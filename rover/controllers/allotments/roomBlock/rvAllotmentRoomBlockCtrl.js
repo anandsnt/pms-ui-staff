@@ -38,7 +38,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldHideAddRoomsButton = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_bookings.length > 0);
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings.length > 0);
 		};
 
 		/**
@@ -92,7 +92,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		 $scope.shouldDisableGridViewSwitch = function() {
-		 	var roomTypesConfigured = $scope.allotmentConfigData.summary.selected_room_types_and_bookings.length > 0;
+		 	var roomTypesConfigured = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings.length > 0;
 
 		 	return (!roomTypesConfigured);
 		 };
@@ -449,11 +449,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.$emit('showLoader');
 			$timeout(function() {
 				// Discard all the changes in current view
-				$scope.clickedOnDiscardButton();
+				// only if there are any changes
+				if ( $scope.shouldShowDiscardButton() ) {
+					$scope.clickedOnDiscardButton();
+				};
+
 				$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+
 				$scope.$emit("hideLoader");
-				$timeout(reinit, 400);
+				$timeout(reinit, 100);
 			}, 0);
+
+			// reset data flags
+			updated_current_counts = false;
+			updated_contract_counts = false;
+			$scope.hasBookingDataChanged = false;
 		};
 
 		/**
@@ -478,7 +488,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Fired when user clickes on the button in contract view.
 		 */
 		$scope.clickedOnApplyToHeldCountsButton = function() {
-			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+			var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 			// plan A: copy contracted value to held counts by force and call saveRoomBlock()
 			_.each(roomBlockData, function(roomtype) {
 				_.each(roomtype.dates, function(dateData) {
@@ -510,7 +520,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Copy held counts to contracts
 		 */
 		$scope.clickedOnApplyToHeldToContractButton = function() {
-			var roomBlockData = $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+			var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 			// plan A: copy held value to contracted counts by force and call saveRoomBlock()
 			_.each(roomBlockData, function(roomtype) {
 				_.each(roomtype.dates, function(dateData) {
@@ -538,8 +548,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return None
 		 */
 		$scope.clickedOnDiscardButton = function() {
-			$scope.allotmentConfigData.summary.selected_room_types_and_bookings =
-				util.deepCopy($scope.copy_selected_room_types_and_bookings);
+
+			//$scope.allotmentConfigData.roomblock.selected_room_types_and_bookings = util.deepCopy($scope.copy_selected_room_types_and_bookings);
+			// put back the original data, not using deep copy since its bad :(
+			// this can be improved further if we can know which fields have been changed 
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(eachRoomType) {
+				_.each(eachRoomType.dates, function(dateData) {
+					dateData['double']          = dateData['old_double'];
+					dateData['double_contract'] = dateData['old_double_contract'];
+					dateData['double_pickup']   = dateData['old_double_pickup'];
+					dateData['release_days']    = dateData['old_release_days'];
+					dateData['single']          = dateData['old_single'];
+					dateData['single_contract'] = dateData['old_single_contract'];
+					dateData['single_pickup']   = dateData['old_single_pickup'];
+				});
+			});
 
 			//and our isn't changed
 			$scope.hasBookingDataChanged = false;
@@ -560,8 +583,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//we have saved everything we have
 			//so our data is new
-			$scope.copy_selected_room_types_and_bookings =
-				angular.copy($scope.allotmentConfigData.summary.selected_room_types_and_bookings);
+			// $scope.copy_selected_room_types_and_bookings =
+			// 	angular.copy($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings);
+
+			// since deep suxx
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(eachRoomType) {
+				_.each(eachRoomType.dates, function(dateData) {
+					dateData['old_double']          = dateData['double'];
+					dateData['old_double_contract'] = dateData['double_contract'];
+					dateData['old_double_pickup']   = dateData['double_pickup'];
+					dateData['old_release_days']    = dateData['release_days'];
+					dateData['old_single']          = dateData['single'];
+					dateData['old_single_contract'] = dateData['single_contract'];
+					dateData['old_single_pickup']   = dateData['single_pickup'];
+				});
+			});
 
 			$scope.hasBookingDataChanged = false;
 			$scope.allotmentConfigData.summary.rooms_total = $scope.getMaxOfBookedRooms();
@@ -591,7 +627,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 					_.each(error.room_type_hash, function(roomType) {
 						var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
-							editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.summary.selected_room_types_and_bookings, {
+							editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, {
 															room_type_id: roomType.room_type_id
 										  				});
 
@@ -655,7 +691,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
-				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
+				results: $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,
 				forcefully_overbook_and_assign_rooms: forceOverbook,
 				is_contract_save: isContratUpdate
 			};
@@ -671,7 +707,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.saveReleaseDays = function() {
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
-				results: $scope.allotmentConfigData.summary.selected_room_types_and_bookings
+				results: $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings
 			};
 
 			var options = {
@@ -753,7 +789,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.getTotalContractedOfDay = function(dateIndex) {
 			var cInt 			= util.convertToInteger,
 				total 			= 0,
-		    	roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+		    	roomBlockData 	= $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 
 		    // Loop each roomtype and calculate the total contracted number for the date
 			_.each(roomBlockData, function(roomType) {
@@ -774,7 +810,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.getTotalHeldOfDay = function(dateIndex) {
 			var cInt 			= util.convertToInteger,
 				total 			= 0,
-		    	roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+		    	roomBlockData 	= $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 
 		    // Loop each roomtype and calculate the total contracted number for the date
 			_.each(roomBlockData, function(roomType) {
@@ -795,7 +831,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.getTotalPickedUpOfDay = function(dateIndex) {
 			var cInt 			= util.convertToInteger,
 				total 			= 0,
-		    	roomBlockData 	= $scope.allotmentConfigData.summary.selected_room_types_and_bookings;
+		    	roomBlockData 	= $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 
 		    // Loop each roomtype and calculate the total contracted number for the date
 			_.each(roomBlockData, function(roomType) {
@@ -895,7 +931,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Integer}
 		 */
 		$scope.getMaxOfBookedRooms = function() {
-			var ref = $scope.allotmentConfigData.summary.selected_room_types_and_bookings,
+			var ref = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,
 				totalBookedOfEachDate = [],
 				arrayOfDateData = [],
 				dateWiseAllotmentedData = {},
@@ -937,7 +973,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		var successCallBackOfRoomTypeAndRatesFetch = function(data) {
-			$scope.allotmentConfigData.summary.selected_room_types_and_rates = data.room_type_and_rates;
+			$scope.allotmentConfigData.roomblock.selected_room_types_and_rates = data.room_type_and_rates;
 		};
 
 		/**
@@ -1089,19 +1125,26 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
-			var summaryData = $scope.allotmentConfigData.summary;
+			var roomBlockData = $scope.allotmentConfigData.roomblock;
 
 			// We have resetted the data.
 			$scope.hasBookingDataChanged = false;
 
-			//we need indivual room type total bookings of each date initially,
-			//we are using this for overbooking calculation
 			_.each(data.results, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
+
+					//we need indivual room type total bookings of each date initially,
+					//we are using this for overbooking calculation
 					dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
 
-					// keeping original release days
-					dateData['old_release_days'] = dateData['release_days'];
+					// keeping original data
+					dateData['old_double']          = dateData['double'];
+					dateData['old_double_contract'] = dateData['double_contract'];
+					dateData['old_double_pickup']   = dateData['double_pickup'];
+					dateData['old_release_days']    = dateData['release_days'];
+					dateData['old_single']          = dateData['single'];
+					dateData['old_single_contract'] = dateData['single_contract'];
+					dateData['old_single_pickup']   = dateData['single_pickup'];
 				});
 			});
 
@@ -1110,16 +1153,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			_.each(data.occupancy, function(eachOcc) {
 				eachOcc['ui_release_days'] = '';
 			});
-			summaryData.common_ui_release_days = '';
+			roomBlockData.common_ui_release_days = '';
 
-			summaryData.selected_room_types_and_bookings = data.results;
-			summaryData.selected_room_types_and_occupanies = data.occupancy;
+			roomBlockData.selected_room_types_and_bookings = data.results;
+			roomBlockData.selected_room_types_and_occupanies = data.occupancy;
 
 			//our total pickup count may change on coming from other tab (CICO-16835)
 			$scope.totalPickups = data.total_picked_count;
 
 			//we need the copy of selected_room_type, we ned to use these to show save/discard button
-			$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
+			// not using any more!
+			//$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
 			//we changed data, so
 			refreshScroller();
@@ -1134,7 +1178,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				return;
 			};
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(each) {
 				if ( each.hasOwnProperty('dates') && each['dates'][index] ) {
 					each['dates'][index]['release_days'] = value;
 					$scope.releaseDaysEdited = true;
@@ -1153,11 +1197,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				return;
 			};
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_occupanies, function(each) {
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies, function(each) {
 				each['ui_release_days'] = value;
 			});
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(each) {
 				_.each(each['dates'], function(date) {
 					date['release_days'] = value;
 				});
@@ -1172,13 +1216,14 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.resetReleaseDaysEdit = function() {
-			$scope.allotmentConfigData.summary.common_ui_release_days = '';
+			var roomBlockData = $scope.allotmentConfigData.roomblock;
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_occupanies, function(each) {
+			roomBlockData.common_ui_release_days = '';
+			_.each(roomBlockData.selected_room_types_and_occupanies, function(each) {
 				each['ui_release_days'] = '';
 			});
 
-			_.each($scope.allotmentConfigData.summary.selected_room_types_and_bookings, function(each) {
+			_.each(roomBlockData.selected_room_types_and_bookings, function(each) {
 				_.each(each['dates'], function(date) {
 					date['release_days'] = date['old_release_days'];
 				});
@@ -1295,7 +1340,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForContractViewTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
 		};
 
 		/**
@@ -1303,7 +1348,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForCurrentViewTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
 		};
 
 		/**
@@ -1311,7 +1356,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForReleaseViewTimeLine = function() {
-			return ($scope.allotmentConfigData.summary.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
 		};
 
 		/**
@@ -1364,7 +1409,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			//whether the booking data changed
 			$scope.hasBookingDataChanged = false;
 
-			_.extend($scope.allotmentConfigData.summary, {
+			_.extend($scope.allotmentConfigData.roomblock, {
 				selected_room_types_and_bookings: [],
 				selected_room_types_and_occupanies: [],
 				selected_room_types_and_rates: []
