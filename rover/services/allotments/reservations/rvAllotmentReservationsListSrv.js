@@ -26,6 +26,30 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 		};
 
 		/**
+		 * function to perform auto room assignment
+		 * @return {Promise}
+		 */
+		this.performAutoRoomAssignment = function(params) {
+			var deferred = $q.defer(),
+				allotment_id = params.id,
+				url = '/api/allotments/' + allotment_id + 'auto_room_assignment',
+				params = {
+					"reservation_ids": params.reservation_ids
+				};
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
 		 * Function to get Room type configured against allotment
 		 * @return {Promise} [will get the details]
 		 */
@@ -42,6 +66,27 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 				},
 				function(errorMessage) {
 					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
+		 * to send reservation list to some email
+		 * @param  {[type]} data [description]
+		 * @return {[type]}      [description]
+		 */
+		this.emailInvoice = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/allotments/email_rooming_list';
+			
+			rvBaseWebSrvV2.postJSON(url, data).then(
+				function(data) {
+					deferred.resolve(data);
+				}.bind(this), 
+				function(data) {
+					deferred.reject(data);
 				}
 			);
 

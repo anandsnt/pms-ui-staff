@@ -1,0 +1,10 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content alert" ng-init="mailInvoiceTo = ''">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+            <div class="entry full-width">
+                <label for="invoice-email" translate>EMAIL</label>
+                <input id="invoice-email" ng-model="mailInvoiceTo" type="text" />
+            </div>
+        <button type="button" class="button blue modal-close" ng-click="sendEmail(mailInvoiceTo)" translate>SEND</a>
+    </div>
+</div>

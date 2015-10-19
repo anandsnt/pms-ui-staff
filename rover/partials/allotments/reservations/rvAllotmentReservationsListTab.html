@@ -120,7 +120,7 @@
 				</div>
 			</li>
 			<li> <!-- Don't show until there are new rooms added in the rooming list -->
-				<button type="button" class="button" ng-show="shouldShowAutoRoomAssignmentButton()" ng-click="autoAssignRooms()" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()">
+				<button type="button" class="button" ng-show="!shouldShowNoReservations()" ng-click="autoAssignRooms()" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()">
 					{{'ALLOTMENT_AUTO_ASSIGN_ROOMS'|translate}}
 				</button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
 			</li>
@@ -131,11 +131,11 @@
 					<input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
 					{{ 'DONT_PRINT_RATE' | translate }}
 				</label>
-				<button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
+				<button type="button" class="button with-icon only-icon blue" ng-hide="shouldShowNoReservations()" ng-click="sendRoomingList()">
 					<span class="icons icon-email"></span>
 					{{'ALLOTMENT_EMAIL'|translate}}
 				</button>
-				<button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="fetchReservationsForPrintingRoomingList()">
+				<button type="button" class="button blue with-icon only-icon" ng-hide="shouldShowNoReservations()" ng-click="fetchReservationsForPrintingRoomingList()">
 					<span class="icons icon-print"></span>
 					{{'ALLOTMENT_PRINT'|translate}}
 				</button>
@@ -153,6 +153,7 @@
 	</div>
 <div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 	<!-- When no rooms in list -->
 	<div class="no-content" ng-show="shouldShowNoReservations()">
 		<div class="info">
