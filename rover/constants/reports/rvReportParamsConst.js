@@ -5,6 +5,8 @@ sntRover.constant('RVReportParamsConst', {
     'CANCEL_TO_DATE'       : 'cancel_to_date',
     'ARRIVAL_FROM_DATE'    : 'arrival_from_date',
     'ARRIVAL_TO_DATE'      : 'arrival_to_date',
+    'GROUP_START_DATE'     : 'group_from_date',
+    'GROUP_END_DATE'       : 'group_to_date',
     'DEPOSIT_FROM_DATE'    : 'deposit_from_date',
     'DEPOSIT_TO_DATE'      : 'deposit_to_date',
     'PAID_FROM_DATE'       : 'paid_from_date',
