@@ -34,6 +34,24 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     var currentMode;
 
     /**
+     * util function to check whether a string is empty
+     * we are assigning it as util's isEmpty function since it is using in html
+     * @param {String/Object}
+     * @return {boolean}
+     */
+    $scope.isEmpty = util.isEmpty;
+
+
+    /**
+     * function to stringify a string
+     * sample use case:- directive higlight filter
+     * sometimes through error parsing speial charactes
+     * @param {String}
+     * @return {String}
+     */
+    $scope.stringify = util.stringify;
+
+    /**
      * Has Permission To Create allotment room block
      * @return {Boolean}
      */
@@ -274,6 +292,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.toggleAddMode = function() {
       if (isReservationListInAddMode()) {
         setToDefaultMode();
+        $scope.fetchReservations ();
       } else {
         setToAddMode();
       }
@@ -286,6 +305,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.toggleSearchMode = function() {
       if (isReservationListInSearchMode()) {
         setToDefaultMode();
+        $scope.fetchReservations ();
       } else {
         setToSearchMode();
       }
@@ -327,6 +347,15 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var isReservationListInAddMode = function() {
       return (currentMode === 'ADD');
+    };
+
+    /**
+     * will clear the query and will run for the new data
+     */
+    $scope.clearSearchQuery = function() {
+      $scope.searchQuery = '';
+      $scope.page = 1;
+      $scope.fetchReservations (true); //true because  to indicate search mode
     };
 
     /**
@@ -466,7 +495,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.totalResultCount += (data.results.length);
 
       //pickup
-      $scope.totalPickUpCount = data.total_pickup_count;
+      $scope.totalPickUpCount = data.total_picked_count;
 
       //we changed data, so
       refreshScrollers();
@@ -495,11 +524,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       //API params
       var params = {
-        id: $scope.allotmentConfigData.summary.allotment_id,
-        room_type_id: $scope.selectedRoomType,
-        from_date: $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
-        to_date: $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
-        occupancy: $scope.selectedOccupancy,
+        id            : $scope.allotmentConfigData.summary.allotment_id,
+        room_type_id  : $scope.selectedRoomType,
+        from_date     : $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
+        to_date       : $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
+        occupancy     : $scope.selectedOccupancy,
         no_of_reservations: $scope.numberOfRooms
       };
 
@@ -643,7 +672,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.totalResultCount = data.total_count;
 
       //pickup
-      $scope.totalPickUpCount = data.total_pickup_count;
+      $scope.totalPickUpCount = data.total_picked_count;
 
       //if pagination end is undefined
       if ($scope.end === undefined) {
@@ -789,14 +818,6 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           $scope.fetchReservations(true);
       }
     };
-
-    /**
-     * util function to check whether a string is empty
-     * we are assigning it as util's isEmpty function since it is using in html
-     * @param {String/Object}
-     * @return {boolean}
-     */
-    $scope.isEmpty = util.isEmpty;
 
     /**
      * we want to display date in what format set from hotel admin

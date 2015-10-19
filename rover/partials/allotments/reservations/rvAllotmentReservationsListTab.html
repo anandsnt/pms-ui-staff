@@ -80,7 +80,7 @@
 	            </button>
 	        </div>
 	        <div class="entry search">
-	            <button class="clear-query"> <!-- Add class "visible" when query is entered -->
+	            <button class="clear-query" ng-class="{'visible': !isEmpty(searchQuery.toString())}" ng-click="clearSearchQuery()"> <!-- Add class "visible" when query is entered -->
 	                <span class="icons icon-clear-search">Clear query</span>
 	            </button>
 	            <button type="submit" name="submit" class="icons icon-search">Search</button>
@@ -191,30 +191,32 @@
                 <div class="check">
                     <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : isCancelledAllotment()}"> 
                         <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
-                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="isCancelledAllotment()">
+                        <input id="guest-id" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="isCancelledAllotment()">
                     </label>
                 </div>
                 <a ng-click="onClickReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
-                            {{reservation.lastname}}, {{reservation.firstname}}
+							<span class="no-margin-right" ng-bind-html="{{stringify(escapeNull(row.lastname))}}|highlight:searchQuery:false"></span>,
+							<span ng-bind-html="{{stringify(escapeNull(row.firstname))}}|highlight:searchQuery:false"></span>                        
+                         	<!--Guest last name, first name will appear here by ng-bind-html -->
                         </h2>
-                            <h2 ng-show="isGuestBlank(reservation)">
+                        <h2 ng-show="isGuestBlank(reservation)">
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'ALLOTMENT_PENDING'|translate}}</span>
                         </h2>
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
                             {{'ALLOTMENT_ROOM'|translate}} 
-                            <span ng-class="getRoomStatusClass(reservation)">
-                                {{reservation.room_no}}
+                            <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="{{stringify(escapeNull(reservation.room_no))}}|highlight:searchQuery:false">
                             </span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
-                            <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
+                        <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
                            {{'ALLOTMENT_UNASSIGNED'|translate}} 
-                        </span> |
-                            <span class="confirmation">{{reservation.confirm_no}}</span>
+                        </span> 
+                        |
+                       	<span class="confirmation" ng-bind-html="{{stringify(escapeNull(reservation.confirm_no))}}|highlight:searchQuery:false"></span>
                         </div>
                         <div class="reservation-info">
                             <div class="arrival-departure">
