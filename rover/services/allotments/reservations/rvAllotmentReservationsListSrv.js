@@ -1,6 +1,9 @@
 sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 	function($q, rvBaseWebSrvV2, util) {
-
+		
+		//some default values
+		this.DEFAULT_PER_PAGE = 50;
+		this.DEFAULT_PAGE = 1;
 		/**
 		 * to get the reservations agianst a group
 		 * @return {Promise} [will get the reservation list]
