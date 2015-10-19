@@ -16,9 +16,9 @@
 <div class="room-block-actions release-range" ng-show="shouldHideAddRoomsButton()">
     <div class="entry">
         <label for="allotment-release-range">Release Range (In Days)</label>
-        <input id="allotment-release-range" type="text" class="highlight" ng-model="allotmentConfigData.summary.common_ui_release_days" />
+        <input id="allotment-release-range" type="text" class="highlight" ng-model="allotmentConfigData.roomblock.common_ui_release_days" />
         <button type="button" class="admin-icons icon-mover-right"
-            ng-click="copyReleaseRangeToAllBlocks(allotmentConfigData.summary.common_ui_release_days)">
+            ng-click="copyReleaseRangeToAllBlocks(allotmentConfigData.roomblock.common_ui_release_days)">
             Fill
         </button>
     </div>
@@ -41,7 +41,7 @@
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
         <div ng-class="{'open' : roomtype_rate.isCollapsed}"
             class="row"
-            ng-repeat="roomtype_rate in allotmentConfigData.summary.selected_room_types_and_bookings"
+            ng-repeat="roomtype_rate in allotmentConfigData.roomblock.selected_room_types_and_bookings"
             ui-jq="accordion"
             ui-options="accordionInitiallyNotCollapsedOptions"
             ng-init="roomtype_rate.isCollapsed = true">
@@ -97,7 +97,7 @@
     bindonce>
 
     <ul class="wrapper" bindonce style="width:{{getWidthForReleaseViewTimeLine()}};">
-        <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
+        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies">
             <div class="inner">
                 <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
                 <strong bo-text="formatDateForUI(occupancy.date, monthAndDate)"></strong>
@@ -122,15 +122,18 @@
     ng-show="shouldHideAddRoomsButton()">
     <div class="wrapper" bindonce style="width:{{getWidthForReleaseViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-        <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
+        <div class="row" ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
             <div class="column" ng-repeat="dateData in roomType.dates">
                 <!-- Room Type -->
                 <div class="line">
-                    <input type="text"
-                        class="highlight" 
-                    	ng-model="dateData.release_days" />
+                    <input type="number"
+                        class="highlight"
+                    	ng-model="dateData.release_days"
+                        rv-delay-textbox
+                        delay="100"
+                        function-to-fire="releaseDateChanging" />
                 </div>
                  <div class="line small" ng-class="{'hidden' : !roomType.isCollapsed}"> <!-- Toggle class hidden when .line-toggle (L41) is clicked/tapped -->
                     <em class="cell">Total</em>
