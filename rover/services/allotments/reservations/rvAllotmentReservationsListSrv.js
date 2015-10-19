@@ -10,14 +10,7 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 				allotment_id = params.id,
 				url = '/api/allotments/' + allotment_id + "/reservations";
 
-			var data = {
-				'sort_field': params.sorting_field,
-				'sort_dir': params.sort_dir,
-				'per_page': params.per_page,
-				'page': params.page
-			};
-
-			rvBaseWebSrvV2.getJSON(url, data).then(
+			rvBaseWebSrvV2.getJSON(url, params.payLoad).then(
 				function(data) {
 					deferred.resolve(data);
 				},

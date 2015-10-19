@@ -84,7 +84,10 @@
 	                <span class="icons icon-clear-search">Clear query</span>
 	            </button>
 	            <button type="submit" name="submit" class="icons icon-search">Search</button>
-	            <input class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off"  ng-model="searchQuery"/>
+	            <input class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off"  
+	            		rv-delay-textbox
+                        delay="1000"
+                        function-to-fire="searchAllotmentReservations"ng-model="searchQuery"/>
 	        </div>
 
 	        <div class="entry date-range">
