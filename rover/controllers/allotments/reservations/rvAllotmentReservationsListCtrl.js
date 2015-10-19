@@ -32,21 +32,21 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         var currentMode;
 
         /**
-         * Has Permission To Create group room block
+         * Has Permission To Create allotment room block
          * @return {Boolean}
          */
         var hasPermissionToCreateRoomingList = function() {
             //TODO: Change key to allotment namespace, not added in API
-            return (rvPermissionSrv.getPermissionValue('CREATE_ROOMING_LIST'));
+            return (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_ROOMING_LIST'));
         };
 
         /**
-         * Has Permission To Edit group room block
+         * Has Permission To Edit allotment room block
          * @return {Boolean}
          */
         var hasPermissionToEditRoomingList = function() {
             //TODO: Change key to allotment namespace, not added in API
-            return (rvPermissionSrv.getPermissionValue('EDIT_ROOMING_LIST'));
+            return (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_ROOMING_LIST'));
         };
 
         /**
