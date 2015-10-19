@@ -10,6 +10,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
     '$state',
     'ngDialog',
     'rvAllotmentConfigurationSrv',
+    'rvAllotmentReservationsListSrv',
     function($rootScope,
         $scope,
         rvGroupRoomingListSrv,
@@ -20,7 +21,8 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         RVBillCardSrv,
         $state,
         ngDialog,
-        rvAllotmentConfigurationSrv) {
+        rvAllotmentConfigurationSrv,
+        rvAllotmentReservationsListSrv) {
 
       BaseCtrl.call(this, $scope);
 
@@ -363,14 +365,15 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         } else {
           params = {
             id: reservation.id,
-            group_id: $scope.allotmentConfigData.summary.allotment_id
+            group_id: $scope.allotmentConfigData.summary.allotment_id,
+            is_allotment: true
           };
 
           options = {
             params: params,
             successCallBack: onRemoveReservationSuccess
           };
-          $scope.callAPI(rvGroupConfigurationSrv.removeRoomingListItem, options);
+          $scope.callAPI(rvAllotmentReservationsListSrv.removeReservation, options);
         }
       };
 
