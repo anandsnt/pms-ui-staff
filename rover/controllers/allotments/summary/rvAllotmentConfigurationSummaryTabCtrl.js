@@ -27,10 +27,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 			for (key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
-					return false;
+					return true;
 				}
 			}
-			return true;
+			return false;
 		};
 
 		/**
@@ -50,21 +50,18 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			var isInaddMode 		= $scope.isInAddMode(),
-				incorrectTarget 	= (targetElement &&
-										(targetElement.id === 'summary' ||
-										 targetElement.id === "cancel-action"
-										)
-									  ),
-				summaryDataChanged 	= whetherSummaryDataChanged(),
-				demographicsOpen 	= $scope.allotmentSummaryData.isDemographicsPopupOpen,
-				tabIsNotSummary 	= $scope.allotmentConfigData.activeTab !== "SUMMARY",
-				updateInProgress 	= $scope.isUpdateInProgress;
+			var isInaddMode 			= $scope.isInAddMode(),
+				incorrectTarget 		= (targetElement &&
+											(targetElement.id === 'summary' ||
+											 targetElement.id === "cancel-action"
+											)
+										  ),
+				summaryDataNotChanged 	= !whetherSummaryDataChanged(),
+				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
+				updateInProgress 		= $scope.isUpdateInProgress;
 
-
-			if ( incorrectTarget 	|| isInaddMode 		||
-				summaryDataChanged 	|| demographicsOpen ||
-				tabIsNotSummary 	|| updateInProgress ) {
+			if ( incorrectTarget 	  || isInaddMode 	  || summaryDataNotChanged ||
+				 demographicsOpen 	  || updateInProgress ) {
 				// No need to call update summary
 				return;
 			}
@@ -840,11 +837,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
-			//IF you are looking for where the hell the API is CALLING
-			//scroll above, and look for the event 'ALLOTMENT_TAB_SWITCHED'
-
-			//date related setups and things
-			//
 			// Fetch rates to show in dropdown
 			if (!!$scope.allotmentConfigData.summary.block_from && !!$scope.allotmentConfigData.summary.block_to) {
 				fetchApplicableRates();

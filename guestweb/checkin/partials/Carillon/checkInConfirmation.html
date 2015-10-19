@@ -1,0 +1,96 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron backgroundbg">
+	<div class="container " >
+		<div class="black-bg">
+			<div class="row headerrow white-bg">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+
+	<!--	 show posting message -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head black-text">Your request is being processed.</p>
+			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+		</div>
+
+	<!--	show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+		<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
+		<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+		</div>
+
+	
+
+	<!-- contentarea starts here-->
+	<div class="container line-top  line-bottom" ng-hide="isPosting || netWorkError || isResponseSuccess">
+		<!-- top section starts here-->
+
+		<div class="row checkin-wrapper">
+			<div class="col-md-6 headtext centeralign pad-rt-60  black-text">
+				Start Pre Check-in ?
+				<p class="subTitletext black-text">
+					To provide you with a
+					<strong class="reservation-details black-text">secure check-in </strong>
+					process, please confirm the following
+					<strong class="reservation-details black-text">reservation details:</strong>
+				</p>
+			</div>
+
+			<div class="verti-ruler margin-bottom-20"></div>
+
+			<!-- top section ends here-->
+
+
+			<div class="col-md-6 pad-lf-60">
+				<form >
+				<div class="row">
+					<em class="labelText black-text">DEPARTURE DATE</em>
+					<span class="date-picker" ng-click="showCalender()" >
+					<input type="text " class = "col-xs-12 textBox" placeholder="{{dateFormatPlaceholder}}"  ng-model="departureDate" readonly/> 
+					<img src="/assets/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
+				</div>
+
+				<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
+					<em class="labelText light-black-text">LAST 4 DIGITS OF CREDIT CARD USED</em>
+					<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
+				</div>
+				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn black-bg" ng-click="nextButtonClicked()" value="Continue"/>
+				
+				
+				</form>
+			</div>
+		</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>
+
+<div class="date-picker-bg" ng-show="isCalender">
+	<div class="date-picker-wrap">
+	   <div class="col-xs-12 date-picker-header">
+	      <div class="col-xs-2 date-picker-back" ng-click = "closeCalender()">
+	         <img src="/assets/img/eden_resorts/back_icon.png " width="25" height="20" alt=""/>
+	         <div class="white-text" >BACK</div>
+	      </div>
+
+	      <div class="col-xs-8 centeralign departure-date ">
+	         <p>DEPARTURE DATE</p>
+
+	         <p class="date-text">{{date | date:'MMM dd'}}</p>
+
+	      </div>
+
+	      <div class="col-xs-2 date-picker" ng-click = "dateChoosen()">
+	      <img src="/assets/img/Carillon/tick-white.png " width="25" height="20" alt=""/>
+	         <div class="white-text">DONE</div>
+	      </div>
+	   </div>
+
+	   <div class="col-xs-12">
+	      <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
+	   </div>
+	</div>
+</div>
