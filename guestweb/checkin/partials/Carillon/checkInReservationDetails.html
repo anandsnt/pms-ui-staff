@@ -2,10 +2,9 @@
 
 <div class="jumbotron backgroundbg">
 	<div class="container" >
-		
-			<div class="row headerrow white-bg">
-				<logo-image></logo-image>
-			</div>
+		<div class="row headerrow white-bg">
+			<logo-image></logo-image>
+		</div>
 
 		<!-- contentarea starts here-->
 		<div class="container">
@@ -69,6 +68,10 @@
 							{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
 						</div>
 					</div>
+					<div class="row applycharge">
+					<input type="checkbox" ng-click="termsClicked()" ng-model="checked"  ng-checked="checkedApplyCharges" >&nbsp
+					<span class="black-text">I ACCEPT ALL TERMS AND CONDITIONS</span>
+			</div>
 				</div></div>
 				<div class="verti-ruler margin-top-20"></div>
 				<div class="col-md-6 pad-lf-60 checkin-width checkin-button-padding">			
@@ -76,11 +79,7 @@
 						<span class="white-text">Continue</span>
 					</button>
 				</div>
-			</div>
-			<div class="row applycharge" ng-hide="true">
-						 <input type="checkbox" ng-click="termsClicked()" ng-model="checked"  ng-checked="checkedApplyCharges" ng-init="checked='true';checkedApplyCharges='true'">&nbsp
-							<span class="black-text">I ACCEPT ALL TERMS AND CONDITIONS</span>
-			</div>
+			</div>			
 			<div class="row checkin-wrapper line-bottom no-top-bottom-padding" id="error-container">
 				<div class="col-md-6 error-callus">
 					<div class="black-text">
