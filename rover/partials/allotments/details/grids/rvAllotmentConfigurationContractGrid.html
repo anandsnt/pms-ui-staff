@@ -83,7 +83,7 @@
             ng-show="shouldHideAddRoomsButton()"
             bindonce>
 
-            <ul style="{'width': getWidthForContractViewTimeLine()}" class="wrapper">
+            <ul class="wrapper" bindonce style="width:{{getWidthForContractViewTimeLine()}};">
                 <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
                     <div class="inner">
                         <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
