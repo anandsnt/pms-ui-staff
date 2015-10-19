@@ -11,6 +11,7 @@ sntRover.constant('RVReportNamesConst', {
 	'BOOKING_SOURCE_MARKET_REPORT' : 'Booking Source & Market Report',
 	'CANCELLATION_NO_SHOW'         : 'Cancellation & No Show',
 	'DEPOSIT_REPORT'               : 'Deposit Report',
+	'GROUP_DEPOSIT_REPORT'         : 'Group Deposit Report',
 	'LOGIN_AND_OUT_ACTIVITY'       : 'Login and out Activity',
 	'OCCUPANCY_REVENUE_SUMMARY'    : 'Occupancy & Revenue Summary',
 	'RESERVATIONS_BY_USER'         : 'Reservations By User',
@@ -23,5 +24,8 @@ sntRover.constant('RVReportNamesConst', {
 	'COMPARISION_BY_DATE'          : 'Comparison',
 	'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report',
 	'GROUP_PICKUP_REPORT'          : 'Group Pick Up Report',
-	'ADDON_FORECAST'               : 'Add-On Forecast'
+	'GUEST_BALANCE_REPORT'		   : 'Guest Balance Report',
+	'ADDON_FORECAST'               : 'Add-On Forecast',
+	'DAILY_PRODUCTION'             : 'Daily Production by Room Type',
+	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report'
 });

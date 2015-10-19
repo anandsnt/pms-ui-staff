@@ -80,6 +80,48 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         /**
+         * we will update the summary data, when we got this one
+         * @return undefined
+         */
+        var fetchSuccessOfSummaryData = function(data) {
+            var summaryData = $scope.allotmentConfigData.summary; // ref for summary
+            summaryData = _.extend(summaryData, data.allotmentSummary);
+
+            if (!$scope.isInAddMode()) {
+                summaryData.block_from = new tzIndependentDate(summaryData.block_from);
+                summaryData.block_to = new tzIndependentDate(summaryData.block_to);
+                summaryData.rate = parseInt(summaryData.rate);
+            }
+
+            // let others know we have refreshed summary data
+            $scope.$broadcast("UPDATED_ALLOTMENT_INFO");
+        };
+
+       /**
+        * method to fetch summary data
+        * @return undefined
+        */
+       var fetchSummaryData = function() {
+           var params = {
+               "allotmentId": $scope.allotmentConfigData.summary.allotment_id
+           };
+           var options = {
+               successCallBack: fetchSuccessOfSummaryData,
+               params: params
+           };
+
+           $scope.callAPI(rvAllotmentConfigurationSrv.getAllotmentSummary, options);
+       };
+
+        /**
+         * Refresh the allotment summary data when we get this event
+         */
+        $scope.$on("FETCH_SUMMARY", function(event) {
+            event.stopPropagation();
+            fetchSummaryData();
+        });
+
+        /**
          * function to form data model for add/edit mode
          * @return - None
          */
@@ -150,28 +192,29 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        var preLoadTransactionsData = function() {
-            var onTransactionFetchSuccess = function(data) {
+        var onTransactionFetchSuccess = function(data) {
 
-                $scope.$emit('hideloader');
-                $scope.transactionsDetails = data;
-                $scope.allotmentConfigData.activeTab = 'TRANSACTIONS';
+            $scope.$emit('hideloader');
+            $scope.transactionsDetails = data;
+            $scope.allotmentConfigData.activeTab = 'TRANSACTIONS';
 
-                /*
-                 * Adding billValue and oldBillValue with data. Adding with each bills fees details
-                 * To handle move to bill action
-                 * Added same value to two different key because angular is two way binding
-                 * Check in HTML moveToBillAction
-                 */
-                angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-                    angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+            /*
+             * Adding billValue and oldBillValue with data. Adding with each bills fees details
+             * To handle move to bill action
+             * Added same value to two different key because angular is two way binding
+             * Check in HTML moveToBillAction
+             */
+            angular.forEach($scope.transactionsDetails.bills, function(value, key) {
+                angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
 
-                        feesValue.billValue = value.bill_number; //Bill value append with bill details
-                        feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
-                    });
+                    feesValue.billValue = value.bill_number; //Bill value append with bill details
+                    feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
                 });
+            });
 
-            };
+        };
+
+        var preLoadTransactionsData = function() {
             var params = {
                 "account_id": $scope.accountConfigData.summary.posting_account_id
             };
@@ -182,9 +225,11 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        $scope.reloadPage = function() {
+        $scope.reloadPage = function(tab) {
+            tab = tab || "SUMMARY";
             $state.go('rover.allotments.config', {
-                id: $scope.allotmentConfigData.summary.allotment_id
+                id: $scope.allotmentConfigData.summary.allotment_id,
+                activeTab: tab
             }, {
                 reload: true
             });
@@ -214,12 +259,23 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.getCurrentTabUrl = function() {
             var tabAndUrls = {
                 'SUMMARY': '/assets/partials/allotments/summary/rvAllotmentConfigurationSummaryTab.html',
-                'DETAILS': '/assets/partials/allotments/details/rvAllotmentConfigurationDetailsTab.html',
+                'ROOM_BLOCK': '/assets/partials/allotments/details/rvAllotmentConfigurationRoomBlockTab.html',
                 'RESERVATIONS': '/assets/partials/allotments/reservations/rvAllotmentReservationsListTab.html',
                 'ACTIVITY': '/assets/partials/allotments/activity/rvAllotmentActivityTab.html'
             };
 
             return tabAndUrls[$scope.allotmentConfigData.activeTab];
+        };
+        var onAllotmentSaveSuccess = function(data) {
+            $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
+            $state.go('rover.allotments.config', {
+                id: data.allotment_id
+            });
+            $stateParams.id = data.allotment_id;
+        };
+
+        var onAllotmentSaveFailure = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
         };
 
         /**
@@ -230,28 +286,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
                 if (ifMandatoryValuesEntered()) {
-                    var onAllotmentSaveSuccess = function(data) {
-                            $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
-                            $state.go('rover.allotments.config', {
-                                id: data.allotment_id
-                            });
-                            $stateParams.id = data.allotment_id;
-                        },
-                        onAllotmentSaveFailure = function(errorMessage) {
-                            $scope.errorMessage = errorMessage;
-                        };
-
                     if (!$scope.allotmentConfigData.summary.rate) {
                         $scope.allotmentConfigData.summary.rate = -1;
                     }
-
-                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, {
+                    var options = {
                         successCallBack: onAllotmentSaveSuccess,
                         failureCallBack: onAllotmentSaveFailure,
                         params: {
                             summary: $scope.allotmentConfigData.summary
                         }
-                    });
+                    };
+                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
                 } else {
                     $scope.errorMessage = ["Allotment's name, from date, to date, room release date and hold status are mandatory"];
                 }
@@ -261,6 +306,18 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
+        var onAllotmentUpdateSuccess = function(data) {
+            //client controllers should get an infromation whether updation was success
+            $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
+            $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
+            return true;
+        };
+        var onAllotmentUpdateFailure = function(errorMessage) {
+            //client controllers should get an infromation whether updation was a failure
+            $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
+            $scope.errorMessage = errorMessage;
+            return false;
+        };
 
         /**
          * Update the allotment data
@@ -272,20 +329,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 if (angular.equals($scope.allotmentSummaryMemento, $scope.allotmentConfigData.summary)) {
                     return false;
                 }
-                var onAllotmentUpdateSuccess = function(data) {
-                        //client controllers should get an infromation whether updation was success
-                        $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
-                        $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);
-                        return true;
-                    },
-                    onAllotmentUpdateFailure = function(errorMessage) {
-                        //client controllers should get an infromation whether updation was a failure
-                        $scope.$broadcast("FAILED_TO_UPDATE_ALLOTMENT_INFO", errorMessage);
-                        $scope.errorMessage = errorMessage;
-                        return false;
-                    };
-
                 var summaryData = _.extend({}, $scope.allotmentConfigData.summary);
+                summaryData     = _.omit(summaryData, ["selected_room_types_and_rates", "selected_room_types_and_occupanies", "selected_room_types_and_bookings"]);
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
@@ -318,7 +363,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id)
+            return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.company && !!$scope.allotmentConfigData.summary.company.id) );
         };
 
         /**
@@ -326,16 +371,16 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id)
+            return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.travel_agent && !!$scope.allotmentConfigData.summary.travel_agent.id) );
         };
 
-        $scope.goToTACard = function(){            
+        $scope.goToTACard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
         };
-        
+
         $scope.goToCompanyCard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
@@ -352,14 +397,15 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.onCompanyCardChange = function() {
-            if ($scope.allotmentConfigData.summary.company && $scope.allotmentConfigData.summary.company.name === "") {
-                $scope.allotmentConfigData.summary.company = null;
+            var summaryData = $scope.allotmentConfigData.summary;
+            if (summaryData.company && summaryData.company.name === "") {
+                summaryData.company = null;
             }
         };
 
         $scope.onTravelAgentCardChange = function() {
-            if ($scope.allotmentConfigData.summary.travel_agent && $scope.allotmentConfigData.summary.travel_agent.name === "") {
-                $scope.allotmentConfigData.summary.travel_agent = null;
+            if (summaryData.travel_agent && summaryData.travel_agent.name === "") {
+                summaryData.travel_agent = null;
             }
         };
 
@@ -472,7 +518,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.updateAndBack = function() {
-            if ($scope.allotmentConfigData.activeTab === "SUMMARY") {
+            if (!$scope.isInAddMode() && $scope.allotmentConfigData.activeTab === "SUMMARY") {
                 $scope.updateAllotmentSummary();
             } else if ($scope.allotmentConfigData.activeTab === "ACCOUNT") {
                 $scope.$broadcast('UPDATE_ACCOUNT_SUMMARY');

@@ -18,6 +18,8 @@ sntRover.service('rvTabletSrv',
                     return deferred.promise;
                 };
                 
+                
+                
                 this.fetchHotelSettings = function () {//to get terms & conditions
                     var deferred = $q.defer();
                     var url = '/api/hotel_settings.json';
@@ -61,6 +63,19 @@ sntRover.service('rvTabletSrv',
                     var deferred = $q.defer(),
                             url = '/staff/staycards/reservation_details.json?reservation='+param.id;
                     
+
+                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                
+                this.fetchAddonDetails = function (param) {
+                    var deferred = $q.defer(),
+                            url = '/staff/staycards/reservation_addons?reservation_id='+param.id;
 
                     rvBaseWebSrvV2.getJSON(url).then(function (data) {
                         deferred.resolve(data);

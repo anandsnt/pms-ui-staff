@@ -8,9 +8,9 @@
         
         <!-- Admin -->
         <button ng-show="at === 'admin-login-screen'" type="button" class="button" touch-press="loginAdmin()">{{modalBtn1}}</button>
-        <button ng-show="at === 'admin-login-screen'" type="button" class="button" touch-press="goToLast()">{{modalBtn2}}</button>
+        <button ng-show="at === 'admin-login-screen'" type="button" class="button" touch-press="navToPrev(true)">{{modalBtn2}}</button>
         <!-- talk to staff-->
-        <button ng-show="at === 'talk-to-staff'" type="button" class="button" touch-press="goToLast()">{{modalBtn1}}</button>
+        <button ng-show="at === 'talk-to-staff'" type="button" class="button" touch-press="navToHome()">{{modalBtn1}}</button>
         <!--key success screens -->
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 1" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 2" type="button" class="button" touch-press="goToScreen(null, 'make-keys', true, 'key-success')">{{modalBtn1}}</button>

@@ -25,26 +25,30 @@ sntRover.service('RVReservationStateService', [
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});
-                        if (rateAddons.associated_addons){
-                            return rateAddons.associated_addons;
-                        } else {
-                            return null;
-                        }
-			
+			if (rateAddons.associated_addons) {
+				return rateAddons.associated_addons;
+			} else {
+				return null;
+			}
+
 		};
 
-		self.getGroupCustomRateModel = function(id, name) {			
+		self.getCustomRateModel = function(id, name, type) {
+			var isAllotment = type && type === 'ALLOTMENT',
+				rateIdentifier = isAllotment ? 'ALLOTMENT_CUSTOM_' + id : 'GROUP_CUSTOM_' + id, //Default to the GROUP
+				rateName = isAllotment ? "Custom Rate for Allotment " + name : "Custom Rate for Group " + name,
+				rateDescription = isAllotment ? "Custom Allotment Rate": "Custom Group Rate";
 			return {
-				id: 'GROUP_CUSTOM_' + id,
-				name: "Custom Rate for Group " + name,
-				description: "Custom Group Rate",
+				id: rateIdentifier,
+				name: rateName,
+				description: rateDescription,
 				account_id: null,
 				is_rate_shown_on_guest_bill: false,
 				is_suppress_rate_on: false,
 				is_discount_allowed: true,
 				rate_type: {
 					id: null,
-					name: "Group Rate"
+					name: isAllotment ? "Allotment Rate" : "Group Rate"
 				},
 				deposit_policy: {
 					id: null,
@@ -238,12 +242,13 @@ sntRover.service('RVReservationStateService', [
 		};
 
 
-		self.shouldPostAddon = function(frequency, present, arrival) {
+		self.shouldPostAddon = function(frequency, present, arrival, departure, chargefullweeksonly) {
 			if (frequency === 0 && present === arrival) {
 				return true;
 			}
 			var dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / (24 * 3600 * 1000), 10);
-			return dayIndex % frequency === 0;
+			var remainingDayIndex = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / (24 * 3600 * 1000), 10);
+			return (dayIndex % frequency === 0) && (remainingDayIndex >= frequency);
 		};
 
 		self.applyDiscount = function(amount, discount, numNights) {
@@ -321,12 +326,22 @@ sntRover.service('RVReservationStateService', [
 				currentRoomId = null,
 				currentRoom = null,
 				roomRatesToBeParsed = roomRate.rates,
-				isCustomRate = false;
+				isCustomRate = false,
+				selectedAllotment = additionalData.allotment.id;
 
-			if ('custom_group_rate' in roomRate) {
+			if ('custom_group_rate' in roomRate && !!selectedGroup) {
 				roomRatesToBeParsed.push({
 					room_rates: roomRate.custom_group_rate.room_rates,
 					id: 'GROUP_CUSTOM_' + selectedGroup,
+					isCustomRate: true
+				});
+			}
+
+			// In case there is an allotment added, this key would have the custom rate (if applicable)
+			if ('custom_allotment_rate' in roomRate && selectedAllotment) {
+				roomRatesToBeParsed.push({
+					room_rates: roomRate.custom_allotment_rate.room_rates,
+					id: 'ALLOTMENT_CUSTOM_' + selectedAllotment,
 					isCustomRate: true
 				});
 			}
@@ -377,7 +392,7 @@ sntRover.service('RVReservationStateService', [
 						_.each(associatedAddons, function(addon) {
 							var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
 								taxOnCurrentAddon = 0.0,
-								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival);
+								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival, addon.charge_full_weeks_only);
 							if (applyPromotion) {
 								currentAddonAmount = parseFloat(self.applyDiscount(currentAddonAmount, code.discount, numNights));
 							}
@@ -445,14 +460,23 @@ sntRover.service('RVReservationStateService', [
 						associatedAddons: addonsApplied,
 						rateBreakUp: room_rate,
 						day: new tzIndependentDate(for_date),
-						availabilityCount: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup ? rooms[currentRoomId].availabilityNumbers[for_date].group : rooms[currentRoomId].availabilityNumbers[for_date].room,
+						availabilityCount: (function(){
+							if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup){
+							 	return rooms[currentRoomId].availabilityNumbers[for_date].group;
+							} else if(!!selectedAllotment){
+								return room_rate.allotment_availability;
+							}else{
+								return rooms[currentRoomId].availabilityNumbers[for_date].room;
+							}
+						})(),
 						taxForAddons: taxForAddons,
 						houseAvailability: houseAvailability,
 						linkedPromos: linkedPromotions,
 						applyPromotion: applyPromotion,
 						appliedPromotion: code,
 						isMember: ratesMeta[rate_id].is_member && membershipValidity,
-						isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup
+						isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup,
+						isAllotmentRate: ratesMeta[rate_id].rate_type.name === !!selectedAllotment
 					};
 
 					var currentRoomRateDetails = currentRoom.ratedetails[for_date][rate_id];
@@ -552,7 +576,12 @@ sntRover.service('RVReservationStateService', [
 			});
 
 			if (!!additionalData.group.id) {
-				var customRate = self.getGroupCustomRateModel(additionalData.group.id, additionalData.group.name);
+				var customRate = self.getCustomRateModel(additionalData.group.id, additionalData.group.name, 'GROUP');
+				ratesMeta[customRate.id] = customRate;
+			};
+
+			if (!!additionalData.allotment.id) {
+				var customRate = self.getCustomRateModel(additionalData.allotment.id, additionalData.allotment.name, 'ALLOTMENT');
 				ratesMeta[customRate.id] = customRate;
 			};
 
@@ -578,7 +607,6 @@ sntRover.service('RVReservationStateService', [
 
 				//step2: Parse the rates and populate the object created for rooms in step1
 				processRatesForNormalRatesAgainstDate(rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity);
-
 			});
 
 			return {

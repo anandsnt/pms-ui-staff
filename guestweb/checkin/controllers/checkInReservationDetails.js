@@ -1,4 +1,7 @@
-
+/*
+	Checkin reservation details Ctrl 
+	Reservation details are shown in this page.
+*/
 (function() {
 	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService,$state,$modal) {
 

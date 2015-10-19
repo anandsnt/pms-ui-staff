@@ -52,7 +52,6 @@
             .card-search-form {
                 height: 50px;
                 margin-left: 20px;
-
                 .calc-width(100, 70);
                 .pull-left;
                 .float;
@@ -94,6 +93,7 @@
                 .holder {
                     clear: both;
                     margin-top: -10px;
+                    overflow-x: hidden;
                     .size(40px, 100%);
                     .show;
 
@@ -432,9 +432,7 @@
                             &:hover,
                             &:active { background-position: 95% -140px !important; }
 
-                            @media @highdpi {
-                                background-image: @calendar2x;
-                            }
+                            @media @highdpi { background-image: @calendar2x; }
                         }
 
                         .switch-button {
@@ -795,9 +793,7 @@
                         #pixel-to-percent > .right-margin(80, 1888);
                         .pull-left;
 
-                        .button {
-                            margin-top: 20px;
-                        }
+                        .button { margin-top: 20px; }
                     }
 
                     .holder {
@@ -812,7 +808,6 @@
                             right: 0;
                         }
                     }
-
                 }
 
                 /* With inner header ***/
@@ -826,6 +821,7 @@
                         .entry { margin: 0; }
 
                         .button { 
+                            font-size: 14px;
                             padding: 0 20px; 
                             height: 40px;
                         }
@@ -843,7 +839,7 @@
                         overflow: hidden;
                         .calc-height(100, 80);
 
-                        >.wrapper {
+                        > .wrapper {
                             padding: 20px; 
                             position: relative;
                             .float;
@@ -1105,7 +1101,6 @@
                 /* Contracts & Reservations ***/
                 &.contracts,
                 &.reservations {
-                    
                     .tab-header {
                         padding: 20px;
 
@@ -1135,7 +1130,6 @@
                     }
 
                     .tab-details {
-
                         .contract-stats {
                             li {
                                 color: @grey3;
@@ -1234,25 +1228,31 @@
 
                         .actions {
                             margin-top: 24px;
-                            width: 140px;
-                            .float;
-                            .pull-left;
+                            .pull-right;
 
-                            .button {
-                                padding: 0;
-                                width: 100%;
-                                .show;
+                            .button { 
+                                padding: 0 20px;
+
+                                &.red,
+                                &.grey,
+                                &.brand-colors {
+                                    &:not(:last-child) { margin-right: 10px; }
+                                }                                
                             }
 
                             &.move-group {
+                                width: 140px;
                                 margin-right: 20px;
+                                .pull-left;
 
                                 .button {
+                                    padding: 0;
+                                    width: 100%;
+                                    .show;
+
                                     &:not(.blue) {
                                         .calc-width(50, 5);
                                         .pull-left;
-
-                                        &.blank { margin-right: 10px; }
                                     }
                                 }
                             }
@@ -1288,7 +1288,8 @@
                                 #fade > .in();
 
                                 &.green,
-                                &.red {
+                                &.red,
+                                &.grey {
                                     margin-bottom: 10px;
                                     .calc-width(50, 5);
                                     .pull-left;
@@ -1299,6 +1300,35 @@
                                 &.blue { width: 100%; }
 
                                 &.hidden { #fade > .out(); }
+                            }
+
+                            &.extended-timeline { height: 170px; }
+
+                            &.release-range {
+                                height: 150px;
+
+                                .entry {
+                                    position: relative;
+                                    text-align: center;
+                                    margin-bottom: 20px;
+                                }
+
+                                .highlight { 
+                                    text-align: center;
+                                    font-weight: 600;
+                                    width: 50%;
+                                    background: lighten(@yellow, 40); 
+                                }
+
+                                .icon-mover-right {
+                                    position: absolute;
+                                    top: 30px;
+                                    right: 0;
+                                    background-position: 13px -888px;
+                                    .hide-text;
+                                    .square(40px);
+                                    .show;
+                                }
                             }
                         }
 
@@ -1315,7 +1345,6 @@
 
                             li {
                                 text-align: center;
-                                font-weight: 600;
                                 text-transform: uppercase;
                                 margin: 0 10px 0 0;
                                 padding: 20px 10px 10px 0;
@@ -1328,15 +1357,79 @@
                                     background: @gcard;
                                     padding: 10px;
                                     #border-radius > .rounded();
-                                    .square(100%);
+                                    .size(70px, 100%);
                                     .show;
 
-                                    em { 
-                                        text-transform: none;
+                                    em,
+                                    span,
+                                    strong { line-height: 13px; }
+
+                                    strong { font-weight: 600; }
+
+                                    em,
+                                    span {
                                         font-weight: 400;
                                         .show;
                                     }
+
+                                    em { text-transform: none; }
+
+                                    span { 
+                                        font-size: 13px;
+                                        color: rgba(255,255,255,.6); 
+                                    }
                                 } 
+
+                                .column {
+                                    position: relative;
+                                    padding: 5px 0;
+
+                                    .line {
+                                        padding-left: 10px;
+                                        margin: 0;
+                                        overflow: hidden;
+                                        .flex(center);
+                                        .size(50px, 100%);
+
+                                        &.small { 
+                                            height: 20px;
+                                            color: @grey3;
+                                            font-size: 14px;
+                                            text-transform: none;
+                                        }
+                                    }
+
+                                    .cell {
+                                        padding: 0;
+                                        text-align: center;
+                                        .calc-width(50, 5);
+
+                                        &:not(:last-of-type) { margin-right: 10px; }
+                                    }
+
+                                    input { 
+                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.2)); 
+
+                                        &.highlight { 
+                                            text-align: center;
+                                            font-weight: 600;
+                                            width: 50%;
+                                            margin: 0 auto;
+                                            background: lighten(@yellow, 40); 
+                                        }
+                                    }
+
+                                    .icon-mover-right {
+                                        position: absolute;
+                                        top: 10px;
+                                        right: 0;
+                                        background-position: 13px -888px;
+                                        .rotate(90deg);
+                                        .hide-text;
+                                        .square(40px);
+                                        .show;
+                                    } 
+                                }
 
                                 &:first-child { 
                                     padding-right: 40px;
@@ -1349,6 +1442,30 @@
                                     .box-shadow(none);
                                 }                                      
                             }
+
+                            &.cols-3 {
+                                li {
+                                    width: 270px;
+
+                                    .column {
+                                        .cell { .calc-width(33.33333, 6.66666); }
+                                    }
+
+                                    &:first-child { width: 310px; }
+                                }
+                            }
+
+                            &.extended-timeline {
+                                height: 170px;
+
+                                li { height: 170px; }
+                            }
+
+                            &.release-range {
+                                height: 150px;
+
+                                li { height: 150px; }
+                            }                            
                         }
 
                         .room-block-sidebar,
@@ -1382,10 +1499,26 @@
                                         .red { color: @red; }
                                     }
                                 }
+
+                                &.no-toggle {
+                                    background-color: transparent;
+                                    height: 100px;
+                                    margin-bottom: 0;
+                                }
+                            }
+
+                            &.extended-timeline {
+                                top: 170px;
+                                .calc-height(100, 170);
+                            }
+
+                            &.release-range {
+                                top: 150px;
+                                .calc-height(100, 150);
                             }
                         }
 
-                        .room-block-sidebar {                   
+                        .room-block-sidebar {
                             left: 0;
                             width: 180px;
                             z-index: 1040;
@@ -1438,6 +1571,21 @@
                                     &.end { padding-bottom: 35px; }
                                 }
                             }
+
+                            &.extended-timeline,
+                            &.release-range {
+                                .row {
+                                    &.open { padding-top: 5px; }
+                                }
+                            }
+
+                            &.release-range {
+                                .row {
+                                    &.open { 
+                                        .line-toggle { margin-bottom: 80px; }
+                                    }
+                                }
+                            }
                         }                                
 
                         .room-block-grid {
@@ -1478,17 +1626,19 @@
                                         padding: 0;
                                         text-align: center;
                                         .calc-width(50, 5);
-                                        .pull-left;
 
-                                        &:first-child { margin-right: 10px; }
+                                        &:not(:last-of-type) { margin-right: 10px; }
                                     }
 
-                                    input {
-                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
+                                    input { 
+                                        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.2)); 
 
-                                        &[disabled] { 
-                                            color: @grey3;
-                                            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                                        &.highlight { 
+                                            text-align: center;
+                                            font-weight: 600;
+                                            width: 50%;
+                                            margin: 0 auto;
+                                            background: lighten(@yellow, 40); 
                                         }
                                     }
 
@@ -1527,69 +1677,32 @@
 
                                         &:after { .hide; }
                                     }
-
                                 }
 
                                 &.open { padding: 0; }
+                            }
+
+                            &.cols-3 {
+                                .column {
+                                    width: 270px;
+
+                                    .cell { .calc-width(33.33333, 6.66666); }
+
+                                    &:first-child { width: 310px; }
+                                }
                             }
                         }
                     }
                 }
 
-                /* AR Transactions & Rooming List ***/
+                /* AR Transactions, Rooming List , Bills, Activity***/
                 &.transactions,
                 &.rooming-list,
                 &.bills,
                 &.activity {
                     .tab-header {
-                        .float;
-
-                        .search-form {
-                            text-align: left;
-                            background: rgba(0,0,0,.1);
-                            .square(80px);
-                            .transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-                            .pull-left;
-
-                            .entry {
-                                overflow: hidden;
-                                visibility: hidden;
-
-                                &.filter { 
-                                    visibility: visible;
-
-                                    .button { 
-                                        padding: 0;
-                                        background-color: @white;
-                                        .square(40px); 
-                                    }
-                                }
-                            }
-
-                            &.open { 
-                                width: 100%;
-
-                                .entry { 
-                                    padding: 0 10px 0 0;
-                                    margin: 0 10px 0 0;
-                                    border-right: 1px solid rgba(0,0,0,.1);
-                                    border-left: 0;
-                                    visibility: visible;
-                                    .box-shadow(none);
-
-                                    &:last-of-type {
-                                        padding-right: 0;
-                                        margin-right: 0;
-                                        border-right: 0;
-                                    }
-                                }
-                            }
-                        }
-
                         .totals {
                             padding: 20px;
-                            .calc-width(100, 80);
-                            .pull-left;
 
                             li {
                                 line-height: 1em;
@@ -1644,6 +1757,69 @@
                     }
                 }
 
+                /* AR Transactions & Rooming List ***/
+                &.transactions,
+                &.rooming-list {
+                   .tab-header {
+                        .float;
+
+                        .search-form {
+                            text-align: left;
+                            background: @rcardTexture1;
+                            z-index: 1;
+                            .box-shadow(inset -2px 0 1px rgba(0,0,0,.1));
+                            .square(80px);
+                            .transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
+                            .pull-left;
+
+                            .entry {
+                                overflow: hidden;
+                                visibility: hidden;
+
+                                &.filter { 
+                                    visibility: visible;
+
+                                    .button { 
+                                        padding: 0;
+                                        background-color: @white;
+                                        .square(40px); 
+                                    }
+                                }
+                            }
+
+                            &.open { 
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                z-index: 9;
+                                width: 100%;
+
+                                .entry { 
+                                    padding: 0 10px 0 0;
+                                    margin: 0 10px 0 0;
+                                    border-right: 1px solid rgba(0,0,0,.1);
+                                    border-left: 0;
+                                    visibility: visible;
+                                    .box-shadow(none);
+
+                                    &:last-of-type {
+                                        padding-right: 0;
+                                        margin-right: 0;
+                                        border-right: 0;
+                                    }
+                                }
+                            }
+                        }
+
+                        .totals {
+                            .calc-width(100, 80);
+                            .pull-left;
+
+                            &.dual-search { .calc-width(100, 160); }
+                        }
+                    } 
+                }
+
                 /* AR Transactions ***/
                 &.transactions {
                     .tab-header {
@@ -1663,9 +1839,7 @@
                                     }
                                 }
 
-                                &.showing {
-                                    .calc-width(22, 10);
-                                }
+                                &.showing { .calc-width(22, 10); }
 
                                 &.search {
                                     .calc-width(38, 10);
@@ -1712,6 +1886,16 @@
                                 &.number { width: 100px; }
                                 &.type { width: 240px; }
                                 &.occupancy { width: 140px; }
+
+                                &.search { 
+                                    width: 500px;
+                                    .icon-search { top: 38px; }
+
+                                    .clear-query {
+                                        top: 28px;
+                                        right: 10px;
+                                    }                                    
+                                }
 
                                 &.date-range { 
                                     .calc-width(100, 670); 
@@ -1762,12 +1946,12 @@
                             }
 
                             &.open {
-
                                 .entry { 
                                     padding: 10px 10px 10px 0;
 
                                     &.filter,
-                                    &.action { padding-top: 28px; }
+                                    &.action,
+                                    &.search { padding-top: 28px; }
                                 }
                             }
                         }
@@ -1920,7 +2104,7 @@
                             position: relative;
                             height: 100%;
 
-                            > .wrapper { padding: 10px 20px; }
+                            > .wrapper { padding: 10px 0; }
                             .iScrollVerticalScrollbar {  bottom: 20px; }
 
                             &.with-pagination { .calc-height(100, 50); }

@@ -6,12 +6,11 @@ sntRover.factory('RVReportParserFac', [
     function($rootScope, $filter, $timeout, reportNames) {
         var factory = {};
 
+        factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
-
-
-
-
-        factory.parseAPI = function ( reportName, apiResponse, options ) {
+            if ( reportName === reportNames['DAILY_PRODUCTION'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options, resultTotalRow );
+            }
 
             // a very special parser for daily transaction report
             // in future we may make this check generic, if more
@@ -31,8 +30,13 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseGroupPickupReport( reportName, apiResponse, options );
             }
 
-            // a very special parser for deposit report
+            // a very special parser for guest deposit report
             else if ( reportName === reportNames['DEPOSIT_REPORT'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
+            }
+
+            // a very special parser for group deposit report
+            else if ( reportName === reportNames['GROUP_DEPOSIT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDepositReport( reportName, apiResponse, options );
             }
 
@@ -48,6 +52,94 @@ sntRover.factory('RVReportParserFac', [
             };
         };
 
+
+
+
+
+
+        function $_parseDailyProduction ( reportName, apiResponse, options, resultTotalRow ) {
+            /**
+             * we are gonna transform the actual api response with the following strucutre:
+             * 
+             * {
+             *      '2015-04-01': [{room_type, room_type_id}, {room_type, room_type_id}],
+             *      '2015-04-02': [{room_type, room_type_id}, {room_type, room_type_id}]
+             * }
+             * 
+             * to the following structure:
+             *
+             * {
+             *      'bunk__1': {
+             *          '2015-04-01': {
+             *              ...
+             *              ...
+             *          },
+             *          '2015-04-02': {
+             *              ...
+             *              ...
+             *          }
+             *      },
+             *      'classic__2': {
+             *          '2015-04-01': {
+             *              ...
+             *              ...
+             *          },
+             *          '2015-04-02': {
+             *              ...
+             *              ...
+             *          }
+             *      }
+             * }
+             *
+             * WHY? Coz we have to!
+             */
+
+            var i, j;
+
+            var returnObj = {};
+
+            var zerothKey  = _.keys( apiResponse )[0],
+                zerothData = apiResponse[zerothKey];
+
+            for ( i = 0, j = zerothData.length; i < j; i++ ) {
+                uuid = zerothData[i]['room_type'] + '__' + zerothData[i]['room_type_id'];
+                returnObj[uuid] = {};
+            };
+
+            var dateData,
+                makeCopy,
+                ithUuid,
+                roomName;
+
+            for (dateKey in apiResponse) {
+                if ( ! apiResponse.hasOwnProperty(dateKey) ) {
+                    continue;
+                };
+
+                var dateData = apiResponse[dateKey];
+
+                for (i = 0, j = dateData.length; i < j; i ++) {
+                    makeCopy = angular.copy( dateData[i] );
+                    ithUuid  = makeCopy['room_type'] + '__' + makeCopy['room_type_id'];
+
+                    returnObj[ithUuid][dateKey] = angular.copy( makeCopy );
+                };
+            };
+
+            /**
+             * so we need to transform the resultTotalRow for
+             * blah blah blah.. I will wirte later
+             */
+            var totalDatekey;
+
+            returnObj['Totals'] = {};
+            for (i = 0, j = resultTotalRow.length; i < j; i ++) {
+                totalDatekey = _.keys( resultTotalRow[i] )[0];
+                returnObj['Totals'][totalDatekey] = angular.copy( resultTotalRow[i][totalDatekey] );
+            };
+
+            return returnObj;
+        };
 
 
 
@@ -612,13 +704,19 @@ sntRover.factory('RVReportParserFac', [
                         });
                         returnAry.push( customData );
                     }
-                };
+                }
+
+                else {
+                    angular.extend(makeCopy, {
+                        'isReport': true,
+                        'className': 'row-break'
+                    });
+                    returnAry.push(makeCopy);
+                }
 
             };
-
             return returnAry;
         };
-
 
 
         /**
@@ -727,8 +825,6 @@ sntRover.factory('RVReportParserFac', [
 
             return returnObj;
         };
-
-
 
         return factory;
     }

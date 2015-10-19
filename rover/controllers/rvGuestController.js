@@ -1,6 +1,6 @@
 sntRover.controller('guestCardController', [
-	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state) {
+	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -19,7 +19,8 @@ sntRover.controller('guestCardController', [
 			if (!$scope.reservationData.isSameCard || !$scope.otherData.reservationCreated) {
 				// open search list card if any of the search fields are entered on main screen
 				var searchData = $scope.reservationData;
-				if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' || searchData.company.id !== null || searchData.travelAgent.id !== null || !!$scope.reservationData.group.id) {
+				if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' ||
+					searchData.company.id !== null || searchData.travelAgent.id !== null || !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
 					// based on search values from base screen
 					// init respective search
 					if ($scope.reservationDetails.guestCard.id === '') {
@@ -64,6 +65,19 @@ sntRover.controller('guestCardController', [
 							$scope.initCompanyCard();
 						}
 					}
+
+					if (!!$scope.reservationData.allotment.id && $rootScope.isStandAlone) {
+
+						$scope.initAllotmentCard($scope.reservationData.allotment.id);
+						if (!!$scope.reservationData.allotment.travelAgent) {
+							$scope.reservationDetails.travelAgent.id = $scope.reservationData.allotment.travelAgent;
+							$scope.initTravelAgentCard();
+						}
+						if (!!$scope.reservationData.allotment.company) {
+							$scope.reservationDetails.companyCard.id = $scope.reservationData.allotment.company;
+							$scope.initCompanyCard();
+						}
+					}
 				}
 			} else {
 				// populate cards
@@ -83,7 +97,7 @@ sntRover.controller('guestCardController', [
 						id: $scope.reservationDetails.travelAgent.id
 					});
 				}
-				
+
 				// CICO-20547 do NOT init group cards for overlays
 				if (!!$scope.reservationData.group.id && $rootScope.isStandAlone) {
 					$scope.initGroupCard($scope.reservationData.group.id);
@@ -93,6 +107,18 @@ sntRover.controller('guestCardController', [
 					}
 					if (!!$scope.reservationData.group.company) {
 						$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
+						$scope.initCompanyCard();
+					}
+				}
+
+				if (!!$scope.reservationData.allotment.id && $rootScope.isStandAlone) {
+					$scope.initAllotmentCard($scope.reservationData.allotment.id);
+					if (!!$scope.reservationData.allotment.travelAgent) {
+						$scope.reservationDetails.travelAgent.id = $scope.reservationData.allotment.travelAgent;
+						$scope.initTravelAgentCard();
+					}
+					if (!!$scope.reservationData.allotment.company) {
+						$scope.reservationDetails.companyCard.id = $scope.reservationData.allotment.company;
 						$scope.initCompanyCard();
 					}
 				}
@@ -421,6 +447,14 @@ sntRover.controller('guestCardController', [
 		$scope.cardCls = function() {
 			// evaluate
 			var cls = $scope.UICards[0]; //  current active card
+			if (cls === 'group-card') {
+				if (!!$scope.reservationData.allotment.id) {
+					cls = 'allotment-card';
+				}
+				if (!$scope.reservationData.allotment.id && !$scope.reservationData.group.id) {
+					cls = 'group-allotment-card';
+				}
+			}
 			if ($scope.cardVisible) {
 				cls += " open";
 			}
@@ -533,38 +567,65 @@ sntRover.controller('guestCardController', [
 			};
 		})();
 
-		$scope.removeGroupCard = function() {
+		var resetCompanyTACards = function() {
+				resetReservationData.resetCompanyCard();
+				resetReservationData.resetTravelAgent();
 
-			resetReservationData.resetCompanyCard();
-			resetReservationData.resetTravelAgent();
+				$scope.reservationDetails.companyCard.id = "";
+				$scope.reservationDetails.travelAgent.id = "";
 
-			$scope.reservationDetails.companyCard.id = "";
-			$scope.reservationDetails.travelAgent.id = "";
+				$scope.$broadcast("companyCardDetached");
+				$scope.$broadcast("travelAgentDetached");
+			},
+			removeGroupCard = function() {
+				resetCompanyTACards();
 
-			$scope.$broadcast("companyCardDetached");
-			$scope.$broadcast("travelAgentDetached");
+				if ($scope.viewState.identifier === "CREATION") {
+					// reservationCreation				
+					$scope.reservationData.group = {
+						id: "",
+						name: "",
+						code: "",
+						company: "",
+						travelAgent: ""
+					}
 
-			if ($scope.viewState.identifier === "CREATION") {
-				// reservationCreation				
-				$scope.reservationData.group = {
-					id: "",
-					name: "",
-					code: "",
-					company: "",
-					travelAgent: ""
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
+					$scope.$broadcast("groupCardDetached");
+					$scope.closeGuestCard();
+				} else {
+					// Handle group removal in stay-card
+					detachGroupFromThisReservation();
 				}
-				
-				$scope.showContractedRates({
-					companyCard: $scope.reservationDetails.companyCard.id,
-					travelAgent: $scope.reservationDetails.travelAgent.id
-				});
-				$scope.$broadcast("groupCardDetached");
-				$scope.closeGuestCard();
-			} else {
-				// Handle group removal in stay-card
-				detachGroupFromThisReservation();
-			}
-		}
+			},
+			removeAllotmentCard = function() {
+
+				resetCompanyTACards();
+
+				if ($scope.viewState.identifier === "CREATION") {
+					// If reservation NOT created			
+					$scope.reservationData.allotment = {
+						id: "",
+						name: "",
+						code: "",
+						company: "",
+						travelAgent: ""
+					}
+
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
+					$scope.$broadcast("groupCardDetached");
+					$scope.closeGuestCard();
+				} else {
+					// In case reservation created with Allotment
+					detachFromAllotment();
+				}
+			};
 
 		var showDetachCardsAPIErrorPopup = function() {
 			ngDialog.open({
@@ -601,8 +662,7 @@ sntRover.controller('guestCardController', [
 					travelAgent: resDetails.travelAgent.id
 				});
 				$scope.$broadcast("companyCardDetached");
-			}
-			else {
+			} else {
 				// billing info may be deleted; so warn user
 				var dataForPopup = {
 					cardTypeText: "Company Card",
@@ -624,8 +684,7 @@ sntRover.controller('guestCardController', [
 					travelAgent: resDetails.travelAgent.id
 				});
 				$scope.$broadcast("travelAgentDetached");
-			}
-			else {
+			} else {
 				// billing info may be deleted; so warn user
 				var dataForPopup = {
 					cardTypeText: "Travel Agent Card",
@@ -639,10 +698,9 @@ sntRover.controller('guestCardController', [
 		$scope.detachGuestCard = function() {
 			// in Create mode no API call is needed
 			if ($scope.viewState.identifier === "CREATION") {
-					resetReservationData.resetGuest();
-					$scope.$broadcast("guestCardDetached");
-			}
-			else {
+				resetReservationData.resetGuest();
+				$scope.$broadcast("guestCardDetached");
+			} else {
 				var dataForPopup = {
 					cardTypeText: "Guest Card",
 					cardType: "guest"
@@ -752,12 +810,27 @@ sntRover.controller('guestCardController', [
 		$scope.searchGroups = function() {
 			var onGroupSearchSuccess = function(data) {
 					$scope.searchingGroups = true;
-					$scope.searchedGroups = data.groups;
+
+					// concat allotment results too into the search results
+					// NOTE: Common search area for both allotments and the groups
+					$scope.searchedGroups = _.map(data.groups, function(group) {
+						return _.extend(group, {
+							type: 'GROUP'
+						})
+					});
+
+					$scope.searchedGroups = $scope.searchedGroups.concat(_.map(data.allotments, function(allotment) {
+						return _.extend(allotment, {
+							type: 'ALLOTMENT'
+						});
+					}));
+
 					$scope.$broadcast('GROUP_SEARCH_ON');
 				},
 				onGroupSearchFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
+
 			if (!!$scope.searchData.groupCard.name || !!$scope.searchData.groupCard.code) {
 				$scope.callAPI(rvGroupSrv.searchGroupCard, {
 					params: {
@@ -801,6 +874,7 @@ sntRover.controller('guestCardController', [
 								companyData.address.state = item.address.state;
 							}
 							if (item.current_contracts.length > 0) {
+								companyData.rateList = item.current_contracts;
 								companyData.rate = item.current_contracts[0];
 								companyData.rate.difference = (function() {
 									if (parseInt(companyData.rate.based_on.value) < 0) {
@@ -1011,19 +1085,13 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} groupData
 		 * @return {undefined}
 		 */
-		var updateReservationGroupData = function(groupData) {
-
-			//if it is not set initially
-			if (_.isUndefined($scope.reservationData.group)) {
-				$scope.reservationData.group = {};
-			}
-
+		var updateReservationGroupData = function(group) {
 			_.extend($scope.reservationData.group, {
-				id: groupData.id,
-				name: groupData.group_name,
-				code: groupData.group_code,
-				company: groupData.company_id,
-				travelAgent: groupData.travel_agent_id
+				id: group.id,
+				name: group.name,
+				code: group.code,
+				company: group.company_id,
+				travelAgent: group.travel_agent_id
 			});
 		};
 
@@ -1128,7 +1196,9 @@ sntRover.controller('guestCardController', [
 			$scope.reservationData.group = {
 				id: "",
 				name: "",
-				code: ""
+				code: "",
+				company: "",
+				travelAgent: ""
 			};
 		};
 
@@ -1137,7 +1207,7 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} success data from API
 		 * @return {undefined}
 		 */
-		var successCallBackOfDetachGroupFromThisReservation = function(data, successCallBackParams) {
+		var successCallBackOfDetachGroupFromThisReservation = function(data) {
 			//updating the central reservation data model
 			resetReservationGroupData();
 
@@ -1157,7 +1227,7 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} selectedGroup
 		 * @return undefined
 		 */
-		var detachGroupFromThisReservation = function(selectedGroup) {
+		var detachGroupFromThisReservation = function() {
 			var resData = $scope.reservationData;
 
 			//calling the API
@@ -1175,14 +1245,74 @@ sntRover.controller('guestCardController', [
 			$scope.callAPI(rvGroupSrv.detachGroupFromReservation, options);
 		};
 
-		$scope.selectGroup = function(group, $event) {
+		var detachFromAllotment = function() {
+			$scope.callAPI(rvAllotmentSrv.detachAllotmentFromReservation, {
+				params: $scope.reservationData.reservationId,
+				successCallBack: function() {
+					//reset reservation data model
+					$scope.reservationData.allotment = {
+						id: "",
+						name: "",
+						code: "",
+						company: "",
+						travelAgent: ""
+					};
+					$scope.closeGuestCard();
+					switchToAddCardViewMode();
+					$scope.$broadcast("groupCardDetached");
+					// Need to select new rate for the reservation --> Take user to the Room & Rates screen
+					$scope.navigateToRoomAndRates();
+				},
+				failureCallBack: function() {
+					console.warn('Detach Allotment FAILED');
+				}
+			});
+		};
+
+
+		/**
+		 * Method shared between group and allot cards!
+		 * Routes control to the appropriate path...
+		 */
+		$scope.detachFromGroupORAllotment = function() {
+			// Common method used across Group and Allotment cards in the reservation card headers
+			// NOTE: The group and allotment cards are mutually exclusive! 
+			if (!!$scope.reservationData.group.id) { // In case the attached card is a group
+				removeGroupCard();
+			} else if (!!$scope.reservationData.allotment.id) {
+				removeAllotmentCard();
+			}
+		};
+
+		$scope.selectToGroupORAllotment = function(cardDetail, $event) {
 			$event.stopPropagation();
+			if ($scope.viewState.identifier === "CREATION") {
+				if (cardDetail.type === 'GROUP') {
+					$scope.selectGroup(cardDetail);
+				} else if (cardDetail.type === 'ALLOTMENT') {
+					$scope.selectAllotment(cardDetail);
+				}
+			} else {
+				ngDialog.open({
+					template: '/assets/partials/cards/alerts/warnCardOverride.html',
+					className: '',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false,
+					data: JSON.stringify({
+						card: cardDetail
+					})
+				});
+			}
+		};
+
+		$scope.selectGroup = function(group) {
 			if ($scope.viewState.identifier === "CREATION") {
 				// In create reservation
 				$scope.reservationData.group = {
 					id: group.id,
-					name: group.group_name,
-					code: group.group_code,
+					name: group.name,
+					code: group.code,
 					company: group.company_id,
 					travelAgent: group.travel_agent_id
 				};
@@ -1273,17 +1403,13 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} allotmentData
 		 * @return {undefined}
 		 */
-		var updateReservationAllotmentData = function(allotmentData) {
-
-			//if it is not set initially
-			if (_.isUndefined($scope.reservationData.allotment)) {
-				$scope.reservationData.allotment = {};
-			}
-
+		var updateReservationAllotmentData = function(allotment) {
 			_.extend($scope.reservationData.allotment, {
-				id: allotmentData.id,
-				name: allotmentData.group_name,
-				code: allotmentData.group_code
+				id: allotment.id,
+				name: allotment.name,
+				code: allotment.code,
+				company: allotment.company_id,
+				travelAgent: allotment.travel_agent_id
 			});
 		};
 
@@ -1319,16 +1445,20 @@ sntRover.controller('guestCardController', [
 		 * @return {undefined}
 		 */
 		var successCallBackOfAttachAllotmentToReservation = function(data, successCallBackParams) {
-			var selectedGroup = successCallBackParams.selectedGroup;
+			var selectedAllotment = successCallBackParams.selectedAllotment;
 
 			//updating the central reservation data model
-			updateReservationAllotmentData(selectedGroup);
+			updateReservationAllotmentData(selectedAllotment);
+
+			$scope.closeGuestCard();
 
 			//we are in card adding mode
 			switchToNomralCardViewingMode();
 
-			//fecthing the group details and showing them
-			initializeAllotmentCard(selectedGroup.id);
+			//we need to upadte the rate and other associated field, to do that, we are reloading the staycard
+			if ($scope.isInStayCardScreen()) {
+				$scope.reloadTheStaycard();
+			}
 		};
 
 		/**
@@ -1339,8 +1469,8 @@ sntRover.controller('guestCardController', [
 		var attachAllotmentToThisReservation = function(selectedAllotment) {
 			//calling the API
 			var params = {
-				reservation_id: $scope.reservationData.reservationId,
-				group_id: selectedAllotment.id
+				reservationId: $scope.reservationData.reservationId,
+				allotmentId: selectedAllotment.id
 			};
 
 			var options = {
@@ -1352,7 +1482,7 @@ sntRover.controller('guestCardController', [
 				}
 			};
 
-			$scope.callAPI(rvGroupSrv.attachAllotmentToReservation, options);
+			$scope.callAPI(rvAllotmentSrv.attachAllotmentToReservation, options);
 		};
 
 		/**
@@ -1362,16 +1492,36 @@ sntRover.controller('guestCardController', [
 		 * @param {Object} - clicked event
 		 * @return {undefined}
 		 */
-		$scope.selectAllotment = function(selectedAllotment, $event) {
-			$event.stopPropagation();
+		$scope.selectAllotment = function(allotment) {
 
 			if (isInCreateReservationMode()) {
-				return;
+				$scope.reservationData.allotment = {
+					id: allotment.id,
+					name: allotment.name,
+					code: allotment.code,
+					company: allotment.company_id,
+					travelAgent: allotment.travel_agent_id
+				};
+				$scope.closeGuestCard();
+				$scope.viewState.isAddNewCard = false;
+				$scope.initAllotmentCard(allotment.id);
+				if (!!$scope.reservationData.allotment.travelAgent) {
+					$scope.reservationDetails.travelAgent.id = $scope.reservationData.allotment.travelAgent;
+					$scope.initTravelAgentCard();
+				}
+				if (!!$scope.reservationData.allotment.company) {
+					$scope.reservationDetails.companyCard.id = $scope.reservationData.allotment.company;
+					$scope.initCompanyCard();
+				}
+				$scope.showContractedRates({
+					companyCard: $scope.reservationDetails.companyCard.id,
+					travelAgent: $scope.reservationDetails.travelAgent.id
+				});
 			}
 
 			//staycard card attaching
 			else {
-				attachAllotmentToThisReservation(selectedAllotment);
+				attachAllotmentToThisReservation(allotment);
 			}
 		};
 
@@ -1413,9 +1563,14 @@ sntRover.controller('guestCardController', [
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
 
-			$timeout(function() {
-				$scope.navigateToRoomAndRates();
-			}, 3000);
+			/**
+			 * CICO-20674: when there is more than one contracted rate we 
+			 * should take the user to room and rates screen after applying the routing info
+			 */
+			// $timeout(function() {
+			// 	$scope.navigateToRoomAndRates();
+			// }, 3000);
+			// CICO-20161
 		};
 
 		// To handle card selection from COMPANY / TA.
@@ -1423,7 +1578,7 @@ sntRover.controller('guestCardController', [
 			$event.stopPropagation();
 
 			if (cardData.account_type === 'COMPANY') {
-				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
+				if (cardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 					showContractRatePopup(cardData);
 				} else {
 					$scope.selectCompany(cardData);
