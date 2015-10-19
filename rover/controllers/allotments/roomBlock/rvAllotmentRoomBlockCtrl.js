@@ -457,7 +457,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
 
 				$scope.$emit("hideLoader");
-				$timeout(reinit, 400);
+				$timeout(reinit, 100);
 			}, 0);
 		};
 
