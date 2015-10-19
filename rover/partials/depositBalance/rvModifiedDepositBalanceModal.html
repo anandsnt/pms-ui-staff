@@ -101,7 +101,7 @@
             	<strong>Deposit Paid</strong>
             	<div class="scrollable" ng-iscroll="deopositdue" >
                 	<ul class="wrapper ">
-                    	<li ng-repeat="paidDeposit in depositBalanceData.paid_deposits">
+                    	<li ng-repeat="paidDeposit in depositBalanceData.paid_deposits" class="due">
                         {{paidDeposit.date | date : dateFormat}}
                         <span>{{currencySymbol}}{{paidDeposit.amount}}</span>                    	
                     	</li>                 
