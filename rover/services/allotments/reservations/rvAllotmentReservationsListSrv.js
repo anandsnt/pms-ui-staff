@@ -67,7 +67,8 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 					from_date: params.from_date,
 					to_date: params.to_date,
 					occupancy: params.occupancy,
-					no_of_reservations: params.no_of_reservations
+					no_of_reservations: params.no_of_reservations,
+					is_from_allotment: true
 				}
 			};
 
