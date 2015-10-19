@@ -458,6 +458,68 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         };        
 
         /**
+         * [successCallBackOfAddReservations description]
+         * @param  {[type]} data [description]
+         * @return {[type]}      [description]
+         */
+        var successCallBackOfAddReservations = function(data) {
+            $scope.newReservations = [];
+            _.each(data.results, function(reservation) {
+                $scope.newReservations.push(reservation);
+                $scope.reservations.unshift(reservation);
+            });
+
+            //total result count
+            $scope.totalResultCount += (data.results.length);
+
+            //pickup
+            $scope.totalPickUpCount = data.total_pickup_count;
+
+            //we changed data, so
+            refreshScrollers();
+
+            //rooming data will change after adding some reservation
+            $scope.fetchConfiguredRoomTypeDetails();
+        };
+
+        /**
+         * to add reservations against a room type
+         * @return undefined
+         */
+        $scope.addReservations = function() {
+            //if there is no room type attached, we have to show some message
+            if ($scope.roomTypesAndData.length === 0) {
+                return showNoRoomTypesAttachedPopUp();
+            }
+
+            if(!$scope.possibleNumberOfRooms.length){
+                $scope.errorMessage = ['No Rooms have been added for the selected Room in the Room Block.'];
+                return;
+            }
+
+            //wiping the weepy
+            $scope.errorMessage = '';
+
+            //API params
+            var params = {
+                id: $scope.allotmentConfigData.summary.allotment_id,
+                room_type_id: $scope.selectedRoomType,
+                from_date: $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
+                to_date: $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
+                occupancy: $scope.selectedOccupancy,
+                no_of_reservations: $scope.numberOfRooms
+            };
+
+            //
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfAddReservations
+            };
+            $scope.callAPI(rvAllotmentReservationsListSrv.addReservations, options);
+
+        };
+
+        /**
          * [changedSelectedRoomType description]
          * @return {[type]} [description]
          */
@@ -542,7 +604,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
             else {
                 _.each($scope.roomTypesAndData, function(roomTypeData) {
                     var correspondingActualData = _.findWhere(data.result, {
-                        room_type_id: roomTypeData.room_type_id
+                        room_type_id: roomTypeData.room_type_idx
                     });
 
                     //CICO-20169 Handles cases where total rooms are updated in room block

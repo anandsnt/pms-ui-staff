@@ -24,7 +24,7 @@
 <!-- Room block room types -->
 <div class="room-block-sidebar extended-timeline scrollable" ng-show="shouldHideAddRoomsButton()"
     ng-iscroll="room_block_scroller">
-    <div class="wrapper">
+    <div class="wrapper" bindonce>
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
         <div ng-class="{'open' : roomtype_rate.isCollapsed}"
             class="row"
@@ -36,8 +36,8 @@
             <!-- Toggle class "active" when clicked/tapped -->
             <p class="line line-toggle"
                 ng-class="{'active' : roomtype_rate.isCollapsed}"
-                ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
-                {{roomtype_rate.room_type_name}}
+                ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed"
+                bo-text="roomtype_rate.room_type_name">
             </p>
             <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
             <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
@@ -83,7 +83,7 @@
     ng-show="shouldHideAddRoomsButton()"
     bindonce>
 
-    <ul bo-style="{'width': getWidthForCurrentViewTimeLine()}" class="wrapper">
+    <ul class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
         <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
             <div class="inner">
                 <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
@@ -108,7 +108,7 @@
 <!-- Room block grid -->
 <div class="room-block-grid extended-timeline scrollable" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldHideAddRoomsButton()">
-    <div class="wrapper" style="width:{{getWidthForCurrentViewTimeLine()}};">
+    <div class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
         <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
@@ -231,10 +231,8 @@
                 <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <em class="cellspan">
                         {{'AVAILABILITY_GROUP'|translate}}
-                        <span
-                        ng-class="{'green': (dateData.availability>0),
-                        'red': (dateData.availability==0) }">
-                            {{dateData.availability}}
+                        <span bo-class="{'green': (dateData.availability>0), 'red': (dateData.availability==0) }"
+                            bo-text="dateData.availability">
                         </span>
                     </em>
                 </div>
