@@ -930,8 +930,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.getReservationClass = function(reservation) {
       var class_ = '', rStatus = reservation.status.toUpperCase(),
-                isOptedLateCheckout = reservation.is_opted_late_checkout,
-          isPreCheckin = reservation.is_pre_checkin;
+        isOptedLateCheckout = reservation.is_opted_late_checkout,
+        isPreCheckin = reservation.is_pre_checkin;
 
       switch (rStatus) {
         case 'RESERVED':
@@ -1147,7 +1147,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       if (isInRoomingList && (amDirectlyComingToRoomingList)) {
           $timeout(function(){
               callInitialAPIs();
-          }, 10);           
+          }, 10);
       }*/
     }();
   }

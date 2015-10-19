@@ -164,19 +164,19 @@
     <!-- Rooming List Header -->
     <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
         <li class="check">
-            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
+            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : isCancelledAllotment()}"> 
                 <span class="icon-form icon-checkbox" 
                     ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
-                <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
+                <input id="rooming-list-all" ng-disabled="isCancelledAllotment()" type="checkbox" ng-click="toggleAllSelection()" />
             </label>
         </li>
-        <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'GROUP_ROOM'|translate}}</li>
-        <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{'GROUP_GUEST_NAME'|translate}}</li>
-        <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
-        <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
-        <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
-        <li class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
-        <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
+        <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'ALLOTMENT_ROOM'|translate}}</li>
+        <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{'ALLOTMENT_GUEST_NAME'|translate}}</li>
+        <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'ALLOTMENT_ARRIVAL'|translate}}</li>
+        <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'ALLOTMENT_DEPARTURE'|translate}}</li>
+        <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'ALLOTMENT_ROOM_TYPE'|translate}}</li>
+        <li class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'ALLOTMENT_ROOM RATE'|translate}}</li>
+        <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'ALLOTMENT_STATUS'|translate}}</li>
     </ul>
 
 	    <!-- Rooming List Content -->
@@ -189,9 +189,9 @@
             <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
 
                 <div class="check">
-                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
+                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : isCancelledAllotment()}"> 
                         <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
-                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
+                        <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="isCancelledAllotment()">
                     </label>
                 </div>
                 <a ng-click="clickedOnReservation(reservation)">
@@ -201,41 +201,41 @@
                         </h2>
                             <h2 ng-show="isGuestBlank(reservation)">
                             <!-- If new room, show this instead: -->
-                            <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
+                            <span class="highlight">{{'ALLOTMENT_PENDING'|translate}}</span>
                         </h2>
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
-                            {{'GROUP_ROOM'|translate}} 
+                            {{'ALLOTMENT_ROOM'|translate}} 
                             <span ng-class="getRoomStatusClass(reservation)">
                                 {{reservation.room_no}}
                             </span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
                             <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
-                           {{'GROUP_UNASSIGNED'|translate}} 
+                           {{'ALLOTMENT_UNASSIGNED'|translate}} 
                         </span> |
                             <span class="confirmation">{{reservation.confirm_no}}</span>
                         </div>
                         <div class="reservation-info">
                             <div class="arrival-departure">
-                                <span class="guest-status check-in">{{'GROUP_CHECK-IN'|translate}}</span>
+                                <span class="guest-status check-in">{{'ALLOTMENT_CHECK-IN'|translate}}</span>
                                 <time datetime="{arrival timestamp}">{{formatDateForUI(reservation.arrival_date)}}</time>
                             </div>
                             <div class="departing">
-                                <span class="guest-status check-out">{{'GROUP_CHECK-OUT'|translate}}</span>
+                                <span class="guest-status check-out">{{'ALLOTMENT_CHECK-OUT'|translate}}</span>
                                 <time datetime="{departure timestamp}">{{formatDateForUI(reservation.departure_date)}}</time>
                             </div>
                         </div>
                         <div class="room-info">
-                            <strong class="room-type">{{reservation.room_type_name}}</strong>
+                            <strong class="room-type">{{reservation.room_type}}</strong>
                             <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
                         </div>
                         <div class="rate">
-                            {{reservation.room_rate_amount}}
+                            {{reservation.rate_amount}}
                         </div>                        
                         <div class="reservation-status">
                             <!-- No status if it's a new room -->
-                            <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
+                            <span class="guest-status" ng-class="getReservationClass(reservation)">{{reservation.reservation_status}}</span>
                         </div>
                     </a>
                 </li>
