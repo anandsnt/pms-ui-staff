@@ -34,6 +34,24 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     var currentMode;
 
     /**
+     * util function to check whether a string is empty
+     * we are assigning it as util's isEmpty function since it is using in html
+     * @param {String/Object}
+     * @return {boolean}
+     */
+    $scope.isEmpty = util.isEmpty;
+
+
+    /**
+     * function to stringify a string
+     * sample use case:- directive higlight filter
+     * sometimes through error parsing speial charactes
+     * @param {String}
+     * @return {String}
+     */
+    $scope.stringify = util.stringify;
+
+    /**
      * Has Permission To Create allotment room block
      * @return {Boolean}
      */
@@ -274,6 +292,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.toggleAddMode = function() {
       if (isReservationListInAddMode()) {
         setToDefaultMode();
+        $scope.fetchReservations ();
       } else {
         setToAddMode();
       }
@@ -286,6 +305,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.toggleSearchMode = function() {
       if (isReservationListInSearchMode()) {
         setToDefaultMode();
+        $scope.fetchReservations ();
       } else {
         setToSearchMode();
       }
@@ -327,6 +347,123 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var isReservationListInAddMode = function() {
       return (currentMode === 'ADD');
+    };
+
+    /**
+     * will clear the query and will run for the new data
+     */
+    $scope.clearSearchQuery = function() {
+      $scope.searchQuery = '';
+      $scope.page = 1;
+      $scope.fetchReservations (true); //true because  to indicate search mode
+    };
+
+    /**
+     * [onBackgroundImageLoaded description]
+     * @return {[type]} [description]
+     */
+    var onBackgroundImageLoaded = function() {
+      //unbinding the events & removing the elements inorder to prevent memory leaks
+      $(this).off('load');
+      $(this).remove();
+
+      //yes we have everything we wanted
+      window.print();
+
+      //if we are in the app
+      $timeout(function() {
+          if (sntapp.cordovaLoaded) {
+              cordova.exec(
+                  function(success) {},
+                  function(error) {},
+                  'RVCardPlugin',
+                  'printWebView', []
+              );
+          };
+      }, 300);
+
+
+      $timeout(function() {
+          $scope.print_type = '';
+          removePrintOrientation();
+          $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
+          $scope.resevationsBeforePrint = [];
+      }, 1200);           
+    };
+
+
+    /**
+     * to print rooming list
+     * this method requires '$scope.resevationsBeforePrint', so please check where all it is assigning
+     * @return undefined
+     */
+    var printRoomingList = function() {
+        //changing the orientation to landscape
+        addPrintOrientation();
+
+        //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
+        //We dont know the icon background-image loaded or not. We need to start print preview
+        //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
+        var $container  = $('#print-orientation'),
+            bg          = $container.css('background-image'),
+            src         = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
+            $img        = $('<img>').attr('src', src).on('load', onBackgroundImageLoaded);
+    };
+
+    /**
+     * event triggered by ngrepeatend directive
+     * mainly used to referesh scroller/printing
+     */
+    $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+        $timeout(function() {
+            if ($scope.print_type === 'rooming_list') {
+                printRoomingList();
+            }
+        }, 500);
+    });
+
+    /**
+     * add the print orientation before printing
+     * @return - None
+     */
+    var addPrintOrientation = function() {
+        $('body').append("<style id='print-orientation'>@page { size: landscape; }</style>");
+    };
+
+    /**
+     * remove the print orientation before printing
+     * @return - None
+     */
+    var removePrintOrientation = function() {
+        $('#print-orientation').remove();
+    };
+
+    /**
+     * Function - Successful callback of printRoomingList.Prints fetched Rooming List.
+     * @return - None
+     */
+    var successCallBackOfFetchAllReservationsForPrint = function(data) {
+        $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
+        $scope.reservations = data.results;
+        $scope.print_type = 'rooming_list';
+        //if you are looking for where the HELL this list is printing
+        //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
+    };
+
+    /**
+     * Function to fetch Rooming list for print.
+     * @return - None
+     */
+    $scope.fetchReservationsForPrintingRoomingList = function() {
+        var params = {
+            id: $scope.allotmentConfigData.summary.allotment_id,
+            per_page: 1000 //assuming that there will be max of 1000 res. for an allotment
+        };
+        var options = {
+            params: params,
+            successCallBack: successCallBackOfFetchAllReservationsForPrint
+        };
+        $scope.callAPI(rvAllotmentReservationsListSrv.fetchReservations, options);
     };
 
     /**
@@ -466,7 +603,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.totalResultCount += (data.results.length);
 
       //pickup
-      $scope.totalPickUpCount = data.total_pickup_count;
+      $scope.totalPickUpCount = data.total_picked_count;
 
       //we changed data, so
       refreshScrollers();
@@ -495,11 +632,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       //API params
       var params = {
-        id: $scope.allotmentConfigData.summary.allotment_id,
-        room_type_id: $scope.selectedRoomType,
-        from_date: $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
-        to_date: $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
-        occupancy: $scope.selectedOccupancy,
+        id            : $scope.allotmentConfigData.summary.allotment_id,
+        room_type_id  : $scope.selectedRoomType,
+        from_date     : $scope.reservationAddFromDate !== '' ? getApiFormattedDate($scope.reservationAddFromDate) : '',
+        to_date       : $scope.reservationAddToDate !== '' ? getApiFormattedDate($scope.reservationAddToDate) : '',
+        occupancy     : $scope.selectedOccupancy,
         no_of_reservations: $scope.numberOfRooms
       };
 
@@ -643,7 +780,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.totalResultCount = data.total_count;
 
       //pickup
-      $scope.totalPickUpCount = data.total_pickup_count;
+      $scope.totalPickUpCount = data.total_picked_count;
 
       //if pagination end is undefined
       if ($scope.end === undefined) {
@@ -662,20 +799,21 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var formFetchReservationsParams = function(isSearching) {
       var params = {
-        id: $scope.allotmentConfigData.summary.allotment_id,
-        payLoad: {
-          per_page: $scope.perPage,
-          page: $scope.page,
+        id      : $scope.allotmentConfigData.summary.allotment_id,
+        payLoad : {
+          per_page  : $scope.perPage,
+          page      : $scope.page,
           sort_field: $scope.sorting_field,
-          sort_dir: $scope.sort_dir
+          sort_dir  : $scope.sort_dir
         }
       };
 
       if (isSearching) {
-        _.extend(params.payLoad, {
-          start_date: getApiFormattedDate($scope.reservationSearchFromDate),
-          end_date: getApiFormattedDate($scope.reservationSearchToDate),
-          query: $scope.searchQuery
+        _.extend(params.payLoad,
+        {
+          start_date  : getApiFormattedDate($scope.reservationSearchFromDate),
+          end_date    : getApiFormattedDate($scope.reservationSearchToDate),
+          query       : $scope.searchQuery
         });
       }
 
@@ -701,11 +839,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var showNoRoomTypesAttachedPopUp = function(argument) {
       ngDialog.open({
-        template: '/assets/partials/groups/rooming/popups/general/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
-        className: '',
-        scope: $scope,
-        closeByDocument: false,
-        closeByEscape: false
+        template        : '/assets/partials/groups/rooming/popups/general/rvGroupRoomingNoRoomTypeAttachedPopUp.html',
+        className       : '',
+        scope           : $scope,
+        closeByDocument : false,
+        closeByEscape   : false
       });
     };
 
@@ -788,14 +926,6 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           $scope.fetchReservations(true);
       }
     };
-
-    /**
-     * util function to check whether a string is empty
-     * we are assigning it as util's isEmpty function since it is using in html
-     * @param {String/Object}
-     * @return {boolean}
-     */
-    $scope.isEmpty = util.isEmpty;
 
     /**
      * we want to display date in what format set from hotel admin
