@@ -640,6 +640,12 @@
 "DASHBOARD": "Dashboard",
 
 
+"ACTIONS_USERNAME": "Username",
+"ACTIONS_DATETIME": "Date / Time",
+"ACTIONS_ACTION_TYPE": "Action Type",
+"ACTIONS_ACTION_DETAILS": "Details",
+
+
 "MARKET":"Markets",
 "USE_MARKETS":"Use markets",
 "MARKET_NAME_PLACEHOLDER":"Enter market name",
