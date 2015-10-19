@@ -411,16 +411,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                         
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+                        
 			var tokenizeSuccessCallback = function(tokenValue) {
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
                                 
-                                
-                                console.log('got token from swipe, showing payment model:');
-                                console.info('data: ',swipedCardData);
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
 			};
+                        
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 		});
 
