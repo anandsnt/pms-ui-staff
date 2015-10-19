@@ -22,5 +22,5 @@
             <span>{{item.to_date}}</span>
         </div>
     </td>
-    <td class="balance" ng-class="{'red': item.balance_amount > 0, 'green': item.balance_amount < 0}">{{item.balance_amount | currency:currencySymbol:2}}</td>
+    <td class="balance" ng-class="{'red': item.balance > 0, 'green': item.balance < 0}">{{item.balance | currency:currencySymbol:2}}</td>
 </tr>
