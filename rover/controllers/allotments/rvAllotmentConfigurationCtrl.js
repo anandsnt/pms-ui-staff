@@ -58,18 +58,6 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.setHeadingTitle(title);
         };
 
-
-
-        /**
-         * Function to check the mandatory values while saving the reservation
-         * Handling in client side owing to alleged issues on import if handled in the server side
-         * @return boolean [true if all the mandatory values are present]
-         */
-        var ifMandatoryValuesEntered = function() {
-            var summary = $scope.allotmentConfigData.summary;
-            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
-        };
-
         /**
          * shouldShowRoomingListTab whether to show rooming list tab
          * @return {Boolean} [description]
@@ -129,6 +117,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.allotmentConfigData = {
                 activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
                 summary: summaryData.allotmentSummary,
+                roomblock: {},
                 holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
@@ -285,21 +274,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.saveNewAllotment = function() {
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
-                if (ifMandatoryValuesEntered()) {
-                    if (!$scope.allotmentConfigData.summary.rate) {
-                        $scope.allotmentConfigData.summary.rate = -1;
-                    }
-                    var options = {
-                        successCallBack: onAllotmentSaveSuccess,
-                        failureCallBack: onAllotmentSaveFailure,
-                        params: {
-                            summary: $scope.allotmentConfigData.summary
-                        }
-                    };
-                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
-                } else {
-                    $scope.errorMessage = ["Allotment's name, from date, to date, room release date and hold status are mandatory"];
+                if (!$scope.allotmentConfigData.summary.rate) {
+                    $scope.allotmentConfigData.summary.rate = -1;
                 }
+                var options = {
+                    successCallBack: onAllotmentSaveSuccess,
+                    failureCallBack: onAllotmentSaveFailure,
+                    params: {
+                        summary: $scope.allotmentConfigData.summary
+                    }
+                };
+                $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
             } else {
                 $scope.$emit("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"]);
             }
@@ -330,7 +315,6 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     return false;
                 }
                 var summaryData = _.extend({}, $scope.allotmentConfigData.summary);
-                summaryData     = _.omit(summaryData, ["selected_room_types_and_rates", "selected_room_types_and_occupanies", "selected_room_types_and_bookings"]);
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
