@@ -198,8 +198,8 @@
                 <a ng-click="onClickReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
-							<span class="no-margin-right" ng-bind-html="{{stringify(escapeNull(row.lastname))}}|highlight:searchQuery:false"></span>,
-							<span ng-bind-html="{{stringify(escapeNull(row.firstname))}}|highlight:searchQuery:false"></span>                        
+							<span class="no-margin-right" ng-bind-html="{{stringify(escapeNull(reservation.lastname))}}|highlight:searchQuery:false"></span>,
+							<span ng-bind-html="{{stringify(escapeNull(reservation.firstname))}}|highlight:searchQuery:false"></span>                        
                          	<!--Guest last name, first name will appear here by ng-bind-html -->
                         </h2>
                         <h2 ng-show="isGuestBlank(reservation)">

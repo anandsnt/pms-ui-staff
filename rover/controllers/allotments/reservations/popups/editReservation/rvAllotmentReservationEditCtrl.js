@@ -35,7 +35,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {Boolean}
        */
       $scope.shouldDisableChangeRoom = function(reservation) {
-        var rStatus = reservation.reservation_status,
+        var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN'];
         return !_.contains(validResStatuses, rStatus);
       };
@@ -46,7 +46,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {Boolean}
        */
       $scope.shouldDisableFromDateChange = function(reservation) {
-        var rStatus = reservation.reservation_status,
+        var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN'];
         return !_.contains(validResStatuses, rStatus);
       };
@@ -57,7 +57,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {Boolean}
        */
       $scope.shouldDisableToDateChange = function(reservation) {
-        var rStatus = reservation.reservation_status,
+        var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN', 'CHECKEDIN', 'CHECKING_OUT'];
         return !_.contains(validResStatuses, rStatus);
       };
@@ -124,7 +124,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         //but should be disabled
         var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
-            rStatus = reservation.reservation_status;
+            rStatus = reservation.status;
 
         //CICO-18717: disable room type switch once a user checks in
         return (!(rStatus === 'RESERVED' || rStatus === 'CHECKING_IN') || containNonEditableRoomType);
