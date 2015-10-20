@@ -1216,8 +1216,6 @@ sntRover.controller('RVbillCardController',
                 } else {
                     signature = '[]';
                 }
-                console.log('current signature: ',signature);
-                
                 $scope.initCompleteCheckin(false, signature);
             });
         }

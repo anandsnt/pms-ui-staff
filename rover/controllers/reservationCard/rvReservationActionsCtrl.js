@@ -261,10 +261,6 @@ sntRover.controller('reservationActionsController', [
                                             "userId": $scope.guestCardData.userId
                                     });
                                     return false;
-                            } else if ($scope.reservationData.check_in_via_queue && !$scope.roomAssignmentNeeded() && !$scope.upsellNeeded()){
-                                //just put them in the queue
-                               $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id);
-                               return;
                             }
 
                             if ($scope.roomAssignmentNeeded()) {
@@ -308,25 +304,7 @@ sntRover.controller('reservationActionsController', [
 			var afterRoomUpdate = function() {
 				if (!!$scope.guestCardData.userId) {
 					if ($scope.reservationMissingPhone()) {
-						$scope.$emit('showLoader');
-                                                
-                                                
-                                            var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
-                                            if (useAdvancedQueFlow){
-                                                if ($scope.reservationData.check_in_via_queue){
-                                                    $scope.putGuestInQueue = true;
-                                                    setTimeout(function(){
-                                                        $rootScope.$emit('putGuestInQueue');
-                                                        $scope.putGuestInQueue = true;
-                                                    },750);
-                                                } else if (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued()){
-                                                    setTimeout(function(){
-                                                        $rootScope.$emit('checkGuestInFromQueue');
-                                                    },750);
-                                                } else {
-                                                        $rootScope.$emit('normalCheckInNotQueued');
-                                                }
-                                            }
+                                                $scope.$emit('showLoader');
                                             
 						ngDialog.open({
 							template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
@@ -450,6 +428,10 @@ sntRover.controller('reservationActionsController', [
                             $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
                         },500);
 		};
+		$scope.failPutInQueueCallBack = function(err) {
+			$scope.$emit('hideLoader');
+                        $scope.errorMessage = error;
+		};
                 
 		$scope.successRemoveFromQueueCallBack = function() {
 			$scope.$emit('hideLoader');
@@ -477,7 +459,7 @@ sntRover.controller('reservationActionsController', [
                             "reservationId": reservationId,
                             "status": "true"
                     };
-                    if (saveData.signature !== '[]'){
+                    if (saveData && saveData.signature !== '[]'){
                         data.signature = saveData.signature;
                     }
                     if (saveData.is_promotions_and_email_set !== undefined){
@@ -485,7 +467,7 @@ sntRover.controller('reservationActionsController', [
                     }
                     data.viaAdvancedQueue = true;
                     
-                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
+                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack, $scope.failPutInQueueCallBack);
                 };
                 
 		$scope.putInQueue = function(reservationId) {
