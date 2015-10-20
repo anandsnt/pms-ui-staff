@@ -444,7 +444,6 @@ sntRover.controller('RVReservationDepositController',
 		} else {
 			$scope.errorMessage = "";
 			$scope.depositInProcess = true;
-			console.log($scope.reservationData);
 			var dataToSrv = {
 				"postData": {
 					"bill_number": 1,
@@ -503,11 +502,71 @@ sntRover.controller('RVReservationDepositController',
 	};
 
 	$scope.onCardClick = function(){
+                $scope.showAddtoGuestCard = false;
 		$scope.showCCPage = true;
 		$scope.swippedCard = true;
 		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 		refreshCardsList();
 	};
+        
+        
+        
+        $scope.showAddtoGuestCardBox = function(){
+            if ($scope.cardSelected && 
+                    !$scope.showCCPage && 
+                    $scope.depositData.paymentType === 'CC' && 
+                        (
+                            $scope.paymentGateway !== 'sixpayments' || $scope.isManual
+                        ) && 
+                    !$scope.depositPaidSuccesFully && 
+                    !$scope.errorOccured && $scope.newCardAdded
+                ) {
+                    return true;
+                } else return false;
+        };
+        
+        $scope.isNewCard = function(){
+            var newCard = true;
+            for (var i in $scope.cardsList){
+                if ($scope.depositData.cardNumber === $scope.cardsList[i].mli_token){
+                    newCard = false;
+                }
+            }
+            return newCard;
+        };
+        
+        $scope.showSelectedCard = function(){
+            var showingSelectedCardScreen = false;
+            if (
+                    $scope.cardSelected && 
+                    !$scope.showCCPage && 
+                    $scope.depositData.paymentType === 'CC' && 
+                        ($scope.paymentGateway !== 'sixpayments' || $scope.isManual)
+                ){
+                showingSelectedCardScreen = true;
+            } else {
+                showingSelectedCardScreen = false;
+            }
+            
+            if (showingSelectedCardScreen){
+                if ($scope.showCCPage || $scope.depositData.paymentType !== 'CC' || !$scope.newCardAdded){
+                    $scope.showAddtoGuestCard = false;
+                }
+
+                if ($scope.depositData.paymentType === 'CC' && $scope.isNewCard()){//check if the card added is new
+                       $scope.showAddtoGuestCard = true;
+                } else {
+                       $scope.showAddtoGuestCard = false;
+                }
+            }
+            return showingSelectedCardScreen;
+            
+        };
+        
+        
+        
+        
+        
 
 	var setCreditCardFromList = function(index){
 		$scope.depositData.selectedCard = $scope.cardsList[index].value;

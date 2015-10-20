@@ -272,7 +272,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			var bestRateData = findBestAvailableRateAgainstDate(dailyData);
 			var title = getTitleAgainstDailyData (dailyData);
 			var eventData = {
-				day 		: getDayDataAgainstDailyData (dailyData),
+				day 		: new tzIndependentDate(dailyData.date).getDate().toString(),
 				className 	: getClassNameAgainstDailyData (dailyData),
 				start 		: new tzIndependentDate (dailyData.date),
 				end 		: new tzIndependentDate (dailyData.date),

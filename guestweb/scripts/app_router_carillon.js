@@ -57,7 +57,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Huntley/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Carillon/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
@@ -74,6 +74,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller:'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/checkin/partials/Carillon/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
+	 }).state('guestDetails', {
+	 	url: '/guestDetails',
+	 	templateUrl: '/assets/checkin/partials/MGM/guestDetails.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
 	 });
 
 
@@ -99,6 +104,24 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
+
+    $stateProvider.state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/MGM/earlyCheckinOptions.html',
+	 	controller : 'earlyCheckinOptionsController',
+	 	title: 'Early Check-in'
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/MGM/earlyCheckinFinal.html',
+	 	controller : 'earlyCheckinFinalController',
+	 	title: 'Early Check-in'
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/checkin/partials/MGM/lateArrivalDetails.html',
+	 	controller : 'checkinArrivalDetailsController',
+	    title: 'Early Check-in'
+	 });
+
 
     $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',

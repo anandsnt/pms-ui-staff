@@ -110,7 +110,7 @@
     "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
     "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this",
     "INSUFFICIENT_INV_ALLOTMENT_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Allotment, please review Allotment Room Block",
-    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"    
+    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"   
 
 
 
@@ -1089,6 +1089,7 @@
     "T_AND_C_TEXT": "By Checking this box you hereby agree to the Terms & Conditions",
     "PROMO_NEWS_BY_EMAIL_TEXT": "Please send me promotions and news via email.",
     "COMPLETE_CHECKIN" : "Complete checkin",
+    "COMPLETE_ADD_TO_QUEUE" : "Add to queue",
     "CLEAR_SIGNATURE": "Clear signature",
     "PHONE_EMAIL_MISSING" : "Phone &amp; e-mail missing!",
     "PHONE_MISSING" : "Phone missing!",
@@ -1098,6 +1099,8 @@
     "EMAIL" : "E-mail",
     "SUBMIT_AND_GOTO_CHECKIN" : "Submit and go to check in",
     "IGNORE_AND_GOTO_CHECKIN" : "Ignore and go to check in",
+    "SUBMIT_AND_GOTO_PUTINQUEUE" : "Submit and go to put in queue",
+    "IGNORE_AND_GOTO_PUTINQUEUE" : "Ignore and go to put in queue",
     "ASK_GUEST_TO_PROVIDE_EMAIL" : "Ask the guest to provide email",
     "SUBMIT": "Submit",
     "KEY_NOT_PRINTED": "Keys not printed",

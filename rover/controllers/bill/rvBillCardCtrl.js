@@ -734,9 +734,6 @@ sntRover.controller('RVbillCardController',
 	 	}
 
 	 	if(swipedCardData === undefined){
-                    if ($scope.uiOptions.isIpad){
-                        alert("swipe debugging code, NO swipe data!");
-                    }
 			 	passData.showDoNotAuthorize = ($scope.clickedButton === "checkinButton" && $rootScope.isStandAlone);
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
@@ -744,32 +741,18 @@ sntRover.controller('RVbillCardController',
 		 		$scope.openPaymentDialogModal(passData, paymentData);
 
   	 	} else {
-                    
-                    if ($scope.uiOptions.isIpad){
-                        alert("swipe debugging code, please ignore: swipedCardDataToRender.swipeFrom == "+swipedCardDataToRender.swipeFrom);
-                    }
+
   	 			var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-                                
-                                
-                                
 				if(swipedCardDataToRender.swipeFrom !== "payButton" && swipedCardDataToRender.swipeFrom !== 'billingInfo'){
-					$scope.openPaymentDialogModal(passData, paymentData);//swippedFrom: 'viewBill' ?
-                                        
-                                        
-                                        
+					$scope.openPaymentDialogModal(passData, paymentData);
 				} else if(swipedCardDataToRender.swipeFrom === "payButton") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
-                                        
-                                        
 				}
 				else if(swipedCardDataToRender.swipeFrom === "billingInfo") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
-                                        
-                                        
-                                        
 				}
 
   	 	}
@@ -791,38 +774,17 @@ sntRover.controller('RVbillCardController',
      /*
 	  * Handle swipe action in bill card
 	  */
-         if (!$scope.uiOptions){
-             $scope.uiOptions = {};
-         }
-        $scope.uiOptions.isIpad = navigator.userAgent.match(/iPad/i) != null;
+
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 
 	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
-                                
-                                
-                                
 			} else if ($scope.billingInfoModalOpened) {
 				swipedCardData.swipeFrom = "billingInfo";
-                                
-                                
-                                
 			} else {
 				swipedCardData.swipeFrom = "viewBill";
-                                
-                                
-                                
-			};
-                        
-                        if ($scope.uiOptions.isIpad){
-                            alert('swipe debugging, please ignore: swipefrom == '+swipedCardData.swipeFrom);
-                        }
-                        
-                        
-                        
-                        
-                        
+			}
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
 			var tokenizeSuccessCallback = function(tokenValue){
@@ -837,9 +799,6 @@ sntRover.controller('RVbillCardController',
 	 	 }
 
 
-                        if ($scope.uiOptions.isIpad){
-                            alert('swipe debugging, please ignore: $scope.isGuestCardVisible: '+$scope.isGuestCardVisible);
-                        }
 
 	});
 	 /*
@@ -1269,20 +1228,20 @@ sntRover.controller('RVbillCardController',
         
 
 	// Handle checkin process with Autherization..
-	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth){
+	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth, queueRoom){
             /*
              * put in Queue should not attempt to auth CC during normal workflow in Overlay,
              * in Standalone, $scope.putInQueue should always be false; (until we start supporting standalone put in queue)
              */
             
-		if(isCheckinWithoutAuth || ($scope.putInQueue && !$scope.checkGuestInFromQueue)){
+		if(isCheckinWithoutAuth || ($scope.putInQueue && !$scope.checkGuestInFromQueue) || queueRoom === true){
                         //$scope.putInQueue is set to true when going through the overlay -> put in queue advanced flow process (basically the same as check-in, without CC auth-CICO-19673)
                         //--- also the guest is not checked-in, so the user gets redirected back to the stay card, where they will see the option to "remove from queue"
                         //--- this also updates the flow for check-in, if (reservation was queue'd, then we will skip upgrade page, T&C page and credit card authorization
                         //----> upon check-in w/ res. queued, Immediately check-in guest in Opera and advance Rover to key generation screen
                         data.authorize_credit_card = false;        
-                        if ($scope.putInQueue){
-                            $rootScope.$emit('putInQueueAdvanced');
+                        if ($scope.putInQueue || queueRoom === true){
+                            $rootScope.$emit('putInQueueAdvanced', data);
                             
                         }else {
                             // Perform checkin process without authorization..
@@ -1472,8 +1431,42 @@ sntRover.controller('RVbillCardController',
 		}
                 
 	};
+        $scope.clickedCompleteAddToQueue = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom){
+            
+		if($scope.hasAnySharerCheckedin()){
+			// Do nothing , Keep going checkin process , it is a sharer reservation..
+		}
+		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+			//TO DO:Go to room assignemt view
+			$state.go("rover.reservation.staycard.roomassignment", {
+				"reservation_id": $scope.reservationBillData.reservation_id,
+				"room_type": $scope.reservationBillData.room_type,
+				"clickedButton": "checkinButton"
+			});
+			return false;
+		}
+
+		var errorMsg = "", signatureData = $scope.getSignature();
+                
+		if($scope.signatureNeeded(signatureData)){
+			errorMsg = "Signature is missing";
+			$scope.showErrorPopup(errorMsg);
+                        
+                        
+                        
+		} else if($scope.termsConditionsNeeded()){
+			errorMsg = "Please check agree to the Terms & Conditions";
+			$scope.showErrorPopup(errorMsg);
+                        
+                        
+		} else {
+                    var queueRoom = true;
+                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureData, queueRoom);
+		}
+                
+	};
         
-        $scope.initCompleteCheckin = function(isCheckinWithoutPreAuthPopup, signatureData){
+        $scope.initCompleteCheckin = function(isCheckinWithoutPreAuthPopup, signatureData, queueRoom){
                     
 			if($scope.validateEmailNeeded()){
                             ngDialog.open({
@@ -1503,17 +1496,17 @@ sntRover.controller('RVbillCardController',
                             
 	 		    if(typeof isCheckinWithoutPreAuthPopup !== 'undefined' && isCheckinWithoutPreAuthPopup){
 	 		    	// Directly performing checkin process without pre-auth popup.
-	 		    	performCCAuthAndCheckinProcess(data,true);
+	 		    	performCCAuthAndCheckinProcess(data,true,queueRoom);
 	 		    }
 	 		    else if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra){
-	 		    	performCCAuthAndCheckinProcess(data,false);
+	 		    	performCCAuthAndCheckinProcess(data,false,queueRoom);
 	 		    }
 	 		    else if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC"){
                                 // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
                                 showPreAuthPopupWithBillingInfo(data);
                             }
                             else{
-                                performCCAuthAndCheckinProcess(data,true);
+                                performCCAuthAndCheckinProcess(data,true,queueRoom);
                             }
 			}
         };
