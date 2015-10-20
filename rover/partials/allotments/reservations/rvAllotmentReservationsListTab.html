@@ -171,8 +171,8 @@
                 <input id="rooming-list-all" ng-disabled="isCancelledAllotment()" type="checkbox" ng-click="toggleAllSelection()" />
             </label>
         </li>
-        <li class="room sort" ng-class="getSortClass('room_no')" ng-click="sortBy('room_no')">{{'ALLOTMENT_ROOM'|translate}}</li>
-        <li class="name sort" ng-class="getSortClass('lastname')" ng-click="sortBy('lastname')">{{'ALLOTMENT_GUEST_NAME'|translate}}</li>
+        <li class="room sort" ng-class="getSortClass('room_number')" ng-click="sortBy('room_number')">{{'ALLOTMENT_ROOM'|translate}}</li>
+        <li class="name sort" ng-class="getSortClass('guest_name')" ng-click="sortBy('guest_name')">{{'ALLOTMENT_GUEST_NAME'|translate}}</li>
         <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'ALLOTMENT_ARRIVAL'|translate}}</li>
         <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'ALLOTMENT_DEPARTURE'|translate}}</li>
         <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'ALLOTMENT_ROOM_TYPE'|translate}}</li>
@@ -198,8 +198,8 @@
                 <a ng-click="onClickReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
-							<span class="no-margin-right" ng-bind-html="{{stringify(escapeNull(row.lastname))}}|highlight:searchQuery:false"></span>,
-							<span ng-bind-html="{{stringify(escapeNull(row.firstname))}}|highlight:searchQuery:false"></span>                        
+							<span class="no-margin-right" ng-bind-html="{{stringify(escapeNull(reservation.lastname))}}|highlight:searchQuery:false"></span>,
+							<span ng-bind-html="{{stringify(escapeNull(reservation.firstname))}}|highlight:searchQuery:false"></span>                        
                          	<!--Guest last name, first name will appear here by ng-bind-html -->
                         </h2>
                         <h2 ng-show="isGuestBlank(reservation)">
@@ -209,7 +209,7 @@
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
                             {{'ALLOTMENT_ROOM'|translate}} 
-                            <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="{{stringify(escapeNull(reservation.room_no))}}|highlight:searchQuery:false">
+                            <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="{{stringify(escapeNull(reservation.room_number))}}|highlight:searchQuery:false">
                             </span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
@@ -246,3 +246,4 @@
         </div>
     </div>
 </div>
+</form>

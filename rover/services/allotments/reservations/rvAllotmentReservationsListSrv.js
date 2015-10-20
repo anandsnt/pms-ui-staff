@@ -32,7 +32,7 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 		this.performAutoRoomAssignment = function(params) {
 			var deferred = $q.defer(),
 				allotment_id = params.id,
-				url = '/api/allotments/' + allotment_id + 'auto_room_assignment',
+				url = '/api/allotments/' + allotment_id + '/auto_room_assignment',
 				params = {
 					"reservation_ids": params.reservation_ids
 				};
@@ -136,6 +136,17 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 			);
 
 			return deferred.promise;
-		};				
-	}
-]);
+	};	
+
+	this.fetchRegistrationCardPrintData = function(params) {
+		var deferred = $q.defer();
+		var url = '/api/reservations/' + params.id + '/batch_print_registration_cards';
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
+}]);
