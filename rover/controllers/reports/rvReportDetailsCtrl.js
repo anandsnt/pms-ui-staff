@@ -788,6 +788,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DAILY_PRODUCTION']:
 					orientation = 'landscape';
 					break;
+				case reportNames['GUEST_BALANCE_REPORT']:
+					orientation = 'landscape';
+					break;
 
 				default:
 					orientation = 'portrait';

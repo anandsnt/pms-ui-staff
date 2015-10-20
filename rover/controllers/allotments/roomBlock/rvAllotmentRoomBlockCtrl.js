@@ -495,7 +495,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					dateData.single = dateData.single_contract;
 					dateData.double = dateData.double_contract;
 
-					if (dateData.triple) {
+					if (dateData.triple_contract) {
 						dateData.triple = dateData.triple_contract;
 					}
 					if (dateData.quadruple_contract) {
@@ -530,7 +530,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					if (dateData.triple) {
 						dateData.triple_contract = dateData.triple;
 					}
-					if (dateData.quadruple_contract) {
+					if (dateData.quadruple) {
 						dateData.quadruple_contract = dateData.quadruple;
 					}
 				});

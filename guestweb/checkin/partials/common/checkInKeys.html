@@ -7,7 +7,7 @@
 			</div>
 		</div>
 		<!--	 show posting message -->
-		<div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 			<p class="msg-head">Your request is being processed.</p>
 			<p class="msg-body">This may take a few seconds..... please wait!</p>
 		</div>
@@ -17,7 +17,7 @@
 			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
 		</div>
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isLoading || netWorkError">
+		<div class="container" ng-hide="isPosting || netWorkError">
 			<!-- top section starts here-->
 			<div class="row checkin-wrapper pre-checkin-final">
 				<div class="col-md-6 headtext centeralign pad-rt-60">
