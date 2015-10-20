@@ -375,7 +375,7 @@ sntRover.controller('RVbillCardController',
 
         $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
-                
+                $scope.isStandAlone = $rootScope.isStandAlone;
                 var viaQueue = false;
                     if ($scope.$parent){
                         if ($scope.$parent.reservation){
