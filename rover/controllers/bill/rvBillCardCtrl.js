@@ -1241,7 +1241,7 @@ sntRover.controller('RVbillCardController',
                         //----> upon check-in w/ res. queued, Immediately check-in guest in Opera and advance Rover to key generation screen
                         data.authorize_credit_card = false;        
                         if ($scope.putInQueue || queueRoom === true){
-                            $rootScope.$emit('putInQueueAdvanced');
+                            $rootScope.$emit('putInQueueAdvanced', data);
                             
                         }else {
                             // Perform checkin process without authorization..

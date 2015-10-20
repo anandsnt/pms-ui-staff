@@ -211,6 +211,10 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var postData = {
 				"status": data.status
 			};
+                        if (data.viaAdvancedQueue){
+                            postData.signature = data.signature;
+                            postData.is_promotions_and_email_set = data.is_promotions_and_email_set;
+                        }
 
 			var url = '/api/reservations/' + data.reservationId + '/queue';
 			rvBaseWebSrvV2.postJSON(url, postData).then(function(postData) {
