@@ -185,7 +185,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       */
       var onUpdateReservationSuccess = function(data) {
         $scope.closeDialog();
-        $scope.$emit('REFRESH_GROUP_ROOMING_LIST_DATA');
+        $scope.$emit('REFRESH_ALLOTMENT_RESERVATIONS_LIST_DATA');
       };
 
       /**
