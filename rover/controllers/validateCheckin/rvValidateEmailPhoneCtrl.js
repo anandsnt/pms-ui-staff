@@ -75,12 +75,16 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
             } else return false;
         };
         $scope.upsellNeeded = function(){
-            if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true"){
+            if ($scope.reservationData.reservation_card.is_force_upsell === "true" && 
+                    $scope.reservationData.reservation_card.is_upsell_available === "true"){
                 return true;
             } else return false;
         };
         $scope.readyToPutInQueue = function(){
-            if (($scope.putGuestInQueue || $rootScope.putGuestInQueue) && !$scope.roomAssignmentNeeded() && !$scope.upsellNeeded() && !$scope.checkGuestInFromQueue){
+            if (($scope.putGuestInQueue || $rootScope.putGuestInQueue) && 
+                    !$scope.roomAssignmentNeeded() && 
+                    !$scope.upsellNeeded() && 
+                    !$scope.checkGuestInFromQueue){
                 return true;
             } else return false;
         };
@@ -88,7 +92,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
             var avoidingBillCard = false;
             
             if ((!$scope.checkGuestInFromQueue || !$rootScope.checkGuestInFromQueue) && ($scope.putGuestInQueue || $rootScope.putGuestInQueue)){
-                avoidingBillCard = true;
+                avoidingBillCard = false;
             } else {
                  avoidingBillCard = false;
             }
