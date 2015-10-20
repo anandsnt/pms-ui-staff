@@ -294,7 +294,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}       [description]
 		 */
 		$scope.isValueConfigured = function(value) {
-			return _.isNumber(value);
+			return _.isNumber(value) || parseInt(value) >= 0;
 		};
 
 		/**
