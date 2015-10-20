@@ -417,18 +417,11 @@ sntRover.controller('RVroomAssignmentController',[
 
 
 	$scope.goToNextView = function(){
-            if ($scope.goToStayCardFromAddToQueue || $rootScope.goToStayCardFromAddToQueue){
-                //this is true when advanced flow is on and the user should be directed back to staycard, no CC Auth being done until check in
-                $rootScope.$emit('putInQueueAdvanced')
-			$scope.$emit('hideLoader');
-			$scope.backToStayCard();
-                        return;
-            }
-
 		if($scope.clickedButton === "checkinButton"){
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-		} else {
+                } else {
+                    
 			$scope.$emit('hideLoader');
 			$scope.backToStayCard();
 		}
