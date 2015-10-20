@@ -473,7 +473,7 @@ sntRover.controller('reservationActionsController', [
                             "reservationId": reservationId,
                             "status": "true"
                     };
-                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack, $scope.successPutInQueueCallBack);
+                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
                 };
                 
 		$scope.putInQueue = function(reservationId) {
