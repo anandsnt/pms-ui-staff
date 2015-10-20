@@ -525,7 +525,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	 * closing the modal
 	 */
 	$scope.successMakePayment = function (data) {
-		console.log("success make payment");
 		$scope.$emit("hideLoader");
 
 		if($rootScope.paymentGateway === "sixpayments" && $scope.isManual){
@@ -533,8 +532,10 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		}
 
 		$scope.depositPaidSuccesFully = true;
-
 		ngDialog.close();
+
+		//To update the balance in accounts
+		$scope.$emit("BALANCE_AFTER_PAYMENT", data.current_balance);
 	};
 
 	/*

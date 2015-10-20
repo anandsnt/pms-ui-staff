@@ -132,6 +132,19 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
+		this.checkWhetherRoomStatusChangePossible = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/room_services/check_room_locked_or_assigned';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 
 		// POST: save from IN_SERVICE to OO/OS
 		this.postCheckOutReservation = function(params) {

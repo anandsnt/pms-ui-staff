@@ -422,7 +422,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                         finalRateRounded = 0.0,
                                         postType = addon.post_type || addon.postType,
                                         amountType = addon.amount_type || addon.amountType,
-                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival);
+                                        chargefullweeksonly = addon.chargefullweeksonly,
+                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure,chargefullweeksonly);
                                     if (shouldPostAddon) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
                                         finalRateRounded = Number(finalRate.toFixed(2));
@@ -575,7 +576,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 view: "DEFAULT",
                 fromState: fromState,
                 company_id: $scope.reservationData.company.id,
-                travel_agent_id: $scope.reservationData.travelAgent.id
+                travel_agent_id: $scope.reservationData.travelAgent.id,
+                group_id: $scope.reservationData.group.id
             });
         };
 
@@ -799,7 +801,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     _.each(room.stayDates, function(staydata, date) {
                         reservationStayDetails.push({
                             date: date,
-                            rate_id: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+                            // In case of the last day, send the first day's occupancy
+                            rate_id: (function() {
+                                var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
+                                // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
+                                return rate && rate.toString().match(/_CUSTOM_/) ? null : rate
+                            })(),
                             room_type_id: room.roomTypeId,
                             room_id: room.room_id,
                             adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
@@ -820,6 +827,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
             data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
             data.group_id = $scope.reservationData.group.id;
+            data.allotment_id = $scope.reservationData.allotment.id;
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;
@@ -1105,7 +1113,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
              * In this case there does not need to be any prompt for Rate or Billing Information to copy, 
              * since all primary reservation information should come from the group itself.
              */
-            if (!!$scope.reservationData.group.id) {
+            if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
                 return false;
             }
             
@@ -1158,7 +1166,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
              * Move check for guest / company / ta card attached to the screen before the reservation summary screen.
              * This may either be the rooms and rates screen or the Add on screen when turned on.
              */
-            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) {
                 $scope.$emit('PROMPTCARD');
             } else {
                 /**

@@ -154,6 +154,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isCondensedPrint = true;
 					break;
 
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					$scope.isDepositReport = true;
+					break;
+					
+				case reportNames['AR_SUMMARY_REPORT']:
+					$scope.hasNoTotals = false;
+					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
+					break;
+
+				case reportNames['GUEST_BALANCE_REPORT']:
+					$scope.hasNoTotals = false;
+					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
+					break;
+
 				default:
 					break;
 			};
@@ -243,6 +259,21 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['GROUP_PICKUP_REPORT']:
 					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['AR_SUMMARY_REPORT']:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 3;
+					break;
+					
+				case reportNames['GUEST_BALANCE_REPORT']:
+					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
 
@@ -383,8 +414,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
 				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
 			};
-			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions) );
-
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
 
@@ -455,7 +485,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
 					};
 					break;
-					
+
+				case reportNames['DAILY_PRODUCTION']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
+					break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -472,6 +507,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			switch ( $scope.parsedApiFor ) {
 
 				// general reports rows
+				case reportNames['AR_SUMMARY_REPORT']:
+					template = '/assets/partials/reports/accountsReceivablesSummary/rvAccountsReceivablesSummaryRow.html';
+					break;
 				case reportNames['ARRIVAL']:
 					template = '/assets/partials/reports/generalReportRows/rvArrivalReportRow.html';
 					break;
@@ -487,6 +525,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 				case reportNames['DEPOSIT_REPORT']:
 					template = '/assets/partials/reports/generalReportRows/rvDepositReportRow.html';
+					break;
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+					template = '/assets/partials/reports/generalReportRows/rvGroupDepositReportRow.html';
 					break;
 				case reportNames['IN_HOUSE_GUEST']:
 					template = '/assets/partials/reports/generalReportRows/rvInHouseReportRow.html';
@@ -504,6 +545,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/generalReportRows/rvGroupPickupReportRow.html';
 					break;
 
+				case reportNames['GUEST_BALANCE_REPORT']:
+					template = '/assets/partials/reports/guestBalanceReport/rvGuestBalanceReportRow.html';
+					break;
 
 				// RESERVATIONS_BY_USER report row
 				case reportNames['RESERVATIONS_BY_USER']:
@@ -722,16 +766,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// add the print orientation before printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
-			var margin = '1cm 0.5cm';
 
 			switch( $scope.chosenReport.title ) {
+				case reportNames['AR_SUMMARY_REPORT']:
 				case reportNames['ARRIVAL']:
 				case reportNames['IN_HOUSE_GUEST']:
 				case reportNames['DEPARTURE']:
 				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['GROUP_DEPOSIT_REPORT']:
 				case reportNames['CANCELLATION_NO_SHOW']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
+				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
 				case reportNames['DAILY_TRANSACTIONS']:
 				case reportNames['DAILY_PAYMENTS']:
 				case reportNames['FORECAST_BY_DATE']:
@@ -739,17 +785,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_PICKUP_REPORT']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
+				case reportNames['DAILY_PRODUCTION']:
 					orientation = 'landscape';
 					break;
-
-				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+				case reportNames['GUEST_BALANCE_REPORT']:
 					orientation = 'landscape';
-					//margin: '2mm 2mm';
 					break;
 
 				default:
 					orientation = 'portrait';
-					// margin: '1cm 0.5cm';
 					break;
 			}
 
@@ -821,10 +865,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			return string.indexOf( subString ) > -1;
 		};
 
-
-
-
-
 		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
 			$_pageNo = 1;
 			$scope.errorMessage = [];
@@ -868,12 +908,61 @@ sntRover.controller('RVReportDetailsCtrl', [
 			refreshScroll();
 		});
 
+		/**
+	     * function to get reservation class against reservation status
+	     * @param {String} [reservationStatus] [description]
+	     * @return {String} [class name]
+	     */
+	    $scope.getReservationClass = function (reservationStatus) {
+	        var class_ = '';
+	        switch (reservationStatus.toUpperCase()) {
+	            case "RESERVED":
+	                class_ = 'arrival';
+	                break;
+
+	            case "DUE IN":
+	                class_ = 'check-in';
+	                break;
+
+	            case "CHECKEDIN":
+	                class_ = 'inhouse';
+	                break;
+
+	            case "DUE OUT":
+	                class_ = 'check-out';
+	                break;
+
+	            case "CHECKEDOUT":
+	                class_ = 'departed';
+	                break;
+
+	            case "CANCELED":
+	                class_ = 'cancel';
+	                break;
+
+	            case "NOSHOW":
+	            case "NOSHOW_CURRENT":
+	                class_ = 'no-show';
+	                break;
+
+	            case "IN HOUSE":
+	                class_ = 'inhouse';
+	                break;
+
+	            default:
+	                class_ = '';
+	                break;
+	        }
+	        return class_;
+	    };
+
 		// removing event listners when scope is destroyed
 		$scope.$on( 'destroy', reportSubmited );
 		$scope.$on( 'destroy', reportUpdated );
 		$scope.$on( 'destroy', reportPageChanged );
 		$scope.$on( 'destroy', reportPrinting );
 		$scope.$on( 'destroy', reportAPIfailed );
-
     }
+
 ]);
+

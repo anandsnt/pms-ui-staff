@@ -33,7 +33,7 @@
                             </td>
                             <td style="width:30%"></td>
                             <td>
-                                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue sm-refresh-btn" ng-class="{'overlay': refreshButtonEnabled === 'disabled'}" ng-click="runFullRefresh()" translate>
+                                <button type="button" like-type="common" id="test-connection" class="button ng-binding blue sm-refresh-btn" ng-click="showDatePicker()" translate>
                                 RUN_REFRESH_BUTTON
                                 </button>
                                 <br>
@@ -44,7 +44,7 @@
                 </table>
                 
                 <br>
-
+                
                 <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SITEMINDER_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SITEMINDER_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>

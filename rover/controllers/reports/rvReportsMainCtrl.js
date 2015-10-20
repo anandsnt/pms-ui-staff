@@ -38,21 +38,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.reportList  = payload.reportsResponse.results;
 		$scope.reportCount = payload.reportsResponse.total_count;
 
-		$scope.activeUserList = payload.activeUserList;
-		$scope.guaranteeTypes = payload.guaranteeTypes;
-
-		$scope.markets = payload.markets;
-		$scope.sources = payload.sources;
-		$scope.origins = payload.origins;
-
 		$scope.codeSettings = payload.codeSettings;
-		$scope.holdStatus   = payload.holdStatus;
-		
-		$scope.reservationStatus = payload.reservationStatus;
-
-		$scope.chargeNAddonGroups = payload.chargeNAddonGroups;
-		$scope.chargeCodes        = payload.chargeCodes;
-		$scope.addons             = payload.addons;
+		$scope.addons       = payload.addons;
 
 
 		$scope.showReportDetails = false;
@@ -138,7 +125,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_23: false,
 			item_24: false,
 			item_25: false,
-			item_26: false
+			item_26: false,
+			item_27: false,
+			item_28: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -622,7 +611,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				'holdStatuses' : [],
 				'addonGroups'  : [],
 				'addons'       : [],
-				'reservationStatus' : []
+				'reservationStatus' : [],
+				'guestOrAccount': []
 			};
 
 			// include dates
@@ -659,6 +649,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
 				$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
+			};
+
+			// include group start dates -- IFF both the limits of date range have been selected
+			if (!!report.hasGroupStartDateRange && !!report.groupStartDate && !!report.groupEndDate) {
+				fromKey  = reportParams['GROUP_START_DATE'];
+				untilKey = reportParams['GROUP_END_DATE'];
+				/**/
+				params[fromKey]  = $filter('date')(report.groupStartDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.groupEndDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['groupFromDate'] = angular.copy( report.groupStartDate );
+				$scope.appliedFilter['groupToDate']   = angular.copy( report.groupEndDate );
 			};
 
 			// include deposit due dates
@@ -848,6 +850,18 @@ sntRover.controller('RVReportsMainCtrl', [
 						params[key] = true;
 						/**/
 						$scope.appliedFilter.display.push( each.description );
+					};
+				});
+			};
+
+			// generate params for guest or account
+			if ( report['hasGuestOrAccountFilter']['data'].length ) {
+				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						$scope.appliedFilter.guestOrAccount.push( each.description );
 					};
 				});
 			};
@@ -1078,7 +1092,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				};
 			};
 
-
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report
 			// @TODO: Fix this. May be refactor the whole logic
@@ -1131,7 +1144,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				$scope.headers         = response.headers || [];
 				$scope.subHeaders      = response.sub_headers || [];
 				$scope.results         = response.results || [];
-				$scope.resultsTotalRow = response.results_total_row || 0;
+				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || [];
 				$scope.reportGroupedBy = response.group_by || '';
 
@@ -1196,31 +1209,46 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 
-		var activeUserAutoCompleteObj = [];
-		_.each($scope.activeUserList, function(user) {
-			activeUserAutoCompleteObj.push({
-				label: user.email,
-				value: user.id
-			});
-		});
+		var touchedReport;
 
-		function split(val) {
-			return val.split(/,\s*/);
-		}
-
-		function extractLast(term) {
-			return split(term).pop();
-		}
-
-		var thisReport;
 		$scope.returnItem = function(item) {
-			thisReport = item;
+			touchedReport = item;
 		};
+
+		var split = function (val) {
+			return val.split(/,\s*/);
+		};
+
+		var extractLast = function (term) {
+			return split(term).pop();
+		};
+
+		var activeUserAutoCompleteObj = [];
 
 		var userAutoCompleteCommon = {
 			source: function(request, response) {
-				// delegate back to autocomplete, but extract the last term
-				response($.ui.autocomplete.filter(activeUserAutoCompleteObj, extractLast(request.term)));
+				var term = extractLast(request.term);
+
+				$scope.$emit( 'showLoader' );
+				reportsSubSrv.fetchActiveUsers(term)
+					.then(function(data) {
+						var entry = {},
+							found;
+
+						activeUserAutoCompleteObj = [];
+						$.map(data, function(user) {
+							entry = {
+								label: user.email,
+								value: user.id,
+							};
+							activeUserAutoCompleteObj.push(entry);
+						});
+
+						found = $.ui.autocomplete.filter(activeUserAutoCompleteObj, term);
+						response(found);
+
+						$scope.$emit( 'hideLoader' );
+					});
 			},
 			select: function(event, ui) {
 				var uiValue = split(this.value);
@@ -1231,7 +1259,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				this.value = uiValue.join(", ");
 				setTimeout(function() {
 					$scope.$apply(function() {
-						thisReport.uiChosenUsers = uiValue.join(", ");
+						touchedReport.uiChosenUsers = uiValue.join(", ");
 					});
 				}.bind(this), 100);
 				return false;
@@ -1252,7 +1280,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				setTimeout(function() {
 					$scope.$apply(function() {
-						thisReport.chosenUsers = modelVal;
+						touchedReport.chosenUsers = modelVal;
 					});
 				}.bind(this), 10);
 			},
@@ -1272,7 +1300,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				setTimeout(function() {
 					$scope.$apply(function() {
-						thisReport.chosenUsers = modelVal;
+						touchedReport.chosenUsers = modelVal;
 					});
 				}.bind(this), 10);
 			},
@@ -1280,31 +1308,26 @@ sntRover.controller('RVReportsMainCtrl', [
 				return false;
 			}
 		};
+
 		$scope.listUserAutoCompleteOptions = angular.extend({
 			position: {
-				my: 'left bottom',
-				at: 'left top',
-				collision: 'flip'
+				'my'        : 'left bottom',
+				'at'        : 'left top',
+				'collision' : 'flip'
 			}
 		}, userAutoCompleteCommon);
+
 		$scope.detailsUserAutoCompleteOptions = angular.extend({
 			position: {
-				my: 'left bottom',
-				at: 'right+20 bottom',
-				collision: 'flip'
+				'my'        : 'left bottom',
+				'at'        : 'right+20 bottom',
+				'collision' : 'flip'
 			}
 		}, userAutoCompleteCommon);
-
-
-
-
-		$scope.removeCompTaGrpId = function(item) {
-			if (!item.uiChosenIncludeComapnyTaGroup) {
-				item.chosenIncludeComapnyTaGroup = null;
-			};
-		};
+		
 		var ctgAutoCompleteCommon = {
 			source: function(request, response) {
+				$scope.$emit( 'showLoader' );
 				reportsSubSrv.fetchComTaGrp(request.term)
 					.then(function(data) {
 						var list = [];
@@ -1319,14 +1342,15 @@ sntRover.controller('RVReportsMainCtrl', [
 						});
 
 						response(list);
+						$scope.$emit( 'hideLoader' );
 					});
 			},
 			select: function(event, ui) {
 				this.value = ui.item.label;
 				setTimeout(function() {
 					$scope.$apply(function() {
-						thisReport.uiChosenIncludeComapnyTaGroup = ui.item.label;
-						thisReport.chosenIncludeComapnyTaGroup = ui.item.value;
+						touchedReport.uiChosenIncludeComapnyTaGroup = ui.item.label;
+						touchedReport.chosenIncludeComapnyTaGroup = ui.item.value;
 					});
 				}.bind(this), 100);
 				return false;
@@ -1335,6 +1359,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				return false;
 			}
 		};
+
 		$scope.listCtgAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left top',
@@ -1342,6 +1367,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				collision: 'flip'
 			}
 		}, ctgAutoCompleteCommon);
+
 		$scope.detailsCtgAutoCompleteOptions = angular.extend({
 			position: {
 				my: 'left bottom',
@@ -1349,6 +1375,5 @@ sntRover.controller('RVReportsMainCtrl', [
 				collision: 'flip'
 			}
 		}, ctgAutoCompleteCommon);
-
 	}
 ]);

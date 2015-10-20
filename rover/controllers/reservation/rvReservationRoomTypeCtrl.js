@@ -64,7 +64,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			},
 			calendarState: {
 				showOnlyAvailableRooms: true,
-				searchWithRestrictions: false,
+				searchWithRestrictions: true,
 				calendarType: "BEST_AVAILABLE"
 			}
 		};
@@ -170,8 +170,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						$scope.stateCheck.suppressedRates.push(d.id);
 					}
 				});
+				if (!!$scope.reservationData.group.id) {					
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
+					 rates[customRate.id] = customRate;
+				};
+
+				if (!!$scope.reservationData.allotment.id) {					
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
+					 rates[customRate.id] = customRate;
+				};
+
 				$scope.displayData.allRates = rates;
 				$scope.reservationData.ratesMeta = rates;
+
 				$scope.roomAvailability = $scope.getAvailability(roomRates);
 				//Filter for rooms which are available and have rate information
 				$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
@@ -258,7 +269,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// CICO-6079
 				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[date] && $scope.roomAvailability[roomId].ratedetails[date][rateId].rate ||
 					$scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].rate;
-				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
+				calculatedAmount =  $filter('number')(calculatedAmount, 2);
 				details.rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
@@ -294,6 +305,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
 				group_id: $scope.reservationData.group.id,
+				allotment_id: $scope.reservationData.allotment.id,
 				promotion_code: $scope.reservationData.searchPromoCode
 			}, fetchSuccess);
 
@@ -1345,7 +1357,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.activeRoom,
 					$scope.reservationData.numNights, {
 						code: $scope.reservationData.code,
-						group: $scope.reservationData.group
+						group: $scope.reservationData.group,
+						allotment: $scope.reservationData.allotment,
 					},
 					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
@@ -1699,6 +1712,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		var setBackButton = function() {
+			// CICO-20270: to force selection of a rate after removing a card with contracted rate.
+			if($stateParams.disable_back_staycard){
+				return;
+			}
+
 			// smart switch btw edit reservation flow and create reservation flow
 			if (!!$state.params && $state.params.isFromChangeStayDates) {
 				$rootScope.setPrevState = {
@@ -1890,10 +1908,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 		$scope.toggleSearchWithRestrictions = function(){
 			$scope.stateCheck.calendarState.searchWithRestrictions = !$scope.stateCheck.calendarState.searchWithRestrictions;
+		    $scope.$broadcast('availableRateFiltersUpdated');
 		};
 
 		$scope.toggleShowOnlyAvailable = function(){
 			$scope.stateCheck.calendarState.showOnlyAvailableRooms = !$scope.stateCheck.calendarState.showOnlyAvailableRooms;
+		    $scope.$broadcast('availableRateFiltersUpdated');
 		};
 	}
 ]);

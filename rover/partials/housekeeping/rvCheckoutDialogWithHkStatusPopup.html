@@ -1,0 +1,26 @@
+<div role="dialog" id="modal" class="modal-show">
+	<div class="modal-content">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<div class="h3 message">{{ message }}</div>
+		<!-- enable_room_status_at_checkout -->
+		<div class="status">
+		   <label for="room-status">Room Status</label>
+		   <div class="switch-button" ng-class="{'on': flag.roomStatusReady}">
+		      <input id="room-status" name="room-status" type="checkbox" value="not-ready" ng-model="flag.roomStatusReady">
+		      <label class="data-off">
+			      <span class="switch-icon">Not Ready</span>
+			      <span class="value">Ready</span>
+		      </label>
+		      <label class="data-on">
+			      <span class="value">Not Ready</span>
+			      <span class="switch-icon">Ready</span>
+		      </label>
+		   </div>
+		</div>
+		<button id="ok" class="button modal-close green" ng-click="manualRoomStatusChange()">
+			Ok
+		</button>
+	</div>
+</div>

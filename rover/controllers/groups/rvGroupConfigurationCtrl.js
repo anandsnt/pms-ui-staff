@@ -127,9 +127,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         //Move date, from date, end date change
         (function(){
 
-            /* modesAvailable = ["DEFAULT", "START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
-                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
-                                "COMPLETE_MOVE"] */
             var activeMode = null,
                 lastSuccessCallback = null,
                 lastFailureCallback = null,
@@ -141,9 +138,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {undefined}
              */
             var setMode = function(mode) {
-                var modesAvailable = ["DEFAULT", "START_DATE_LEFT_MOVE", "START_DATE_RIGHT_MOVE", 
-                                "END_DATE_LEFT_MOVE", "END_DATE_RIGHT_MOVE", 
-                                "COMPLETE_MOVE"];
+                var modesAvailable = ["DEFAULT", "CHANGE_DATES", "COMPLETE_MOVE"];
 
                 if (mode && mode !== null) {
                     mode        = mode.toString().toUpperCase();
@@ -397,15 +392,6 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 });
             };
 
-            /**
-             * Called when user cancels a change date popup
-             * @return {undefined}
-             */
-            $scope.cancelChangeDatesAction = function() {
-                $scope.closeDialog ();
-                if (lastCancelCallback)
-                    lastCancelCallback();
-             };
 
             /**
              * [successCallBackOfMoveDatesAPI description]
@@ -682,6 +668,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 setMode ("COMPLETE_MOVE");
             };
 
+            var triggerdChangeDateActions = function() {
+                setMode ("CHANGE_DATES");
+            };
+
             /**
              * to set to default mode
              * @return {undefined}
@@ -699,11 +689,19 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
 
             /**
-             * [isInCompleteMoveMode description]
-             * @return {Boolean} [description]
+             * Returns true if in move group mode.
+             * @return {Boolean} True for move mode.
              */
             var isInCompleteMoveMode = function() {            
                 return (activeMode === "COMPLETE_MOVE");
+            };
+
+            /**
+             * Returns true if in arr/dept date left/right change mode.
+             * @return {Boolean} True for date change mode.
+             */
+            var isInChangeDatesMode = function() {
+                return (activeMode === "CHANGE_DATES");
             };
 
             /**
@@ -711,8 +709,26 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {[type]} [description]
              */
             var cancelMoveAction = function() {
-                setToDefaultMode ();
+                // time out to prevent outside click event firing.
+                $timeout(function(){
+                    setToDefaultMode ();
+                }, 100);
             };
+
+            /**
+             * Called when user cancels a change date popup
+             * @return {undefined}
+             */
+            $scope.cancelChangeDatesAction = function() {
+                $scope.closeDialog ();
+                if (lastCancelCallback)
+                    lastCancelCallback();
+
+                // time out to prevent outside click event firing.
+                $timeout(function(){
+                    setToDefaultMode ();
+                }, 100);
+             };
 
             /**
              * to get various move dates from child controllers
@@ -723,21 +739,67 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     shouldShowMoveButton         : shouldShowMoveButton,
                     clickedOnMoveButton          : clickedOnMoveButton,
                     triggerEarlierArrDateChange  : triggerEarlierArrivalDateChange,
-                    triggerLaterArrDateChange    : triggerLaterArrivalDateChange,                    
+                    triggerLaterArrDateChange    : triggerLaterArrivalDateChange,
                     arrDateLeftChangeAllowed     : arrDateLeftChangeAllowed,
                     arrDateRightChangeAllowed    : arrDateRightChangeAllowed,
                     triggerEarlierDepDateChange  : triggerEarlierDepartureDateChange,
-                    triggerLaterDepDateChange    : triggerLaterDepartureDateChange,                     
+                    triggerLaterDepDateChange    : triggerLaterDepartureDateChange,
                     depDateLeftChangeAllowed     : depDateLeftChangeAllowed,
-                    depDateRightChangeAllowed    : depDateRightChangeAllowed, 
+                    depDateRightChangeAllowed    : depDateRightChangeAllowed,
                     showDateChangeInvalidWarning : showDateChangeInvalidWarning,
                     isInCompleteMoveMode         : isInCompleteMoveMode,
+                    isInChangeDatesMode          : isInChangeDatesMode,
                     clickedOnMoveSaveButton      : clickedOnMoveSaveButton,
                     cancelMoveAction             : cancelMoveAction,
-                    setToDefaultMode             : setToDefaultMode
+                    setToDefaultMode             : setToDefaultMode,
+                    triggerdChangeDateActions    : triggerdChangeDateActions
                 };
             };
         }());
+
+        /**
+         * we will update the summary data, when we got this one
+         * @return undefined
+         */
+        var fetchSuccessOfSummaryData = function(data) {
+            var summaryData = $scope.groupConfigData.summary; // ref for group summary
+            summaryData = _.extend(summaryData, data.groupSummary);
+            if (!summaryData.release_date) {
+                summaryData.release_date = summaryData.block_from;
+            }
+
+            if (!$scope.isInAddMode()) {
+                summaryData.block_from = new tzIndependentDate(summaryData.block_from);
+                summaryData.block_to = new tzIndependentDate(summaryData.block_to);
+            }
+
+            // let others know we have refreshed summary data
+            $scope.$broadcast("UPDATED_GROUP_INFO");
+        };
+
+        /**
+         * method to fetch summary data
+         * @return undefined
+         */
+        var fetchSummaryData = function() {
+            var params = {
+                "groupId": $scope.groupConfigData.summary.group_id
+            };
+            var options = {
+                successCallBack: fetchSuccessOfSummaryData,
+                params: params
+            };
+
+            $scope.callAPI(rvGroupConfigurationSrv.getGroupSummary, options);
+        };
+
+        /**
+         * Refresh the group summary data when we get this event
+         */
+        $scope.$on("FETCH_SUMMARY", function(event) {
+            event.stopPropagation();
+            fetchSummaryData();
+        });
 
         /**
          * function to form data model for add/edit mode
@@ -753,27 +815,29 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 selectedAddons: [],
                 activeScreen: 'GROUP_ACTUAL'
             };
+            var groupSummary = $scope.groupConfigData.summary;
+
             $timeout(function() {
-                $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
+                $scope.groupSummaryMemento = angular.copy(groupSummary);
             }, 500);
 
 
             $scope.accountConfigData = {
                 summary: summaryData.accountSummary
             }
-            if (!$scope.groupConfigData.summary.release_date) {
-                $scope.groupConfigData.summary.release_date = $scope.groupConfigData.summary.block_from;
+            if (!groupSummary.release_date) {
+               groupSummary.release_date = groupSummary.block_from;
             }
 
             if (!$scope.isInAddMode()) {
-                $scope.groupConfigData.summary.block_from = new tzIndependentDate($scope.groupConfigData.summary.block_from);
-                $scope.groupConfigData.summary.block_to = new tzIndependentDate($scope.groupConfigData.summary.block_to);
+                groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
+                groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
             }
 
             // if we searched a group name that wasnt in the db
             // pass over that search term here
             if ( !!$stateParams.newGroupName ) {
-                $scope.groupConfigData.summary.group_name = $stateParams.newGroupName
+                groupSummary.group_name = $stateParams.newGroupName
             };
 
         };
@@ -939,7 +1003,25 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
 
         }
-
+        /** CICO-20270: a 470 failure response indicates that transactions exist
+         * in bill routing. we need to show user a warning in this case.
+         * @param {object} API response object.
+         */
+        var showRemoveCardsAPIErrorPopup = function(errors) {
+            var data = {
+                errorMessages: errors.errorMessage
+            };
+            $timeout(function(){
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/popups/detachCardsAPIErrorPopup.html',
+                    className: 'ngdialog-theme-default stay-card-alerts',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    data: JSON.stringify(data)
+                });
+            }, 500);
+        };
 
         /**
          * Update the group data
@@ -957,11 +1039,26 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
                         return true;
                     },
-                    onGroupUpdateFailure = function(errorMessage) {
-                        //client controllers should get an infromation whether updation was a failure
-                        $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", errorMessage);
-                        $scope.errorMessage = errorMessage;
-                        return false;
+                    onGroupUpdateFailure = function(error) {
+                        /* CICO-20270: Since we are expecting some custom http error status in the response
+                         * and we are using that to acknowledge error with card detaching.*/
+                        if(error.hasOwnProperty ('httpStatus')) {
+                            switch (error.httpStatus) {
+                                case 470:
+                                    showRemoveCardsAPIErrorPopup(error);
+                                    break;
+                                default:
+                                    $scope.errorMessage = error.errorMessage;
+                                    break;
+                            }
+                        }
+
+                        else {
+                            //client controllers should get an infromation whether updation was a failure
+                            $scope.$broadcast("FAILED_TO_UPDATE_GROUP_INFO", error);
+                            $scope.errorMessage = error;
+                            return false;
+                        }
                     };
 
                 var summaryData = _.extend({}, $scope.groupConfigData.summary);
@@ -1012,6 +1109,20 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
         }
 
+        $scope.detachCardFromGroup = function(card) {
+            // warn about billing info
+            var dataForPopup = {
+                cardType: card
+            }
+            ngDialog.open({
+                template: '/assets/partials/groups/summary/popups/detachCardWarningPopup.html',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(dataForPopup)
+            });
+        };
+
         /**
          * Autocompletions for company/travel agent
          * @return {None}
@@ -1049,7 +1160,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.company.name = ui.item.label;
                     $scope.groupConfigData.summary.company.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
-                        $scope.updateGroupSummary();                        
+                        $scope.updateGroupSummary();
                     }
                     $scope.$broadcast("COMPANY_CARD_CHANGED");
                     runDigestCycle();
@@ -1060,7 +1171,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         $scope.groupConfigData.summary.company = {
                             id: ""
                         }
-                        $scope.updateGroupSummary();                        
+                        $scope.detachCardFromGroup('company');
                     }
                     $scope.$broadcast("COMPANY_CARD_CHANGED");
                 }
@@ -1090,7 +1201,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.groupConfigData.summary.travel_agent.name = ui.item.label;
                     $scope.groupConfigData.summary.travel_agent.id = ui.item.value;
                     if (!$scope.isInAddMode()) {
-                        $scope.updateGroupSummary();                        
+                        $scope.updateGroupSummary();
                     }
                     $scope.$broadcast("TA_CARD_CHANGED");
                     runDigestCycle();
@@ -1101,7 +1212,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                         $scope.groupConfigData.summary.travel_agent = {
                             id: ""
                         }
-                        $scope.updateGroupSummary();                        
+                        $scope.detachCardFromGroup('travel_agent');
                     }
                     $scope.$broadcast("TA_CARD_CHANGED");
                 }
@@ -1174,17 +1285,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 param = prevParam;
             };
 
-            console.log( _.indexOf(reservationFlow.forRoutes, prevName) );
-
-            console.log( _.indexOf(flowStates, prevName) );
-
             return {
                 'title' : title,
                 'name'  : name,
                 'param' : param
             };
         })( $rootScope );
-        console.log( resolvedBackBtn );
 
         $scope.updateAndBack = function() {
             if ( !$scope.isInAddMode() && 'SUMMARY' === $scope.groupConfigData.activeTab ) {

@@ -1379,23 +1379,23 @@
                     .pull-left;
                 }
 
-                .calendar-left { 
-                    #pixel-to-percent > .right-margin(80, 1968); 
+                .calendar-left { #pixel-to-percent > .right-margin(80, 1968); }
 
-                    .tooltip {
-                        left: -20px;
-
-                        &:after { left: 20px; }
-                    }
+                .fc-button-prev,
+                .fc-button-next {
+                    position: absolute;
+                    top: 5px;
+                    overflow: hidden;
+                    cursor: pointer;
+                    background-color: transparent;
+                    border: 0;
+                    .show;
+                    .hide-text;
+                    .square(40px);
                 }
 
-                .calendar-right {
-                    .tooltip {
-                        right: -20px;
-
-                        &:after { right: 20px; }
-                    }
-                }
+                .fc-button-prev { left: 5px; }
+                .fc-button-next { right: 5px; }
 
                 .calendar-legend { 
                     position: absolute;

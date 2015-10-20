@@ -140,6 +140,13 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					code: "",
 					company: "",
 					travelAgent: ""
+				},
+				allotment: {
+					id: "",
+					name: "",
+					code: "",
+					company: "",
+					travelAgent: ""
 				}
 			};
 		};
@@ -185,6 +192,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					futureReservations: 0
 				},
 				group: {
+					id: "",
+					futureReservations: 0
+				},
+				allotment: {
 					id: "",
 					futureReservations: 0
 				}
@@ -289,6 +300,12 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 				company: cards.company_id || "",
 				travelAgent: cards.travel_agent_id || ""
 			};
+			reservationData.allotment = { //allotment
+				id: stayCard.allotment_id,
+				name: stayCard.allotment_name,
+				company: cards.company_id || "",
+				travelAgent: cards.travel_agent_id || ""
+			};
 			//ID
 			reservationData.confirmNum = stayCard.confirmation_num;
 			reservationData.reservationId = stayCard.reservation_id;
@@ -375,7 +392,7 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 					dayOfWeek: dateFilter(new tzIndependentDate(reservationData.departureDate), 'EEE'),
 					day: dateFilter(new tzIndependentDate(reservationData.departureDate), 'dd')
 				});
-				roomDetails.stayDates[departure] = roomDetails.stayDates[arrival];
+				roomDetails.stayDates[departure] = angular.copy(roomDetails.stayDates[arrival]);
 			}
 			// Payment
 			if (stayCard.payment_method_used !== "" && stayCard.payment_method_used !== null) {

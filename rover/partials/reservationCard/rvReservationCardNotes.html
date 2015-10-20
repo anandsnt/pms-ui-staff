@@ -4,17 +4,20 @@
         <button type="button" class="staycard-button next-view " ng-class="{
                     'icon-no-actions' : actionsCount === 'none', 
                     'icon-new-actions' : actionsCount === 'pending' || actionsCount === 'only-pending', 
-                    'icon-actions' : actionsCount === 'all-completed'
+                    'icon-actions' : actionsCount === 'all-completed', 'overlay': !actionsSyncd && !isStandAlone
         }" ng-click="openActionsPopup();">
+                <div id="loading" style="position: relative" class="overlay" ng-show="!actionsSyncd && !isStandAlone"> <!-- sync only on overlay -->
+                    <div id="loading-spinner" style="position: absolute"></div>
+                </div>
             <!-- ng-class="TODO: icon-{'no-actions' or 'actions' or 'new-actions'}" 
             'icon-no-actions' is grey, when there are no actions
             'icon-actions' is green, when all actions are resloved
             'icon-new-actions' is red, when there are unresolved actions 
             -->
-            <span ng-show="actionsCount === 'none'" ng-hide="actionsCount !== 'none'"class='actions-none'>{{actions.totalCount}}</span>
-            <span ng-show="actionsCount === 'pending'" ng-hide="actionsCount !== 'pending'"><font class='actions-pending'>{{actions.pendingCount}}</font> / {{actions.totalCount}}</span>
-            <span ng-show="actionsCount === 'only-pending'" ng-hide="actionsCount !== 'only-pending'" class='actions-pending'>{{actions.pendingCount}}</span>
-            <span ng-show="actionsCount === 'all-completed'" ng-hide="actionsCount !== 'all-completed'"class='actions-completed'>{{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'none'" class='actions-none'>{{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'pending'" ><font class='actions-pending'>{{actions.pendingCount}}</font> / {{actions.totalCount}}</span>
+            <span ng-show="actionsCount === 'only-pending'" class='actions-pending'>{{actions.pendingCount}}</span>
+            <span ng-show="actionsCount === 'all-completed'" class='actions-completed'>{{actions.totalCount}}</span>
             
         </button>
     </div>

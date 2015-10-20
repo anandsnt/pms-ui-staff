@@ -1,7 +1,6 @@
 <!-- Popup -->
-<div id='tablet-popup' click-touch='resetCounter();'>
-    <div id="popup" class=" open"> <!-- Remove class "open" to hide popup content -->
-        <div id="popup-content">
+<div role="dialog" id="modal" class="modal-show">
+	<form method="post" class="modal-content" id='tablet-popup' click-touch='resetCounter();'>
             <table class='admin-table'>
                 <tr>
                 <h2 class="nocaps header">Kiosk Admin</h2>
@@ -49,7 +48,5 @@
 
             </table>
 
-        </div>
-    </div>
-    <div id="popup-overlay" class="open"></div> <!-- Remove class "open" to hide popup overlay -->
+        </form>
 </div>

@@ -103,6 +103,10 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			return $rootScope.currencySymbol + $filter('number')(amount, 2);
 		};
 
+		//Update the balance after payment
+		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
+			$scope.accountConfigData.summary.balance = balance;
+		});
 
 		/**
 		 * Place holder method for future implementation of mandatory demographic data
