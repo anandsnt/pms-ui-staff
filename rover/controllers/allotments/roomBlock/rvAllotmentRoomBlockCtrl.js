@@ -439,6 +439,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.setActiveGridView = function(mode) {
 			$scope.activeGridView = mode;
 			$scope.gridViewTemplateUrl = $scope.getGridViewTemplateurl($scope.activeGridView);
+			$timeout(reinit, 500);
 		};
 
 		/**
@@ -1125,48 +1126,52 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
-			var roomBlockData = $scope.allotmentConfigData.roomblock;
+			$scope.$emit("showLoader");
+			$timeout(function() {
+				var roomBlockData = $scope.allotmentConfigData.roomblock;
 
-			// We have resetted the data.
-			$scope.hasBookingDataChanged = false;
+				// We have resetted the data.
+				$scope.hasBookingDataChanged = false;
 
-			_.each(data.results, function(eachRoomType) {
-				_.each(eachRoomType.dates, function(dateData) {
+				_.each(data.results, function(eachRoomType) {
+					_.each(eachRoomType.dates, function(dateData) {
 
-					//we need indivual room type total bookings of each date initially,
-					//we are using this for overbooking calculation
-					dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
+						//we need indivual room type total bookings of each date initially,
+						//we are using this for overbooking calculation
+						dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
 
-					// keeping original data
-					dateData['old_double']          = dateData['double'];
-					dateData['old_double_contract'] = dateData['double_contract'];
-					dateData['old_double_pickup']   = dateData['double_pickup'];
-					dateData['old_release_days']    = dateData['release_days'];
-					dateData['old_single']          = dateData['single'];
-					dateData['old_single_contract'] = dateData['single_contract'];
-					dateData['old_single_pickup']   = dateData['single_pickup'];
+						// keeping original data
+						dateData['old_double']          = dateData['double'];
+						dateData['old_double_contract'] = dateData['double_contract'];
+						dateData['old_double_pickup']   = dateData['double_pickup'];
+						dateData['old_release_days']    = dateData['release_days'];
+						dateData['old_single']          = dateData['single'];
+						dateData['old_single_contract'] = dateData['single_contract'];
+						dateData['old_single_pickup']   = dateData['single_pickup'];
+					});
 				});
-			});
 
-			// adding DS for ui release days for each occupancy and
-			// for common
-			_.each(data.occupancy, function(eachOcc) {
-				eachOcc['ui_release_days'] = '';
-			});
-			roomBlockData.common_ui_release_days = '';
+				// adding DS for ui release days for each occupancy and
+				// for common
+				_.each(data.occupancy, function(eachOcc) {
+					eachOcc['ui_release_days'] = '';
+				});
+				roomBlockData.common_ui_release_days = '';
 
-			roomBlockData.selected_room_types_and_bookings = data.results;
-			roomBlockData.selected_room_types_and_occupanies = data.occupancy;
+				roomBlockData.selected_room_types_and_bookings = data.results;
+				roomBlockData.selected_room_types_and_occupanies = data.occupancy;
 
-			//our total pickup count may change on coming from other tab (CICO-16835)
-			$scope.totalPickups = data.total_picked_count;
+				//our total pickup count may change on coming from other tab (CICO-16835)
+				$scope.totalPickups = data.total_picked_count;
 
-			//we need the copy of selected_room_type, we ned to use these to show save/discard button
-			// not using any more!
-			//$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
+				//we need the copy of selected_room_type, we ned to use these to show save/discard button
+				// not using any more!
+				//$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
-			//we changed data, so
-			refreshScroller();
+				//we changed data, so
+				refreshScroller();
+				$scope.$emit("hideLoader");
+			}, 0);
 		};
 
 		$scope.releaseDaysEdited = false;
