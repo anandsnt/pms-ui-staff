@@ -445,7 +445,10 @@ sntRover.controller('reservationActionsController', [
                         if (useAdvancedQueFlow){
                             $rootScope.$emit('goToStayCardFromAddToQueue');
                         }
-                        
+                        setTimeout(function(){
+                            //then prompt for keys
+                            $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
+                        },500);
 		};
                 
 		$scope.successRemoveFromQueueCallBack = function() {
