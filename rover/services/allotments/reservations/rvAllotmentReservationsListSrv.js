@@ -140,7 +140,7 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 
 	this.fetchRegistrationCardPrintData = function(params) {
 		var deferred = $q.defer();
-		var url = '/api/reservations/' + params.id + '/batch_print_registration_cards';
+		var url = '/api/allotments/' + params.id + '/batch_print_registration_cards';
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

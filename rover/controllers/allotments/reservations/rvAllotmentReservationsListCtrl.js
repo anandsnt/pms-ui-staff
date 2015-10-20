@@ -421,15 +421,15 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {[type]} [description]
      */
     $scope.printRegistrationCards = function() {
-
       var params = {
         id: $scope.allotmentConfigData.summary.allotment_id
       };
       var options = {
+        params: params,
         successCallBack : sucessCallbackOfRegistrationCardData,
-        failureCallBack : failureCallbackOfRegistrationCardData,
+        failureCallBack : failureCallbackOfRegistrationCardData
       };
-      $scope.callAPI(rvGroupRoomingListSrv.fetchRegistrationCardPrintData, options);
+      $scope.callAPI(rvAllotmentReservationsListSrv.fetchRegistrationCardPrintData, options);
     };
 
     /**
