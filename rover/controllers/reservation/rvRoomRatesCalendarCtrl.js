@@ -385,16 +385,16 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			$scope.setTitle ($scope.heading);
 			
 			//scroller options
-			//$scope.setScroller ('room-rates-calendar');
+			$scope.setScroller ('room-rates-calendar');
 		};
 
 		/**
 		 * method to refresh scroller
 		 */
 		var	refreshScroller = function() {
-			/*$timeout(function() {
+			$timeout(function() {
 				$scope.refreshScroller('room-rates-calendar');
-			}, 100);*/
+			}, 100);
 		};
 
 		/**

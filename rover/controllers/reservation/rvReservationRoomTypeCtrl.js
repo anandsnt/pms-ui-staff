@@ -1533,7 +1533,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";
 			$scope.setHeadingTitle($scope.heading);
-			$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+			$("#rooms-and-rates-header .switch-button").toggleClass("on");
 		};
 
 		$scope.showStayDateDetails = function(selectedDate) {
@@ -1700,7 +1700,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 			$scope.$on('switchToStayDatesCalendar', function() {
 				$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
-				$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+				$("#rooms-and-rates-header .switch-button").toggleClass("on");
 			});
 		}
 
