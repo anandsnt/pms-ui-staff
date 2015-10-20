@@ -477,7 +477,7 @@ sntRover.controller('reservationActionsController', [
                             "reservationId": reservationId,
                             "status": "true"
                     };
-                    if (saveData.signature !== '[]'){
+                    if (saveData && saveData.signature !== '[]'){
                         data.signature = saveData.signature;
                     }
                     if (saveData.is_promotions_and_email_set !== undefined){
