@@ -5419,20 +5419,13 @@ function DayEventRenderer() {
 				if (event.toolTipData.restrictions.length > 0){
 					html +=" <span class='restrictions'>R</span>";
 			    }
-<<<<<<< HEAD
-			    html += "<span class='fc-event-title'>";
-=======
 			    html += "<span class='fc-event-title'><span class='icon'></span>";
->>>>>>> CICO-5247
+
 		        if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
 			        html += htmlEscape(event.currencySymbol);
 		        }
 			}else {
-<<<<<<< HEAD
-				html += "<span class='fc-event-title'>";
-=======
 				html += "<span class='fc-event-title'><span class='icon'></span>";
->>>>>>> CICO-5247
 			}
 		html +=	htmlEscape(event.title || '') +
 			"</span>" +		

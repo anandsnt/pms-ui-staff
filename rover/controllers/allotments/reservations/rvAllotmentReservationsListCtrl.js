@@ -1097,7 +1097,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         payLoad : {
           per_page  : $scope.perPage,
           page      : $scope.page,
-          sort_field: $scope.sorting_field,
+          sort_by   : $scope.sorting_field,
           sort_dir  : $scope.sort_dir
         }
       };
