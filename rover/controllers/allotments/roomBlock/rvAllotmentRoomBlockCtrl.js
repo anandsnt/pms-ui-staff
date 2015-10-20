@@ -289,6 +289,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+		 * to check if any value is configured
+		 * @param  {[type]}  value [description]
+		 * @return {Boolean}       [description]
+		 */
+		$scope.isValueConfigured = function(value) {
+			return _.isNumber(value);
+		};
+
+		/**
 		 * should we wanted to disable add triple button
 		 * @param {Object} [dateData] [description]
 		 * @param {Object} - Room Type data row
