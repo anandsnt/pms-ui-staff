@@ -461,13 +461,13 @@ sntRover.controller('reservationActionsController', [
                 
                 if (!$rootScope.reservationWatch){//alternative to $destroy, this is an init-once method
                     $rootScope.reservationWatch = 1;
-                    $rootScope.$on('putInQueueAdvanced',function(){
-                        $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id);
+                    $rootScope.$on('putInQueueAdvanced',function(data){
+                        $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id, data);
                     });
                 }
                 
                 $scope.reservationData.check_in_via_queue = false;
-                $scope.putInQueueAdvanced = function(reservationId){
+                $scope.putInQueueAdvanced = function(reservationId, sData){
                     $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
                     var data = {
                             "reservationId": reservationId,
