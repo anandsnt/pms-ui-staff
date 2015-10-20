@@ -428,7 +428,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         failureCallBack : mailFailed,
       };
 
-      $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, options);
+      $scope.callAPI(rvAllotmentReservationsListSrv.emailInvoice, options);
     };
 
    /**
@@ -477,7 +477,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       });
 
       qualifiedRes = _.filter(filteredList, function(reservation) {
-          roomNo = reservation.room_no;
+          roomNo = reservation.room_number;
           return (roomNo === null || roomNo === '');
       });
 
@@ -575,7 +575,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         $scope.closeDialog();
         $timeout(function() {
             var params = {
-                id: $scope.allomentConfigData.summary.alloment_id,
+                id: $scope.allotmentConfigData.summary.allotment_id,
                 reservation_ids: _.pluck($scope.qualifiedReservations, "id")
             };
 
@@ -584,7 +584,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
                 successCallBack: successCallBackOfAutoRoomAssignQualifiedReservations,
                 failureCallBack: failureCallBackOfAutoRoomAssignQualifiedReservations
             };
-            $scope.callAPI(rvGroupRoomingListSrv.performAutoRoomAssignment, options);
+            $scope.callAPI(rvAllotmentReservationsListSrv.performAutoRoomAssignment, options);
         }, 800);
     };
 
@@ -746,7 +746,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       currentMode = 'DEFAULT';
 
       //default sorting fields & directions
-      $scope.sorting_field = 'room_no';
+      $scope.sorting_field = 'room_number';
       $scope.sort_dir = 'ASC';
 
       //selected reservation list
@@ -1029,7 +1029,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var formFetchReservationsParams = function(isSearching) {
       var params = {
-        id      : $scope.allotmentConfigData.summary.allotment_id,
+        id : $scope.allotmentConfigData.summary.allotment_id,
         payLoad : {
           per_page  : $scope.perPage,
           page      : $scope.page,
@@ -1355,7 +1355,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {Boolean}
      */
     $scope.isRoomUnAssigned = function(reservation) {
-      return util.isEmpty(reservation.room_no);
+      return util.isEmpty(reservation.room_number);
     };
 
     /**
@@ -1503,7 +1503,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         if (roomId !== null && roomId !== '') {
           assignedRoom = [{
             id: roomId,
-            room_number: selectedReservation.room_no
+            room_number: selectedReservation.room_number
           }];
         }
 

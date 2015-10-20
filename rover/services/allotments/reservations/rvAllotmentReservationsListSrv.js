@@ -32,7 +32,7 @@ sntRover.service('rvAllotmentReservationsListSrv', ['$q', 'rvBaseWebSrvV2', 'rvU
 		this.performAutoRoomAssignment = function(params) {
 			var deferred = $q.defer(),
 				allotment_id = params.id,
-				url = '/api/allotments/' + allotment_id + 'auto_room_assignment',
+				url = '/api/allotments/' + allotment_id + '/auto_room_assignment',
 				params = {
 					"reservation_ids": params.reservation_ids
 				};
