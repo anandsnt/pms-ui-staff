@@ -1,0 +1,55 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron backgroundbg">
+	<div class="container" >
+		
+			<div class="row headerrow white-bg">
+				<logo-image></logo-image>
+			</div>
+		
+		<!--- show posting message   -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head black-text">Your request is being processed.</p>
+			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+		</div>
+		<!-- show error message -->
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
+			<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+		</div>	
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isPosting || netWorkError">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper checkin-key-padding">
+				<div class="col-md-12 pad-rt-60">
+					<div class="chekin-heading centeralign black-text">
+						You're checked in!
+					</div>
+					<div class="reservation-id centeralign">
+						<span class="normal-reservation black-text">Reservation #: {{confirmationNumber}}</span>
+					</div>
+					<div class="key-wrap">
+						<p class="key-for">
+							<span class="black-text">Room {{responseData.room_no}}</span>
+						</p>
+					</div>
+				<!-- 	<div class="get-key">
+						<p>{{responseData.delivery_message}}</p>
+					</div> -->
+			 		<div class="centeralign qr-code-image">
+						<div class="qr-code-info">
+							<ol>
+								<li class="black-text"> Scan the QR code at the Guest Key Express Kiosk located at The Indoor Pool Entrance C or at the counter of The Front Desk to receive your key to your guest room.</li>
+								<li class="black-text">The kiosk will dispense your key.</li>
+							</ol>
+						</div>
+						<img src="data:image/png;base64, {{image|| responseData.key_info}}"
+						width="180" height="180" alt="">
+					
+					</div> 
+				</div>
+			</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>

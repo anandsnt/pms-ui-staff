@@ -15,16 +15,22 @@
 		<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 	</div>
 		<!-- contentarea starts here-->
-	<div class="container" ng-hide="isLoading || netWorkError">
-	
-		<div class="container-fluid">
-			<div class="row checkin-wrapper-top">
-				<div class="checkout-status centeralign checkout-now-status pre-checkin-complete">
+	<div class="container line-top  line-bottom" ng-hide="isLoading || netWorkError">
+		<div class="row checkin-wrapper">
+			<div class="col-md-6 headtext centeralign pad-rt-60">
+				<div class="checkout-status centeralign pre-checkin-complete">
 					<p class="msg-head black-text preckin-status-header">You're checked in!</p>
 					<p class="msg-body black-text">Reservation #:{{confirmationNumber}}</p>
-					<p class="msg-body black-text">{{responseData.confirmation_message}}</p>
-				</div>
+		    	</div>
+			</div>
+
+			<div class="verti-ruler margin-bottom-20"></div>
+
+			<!-- top section ends here-->
+			<div class="col-md-6 pad-lf-60">
+				<p class="msg-body black-text">{{responseData.confirmation_message}}</p>
 			</div>
 		</div>
-	</div
-></div>
+			<!-- checkinbtn section ends here-->
+	</div>
+</div>
