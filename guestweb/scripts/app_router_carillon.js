@@ -62,23 +62,18 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Huntley/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Carillon/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Huntley/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Carillon/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
 	 	templateUrl: '/assets/checkin/partials/Carillon/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
-	 }).state('guestDetails', {
-	 	url: '/guestDetails',
-	 	templateUrl: '/assets/checkin/partials/MGM/guestDetails.html',
-	 	controller : 'guestDetailsController',
-	    title: 'Guest Details'
 	 });
 
 
@@ -107,17 +102,17 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/checkin/partials/MGM/earlyCheckinOptions.html',
+	 	templateUrl: '/assets/checkin/partials/Carillon/earlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/checkin/partials/MGM/earlyCheckinFinal.html',
+	 	templateUrl: '/assets/checkin/partials/Carillon/earlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/checkin/partials/MGM/lateArrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Carillon/lateArrivalDetails.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
