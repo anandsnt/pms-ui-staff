@@ -5417,9 +5417,7 @@ function DayEventRenderer() {
 			if(typeof event.toolTipData !== 'undefined' && typeof event.currencySymbol !== 'undefined'){
 
 				if (event.toolTipData.restrictions.length > 0){
-				html +=" <span>" +
-						'R' +
-						"</span>" ;
+					html +=" <span class='restrictions'>R</span>";
 			    }
 			    html += "<span class='fc-event-title'>";
 		        if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
@@ -5429,6 +5427,10 @@ function DayEventRenderer() {
 				html += "<span class='fc-event-title'>";
 			}
 			
+			html += "<span class='fc-event-title'><span class='icon'></span>";
+		if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
+			html += htmlEscape(event.currencySymbol);
+		}
 		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
