@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv',
-    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q',
+    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q) {
 
 
         BaseCtrl.call(this, $scope);
@@ -495,20 +495,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     view: "ROOM_RATE",
                     company_id: $scope.reservationData.company.id,
                     travel_agent_id: $scope.reservationData.travelAgent.id,
-                    group_id: $scope.reservationData.group.id                    
+                    group_id: $scope.reservationData.group.id,
+                    allotment_id: $scope.reservationData.allotment.id
                 }
             };
             // }
         }
 
         var save = function() {
-            if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
+            if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                 $scope.saveReservation();
             }
         };
 
         var createReservation = function() {
-            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) {
                 $timeout(function() {
                     $scope.$emit('PROMPTCARD');
                 }, 3000);
@@ -528,7 +529,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 depositPaid = true;
             };
 
-            var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) : true;
+            var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) : true;
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
             return (idPresent || isPaymentTypeNotSelected || !depositPaid);
 
@@ -1222,9 +1223,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {
+            var promises = [];
+            $scope.$emit('showLoader');
+
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.closeDialog();
+                if (goToConfirmationScreen) {
+                    $timeout(function(){
+                        $scope.confirmReservation(true);
+                    },700);    
+                }
             };
 
             var updateFailure = function(data) {
@@ -1241,20 +1250,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.demographics = angular.copy($scope.demographics);
                     var postData = $scope.computeReservationDataforUpdate(false, true, currentRoomIndex);
                     postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
-                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+                    promises.push(RVReservationSummarySrv.updateReservation(postData));
                 });
-
             } else {
                 $scope.reservationData.rooms[index].demographics = angular.copy($scope.demographics);
                 $scope.reservationData.demographics = angular.copy($scope.demographics);
                 var postData = $scope.computeReservationDataforUpdate(false, true, index);
                 postData.reservationId = reservationId;
-                $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+                promises.push(RVReservationSummarySrv.updateReservation(postData));
             }
 
-            if (goToConfirmationScreen) {
-                $scope.confirmReservation(true);
-            }
+            $q.all(promises).then(updateSuccess, updateFailure);
         };
 
         $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {

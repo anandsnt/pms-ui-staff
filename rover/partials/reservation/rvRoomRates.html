@@ -71,18 +71,22 @@
                             <span class="count red" ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount < 5">
                                 {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount}} room(s) left
                                 <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) < 5">
                                 {{getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
                                 <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount > 4">
                                 {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].availabilityCount}} room(s) left
                                 <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(room.id, roomAvailability[room.id].defaultRate) > 4">
                                 {{getLeastAvailability(room.id, roomAvailability[room.id].defaultRate)}} room(s) left
                                 <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isGroupRate"> in Group Block</label>
+                                <label ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][roomAvailability[room.id].defaultRate].isAllotmentRate"> in Allotment</label>
                             </span>                            
                         </div>
                         <div class="book-rate" ng-class="{hidden: isVisibleRoom}">
@@ -115,6 +119,7 @@
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].applyPromotion">PROMOTION</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isMember">MEMBER</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isGroupRate">GROUP</span>
+                                      <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isAllotmentRate">ALLOTMENT</span>
                                     
                                     <!-- If restriction applies, show: -->
                                     <span class="restricted" 
@@ -242,6 +247,7 @@
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].applyPromotion">PROMOTION</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isMember">MEMBER</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate">GROUP</span>
+                            <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isAllotmentRate">ALLOTMENT</span>
                             <!-- If restriction applies, show: selectedRoom, rate.rate.id -->
                             <span class="restricted" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length > 1">MULTIPLE RESTRICTIONS APPLY</span>
                             <span class="restricted {{restrictionColorClass[getAllRestrictions(selectedRoom,rate.rate.id)[0].key]}}" ng-if="!stateCheck.stayDatesMode && getAllRestrictions(selectedRoom,rate.rate.id).length == 1">
@@ -266,18 +272,22 @@
                             <span class="count red" ng-show="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount < 5">
                                 {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount}} room(s) left
                                   <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(selectedRoom, rate.rate.id) < 5">
                                 {{getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
                                   <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="stateCheck.stayDatesMode && roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount > 4">
                                 {{roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].availabilityCount}} room(s) left
                                   <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="!stateCheck.stayDatesMode && getLeastAvailability(selectedRoom, rate.rate.id) > 4">
                                 {{getLeastAvailability(selectedRoom, rate.rate.id)}} room(s) left
                                   <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate"> in Group Block</label>
+                                  <label ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isAllotmentRate"> in Allotment</label>
                             </span>
                             <div class="price" ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">
                                 {{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:2}}

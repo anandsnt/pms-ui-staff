@@ -112,8 +112,7 @@
 			}
 		}
 
-		&.allotment-card,
-		&.group-allotment-card {
+		&.allotment-card {
 			.ui-resizable-handle {
 				&.ui-resizable-s {
 					background-color: @allotmentcard;
@@ -121,6 +120,20 @@
 
 					@media @highdpi {
 						background-image: @icons2x, @allotmentcardTexture;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
+
+		&.group-allotment-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: mix(@allotmentcard, @groupcard, 50%);
+					background-image: @icons;
+
+					@media @highdpi {
+						background-image: @icons2x;
 						background-size: 120px, 40px;
 					}
 				}
@@ -332,6 +345,32 @@
 				}
 
 				&.medium { width: 380px; }
+
+				&.room-ooo {
+					width: 100%;
+
+					.message { margin-bottom: 10px; }
+
+					.guest {
+						font-size: 14px;
+						text-align: center;
+						text-transform: uppercase;
+						margin: 20px 0;
+						padding: 10px;
+						color: darken(@yellow, 30);
+						background: lighten(@yellow, 20);
+						border: 1px solid @yellow;
+						#border-radius > .rounded(3px);
+
+						strong { 
+							font-size: 24px; 
+							text-transform: none;
+							.show;
+						}
+					}
+
+					@media only screen and (min-width: 768px) { width: 340px; }
+				}
 			}
 
 			/* Confirmation modal window ***/
@@ -4515,10 +4554,27 @@
 
 				.calendar-left,
                 .calendar-right {
+                	position: relative;
                 	margin: 0 15px;
                     .calc-width(50, 30);
                     .pull-left;
                 }
+
+                .fc-button-prev,
+                .fc-button-next {
+                    position: absolute;
+                    top: 5px;
+                    overflow: hidden;
+                    cursor: pointer;
+                    background-color: transparent;
+                    border: 0;
+                    .show;
+                    .hide-text;
+                    .square(40px);
+                }
+
+                .fc-button-prev { left: 5px; }
+                .fc-button-next { right: 5px; }
 
                 .calendar-legend { 
                 	padding: 20px;
@@ -4725,9 +4781,8 @@
 		}
 
 		.fc-day-content {
-			width: 60px !important;
+			width: 100% !important;
 			height: 50px !important;
-			background: rgba(0,0,0,.1);
 		}
 
 		.fc-event {
@@ -4736,34 +4791,46 @@
 
 			.fc-event-inner {
 				overflow: hidden;
-				width: 60px !important;
+				width: 100% !important;
 				height: 50px !important;
 				#border-radius > .rounded();
 				.show;
 
-				.fc-event-title,
-				.fc-event-day {
-					position: relative;
-					text-align: right;
-					line-height: 25px;
-					padding-right: 5px;
-					z-index: 99;
-					.show;
-					.size(25px, 100%);
-					.pull-right;
-				}
-
-				.fc-event-day {
-					font-size: 18px;
-					font-weight: 600;					
-				}
-
-				.fc-event-title {
-					font-size: 12px;
-					vertical-align: bottom;
-				}
-
 				&:after { z-index: 10; }
+			}
+
+			.fc-event-title,
+			.fc-event-day {
+				position: relative;
+				text-align: right;
+				line-height: 25px;
+				padding-right: 5px;
+				z-index: 99;
+				.show;
+				.size(25px, 100%);
+				.pull-right;
+			}
+
+			.fc-event-day {
+				font-size: 18px;
+				font-weight: 600;					
+			}
+
+			.fc-event-title {
+				font-size: 12px;
+				vertical-align: bottom;
+			}
+
+			.icon { .hide; }
+
+			.restrictions {
+				position: absolute;
+				top: 0;
+				left: 0;
+				color: rgba(0,0,0,.3);
+				text-align: center;
+				font-weight: 600;
+				.square(25px);
 			}
 
 			&.fc-event-draggable {
@@ -4780,86 +4847,11 @@
 				}
 			}
 
-			&.available {
-				.fc-event-inner {
-					.fc-event-day,
-					.fc-event-title {
-						color: @green;
-						background-color: rgba(137,189,85,.3); 
-					}
-				}
-			}
-
-			&.unavailable {
-				.fc-event-inner {
-					.fc-event-day,
-					.fc-event-title {
-						color: @red;
-						background-color: rgba(230,56,56,.3); 
-					}
-				}				
-			}
-
-			&.check-in,
-			&.check-out {
-				.fc-event-inner {
-					.fc-event-day,
-					.fc-event-title { color: @white; }
-				}
-			}
-
-			&.past-day{
-				.fc-event-inner {
-					background: @grey3; 
-				}
-			}			
-
-			&.check-in {
-				.fc-event-inner {
-					background: @green; 
-
-					.fc-event-title { 
-						background: @icons no-repeat 5px -115px; 
-
-						@media @highdpi {
-							background-image: @icons2x;
-							background-size: 120px;
-						}
-					}
-				}
-				&.unavailable { 
-					.fc-event-inner {
-						.fc-event-day,
-						.fc-event-title { 						
-							color: @red;
-							background-color: @green;                     		                   		
-                    	}                    	
-                	}
-                }
-			}
-
-			&.check-out { 
-				.fc-event-inner {
-					background: @red; 
-
-					.fc-event-title { 
-						text-indent: 9999px; 
-						background: @icons no-repeat 5px -155px; 
-
-						@media @highdpi {
-							background-image: @icons2x;
-							background-size: 120px;
-						}
-					}
-				}
-			}
-
+			/* Available - Mid Stay  ***/
+			&.available,
 			&.mid-stay {
 				.fc-event-inner {
 					.background();
-
-					.fc-event-day,
-					.fc-event-title { color: @green; }
 
 					&:after {
 						content: ' ';
@@ -4871,54 +4863,117 @@
 					    background-color: rgba(137,189,85,.3);
 					}
 				}
+
+				.fc-event-day,
+				.fc-event-title { color: @green; }
 			}
 
 			&.type-available {
 				.fc-event-inner {
 					.background();
 					.box-shadow(inset 0 0 0 3px @green);
+				}
 
-					.fc-event-day { color: @textColor; }
-					.fc-event-title { color: @grey3; }
+				.fc-event-day { color: @textColor; }
+				.fc-event-title { color: @grey3; }
+			}
+
+			/* Unavailable ***/
+			&.unavailable {
+				.fc-event-inner {
+					.background();
+
+					&:after {
+						content: ' ';
+					    position: absolute;
+					    left: 0;
+					    right: 0;
+					    top: 0;
+					    bottom: 0;
+					    background-color: rgba(230,56,56,.3); 
+					}
+				}
+
+				.fc-event-day,
+				.fc-event-title { color: @red; }
+			}
+
+			/* Check In - Check Out ***/
+			&.check-in,
+			&.check-out {
+				.fc-event-day,
+				.fc-event-title { color: @white; }
+
+				.icon {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					background: @icons no-repeat; 
+					.square(25px);
+					.show;
+
+					@media @highdpi {
+						background-image: @icons2x;
+						background-size: 120px;
+					}
 				}
 			}
 
+			&.check-in {
+				.fc-event-inner { background: @green; }
+
+				.icon { background-position: 5px -115px; }
+
+				&.unavailable { 
+					.fc-event-inner { 
+						background: @green; 
+
+						&:after { .hide; }
+					}
+
+                    .icon{	
+                    	background-position: 7px -595px;
+                    	.rotate(180deg);
+                    }
+                }
+			}
+
+			&.check-out {
+				.fc-event-inner { background: @red; }
+
+				.icon { background-position: 5px -155px; }
+			}
+
+			/* Split View ***/
 			&.split-view {
 				.fc-event-inner { height: 25px !important; }
-				
+
 				&.check-in {
-					.fc-event-inner {
-						.fc-event-title { 
-							margin-top: -25px;
-							text-indent: 9999px; 
-						}
+					.fc-event-title { 
+						margin-top: -25px;
+						text-indent: 9999px; 
 					}
 				}
 
 				&.check-out {
-					.fc-event-inner {
-						.fc-event-title { text-indent: 0; }
-						.fc-event-day { .hide; }
-					}
-				}  
+					.fc-event-title { text-indent: 0; }
+					.fc-event-day { .hide; }
+				}
 
 				/* Restore looks when dragging ***/
 				&.ui-draggable-dragging {
 					.fc-event-inner { height: 50px !important; }
 
 					&.check-in {
-						.fc-event-inner {
-							.fc-event-title { 
-								margin-top: 0;
-								text-indent: 0; 
-							}
+						.fc-event-title { 
+							margin-top: 0;
+							text-indent: 0; 
 						}
 					}
+
 					&.check-out {
-						.fc-event-inner {
-							.fc-event-title { text-indent: 9999px; }
-							.fc-event-day { .show; }
-						}
+						.fc-event-title { text-indent: 9999px; }
+						.fc-event-day { .show; }
 					} 
 				}
 			}
@@ -4944,19 +4999,22 @@
 				tr {
 					td {
 						padding: 0 5px 5px 0;
-						width: 60px !important;
+						width: 100% !important;
 						height: 50px !important;
 
 						&:nth-child(7n) { padding-right: 0; }
 
 						> div {
-							width: 60px !important;
+							width: 100% !important;
 							height: 50px !important;
 							overflow: hidden;
 						}
 
+						.fc-day-content { background-color: rgba(0,0,0,.1); }
+
 						&.fc-other-month {
-							.fc-day-number { .opacity(30); }
+							.fc-day-number { color: @grey2; }
+							.fc-day-content { background-color: rgba(0,0,0,.05); }
 						}
 					}
 
@@ -4967,6 +5025,185 @@
 			}
 		}
 
+/* qTIP - plugin defaults	==============================*/
+	.qtip {
+		position: absolutev;
+		left: -28000px;
+		top: -28000px;
+		direction: ltr;
+		.hide;
+	}
+
+	.qtip-content {
+		position: relative;
+		padding: 5px;
+		text-align: left;
+		word-wrap: break-word;
+	}
+
+	.qtip-close {
+		position: absolute;
+		top: -9px;
+		right: -9px;
+		cursor: pointer;
+	}
+
+	.qtip-titlebar {
+		position: relative;
+		padding: 5px 35px 5px 10px;
+		overflow: hidden;
+		border-width: 0 0 1px;
+		font-weight: 600;
+
+		.qtip-close{
+			top: 50%;
+			right: 4px;
+			margin-top: -9px;
+		}
+	}
+
+	.qtip-titlebar + .qtip-content{ border-top-width: 0 !important; }
+
+	.qtip-tip { display: none !important; }
+
+	.qtip-titlebar .ui-icon,
+	.qtip-icon .ui-icon{
+		text-indent: -1000em;
+		direction: ltr;
+		.show;
+	}
+
+	.qtip-icon, .qtip-icon .ui-icon{
+		text-decoration: none;
+		#border-radius > .rounded();
+	}
+
+	.qtip-icon .ui-icon{
+		line-height: 14px;
+		text-align: center;
+		text-indent: 0;
+		font: normal bold 10px/13px Tahoma,sans-serif;
+		color: inherit;
+		background: transparent none no-repeat -100em -100em;
+		.size(14px, 18px);
+	}
+
+	.qtip-focus{}
+
+	.qtip-hover{}
+
+	.qtip-tip { display: none !important; }
+
+	#qtip-overlay{
+		position: fixed;
+		left: -10000em;
+		top: -10000em;
+	}
+
+	/* Applied to modals with show.modal.blur set to true */
+	#qtip-overlay.blurs{ cursor: pointer; }
+
+	/* Change opacity of overlay here */
+	#qtip-overlay div{
+		position: absolute;
+		left: 0; 
+		top: 0;
+		width: 100%; 
+		height: 100%;
+		background-color: @black;
+		.opacity(70);
+		.square(100%);
+	}
+
+	.qtipmodal-ie6fix{
+		position: absolute !important;
+	}
+
+/* qTIP - SNT theme			==============================*/
+	.qtip-snt {
+		pointer-events: none;
+
+		.qtip-content { padding: 0; }
+
+		.qtip-titlebar,
+		.qtip-close { .hide; }
+
+		.tooltip {
+			position: relative;
+			background: @white;
+			padding: 10px 0;
+			width: 220px;
+			.box-shadow(0 0 2px rgba(0,0,0,.2));
+			#border-radius > .rounded();
+
+			ul { padding: 0 10px; }
+
+			li {
+				color: @textColor;
+				font-size: 14px;
+				line-height: 20px;
+				text-align: left;
+				margin-bottom: 5px;	
+
+				.label {
+					float: none;
+					font-weight: 400;
+					line-height: 15px;
+				}
+
+				strong {
+					line-height: 20px;
+					font-weight: 600;
+					max-width: 320px;
+					.show;
+					.nowrap();
+				}
+
+				&:last-child { margin-bottom: 0; }
+			}
+
+			.restriction-info { 
+				.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
+
+				li { 
+					position: relative;
+					height: 20px;
+					padding-left: 30px;
+
+					.restriction-icon {
+						position: absolute;
+						top: 0;
+						left: 0;
+					}
+
+					&.label { padding-left: 0; }
+				}
+			}
+
+			&.has-restrictions {
+				width: 380px;
+				.flex(flex-start);
+
+				.details,
+				.restriction-info { width: 50%; }
+			}
+
+			&:after {
+				content: '';
+				position: absolute;
+				bottom: -10px;
+				left: 50%;
+				margin-left: -5px;
+				width: 0; 
+				height: 0; 
+				border-left: 10px solid transparent;
+				border-right: 10px solid transparent;
+				border-top: 10px solid @white;
+				clear: none;
+				.show;
+			}
+		}
+	}
 
 /* 6. IE
 ==========================================================*/

@@ -223,16 +223,14 @@ angular.module('ui.calendar', [])
         };
 
         scope.init = function(){
-          var opts = {compiler:$compile, compile_scope:scope};
-          angular.extend(opts, options);
-          scope.calendar.fullCalendar(opts);
-          
+          options.compiler = $compile;
+          options.compile_scope = scope;
+          scope.calendar.fullCalendar(options);
         };
 
         eventSourcesWatcher.onAdded = function(source) {
           scope.calendar.fullCalendar('addEventSource', source);
           sourcesChanged = true;
-           
         };
 
         eventSourcesWatcher.onRemoved = function(source) {
@@ -242,7 +240,6 @@ angular.module('ui.calendar', [])
 
         eventsWatcher.onAdded = function(event) {
           scope.calendar.fullCalendar('renderEvent', event);
-
         };
 
         eventsWatcher.onRemoved = function(event) {
@@ -266,7 +263,6 @@ angular.module('ui.calendar', [])
             scope.destroy();
             scope.init();
         });
-
       }
     };
 }]);

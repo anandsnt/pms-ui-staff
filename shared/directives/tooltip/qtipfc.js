@@ -1,5 +1,5 @@
 (function() {
-  angular.module('qtip2fc', []).directive('qtipfc', [
+  angular.module('qtip3', []).directive('qtipfc', [
     '$timeout', '$compile', '$http', '$templateCache', function($timeout, $compile, $http, $templateCache) {
       return {
         restrict: 'A',

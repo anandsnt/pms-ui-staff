@@ -5336,8 +5336,9 @@ function DayEventRenderer() {
 	// Build a concatenated HTML string for an array of segments
 	function buildHTML(segments) {
 		var html = '';
+		t.calendar.options.compile_scope.segments = segments;
 		for (var i=0; i<segments.length; i++) {
-			html += buildHTMLForSegment(segments[i]);
+			html += buildHTMLForSegment(segments[i], i);
 		}
 		return html;
 	}
@@ -5347,7 +5348,7 @@ function DayEventRenderer() {
 	// Relies on the following properties:
 	// - `segment.event` (from `buildSegmentsForEvent`)
 	// - `segment.left` (from `calculateHorizontals`)
-	function buildHTMLForSegment(segment) {
+	function buildHTMLForSegment(segment, index) {
 		var html = '';
 		var isRTL = opt('isRTL');
 		var event = segment.event;
@@ -5385,8 +5386,13 @@ function DayEventRenderer() {
 			" class='" + classNames.join(' ') + "'" +
 			" data-date='" + htmlEscape(formatDate(event.start, 'yyyy-MM-dd')) + "'" + 
 			" data-rate='" + htmlEscape(event.rate || '') + "'" + 
-			" data-room-type='" + htmlEscape(event.roomType || '') + "'" + "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
-			" style=" +
+			" data-room-type='" + htmlEscape(event.roomType || '') + "'";
+            if(segment.event.toolTipData && segment.event.toolTipData.bestAvailableRate !== "" && event.toolTipData !== 'undefined'){
+               html += "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
+			"qtip-template-object='segments[" + index + "]'";
+            }
+			
+            html += " style=" +
 				"'" +
 				"position:absolute;" +
 				"left:" + segment.left + "px;" +
@@ -5405,14 +5411,27 @@ function DayEventRenderer() {
 		html +=
 			"<span class='fc-event-day'>" +
 			htmlEscape(event.day || '') +
+
 			"</span>" ;
-			if (event.toolTipData.restrictions.length > 0){
-				html +=" <span>" +
-			'R' +
-			"</span>" ;
+
+			if(typeof event.toolTipData !== 'undefined' && typeof event.currencySymbol !== 'undefined'){
+
+				if (event.toolTipData.restrictions.length > 0){
+					html +=" <span class='restrictions'>R</span>";
+			    }
+			    html += "<span class='fc-event-title'>";
+		        if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
+			        html += htmlEscape(event.currencySymbol);
+		        }
+			}else {
+				html += "<span class='fc-event-title'>";
 			}
-			html += "<span class='fc-event-title'>" +
-			htmlEscape(event.title || '') +
+			
+			html += "<span class='fc-event-title'><span class='icon'></span>";
+		if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
+			html += htmlEscape(event.currencySymbol);
+		}
+		html +=	htmlEscape(event.title || '') +
 			"</span>" +		
 			"</div>";
 		if (segment.isEnd && isEventResizable(event)) {
@@ -5429,6 +5448,7 @@ function DayEventRenderer() {
 		// SOLUTION: initially set them as visibility:hidden ?
 
 		return html;
+
 	}
 
 

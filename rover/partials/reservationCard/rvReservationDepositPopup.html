@@ -30,7 +30,7 @@
                 </div>
             </div>
             <!-- Selected card - Show when card is selected/added -->
-            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual)">
+            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -101,7 +101,7 @@
                 <div class="notice error">{{paymentErrorMessage}}</div>
             </div> 
 
-             <div class="entry full-width" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && !errorOccured && newCardAdded">
+             <div class="entry full-width" ng-show="showAddtoGuestCard">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositData.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': depositData.addToGuestCard}"></span>
                     <input ng-model="depositData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />

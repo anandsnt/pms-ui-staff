@@ -136,11 +136,30 @@
     </div>
 </div>
 
+<div class="date-range" ng-if="item.hasGroupStartDateRange">
+    <label>{{ item.hasGroupStartDateRange.description }}</label>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.groupStartDate" ng-change="dateChanged(item, 'hasGroupStartDateRange')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.groupStartDate" ng-change="dateChanged(item, 'hasGroupStartDateRange')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasGroupStartDateRange.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasGroupStartDateRange')">Clear query</span>
+        </button>
+    </div>
+    <span class="span-to"> To </span>
+    <div class="has-datepicker">
+        <input ng-if="item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.groupEndDate" ng-change="dateChanged(item, 'hasGroupStartDateRange')" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.groupEndDate" ng-change="dateChanged(item, 'hasGroupStartDateRange')" readonly>
+        <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasGroupStartDateRange.showRemove}" class="clear-query">
+            <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasGroupStartDateRange')">Clear query</span>
+        </button>
+    </div>
+</div>
+
 <div class="single-date" ng-if="item.hasSingleDateFilter">
     <label>Date</label>
     <div class="has-datepicker">
-        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" readonly>
-        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" readonly>
+        <input ng-if="item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        <input ng-if="!item.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.singleValueDate" ng-change="dateChanged(item, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasSingleDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasSingleDateFilter')">Clear query</span>
         </button>
@@ -327,6 +346,21 @@
         <label class="checkbox inline" ng-repeat="each in item.hasReservationStatus.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
             <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ each.status }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasGuestOrAccountFilter.data.length" ng-click="catchFauxSelectClick($event, 'hasGuestOrAccountFilter')">
+    <label for="group-deposit-status">Guest/Account</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasGuestOrAccountFilter)">{{ item.hasGuestOrAccountFilter.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasGuestOrAccountFilter.show }">
+        <label class="checkbox inline" ng-show="item.hasGuestOrAccountFilter.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasGuestOrAccountFilter.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasGuestOrAccountFilter.selectAll" ng-change="fauxSelectChange(item, item.hasGuestOrAccountFilter, true)"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="each in item.hasGuestOrAccountFilter.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasGuestOrAccountFilter)"> {{ each.description }}
         </label>
     </div>
 </div>

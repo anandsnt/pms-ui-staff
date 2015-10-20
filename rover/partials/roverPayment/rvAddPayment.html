@@ -15,7 +15,7 @@
 	</div>
 </div>
 <div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-show="!showManualEntryDisabledPopup" ng-click="clearErrorMessage()" ng-cloak>
-<form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+<form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': hasExistingCard(), 'select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <strong class="h2 message">New payment method</strong>
@@ -65,7 +65,7 @@
 			
 
         <!-- Payment method options -->
-        <div class="holder" ng-show="!showCCPage && dataToSave.paymentType === 'CC' && isNewCardAdded && !isFromGuestCard && !isFromAccounts">
+        <div class="holder" ng-show="isNewCardAdded">
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
@@ -92,7 +92,7 @@
 			<button type="button" class="button blank modal-close" ng-click="closeDialog()">
 				Close
 			</button>
-			<button type="button" class="button green" ng-click="addNewPayment()">
+			<button type="button" class="button green" ng-click="addNewPayment(); closeDialog()">
 				Add
 			</button>
 		</div>
