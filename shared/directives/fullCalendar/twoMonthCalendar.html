@@ -1,11 +1,11 @@
-<div class="calendar-left"  iscroll-stop-propagation>
+<div class="calendar-left">
 	<button type="button" id="calendar-prev" class="fc-button-prev" ng-click="prevButtonClickHandler()" ng-hide="disablePrevButton">Prev</button>
 	<div id="calendar1">
 		<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="leftCalendarOptions" ng-model="eventSourcesLeft" calendar="myCalendar"></div>
 	</div>
 </div>
 
-<div class="calendar-right"  iscroll-stop-propagation>
+<div class="calendar-right">
 	<button type="button" id="calendar-next" class="fc-button-next" ng-click="nextButtonClicked()">Next</button>
 	<div id="calendar2">
 		<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="rightCalendarOptions" ng-model="eventSourcesRight" calendar="myCalendar"></div>

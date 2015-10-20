@@ -5415,9 +5415,7 @@ function DayEventRenderer() {
 			"</span>" ;
 			if(event.toolTipData !== 'undefined'){
 				if (event.toolTipData.restrictions.length > 0){
-				html +=" <span>" +
-						'R' +
-						"</span>" ;
+					html +=" <span class='restrictions'>R</span>";
 			    }
 			}
 			
