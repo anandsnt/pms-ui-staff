@@ -1006,10 +1006,15 @@ sntRover.factory('RVReportUtilsFac', [
                             title        : 'Select Status',
                             data         : angular.copy( customData )
                         });
+
+                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                            report['hasReservationStatus'].selectAll = true;
+                            report['hasReservationStatus'].title = 'All Selected';
+                        };
                     };
                 });
 
-                completed++
+                completed++;
                 checkAllCompleted();
             };
 
