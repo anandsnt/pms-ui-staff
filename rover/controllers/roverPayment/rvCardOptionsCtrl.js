@@ -65,7 +65,7 @@ sntRover.controller('RVCardOptionsCtrl',
                 $scope.hideCardToggles = function(){
                     if ($scope.isFromGuestCard  || 
                             $scope.hasAccompanyguest || 
-                            $scope.cardsList.length === 0 || 
+                            ($scope.cardsList && $scope.cardsList.length === 0) || 
                             $scope.initFromCashDeposit){
                         return true;
                             } else return false;

@@ -1,7 +1,7 @@
 <!-- Checkin screen -->
 <form id="signature-pad" class="complete-registration form" ng-if="clickedButton == 'checkinButton' && $index === 0">
-	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN'" translate>PLEASE_SIGN_BELOW</h2>
-	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
+	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN' && reservationBillData.signature_details.is_signed === 'false'" translate>PLEASE_SIGN_BELOW</h2>
+	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'  && reservationBillData.signature_details.is_signed === 'false'">
 		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
 			
 		</div>

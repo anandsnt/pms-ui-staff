@@ -753,7 +753,7 @@
 "USE_INSPECTED_ROOM_STATUS":"Use Inspected room status",
 "USE_PICKUP_ROOM_STATUS":"Use Pick-up room status",
 "ENABLE_QUEUE_ROOMS":"Enable Queue Rooms",
-"ENABLE_ADVANCED_QUEUE_PRECHECKIN":"Enable Advanced Queue Pre-Checkin",
+"ENABLE_ADVANCED_QUEUE_PRECHECKIN":"Enable Advanced Queue",
 "EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT":"EMAIL ACCOUNTS TO RECEIVE QUEUE RESERVATION ALERT",
 "CHECK_IN_TO_INSPECTED_ROOMS_ONLY":"Check in to inspected rooms only",
 "ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",

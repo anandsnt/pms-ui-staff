@@ -5421,6 +5421,7 @@ function DayEventRenderer() {
 			    }
 
 			    html += "<span class='fc-event-title'><span class='icon'></span>";
+
 		        if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
 			        html += htmlEscape(event.currencySymbol);
 		        }

@@ -298,13 +298,14 @@ sntRover.controller('RVroomAssignmentController',[
 			openRoomAlreadyChoosedPopup ();
 		}
 		else {
-                    
+                    /*
                     var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
                     if (useAdvancedQueFlow && ($scope.putGuestInQueue || $rootScope.putGuestInQueue)){
                         $rootScope.$emit('putInQueueAdvanced');
                         $scope.backToStayCard();
                         return;
                     }
+                    */
                     
 			if($scope.clickedButton === "checkinButton") {
 				$state.go('rover.reservation.staycard.billcard',

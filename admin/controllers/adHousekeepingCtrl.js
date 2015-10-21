@@ -9,8 +9,7 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
 		$scope.watchInspectedStatus();
 	};
 	$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccess);
-
-
+        $scope.isStandAlone = $rootScope.isStandAlone;
 	/*
     * To handle save button click.
     */

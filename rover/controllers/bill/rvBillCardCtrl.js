@@ -375,7 +375,7 @@ sntRover.controller('RVbillCardController',
 
         $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
-                
+                $scope.isStandAlone = $rootScope.isStandAlone;
                 var viaQueue = false;
                     if ($scope.$parent){
                         if ($scope.$parent.reservation){
@@ -1209,7 +1209,14 @@ sntRover.controller('RVbillCardController',
             });
             $rootScope.$on('checkGuestInFromQueue', function() {
                 $scope.checkGuestInFromQueue = true;
-                $scope.initCompleteCheckin(false, '[]');
+                //if checking guest in from queue, then signature details should have already been collected, submit those with the cc auth request
+                var signature;
+                if ($scope.reservationBillData.signature_details){
+                    signature = $scope.reservationBillData.signature_details.signed_image;
+                } else {
+                    signature = '[]';
+                }
+                $scope.initCompleteCheckin(false, signature);
             });
         }
         
@@ -1242,6 +1249,7 @@ sntRover.controller('RVbillCardController',
                         data.authorize_credit_card = false;        
                         if ($scope.putInQueue || queueRoom === true){
                             $rootScope.$emit('putInQueueAdvanced', data);
+                            //Now, we need to go ahead and produce the keys so the user doesn't need key creation at check-in if (queued room)
                             
                         }else {
                             // Perform checkin process without authorization..
