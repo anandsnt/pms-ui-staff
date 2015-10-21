@@ -285,7 +285,19 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
         };
 
-
+        $scope.showAddToGuestCard = function(){
+          if ($scope.showCreditCardInfo && 
+                  !$scope.showCCPage && 
+                  $scope.newCardAdded && 
+                    (
+                        $scope.paymentGateway !== 'sixpayments' || 
+                        $scope.isManual
+                    ) &&
+                    !$scope.depositPaidSuccesFully
+             ){
+              return true;
+          } else return false;
+        };
         $scope.isGiftCardPmt = false;
 	$scope.showHideCreditCard = function(){
                 if ($scope.saveData.paymentType === "GIFT_CARD"){

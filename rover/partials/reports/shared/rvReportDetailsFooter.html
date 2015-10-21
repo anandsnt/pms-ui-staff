@@ -32,6 +32,12 @@
 			From: <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span>
 		</div>
 
+		<!-- group start date range -->
+		<div ng-if="appliedFilter.groupFromDate || appliedFilter.groupToDate">
+			<label>Group Start Dates - </label>
+			From: <span>{{ appliedFilter.groupFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.groupToDate | date:dateFormat }}</span>
+		</div>
+
 
 
 		<!-- deposit due date range -->
@@ -161,7 +167,10 @@
 			Charge Codes: <span>{{ appliedFilter.chargeCode.join(', ') }}</span>
 		</div>
 
-
+		<!-- chosen charge codes -->
+		<div ng-if="appliedFilter.guestOrAccount.length">
+			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
+		</div>
 
 
 		<!-- Never REMOVE this span -->

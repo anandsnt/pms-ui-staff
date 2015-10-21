@@ -1,0 +1,53 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+	<div class="container backgroundbg" >
+		<div class="container-fluid eden_logo_bg">
+				<div class="row headerrow white-bg">
+					<logo-image></logo-image>
+				</div>
+		</div>
+		<!-- contentarea starts here-->
+		<div class="container margin-10" ng-hide="!pageValid">
+			<!-- top section starts here-->
+
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign ">
+					<span class="black-text">Ready to check-out?</span>
+					<br/>
+					<p class="checkout-time-container margin-10">
+						<span class="lightcontent chekout-time black-text">{{checkoutTimessage}} {{checkoutTime}}</span>
+					</p>
+				</div>
+				<!-- top section ends here-->
+				
+				<!-- checkoubtn section starts here-->
+				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+				<div class="row">
+						<div class="col-xs-12 checkoutnow single checkout-later-bg">
+							<div class="rel-wrapper">
+								<a ui-sref="checkoutBalance"></a>
+								<div class="row">
+									Check-out<br class="hide-in-desktop"/> now.
+									<!-- {{details.buttonText}} -->
+								</div>
+								<div class="row  icontop">
+									<img src="/assets/img/checkout_icon.png" width="48" height="48" alt=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+			</div>
+			<div class="row clearboth">
+				<p class="foot-text centeralign" ng-show="true">
+						<em class = "base-text black-text">{{footerMessage1}}</em>
+				</p>
+				<p class="foot-text centeralign second-in ">
+					<em class = "base-text black-text">Come back to this page to check-out at any time before {{checkoutTime}}.</em>
+				</p>
+			</div>
+
+		</div>
+	</div>
+</div>

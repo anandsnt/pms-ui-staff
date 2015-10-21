@@ -9,7 +9,7 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
 
-		if(!isEmpty(paymentsData)){
+		if(!isEmpty(paymentsData) && !data.direct_bill){
 			deferred.resolve(paymentsData)
 		}else{
 			RVBaseWebSrv.getJSON(url,data).then(function(data) {
