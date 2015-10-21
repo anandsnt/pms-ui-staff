@@ -1,5 +1,4 @@
-<div class="tooltip">
-   <!-- Add class "has-restrictions" if restrictions will be shown in the tooltip -->
+<div class="tooltip" ng-class="{'has-restrictions' : object.event.toolTipData.restrictions.length > 0}">
    <!-- Details, only show those that apply -->
    <ul class="details">
       <li><span class="label">Rate</span><strong>{{object.event.toolTipData.rate_name}}</strong></li>
