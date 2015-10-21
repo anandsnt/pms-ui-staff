@@ -12,7 +12,7 @@ sntRover.controller('rvAllotmentReservationCheckoutCtrl', [
 
       var completeCheckoutSuccessCallback = function(data) {
         //calling initially required APIs
-        $scope.$emit('REFRESH_GROUP_ROOMING_LIST_DATA');
+        $scope.$emit('REFRESH_ALLOTMENT_RESERVATIONS_LIST_DATA');
         $timeout(function() {
           $scope.closeDialog();
         }, 700);

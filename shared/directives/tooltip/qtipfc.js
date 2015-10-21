@@ -58,7 +58,7 @@
                 delay: delay,
                 event: eventOut
               },
-              style: qtipClass
+              style: 'qtip-snt'
             };
             $(el).qtip(options);
             if (attrs.qtipVisible) {

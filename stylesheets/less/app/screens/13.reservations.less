@@ -584,6 +584,8 @@
                 .size(40px, 240px);
                 .show;
 
+                input { min-height: 40px; }
+
                 .data-off,
                 .data-on {
                     font-size: 14px;
@@ -1368,8 +1370,11 @@
                 padding: 0 20px;
                 width: 100%;
                 overflow: visible;
-                .float;
                 .calc-height(100, 130);
+
+                .scrollable { .calc-height(100, 45); }
+
+                .wrapper { .float; }
 
                 .calendar-left,
                 .calendar-right {

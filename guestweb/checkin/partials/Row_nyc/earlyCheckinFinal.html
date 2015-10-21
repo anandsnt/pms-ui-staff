@@ -2,48 +2,37 @@
 
 <!-- contentarea starts here-->
 
-<div class="jumbotron backgroundbg">
-	<div class="container" >
-		<div class="row headerrow white-bg">
+<div class="jumbotron">
+	<div class="container backgroundbg width-100" >
+		<div class="row headerrow black-bg">
 			<logo-image></logo-image>
 		</div>
-
-
-	<!--	 show posting message -->
+<!--	 show posting message -->
 		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 			<p class="msg-head black-text">Your request is being processed.</p>
 			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
 		</div>
-
-	<!--	show error message -->
-
+<!--	show error message -->
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-		<p class="msg-head black-text">Our apologies, something went wrong, please complete your check in at our front desk.</p>
-		<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag black-text">{{hotelPhone}}.</a></p>
+			<p class="msg-head black-text">Our apologies, something went wrong, please complete your check in at our front desk.</p>
+			<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
 		</div>
-
-	
-
-	<!-- contentarea starts here-->
+<!-- contentarea starts here-->
 	<div class="container line-top  line-bottom" ng-hide="isPosting || netWorkError">
 		<!-- top section starts here-->
-
 		<div class="row checkin-wrapper">
-			<div class="col-md-6 headtext centeralign pad-rt-60 black-text">
+			<div class="col-md-6 headtext centeralign pad-rt-60 black-text padding-mobile-10">
 				Early Check-in
-				<p class="subTitletext black-text">
+				<p class="subTitletext">
 					Thank You. A {{earlyCheckinCharge}} charge for <b>Early Check-in</b> has been added to your bill.
 				</p>
 			</div>
-
 			<div class="verti-ruler margin-bottom-20"></div>
-
 			<!-- top section ends here-->
-
-
 			<div class="col-md-6 pad-lf-60">
 				<form >
-				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn black-bg" ng-click="nextButtonClicked()" value="Continue"/>
+					<input type="submit" class="col-xs-12 link-btn with-bg nextbtn pink-bg btn_height" ng-click="nextButtonClicked()" value="Continue"/>
+				</form>
 			</div>
 		</div>
 			<!-- checkinbtn section ends here-->

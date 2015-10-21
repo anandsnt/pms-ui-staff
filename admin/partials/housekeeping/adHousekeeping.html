@@ -15,7 +15,10 @@
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email" label = "{{'EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT'| translate}} " placeholder = "{{'EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT'|translate }}" disabled="!data.is_queue_rooms_on" ></ad-textarea>	
 					<ad-checkbox is-disabled="!data.use_inspected" is-checked="data.checkin_inspected_only" label="{{'CHECK_IN_TO_INSPECTED_ROOMS_ONLY' | translate}}" div-class="full-width"></ad-checkbox>
 					
-					<ad-checkbox is-checked="data.enable_room_status_at_checkout" label="{{'ROOM_STATUS_UPDATE_CHECKOUT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
+                                        <div ng-hide="isStandAlone">
+                                            <ad-checkbox is-checked="data.enable_room_status_at_checkout" label="{{'ROOM_STATUS_UPDATE_CHECKOUT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>
+                                        </div>
+					
 				</fieldset>
 				
 				<div class="actions float">

@@ -24,9 +24,12 @@
 
 	<!-- Calendar -->
 	<div id="room-rates-calendar" class="reservation-content stay-dates-content">
+		<div class="scrollable" ng-iscroll="room-rates-calendar">
+			<div class="wrapper">
+				<two-month-calendar ng-if="showCalender" event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+			</div>
+		</div>
 		
-		<two-month-calendar ng-if="showCalender" event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
-
 		<!-- Legend -->
 		<ul class="calendar-legend">
     		<li><span class="check-in"></span>{{'ARRIVAL'|translate}}</li>
