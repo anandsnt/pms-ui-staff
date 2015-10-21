@@ -183,8 +183,8 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
 
  		function init () {
-			addonGroups  = mainCtrlScope.addonGroups;
-			addons       = mainCtrlScope.addons;
+			addonGroups  = mainCtrlScope.addonGroups || $scope.chosenReport.hasAddonGroups.data;
+			addons       = mainCtrlScope.addons ||  $scope.chosenReport.hasAddons.data;
 			addonGrpHash = {};
 			addonHash    = {};
 
