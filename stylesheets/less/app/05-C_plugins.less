@@ -5163,7 +5163,6 @@
 			}
 
 			.restriction-info { 
-				.box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
 
 				li { 
 					position: relative;
@@ -5182,7 +5181,13 @@
 
 			&.has-restrictions {
 				width: 380px;
-				.flex(flex-start);
+				display: -webkit-box !important;
+			    display: -moz-box !important;
+			    display: -ms-flexbox !important;
+			    display: -webkit-flex !important;
+			    display: flex !important;
+			    -webkit-align-items: flex-start;
+		    	align-items: flex-start;
 
 				.details,
 				.restriction-info { width: 50%; }
