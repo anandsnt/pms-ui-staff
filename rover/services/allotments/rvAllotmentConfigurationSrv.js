@@ -29,9 +29,9 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 			"rate": "",
 			"addons_count": null,
 			"notes": [],
-		    "selected_room_types_and_bookings": [],
-		    "selected_room_types_and_occupanies": [],
-		    "selected_room_types_and_rates": []
+			"selected_room_types_and_bookings": [],
+			"selected_room_types_and_occupanies": [],
+			"selected_room_types_and_rates": []
 		};
 
 		/**
@@ -62,10 +62,31 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		 */
 		this.saveRoomBlockBookings = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/allotmets/save_inventories';
+				url = '/api/allotments/save_inventories';
 
 
 			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
+		 * To save the selected Room types and its release days
+		 * @return {Promise}
+		 */
+		this.saveRoomBlockReleaseDays = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/allotments/update_release_date';
+
+
+			rvBaseWebSrvV2.putJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},
@@ -164,7 +185,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.cancelAllotment = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/allotments/'+params.allotment_id+'/cancel';
+				url = '/api/allotments/' + params.allotment_id + '/cancel';
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -229,7 +250,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 				url = 'api/allotments/' + params.allotmentId;
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
-						if (data.rate === null){
+						if (data.rate === null) {
 							data.rate = -1;
 						}
 						summaryHolder.allotmentSummary = data;
@@ -237,7 +258,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 						/*getAccountSummary(deferred, {
 							accountId: data.posting_account_id
 						});*/
-						deferred.resolve(summaryHolder);	// CICO-12555 avoid account summary call.
+						deferred.resolve(summaryHolder); // CICO-12555 avoid account summary call.
 					},
 					function(errorMessage) {
 						deferred.reject(errorMessage);
@@ -380,7 +401,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.updateRoomingListItem = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/allotment_reservations/' + data.id;
+				url = '/api/allotments/' + data.id + '/update_reservation';
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -431,25 +452,25 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 			return deferred.promise;
 		};
 
-		this.toggleHideRate = function( params ){
+		this.toggleHideRate = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/allotments/'+params.allotment_id+'/hide_rates';
-				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
-				   	 deferred.resolve(data);
-				},function(data){
-				    deferred.reject(data);
-				});
+				url = 'api/allotments/' + params.allotment_id + '/hide_rates';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
 			return deferred.promise;
 		};
 
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/allotments/'+params.allotment_id+'/change_rate';
-				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
-				   	 deferred.resolve(data);
-				},function(data){
-				    deferred.reject(data);
-				});
+				url = 'api/allotments/' + params.allotment_id + '/change_rate';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
 			return deferred.promise;
 		};
 

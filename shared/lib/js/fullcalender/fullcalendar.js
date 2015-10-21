@@ -5419,7 +5419,9 @@ function DayEventRenderer() {
 				if (event.toolTipData.restrictions.length > 0){
 					html +=" <span class='restrictions'>R</span>";
 			    }
+
 			    html += "<span class='fc-event-title'><span class='icon'></span>";
+
 		        if (parseInt(event.title) > 0 && event.currencySymbol !== 'undefined'){
 			        html += htmlEscape(event.currencySymbol);
 		        }

@@ -109,7 +109,7 @@ sntRover.controller('rvTabletCtrl', [
             $scope.headingText = 'Header Text Here';
             $scope.subHeadingText = 'Subheader Text Here';
             $scope.inputTextPlaceholder = 'Input Text Here';
-            
+            $scope.currencySymbol = '';
             var initTabletConfig = function(){
 //                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
@@ -123,16 +123,16 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.hotel_settings = data;
                     $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
                     //fetch the idle timer settings
+                $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
                     $scope.$emit('hideLoader');
                 };
+    
                 var fetchBizDateComplete = function(data){
-                    console.log('data.business_date: '+data.business_date);
                     if (data){
                         if (data.business_date){
                             var d = data.business_date;
                             var a = d.split('-');
                             var yr = a[0], day = a[2], mo = a[1];
-                            console.log(yr+'.'+mo+'.'+day);
                             $scope.business_date = new Date(yr, mo, day);
                             $scope.resetDatePicker();
                         }
@@ -310,7 +310,6 @@ sntRover.controller('rvTabletCtrl', [
                     if (settings){
                         if (typeof settings.prompt !== typeof undefined && typeof settings.enabled !== typeof undefined) {
                             if (settings.prompt !== null && settings.enabled !== null){
-      //                          console.info('%c settings available to set for kiosk','color: green');
                                 $scope.idle_prompt = settings.prompt;
                                 $scope.idle_timer_enabled = settings.enabled;
                                 $scope.idle_max = settings.max;
@@ -362,8 +361,6 @@ sntRover.controller('rvTabletCtrl', [
 
                                 minutes = minutes < 10 ? "0" + minutes : minutes;
                                 seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                                console.log(minutes + ":" + seconds);
                                 
                                 if (timer === promptTime){
                                     $scope.idlePopup();
@@ -421,21 +418,47 @@ sntRover.controller('rvTabletCtrl', [
                  }
                 $scope.goToScreen(null, 'reservation-details', true, fromScreen);
                 $scope.selectedReservation = r;
-                console.log('reservation selected',r);
                 $scope.selectedReservation.reservation_details = {};
                 $scope.invokeApi(rvTabletSrv.fetchReservationDetails, {
                     'id': r.confirmation_number
                 }, $scope.onSuccessFetchReservationDetails);
             };
             
+            
+            $scope.is_rates_suppressed = false;
+            $scope.checkIfSupressed = function(){
+                //if selected rate is supressed, set flag;
+                $scope.is_rates_suppressed = false;
+                if ($scope.selectedReservation){
+                    if ($scope.selectedReservation.reservation_details){
+                        if ($scope.selectedReservation.reservation_details.data){
+                            var rateData = $scope.selectedReservation.reservation_details.data;
+                            if (rateData.reservation_card.is_rates_suppressed === 'true'){
+                                $scope.is_rates_suppressed = true;
+                                /*
+                                 * Since the rate is supressed, the balance will need to be set to 0.00 unless a different requirement for the hotel exists
+                                 * Yotel / Zoku currently set to 0.00 balance in Reservation details as of Sprint 38
+                                 */
+                                $scope.selectedReservation.reservation_details.balance = 0.00;
+
+                            }
+                        }
+                    }
+                }
+                console.log($scope.selectedReservation);
+            };
+            //$scope
+            $scope.formatCurrency = function(amt){
+               return parseFloat(amt).toFixed(2);
+            };
+            
+            
             $scope.onSuccessFetchReservationDetails = function(data){
                     $scope.selectedReservation.reservation_details = data;
-                    console.info(data);
                     //$scope.input.lastEmailValue = data.reservation_card;
                     
                     var info = data.data.reservation_card;
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
-                    //console.log(info)
                     nites = parseInt(info.total_nights);
                     $scope.selectedReservation.total_nights = nites;
                     avgDailyRate = parseFloat(info.deposit_attributes.room_cost).toFixed(2);
@@ -452,11 +475,9 @@ sntRover.controller('rvTabletCtrl', [
                     
                     subtotal = parseFloat(info.deposit_attributes.sub_total).toFixed(2);
                     
-                    balanceDue = parseFloat(info.deposit_attributes.total_cost_of_stay).toFixed(2);
+                    balanceDue = parseFloat(info.deposit_attributes.outstanding_stay_total).toFixed(2);
                     
-                    //console.info('balanceDue',balanceDue, 'subtotal',subtotal, 'deposits',deposits)
                     
-                    console.info(nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue);
                   
                   
                   //comma format
@@ -469,31 +490,47 @@ sntRover.controller('rvTabletCtrl', [
                   
                   
                   //in-view elements
-                  $scope.selectedReservation.reservation_details.daily_rate  = parseFloat(avgDailyRate).toFixed(2);
+                  $scope.selectedReservation.reservation_details.daily_rate  = $scope.getFloat(avgDailyRate);
                   
-                  $scope.selectedReservation.reservation_details.package_price = parseFloat(packageRate).toFixed(2);
+                  $scope.selectedReservation.reservation_details.package_price = $scope.getFloat(packageRate);
                   
-                  $scope.selectedReservation.reservation_details.taxes = parseFloat(taxes).toFixed(2);
+                  $scope.selectedReservation.reservation_details.taxes = $scope.getFloat(taxes);
                   
-                  $scope.selectedReservation.reservation_details.sub_total = parseFloat(subtotal).toFixed(2);
+                  $scope.selectedReservation.reservation_details.sub_total = $scope.getFloat(subtotal);
                   
-                  $scope.selectedReservation.reservation_details.deposits = parseFloat(deposits).toFixed(2);
+                  $scope.selectedReservation.reservation_details.deposits = $scope.getFloat(deposits);
                   
-                  $scope.selectedReservation.reservation_details.balance = parseFloat(balanceDue).toFixed(2);
+                  $scope.selectedReservation.reservation_details.balance = $scope.getFloat(balanceDue);
                  
                  
+                    $scope.checkIfSupressed();
                  //reservation_addons?reservation_id=1646512
                  var fetchCompleted = function(addonData){
-                     console.info('got addons');
-                     console.log(addonData);
                      $scope.$emit('hideLoader');
+                     $scope.selectedReservation.addons = addonData.existing_packages;
+                     
+                     var items = $scope.selectedReservation.addons.length;
+                     for (var i=0; i < items; i++){
+                         if (i === (items-1)){
+                             $scope.selectedReservation.addons[i].isLastAddon = true;
+                         } else {
+                             $scope.selectedReservation.addons[i].isLastAddon = false;
+                         }
+                     }
+                     
                  };
-                 console.log('fetch using this', info);
                   $scope.invokeApi(rvTabletSrv.fetchAddonDetails, {
-                            'id':info.confirmation_num
+                            'id':info.reservation_id
                         }, fetchCompleted);
                  
                     $scope.$emit('hideLoader');
+            };
+            
+            $scope.getFloat = function(n){
+                //to check/remove any commas in a string..
+                var num = n+'';
+                num = num.replace(/,/gi, "");
+                return $scope.CommaFormatted( parseFloat(num).toFixed(2) + '' );//return with comma back in
             };
             
             $scope.modalBtn1 = 'LOGIN';
@@ -533,12 +570,15 @@ sntRover.controller('rvTabletCtrl', [
             $scope.prevStateNav = [];
             
             
-            $scope.navToPrev = function(){
+            $scope.navToPrev = function(nopop){
                 var from = $scope.from, toScreen;
                 if ($scope.prevStateNav.length === 0){
                     toScreen = $scope.from;
                 } else {
-                     toScreen = $scope.prevStateNav.pop();
+                    if (!nopop){
+                        toScreen = $scope.prevStateNav.pop();
+                    }
+                     
                 }
                 $scope.goToScreen(null, toScreen, true);
             };
@@ -556,11 +596,9 @@ sntRover.controller('rvTabletCtrl', [
             $scope.lastTextInput = '';
             
             $scope.inputTextHandler = function(at, textValue, el){
-                console.log('at: '+at);
                 if (!$scope.from){
                     $scope.from = 'home';
                 }
-                console.log('from: '+$scope.from);
                 //lose focus of inputfield to drop keyboard in mobile
                // $scope.hideKeyboard();
                 
@@ -659,9 +697,7 @@ sntRover.controller('rvTabletCtrl', [
                         $scope.input.lastEmailValue = $scope.input.inputTextValue;
                         $scope.clearInputText();
                         $scope.setLast('input-email');
-                        console.log('$scope.input.lastEmailValue: '+$scope.input.lastEmailValue);
                         if (!$scope.isValidEmail($scope.input.lastEmailValue)){
-                            console.warn('invalid email address detected');
                             //invalid email warning;
                             
                             $scope.goToScreen(null, 'invalid-email', true, $scope.from);
@@ -880,8 +916,6 @@ sntRover.controller('rvTabletCtrl', [
             };
             
             $scope.afterGuestCheckinCallback = function(){
-                console.log('successful guest check-in; now do email stuff');
-                console.log(arguments);
                 $scope.$emit('hideLoader');
                  var guestEmailEnteredOrOnReservation = function(){
                     var useEmail = '';
@@ -977,7 +1011,6 @@ sntRover.controller('rvTabletCtrl', [
                 switch(screen){
                     case "home":
                         if ($scope.debug){
-                            console.log('debugging, going to: '+$scope.debugAt);
                             $scope.goToScreen(null, $scope.debugAt, true);
                             break;
                         }
@@ -1061,7 +1094,6 @@ sntRover.controller('rvTabletCtrl', [
                         break;
                         
                     case "card-swipe":
-                        console.info($scope.selectedReservation)
                             $scope.setLast('reservation-details');
                         if ($scope.from === 'reservation-details' && ($scope.selectedReservation.reservation_details.data.reservation_card.payment_method_used === 'CC' || $scope.alwaysCollectCC)){
                             $scope.at = 'card-swipe';
@@ -1391,7 +1423,6 @@ sntRover.controller('rvTabletCtrl', [
                              //fetch reservation list using email as the param
                                 //onsuccess push results to window
                             var fetchHotelCompleted = function(response){
-                                console.log('SENT!: ',response);
                                 $scope.at = 'send-registration';
                                 $scope.headingText = "Your Registration Has Been sent to:";
                                 $scope.subHeadingText = $scope.input.lastEmailValue;
@@ -1399,7 +1430,6 @@ sntRover.controller('rvTabletCtrl', [
                                 $scope.$emit('hideLoader');
                             };
                             var id = $scope.selectedReservation.id;
-                            console.log(id);
                             $scope.invokeApi(rvTabletSrv.sendRegistrationByEmail, {'id':id}, fetchHotelCompleted, $scope.generalError);
                           
                             $scope.hideNavBtns = false;
@@ -1514,7 +1544,6 @@ sntRover.controller('rvTabletCtrl', [
                 },1750);
                 */
                
-                console.info($scope.prevStateNav);
                 $scope.resetTime();
             };
             $scope.agreeTerms = function(){
@@ -1539,7 +1568,6 @@ sntRover.controller('rvTabletCtrl', [
                 dateFormat: 'MM-dd-yy',
                 yearRange: "0:+10",
                 onSelect: function(value) {
-                    console.log('selected: '+value)
                     var d = value;
                     var text = d.split('/');
                     if (value){
@@ -1584,16 +1612,11 @@ sntRover.controller('rvTabletCtrl', [
                 */
                 setTimeout(function(){
                        if ($state.setDate === $scope.datePickerMin){
-                           console.info('set date is default!');
-                           console.log($scope.datePickerMin);
                            var d = $scope.datePickerMin.split('-');
-                           console.log(d);
-                           
                            var year, month, day;
                            year = parseInt(d[2]);
                            month = parseInt($scope.getMonthN(d[0]));
                            day = parseInt(d[1]);
-                           console.log('year: '+year+', month: '+month+', day: '+day)
                                 $('#picker').datepicker('setDate', new Date(year, month, day));
                        } else {
                             if ($state.setDate){

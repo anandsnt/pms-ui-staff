@@ -2,9 +2,11 @@ sntRover.factory('RVReportUtilsFac', [
     '$rootScope',
     '$filter',
     '$timeout',
+    '$q',
     'RVReportNamesConst',
     'RVReportFiltersConst',
-    function($rootScope, $filter, $timeout, reportNames, reportFilters) {
+    'RVreportsSubSrv',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
         var factory = {};
 
         /**
@@ -170,6 +172,11 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_SEGMENT' : true
         };
 
+        var _guestOrAccountFilterNames = {
+            'GUEST': true,
+            'ACCOUNT': true
+        };
+
         /**
          * Create a DS representing the found filter into the general options DS
          * @param {Object} objRef The ith report object
@@ -242,9 +249,18 @@ sntRover.factory('RVReportUtilsFac', [
             });
         };
 
-
-
-
+        /**
+         * Create a DS representing the found filter into the display DS
+         * @param {Object} objRef The ith report object
+         * @param {Object} filter The ith report's filter object
+         */
+        var __pushGuestOrAccountData = function(objRef, filter) {
+            objRef['hasGuestOrAccountFilter']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : true
+            });
+        };
 
 
         /**
@@ -301,6 +317,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-deposit';
                     break;
 
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-deposit';
+                    break;
+
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     report['reportIconCls'] = 'icon-report icon-occupancy';
                     break;
@@ -346,15 +366,19 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
+                case reportNames['AR_SUMMARY_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
+                case reportNames['GUEST_BALANCE_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
             };
         };
-
-
-
-
 
 
         /**
@@ -390,6 +414,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DEPOSIT_REPORT']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
+                case reportNames['GROUP_DEPOSIT_REPORT']:
                     report['hasDateLimit']  = false;
                     report['canRemoveDate'] = true;
                     break;
@@ -442,6 +471,22 @@ sntRover.factory('RVReportUtilsFac', [
 
 
 
+        factory.addIncludeUserFilter = function( report ) {
+            switch ( report['title'] ) {
+                case reportNames['LOGIN_AND_OUT_ACTIVITY']:
+                case reportNames['RATE_ADJUSTMENTS_REPORT']:
+                case reportNames['RESERVATIONS_BY_USER']:
+                    report['filters'].push({
+                        'value': "INCLUDE_USER_NAMES",
+                        'description': "Include User Names"
+                    });
+                    break;
+
+                default:
+                    // no op
+                    break;
+            };
+        };
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -473,6 +518,16 @@ sntRover.factory('RVReportUtilsFac', [
                 selectAll    : false,
                 defaultTitle : 'Select displays',
                 title        : 'Select displays',
+                data         : []
+            });
+
+            // create DS for guest or account
+            __setData(report, 'hasGuestOrAccountFilter', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : true,
+                defaultTitle : 'Select',
+                title        : 'All Selected',
                 data         : []
             });
 
@@ -543,6 +598,20 @@ sntRover.factory('RVReportUtilsFac', [
                         untilModel : 'untilArrivalDate'
                     });
                     report.allDates.push( 'hasArrivalDateFilter' );
+                };
+
+                // check for group start date filter and keep a ref to that item
+                if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
+                    report['hasGroupStartDateRange'] = filter;
+
+                    // track - showRemove flag, model names.
+                    // push date name to 'allDates'
+                    angular.extend(report['hasGroupStartDateRange'], {
+                        showRemove : true,
+                        fromModel  : 'groupStartDate',
+                        untilModel : 'groupEndDate'
+                    });
+                    report.allDates.push( 'hasGroupStartDateRange' );
                 };
 
                 // check for Deposit due date range filter and keep a ref to that item
@@ -681,144 +750,362 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 };
 
-
-
-
-                // check for "include guarantee type" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_GUARANTEE_TYPE' && data.guaranteeTypes.length ) {
-                    __setData(report, 'hasGuaranteeType', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Guarantees',
-                        title        : 'Select Guarantees',
-                        data         : angular.copy( data.guaranteeTypes )
-                    });
+                // fill up DS for options combo box
+                if ( _guestOrAccountFilterNames[filter.value] ) {
+                    __pushGuestOrAccountData( report, filter );
                 };
 
-                // check for "by charge group" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_CHARGE_GROUP' && processedCGCC.chargeGroups.length ) {
-                    __setData(report, 'hasByChargeGroup', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Groups',
-                        title        : 'All Selected',
-                        data         : angular.copy( processedCGCC.chargeGroups )
-                    });
-                };
-
-                // check for "by charge group" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'INCLUDE_CHARGE_CODE' && processedCGCC.chargeCodes.length ) {
-                    __setData(report, 'hasByChargeCode', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Codes',
-                        title        : 'All Selected',
-                        data         : angular.copy( processedCGCC.chargeCodes )
-                    });
-                };
-
-                // check for "show markets" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_MARKET' && data.markets.length ) {
-                    __setData(report, 'hasMarketsList', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Markets',
-                        title        : 'Select Markets',
-                        data         : angular.copy( data.markets )
-                    });
-                };
-
-                // check for "show sources" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_SOURCE' && data.sources.length ) {
-                    __setData(report, 'hasSourcesList', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Sources',
-                        title        : 'Select Sources',
-                        data         : angular.copy( data.sources )
-                    });
-                };
-
-                // check for "show origins" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'CHOOSE_BOOKING_ORIGIN' && data.origins.length ) {
-                    __setData(report, 'hasOriginsList', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Origins',
-                        title        : 'Select Origins',
-                        data         : angular.copy( data.origins )
-                    });
-                };
-
-                // check for "hold status" and keep a ref to that item
-                // create the filter option only when there is any data
-                if ( filter.value === 'HOLD_STATUS' && data.holdStatus.length ) {
-                    __setData(report, 'hasHoldStatus', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Hold Status',
-                        title        : 'Select Hold Status',
-                        data         : angular.copy( data.holdStatus )
-                    });
-                };
-
-                if ( filter.value === 'ADDON_GROUPS' && data.chargeNAddonGroups.length ) {
-                    __setData(report, 'hasAddonGroups', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Addon Group',
-                        title        : 'All Selected',
-                        data         : selectAllAddonGroups( angular.copy(data.chargeNAddonGroups) ),
-                    });
-                };
-
-                if ( filter.value === 'ADDONS' && data.addons.length ) {
-                    __setData(report, 'hasAddons', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : true,
-                        defaultTitle : 'Select Addon',
-                        title        : 'All Selected',
-                        data         : selectAllAddons( angular.copy(data.addons) )
-                    });
-                };
-
-                if ( filter.value === 'RESERVATION_STATUS' && data.reservationStatus.length ) {
-                    __setData(report, 'hasReservationStatus', {
-                        type         : 'FAUX_SELECT',
-                        filter       : filter,
-                        show         : false,
-                        selectAll    : false,
-                        defaultTitle : 'Select Status',
-                        title        : 'Select Status',
-                        data         : angular.copy( data.reservationStatus )
-                    });
-                };
 
             });
+        };
+
+        factory.findFillFilters = function( reportItem, reportList ) {
+            var deferred = $q.defer();
+
+            var requested = 0,
+                completed = 0;
+
+            var checkAllCompleted = function() {
+                if ( completed == requested ) {
+
+                    // tryin to figure out if all the filters for this
+                    // reportItem has been filled, if so make it 'allFiltersProcessed'
+                    anyFilterLeft = _.find(filters, function(each) {
+                        return ! each.hasOwnProperty( 'filled' );
+                    });
+
+                    if ( undefined == anyFilterLeft ) {
+                        reportItem.allFiltersProcessed = true;
+                    };
+
+                    // finally resolve the promise
+                    deferred.resolve();
+                };
+            };
+
+            var filters       = reportItem['filters'],
+                anyFilterLeft = undefined;
+
+            _.each(filters, function(filter) {
+
+                if ( 'INCLUDE_GUARANTEE_TYPE' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchGuaranteeTypes()
+                        .then( fillGarntTypes );  
+                }
+
+                else if ( 'CHOOSE_MARKET' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchMarkets()
+                        .then( fillMarkets );
+                }
+
+                else if ( 'CHOOSE_SOURCE' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchSources()
+                        .then( fillSources );
+                }
+
+                else if ( 'CHOOSE_BOOKING_ORIGIN' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchBookingOrigins()
+                        .then( fillBookingOrigins );
+                }
+
+                else if ( 'HOLD_STATUS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchHoldStatus()
+                        .then( fillHoldStatus );
+                }
+
+                else if ( 'RESERVATION_STATUS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchReservationStatus()
+                        .then( fillResStatus );
+                }
+
+                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
+                    
+                    // fetch charge groups
+                    requested++;
+                    reportsSubSrv.fetchChargeNAddonGroups()
+                        .then(function(chargeNAddonGroups) {
+
+                            // then fetch charge code
+                            requested++;
+                            reportsSubSrv.fetchChargeCodes()
+                                .then( fillCGCC.bind(null, chargeNAddonGroups) );
+
+                            // along with that fetch addons
+                            requested++;
+                            reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
+                                .then( fillAGAs.bind(null, chargeNAddonGroups) );
+                        });
+                }
+
+                else {
+                    // no op
+                };
+            });           
+            
+            // lets just resolve the deferred already!
+            if ( 0 == requested ) {
+                checkAllCompleted();
+            };
+
+            function fillGarntTypes (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasGuaranteeType', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Guarantees',
+                            title        : 'Select Guarantees',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillMarkets (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasMarketsList', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Markets',
+                            title        : 'Select Markets',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillSources (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasSourcesList', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Sources',
+                            title        : 'Select Sources',
+                            data         : angular.copy( data )
+                        });
+                        report['filters']['filled'] = true;
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillBookingOrigins (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasOriginsList', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Origins',
+                            title        : 'Select Origins',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillHoldStatus (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'HOLD_STATUS' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        __setData(report, 'hasHoldStatus', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Hold Status',
+                            title        : 'Select Hold Status',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            function fillResStatus (data) {
+                var foundFilter,
+                    customData;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_STATUS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        // CICO-20405: Required custom data for only deposit reports ¯\_(ツ)_/¯
+                        customData = angular.copy( data );
+                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                            customData = [
+                                {id: -2, status: "DUE IN", selected: true},
+                                {id: -1, status: "DUE OUT", selected: true},
+                                {id: 1,  status: "RESERVED", selected: true},
+                                {id: 2,  status: "CHECKED IN", selected: true},
+                                {id: 3,  status: "CHECKED OUT", selected: true},
+                                {id: 4,  status: "NO SHOW", selected: true},
+                                {id: 5,  status: "CANCEL", selected: true}
+                            ];
+                        };
+
+                        __setData(report, 'hasReservationStatus', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Status',
+                            title        : 'Select Status',
+                            data         : angular.copy( customData )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            // fill charge group and charge codes
+            function fillCGCC (chargeNAddonGroups, chargeCodes) {
+                var foundCG,
+                    foundCC,
+                    processedCGCC;
+
+                _.each(reportList, function(report) {
+
+                    if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'REMOVE_PAYMENTS' );
+                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'ONLY_PAYMENTS' );
+                    } else {
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, '' );
+                    };
+
+                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_GROUP' });
+
+                    if ( !! foundCG ) {
+                        foundCG['filled'] = true;
+                        __setData(report, 'hasByChargeGroup', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundCG,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Groups',
+                            title        : 'All Selected',
+                            data         : angular.copy( processedCGCC.chargeGroups )
+                        });
+                    };
+
+                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+
+                    if ( !!foundCG ) {
+                        foundCG['filled'] = true;
+                        __setData(report, 'hasByChargeCode', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundCG,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Codes',
+                            title        : 'All Selected',
+                            data         : angular.copy( processedCGCC.chargeCodes )
+                        });
+                    };
+                });
+
+                completed += 2;
+                checkAllCompleted();
+            };
+
+            // fill addon group and addons
+            function fillAGAs (chargeNAddonGroups, addons) {
+                var foundAG,
+                    foundAs;
+
+                _.each(reportList, function(report) {
+                    foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
+
+                    if ( !! foundAG ) {
+                        foundAG['filled'] = true;
+                        __setData(report, 'hasAddonGroups', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundAG,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Addon Group',
+                            title        : 'All Selected',
+                            data         : selectAllAddonGroups( angular.copy(chargeNAddonGroups) ),
+                        });
+                    };
+
+                    foundAs = _.find(report['filters'], { value: 'ADDONS' });
+
+                    if ( !!foundAs ) {
+                        foundAs['filled'] = true;
+                        __setData(report, 'hasAddons', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundAs,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Addon',
+                            title        : 'All Selected',
+                            data         : selectAllAddons( angular.copy(addons) )
+                        });
+                    };
+                });
+
+                completed++
+                checkAllCompleted();
+            };
+
+            return deferred.promise;
         };
 
 
@@ -856,6 +1143,21 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sort_fields'][2] = dateSortBy;
             };
 
+            // for AR Summary report the sort by items must be
+            // ordered in a specific way as per the design
+            // [name - account - balance] > TO > [balance - account - name]
+            if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
+                var nameSortBy    = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
+                    accountSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NO' }) ),
+                    balanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) );
+
+                report['sort_fields'][0] = nameSortBy;
+                report['sort_fields'][1] = accountSortBy;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = balanceSortBy;
+            };
+
             // for in-house report the sort by items must be
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
@@ -885,6 +1187,21 @@ sntRover.factory('RVReportUtilsFac', [
             // need to reorder the sort_by options
             // for deposit report in the following order
             if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
+                var reservationSortBy = angular.copy( report['sort_fields'][4] ),
+                    dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
+                    paidDateSortBy    = angular.copy( report['sort_fields'][2] );
+
+                report['sort_fields'][0] = reservationSortBy;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = dueDateSortBy;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = paidDateSortBy;
+                report['sort_fields'][5] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for group deposit report in the following order
+            if ( report['title'] === reportNames['GROUP_DEPOSIT_REPORT'] ) {
                 var reservationSortBy = angular.copy( report['sort_fields'][4] ),
                     dueDateSortBy     = angular.copy( report['sort_fields'][1] ),
                     paidDateSortBy    = angular.copy( report['sort_fields'][2] );
@@ -973,6 +1290,20 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
             };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['GUEST_BALANCE_REPORT'] ) {
+                var balance = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) ),
+                    name    = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) ),
+                    room    = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NO' }) );
+
+                report['sort_fields'][0] = name;
+                report['sort_fields'][1] = room;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = balance;
+            };
         };
 
 
@@ -1027,6 +1358,19 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilPaidDate'] = _getDates.businessDate;
                     break;
 
+                // arrival date range must be from business date to a week after
+                // deposit date range must the current business date
+                case reportNames['GROUP_DEPOSIT_REPORT']:
+                    report['groupStartDate']  = _getDates.businessDate;
+                    report['groupEndDate'] = _getDates.twentyEightDaysAfter;
+                    /**/
+                    /*report['fromDepositDate']  = _getDates.businessDate;
+                    report['untilDepositDate'] = _getDates.businessDate;*/
+                    /**/
+                    report['fromPaidDate']  = _getDates.twentyEightDaysBefore;
+                    report['untilPaidDate'] = _getDates.businessDate;
+                    break;
+
                 // date range must be yesterday - relative to current business date
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
                     report['fromDate']  = _getDates.yesterday;
@@ -1071,9 +1415,6 @@ sntRover.factory('RVReportUtilsFac', [
         };
 
 
-
-
-
         // HELPER: create meaningful date names
         factory.processDate = function ( customDate, xDays ) {
             var _dateVal      = customDate ? tzIndependentDate(customDate) : $rootScope.businessDate,
@@ -1090,6 +1431,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
+                'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
                 'aMonthAfter'  : new Date(_year, _month, _date + 30)
             };
 
@@ -1140,11 +1483,6 @@ sntRover.factory('RVReportUtilsFac', [
 
             return _ret;
         };
-
-
-
-
-
 
         return factory;
     }

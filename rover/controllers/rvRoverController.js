@@ -101,6 +101,7 @@ sntRover.controller('roverController',
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+    $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;

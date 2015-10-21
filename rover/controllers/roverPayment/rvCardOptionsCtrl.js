@@ -9,18 +9,32 @@ sntRover.controller('RVCardOptionsCtrl',
          'RVReservationCardSrv',
 	function($rootScope, $scope, $state, ngDialog, $location, $document, RVPaymentSrv,RVReservationCardSrv){
 		BaseCtrl.call(this, $scope);
+                $scope.showAddtoGuestCard = false;
 		 $scope.renderDataFromSwipe = function(swipedDataToRenderInScreen){
-	    	$scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
+                        $scope.cardData.cardNumber = swipedDataToRenderInScreen.cardNumber;
 			$scope.cardData.userName   = swipedDataToRenderInScreen.nameOnCard;
 			$scope.cardData.expiryMonth = swipedDataToRenderInScreen.cardExpiryMonth;
 			$scope.cardData.expiryYear = swipedDataToRenderInScreen.cardExpiryYear;
 			$scope.cardData.cardType = swipedDataToRenderInScreen.cardType;
+                        
+                        if (swipedDataToRenderInScreen.swipeFrom === "guestCard"){
+                            $rootScope.$broadcast('swipeAtGuestCard');//change tabs to [ credit cards & payments ]
+                        }
 			if(swipedDataToRenderInScreen.swipeFrom === "guestCard"){
-				$scope.showAddtoGuestCard = false;
+				$scope.showAddtoGuestCard = false;//hides redundancy
 			} else {
 				$scope.showAddtoGuestCard = true;
 			}
-	    };
+                        
+                        
+                        
+			if(swipedDataToRenderInScreen.swipeFrom === "guestCard" || swipedDataToRenderInScreen.swipeFrom === "stayCard"){
+                            //go straight to add new card - CICO-20531
+                            setTimeout(function(){
+                                $scope.clickedAddNewCard();
+                            },100);
+                        }
+                };
 
 		$scope.refreshIframe = function(){
 			//in case of hotel with MLI iframe will not be present
@@ -41,12 +55,116 @@ sntRover.controller('RVCardOptionsCtrl',
                 
                 //also if !standalone, check if gift card allowed
                 $scope.checkForGiftCard = function(){
+                     $scope.addmode = false; 
+                     $scope.isGiftCard = false;
                     if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
                          $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
                     };
-                        
-                    
                 };
+                
+                $scope.hideCardToggles = function(){
+                    if ($scope.isFromGuestCard  || 
+                            $scope.hasAccompanyguest || 
+                            ($scope.cardsList && $scope.cardsList.length === 0) || 
+                            $scope.initFromCashDeposit){
+                        return true;
+                            } else return false;
+                };
+                
+                $scope.clickedExistingCard = function(){
+                    $scope.shouldShowIframe = true; 
+                    $scope.addmode = false; 
+                    $scope.isGiftCard = false; 
+                    $scope.useDepositGiftCard = false; 
+                    $scope.hideCancelCard = false; 
+                    $scope.depositWithGiftCard = false;
+                };
+                
+                $scope.$on('SHOW_SWIPED_DATA_ON_PAY_SCREEN',function(){
+                    $scope.clickedAddNewCard();
+                    $scope.$apply();
+                })
+                $scope.$on('SHOW_SWIPED_DATA_ON_BILLING_SCREEN',function(){
+                    $scope.clickedAddNewCard();
+                    $scope.$apply();
+                })
+                $scope.clickedAddNewCard = function(){
+                    $scope.shouldShowIframe = false; 
+                    $scope.addmode = true; 
+                    $scope.isGiftCard = false; 
+                    $scope.useDepositGiftCard = false; 
+                    $scope.hideCancelCard = false; 
+                    $scope.depositWithGiftCard = false;
+                };
+                
+                $scope.clickedGiftCardToggle = function(){
+                    $scope.shouldShowIframe = true; 
+                    $scope.useDepositGiftCard = true; 
+                    $scope.addmode = false; 
+                    $scope.isGiftCard = true; 
+                    $scope.depositWithGiftCard = true;
+                };
+                
+                $scope.showExistingCards = function(){
+                    if (!$scope.addmode && !$scope.useDepositGiftCard && !$scope.initFromCashDeposit){
+                        return true;
+                    } else return false;
+                };
+                
+                $scope.showGiftCardToggle = function(){
+                    if (!$scope.isStandAlone && $scope.allowPmtWithGiftCard){
+                        return true;
+                    } else return false;
+                };
+                $scope.existingSelected = function(){
+                    if (!$scope.addmode && !$scope.isGiftCard){
+                        return true;
+                    } else return false;
+                };
+                $scope.addNewSelected = function(){
+                    if ($scope.addmode && !$scope.isGiftCard){
+                        return true;
+                    } else return false;
+                };
+                
+                $scope.hideMLINewCard = function(){
+                   if ( ($scope.paymentGateway === 'sixpayments' && $scope.addmode) || 
+                           $scope.isManual || 
+                           $scope.isGiftCard || 
+                           $scope.depositWithGiftCard || 
+                           $scope.shouldShowIframe
+                        ){
+                        return true;
+                    } else return false;
+               // ng-show="(!shouldShowIframe && addmode && shouldShowAddNewCard && paymentGateway !== 'sixpayments') || swippedCard
+                };
+                $scope.showAddToGuestCardBox = function(){
+                    if ($scope.existingSelected() || $scope.isGiftCard){
+                        $scope.showAddtoGuestCard = false;
+                    } else if ($scope.addNewSelected()){
+                        $scope.showAddtoGuestCard = true;
+                    }
+                    
+                    if ($scope.showAddtoGuestCard){
+                        return true;
+                    } else return false;
+                };
+                
+                $scope.showMLIAddNewCC = function(){
+                  if ($scope.addNewSelected()){
+                      return true;
+                  }
+                  
+                  
+                  if ($scope.isGiftCard && 
+                          !$scope.showingDepositModal && 
+                          !$scope.depositWithGiftCard && 
+                          !$scope.useDepositGiftCard){
+                      return true;
+                  } else return false;
+                };
+                
+                
                 $rootScope.$on('giftCardSelected',function(){
                       $scope.shouldShowIframe = false;
                       if ($rootScope.isStandAlone){
@@ -148,7 +266,16 @@ sntRover.controller('RVCardOptionsCtrl',
 			var lastName = guestData.lname;
 			iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
 			var iFrame = document.getElementById('sixIframe');
-			iFrame.src = iFrameUrl;
+			try{
+			 	iFrame.src = iFrameUrl;
+			}catch(ex){
+				// CICO-21044
+				// Hiding ugly exception thrown in console
+				// happens when MLI is shown and no sixpayment iFrame is configured
+				// TODO: Investigate further and elimitate this function call
+				console.warn(ex.name, ex.message);
+			}
+			
 		};
 		$scope.$on("refreshIframe", function(e, guestData){
 			$scope.refreshIframeWithGuestData(guestData);
@@ -338,10 +465,17 @@ sntRover.controller('RVCardOptionsCtrl',
                }
             };
             
+            $scope.$on('addNewCardClicked',function(){
+                $scope.clickedAddNewCard();
+            });
+            
 	    $scope.$on("RENDER_SWIPED_DATA", function(e, swipedCardDataToRender){
             $scope.swippedCard = true;
 			$scope.renderDataFromSwipe(swipedCardDataToRender);
 			$scope.passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+                        setTimeout(function(){
+                            $scope.clickedAddNewCard();
+                        },100)
 		});
 
 }]);

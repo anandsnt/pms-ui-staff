@@ -1,3 +1,8 @@
+/*
+	Early Checkin options Ctrl 
+	There are two options 1) purcahase an early checkin 2) change the arrival time to a later time.
+*/
+
 (function() {
 	var earlyCheckinOptionsController = function($scope,$rootScope,$state,$stateParams) {
 

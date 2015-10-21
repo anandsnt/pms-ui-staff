@@ -342,8 +342,8 @@
 
 		#modal-close {
 			position: absolute;
-			top: -20px;
-			left: -20px;
+			top: 0;
+			left: 0;
 			z-index: 9995;
 			border: 0;
 			cursor: pointer;
@@ -574,6 +574,11 @@
 			left: 50%;
 			height: auto;
 			.translate3d(-50%, -50%, 0);
+
+			#modal-close {
+				top: -20px;
+				left: -20px;
+			}
 		}
 	}
 

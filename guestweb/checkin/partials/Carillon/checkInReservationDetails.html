@@ -1,0 +1,111 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron backgroundbg">
+	<div class="container" >
+		<div class="row headerrow white-bg">
+			<logo-image></logo-image>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper line-top checkin-details no-bottom-padding no-top-padding">
+				<div class="col-md-6 pad-rt-60">
+					<div class="reservation-id centeralign">
+						<span class="res-conf-no black-text">RESERVATION #{{confirmationNumber}}</span>
+					</div>
+					<div class="chekin-heading centeralign black-text">
+					Your stay details
+					</div>
+					<div class="date-container">
+						<div class="row">
+							<div class="col-xs-6 reservation-dates leftalign">
+								<div class="lightcontent centeralign-date black-text">
+									ARRIVAL DATE
+								</div>
+								<div class="dateContent centeralign-date black-text">
+									{{reservationData.arrival_date}}
+								</div>
+							</div>
+							<div class="col-xs-6  reservation-dates rightalign"><div class="lightcontent centeralign-date black-text">
+								DEPARTURE DATE
+							</div>
+							<div class="dateContent centeralign-date black-text">
+								{{reservationData.departure_date}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- top section ends here-->
+				<div class="date-container no-border">
+					<div class="row">
+						<div class=" reservation-dates">
+							<div class="lightcontent black-text">
+								ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
+							</div>
+						</div>
+						<div class="room_details black-text">
+							{{reservationData.room_type}}
+						</div>
+					</div>
+					<div class="row" ng-show="!!reservationData.room_rate.length">
+						<div class=" reservation-dates">
+							<div class="lightcontent black-text">
+								RATE
+							</div>
+						</div>
+						<div class="room_details black-text">
+							{{reservationData.room_rate}}
+						</div>
+					</div>
+					<div class="row">
+						<div class=" reservation-dates ">
+							<div class="lightcontent black-text">
+								AVERAGE RATE PER NIGHT
+							</div>
+						</div>
+						<div class="room_details black-text">
+							{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+						</div>
+					</div>
+					<div class="row applycharge">
+					<input type="checkbox" ng-click="termsClicked()" ng-model="checked"  ng-checked="checkedApplyCharges" >&nbsp
+					<span class="black-text">I ACCEPT ALL TERMS AND CONDITIONS</span>
+			</div>
+				</div></div>
+				<div class="verti-ruler margin-top-20"></div>
+				<div class="col-md-6 pad-lf-60 checkin-width checkin-button-padding">			
+					<button class=" checkin checkin-button black-bg" ng-click="checkInButtonClicked()">
+						<span class="white-text">Continue</span>
+					</button>
+				</div>
+			</div>			
+			<div class="row checkin-wrapper line-bottom no-top-bottom-padding" id="error-container">
+				<div class="col-md-6 error-callus">
+					<div class="black-text">
+						QUESTIONS? <a href="tel: {{hotelPhone}}"><u class="black-text">CALL US AT  {{hotelPhone}}</u></a>
+					</div>
+				</div>
+				<div class="verti-ruler margin-bottom-20"></div>
+			</div>			
+		</div>
+		<!-- checkinbtn section ends here-->
+	</div>
+</div>
+<!-- Termas and conditions popup -->
+	<div class="date-picker-bg terms-and-conditions-container" ng-show="showTermsPopup">
+		<div class="modal-content modal-vertical-centered full-screen">
+			<div class="centeralign terms-alert">
+				<div style="text-align:left;" class="cc-number-description terms-padding">
+					<p class="ccv-headings centeralign green-text"><p class="terms-main">To complete Check-in,</p><p class="terms-sub"> Please read and agree to the following:</p></p>
+
+					<description class="terms-list" template="{{reservationData.terms_and_conditions}}">
+					</description>
+				</div>
+				<div class="terms-actions">
+					<button type="button" ng-click="agreeClicked()" class="btn btn-close room-error-button room-error-green-button terms-buttons">I AGREE</button>
+					<button type="button" ng-click="cancel()" class="btn btn-close room-error-button light-gray-bg terms-buttons terms-buttons">CANCEL</button>
+				</div>
+			</div>
+		</div>
+	</div>

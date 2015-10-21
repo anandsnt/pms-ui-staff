@@ -752,6 +752,8 @@ table {
         }
 
         table {
+            .unassigned { color: @grey3; }
+
             thead {
                 tr {
                     &.bottom-row {
@@ -833,8 +835,6 @@ table {
             }
 
             &.guest-reports {
-
-                .unassigned { color: @grey3; }
 
                 tr {
                     th {
@@ -1104,71 +1104,83 @@ table {
                 tbody {
                     tr {
                         td {
-                            height: 20px;
-                            border-bottom-color: @grey1;
+                            padding: 4pt 8pt 0 0;
 
                             strong { font-weight: 600; }
 
                             &.name {
                                 width: 12cm;
                                 border-bottom: 0;
+                                height: auto;
+                                padding-bottom: 8pt;
+
+                                > div { 
+                                    .float; 
+
+                                    &:not(:last-child) { margin-bottom: 5px; }
+                                }
 
                                 .info {
-                                    .float;
-
-                                    strong {
-                                        .calc-width(100, 80);
-                                        .pull-left;
-                                    }
+                                    strong { line-height: 20px; }
 
                                     em { 
                                         color: @grey3;
-                                        width: 80px;
-                                        text-align: right;
                                         .pull-right;
                                     }
                                 }
 
-                                .dates {
-                                    padding-top: 5px;
-                                    line-height: 20px;
-                                    .float;
+                                .date {
+                                    .nowrap();
+                                    .pull-left;
 
-                                    .date { 
-                                        margin-right: 10px;
-                                        .pull-left;
-                                    }
-
-                                    span { margin-right: 5px; }
-
-                                    .guest-status { .square(20px); }
+                                    &:not(:last-child) { margin-right: 20px; }
                                 }
 
-                                .guest-info {
-                                    padding-top: 5px;
+                                .guest-status,
+                                .icons {
+                                    font-size: 12px;
+                                    margin-right: 5px;
                                     color: @grey3;
+                                }
 
-                                    .icons { 
-                                        line-height: 12px;
-                                        padding-left: 16px; 
-                                        .nowrap();
+                                .guest-status { .square(20px); }
+
+                                .icons {
+                                    font-size: 7pt;
+                                    line-height: 8pt;
+                                    padding-left: 20px;
+
+                                    &.icon-group { background-position: 5px -120px; }
+                                    &.icon-guest-company { background-position: 5px -140px; }
+                                    &.icon-guest-travelagent { background-position: 5px -160px; }
+
+                                    &:not(:last-child) { margin-bottom: 5px; }
+
+                                    &.time { 
+                                        padding: 0;
+                                        margin-bottom: 0;
+                                        background-size: 16px;
+                                        .opacity(50);
+                                        .size(8pt, 12px);
+                                        .pull-left;
+
+                                        &.check-in { background-position: 0 -3px; }
+                                        &.check-out { background-position: 0 -19px; }
                                     }
                                 }
 
                                 &.short { width: 6cm; }
                             }
 
-                            &.room-type {
-                                max-width: 3cm;
-                                .nowrap();
-                            }
-
-                            &.date { white-space: nowrap; }
-
                             &.info {
                                 font-style: italic;
                                 color: @grey3;
                                 width: 20%;
+                            }
+
+                            &.room-type {
+                                max-width: 3cm;
+                                .nowrap();
                             }
 
                             &:first-child { padding-left: 0; }
@@ -1192,6 +1204,65 @@ table {
 
                                 &[rowspan] { padding-right: 4pt; }
                             }
+                        }
+                    }
+                }
+            }
+
+            &.balance-reports {
+                thead {
+                    th { 
+                        padding: 4pt 12pt 4pt; 
+
+                        &:last-child { padding-right: 0; }
+                    }
+                }
+
+                tbody {
+                    td {
+                        padding: 4pt 12pt 4pt;
+                        line-height: 20px;
+                        .float;
+
+                        strong { font-weight: 600; }
+
+                        .date {
+                            .nowrap();
+                            .pull-left;
+
+                            &:not(:last-child) { margin-right: 8pt; }
+                        }
+
+                        .guest-status { 
+                            float: none;
+                            .square(20px); 
+                        }
+
+                        .icons.time {
+                            margin: 3pt 4pt 0 0;
+                            background-size: 16px;
+                            .opacity(50);
+                            .size(8pt, 12px);
+                            .pull-left;
+
+                            &.check-in { background-position: 0 -3px; }
+                            &.check-out { background-position: 0 -19px; }
+                        }
+
+                        &.name {
+                            em { 
+                                color: @grey3; 
+                                .pull-right; 
+                            }
+                        }
+
+                        &.room,
+                        &.status { width: 2cm; }
+
+                        &.balance {
+                            width: 3cm;
+                            padding-right: 0;
+                            .nowrap();
                         }
                     }
                 }

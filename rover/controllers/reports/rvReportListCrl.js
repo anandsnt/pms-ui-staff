@@ -39,6 +39,10 @@ sntRover.controller('RVReportListCrl', [
                 // add required flags this report
                 reportUtils.applyFlags( report[i] );
 
+                // add users filter for needed reports
+                // unfortunately this is not sent from server
+                reportUtils.addIncludeUserFilter( report[i] );
+
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
                     'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
@@ -90,9 +94,27 @@ sntRover.controller('RVReportListCrl', [
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function() {
-            this.item.show_filter = this.item.show_filter ? false : true;
-            $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        $scope.toggleFilter = function(reportItem) {
+            // this.item.show_filter = this.item.show_filter ? false : true;
+            // $scope.refreshScroller( LIST_ISCROLL_ATTR );
+
+            var toggle = function() {
+                reportItem.show_filter = reportItem.show_filter ? false : true;
+                $scope.refreshScroller( LIST_ISCROLL_ATTR );
+            };
+
+            var callback = function() {
+                $scope.$emit( 'hideLoader' );
+                toggle();
+            };
+
+            if ( !! reportItem.allFiltersProcessed ) {
+                toggle();
+            } else {
+                $scope.$emit( 'showLoader' );
+                reportUtils.findFillFilters( reportItem, $scope.$parent.reportList )
+                    .then( callback );
+            };
         };
 
         $scope.setnGenReport = function() {

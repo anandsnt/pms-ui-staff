@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv',
-    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q',
+    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q) {
 
 
         BaseCtrl.call(this, $scope);
@@ -495,20 +495,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     view: "ROOM_RATE",
                     company_id: $scope.reservationData.company.id,
                     travel_agent_id: $scope.reservationData.travelAgent.id,
-                    group_id: $scope.reservationData.group.id                    
+                    group_id: $scope.reservationData.group.id,
+                    allotment_id: $scope.reservationData.allotment.id
                 }
             };
             // }
         }
 
         var save = function() {
-            if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
+            if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                 $scope.saveReservation();
             }
         };
 
         var createReservation = function() {
-            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
+            if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) {
                 $timeout(function() {
                     $scope.$emit('PROMPTCARD');
                 }, 3000);
@@ -528,7 +529,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 depositPaid = true;
             };
 
-            var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) : true;
+            var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) : true;
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
             return (idPresent || isPaymentTypeNotSelected || !depositPaid);
 
@@ -1222,9 +1223,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {
+            var promises = [];
+            $scope.$emit('showLoader');
+
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.closeDialog();
+                if (goToConfirmationScreen) {
+                    $timeout(function() {
+                        $scope.confirmReservation(true);
+                    }, 700);
+                }
             };
 
             var updateFailure = function(data) {
@@ -1241,20 +1250,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.demographics = angular.copy($scope.demographics);
                     var postData = $scope.computeReservationDataforUpdate(false, true, currentRoomIndex);
                     postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
-                    $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+                    promises.push(RVReservationSummarySrv.updateReservation(postData));
                 });
-
             } else {
                 $scope.reservationData.rooms[index].demographics = angular.copy($scope.demographics);
                 $scope.reservationData.demographics = angular.copy($scope.demographics);
                 var postData = $scope.computeReservationDataforUpdate(false, true, index);
                 postData.reservationId = reservationId;
-                $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+                promises.push(RVReservationSummarySrv.updateReservation(postData));
             }
 
-            if (goToConfirmationScreen) {
-                $scope.confirmReservation(true);
-            }
+            $q.all(promises).then(updateSuccess, updateFailure);
         };
 
         $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
@@ -1262,11 +1268,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         });
 
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {
-            $scope.shouldShowReservationType = true;
-            $scope.shouldShowMarket = true;
-            $scope.shouldShowSource = true;
-            $scope.shouldShowOriginOfBooking = true;
-            $scope.shouldShowSegments = true;
+            $scope.shouldShowReservationType = $scope.otherData.reservationTypes.length > 0;
+            $scope.shouldShowMarket = $scope.otherData.markets.length > 0;
+            $scope.shouldShowSource = $scope.otherData.sources.length > 0;
+            $scope.shouldShowOriginOfBooking = $scope.otherData.origins.length > 0;
+            $scope.shouldShowSegments = $scope.otherData.segments.length > 0;
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
             // CICO-18594 - Urgent fix
@@ -1275,11 +1281,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             };
 
             if (showRequiredFieldsOnly) {
-                $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced) ? true : false;
-                $scope.shouldShowMarket = ($scope.otherData.marketIsForced) ? true : false;
-                $scope.shouldShowSource = ($scope.otherData.sourceIsForced) ? true : false;
-                $scope.shouldShowOriginOfBooking = ($scope.otherData.originIsForced) ? true : false;
-                $scope.shouldShowSegments = ($scope.otherData.segmentsIsForced) ? true : false;
+                $scope.shouldShowReservationType = ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) ? true : false;
+                $scope.shouldShowMarket = ($scope.otherData.marketIsForced && $scope.otherData.markets.length > 0) ? true : false;
+                $scope.shouldShowSource = ($scope.otherData.sourceIsForced && $scope.otherData.sources.length > 0) ? true : false;
+                $scope.shouldShowOriginOfBooking = ($scope.otherData.originIsForced && $scope.otherData.origins.length > 0) ? true : false;
+                $scope.shouldShowSegments = ($scope.otherData.segmentsIsForced && $scope.otherData.segments.length > 0) ? true : false;
             }
             ngDialog.open({
                 template: '/assets/partials/reservation/rvReservationDemographicsPopup.html',
@@ -1304,19 +1310,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                         } else {
                             var demographicsData = room.demographics;
 
-                            if ($scope.otherData.reservationTypeIsForced) {
+                            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+                             
+                            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
                                 isValid = demographicsData.reservationType !== "";
                             }
-                            if ($scope.otherData.marketIsForced && isValid) {
+                            if ($scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
                                 isValid = demographicsData.market !== "";
                             }
-                            if ($scope.otherData.sourceIsForced && isValid) {
+                            if ($scope.otherData.sourceIsForced && $scope.otherData.sources.length > 0 && isValid) {
                                 isValid = demographicsData.source !== "";
                             }
-                            if ($scope.otherData.originIsForced && isValid) {
+                            if ($scope.otherData.originIsForced && $scope.otherData.origins.length > 0 && isValid) {
                                 isValid = demographicsData.origin !== "";
                             }
-                            if ($scope.otherData.segmentsIsForced && isValid) {
+                            if ($scope.otherData.segmentsIsForced && $scope.otherData.segments.length > 0 && isValid) {
                                 isValid = demographicsData.segment !== "";
                             }
                         }
@@ -1326,6 +1334,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
 
                     var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
+
+                    // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+
 
                     if ($scope.otherData.reservationTypeIsForced) {
                         isValid = demographicsData.reservationType !== "";
