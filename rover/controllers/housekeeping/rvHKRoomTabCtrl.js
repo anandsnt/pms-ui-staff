@@ -7,7 +7,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 	'RVHkRoomDetailsSrv',
 	'ngDialog',
 	'rvUtilSrv',
-	function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog, util) {
+	'$timeout',
+	function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog, util, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -352,7 +353,10 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			else if (alreadyAssignedToReservations) {
 				showAlreadyAssignedToReservationsPopup (data.reservations);
 			}
-			$scope.update ();
+			else {
+				$scope.update ();
+			}
+			
 		};
 
 		/**
@@ -395,7 +399,16 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		/* ***** ***** ***** ***** ***** */
 
-
+		/**
+		 * when the user chooses for force fully put room oos/ooo from popup
+		 * @return {[type]} [description]
+		 */
+		$scope.forcefullyPutRoomToOOSorOOO = function() {
+			$scope.closeDialog ();
+			$timeout(function(){
+				$scope.update();
+			}, 700);
+		};
 
 		$scope.update = function() {
 			var _error = function(errorMessage) {
