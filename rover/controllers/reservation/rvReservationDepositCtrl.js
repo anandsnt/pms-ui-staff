@@ -649,4 +649,19 @@ sntRover.controller('RVReservationDepositController',
 	// CICO-12488 : Handle initial case of change Payment type.
 	$scope.checkReferencetextAvailable();
 
+        $scope.showDepositNotice = function(){
+          if ($scope.showCCPage || $scope.depositInProcess || $scope.depositPaidSuccesFully){
+              if ($scope.isStandAlone){
+                if ($scope.cardsList.length === 0){
+                  $scope.$broadcast('CLICK_ADD_NEW_CARD');
+                }
+              }
+              return true;
+          } else return false;
+            
+        };
+        
+
+
+
 }]);

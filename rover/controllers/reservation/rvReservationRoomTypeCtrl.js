@@ -1676,7 +1676,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 
 			$scope.$on('resetGuestTab', function() {
-				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id, function(data) {
+				// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
+				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id, function(data) {
 					$scope.$emit('hideLoader');
 					$scope.reservationData.guestMemberships = {
 						ffp: data.frequentFlyerProgram,
