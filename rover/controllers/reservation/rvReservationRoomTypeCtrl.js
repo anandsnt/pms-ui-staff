@@ -810,7 +810,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					//7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// Revisit all occupancyLimit warnings
-					// $scope.checkOccupancyLimit(null, false, i);					
+					$scope.checkOccupancyLimit(null, false, i);					
 				}
 				$scope.viewState.currentTab = $scope.activeRoom;
 				if ($scope.otherData.showOverbookingAlert) {
