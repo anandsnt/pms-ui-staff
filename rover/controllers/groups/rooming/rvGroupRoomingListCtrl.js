@@ -520,6 +520,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             if (activeTab !== 'ROOMING') {
                 return;
             }
+
+            //re-initializing date pickers as there is to update from other tab & come back here
+            setDatePickerOptions();
+
             //calling initially required APIs
             callInitialAPIs();
         });
