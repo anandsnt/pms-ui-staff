@@ -105,7 +105,7 @@ sntRover.controller('RVReservationDepositController',
 		};
 
 
-		$scope.showHideCreditCard = function(){
+		$scope.changePaymentType = function(){
 
 			$scope.checkReferencetextAvailable();
 
@@ -261,9 +261,12 @@ sntRover.controller('RVReservationDepositController',
 		 * check if reference text is available for the selected card type
 		 *
 		 */
+                $scope.isReservationDeposit = true;
+                $scope.renderData = {};
+                $scope.renderData.paymentTypes = $scope.passData.details.paymentTypes;
+                
 		$scope.checkReferencetextAvailable = function(){
-
-
+                    
 			angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
 				if(value.name === $scope.depositData.paymentType){
 					if($scope.depositData.paymentType !== "CC"){

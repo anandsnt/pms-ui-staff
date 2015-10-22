@@ -66,7 +66,7 @@
 			<input name="expiry-month" ng-readonly="!isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
 			<input name="expiry-year" ng-readonly="!isManualCCEntryEnabled" id="expiry-year" placeholder="YY"  ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
 		</div>
-		<div class="entry card-name" ng-hide="isGiftCard">
+		<div class="entry card-name">
 			<label for="name-on-card">Name on card</label>
 			<input name="name-on-card" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.userName"type="text" />
 		</div>  
@@ -79,16 +79,11 @@
 		</div>
 	</div>
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-show="isGiftCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
-		<div class="entry card-number card-type">
-                    <label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this, depositWithGiftCard)" />
-		</div>
-	</div>
+        
         <div id="cc-new-card" class="new-card" ng-show="useDepositGiftCard"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-number card-type">
                     <label for="card-number">Card number (<span>No spaces</span>)</label>
-			<input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this, depositWithGiftCard)" />
+			<input name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this, depositWithGiftCard)" />
 		</div>
 	</div>
         <div class="entry full-width" id="selected-card" ng-show="useDepositGiftCard && giftCardAvailableBalance">
@@ -100,25 +95,25 @@
         
         
 	<!-- New card: Call-In -->
-	<iframe ng-if="(paymentGateway === 'sixpayments' && addmode) || isManual" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+	<iframe ng-if="isSixPayPayment()" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
-	<div class="actions" ng-hide="hideCancelCard || depositWithGiftCard" ng-show="!hideCancelCard && !depositWithGiftCard">
+	<div class="actions" ng-show="showCancelCardSelection()">
 		<button type="button" class="button blank" ng-click="cancelCardSelection()">
 			Cancel Card selection
 		</button>
 	</div>
-        <div class="actions" ng-show="useDepositGiftCard" ng-hide="!useDepositGiftCard">
+        
+        <div class="actions" ng-hide="!useDepositGiftCard">
                 <button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
                         Close
                 </button>
                 <span>
-                        <span>
-                                <button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close" 
-                                ng-hide="hideMakePayment()" >
-                                Make Payment
-                                </button>
-                        </span>
+                    <span>
+                        <button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close" 
+                        ng-hide="hideMakePayment()" >
+                        Make Payment
+                        </button>
+                    </span>
                 </span>
-
         </div>
 

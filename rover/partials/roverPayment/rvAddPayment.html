@@ -39,17 +39,7 @@
         
         
         
-        
-    <div class="entry full-width" ng-hide="showCCPage" >
-            <label for="payment-type">Payment type</label>
-            <div class="select">
-                    <select name="payment-type" ng-change="changePaymentType()" ng-model="dataToSave.paymentType" class="placeholder">
-                            <option value="" selected>Select Payment Type</option>
-                            <option ng-repeat="paymentOptions in renderData" value="{{paymentOptions.name}}" ng-selected="paymentOptions.name === dataToSave.paymentType">{{paymentOptions.description}}</option>
-                    </select>
-            </div>
-    </div>		
-
+               <div ng-init="isADDPaymentModal = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
         
         
         
