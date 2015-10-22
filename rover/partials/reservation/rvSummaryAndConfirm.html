@@ -204,21 +204,21 @@
             <div class="wrapper" style="height:120%;">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation">
-                    <div class="entry full-width" ng-hide="showCC ||(depositData.attempted && !depositData.depositAttemptFailure)">
+                    <div class="entry full-width" ng-hide="hidePaymentSelection()">
                         <span ng-hide="true">{{reservationData.paymentType}}</span>
                         <label for="payment-type" translate>PAYMENT_TYPE</label>
                         <div class="select">
 
                             <select class="placeholder" ng-model="reservationData.paymentType.type.value" ng-change="changePaymentType()" iscroll-stop-propagation>
                                 <option value="" translate>SELECT_PAYMENT_TYPE</option>
-                                <option ng-selected="paymentTypes.value == reservationData.paymentType.type.value" value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
+                                <option ng-selected="paymentTypes.value == reservationData.paymentType.type.value" 
+                                        value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                             </select>
                         </div>
                     </div>
                     
-                    
                     <!-- Card Input type - output only if Six Payments and payment type is CC -->
-                    <div class="entry" ng-show="paymentGateway === 'sixpayments' && reservationData.paymentType.type.value ==='CC' && !showCC">
+                    <div class="entry" ng-show="showCardInputType()">
                         <label for="card-source">Card Input</label>
                         <div class="switch-button" ng-class="{'on': !isManual}">
                             <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
