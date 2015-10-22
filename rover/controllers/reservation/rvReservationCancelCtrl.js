@@ -6,7 +6,7 @@
 			$scope.showCancelCardSelection = true;
 			$scope.showAddtoGuestCard = true;
 			$scope.addmode = false;
-			$scope.showCC = false;
+			$scope.showCCPage = false;
 			$scope.referanceText = "";
 			$scope.isDisplayReference = false;
 			$scope.newCardAdded = false;
@@ -64,12 +64,13 @@
 
 
 			$scope.changeOnsiteCallIn = function() {
-				$scope.isManual ? $scope.showCC = true : "";
+				$scope.isManual ? $scope.showCCPage = true : "";
 			};
 
-			$scope.showHideCreditCard = function() {
+			$scope.changePaymentType = function() {
+console.log(arguments)
 				if ($scope.cancellationData.paymentType === "CC") {
-					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCC = true;
+					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCCPage = true;
 				} else {
 					checkReferencetextAvailableForCC();
 				};
@@ -210,7 +211,7 @@
 					$scope.cancellationData.expiry_date = retrieveExpiryDate();
 					$scope.cancellationData.card_type = retrieveCardtype();
 					checkReferencetextAvailableForCC();
-					$scope.showCC = false;
+					$scope.showCCPage = false;
 					$scope.newCardAdded = true;
 				};
 				var paymentData = {
@@ -391,7 +392,7 @@
 			};
 
 			$scope.onCardClick = function() {
-				$scope.showCC = true;
+				$scope.showCCPage = true;
 				$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 			};
 			var setCreditCardFromList = function(index) {
@@ -400,7 +401,7 @@
 				$scope.cancellationData.expiry_date = $scope.cardsList[index].card_expiry;
 				$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
 				checkReferencetextAvailableForCC();
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 				// CICO-9457 : Data for fees details - standalone only.
 				if ($scope.isStandAlone) {
 					$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
@@ -411,7 +412,7 @@
 
 			$scope.$on("TOKEN_CREATED", function(e, data) {
 				$scope.newPaymentInfo = data;
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 				savePayment();
 			});
 
@@ -420,7 +421,7 @@
 			});
 
 			$scope.$on('cancelCardSelection', function(e, data) {
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 				$scope.cancellationData.paymentType = "";
 				$scope.isManual = false;
 			});
@@ -433,7 +434,7 @@
 
 				$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 				$scope.ngDialogData.state = 'PENALTY';
-				$scope.showCC = true;
+				$scope.showCCPage = true;
 				$scope.addmode = true;
 
 			});
@@ -444,7 +445,7 @@
 				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);;
 				$scope.cancellationData.expiry_date = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
 				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 			};
 			$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
 				var data = swipedCardDataToSave;

@@ -1,0 +1,13 @@
+    <label for="card-source">Card Input</label>
+    <div class="switch-button" ng-class="{'on': !isManual}">
+        <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
+        <label class="data-off">
+            <span class="value">C &amp; P</span>
+            <span class="switch-icon">Manual</span>
+        </label>
+        <label class="data-on">
+            <span class="switch-icon">C &amp; P</span>
+            <span class="value">Manual</span>
+        </label>
+    </div>
+

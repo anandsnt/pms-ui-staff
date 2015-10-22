@@ -224,16 +224,23 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
                         $scope.swippedCard = true;
 		};
 
-
 		/**
 		 * change payment type action - override parent's method so as to deal with referance and fees
 		 */
 		$scope.changePaymentType = function(){
-			if($scope.saveData.paymentType === "CC"&& $scope.paymentGateway !== 'sixpayments'){
+                    console.log(arguments);
+			if($scope.saveData.paymentType === "CC" && $scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showCardAddmode();
+                                if ($rootScope.isStandAlone){
+                                    $rootScope.$broadcast('CLICK_ADD_NEW_CARD');
+                                }
 			} else {
 				$scope.showCreditCardInfo = false;
 			};
+                        console.info('$scope.saveData.paymentType: '+$scope.saveData.paymentType)
+                        if ($scope.saveData.paymentType === "GIFT_CARD"){
+                            $rootScope.$broadcast('giftCardSelectedFromGroups');
+                        }
 			checkReferencetextAvailable();
 			checkforFee();
 		};

@@ -189,7 +189,7 @@
                 </ul>
             </div>
         </div>
-        <form class="form payment-info" ng-show="reservationData.paymentType.type.value=== 'CC' && showCC" ng-click="clearErrorMessage()">
+        <form class="form payment-info" ng-show="reservationData.paymentType.type.value=== 'CC' && showCCPage" ng-click="clearErrorMessage()">
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation">
@@ -200,22 +200,27 @@
                 </div>
             </div>
         </form>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="(reservationData.paymentType.type.value === 'CC') && showCC" ng-click="clearErrorMessage()">
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="(reservationData.paymentType.type.value === 'CC') && showCCPage" ng-click="clearErrorMessage()">
             <div class="wrapper" style="height:120%;">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation">
+                    
+                    
                     <div class="entry full-width" ng-hide="hidePaymentSelection()">
                         <span ng-hide="true">{{reservationData.paymentType}}</span>
                         <label for="payment-type" translate>PAYMENT_TYPE</label>
                         <div class="select">
 
-                            <select class="placeholder" ng-model="reservationData.paymentType.type.value" ng-change="changePaymentType()" iscroll-stop-propagation>
+                            <select class="placeholder" ng-model="reservationData.paymentType.type.value" ng-change="changePaymentType('create res. summary deposit')" iscroll-stop-propagation>
                                 <option value="" translate>SELECT_PAYMENT_TYPE</option>
                                 <option ng-selected="paymentTypes.value == reservationData.paymentType.type.value" 
                                         value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
                             </select>
                         </div>
                     </div>
+                    
+                    
+                    
                     
                     <!-- Card Input type - output only if Six Payments and payment type is CC -->
                     <div class="entry" ng-show="showCardInputType()">
@@ -233,28 +238,26 @@
                         </div>
                     </div>
 
-                    <div class="entry full-width" id="selected-card" ng-show="showSelectedCreditCard && !showCCPage && (reservationData.paymentType.type.value === 'CC' || reservationData.paymentType.type.value === 'GIFT_CARD') && !showCC &&(paymentGateway !== 'sixpayments' || isManual || reservationEditMode)" ng-click="changePaymentType()">
-                        <label ng-show="!isGiftCard" ng-hide="isGiftCard">Credit Card (<span>Tap to change</span>)</label>
-                        <label ng-show="isGiftCard" ng-hide="!isGiftCard">Gift Card (<span>Tap to change</span>)</label>
-                        <label ng-show="isGiftCard" ng-hide="!isGiftCard">Available Balance ({{currencySymbol}}{{giftCardAvailableBalance}})</label>
+                    <div class="entry full-width" id="selected-card" ng-show="showSelectedCreditCardButton()" ng-click="changePaymentType()">
+                        <label>Credit Card (<span>Tap to change</span>)</label>
+                        
                         <label class="active-item item-payment" id="pay-with-amex">
                             <figure class="card-logo">
                                 <img ng-src="/assets/{{renderData.creditCardType}}.png" alt="">
                             </figure>
                             <span class="number">Ending with 
-                        <span class="value number">{{renderData.endingWith}}</span>
+                                <span class="value number">{{renderData.endingWith}}</span>
                             </span>
                             <span class="date">Date 
-                        <span class="value date">{{renderData.cardExpiry}}</span>
-                            <span ng-show="renderData.isSwiped" class="icons icon-swiped swiped-card"></span>
+                                <span class="value date">{{renderData.cardExpiry}}</span>
+                                <span ng-show="renderData.isSwiped" class="icons icon-swiped swiped-card"></span>
                             </span>
 
                         </label>
                     </div>
 
                     <!-- Credit card options - hidden until CC set as payment type -->
-                    <!-- Credit card options - hidden until CC set as payment type -->
-                    <!-- <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=== 'CC' && showCC"></div> -->
+                    <!-- <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=== 'CC' && showCCPage"></div> -->
 
                     <div class="entry full-width" ng-show="isNewCardAdded">
                         <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': addtoGuestCard}">
@@ -264,7 +267,7 @@
                     </div>
 
                     <!-- Use only if deposit is required -->
-                    <div class="notice deposit" ng-if="depositData.isDepositRequired && reservationData.isValidDeposit" ng-hide="depositData.attempted || showCC">
+                    <div class="notice deposit" ng-if="depositData.isDepositRequired && reservationData.isValidDeposit" ng-hide="depositData.attempted || showCCPage">
                         <p>Deposit required: <strong>{{depositData.description}}</strong>.</p>
                         <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD' || depositData.attempted || !depositData.isDepositRequired || !isDepositEditable">
                             <label for="card-number">Card number (<span>No spaces</span>)</label>
@@ -308,7 +311,7 @@
                         <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="tryAgain()">Try Again</button>
                     </div>
 
-                    <div class="actions" ng-hide="showCC">
+                    <div class="actions" ng-hide="showCCPage">
                         <button type="button" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" class="button blank" ng-click="cancelReservation()">Cancel Reservation</button>
                         <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
                         <!-- <button type="button" class="button" ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}" ng-disabled="isContinueDisabled()" ng-click="proceedCreatingReservation()">Continue</button> -->
