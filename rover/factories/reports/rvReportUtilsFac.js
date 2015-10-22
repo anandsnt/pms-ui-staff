@@ -402,7 +402,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case reportNames['GROUP_DEPOSIT_REPORT']:
                     report['hasDateLimit']  = false;
-                    report['canRemoveDate'] = true;
+                    report['canRemoveDate'] = false;
                     break;
 
                 case reportNames['OCCUPANCY_REVENUE_SUMMARY']:                    
