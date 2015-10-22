@@ -77,6 +77,22 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			return (rvPermissionSrv.getPermissionValue('EDIT_ALLOTMENT_ROOM_BLOCK'));
 		};
 
+		var isContractHeld = function(){
+			var contractIsHeld = true; 
+			
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,function(roomData){
+				_.each(roomData.dates,function(config){
+					contractIsHeld = contractIsHeld && config.single === config.single_contract &&
+						config.double === config.double_contract &&
+						  config.triple === config.triple_contract &&
+						  	config.quadruple === config.quadruple_contract;
+					
+				});
+			}); 
+
+			return contractIsHeld;
+		};
+
 		/**
 		 * Function to decide whether to disable Add Rooms & Rates button
 		 * for now we are checking only permission
@@ -103,7 +119,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		  * @return {Boolean} Whether button should be disabled or not
 		  */
 		 $scope.shouldDisableApplyToHeldCountsButton = function() {
-		 	return (!updated_contract_counts);
+		 	return (isContractHeld());
 		 };
 
 		 $scope.shouldDisableApplyToContractButton = function() {
@@ -144,7 +160,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			var hasBookingDataChanged = $scope.hasBookingDataChanged,
 				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
 
-			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged ) );
+			// When the contract is saved without using the "copy to held" button 
+			// it is now clear that the button should be there if afterwards you go back to the contract view.
+			// https://stayntouch.atlassian.net/browse/CICO-19121?focusedCommentId=57106&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-57106
+			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged  || !isContractHeld()) );
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {

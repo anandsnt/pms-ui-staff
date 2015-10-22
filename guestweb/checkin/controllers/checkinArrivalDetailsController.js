@@ -78,7 +78,6 @@
 		 };
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
-			console.log(response);
 			$rootScope.earlyCheckinHour   =  response.last_early_checkin_hour;
 			$rootScope.earlyCheckinMinute =  response.last_early_checkin_minute;
 			$rootScope.earlyCheckinPM     =  response.last_early_checkin_primetime;
