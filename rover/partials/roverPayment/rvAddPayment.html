@@ -6,6 +6,9 @@
 		<span class="h3 message solo">Manual Credit Card Updates are Disabled!</span>
 	</div>
 </div>
+
+
+
 <div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-show="shouldShowWaiting" ng-cloak>
 	<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;" >
 		<div class="centeralign alert-box">
@@ -14,23 +17,38 @@
 		<div class="waiting-payment">&nbsp;</div>
 	</div>
 </div>
+
+
+
 <div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-show="!showManualEntryDisabledPopup" ng-click="clearErrorMessage()" ng-cloak>
-<form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': hasExistingCard(), 'select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+
+    
+    
+    
+    <form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': hasExistingCard(), 'select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <strong class="h2 message">New payment method</strong>
     <div class="payment-form">
         <!-- Payment type -->
-		<div class="entry full-width" ng-hide="showCCPage" >
-			<label for="payment-type">Payment type</label>
-			<div class="select">
-				<select name="payment-type" ng-change="changePaymentType()" ng-model="dataToSave.paymentType" class="placeholder">
-					<option value="" selected>Select Payment Type</option>
-					<option ng-repeat="paymentOptions in renderData" value="{{paymentOptions.name}}" ng-selected="paymentOptions.name === dataToSave.paymentType">{{paymentOptions.description}}</option>
-				</select>
-			</div>
-		</div>		
-
+        
+        
+        
+        
+        
+        
+        
+        
+               <div ng-init="isADDPaymentModal = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <!-- Card Input type - output only if Six Payments and payment type is CC -->
         <!-- Use only for Six Payments -->
 		<div class="entry" ng-show="paymentGateway === 'sixpayments' && dataToSave.paymentType ==='CC' && !showCCPage">
@@ -47,8 +65,15 @@
 		        </label>
 		    </div>
 		</div>
+        
+        
+        
+        
+        
+        
+        
         <!-- Selected card - Show when card is selected/added -->
-       <div class="entry full-width" id="selected-card"  ng-show="showSelectedCreditCard && !showCCPage && dataToSave.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual)" ng-click="showCCList()">
+       <div class="entry full-width" id="selected-card"  ng-show="showAddedCard()" ng-click="showCCList()">
 			<label>Credit Card (<span>Tap to change</span>)</label>
 			<label class="active-item item-payment" id="pay-with-amex">
 				<figure class="card-logo">
@@ -62,10 +87,19 @@
 				</span>
 			</label>
 		</div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
 			
 
         <!-- Payment method options -->
-        <div class="holder" ng-show="isNewCardAdded">
+        <div class="holder" ng-show="showAddtoGuestCardBox()">
         	<div class="entry full-width" >
         		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
         			<span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
@@ -83,10 +117,32 @@
         	</div>  
         	-->
         </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         <!-- New CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P. Never output exsisting cards here! -->
        <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>       
 
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
         <!-- Buttons -->
        	<div class="actions"  ng-show="!showCCPage">
 			<button type="button" class="button blank modal-close" ng-click="closeDialog()">
