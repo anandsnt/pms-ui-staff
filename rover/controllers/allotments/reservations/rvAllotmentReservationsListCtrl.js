@@ -768,6 +768,9 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       if (activeTab !== 'RESERVATIONS') {
         return;
       }
+      //as the date may get change from other tab
+      setDatePickerOptions();
+
       //calling initially required APIs
       callInitialAPIs();
     });
@@ -1329,22 +1332,22 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       //what is page that we are requesting in the API
       $scope.page     = 1;
     };
- 
+
     /**
      * Function to handle success, failure callbacks for toggleHideRate
      */
-    var sucessCallbackToggleHideRate = function(data){
-        $scope.allotmentConfigData.summary.hide_rates = !$scope.allotmentConfigData.summary.hide_rates;
+    var sucessCallbackToggleHideRate = function(data) {
+      $scope.allotmentConfigData.summary.hide_rates = !$scope.allotmentConfigData.summary.hide_rates;
     };
 
-    var failureCallbackToggleHideRate = function(errorData){
-        $scope.errorMessage = errorData;
+    var failureCallbackToggleHideRate = function(errorData) {
+      $scope.errorMessage = errorData;
     };
 
     /**
      * Function to toggle show rate checkbox value
      */
-    $scope.clickedShowRate = function(){
+    $scope.clickedShowRate = function() {
       var params = {
         'id'        : $scope.allotmentConfigData.summary.allotment_id,
         'hide_rates': !$scope.allotmentConfigData.summary.hide_rates
