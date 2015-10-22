@@ -434,12 +434,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.message_out_going_to_room = false;
 			$scope.message_out_going_to_comp_tra = false;
 
-			if ($scope.availabilityDetails.routing_info.incoming_from_room) {
-				$scope.message_incoming_from_room = true;
-			} else if ($scope.availabilityDetails.routing_info.out_going_to_room) {
-				$scope.message_out_going_to_room = true;
-			} else if ($scope.availabilityDetails.routing_info.out_going_to_comp_tra) {
-				$scope.message_out_going_to_comp_tra = true;
+			if ($scope.availabilityDetails.routing_info !== undefined) {
+				if ($scope.availabilityDetails.routing_info.incoming_from_room) {
+					$scope.message_incoming_from_room = true;
+				} else if ($scope.availabilityDetails.routing_info.out_going_to_room) {
+					$scope.message_out_going_to_room = true;
+				} else if ($scope.availabilityDetails.routing_info.out_going_to_comp_tra) {
+					$scope.message_out_going_to_comp_tra = true;
+				}
 			}
 		};
 
