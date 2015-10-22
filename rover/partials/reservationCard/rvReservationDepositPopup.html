@@ -45,7 +45,7 @@
             <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCCPage"></div>
 
             <!-- Fields -->
-            <div class="notice deposit" ng-hide="showCCPage || depositInProcess || depositPaidSuccesFully">
+            <div class="notice deposit" ng-hide="showDepositNotice()"><!-- showCCPage || depositInProcess || depositPaidSuccesFully -->
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
                     <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
@@ -101,7 +101,7 @@
                 <div class="notice error">{{paymentErrorMessage}}</div>
             </div> 
 
-             <div class="entry full-width" ng-show="showAddtoGuestCard">
+             <div class="entry full-width" ng-show="showAddtoGuestCardBox()">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositData.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': depositData.addToGuestCard}"></span>
                     <input ng-model="depositData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />

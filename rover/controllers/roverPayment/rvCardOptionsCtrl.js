@@ -65,10 +65,10 @@ sntRover.controller('RVCardOptionsCtrl',
                 $scope.hideCardToggles = function(){
                     if ($scope.isFromGuestCard  || 
                             $scope.hasAccompanyguest || 
-                            ($scope.cardsList && $scope.cardsList.length === 0) || 
-                            $scope.initFromCashDeposit){
-                        return true;
-                            } else return false;
+                            ($scope.cardsList && $scope.cardsList.length === 0)
+                        ){
+                            return true;
+                        } else return false;
                 };
                 
                 $scope.clickedExistingCard = function(){
@@ -80,14 +80,17 @@ sntRover.controller('RVCardOptionsCtrl',
                     $scope.depositWithGiftCard = false;
                 };
                 
+                $scope.$on('CLICK_ADD_NEW_CARD',function(){
+                   $scope.clickedAddNewCard();
+                });
                 $scope.$on('SHOW_SWIPED_DATA_ON_PAY_SCREEN',function(){
                     $scope.clickedAddNewCard();
                     $scope.$apply();
-                })
+                });
                 $scope.$on('SHOW_SWIPED_DATA_ON_BILLING_SCREEN',function(){
                     $scope.clickedAddNewCard();
                     $scope.$apply();
-                })
+                });
                 $scope.clickedAddNewCard = function(){
                     $scope.shouldShowIframe = false; 
                     $scope.addmode = true; 
@@ -106,7 +109,7 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 
                 $scope.showExistingCards = function(){
-                    if (!$scope.addmode && !$scope.useDepositGiftCard && !$scope.initFromCashDeposit){
+                    if (!$scope.addmode && !$scope.useDepositGiftCard){
                         return true;
                     } else return false;
                 };
