@@ -600,7 +600,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //
             $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
             $scope.otherData.segments = baseData.demographics.segments;
-            $scope.checkOccupancyLimit();
         };
 
         var openRateAdjustmentPopup = function(room, index, lastReason) {

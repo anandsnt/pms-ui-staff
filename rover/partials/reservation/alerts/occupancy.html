@@ -1,9 +1,10 @@
-<div id="modal" class="modal-show">
-	<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
-		<div class="centeralign alert-box">
-			Maximum number of people for room type {{ngDialogData.roomType}} is {{ngDialogData.roomMax}}.
-			<br/>
-			<a ng-click="closeDialog()" class="button blank">OK</a>
-		</div>
-	</div>
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" ng-click="closeDialog()" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <span class="icons icon-popup-alert"></span>
+        <span class="message h2">
+        	Maximum number of people for room type {{ngDialogData.roomType}} is {{ngDialogData.roomMax}}.
+        </span>
+        <button type="button" class="button green modal-close" ng-click="closeDialog(); saveRoomBlock(true);">Ok</button>
+    </div>
 </div>
