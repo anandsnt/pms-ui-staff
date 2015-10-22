@@ -381,7 +381,6 @@ sntRover.controller('reservationActionsController', [
 		/******************************************/
 		$scope.showPutInQueue = function() {
                      //In standalone hotels we do not show the putInQueue option
-                     $rootScope.isStandAlone = false;
                     if ($rootScope.isStandAlone) {
                         return false;
                     } else {
