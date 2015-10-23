@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv, RVReservationCardSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -224,16 +224,78 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
                         $scope.swippedCard = true;
 		};
 
-
+                $scope.showSelectedCreditCardButton = function(){
+                    if ($scope.showCreditCardInfo && !$scope.showCCPage && ($scope.paymentGateway !== 'sixpayments' || $scope.isManual) && $scope.saveData.paymentType === 'CC' && !$scope.depositPaidSuccesFully){
+                        return true;
+                    } else return false;
+                };
 		/**
 		 * change payment type action - override parent's method so as to deal with referance and fees
 		 */
+    $scope.giftCardAmountAvailable = false;
+    $scope.giftCardAvailableBalance = 0;
+
+    $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+       $scope.giftCardAvailableBalance = giftCardData.amount;
+    });
+
+    $scope.timer = null;
+
+    $scope.cardNumberInput = function (n, e) {
+        if ($scope.isGiftCardPmt){
+            var len = n.length;
+            $scope.num = n;
+            if (len >= 8 && len <= 22){
+                //then go check the balance of the cardd
+                $('[name=card-number]').keydown(function(){
+                    clearTimeout($scope.timer); 
+                    $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                });
+            } else {
+                //hide the field and reset the amount stored
+                $scope.giftCardAmountAvailable = false;
+            }
+        }
+    };
+
+    $scope.num;
+    $scope.fetchGiftCardBalance = function () {
+        console.info('fetching card balance...');
+        if ($scope.isGiftCardPmt){
+               //switch this back for the UI if the payment was a gift card
+           var fetchGiftCardBalanceSuccess = function (giftCardData) {
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+               $scope.giftCardAmountAvailable = true;
+               $scope.$emit('giftCardAvailableBalance',giftCardData);
+               //data.expiry_date //unused at this time
+               $scope.$emit('hideLoader');
+           };
+           $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+       } else {
+           $scope.giftCardAmountAvailable = false;
+       }
+    };
+
+                
+                
+                
 		$scope.changePaymentType = function(){
-			if($scope.saveData.paymentType === "CC"&& $scope.paymentGateway !== 'sixpayments'){
+                    console.log(arguments);
+			if($scope.saveData.paymentType === "CC" && $scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showCardAddmode();
+                                if ($rootScope.isStandAlone){
+                                    $rootScope.$broadcast('CLICK_ADD_NEW_CARD');
+                                }
 			} else {
 				$scope.showCreditCardInfo = false;
 			};
+                        console.info('$scope.saveData.paymentType: '+$scope.saveData.paymentType)
+                        if ($scope.saveData.paymentType === "GIFT_CARD"){
+                            $rootScope.$broadcast('giftCardSelectedFromGroups');
+                            $scope.isGiftCardPmt = true;
+                        } else {
+                            $scope.isGiftCardPmt = false;
+                        }
 			checkReferencetextAvailable();
 			checkforFee();
 		};

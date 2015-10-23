@@ -127,7 +127,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
             } else return false;
         };
         
-        
 	/*
 	 * change payment type action - initial add payment screen
 	 */
@@ -135,6 +134,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 		if($scope.paymentGateway !== 'sixpayments'){
 			$scope.showCCPage = ($scope.dataToSave.paymentType === "CC") ? true: false;
+                        if ($scope.dataToSave.paymentType === "CC"){
+                            $scope.showSelectedCreditCard = true;
+                        } else {
+                            $scope.showSelectedCreditCard = false;
+                        }
+                        
 			$scope.swippedCard = ($scope.dataToSave.paymentType === "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType === "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType === "CC") ? false: true;
@@ -444,7 +449,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			};
 		};
 	};
-
+        
     var savePaymentSuccess = function(data){
     	$scope.$emit("hideLoader");
     	if(typeof $scope.passData.fromBill !== "undefined"){
@@ -489,7 +494,11 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		} else if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 			saveDataFromSwipe();
 		} else if(typeof $scope.dataToSave !== "undefined") {
-		   ($scope.dataToSave.paymentType ==='CC') ? saveNewCard():saveNewPayment();
+                    if ($scope.dataToSave.paymentType ==='CC'){
+                        saveNewCard();
+                    } else {
+                        saveNewPayment();
+                    }
 		}
 	};
 	var sixPaymentSwipe = function(){
@@ -714,6 +723,27 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     if (!$scope.isStandAlone && $scope.allowPmtWithGiftCard){
                         return true;
                     } else return false;
+                };
+                
+                
+                $scope.showCreditCardScreen = function(){
+                     if  ($scope.showCCPage && $scope.dataToSave.paymentType === 'CC' && $scope.paymentGateway !== 'sixpayments')  {
+                        return true;
+                    } else return false;
+                };
+                
+                $scope.showAddedCard = function(){
+                    if ($scope.dataToSave.paymentType === 'CC'){
+                          if (!$scope.showCCPage && //showing add new card inputs
+                                ($scope.paymentGateway !== 'sixpayments' || $scope.isManual)){
+                    
+                            return true;
+                        } else {
+
+                        return false;}
+                        
+                    } else return false;
+                    
                 };
         
         $scope.hasExistingCard = function(){

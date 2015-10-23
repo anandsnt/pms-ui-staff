@@ -23,7 +23,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
         $scope.isSixCardSwiped = false;
         $scope.addmode = true;
-        $scope.showCC = false;
+        $scope.showCCPage = false;
         $scope.addToGuestCard = false;
         if (typeof $scope.renderData === 'undefined') {
             $scope.renderData = {};
@@ -206,7 +206,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         $scope.$on('cancelCardSelection', function() {
             $scope.depositWithGiftCard = false;
             $scope.hideCancelCard = false;
-            $scope.showCC = false;
+            $scope.showCCPage = false;
             $scope.reservationData.paymentType.type.value = "";
             $scope.isManual = false;
         });
@@ -326,7 +326,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $rootScope.$emit("showLoader");
             $scope.newPaymentInfo = data;
             $scope.showSelectedCreditCard = false;
-            $scope.showCC = false;
+            $scope.showCCPage = false;
             savenewCc();
         });
 
@@ -340,7 +340,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.renderData.creditCardType = $scope.cardsList[index].card_code.toLowerCase();
             $scope.renderData.endingWith = $scope.cardsList[index].mli_token;
             $scope.renderData.cardExpiry = $scope.cardsList[index].card_expiry;
-            $scope.showCC = false;
+            $scope.showCCPage = false;
             $scope.showSelectedCreditCard = true;
             // CICO-9457 : Data for fees details - standalone only.
             //CICO-13427 : API response changed from fees_information to fees_details
@@ -374,6 +374,26 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 };
             });
             return referenceTextAvailable;
+        };
+        $scope.showSelectedCreditCardButton = function(){
+            if ($scope.showSelectedCreditCard && 
+                    !$scope.showCCPage && 
+                    $scope.reservationData.paymentType.type.value === 'CC' && 
+                    ($scope.paymentGateway !== 'sixpayments' || $scope.isManual || $scope.reservationEditMode)
+                ){ return true;
+            } else return false;
+        };
+        
+        $scope.showCardInputType = function(){
+            if ($scope.paymentGateway === 'sixpayments' && $scope.reservationData.paymentType.type.value ==='CC' && !$scope.showCCPage){
+                return true;
+            } else return false;
+        };
+
+        $scope.hidePaymentSelection = function(){
+            if ($scope.showCCPage ||($scope.depositData.attempted && !$scope.depositData.depositAttemptFailure)){
+                return true;
+            } else return false;
         };
 
         $scope.tryAgain = function() {
@@ -1019,7 +1039,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         // CICO-9512
 
         $scope.changeOnsiteCallIn = function() {
-            $scope.isManual ? $scope.showCC = true : "";
+            $scope.isManual ? $scope.showCCPage = true : "";
             refreshScrolls();
         };
 
@@ -1067,36 +1087,42 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         };
 
 
-
-        $scope.isGiftCard = false;
-        $scope.changePaymentType = function() {
+        $scope.setGiftCardParams = function(){
+            $scope.shouldShowIframe = false;
+            $scope.addmode = false;
+            $scope.shouldShowAddNewCard = false;
+            $scope.showCCPage = false;
+            $scope.giftCardDetails = $scope.reservationData.paymentType;
+        };
+        $scope.isGiftCardType = function(){
             if ($scope.reservationData.paymentType.type.value === 'GIFT_CARD') {
-                $scope.isGiftCard = true;
-                $scope.giftCardDetails = $scope.reservationData.paymentType;
+                return true;
                 //act as a credit card but set the gift card flag to show/hide specific sections
                 // $scope.reservationData.paymentType.type.value = 'CC';
             } else {
-                $scope.isGiftCard = false;
+               return false;
             }
+        };
+        $scope.isGiftCard = false;
+        $scope.changePaymentType = function() {
+            $scope.isGiftCard = $scope.isGiftCardType();
 
             if ($scope.reservationData.paymentType.type.value === 'CC') {
 
-                ($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCC = true;
+                ($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCCPage = true;
                 $scope.isNewCardAdded = ($rootScope.paymentGateway === 'sixpayments') ? true : false;
                 $scope.isManual = ($rootScope.paymentGateway === 'sixpayments') ? false : "";
                 refreshScrolls();
                 /*
                  * Comment out .if existing cards needed remove comments
                  */
-
-
                 $scope.cardsList = (typeof $scope.cardsList !== 'undefined') ? $scope.cardsList : [];
                 $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
+                    if ($scope.addmode){
+                        $rootScope.$broadcast('CLICK_ADD_NEW_CARD');
+                    }
                 if ($scope.isGiftCard) {
-                    $scope.shouldShowIframe = false;
-                    $scope.addmode = false;
-                    $scope.shouldShowAddNewCard = false;
-                    $scope.showCC = false;
+                    $scope.setGiftCardParams();
                 }
             } else {
                 $scope.isSubmitButtonEnabled = true;
@@ -1363,7 +1389,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 swipedCardData.token = tokenValue;
                 var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
                 $scope.reservationData.paymentType.type.value = "CC";
-                $scope.showCC = true;
+                $scope.showCCPage = true;
                 $scope.addmode = true;
                 $scope.swippedCard = true;
 
@@ -1387,7 +1413,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         });
         var successSwipePayment = function(data, successParams) {
 
-            $scope.showCC = false;
+            $scope.showCCPage = false;
             $scope.showSelectedCreditCard = true;
             $scope.reservationData.selectedPaymentId = data.id;
             $scope.renderData.creditCardType = successParams.cardType.toLowerCase();
