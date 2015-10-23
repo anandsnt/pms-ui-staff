@@ -1260,12 +1260,12 @@ sntRover.controller('RVbillCardController',
 
                     var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
                     if (useAdvancedQueFlow){
+                        setTimeout(function(){
+                            //then prompt for keys
+                            $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
+                        },1250);
                         $scope.goToStayCardFromAddToQueue();
                     }
-                    setTimeout(function(){
-                        //then prompt for keys
-                        $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
-                    },500);
             };
             $scope.failPutInQueueCallBack = function(err) {
                     $scope.$emit('hideLoader');
