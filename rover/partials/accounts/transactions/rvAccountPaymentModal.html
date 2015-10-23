@@ -28,7 +28,7 @@
                 </div>
                 
             <!-- Selected card - Show when card is selected/added-->
-            <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo && !showCCPage && (paymentGateway !== 'sixpayments' || isManual) && saveData.paymentType === 'CC' && !depositPaidSuccesFully" ng-click="showCardAddmode()">
+            <div id="selected-card" class="entry full-width" ng-show="showSelectedCreditCardButton()" ng-click="showCardAddmode()">
                 <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
                 <label class="active-item item-payment">
                     <figure class="card-logo">
@@ -47,14 +47,17 @@
                 <label ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable || !isGiftCardPmt || depositPaidSuccesFully"> Available Card Balance ({{currencySymbol}}) </label>
                 <input ng-show="depositWithGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable || !isGiftCardPmt || depositPaidSuccesFully" name="giftCardAmount" id="amount" ng-model="giftCardAvailableBalance" type="text" class="amount" ng-readonly="true" value="{{ giftCardAvailableBalance }}"/>
                                     
-		<div ng-show="isGiftCardPmt" ng-hide="!isGiftCardPmt || depositPaidSuccesFully" class="entry card-number" ng-class="{'card-type':isGiftCard}">
+		<div ng-show="isGiftCardPmt" class="entry card-number" ng-class="{'card-type':isGiftCard}">
                     <label for="card-number">Card number (<span>No spaces</span>)</label>
-                    <input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber)" />
-                    <input ng-show="!isGiftCard" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+                    <input ng-show="isGiftCardPmt" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber)" />
+                    <input ng-show="!isGiftCardPmt" name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+                    <br />
 		</div>
-                
-                
+                <div ng-show="isGiftCardPmt" class="entry card-number">
                 <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
+                </div>
+                
+                <label ng-show="!isGiftCardPmt" for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
                 
                 <!-- CICO-12408 : Use only when fee exsists -->
                 <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" />

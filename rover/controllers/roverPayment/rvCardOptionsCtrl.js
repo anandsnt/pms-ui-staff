@@ -63,9 +63,6 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 
                 $scope.hideCardToggles = function(){
-                    console.info('$scope.hasAccompanyguest: '+$scope.hasAccompanyguest)
-                    console.info('$scope.isFromGuestCard: '+$scope.isFromGuestCard)
-                    console.info('$scope.cardsList: ',$scope.cardsList)
                     if ($scope.isFromGuestCard  || 
                             $scope.hasAccompanyguest || 
                             ($scope.cardsList && $scope.cardsList.length === 0)
@@ -76,7 +73,6 @@ sntRover.controller('RVCardOptionsCtrl',
                 
                 
                 $scope.$on('giftCardSelectedFromGroups',function(){
-                    console.warn('toggle gift card')
                    $scope.clickedGiftCardToggle()
                 });
                 
