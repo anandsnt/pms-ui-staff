@@ -72,8 +72,11 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 
                 
+                $scope.$on('hidePayCardToggles',function(){
+                   $scope.isFromGuestCard = true;
+                });
                 $scope.$on('giftCardSelectedFromGroups',function(){
-                   $scope.clickedGiftCardToggle()
+                   $scope.clickedGiftCardToggle();
                 });
                 
                 $scope.$on('CLICK_ADD_NEW_CARD',function(){
