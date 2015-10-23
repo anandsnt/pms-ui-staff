@@ -399,8 +399,10 @@ console.log(arguments)
 			angular.forEach($scope.cardsList, function(value, key) {
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
-					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() === "CC"){
-						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number === value.mli_token) && ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() === value.card_code.toLowerCase() )) {
+					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type && $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() === "CC"){
+						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number === value.mli_token) && 
+                                                        ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() === 
+                                                        value.card_code.toLowerCase() )) {
 							value.isSelected = true;
 							checkReferencetextAvailableForCC();
 						}
