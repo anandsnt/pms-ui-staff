@@ -32,10 +32,27 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.showCCPage = false;
         $scope.swippedCard = false;
+        $scope.initCardSwipeRenderData = function(){
+            $scope.isNewCardAdded = false;
+            $scope.shouldShowIframe = false; 
+            $scope.addmode = true; 
+            $scope.isGiftCard = false; 
+            $scope.useDepositGiftCard = false; 
+            $scope.hideCancelCard = false; 
+            $scope.depositWithGiftCard = false;
+            setTimeout(function(){
+                $scope.$broadcast('addNewCardClicked');//child element is the rvCardOptions.html
+                $scope.$broadcast('hidePayCardToggles');//child element is the rvCardOptions.html
+            },100);
+        };
+        
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 		$scope.showManualEntryDisabledPopup = false;
-		$scope.showCCPage = true;
+		/*$scope.showCCPage = true;
 		$scope.swippedCard = true;
+                $scope.addmode = true;
+                */ //these below need to be moved out to a dedicated function call for swipe in overlay
+                $scope.initCardSwipeRenderData();
 	}
 	else{
 		$scope.showManualEntryDisabledPopup = ($rootScope.isManualCCEntryEnabled) ? false : true;
@@ -570,7 +587,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
-
+                
+                if ($scope.dataToSave.addToGuestCard){
+                    data.addToGuestCard = $scope.dataToSave.addToGuestCard;
+                }
 		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
 			successSwipePayment();
