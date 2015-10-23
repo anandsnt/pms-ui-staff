@@ -102,7 +102,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
 		    angular.forEach($scope.roomTypes,function(roomType, index) {
                 angular.forEach($scope.checkoutData.excluded_room_types,function(excludedRoomType, index) {
-                if(roomType.id === excludedRoomType){
+                if(parseInt(roomType.id) === parseInt(excludedRoomType)){
                     $scope.excludedRoomTypes.push(roomType);
                     roomType.ticked = true;// for the multi-select implementation
                 }
