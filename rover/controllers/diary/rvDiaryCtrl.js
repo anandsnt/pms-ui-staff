@@ -156,8 +156,6 @@ sntRover
 	    	showOn: 'button',
 	    	//dateFormat: $rootScope.dateFormat,
 	    	numberOfMonths: 1,
-	    	//minDate: minDate,
-	    	//yearRange: '-0:'
 	    	onSelect: onDateSelectionFromDatepicker
 	    };
 
@@ -1273,8 +1271,7 @@ sntRover
 			if ( !!_.size($_resetObj) ) {
 				$_resetObj.callback();
 			} 
-			else {				
-
+			else {	
 				$scope.clearAvailability();
 				$scope.resetEdit();	
 				$scope.renderGrid();				
@@ -1564,6 +1561,7 @@ sntRover
 
     $scope.resetEverything = function() {
     	var _sucessCallback = function(propertyTime) {
+
 	    	var propertyDate = new tzIndependentDate( propertyTime.hotel_time.date );
 			propertyDate.setHours(0, 0, 0);
 
@@ -1573,14 +1571,15 @@ sntRover
 				$scope.gridProps.filter.arrival_time = $_resetObj.arrival_time;
 				$scope.gridProps.filter.rate_type = 'Standard';
 				$scope.gridProps.filter.room_type = '';
-				$scope.$emit('hideLoader');	
+				
 				var display_offset = new tzIndependentDate($_resetObj.start_date);
 				
-				$scope.gridProps.edit.reset_scroll = {
+		    	$scope.gridProps.edit.reset_scroll = {
 		    		'x_n'      : propertyDate,
-		    		'x_origin' : display_offset.getTime()
-	    		};
+		    		'x_origin' : $_resetObj.start_date
+		    	};
 	    		$scope.renderGrid();
+	    		$scope.$emit('hideLoader');	
 				$timeout(function() {
 					$_resetObj = {};
 				}, 300);
@@ -1591,6 +1590,7 @@ sntRover
 			if(!$scope.$$phase) {	
 				$scope.$apply();
 			}	    	
+
     	};
 
 
