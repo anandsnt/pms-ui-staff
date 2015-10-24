@@ -117,6 +117,20 @@ var GridRowItem = React.createClass({
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';			
 		}
+		else if(display_start_time.isOnDST() && !start_date.isOnDST()){
+			var dateForCalculatingLeft = new Date(start_time_ms);
+			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
+			
+			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
+
+			//The special case adjustment
+			if(dateForCalculatingLeft.isOnDST()){
+				left = (dateForCalculatingLeft.getTime() +3600000 - x_origin) * px_per_ms + 'px';
+			}
+
+
+		}
+		console.log('removedrr');
 		/*if(start_date.isOnDST()){
 			console.log('yes in DST')
 			start_date.setMinutes(start_date.getMinutes() + start_date.getDSTDifference());

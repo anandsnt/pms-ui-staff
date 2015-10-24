@@ -1104,7 +1104,7 @@ sntRover
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
-		console.log(params);
+
 		if(filter.rate_type == 'Corporate' && !filter.rate) {			
 			//if Rate type select box is not open, we have to
 			openRateTypeSelectBox();
@@ -1188,8 +1188,12 @@ sntRover
 							 start_date.getDate(),
 							 start_time.hours,
 							 start_time.minutes,
-							 0, 0),
-			end = new Date(start.getFullYear(),
+							 0, 0);
+			var selected_hour_min = $scope.gridProps.filter.arrival_time.split(":"),
+					hour = selected_hour_min[0],
+					min  = selected_hour_min[1];
+			start.setHours(hour, min)
+		var end = new Date(start.getFullYear(),
 						   start.getMonth(),
 						   start.getDate(),
 						   start.getHours()  + time_span.hours,
@@ -1206,11 +1210,11 @@ sntRover
 					hour = selected_hour_min[0],
 					min  = selected_hour_min[1];
 				start.setHours(hour, min);*/
-				console.log('ys hhh');
-				start.setMinutes(start.getMinutes() - start.getDSTDifference());
+				console.log('ys hhh ' + start.getDSTDifference());
+				//start.setMinutes(start.getMinutes() - start.getDSTDifference());
 			}
 			if(end.isOnDST()){
-				end.setMinutes(end.getMinutes() - end.getDSTDifference());
+				//end.setMinutes(end.getMinutes() - end.getDSTDifference());
 			}
 
 			if(this.availability.resize.current_arrival_time !== null && 
