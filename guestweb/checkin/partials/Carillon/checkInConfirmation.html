@@ -30,7 +30,8 @@
 
 		<div class="row checkin-wrapper">
 			<div class="col-md-6 headtext centeralign pad-rt-60  black-text">
-				Start Pre Check-in ?
+				<span ng-if="!isPrecheckinOnly">Ready to Check-in ?</span>
+				<span ng-if="isPrecheckinOnly">Start Pre Check-in ?</span>
 				<p class="subTitletext black-text">
 					To provide you with a
 					<strong class="reservation-details black-text">secure check-in </strong>
