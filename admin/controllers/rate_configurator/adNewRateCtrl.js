@@ -286,7 +286,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
             $scope.hotel_business_date = data.business_date;
             // set rate data for edit
-
+            $scope.rateData.classification = data.rate_type.classification;
             $scope.manipulateData(data);
             $scope.rateData.id = $stateParams.rateId;
             // navigate to step where user last left unsaved

@@ -61,7 +61,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
-					'userId': $scope.reservationDetails.guestCard.id,
+					// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
+					'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
 					'avatar': $scope.guestCardData.cardHeaderImage,
 					'guestId': null,
 					'vip': data.vip
