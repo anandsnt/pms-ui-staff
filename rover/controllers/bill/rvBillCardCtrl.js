@@ -778,6 +778,8 @@ sntRover.controller('RVbillCardController',
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 
+                ngDialog.close();//close the dialog if one exists, set data after, so duplicates are not created
+                //this needs to be moved after 1.13.0 to better detect where the swipe happens and do proper broadcasts to set carddata
 	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
 			} else if ($scope.billingInfoModalOpened) {
