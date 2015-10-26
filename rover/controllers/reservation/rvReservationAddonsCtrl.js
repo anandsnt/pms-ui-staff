@@ -412,10 +412,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     };
                 };
 
+               
+                // Set the departure date for the query as the date before actual departure and in case of day reservations,
+                // make it the arrival date.
+                // Change made for CICO-21037
+                var adjustedQueryEndDate = new tzIndependentDate($scope.reservationData.arrivalDate);
+                adjustedQueryEndDate.setDate(adjustedQueryEndDate.getDate() + (($scope.reservationData.numNights || 1) - 1));
+
                 var paramDict = {
                     'addon_id': addon.id,
                     'from_date': $scope.reservationData.arrivalDate,
-                    'to_date': $scope.reservationData.departureDate,
+                    'to_date':  $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
                 }
                 $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
             }
