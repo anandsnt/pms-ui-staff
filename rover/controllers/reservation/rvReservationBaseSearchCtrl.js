@@ -39,8 +39,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;
             };
-            if ($scope.reservationData.resHours && $scope.reservationData.resHours < 3) {
-                $timeout(correctHours.bind(null, 3), 100);
+            if ($scope.reservationData.resHours && $scope.reservationData.resHours < $rootScope.minimumHourlyReservationPeriod) {
+                $timeout(correctHours.bind(null, $rootScope.minimumHourlyReservationPeriod), 100);
             };
 
             var checkinHour = parseInt($scope.reservationData.checkinTime.hh);
@@ -153,15 +153,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.refreshScroller('search_reservation');
             };
 
-        var fetchMinTimeSucess = function(data) {
-            var intVal = parseInt(data.min_hours);
-
-            if (isNaN(intVal) || intVal < 3) {
-                $scope.reservationData.resHours = 3;
-            } else {
-                $scope.reservationData.resHours = intVal;
-            };
-        };
 
         /**
          *   We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -251,8 +242,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.isNightsActive = false;
                 $scope.shouldShowNights = false;
                 $scope.shouldShowHours = true;
-
-                $scope.invokeApi(RVReservationBaseSearchSrv.fetchMinTime, {}, fetchMinTimeSucess);
+                $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, fetchCurrentTimeSucess);
             } else {
                 $scope.isNightsActive = true;
