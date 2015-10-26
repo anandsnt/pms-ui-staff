@@ -500,6 +500,9 @@ sntRover.controller('guestCardController', [
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 			$scope.guestCardVisible = false;
+			$timeout(function () {
+				$scope.$emit('hideLoader');
+			},2000);
 		};
 
 		$scope.handleDrawClosing = function() {
