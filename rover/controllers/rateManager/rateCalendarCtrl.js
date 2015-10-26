@@ -590,6 +590,7 @@ sntRover.controller('RateCalendarCtrl', [
          * Set scope variables to be passed to the popup.
          */
         $scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type, isForAllData) {
+            $scope.calendarData.is_child = $scope.rateIsChild($scope.currentSelectedRate);
             $stateParams.openUpdatePriceRestrictions = true;
             //flag to show update price restriction window
             $scope.popupData.all_room_types = $scope.calendarData.room_types_all;
@@ -830,6 +831,9 @@ sntRover.controller('RateCalendarCtrl', [
         });
 
         $scope.rateIsChild = function(rate) {
+            if ($scope.calendarData.isChildRate){
+                $scope.lastChildRates = $scope.calendarData.isChildRate;
+            }
             if ($scope.calendarData.isChildRate) {
                 for (var i in $scope.calendarData.isChildRate) {
                     if ($scope.calendarData.isChildRate[i] === rate.id) {
@@ -837,9 +841,13 @@ sntRover.controller('RateCalendarCtrl', [
                     };
                 }
                 return false;
-            } else {
-                return false;
-            }
+            } else if ($scope.lastChildRates) {
+                 for (var i in $scope.lastChildRates) {
+                    if ($scope.lastChildRates[i] === rate.id) {
+                        return true;
+                    };
+                }
+            } else return false;
         };
 
 

@@ -810,7 +810,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					//7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// Revisit all occupancyLimit warnings
-					// $scope.checkOccupancyLimit(null, false, i);					
+					$scope.checkOccupancyLimit(null, false, i);					
 				}
 				$scope.viewState.currentTab = $scope.activeRoom;
 				if ($scope.otherData.showOverbookingAlert) {
@@ -1676,7 +1676,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 
 			$scope.$on('resetGuestTab', function() {
-				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id, function(data) {
+				// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
+				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id, function(data) {
 					$scope.$emit('hideLoader');
 					$scope.reservationData.guestMemberships = {
 						ffp: data.frequentFlyerProgram,

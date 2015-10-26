@@ -387,7 +387,6 @@ sntRover.controller('reservationActionsController', [
                         var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on, 
                             isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued, 
                             reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-
                         var displayPutInQueue = false;
                         if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
                             if (isQueueRoomsOn === "true" && isReservationQueued === "false") {
@@ -422,15 +421,11 @@ sntRover.controller('reservationActionsController', [
                         var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
                         if (useAdvancedQueFlow){
                             $rootScope.$emit('goToStayCardFromAddToQueue');
+                            setTimeout(function(){
+                                //then prompt for keys
+                                $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
+                            },500);
                         }
-                        setTimeout(function(){
-                            //then prompt for keys
-                            $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
-                        },500);
-		};
-		$scope.failPutInQueueCallBack = function(err) {
-			$scope.$emit('hideLoader');
-                        $scope.errorMessage = error;
 		};
                 
 		$scope.successRemoveFromQueueCallBack = function() {
@@ -444,31 +439,7 @@ sntRover.controller('reservationActionsController', [
 		};
                 
                 
-                if (!$rootScope.reservationWatch){//alternative to $destroy, this is an init-once method
-                    $rootScope.reservationWatch = 1;
-                    $rootScope.$on('putInQueueAdvanced',function(evt, data){
-                        $scope.putInQueueAdvanced($scope.reservationData.reservation_card.reservation_id, data);
-                    });
-                }
-                
                 $scope.reservationData.check_in_via_queue = false;
-                $scope.putInQueueAdvanced = function(reservationId, saveData){
-                    $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
-                    
-                    var data = {
-                            "reservationId": reservationId,
-                            "status": "true"
-                    };
-                    if (saveData && saveData.signature !== '[]'){
-                        data.signature = saveData.signature;
-                    }
-                    if (saveData.is_promotions_and_email_set !== undefined){
-                        data.is_promotions_and_email_set = saveData.is_promotions_and_email_set;
-                    }
-                    data.viaAdvancedQueue = true;
-                    
-                    $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack, $scope.failPutInQueueCallBack);
-                };
                 
 		$scope.putInQueue = function(reservationId) {
                     

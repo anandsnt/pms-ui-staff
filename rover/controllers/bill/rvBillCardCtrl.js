@@ -1195,6 +1195,7 @@ sntRover.controller('RVbillCardController',
 	};
         
         $scope.goToStayCardFromAddToQueue = function(){
+            $scope.isRefreshOnBackToStaycard = true;
             $scope.goBackToStayCard();
         };
         
@@ -1231,7 +1232,45 @@ sntRover.controller('RVbillCardController',
 		});
 		return isSharerCheckedin;
 	};
-        
+
+        $scope.putInQueueAdvanced = function(saveData){
+                   var reservationId = $scope.reservationBillData.reservation_id;
+                   $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
+
+                   var data = {
+                           "reservationId": reservationId,
+                           "status": "true"
+                   };
+                   if (saveData && saveData.signature !== '[]'){
+                       data.signature = saveData.signature;
+                   }
+                   if (saveData.is_promotions_and_email_set !== undefined){
+                       data.is_promotions_and_email_set = saveData.is_promotions_and_email_set;
+                   }
+                   data.viaAdvancedQueue = true;
+
+                   $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack, $scope.failPutInQueueCallBack);
+               };
+                
+            $scope.successPutInQueueCallBack = function() {
+                    $scope.$emit('hideLoader');
+                    $scope.reservationData.reservation_card.is_reservation_queued = "true";
+                    $scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
+                    RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+
+                    var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    if (useAdvancedQueFlow){
+                        setTimeout(function(){
+                            //then prompt for keys
+                            $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
+                        },1250);
+                        $scope.goToStayCardFromAddToQueue();
+                    }
+            };
+            $scope.failPutInQueueCallBack = function(err) {
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = err;
+            };
         
 
 	// Handle checkin process with Autherization..
@@ -1248,7 +1287,7 @@ sntRover.controller('RVbillCardController',
                         //----> upon check-in w/ res. queued, Immediately check-in guest in Opera and advance Rover to key generation screen
                         data.authorize_credit_card = false;        
                         if ($scope.putInQueue || queueRoom === true){
-                            $rootScope.$emit('putInQueueAdvanced', data);
+                            $scope.putInQueueAdvanced(data);
                             //Now, we need to go ahead and produce the keys so the user doesn't need key creation at check-in if (queued room)
                             
                         }else {
@@ -1332,6 +1371,10 @@ sntRover.controller('RVbillCardController',
                 return signatureData;
         };
         $scope.signatureNeeded = function(signatureData){
+                if ($scope.reservationBillData.signature_details.is_signed === 'true'){
+                    signatureData = $scope.reservationBillData.signature_details.signed_image;
+                    return false;
+                };
                 
 		if(signatureData === "[]" && $scope.reservationBillData.required_signature_at === "CHECKIN"){
                     return true;
