@@ -657,7 +657,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var onReplaceSuccess = function() {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
-					if ($scope.viewState.lastCardSlot !== "") {
+					//CICO-21205 
+					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot);
 						$scope.viewState.lastCardSlot = "";
 					}
