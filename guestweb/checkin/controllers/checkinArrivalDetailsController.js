@@ -1,3 +1,8 @@
+/*
+	Checkin arrival details Ctrl 
+	The user can change the estimated time of arrival from here and optionally add comments.
+*/
+
 (function() {
 
 	var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal,$stateParams) {

@@ -162,7 +162,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
-      if (typeof $scope.guestCardData.contactInfo.user_id === "undefined" || $scope.guestCardData.userId === "" || $scope.guestCardData.userId === null || typeof $scope.guestCardData.userId === 'undefined') {
+      if (!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) {
         $scope.saveContactInfo(true);
       } else {
         $scope.saveContactInfo();

@@ -8,14 +8,14 @@
                 {{getTabTitle(tabIndex)}}
             </li>
         </ul>
-        <div class="switch-button" ng-click="toggleCalendar()">
+        <div class="switch-button on" ng-click="toggleCalendar()">
             <!-- CICO-15042 we will be disabling calendar switch for now -->
-            <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox"/>
-            <label class="data-on">
+            <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" checked />
+            <label class="data-off">
                 <span class="value">Rooms &amp; Rates</span>
                 <span class="switch-icon">Calendar</span>
             </label>
-            <label class="data-off" ng-class="{'calendar': stateCheck.activeMode=='CALENDAR'}">
+            <label class="data-on">
                 <span class="switch-icon">Rooms &amp; Rates</span>
                 <span class="value">Calendar</span>
             </label>

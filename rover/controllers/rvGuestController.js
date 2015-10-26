@@ -1,6 +1,6 @@
 sntRover.controller('guestCardController', [
-	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state) {
+	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -159,7 +159,11 @@ sntRover.controller('guestCardController', [
 				var preventClicking = false;
 			}
 		};
-
+                
+		$scope.$on("swipeAtGuestCard", function() {
+			$scope.guestCardTabSwitch("guest-credit");
+		});
+                
 		$scope.$on("resetGuestTab", function() {
 			$scope.guestCardTabSwitch("guest-contact");
 		});
@@ -567,38 +571,65 @@ sntRover.controller('guestCardController', [
 			};
 		})();
 
-		$scope.removeGroupCard = function() {
+		var resetCompanyTACards = function() {
+				resetReservationData.resetCompanyCard();
+				resetReservationData.resetTravelAgent();
 
-			resetReservationData.resetCompanyCard();
-			resetReservationData.resetTravelAgent();
+				$scope.reservationDetails.companyCard.id = "";
+				$scope.reservationDetails.travelAgent.id = "";
 
-			$scope.reservationDetails.companyCard.id = "";
-			$scope.reservationDetails.travelAgent.id = "";
+				$scope.$broadcast("companyCardDetached");
+				$scope.$broadcast("travelAgentDetached");
+			},
+			removeGroupCard = function() {
+				resetCompanyTACards();
 
-			$scope.$broadcast("companyCardDetached");
-			$scope.$broadcast("travelAgentDetached");
+				if ($scope.viewState.identifier === "CREATION") {
+					// reservationCreation				
+					$scope.reservationData.group = {
+						id: "",
+						name: "",
+						code: "",
+						company: "",
+						travelAgent: ""
+					}
 
-			if ($scope.viewState.identifier === "CREATION") {
-				// reservationCreation				
-				$scope.reservationData.group = {
-					id: "",
-					name: "",
-					code: "",
-					company: "",
-					travelAgent: ""
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
+					$scope.$broadcast("groupCardDetached");
+					$scope.closeGuestCard();
+				} else {
+					// Handle group removal in stay-card
+					detachGroupFromThisReservation();
 				}
+			},
+			removeAllotmentCard = function() {
 
-				$scope.showContractedRates({
-					companyCard: $scope.reservationDetails.companyCard.id,
-					travelAgent: $scope.reservationDetails.travelAgent.id
-				});
-				$scope.$broadcast("groupCardDetached");
-				$scope.closeGuestCard();
-			} else {
-				// Handle group removal in stay-card
-				detachGroupFromThisReservation();
-			}
-		}
+				resetCompanyTACards();
+
+				if ($scope.viewState.identifier === "CREATION") {
+					// If reservation NOT created			
+					$scope.reservationData.allotment = {
+						id: "",
+						name: "",
+						code: "",
+						company: "",
+						travelAgent: ""
+					}
+
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
+					$scope.$broadcast("groupCardDetached");
+					$scope.closeGuestCard();
+				} else {
+					// In case reservation created with Allotment
+					detachFromAllotment();
+				}
+			};
 
 		var showDetachCardsAPIErrorPopup = function() {
 			ngDialog.open({
@@ -1058,19 +1089,13 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} groupData
 		 * @return {undefined}
 		 */
-		var updateReservationGroupData = function(groupData) {
-
-			//if it is not set initially
-			if (_.isUndefined($scope.reservationData.group)) {
-				$scope.reservationData.group = {};
-			}
-
+		var updateReservationGroupData = function(group) {
 			_.extend($scope.reservationData.group, {
-				id: groupData.id,
-				name: groupData.group_name,
-				code: groupData.group_code,
-				company: groupData.company_id,
-				travelAgent: groupData.travel_agent_id
+				id: group.id,
+				name: group.name,
+				code: group.code,
+				company: group.company_id,
+				travelAgent: group.travel_agent_id
 			});
 		};
 
@@ -1175,7 +1200,9 @@ sntRover.controller('guestCardController', [
 			$scope.reservationData.group = {
 				id: "",
 				name: "",
-				code: ""
+				code: "",
+				company: "",
+				travelAgent: ""
 			};
 		};
 
@@ -1184,7 +1211,7 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} success data from API
 		 * @return {undefined}
 		 */
-		var successCallBackOfDetachGroupFromThisReservation = function(data, successCallBackParams) {
+		var successCallBackOfDetachGroupFromThisReservation = function(data) {
 			//updating the central reservation data model
 			resetReservationGroupData();
 
@@ -1204,7 +1231,7 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} selectedGroup
 		 * @return undefined
 		 */
-		var detachGroupFromThisReservation = function(selectedGroup) {
+		var detachGroupFromThisReservation = function() {
 			var resData = $scope.reservationData;
 
 			//calling the API
@@ -1222,16 +1249,68 @@ sntRover.controller('guestCardController', [
 			$scope.callAPI(rvGroupSrv.detachGroupFromReservation, options);
 		};
 
-		$scope.selectToGroupORAllotment = function(cardDetail, $event) {
-			$event.stopPropagation();
-			if (cardDetail.type === 'GROUP') {
-				selectGroup(cardDetail);
-			} else if (cardDetail.type === 'ALLOTMENT') {
-				selectAllotment(cardDetail);
+		var detachFromAllotment = function() {
+			$scope.callAPI(rvAllotmentSrv.detachAllotmentFromReservation, {
+				params: $scope.reservationData.reservationId,
+				successCallBack: function() {
+					//reset reservation data model
+					$scope.reservationData.allotment = {
+						id: "",
+						name: "",
+						code: "",
+						company: "",
+						travelAgent: ""
+					};
+					$scope.closeGuestCard();
+					switchToAddCardViewMode();
+					$scope.$broadcast("groupCardDetached");
+					// Need to select new rate for the reservation --> Take user to the Room & Rates screen
+					$scope.navigateToRoomAndRates();
+				},
+				failureCallBack: function() {
+					console.warn('Detach Allotment FAILED');
+				}
+			});
+		};
+
+
+		/**
+		 * Method shared between group and allot cards!
+		 * Routes control to the appropriate path...
+		 */
+		$scope.detachFromGroupORAllotment = function() {
+			// Common method used across Group and Allotment cards in the reservation card headers
+			// NOTE: The group and allotment cards are mutually exclusive! 
+			if (!!$scope.reservationData.group.id) { // In case the attached card is a group
+				removeGroupCard();
+			} else if (!!$scope.reservationData.allotment.id) {
+				removeAllotmentCard();
 			}
 		};
 
-		var selectGroup = function(group) {
+		$scope.selectToGroupORAllotment = function(cardDetail, $event) {
+			$event.stopPropagation();
+			if ($scope.viewState.identifier === "CREATION") {
+				if (cardDetail.type === 'GROUP') {
+					$scope.selectGroup(cardDetail);
+				} else if (cardDetail.type === 'ALLOTMENT') {
+					$scope.selectAllotment(cardDetail);
+				}
+			} else {
+				ngDialog.open({
+					template: '/assets/partials/cards/alerts/warnCardOverride.html',
+					className: '',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false,
+					data: JSON.stringify({
+						card: cardDetail
+					})
+				});
+			}
+		};
+
+		$scope.selectGroup = function(group) {
 			if ($scope.viewState.identifier === "CREATION") {
 				// In create reservation
 				$scope.reservationData.group = {
@@ -1328,17 +1407,13 @@ sntRover.controller('guestCardController', [
 		 * @param  {Object} allotmentData
 		 * @return {undefined}
 		 */
-		var updateReservationAllotmentData = function(allotmentData) {
-
-			//if it is not set initially
-			if (_.isUndefined($scope.reservationData.allotment)) {
-				$scope.reservationData.allotment = {};
-			}
-
+		var updateReservationAllotmentData = function(allotment) {
 			_.extend($scope.reservationData.allotment, {
-				id: allotmentData.id,
-				name: allotmentData.group_name,
-				code: allotmentData.group_code
+				id: allotment.id,
+				name: allotment.name,
+				code: allotment.code,
+				company: allotment.company_id,
+				travelAgent: allotment.travel_agent_id
 			});
 		};
 
@@ -1374,16 +1449,20 @@ sntRover.controller('guestCardController', [
 		 * @return {undefined}
 		 */
 		var successCallBackOfAttachAllotmentToReservation = function(data, successCallBackParams) {
-			var selectedGroup = successCallBackParams.selectedGroup;
+			var selectedAllotment = successCallBackParams.selectedAllotment;
 
 			//updating the central reservation data model
-			updateReservationAllotmentData(selectedGroup);
+			updateReservationAllotmentData(selectedAllotment);
+
+			$scope.closeGuestCard();
 
 			//we are in card adding mode
 			switchToNomralCardViewingMode();
 
-			//fecthing the group details and showing them
-			initializeAllotmentCard(selectedGroup.id);
+			//we need to upadte the rate and other associated field, to do that, we are reloading the staycard
+			if ($scope.isInStayCardScreen()) {
+				$scope.reloadTheStaycard();
+			}
 		};
 
 		/**
@@ -1394,8 +1473,8 @@ sntRover.controller('guestCardController', [
 		var attachAllotmentToThisReservation = function(selectedAllotment) {
 			//calling the API
 			var params = {
-				reservation_id: $scope.reservationData.reservationId,
-				group_id: selectedAllotment.id
+				reservationId: $scope.reservationData.reservationId,
+				allotmentId: selectedAllotment.id
 			};
 
 			var options = {
@@ -1407,7 +1486,7 @@ sntRover.controller('guestCardController', [
 				}
 			};
 
-			$scope.callAPI(rvGroupSrv.attachAllotmentToReservation, options);
+			$scope.callAPI(rvAllotmentSrv.attachAllotmentToReservation, options);
 		};
 
 		/**
@@ -1417,7 +1496,7 @@ sntRover.controller('guestCardController', [
 		 * @param {Object} - clicked event
 		 * @return {undefined}
 		 */
-		var selectAllotment = function(allotment) {
+		$scope.selectAllotment = function(allotment) {
 
 			if (isInCreateReservationMode()) {
 				$scope.reservationData.allotment = {

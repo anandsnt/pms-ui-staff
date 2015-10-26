@@ -103,7 +103,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      };
 
      $scope.shouldDisableRemoveButton = function(reservation) {
-        return !$scope.reservationStatusFlags.reservationStatusFlags.isExpected;
+        return !$scope.reservationStatusFlags.isExpected;
      };
 
      $scope.shouldDisableNameField = function(reservation) {

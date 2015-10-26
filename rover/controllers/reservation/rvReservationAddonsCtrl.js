@@ -392,7 +392,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     /*
                      *  if the available count is less we prompts warning popup
                      */
-                    if (remainingCount >= 0 || availableAddonCount === null) {
+                    if (remainingCount > 0 || availableAddonCount === null) {
                         insertAddon(addon, addonQty);
                     } else {
                         $scope.addon = addon;

@@ -93,7 +93,7 @@
                 .holder {
                     clear: both;
                     margin-top: -10px;
-                    overflow-x: hidden;
+                    overflow: hidden;
                     .size(40px, 100%);
                     .show;
 
@@ -1582,7 +1582,7 @@
                             &.release-range {
                                 .row {
                                     &.open { 
-                                        .line-toggle { margin-bottom: 80px; }
+                                        .line-toggle { margin-bottom: 30px; }
                                     }
                                 }
                             }
@@ -1705,11 +1705,11 @@
                             padding: 20px;
 
                             li {
+                                display: inline-block;
                                 line-height: 1em;
                                 margin-bottom: 0;
                                 padding: 0 10px;
                                 border-right: 1px solid rgba(0,0,0,.1);
-                                .pull-left;
 
                                 .data {
                                     display: inline-block;
@@ -2082,6 +2082,10 @@
                         .totals {
                             width: 100%;
                             float: none;
+
+                            li {
+                                .button { padding: 0 20px; }
+                            }
                         }
                     }
 

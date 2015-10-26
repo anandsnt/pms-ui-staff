@@ -3,6 +3,7 @@ sntRover.constant('RVReportFiltersConst', {
 	'CANCELATION_DATE_RANGE'       : true,
 	'CANCELLATION_DATE_RANGE'      : true,
 	'ARRIVAL_DATE_RANGE'           : true,
+	'GROUP_START_DATE_RANGE'       : true,
 	'DEPOSIT_DATE_RANGE'           : true,
 	'CREATE_DATE_RANGE'            : true,
 	'PAID_DATE_RANGE'              : true,

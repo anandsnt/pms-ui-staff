@@ -526,7 +526,7 @@ sntRover.service('RVReservationStateService', [
 						currentRoom.total[rate_id].total += currentRoomRateDetails.total;
 						var stayLength = numNights;
 						// Handle single days for calculating rates
-						if (stayLength === 0) {
+						if (parseInt(stayLength, 10) === 0) {
 							stayLength = 1;
 						}
 						rooms[currentRoomId].total[rate_id].average = parseFloat(currentRoom.total[rate_id].totalRate / stayLength);
