@@ -1540,7 +1540,7 @@ sntRover.controller('RVbillCardController',
                             if (!$scope.putInQueue){
                                 setFlagForPreAuthPopup();
                             }
-                            if (signatureData === 'isSigned'){
+                            if (signatureData === 'isSigned' || signatureData === '[]'){
                                 delete data.signature;
                             }
                             
