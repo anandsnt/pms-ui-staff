@@ -24,6 +24,7 @@
 	if($scope.pageValid){
 
     $scope.checkoutmessage = $stateParams.message;
+    $scope.isFromCheckoutNow =  ($stateParams.isFromCheckoutNow  ==="true") ? true :false;
     $scope.fee = $stateParams.fee;
     var MLISessionId = "";
 

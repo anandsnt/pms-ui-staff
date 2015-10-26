@@ -24,8 +24,8 @@
 				<div class="col-md-6 headtext centeralign">
 					<span>Payment</span>
 					<p class="margin-10 checkout-time-container">
-						<span class="lightcontent chekout-time template-text">{{checkoutmessage}}
-						</span>
+						<span class="lightcontent chekout-time template-text" ng-hide="isFromCheckoutNow">Late check-out fee</span>
+						<span class="lightcontent chekout-time template-text" ng-show="isFromCheckoutNow">Your balance is</span>
 					</p>
 					<span class="template-text">{{currencySymbol}}{{fee}}</span>			
 				</div>
