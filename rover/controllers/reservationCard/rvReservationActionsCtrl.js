@@ -276,6 +276,7 @@ sntRover.controller('reservationActionsController', [
                             if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
                                 if ($scope.roomAssignmentNeeded()) {
                                     $scope.goToRoomAssignment();
+                                        return false;
                                 } else {
                                        $scope.goToBillCard();
                                         return false;
