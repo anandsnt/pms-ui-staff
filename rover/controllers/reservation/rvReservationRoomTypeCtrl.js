@@ -137,7 +137,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					});
 
 					$scope.isHouseAvailable = isHouseAvailable;
-					if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
+					// CICO-21313
+					// While coming in from staycard even if no avbl -- DO NOT go into calendar view
+					// clarified the same with the product team as well. (w. Nicole)
+					if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime && $stateParams.fromState !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
 						$scope.toggleCalendar();
 					}
 				} else if ($stateParams.view === "CALENDAR" && isCallingFirstTime) {
