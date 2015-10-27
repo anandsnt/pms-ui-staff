@@ -171,13 +171,11 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
                 'checkout_static_uri':$scope.checkoutData.checkout_static_uri
 			};
 
-        var saveCheckoutDetailsFailureCallback = function(data) {
-             $scope.$emit('hideLoader');
-          };
+        
     	var saveCheckoutDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     	};
-    	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback,saveCheckoutDetailsFailureCallback);
+    	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback);
     };
 
 }]);
