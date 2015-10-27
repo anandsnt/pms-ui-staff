@@ -529,7 +529,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	};
 
 	$scope.closeDepositModal = function () {
-		//$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", false);
+		$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG", false);
 		$scope.closeDialog();
 	};
 
