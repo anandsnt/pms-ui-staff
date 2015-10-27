@@ -1350,8 +1350,11 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
-                    report['sort_fields'][3]['sortDir'] = true;
-                    report['chosenSortBy'] = report['sort_fields'][3]['value'];
+                    var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
+                    if ( !! roomType ) {
+                        roomType['sortDir'] = true;
+                        report['chosenSortBy'] = roomType['value'];
+                    };
                 };
             };
         };
