@@ -16,7 +16,7 @@ sntRover.factory('RVReportUtilsFac', [
          * @param  {String} setting         Remove payments or only payments
          * @return {Object}                 Processed CG & CC
          */
-        var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting) {
+        var __adjustChargeGroupsCodes = function (chargeGroupsAry, chargeCodesAry, setting, selected) {
             var chargeGroupsAryCopy,
                 chargeCodesAryCopy,
                 newChargeGroupsAry = [],
@@ -25,13 +25,15 @@ sntRover.factory('RVReportUtilsFac', [
                 cgAssociated       = false,
                 paymentEntry       = {};
 
+            var selected = 'boolean' == typeof selected ? selected : true;
+
             chargeGroupsAryCopy = angular.copy( chargeGroupsAry );
             chargeCodesAryCopy = angular.copy( chargeCodesAry );
 
             if ( 'REMOVE_PAYMENTS' === setting ) {
                 _.each(chargeGroupsAryCopy, function (each) {
                     if ( each.name !== 'Payments' ) {
-                        each.selected = true;
+                        each.selected = selected;
                         newChargeGroupsAry.push( each );
                     } else {
                         paymentId = each.id;
@@ -44,7 +46,7 @@ sntRover.factory('RVReportUtilsFac', [
                     });
 
                     if ( !cgAssociated ) {
-                        each.selected = true;
+                        each.selected = selected;
                         newChargeCodesAry.push( each );
                     };
                 });
@@ -55,7 +57,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 if ( !!paymentEntry ) {
                     paymentId = paymentEntry.id;
-                    paymentEntry.selected = true;
+                    paymentEntry.selected = selected;
                     newChargeGroupsAry.push(paymentEntry);
 
                     _.each(chargeCodesAryCopy, function (each) {
@@ -64,19 +66,19 @@ sntRover.factory('RVReportUtilsFac', [
                         });
 
                         if ( !!cgAssociated ) {
-                            each.selected = true;
+                            each.selected = selected;
                             newChargeCodesAry.push(each);
                         };
                     });
                 };
             } else {
                 _.each(chargeGroupsAryCopy, function(each) {
-                    each.selected = true;
+                    each.selected = selected;
                     newChargeGroupsAry.push(each);
                 });
 
                 _.each(chargeCodesAryCopy, function(each) {
-                    each.selected = true;
+                    each.selected = selected;
                     newChargeCodesAry.push(each);
                 });
             };
@@ -1024,14 +1026,29 @@ sntRover.factory('RVReportUtilsFac', [
                     foundCC,
                     processedCGCC;
 
+                    var title,
+                        selected;
+
                 _.each(reportList, function(report) {
 
                     if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'REMOVE_PAYMENTS' );
-                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'ONLY_PAYMENTS' );
-                    } else {
-                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, '' );
+                        selected = true;
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'REMOVE_PAYMENTS', selected );
+                    }
+                    /**/
+                    else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
+                        selected = true;
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'ONLY_PAYMENTS', selected );
+                    }
+                    /**/
+                    else if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
+                        selected = false;
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'NONE', selected );
+                    }
+                    /**/
+                    else {
+                        selected = true;
+                        processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'NONE', selected );
                     };
 
                     foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_GROUP' });
@@ -1042,9 +1059,9 @@ sntRover.factory('RVReportUtilsFac', [
                             type         : 'FAUX_SELECT',
                             filter       : foundCG,
                             show         : false,
-                            selectAll    : true,
+                            selectAll    : selected,
                             defaultTitle : 'Select Groups',
-                            title        : 'All Selected',
+                            title        : selected ? 'All Selected' : 'Select Groups',
                             data         : angular.copy( processedCGCC.chargeGroups )
                         });
                     };
@@ -1057,9 +1074,9 @@ sntRover.factory('RVReportUtilsFac', [
                             type         : 'FAUX_SELECT',
                             filter       : foundCG,
                             show         : false,
-                            selectAll    : true,
+                            selectAll    : selected,
                             defaultTitle : 'Select Codes',
-                            title        : 'All Selected',
+                            title        : selected ? 'All Selected' : 'Select Codes',
                             data         : angular.copy( processedCGCC.chargeCodes )
                         });
                     };
@@ -1330,6 +1347,12 @@ sntRover.factory('RVReportUtilsFac', [
 
                 // adding custom name ref for easy access
                 report['sortByOptions'] = report['sort_fields'];
+
+                // making sort by room type default
+                if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
+                    report['sort_fields'][3]['sortDir'] = true;
+                    report['chosenSortBy'] = report['sort_fields'][3]['value'];
+                };
             };
         };
 
@@ -1402,6 +1425,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.businessDate;
                     break;
 
+                case reportNames['DAILY_PRODUCTION']:
+                    report['fromDate']  = _getDates.monthStart;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     report['fromDate']            = _getDates.aWeekAgo;
@@ -1436,6 +1464,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
                 'aWeekAfter'   : new Date(_year, _month, _date + 7),
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
+                'monthStart'   : new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
                 'aMonthAfter'  : new Date(_year, _month, _date + 30)

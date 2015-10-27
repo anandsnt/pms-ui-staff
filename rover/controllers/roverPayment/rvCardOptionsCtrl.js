@@ -72,8 +72,13 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 
                 
-                $scope.$on('hidePayCardToggles',function(){
-                   $scope.isFromGuestCard = true;
+                $scope.$on('hidePayCardToggles',function(evt, passObj){
+                    $scope.isFromGuestCard = true;
+                    if (passObj){
+                        if (passObj.isFromSwipe && passObj.swipeFrom !== 'guestCard'){
+                            $scope.isFromGuestCard = false;
+                        }
+                    }
                 });
                 $scope.$on('giftCardSelectedFromGroups',function(){
                    $scope.clickedGiftCardToggle();

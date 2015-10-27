@@ -778,6 +778,8 @@ sntRover.controller('RVbillCardController',
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 
+                ngDialog.close();//close the dialog if one exists, set data after, so duplicates are not created
+                //this needs to be moved after 1.13.0 to better detect where the swipe happens and do proper broadcasts to set carddata
 	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
 			} else if ($scope.billingInfoModalOpened) {
@@ -1210,13 +1212,9 @@ sntRover.controller('RVbillCardController',
             });
             $rootScope.$on('checkGuestInFromQueue', function() {
                 $scope.checkGuestInFromQueue = true;
-                //if checking guest in from queue, then signature details should have already been collected, submit those with the cc auth request
-                var signature;
-                if ($scope.reservationBillData.signature_details){
-                    signature = $scope.reservationBillData.signature_details.signed_image;
-                } else {
-                    signature = '[]';
-                }
+                //if checking guest in from queue, then signature details should have already been collected, dont re-submit the signature, this will fix an issue getting internal server error
+                var signature = 'isSigned';
+                  //  signature = $scope.reservationBillData.signature_details.signed_image;
                 $scope.initCompleteCheckin(false, signature);
             });
         }
@@ -1543,6 +1541,9 @@ sntRover.controller('RVbillCardController',
 	 		    }
                             if (!$scope.putInQueue){
                                 setFlagForPreAuthPopup();
+                            }
+                            if (signatureData === 'isSigned' || signatureData === '[]'){
+                                delete data.signature;
                             }
                             
 	 		    if(typeof isCheckinWithoutPreAuthPopup !== 'undefined' && isCheckinWithoutPreAuthPopup){
