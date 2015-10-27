@@ -260,7 +260,7 @@ console.log(arguments)
 				$scope.closeReservationCancelModal();
 			};
 
-			var cancelReservation = function() {
+			var cancelReservation = function(isWithoutPenalty) {
 				var onEachCancelSuccess = function(data) {
 						// Handle individual cancellations here if reqd.
 					},
@@ -286,7 +286,8 @@ console.log(arguments)
 							reason: $scope.cancellationData.reason,
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
-							application : "ROVER"
+							application : "ROVER",
+							is_without_penalty: isWithoutPenalty
 						};
 						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
@@ -299,7 +300,8 @@ console.log(arguments)
 						reason: $scope.cancellationData.reason,
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
-						application : "ROVER"
+						application : "ROVER",
+						is_without_penalty: isWithoutPenalty
 					};
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
@@ -332,8 +334,8 @@ console.log(arguments)
 
 			};
 
-			$scope.cancelReservation = function() {
-				cancelReservation();
+			$scope.cancelReservation = function(isWithoutPenalty) {
+				cancelReservation(isWithoutPenalty);
 			};
 			/*
 			 * Action - On click submit payment button
