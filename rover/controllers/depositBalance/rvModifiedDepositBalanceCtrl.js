@@ -346,6 +346,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.shouldCardAvailable = ($scope.shouldShowMakePaymentScreen) ? false: true;
 		refreshScroll();
 	};
+	//to trigger from sixpayment partial
+	$scope.$on('changeOnsiteCallIn', function(event){
+	    $scope.isManual =  true;
+	    $scope.changeOnsiteCallIn();
+	});
 
 	/*
 	 * on succesfully created the token

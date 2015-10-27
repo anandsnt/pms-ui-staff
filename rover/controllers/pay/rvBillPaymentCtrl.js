@@ -189,6 +189,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		 refreshCardsList();
 	};
 
+	$scope.$on('changeOnsiteCallIn', function(event){
+		$scope.isManual =  true;
+		$scope.changeOnsiteCallIn();
+	});
+
 	var checkReferencetextAvailable = function(){
 		angular.forEach($scope.renderData.paymentTypes, function(value, key) {
 			if(value.name === $scope.saveData.paymentType){

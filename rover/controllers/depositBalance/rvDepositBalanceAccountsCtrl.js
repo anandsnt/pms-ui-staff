@@ -287,6 +287,12 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		refreshScroll();
 	};
 
+	 //to trigger from sixpayment partial
+    $scope.$on('changeOnsiteCallIn', function(event){
+        $scope.isManual =  true;
+        $scope.changeOnsiteCallIn();
+    });
+
 	/*
 	 * on succesfully created the token
 	 */
