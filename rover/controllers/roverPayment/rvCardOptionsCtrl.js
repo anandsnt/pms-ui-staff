@@ -368,10 +368,10 @@ sntRover.controller('RVCardOptionsCtrl',
 
 		var notifyParent = function(tokenDetails){
 
-			var payementData = {};
-			payementData.cardDetails = angular.copy($scope.cardData);
-			payementData.tokenDetails = tokenDetails;
-			$scope.$emit("TOKEN_CREATED", payementData);
+			var paymentData = {};
+			paymentData.cardDetails = angular.copy($scope.cardData);
+			paymentData.tokenDetails = tokenDetails;
+			$scope.$emit("TOKEN_CREATED", paymentData);
 			$scope.$digest();
 			$scope.refreshIframe();
 		};
