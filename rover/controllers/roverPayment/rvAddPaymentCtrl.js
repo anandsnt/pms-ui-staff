@@ -131,7 +131,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	else{
 		$scope.showAddtoGuestCard = false;
 	};
-        
+        $scope.$on('isFromGuestCardFalse',function(){
+		$scope.showAddtoGuestCard = true;
+		$scope.isFromGuestCard = true;
+        });
         
         $scope.showAddtoGuestCardBox = function(){
             if (!$scope.showCCPage && 
