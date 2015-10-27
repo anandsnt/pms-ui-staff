@@ -106,6 +106,7 @@ sntRover.controller('roverController',
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+    $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
