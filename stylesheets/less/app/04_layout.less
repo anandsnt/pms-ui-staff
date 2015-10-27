@@ -2296,10 +2296,10 @@ body { overflow: hidden; }
 
 		                .icon-action {
 		                	position: absolute;
-		                	top: 10px;
+		                	top: 8px !important;
 		                	left: 10px;
 		                	font-size: 10px;
-		                	line-height: 1;
+		                	line-height: 1 !important;
 		                	text-transform: uppercase;
 		                	font-weight: 600;
 		                	text-align: center;
@@ -2343,6 +2343,10 @@ body { overflow: hidden; }
 		                	bottom: 10px;
 		                	right: 10px;
 		                	font-size: 14px;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                    width: 135px;
+                                    white-space: nowrap;
 	                        line-height: 20px;
 	                        text-transform: uppercase;
 	                        text-align: right;

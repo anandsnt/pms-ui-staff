@@ -246,6 +246,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 $scope.actions.totalCount = data.data.action_count;
                 $scope.actions.pendingCount = data.data.pending_action_count;
+                if ($scope.actions.totalCount === 0){
+                    $scope.actionSelected = 'new';
+                }
+                
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
                 if (total === 0 && pending === 0){
@@ -257,7 +261,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 } else {
                     $scope.actionsCount = 'pending';
                 }
-
+                $scope.$apply();
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
@@ -292,6 +296,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.setRightPane = function(toView){
             //selected, new, assign, comment
             $scope.actionSelected = toView;
+            $scope.$apply();
         };
         $scope.clearNewAction = function(){
             $scope.closeSelectedCalendar();
@@ -775,17 +780,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
-                 /*   if ($scope.isRequest(list[x].action_task_type) || $scope.isAlert(list[x].action_task_type)){
-                        
-                        if (list[x].assigned_to)    {
-                            list[x].assigned_to.name = "Specials";
-                        } else {
-                            list[x].assigned_to = {
-                                name: 'Specials'
-                            };   
-                        }
-                    }
-                    */
+                    
                 }
                 $scope.actions = list;
 
@@ -1068,6 +1063,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 params.action_task.id  = $scope.selectedAction.id;
                 params.is_complete = true;
                 var onSuccess = function(){
+                    $scope.actions.totalCount--;
                     $scope.lastSelectedItemId = params.action_task.id;
                     $scope.refreshActionList(del, selected);
                 };
