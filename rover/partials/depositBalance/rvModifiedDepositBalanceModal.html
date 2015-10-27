@@ -57,7 +57,7 @@
                 <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Add-On Revenue
                 	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.package_revenue | number:2}}</span>
                 </li>
-                <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Tax Excl.
+                <li ng-show="depositBalanceData.account_type=='GROUP'">Projected Tax
                 	<span>{{currencySymbol}}{{depositBalanceData.projected_revenue_details.exclusive_tax | number:2}}</span>
                 </li>
                 <li class="total" ng-show="depositBalanceData.account_type=='GROUP'">Total Projected Revenue 
