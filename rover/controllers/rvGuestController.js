@@ -1003,7 +1003,7 @@ sntRover.controller('guestCardController', [
 				$scope.$broadcast('travelAgentSearchStopped');
 			}
 		};
-		$scope.checkFuture = function(cardType, card) {
+		$scope.checkFuture = function(cardType, card,useCardRate) {
 			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card.
 			// Changing all reservations will move all stay cards to the new card.
 			// This will only apply when a new company / TA card had been selected.
@@ -1022,6 +1022,7 @@ sntRover.controller('guestCardController', [
 					scope: $scope,
 					closeByDocument: false,
 					closeByEscape: false,
+					useCardRate: useCardRate,
 					data: JSON.stringify({
 						cardType: cardType,
 						card: card
@@ -1030,8 +1031,8 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		$scope.replaceCardCaller = function(cardType, card, future) {
-			$scope.replaceCard(cardType, card, future);
+		$scope.replaceCardCaller = function(cardType, card, future, useCardRate) {
+			$scope.replaceCard(cardType, card, future, useCardRate);
 		};
 
 		/**
@@ -1553,18 +1554,18 @@ sntRover.controller('guestCardController', [
 			});
 		};
 		// To keep existing rate and proceed.
-		$scope.keepExistingRate = function(cardData) {
+		$scope.selectCard = function(cardData, chooseCardRate) {
 			if (cardData.account_type === 'COMPANY') {
-				$scope.selectCompany(cardData);
+				$scope.selectCompany(cardData, chooseCardRate);
 			}
 			if (cardData.account_type === 'TRAVELAGENT') {
-				$scope.selectTravelAgent(cardData);
+				$scope.selectTravelAgent(cardData, chooseCardRate);
 			}
 			ngDialog.close();
 		};
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function(cardData) {
-			$scope.keepExistingRate(cardData);
+			$scope.selectCard(cardData, true);
 			//$scope.navigateToRoomAndRates();
 			ngDialog.close();
 			//we will be in card opened mode, so closing
@@ -1585,7 +1586,7 @@ sntRover.controller('guestCardController', [
 			$event.stopPropagation();
 
 			if (cardData.account_type === 'COMPANY') {
-				if (cardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
+				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 					showContractRatePopup(cardData);
 				} else {
 					$scope.selectCompany(cardData);
@@ -1600,7 +1601,7 @@ sntRover.controller('guestCardController', [
 		};
 
 		// On selecting comapny card
-		$scope.selectCompany = function(company) {
+		$scope.selectCompany = function(company, useCardRate) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -1620,14 +1621,14 @@ sntRover.controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 			} else {
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
-					$scope.replaceCardCaller('company', company, false);
+					$scope.replaceCardCaller('company', company, false, useCardRate);
 				} else {
-					$scope.checkFuture('company', company);
+					$scope.checkFuture('company', company, useCardRate);
 				}
 			}
 		};
 		// On selecting travel agent card
-		$scope.selectTravelAgent = function(travelAgent) {
+		$scope.selectTravelAgent = function(travelAgent, useCardRate) {
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope
@@ -1648,9 +1649,9 @@ sntRover.controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 			} else {
 				if (!$scope.reservationDetails.travelAgent.futureReservations || $scope.reservationDetails.travelAgent.futureReservations <= 0) {
-					$scope.replaceCardCaller('travel_agent', travelAgent, false);
+					$scope.replaceCardCaller('travel_agent', travelAgent, false, useCardRate);
 				} else {
-					$scope.checkFuture('travel_agent', travelAgent);
+					$scope.checkFuture('travel_agent', travelAgent, useCardRate);
 				}
 			}
 		};

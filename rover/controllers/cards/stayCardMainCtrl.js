@@ -645,7 +645,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.newCardData = {};
-		$scope.replaceCard = function(card, cardData, future) {
+		$scope.replaceCard = function(card, cardData, future, useCardRate) {
 			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
@@ -684,7 +684,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						'reservation': reservationId,
 						'cardType': card,
 						'id': cardData.id,
-						'future': typeof future === 'undefined' ? false : future
+						'future': typeof future === 'undefined' ? false : future,
+						'useCardRate' : useCardRate
 					}).then(onEachReplaceSuccess));
 				});
 				$q.all(promises).then(onReplaceSuccess, onReplaceFailure);
@@ -694,7 +695,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card,
 					'id': cardData.id,
-					'future': typeof future === 'undefined' ? false : future
+					'future': typeof future === 'undefined' ? false : future,
+					'useCardRate' : useCardRate
 				}, onReplaceSuccess, onReplaceFailure);
 			}
 		};
