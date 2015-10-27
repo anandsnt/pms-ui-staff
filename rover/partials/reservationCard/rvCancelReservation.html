@@ -107,7 +107,7 @@
                 <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
             </div>
             <div class="actions" ng-hide="!depositPaidSuccesFully">
-                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation()" translate>CANCEL_RESERVATION</button>
+                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation(true)" translate>CANCEL_RESERVATION</button>
              </div>   
         </div>
     </fieldset>
