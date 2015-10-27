@@ -154,6 +154,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
+			console.log(candidate)
+
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
 					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
@@ -200,10 +203,13 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				last = new tzIndependentDate(chosenReport.untilDate) * 1,
 				step = (24 * 3600 * 1000);
 
+			// since we moved these from main controller
+			$scope.markets = chosenReport.hasMarketsList;
+
 
 			// UPDATE: keep a quick ref to flags way up in the sky
-			$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year;
-			$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance;
+			$scope.chosenLastYear = chosenReport.chosenOptions.include_last_year;
+			$scope.chosenVariance = chosenReport.chosenOptions.include_variance;
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {
