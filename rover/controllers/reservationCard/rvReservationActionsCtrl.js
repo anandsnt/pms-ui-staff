@@ -249,39 +249,48 @@ sntRover.controller('reservationActionsController', [
                     } else return false;
                 };
                 
-                
+                $scope.goToRoomAssignment = function(){
+                    $state.go("rover.reservation.staycard.roomassignment", {
+                            "reservation_id": $scope.reservationData.reservation_card.reservation_id,
+                            "room_type": $scope.reservationData.reservation_card.room_type_code,
+                            "clickedButton": "checkinButton"
+                    });
+                };
+                $scope.goToBillCard = function(){
+                     $state.go('rover.reservation.staycard.billcard', {
+                            "reservationId": $scope.reservationData.reservation_card.reservation_id,
+                            "clickedButton": "checkinButton",
+                            "userId": $scope.guestCardData.userId
+                    });
+                };
+                $scope.goToRoomUpgrades = function(){
+                    $state.go('rover.reservation.staycard.upgrades', {
+                            "reservation_id": $scope.reservationData.reservation_card.reservation_id,
+                            "clickedButton": "checkinButton"
+                    });
+                };
                 
                 $scope.initCheckInFlow = function(){
                     var checkingInQueued = (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued());
                             //CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
                             if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
-                                    $state.go('rover.reservation.staycard.billcard', {
-                                            "reservationId": $scope.reservationData.reservation_card.reservation_id,
-                                            "clickedButton": "checkinButton",
-                                            "userId": $scope.guestCardData.userId
-                                    });
-                                    return false;
+                                if ($scope.roomAssignmentNeeded()) {
+                                    $scope.goToRoomAssignment();
+                                        return false;
+                                } else {
+                                       $scope.goToBillCard();
+                                        return false;
+                                }
                             }
 
                             if ($scope.roomAssignmentNeeded()) {
-                                    //TO DO:Go to room assignemt view
-                                    $state.go("rover.reservation.staycard.roomassignment", {
-                                            "reservation_id": $scope.reservationData.reservation_card.reservation_id,
-                                            "room_type": $scope.reservationData.reservation_card.room_type_code,
-                                            "clickedButton": "checkinButton"
-                                    });
+                                   $scope.goToRoomAssignment();
+                                   
                             } else if ($scope.upsellNeeded()) {
-                    //TO DO : gO TO ROOM UPGRAFED VIEW
-                                    $state.go('rover.reservation.staycard.upgrades', {
-                                            "reservation_id": $scope.reservationData.reservation_card.reservation_id,
-                                            "clickedButton": "checkinButton"
-                                    });
+                                    $scope.goToRoomUpgrades();
+                                    
                             } else {
-                                    $state.go('rover.reservation.staycard.billcard', {
-                                            "reservationId": $scope.reservationData.reservation_card.reservation_id,
-                                            "clickedButton": "checkinButton",
-                                            "userId": $scope.guestCardData.userId
-                                    });
+                                $scope.goToBillCard();
                             }
                 };
                 
