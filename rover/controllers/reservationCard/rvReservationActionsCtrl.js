@@ -556,7 +556,7 @@ sntRover.controller('reservationActionsController', [
 
 
 					depositAmount = data.results.deposit_amount;
-					var isOutOfCancellationPeriod = (data.results.cancellation_policy_id === undefined);
+					var isOutOfCancellationPeriod = !!data.results.cancellation_policy_id;
 					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type === 'day') {
 							// To get the duration of stay
