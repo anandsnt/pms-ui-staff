@@ -12,7 +12,7 @@ body { overflow: hidden; }
 }
 ::selection{
     color: @white;
-    background: @logoPrimary;
+    background: @lvogoPrimary;
 }
 
 .hidden { display: none !important; }
@@ -396,7 +396,7 @@ body { overflow: hidden; }
 	.nav-bar { 
 		position: relative;
 		height: 50px;
-		padding: 5px 10px;
+		padding: 5px 80px;
 		text-align: center;
 		z-index: 99;
 		.show;
@@ -409,6 +409,7 @@ body { overflow: hidden; }
 			font-weight: 700;
 			vertical-align: middle;
 			clear: none;
+			.nowrap();
 
 			.hotel,
 			.user {
@@ -486,7 +487,7 @@ body { overflow: hidden; }
 	@media only screen and (min-width: 768px) {
 		.nav-bar { 
 			text-align: center;
-			padding: 10px 60px;
+			padding: 10px 220px;
 
 			.switch-button {
 				position: absolute;
