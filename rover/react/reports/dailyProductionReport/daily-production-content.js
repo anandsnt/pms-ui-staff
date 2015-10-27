@@ -127,5 +127,9 @@ var DPContent = React.createClass({
 
 	componentDidMount: function() {
 		document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
+	},
+
+	componentDidUpdate: function() {
+		document.getElementById('daily-production-render').style.width = this.props.rightPaneWidth;
 	}
 });
