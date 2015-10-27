@@ -95,6 +95,10 @@ sntRover.controller('RVCardOptionsCtrl',
                     $scope.clickedAddNewCard();
                     $scope.$apply();
                 });
+                $scope.$on('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN',function(){
+                    $scope.clickedAddNewCard();
+                    $scope.$apply();
+                });
                 $scope.clickedAddNewCard = function(){
                     $scope.shouldShowIframe = false; 
                     $scope.addmode = true; 
@@ -391,11 +395,16 @@ sntRover.controller('RVCardOptionsCtrl',
 		 */
 		$scope.getToken = function($event){
 			$event.preventDefault();
+                        
 			if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 				var swipeOperationObj = new SwipeOperation();
 				var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave($scope.passData.details.swipedDataToRenderInScreen);
 				swipedCardDataToSave.addToGuestCard = $scope.cardData.addToGuestCard;
+                                if (!swipedCardDataToSave.card_name || swipedCardDataToSave.card_name === ''){
+                                    swipedCardDataToSave.card_name = $scope.cardData.userName;
+                                }
 				$scope.$emit('SWIPED_DATA_TO_SAVE', swipedCardDataToSave);
+                                
 			} else {
 				var sessionDetails = setUpSessionDetails();
 				var successCallBack = function(response){
