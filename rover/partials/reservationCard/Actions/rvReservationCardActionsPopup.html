@@ -25,7 +25,7 @@
                             {{errorMessage}}
             </span>
     </div>
-    <section class="actions-content" role="main" ng-show='actions.totalCount > 0 || actionSelected === "new"' ng-class="{'action-full-view': actions.totalCount === 0 && actionSelected === 'new'}"> <!-- Add class "no-content" if no actions for room -->
+    <section class="actions-content" role="main" ng-show='actions.totalCount > 0'> <!-- Add class "no-content" if no actions for room -->
 
         <!-- Actions list -->
         <div class="content-left" ng-if='actions.totalCount > 0'>
@@ -168,7 +168,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
@@ -209,7 +208,51 @@
                     </div> 
                 </div> 
             </div>
+            </div>
         
+    </section>
+    <section class="actions-content" role="main" ng-show='actions.totalCount === 0 && actionSelected === "new"'>
+        <div class="content-right action-full-view" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+            <div class="summary">
+                <div class="add-content">
+                    <span class="h2 message">New Action</span>
+                    <div class="entry full-width">
+                        <label for="department">Assign to Department</label>
+                        <div class="select">
+                            <select id="department-new-action" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
+                                <option value="" selected>Select department</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry date margin" ng-click='showNewCalendar()'>
+                        <label for="due-date">Date Due</label>
+                        <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
+                    </div>
+                    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
+                    <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
+                        <label for="due-time">Time Due</label>
+                        <div class="select">
+                            <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue" ng-init="newAction.time_due = timeFieldValue[0]">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry full-width">
+                        <label for="notes">
+                            Notes
+                            <span>
+                                <font ng-if='newAction.notes.length < 255' color=green>  {{255-newAction.notes.length}}</font> 
+                                <font ng-if='newAction.notes.length >= 255' color=red>  {{255-newAction.notes.length}}</font>
+                            </span>
+                        </label>
+                        <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
+                    </div> 
+                    <div>
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
+                    </div> 
+                </div> 
+            </div>
+            </div>
     </section>
     
     <section class="actions-content no-content" role="main" ng-if='actions.length === 0'>
