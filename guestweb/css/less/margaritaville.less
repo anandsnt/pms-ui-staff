@@ -1,0 +1,343 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#000;
+@blue:#6E96AC;
+@dark-blue:#CED526;
+
+
+.template-header-bg{
+	background: url(/assets/img/Margaritaville/web_bg.png) no-repeat center top !important;
+}
+
+.template-bg{
+   background: none;
+}
+
+.template-button{
+   background:@blue !important;
+   color:@white !important;
+}
+.template-heading-text,.msg-head.template-heading-text.thanks-msg{
+   color:#8BB7C6 !important;
+   font-weight:300 !important;
+}
+.template-text,.subTitletext{
+	color:@black !important;
+}
+.light-template-bg{
+   background:#7CAFBF;
+}
+.dark-template-bg{
+	background:@blue !important;
+}
+.white-text{
+	color:@white !important;
+}
+.header {
+    padding: 2% 0px	;
+}
+
+
+body {
+  	background: none !important;
+}
+
+
+
+.jumbotron .check-inout-wrapper{
+	border:none !important;
+}
+
+.checkout-status{
+	border-top:none !important;
+	border-bottom:none !important;
+}
+
+
+.verti-ruler {
+    background: none repeat scroll 0 0 #D3D3D3;
+}
+.msg-head,.msg-body{
+	color:@black !important;
+}
+.balancevalue{
+	color:@black !important;
+}
+.key-delivery-message {
+	text-align:center;
+}
+.bottom-logo{
+	margin-top:60px !important;
+}
+
+
+/* ----------------late checkout options page----------------- */
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #A1C2CD;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #7CAFBF;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #6E96AC;
+}
+.checkout-later-back-button,.no-thanks a,.checkouttime1, .checkouttime2, .checkouttime3{
+	color: @white !important;
+}
+
+
+.no-thanks,.questions
+{
+	a,a:hover{
+		text-decoration:underline  !important;
+		color: @black !important;
+	}
+}
+/* ------------------------------------------------------------------- */
+
+/* --------------------checkout confirmation page---------------------- */
+
+.jumbotron .headtext{
+	color:@blue;
+}
+
+.col-xs-12.checkoutnow.single,.link-btn.with-bg{
+	background:@blue;
+	color:@white !important;
+}
+/* -------------------------------------------------------------------- */
+
+/* -------------------------checkout balance page----------------------- */
+.accept-charges-button.single{
+	background:@blue;
+	color:@white;
+}
+
+.viewbill-toggle{
+	a,a:hover{
+		color:@black !important;
+		.right-arrow{
+			width:16px;
+			height:25px;
+		}
+		.down-arrow{
+			width:25px;
+			height:16px;
+		}
+
+	}
+}
+
+.now-later-options{
+	a,a:hover{
+		color:@white !important;
+	}
+}
+a, a:hover {
+    color: @black !important;
+}
+
+.msg-head.brown-text.thanks-msg{
+	.template-heading-text;
+}
+/* --------------------------------------------------------------------------- */
+
+/* ----------------------------checkout later page--------------------------- */
+.back-to-checkout{
+	padding:5% !important;
+}
+
+.backbtn {
+    left: 10%;    
+}
+.checkout-later-back-button{
+	color:#fff !important;
+}
+
+/* --------------------------------------------------------------------------- */
+
+
+/* responsive starts here */
+
+@media (max-width: 480px) {
+	body {
+  		background: none !important;
+	}
+	.checkin-button.template-button.verification-button{
+		margin: 10px 0 0 !important;
+	}
+	.padding-5{
+ 	    padding:0 5% !important;
+	}
+	.padding-bottom-10{
+		padding-bottom:10% !important;
+	}
+	.now-later-options{
+		margin: 0 10px;
+	}
+}
+@media (min-width: 480px) {
+    .headerrow {
+    	padding: 2% 0px;
+	}
+}
+
+@media (min-width: 990px) {
+	.bottom-logo{
+		margin-top:70px !important;
+	}
+	.template-header-bg{
+		background-size: 100% !important;
+	}
+	.checkin-button {
+		padding:20px !important;
+	}
+	.now-later-options{
+		width:40% !important;
+		max-width: 487px;
+	}
+}
+
+
+/* --------------------------------------------------------------------------- */
+
+/*------------------------------- date picker starts here---------------------*/
+.date-picker-header{
+  background-color: @blue;
+  color:@white !important;
+}
+
+.pickadate-cell li {
+ border: 1px solid #fff;
+}
+
+.date-picker-back,.date-picker-ok,.departure-date p:last-child,.departure-date p:first-child{
+	color:@white !important;
+}
+.date-picker-wrap{
+  background-color: @white !important;
+  background: #fff !important;
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #959595 !important;
+}
+
+.date-picker-ok{
+  padding-top: 0px;
+  background:  none !important;
+  color:#000;
+}
+
+.departure-date{
+   p:first-child{
+       color:@black;
+   }
+  
+}
+.pickadate-centered-heading, .pickadate-cell .pickadate-head{
+	color:#18171c;
+}
+
+.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled{
+    background-color:#E5E5E5 !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:@blue !important;
+    color:@white !important;
+}
+.pickadate-cell .pickadate-enabled, .pickadate-prev,.pickadate-next {
+    color:#000 !important;
+}
+.pickadate-controls{
+    a, a:hover
+    {
+        color:#18171c !important;
+    }
+}
+
+.pickadate-cell{
+	.pickadate-active{
+		color:#fff !important;
+	}
+}
+.pickadate-cell li{
+	border-right: 1px solid #fff !important;
+	border-left: 1px solid #fff !important;
+}
+
+
+/*-------------------------------------------------------------------------*/
+
+.reservation-dates .template-heading-text,.res-conf-no,.jumbotron .headtext .conf-num{
+	color:#959595 !important;
+}
+
+.row .reservation-dates,.room_details{
+	color:@black;
+}
+
+
+.row .date-container{
+	border-bottom:none;
+}
+
+.upgrades-label{
+	color:#C76A6F;
+	font-size: inherit !important;
+}
+
+.upgrade-details .upgrades-btn{
+	background:#AE252B;
+}
+
+.proceed-to-checkin{
+	background:#464646;
+	font-size:14px;
+}
+
+
+.upgrades-container{
+	padding-bottom:30px !important;
+}
+
+
+
+.link-btn.with-bg.nextbtn.early-checkin-button{
+	padding:0px 2px !important;
+	font-size:24px !important;
+	height:72px;
+	font-weight:lighter !important;
+}
+
+.link-btn.with-bg.nextbtn.early-checkin-button.gray-bg{
+	color:@white !important;
+}
+
+.row.checkin-wrapper-top.arrival-details.verification-container.date-container{
+	padding-top:0px;
+}
+
+.checkin-button.template-button.verification-button{
+	margin: 60px 0 0;
+}
+
+.full-width-select{
+	float:none !important;
+	width:100% !important;
+}
+
+.link-btn.with-bg.nextbtn{
+	font-weight: lighter !important;
+	text-transform:none;
+	font-size: 30px !important;
+    height: 10%;
+}
+
+
+
+
+
+

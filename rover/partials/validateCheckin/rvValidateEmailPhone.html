@@ -16,9 +16,13 @@
 			<label for="guest-email" translate>EMAIL</label>
 			<input type="text" value="" name="guest-email" id="guest-email" autocomplete="off" ng-model="saveData.email">
 		</div>
-		<div class="actions float">
+		<div ng-show='!putInQueue' class="actions float">
 			<a id="submit" class="button green modal-close" ng-click="submitAndGoToCheckin()" translate>SUBMIT_AND_GOTO_CHECKIN</a>
 			<a id="cancel" class="button blank modal-close" ng-click="ignoreAndGoToCheckin()" translate>IGNORE_AND_GOTO_CHECKIN</a>
+		</div>
+		<div ng-show='putInQueue' class="actions float">
+			<a id="submit" class="button green modal-close" ng-click="submitAndGoToCheckin()" translate>SUBMIT_AND_GOTO_PUTINQUEUE</a>
+			<a id="cancel" class="button blank modal-close" ng-click="ignoreAndGoToCheckin()" translate>IGNORE_AND_GOTO_PUTINQUEUE</a>
 		</div>
 	</form>
 </div>

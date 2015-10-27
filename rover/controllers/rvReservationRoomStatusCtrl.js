@@ -93,6 +93,10 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 		return hasButton;
 	};
+        
+        $scope.$on('clickedIconKeyFromQueue',function(){
+            $scope.clickedIconKey();//one less thing for user to do
+        });
 	// To handle click of key icon.
 	$scope.clickedIconKey = function(){
 		var keySettings = $scope.reservationData.reservation_card.key_settings;

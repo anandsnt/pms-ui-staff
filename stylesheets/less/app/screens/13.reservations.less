@@ -584,6 +584,8 @@
                 .size(40px, 240px);
                 .show;
 
+                input { min-height: 40px; }
+
                 .data-off,
                 .data-on {
                     font-size: 14px;
@@ -1368,9 +1370,22 @@
                 padding: 0 20px;
                 width: 100%;
                 overflow: visible;
-                .float;
                 .calc-height(100, 130);
 
+                .scrollable { .calc-height(100, 45); }
+
+                .wrapper { 
+                    min-height: 420px;
+                    height: auto;
+                    padding-bottom: 10px;
+                    .float; 
+                }
+
+                .iScrollVerticalScrollbar { 
+                    top: 0; 
+                    bottom: 10px;
+                }
+                
                 .calendar-left,
                 .calendar-right {
                     position: relative;
@@ -1379,23 +1394,23 @@
                     .pull-left;
                 }
 
-                .calendar-left { 
-                    #pixel-to-percent > .right-margin(80, 1968); 
+                .calendar-left { #pixel-to-percent > .right-margin(80, 1968); }
 
-                    .tooltip {
-                        left: -20px;
-
-                        &:after { left: 20px; }
-                    }
+                .fc-button-prev,
+                .fc-button-next {
+                    position: absolute;
+                    top: 5px;
+                    overflow: hidden;
+                    cursor: pointer;
+                    background-color: transparent;
+                    border: 0;
+                    .show;
+                    .hide-text;
+                    .square(40px);
                 }
 
-                .calendar-right {
-                    .tooltip {
-                        right: -20px;
-
-                        &:after { right: 20px; }
-                    }
-                }
+                .fc-button-prev { left: 5px; }
+                .fc-button-next { right: 5px; }
 
                 .calendar-legend { 
                     position: absolute;

@@ -36,6 +36,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					activeTab: "ROOMING"
 				}
 			};
+		} else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
+			if ($scope.previousState.name === "rover.allotments.config") {
+				setNavigationBookMark();
+			}
+			$rootScope.setPrevState = {
+				title: 'ALLOTMENT DETAILS',
+				name: 'rover.allotments.config',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "RESERVATIONS"
+				}
+			};
 		} else if ($stateParams.isFromCards) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
@@ -411,16 +423,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                         
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+                        
 			var tokenizeSuccessCallback = function(tokenValue) {
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
                                 
-                                
-                                console.log('got token from swipe, showing payment model:');
-                                console.info('data: ',swipedCardData);
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
 			};
+                        
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 		});
 
@@ -528,25 +539,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				return false;
 			};
 
-			// TODO : This following LOC has to change if the room number changes to an array
-			// to handle multiple rooms in future
-			if ($rootScope.isStandAlone) {
-				//If standalone, go to change staydates calendar if rooms is assigned.
-				//If no room is assigned, go to stay dates calendar. (REQUIREMENT HAS CHANGED - CICO-13566)
-				if (true) { // -- CICO-13566  (reservationMainData.rooms[0].roomNumber !== "") - <<<< ALWAYS ROUTE TO THE STAYDATES SCREEN >>>>
-					$state.go('rover.reservation.staycard.changestaydates', {
-						reservationId: reservationMainData.reservationId,
-						confirmNumber: reservationMainData.confirmNum
-					});
-				}
-
-			} else {
-				//If ext PMS connected, go to change staydates screen
-				$state.go('rover.reservation.staycard.changestaydates', {
-					reservationId: reservationMainData.reservationId,
-					confirmNumber: reservationMainData.confirmNum
-				});
-			}
+			$state.go("rover.reservation.staycard.changestaydates", {
+				reservationId: reservationMainData.reservationId,
+				confirmNumber: reservationMainData.confirmNum
+			});
 		};
 
 		var editPromptDialogId;

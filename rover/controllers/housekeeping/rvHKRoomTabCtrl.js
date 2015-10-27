@@ -70,6 +70,12 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			mode = 12;
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
+		//for fixing the issue of 24 hour long OOO thing
+		$scope.timeSelectorList.push ({
+			text: "11:59 PM",
+			value: "23:59"
+		});
+
 		/* ***** ***** ***** ***** ***** */
 
 		$scope.setClass = function(day) {
@@ -354,7 +360,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		 * @return {[type]}
 		 */
 		var failureCallbackOfRoomStatusChangePossible = function(errorMessage) {
-
+			$scope.errorMessage = errorMessage;
 		};
 
 		/**

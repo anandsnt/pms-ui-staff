@@ -24,11 +24,11 @@
 <!-- Room block room types -->
 <div class="room-block-sidebar extended-timeline scrollable" ng-show="shouldHideAddRoomsButton()"
     ng-iscroll="room_block_scroller">
-    <div class="wrapper">
+    <div class="wrapper" bindonce>
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
         <div ng-class="{'open' : roomtype_rate.isCollapsed}"
             class="row"
-            ng-repeat="roomtype_rate in allotmentConfigData.summary.selected_room_types_and_bookings"
+            ng-repeat="roomtype_rate in allotmentConfigData.roomblock.selected_room_types_and_bookings"
             ui-jq="accordion"
             ui-options="accordionInitiallyNotCollapsedOptions"
             ng-init="roomtype_rate.isCollapsed = true">
@@ -36,8 +36,8 @@
             <!-- Toggle class "active" when clicked/tapped -->
             <p class="line line-toggle"
                 ng-class="{'active' : roomtype_rate.isCollapsed}"
-                ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
-                {{roomtype_rate.room_type_name}}
+                ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed"
+                bo-text="roomtype_rate.room_type_name">
             </p>
             <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
             <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
@@ -80,14 +80,15 @@
 <!-- Room block days -->
 <div class="room-block-timeline extended-timeline scrollable"
     ng-iscroll="room_rates_timeline_scroller"
-    ng-show="shouldHideAddRoomsButton()">
+    ng-show="shouldHideAddRoomsButton()"
+    bindonce>
 
-    <ul style="width:{{getWidthForCurrentViewTimeLine()}};" class="wrapper">
-        <li ng-repeat="occupancy in allotmentConfigData.summary.selected_room_types_and_occupanies">
+    <ul class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
+        <li ng-repeat="occupancy in allotmentConfigData.roomblock.selected_room_types_and_occupanies">
             <div class="inner">
-                <span>{{formatDateForUI(occupancy.date, fulldayInWeek)}}</span>
-                <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
-                <em>{{occupancy.occupancy}}% Occupancy</em>
+                <span bo-text="formatDateForUI(occupancy.date, fulldayInWeek)"></span>
+                <strong bo-text="formatDateForUI(occupancy.date, monthAndDate)"></strong>
+                <em><i bo-text="occupancy.occupancy"></i><i>% Occupancy</i></em>
             </div>
             <div class="column">
                 <div class="line small">
@@ -97,7 +98,7 @@
                 <!-- Total for Day -->
                 <div class="line">
                     <input type="text" value="{{getTotalHeldOfDay($index)}}" class="cell" disabled />
-                    <input type="text" value="{{getTotalPickedUpOfDay($index)}}" class="cell" disabled />
+                    <input type="text" bo-value="getTotalPickedUpOfDay($index)" class="cell" disabled />
                 </div>
             </div>
         </li>
@@ -107,9 +108,9 @@
 <!-- Room block grid -->
 <div class="room-block-grid extended-timeline scrollable" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldHideAddRoomsButton()">
-    <div class="wrapper" style="width:{{getWidthForCurrentViewTimeLine()}};">
+    <div class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-        <div class="row" ng-repeat="roomType in allotmentConfigData.summary.selected_room_types_and_bookings">
+        <div class="row" ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
             <div class="column" ng-repeat="dateData in roomType.dates">
@@ -126,10 +127,12 @@
                 <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
+                        ng-disabled="!isValueConfigured(dateData.single_contract)"
                         ng-model="dateData.single"
                         class="cell" /> <!-- Add attr "disabled" when group is canceled -->
                     <input type="text"
@@ -150,11 +153,13 @@
                 <!-- <div class="line hidden"> -->
                 <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.double"
+                        ng-disabled="!isValueConfigured(dateData.double_contract)" 
                         class="cell" />
                     <input type="text"
                         rv-delay-textbox
@@ -174,11 +179,13 @@
                 <!-- If L63 is clicked, generate option to add triple: -->
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                 <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.triple"
+                        ng-disabled="!isValueConfigured(dateData.triple_contract)"
                         class="cell" />
                     <input type="text"
                         rv-delay-textbox
@@ -199,10 +206,12 @@
                 <!-- If L65 is clicked, generate option to add quadruple: -->
                 <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                 <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
+                    <!--  Disabled unless occupancy is contracted! -->
                     <input type="text"
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
+                        ng-disabled="!isValueConfigured(dateData.quadruple_contract)"
                         ng-model="dateData.quadruple"
                         class="cell" />
                     <input type="text"
@@ -222,10 +231,8 @@
                 <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                     <em class="cellspan">
                         {{'AVAILABILITY_GROUP'|translate}}
-                        <span
-                        ng-class="{'green': (dateData.availability>0),
-                        'red': (dateData.availability==0) }">
-                            {{dateData.availability}}
+                        <span bo-class="{'green': (dateData.availability>0), 'red': (dateData.availability==0) }"
+                            bo-text="dateData.availability">
                         </span>
                     </em>
                 </div>

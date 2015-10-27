@@ -1,4 +1,7 @@
-
+/*
+  Checkin Room Upgrade Ctrl 
+  This displays the available rooms for upgrading.
+*/
 (function() {
   var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
 

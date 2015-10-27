@@ -317,7 +317,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// CICO-20547 do NOT init group cards for overlays
 			if (!isCardSame.group && $rootScope.isStandAlone) {
 				$timeout(function() {
-					$scope.$broadcast('groupDetached');
+					$scope.$broadcast('groupCardDetached');
 					$scope.initGroupCard($scope.reservationDetails.group.id);
 				}, timer);
 				timer += 300;
@@ -327,7 +327,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// CICO-20547 do NOT init group cards for overlays
 			if (!isCardSame.allotment && $rootScope.isStandAlone) {
 				$timeout(function() {
-					$scope.$broadcast('groupDetached');
+					$scope.$broadcast('groupCardDetached');
 					$scope.initAllotmentCard($scope.reservationDetails.allotment.id);
 				}, timer);
 				timer += 300;
