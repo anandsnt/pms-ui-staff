@@ -97,6 +97,9 @@ sntRover.controller('RVReservationDepositController',
 			$scope.showCCPage = true;
 			$scope.swippedCard = true;
 			$scope.addmode = $scope.cardsList.length>0 ?false:true;
+                        if ($scope.addmode){
+                            $scope.$broadcast('CLICK_ADD_NEW_CARD');
+                        }
 		};
 
 		$scope.changeOnsiteCallIn = function(){
@@ -106,10 +109,9 @@ sntRover.controller('RVReservationDepositController',
 
 
 		$scope.changePaymentType = function(){
-
 			$scope.checkReferencetextAvailable();
 
-			if($scope.depositData.paymentType ==="CC"){
+			if($scope.depositData.paymentType === "CC"){
 				($rootScope.paymentGateway === 'sixpayments')  ? "": showCardOptions();
 			}
 		};
@@ -620,6 +622,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.addmode = true;
 		$scope.depositData.paymentType  = "CC";
 		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
+                $scope.$apply();
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
