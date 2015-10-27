@@ -615,7 +615,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		$scope.depositData.paymentType  = "";
-		$scope.isManual = "";
+		$scope.isManual = false;
 	});
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);
