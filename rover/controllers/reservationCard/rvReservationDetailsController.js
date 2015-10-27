@@ -393,6 +393,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		 * Handle swipe action in reservationdetails card
 		 */
 
+                 $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG',function(evt, val){
+                     $scope.isDepositBalanceScreenOpened = val;
+                 });
+                 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.isDepositBalanceScreenOpened) {
 				swipedCardData.swipeFrom = "depositBalance";
@@ -683,11 +687,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
-                                    
-                                    
-                                    
+				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && 
+                                        swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && 
+                                        swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
+                                        console.info('doing open pmt window with pass data')
 					$scope.openPaymentDialogModal(passData, paymentData);
+                                        
+                                        
 				} else if (swipedCardDataToRender.swipeFrom === "stayCardDeposit") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
                                         
