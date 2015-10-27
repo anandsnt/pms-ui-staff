@@ -66,9 +66,14 @@
 			$scope.changeOnsiteCallIn = function() {
 				$scope.isManual ? $scope.showCCPage = true : "";
 			};
+			 //to trigger from sixpayment partial
+	        $scope.$on('changeOnsiteCallIn', function(event){
+	            $scope.isManual =  !$scope.isManual;
+	            $scope.changeOnsiteCallIn();
+	        });
 
 			$scope.changePaymentType = function() {
-console.log(arguments)
+
 				if ($scope.cancellationData.paymentType === "CC") {
 					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCCPage = true;
 				} else {

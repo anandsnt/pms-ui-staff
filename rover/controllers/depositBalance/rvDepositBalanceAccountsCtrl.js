@@ -287,6 +287,12 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		refreshScroll();
 	};
 
+	 //to trigger from sixpayment partial
+    $scope.$on('changeOnsiteCallIn', function(event){
+        $scope.isManual =  !$scope.isManual;
+        $scope.changeOnsiteCallIn();
+    });
+
 	/*
 	 * on succesfully created the token
 	 */
@@ -600,6 +606,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.addmode                 			 = false;
 		$scope.depositBalanceMakePaymentData.payment_type = "";
+		$scope.isManual = false;
 	});
 
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function (e, swipedCardDataToRender){
