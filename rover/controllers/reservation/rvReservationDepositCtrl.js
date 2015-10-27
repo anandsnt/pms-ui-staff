@@ -108,7 +108,7 @@ sntRover.controller('RVReservationDepositController',
 		};
 		 //to trigger from sixpayment partial
         $scope.$on('changeOnsiteCallIn', function(event){
-            $scope.isManual =  true;
+            $scope.isManual =  !$scope.isManual;
             $scope.changeOnsiteCallIn();
         });
 

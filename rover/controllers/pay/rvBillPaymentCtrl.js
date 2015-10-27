@@ -190,7 +190,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 
 	$scope.$on('changeOnsiteCallIn', function(event){
-		$scope.isManual =  true;
+		$scope.isManual =  !$scope.isManual;
 		$scope.changeOnsiteCallIn();
 	});
 

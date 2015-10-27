@@ -348,7 +348,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	//to trigger from sixpayment partial
 	$scope.$on('changeOnsiteCallIn', function(event){
-	    $scope.isManual =  true;
+	    $scope.isManual =  !$scope.isManual;
 	    $scope.changeOnsiteCallIn();
 	});
 
