@@ -287,7 +287,7 @@ console.log(arguments)
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
 							application : "ROVER",
-							is_without_penalty: isWithoutPenalty
+							is_with_penalty: isWithoutPenalty
 						};
 						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
@@ -301,7 +301,7 @@ console.log(arguments)
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
 						application : "ROVER",
-						is_without_penalty: isWithoutPenalty
+						is_with_penalty: isWithoutPenalty
 					};
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
