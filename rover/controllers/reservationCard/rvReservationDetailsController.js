@@ -420,7 +420,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			} else {
 				swipedCardData.swipeFrom = "stayCard";
 			}
-                        
+                        if (swipedCardData.swipeFrom !== 'guestCard'){
+                            $scope.$emit('isFromGuestCardFalse');
+                        }
                         
                         
                         
@@ -434,6 +436,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                                 
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
+                                if (swipedCardData.swipeFrom !== 'guestCard'){
+                                    $scope.$emit('isFromGuestCardFalse');
+                                }
 			};
                         
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);

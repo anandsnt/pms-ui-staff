@@ -72,6 +72,10 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 
                 
+                $scope.$on('isFromGuestCardFalse',function(){
+                        $scope.showAddtoGuestCard = true;
+                        $scope.isFromGuestCard = true;
+                });
                 $scope.$on('hidePayCardToggles',function(evt, passObj){
                     $scope.isFromGuestCard = true;
                     if (passObj){
