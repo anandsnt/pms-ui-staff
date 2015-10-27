@@ -1042,6 +1042,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.isManual ? $scope.showCCPage = true : "";
             refreshScrolls();
         };
+        //to trigger from sixpayment partial
+        $scope.$on('changeOnsiteCallIn', function(event){
+            $scope.isManual =  !$scope.isManual;
+            $scope.changeOnsiteCallIn();
+        });
 
 
 

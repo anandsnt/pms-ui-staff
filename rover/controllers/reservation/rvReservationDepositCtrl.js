@@ -106,6 +106,11 @@ sntRover.controller('RVReservationDepositController',
 		 	$scope.isManual ? showCardOptions() : "";
 		 	refreshCardsList();
 		};
+		 //to trigger from sixpayment partial
+        $scope.$on('changeOnsiteCallIn', function(event){
+            $scope.isManual =  !$scope.isManual;
+            $scope.changeOnsiteCallIn();
+        });
 
 
 		$scope.changePaymentType = function(){
@@ -610,7 +615,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		$scope.depositData.paymentType  = "";
-		$scope.isManual = "";
+		$scope.isManual = false;
 	});
 	$scope.$on('cardSelected',function(e,data){
 		setCreditCardFromList(data.index);

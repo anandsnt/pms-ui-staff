@@ -47,7 +47,7 @@
         
         
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-show="addNewSelected()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-show="addNewSelected() && !isSixPayPayment()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
 			<label for="card-type" >Card type </label>
 			<div class="select">
