@@ -18,10 +18,13 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var getDayOfMonth = function(date){
 			var date = new Date(date),
 				y = date.getFullYear(),
-				m = date.getMonth();
-            day = m > parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
+				m = date.getMonth(),
+				businessDate = tzIndependentDate($rootScope.businessDate),
+				businessM = businessDate.getMonth(),
+				businessY = businessDate.getFullYear();
+            day = (m + (y*100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
-		}
+		};
 
 		var getLastDayOfMonth = function(date) {
 			var date = new Date(date),
@@ -292,7 +295,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isProcessingLeftSideCalendar = function(dailyData) {
 			//if the month of left calndr and date are same, it means
-			return ($scope.leftCalendarOptions.month === new tzIndependentDate(dailyData.date).getMonth());
+			return ($scope.leftCalendarOptions.month % 12 === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
 		/**
@@ -302,7 +305,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isProcessingRightSideCalendar = function(dailyData) {
 			//if the month of right calndr and date are same, it means
-			return ($scope.rightCalendarOptions.month === new tzIndependentDate(dailyData.date).getMonth());
+			return ($scope.rightCalendarOptions.month % 12  === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
 
