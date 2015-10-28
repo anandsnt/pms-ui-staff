@@ -261,7 +261,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 } else {
                     $scope.actionsCount = 'pending';
                 }
-                $scope.$apply();
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
@@ -296,7 +295,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.setRightPane = function(toView){
             //selected, new, assign, comment
             $scope.actionSelected = toView;
-            $scope.$apply();
         };
         $scope.clearNewAction = function(){
             $scope.closeSelectedCalendar();
