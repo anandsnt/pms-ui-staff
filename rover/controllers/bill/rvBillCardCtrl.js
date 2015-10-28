@@ -1448,19 +1448,12 @@ sntRover.controller('RVbillCardController',
         
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom){
-                var isQueuedRoom = false;
-                if ($scope.reservationData){
-                    if ($scope.reservationData.reservation_card){
-                        if ($scope.reservationData.reservation_card.is_reservation_queued === 'true'){
-                            isQueuedRoom = true;
-                        }
-                    }
-                }
+                
             
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
-		else if(($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED') && !isQueuedRoom){
+		else if(($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED') && !$scope.checkGuestInFromQueue){
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,
