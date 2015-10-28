@@ -269,6 +269,25 @@ sntRover.controller('reservationActionsController', [
                             "clickedButton": "checkinButton"
                     });
                 };
+                $scope.validateEmailPhone = function(){
+                    ngDialog.open({
+                            template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+                            controller: 'RVValidateEmailPhoneCtrl',
+                            scope: $scope
+                    });
+                };
+                
+                $scope.promptCardAddition = function(){
+                    $scope.errorMessage = ['Please select a Guest Card to check in'];
+                    var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
+                    ngDialog.open({
+                            template: templateUrl,
+                            className: 'ngdialog-theme-default stay-card-alerts',
+                            scope: $scope,
+                            closeByDocument: false,
+                            closeByEscape: false
+                    });
+                };
                 
                 $scope.initCheckInFlow = function(){
                     var checkingInQueued = (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued());
@@ -314,28 +333,13 @@ sntRover.controller('reservationActionsController', [
 				if (!!$scope.guestCardData.userId) {
 					if ($scope.reservationMissingPhone()) {
                                                 $scope.$emit('showLoader');
-                                            
-						ngDialog.open({
-							template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-							controller: 'RVValidateEmailPhoneCtrl',
-							scope: $scope
-						});
-                                                
-                                                
+						$scope.validateEmailPhone();
 					} else {
                                             $scope.initCheckInFlow();
 					}
 				} else {
 					//Prompt user to add a Guest Card
-					$scope.errorMessage = ['Please select a Guest Card to check in'];
-					var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
-					ngDialog.open({
-						template: templateUrl,
-						className: 'ngdialog-theme-default stay-card-alerts',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
+					$scope.promptCardAddition();
 				}
 			};
 
