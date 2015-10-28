@@ -173,6 +173,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         var refreshScroller = function() {
             $scope.refreshScroller('rvActionListScroller');
         };
+        
+        
         $scope.hasArrivalDate = false;
         $scope.hasDepartureDate = false;
 
@@ -246,9 +248,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 $scope.actions.totalCount = data.data.action_count;
                 $scope.actions.pendingCount = data.data.pending_action_count;
-                if ($scope.actions.totalCount === 0){
-                    $scope.actionSelected = 'new';
-                }
                 
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
@@ -772,7 +771,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].date_completed = getFormattedDate(list[x].completed_at, 'date_completed');
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
                     }
-
 
                     if (list[x].created_at){
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
