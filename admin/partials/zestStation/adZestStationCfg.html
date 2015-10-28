@@ -8,6 +8,35 @@
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
+
+             <!-- Guest delivery options -->
+           <fieldset class="holder left">    
+                <div class="form-title full-width">
+                     <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
+                </div>
+                <label class="radio" ng-class="{'checked':data.email_option == 'is_email_only'}">
+                    <span class="icon-form icon-radio " ng-class="{checked:data.email_option =='is_email_only'}"></span>
+                    <input type="radio" value="is_email_only" ng-model="data.email_option"  >
+                        {{ 'EMAIL_ONLY' | translate}} 
+                </label>
+                <label class="radio" ng-class="{'checked':data.email_option == 'email_and_print'}">
+                    <span class="icon-form icon-radio " ng-class="{checked:data.email_option == 'email_and_print'}"></span>
+                    <input type="radio" value="email_and_print" ng-model="data.email_option" >
+                        {{ 'EMAIL_AND_PRINT' | translate}}
+                </label>
+            </fieldset>
+
+            <!-- Home screen options -->
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                 <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
+                </div>
+                <ad-checkbox is-checked="data.pickup_keys_on" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="dat.checkin_on" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>    
+                <ad-checkbox is-checked="data.checkout_on" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
+            </fieldset>
+
+            <!-- color selection -->
             <fieldset class="holder left max-width">
                 <div class="form-title full-width">
                     <h3><span translate>COLOR_SEC_LABEL</span> </h3>
@@ -34,33 +63,6 @@
                         <ad-textbox value="data.header_icons_pressed" label="{{'HEADER_ICONS_COLOR_PRESSED'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
            </fieldset>
-
-           <!-- Guest delivery options -->
-           <fieldset class="holder left">    
-                <div class="form-title full-width">
-                     <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
-                </div>
-                <label class="radio" ng-class="{'checked':data.email_option == 'is_email_only'}">
-                    <span class="icon-form icon-radio " ng-class="{checked:data.email_option =='is_email_only'}"></span>
-                    <input type="radio" value="is_email_only" ng-model="data.email_option"  >
-                        {{ 'EMAIL_ONLY' | translate}} 
-                </label>
-                <label class="radio" ng-class="{'checked':data.email_option == 'email_and_print'}">
-                    <span class="icon-form icon-radio " ng-class="{checked:data.email_option == 'email_and_print'}"></span>
-                    <input type="radio" value="email_and_print" ng-model="data.email_option" >
-                        {{ 'EMAIL_AND_PRINT' | translate}}
-                </label>
-            </fieldset>
-
-            <!-- Home screen options -->
-            <fieldset class="holder right">
-                <div class="form-title full-width">
-                 <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
-                </div>
-                <ad-checkbox is-checked="data.pickup_keys_on" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
-                <ad-checkbox is-checked="dat.checkin_on" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>    
-                <ad-checkbox is-checked="data.checkout_on" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
-            </fieldset>
 
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
