@@ -295,7 +295,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isProcessingLeftSideCalendar = function(dailyData) {
 			//if the month of left calndr and date are same, it means
-			return ($scope.leftCalendarOptions.month % 12 === new tzIndependentDate(dailyData.date).getMonth() % 12);
+			//add 12 to the 'month' value in the options to tackle negative values
+			return (($scope.leftCalendarOptions.month + 12) % 12 === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
 		/**
@@ -305,7 +306,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isProcessingRightSideCalendar = function(dailyData) {
 			//if the month of right calndr and date are same, it means
-			return ($scope.rightCalendarOptions.month % 12  === new tzIndependentDate(dailyData.date).getMonth() % 12);
+			//add 12 to the 'month' value in the options to tackle negative values
+			return (($scope.rightCalendarOptions.month + 12) % 12  === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
 
@@ -466,12 +468,12 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 
 		$scope.isPrevButtonDisabled = function() {
-			var disabled = false;
-			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) === parseInt($scope.leftCalendarOptions.month)) {
-				disabled = true;
-			}
-			return disabled;
-
+			var startDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month), 
+				calFrom = new tzIndependentDate(getFirstDayOfMonth(startDate)),
+				calTo = new tzIndependentDate(getLastDayOfNextMonth(startDate)),
+				busDate = new tzIndependentDate($rootScope.businessDate);
+			// Disable prev button if current business date is visible in the calendar
+			return busDate <= calTo && busDate >=calFrom;
 		};
 
 		/**
