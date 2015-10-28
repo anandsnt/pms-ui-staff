@@ -420,6 +420,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 case reportNames['GROUP_DEPOSIT_REPORT']:
                     report['hasDateLimit']  = false;
                     report['canRemoveDate'] = false;
