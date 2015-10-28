@@ -212,7 +212,7 @@
         
     </section>
     <section class="actions-content" role="main" ng-show='actions.totalCount === 0 && actionSelected === "new"'>
-        <div class="content-right action-full-view" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message">New Action</span>
@@ -255,7 +255,7 @@
             </div>
     </section>
     
-    <section class="actions-content no-content" role="main" ng-if='actions.length === 0'>
+    <section class="actions-content no-content" role="main" ng-if='actions.totalCount === 0'>
         <!-- if no actions for room -->
          <div class="info"  ng-hide='actionSelected === "new"'>
             <span class="icon-no-content icon-actions"></span>
