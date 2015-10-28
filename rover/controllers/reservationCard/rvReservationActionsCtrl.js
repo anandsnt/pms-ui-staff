@@ -237,7 +237,9 @@ sntRover.controller('reservationActionsController', [
                 };
                 
                 $scope.roomAssignmentNeeded = function(){
-                    if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
+                    if ($scope.reservationData.reservation_card.room_number === '' || 
+                            $scope.reservationData.reservation_card.room_status === 'NOTREADY' || 
+                            $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
                         return true;
                     } else return false;
                 };
@@ -290,7 +292,7 @@ sntRover.controller('reservationActionsController', [
                 };
                 
                 $scope.initCheckInFlow = function(){
-                    var checkingInQueued = (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued());
+                    var checkingInQueued = !$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued();
                             //CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
                             if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
                                 if ($scope.roomAssignmentNeeded()) {
@@ -345,7 +347,7 @@ sntRover.controller('reservationActionsController', [
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
-
+                        
 			if (!!hasRoom) {
 				// Go fetch the room status again
 				// After fetch do the entire rest of it
