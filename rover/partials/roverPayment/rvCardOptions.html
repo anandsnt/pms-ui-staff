@@ -23,7 +23,7 @@
         
         
 	<!-- Exsiting cards - use only when they exsit -->
-	<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="showExistingCards()" ng-iscroll="cardsList">
+	<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="showExistingCards() && !addmode" ng-iscroll="cardsList">
 		<div class="wrapper">
 
 			<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->
@@ -47,7 +47,7 @@
         
         
 	<!-- New card: MLI form -->
-	<div id="cc-new-card" class="new-card" ng-show="addNewSelected() && !isSixPayPayment()"> <!-- Remove class "hidden" if there are no exsisting cards available -->
+	<div id="cc-new-card" class="new-card" ng-show="addNewSelected() && !isSixPayPayment() && addmode"> <!-- Remove class "hidden" if there are no exsisting cards available -->
 		<div class="entry card-type">
 			<label for="card-type" >Card type </label>
 			<div class="select">
@@ -95,7 +95,7 @@
         
         
 	<!-- New card: Call-In -->
-	<iframe ng-if="isSixPayPayment()" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
+	<iframe ng-if="isSixPayPayment() && addmode" class="payment-iframe iframe-scroll" src="{{iFrameUrl}}" id="sixIframe" seamless></iframe>
 	<!-- Show only when creating reservation or paying the bill -->
 	<div class="actions" ng-show="showCancelCardSelection()">
 		<button type="button" class="button blank" ng-click="cancelCardSelection()">
