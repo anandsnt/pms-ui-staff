@@ -467,6 +467,7 @@
                         line-height: 40px;
                         font-weight: 300;
                         color: @textColor;
+                        .nowrap();
                         .show;
                     }
 
@@ -755,12 +756,11 @@
                     td {
                         line-height: 1em;
                         padding: 10px;
-                        white-space: normal;
-                        overflow: visible;
+                        width: 50%;
+                        .nowrap();
                     }
 
                     td {
-                        width: 20%;
                         font-size: 18px;
                         font-weight: 600;
                         text-align: right;
@@ -778,8 +778,6 @@
                             }
                         }
                     }
-
-                    th { width: 80%; }
 
                     &:nth-child(odd) {
                         th,
