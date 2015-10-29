@@ -125,7 +125,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_23: false,
 			item_24: false,
 			item_25: false,
-			item_26: false
+			item_26: false,
+			item_27: false,
+			item_28: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -400,6 +402,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.sortByChanged = function(item) {
             var _sortBy;
 
+            console.log(item.chosenSortBy);
+
             // un-select sort dir of others
             // and get a ref to the chosen item
             _.each(item.sortByOptions, function(each) {
@@ -609,7 +613,8 @@ sntRover.controller('RVReportsMainCtrl', [
 				'holdStatuses' : [],
 				'addonGroups'  : [],
 				'addons'       : [],
-				'reservationStatus' : []
+				'reservationStatus' : [],
+				'guestOrAccount': []
 			};
 
 			// include dates
@@ -646,6 +651,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
 				$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
+			};
+
+			// include group start dates -- IFF both the limits of date range have been selected
+			if (!!report.hasGroupStartDateRange && !!report.groupStartDate && !!report.groupEndDate) {
+				fromKey  = reportParams['GROUP_START_DATE'];
+				untilKey = reportParams['GROUP_END_DATE'];
+				/**/
+				params[fromKey]  = $filter('date')(report.groupStartDate, 'yyyy/MM/dd');
+				params[untilKey] = $filter('date')(report.groupEndDate, 'yyyy/MM/dd');
+				/**/
+				$scope.appliedFilter['groupFromDate'] = angular.copy( report.groupStartDate );
+				$scope.appliedFilter['groupToDate']   = angular.copy( report.groupEndDate );
 			};
 
 			// include deposit due dates
@@ -835,6 +852,18 @@ sntRover.controller('RVReportsMainCtrl', [
 						params[key] = true;
 						/**/
 						$scope.appliedFilter.display.push( each.description );
+					};
+				});
+			};
+
+			// generate params for guest or account
+			if ( report['hasGuestOrAccountFilter']['data'].length ) {
+				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						$scope.appliedFilter.guestOrAccount.push( each.description );
 					};
 				});
 			};
@@ -1064,7 +1093,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					};
 				};
 			};
-
 
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report
@@ -1349,6 +1377,5 @@ sntRover.controller('RVReportsMainCtrl', [
 				collision: 'flip'
 			}
 		}, ctgAutoCompleteCommon);
-
 	}
 ]);

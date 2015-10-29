@@ -1,4 +1,9 @@
-
+/*
+	Checkin keys Ctrl 
+	This is the final screen for the checkin operations.
+	It will have two types of responses. Some hotels may have QR code facility, so the HTML will
+	display the QR code ,else the text enterd in room key delivery in the admin setting will be shown as text.
+*/
 (function() {
 	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
 

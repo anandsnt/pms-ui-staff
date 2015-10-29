@@ -10,7 +10,7 @@
 <!-- <div ng-hide="hasNoResults" -->
 <div ng-hide="hasNoResults" id="report-content" class="report-content statistics" ng-controller="RVDailyProdReportCtrl">
 
-	<!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
+    <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
         <div class="scrollable" ng-iscroll="left-pane-scroll"> <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
             <ul class="wrapper">
@@ -39,8 +39,8 @@
                     </div>
                 </li>
                 <li ng-repeat="name in roomNames track by $index">
-                	<span ng-show="!$last">{{ name }}</span>
-                	<strong ng-show="$last">{{ name }}</strong>
+                    <span ng-show="!$last">{{ name }}</span>
+                    <strong ng-show="$last">{{ name }}</strong>
                 </li>
             </ul>
         </div>
@@ -49,29 +49,8 @@
     <!-- Right side - table numbers. Number of table rows here should be identical to the number of list items on the left side -->
     <div class="statistics-content scrollable" ng-iscroll="right-pane-scroll"><!-- Attach iscroll here, should scroll vertically and horizontally. While scrolling vertically it should update iscoll on the left side as well -->
 
-        <div class="wrapper" style="width: {{ rightPaneWidth }}px;">
-            <table class="statistics-reports">
-                <thead>
-                    <tr>
-                    	<th ng-repeat="item in headerTop track by $index" colspan="{{ colSpan }}">{{ item }}</th><!-- When L156 is on and L167 is off, colspan is 2. When L156 is off and L167 is on, colspan is 3. When both L156 and L167 are on, colspan is 5 -->
-                    </tr>
-                    <tr class="bottom-row">
-                    	<th ng-repeat="item in headerBot track by $index" class="{{ item.cls }}">{{ item.name }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- For individual rates use this -->
-                    <tr ng-repeat="rowData in reportData track by $index" ng-init="outerLast = $last">
-                    	<td ng-repeat="item in rowData track by $index" class="{{ item.cls }}">
-                    		<em ng-show="!outerLast && item.isAvail">{{ item.value }}</em>
-                    		<span ng-show="!outerLast && item.isRev">{{ item.value }}</span>
-                    		<strong ng-show="outerLast">{{ item.value }}</strong>
-                    	</td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
+        <div class="wrapper" id="daily-production-render"></div>
+        
     </div>
 </div>
 

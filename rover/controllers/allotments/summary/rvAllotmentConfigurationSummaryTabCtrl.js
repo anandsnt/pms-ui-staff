@@ -27,10 +27,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			var currentSummaryData = $scope.allotmentConfigData.summary;
 			for (key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
-					return false;
+					return true;
 				}
 			}
-			return true;
+			return false;
 		};
 
 		/**
@@ -50,13 +50,22 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
-			if ($scope.isInAddMode() || (targetElement && (targetElement.id === 'summary' ||
-				targetElement.id === "cancel-action" )) || //TODO: Need to check with Dilip/Shiju PC for more about this
-				whetherSummaryDataChanged() ||
-				$scope.allotmentSummaryData.isDemographicsPopupOpen || $scope.isUpdateInProgress) {
+			var isInaddMode 			= $scope.isInAddMode(),
+				incorrectTarget 		= (targetElement &&
+											(targetElement.id === 'summary' ||
+											 targetElement.id === "cancel-action"
+											)
+										  ),
+				summaryDataNotChanged 	= !whetherSummaryDataChanged(),
+				demographicsOpen 		= $scope.allotmentSummaryData.isDemographicsPopupOpen,
+				updateInProgress 		= $scope.isUpdateInProgress;
 
+			if ( incorrectTarget 	  || isInaddMode 	  || summaryDataNotChanged ||
+				 demographicsOpen 	  || updateInProgress ) {
+				// No need to call update summary
 				return;
 			}
+
 			//yes, summary data update is in progress
 			$scope.isUpdateInProgress = true;
 
@@ -120,7 +129,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				demographics 	= $scope.allotmentSummaryData.demographics,
 				blockFromDate	= configSummaryData.block_from,
 				blockToDate		= configSummaryData.block_to,
-				aptSegment		= "" //Variable to store the suitable segment ID;
+				aptSegment		= ""; //Variable to store the suitable segment ID;
 
 			// CICO-15107 --
 			if (!!blockToDate && !!blockFromDate) {
@@ -147,7 +156,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				var options = {
 					successCallBack: onFetchSegmentDataSuccess,
 					failureCallBack: onFetchSegmentDataFailure
-				}
+				};
 				$scope.callAPI(RVReservationSummarySrv.fetchInitialData, options);
 			} else {
 				updateSegment();
@@ -580,7 +589,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					successCallBack: onFetchAddonsListSuccess,
 					failureCallBack: onFetchAddonsListFailure,
 					params: params
-				}
+				};
 			$scope.callAPI(RVReservationAddonsSrv.fetchAddonData, options);
 		};
 
@@ -721,7 +730,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 					processSwipedData(swipedCardData);
 				};
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-			};
+			}
 		});
 
 		var onFetchRatesSuccess = function(data) {
@@ -828,11 +837,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
-			//IF you are looking for where the hell the API is CALLING
-			//scroll above, and look for the event 'ALLOTMENT_TAB_SWITCHED'
-
-			//date related setups and things
-			//
 			// Fetch rates to show in dropdown
 			if (!!$scope.allotmentConfigData.summary.block_from && !!$scope.allotmentConfigData.summary.block_to) {
 				fetchApplicableRates();

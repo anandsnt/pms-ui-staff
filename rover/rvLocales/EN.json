@@ -110,7 +110,7 @@
     "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
     "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this",
     "INSUFFICIENT_INV_ALLOTMENT_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Allotment, please review Allotment Room Block",
-    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"    
+    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"   
 
 
 
@@ -627,7 +627,10 @@
 	"STAYOVERS" : "Stayovers",
 	"COMPLETED" : "Completed",
 	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
-	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms.",
+	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
+
+
 ,	
 
 	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Dept. / House",
@@ -867,15 +870,19 @@
     "NIGHTS":"nights",
     "CHECKIN":"check-in",
     "CHECKOUT":"check-out",
+    "AVAILABLE" : "Available",
     "SELECT_ROOM_TYPE":"Select Room Type",
     "SET_DATES":"Set Dates", 
     "DRAG_AND_DROP_TEXT":"Drag &amp; drop to change stay dates",
     "ARRIVAL":"Arrival",
+    "ARRIVAL_UNAVAILABLE" : "Arrival Unavailable",
     "MID_STAY":"Mid stay",
+    "RESTRICTIONS_APPLY" : "Restrictions Apply",
     "DEPARTURE":"Departure",
     "ROOM_TYPE_AVAILABLE":"Room Type available",
     "NO_TYPE_AVAILABLE":"No Type availability",
     "NO_HOUSE_AVAILABLE":"No House availability",
+    "NO_ROOM_TYPE_AVAILABLE" : "NO Room Type available",
     "HOUSE":"House",
     "OVERBOOK_TEXT":"availability on one or more of the selected dates. Overbook?",
     "YES":"Yes",
@@ -888,9 +895,9 @@
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
     "START_PAYMENT_PROCESS": "Start Payment Process",
-    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "Conflicting Billing Information exists for",
     "CARD": "card",
-    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually.",
     "OK": "ok",
     "BILLING_INFORMATION_FOUND": "Billing information found",
     "ON_SELECTED_CARD": "On selected card",
@@ -1082,6 +1089,7 @@
     "T_AND_C_TEXT": "By Checking this box you hereby agree to the Terms & Conditions",
     "PROMO_NEWS_BY_EMAIL_TEXT": "Please send me promotions and news via email.",
     "COMPLETE_CHECKIN" : "Complete checkin",
+    "COMPLETE_ADD_TO_QUEUE" : "Add to queue",
     "CLEAR_SIGNATURE": "Clear signature",
     "PHONE_EMAIL_MISSING" : "Phone &amp; e-mail missing!",
     "PHONE_MISSING" : "Phone missing!",
@@ -1091,6 +1099,8 @@
     "EMAIL" : "E-mail",
     "SUBMIT_AND_GOTO_CHECKIN" : "Submit and go to check in",
     "IGNORE_AND_GOTO_CHECKIN" : "Ignore and go to check in",
+    "SUBMIT_AND_GOTO_PUTINQUEUE" : "Submit and go to put in queue",
+    "IGNORE_AND_GOTO_PUTINQUEUE" : "Ignore and go to put in queue",
     "ASK_GUEST_TO_PROVIDE_EMAIL" : "Ask the guest to provide email",
     "SUBMIT": "Submit",
     "KEY_NOT_PRINTED": "Keys not printed",

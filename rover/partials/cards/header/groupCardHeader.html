@@ -1,5 +1,8 @@
-<div id="group-card-header" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVGroupCardCtrl" ng-show="isStandAlone" outside-click-handler>
-    <section ng-if="!searchMode">
+<div id="{{fetchGroupAllotmentCardId('HEAD')}}" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVGroupCardCtrl" ng-show="isStandAlone" outside-click-handler>
+<!-- NOTE: Allotments and Groups are mutually exclusive in a reservation. Both can NOT be associated with a reservation at the same time -->
+    <!-- This section is to be used in case a group card is selected -->
+    <!-- SELECTED GROUP HEADER -->
+    <section ng-if="!searchMode && !!reservationData.group.id">
         <div class="guest-image icons icon-group-large" ng-click="switchCard('group-card')"></div>
         <form name="edit-group" id="new-group" class="dual-actions">
             <div class="holder">
@@ -20,18 +23,45 @@
             <button type="button" class="button blue" ng-hide="true">Duplicate</button>
             <!-- If in Stay Card or Create Reservation, show these instead: -->
             <button type="button" class="button brand-colors" ng-click="gotoGroupDetails()">Group Details</button>
-            <button type="button" class="button red" ng-click="removeGroupCard()">Remove Group</button>
+            <button type="button" class="button red" ng-click="detachFromGroupORAllotment()">Remove Group</button>
         </div>
     </section>
+    <!-- This following section is for allotments (Only if an allotment is selected)-->
+    <!-- SELECTED ALLOTMENT HEADER -->
+    <section ng-if="!searchMode && !!reservationData.allotment.id">
+        <div class="guest-image icons icon-allotment-large new" ng-click="switchCard('group-card')"></div>
+        <form name="edit-group" id="new-group" class="dual-actions">
+            <div class="holder">
+                <div class="entry">
+                    <input id="group-name" placeholder="" value="{{allotmentConfigData.summary.allotment_name}}" type="text" class="masked-input h1" />
+                </div>
+            </div>
+            <div class="holder data">
+                <!-- These should not allow free text input, you should only be able to search and add -->
+                <input class="masked-input icons icon-gc-company" id="group-company" value="{{allotmentConfigData.summary.company.name}}" type="text" style="width:{{ ((allotmentConfigData.summary.company && allotmentConfigData.summary.company.name && allotmentConfigData.summary.company.name.length) || 2) * 9 + 45}}px"/>
+                <!-- Search only companies -->
+                <input class="masked-input icons icon-gc-ta" id="group-ta" value="{{allotmentConfigData.summary.travel_agent.name}}" type="text" style="width:{{ ((allotmentConfigData.summary.travel_agent && allotmentConfigData.summary.travel_agent.name && allotmentConfigData.summary.travel_agent.name.length) || 2) * 9 + 45}}px"/>
+                <!-- Search only travel agents -->
+            </div>
+        </form>
+        <div class="card-actions dual-actions">
+            <!-- Add class "dual-actions" if in Stay Card/Create Reservation screens -->
+            <button type="button" class="button blue" ng-hide="true">Duplicate</button>
+            <!-- If in Stay Card or Create Reservation, show these instead: -->
+            <button type="button" class="button brand-colors" ng-click="gotoAllotmentDetails()">Details</button>
+            <button type="button" class="button red" ng-click="detachFromGroupORAllotment()">Detach</button>
+        </div>
+    </section>
+
     <section section ng-if="searchMode">
-        <div class="guest-image icons icon-group-large new" ng-click="switchCard('group-card')">
+        <div class="guest-image icons icon-group-allotment new" ng-click="switchCard('group-card')">
             <span class="search-indicator"></span>
         </div>
-        <form method="post" name="search-group" id="search-group" class="card-search-form" role="search">
+        <form method="post" name="search-group" id="ssearch-allotment-group" class="card-search-form" role="search">
             <div class="holder">
                 <div class="entry" ng-click="openGuestCard()">
-                    <input name="group-name" id="group-name" placeholder="Group Name" value="" class="masked-input fixed long-name h1" type="text" rv-delay-textbox ng-model="searchData.groupCard.name" delay="1000" function-to-fire="searchGroups">
-                    <input name="group-code" id="group-code" placeholder="Group Code #" value="" class="masked-input fixed code h1" type="text" rv-delay-textbox ng-model="searchData.groupCard.code" delay="1000" function-to-fire="searchGroups">
+                    <input name="group-name" id="allotment-group-name" placeholder="Group or Allotment Name" value="" class="masked-input fixed long-name h1" type="text" rv-delay-textbox ng-model="searchData.groupCard.name" delay="1000" function-to-fire="searchGroups">
+                    <input name="group-code" id="allotment-group-code" placeholder="Group or Allotment Code #" value="" class="masked-input fixed code h1" type="text" rv-delay-textbox ng-model="searchData.groupCard.code" delay="1000" function-to-fire="searchGroups">
                 </div>
             </div>
         </form>

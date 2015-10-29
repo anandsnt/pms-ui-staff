@@ -58,18 +58,6 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.setHeadingTitle(title);
         };
 
-
-
-        /**
-         * Function to check the mandatory values while saving the reservation
-         * Handling in client side owing to alleged issues on import if handled in the server side
-         * @return boolean [true if all the mandatory values are present]
-         */
-        var ifMandatoryValuesEntered = function() {
-            var summary = $scope.allotmentConfigData.summary;
-            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
-        };
-
         /**
          * shouldShowRoomingListTab whether to show rooming list tab
          * @return {Boolean} [description]
@@ -129,6 +117,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             $scope.allotmentConfigData = {
                 activeTab: $stateParams.activeTab, // Possible values are SUMMARY, ROOM_BLOCK, ROOMING, ACCOUNT, TRANSACTIONS, ACTIVITY
                 summary: summaryData.allotmentSummary,
+                roomblock: {},
                 holdStatusList: holdStatusList.data.hold_status,
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
@@ -225,9 +214,11 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         };
 
-        $scope.reloadPage = function() {
+        $scope.reloadPage = function(tab) {
+            tab = tab || "SUMMARY";
             $state.go('rover.allotments.config', {
-                id: $scope.allotmentConfigData.summary.allotment_id
+                id: $scope.allotmentConfigData.summary.allotment_id,
+                activeTab: tab
             }, {
                 reload: true
             });
@@ -283,21 +274,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.saveNewAllotment = function() {
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
-                if (ifMandatoryValuesEntered()) {
-                    if (!$scope.allotmentConfigData.summary.rate) {
-                        $scope.allotmentConfigData.summary.rate = -1;
-                    }
-                    var options = {
-                        successCallBack: onAllotmentSaveSuccess,
-                        failureCallBack: onAllotmentSaveFailure,
-                        params: {
-                            summary: $scope.allotmentConfigData.summary
-                        }
-                    };
-                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
-                } else {
-                    $scope.errorMessage = ["Allotment's name, from date, to date, room release date and hold status are mandatory"];
+                if (!$scope.allotmentConfigData.summary.rate) {
+                    $scope.allotmentConfigData.summary.rate = -1;
                 }
+                var options = {
+                    successCallBack: onAllotmentSaveSuccess,
+                    failureCallBack: onAllotmentSaveFailure,
+                    params: {
+                        summary: $scope.allotmentConfigData.summary
+                    }
+                };
+                $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
             } else {
                 $scope.$emit("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"]);
             }
@@ -360,7 +347,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowCompanyCardNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.company.id);
+            return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.company && !!$scope.allotmentConfigData.summary.company.id) );
         };
 
         /**
@@ -368,16 +355,16 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return {Boolean} [description]
          */
         $scope.shouldShowTravelAgentNavigationButton = function() {
-            return (!$scope.isInAddMode() && !!$scope.allotmentConfigData.summary.travel_agent.id);
+            return ( !$scope.isInAddMode() && (null !== $scope.allotmentConfigData.summary.travel_agent && !!$scope.allotmentConfigData.summary.travel_agent.id) );
         };
 
-        $scope.goToTACard = function(){            
+        $scope.goToTACard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.travel_agent.id,
                 type: 'TRAVELAGENT'
             });
         };
-        
+
         $scope.goToCompanyCard = function(){
             $state.go('rover.companycarddetails', {
                 id: summaryData.allotmentSummary.company.id,
@@ -394,14 +381,15 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         $scope.onCompanyCardChange = function() {
-            if ($scope.allotmentConfigData.summary.company && $scope.allotmentConfigData.summary.company.name === "") {
-                $scope.allotmentConfigData.summary.company = null;
+            var summaryData = $scope.allotmentConfigData.summary;
+            if (summaryData.company && summaryData.company.name === "") {
+                summaryData.company = null;
             }
         };
 
         $scope.onTravelAgentCardChange = function() {
-            if ($scope.allotmentConfigData.summary.travel_agent && $scope.allotmentConfigData.summary.travel_agent.name === "") {
-                $scope.allotmentConfigData.summary.travel_agent = null;
+            if (summaryData.travel_agent && summaryData.travel_agent.name === "") {
+                summaryData.travel_agent = null;
             }
         };
 

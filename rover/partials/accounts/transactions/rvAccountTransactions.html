@@ -126,7 +126,7 @@
                             </li>
                             <!-- Only if balance > 0:-->
                             <li>
-                                <button class="button green with-icon only-icon" click-touch="showPayemntModal()" >
+                                <button ng-show="billData.total_fees.balance_amount != 0" class="button green with-icon only-icon" click-touch="showPayemntModal()" >
                                     <span class="icons icon-wallet"></span>
                                     {{'PAY' |translate}}
                                 </button>
@@ -199,9 +199,11 @@
                                         </td>
                                         <td>
                                             <!-- Only if balance > 0, otherwise leave blank cell -->
-                                            <button class="button green with-icon only-icon" click-touch="showPayemntModal()">
-                                                <span class="icons icon-wallet"></span>
-                                                {{'PAY' |translate}}
+                                            <button class="button green with-icon only-icon"
+                                                ng-show="billData.total_fees.balance_amount != 0"
+                                                click-touch="showPayemntModal()">
+                                                    <span class="icons icon-wallet"></span>
+                                                    {{'PAY' |translate}}
                                             </button>
                                         </td>
                                         <td ></td>

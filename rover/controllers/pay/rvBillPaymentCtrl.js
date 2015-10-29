@@ -189,6 +189,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		 refreshCardsList();
 	};
 
+	$scope.$on('changeOnsiteCallIn', function(event){
+		$scope.isManual =  !$scope.isManual;
+		$scope.changeOnsiteCallIn();
+	});
+
 	var checkReferencetextAvailable = function(){
 		angular.forEach($scope.renderData.paymentTypes, function(value, key) {
 			if(value.name === $scope.saveData.paymentType){
@@ -285,9 +290,22 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
             $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
         };
 
-
+        $scope.showAddToGuestCard = function(){
+          if ($scope.showCreditCardInfo && 
+                  !$scope.showCCPage && 
+                  $scope.newCardAdded && 
+                    (
+                        $scope.paymentGateway !== 'sixpayments' || 
+                        $scope.isManual
+                    ) &&
+                    !$scope.depositPaidSuccesFully
+             ){
+              return true;
+          } else return false;
+        };
         $scope.isGiftCardPmt = false;
-	$scope.showHideCreditCard = function(){
+	$scope.changePaymentType = function(){
+console.log(arguments)
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
                     $scope.resetSplitPaymentDetailForGiftCard();
                     $scope.shouldShowMakePaymentButton = true;
@@ -346,7 +364,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.creditCardTypes = item.values;
 			};
 		});
-		$scope.showHideCreditCard();
+		$scope.changePaymentType();
 	};
 
 
@@ -386,8 +404,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			angular.forEach($scope.cardsList, function(value, key) {
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
-					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() === "CC"){
-						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number === value.mli_token) && ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() === value.card_code.toLowerCase() )) {
+					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type && $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() === "CC"){
+						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number === value.mli_token) && 
+                                                        ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() === 
+                                                        value.card_code.toLowerCase() )) {
 							value.isSelected = true;
 							checkReferencetextAvailableForCC();
 						}
@@ -704,7 +724,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if($scope.saveData.paymentType === "CC"){
 				if(!$scope.showCreditCardInfo){
 					$scope.errorMessage = ["Please select/add credit card"];
-					$scope.showHideCreditCard();
+					$scope.changePaymentType();
 				} else {
 					$scope.errorMessage = "";
 					dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC

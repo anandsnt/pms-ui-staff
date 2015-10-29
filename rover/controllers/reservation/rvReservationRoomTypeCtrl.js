@@ -137,7 +137,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					});
 
 					$scope.isHouseAvailable = isHouseAvailable;
-					if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
+					// CICO-21313
+					// While coming in from staycard even if no avbl -- DO NOT go into calendar view
+					// clarified the same with the product team as well. (w. Nicole)
+					if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime && $stateParams.fromState !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
 						$scope.toggleCalendar();
 					}
 				} else if ($stateParams.view === "CALENDAR" && isCallingFirstTime) {
@@ -171,7 +174,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 				});
 				if (!!$scope.reservationData.group.id) {					
-					 var customRate = RVReservationStateService.getGroupCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name);
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
+					 rates[customRate.id] = customRate;
+				};
+
+				if (!!$scope.reservationData.allotment.id) {					
+					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
 					 rates[customRate.id] = customRate;
 				};
 
@@ -300,6 +308,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
 				group_id: $scope.reservationData.group.id,
+				allotment_id: $scope.reservationData.allotment.id,
 				promotion_code: $scope.reservationData.searchPromoCode
 			}, fetchSuccess);
 
@@ -804,7 +813,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					//7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// Revisit all occupancyLimit warnings
-					// $scope.checkOccupancyLimit(null, false, i);					
+					$scope.checkOccupancyLimit(null, false, i);					
 				}
 				$scope.viewState.currentTab = $scope.activeRoom;
 				if ($scope.otherData.showOverbookingAlert) {
@@ -1351,7 +1360,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.activeRoom,
 					$scope.reservationData.numNights, {
 						code: $scope.reservationData.code,
-						group: $scope.reservationData.group
+						group: $scope.reservationData.group,
+						allotment: $scope.reservationData.allotment,
 					},
 					$scope.reservationData.member.isSelected),
 				rooms = parsedRooms.rooms;
@@ -1533,7 +1543,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";
 			$scope.setHeadingTitle($scope.heading);
-			$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+			$("#rooms-and-rates-header .switch-button").toggleClass("on");
 		};
 
 		$scope.showStayDateDetails = function(selectedDate) {
@@ -1669,7 +1679,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			});
 
 			$scope.$on('resetGuestTab', function() {
-				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id, function(data) {
+				// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
+				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id, function(data) {
 					$scope.$emit('hideLoader');
 					$scope.reservationData.guestMemberships = {
 						ffp: data.frequentFlyerProgram,
@@ -1700,7 +1711,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 			$scope.$on('switchToStayDatesCalendar', function() {
 				$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
-				$("#rooms-and-rates-header .data-off span").toggleClass("value switch-icon");
+				$("#rooms-and-rates-header .switch-button").toggleClass("on");
 			});
 		}
 

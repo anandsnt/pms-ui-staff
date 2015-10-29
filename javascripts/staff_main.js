@@ -57,6 +57,8 @@
 //=require ../rover/react/diary/diary-grid-panel.js
 //=require ../rover/react/diary/diary-content.js
 
+//=require ../rover/react/reports/dailyProductionReport/daily-production-content.js
+
 //=require ../rover/rvRouter.js
 //=require ../rover/rvCardOperations.js
 //=require ../rover/rvMLIOperations.js

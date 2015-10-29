@@ -1,0 +1,18 @@
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+	<div class="modal-content alert room-ooo">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+	    
+	    <span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">Please move reservation to another room.</span>
+	    <span class="text">For the selected date / time room is assigned to Reservation for:</span>
+	    <p class="guest" ng-repeat="reservation in ngDialogData.reservations">
+	    	<strong>{{reservation.last_name}}, {{reservation.first_name}}</strong>
+	    	Reservation #<em>{{reservation.confirm_no}}</em>
+	    </p>
+
+	    <div class="actions">
+	        <button type="button" class="button blue" ng-click="forcefullyPutRoomToOOSorOOO()">Put {{ooOsTitle}} anyway</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+</div>
+</div>

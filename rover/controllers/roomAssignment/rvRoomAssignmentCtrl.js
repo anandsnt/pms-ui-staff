@@ -298,6 +298,15 @@ sntRover.controller('RVroomAssignmentController',[
 			openRoomAlreadyChoosedPopup ();
 		}
 		else {
+                    /*
+                    var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    if (useAdvancedQueFlow && ($scope.putGuestInQueue || $rootScope.putGuestInQueue)){
+                        $rootScope.$emit('putInQueueAdvanced');
+                        $scope.backToStayCard();
+                        return;
+                    }
+                    */
+                    
 			if($scope.clickedButton === "checkinButton") {
 				$state.go('rover.reservation.staycard.billcard',
 					{
@@ -394,12 +403,26 @@ sntRover.controller('RVroomAssignmentController',[
         $scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
 	};
 
-	$scope.goToNextView = function(){
 
+        
+        $scope.goToStayCardFromAddToQueue = false;
+        if (!$rootScope.reservationRoomWatch){//alternative to $destroy, this is an init-once method
+            $rootScope.reservationRoomWatch = 1;
+
+            $rootScope.$on('putGuestInQueue',function(){
+                $scope.goToStayCardFromAddToQueue = true;
+                $rootScope.goToStayCardFromAddToQueue = true;
+
+            });
+        }
+
+
+	$scope.goToNextView = function(){
 		if($scope.clickedButton === "checkinButton"){
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-		} else {
+                } else {
+                    
 			$scope.$emit('hideLoader');
 			$scope.backToStayCard();
 		}
@@ -449,7 +472,6 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function(){
-
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num ,isrefresh: false});
 
 	};

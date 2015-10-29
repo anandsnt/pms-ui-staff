@@ -2,9 +2,16 @@
 	<div class="info">
 		<span class="icon-no-content icon-room"></span>
 		<strong class="h1">No Current reservations</strong>
-		<span class="h2"> It looks like
+		<span class="h2" ng-show="isStandAlone"> It looks like
 			{{data.guest_details.first_name}}
 			{{data.guest_details.last_name}}
-			doesn’t have any reservation today. Would you like to <a class="open-modal-fix">create one</a> ? </span>
+			doesn’t have any reservation today. Would you like to 
+			<a class="open-modal-fix" ui-sref="rover.reservation.search">create one</a> ? 
+		</span>
+		<span class="h2" ng-hide="isStandAlone"> It looks like
+			{{data.guest_details.first_name}}
+			{{data.guest_details.last_name}}
+			doesn’t have any reservation today.
+		</span>
 	</div>
 </div>

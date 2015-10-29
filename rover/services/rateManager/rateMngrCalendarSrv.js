@@ -133,11 +133,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
             }
             calendarData.room_types_all = [];
             calendarData.isChildRate = [];
+            
             var rateObj;
             if (data.results[0]){
                 for (var c in data.results[0].rates){
                 rateObj = data.results[0].rates[c];
-                    if (rateObj.is_child){
+                    if (!rateObj.can_modify){
                         calendarData.isChildRate.push(rateObj.id);
                     }
                 }
@@ -216,7 +217,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//Pass the rate details to the controller
 			calendarData.selectedRateDetails = selectedRate;
 			calendarData.is_fixed_rate = data.is_fixed_rate;
-			calendarData.is_child = data.is_child;
+			calendarData.is_child = !data.can_modify;
 			deferred.resolve(calendarData);
 		},rejectDeferred);
 

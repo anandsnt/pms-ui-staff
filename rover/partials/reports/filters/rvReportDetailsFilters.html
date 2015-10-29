@@ -206,7 +206,30 @@
         </div>
 
 
-
+        <!-- item_27: group start date range -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGroupStartDateRange" ng-class="{'active': filterItemsToggle.item_27}" ng-click="toggleFilterItems('item_27')">
+            <span class="title">{{ chosenReport.hasGroupStartDateRange.description }}</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasGroupStartDateRange" ng-class="{'hidden': !filterItemsToggle.item_27}">
+            <div class="entry date-range">
+                <label for="arrival-range-from">From</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.groupStartDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.groupStartDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasGroupStartDateRange')">Clear query</span>
+                    </button>
+                </div>
+                <label for="arrival-range-to">To</label>
+                <div class="has-datepicker">
+                    <input ng-if="chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.groupEndDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <input ng-if="!chosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.groupEndDate" ng-change="dateChanged(chosenReport, 'hasGroupStartDateRange')" readonly>
+                    <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
+                        <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasGroupStartDateRange')">Clear query</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -442,6 +465,25 @@
                     <label class="checkbox" ng-repeat="status in chosenReport.hasReservationStatus.data">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
                         <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport.id, chosenReport.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.status }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- item_28: Guest or Account -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGuestOrAccountFilter.data.length" ng-class="{ 'active': filterItemsToggle.item_28 }" ng-click="toggleFilterItems('item_28')">
+            <span class="title">Guest/Account</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasGuestOrAccountFilter" ng-class="{ 'hidden': !filterItemsToggle.item_28 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasGuestOrAccountFilter.data.length > 1">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasGuestOrAccountFilter.selectAll }"></span>
+                    <input type="checkbox" ng-model="chosenReport.hasGuestOrAccountFilter.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasGuestOrAccountFilter, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasGuestOrAccountFilter.data.length > 1 && chosenReport.hasGuestOrAccountFilter.selectAll) }">
+                    <label class="checkbox" ng-repeat="status in chosenReport.hasGuestOrAccountFilter.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
+                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport.id, chosenReport.hasGuestOrAccountFilter)" id="addon-reserved" name="addon-status"> {{ status.description }}
                     </label>
                 </div>
             </div>
