@@ -24,10 +24,9 @@
 			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
 		</div>
 		<div class="action">
-			<button class="button green" id="loginbutton" name="commit" type="submit" value="login">
-				Login
-			</button>
-		</div>
+            <button type="submit" class="button green">Login</button>
+            <a ng-click="forgotPassword()">Forgot Password?</a>
+        </div>
 	</form>
 
 	<div class="support">

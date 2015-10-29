@@ -80,6 +80,18 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
  		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 
+	/*
+	 * Forgot password action of login
+	 */
+	 $scope.forgotPassword = function() {
+	 	var errorMessage = ["Please enter your Login email address"];
+	 	if($scope.data.email === ""){
+	 		$scope.errorMessage = errorMessage;
+	 	} else {
+	 		$scope.errorMessage = "";
+	 	}
+	 }
+
 
 }]);
 /*
