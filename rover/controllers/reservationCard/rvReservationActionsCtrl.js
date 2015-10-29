@@ -366,6 +366,11 @@ sntRover.controller('reservationActionsController', [
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
+                        if (!hasRoom && $scope.putInQueueClicked){
+                            $scope.goToRoomAssignment();
+                            return false;
+                        }
+                        
                         
 			if (!!hasRoom) {
 				// Go fetch the room status again
