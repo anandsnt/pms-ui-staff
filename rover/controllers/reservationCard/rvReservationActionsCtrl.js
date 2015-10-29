@@ -240,7 +240,7 @@ sntRover.controller('reservationActionsController', [
                     if ($scope.reservationData.reservation_card.room_number === '' || 
                             $scope.reservationData.reservation_card.room_status === 'NOTREADY' || 
                             $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
-                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.reservationIsQueued()){
+                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && !$scope.reservationIsQueued()){
                             return false;
                         }
                         return true;
