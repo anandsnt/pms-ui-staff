@@ -53,7 +53,9 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		var deferred = $q.defer();
 		var data = {
 			query: params.query,
-			floor_unassigned:true
+			floor_unassigned:true,
+			per_page: params.roomsPerPage,
+			page: params.currentPage
 		};
 		var url = '/api/floors/rooms';
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
