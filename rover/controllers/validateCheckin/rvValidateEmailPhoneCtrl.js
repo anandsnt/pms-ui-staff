@@ -69,8 +69,25 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		ngDialog.close();
 		$scope.goToNextView();
 	};
+         $scope.reservationIsQueued = function(){
+                    //checks current reservation data to see if it is in Queue or not
+                    if ($scope.reservationData.reservation_card.is_reservation_queued === 'true'){
+                        return true;
+                    } else return false;
+                };
         $scope.roomAssignmentNeeded = function(){
-            if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || $scope.reservationData.reservation_card.room_status !== 'READY' || $scope.reservationData.reservation_card.fo_status !== 'VACANT'){
+            if ($scope.reservationData.reservation_card.room_number === '' || 
+                    $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || 
+                    $scope.reservationData.reservation_card.room_status !== 'READY' || 
+                    $scope.reservationData.reservation_card.fo_status !== 'VACANT'){
+                
+                    if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
+                        return true;
+                    }
+                    if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.reservationIsQueued()){
+                        return false;
+                    }
+                
                 return true;
             } else return false;
         };

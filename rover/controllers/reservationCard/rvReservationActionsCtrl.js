@@ -244,8 +244,6 @@ sntRover.controller('reservationActionsController', [
                         if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
                             return true;
                         }
-                        
-                        
                         if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.reservationIsQueued()){
                             return false;
                         }
@@ -253,8 +251,6 @@ sntRover.controller('reservationActionsController', [
                     } else return false;
                 };
                 $scope.upsellNeeded = function(){
-                    
-                    
                     if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true"){
                         return true;
                     } else return false;
