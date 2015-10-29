@@ -45,7 +45,7 @@
                     <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
                         <a id="summary" translate>ALLOTMENT_SUMMARY</a>
                     </li>
-                    <li class="with-filters" ng-click="switchTabTo('DETAILS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'DETAILS'}">
+                    <li class="with-filters" ng-click="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}">
                         <a translate>ALLOTMENT_DETAILS</a>
                     </li>
                     <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}">
@@ -62,8 +62,8 @@
                         ng-show="allotmentConfigData.activeTab == 'SUMMARY'">
                 </ng-include>
 
-                <ng-include src="'/assets/partials/allotments/details/rvAllotmentConfigurationDetailsTab.html'"
-                        ng-show="allotmentConfigData.activeTab == 'DETAILS'">
+                <ng-include src="'/assets/partials/allotments/details/rvAllotmentConfigurationRoomBlockTab.html'"
+                        ng-show="allotmentConfigData.activeTab == 'ROOM_BLOCK'">
                 </ng-include>
 
                 <ng-include src="'/assets/partials/allotments/reservations/rvAllotmentReservationsListTab.html'"

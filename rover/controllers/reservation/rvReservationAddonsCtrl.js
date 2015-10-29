@@ -98,7 +98,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, saveData, successCallBack, failureCallBack);
                 } else {
                     var save = function() {
-                        if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
+                        if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id || $scope.reservationData.allotment.id) {
                             /**
                              * 1. Move check for guest / company / ta card attached to the screen before the reservation summary screen.
                              * This may either be the rooms and rates screen or the Add on screen when turned on.
@@ -259,6 +259,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amountType: addon.amountType,
                             postType: addon.postType,
                             taxDetail: addon.taxes,
+                            chargefullweeksonly:addon.chargefullweeksonly
                         });
                     }
                 }
@@ -391,7 +392,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     /*
                      *  if the available count is less we prompts warning popup
                      */
-                    if (remainingCount >= 0 || availableAddonCount === null) {
+                    if (remainingCount > 0 || availableAddonCount === null) {
                         insertAddon(addon, addonQty);
                     } else {
                         $scope.addon = addon;
@@ -411,10 +412,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     };
                 };
 
+               
+                // Set the departure date for the query as the date before actual departure and in case of day reservations,
+                // make it the arrival date.
+                // Change made for CICO-21037
+                var adjustedQueryEndDate = new tzIndependentDate($scope.reservationData.arrivalDate);
+                adjustedQueryEndDate.setDate(adjustedQueryEndDate.getDate() + (($scope.reservationData.numNights || 1) - 1));
+
                 var paramDict = {
                     'addon_id': addon.id,
                     'from_date': $scope.reservationData.arrivalDate,
-                    'to_date': $scope.reservationData.departureDate,
+                    'to_date':  $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
                 }
                 $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
             }

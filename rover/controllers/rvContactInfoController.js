@@ -110,10 +110,6 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
         $scope.newGuestAdded(data.id);
       };
-      var createUserInfoFailureCallback = function(data) {
-        $scope.$emit('hideLoader');
-        $scope.errorMessage = data;
-      };
 
       /**
        * change date format for API call
@@ -147,7 +143,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         if (typeof data.data.is_opted_promotion_email === 'undefined') {
           data.data.is_opted_promotion_email = false;
         }
-        $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, createUserInfoFailureCallback);
+        $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback);
       }
     };
 
@@ -162,7 +158,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
-      if (typeof $scope.guestCardData.contactInfo.user_id === "undefined" || $scope.guestCardData.userId === "" || $scope.guestCardData.userId === null || typeof $scope.guestCardData.userId === 'undefined') {
+      if (!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) {
         $scope.saveContactInfo(true);
       } else {
         $scope.saveContactInfo();

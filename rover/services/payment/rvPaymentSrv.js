@@ -2,17 +2,27 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 
 
 	var that =this;
+
+	var paymentsData = {};
+
 	this.renderPaymentScreen = function(data){
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
-		RVBaseWebSrv.getJSON(url,data).then(function(data) {
+
+		if(!isEmpty(paymentsData) && !(data && data.direct_bill)){
+			deferred.resolve(paymentsData)
+		}else{
+			RVBaseWebSrv.getJSON(url,data).then(function(data) {
+			    paymentsData = data;
 			    deferred.resolve(data);
 			},function(data){
-			    deferred.reject(data);
+				deferred.reject(data);
 			});
+		};
+
 		return deferred.promise;
 	};
-        this.fetchAvailPayments = function(data){
+    this.fetchAvailPayments = function(data){
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
 		RVBaseWebSrv.getJSON(url,data).then(function(data) {

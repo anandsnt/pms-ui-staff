@@ -41,6 +41,14 @@
                             <span id="room-out-from-month" class="month">{{ updateService.from_date | date:'MMMM' }}</span>
                             <span id="room-out-from-year" class="year">{{ updateService.from_date | date:'yyyy' }}</span>
                         </div>
+
+                        <!--from time onwards -->
+                        <div class="select" ng-show="shouldShowTimeSelector()">
+                            <select id="room-out-from-time" class="placeholder" ng-model="updateService.begin_time">
+                                <option value="" selected>From Time</option>
+                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="updateService.begin_time==timeSelector.value">{{timeSelector.text}}</option>
+                            </select>
+                        </div>
                     </div>
                     <div id="out-to" class="entry">
                         <label id="room-out-to-label" for="room-out-to">To <span>{{ getSimplifiedDayName(updateService.to_date) }}</span>
@@ -52,6 +60,14 @@
                             <span id="room-out-to-month" class="month">{{ updateService.to_date | date:'MMMM' }}</span>
                             <span id="room-out-to-year" class="year">{{ updateService.to_date | date:'yyyy' }}</span>
                         </div>
+
+                        <!--to time--> 
+                        <div class="select" ng-show="shouldShowTimeSelector()">
+                            <select id="room-out-to-time" class="placeholder" ng-model="updateService.end_time">
+                                <option value="" selected>To Time</option>
+                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="updateService.end_time==timeSelector.value">{{timeSelector.text}}</option>
+                            </select>
+                        </div>                        
                     </div>
                 </div>
                 <div id="reason" class="row">
@@ -70,7 +86,7 @@
                     </div>
                 </div>
                 <div id="actions" class="row">
-                    <button type="button" class="button green" ng-click="update()">Update</button>
+                    <button type="button" class="button green" ng-click="checkWhetherRoomStatusChangePossible()">Update</button>
                 </div>
             </form>
 

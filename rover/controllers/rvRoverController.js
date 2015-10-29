@@ -18,12 +18,6 @@ sntRover.controller('roverController',
 
 
     $rootScope.isOWSErrorShowing = false;
-    $scope.kiosk = false;
-    if (localStorage['kioskUser']){
-        $scope.kiosk = true;
-        $scope.$emit('hideLoader');
-        return;
-    }
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -107,10 +101,12 @@ sntRover.controller('roverController',
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+    $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+    $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
@@ -123,8 +119,6 @@ sntRover.controller('roverController',
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
       
-      $rootScope.kiosk = hotelDetails.kiosk;
-
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -162,8 +156,6 @@ sntRover.controller('roverController',
     
     
     
-    $scope.$emit('kioskMode',function(){});
-
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB

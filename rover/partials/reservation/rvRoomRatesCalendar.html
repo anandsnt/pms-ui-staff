@@ -1,0 +1,48 @@
+<!-- Rooms & Rates -->
+<div id="room-rates-content" class="reservations-content-wrapper" ng-controller="RVRoomRatesCalendarCtrl">
+	
+	<!-- Filters -->
+	<div class="reservation-filters">
+		<!-- Change room type visible for the calendar -->
+		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
+			<select ng-model="stateVariables.selectedRoom" ng-change="filtersUpdated()"
+                ng-options="room.id as room.name for room in stateVariables.rooms">
+                <option value="" selected translate>RESV_ALL_ROOMS</option>
+            </select>
+		</div>
+		<div id="change-room-type" class="select" ng-show="stateCheck.calendarState.calendarType == 'ROOM_TYPE'">
+			<select ng-model="stateVariables.selectedRate" ng-change="filtersUpdated()"
+                ng-options="rate.id as rate.name for rate in stateVariables.rates">
+                <option value="" selected translate>RESV_ALL_RATES</option>
+            </select>
+		</div>
+		<ul id="filter-calendar">
+			<li id="show-types" ng-class="{'active': stateCheck.calendarState.calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()" translate>ROOM_TYPES</li>
+			<li id="show-bar" ng-class="{'active': stateCheck.calendarState.calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()" translate>BEST_AVAILABLE</li>
+		</ul>
+	</div>
+
+	<!-- Calendar -->
+	<div id="room-rates-calendar" class="reservation-content stay-dates-content">
+		<div class="scrollable" ng-iscroll="room-rates-calendar">
+			<div class="wrapper">
+				<two-month-calendar ng-if="showCalender" event-sources-left='eventSources.left' event-sources-right='eventSources.right' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+			</div>
+		</div>
+		
+		<!-- Legend -->
+		<ul class="calendar-legend">
+    		<li><span class="check-in"></span>{{'ARRIVAL'|translate}}</li>
+    		<li><span class="check-in unavailable"></span>{{'ARRIVAL_UNAVAILABLE'|translate}}</li>
+    		<li><span class="check-out"></span>{{'DEPARTURE'|translate}}</li>
+    		<li><span class="availabile"></span>{{'AVAILABLE'|translate}}</li>
+    		<li ng-show="(stateVariables.selectedRoom !== null && stateVariables.selectedRoom !== '')&& stateCheck.calendarState.calendarType == 'ROOM_TYPE'"><span class="unavailable"></span>
+    			{{'NO_ROOM_TYPE_AVAILABLE'|translate}}
+    		</li>
+    		<li ng-hide="(stateVariables.selectedRoom !== null && stateVariables.selectedRoom !== '')&& stateCheck.calendarState.calendarType == 'ROOM_TYPE'"><span class="unavailable"></span>
+    			{{'NO_HOUSE_AVAILABLE'|translate}}
+    		</li>
+    		<li><span class="restrictions">R</span>{{'RESTRICTIONS_APPLY'|translate}}</li>
+		</ul>
+	</div>
+</div>

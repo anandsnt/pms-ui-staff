@@ -120,7 +120,6 @@
               <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
               <span bo-text="room.timeOrIn"></span>
             </div>
-            <span bo-if="room.is_queued" class="icons icon-queued"></div>
           </div>
 
           <!-- Show if room is assigned or ooo/oos -->
@@ -136,13 +135,16 @@
           </div>
           
           <!-- Show only if room is occupied -->
-          <figure class="guest-image" bo-if="room.is_occupied">
+          <figure class="guest-image" bo-if="!room.is_queued && room.is_occupied">
             <span bo-if="room.is_vip" class="vip" translate>VIP</span>
             <img bo-src-i="{{room.avatar_src}}" alt="" />
           </figure>
             
           <!-- Show only if room is vacant -->
-          <div bo-if="!room.is_occupied" class="show-vacant">VACANT</div>
+          <div bo-if="!room.is_queued && !room.is_occupied" class="show-vacant">VACANT</div>
+
+          <!-- Show only if room is queued -->
+          <span bo-if="room.is_queued" class="icons icon-queued"></div>
         </a>
     </li>
 
@@ -294,6 +296,13 @@
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.lateCheckout}"></span>
                         <input name="room-filters" type="checkbox" ng-model="currentFilters.lateCheckout">
                         <label translate>Late Checkout</label>
+                    </label>
+                </div>
+                <div class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.pre_checkin}"></span>
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.pre_checkin">
+                        <label translate>Pre Checkin</label>
                     </label>
                 </div>
             </div>

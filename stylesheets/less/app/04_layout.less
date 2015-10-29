@@ -396,7 +396,7 @@ body { overflow: hidden; }
 	.nav-bar { 
 		position: relative;
 		height: 50px;
-		padding: 5px 10px;
+		padding: 5px 80px;
 		text-align: center;
 		z-index: 99;
 		.show;
@@ -409,6 +409,7 @@ body { overflow: hidden; }
 			font-weight: 700;
 			vertical-align: middle;
 			clear: none;
+			.nowrap();
 
 			.hotel,
 			.user {
@@ -486,7 +487,7 @@ body { overflow: hidden; }
 	@media only screen and (min-width: 768px) {
 		.nav-bar { 
 			text-align: center;
-			padding: 10px 60px;
+			padding: 10px 220px;
 
 			.switch-button {
 				position: absolute;
@@ -2295,10 +2296,10 @@ body { overflow: hidden; }
 
 		                .icon-action {
 		                	position: absolute;
-		                	top: 10px;
+		                	top: 8px !important;
 		                	left: 10px;
 		                	font-size: 10px;
-		                	line-height: 1;
+		                	line-height: 1 !important;
 		                	text-transform: uppercase;
 		                	font-weight: 600;
 		                	text-align: center;
@@ -2342,6 +2343,10 @@ body { overflow: hidden; }
 		                	bottom: 10px;
 		                	right: 10px;
 		                	font-size: 14px;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                    width: 135px;
+                                    white-space: nowrap;
 	                        line-height: 20px;
 	                        text-transform: uppercase;
 	                        text-align: right;
@@ -2667,237 +2672,7 @@ body { overflow: hidden; }
 		}
 	}
 
-/* Dual Calendar			==============================*/
-	.calendar {
-		border-collapse: separate;
-		border-spacing: 5px;
-		width: 100%;
-		margin: 0;
-
-		th {
-			font-weight: 600;
-			text-align: center;
-			text-transform: uppercase;
-			vertical-align: middle;
-		}
-
-		.month {
-			th {
-				position: relative;
-				font-size: 18px;
-				line-height: 50px;
-				background-color: @white;
-				#border-radius > .rounded();
-				.box-shadow(1px 1px 0 rgba(0,0,0,.15));
-
-				.calendar-nav {
-					position: absolute;
-					top: 5px;
-					.hide-text;
-					.square(40px);
-
-					&.calendar-prev { left: 5px; }
-					&.calendar-next { right: 5px; }
-				}
-			}
-		}
-
-		.days {
-			th {
-				color: @grey3;
-				line-height: 20px;
-			}
-		}
-
-
-		td {
-			position: relative;
-			text-align: right;
-			font-size: 14px;
-			line-height: 25px;
-			vertical-align: top;
-			background-color: rgba(0,0,0,.1);
-			background-repeat: no-repeat;
-			overflow: visible !important;
-
-			.tooltip {
-				position: absolute;
-				right: -20px;
-				bottom: 20px;
-				visibility: hidden;
-				background-color: @white;
-				pointer-events: none;
-				z-index: 999;
-				padding: 10px;
-				width: 220px;
-				.float;
-				.transition;
-				.opacity(0);
-				.box-shadow(0 0 2px rgba(0,0,0,.2));
-				#border-radius > .rounded();
-
-				.restriction-info { .hide; }
-
-				li {
-					color: @textColor;
-					line-height: 1em;
-					text-align: left;
-					margin-bottom: 5px;	
-
-					.label {
-						float: none;
-						font-weight: 400;
-						line-height: 15px;
-					}
-
-					strong {
-						line-height: 20px;
-						font-weight: 600;
-						max-width: 320px;
-						.show;
-						.nowrap();
-					}
-
-					&:last-child { margin-bottom: 0; }
-				}
-
-				&.has-restrictions {
-					width: 380px;
-
-					.details,
-					.restriction-info {
-						width: 50%;
-						.pull-left;
-					}
-
-					.restriction-info { 
-						.show; 
-
-						li { 
-							position: relative;
-							height: 20px;
-							line-height: 20px;
-							padding-left: 30px;
-
-							.restriction-icon {
-								position: absolute;
-								top: 0;
-								left: 0;
-							}
-
-							&:first-child { padding-left: 0; }
-						}
-					}
-				}
-
-				&:after {
-					position: absolute;
-					bottom: -10px;
-					width: 0; 
-					height: 0; 
-					border-left: 10px solid transparent;
-					border-right: 10px solid transparent;
-					border-top: 10px solid @white;
-					clear: none;
-					.show;
-				}
-			}
-
-			.day,
-			.data {
-				padding: 0 5px;
-				height: 25px;
-			}
-
-			.day {
-				font-size: 18px;
-				font-weight: 600;
-			}
-
-			.guest-status {
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				.square(25px);
-
-				&.check-in { background-position: 5px -115px; }
-				&.check-out { background-position: 5px -155px; }
-			}
-
-			.restrictions {
-				position: absolute;
-				top: 0;
-				left: 0;
-				color: rgba(0,0,0,.3);
-				text-align: center;
-				font-weight: 600;
-				.square(25px);
-			}
-
-			&.available {
-				color: @green;
-				background-color: rgba(137,189,85,.3);
-			}
-
-			&.unavailable {
-				color: @red;
-				background-color: rgba(230,56,56,.3); 
-			}
-
-			&.past-day { color: @grey3; }
-
-			&.last-month,
-			&.next-month { background-color: rgba(0,0,0,.025); }
-
-			&.check-in { 
-				color: @white;
-				background-color: @green; 
-
-				&.unavailable { 
-					color: @red;
-					
-                    .check-in{	
-                    	background-position: 7px -595px;
-                    	.rotate(180deg);
-                    }
-                }
-			}
-
-			&.check-out { 
-				color: @white;
-				background-color: @red; 
-			}
-
-			&.split-view {
-				.guest-status {
-					&.check-in { top: 0; }
-				}
-
-				&.unavailable {
-					.guest-status {
-						&.check-in { 
-							background-position: 7px -595px;
-                    		.rotate(180deg);
-						 }
-					}
-				}
-			}
-
-			&:hover,
-			&:active {
-				.tooltip {
-					visibility: hidden;
-					.opacity(0);
-				}
-
-				> .tooltip {
-					visibility: visible;
-					.opacity(100);
-				}				
-			}
-		}
-	}
-
+/* Dual Calendar Legend		==============================*/
 	.calendar-legend {
 		overflow: hidden;
 		padding: 10px 0;

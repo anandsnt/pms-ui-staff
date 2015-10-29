@@ -323,6 +323,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.group) ||
 					txtInQry(res.travel_agent) ||
 					txtInQry(res.company) ||
+					txtInQry(res.allotment) || 
 					txtInQry(escN(res.room).toString(), false) ||
 					txtInQry(escN(res.confirmation).toString(), false) ||
 					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0));

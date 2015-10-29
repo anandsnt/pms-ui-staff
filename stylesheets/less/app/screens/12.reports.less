@@ -44,7 +44,11 @@
                     margin: 20px;
                 }
 
-                &.single-title { line-height: 40px; }
+                &.single-title { 
+                    line-height: 40px; 
+
+                    span { line-height: 40px; }
+                }
             }
 
             em {
@@ -569,7 +573,7 @@
 
     .report-header {
         position: relative;
-        padding: 5px 20px;
+        padding: 5px 10px;
         overflow: hidden;
         background: @white;
         z-index: 1090;
@@ -580,7 +584,7 @@
 
         .totals {
             margin: 5px 0;
-            .calc-width(100, 130);
+            .calc-width(100, 140);
             .pull-left;
 
             li {
@@ -620,27 +624,14 @@
         }
 
         .actions {
-            /*max-width: 320px;*/
-            width: 130px;
+            width: 140px;
             overflow: hidden;
+            text-align: right;
             .pull-right;
-
-            .select {
-                margin-right: 5px;
-                .hide;
-                .pull-left;
-
-                select {
-                    padding-right: 20px;
-                    height: 40px;
-                    .box-shadow(none);
-                }
-            }
 
             .button {
                 margin-right: 5px;
                 .square(40px);
-                .pull-left;
 
                 &:last-child { margin-right: 0; }
             }
@@ -649,9 +640,10 @@
 
     .report-content {
         position: relative;
+        padding: 0 20px;
         .calc-height(100, 50);
 
-        > .wrapper { padding: 20px; }
+        > .wrapper { padding: 20px 0; }
 
         h2 {
             font-size: 18px;
@@ -671,6 +663,12 @@
             border-collapse: separate; 
             border-spacing: 0 10px;
             margin: 0;
+
+            .green { color: @green; }
+            .red,
+            .penalty { color: @red; }
+            .blue { color: @blue; }
+            .unassigned { color: @grey3; }
 
             tr {
                 th {
@@ -774,7 +772,8 @@
             &.guest-reports,
             &.log-reports,
             &.transaction-reports,
-            &.deposit-reports {
+            &.deposit-reports,
+            &.balance-reports {
                 tr {
                     th {
                         line-height: 35px;
@@ -796,7 +795,10 @@
 
                             &.sort {
                                 cursor: pointer;
-                                background: darken(@grey2, 10) @arrowSort no-repeat 95% 50%;
+                                background: darken(@grey2, 10) @arrowSort no-repeat;
+                                background-position: -webkit-calc(~"100% - 10px") 50%;
+                                background-position: -moz-calc(~"100% - 10px") 50%;
+                                background-position: calc(~"100% - 10px") 50%;
                                 padding-right: 40px;
 
                                 &.sorting-asc { background-image: @arrowSortAsc; }
@@ -813,10 +815,10 @@
 
             &.guest-reports,
             &.transaction-reports,
-            &.deposit-reports {
+            &.deposit-reports,
+            &.balance-reports {
                 border-collapse: collapse;
                 border-spacing: 0;
-                text-transform: none;
 
                 tr {
                     td {
@@ -854,11 +856,7 @@
             }
 
             &.guest-reports {
-
-                .green { color: @green; }
-                .red,
-                .penalty { color: @red; }
-                .unassigned { color: @grey3; }
+                text-transform: none;
 
                 tr {
                     td {
@@ -1073,6 +1071,8 @@
             }
 
             &.transaction-reports {
+                text-transform: none;
+                
                 tbody {
                     tr {
                         td {
@@ -1105,13 +1105,10 @@
             }
 
             &.deposit-reports {
-                .green { color: @green; }
-                .red { color: @red; }
-
                 tbody {
                     tr {
                         td {
-                            text-transform: uppercase;
+                            line-height: 1;
                             padding: 5px 10px;
                             border-bottom: 1px solid @grey2;
 
@@ -1119,59 +1116,55 @@
 
                             &.name {
                                 min-width: 320px;
-                                border-bottom: 0;
+                                height: auto;
+                                border-bottom: 0;                                
+
+                                > div {
+                                    line-height: 20px;
+                                    .float; 
+
+                                    &:not(:last-child) { margin-bottom: 5px; }
+                                }
 
                                 .info {
-                                    .float;
-
-                                    strong {
-                                        .calc-width(100, 80);
-                                        .pull-left;
-                                    }
-
                                     em { 
                                         color: @grey3;
-                                        width: 80px;
-                                        text-align: right;
                                         .pull-right;
                                     }
                                 }
 
-                                .dates {
-                                    padding-top: 5px;
-                                    line-height: 20px;
-                                    .float;
+                                .date {
+                                    .nowrap();
+                                    .pull-left;
 
-                                    .date { 
-                                        margin-right: 10px;
-                                        .pull-left;
-                                    }
-
-                                    span { margin-right: 5px; }
-                                    
-                                    .guest-status { .square(20px); }
+                                    &:not(:last-child) { margin-right: 20px; }
                                 }
 
-                                .guest-info {
-                                    padding-top: 5px;
+                                .guest-status,
+                                .icons {
+                                    font-size: 12px;
+                                    margin-right: 5px;
                                     color: @grey3;
+                                }
 
-                                    .icons { 
-                                        font-size: 12px;
-                                        line-height: 20px;
-                                        padding-left: 20px; 
+                                .guest-status { .square(20px); }
+
+                                .icons {
+                                    &:not(.time) { padding-left: 25px; }
+
+                                    &.time {
+                                        background-size: 80px;
+                                        background-color: @grey1;
+                                        .square(20px);
+                                        .pull-left;
+                                        
+                                        &.check-in { background-position: 6px -368px; }
+                                        &.check-out { background-position: 6px -395px; }
                                     }
                                 }
 
                                 &.short { min-width: 220px; }
                             }
-
-                            &.room-type {
-                                max-width: 180px;
-                                .nowrap();
-                            }
-
-                            &.date { white-space: nowrap; }
 
                             &.info {
                                 font-size: 12px;
@@ -1180,10 +1173,66 @@
                                 color: @grey3;
                                 width: 20%;
                             }
+
+                            &.room-type {
+                                max-width: 180px;
+                                .nowrap();
+                            }
                         }
 
                         &.row-break {
                             td { border-bottom: 0; }
+                        }
+                    }
+                }
+            }
+
+            &.balance-reports {
+                tbody {
+                    tr {
+                        td {
+                            line-height: 20px;
+                            .float;
+
+                            strong { font-weight: 600; }
+
+                            .date {
+                                .nowrap();
+                                .pull-left;
+
+                                &:not(:last-child) { margin-right: 20px; }
+                            }
+
+                            .guest-status { 
+                                float: none;
+                                .square(20px); 
+                            }
+
+                            .icons.time {
+                                margin-right: 5px;
+                                background-size: 80px;
+                                background-color: @grey1;
+                                .square(20px);
+                                .pull-left;
+                                
+                                &.check-in { background-position: 6px -368px; }
+                                &.check-out { background-position: 6px -395px; }
+                            }
+
+                            &.name {
+                                em { 
+                                    color: @grey3; 
+                                    .pull-right; 
+                                }
+                            }
+
+                            &.room,
+                            &.status { width: 80px; }
+
+                            &.balance {
+                                width: 120px;
+                                .nowrap();
+                            }
                         }
                     }
                 }
@@ -1220,6 +1269,8 @@
 
                             &[colspan="2"] { width: 160px; }
                             &[colspan="3"] { width: 240px; }
+                            &[colspan="4"] { width: 320px; }
+                            &[colspan="5"] { width: 400px; }
                         }
 
                         &.bottom-row {
@@ -1254,7 +1305,7 @@
 
                             &.day-end { border-right: 1px solid @grey4; }
 
-                            strong { font-size: 16px; }
+                            strong { font-weight: 600; }
 
                             &:last-child { border-right-width: 0; }
                         }
@@ -1731,6 +1782,73 @@
                         em { color: rgba(0,0,0,.5); }
 
                         strong { font-weight: 600; }
+
+                        .switch-button {
+                            #border-radius > .rounded();
+                            .size(50px, 50%);
+                            .pull-left;
+
+                            input { .size(50px, 100%); }
+
+                            .data-off,
+                            .data-on {
+                                padding: 5px;
+                                line-height: 20px;
+                                .size(40px, 100%);
+
+                                .switch-icon,
+                                .value {
+                                    font-size: 12px;
+                                    text-transform: uppercase;
+                                    text-align: center;
+                                    font-weight: 400;
+                                    margin: 0;
+                                    .size(20px, 100%);
+                                    #border-radius > .rounded();
+                                    .show;
+                                }
+                            }
+
+                            .data-off {
+                                left: 0;
+                                right: 0;
+                                top: 0;
+
+                                .switch-icon { .gradient(@redStart, @redEnd); }
+                            }
+
+                            .data-on {
+                                left: 0;
+                                right: 0;
+                                top: 100%;
+
+                                .switch-icon { .gradient(@greenStart, @greenEnd); }
+                            }
+
+                            &.on {
+                                .data-off {
+                                    left: 0;
+                                    right: 0;
+                                    top: -100%;
+                                }
+
+                                .data-on {
+                                    left: 0;
+                                    right: 0;
+                                    top: 0;
+                                }
+                            }
+
+                            &:first-child { 
+                                margin-right: 5px;
+                                .calc-width(50, 5);
+                            }
+                        }
+
+                        &.action-row {
+                            padding: 5px 5px 5px 10px;
+                            height: 60px;
+                        }
 
                         &.main-heading {
                             font-size: 16px;

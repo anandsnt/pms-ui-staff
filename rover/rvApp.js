@@ -10,8 +10,8 @@ var sntRover = angular.module('sntRover',[
 		'pascalprecht.translate',
 		'ui.date',
 		'ui.calendar',
-		'dashboardModule',
 		'tabletKioskModule',
+		'dashboardModule',
 		'companyCardModule',
 		'stayCardModule',
 		'housekeepingModule',
@@ -32,7 +32,8 @@ var sntRover = angular.module('sntRover',[
 		'ngDragDrop',
 		'iscrollStopPropagation',
 		'ngReact',
-		'ngClassWithoutAnimation']);
+		'ngClassWithoutAnimation',
+		'qtip3']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed

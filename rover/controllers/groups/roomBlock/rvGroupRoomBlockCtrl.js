@@ -246,7 +246,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTripleEntryRow = function(roomType) {
-			if ($scope.groupConfigData.summary.rate === -1) {
+			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1);
+			if (customRateSelected) {
 				var list_of_triples = _.pluck(roomType.dates, 'triple');
 
 				//throwing undefined items
@@ -268,7 +269,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowQuadrupleEntryRow = function(roomType) {
-			if ($scope.groupConfigData.summary.rate === -1) {
+			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1);
+			if (customRateSelected) {
 				var list_of_quadruples = _.pluck(roomType.dates, 'quadruple');
 
 				//throwing undefined items
@@ -562,6 +564,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
 				$timeout(function() {
 					$scope.updateGroupSummary();
+					//for updating the room block after udating the summary
+					$scope.hasBlockDataUpdated = true; //as per variable name, it should be false, but in this contrler it should be given as true other wise its not working
 				}, 100);				
 			}
 
@@ -1154,17 +1158,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * we will update the summary data, when we got this one
-		 * @param  {Object} data
-		 * @return undefined
-		 */
-		var fetchSuccessOfSummaryData = function(data) {
-			$scope.groupConfigData.summary = _.extend($scope.groupConfigData.summary, data.groupSummary);
-
-			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
-		};
-
-		/**
 		 * Success callback of room block details API
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
@@ -1259,16 +1252,6 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
                 .then(successCallBackOfFetchRoomBlockGridDetails)
             );
 
-            // params for summary data fetch
-            var paramsForSummaryDataFetch = {
-				"groupId": $scope.groupConfigData.summary.group_id
-			};
-            promises.push(rvGroupConfigurationSrv
-                .getGroupSummary(paramsForSummaryDataFetch)
-                .then(fetchSuccessOfSummaryData)
-            );
-
-
             //Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
@@ -1282,25 +1265,26 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			if (activeTab !== 'ROOM_BLOCK') {
 				return;
 			}
-
+			$scope.$emit("FETCH_SUMMARY");
 			callInitialAPIs();
 
 			//end date picker will be in disabled in move mode
 			//in order to fix the issue of keeping that state even after coming back to this
 			//tab after going to some other tab
-			_.extend($scope.endDateOptions, 
+			_.extend($scope.endDateOptions,
 			{
 				disabled: shouldDisableEndDatePicker()
-			});			
+			});
 
 			initializeChangeDateActions ();
 		});
 
 		/**
-		 * when a tab switch is there, parant controller will propogate
+		 * When group summary is updated by some trigger, parant controller will propogate
 		 * API, we will get this event, we are using this to fetch new room block deails
 		 */
 		$scope.$on("UPDATED_GROUP_INFO", function(event) {
+			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
 			if ($scope.hasBlockDataUpdated) {
 				$scope.fetchRoomBlockGridDetails();
@@ -1618,6 +1602,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};
 
@@ -1634,6 +1619,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
 			}
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
@@ -1642,6 +1628,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 				cancelPopupCallBack	: cancelCallBackofDateChange,
 				message 			: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
 			}
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
 
@@ -1659,6 +1646,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
 
@@ -1696,6 +1684,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfEarlierDepartureDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};
 
@@ -1730,6 +1719,7 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 					failureCallBack 	: failureCallBackOfLaterDepartureDateChange,
 					cancelPopupCallBack	: cancelCallBackofDateChange
 				};
+			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
 

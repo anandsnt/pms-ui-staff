@@ -1,0 +1,51 @@
+<div class="jumbotron">
+	<div class="container">
+		<div>
+			<div class="row headerrow template-bg">
+				<logo-image-back></logo-image-back>
+			</div>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+
+			<div ng-show="returnHome && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+				<p class="msg-head template-text">Your request is being processed.</p>
+				<p class="msg-body template-text">This may take a few seconds..... please wait!</p>
+			</div>
+
+			<div ng-show="!returnHome && !posted && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+				<p class="msg-head template-text">Your request is being processed.</p>
+				<p class="msg-body template-text">This may take a few seconds..... please wait!</p>
+			</div>
+
+			<div ng-show="!returnHome && posted && !success && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+				<p class="msg-head template-text">Something went wrong, complete your check-out by going to or call our front desk.</p>
+				<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+			</div>
+
+			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status" >
+				<p class="msg-head template-text">Something went wrong, complete your check-out by going to or call our front desk.</p>
+				<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+			</div>
+			
+			<div ng-show="!returnHome && posted && success && !netWorkError" class="row check-inout-wrapper checkout-late-sucess">
+				<div class="col-md-6 headtext centeralign">
+					<span class="template-heading-text">Thank you</span>
+					<p class="leadtext">
+						<em class="lightcontent template-text chekout-late-final">The following charge plus taxes will appear on your bill.</em>
+					</p>
+					<p class="latecheckout-charged centeralign">
+						<span class="template-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</span></p>
+					<p class="leadtext">
+						<em class="lightcontent template-text chekout-late-final">{{keyExpiry}}</em>
+					</p>
+					</div>
+					<div class="col-md-6 no-padding now-later-options">
+						<a ui-sref="checkOutConfirmation" class="link-btn with-bg template-bg back-to-checkout">Done</a>
+					</div>
+			</div>	
+			</div>
+		</div>
+	</div>

@@ -125,6 +125,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			            title: "MENU_MANAGE_GROUP",
 			            action: "staff#/staff/groups/search",
 			            menuIndex: "menuManageGroup"
+			        }, {
+			            title: "MENU_CREATE_ALLOTMENT",
+			            action: "staff#/staff/allotments/config/NEW_ALLOTMENT/SUMMARY",
+			            menuIndex: "menuCreateAllotment"
+			        }, {
+			            title: "MENU_MANAGE_ALLOTMENT",
+			            action: "staff#/staff/allotments/search",
+			            menuIndex: "menuManageAllotment"
 			        }]
 		    	},{
 					title: "MENU_CONVERSATIONS",
@@ -485,6 +493,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if (data.pms_type === null) {
 				$scope.isStandAlone = true;
 			}
+                        $rootScope.isStandAlone = $scope.isStandAlone;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');

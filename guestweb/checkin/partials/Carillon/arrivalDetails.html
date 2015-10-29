@@ -1,0 +1,89 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron backgroundbg">
+	<div class="container " >
+		<div class="black-bg">
+			<div class="row headerrow white-bg">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+
+	<!--	 show posting message -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head black-text">Your request is being processed.</p>
+			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+		</div>
+
+	<!--	show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+		<p class="msg-head black-text">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
+		<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+		</div>
+
+	
+
+	<!-- contentarea starts here-->
+	<div class="container line-top  line-bottom" ng-hide="isPosting || netWorkError || isResponseSuccess">
+		<!-- top section starts here-->
+
+		<div class="row checkin-wrapper">
+			<div class="col-md-6 headtext centeralign pad-rt-60  black-text">
+				Arrival Details
+			</div>
+
+			<div class="verti-ruler margin-bottom-20"></div>
+
+			<!-- top section ends here-->
+
+
+			<div class="col-md-6 pad-lf-60">
+				<form >
+				
+				<div class="date-container bottom-padding-20">
+					<span class="black-text bottom-margin-20">ESTIMATED ARRIVAL TIME</span>
+					<div class="row cabin_number_field ">
+						<div class="expiry-year-container eta-container">
+							<div class="select-style">
+								<select ng-model="stayDetails.hour"
+								ng-options="hour as hour  for hour in hours">
+								<option value="">HH</option>
+								</select>
+							</div>
+						</div>
+						<div class="expiry-year-container eta-container">
+							<div class="select-style">
+								<select ng-model="stayDetails.minute"
+								ng-options="minute as minute  for minute in minutes">
+									<option value="">MM</option>
+								</select>
+							</div>
+						</div>
+						<div class="expiry-year-container eta-container">
+							<div class="select-style arrival-time">
+								<select ng-model="stayDetails.primeTime">
+									<option value="AM" selected="" >AM</option>
+									<option value="PM" >PM</option>
+									<option value="">AM/PM</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<span class="black-text bottom-margin-20">LET US KNOW ANY QUESTION OR COMMENT</span>
+				<div class="row cabin_number_field comments_field bottom-padding-20">
+					<textarea rows="5" cols="50" ng-model="stayDetails.comment" class = "col-xs-12 textArea shadow grey-text" placeholder="Comments here">
+					</textarea>
+				</div>
+					<button class="checkin-button continue-button black-bg room-verification-continue" ng-click="postStayDetails()">
+						<span class="continue-text white-text">Continue</span>
+					</button>
+				</form>
+			</div>
+		</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>
+

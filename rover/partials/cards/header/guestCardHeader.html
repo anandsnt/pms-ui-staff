@@ -37,7 +37,7 @@
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
         </div>
         <div class="card-actions" ng-hide="viewState.isAddNewCard">
-            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('guest')" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>
+            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachGuestCard()" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>
         </div>
     </section>
     <section ng-if="searchMode">

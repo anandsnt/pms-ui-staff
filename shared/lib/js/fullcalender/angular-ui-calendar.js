@@ -165,7 +165,7 @@ angular.module('ui.calendar', [])
           return config;
       };
   }])
-  .directive('uiCalendar', ['uiCalendarConfig', '$locale', function(uiCalendarConfig, $locale) {
+  .directive('uiCalendar', ['uiCalendarConfig', '$locale', '$compile', function(uiCalendarConfig, $locale, $compile) {
     // Configure to use locale names by default
     var tValues = function(data) {
       // convert {0: "Jan", 1: "Feb", ...} to ["Jan", "Feb", ...]
@@ -223,6 +223,8 @@ angular.module('ui.calendar', [])
         };
 
         scope.init = function(){
+          options.compiler = $compile;
+          options.compile_scope = scope;
           scope.calendar.fullCalendar(options);
         };
 
