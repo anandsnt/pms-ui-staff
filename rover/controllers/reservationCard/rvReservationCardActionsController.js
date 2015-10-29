@@ -556,7 +556,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.cancelNewAction = function(){
             //switch back to selected view of lastSelected
             //just change the view to selected
-            if ($scope.actionsCount > 0){
+            if ($scope.actions.totalCount > 0){
+                if ($scope.lastSelectedItemId){
+                    $scope.selectAction($scope.actions[$scope.lastSelectedItemId]);
+                }
                 $scope.setRightPane('selected');//goes back to last screen if actions exist
             } else {
                 $scope.setRightPane('none');//goes back to All is Good if no actions
