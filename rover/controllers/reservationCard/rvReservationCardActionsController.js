@@ -245,8 +245,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.fetchActionsCount = function(){
             var onSuccess = function(data){
                 $scope.$parent.$emit('hideLoader');
-
+                if (data.data.action_count === 0){
+                    $scope.setRightPane('none');
+                }
                 $scope.actions.totalCount = data.data.action_count;
+                if (!data.data){
+                    $scope.actions.totalCount = 0;
+                    $scope.setRightPane('none');
+                }
+                
                 $scope.actions.pendingCount = data.data.pending_action_count;
                 
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
@@ -316,10 +323,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.errorMessage = [];
         };
         $scope.postAction = function(){
-            var onSuccess = function(){
+            var onSuccess = function(response){
                 $scope.$parent.$emit('hideLoader');
+                if (response.status === 'failure'){
+                    if (response.errors && response.errors[0]){
+                        $scope.errorMessage = response.errors[0];
+                    }
+                }
                 $scope.fetchActionsList();
                 $scope.refreshScroller("rvActionListScroller");
+                
             };
             var onFailure = function(data){
                 if (data[0]){
@@ -524,8 +537,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.initNewAction = function(){
             $scope.clearNewAction();
             $scope.setRightPane('new');
-
-
         };
         $scope.getDefaultDueDate = function(){
             return new Date();
@@ -533,7 +544,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.cancelNewAction = function(){
             //switch back to selected view of lastSelected
             //just change the view to selected
-            $scope.setRightPane('selected');
+            if ($scope.actionsCount > 0){
+                $scope.setRightPane('selected');//goes back to last screen if actions exist
+            } else {
+                $scope.setRightPane('none');//goes back to All is Good if no actions
+            }
+            
             $scope.clearNewAction();
         };
         $scope.cancelAssign = function(){
@@ -912,7 +928,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         function closeDialog() {
             $scope.fetchActionsCount();
-        $scope.actionSelected = 'selected';
+            $scope.actionSelected = 'selected';
             ngDialog.close();
         }
 
