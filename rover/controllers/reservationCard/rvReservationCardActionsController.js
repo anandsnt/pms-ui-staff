@@ -285,8 +285,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         $scope.selectAction = function(a){
             var action = a;
-            $scope.selectedAction = action;
-            $scope.lastSavedDescription = action.description;
+            if (action){
+                $scope.selectedAction = action;
+                if (action.description){
+                    $scope.lastSavedDescription = action.description;
+                }
+            }
             
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
@@ -785,7 +789,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 setTimeout(function(){
                     $scope.refreshing = false;
-                   $scope.selectAction($scope.actions[0]);
+                    if ($scope.actions[0]){
+                       $scope.selectAction($scope.actions[0]);
+                    }
                    $scope.$apply();
                 },100);
                 if ($scope.openingPopup){
