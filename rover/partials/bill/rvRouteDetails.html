@@ -2,7 +2,7 @@
 	<fieldset class="content-left">
 		<div id="entity-details" class="entity-details scrollable">
 			<div class="wrapper">
-				<div ng-show="isFromStayCard()">
+				<div ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'">
 					<div class="title">
 	                        Date Range
 	                </div>
@@ -17,6 +17,7 @@
 	                    </div>
 	                </div>
                 </div>
+
 				<div class="title">
 					{{'ENTITY' | translate}}
 					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'  || billingEntity === 'GROUP_DEFAULT_BILLING'">
