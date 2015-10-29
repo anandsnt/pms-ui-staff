@@ -244,18 +244,23 @@ sntRover.controller('reservationActionsController', [
                         console.info('$scope.reservationData.reservation_card.room_number: '+$scope.reservationData.reservation_card.room_number);
                         console.info('$scope.reservationData.reservation_card.room_status: '+$scope.reservationData.reservation_card.room_status);
                         console.info('$scope.reservationIsQueued: '+$scope.reservationIsQueued());
+                        console.info('$scope.putInQueueClicked: '+$scope.putInQueueClicked);
                         
-                        if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
+                        if ($scope.reservationData.reservation_card.room_number === '' && $scope.putInQueueClicked){
                             return true;
                         }
                         if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueueClicked)) {
                             return false;
                         }
+                        if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
+                            return true;
+                        }
                         return true;
                     } else return false;
                 };
                 $scope.upsellNeeded = function(){
-                    if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true"){
+                    if ($scope.reservationData.reservation_card.is_force_upsell === "true" && 
+                            $scope.reservationData.reservation_card.is_upsell_available === "true"){
                         return true;
                     } else return false;
                 };
@@ -365,6 +370,11 @@ sntRover.controller('reservationActionsController', [
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
+                        if (!hasRoom && $scope.putInQueueClicked){
+                            $scope.goToRoomAssignment();
+                            return false;
+                        }
+                        
                         
 			if (!!hasRoom) {
 				// Go fetch the room status again
@@ -479,7 +489,7 @@ sntRover.controller('reservationActionsController', [
                         var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
                         if (useAdvancedQueFlow){
                             $scope.reservationData.check_in_via_queue = true;//set flag for checking in via put-in-queue
-                            
+                            $scope.initAdvQueCheck();
                             $scope.goToCheckin();
                         } else {
                             /*
@@ -977,6 +987,7 @@ sntRover.controller('reservationActionsController', [
 		};
                 $scope.putInQueueClicked = false;
                 $scope.initAdvQueCheck = function(){
+                    
                     var adv = $rootScope.advanced_queue_flow_enabled;
                     var viaQueue = $scope.reservationData.check_in_via_queue;
 
@@ -985,6 +996,7 @@ sntRover.controller('reservationActionsController', [
                     } else {
                         $scope.putInQueueClicked = false;
                     }
+                    console.info('$scope.putInQueueClicked: set: '+$scope.putInQueueClicked);
                 };
                 $scope.initAdvQueCheck();
 	}
