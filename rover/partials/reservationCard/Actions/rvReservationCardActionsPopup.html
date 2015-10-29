@@ -203,7 +203,7 @@
                         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
-                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes  || (!departmentSelected && !isStandAlone)}">Post Action</button> 
                         <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
                     </div> 
                 </div> 
@@ -247,7 +247,7 @@
                         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
-                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
                         <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
                     </div> 
                 </div> 
