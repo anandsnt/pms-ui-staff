@@ -1,4 +1,4 @@
-sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'dateFilter', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, dateFilter){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -638,6 +638,15 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             else {
 	        	//CICO-12797 workaround to meet the API expected params
                 var params =  angular.copy($scope.selectedEntity);
+
+                if($scope.routeDates) {
+                  params.from_date = dateFilter($scope.routeDates.from, 'yyyy-MM-dd'); 
+                  params.to_date = dateFilter($scope.routeDates.to, 'yyyy-MM-dd');  
+                }
+                console.log(params);
+	        	if($scope.selectedEntity.entity_type === "POSTING_ACCOUNT"){
+					 params.entity_type  = 'GROUP';
+	        	}
 	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
 	        }
 	    };
@@ -885,5 +894,43 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.$on('CHANGE_IS_MANUAL', function(e, value){
         	$scope.sixIsManual = value;
         });
+
+        if($scope.reservation) {
+            var arrivalDate = new Date($scope.reservation.reservation_card.arrival_date),        
+            defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
+            
+            $scope.routeDates = {
+                from : defaultRouteFromDate,
+                to : new Date($scope.reservation.reservation_card.departure_date)
+            };    
+
+            $scope.routingDateFromOptions = {       
+                dateFormat : "dd-mm-yy",
+                minDate : arrivalDate,
+                maxDate : $scope.routeDates.to
+            };
+            $scope.routingDateToOptions = {       
+                dateFormat : "dd-mm-yy",
+                minDate : arrivalDate,
+                maxDate : $scope.routeDates.to
+            };
+
+            /**
+                Watch the changes on from and to dates and set their min/max limits within
+                the allowed range
+            **/
+            $scope.$watch('routeDates', function() {      
+              $scope.routingDateFromOptions.maxDate = $scope.routeDates.to,
+              $scope.routingDateToOptions.minDate   = $scope.routeDates.from;
+            }, true); 
+        } 
+
+        /**
+            Checks whether the billing information is taken form the stay card
+             or via some other path
+        **/
+        $scope.isFromStayCard = function() {
+            return ($scope.reservation != null && $scope.reservation != undefined);
+        }
 
 }]);
