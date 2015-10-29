@@ -240,7 +240,7 @@ sntRover.controller('reservationActionsController', [
                     if ($scope.reservationData.reservation_card.room_number === '' || 
                             $scope.reservationData.reservation_card.room_status === 'NOTREADY' || 
                             $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
-                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.checkInFromQueued()){
+                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.reservationIsQueued()){
                             return false;
                         }
                         return true;
@@ -330,6 +330,7 @@ sntRover.controller('reservationActionsController', [
                 };
                 
 		var startCheckin = function() {
+                    $rootScope.queuedCheckIn = $scope.reservationIsQueued();//pass to billcardctrl through here
                     if ($scope.checkInFromQueued()){
                         $scope.checkGuestInFromQueue();
                         return;
