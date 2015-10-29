@@ -245,9 +245,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.fetchActionsCount = function(){
             var onSuccess = function(data){
                 $scope.$parent.$emit('hideLoader');
-
+                console.info('data: ',data);
                 $scope.actions.totalCount = data.data.action_count;
                 $scope.actions.pendingCount = data.data.pending_action_count;
+                if (!data.data){
+                    $scope.actions.totalCount = 0;
+                }
+                
                 
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
