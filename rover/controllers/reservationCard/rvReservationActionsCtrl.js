@@ -246,6 +246,9 @@ sntRover.controller('reservationActionsController', [
                         console.info('$scope.reservationIsQueued: '+$scope.reservationIsQueued());
                         console.info('$scope.putInQueueClicked: '+$scope.putInQueueClicked);
                         
+                        if ($scope.reservationData.reservation_card.room_number === '' && $scope.putInQueueClicked){
+                            return true;
+                        }
                         if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueueClicked)) {
                             return false;
                         }
@@ -256,7 +259,8 @@ sntRover.controller('reservationActionsController', [
                     } else return false;
                 };
                 $scope.upsellNeeded = function(){
-                    if ($scope.reservationData.reservation_card.is_force_upsell === "true" && $scope.reservationData.reservation_card.is_upsell_available === "true"){
+                    if ($scope.reservationData.reservation_card.is_force_upsell === "true" && 
+                            $scope.reservationData.reservation_card.is_upsell_available === "true"){
                         return true;
                     } else return false;
                 };
