@@ -320,10 +320,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.errorMessage = [];
         };
         $scope.postAction = function(){
-            var onSuccess = function(){
+            var onSuccess = function(response){
                 $scope.$parent.$emit('hideLoader');
+                console.info(response);
+                if (response.status === 'failure'){
+                    if (response.errors && response.errors[0]){
+                        $scope.errorMessage = response.errors[0];
+                    }
+                }
                 $scope.fetchActionsList();
                 $scope.refreshScroller("rvActionListScroller");
+                
             };
             var onFailure = function(data){
                 if (data[0]){
