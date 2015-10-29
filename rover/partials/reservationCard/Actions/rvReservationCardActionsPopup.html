@@ -168,7 +168,7 @@
                 </div>
             </div>
         </div>
-        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+        <div class="content-right" ng-show="actionSelected === 'new' || refreshing" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message">New Action</span>
