@@ -37,8 +37,8 @@
 				.notice { margin: 20px 0 0 0; }
 
 				.form {
+					margin: 20px 0 10px;
 					border-bottom: 1px solid rgba(0,0,0,.1);
-					margin: 30px 0 10px 0;
 
 					.entry { 
 						float: none;
@@ -50,15 +50,36 @@
 							width: 100%;
 							.show; 
 						}
+
+						input {
+							font-size: 18px;
+							line-height: 50px;
+							.placeholder-text(18px, 50px, 400, @grey3);
+
+							&.error { .placeholder-text(18px, 50px, 400, @red); }
+						}
 					}
 
 					.action {
+						text-align: center;
 						margin-bottom: 20px;
 
-						.button { 
-							font-size: 18px;
+						.button,
+						a {
 							line-height: 50px;
-							width: 100%;							
+							.size(50px, 100%);
+						}
+
+						.button { 
+							font-size: 18px; 
+							margin-bottom: 10px;
+						}
+
+						a { 
+							font-size: 14px;
+							font-style: italic;
+						
+							&:active { .box-shadow(0 0 0 1px lighten(@logoPrimary, 20)); }
 						}
 					}
 				}
@@ -101,14 +122,36 @@
 					.form {
 						margin: 20px 0;
 
-						.action {
-							text-align: center;
+						.entry {
+							input {
+								font-size: 16px;
+								line-height: 40px;
+								.placeholder-text(16px, 40px, 400, @grey3);
 
-							.button { 
-								width: auto;
-								padding: 0 40px;
+								&.error { .placeholder-text(16px, 40px, 400, @red); }
 							}
 						}
+
+						.action {
+							.float;
+
+							.button,
+							a { width: auto; }
+
+							.button { 
+								padding: 0 40px; 
+								margin: 0;
+								.pull-right;
+
+								&.new { float: none; }
+							}
+
+							a { 
+								.pull-left;
+			
+								&:active { .box-shadow(none); }
+							}
+						}	
 					}
 				}
 			}	
