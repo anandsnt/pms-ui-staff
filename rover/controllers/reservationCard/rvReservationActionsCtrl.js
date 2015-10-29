@@ -244,7 +244,7 @@ sntRover.controller('reservationActionsController', [
                         if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
                             return true;
                         }
-                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.reservationIsQueued()){
+                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueueClicked)) {
                             return false;
                         }
                         return true;
@@ -963,5 +963,17 @@ sntRover.controller('reservationActionsController', [
 				}
 			});
 		};
+                $scope.putInQueueClicked = false;
+                $scope.initAdvQueCheck = function(){
+                    var adv = $rootScope.advanced_queue_flow_enabled;
+                    var viaQueue = $scope.reservationData.check_in_via_queue;
+
+                    if (adv && viaQueue){
+                       $scope.putInQueueClicked = true;
+                    } else {
+                        $scope.putInQueueClicked = false;
+                    }
+                };
+                $scope.initAdvQueCheck();
 	}
 ]);
