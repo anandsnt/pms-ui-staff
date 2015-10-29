@@ -316,12 +316,16 @@ console.log(arguments)
                     $scope.isGiftCardPmt = false;
                 }
                 $scope.$emit('isGiftCardPmt',$scope.isGiftCardPmt);
-
 		if($scope.saveData.paymentType === "CC"){
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
 				 refreshCardsList();
 			}
+                        if ($scope.cardsList){
+                           if ($scope.cardsList.length === 0){
+                               $scope.$broadcast('CLICK_ADD_NEW_CARD');
+                           }
+                        }
                         if ($scope.isGiftCardPmt === true){
                             $scope.showCC = false;
                         }
