@@ -306,6 +306,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         $scope.isGiftCardPmt = false;
 	$scope.changePaymentType = function(){
 console.log(arguments)
+                $scope.showGuestAddCard = false;
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
                     $scope.resetSplitPaymentDetailForGiftCard();
                     $scope.shouldShowMakePaymentButton = true;
@@ -884,8 +885,16 @@ console.log(arguments)
 		$scope.setCreditCardFromList(data.index);
 	});
 
-	$scope.$on("TOKEN_CREATED", function(e,data){
+        $scope.showGuestAddCard = false;
+        $scope.showAddtoGuestCardBox = function(){
+            if ($scope.showGuestAddCard){
+               return true;
+            } else return false;
+        }
+        
 
+	$scope.$on("TOKEN_CREATED", function(e,data){
+            $scope.showGuestAddCard = true;
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
 		$scope.swippedCard = false;
