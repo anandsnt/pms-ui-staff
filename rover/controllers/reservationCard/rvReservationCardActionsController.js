@@ -173,6 +173,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         var refreshScroller = function() {
             $scope.refreshScroller('rvActionListScroller');
         };
+        
+        
         $scope.hasArrivalDate = false;
         $scope.hasDepartureDate = false;
 
@@ -246,9 +248,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 $scope.actions.totalCount = data.data.action_count;
                 $scope.actions.pendingCount = data.data.pending_action_count;
-                if ($scope.actions.totalCount === 0){
-                    $scope.actionSelected = 'new';
-                }
                 
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
@@ -286,8 +285,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         $scope.selectAction = function(a){
             var action = a;
-            $scope.selectedAction = action;
-            $scope.lastSavedDescription = action.description;
+            if (action){
+                $scope.selectedAction = action;
+                if (action.description){
+                    $scope.lastSavedDescription = action.description;
+                }
+            }
             
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
@@ -608,7 +611,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                     $scope.actions[i] = listItem;
                                     inActions = true;
                                 } else if (!$scope.isStandAlone){
-                                    if (del === 'delete'){//flag to delete an item (overlay)
+                                    if (del === 'delete' && selected){//flag to delete an item (overlay)
                                         if (selected.id === listItem.id){
                                             inActions = true;//skips 
                                         }
@@ -628,7 +631,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 //hide the element that was deleted; and refresh the scroller,
                 //this also sets focus to the first item in the list
                 for (var xi in $scope.actions){
-                    if ($scope.actions[xi].id === selected.id){
+                    if (selected && $scope.actions[xi].id === selected.id){
                         $scope.actions[xi].is_deleted = true;
                         refreshScroller();
                     }
@@ -773,19 +776,24 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
                     }
 
-
                     if (list[x].created_at){
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
                     
                 }
+                $scope.refreshing = true;
                 $scope.actions = list;
-
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
-                $scope.setDefaultActionSelected(0);
 
+                setTimeout(function(){
+                    $scope.refreshing = false;
+                    if ($scope.actions[0]){
+                       $scope.selectAction($scope.actions[0]);
+                    }
+                   $scope.$apply();
+                },100);
                 if ($scope.openingPopup){
                     setTimeout(function(){
                         $scope.initPopup();
@@ -803,6 +811,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
         };
 
+        $scope.refreshing = false;
         var getTimeFromDateStr = function(d, via){
             var date = new Date(d);
             return formatTime(date.valueOf(), via);

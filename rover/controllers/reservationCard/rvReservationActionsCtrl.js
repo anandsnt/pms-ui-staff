@@ -237,7 +237,12 @@ sntRover.controller('reservationActionsController', [
                 };
                 
                 $scope.roomAssignmentNeeded = function(){
-                    if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
+                    if ($scope.reservationData.reservation_card.room_number === '' || 
+                            $scope.reservationData.reservation_card.room_status === 'NOTREADY' || 
+                            $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
+                        if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && $scope.reservationIsQueued()){
+                            return false;
+                        }
                         return true;
                     } else return false;
                 };
@@ -269,9 +274,28 @@ sntRover.controller('reservationActionsController', [
                             "clickedButton": "checkinButton"
                     });
                 };
+                $scope.validateEmailPhone = function(){
+                    ngDialog.open({
+                            template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+                            controller: 'RVValidateEmailPhoneCtrl',
+                            scope: $scope
+                    });
+                };
+                
+                $scope.promptCardAddition = function(){
+                    $scope.errorMessage = ['Please select a Guest Card to check in'];
+                    var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
+                    ngDialog.open({
+                            template: templateUrl,
+                            className: 'ngdialog-theme-default stay-card-alerts',
+                            scope: $scope,
+                            closeByDocument: false,
+                            closeByEscape: false
+                    });
+                };
                 
                 $scope.initCheckInFlow = function(){
-                    var checkingInQueued = (!$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued());
+                    var checkingInQueued = !$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued();
                             //CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
                             if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
                                 if ($scope.roomAssignmentNeeded()) {
@@ -306,6 +330,7 @@ sntRover.controller('reservationActionsController', [
                 };
                 
 		var startCheckin = function() {
+                    $rootScope.queuedCheckIn = $scope.reservationIsQueued();//pass to billcardctrl through here
                     if ($scope.checkInFromQueued()){
                         $scope.checkGuestInFromQueue();
                         return;
@@ -314,34 +339,19 @@ sntRover.controller('reservationActionsController', [
 				if (!!$scope.guestCardData.userId) {
 					if ($scope.reservationMissingPhone()) {
                                                 $scope.$emit('showLoader');
-                                            
-						ngDialog.open({
-							template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-							controller: 'RVValidateEmailPhoneCtrl',
-							scope: $scope
-						});
-                                                
-                                                
+						$scope.validateEmailPhone();
 					} else {
                                             $scope.initCheckInFlow();
 					}
 				} else {
 					//Prompt user to add a Guest Card
-					$scope.errorMessage = ['Please select a Guest Card to check in'];
-					var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
-					ngDialog.open({
-						template: templateUrl,
-						className: 'ngdialog-theme-default stay-card-alerts',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});
+					$scope.promptCardAddition();
 				}
 			};
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
-
+                        
 			if (!!hasRoom) {
 				// Go fetch the room status again
 				// After fetch do the entire rest of it

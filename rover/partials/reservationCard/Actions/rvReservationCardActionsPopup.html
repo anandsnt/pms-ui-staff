@@ -25,10 +25,10 @@
                             {{errorMessage}}
             </span>
     </div>
-    <section class="actions-content" role="main" ng-show='actions.totalCount > 0'> <!-- Add class "no-content" if no actions for room -->
+    <section class="actions-content" role="main" ng-show='actions.totalCount > 0 || refreshing'> <!-- Add class "no-content" if no actions for room -->
 
         <!-- Actions list -->
-        <div class="content-left" ng-if='actions.totalCount > 0'>
+        <div class="content-left" ng-if='actions.totalCount > 0 || refreshing'>
             <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"> <!-- Attach iScroll here -->
                 <ul class="wrapper">
                     <li ng-repeat="action in actions" ng-hide="action.is_deleted" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
@@ -212,7 +212,7 @@
         
     </section>
     <section class="actions-content" role="main" ng-show='actions.totalCount === 0 && actionSelected === "new"'>
-        <div class="content-right action-full-view" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message">New Action</span>
@@ -255,9 +255,9 @@
             </div>
     </section>
     
-    <section class="actions-content no-content" role="main" ng-if='actions.length === 0'>
+    <section class="actions-content no-content" role="main" ng-show='actions.totalCount === 0'>
         <!-- if no actions for room -->
-         <div class="info"  ng-hide='actionSelected === "new"'>
+         <div class="info">
             <span class="icon-no-content icon-actions"></span>
             <strong class="h1">No Actions</strong>
             <span class="h2" ng-if="$parent.reservationData.reservation_card.room_number">All is good in Room {{$parent.reservationData.reservation_card.room_number}}</span> 
