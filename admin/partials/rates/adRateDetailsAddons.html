@@ -27,7 +27,7 @@
 		<thead>
 			<th class="header">ADD-ON</th>
 			<th class="header">PRICE</th>
-			<th class="header">INCLUSIVE/EXCLUSIVE</th>
+			<th class="header">INCLUDE IN PRICE/ ADD TO PRICE</th>
 			<th class="header center_align">USE</th>
 		</thead>
 		<tbody>
@@ -43,7 +43,7 @@
 							<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'true'}">
 								<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'true'}"></span>
 								<input type="radio" ng-model="addon.is_inclusive_in_rate" value="true" class="change-data">
-								Inclusive
+								Include in price
 								
 							</label>
 						</div>
@@ -51,7 +51,7 @@
 							<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'false'}">
 								<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'false'}"></span>
 								<input type="radio" ng-model="addon.is_inclusive_in_rate" value="false" class="change-data">
-								Exclusive
+								Add to price
 								
 							</label>
 						</div>
