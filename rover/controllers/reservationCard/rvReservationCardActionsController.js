@@ -24,6 +24,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.due_at_date;
         $scope.selectedAction.due_at_time;
         $scope.openingPopup = false;
+        
+        $scope.newAction.department = {'value': ''};
 
         $scope.hotel_time = "4:00 A.M";
         $scope.departmentSelect = {};
@@ -310,7 +312,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.closeSelectedCalendar();
             $scope.closeNewCalendar();
             $scope.newAction.notes = '';
-            $scope.newAction.department = {};
+            $scope.newAction.department = {'value': ''};
             $scope.newAction.time_due = '';
             var nd = new Date();
             var fmObj = $scope.getDateObj(getFormattedDate(nd.valueOf())+'', '-');
@@ -319,6 +321,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.setFreshDate();
 
         };
+        $scope.departmentSelected = false;
+        $scope.$watch('newAction.department',function(now, was){
+            if (!now || now === null){
+                $scope.departmentSelected = false;
+            } else if (now.value === ''){
+                $scope.departmentSelected = false;
+            } else {
+                $scope.departmentSelected = true;
+            }
+        });
         $scope.clearErrorMessage = function () {
                 $scope.errorMessage = [];
         };
