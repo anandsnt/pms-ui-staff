@@ -1438,6 +1438,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.businessDate;
                     break;
 
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['singleValueDate']  = _getDates.businessDate;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     report['fromDate']            = _getDates.aWeekAgo;
