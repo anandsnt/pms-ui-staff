@@ -667,8 +667,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.newCardData = cardData;
 					that.attachCompanyTACardRoutings(card, cardData);
 				},
-				onReplaceFailure = function() {
+				onReplaceFailure = function(error) {
 					$scope.cardRemoved();
+					//480 is reserved for cases where trial to use the card fails fails
+					if (error.httpStatus === 480) {
+	  					$scope.cardReplaced(card, cardData);
+	  					//CICO-21205 
+						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+						if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
+							$scope.removeCard($scope.viewState.lastCardSlot);
+							$scope.viewState.lastCardSlot = "";
+						}
+						$scope.newCardData = cardData;
+						that.attachCompanyTACardRoutings(card, cardData);
+						RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', true);
+	 				}
 					$scope.$emit('hideLoader');
 				},
 				onEachReplaceSuccess = function() {
