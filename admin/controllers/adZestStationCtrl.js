@@ -37,6 +37,7 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
                 if (data.colors){
                     $scope.data = data.colors;
                 }
+                $scope.zestSettings = data;
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
@@ -66,7 +67,7 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
              colorData.header_icons = hasTagsRemoved(data.header_icons);
              colorData.header_icons_pressed = hasTagsRemoved(data.header_icons_pressed);
             
-            $scope.invokeApi(ADZestStationSrv.save, {'kiosk':{'colors':colorData}}, saveSuccess, saveFailed);
+            $scope.invokeApi(ADZestStationSrv.save, {'kiosk':{'colors':colorData,'home_screen':$scope.zestSettings.home_screen,'guest_bill':$scope.zestSettings.guest_bill}}, saveSuccess, saveFailed);
         };
         
         $scope.init = function(){

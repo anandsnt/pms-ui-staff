@@ -113,9 +113,9 @@ sntRover.controller('rvTabletCtrl', [
 
             //set Home screen options based on admin settings
             var setHomeScreenOptions   = function(data){
-                $scope.show.pickupkey  = data.pickup_keys_on;
-                $scope.show.check_out  = data.checkout_on;
-                $scope.show.check_in   = data.checkin_on;
+                $scope.show.pickupkey  = data.home_screen.pickup_keys;
+                $scope.show.check_out  = data.home_screen.check_out;
+                $scope.show.check_in   = data.home_screen.check_in;
             };
 
             var initTabletConfig = function(){

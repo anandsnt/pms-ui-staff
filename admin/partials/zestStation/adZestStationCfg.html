@@ -14,8 +14,8 @@
                 <div class="form-title full-width">
                      <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
                 </div>
-                <ad-checkbox is-checked="data.is_email_delivery_on" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
-                <ad-checkbox is-checked="data.is_print_delivery_on" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
             </fieldset>
 
             <!-- Home screen options -->
@@ -23,9 +23,8 @@
                 <div class="form-title full-width">
                  <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
                 </div>
-                <ad-checkbox is-checked="data.pickup_keys_on" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
-                <ad-checkbox is-checked="dat.checkin_on" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>    
-                <ad-checkbox is-checked="data.checkout_on" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
+                <ad-checkbox is-checked="zestSettings.home_screen.pickup_keys" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
             </fieldset>
 
             <!-- color selection -->
