@@ -85,7 +85,7 @@
         </div>
 
         <!-- Action summary -->
-        <div class="content-right" ng-show="actionSelected === 'selected'" ng-click="stopEditClick()"> 
+        <div class="content-right" ng-show="actionSelected === 'selected' || (actionSelected === 'selected' && refreshing)" ng-click="stopEditClick()"> 
             <div class="summary">
                 <div id="action-summary"><!-- only in overlay hide -->
                     
@@ -134,7 +134,7 @@
                     {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
                 </div> 
                 
-                <div class="detail-actions col-2" ng-hide="(isStandAlone && selectedAction.date_completed) || (!isStandAlone && isRequest(selectedAction.action_task_type))">
+                <div class="detail-actions col-2" ng-hide="(!isStandAlone && isRequest(selectedAction.action_task_type)) || selectedAction.date_completed">
                     <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
@@ -146,7 +146,7 @@
             </div>
         </div>
         
-        <div class="content-right" ng-show="actionSelected === 'assign'"> 
+        <div class="content-right" ng-show="actionSelected === 'assign' || (actionSelected === 'assign' && refreshing)"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</span>

@@ -1112,12 +1112,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     $scope.refreshToEmpty = true;
                 } else if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete'){
                     $scope.refreshing = true;
+                    $scope.actionSelected = 'selected';
                 }
                 
                 var onSuccess = function(){
                     $scope.actions.totalCount--;
                     $scope.lastSelectedItemId = params.action_task.id;
                     $scope.refreshActionList(del, selected);
+                    if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete'){
+                        $scope.actionSelected = 'selected';
+                    }
                 };
                 var onFailure = function(data){
                     if (data[0]){
