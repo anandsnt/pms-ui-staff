@@ -240,20 +240,14 @@ sntRover.controller('reservationActionsController', [
                     if ($scope.reservationData.reservation_card.room_number === '' || 
                             $scope.reservationData.reservation_card.room_status === 'NOTREADY' || 
                             $scope.reservationData.reservation_card.fo_status === 'OCCUPIED'){
-                        
-                        console.info('$scope.reservationData.reservation_card.room_number: '+$scope.reservationData.reservation_card.room_number);
-                        console.info('$scope.reservationData.reservation_card.room_status: '+$scope.reservationData.reservation_card.room_status);
-                        console.info('$scope.reservationIsQueued: '+$scope.reservationIsQueued());
-                        console.info('$scope.putInQueueClicked: '+$scope.putInQueueClicked);
-                        
                         if ($scope.reservationData.reservation_card.room_number === '' && $scope.putInQueueClicked){
+                            return true;
+                        }
+                        if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
                             return true;
                         }
                         if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueueClicked)) {
                             return false;
-                        }
-                        if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
-                            return true;
                         }
                         return true;
                     } else return false;
@@ -308,10 +302,6 @@ sntRover.controller('reservationActionsController', [
                 $scope.initCheckInFlow = function(){
                     var checkingInQueued = !$scope.reservationData.check_in_via_queue && $scope.reservationIsQueued();
                         //CICO-13907 : If any sharer of the reservation is checked in, do not allow to go to room assignment or upgrades screen
-                        console.log('$scope.hasAnySharerCheckedin(): '+$scope.hasAnySharerCheckedin());
-                        console.log('checkingInQueued: '+checkingInQueued);
-                        console.log('$scope.roomAssignmentNeeded(): '+$scope.roomAssignmentNeeded());
-                        console.log('$scope.upsellNeeded(): '+$scope.upsellNeeded());
                         if ($scope.hasAnySharerCheckedin() || checkingInQueued) {
 
 
@@ -370,7 +360,14 @@ sntRover.controller('reservationActionsController', [
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
+                        
+                        
                         if (!hasRoom && $scope.putInQueueClicked){
+                            if ($scope.reservationMissingPhone()) {
+                                    $scope.$emit('showLoader');
+                                    $scope.validateEmailPhone();
+                                    return false;
+                            }
                             $scope.goToRoomAssignment();
                             return false;
                         }
@@ -996,7 +993,6 @@ sntRover.controller('reservationActionsController', [
                     } else {
                         $scope.putInQueueClicked = false;
                     }
-                    console.info('$scope.putInQueueClicked: set: '+$scope.putInQueueClicked);
                 };
                 $scope.initAdvQueCheck();
 	}

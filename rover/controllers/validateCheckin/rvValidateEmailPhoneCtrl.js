@@ -81,7 +81,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
                     $scope.reservationData.reservation_card.room_status !== 'READY' || 
                     $scope.reservationData.reservation_card.fo_status !== 'VACANT'){
                 
-                    if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
+                    if ($scope.reservationData.reservation_card.room_number === '' && ($scope.reservationIsQueued() || $scope.putInQueue)){
                         return true;
                     }
                     if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueue)){
@@ -92,11 +92,15 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
             } else return false;
         };
         $scope.upsellNeeded = function(){
-            if ($scope.putInQueue){
-                return false;
-            }
             if ($scope.reservationData.reservation_card.is_force_upsell === "true" && 
                     $scope.reservationData.reservation_card.is_upsell_available === "true"){
+                
+                if ($scope.putInQueue){
+                    return true;//go to room upgrade if adding to queue
+                } else if ($scope.reservationIsQueued()){
+                    return false;//skip if already in queue and checking in
+                }
+                
                 return true;
             } else return false;
         };
@@ -147,8 +151,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			//TO DO : GO TO ROOM UPGRAFED VIEW
 			  $scope.goToUpgrades();
                           $scope.emitPutGuestInQueue();
-                          
-		} else{
+                } else{
                     $scope.goToBillCard();
 		}
                 

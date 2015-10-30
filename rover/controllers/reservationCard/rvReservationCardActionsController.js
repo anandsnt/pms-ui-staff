@@ -24,6 +24,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedAction.due_at_date;
         $scope.selectedAction.due_at_time;
         $scope.openingPopup = false;
+        
+        $scope.newAction.department = {'value': ''};
 
         $scope.hotel_time = "4:00 A.M";
         $scope.departmentSelect = {};
@@ -244,6 +246,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
         $scope.fetchActionsCount = function(){
             var onSuccess = function(data){
+            $scope.refreshing = false;
                 $scope.$parent.$emit('hideLoader');
                 if (data.data.action_count === 0){
                     $scope.setRightPane('none');
@@ -271,7 +274,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
             };
-
+            $scope.refreshing = true;
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
         };
@@ -310,7 +313,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.closeSelectedCalendar();
             $scope.closeNewCalendar();
             $scope.newAction.notes = '';
-            $scope.newAction.department = {};
+            $scope.newAction.department = {'value': ''};
             $scope.newAction.time_due = '';
             var nd = new Date();
             var fmObj = $scope.getDateObj(getFormattedDate(nd.valueOf())+'', '-');
@@ -319,6 +322,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.setFreshDate();
 
         };
+        $scope.departmentSelected = false;
+        $scope.$watch('newAction.department',function(now, was){
+            if (!now || now === null){
+                $scope.departmentSelected = false;
+            } else if (now.value === ''){
+                $scope.departmentSelected = false;
+            } else {
+                $scope.departmentSelected = true;
+            }
+        });
         $scope.clearErrorMessage = function () {
                 $scope.errorMessage = [];
         };
@@ -544,7 +557,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.cancelNewAction = function(){
             //switch back to selected view of lastSelected
             //just change the view to selected
-            if ($scope.actionsCount > 0){
+            if ($scope.actions.totalCount > 0){
+                if ($scope.lastSelectedItemId){
+                    $scope.selectAction($scope.actions[$scope.lastSelectedItemId]);
+                }
                 $scope.setRightPane('selected');//goes back to last screen if actions exist
             } else {
                 $scope.setRightPane('none');//goes back to All is Good if no actions
@@ -798,13 +814,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                     
                 }
-                $scope.refreshing = true;
                 $scope.actions = list;
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
 
                 setTimeout(function(){
-                    $scope.refreshing = false;
                     if ($scope.actions[0]){
                        $scope.selectAction($scope.actions[0]);
                     }

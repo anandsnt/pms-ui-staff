@@ -28,7 +28,7 @@
     <section class="actions-content" role="main" ng-show='actions.totalCount > 0 || refreshing'> <!-- Add class "no-content" if no actions for room -->
 
         <!-- Actions list -->
-        <div class="content-left" ng-if='actions.totalCount > 0 || refreshing'>
+        <div class="content-left" ng-show='actions.totalCount > 0 || refreshing'>
             <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"> <!-- Attach iScroll here -->
                 <ul class="wrapper">
                     <li ng-repeat="action in actions" ng-hide="action.is_deleted" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
@@ -168,7 +168,7 @@
                 </div>
             </div>
         </div>
-        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+        <div class="content-right" ng-show="actionSelected === 'new' || refreshing" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message">New Action</span>
@@ -203,7 +203,7 @@
                         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
-                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes  || (!departmentSelected && !isStandAlone)}">Post Action</button> 
                         <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
                     </div> 
                 </div> 
@@ -247,7 +247,7 @@
                         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
-                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
                         <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
                     </div> 
                 </div> 

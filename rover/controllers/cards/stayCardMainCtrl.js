@@ -645,7 +645,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		};
 
 		$scope.newCardData = {};
-		$scope.replaceCard = function(card, cardData, future) {
+		$scope.replaceCard = function(card, cardData, future, useCardRate) {
 			if (card === 'company') {
 				$scope.reservationData.company.id = cardData.id;
 				$scope.reservationData.company.name = cardData.account_name;
@@ -667,8 +667,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.newCardData = cardData;
 					that.attachCompanyTACardRoutings(card, cardData);
 				},
-				onReplaceFailure = function() {
+				onReplaceFailure = function(error) {
 					$scope.cardRemoved();
+					//480 is reserved for cases where trial to use the card fails fails
+					if (error.httpStatus === 480) {
+	  					$scope.cardReplaced(card, cardData);
+	  					//CICO-21205 
+						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+						if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
+							$scope.removeCard($scope.viewState.lastCardSlot);
+							$scope.viewState.lastCardSlot = "";
+						}
+						$scope.newCardData = cardData;
+						that.attachCompanyTACardRoutings(card, cardData);
+						RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', true);
+	 				}
 					$scope.$emit('hideLoader');
 				},
 				onEachReplaceSuccess = function() {
@@ -684,7 +697,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						'reservation': reservationId,
 						'cardType': card,
 						'id': cardData.id,
-						'future': typeof future === 'undefined' ? false : future
+						'future': typeof future === 'undefined' ? false : future,
+						'useCardRate' : useCardRate
 					}).then(onEachReplaceSuccess));
 				});
 				$q.all(promises).then(onReplaceSuccess, onReplaceFailure);
@@ -694,7 +708,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card,
 					'id': cardData.id,
-					'future': typeof future === 'undefined' ? false : future
+					'future': typeof future === 'undefined' ? false : future,
+					'useCardRate' : useCardRate
 				}, onReplaceSuccess, onReplaceFailure);
 			}
 		};
@@ -707,17 +722,27 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 */
 		this.reloadStaycard = function() {
 			/**
-			 * CICO-20674: when there is more than one contracted rate we 
+			 * CICO-20674: when there is more than one contracted rate we
 			 * should take the user to room and rates screen after applying the routing info
 			 */
 			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 				$scope.navigateToRoomAndRates();
 			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": false
-				});
+				if (RVReservationStateService.getReservationFlag('RATE_CHANGE_FAILED')) {
+					RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', false);
+					ngDialog.open({
+						template: '/assets/partials/cards/alerts/contractedRateChangeFailure.html',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+				} else {
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+						"confirmationId": $stateParams.confirmationId,
+						"isrefresh": false
+					});
+				}
 			}
 		};
 
