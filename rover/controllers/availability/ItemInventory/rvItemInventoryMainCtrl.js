@@ -48,7 +48,7 @@ sntRover.controller('itemInventoryMainController', [
 	/**
 	* success call of availability data fetch
 	*/
-	var successCallbackOfInventoryFetch = function (data) {
+	var successCallbackOfItemInventoryFetch = function (data) {
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
 		// for this successcallback we are not hiding the activty indicator
@@ -58,7 +58,7 @@ sntRover.controller('itemInventoryMainController', [
 	/**
 	* error call of availability data fetch
 	*/
-	var failureCallbackOfAvailabilityFetch = function (errorMessage) {
+	var failureCallbackOfItemInventoryFetch = function (errorMessage) {
 		$scope.$emit("hideLoader");
 	};
 
@@ -67,15 +67,15 @@ sntRover.controller('itemInventoryMainController', [
 	*/
 	$scope.changedAvailabilityDataParams = function () {
 		$timeout(function () {
-		//calculating date after number of dates selected in the select box
+			//calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
-
 			dateAfter.setDate(dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
+
 			var dataForWebservice = {
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			};
-			rvAvailabilitySrv.fetchItemInventoryDetails(dataForWebservice);
+			$scope.invokeApi(rvAvailabilitySrv.fetchItemInventoryDetails, dataForWebservice, successCallbackOfItemInventoryFetch, failureCallbackOfItemInventoryFetch);
 		}, 0);
 	};
 
