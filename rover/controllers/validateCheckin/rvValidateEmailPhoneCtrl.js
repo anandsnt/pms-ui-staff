@@ -81,7 +81,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
                     $scope.reservationData.reservation_card.room_status !== 'READY' || 
                     $scope.reservationData.reservation_card.fo_status !== 'VACANT'){
                 
-                    if ($scope.reservationData.reservation_card.room_number === '' && $scope.reservationIsQueued()){
+                    if ($scope.reservationData.reservation_card.room_number === '' && ($scope.reservationIsQueued() || $scope.putInQueue)){
                         return true;
                     }
                     if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueue)){
