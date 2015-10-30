@@ -710,11 +710,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.$parent.$emit('hideLoader');
                 if ($scope.refreshToEmpty){
                     $scope.refreshToEmpty = false;
+                } 
+                if ($scope.refreshing){
+                    $scope.refreshing = false;
                 }
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshToEmpty = false;
+                $scope.refreshing = false;
             };
 
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
@@ -1106,6 +1110,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 
                 if (($scope.actions.totalCount - 1 <= 0) && del === 'delete'){
                     $scope.refreshToEmpty = true;
+                } else if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete'){
+                    $scope.refreshing = true;
                 }
                 
                 var onSuccess = function(){
