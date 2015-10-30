@@ -940,8 +940,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             the allowed range
         **/
         $scope.$watch('routeDates', function() {      
-          $scope.routeDates.from = tzIndependentDate($scope.routeDates.from),
-          $scope.routeDates.to   = tzIndependentDate($scope.routeDates.to);
+          $scope.routeDates.from = $filter('date')(tzIndependentDate($scope.routeDates.from), 'yyyy-MM-dd');
+          $scope.routeDates.to   = $filter('date')(tzIndependentDate($scope.routeDates.to), 'yyyy-MM-dd');
         }, true);
     }
 
