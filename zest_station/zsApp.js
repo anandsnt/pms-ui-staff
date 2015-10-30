@@ -14,7 +14,9 @@ var sntZestStation = angular.module('sntZestStation',[
 		'pasvaz.bindonce',
 		'sharedHttpInterceptor',
 		'orientationInputBlurModule',
-		'iscrollStopPropagation','touchPress']);
+		'iscrollStopPropagation',
+		'touchPress',
+		'clickTouch']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
