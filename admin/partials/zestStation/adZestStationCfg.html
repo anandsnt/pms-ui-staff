@@ -14,16 +14,8 @@
                 <div class="form-title full-width">
                      <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
                 </div>
-                <label class="radio" ng-class="{'checked':data.email_option == 'is_email_only'}">
-                    <span class="icon-form icon-radio " ng-class="{checked:data.email_option =='is_email_only'}"></span>
-                    <input type="radio" value="is_email_only" ng-model="data.email_option"  >
-                        {{ 'EMAIL_ONLY' | translate}} 
-                </label>
-                <label class="radio" ng-class="{'checked':data.email_option == 'email_and_print'}">
-                    <span class="icon-form icon-radio " ng-class="{checked:data.email_option == 'email_and_print'}"></span>
-                    <input type="radio" value="email_and_print" ng-model="data.email_option" >
-                        {{ 'EMAIL_AND_PRINT' | translate}}
-                </label>
+                <ad-checkbox is-checked="data.is_email_delivery_on" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="data.is_print_delivery_on" label="{{ 'PRINT' | translate}}"></ad-checkbox>
             </fieldset>
 
             <!-- Home screen options -->

@@ -13,8 +13,8 @@
 "HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)",
 
 "GUEST_BILL_DELIVERY":"Guest bill delivery options",
-"EMAIL_ONLY":"Email only",
-"EMAIL_AND_PRINT":"Email and print",
+"EMAIL":"Email",
+"PRINT":"Print",
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
