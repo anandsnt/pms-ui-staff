@@ -1,7 +1,7 @@
 sntZestStation.controller('rvTabletCtrl', [
         '$scope',
         '$rootScope',
-        'rvGroupSrv',
+        'rvTabletSrv',
         '$document',
         '$state',
         '$timeout',
@@ -11,7 +11,7 @@ sntZestStation.controller('rvTabletCtrl', [
         '$sce',
     function($scope, 
     $rootScope,
-        rvGroupSrv, 
+        rvTabletSrv, 
         $document, 
         $state, 
         $timeout, 
@@ -141,7 +141,7 @@ sntZestStation.controller('rvTabletCtrl', [
                 
                 $scope.invokeApi(rvTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
                 $scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
-                $scope.invokeApi(rvGroupSrv.fetchHotelBusinessDate, {}, fetchBizDateComplete);
+                $scope.invokeApi(rvTabletSrv.fetchHotelBusinessDate, {}, fetchBizDateComplete);
                 setTitle();
                 
                 $('.root-view').addClass('kiosk');

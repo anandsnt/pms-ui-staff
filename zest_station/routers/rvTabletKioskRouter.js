@@ -1,10 +1,23 @@
 sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function ($stateProvider, $urlRouterProvider, $translateProvider) {
 
-        //module specific routes for zest-station
+        
+        $urlRouterProvider.otherwise('/zest_station_home');
+
+        $stateProvider.state('zest_station_home', {
+            url: '/zest_station_home',
+            templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
+            controller: 'rvTabletCtrl'
+        });
+
+         //check-in [ find-reservation main ]
+        $stateProvider.state('station.tab-kiosk-find-reservation', {
+            url: '/', controller: 'rvTabletCtrl',
+            templateUrl: '/assets/partials/zestStation/kiosk/specific/find-reservation.html',
+        });
 
         //check-in [ find-reservation main ]
         $stateProvider.state('station.tab-kiosk-find-reservation', {
-            url: '/zest_station', controller: 'rvTabletCtrl',
+            url: '/zest_station1', controller: 'rvTabletCtrl',
             templateUrl: '/assets/partials/zestStation/kiosk/specific/find-reservation.html',
         });
 

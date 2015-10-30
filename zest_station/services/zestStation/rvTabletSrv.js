@@ -3,18 +3,38 @@
  */
 
 sntZestStation.service('rvTabletSrv',
-        ['$http', '$q', 'rvBaseWebSrvV2',
-            function ($http, $q, rvBaseWebSrvV2) {
+        ['$http', '$q', 'zsBaseWebSrv',
+            function ($http, $q, zsBaseWebSrv) {
                  // fetch idle time settings
                 this.fetchSettings = function () {
                     var deferred = $q.defer(),
                             url = '/api/hotel_settings/kiosk';
 
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
                     });
+                    return deferred.promise;
+                };
+
+                /**
+                 * function to get business date
+                 * @return {Promise} - After resolving it will return the business date
+                 */
+                this.fetchHotelBusinessDate = function() {
+                    var deferred = $q.defer(),
+                        url = '/api/business_dates/active';
+
+                    zsBaseWebSrv.getJSON(url).then(
+                        function(data) {
+                            deferred.resolve(data);
+                        },
+                        function(errorMessage) {
+                            deferred.reject(errorMessage);
+                        }
+                    );
+
                     return deferred.promise;
                 };
                 
@@ -24,7 +44,7 @@ sntZestStation.service('rvTabletSrv',
                     var deferred = $q.defer();
                     var url = '/api/hotel_settings.json';
 
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -37,7 +57,7 @@ sntZestStation.service('rvTabletSrv',
                     var deferred = $q.defer();
                     var id= data.id;
                     var url = '/api/reservations/'+id+'/print_registration_card';
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -50,7 +70,7 @@ sntZestStation.service('rvTabletSrv',
                     var id= data.id;
                     var url = '/api/reservations/'+id+'/email_registration_card';
 
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -64,7 +84,7 @@ sntZestStation.service('rvTabletSrv',
                             url = '/staff/staycards/reservation_details.json?reservation='+param.id;
                     
 
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -77,7 +97,7 @@ sntZestStation.service('rvTabletSrv',
                     var deferred = $q.defer(),
                             url = '/staff/staycards/reservation_addons?reservation_id='+param.id;
 
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -108,7 +128,7 @@ sntZestStation.service('rvTabletSrv',
                             credit_card_last_4
                          */
 
-                    rvBaseWebSrvV2.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -121,7 +141,7 @@ sntZestStation.service('rvTabletSrv',
                     var deferred = $q.defer(),
                             url = '/staff/checkin';
 
-                    rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -133,7 +153,7 @@ sntZestStation.service('rvTabletSrv',
                     var deferred = $q.defer(),
                             url = '/api/hotel_settings/change_settings';
 
-                    rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
