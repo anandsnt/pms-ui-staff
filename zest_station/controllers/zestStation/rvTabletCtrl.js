@@ -1,4 +1,4 @@
-sntRover.controller('rvTabletCtrl', [
+sntZestStation.controller('rvTabletCtrl', [
         '$scope',
         '$rootScope',
         'rvGroupSrv',
@@ -985,7 +985,7 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.refreshScroller($scope.scrollId);
                 },500);
             };
-            sntRover.filter('unsafe', function($sce) {
+            sntZestStation.filter('unsafe', function($sce) {
                 return function(val) {
                     return $sce.trustAsHtml(val);
                 };

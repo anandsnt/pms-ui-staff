@@ -2,7 +2,7 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntRover.service('rvTabletSrv',
+sntZestStation.service('rvTabletSrv',
         ['$http', '$q', 'rvBaseWebSrvV2',
             function ($http, $q, rvBaseWebSrvV2) {
                  // fetch idle time settings
