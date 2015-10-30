@@ -246,6 +246,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
         $scope.fetchActionsCount = function(){
             var onSuccess = function(data){
+            $scope.refreshing = false;
                 $scope.$parent.$emit('hideLoader');
                 if (data.data.action_count === 0){
                     $scope.setRightPane('none');
@@ -273,7 +274,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
             };
-
+            $scope.refreshing = true;
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
             $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
         };
@@ -813,13 +814,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                     
                 }
-                $scope.refreshing = true;
                 $scope.actions = list;
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
 
                 setTimeout(function(){
-                    $scope.refreshing = false;
                     if ($scope.actions[0]){
                        $scope.selectAction($scope.actions[0]);
                     }
