@@ -259,7 +259,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amountType: addon.amountType,
                             postType: addon.postType,
                             taxDetail: addon.taxes,
-                            chargefullweeksonly:addon.chargefullweeksonly
+                            chargefullweeksonly:addon.chargefullweeksonly,
+                            is_rate_addon : addon.is_rate_addon
                         });
                     }
                 }
@@ -495,7 +496,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             price_per_piece: item.amount,
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
-                            is_inclusive: item.is_inclusive
+                            is_inclusive: item.is_inclusive,
+                            is_rate_addon : item.is_rate_addon 
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -510,7 +512,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 title: addonsData.title,
                                 totalAmount: addonsData.totalAmount,
                                 is_inclusive: addonsData.is_inclusive,
-                                taxes: item.taxes
+                                taxes: item.taxes,
+                                is_rate_addon: item.is_rate_addon 
                             });
                         }
 
