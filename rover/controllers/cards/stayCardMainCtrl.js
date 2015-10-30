@@ -722,17 +722,27 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 */
 		this.reloadStaycard = function() {
 			/**
-			 * CICO-20674: when there is more than one contracted rate we 
+			 * CICO-20674: when there is more than one contracted rate we
 			 * should take the user to room and rates screen after applying the routing info
 			 */
 			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 				$scope.navigateToRoomAndRates();
 			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": false
-				});
+				if (RVReservationStateService.getReservationFlag('RATE_CHANGE_FAILED')) {
+					RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', false);
+					ngDialog.open({
+						template: '/assets/partials/cards/alerts/contractedRateChangeFailure.html',
+						scope: $scope,
+						closeByDocument: false,
+						closeByEscape: false
+					});
+				} else {
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+						"confirmationId": $stateParams.confirmationId,
+						"isrefresh": false
+					});
+				}
 			}
 		};
 
