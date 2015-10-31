@@ -1,0 +1,15 @@
+<section id="main" class="centered test ng-scope" role="main" click-touch="resetTime()">
+    <div id="content">
+        <h1 class="">Type Your Last Name</h1>
+        <h3 class=""></h3>
+        <form method="post" class="form ng-valid ng-dirty">
+            <div class="entry input">
+                <input class="start-focused ng-valid ng-dirty" type="text" ng-keydown="resetTime()" ng-model="input.inputTextValue" placeholder="" enter-press="inputTextHandler(at, input.inputTextValue)" value="" touch-press="">
+            </div>
+            <div class="entry action">
+                <button type="button" class="button overlay" touch-press="inputTextHandler(at, input.inputTextValue)" ng-class="{'overlay': input.inputTextValue.length < 1}" style="">Next</button>
+            </div>
+        </form>
+        <button ng-show="at === &quot;input-email&quot; &amp;&amp; from === &quot;card-swipe&quot; &amp;&amp; emailOptional" type="button" class="button ng-hide" touch-press="skipEmailEntryAfterSwipe()">Skip</button>
+    </div>
+</section>
