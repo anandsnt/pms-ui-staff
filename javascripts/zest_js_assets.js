@@ -1,7 +1,6 @@
 //=require ../shared/lib/js/jquery.js
-//=require ../shared/lib/js/jquery-ui.min.js
 //=require ../shared/lib/js/jquery.ui.touch-punch.js
-
+//=require ../shared/lib/js/jquery-ui.min.js
 //=require ../shared/lib/js/angular.min.js
 //=require ../shared/lib/js/angular-route.js
 //=require ../shared/lib/js/angular-ui-router.js
@@ -21,17 +20,19 @@
 
 //=require_tree ../shared/interceptors
 
+//=require ../shared/lib/js/Utils.js
+//=require ../shared/lib/js/underscore.min.js
 //=require ../shared/baseCtrl.js
 //=require ../shared/lib/js/date.js
+//=require ../shared/lib/js/fullcalender/angular-ui-calendar.js
 
-//=require_tree ../shared/lib
+
 
 //=require ../shared/directives/divTouchMoveStopPropogate/documentTouchMovePrevent.js
-//=require ../shared/directives/ngClassWithoutAnimation/ngClassWithoutAnimation.js
 //=require ../shared/directives/documentTouchMovePrevent/documentTouchMovePrevent.js
 //=require ../shared/directives/orientationInputBlur/orientationInputBlur.js
 //=require ../shared/directives/iscrollFixes/iscrollStopPropagation.js
-//=require ../shared/directives/bindOnce/bindOnce.js
+
 //=require ../shared/directives/touchPress/touchPress.js
 //=require ../shared/directives/clickTouch/clickTouch.js
 

@@ -11,7 +11,6 @@ var sntZestStation = angular.module('sntZestStation',[
 		'ui.calendar',
 		'documentTouchMovePrevent',
 		'divTouchMoveStopPropogate',
-		'pasvaz.bindonce',
 		'sharedHttpInterceptor',
 		'orientationInputBlurModule',
 		'iscrollStopPropagation',
