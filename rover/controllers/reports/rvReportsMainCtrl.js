@@ -1131,6 +1131,28 @@ sntRover.controller('RVReportsMainCtrl', [
 			return params;
 		};
 
+		/**
+		 * function to get the export url for a report
+		 * @return {String}
+		 */
+		$scope.getExportUrl = function() {
+			var exportUrl 				= "",
+				chosenReport 			= reportsSrv.getChoosenReport(),
+				loadPage 				= 1,
+				resultPerPageOverride 	= true;
+
+			switch ( chosenReport.title ) {
+				case reportNames['DAILY_PRODUCTION']: 
+					exportUrl = "/api/reports/30/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
+					break;
+				
+				default:
+					exportUrl = "";
+					break;					
+			}
+			
+			return exportUrl;
+		};
 
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
