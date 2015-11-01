@@ -2,7 +2,7 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('rvTabletSrv',
+sntZestStation.service('zsTabletSrv',
         ['$http', '$q', 'zsBaseWebSrv',
             function ($http, $q, zsBaseWebSrv) {
                  // fetch idle time settings
@@ -105,30 +105,11 @@ sntZestStation.service('rvTabletSrv',
                     return deferred.promise;
                 };
                 
-                this.fetchReservations = function (param) {
-                    var filter = '', due_in;
-                    if (param.last_name){
-                         filter = '?last_name='+param.last_name;
-                    }
-                    if (param.find_by !='' && param.last_name !=''){
-                        filter += '&'+param.find_by+'='+param.value;
-                    }
-                    if (filter !== ''){
-                        due_in = '&due_in=true';
-                    } else {
-                        due_in = '?due_in=true';
-                    }
-                    var deferred = $q.defer(),
-                            url = '/api/reservations'+filter+due_in;
-                        /*
-                         * confirmation_number
-                            departure_date
-                            email
-                            last_name
-                            credit_card_last_4
-                         */
+                this.fetchReservations = function (params) {
+                    var deferred    = $q.defer(),
+                        url         = '/api/reservations';
 
-                    zsBaseWebSrv.getJSON(url).then(function (data) {
+                    zsBaseWebSrv.getJSON(url, params).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);

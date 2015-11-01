@@ -44,4 +44,5 @@
 //=require_tree ../zest_station/controllers
 //=require_tree ../zest_station/services
 //=require_tree ../zest_station/routers
-////=require_tree ../zest_station/constants
+//=require_tree ../zest_station/directives
+//=require_tree ../zest_station/constants

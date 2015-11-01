@@ -1,15 +1,42 @@
 <section id="main" class="centered test ng-scope" role="main" click-touch="resetTime()">
-    <div id="content">
+    
+    <div id="content" ng-show="!shouldShowSearchResults()">
         <h1 class="">Type Your Last Name</h1>
         <h3 class=""></h3>
         <form method="post" class="form ng-valid ng-dirty">
             <div class="entry input">
-                <input class="start-focused ng-valid ng-dirty" type="text" ng-keydown="resetTime()" ng-model="input.inputTextValue" placeholder="" enter-press="inputTextHandler(at, input.inputTextValue)" value="" touch-press="">
+                <input class="start-focused ng-valid ng-dirty" type="text" ng-keydown="resetTime()" ng-model="searchQuery" zs-delay-textbox function-to-fire="searchReservations" delay="800">
             </div>
             <div class="entry action">
-                <button type="button" class="button overlay" touch-press="inputTextHandler(at, input.inputTextValue)" ng-class="{'overlay': input.inputTextValue.length < 1}" style="">Next</button>
+                <button type="button" class="button overlay" touch-press="searchReservations" ng-class="{'overlay': input.inputTextValue.length < 1}" style="">Next</button>
             </div>
         </form>
-        <button ng-show="at === &quot;input-email&quot; &amp;&amp; from === &quot;card-swipe&quot; &amp;&amp; emailOptional" type="button" class="button ng-hide" touch-press="skipEmailEntryAfterSwipe()">Skip</button>
     </div>
+
+    <div id="content" ng-show="shouldShowSearchResults()">
+        <h1>Select a Reservation</h1>
+        <div id="labels">
+            <span class="label">Name</span>
+            <span class="label">Check Out Date / Room Type</span>
+        </div>
+        
+        <ul id="selection"> <!-- Show no more than 3 results per page -->
+            <li ng-repeat="reservation in reservations">
+                <div class="details" touch-press="selectReservation(reservation)">
+                    <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
+                    <div class="date">
+                        {{reservation.arrival_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} {{hoursNights}})
+                        <!--span>{{reservation.room_type}}</span-->
+                        <span>{{reservation.stay_dates[0].room_type}}</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="actions" class='select-reservation'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+            <button type="button" class="button transparent prev" touch-press='fetchPreviousReservationList()' ng-class='{"overlay":reservationPageNum==1}'>Previous</button>
+            <label ng-show='reservationPages > 1' ng-hide='reservationPages == 1'>{{page}} / {{totalResults}}</label>
+            <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":reservationPageNum==reservationPages}'>Next</button>
+        </div> 
+    </div>
+
 </section>
