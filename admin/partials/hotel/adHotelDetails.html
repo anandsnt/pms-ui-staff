@@ -624,30 +624,31 @@
 						Saferpay
 				</label>				
 			</div>
-			<div class="entry full-width"></div>
+			<div class="entry full-width" ng-if="data.zest_payment_gateway === 'SAFERPAY' && data.payment_gateway != 'SAFERPAY'">
 			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay ACCOUNT ID
 				</label>
-				<input type="text" ng-model="data.zest_saferpay_account_id">
+				<input type="text" ng-model="data.saferpay_account_id">
 			</div>
 			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay HTTPS Password
 				</label>
-				<input type="text" ng-model="data.zest_saferpay_https_password">
+				<input type="text" ng-model="data.saferpay_https_password">
 			</div>
 			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay auth URL
 				</label>
-				<input type="text" ng-model="data.zest_saferpay_auth_url" readonly="readonly">
+				<input type="text" ng-model="data.saferpay_auth_url" readonly="readonly">
 			</div>
 			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
 				<label>
 					Saferpay settlement URL
 				</label>
-				<input type="text" ng-model="data.zest_saferpay_settlement_url" readonly="readonly">
+				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
+			</div>
 			</div>
 
 			
