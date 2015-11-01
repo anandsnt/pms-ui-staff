@@ -24,7 +24,31 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 */
 	var successCallBackOfSearchReservations = function(data) {
 		$scope.reservations = data.results;
-		$scope.totalResults	= data.total_count;
+		$scope.totalPages	= Math.ceil (data.total_count/$scope.PER_PAGE_RESULTS);
+	};
+
+	/**
+	 * [isInCheckinMode description]
+	 * @return {Boolean} [description]
+	 */
+	$scope.isInCheckinMode = function() {
+		return ($stateParams.mode === zsModeConstants.CHECKIN_MODE);
+	};
+
+	/**
+	 * [isInCheckinMode description]
+	 * @return {Boolean} [description]
+	 */
+	$scope.isInCheckoutMode = function() {
+		return ($stateParams.mode === zsModeConstants.CHECKOUT_MODE);
+	};
+
+	/**
+	 * [isInCheckinMode description]
+	 * @return {Boolean} [description]
+	 */
+	$scope.isInPickupKeyMode = function() {
+		return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
 	};
 
 	/**
@@ -32,23 +56,21 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * @return {undefined}
 	 */
 	$scope.searchReservations = function() {
-		var mode = $stateParams.mode;
-        
         var params = {
             //last_name 	: $scope.searchQuery,
             per_page 	: $scope.PER_PAGE_RESULTS,
             page 		: $scope.page
         };
 
-        if (mode === zsModeConstants.CHECKIN_MODE) {
+        if ($scope.isInCheckinMode()) {
         	params.due_in = true;
         }
 
-        else if (mode === zsModeConstants.CHECKOUT_MODE) {
+        else if ($scope.isInCheckoutMode()) {
         	params.due_out = true;
         }
 
-        else if (mode === zsModeConstants.PICKUP_KEY_MODE) {
+        else if ($scope.isInPickupKeyMode()) {
         	params.due_in = true;
         }
 
@@ -66,7 +88,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.fetchNextReservationList = function() {
-		$scope.page++; //TODO: Correct logic
+		if ($scope.page < $scope.totalPages) {
+			$scope.page++;
+		}
 		$scope.searchReservations();
 	};
 
@@ -75,7 +99,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.fetchPreviousReservationList = function() {
-		$scope.page--; //TODO: Correct logic
+		if ($scope.page > 1) {
+			$scope.page--;
+		}
 		$scope.searchReservations();
 	};
 
@@ -102,7 +128,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 
 		//pagination
 		$scope.page 			= 1;
-		$scope.totalResults 	= 0;
+		$scope.totalPages 		= 0;
 		$scope.PER_PAGE_RESULTS = 3;
 	}();
 

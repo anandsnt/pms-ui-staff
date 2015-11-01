@@ -15,6 +15,25 @@ sntZestStation.controller('zsHomeCtrl', [
         });
 	};
 
+	/**
+	 * when we clicked on checkin from home screen
+	 * @return {undefined}
+	 */
+	$scope.clickedOnCheckinButton = function() {
+		$state.go('zest_station.reservation_search', {
+          mode: zsModeConstants.CHECKIN_MODE
+        });
+	};
+
+	/**
+	 * when we clicked on checkout from home screen
+	 * @return {undefined}
+	 */
+	$scope.clickedOnCheckoutButton = function() {
+		$state.go('zest_station.reservation_search', {
+          mode: zsModeConstants.CHECKOUT_MODE
+        });
+	};
 
 	/**
 	 * [initializeMe description]
