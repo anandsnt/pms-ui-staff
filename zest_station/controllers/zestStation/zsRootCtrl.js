@@ -24,17 +24,17 @@ sntZestStation.controller('zsRootCtrl', [
 	 * event for child controllers to show loader
 	 * @return {undefined}
 	 */
-    $scope.$on(zsEventConstants.SHOW_LOADER,function(){
-        $scope.hasLoader = true;
-    });
+        $scope.$on(zsEventConstants.SHOW_LOADER,function(){
+            $scope.hasLoader = true;
+        });
 
 	/**
 	 * event for child controllers to hide loader
 	 * @return {undefined}
 	 */
-    $scope.$on(zsEventConstants.HIDE_LOADER,function(){
-        $scope.hasLoader = false;
-    });
+        $scope.$on(zsEventConstants.HIDE_LOADER,function(){
+            $scope.hasLoader = false;
+        });
 
 	/**
 	 * event for showing the back button

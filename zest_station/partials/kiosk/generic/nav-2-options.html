@@ -8,7 +8,7 @@
                     <ul role="menu">
                         <!-- card swipe -->
                          <li ng-show='show.swipecardScreen && at === "card-swipe"'>
-                            <button type="button" class="button option" touch-press='goToScreen($event,"cc-sign", false, "card-swipe")'>
+                            <button type="button" class="button option" touch-press='goToCardSign()'>
                                 <ng-include src="'assets/css/zestStation/icons/creditcard.svg'"></ng-include>
                             </button>
                             <span translate>Please Swipe Credit Card</span>
@@ -24,7 +24,7 @@
                             <span>Or</span>
                         </li>
                          <li ng-show='at === "deliver-registration"'> 
-                            <button type="button" class="button option" touch-press='goToScreen($event,"email-delivery", false, "deliver-registration")'>
+                            <button type="button" class="button option" touch-press='selectEmailDelivery()'>
                                 <ng-include src="'assets/css/zestStation/icons/email.svg'"></ng-include>
                             </button>
                             <span translate>E-Mail</span>
@@ -49,7 +49,7 @@
                             <span>Or</span>
                         </li>
                          <li ng-show='at === "email-delivery"'> 
-                            <button type="button" class="button option" touch-press='goToScreen($event,"send-registration", false, "email-delivery")'>
+                            <button type="button" class="button option" touch-press='sendRegistration()'>
                                 <ng-include src="'assets/css/zestStation/icons/email.svg'"></ng-include>
                             </button>
                             <span translate>Send E-Mail</span>

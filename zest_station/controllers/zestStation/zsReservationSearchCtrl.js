@@ -57,7 +57,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 */
 	$scope.searchReservations = function() {
         var params = {
-            //last_name 	: $scope.searchQuery,
+            last_name 	: $scope.searchQuery,
             per_page 	: $scope.PER_PAGE_RESULTS,
             page 		: $scope.page
         };
@@ -78,9 +78,12 @@ sntZestStation.controller('zsReservationSearchCtrl', [
           	params            : params,
           	successCallBack   : successCallBackOfSearchReservations
         };
-
-        $scope.callAPI(zsTabletSrv.fetchReservations, options);
+            console.info('search with opts',options)
+            $scope.callAPI(zsTabletSrv.fetchReservations, options);
 	};
+        
+        
+        
 
 
 	/**
@@ -113,6 +116,15 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		return ($scope.reservations.length > 0);
 	};
 
+
+        $scope.selectReservation = function(r){
+            //pass reservation as a state param
+            $state.selectedReservation = r;
+            $state.go('zest_station.reservation_details');
+        };
+
+
+
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -131,5 +143,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		$scope.totalPages 		= 0;
 		$scope.PER_PAGE_RESULTS = 3;
 	}();
+        
+        
 
 }]);
