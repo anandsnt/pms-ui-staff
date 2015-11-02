@@ -1,9 +1,10 @@
 sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$state',
-	function($scope, zsEventConstants, $state) {
+	'$state','zsTabletSrv',
+	function($scope, zsEventConstants, $state,zsTabletSrv) {
 
+	BaseCtrl.call(this, $scope);
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -73,6 +74,14 @@ sntZestStation.controller('zsRootCtrl', [
 	});
 
 	/**
+	 * Set zest admin settings data.
+	 */
+	var fetchCompleted =  function(data){
+		$scope.$emit('hideLoader');
+		$scope.zestStationData = data;
+	};
+
+	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
 	 */
@@ -85,5 +94,12 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//to show loader
 		$scope.hasLoader = false;
+
+		//call Zest station settings API
+		var options = {
+    		params: 			{},
+    		successCallBack: 	fetchCompleted
+        };
+		$scope.callAPI(zsTabletSrv.fetchSettings, options);
 	}();
 }]);
