@@ -1,10 +1,10 @@
-<div id="modal" class="modal-show" role="dialog">
-	<div class="modal-content modal-vertical-centered">
-		<div class="centeralign alert-box">
-			Please enter Card details
-			<br/>
-			<br/>
-			<a ng-click="closeDialog()" class="button blank" style="">Close</a>
-		</div>
+<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div class="modal-content alert">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+		<span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">Please enter Card details</span>
+	    <button type="button" class="button blank modal-close" ng-click="noRoutingToReservation()">OK</button>
 	</div>
 </div>
