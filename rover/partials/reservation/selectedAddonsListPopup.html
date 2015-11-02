@@ -29,30 +29,30 @@
                     <span class="count" ng-show="addon.post_type ==='Entire Stay'"> ({{addon.quantity* duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)}})</span>
                 </span>
                
-                <span class="base" ng-hide="addon.is_inclusive">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} <span ng-show="addon.post_type ==='First Night'">per stay</span><span ng-show="addon.post_type ==='Entire Stay'"> per night</span></span>
+                <span class="base" ng-hide="addon.is_rate_addon">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} <span ng-show="addon.post_type ==='First Night'">per stay</span><span ng-show="addon.post_type ==='Entire Stay'"> per night</span></span>
 
                 <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
                 <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
 
                  <span ng-if="addon.amount_type ==='Adult'">
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * reservationData.number_of_adults| number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay * reservationData.number_of_adults| number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * reservationData.number_of_adults| number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay * reservationData.number_of_adults| number : 2}}</span>
                     </span>
                      <span ng-if="addon.amount_type ==='Child'">
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount*reservationData.number_of_children | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay*reservationData.number_of_children| number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount*reservationData.number_of_children | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay*reservationData.number_of_children| number : 2}}</span>
                     </span>
                     <span ng-if="addon.amount_type ==='Flat'">
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay| number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay| number : 2}}</span>
                     </span>
                     <span ng-if="addon.amount_type ==='Person'">
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount*(reservationData.number_of_children+reservationData.number_of_adults) | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.totalAmount*(reservationData.number_of_children+reservationData.number_of_adults) | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_rate_addon || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
                     </span>
                
-                <span class="price" ng-show="addon.is_inclusive">INCL</span>
-                <button type="button" ng-hide="addon.is_inclusive" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
+                <span class="price" ng-show="addon.is_rate_addon">INCL</span>
+                <button type="button" ng-hide="addon.is_rate_addon" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
         </ul>
         </div>

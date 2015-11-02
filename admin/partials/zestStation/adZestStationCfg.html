@@ -8,6 +8,26 @@
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
+
+             <!-- Guest delivery options -->
+           <fieldset class="holder left">    
+                <div class="form-title full-width">
+                     <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+            </fieldset>
+
+            <!-- Home screen options -->
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                 <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.home_screen.pickup_keys" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
+            </fieldset>
+
+            <!-- color selection -->
             <fieldset class="holder left max-width">
                 <div class="form-title full-width">
                     <h3><span translate>COLOR_SEC_LABEL</span> </h3>
