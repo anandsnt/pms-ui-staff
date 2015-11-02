@@ -536,14 +536,16 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 							cardType: card,
 							cardId: cardId
 						};
-						var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
-						ngDialog.open({
-							template: templateUrl,
-							className: 'ngdialog-theme-default stay-card-alerts',
-							scope: $scope,
-							closeByDocument: false,
-							closeByEscape: false
-						});
+						$timeout(function() {
+							ngDialog.open({
+								template: '/assets/partials/cards/alerts/cardRemoval.html',
+								className: 'ngdialog-theme-default stay-card-alerts',
+								scope: $scope,
+								closeByDocument: false,
+								closeByEscape: false
+							});
+						}, 300);
+
 					}
 				}
 			};
@@ -598,7 +600,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		this.attachCompanyTACardRoutings = function(card, cardData) {
 			// CICO-20161
 			/**
-			 * In this case there does not need to be any prompt for Rate or Billing Information to copy, 
+			 * In this case there does not need to be any prompt for Rate or Billing Information to copy,
 			 * since all primary reservation information should come from the group itself.
 			 */
 			if (!!$scope.reservationData.group.id) {
@@ -660,12 +662,14 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var onReplaceSuccess = function() {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
+
 					//CICO-21205 
 					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
-					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
-						$scope.removeCard($scope.viewState.lastCardSlot);
-						$scope.viewState.lastCardSlot = "";
+					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
+						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
+
+					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;
 					that.attachCompanyTACardRoutings(card, cardData);
@@ -710,7 +714,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		 */
 		this.reloadStaycard = function() {
 			/**
-			 * CICO-20674: when there is more than one contracted rate we 
+			 * CICO-20674: when there is more than one contracted rate we
 			 * should take the user to room and rates screen after applying the routing info
 			 */
 			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {

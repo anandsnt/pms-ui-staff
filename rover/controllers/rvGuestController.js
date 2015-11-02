@@ -724,20 +724,7 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		$scope.deleteCard = function(cardType, cardId) {
-			$scope.closeDialog();
-			// TODO: check for travel agent and company cards and do the needful
-			if(cardType === 'guest'){
-				resetReservationData.resetGuest();
-				$scope.$broadcast("guestCardDetached");
-			}
-			$timeout(function() {
-				$scope.closeGuestCard();
-				$scope.removeCard(cardType, cardId);
-			}, 700);
-		};
-
-		$scope.$on("CARD_REMOVED", function(event, card) {
+		var broadCastDetachEvent = function(card){
 			if (card === 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
 			} else if (card === 'company') {
@@ -745,10 +732,23 @@ sntRover.controller('guestCardController', [
 			} else if (card === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 			}
+		}
+
+		$scope.deleteCard = function(cardType, cardId) {
+			$scope.closeDialog();
+			broadCastDetachEvent(cardType);
+
+			$timeout(function() {
+				$scope.closeGuestCard();
+				$scope.removeCard(cardType, cardId);
+			}, 700);
+		};
+
+		$scope.$on("CARD_REMOVED", function(event, card) {
+			broadCastDetachEvent(card);
 		});
 
 		// init staycard header
-
 		$scope.searchGuest = function() {
 			var successCallBackFetchGuest = function(data) {
 				$scope.$emit("hideLoader");
@@ -1589,7 +1589,8 @@ sntRover.controller('guestCardController', [
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData, $event) {
 			$event.stopPropagation();
-
+			// Card draw is closed on select
+			$scope.closeGuestCard();
 			if (cardData.account_type === 'COMPANY') {
 				if (cardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 					showContractRatePopup(cardData);
