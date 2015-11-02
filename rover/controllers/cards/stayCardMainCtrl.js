@@ -532,7 +532,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						// If user has not replaced a new card, keep this one. Else remove this card
 						// The below flag tracks the card and has to be reset once a new card has been linked,
 						// along with a call to remove the flagged card
-						$scope.viewState.lastCardSlot = card;
+						$scope.viewState.lastCardSlot = {
+							cardType: card,
+							cardId: cardId
+						};
 						var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
 						ngDialog.open({
 							template: templateUrl,

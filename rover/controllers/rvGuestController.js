@@ -710,7 +710,8 @@ sntRover.controller('guestCardController', [
 			} else {
 				var dataForPopup = {
 					cardTypeText: "Guest Card",
-					cardType: "guest"
+					cardType: "guest",
+					cardId: $scope.reservationDetails.guestCard.id
 				}
 				ngDialog.open({
 					template: '/assets/partials/cards/alerts/detachCard.html',
@@ -725,6 +726,11 @@ sntRover.controller('guestCardController', [
 
 		$scope.deleteCard = function(cardType, cardId) {
 			$scope.closeDialog();
+			// TODO: check for travel agent and company cards and do the needful
+			if(cardType === 'guest'){
+				resetReservationData.resetGuest();
+				$scope.$broadcast("guestCardDetached");
+			}
 			$timeout(function() {
 				$scope.closeGuestCard();
 				$scope.removeCard(cardType, cardId);
