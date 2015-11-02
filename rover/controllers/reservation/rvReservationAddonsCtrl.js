@@ -181,8 +181,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             for (i = startIndex; i <= endIndex; i++) {
                                 $scope.reservationData.rooms[i].addons = [];
                             }
+                            //This is for addons associated with the RATE!!!
                             _.each(data.rate_addons, function(addon) {
                                 //Set this flag when there is Children in reservation & addon on for child.
+                                addon.is_rate_addon = true; // This is true as these addons are rate associated addons
                                 var flag = addon.amount_type.value === "CHILD" && $scope.reservationData.tabs[$scope.activeRoom].numChildren === 0,
                                     roomIndex;
                                 if (!flag) {
