@@ -50,7 +50,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         var routeToPostingAccountExist = false;
         var routesList = dclone($scope.routes,[]);
         for(var i = 0; i < routesList.length; i++){
-            if(routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE"){
+            if(routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE" || routesList[i].entity_type === "ALLOTMENT" ){
                 routeToPostingAccountExist = true;
                 return routeToPostingAccountExist;
             }
@@ -88,7 +88,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             if($scope.selectedEntity.entity_type !=='RESERVATION') {
                    $scope.selectedEntity.guest_id = null;
             }
-            if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE"){
+            if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "GROUP"){
 
             }
             else{
@@ -136,7 +136,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
             }
         }
-        else if(type === 'GROUP' || type === 'HOUSE'){
+        else if(type === 'GROUP' || type === 'HOUSE' || type === "ALLOTMENT"){
             if(isRoutingForPostingAccountExist()){
                 $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                 $scope.isEntitySelected = false;
@@ -180,7 +180,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             };
             if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
-                $scope.billingEntity !== "GROUP_DEFAULT_BILLING"){
+                $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
+                $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING"){
                 $scope.selectedEntity.reservation_status = $scope.reservationData.reservation_status;
                 $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
             }
@@ -221,7 +222,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             }
-            else if(type ==='GROUP' || type === 'HOUSE'){
+            else if(type ==='GROUP' || type === 'HOUSE' || type === 'ALLOTMENT'){
                 if(isRoutingForPostingAccountExist()){
                     $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                     $scope.isEntitySelected = false;
@@ -334,30 +335,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.invokeApi(RVBillinginfoSrv.fetchAttachedCards, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };
 
-    if($scope.attachedEntities === undefined){
-        $scope.isInitialPage = true;
-        $scope.fetchRoutes();
-        $scope.attachedEntities = [];
-
-    }
-    else {
-        if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING"){
-            $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
-        }
-        else if($scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
-            $scope.selectAttachedEntity('', 'COMPANY_CARD');
-        }
-        else if($scope.billingEntity === "GROUP_DEFAULT_BILLING") {
-            $scope.selectAttachedEntity('', 'GROUP');
-        }
-        else {
-            $scope.isInitialPage = true;
-            $scope.fetchRoutes();
-            $scope.attachedEntities = [];
-        }
-
-    }
-
     /**
     * function to save the new route
     */
@@ -404,5 +381,36 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.deleteBillingInfo = function(){
         $scope.deleteDefaultRouting();
     };
+
+    var init = function() {
+        if($scope.attachedEntities === undefined){
+            $scope.isInitialPage = true;
+            $scope.fetchRoutes();
+            $scope.attachedEntities = [];
+
+        }
+        else {
+            if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING"){
+                $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
+            }
+            else if($scope.billingEntity === "COMPANY_CARD_DEFAULT_BILLING") {
+                $scope.selectAttachedEntity('', 'COMPANY_CARD');
+            }
+            else if($scope.billingEntity === "GROUP_DEFAULT_BILLING") {
+                $scope.selectAttachedEntity('', 'GROUP');
+            }
+            else if($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+                $scope.selectAttachedEntity('', 'ALLOTMENT');
+            }
+            else {
+                $scope.isInitialPage = true;
+                $scope.fetchRoutes();
+                $scope.attachedEntities = [];
+            }
+
+        }
+    };
+
+    init();
 
 }]);
