@@ -3,9 +3,9 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 	'rvAvailabilitySrv',
 	'$state',
 	'ngDialog',
-	'rvGroupConfigurationSrv',
+	'rvAllotmentConfigurationSrv',
 	'$timeout',
-	function($scope, rvAvailabilitySrv, $state, ngDialog, rvGroupConfigurationSrv, $timeout){
+	function($scope, rvAvailabilitySrv, $state, ngDialog, rvAllotmentConfigurationSrv, $timeout){
 
 		BaseCtrl.call(this, $scope);		
 
@@ -142,7 +142,7 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 			$scope.data.clickedHeldRoomDetail = detail;
 			ngDialog.open({
 				template: '/assets/partials/availability/releaseRoomPopup.html',
-				controller: 'rvGroupAvailabilityStatusController',
+				controller: 'rvAllotmentAvailabilityStatusController',
 				scope: $scope,
 				closeByDocument: true
 			});
@@ -161,11 +161,11 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 					$scope.closeDialog();
 					$scope.errorMessage = errorMessage;
 				};
-			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, {
+			$scope.callAPI(rvAllotmentConfigurationSrv.releaseRooms, {
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure,
 				params: {
-					groupId:$scope.data.clickedHeldRoomDetail.id,
+					allotmentId:$scope.data.clickedHeldRoomDetail.id,
 					date:$scope.data.clickedHeldRoomDetail.date
 				}
 			});
