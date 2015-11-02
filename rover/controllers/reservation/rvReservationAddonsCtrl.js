@@ -80,7 +80,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
             goToSummaryAndConfirm = function() {
                 if ($scope.fromPage === "staycard") {
                     var saveData = {};
-                    saveData.addons = $scope.addonsData.existingAddons;
+                    saveData.addons = _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon});
                     saveData.reservationId = $scope.reservationData.reservationId;
 
                     var successCallBack = function() {
