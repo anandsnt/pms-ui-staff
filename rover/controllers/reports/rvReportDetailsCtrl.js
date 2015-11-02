@@ -500,15 +500,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 		};
 
-		/**
-		 * Should we show export button
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowExportButton = function() {
-			//As per CICO-21232 we should show this for DAILY PRODUCTION REPORT
-			return ($scope.parsedApiFor === reportNames['DAILY_PRODUCTION']);
-		};
-
 		$scope.parsedApiTemplate = function() {
 			var template = '';
 

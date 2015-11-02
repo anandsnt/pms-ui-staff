@@ -235,6 +235,30 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
+		/**
+		 * utility method to get date after one year
+		 * @param  {Object/String} date [if String, should be valid date format string]
+		 * @return {Object}      [Date]
+		 */
+		var getDateAfterOneYear = function (date) {
+			var dateAfter1Year 	= new tzIndependentDate (date);
+			dateAfter1Year.setFullYear(dateAfter1Year.getFullYear() + 1);
+			return dateAfter1Year;
+		};
+
+		//for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
+		$scope.fromDateOptionsOneYearLimit = angular.extend({
+			onSelect: function(value) {
+				$scope.toDateOptionsOneYearLimit.minDate = value;
+				$scope.toDateOptionsOneYearLimit.maxDate = getDateAfterOneYear (value);
+			}
+		}, datePickerCommon);
+		
+		$scope.toDateOptionsOneYearLimit = angular.extend({
+			// minDate: $scope.item.fromDate,
+			// maxDate: getDateAfterOneYear ($scope.item.fromDate)
+		}, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -1132,14 +1156,26 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		/**
+		 * Should we show export button
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowExportButton = function(name) {
+			//As per CICO-21232 we should show this for DAILY PRODUCTION REPORT
+			return (name === reportNames['DAILY_PRODUCTION']);
+		};
+
+		/**
 		 * function to get the export url for a report
 		 * @return {String}
 		 */
-		$scope.getExportUrl = function() {
+		$scope.getExportUrl = function(chosenReport) {
 			var exportUrl 				= "",
-				chosenReport 			= reportsSrv.getChoosenReport(),
 				loadPage 				= 1,
 				resultPerPageOverride 	= true;
+
+			if (!chosenReport) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+				return exportUrl;
+			}
 
 			switch ( chosenReport.title ) {
 				case reportNames['DAILY_PRODUCTION']: 
