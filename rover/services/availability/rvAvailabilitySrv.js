@@ -290,13 +290,14 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 	var formGridDataForItemInventory = function (response) {
 		var dates = [];
-
 		//extracting dates from response
-		_.each(response.addons[0].dates, function (key) {
-			var eachDate = {"date" : key.date, "isWeekend" : key.isWeekend};
+		_.each(response.addons[0].availability_details, function (key) {
+			var dateToCheck = tzIndependentDate(key.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			var eachDate = {"date" : key.date, "isWeekend" : isWeekend};
 			dates.push(eachDate);
 		});
-		var result = {"addons": response.addons, "dates": dates};
+		var result = { "addons": response.addons, "dates": dates };
 		return result;
 	};
 
@@ -338,63 +339,24 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch item inventory between from date & to date
 	*/
 	this.fetchItemInventoryDetails = function (params) {
-		var firstDate 	= (params.from_date);
-		var secondDate 	= (params.to_date);
+		var firstDate 	= (params.from_date),
+			secondDate 	= (params.to_date);
 
 		var dataForWebservice = {
 			from_date	: firstDate,
 			to_date		: secondDate
 		};
 		//Webservice calling section
-		var deferred = $q.defer();
-		var url = 'api/availability/addons';
-		var result = {
-	        "addons": [
-	            {
-	                "id": 1,
-	                "name": "Addon Name 1",
-	                "dates": [
-	                    {
-	                        "date": "12/12/2015",
-	                        "isWeekend": false,
-	                        "availability": 10,
-	                        "sold_count": 20
-	                    },
-	                    {
-	                        "date": "13/12/2015",
-	                        "availability": 10,
-	                        "isWeekend": false,
-	                        "sold_count": 23
-	                    }
-	                ]
-	            },
-	            {
-	                "id": 1,
-	                "name": "Addon Name 2",
-	                "dates": [
-	                    {
-	                        "date": "12/12/2015",
-	                        "availability": 44,
-	                        "isWeekend": false,
-	                        "sold_count": 24
-	                    },
-	                    {
-	                        "date": "13/12/2015",
-	                        "availability": -5,
-	                        "isWeekend": false,
-	                        "sold_count": 33
-	                    }
-	                ]
-	            }
-	        ]
-	    }
-		//rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
-			that.data.gridDataForItemInventory = formGridDataForItemInventory(result);
-			//deferred.resolve(that.data);
-		//},function(data){
-			//deferred.reject(data);
-		//});
-		return that.data.gridDataForItemInventory;
+		var deferred = $q.defer(),
+			url = '/api/availability/addons';
+		
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
+			that.data.gridDataForItemInventory = formGridDataForItemInventory(resultFromAPI);
+			deferred.resolve(that.data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
 	};
 
 
