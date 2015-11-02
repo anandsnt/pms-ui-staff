@@ -161,9 +161,12 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                     // initialize addons for display
                     $scope.addons = [];
+                    var currentRate = parseInt($scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId, 10);
                     _.each(data.results, function(item) {
                         if (!!item) {
-                            $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));
+                            if(!item.allow_rate_exclusion || (item.allow_rate_exclusion && _.indexOf(item.excluded_rate_ids, currentRate) < 0)){
+                                $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));   
+                            }
                         }
                     });
                     // refresh scroller
