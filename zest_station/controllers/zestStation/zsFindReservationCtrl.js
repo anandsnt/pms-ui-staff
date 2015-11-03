@@ -7,8 +7,24 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	'zsEventConstants',
 	function($scope, $state, zsTabletSrv, zsUtilitySrv, zsModeConstants, zsEventConstants) {
 
+            BaseCtrl.call(this, $scope);
+            /**
+             * when the back button clicked
+             * @param  {[type]} event
+             * @return {[type]} 
+             */
+            $scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+                // navigate to home screen if not in the detailed search page
+                if($scope.at  === "input-last" || $scope.at === "find-reservation"){
+                    $state.go ('zest_station.home');
+                }
+                else{
+                    $state.go ('zest_station.find_reservation');
+                }
+            });
+
             $scope.datePickerMin;
-             $scope.fetchBizDateComplete = function(data){
+            $scope.fetchBizDateComplete = function(data){
                 if (data){
                     if (data.business_date){
                         var d = data.business_date;
@@ -184,11 +200,11 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	 */
 	var initializeMe = function() {
 		//show back button
-		$scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+        $scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
 
-		//show close button
-		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
+        //show close button
+        $scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
                 
-                $scope.init();
+        $scope.init();
 	}();
 }]);
