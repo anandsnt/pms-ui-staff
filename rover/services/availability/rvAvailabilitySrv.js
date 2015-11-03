@@ -15,7 +15,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	};
 
 	this.getGridDataForInventory = function () {
-		this.fetchItemInventoryDetails("");
 		return that.data.gridDataForItemInventory;
 	};
 
