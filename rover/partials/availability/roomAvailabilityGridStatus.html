@@ -140,45 +140,21 @@
 			</colgroup>
 			<tbody>
 				<tr class="main">
-					<th class="heading rows-toggle" scope="row">Group / Allotment</th>
+					<th class="heading rows-toggle" scope="row" ng-click="toggleShowGroupAllotmentTotals()">Group / Allotment</th>
 					<td ng-repeat="groupAndAllotment in data.groupAndAllotments track by $index">
 						<div class="inner" ng-bind="groupAndAllotment"></div>
 					</td>
 				</tr>
-				<tr class="hidden">
-					<th scope="row">Group Blocks Tentative</th>
-					<td>
-						<div class="inner">-</div>
+				<tr ng-repeat="rowData in data.gridDataForGroupAvailability.holdstatuses track by $index" ng-class="{'hidden': !showShowGroupAllotmentTotals}">
+					<th scope="row">Group Blocks {{ getGroupAllotmentName(data.gridDataForGroupAvailability, rowData[0].id) }}</th>
+					<td ng-repeat="cellData in rowData track by $index">
+						<div class="inner">{{ cellData.total_number_of_rooms_blocked }}</div>
 					</td>
 				</tr>
-				<tr class="hidden">
-					<th scope="row">Group Blocks Definite</th>
-					<td>
-						<div class="inner">-</div>
-					</td>
-				</tr>
-				<tr class="hidden">
-					<th scope="row">Group Picked Up</th>
-					<td>
-						<div class="inner">-</div>
-					</td>
-				</tr>
-				<tr class="hidden">
-					<th scope="row">Allotment Tentative</th>
-					<td>
-						<div class="inner">-</div>
-					</td>
-				</tr>
-				<tr class="hidden">
-					<th scope="row">Allotment Definite</th>
-					<td>
-						<div class="inner">-</div>
-					</td>
-				</tr>
-				<tr class="hidden">
-					<th scope="row">Allotment Picked Up</th>
-					<td>
-						<div class="inner">-</div>
+				<tr ng-repeat="rowData in data.gridDataForAllotmentAvailability.holdstatuses track by $index" ng-class="{'hidden': !showShowGroupAllotmentTotals}">
+					<th scope="row">Allotment {{ getAllotmentName(data.gridDataForAllotmentAvailability, rowData[0].id) }}</th>
+					<td ng-repeat="cellData in rowData track by $index">
+						<div class="inner">{{ cellData.total_number_of_rooms_blocked }}</div>
 					</td>
 				</tr>
 			</tbody>

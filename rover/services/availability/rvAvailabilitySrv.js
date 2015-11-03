@@ -11,6 +11,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		return that.data.graphData;
 	};
 	this.getGridData = function(){
+		console.log(that.data)
 		return that.data.gridData;
 	};
 	this.getGridDataForGroupAvailability = function(){
@@ -634,6 +635,40 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		});
 
 	return houseDetails;
+	};
+
+	this.fetchGrpNAllotAvailDetails = function(params) {
+		var deferred = $q.defer();
+
+		var count = 2;
+
+		var shallWeResolve = function() {
+			if ( count == 0 ) {
+				deferred.resolve();
+			};
+		};
+
+		var success = function() {
+			count--;
+			shallWeResolve();
+		};
+
+		var failed = function() {
+			count--;
+			shallWeResolve();
+		};
+
+		that.fetchGroupAvailabilityDetails({
+			from_date : params.from_date,
+			to_date   : params.to_date
+		}).then(success, failed);
+
+		that.fetchAllotmentAvailabilityDetails({
+			from_date : params.from_date,
+			to_date   : params.to_date
+		}).then(success, failed);
+
+		return deferred.promise;
 	};
 
 }]);
