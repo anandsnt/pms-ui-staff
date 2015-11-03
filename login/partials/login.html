@@ -11,6 +11,14 @@
 		</ul>	
 	</span>
 
+	<span class="notice success" ng-show="successMessage!=''" >
+		<ul>
+			<li>
+				{{successMessage}}
+			</li>
+		</ul>	
+	</span>
+
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>
 		<input name="utf8" type="hidden" value="" />
 		<input name="authenticity_token" type="hidden" value="" />
