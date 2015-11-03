@@ -197,7 +197,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'commission_details':commissions,
                 'is_member': $scope.rateData.is_member_rate,
                 'is_pms_only' : $scope.rateData.is_pms_only,
-                'is_channel_only' : $scope.rateData.is_channel_only
+                'is_channel_only' : $scope.rateData.is_channel_only,
+                'code':$scope.rateData.code
             };
 
             // Save Rate Success Callback
