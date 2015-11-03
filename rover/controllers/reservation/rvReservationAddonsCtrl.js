@@ -79,9 +79,15 @@ sntRover.controller('RVReservationAddonsCtrl', [
             },
             goToSummaryAndConfirm = function() {
                 if ($scope.fromPage === "staycard") {
-                    var saveData = {};
-                    saveData.addons = _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon});
-                    saveData.reservationId = $scope.reservationData.reservationId;
+
+                    var saveData = {
+                        reservationId: $scope.reservationData.reservationId,
+                        room_types: [{
+                            id: $scope.reservationData.rooms[0].roomTypeId ,
+                            num_rooms: 1,
+                            addons: _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon})
+                        }]
+                    }
 
                     var successCallBack = function() {
                         $scope.$emit('hideLoader');
