@@ -37,7 +37,7 @@
 //=require ../shared/directives/clickTouch/clickTouch.js
 
 
-
+//=require ../rover/rvSntApp.js
 
 //=require ../zest_station/zsApp.js
 
