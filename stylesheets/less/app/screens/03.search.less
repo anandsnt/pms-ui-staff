@@ -174,12 +174,16 @@
                         line-height: 20px;
                         .show;
 
-                        &.ready { color: @green; }
+                        &.ready,
+                        &.room-green { color: @green; }
+                        
                         &.not-ready,
                         &.room-red { 
                             color: @red; 
                             margin-top: -10px;
                         }
+
+                        &.room-orange { color: @orange; }
                     }
 
                     .room-type {
@@ -449,6 +453,27 @@
                             float: none;
                             margin: 5px auto 0;
                             .square(30px);
+                        }
+                    }
+                }
+
+                /* Post Charge ***/
+                &.post-charge {
+                    .data { 
+                        .calc-width(45, 110); 
+
+                        &.no-guest-info { .calc-width(73, 110); }
+                    }
+
+                    .reservation-info {
+                        position: relative;
+                        .size(50px, 27%);
+
+                        .guest-status { margin-top: 10px; }
+
+                        .room-number { 
+                            margin-right: 10px;
+                            line-height: 50px; 
                         }
                     }
                 }
