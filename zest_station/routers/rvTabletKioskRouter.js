@@ -124,6 +124,16 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsFindReservationCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
+         
+         
+        // //check-in [ no-match ]
+         $stateProvider.state('zest_station.find_reservation_no_match', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/no-match.html',
+         });
+         
+         
 
 
         // //check-in [ reservation credit card sign Time Out]
@@ -186,11 +196,6 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 
 
-        // //check-in [ no-match ]
-        // $stateProvider.state('station.tab-kiosk-no-match', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/specific/no-match.html',
-        // });
 
 
 

@@ -25,6 +25,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	var successCallBackOfSearchReservations = function(data) {
 		$scope.reservations = data.results;
 		$scope.totalPages	= Math.ceil (data.total_count/$scope.PER_PAGE_RESULTS);
+                if ($scope.reservations.length === 0){
+                    $state.go('zest_station.find_reservation_no_match');
+                }
 	};
 
 	/**
@@ -57,17 +60,30 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 */
         
 	$scope.searchReservations = function() {
-            console.log('run search reservation')
+            console.log('run search reservation: '+$state.lastAt)
             var params = {
-                //last_name 	: $scope.searchQuery,
+                email           : $state.input.email,
                 last_name       : $state.input.last,
                 per_page 	: $scope.PER_PAGE_RESULTS,
                 page 		: $scope.page
             };
-            if ($state.lastAt === 'find-by-email'){
-                params.email === $state.lastInput;
+            
+            if ($state.lastAt !== 'find-by-email'){
+                delete params.email;
             }
+            
+            //sets due_in or due_out
+            params = $scope.setDueInOut(params);
 
+            var options = {
+                    params            : params,
+                    successCallBack   : successCallBackOfSearchReservations
+            };
+            console.info('search with opts',options)
+            $scope.callAPI(zsTabletSrv.fetchReservations, options);
+	};
+        
+        $scope.setDueInOut = function(params){
             if ($scope.isInCheckinMode()) {
                     params.due_in = true;
             }
@@ -79,16 +95,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             else if ($scope.isInPickupKeyMode()) {
                     params.due_in = true;
             }
-
-            var options = {
-                    params            : params,
-                    successCallBack   : successCallBackOfSearchReservations
-            };
-            console.info('search with opts',options)
-            $scope.callAPI(zsTabletSrv.fetchReservations, options);
-	};
-        
-        
+            return params;
+        };
         
 
 
