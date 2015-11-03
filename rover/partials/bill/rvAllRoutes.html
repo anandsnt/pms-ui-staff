@@ -19,8 +19,8 @@
 			                    <div class="guest-image icons icon-company" ng-if="escapeNull(route.entity_type)=='COMPANY_CARD'"></div>
 			                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(route.entity_type)=='TRAVEL_AGENT'" ></div>
 			                    <div class="group-info" ng-if="escapeNull(route.entity_type)=='GROUP' || escapeNull(route.entity_type)=='HOUSE'">A</div>
-			                    <div class="allotment-info" ng-if="escapeNull(route.entity_type)=='ALLOTMENT' || escapeNull(route.entity_type)=='HOUSE'">A</div>
-			                </figure>
+								<div class="guest-image icons icon-allotment" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'"></div>
+							</figure>
 
 			            <h2>{{route.name}}</h2>
 			            <div class="type">

@@ -88,7 +88,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             if($scope.selectedEntity.entity_type !=='RESERVATION') {
                    $scope.selectedEntity.guest_id = null;
             }
-            if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "GROUP"){
+            if($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "ALLOTMENT"){
 
             }
             else{
@@ -98,19 +98,30 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];
         	$scope.selectedEntity = {
-			    "id": data.id,
-			    "reservation_status" : data.reservation_status,
-                "is_opted_late_checkout" : data.is_opted_late_checkout,
-			    "name": data.firstname + " " + data.lastname,
-			    "images": data.images,
-			    "bill_no": "",
-			    "entity_type": "RESERVATION",
-			    "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "is_new" : true,
                 "credit_card_details": {}
 			};
+            if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+                $scope.selectedEntity = _.extend($scope.selectedEntity, {
+                    "id": $scope.allotmentId,
+                    "charge_routes_recipient_id": data.id,
+                    "charge_routes_recipient_type": "RESERVATION",
+                    "entity_type": "ALLOTMENT",
+                });
+            } else {
+                $scope.selectedEntity = _.extend($scope.selectedEntity, {
+                    "id": data.id,
+                    "reservation_status" : data.reservation_status,
+                    "is_opted_late_checkout" : data.is_opted_late_checkout,
+                    "name": data.firstname + " " + data.lastname,
+                    "images": data.images,
+                    "bill_no": "",
+                    "entity_type": "RESERVATION",
+                    "has_accompanying_guests" : ( data.images.length >1 ) ? true : false
+                });
+            }
 
         }
         else if(type === 'ACCOUNT'){
@@ -136,7 +147,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
             }
         }
-        else if(type === 'GROUP' || type === 'HOUSE' || type === "ALLOTMENT"){
+        else if(type === 'GROUP' || type === 'HOUSE'){
             if(isRoutingForPostingAccountExist()){
                 $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                 $scope.isEntitySelected = false;
@@ -157,6 +168,29 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 };
             }
 
+        }
+        else if (type === "ALLOTMENT") {
+            if(isRoutingForPostingAccountExist()){
+                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.isEntitySelected = false;
+                $scope.isInitialPage = true;
+            }
+            else{
+                var data = $scope.results.posting_accounts[index];
+                $scope.selectedEntity = {
+                    "allotment_id": data.id,
+                    "name": data.account_name,
+                    "bill_no": "",
+                    "charge_routes_recipient_id": data.id,
+                    "charge_routes_recipient_type": "ACCOUNT",
+                    "attached_charge_codes": [],
+                    "attached_billing_groups": [],
+                    "is_new" : true,
+                    "selected_payment" : "",
+                    "credit_card_details": {},
+                    "entity_type": data.account_type
+                };
+            }
         }
 	};
 
@@ -222,7 +256,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }];
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
             }
-            else if(type ==='GROUP' || type === 'HOUSE' || type === 'ALLOTMENT'){
+            else if(type ==='GROUP' || type === 'HOUSE'){
                 if(isRoutingForPostingAccountExist()){
                     $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
                     $scope.isEntitySelected = false;
@@ -230,6 +264,19 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 }
                 else{
                     $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
+                    $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
+                    $scope.selectedEntity.entity_type = type;
+                }
+            }
+            else if (type === 'ALLOTMENT') {
+                if(isRoutingForPostingAccountExist()){
+                    $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                    $scope.isEntitySelected = false;
+                    $scope.isInitialPage = true;
+                }
+                else{
+                    $scope.allotmentId = $scope.attachedEntities.posting_account.id;
+                    $scope.selectedEntity.id = $scope.allotmentId;
                     $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
                     $scope.selectedEntity.entity_type = type;
                 }

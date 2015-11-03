@@ -4,7 +4,7 @@
 			<div class="wrapper">
 				<div class="title">
 					{{'ENTITY' | translate}}
-					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'  || billingEntity === 'GROUP_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
+					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'  || billingEntity === 'GROUP_DEFAULT_BILLING'">
 						<span class="icons icon-pencil" ></span>
 					</button>
 				</div>
@@ -18,7 +18,7 @@
 	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
 	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
 	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
-	                    <div class="allotment-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+	                    <div class="guest-image icons icon-allotment" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'"></div>
 	                </figure>
 
 					<h2>{{selectedEntity.name}}</h2>
