@@ -43,7 +43,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		* the toogle button
 		*/
 		$scope.toggleShowRoomTypeWiseBookedRooms = function(){
-			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms ;
+			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms;
 			$scope.refreshScroller('room_availability_scroller');
 		};
 
@@ -53,9 +53,24 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		* the toogle button
 		*/
 		$scope.toggleShowRoomTypeWiseAvailableRooms = function(){
-			$scope.showRoomTypeWiseAvailableRooms  = !$scope.showRoomTypeWiseAvailableRooms ;
+			$scope.showRoomTypeWiseAvailableRooms  = !$scope.showRoomTypeWiseAvailableRooms;
 			$scope.refreshScroller('room_availability_scroller');
 		};
+
+		/*
+		* function to toggle the display of individual group/allotmet on clicking
+		* the toogle button
+		*/
+		$scope.toggleShowGroupAllotmentBreakdown = function() {
+			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms;
+			$scope.refreshScroller('room_availability_scroller');
+
+			// do something
+			// call indiviual
+
+			somesrv.fetchGroupAndAllotmentAvailabilityDetails()
+		};
+
 
 		/**
 		 * For iScroll, we need width of the table
