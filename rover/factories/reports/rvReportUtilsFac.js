@@ -420,6 +420,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 case reportNames['GROUP_DEPOSIT_REPORT']:
                     report['hasDateLimit']  = false;
                     report['canRemoveDate'] = false;
@@ -1431,6 +1436,10 @@ sntRover.factory('RVReportUtilsFac', [
                 case reportNames['DAILY_PRODUCTION']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
+                    break;
+
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['singleValueDate']  = _getDates.businessDate;
                     break;
 
                 // by default date range must be from a week ago to current business date
