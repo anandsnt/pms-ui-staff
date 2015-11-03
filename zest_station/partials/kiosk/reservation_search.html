@@ -5,7 +5,7 @@
         <h3 class=""></h3>
         <form method="post" class="form">
             <div class="entry input">
-                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="searchQuery" zs-delay-textbox function-to-fire="searchReservations" delay="800">
+                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="searchQuery" enter-press="searchReservations()" value="" touch-press>
             </div>
             <div class="entry action">
                 <button type="button" class="button overlay" touch-press="searchReservations()" ng-class="{'overlay': input.inputTextValue.length < 1}" style="">Next</button>
