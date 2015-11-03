@@ -129,6 +129,7 @@ sntRover.controller('RVReportListCrl', [
                 mainCtrlScope.printOptions.resetSelf();
             };
             
+            console.log (this.item );
             reportsSrv.setChoosenReport( this.item );
             $scope.genReport();
         };

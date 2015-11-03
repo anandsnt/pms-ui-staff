@@ -10,7 +10,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'RVReportNamesConst',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+	'rvUtilSrv',
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -241,22 +242,25 @@ sntRover.controller('RVReportsMainCtrl', [
 		 * @return {Object}      [Date]
 		 */
 		var getDateAfterOneYear = function (date) {
-			var dateAfter1Year 	= new tzIndependentDate (date);
-			dateAfter1Year.setFullYear(dateAfter1Year.getFullYear() + 1);
+			var dateAfter1Year 	= new Date (date);
+			dateAfter1Year.setFullYear( dateAfter1Year.getFullYear() + 1 );
 			return dateAfter1Year;
 		};
 
 		//for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
 		$scope.fromDateOptionsOneYearLimit = angular.extend({
-			onSelect: function(value) {
-				$scope.toDateOptionsOneYearLimit.minDate = value;
-				$scope.toDateOptionsOneYearLimit.maxDate = getDateAfterOneYear (value);
+			onSelect: function(value, datePickerObj) {
+				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+				$scope.toDateOptionsOneYearLimit.minDate = selectedDate;
+				$scope.toDateOptionsOneYearLimit.maxDate = getDateAfterOneYear (selectedDate);
 			}
 		}, datePickerCommon);
-		
+		var datesUsedForCalendar = reportUtils.processDate();
+
 		$scope.toDateOptionsOneYearLimit = angular.extend({
-			// minDate: $scope.item.fromDate,
-			// maxDate: getDateAfterOneYear ($scope.item.fromDate)
+			minDate: datesUsedForCalendar.monthStart,
+			maxDate: getDateAfterOneYear (datesUsedForCalendar.monthStart)
 		}, datePickerCommon);
 
 		// custom from and untill date picker options
