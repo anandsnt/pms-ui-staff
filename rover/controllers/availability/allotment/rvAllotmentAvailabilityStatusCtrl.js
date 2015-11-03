@@ -142,7 +142,6 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 			$scope.data.clickedHeldRoomDetail = detail;
 			ngDialog.open({
 				template: '/assets/partials/availability/releaseRoomPopup.html',
-				controller: 'rvAllotmentAvailabilityStatusController',
 				scope: $scope,
 				closeByDocument: true
 			});
