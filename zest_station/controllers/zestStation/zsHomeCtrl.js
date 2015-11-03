@@ -2,8 +2,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$scope',
 	'$state',
 	'zsModeConstants',
-	'zsEventConstants',
-	function($scope, $state, zsModeConstants, zsEventConstants) {
+	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
+	function($scope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
 
 	/**
 	 * when we clicked on pickup key from home screen
@@ -42,4 +42,48 @@ sntZestStation.controller('zsHomeCtrl', [
 		//show close button
 		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
 	}();
+
+	/**
+	 * admin popup actions starts here
+	 */
+	var openAdminPopup = function() {
+        $scope.idle_timer_enabled = false;
+        ngDialog.open({
+            template: '/assets/partials/rvTabletAdminPopup.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope,
+            closeByDocument: false,
+            closeByEscape: false
+        });
+    };
+
+    ($stateParams.isadmin == "true") ? openAdminPopup() : "";
+
+
+    $scope.cancelAdminSettings = function(){
+    	$scope.closeDialog();
+    };
+
+    $scope.updateSettings = function(value){
+    	$scope.zestStationData.idle_timer.enabled = (value === 'true') ? true:false;
+    };
+
+    $scope.saveAdminSettings = function(){
+    	var saveCompleted = function(){
+    		$scope.$emit('hideLoader');
+    		$scope.closeDialog();
+    	}
+    	var params = {
+                        'kiosk': {
+                            'idle_timer':$scope.zestStationData.idle_timer
+                        }
+                	};
+
+        var options = {
+    		params: 			params,
+    		successCallBack: 	saveCompleted
+        };
+		$scope.callAPI(zsTabletSrv.saveSettings, options);
+    };
+
 }]);

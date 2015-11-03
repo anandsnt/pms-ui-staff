@@ -1,8 +1,8 @@
 sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$state','zsTabletSrv','$rootScope',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope) {
+	'$state','zsTabletSrv','$rootScope','ngDialog',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog) {
 
 	BaseCtrl.call(this, $scope);
 	/**
@@ -27,6 +27,14 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.goToAdmin = function() {
 		$state.go ('zest_station.admin');
+	};
+
+	/**
+	 * [ngDialog closse description]
+	 * @return {[type]} [description]
+	 */
+	$scope.closeDialog = function() {
+		ngDialog.close();
 	};
 
 	/**

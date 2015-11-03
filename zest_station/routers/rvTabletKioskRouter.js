@@ -16,6 +16,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller  : 'zsHomeCtrl'
         });
 
+        $stateProvider.state('zest_station.home-admin', {
+            url         : '/home/:isadmin',
+            templateUrl : '/assets/partials/kiosk/home.html',
+            controller  : 'zsHomeCtrl'
+        });
+
         $stateProvider.state('zest_station.reservation_search', {
             url         : '/reservation_search/:mode',
             templateUrl : '/assets/partials/kiosk/reservation_search.html',
@@ -137,7 +143,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.admin', {
              url: '/find_reservation', 
              controller: 'zsAdminCtrl',
-             templateUrl: '/assets/partials/kiosk/generic/modal.html',
+             templateUrl: '/assets/partials/kiosk/admin.html',
          });
 
          

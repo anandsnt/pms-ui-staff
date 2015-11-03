@@ -10,10 +10,10 @@
                     <td>
                         <div class="entry">
                                 <!--input type="checkbox" ng-change='updateSettings("enabled", settings.adminIdleTimeEnabled)' /need style added for kiosk-->
-                                <button ng-hide="idleSettingsPopup.enabled" ng-show="!idleSettingsPopup.enabled" style="float:right" type="button" class="button grey" touch-press='updateSettings("enabled", true);'>
+                                <button ng-hide="zestStationData.idle_timer.enabled" style="float:right" type="button" class="button grey" touch-press="updateSettings('true');">
                                         Disabled
                                 </button>
-                                <button ng-hide="!idleSettingsPopup.enabled" ng-show="idleSettingsPopup.enabled" style="float:right" type="button" class="button green" touch-press='updateSettings("enabled", false);'>
+                                <button ng-hide="!zestStationData.idle_timer.enabled"  style="float:right" type="button" class="button green" touch-press="updateSettings('false');">
                                         Enabled
                                 </button>
                         </div>
@@ -24,7 +24,7 @@
 
                 <tr>
                     <td><label class='admin-item-label'>Idle Time (Seconds)</label></td>
-                    <td><input touch-press type="number" min='0' max='9999' ng-model='settings.adminIdleTimeMax' ng-change='updateSettings("max",settings.adminIdleTimeMax)' class='admin-input'/></td>
+                    <td><input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.max'  class='admin-input'/></td>
                 </tr>
 
                 <tr class='admin-item'>
@@ -32,17 +32,15 @@
                         <label class='admin-item-label'>Idle Screen Prompt Time (Seconds)</label>
                     </td>
                     <td>
-                        <input touch-press type="number" min='0' max='9999' ng-model='settings.adminIdleTimePrompt' ng-change='updateSettings("prompt",settings.adminIdleTimePrompt)' class='admin-input'/>
+                        <input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input'/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button type="button" class="button" touch-press='cancelAdminSettings();
-                                    closePopup();'>Cancel</button>
+                        <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
                     </td>
                     <td>
-                        <button type="button" class="button" touch-press='saveAdminSettings();
-                                    closePopup();'>Save</button>
+                        <button type="button" class="button" touch-press='saveAdminSettings()'>Save</button>
                     </td>
                 </tr>
 
