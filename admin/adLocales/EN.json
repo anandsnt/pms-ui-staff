@@ -578,7 +578,9 @@
 	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
         "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
 
-,
+,"LETSHARE_SETUP_HEADER": "LetShare Setup",
+"LETSHARE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"LETSHARE_SUB_TITLE": "LetShare API Access Configuration",
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",
