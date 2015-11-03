@@ -605,6 +605,57 @@
 
 		</fieldset>
 
+		<fieldset class="holder right" ng-if="isAdminSnt">
+			<div class="form-title">
+				<h3><span>Hotel</span> Zest App Payment Processor </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<div class="entry full-width">
+				
+				<label class="radio" ng-class="{checked:data.zest_payment_gateway == 'none'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.zest_payment_gateway == 'NONE'}"></span>
+					<input type="radio" ng-model="data.zest_payment_gateway" value="NONE" class="change-data">
+					None
+				</label>
+				<label class="radio" ng-class="{checked:data.zest_payment_gateway == 'SAFERPAY'}">
+						<span class="icon-form icon-radio " ng-class="{checked:data.zest_payment_gateway == 'SAFERPAY'}"></span>
+						<input type="radio" ng-model="data.zest_payment_gateway" value="SAFERPAY" class="change-data">
+						Saferpay
+				</label>				
+			</div>
+			<div class="entry full-width" ng-if="data.zest_payment_gateway === 'SAFERPAY' && data.payment_gateway != 'SAFERPAY'">
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay ACCOUNT ID
+				</label>
+				<input type="text" ng-model="data.saferpay_account_id">
+			</div>
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay HTTPS Password
+				</label>
+				<input type="text" ng-model="data.saferpay_https_password">
+			</div>
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay auth URL
+				</label>
+				<input type="text" ng-model="data.saferpay_auth_url" readonly="readonly">
+			</div>
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay settlement URL
+				</label>
+				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
+			</div>
+			</div>
+
+			
+			
+
+		</fieldset>
+
 		<div class="actions float">
 			<button type="button" ng-click ="back()" class="button blank">
 				Cancel
