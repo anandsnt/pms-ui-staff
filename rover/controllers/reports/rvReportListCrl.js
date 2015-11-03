@@ -128,8 +128,6 @@ sntRover.controller('RVReportListCrl', [
             if ( lastReportID != this.item.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             };
-            
-            console.log (this.item );
             reportsSrv.setChoosenReport( this.item );
             $scope.genReport();
         };
