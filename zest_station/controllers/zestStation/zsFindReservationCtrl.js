@@ -8,7 +8,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	function($scope, $state, zsTabletSrv, zsUtilitySrv, zsModeConstants, zsEventConstants) {
 
             $scope.datePickerMin;
-             $scope.fetchBizDateComplete = function(data){
+            $scope.business_date;
+             var fetchBizDateComplete = function(data){
                 if (data){
                     if (data.business_date){
                         var d = data.business_date;
@@ -124,15 +125,26 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.lastAt = $scope.at;
             if ($scope.at === 'find-by-email'){
                 $state.search = true; 
+                $state.lastAt = 'find-by-email';
+                if (!$state.input){
+                    $state.input = {};
+                }
+                $state.input.email = $scope.input.inputTextValue;
                 $state.go('zest_station.reservation_search');
+                
                 
             } else if ($scope.at === 'input-last'){
                 if (!$state.input){
                     $state.input = {};
                 }
+                $state.lastAt = 'input-last';
                 $state.input.last = $scope.input.inputTextValue;
                 $state.go('zest_station.find_reservation');
-            }
+                
+            };
+            
+            
+            
         };
         
 
@@ -146,11 +158,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
                            $scope.input.date = '';
                             $scope.datepicker_heading = 'Find By Date';
                             $scope.hideNavBtns = false;
-                            setTimeout(function(){
-                                
-                            $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {}, $scope.fetchBizDateComplete);
-                            
-                            },500);
+                            $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {
+                                'successCallBack':fetchBizDateComplete
+                            });
           } else if (current === 'zest_station.find_by_email'){
                 $scope.at = 'find-by-email';
                             $scope.headingText = 'Type Your Email Address';
@@ -174,6 +184,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
                             
           } else if (current === 'zest_station.find_reservation'){
                             $scope.at = 'find-reservation';
+          } else if (current === 'zest_station.find_reservation_no_match'){
+                            $scope.at = 'no-match';
           }
           
           
