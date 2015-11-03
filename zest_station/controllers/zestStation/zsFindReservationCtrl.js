@@ -101,30 +101,6 @@ sntZestStation.controller('zsFindReservationCtrl', [
                         $scope.input.lastDateValue = defaultDate;
             };
             
-	/**
-	 * when we clicked on pickup key from home screen
-	 */
-	$scope.clickedOnPickUpKey = function() {
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.PICKUP_KEY_MODE
-            });
-	};
-
-	/**
-	 * when we clicked on checkin from home screen
-	$scope.clickedOnCheckinButton = function() {
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.CHECKIN_MODE
-            });
-	};
-
-	 * when we clicked on checkout from home screen
-	 */
-	$scope.clickedOnCheckoutButton = function() {
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.CHECKOUT_MODE
-            });
-	};
 
         $scope.findByDate = function(){
             $state.go('zest_station.find_by_date');

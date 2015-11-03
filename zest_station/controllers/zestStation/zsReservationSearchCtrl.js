@@ -8,6 +8,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, $stateParams) {
 
 	BaseCtrl.call(this, $scope);
+
+	$scope.reservationParams = {
+		"last_name":"",
+		"email":"",
+		"room_no":""
+	};
+	$scope.input = {};
 	
 	/**
 	 * when the back button clicked
@@ -25,9 +32,12 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	var successCallBackOfSearchReservations = function(data) {
 		$scope.reservations = data.results;
 		$scope.totalPages	= Math.ceil (data.total_count/$scope.PER_PAGE_RESULTS);
-                if ($scope.reservations.length === 0){
-                    $state.go('zest_station.find_reservation_no_match');
-                }
+        if ($scope.reservations.length === 0){
+        	$scope.showRoomEnter = $scope.isInCheckoutMode() ?  true : false;
+            $scope.mode= 'no-match';
+        }else{
+        	$scope.mode = "reservations-list";
+        }
 	};
 
 	/**
@@ -62,8 +72,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	$scope.searchReservations = function() {
             console.log('run search reservation: '+$state.lastAt)
             var params = {
-                email           : $state.input.email,
-                last_name       : $state.input.last,
+                email           : $scope.reservationParams.email,
+                last_name       : $scope.reservationParams.last_name,
+                room_no         : $scope.reservationParams.room_no,
                 per_page 	: $scope.PER_PAGE_RESULTS,
                 page 		: $scope.page
             };
@@ -82,22 +93,60 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             console.info('search with opts',options)
             $scope.callAPI(zsTabletSrv.fetchReservations, options);
 	};
-        
-        $scope.setDueInOut = function(params){
-            if ($scope.isInCheckinMode()) {
-                    params.due_in = true;
-            }
 
-            else if ($scope.isInCheckoutMode()) {
-                    params.due_out = true;
-            }
+	$scope.isSearchMode = function(){
+		if($scope.isInCheckoutMode()){
+			return ($scope.mode === 'search-mode' || $scope.mode ==='search-final-mode');
+		}
+		else{
+			return true;
+		}
+	};
 
-            else if ($scope.isInPickupKeyMode()) {
-                    params.due_in = true;
-            }
-            return params;
-        };
+	$scope.goToNext =  function(){
+		/*
+		* 	There are two steps for checkout
+		*	1.enter last name
+		*	2.enter room number
+		*/
+		if($scope.isInCheckoutMode()){
+			if($scope.mode === "search-mode"){
+				$scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
+				$scope.input.inputTextValue = "";
+				$scope.headingText = "Next, Type your room number";
+				$scope.mode = "search-final-mode";
+			}
+			else{
+				$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
+				$scope.searchReservations();
+			}
+		}
+	};
+
+	$scope.reEnterLastName = function(){
+		$scope.mode = "search-mode";
+		$scope.input.inputTextValue = $scope.reservationParams.last_name;
+	};
+	$scope.reEnterRoomNumber = function(){
+		$scope.mode = "search-final-mode";
+		$scope.input.inputTextValue = $scope.reservationParams.room_no;
+	};
         
+    $scope.setDueInOut = function(params){
+        if ($scope.isInCheckinMode()) {
+                params.due_in = true;
+        }
+
+        else if ($scope.isInCheckoutMode()) {
+                params.due_in = true; // need to change to due_out
+        }
+
+        else if ($scope.isInPickupKeyMode()) {
+                params.due_in = true;
+        }
+        return params;
+    };
+    
 
 
 	/**
@@ -135,7 +184,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.selectReservation = function(r){
             //pass reservation as a state param
             $state.selectedReservation = r;
-            $state.go('zest_station.reservation_details');
+            if($scope.isInCheckoutMode()){
+            	$state.go('zest_station.reservation_details',{"mode":zsModeConstants.CHECKOUT_MODE});
+            }
+            else{
+            	$state.go('zest_station.reservation_details');
+            }
+            
         };
 
         
@@ -145,6 +200,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
               $state.search = false;
           }
             
+          $scope.mode = "search-mode";
+          $scope.headingText = "Type your Last Name";
             
         };
 	/**

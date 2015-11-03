@@ -1,4 +1,7 @@
-<section id="main" class="centered test ng-scope" role="main" click-touch="resetTime()">
+<!-- search mode -->
+<ng-include src="'assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() || mode !== 'no-match'"></ng-include>
+<!-- reservation list view -->
+<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match'" click-touch="resetTime()">
     <div id="content" ng-show="shouldShowSearchResults()">
         <h1>Select a Reservation</h1>
         <div id="labels">
@@ -24,5 +27,45 @@
             <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":reservationPageNum==reservationPages}'>Next</button>
         </div> 
     </div>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>
 
+<!-- no match -->
+<section id="main" class="centered" role="main" ng-hide='mode !== "no-match"' click-touch='resetTime()'>
+    <div id="content">
+        <h1 style="padding-top: 23px;">Sorry.</h1>
+        <h2>We can't seem to find your reservation.</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='reEnterLastName()'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{reservationParams.last_name}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li ng-show="showRoomEnter">
+                    <button type="button" class="button option" touch-press='reEnterRoomNumber()'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{reservationParams.room_no}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-staff", true, "no-match")'>
+                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                    </button>
+                    Talk
+                    <span>To a Staff Member</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
 </section>
