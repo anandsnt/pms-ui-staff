@@ -21,7 +21,7 @@
 					<td ng-repeat="date in addon.availability_details track by $index">
 						<div class="inner" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : (date.availability <= 3) }">
 						</div>
-						<div ng-if="date.availability === null" class="inner" class="disabled">N/A
+						<div ng-if="date.availability === null" class="inner disabled">N/A
 						</div>
 					</td>
 				</tr>
