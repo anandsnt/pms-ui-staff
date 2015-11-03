@@ -9,14 +9,14 @@
                         <!-- card swipe -->
                          <li ng-show='show.swipecardScreen && at === "card-swipe"'>
                             <button type="button" class="button option" touch-press='goToCardSign()'>
-                                <ng-include src="'assets/css/zestStation/icons/creditcard.svg'"></ng-include>
+                                <ng-include src="'assets/css/icons/creditcard.svg'"></ng-include>
                             </button>
                             <span translate>Please Swipe Credit Card</span>
                         </li>
                         <!-- deliver-registration -->
                          <li ng-show='at === "deliver-registration"'> 
                             <button type="button" class="button option" touch-press='goToScreen($event,"print-delivery", false, "deliver-registration")'>
-                                <ng-include src="'assets/css/zestStation/icons/print.svg'"></ng-include>
+                                <ng-include src="'assets/css/icons/print.svg'"></ng-include>
                             </button>
                             <span translate>Print</span>
                         </li>
@@ -25,14 +25,14 @@
                         </li>
                          <li ng-show='at === "deliver-registration"'> 
                             <button type="button" class="button option" touch-press='selectEmailDelivery()'>
-                                <ng-include src="'assets/css/zestStation/icons/email.svg'"></ng-include>
+                                <ng-include src="'assets/css/icons/email.svg'"></ng-include>
                             </button>
                             <span translate>E-Mail</span>
                         </li>
                         <!-- invalid-email -->
                          <li ng-show='at === "invalid-email"'> 
                             <button type="button" class="button option" touch-press='navToPrev()'>
-                                <ng-include src="'assets/css/zestStation/icons/keyboard.svg'"></ng-include>
+                                <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
                             </button>
                              <h1>Re-type</h1>
                                  <h3>"{{input.lastEmailValue}}"</h3>
@@ -41,7 +41,7 @@
                         <!--email-delivery -->
                          <li ng-show='at === "email-delivery"'> 
                             <button type="button" class="button option" touch-press='goToScreen($event,"input-email", false, "email-delivery")'>
-                                <ng-include src="'assets/css/zestStation/icons/pen.svg'"></ng-include>
+                                <ng-include src="'assets/css/icons/pen.svg'"></ng-include>
                             </button>
                             <span translate>Edit My E-mail Address</span>
                         </li>
@@ -50,7 +50,7 @@
                         </li>
                          <li ng-show='at === "email-delivery"'> 
                             <button type="button" class="button option" touch-press='sendRegistration()'>
-                                <ng-include src="'assets/css/zestStation/icons/email.svg'"></ng-include>
+                                <ng-include src="'assets/css/icons/email.svg'"></ng-include>
                             </button>
                             <span translate>Send E-Mail</span>
                         </li>
