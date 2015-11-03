@@ -592,14 +592,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		};
 
 		var haveAddonsChanged = function(entireSet, associatedAddons) {
-			if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
-				return parseInt($scope.reservationData.rooms[0].package_count) !== associatedAddons.length;
+			if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" ||
+				$stateParams.fromState === "STAY_CARD") {
+				return associatedAddons && associatedAddons.length > 0;
 			} else {
 				var extraAddons = [];
 				_.each(entireSet, function(addon) {
 					if (!_.find(associatedAddons, {
-							id: addon.id
-						})) {
+						id: addon.id
+					})) {
 						extraAddons.push(addon.id);
 					}
 				})
@@ -1782,18 +1783,35 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
 			$scope.navigateOut();
 			$scope.closeDialog();
-		}
+		};
 
 		var transferState = function() {
-			// TODO: Check if there has been a rateChange
+			// Check if there has been a rateChange
 			if (!!RVReservationStateService.bookMark.lastPostedRate) {
 				// Identify if there are extra addons added other than those of the associated rate's
-				var associatedRateAddons = RVReservationStateService.fetchAssociatedAddons(RVReservationStateService.bookMark.lastPostedRate), // associated addons in the previous rate;
-					entireAddons = $scope.reservationData.rooms[0].addons; // Entire set of addons for the reservation (incl rate associated addons)
+				var firstRoom = $scope.reservationData.rooms[0],
+					existingAddons = firstRoom.addons, // Entire set of addons for the reservation (incl rate associated addons)
+					existingRateAddons = _.filter(existingAddons, function(addon) {
+						return addon.is_rate_addon;
+					}),
+					existingReservationAddons = _.filter(existingAddons, function(addon) {
+						return !addon.is_rate_addon;
+					}),
+					newRateAddons = RVReservationStateService.fetchAssociatedAddons(firstRoom.rateId);
 
 				RVReservationStateService.setReservationFlag('RATE_CHANGED', true);
+				
+				firstRoom.addons = _.map(newRateAddons, function(addon) {
+					return _.extend(addon, {
+						is_rate_addon: true
+					})
+				});
 
-				if (haveAddonsChanged(entireAddons, associatedRateAddons)) { // if user has added extra addons other than that of the associated rate -- alert the user!
+				//TODO: Go through the existingReservationAddons and retain those of which arent having the new rate
+				//in their excluded list. Leave the rest
+
+				// if user has added extra addons other than that of the associated rate -- alert the user!
+				if (haveAddonsChanged(existingAddons, existingRateAddons)) {
 					//alert the user
 					ngDialog.open({
 						template: '/assets/partials/reservation/alerts/rateChangeAddonsAlert.html',
@@ -1801,13 +1819,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						closeByDocument: false,
 						closeByEscape: false
 					});
-
 					return false;
 				}
-				$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
 			}
 			$scope.navigateOut();
-		}
+		};
 
 		initializeRoomAndRates();
 

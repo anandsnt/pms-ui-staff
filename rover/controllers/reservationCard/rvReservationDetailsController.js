@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv', 'RVReservationPackageSrv',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -606,6 +606,34 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$timeout(navigateToRoomAndRates, timer);
 		};
 
+		$scope.updateRoomRate = function() {
+			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservation_card.reservation_id, function(response) {
+					
+				$scope.$emit('hideLoader');
+
+				var roomData = $scope.$parent.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
+
+				// Reset addons package
+				roomData.addons = [];
+
+				angular.forEach(response.existing_packages, function(addon) {
+					roomData.addons.push({
+						quantity: addon.addon_count,
+						id: addon.id,
+						price: parseFloat(addon.amount),
+						amountType: addon.amount_type,
+						postType: addon.post_type,
+						title: addon.name,
+						totalAmount: addon.addon_count * parseFloat(addon.amount),
+						is_inclusive: addon.is_inclusive,
+						taxes: addon.taxes,
+						is_rate_addon: addon.is_rate_addon
+					});
+				});
+
+				$scope.goToRoomAndRates('ROOM_RATE');
+			});
+		};
 
 		$scope.goToRoomAndRates = function(state) {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
