@@ -125,8 +125,8 @@
 			<tbody>
 				<tr class="main">
 					<th class="heading" scope="row">Non Group Rooms</th>
-					<td>
-						<div class="inner">-</div>
+					<td ng-repeat="nonGroupRoom in data.nonGroupRooms track by $index">
+						<div class="inner" ng-bind="nonGroupRoom"></div>
 					</td>
 				</tr>
 			</tbody>
@@ -141,8 +141,8 @@
 			<tbody>
 				<tr class="main">
 					<th class="heading rows-toggle" scope="row">Group / Allotment</th>
-					<td>
-						<div class="inner">-</div>
+					<td ng-repeat="groupAndAllotment in data.groupAndAllotments track by $index">
+						<div class="inner" ng-bind="groupAndAllotment"></div>
 					</td>
 				</tr>
 				<tr class="hidden">

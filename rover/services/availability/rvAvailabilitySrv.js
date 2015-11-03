@@ -240,7 +240,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		_.each(datafromApi.results,function(element,index,lis){
 			var temp = [];
-			//Extracting date detail		
+			//Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
@@ -317,6 +317,62 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		});
 		return deferred.promise;
 	};
+	var formGridDataV1 = function(roomAvailabilityData){
+		var gridData = {};
+
+		//array to keep all data, we will append these to above dictionary after calculation
+		var dates 				= [],
+		occupancies  			= [],
+		availableRooms   		= [],
+		bookedRooms  			= [],
+		nonGroupRooms 			= [],
+		groupAndAllotments 		= [];
+
+		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
+
+		_.each(roomAvailabilityData.results,function(item){
+
+			//Extracting date detail
+			var dateToCheck = tzIndependentDate(item.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
+
+			//Extracting Occupancy details
+			occupancies.push(item.occupancy.percentage);
+
+			//Extracting Availability details
+			availableRooms.push(item.available_rooms);
+
+			//Extracting Availability details
+			nonGroupRooms.push(item.non_group_rooms);
+
+			groupAndAllotments.push(item.group_and_allotment);
+
+			//CICO-13590
+			//we are enabling this for non-hourly hotels only
+			if (!isHourlyRateOn) {
+				bookedRooms.push (item.rooms_sold);
+			}
+		});
+
+		gridData = {
+			'dates'				: dates,
+			'occupancies'		: occupancies,
+			'availableRooms'	: availableRooms,
+			'nonGroupRooms'		: nonGroupRooms,
+			'groupAndAllotments': groupAndAllotments
+		};
+		//CICO-13590
+		if (!isHourlyRateOn) {
+			_.extend (gridData,
+			{
+				'bookedRooms' 		: bookedRooms				
+			});
+		}
+		console.log(gridData);
+		return gridData;
+	};
+
 
 	/**
 	* function to fetch allotment availability between from date & to date
@@ -437,11 +493,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		//Webservice calling section
 		var deferred = $q.defer();
-		var url = 'api/availability';
+		var url = 'api/availability_main';
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
-			//storing response temporarily in that.data, will change in occupancy call
-			availabilityGridDataFromAPI= resultFromAPI;
-			return that.fetchOccupancyDetails(params, deferred);
+			that.data.gridData = formGridDataV1(resultFromAPI);
+			deferred.resolve(resultFromAPI);
 		},function(data){
 			deferred.reject(data);
 		});
