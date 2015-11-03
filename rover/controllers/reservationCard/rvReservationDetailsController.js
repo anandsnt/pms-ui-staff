@@ -627,7 +627,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 						totalAmount: addon.addon_count * parseFloat(addon.amount),
 						is_inclusive: addon.is_inclusive,
 						taxes: addon.taxes,
-						is_rate_addon: addon.is_rate_addon
+						is_rate_addon: addon.is_rate_addon,
+						allow_rate_exclusion: addon.allow_rate_exclusion,
+						excluded_rate_ids: addon.excluded_rate_ids
 					});
 				});
 

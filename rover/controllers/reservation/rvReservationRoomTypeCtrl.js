@@ -1780,7 +1780,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 		}
 
 		$scope.onResetAddonsAcknowledged = function() {
-			$scope.reservationData.rooms[0].addons = RVReservationStateService.fetchAssociatedAddons($scope.reservationData.rooms[0].rateId);
 			$scope.navigateOut();
 			$scope.closeDialog();
 		};
@@ -1790,6 +1789,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 			if (!!RVReservationStateService.bookMark.lastPostedRate) {
 				// Identify if there are extra addons added other than those of the associated rate's
 				var firstRoom = $scope.reservationData.rooms[0],
+					currentRate = firstRoom.rateId,
 					existingAddons = firstRoom.addons, // Entire set of addons for the reservation (incl rate associated addons)
 					existingRateAddons = _.filter(existingAddons, function(addon) {
 						return addon.is_rate_addon;
@@ -1797,7 +1797,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					existingReservationAddons = _.filter(existingAddons, function(addon) {
 						return !addon.is_rate_addon;
 					}),
-					newRateAddons = RVReservationStateService.fetchAssociatedAddons(firstRoom.rateId);
+					newRateAddons = RVReservationStateService.fetchAssociatedAddons(currentRate),
+					reservationAddonsChanged = false;
 
 				RVReservationStateService.setReservationFlag('RATE_CHANGED', true);
 				
@@ -1807,12 +1808,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					})
 				});
 
-				//TODO: Go through the existingReservationAddons and retain those of which arent having the new rate
+				//Go through the existingReservationAddons and retain those of which arent having the new rate
 				//in their excluded list. Leave the rest
+				_.each(existingReservationAddons,function(addon){
+					if(!addon.allow_rate_exclusion || (addon.allow_rate_exclusion && _.indexOf(addon.excluded_rate_ids, currentRate) < 0)){
+						firstRoom.addons.push(addon);
+					}else{
+						reservationAddonsChanged = true;
+					}
+				});
 
 				// if user has added extra addons other than that of the associated rate -- alert the user!
-				if (haveAddonsChanged(existingAddons, existingRateAddons)) {
-					//alert the user
+				if (reservationAddonsChanged || haveAddonsChanged(existingAddons, existingRateAddons)) {
 					ngDialog.open({
 						template: '/assets/partials/reservation/alerts/rateChangeAddonsAlert.html',
 						scope: $scope,
