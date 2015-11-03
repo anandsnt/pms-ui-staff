@@ -464,8 +464,8 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DAILY_PRODUCTION']:
-                    report['hasDateLimit']  = false;
-                    report['canRemoveDate'] = true;
+                    report['canRemoveDate']     = true;
+                    report['hasOneYearLimit']   = true;
                     break;
 
                 default:
