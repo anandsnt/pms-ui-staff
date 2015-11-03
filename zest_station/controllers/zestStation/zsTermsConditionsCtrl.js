@@ -56,11 +56,24 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
             console.info('goto card swipe');
             $state.go('zest_station.card_swipe');
         };
- 
+
+ 		$scope.setScroller('terms');
+
+ 		var setTermsConditionsHeight = function(){
+ 			if($('#textual').length) {
+		        var $contentHeight = ($('#content').outerHeight()),
+		            $h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
+		            $h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
+		            $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
+		            $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
+		            $textualHeight = parseFloat($contentHeight-$headingsHeight);		
+		       		$('#textual').css('max-height', $textualHeight + 'px');
+   		 	}
+ 		};
         var refreshScroller = function(){
         	$scope.refreshScroller('terms');
         }
-		$scope.setScroller('terms');
+		
        
         $scope.init = function(r){
                 $scope.termsHeading = "";
@@ -79,6 +92,7 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
                     $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
                     //fetch the idle timer settings
                     $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
+                    setTermsConditionsHeight();
                     $timeout(function() {
 						refreshScroller();
 					}, 300);
