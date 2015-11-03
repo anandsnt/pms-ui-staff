@@ -19,6 +19,16 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/propertyinterface/setup'
 		});
 
+		$stateProvider.state('admin.letshareSetup', {
+			templateUrl: '/assets/partials/letshare/letShareSetup.html',
+			controller: 'adLetShareSetupCtrl',
+			url : '/letshare/setup',
+			resolve: {
+				letsShareSetupValues: ['adLetShareSetupSrv', function(adLetShareSetupSrv) {
+					return adLetShareSetupSrv.fetchLetShareConfiguration();
+				}]
+			}
+		});
 
 		$stateProvider.state('admin.permissions', {
 			templateUrl: '/assets/partials/hotel/adUserRolePermissions.html',
