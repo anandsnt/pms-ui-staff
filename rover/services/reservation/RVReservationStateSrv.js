@@ -8,7 +8,8 @@ sntRover.service('RVReservationStateService', [
 
 		self.reservationFlags = {
 			outsideStaydatesForGroup: false,
-			RATE_CHANGED: false
+			RATE_CHANGED: false,
+			RATE_CHANGE_FAILED: false
 		};
 
 		self.bookMark = {
