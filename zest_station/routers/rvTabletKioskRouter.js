@@ -132,6 +132,15 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsFindReservationCtrl',
              templateUrl: '/assets/partials/kiosk/specific/no-match.html',
          });
+
+          // //check-in [ no-match ]
+         $stateProvider.state('zest_station.admin', {
+             url: '/find_reservation', 
+             controller: 'zsAdminCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html',
+         });
+
+         
          
          
 

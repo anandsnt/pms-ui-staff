@@ -22,6 +22,14 @@ sntZestStation.controller('zsRootCtrl', [
 	};
 
 	/**
+	 * [clickedOnAdmin description]
+	 * @return {[type]} [description]
+	 */
+	$scope.goToAdmin = function() {
+		$state.go ('zest_station.admin');
+	};
+
+	/**
 	 * event for child controllers to show loader
 	 * @return {undefined}
 	 */
