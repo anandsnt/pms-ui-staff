@@ -19,13 +19,13 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
             $scope.data[field] = value;
             
         };
-        $scope.$watch('data.text',function(value, old){$scope.updateField('text',value, old)});
-        $scope.$watch('data.background',function(value, old){$scope.updateField('background',value, old)});
-        $scope.$watch('data.button',function(value, old){$scope.updateField('button',value, old)});
-        $scope.$watch('data.transparent',function(value, old){$scope.updateField('transparent',value, old)});
-        $scope.$watch('data.input_field_background',function(value, old){$scope.updateField('input_field_background',value, old)});
-        $scope.$watch('data.header_icons',function(value, old){$scope.updateField('header_icons',value, old)});
-        $scope.$watch('data.header_icons_pressed',function(value, old){$scope.updateField('header_icons_pressed',value, old)});
+        $scope.$watch('zestSettings.colors.text',function(value, old){$scope.updateField('text',value, old)});
+        $scope.$watch('zestSettings.colors.background',function(value, old){$scope.updateField('background',value, old)});
+        $scope.$watch('zestSettings.colors.button',function(value, old){$scope.updateField('button',value, old)});
+        $scope.$watch('zestSettings.colors.transparent',function(value, old){$scope.updateField('transparent',value, old)});
+        $scope.$watch('zestSettings.colors.input_field_background',function(value, old){$scope.updateField('input_field_background',value, old)});
+        $scope.$watch('zestSettings.colors.header_icons',function(value, old){$scope.updateField('header_icons',value, old)});
+        $scope.$watch('zestSettings.colors.header_icons_pressed',function(value, old){$scope.updateField('header_icons_pressed',value, old)});
         
         $scope.updateFieldColor = function(field_id){
             //function to update color preview inline
