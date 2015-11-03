@@ -108,7 +108,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 		$scope.errorMessage = "";
 	 		var dataToPost = {"email" :$scope.data.email};
 	 		$scope.hasLoader = true;
- 			loginSrv.forgotPassword(dataToPost, $scope.successCallback, $scope.failureCallBack);
+ 			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
 	 	}
 	 }
 
