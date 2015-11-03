@@ -708,9 +708,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     $scope.setDefaultActionSelected(0);
                 }
                 $scope.$parent.$emit('hideLoader');
+                if ($scope.refreshToEmpty){
+                    $scope.refreshToEmpty = false;
+                } 
+                if ($scope.refreshing){
+                    $scope.refreshing = false;
+                }
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
+                $scope.refreshToEmpty = false;
+                $scope.refreshing = false;
             };
 
             var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
@@ -1093,16 +1101,27 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
             }
         };
-
+        $scope.refreshToEmpty = false;
         $scope.completeAction = function(del, selected){
             //mark the selected action as complete, notify the api
             var params = $scope.getBaseParams();
                 params.action_task.id  = $scope.selectedAction.id;
                 params.is_complete = true;
+                
+                if (($scope.actions.totalCount - 1 <= 0) && del === 'delete'){
+                    $scope.refreshToEmpty = true;
+                } else if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete'){
+                    $scope.refreshing = true;
+                    $scope.actionSelected = 'selected';
+                }
+                
                 var onSuccess = function(){
                     $scope.actions.totalCount--;
                     $scope.lastSelectedItemId = params.action_task.id;
                     $scope.refreshActionList(del, selected);
+                    if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete'){
+                        $scope.actionSelected = 'selected';
+                    }
                 };
                 var onFailure = function(data){
                     if (data[0]){

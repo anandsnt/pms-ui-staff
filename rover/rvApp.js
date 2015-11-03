@@ -10,7 +10,6 @@ var sntRover = angular.module('sntRover',[
 		'pascalprecht.translate',
 		'ui.date',
 		'ui.calendar',
-		//'tabletKioskModule',
 		'dashboardModule',
 		'companyCardModule',
 		'stayCardModule',

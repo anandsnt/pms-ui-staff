@@ -101,7 +101,7 @@ sntZestStation.controller('rvTabletCtrl', [
                  $scope.windowTitle = angular.element(window.document)[0].title = title;
             };
             
-            $scope.hotelLogo = 'assets/css/zestStation/themes/'+$scope.hotel.title.toLowerCase()+'/logo.svg';
+            $scope.hotelLogo = 'assets/css/themes/'+$scope.hotel.title.toLowerCase()+'/logo.svg';
             $scope.at = 'home';
             $scope.hideNavBtns = true;
             $scope.inRover = true;
@@ -111,7 +111,7 @@ sntZestStation.controller('rvTabletCtrl', [
             $scope.inputTextPlaceholder = 'Input Text Here';
             $scope.currencySymbol = '';
             var initTabletConfig = function(){
-//                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
+//                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
                 var fetchCompleted = function(data){
                     $scope.settings = data;

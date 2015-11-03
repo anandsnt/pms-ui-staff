@@ -8,30 +8,45 @@
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>GUEST_BILL_DELIVERY </span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                   <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
+                </div> 
+                <ad-checkbox is-checked="zestSettings.home_screen.pickup_keys" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
+                <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
+            </fieldset>
             <fieldset class="holder left max-width">
                 <div class="form-title full-width">
                     <h3><span translate>COLOR_SEC_LABEL</span> </h3>
                 </div>
                     <div class="zest-settings-left" id="text"><!-- text color-->
-                        <ad-textbox value="data.text" label="{{'TEXT_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.text" label="{{'TEXT_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
                     <div class="zest-settings-right" id="background"><!-- background color-->
-                        <ad-textbox value="data.background" label="{{'BG_COLOR'| translate}}" styleclass="full-width" n></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.background" label="{{'BG_COLOR'| translate}}" styleclass="full-width" n></ad-textbox>
                     </div>
                     <div class="zest-settings-left" id="button"><!-- button color-->
-                        <ad-textbox value="data.button" label="{{'BUTTON_COLOR'| translate}}" styleclass="full-width" ></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.button" label="{{'BUTTON_COLOR'| translate}}" styleclass="full-width" ></ad-textbox>
                     </div>
                     <div class="zest-settings-right" id="transparent"><!-- transparent color -->
-                        <ad-textbox value="data.transparent"  label="{{'TRANS_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.transparent"  label="{{'TRANS_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
                     <div class="zest-settings-left" id="input_field_background"><!-- input_field_background -->
-                        <ad-textbox value="data.input_field_background" label="{{'IN_FIELD_BG'| translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.input_field_background" label="{{'IN_FIELD_BG'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
                     <div class="zest-settings-right" id="header_icons"><!-- header_icons -->
-                        <ad-textbox value="data.header_icons" label="{{'HEADER_ICONS_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.header_icons" label="{{'HEADER_ICONS_COLOR'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
                     <div class="zest-settings-left" id="header_icons_pressed"><!-- header_icons_pressed -->
-                        <ad-textbox value="data.header_icons_pressed" label="{{'HEADER_ICONS_COLOR_PRESSED'| translate}}" styleclass="full-width"></ad-textbox>
+                        <ad-textbox value="zestSettings.colors.header_icons_pressed" label="{{'HEADER_ICONS_COLOR_PRESSED'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
            </fieldset>
 
