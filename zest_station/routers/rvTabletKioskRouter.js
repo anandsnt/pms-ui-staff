@@ -96,6 +96,26 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
          
          
+        // //check-in [ find-by-date ]
+         $stateProvider.state('zest_station.find_by_date', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-date.html'
+         });
+
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.find_by_email', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+
+        // //check-in [ find-by-confirmation ]
+         $stateProvider.state('zest_station.find_by_confirmation', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
 
         // //check-in [ reservation credit card sign Time Out]
         // $stateProvider.state('station.tab-kiosk-reservation-signature-time-out', {
@@ -120,23 +140,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         //     templateUrl: '/assets/partials/kiosk/specific/find-reservation.html',
         // });
 
-        // //check-in [ find-by-date ]
-        // $stateProvider.state('station.tab-kiosk-find-reservation-by-date', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/generic/input-date.html',
-        // });
 
-        // //check-in [ find-by-confirmation ]
-        // $stateProvider.state('station.tab-kiosk-find-reservation-by-confirmation', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/generic/input-text.html',
-        // });
 
-        // //check-in [ find-by-email ]
-        // $stateProvider.state('station.tab-kiosk-find-by-email', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/generic/input-text.html',
-        // });
+        
         // //check-in [ find-by-email ]
         // $stateProvider.state('station.tab-kiosk-input-email', {
         //     url: '/zest_station', controller: 'rvTabletCtrl',
