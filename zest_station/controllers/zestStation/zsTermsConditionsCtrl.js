@@ -6,8 +6,8 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 	'zsTabletSrv',
 	'zsUtilitySrv',
 	'$stateParams',
-	'$sce',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce) {
+	'$sce','$timeout',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce,$timeout) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -56,18 +56,12 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
             console.info('goto card swipe');
             $state.go('zest_station.card_swipe');
         };
-        
-        
-        $scope.scrollerOptions = {click: true, preventDefault: false};
-        $scope.setScroll = function() {
-            //setting scroller things
-            $scope.setScroller($scope.scrollId, $scope.scrollerOptions);
-            setTimeout(function(){
-                $scope.refreshScroller($scope.scrollId);
-            },500);
-        };
-
-
+ 
+        var refreshScroller = function(){
+        	$scope.refreshScroller('terms');
+        }
+		$scope.setScroller('terms');
+       
         $scope.init = function(r){
                 $scope.termsHeading = "";
                 $scope.subHeading = "";
@@ -78,13 +72,16 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
                 $scope.cancelButtonText = "Cancel";
 
                 $scope.at = 'terms-conditions';
-                setTimeout(function(){$scope.setScroll()},200);
+                
            
                 var fetchHotelCompleted = function(data){
                     $scope.hotel_settings = data;
                     $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
                     //fetch the idle timer settings
                     $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
+                    $timeout(function() {
+						refreshScroller();
+					}, 300);
                     $scope.$emit('hideLoader');
                 };
     
