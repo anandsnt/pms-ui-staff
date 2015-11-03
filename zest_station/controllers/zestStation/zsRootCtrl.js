@@ -1,8 +1,8 @@
 sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$state','zsTabletSrv',
-	function($scope, zsEventConstants, $state,zsTabletSrv) {
+	'$state','zsTabletSrv','$rootScope',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope) {
 
 	BaseCtrl.call(this, $scope);
 	/**
@@ -72,6 +72,15 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.$on (zsEventConstants.HIDE_CLOSE_BUTTON, function(event) {
 		$scope.hideCloseButton = true;
 	});
+
+
+	var routeChange = function(event, newURL) {
+      event.preventDefault();
+      return;
+    };
+
+    $rootScope.$on('$locationChangeStart', routeChange);
+    window.history.pushState("initial", "Showing Dashboard", "#/zest_station/home");
 
 	/**
 	 * Set zest admin settings data.
