@@ -55,29 +55,39 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * [searchReservations description]
 	 * @return {undefined}
 	 */
+        
+        
+        $scope.on('SEARCH_RESERVATION',function(){
+            $scope.searchReservations();
+        });
+        
 	$scope.searchReservations = function() {
-        var params = {
-            last_name 	: $scope.searchQuery,
-            per_page 	: $scope.PER_PAGE_RESULTS,
-            page 		: $scope.page
-        };
+            var params = {
+                //last_name 	: $scope.searchQuery,
+                last_name:      $state.lastInput,
+                per_page 	:   $scope.PER_PAGE_RESULTS,
+                page 		: $scope.page
+            };
+            if ($state.lastAt === 'find-by-email'){
+                params.email === $state.lastInput;
+            }
 
-        if ($scope.isInCheckinMode()) {
-        	params.due_in = true;
-        }
+            if ($scope.isInCheckinMode()) {
+                    params.due_in = true;
+            }
 
-        else if ($scope.isInCheckoutMode()) {
-        	params.due_out = true;
-        }
+            else if ($scope.isInCheckoutMode()) {
+                    params.due_out = true;
+            }
 
-        else if ($scope.isInPickupKeyMode()) {
-        	params.due_in = true;
-        }
+            else if ($scope.isInPickupKeyMode()) {
+                    params.due_in = true;
+            }
 
-        var options = {
-          	params            : params,
-          	successCallBack   : successCallBackOfSearchReservations
-        };
+            var options = {
+                    params            : params,
+                    successCallBack   : successCallBackOfSearchReservations
+            };
             console.info('search with opts',options)
             $scope.callAPI(zsTabletSrv.fetchReservations, options);
 	};

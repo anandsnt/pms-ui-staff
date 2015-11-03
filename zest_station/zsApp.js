@@ -15,6 +15,7 @@ var sntZestStation = angular.module('sntZestStation',[
 		'orientationInputBlurModule',
 		'iscrollStopPropagation',
 		'touchPress',
+		'enterPress',
 		'clickTouch']);
 
 

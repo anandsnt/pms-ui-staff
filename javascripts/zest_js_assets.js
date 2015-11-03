@@ -34,6 +34,7 @@
 //=require ../shared/directives/iscrollFixes/iscrollStopPropagation.js
 
 //=require ../shared/directives/touchPress/touchPress.js
+//=require ../shared/directives/enterPress/enterPress.js
 //=require ../shared/directives/clickTouch/clickTouch.js
 
 
