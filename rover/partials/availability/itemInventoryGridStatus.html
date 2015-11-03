@@ -19,7 +19,9 @@
 				<tr ng-repeat="addon in data.addons track by $index">
 					<th class="heading" scope="row" ng-bind="addon.name"></th>
 					<td ng-repeat="date in addon.availability_details track by $index">
-						<div class="inner" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : (date.availability > 0 && date.availability <= 3) }"> <!-- Add class "disabled" if restricted. Otherwise, add "unavailable" if value <= 0, add class "warning" if value >0 and <= 3 -->
+						<div class="inner" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : (date.availability <= 3) }">
+						</div>
+						<div ng-if="date.availability === null" class="inner" class="disabled">N/A
 						</div>
 					</td>
 				</tr>
