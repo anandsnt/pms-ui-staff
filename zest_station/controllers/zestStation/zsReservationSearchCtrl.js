@@ -56,16 +56,12 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * @return {undefined}
 	 */
         
-        
-        $scope.on('SEARCH_RESERVATION',function(){
-            $scope.searchReservations();
-        });
-        
 	$scope.searchReservations = function() {
+            console.log('run search reservation')
             var params = {
                 //last_name 	: $scope.searchQuery,
-                last_name:      $state.lastInput,
-                per_page 	:   $scope.PER_PAGE_RESULTS,
+                last_name       : $state.input.last,
+                per_page 	: $scope.PER_PAGE_RESULTS,
                 page 		: $scope.page
             };
             if ($state.lastAt === 'find-by-email'){
@@ -123,7 +119,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * @return {Boolean}
 	 */
 	$scope.shouldShowSearchResults = function() {
-		return ($scope.reservations.length > 0);
+		return true;
+		//return ($scope.reservations.length > 0);
 	};
 
 
@@ -133,8 +130,15 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             $state.go('zest_station.reservation_details');
         };
 
-
-
+        
+        $scope.init = function(){
+          if ($state.search){
+              $scope.searchReservations();
+              $state.search = false;
+          }
+            
+            
+        };
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -152,6 +156,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		$scope.page 			= 1;
 		$scope.totalPages 		= 0;
 		$scope.PER_PAGE_RESULTS = 3;
+                $scope.init();
 	}();
         
         

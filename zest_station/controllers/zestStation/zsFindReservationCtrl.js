@@ -123,9 +123,15 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.lastInput = $scope.input.inputTextValue; 
             $state.lastAt = $scope.at;
             if ($scope.at === 'find-by-email'){
-                $scope.$emit('SEARCH_RESERVATION');
+                $state.search = true; 
+                $state.go('zest_station.reservation_search');
+                
             } else if ($scope.at === 'input-last'){
-                $scope.go('find-reservation');
+                if (!$state.input){
+                    $state.input = {};
+                }
+                $state.input.last = $scope.input.inputTextValue;
+                $state.go('zest_station.find_reservation');
             }
         };
         
@@ -151,6 +157,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                             $scope.subHeadingText = '';
                             $scope.inputTextPlaceholder = '';
                             $scope.hideNavBtns = false;
+                            
           } else if (current === 'zest_station.find_by_confirmation'){
                 $scope.at = 'find-by-confirmation';
                 
@@ -158,13 +165,16 @@ sntZestStation.controller('zsFindReservationCtrl', [
                             $scope.subHeadingText = '';
                             $scope.inputTextPlaceholder = '';
                             $scope.input.inputTextValue = '';
+                            
           } else if (current === 'zest_station.find_reservation_input_last'){
-              console.warn('going to input last!')
                 $scope.at = 'input-last';
                             $scope.headingText = 'Type Your Last Name';
                             $scope.subHeadingText = '';
                             $scope.inputTextPlaceholder = '';
-          } 
+                            
+          } else if (current === 'zest_station.find_reservation'){
+                            $scope.at = 'find-reservation';
+          }
           
           
         };
