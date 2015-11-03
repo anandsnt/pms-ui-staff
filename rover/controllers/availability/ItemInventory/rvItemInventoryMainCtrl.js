@@ -18,7 +18,7 @@ sntRover.controller('itemInventoryMainController', [
 
 	//default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
-	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
+	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, 'dd-MM-yyyy');
 
 	$scope.setSelectedView = function (selectedView) {
 		$scope.$emit("showLoader");
