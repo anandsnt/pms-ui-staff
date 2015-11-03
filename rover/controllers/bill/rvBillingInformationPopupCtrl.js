@@ -100,12 +100,15 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         	$scope.selectedEntity = {
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
+                "images": data.images,
+                "bill_no": "",
                 "is_new" : true,
                 "credit_card_details": {}
 			};
             if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
                     "id": $scope.allotmentId,
+                    "allotment_id": $scope.allotmentId,
                     "charge_routes_recipient_id": data.id,
                     "charge_routes_recipient_type": "RESERVATION",
                     "entity_type": "ALLOTMENT",
@@ -116,8 +119,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "reservation_status" : data.reservation_status,
                     "is_opted_late_checkout" : data.is_opted_late_checkout,
                     "name": data.firstname + " " + data.lastname,
-                    "images": data.images,
-                    "bill_no": "",
                     "entity_type": "RESERVATION",
                     "has_accompanying_guests" : ( data.images.length >1 ) ? true : false
                 });
@@ -140,11 +141,22 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 "selected_payment" : "",
                 "credit_card_details": {}
 			};
-			if(data.account_type === 'COMPANY'){
-				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
-			}
-            else if(data.account_type === 'TRAVELAGENT'){
-                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+            if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+                $scope.selectedEntity = _.extend($scope.selectedEntity, {
+                    "id": $scope.allotmentId,
+                    "allotment_id": $scope.allotmentId,
+                    "charge_routes_recipient_id": data.id,
+                    "charge_routes_recipient_type": "ACCOUNT",
+                    "entity_type": "ALLOTMENT",
+                });
+            }
+            else {
+    			if(data.account_type === 'COMPANY'){
+    				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+    			}
+                else if(data.account_type === 'TRAVELAGENT'){
+                    $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+                }
             }
         }
         else if(type === 'GROUP' || type === 'HOUSE'){
@@ -178,7 +190,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             else{
                 var data = $scope.results.posting_accounts[index];
                 $scope.selectedEntity = {
-                    "allotment_id": data.id,
+                    "id": data.id,
                     "name": data.account_name,
                     "bill_no": "",
                     "charge_routes_recipient_id": data.id,
@@ -277,6 +289,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 else{
                     $scope.allotmentId = $scope.attachedEntities.posting_account.id;
                     $scope.selectedEntity.id = $scope.allotmentId;
+                    $scope.selectedEntity.allotment_id = $scope.allotmentId;
                     $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
                     $scope.selectedEntity.entity_type = type;
                 }

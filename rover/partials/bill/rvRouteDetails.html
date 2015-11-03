@@ -18,7 +18,7 @@
 	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
 	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
 	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
-	                    <div class="guest-image icons icon-allotment" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'"></div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
 	                </figure>
 
 					<h2>{{selectedEntity.name}}</h2>
@@ -31,7 +31,7 @@
 						<span class="icons icon-pencil" ></span>
 					</button>
 				</div>
-				
+
 				<!-- Available credit card -->
 				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(((selectedEntity.entity_type == 'ALLOTMENT' || selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
 					<div class="wrapper">
@@ -42,29 +42,29 @@
 									<img src="/assets/{{paymentType.card_code}}.png" alt="" />
 								</figure>
 								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
-								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>							
+								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
 							</span>
 							<span class="value code" ng-show = "paymentType.payment_type_id != 1">{{ paymentType.payment_type }}</span>
 							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.id"></span>
 						</div>
 					</div>
 				</div>
-				
-				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment && showPayment && !saveData.newPaymentFormVisible && ( (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE' && selectedEntity.entity_type !== 'ALLOTMENT') || billingEntity == 'ALLOTMENT_DEFAULT_BILLING' || billingEntity == 'GROUP_DEFAULT_BILLING' || billingEntity == 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING')">
+
+				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && ( (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE' && selectedEntity.entity_type !== 'ALLOTMENT') || billingEntity == 'ALLOTMENT_DEFAULT_BILLING' || billingEntity == 'GROUP_DEFAULT_BILLING' || billingEntity == 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING')">
 						<!-- add class active when selected -->
 						<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 							<figure class="card-logo">
 								<img src="/assets/{{renderAddedPayment.creditCardType}}.png" alt="" />
 							</figure>
 							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{renderAddedPayment.endingWith}}</span></span>
-							<span class="date">{{'DATE' | translate}} <span class="value date">{{renderAddedPayment.cardExpiry}}</span></span>							
+							<span class="date">{{'DATE' | translate}} <span class="value date">{{renderAddedPayment.cardExpiry}}</span></span>
 						</span>
 						<span class="value code" ng-show = "renderAddedPayment.payment_type != 'CC'">{{ renderAddedPayment.payment_type_description }}</span>
 						<span class="icons icon-ok-10" ></span>
 				</div>
-				
+
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE' || selectedEntity.entity_type == 'ALLOTMENT') && (billingEntity !== 'GROUP_DEFAULT_BILLING' || billingEntity !== 'ALLOTMENT_DEFAULT_BILLING')) || renderAddedPayment != null">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE' || selectedEntity.entity_type == 'ALLOTMENT') && (billingEntity === 'GROUP_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING')) || renderAddedPayment != null">+ New Payment Method</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
@@ -88,16 +88,16 @@
 			<li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
 		</ul>
 		<div id="transactions" ng-iscroll='billingGroups' ng-iscroll-delay='100' class="transactions scrollable" ng-show = "isBillingGroup">
-			
+
 				<div class="entry radio-check wrapper"  >
 					<label class="checkbox" ng-repeat  = "billingGroup in availableBillingGroups" ng-click = "toggleSelectionForBillingGroup(billingGroup)">
 						<span class="icon-form icon-checkbox" ng-class = "{'checked':isBillingGroupSelected(billingGroup)}" ></span>
 						<input name="billing-group" id="100" value="100" type="checkbox" />
 						<span class="value"></span> {{billingGroup.name}}
 					</label>
-					
+
 				</div>
-			
+
 		</div>
 
 
@@ -105,10 +105,10 @@
 		<div id="autocomplete-charge-codes" class="search-codes charge-code-select" ng-show = "!isBillingGroup">
 			<input ng-model="chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
 			<div class="mini-select" ng-click = "showAvailableChargeCodes()">
-				
+
 			</div></div>
 			<div ng-show="(chargeCodeSearchText.length>2 || showChargeCodes)">
-         	
+
          	<!-- Charge code Results / content -->
 				<div class="billing-info-charges charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
 					<div class="search-results" >
@@ -119,19 +119,19 @@
 							</li>
 						</ul>
 					</div>
-				
+
 	         	</div>
 			</div>
 		<!-- Added from search -->
 		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable billing-info-charge-codes" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
-			
+
 				<div class="entry radio-check wrapper" >
 					<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
 						<span class="icon-form icon-checkbox checked"></span>
 							<input name="billing-group" id="100" value="100" type="checkbox" checked />
 						<span class="value">{{selectedChargeCode.code}}</span> {{selectedChargeCode.description}}
 					</label>
-					
+
 				</div>
 		</div>
 		<!-- No content-->
@@ -145,11 +145,11 @@
 	<!-- <fieldset class="content-right" ng-show = "bills.length == 0">
       <div class="no-content" >
          <div class="info">
-            <strong class="h1" translate>NO_BILLS_TO_ROUTE</strong>  
-            
+            <strong class="h1" translate>NO_BILLS_TO_ROUTE</strong>
+
          </div>
       </div> -->
-        
+
    </fieldset>
 
 </div>
