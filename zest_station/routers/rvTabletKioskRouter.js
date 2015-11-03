@@ -117,6 +117,15 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
 
+         
+        // //pick up key [ home screen ]
+         $stateProvider.state('zest_station.find_reservation_input_last', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+
+
         // //check-in [ reservation credit card sign Time Out]
         // $stateProvider.state('station.tab-kiosk-reservation-signature-time-out', {
         //     url: '/zest_station', controller: 'rvTabletCtrl',
@@ -191,11 +200,6 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         //     templateUrl: '/assets/partials/kiosk/specific/select-keys-after-checkin.html',
         // });
 
-        // //pick up key [ home screen ]
-        // $stateProvider.state('station.tab-kiosk-input-last', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/generic/input-text.html',
-        // });
 
 
     }]);

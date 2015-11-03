@@ -18,7 +18,7 @@ sntZestStation.controller('zsHomeCtrl', [
 	 * when we clicked on checkin from home screen
 	 */
 	$scope.clickedOnCheckinButton = function() {
-            $state.go('zest_station.find_reservation', {
+            $state.go('zest_station.find_reservation_input_last', {
                 mode: zsModeConstants.CHECKIN_MODE
             });
 	};

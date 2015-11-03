@@ -117,6 +117,18 @@ sntZestStation.controller('zsFindReservationCtrl', [
         $scope.findByConfirmation = function(){
             $state.go('zest_station.find_by_confirmation');
         };
+        
+        
+        $scope.goToNext = function(){
+            $state.lastInput = $scope.input.inputTextValue; 
+            $state.lastAt = $scope.at;
+            if ($scope.at === 'find-by-email'){
+                $scope.$emit('SEARCH_RESERVATION');
+            } else if ($scope.at === 'input-last'){
+                $scope.go('find-reservation');
+            }
+        };
+        
 
         $scope.init = function(){  
             if (!$scope.input){
@@ -132,7 +144,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                                 
                             $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {}, $scope.fetchBizDateComplete);
                             
-                            },500)
+                            },500);
           } else if (current === 'zest_station.find_by_email'){
                 $scope.at = 'find-by-email';
                             $scope.headingText = 'Type Your Email Address';
@@ -146,9 +158,13 @@ sntZestStation.controller('zsFindReservationCtrl', [
                             $scope.subHeadingText = '';
                             $scope.inputTextPlaceholder = '';
                             $scope.input.inputTextValue = '';
-          } else {
-                $scope.at = 'find-reservation';
-          }
+          } else if (current === 'zest_station.find_reservation_input_last'){
+              console.warn('going to input last!')
+                $scope.at = 'input-last';
+                            $scope.headingText = 'Type Your Last Name';
+                            $scope.subHeadingText = '';
+                            $scope.inputTextPlaceholder = '';
+          } 
           
           
         };
