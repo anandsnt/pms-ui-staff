@@ -86,7 +86,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         init();
 	}();
 
-
+    /**
+     *  We check if the balance is greater than 0 and has no CC.
+     *  If so we redirect to the staff
+     */
     $scope.nextClicked = function(){
         if(!$scope.billData.has_cc && $scope.billData.balance > 0){
             $state.go('zest_station.speak_to_staff');

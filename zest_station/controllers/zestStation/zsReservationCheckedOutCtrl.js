@@ -59,6 +59,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         $scope.mode = "final-mode";
         $scope.printOpted = true;
     };
+    
     $scope.clickedNoThanks = function(){
         $scope.mode = "final-mode";
     };

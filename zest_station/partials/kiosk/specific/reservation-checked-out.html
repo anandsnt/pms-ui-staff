@@ -1,3 +1,4 @@
+<!-- print option -->
 <section id="main" role="main" class="centered" ng-show="mode === 'print-mode'">
     <div id="content">
         <h1>Thanks for staying at Zoku!</h1>
@@ -24,7 +25,9 @@
     </div>
 </section>
 
+<!-- Email entry -->
 <section id="main" role="main" class="centered" ng-show="mode === 'email-mode'">
+    <!-- Type Email -->
      <div id="content" ng-show="!emailError">
         <h1>Type your email address</h1>
         <form method="post" class="form">
@@ -36,6 +39,7 @@
             </div>
         </form>
     </div>
+    <!-- Email invalid -->
     <div id="content" ng-show="emailError">
         <h1>Hm.</h1>
         <h2>This does not appear to be a valid e-mail address.</h2>
@@ -56,6 +60,7 @@
     </div>
 </section>
 
+<!-- Final view-->
 <section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
     <div id="content">
         <h1>Thanks for staying at Zoku!</h1>
