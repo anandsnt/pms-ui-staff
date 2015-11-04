@@ -152,7 +152,7 @@
 					</td>
 				</tr>
 				<tr ng-repeat="rowData in data.gridDataForAllotmentAvailability.holdstatuses track by $index" ng-class="{'hidden': !showShowGroupAllotmentTotals}">
-					<th scope="row">Allotment {{ getAllotmentName(data.gridDataForAllotmentAvailability, rowData[0].id) }}</th>
+					<th scope="row">Allotment {{ getGroupAllotmentName(data.gridDataForAllotmentAvailability, rowData[0].id) }}</th>
 					<td ng-repeat="cellData in rowData track by $index">
 						<div class="inner">{{ cellData.total_number_of_rooms_blocked }}</div>
 					</td>
