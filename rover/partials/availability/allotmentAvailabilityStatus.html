@@ -1,4 +1,4 @@
-<div class="availability-grid scrollable" ng-controller="rvGroupAvailabilityStatusController" ng-iscroll-delay="100" ng-iscroll='groupscroller' ng-hide="hideBeforeDataFetch">
+<div class="availability-grid scrollable" ng-controller="rvAllotmentAvailabilityStatusController" ng-iscroll-delay="100" ng-iscroll='groupscroller' ng-hide="hideBeforeDataFetch">
 	<div class="wrapper" style="width: {{getWidthForTable()}}px">
 		<table class="dates-grid">
 			<colgroup>
@@ -78,7 +78,7 @@
 								<span class="label">Hold Status:</span>
 								{{groupDetail.holdStatusName}}
 							</div>
-							<button type="button" class="has-arrow next-view" ng-click="gotoGroupScreen(groupDetail.id)">Details</button>
+							<button type="button" class="has-arrow next-view" ng-click="gotoAllotmentScreen(groupDetail.id)">Details</button>
 						</div>
 					</th>
 				</tr>

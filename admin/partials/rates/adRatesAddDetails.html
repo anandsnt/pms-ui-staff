@@ -13,7 +13,10 @@
         </div>
         <fieldset class="holder left">
             <div></div>
-            <ad-textbox styleclass="full-width" inputtype="text" value="rateData.name" label="Name" placeholder="Enter Rate Name" required="yes"></ad-textbox>
+            <div class="entry full-width">
+                <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
+                <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE" disabled="rateData.id" placeholder="Enter Rate code" maxlength="20" required="yes" ></ad-textbox>
+            </div>
             <div class="entry margin">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
