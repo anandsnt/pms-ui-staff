@@ -8,6 +8,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.data = {};
 
 	this.getGraphData = function(){
+		console.log(that.data)
 		return that.data.graphData;
 	};
 	this.getGridData = function(){
