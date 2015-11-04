@@ -31,7 +31,7 @@
 //=require ../shared/directives/divTouchMoveStopPropogate/documentTouchMovePrevent.js
 //=require ../shared/directives/documentTouchMovePrevent/documentTouchMovePrevent.js
 //=require ../shared/directives/orientationInputBlur/orientationInputBlur.js
-//=require ../shared/directives/iscrollFixes/iscrollStopPropagation.js
+//=require ../shared/directives/iScrollFixes/iscrollStopPropagation.js
 
 //=require ../shared/directives/touchPress/touchPress.js
 //=require ../shared/directives/enterPress/enterPress.js
