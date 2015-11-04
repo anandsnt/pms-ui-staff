@@ -84,6 +84,20 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		return deferred.promise;
 	};
 
+	/**
+    *   Service to search charge code
+    */
+	this.searchChargeCode = function(params){
+		var deferred = $q.defer();
+		var url = '/api/charge_codes/search';
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 
 
 

@@ -75,29 +75,29 @@
                         <input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
                         <input type="hidden" value="3" name="total_level_count" id="total_level_count">
 
-                        <!--<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes"
-                                     selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown> -->
+
                         <!-- Search available charge codes -->
                         <div id="autocomplete-charge-codes" class="search-codes charge-code-select" ng-show = "!isBillingGroup">
                             <div class="entry" ng-class="styleclass">
                                 <label> Charge Code </label>
                                 <input ng-model="chargecodeData.chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
-                                <div class="mini-select" ng-click = "showAvailableChargeCodes()">
-                                </div></div>
                                 <div ng-show="showChargeCodes">
 
                                 <!-- Charge code Results / content -->
                                     <div class="billing-info-charges charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
                                         <div class="search-results" >
                                             <ul id="search-list" >
-                                                <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.value)" >
-                                                    <h4 class="text-bold" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.name"></h4>
+                                                <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id)" >
+                                                    <h4 class="text-bold" ng-bind-html="chargeCode.name"></h4>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
                         </div>
+
 
                     </fieldset>
                     <div class="entry"></div>
