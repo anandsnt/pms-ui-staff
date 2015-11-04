@@ -246,6 +246,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
 
             $scope.rateData.name = data.name;
+            $scope.rateData.code = data.code;
             $scope.rateData.description = data.description;
             $scope.rateData.promotion_code = data.promotion_code;
             $scope.rateData.room_types = data.room_types;

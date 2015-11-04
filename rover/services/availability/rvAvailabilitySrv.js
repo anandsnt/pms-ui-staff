@@ -15,6 +15,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	};
 	this.getGridDataForGroupAvailability = function(){
 		return that.data.gridDataForGroupAvailability;
+	};
+	this.getGridDataForAllotmentAvailability = function(){
+		return that.data.gridDataForAllotmentAvailability;
 	};	
 
 	this.updateData = function(data){
@@ -313,6 +316,110 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			deferred.reject(data);
 		});
 		return deferred.promise;
+	};
+
+	/**
+	* function to fetch allotment availability between from date & to date
+	*/
+	this.fetchAllotmentAvailabilityDetails = function(params){
+		var firstDate 	= (params.from_date);
+		var secondDate 	= (params.to_date);
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = 'api/allotment_availability';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
+			.then(function(resultFromAPI) {
+				//storing response temporarily in that.data, will change in occupancy call
+				that.data.gridDataForAllotmentAvailability = formGridDataForAllotmentAvailability(resultFromAPI);
+				console.log(that.data);
+				deferred.resolve(that.data);
+			},function(data){
+				deferred.reject(data);
+			});
+		return deferred.promise;
+	};
+
+	/*
+	* param - Group id
+	* return Group name
+	*/
+	var getAllotmentName = function(GroupId, holdstatuses){
+		return _.find(holdstatuses, function(elem){ 
+				return (elem.id === GroupId)?true:false;
+				}).name;
+	};
+
+	/*
+	* param - Object from api/group_availability response
+	* return - Object 
+	*/
+	var formGridDataForAllotmentAvailability = function(datafromApi){
+		var gridDataForAllotmentAvailability = {};
+		var dates = [];
+		var groupTotalRooms =[];
+		var groupTotalPickedUps = [];
+		var holdstatus = [];
+		var groupDetails =[];
+		var groupDetail = [];		
+
+		_.each(datafromApi.results,function(element,index,lis){
+			var temp = [];
+
+			//Extracting date detail		
+			var dateToCheck = tzIndependentDate(element.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
+
+			//Extracting groupTotalRooms
+			groupTotalRooms.push(element.total_rooms);
+
+			//Extracting groupTotal picked ups
+			groupTotalPickedUps.push(element.total_pickups);			
+			holdstatus.push(element.hold_status);
+
+			//Forms array(temp) of details of groups date wise
+			_.each(element.availability,function(ele, ind, list){
+				var detail ={
+					"id":ele.id,
+					"Name":ele.name, 
+					"date":element.date, // is needed, not in API				
+					"total_blocked_rooms":ele.total_blocked_rooms,
+					"total_pickedup_rooms":ele.total_pickedup_rooms
+				};
+				temp.push(detail);
+			});
+
+			//Forms two dimensional array[datewise][groupwise]
+			groupDetail.push(temp);
+		});
+
+		//Forms groupwise Details. 
+		_.each(datafromApi.results[0].availability, function(element, index, list){
+			var groupdetail ={
+				"name":element.name,
+				"id":element.id,
+				"holdStatusName":getAllotmentName(element.hold_status_id, datafromApi.hold_status),
+				"details":_.zip.apply(null, groupDetail)[index]
+			};
+			groupDetails.push(groupdetail);
+		});
+		
+		gridDataForAllotmentAvailability = {
+			'dates'	: dates,
+			'groupTotalRooms': groupTotalRooms,
+			'groupTotalPickedUps':groupTotalPickedUps,
+			'holdstatuses': _.zip.apply(null, holdstatus),
+			'groupDetails':groupDetails,
+			'holdStatus':datafromApi.hold_status
+		};
+
+		return gridDataForAllotmentAvailability;
 	};
 
 

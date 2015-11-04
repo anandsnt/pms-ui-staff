@@ -500,7 +500,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			};
 		};
 
-
 		$scope.parsedApiTemplate = function() {
 			var template = '';
 

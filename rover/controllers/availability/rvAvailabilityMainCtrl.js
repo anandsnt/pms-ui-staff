@@ -28,6 +28,9 @@ sntRover.controller('rvAvailabilityMainController', [
 			else if($scope.availabilityToShow === 'groups'){
 				return '/assets/partials/availability/groupAvailabilityMain.html';
 			}
+			else if($scope.availabilityToShow === 'allotments'){
+				return '/assets/partials/availability/allotmentAvailabilityMain.html';
+			}
 		};
 
 		/**
@@ -35,6 +38,10 @@ sntRover.controller('rvAvailabilityMainController', [
 		 * @return {Boolean} [description]
 		 */
 		$scope.shouldShowGroupInSelectBox = function() {
+			return (!$rootScope.isHourlyRateOn);
+		};
+
+		$scope.shouldShowAllotmentInSelectBox = function() {
 			return (!$rootScope.isHourlyRateOn);
 		};
 
