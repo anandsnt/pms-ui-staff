@@ -76,3 +76,69 @@
   left:auto !important;
 }
 
+.charge-code-select{
+  margin: 0 auto 0 auto !important;
+}
+
+.billing-info-charge-codes{
+  margin: 20 0 0 0 !important;
+}
+ 
+ // For CICO-6080 Charge code search results.
+ 
+ .charge-code-list{
+    height: 200px;
+    z-index: 999;
+    left: 390px;
+    width: 330px;
+    li{
+      padding-left: 5px;
+    }
+    .text-bold {
+     font-weight: bold;
+     font-size:16px;
+    }
+    .first-text{
+     margin-right:5px;
+   }
+ }
+
+/* CICO-11897 */
+.search-results li.reservation:not(.no-content) a .room-highlight, .search-results li.reservation:not(.no-content) .faux-anchor .room-highlight{
+  display: inline-block;
+  margin-left: -10px;
+  padding-left: 10px;
+  border-left: 4px solid #f6991b;
+}
+
+.billing-info-charges {
+    overflow-y:hidden;
+    .search-results {
+      background: none repeat scroll 0 0 #fcfcfc;
+      padding: 0;
+      position: relative;
+    }
+
+    li {
+      border-bottom: 1px solid #eeeeee;
+      cursor: pointer;
+      height: 42px;
+      margin: 1px !important;
+    }
+
+    h4 {
+      clear: none;
+      float: left;
+      margin: 12px 0;
+    }
+    &.charge-code-list {
+      height: 200px;
+      margin: 0 auto 20px;
+      width: 310px;
+      z-index: 999;
+      position:absolute;
+      left:0;
+      right:0;
+    }
+}
+

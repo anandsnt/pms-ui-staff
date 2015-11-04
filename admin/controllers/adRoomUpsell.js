@@ -1,5 +1,5 @@
-admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomUpsellService',
-  function ($scope, $rootScope, $state, adRoomUpsellService) {
+admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomUpsellService', 'ADChargeCodesSrv',
+  function ($scope, $rootScope, $state, adRoomUpsellService, ADChargeCodesSrv) {
 
     BaseCtrl.call(this, $scope);
     $scope.upsellData = {};
@@ -29,6 +29,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       var fetchRoomUpsellDetailsSuccessCallback = function (data) {
         $scope.$emit('hideLoader');
         $scope.upsellData = data;
+        $scope.availableChargeCodes = data.charge_codes;
         $scope.levelOne = $scope.upsellData.upsell_room_levels[0].room_types;
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
@@ -36,7 +37,14 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         $scope.upsellData.deleted_room_types = [];
         isRoomTypesSelected();
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
+
+        $scope.selectedChargeCode = _.findWhere(data.charge_codes, {
+          value: data.selected_charge_code
+        });
+        $scope.upsellData.selected_charge_code = $scope.selectedChargeCode.value;
+        $scope.chargecodeData.chargeCodeSearchText = $scope.selectedChargeCode.name;
       };
+
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
     };
 
@@ -164,4 +172,84 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       };
       $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback);
     };
+
+/*----------------------------edit charge drop down implementation--------------------------------------*/
+  $scope.chargecodeData = {};
+  $scope.chargeCodeSearchResults = [];
+  var scrollerOptionsForSearch = {click: false, preventDefault: false};
+  $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
+
+  /**
+   * Set the charge code to item selected from auto complete list
+   * @param {Integer} charge code value
+   */
+  $scope.selectChargeCode = function(id){
+    $scope.selectedChargeCode = _.findWhere($scope.availableChargeCodes, {
+      value: id
+    });
+    $scope.upsellData.selected_charge_code = $scope.selectedChargeCode.value;
+    $scope.chargecodeData.chargeCodeSearchText = $scope.selectedChargeCode.name;
+    $scope.showChargeCodes = false;
+  };
+
+  /**
+   * Fired after charge code search has completed. used to show result set in auto complete list.
+   * @param {Object} API response data
+   */
+  var successCallBackForChargeCodeSearch = function(data) {
+    if (data.charge_codes && data.charge_codes.length) {
+      // change results set to suite our needs
+      $scope.chargeCodeSearchResults = data.charge_codes.map(function(item) {
+        return {
+          value: parseInt(item.value),
+          name: item.charge_code + " " + item.description
+        };
+      });
+      $scope.showChargeCodes = true;
+      $scope.refreshScroller('chargeCodesList');
+    }
+  };
+
+  var callSearchChargeCodesAPI = function(searchQuery) {
+    var params = {
+        query: searchQuery
+    };
+    ADChargeCodesSrv.fetch(params).then(successCallBackForChargeCodeSearch);
+  };
+
+  /**
+   * function to perform filering on results.
+   * if not fouund in the data, it will request for webservice
+   */
+  var displayFilteredResultsChargeCodes = function(){
+    $scope.chargeCodeSearchResults = [];
+    //if the entered text's length < 3, we will show everything, means no filtering
+    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
+      //callSearchChargeCodesAPI("");
+      $scope.refreshScroller('chargeCodesList');
+    }
+    else{
+      callSearchChargeCodesAPI($scope.chargecodeData.chargeCodeSearchText);
+    }
+
+  };
+
+  /**
+   * function to clear the charge code search text
+   */
+  $scope.clearResults = function(){
+    $scope.chargecodeData.chargeCodeSearchText = "";
+  };
+
+  /**
+   * function to trigger the filtering when the search text is entered
+   */
+  $scope.chargeCodeEntered = function(){
+    $scope.showChargeCodes = true;
+    displayFilteredResultsChargeCodes();
+    var queryText = $scope.chargecodeData.chargeCodeSearchText;
+    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+  };
+
+
   }]);
