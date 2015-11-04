@@ -105,6 +105,9 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.$emit('hideLoader');
 		$scope.zestStationData = data;
 	};
+	$scope.failureCallBack =  function(data){
+		$state.go('zest_station.speak_to_staff');
+	};
 
 	/**
 	 * [initializeMe description]
@@ -123,7 +126,8 @@ sntZestStation.controller('zsRootCtrl', [
 		//call Zest station settings API
 		var options = {
     		params: 			{},
-    		successCallBack: 	fetchCompleted
+    		successCallBack: 	fetchCompleted,
+    		failureCallBack: $scope.failureCallBack
         };
 		$scope.callAPI(zsTabletSrv.fetchSettings, options);
 	}();
