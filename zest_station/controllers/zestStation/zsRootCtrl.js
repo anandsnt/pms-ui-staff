@@ -106,7 +106,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData = data;
 	};
 	$scope.failureCallBack =  function(data){
-		$state.go('zest_station.speak_to_staff');
+		$state.go('zest_station.error_page');
 	};
 
 	/**

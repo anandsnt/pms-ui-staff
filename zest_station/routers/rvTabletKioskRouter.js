@@ -28,10 +28,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller  : 'zsReservationSearchCtrl'
         });
 
-         $stateProvider.state('zest_station.speak_to_staff', {
+        $stateProvider.state('zest_station.speak_to_staff', {
             url         : '/speak_to_staff',
-            templateUrl : '/assets/partials/kiosk/specific/speak-to-staff.html',
-            controller  : 'zsReservationSearchCtrl'
+            templateUrl : '/assets/partials/kiosk/specific/speak-to-staff.html'
+        });
+        $stateProvider.state('zest_station.error_page', {
+            url         : '/speak_to_staff',
+            templateUrl : '/assets/partials/kiosk/specific/error-page.html'
         });
         
 
