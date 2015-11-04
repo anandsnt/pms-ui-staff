@@ -20,18 +20,23 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 	});
 
 
-  
-
     var init = function(){
 
        $scope.email = "";
 
-       if($stateParams.email.length !== 0){
-            $scope.mode       = "print-mode";
-            $scope.email      = $stateParams.email;
-       }else{
+       // we check if the reservation has an email id and the admin settings for 
+       // email bill is set as true
+       if($stateParams.email.length === 0 && $scope.zestStationData.guest_bill.email){
             $scope.mode       = "email-mode";
             $scope.emailError = false;
+       }
+       //else we check if admin settings for print bill is set as true
+       else if($scope.zestStationData.guest_bill.print){
+            $scope.mode       = "print-mode";
+            $scope.email      = $stateParams.email;
+       }
+       else{
+             $scope.mode = "final-mode";
        }
        
        $scope.printOpted = false;
