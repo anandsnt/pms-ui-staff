@@ -1,0 +1,52 @@
+<section id="main" role="main" class="centered" ng-hide="alreadyCheckedOut">
+    <div id="content">
+        <h1>Review your bill</h1>
+        <div id="flex-holder">
+            <div id="textual" class="review-bill pull-left" ng-iscroll="bill-list" class="scrollable">
+                <div class="wrapper">
+                    <div id="bill">
+                        <p>
+                            <strong>{{billData.guest_name}}</strong>                          
+                            <span>{{billData.days_of_stay}} nights</span>
+                        </p>
+                        <div id="bill-grid">
+                            <div id="grid-head">
+                                <div class="row">
+                                    <span class="cell date">Date</span>
+                                    <span class="cell desc">Description</span>
+                                    <span class="cell amount">Amount</span>
+                                </div>
+                            </div>
+                            <div id="grid-body">
+                                <div class="row" ng-repeat="charge_code in billData.charge_codes">
+                                    <span class="cell date">{{charge_code.date}}</span>
+                                    <span class="cell desc">{{charge_code.type}}</span>
+                                    <span class="cell amount">{{billData.currency}}{{charge_code.value}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="rate">
+                        <li class="sub">Subtotal<span>{{billData.currency}}{{billData.sub-total}}</span></li>
+                        <li class="sub">Deposits<span>{{billData.currency}}{{billData.deposit}}</span></li>
+                        <li class="total">Balance due<span>{{billData.currency}}{{billData.balance}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="actions" class="pull-right">
+                <button type="button" class="button" touch-press='nextClicked()'>Next</button>
+                <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!---->
+<section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
+    <div id="content">
+        <h1>Sorry</h1>
+        <h2 class="nocaps">You have been already checked out.</h2>
+        <button type="button" class="button" ui-sref="zest_station.home">Return</button>
+    </div>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>

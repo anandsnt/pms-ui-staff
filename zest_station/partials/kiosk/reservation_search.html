@@ -1,8 +1,8 @@
 <!-- search mode -->
-<ng-include src="'assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match' && mode !== 'speak-to-staff'"></ng-include>
+<ng-include src="'assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match'"></ng-include>
 
 <!-- reservation list view -->
-<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match' || mode === 'speak-to-staff'" click-touch="resetTime()">
+<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match'" click-touch="resetTime()">
     <div id="content" ng-show="shouldShowSearchResults()">
         <h1>Select a Reservation</h1>
         <div id="labels">
@@ -67,16 +67,6 @@
                 </li>
             </ul>
         </nav>
-    </div>
-    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
-</section>
-
-<!-- speak to staff -->
-<section id="main" class="centered" role="main" ng-show='mode === "speak-to-staff"'>
-    <div id="content">
-        <h1>Speak To A Staff Member</h1>
-        <h2 class="nocaps">A staff member at the front desk will assist you</h2>
-        <button type="button" class="button" ui-sref="zest_station.home">Return</button>
     </div>
     <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
 </section>

@@ -1,0 +1,66 @@
+<section id="main" role="main" class="centered" ng-show="mode === 'print-mode'">
+    <div id="content">
+        <h1>Thanks for staying at Zoku!</h1>
+        <h3 ng-show="email.length>0">We e-mailed your bill to you. Do you want to print it now?</h3>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='clickedPrint()'>
+                        <ng-include src="'assets/css/icons/print.svg'"></ng-include>
+                    </button>
+                    Print Bill
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='clickedNoThanks()'>
+                        <ng-include src="'assets/css/icons/no-print.svg'"></ng-include>
+                    </button>
+                    No, thanks
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<section id="main" role="main" class="centered" ng-show="mode === 'email-mode'">
+     <div id="content" ng-show="!emailError">
+        <h1>Type your email address</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="goToNext()" value="" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">Next</button>
+            </div>
+        </form>
+    </div>
+    <div id="content" ng-show="emailError">
+        <h1>Hm.</h1>
+        <h2>This does not appear to be a valid e-mail address.</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='reTypeEmail()'>
+                         <ng-include src="'assets/css/icons/keyboard.svg'">
+                    </button>
+                    Re-Type
+                    <span>{{email}}</span>
+                </li>
+            </ul>
+        </nav>
+        <div id="actions" class="align-right">
+            <button type="button" class="button transparent" touch-press='printBill()'>Print Bill</button>
+        </div>
+    </div>
+</section>
+
+<section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
+    <div id="content">
+        <h1>Thanks for staying at Zoku!</h1>
+        <h3 ng-show="printOpted">Your bill has been printed below.</h3>
+        <button  type="button" class="button" click-touch='clickedOnCloseButton()'>DONE</button>
+    </div>
+</section>
+
