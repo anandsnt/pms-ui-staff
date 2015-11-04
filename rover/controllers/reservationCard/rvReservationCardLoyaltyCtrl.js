@@ -65,10 +65,10 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                     use_hlp = $scope.$parent.reservationData.use_hlp;
             var flag = false;
             // doing null check as when, no guest card attached the hotelLoyaltyProgram variable has null
-            if (hotelLoyaltyProgram !== null && use_hlp === true) {
+            if (hotelLoyaltyProgram !== null && $rootScope.isHLPActive) {
                 for (var i = 0; i < hotelLoyaltyProgram.length; i++) {
-                    if (id === hotelLoyaltyProgram[i].id) {
-                        flag = true
+                    if (parseInt(id,10) === parseInt(hotelLoyaltyProgram[i].id,10)) {
+                        flag = true;
                         $scope.selectedLoyalty = hotelLoyaltyProgram[i];
                         $scope.selectedLoyaltyID = hotelLoyaltyProgram[i].id;
                         $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = hotelLoyaltyProgram[i].id;
@@ -80,9 +80,9 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             if (flag) {
                 return true;
             }
-            if (freequentFlyerprogram !== null && use_ffp === true) {
+            if (freequentFlyerprogram !== null && $rootScope.isFFPActive) {
                 for (var i = 0; i < freequentFlyerprogram.length; i++) {
-                    if (id === freequentFlyerprogram[i].id) {
+                    if (parseInt(id,10) === parseInt(freequentFlyerprogram[i].id,10)) {
                         flag = true;
                         $scope.selectedLoyalty = freequentFlyerprogram[i];
                         $scope.selectedLoyaltyID = freequentFlyerprogram[i].id;

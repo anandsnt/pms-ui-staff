@@ -5,32 +5,13 @@
         <strong class="h2 message">Deposit required</strong>
         <div class="payment-form">
             <!-- Payment type -->
-            <div id="payment-type" class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully">
-                <label for="payment-type" translate>PAYMENT_TYPE</label>
-                <div class="select">
-                    <select id="payment-options" ng-model="depositData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
-                        <option value="" translate>SELECT_PAYMENT_TYPE</option>
-                        <option ng-repeat="paymentData in passData.details.paymentTypes" value="{{paymentData.name}}" ng-selected="{{paymentData.name === depositData.paymentType}}">{{paymentData.description}}</option>
-                    </select>
+               <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
+                <!-- Card Input type - output only if Six Payments and payment type is CC -->
+                <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
+                   <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
                 </div>
-            </div>
-            <!-- Card Input type - output only if Six Payments and payment type is CC -->
-            <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
-                <label for="card-source">Card Input</label>
-                <div class="switch-button" ng-class="{'on': !isManual}">
-                    <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
-                    <label class="data-off">
-                        <span class="value">C &amp; P</span>
-                        <span class="switch-icon">Manual</span>
-                    </label>
-                    <label class="data-on">
-                        <span class="switch-icon">C &amp; P</span>
-                        <span class="value">Manual</span>
-                    </label>
-                </div>
-            </div>
             <!-- Selected card - Show when card is selected/added -->
-            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual)">
+            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -45,9 +26,12 @@
             <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCCPage"></div>
 
             <!-- Fields -->
-            <div class="notice deposit" ng-hide="showCCPage || depositInProcess || depositPaidSuccesFully">
+            <div class="notice deposit" ng-hide="showDepositNotice()"><!-- showCCPage || depositInProcess || depositPaidSuccesFully -->
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
+                    <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
+                    <label ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+                    <input ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
                     <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
                     
                     <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable"  class="amount"/>
@@ -98,7 +82,7 @@
                 <div class="notice error">{{paymentErrorMessage}}</div>
             </div> 
 
-             <div class="entry full-width" ng-show="cardSelected && !showCCPage && depositData.paymentType === 'CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && !errorOccured && newCardAdded">
+             <div class="entry full-width" ng-show="showAddtoGuestCardBox()">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositData.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': depositData.addToGuestCard}"></span>
                     <input ng-model="depositData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />

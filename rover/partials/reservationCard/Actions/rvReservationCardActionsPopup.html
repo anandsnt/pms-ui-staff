@@ -25,23 +25,59 @@
                             {{errorMessage}}
             </span>
     </div>
-    <section class="actions-content" role="main" ng-show='actions.totalCount > 0 || actionSelected === "new"' ng-class="{'action-full-view': actions.totalCount === 0 && actionSelected === 'new'}"> <!-- Add class "no-content" if no actions for room -->
+    <section class="actions-content" role="main" ng-show='actions.totalCount > 0'> <!-- Add class "no-content" if no actions for room -->
 
         <!-- Actions list -->
         <div class="content-left" ng-if='actions.totalCount > 0'>
             <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"> <!-- Attach iScroll here -->
                 <ul class="wrapper">
-                    <li ng-repeat="action in actions" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
-                        <span class="icons icon-action icon-{{action.action_status}}" ng-class="{'active': action.id == selectedAction.id, 'action-set-mid': (action.over_due == false && action.action_task_type == null) || action.action_status === 'COMPLETED'}"> <!-- makes each icon a white version for visibility when section is 'active'-->
+                    <li ng-repeat="action in actions" ng-hide="action.is_deleted" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
+                        <span ng-hide="!isStandAlone && (isRequest(action.action_task_type))" 
+                              class="icons icon-action icon-{{action.action_status}}" 
+                              ng-class="{'active': action.id == selectedAction.id, 
+                                          'ng-hide':action.is_deleted,
+                                          'action-set-mid': (isStandAlone && action.over_due == false && action.action_task_type == null) || 
+                                          (isStandAlone && action.action_status === 'COMPLETED')
+                              }"> <!-- makes each icon a white version for visibility when section is 'active'-->
                             <!-- If overdue, output "Overdue " -->
+                            
                             <!--{Alert|Trace|Request} -->
-                            <span ng-if="action.over_due && action.action_status !== 'COMPLETED'" class="actions-overdue-font" ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
-                            <span class="actions-overdue-font" ng-class="{'active': action.id == selectedAction.id}">{{action.action_task_type}}</span>
+                            <span ng-if="(action.over_due && action.action_status !== 'COMPLETED' && isStandAlone) || 
+                                    (!isStandAlone && action.over_due && action.action_status !== 'COMPLETED' && isTrace(action.action_task_type))" 
+                                  class="actions-overdue-font" 
+                                  ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
+                            
+                                  
+                                  
+                                  <span class="actions-overdue-font" 
+                                  ng-class="{'active': action.id == selectedAction.id}">
+                                {{action.action_task_type}}</span>
                             
                         </span>
+                        <span ng-show="!isStandAlone && isRequest(action.action_task_type)" class="icon-action special-request-icon" 
+                              ng-class="{'active': action.id == selectedAction.id,'special-request-icon':
+                                          (!isStandAlone && action.action_status === 'COMPLETED'  && isRequest(action.action_task_type))
+                              }"> <!-- makes each icon a white version for visibility when section is 'active'-->
+                            <!-- If overdue, output "Overdue " -->
+                            
+                            <!--{Alert|Trace|Request} -->
+                            <span ng-if="(!isStandAlone && action.over_due && action.action_status !== 'COMPLETED' && isTrace(action.action_task_type))" 
+                                  class="actions-overdue-font" 
+                                  ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
+                                  
+                                  <span class="actions-overdue-font" style="margin-left:2px;" 
+                                  ng-class="{'active': action.id == selectedAction.id}">
+                                {{action.action_task_type}}</span>
+                            
+                        </span>
+                        
+                        
+                        
                         <div class="data">
                             <h3>{{action.description}}</h3>
-                            <em>{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
+                            <em ng-show="!isTrace(action.action_task_type) && !isRequest(action.action_task_type) && !isAlert(action.action_task_type)">{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
+                            <em ng-show="isTrace(action.action_task_type)">{{action.due_at_date}}</em>
+                            <em ng-show="isRequest(action.action_task_type) || isAlert(action.action_task_type)"></em>
                         </div>
                         <span class="department">{{action.assigned_to.name}}</span>
                     </li>
@@ -50,29 +86,42 @@
         </div>
 
         <!-- Action summary -->
-        <div class="content-right" ng-show="actionSelected === 'selected'"> 
+        <div class="content-right" ng-show="actionSelected === 'selected'" ng-click="stopEditClick()"> 
             <div class="summary">
-                <div id="action-summary">
-                    <h3>{{selectedAction.description}}</h3>
-                    <div class="info assigned">
+                <div id="action-summary"><!-- only in overlay hide -->
+                    
+                    
+                    <!-- DISPLAY FIELD (LABEL) -->
+                    <h3 ng-show="!editingDescriptionInline" ng-click="startEditDescription()">{{selectedAction.description}}</h3>
+                    
+                    
+                    <!-- INPUT FIELD -->
+                    <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline">
+                        <input ng-keydown="startEditDescription()" ng-enter="stopEditClick('enter')" ng-model="selectedAction.description" type="text" class="inline-edit-action-title"/> <!-- -->
+                    </h3> <!-- both elements have listeners to start editing to validate blur or not -->
+                    
+                    
+                    
+                    
+                    <div class="info assigned"  ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)">
                         <span class="label">Assigned To</span>
                         {{selectedAction.assigned_to.name}}
                     </div>
-                    <div class="info created">
+                    <div class="info created" ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" >
                         <span class="label" ng-if="!selectedAction.created_by_null">Created By</span>
                         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
                         {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}} 
                     </div>
-                    <div class="entry action-info date" ng-click="showSelectCalendar()" ng-class="{'overlay': selectedAction.date_completed}">
+                    <div class="entry action-info date" ng-click="showSelectCalendar()" ng-class="{'overlay': selectedAction.date_completed}" ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)">
                         <label for="due-date">Date Due</label>
                         <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
                             <span class="icons icon-clear-search">Clear query</span>
                         </button>
                         <input id="due-date" type="text" class="datepicker" value="{{selectedAction.due_at_date}}" readonly />
                     </div>
-                    <div ng-show="selectCalendarShow" class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'">
+                    <div class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"  ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectCalendarShow">
                     </div>
-                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}">
+                    <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}"  ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)">
                         <label for="selected-due-time">Time Due</label>
                         <div class="select">
                             <select id="selected-due-time" ng-model="selectedAction.due_at_time" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
@@ -81,15 +130,16 @@
                     </div>
                 </div>
 
-                <div class="notice" ng-show="selectedAction.date_completed" ng-hide="!selectedAction.date_completed">
+                <div class="notice" ng-hide="!selectedAction.date_completed || (!isStandAlone && !isTrace(selectedAction.action_task_type))">
                     <span>Completed By</span>
                     {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
                 </div> 
                 
-                <div class="detail-actions col-2" ng-hide="selectedAction.date_completed">
-                    <button type="button" class="button white brand-text" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
-                    <button type="button" class="button white brand-text" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
-                    <button type="button" class="button white green-text" ng-click="completeAction()">Complete</button>
+                <div class="detail-actions col-2" ng-hide="(isStandAlone && selectedAction.date_completed) || (!isStandAlone && isRequest(selectedAction.action_task_type))">
+                    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
+                    <button ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
+                    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" type="button" class="button white green-text centered-action-btn" ng-click="completeAction('delete',selectedAction)">Delete</button>
                 </div>
 
 
@@ -118,7 +168,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
@@ -159,7 +208,51 @@
                     </div> 
                 </div> 
             </div>
+            </div>
         
+    </section>
+    <section class="actions-content" role="main" ng-show='actions.totalCount === 0 && actionSelected === "new"'>
+        <div class="content-right action-full-view" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+            <div class="summary">
+                <div class="add-content">
+                    <span class="h2 message">New Action</span>
+                    <div class="entry full-width">
+                        <label for="department">Assign to Department</label>
+                        <div class="select">
+                            <select id="department-new-action" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
+                                <option value="" selected>Select department</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry date margin" ng-click='showNewCalendar()'>
+                        <label for="due-date">Date Due</label>
+                        <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
+                    </div>
+                    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
+                    <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
+                        <label for="due-time">Time Due</label>
+                        <div class="select">
+                            <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue" ng-init="newAction.time_due = timeFieldValue[0]">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry full-width">
+                        <label for="notes">
+                            Notes
+                            <span>
+                                <font ng-if='newAction.notes.length < 255' color=green>  {{255-newAction.notes.length}}</font> 
+                                <font ng-if='newAction.notes.length >= 255' color=red>  {{255-newAction.notes.length}}</font>
+                            </span>
+                        </label>
+                        <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
+                    </div> 
+                    <div>
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
+                    </div> 
+                </div> 
+            </div>
+            </div>
     </section>
     
     <section class="actions-content no-content" role="main" ng-if='actions.length === 0'>

@@ -29,6 +29,7 @@
 		&.icon-groups { background-position: 0 -690px; }
 		&.icon-actions { background-position: 0 -750px; }
 		&.icon-notes { background-position: 0 -810px; }
+		&.icon-allotments { background-position: 0 -870px; }
 
 		@media only screen and (min-width: 600px) { 
 			background-size: 125px;
@@ -49,6 +50,7 @@
 			&.icon-groups { background-position: 0 -1440px; }
 			&.icon-actions { background-position: 0 -1570px; }
 			&.icon-notes { background-position: 0 -1690px; }
+			&.icon-allotments { background-position: 0 -1800px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -151,6 +153,12 @@
 				.hide-text;
 			}
 
+			&.icon-search-60 {
+				background-position: 10px -8670px;
+				.hide-text;
+				.square(60px);
+			}
+
 		/* Navbar ***/
 			&.icon-alert {
 				.square(40px);
@@ -184,9 +192,17 @@
 				&.icon-hk-guest { background-position: 50% -4890px; }
 				&.icon-hk-work { background-position: 50% -5010px; }
 				&.icon-hk-room { background-position: 50% -5130px; }
+
+				&.icon-summary { background-position: 50% -7950px; }
 				&.icon-revenue { background-position: 50% -5250px; }
 				&.icon-payments { background-position: 50% -5370px; }
 				&.icon-cashier { background-position: 50% -5490px; }
+
+				&.icon-total { background-position: 50% -8070px; }
+				&.icon-prestay { background-position: 50% -8130px; }
+				&.icon-inhouse { background-position: 50% -8190px; }
+				&.icon-poststay { background-position: 50% -8250px; }
+
 				&.icon-authorizations { background-position: 50% -6985px; }
 
 				@media only screen and (min-width: 768px) {
@@ -194,16 +210,23 @@
 					&.icon-hk-work { background-position: 50% -5000px; }
 					&.icon-hk-room { background-position: 50% -5120px; }
 				}
+
+				&.only-icon { 
+					padding-top: 0;
+					.hide-text; 
+				}
 			}
 
-		/* Reservation - Search ***/
+		/* Search Results ***/
 			&.icon-location {  background-position: 0px -36px; }
 			&.icon-group { background-position: 0 -77px; }
 			&.icon-guest-company { background-position: 0 -758px; }
 			&.icon-guest-travelagent { background-position: 0 -818px; }
+			&.icon-allotment { background-position: 0 -8317px; }
 
 			&.icon-phone { background-position: 3px -4234px; }
 			&.icon-email-grey { background-position: 2px -4293px; }
+			&.icon-contracts { background-position: 0 -7658px; }
 
 			&.icon-gc-location { background-position: 10px -269px; }
 			&.icon-gc-phone { background-position: 10px -308px; }
@@ -221,17 +244,9 @@
 		/* Reservation - Display ***/
 			&.icon-company { background-position: 15px -3448px; }
 			&.icon-travel-agent { background-position: 15px -3566px; }
-			&.icon-group-large {
-				font-size: 18px;
-				line-height: 30px;
-				text-transform: uppercase;
-				font-weight: 600;
-				text-align: center;
-				color: @grey3;
-				background-color: @grey1;
-				background-image: none;
-				.square(30px);
-			}
+			&.icon-group-large { background-position: 15px -7705px; }
+			&.icon-allotment-large { background-position: 14px -8365px; }
+			&.icon-group-allotment { background-position: 10px -8490px; }
 
 			&.icon-upgrade { background-position: 3px -440px; }
 			&.icon-key { background-position: 0 -500px; }
@@ -511,6 +526,9 @@
 		&.icon-comparison { background-position: 0 -300px;}
 		&.icon-forecast { background-position: 0 -330px;}
 		&.icon-market { background-position: 0 -360px;}
+		&.icon-rate { background-position: 0 -390px;}
+		&.icon-group { background-position: 0 -420px;}
+		&.icon-balance { background-position: 0 -450px; }
 
 		@media @highdpi {
 			background-image: @iconReports2x;
@@ -791,6 +809,35 @@
 			background-image: @iconStayCard2x;
 			background-size: 40px;
 		}
+	}
+
+/* Restrictions icons 	==================================*/
+	.restriction-icon {
+		color: @white;
+		text-align: center;
+		.square(20px);
+
+		/* Color only ***/
+		&.bg-red { background-color: @red; }
+		&.bg-blue { background-color: @blue; }
+		&.bg-grey { background-color: @grey3; }
+		&.bg-purple { background-color: @purpleStart; }
+		&.bg-green { background-color: @green; }
+
+		/* With image ***/
+		&.closed,
+		&.arrival {
+			background-image: @icons;
+			background-repeat: no-repeat;
+
+			@media @highdpi {
+				background-image: @icons2x;
+				background-size: 120px;
+			}
+		}
+
+		&.closed { background-position: 5px -7835px; }
+		&.arrival {	background-position: 5px -7895px; }
 	}
 
 /* 4. LAYOUT

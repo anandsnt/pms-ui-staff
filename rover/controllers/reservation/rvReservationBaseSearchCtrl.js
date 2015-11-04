@@ -13,7 +13,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     'flyerPrograms',
     'loyaltyPrograms',
     '$filter',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter) {
+    'RVReservationTabService',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -27,7 +28,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.activeCodes = activeCodes.promotions;
         $scope.loyaltyPrograms = loyaltyPrograms.data;
         $scope.flyerPrograms = flyerPrograms.data;
-
+        $scope.codeSearchText = "";
 
         /*
          * To setup departure time based on arrival time and hours selected
@@ -38,8 +39,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;
             };
-            if ($scope.reservationData.resHours && $scope.reservationData.resHours < 3) {
-                $timeout(correctHours.bind(null, 3), 100);
+            if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours && $scope.reservationData.resHours < $rootScope.minimumHourlyReservationPeriod) {
+                $timeout(correctHours.bind(null, $rootScope.minimumHourlyReservationPeriod), 100);
             };
 
             var checkinHour = parseInt($scope.reservationData.checkinTime.hh);
@@ -92,72 +93,89 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
 
+        /**
+         * [isInteger description]
+         * @param  {[type]}  value [description]
+         * @return {Boolean}       [description]
+         */
+        var isInteger = function(n) {
+            // It is == ON PURPOSE
+            return Number(n) == n && n % 1 === 0;
+        };
+
+        $scope.clearNumNightIfWrong = function() {
+            if (!isInteger($scope.reservationData.numNights)) {
+                $scope.reservationData.numNights = 1;
+                $scope.errorMessage = ['Number of nights can only be a numeric value'];
+            }
+        };
+
+        $scope.clearNumHoursIfWrong = function() {
+            if (!isInteger($scope.reservationData.resHours)) {
+                $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
+                $scope.errorMessage = ['Number of hours can only be a numeric value'];
+            }
+        };
         /*
          * To setup arrival time based on hotel time
          *
          */
         var fetchCurrentTimeSucess = function(data) {
-            var intHrs = parseInt(data.hotel_time.hh),
-                intMins = parseInt(data.hotel_time.mm),
-                ampm = '';
+                var intHrs = parseInt(data.hotel_time.hh),
+                    intMins = parseInt(data.hotel_time.mm),
+                    ampm = '';
 
-            // first conver 24hr time to 12hr time
-            if (intHrs > 12) {
-                intHrs -= 12;
-                ampm = 'PM';
-            } else {
-                ampm = 'AM';
-            }
-
-
-            // the time must be rounded to next 15min position
-            // if the guest came in at 3:10AM it should be rounded to 3:15AM
-            if (intMins > 45 && intHrs + 1 < 12) {
-                intHrs += 1;
-                intMins = '00';
-            } else if (intMins > 45 && intHrs + 1 === 12) {
-                if (ampm === 'AM') {
-                    intHrs = '00';
-                    intMins = '00';
+                // first conver 24hr time to 12hr time
+                if (intHrs > 12) {
+                    intHrs -= 12;
                     ampm = 'PM';
                 } else {
-                    intHrs = '00';
-                    intMins = '00';
                     ampm = 'AM';
                 }
-            } else if (intMins === 15 || intMins === 30 || intMins === 45) {
-                intMins += 15;
-            } else {
-                do {
-                    intMins += 1;
-                    if (intMins === 15 || intMins === 30 || intMins === 45) {
-                        break;
+
+
+                // the time must be rounded to next 15min position
+                // if the guest came in at 3:10AM it should be rounded to 3:15AM
+                if (intMins > 45 && intHrs + 1 < 12) {
+                    intHrs += 1;
+                    intMins = '00';
+                } else if (intMins > 45 && intHrs + 1 === 12) {
+                    if (ampm === 'AM') {
+                        intHrs = '00';
+                        intMins = '00';
+                        ampm = 'PM';
+                    } else {
+                        intHrs = '00';
+                        intMins = '00';
+                        ampm = 'AM';
                     }
-                } while ( intMins !== 15 || intMins !== 30 || intMins !== 45 );
+                } else if (intMins === 15 || intMins === 30 || intMins === 45) {
+                    intMins += 15;
+                } else {
+                    do {
+                        intMins += 1;
+                        if (intMins === 15 || intMins === 30 || intMins === 45) {
+                            break;
+                        }
+                    } while (intMins !== 15 || intMins !== 30 || intMins !== 45);
+                };
+
+                // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
+                $scope.reservationData.checkinTime = {
+                    hh: (intHrs < 10 && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
+                    mm: intMins.toString(),
+                    ampm: ampm
+                };
+
+                // NOTE: on UI we are no appending a leading '0' for hours less than 12
+                // This could change in future, only God knows
+                $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
+                $scope.setDepartureHours();
+            },
+            refreshScroller = function() {
+                $scope.refreshScroller('search_reservation');
             };
 
-            // finally append zero and convert to string -- only for $scope.reservationData.checkinTime
-            $scope.reservationData.checkinTime = {
-                hh: (intHrs < 10 && intHrs.length < 2) ? '0' + intHrs : intHrs.toString(),
-                mm: intMins.toString(),
-                ampm: ampm
-            };
-
-            // NOTE: on UI we are no appending a leading '0' for hours less than 12
-            // This could change in future, only God knows
-            $scope.fullCheckinTime = intHrs + ':' + intMins + ' ' + ampm;
-            $scope.setDepartureHours();
-        };
-
-        var fetchMinTimeSucess = function(data) {
-            var intVal = parseInt(data.min_hours);
-
-            if (isNaN(intVal) || intVal < 3) {
-                $scope.reservationData.resHours = 3;
-            } else {
-                $scope.reservationData.resHours = intVal;
-            };
-        };
 
         /**
          *   We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -189,7 +207,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.initReservationData();
                 $scope.initReservationDetails();
             } else {
-                //$scope.reservationData.isSameCard = false;
+
                 //TODO: 1. User gets diverted to the Search screen (correct)
                 //but Guest Name and Company / TA cards are not copied into the respective search fields.
                 //They are added to the reservation by default later on,
@@ -202,19 +220,38 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
                 }
                 $scope.companySearchText = (function() {
-                    if ($scope.reservationData.company.id !== null && $scope.reservationData.company.id !== "") {
+                    if (!!$scope.reservationData.group.id) {
+                        return $scope.reservationData.group.name;
+                    } else if (!!$scope.reservationData.allotment.id) {
+                        return $scope.reservationData.allotment.name;
+                    } else if (!!$scope.reservationData.company.id) {
                         return $scope.reservationData.company.name;
-                    } else if ($scope.reservationData.travelAgent.id !== null && $scope.reservationData.travelAgent.id !== "") {
+                    } else if (!!$scope.reservationData.travelAgent.id) {
                         return $scope.reservationData.travelAgent.name;
                     }
                     return "";
                 })();
-                $scope.codeSearchText = (function(){
-                    if(!!$scope.reservationData.code){
-                        return $scope.reservationData.code.value;;
+                $scope.searchPromoCode = (function() {
+                    if ($scope.reservationData.searchPromoCode) {
+                        $scope.codeSearchText = $scope.reservationData.searchPromoCode;
+                        return $scope.reservationData.searchPromoCode;
                     }
                     return "";
                 })();
+                $scope.codeSearchText = (function() {
+                    if ($scope.reservationData.searchPromoCode) {
+                        return $scope.reservationData.searchPromoCode;
+                    }
+                    if (!!$scope.reservationData.group.id) {
+                        return $scope.reservationData.group.code;
+                    } else if (!!$scope.reservationData.allotment.id) {
+                        return $scope.reservationData.allotment.code;
+                    } else if (!!$scope.reservationData.code) {
+                        return $scope.reservationData.code.value;
+                    }
+                    return "";
+                })();
+
             }
 
             if ($scope.reservationData.arrivalDate === '') {
@@ -228,8 +265,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.isNightsActive = false;
                 $scope.shouldShowNights = false;
                 $scope.shouldShowHours = true;
-
-                $scope.invokeApi(RVReservationBaseSearchSrv.fetchMinTime, {}, fetchMinTimeSucess);
+                $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, fetchCurrentTimeSucess);
             } else {
                 $scope.isNightsActive = true;
@@ -245,13 +281,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
-            if ($scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
+            if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
+                $scope.reservationData.numNights = '';
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
+           
         };
 
         $scope.setNumberOfNights = function() {
@@ -318,25 +356,37 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 };
             };
         };
+
         $scope.navigate = function() {
+
+            // CICO-19685: if user moves back and forth in create reservation, before saving
+            $scope.reservationGuestSearchChanged();
+
             //if selected thing is 'hours'
             if (!$scope.isNightsActive) {
                 var reservationDataToKeepinVault = {},
-                    roomData = $scope.reservationData.rooms[0];
+                    roomData = $scope.reservationData.rooms[0],
+                    numberOfHours = $scope.reservationData.resHours;
 
-                reservationDataToKeepinVault.fromDate = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
-                reservationDataToKeepinVault.toDate = new tzIndependentDate($scope.reservationData.departureDate).getTime();
-                reservationDataToKeepinVault.arrivalTime = $scope.reservationData.checkinTime;
-                reservationDataToKeepinVault.departureTime = $scope.reservationData.checkoutTime;
-                reservationDataToKeepinVault.minHours = $scope.reservationData.resHours;
-                reservationDataToKeepinVault.adults = roomData.numAdults;
-                reservationDataToKeepinVault.children = roomData.numChildren;
-                reservationDataToKeepinVault.infants = roomData.numInfants;
-                reservationDataToKeepinVault.roomTypeID = roomData.roomTypeId;
-                reservationDataToKeepinVault.guestFirstName = $scope.searchData.guestCard.guestFirstName;
-                reservationDataToKeepinVault.guestLastName = $scope.searchData.guestCard.guestLastName;
-                reservationDataToKeepinVault.companyID = $scope.reservationData.company.id;
-                reservationDataToKeepinVault.travelAgentID = $scope.reservationData.travelAgent.id;
+                if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours === ''|| !$scope.reservationData.resHours) {
+                    numberOfHours = $rootScope.minimumHourlyReservationPeriod;
+                }
+                _.extend(reservationDataToKeepinVault, {
+                    'fromDate': new tzIndependentDate($scope.reservationData.arrivalDate).getTime(),
+                    'toDate': new tzIndependentDate($scope.reservationData.departureDate).getTime(),
+                    'arrivalTime': $scope.reservationData.checkinTime,
+                    'departureTime': $scope.reservationData.checkoutTime,
+                    'minHours': numberOfHours,
+                    'adults': roomData.numAdults,
+                    'children': roomData.numChildren,
+                    'infants': roomData.numInfants,
+                    'roomTypeID': roomData.roomTypeId,
+                    'guestFirstName': $scope.searchData.guestCard.guestFirstName,
+                    'guestLastName': $scope.searchData.guestCard.guestLastName,
+                    'companyID': $scope.reservationData.company.id,
+                    'travelAgentID': $scope.reservationData.travelAgent.id,
+                    'promotionCode': $scope.reservationData.searchPromoCode
+                });
 
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
 
@@ -349,21 +399,104 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
-                for (var roomNumber = 0; roomNumber < $scope.reservationData.roomCount; roomNumber++) {
+                
+                $scope.setNumberOfNights();
+
+                for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
                 }
 
                 if ($scope.checkOccupancyLimit()) {
                     $state.go('rover.reservation.staycard.mainCard.roomType', {
-                        from_date: $scope.reservationData.arrivalDate,
-                        to_date: $scope.reservationData.departureDate,
-                        fromState: $state.current.name,
-                        company_id: $scope.reservationData.company.id,
-                        travel_agent_id: $scope.reservationData.travelAgent.id
+                        'from_date': $scope.reservationData.arrivalDate,
+                        'to_date': $scope.reservationData.departureDate,
+                        'fromState': $state.current.name,
+                        'company_id': $scope.reservationData.company.id,
+                        'allotment_id': $scope.reservationData.allotment.id,
+                        'travel_agent_id': $scope.reservationData.travelAgent.id,
+                        'group_id': $scope.reservationData.group.id,
+                        'promotion_code': $scope.reservationData.searchPromoCode
                     });
                 }
             }
 
+        };
+
+        $scope.alertOverbooking = function(close) {
+            var tabIndex = 0,
+                timer = 0;
+            if (close) {
+                $scope.closeDialog();
+                timer = 1000
+            }
+            $timeout(function() {
+                for (; tabIndex < $scope.reservationData.tabs.length; tabIndex++) {
+                    var tab = $scope.reservationData.tabs[tabIndex];
+                    if ((!tab.overbookingStatus.room || !tab.overbookingStatus.house) && !tab.overbookingStatus.alerted) {
+                        tab.overbookingStatus.alerted = true;
+                        ngDialog.open({
+                            template: '/assets/partials/reservation/alerts/availabilityCheckOverbookingAlert.html',
+                            scope: $scope,
+                            controller: 'overbookingAlertCtrl',
+                            closeByDocument: false,
+                            closeByEscape: false,
+                            data: JSON.stringify({
+                                houseFull: !tab.overbookingStatus.house,
+                                roomTypeId: tab.roomTypeId
+                            })
+                        });
+                        break;
+                    }
+                }
+                if (tabIndex === $scope.reservationData.tabs.length) {
+                    $scope.navigate();
+                }
+            }, timer);
+        };
+
+        $scope.checkAvailability = function() {
+            $scope.invokeApi(RVReservationBaseSearchSrv.checkOverbooking, {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate
+            }, function(availability) {
+                $scope.availabilityData = availability;
+                var houseAvailable = true,
+                    roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
+                        return true
+                    });
+                _.each(availability, function(dailyStat) {
+                    houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
+                    _.each($scope.reservationData.tabs, function(tab, tabIndex) {
+                        if (!!tab.roomTypeId) {
+                            roomtypesAvailable[tabIndex] = roomtypesAvailable[tabIndex] &&
+                                (dailyStat.room_types[tab.roomTypeId] > 0);
+                        }
+                    });
+                });
+
+                if (houseAvailable && _.reduce(roomtypesAvailable, function(a, b) {
+                        return a && b
+                    })) {
+                    $scope.navigate();
+                } else {
+                    // initiate flags in the tabs data model
+                    _.each($scope.reservationData.tabs, function(tab, tabIndex) {
+                        tab.overbookingStatus = {
+                            house: houseAvailable,
+                            room: roomtypesAvailable[tabIndex],
+                            alerted: false
+                        }
+                    });
+                    $scope.alertOverbooking();
+                }
+
+                $scope.$emit('hideLoader');
+
+            }, function(errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            });
+            // 
         };
 
 
@@ -383,7 +516,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var processDisplay = function(data) {
                 $scope.$emit("hideLoader");
 
-                angular.forEach(data.accounts, function(item) {
+                _.each(data.accounts, function(item) {
                     eachItem = {};
 
                     eachItem = {
@@ -414,6 +547,33 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     };
                 });
 
+                if ($scope.reservationData.rooms.length === 1 && !!data.groups && data.groups.length > 0) {
+                    _.each(data.groups, function(group) {
+                        companyCardResults.push({
+                            label: group.name,
+                            value: group.name,
+                            type: 'GROUP',
+                            id: group.id,
+                            code: group.code,
+                            company: group.company_id,
+                            travelAgent: group.travel_agent_id
+                        });
+                    });
+                }
+
+                if ($scope.reservationData.rooms.length === 1 && !!data.allotments && data.allotments.length > 0) {
+                    _.each(data.allotments, function(allotment) {
+                        companyCardResults.push({
+                            label: allotment.name,
+                            value: allotment.name,
+                            type: 'ALLOTMENT',
+                            id: allotment.id,
+                            code: allotment.code,
+                            company: allotment.company_id,
+                            travelAgent: allotment.travel_agent_id
+                        });
+                    });
+                }
                 // call response callback function
                 // with the processed results array
                 response(companyCardResults);
@@ -423,16 +583,46 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var fetchData = function() {
                 if (request.term !== '' && lastSearchText !== request.term) {
                     $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, {
-                        'query': request.term
+                        'query': request.term,
+                        'include_group': $scope.reservationData.rooms.length === 1,
+                        'include_allotment': $scope.reservationData.rooms.length === 1,
+                        'from_date': $scope.reservationData.arrivalDate,
+                        'to_date': $scope.reservationData.departureDate,
                     }, processDisplay);
                     lastSearchText = request.term;
                 }
             };
 
-            // quite simple to understand
+            // quite simple to understand :)
             if (request.term.length === 0) {
                 companyCardResults = [];
                 lastSearchText = "";
+                $scope.searchPromoCode = "";
+                if (!!$scope.reservationData.group.id) { // Reset in case of group
+                    $scope.reservationData.group = {
+                        id: "",
+                        name: "",
+                        code: "",
+                        company: "",
+                        travelAgent: ""
+                    };
+                    $scope.codeSearchText = "";
+                    $scope.companySearchText = "";
+                }
+
+                if (!!$scope.reservationData.allotment.id) { // Reset in case of group
+                    $scope.reservationData.allotment = {
+                        id: "",
+                        name: "",
+                        code: "",
+                        company: "",
+                        travelAgent: ""
+                    };
+                    $scope.codeSearchText = "";
+                    $scope.companySearchText = "";
+                }
+
+
             } else if (request.term.length > 2) {
                 fetchData();
             }
@@ -443,17 +633,36 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.company.id = ui.item.id;
                 $scope.reservationData.company.name = ui.item.label;
                 $scope.reservationData.company.corporateid = ui.item.corporateid;
+            } else if (ui.item.type === 'GROUP') {
+                $scope.reservationData.group = {
+                    id: ui.item.id,
+                    name: ui.item.label,
+                    code: ui.item.code,
+                    company: ui.item.company,
+                    travelAgent: ui.item.travelAgent
+                };
+                $scope.codeSearchText = ui.item.code;
+            } else if (ui.item.type === 'ALLOTMENT') {
+                $scope.reservationData.allotment = {
+                    id: ui.item.id,
+                    name: ui.item.label,
+                    code: ui.item.code,
+                    company: ui.item.company,
+                    travelAgent: ui.item.travelAgent
+                };
+                $scope.codeSearchText = ui.item.code;
             } else {
                 $scope.reservationData.travelAgent.id = ui.item.id;
                 $scope.reservationData.travelAgent.name = ui.item.label;
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             };
 
-            // DO NOT return false;
+            // DO NOT return false
         };
 
         $scope.autocompleteOptions = {
             delay: 0,
+            minLength: 0,
             position: {
                 my: 'left bottom',
                 at: 'left top',
@@ -509,6 +718,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             // check whether guest card attached and remove if attached.
             $scope.reservationDetails.guestCard.id = '';
         };
+        $scope.reservationGuestPromoCodeChanged = function() {
+            // check whether guest card attached and remove if attached.
+            // $scope.reservationDetails. = '';
+        };
 
         $scope.switchNightsHours = function() {
             if ($scope.isNightsActive) {
@@ -526,7 +739,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         /**
          * Source handler for the codes autocomplete
          * jquery autocomplete Souce handler
-         * get two arguments - request object and response callback function 
+         * get two arguments - request object and response callback function
          */
 
         var codeACSourceHandler = function(request, response) {
@@ -535,37 +748,128 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (request.term.length === 0) {
                 codeResults = [];
                 lastSearchText = "";
+                $scope.searchPromoCode = "";
+                $scope.reservationData.searchPromoCode = "";
+                if (!!$scope.reservationData.group.id) { // Reset in case of group
+                    $scope.reservationData.group = {
+                        id: "",
+                        name: "",
+                        code: "",
+                        company: "",
+                        travelAgent: ""
+                    };
+                    $scope.codeSearchText = "";
+                    $scope.companySearchText = "";
+                } else if (!!$scope.reservationData.allotment.id) {
+                    $scope.reservationData.allotment = {
+                        id: "",
+                        name: "",
+                        code: "",
+                        company: "",
+                        travelAgent: ""
+                    };
+                    $scope.codeSearchText = "";
+                }
+                if (!!$scope.reservationData.code) { // Reset in case of promotion code CICO-19484
+                    $scope.reservationData.code = {
+                        id: '',
+                        type: '',
+                        discount: {}
+                    };
+                }
             } else if (request.term.length > 0) {
-                if (request.term != '' && lastSearchText != request.term) {
+                if (request.term !== '' && lastSearchText !== request.term) {
                     lastSearchText = request.term;
-                    var filteredCodes = $filter('filter')($scope.activeCodes, {
-                        name: request.term
+                    $scope.reservationData.searchPromoCode = request.term;
+                    $scope.invokeApi(RVReservationBaseSearchSrv.autoCompleteCodes, {
+                        'code': request.term,
+                        'include_group': $scope.reservationData.rooms.length === 1,
+                        'include_allotment': $scope.reservationData.rooms.length === 1,
+                        'from_date': $scope.reservationData.arrivalDate,
+                        'to_date': $scope.reservationData.departureDate,
+                    }, function(filteredCodes) {
+                        codeResults = [];
+                        angular.forEach(filteredCodes.promotions, function(item) {
+                            eachItem = {
+                                label: item.name,
+                                value: item.name,
+                                type: 'PROMO',
+                                id: item.id,
+                                discount: item.discount,
+                                from: item.from_date,
+                                to: item.to_date
+                            };
+                            codeResults.push(eachItem);
+                        });
+                        angular.forEach(filteredCodes.groups, function(item) {
+                            eachItem = {
+                                label: item.name,
+                                value: item.code,
+                                type: 'GROUP',
+                                id: item.id,
+                                from: item.from_date,
+                                to: item.to_date,
+                                name: item.name,
+                                company: item.company_id,
+                                travelAgent: item.travel_agent_id
+                            };
+                            codeResults.push(eachItem);
+                        });
+                        angular.forEach(filteredCodes.allotments, function(item) {
+                            eachItem = {
+                                label: item.name,
+                                value: item.code,
+                                type: 'ALLOTMENT',
+                                id: item.id,
+                                from: item.from_date,
+                                to: item.to_date,
+                                name: item.name,
+                                company: item.company_id,
+                                travelAgent: item.travel_agent_id
+                            };
+                            codeResults.push(eachItem);
+                        });
+                        $scope.$emit("hideLoader");
+                        response(codeResults);
                     });
-                    codeResults = [];
-                    angular.forEach(filteredCodes, function(item) {
-                        eachItem = {
-                            label: item.name,
-                            value: item.name,
-                            type: 'PROMO',
-                            id: item.id,
-                            discount: item.discount,
-                            from: item.from_date,
-                            to: item.to_date
-                        };
-                        codeResults.push(eachItem);
-                    });
-                    response(codeResults);
                 }
             }
         };
 
         var codeACSelectHandler = function(event, code) {
-            $scope.reservationData.code = code.item;
+            if (code.item) {
+                $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.searchPromoCode = code.item.label;
+            }
+            if (code.item.type === "PROMO") {
+                $scope.reservationData.code = code.item;
+            } else if (code.item.type === "GROUP") {
+                $scope.reservationData.group = {
+                    id: code.item.id,
+                    name: code.item.name,
+                    code: code.item.value,
+                    company: code.item.company,
+                    travelAgent: code.item.travelAgent
+                };
+                $scope.codeSearchText = code.item.value;
+                $scope.companySearchText = code.item.name;
+            } else if (code.item.type === "ALLOTMENT") {
+                $scope.reservationData.allotment = {
+                    id: code.item.id,
+                    name: code.item.name,
+                    code: code.item.value,
+                    company: code.item.company,
+                    travelAgent: code.item.travelAgent
+                };
+                $scope.codeSearchText = code.item.value;
+                $scope.companySearchText = code.item.name;
+            }
         };
 
         // Autocomplete options for promo/group code
         $scope.codesACOptions = {
             delay: 0,
+            minLength: 0,
             position: {
                 my: 'left bottom',
                 at: 'left top',
@@ -576,14 +880,65 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onMemberRateToggle = function() {
-            if($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0){
+            if ($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0) {
                 $scope.reservationData.member.value = $scope.loyaltyPrograms[0].hl_value;
                 return;
             }
-            if($rootScope.isFFPActive && $scope.flyerPrograms.length > 0){
-                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;                
-            }            
+            if ($rootScope.isFFPActive && $scope.flyerPrograms.length > 0) {
+                $scope.reservationData.member.value = $scope.flyerPrograms[0].ff_value;
+            }
         };
+
+        $scope.addTab = function(tabIndex) {
+            if (!$scope.reservationData.tabs[tabIndex].roomTypeId) {
+                return false; // Need to select room type before adding another row
+            }
+            $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
+            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
+            refreshScroller();
+        };
+
+        $scope.onRoomTypeChange = function(tabIndex) {
+            var index = 0,
+                currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
+                roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
+                i;
+            $scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
+            for (i = 0; i < tabIndex; i++) {
+                index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
+            }
+            for (i = index; i < index + currentRoomCount; i++) {
+                $scope.reservationData.rooms[i].roomTypeId = roomType;
+            }
+        };
+
+        $scope.onOccupancyChange = function(type, tabIndex) {
+            var currentRoomTypeId = $scope.reservationData.tabs[tabIndex].roomTypeId,
+                firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                })),
+                lastIndex = _.lastIndexOf($scope.reservationData.rooms, _.last(_.where($scope.reservationData.rooms, {
+                    roomTypeId: currentRoomTypeId
+                }))),
+                i;
+            for (i = firstIndex; i <= lastIndex; i++) {
+                $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
+            }
+        };
+
+        $scope.isRoomTypeSelected = function(tabIndex, roomTypeId) {
+            var chosen = false;
+            _.each($scope.reservationData.tabs, function(tabData, index) {
+                if (parseInt(tabData.roomTypeId, 10) === roomTypeId && tabIndex != index) {
+                    chosen = true;
+                }
+            });
+            return chosen;
+        };
+
+        $scope.restrictMultipleBookings = function() {
+            return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
+        }
 
     }
 ]);

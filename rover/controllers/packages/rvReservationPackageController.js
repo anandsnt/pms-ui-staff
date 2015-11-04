@@ -15,10 +15,9 @@ sntRover.controller('RVReservationPackageController',
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
 		angular.forEach($scope.packageData.existing_packages,function(item, index) {
-           item.totalAmount = (item.count)*(item.price_per_piece);
+           item.totalAmount = (item.addon_count)*(item.amount);
   		});
 	};
-	//console.log($scope);
 	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
 	$scope.setScroller('resultDetails', {
 			'click': true
@@ -61,16 +60,16 @@ sntRover.controller('RVReservationPackageController',
 				$scope.reservationData.reservation_card.is_package_exist = false;
 				$scope.closeAddOnPopup();
 			}
-		}
+		};
 		var addonArray = [];
-		addonArray.push(addonId)
+		addonArray.push(addonId);
 		var dataToApi = {
 			"postData": {
 				"addons":addonArray
 			},
 
 			"reservationId": reservationId
-		}
+		};
 		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
 	};
 

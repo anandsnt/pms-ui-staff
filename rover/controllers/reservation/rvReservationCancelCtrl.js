@@ -6,7 +6,7 @@
 			$scope.showCancelCardSelection = true;
 			$scope.showAddtoGuestCard = true;
 			$scope.addmode = false;
-			$scope.showCC = false;
+			$scope.showCCPage = false;
 			$scope.referanceText = "";
 			$scope.isDisplayReference = false;
 			$scope.newCardAdded = false;
@@ -24,7 +24,7 @@
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
-			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";			
+			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
 			$scope.DailogeState.isCancelled = false;
 			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty, 2);
 			if ($scope.ngDialogData.penalty > 0) {
@@ -64,12 +64,18 @@
 
 
 			$scope.changeOnsiteCallIn = function() {
-				$scope.isManual ? $scope.showCC = true : "";
+				$scope.isManual ? $scope.showCCPage = true : "";
 			};
+			 //to trigger from sixpayment partial
+	        $scope.$on('changeOnsiteCallIn', function(event){
+	            $scope.isManual =  !$scope.isManual;
+	            $scope.changeOnsiteCallIn();
+	        });
 
-			$scope.showHideCreditCard = function() {
+			$scope.changePaymentType = function() {
+
 				if ($scope.cancellationData.paymentType === "CC") {
-					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCC = true;
+					($rootScope.paymentGateway === 'sixpayments') ? "" : $scope.showCCPage = true;
 				} else {
 					checkReferencetextAvailableForCC();
 				};
@@ -210,7 +216,7 @@
 					$scope.cancellationData.expiry_date = retrieveExpiryDate();
 					$scope.cancellationData.card_type = retrieveCardtype();
 					checkReferencetextAvailableForCC();
-					$scope.showCC = false;
+					$scope.showCCPage = false;
 					$scope.newCardAdded = true;
 				};
 				var paymentData = {
@@ -246,7 +252,7 @@
 				$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 				refreshCardsList();
 				$scope.ngDialogData.state = 'PENALTY';
-			};		
+			};
 
 			$scope.completeCancellationProcess = function(){
 				if($scope.DailogeState.isCancelled){
@@ -259,7 +265,7 @@
 				$scope.closeReservationCancelModal();
 			};
 
-			var cancelReservation = function() {
+			var cancelReservation = function(isWithoutPenalty) {
 				var onEachCancelSuccess = function(data) {
 						// Handle individual cancellations here if reqd.
 					},
@@ -285,7 +291,8 @@
 							reason: $scope.cancellationData.reason,
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
-							application : "ROVER"
+							application : "ROVER",
+							is_with_penalty: isWithoutPenalty
 						};
 						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
@@ -298,7 +305,8 @@
 						reason: $scope.cancellationData.reason,
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
-						application : "ROVER"
+						application : "ROVER",
+						is_with_penalty: isWithoutPenalty
 					};
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
@@ -331,8 +339,8 @@
 
 			};
 
-			$scope.cancelReservation = function() {
-				cancelReservation();
+			$scope.cancelReservation = function(isWithoutPenalty) {
+				cancelReservation(isWithoutPenalty);
 			};
 			/*
 			 * Action - On click submit payment button
@@ -380,7 +388,7 @@
 				} else {
 					$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment);
 				}
-				//$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv,successPayment);
+
 			};
 
 			$scope.applyPenalty = function() {
@@ -391,7 +399,7 @@
 			};
 
 			$scope.onCardClick = function() {
-				$scope.showCC = true;
+				$scope.showCCPage = true;
 				$scope.addmode = $scope.cardsList.length > 0 ? false : true;
 			};
 			var setCreditCardFromList = function(index) {
@@ -400,7 +408,7 @@
 				$scope.cancellationData.expiry_date = $scope.cardsList[index].card_expiry;
 				$scope.cancellationData.card_type = $scope.cardsList[index].card_code;
 				checkReferencetextAvailableForCC();
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 				// CICO-9457 : Data for fees details - standalone only.
 				if ($scope.isStandAlone) {
 					$scope.feeData.feesInfo = $scope.cardsList[index].fees_information;
@@ -411,7 +419,7 @@
 
 			$scope.$on("TOKEN_CREATED", function(e, data) {
 				$scope.newPaymentInfo = data;
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 				savePayment();
 			});
 
@@ -420,7 +428,7 @@
 			});
 
 			$scope.$on('cancelCardSelection', function(e, data) {
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 				$scope.cancellationData.paymentType = "";
 				$scope.isManual = false;
 			});
@@ -433,7 +441,7 @@
 
 				$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 				$scope.ngDialogData.state = 'PENALTY';
-				$scope.showCC = true;
+				$scope.showCCPage = true;
 				$scope.addmode = true;
 
 			});
@@ -444,7 +452,7 @@
 				$scope.cancellationData.cardNumber = successParams.cardNumber.slice(-4);;
 				$scope.cancellationData.expiry_date = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
 				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
-				$scope.showCC = false;
+				$scope.showCCPage = false;
 			};
 			$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
 				var data = swipedCardDataToSave;
@@ -464,7 +472,7 @@
 			});
 			$scope.closeReservationCancelModal = function() {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", false);
-				$scope.closeDialog();				
+				$scope.closeDialog();
 			};
 
 			// -- CICO-17706 --//
@@ -499,7 +507,7 @@
 				};
 				var data = {
 					"postData": postData,
-					"reservationId": $scope.passData.reservationId,
+					"reservationId": $scope.passData.reservationId
 				};
 				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 			};

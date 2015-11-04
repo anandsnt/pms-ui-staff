@@ -13,6 +13,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.getGridData = function(){
 		return that.data.gridData;
 	};
+	this.getGridDataForGroupAvailability = function(){
+		return that.data.gridDataForGroupAvailability;
+	};	
 
 	this.updateData = function(data){
 		that.data = data;
@@ -51,7 +54,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				'id' 	: roomAvailabilityData.room_types[i].id,
 				'name'	: roomAvailabilityData.room_types[i].name,
 				'availableRoomNumberList': []
-			})
+			});
 
 			//CICO-13590:
 			individualBookedRooms.push ({
@@ -122,7 +125,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
 			'individualAvailableRooms': individualAvailableRooms,
 			'totalRooms'		: roomAvailabilityData.physical_count
-		}
+		};
 
 		//CICO-13590
 		if (!isHourlyRateOn) {
@@ -135,7 +138,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			});
 		}
 		return gridData;
-	}
+	};
 
 	var formGraphData = function(dataFromAvailability, occupancyData){
 		// returning object
@@ -215,9 +218,101 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'occupanciesTargeted': occupanciesTargeted,
 			'totalRooms'	: totalRoomCount
 
-		}
+		};
 		return graphData;
 
+	};
+	/*
+	* param - Object from api/group_availability response
+	* return - Object 
+	*/
+	var formGridDataForGroupAvailability = function(datafromApi){
+		var gridDataForGroupAvailability = {};
+		var dates = [];
+		var groupTotalRooms =[];
+		var groupTotalPickedUps = [];
+		var holdstatus = [];
+		var groupDetails =[];
+		var groupDetail = [];		
+
+		_.each(datafromApi.results,function(element,index,lis){
+			var temp = [];
+			//Extracting date detail		
+			var dateToCheck = tzIndependentDate(element.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
+			//Extracting groupTotalRooms
+			groupTotalRooms.push(element.group_total_rooms);
+			//Extracting groupTotal picked ups
+			groupTotalPickedUps.push(element.group_total_pickups);			
+			holdstatus.push(element.hold_status);
+			//Forms array(temp) of details of groups date wise
+			_.each(element.group_availability,function(ele, ind, list){
+				var detail ={
+					"id":ele.group_id,
+					"Name":ele.name,
+					"date":element.date,					
+					"total_blocked_rooms":ele.total_blocked_rooms,
+					"total_pickedup_rooms":ele.total_pickedup_rooms
+				};
+				temp.push(detail);
+			});
+			//Forms two dimensional array[datewise][groupwise]
+			groupDetail.push(temp);
+		});
+		//Forms groupwise Details. 
+		_.each(datafromApi.results[0].group_availability, function(element, index, list){
+			var groupdetail ={
+				"name":element.name,
+				"id":element.group_id,
+				"holdStatusName":getGroupName(element.hold_status_id,datafromApi.hold_status),
+				"details":_.zip.apply(null, groupDetail)[index]
+			};
+			groupDetails.push(groupdetail);
+		});
+		
+		gridDataForGroupAvailability = {
+			'dates'	: dates,
+			'groupTotalRooms': groupTotalRooms,
+			'groupTotalPickedUps':groupTotalPickedUps,
+			'holdstatuses': _.zip.apply(null, holdstatus),
+			'groupDetails':groupDetails,
+			'holdStatus':datafromApi.hold_status
+		};
+		return gridDataForGroupAvailability;
+	}
+	/*
+	* param - Group id
+	* return Group name
+	*/
+	var getGroupName = function(GroupId, holdstatuses){
+		return _.find(holdstatuses, function(elem){ 
+				return (elem.id === GroupId)?true:false;
+				}).name;
+	};
+	/**
+	* function to fetch group availability between from date & to date
+	*/
+	this.fetchGroupAvailabilityDetails = function(params){
+		var firstDate 	= (params.from_date);
+		var secondDate 	= (params.to_date);
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = 'api/group_availability';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
+			//storing response temporarily in that.data, will change in occupancy call
+			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
+			deferred.resolve(that.data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
 	};
 
 
@@ -225,8 +320,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch availability between from date & to date
 	*/
 	this.fetchAvailabilityDetails = function(params){
-		var firstDate 	= tzIndependentDate(params.from_date);
-		var secondDate 	= tzIndependentDate(params.to_date);
+		var firstDate 	= params.from_date;
+		var secondDate 	= params.to_date;
 
 		var dataForWebservice = {
 			from_date	: firstDate,
@@ -250,8 +345,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch occupancy details date wise
 	*/
 	this.fetchOccupancyDetails = function(params, deferred){
-		var firstDate 	= tzIndependentDate(params.from_date);
-		var secondDate 	= tzIndependentDate(params.to_date);
+		var firstDate 	= params.from_date;
+		var secondDate 	= params.to_date;
 
 		var dataForWebservice = {
 			from_date	: firstDate,
@@ -275,7 +370,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var deferred = $q.defer();
 		var url = '/api/availability/house';
 		var businessDate = tzIndependentDate(params['business_date']).clone();
-		//var url = '/ui/show?format=json&json_input=availability/house_status.json';
+
 		delete params['business_date'];
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
@@ -344,7 +439,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			houseDetails.departues_expected[dayInfo.date] = {};
 			houseDetails.departues_expected[dayInfo.date].value = dayInfo.house.departing;
 			houseDetails.departues_expected[dayInfo.date].percent = dayInfo.house.departing / totalDepartures * 100;
-			//Departures Actual;
+			//Departures Actual
 			houseDetails.departures_actual[dayInfo.date] = {};
 			houseDetails.departures_actual[dayInfo.date].value = dayInfo.house.departed;
 			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.house.departed / totalDepartures * 100;

@@ -93,11 +93,13 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 		return hasButton;
 	};
+        
+        $scope.$on('clickedIconKeyFromQueue',function(){
+            $scope.clickedIconKey();//one less thing for user to do
+        });
 	// To handle click of key icon.
 	$scope.clickedIconKey = function(){
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
-                console.log('clicked key icon: ');
-                console.log($scope.reservationData.reservation_card.reservation_status);
 		$scope.viewFromBillScreen = false;
 		if(keySettings === "email"){
                     ngDialog.open({
@@ -144,14 +146,11 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			console.log("keySettings ----" + keySettings);
-			console.log($scope.reservationData.reservation_card.is_remote_encoder_enabled);
-			console.log($scope.encoderTypes);
-                    if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
-                        fetchEncoderTypes();
-                    } else {
-                        openKeyEncodePopup();
-                    }
+            if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
+                fetchEncoderTypes();
+            } else {
+                openKeyEncodePopup();
+            }
 		}
         };
 
@@ -178,12 +177,10 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 	//Fetch encoder types for if remote encoding enabled
 	var fetchEncoderTypes = function(){
-		console.log("fetchEncoderTypes");
 
 		var encoderFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.encoderTypes = data;
-			console.log($scope.encoderTypes);
 			openKeyEncodePopup();
 		};
 
@@ -199,7 +196,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 
 	$scope.goToRoomUpgrades = function(){
 		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
-	}
+	};
 
 	/**
 	 * utility method used to redirect to diary in edit mode
@@ -211,7 +208,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			reservation_id: $scope.reservationData.reservation_card.reservation_id,
 			checkin_date: $scope.reservationData.reservation_card.arrival_date
 		});
-	}
+	};
 	/**
 	* function to trigger room assignment.
 	*/

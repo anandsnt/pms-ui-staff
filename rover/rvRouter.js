@@ -4,7 +4,6 @@ sntRover.config([
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider) {
         var currentTime = new Date();
-        //var avoidCacheTime = currentTime.getUTCSeconds();
         $translateProvider.useStaticFilesLoader({
           prefix: '/assets/rvLocales/',
           suffix: '.json?time='+currentTime
@@ -32,13 +31,19 @@ sntRover.config([
                     return RVHotelDetailsSrv.fetchHotelDetails();
                 },
                 userInfoDetails: function(RVDashboardSrv) {
-                    return RVDashboardSrv.fetchUserInfo();
+                        return RVDashboardSrv.fetchUserInfo();
                 },
                 permissions: function (rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
                 }
             }
 
+
+        });
+         $stateProvider.state('station', {
+            url: '/zest_station',
+            templateUrl: '/assets/partials/zestStation/kiosk/specific/home.html',
+            controller: 'rvTabletCtrl'
         });
 
     }

@@ -13,7 +13,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = '/api/group_reservations/',
-				//url = '/ui/show?format=json&json_input=groups/create_reservations.json',
+
 				params = {
 					"group_id": params.group_id,
 					"reservations_data": {
@@ -47,7 +47,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 
 				group_id = params.group_id,
 				url = '/api/group_reservations/' + group_id + "/list";
-			//url = '/ui/show?format=json&json_input=groups/create_reservations.json';
+
 
 			var data = {
 				'sort_field': params.sorting_field,
@@ -95,6 +95,32 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 		};
 
 		/**
+		 * function to perform mass checkout
+		 * @return {Promise}
+		 */
+		this.performMassCheckout = function(params) {
+			var deferred = $q.defer(),
+				group_id = params.id,
+				url = '/api/group_checkouts/',
+				params = {
+					"group_id": params.group_id,
+					"reservation_ids": params.reservation_ids
+				};
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+		/**
 		 * function to perform auto room assignment
 		 * @return {Promise}
 		 */
@@ -102,7 +128,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = '/api/groups/auto_room_assignment',
-				//url = '/ui/show?format=json&json_input=groups/group_auto_room_assignment.json',
+
 				params = {
 					"group_id": params.group_id,
 					"reservation_ids": params.reservation_ids
@@ -132,7 +158,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 				data_for_web_service = {
 					'count': params.num_of_rooms_to_fetch,
 					'room_type_id': params.room_type_id
-				};				
+				};
 
 			rvBaseWebSrvV2.getJSON(url, data_for_web_service).then(
 				function(data) {
@@ -154,7 +180,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 			var deferred = $q.defer(),
 				group_id = params.id,
 				url = 'api/group_rooms/' + group_id;
-			//url = '/ui/show?format=json&json_input=groups/group_room_types_and_rates.json';
+
 
 			rvBaseWebSrvV2.getJSON(url).then(
 				function(data) {
@@ -219,7 +245,7 @@ sntRover.service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrvV2', 'rvUtilSrv',
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		}
+		};
 
 		this.fetchRegistrationCardPrintData = function(params) {
 			var deferred = $q.defer();

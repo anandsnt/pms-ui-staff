@@ -1,20 +1,24 @@
 sntRover.controller('rvGroupReservationEditCtrl', [
-    '$rootScope', 
-    '$scope', 
-    'rvGroupRoomingListSrv', 
-    '$filter', 
+    '$rootScope',
+    '$scope',
+    'rvGroupRoomingListSrv',
+    '$filter',
     '$timeout',
     'rvUtilSrv',
     'rvGroupConfigurationSrv',
+    'RVBillCardSrv',
     '$state',
-    function ($rootScope, 
-        $scope, 
-        rvGroupRoomingListSrv, 
+    'ngDialog',
+    function ($rootScope,
+        $scope,
+        rvGroupRoomingListSrv,
         $filter,
         $timeout,
         util,
         rvGroupConfigurationSrv,
-        $state) {
+        RVBillCardSrv,
+        $state,
+        ngDialog) {
 
     BaseCtrl.call(this, $scope);
 
@@ -55,13 +59,103 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     };
 
     /**
+     * Put all logic to show/hide the checkout button here.
+     * @param {object} Reservation
+     * @return {undefined}
+     */
+    $scope.shouldShowCheckoutButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isExpected &&
+                 $scope.reservationStatusFlags.isPastArrival);
+    };
+
+    /**
+     * Conditionally disable the checkout button
+     * @param {object} Reservation
+     */
+     $scope.shouldDisableCheckoutButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isStaying ||
+                $scope.reservationStatusFlags.isUneditable ||
+                !reservation.can_checkout);
+     };
+
+    /**
+     * Put all logic to show/hide the checkin button here.
+     * @param {object} Reservation
+     * @return {undefined}
+     */
+    $scope.shouldShowCheckinButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isExpected &&
+                 $scope.reservationStatusFlags.isPastArrival);
+    };
+
+    /**
+     * Conditionally disable the checkout button
+     * @param {object} Reservation
+     */
+     $scope.shouldDisableCheckinButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.canChekin ||
+                $scope.reservationStatusFlags.isUneditable ||
+                !reservation.can_checkin);
+     };
+
+     $scope.shouldDisableStaycardButton = function(reservation) {
+        return (!$scope.reservationStatusFlags.isGuestAttached);
+     };
+
+     $scope.shouldDisableRemoveButton = function(reservation) {
+        return !$scope.reservationStatusFlags.isExpected;
+     };
+
+     $scope.shouldDisableNameField = function(reservation) {
+        return $scope.reservationStatusFlags.isUneditable;
+     };
+
+    /**
+     * Function to decide whether to disable room type changing from edit reservation popup
+     * @param {Object} - reservation
+     * @return {Boolean}
+     */
+    $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
+        //as per CICO-17082, we need to show the room type in select box of edit with others
+        //but should be disabled
+        var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
+            containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
+            rStatus = reservation.reservation_status;
+
+        //CICO-18717: disable room type switch once a user checks in
+        return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
+    };
+
+    $scope.shouldDisableReservationOccuppancyChange = function(reservation) {
+        return ($scope.reservationStatusFlags.isUneditable ||
+                $scope.reservationStatusFlags.isCheckedOut);
+    };
+
+    /**
+     * Function to decide whether to show a particular occupancy
+     * based on the key that we getting from the function we are deciding
+     * @return {Boolean}
+     */
+    $scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
+        //finding the selected room type data
+        var selectedRoomType = _.findWhere($scope.ngDialogData.allowedRoomTypes, {
+            room_type_id: parseInt($scope.ngDialogData.room_type_id)
+        });
+        //we are hiding the occupancy if selected room type is undefined
+        if (typeof selectedRoomType === "undefined") {
+            return false;
+        }
+        return selectedRoomType[keyToCheck];
+    };
+
+    /**
      * is Room Number is empty
      * @return {Boolean} [description]
      */
     $scope.isEmptyRoomNumber = function(roomNo) {
         return (roomNo === null || roomNo === '');
     };
-      
+
     /**
      * to run angular digest loop,
      * will check if it is not running
@@ -71,8 +165,8 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         if (!$scope.$$phase) {
             $scope.$digest();
         }
-    };   
-         
+    };
+
     /**
     * utility method to get the formmated date for API
     * @param  {String} dateString
@@ -95,8 +189,10 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @param  {object} reservation
     * @return {undefined}
     */
-    $scope.updateReservation = function(reservation) {       
-        
+
+    $scope.updateReservation = function(reservation) {
+
+
             $scope.errorMessage = "";
 
             _.extend(reservation, {
@@ -107,12 +203,72 @@ sntRover.controller('rvGroupReservationEditCtrl', [
               room_id: parseInt(reservation.room_id)
             });
 
-            var options = {              
+            var options = {
               params: reservation,
               successCallBack: onUpdateReservationSuccess
             };
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
-        
+
+    };
+
+    var showCheckoutConfirmationPopup = function(data) {
+        ngDialog.open({
+            template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckoutConfirmation.html',
+            className: '',
+            scope: $scope.$parent,
+            closeByDocument: false,
+            closeByEscape: false,
+            controller: 'rvGroupReservationCheckoutCtrl',
+            data: JSON.stringify(data)
+        });
+    };
+
+    var showCheckinConfirmationPopup = function(data) {
+        ngDialog.open({
+            template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckinConfirmation.html',
+            className: '',
+            scope: $scope.$parent,
+            closeByDocument: false,
+            closeByEscape: false,
+            controller: 'rvGroupReservationCheckinCtrl',
+            data: JSON.stringify(data)
+        });
+    };
+
+    /**
+     * Call to checkout a single reservation
+     * @param {object} Selected Reservation
+     */
+    $scope.checkoutReservation = function(reservation) {
+        var summaryData     = $scope.groupConfigData.summary,
+            dataForPopup    = {
+                                group_name: summaryData.group_name,
+                                group_id: summaryData.group_id,
+                                reservation_id: reservation.id
+                              };
+
+        $scope.closeDialog();
+        $timeout(function() {
+            showCheckoutConfirmationPopup(dataForPopup);
+        }, 800);
+    };
+
+    /**
+     * Call to checkin a single reservation
+     * @param {object} Selected Reservation
+     */
+    $scope.checkinReservation = function(reservation) {
+        var summaryData     = $scope.groupConfigData.summary,
+            dataForPopup    = {
+                                group_name: summaryData.group_name,
+                                group_id: summaryData.group_id,
+                                reservation_id: reservation.id
+                              };
+
+        $scope.closeDialog();
+        $timeout(function() {
+            showCheckinConfirmationPopup(dataForPopup);
+        }, 800);
     };
 
     /**
@@ -122,10 +278,10 @@ sntRover.controller('rvGroupReservationEditCtrl', [
      */
     $scope.navigateStayCard = function(reservation) {
         // Navigate to StayCard
-        if (reservation.reservationStatusFlags.isGuestAttached) {            
+        if ($scope.reservationStatusFlags.isGuestAttached) {
             $scope.closeDialog();
             $timeout(function() {
-                $scope.$emit('showLoader');
+
                 $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                     "id": reservation.id,
                     "confirmationId": reservation.confirm_no,
@@ -141,7 +297,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
     var successCallBackOfListOfFreeRoomsAvailable = function (data) {
-        var roomId = initialPopupData.room_id, 
+        var roomId = initialPopupData.room_id,
             assignedRoom = [],
             isSameRoomType = (initialPopupData.room_type_id === $scope.ngDialogData.room_type_id);
 
@@ -197,13 +353,13 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     * @return {undefined}
     */
     $scope.removeReservation = function(reservation) {
-        var rStatusFlags = reservation.reservationStatusFlags, 
-            options = null, 
+        var rStatusFlags = $scope.reservationStatusFlags,
+            options = null,
             params = null;
 
         if (!rStatusFlags.isExpected) {
             return false;
-        } 
+        }
         else {
             params = {
                 id: reservation.id,
@@ -216,7 +372,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             };
             $scope.callAPI(rvGroupConfigurationSrv.removeRoomingListItem, options);
         }
-    }
+    };
 
     /**
      * when the reservation from choosed
@@ -225,7 +381,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationFromDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
-    }
+    };
 
     /**
      * when the reservation to choosed
@@ -234,7 +390,30 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     var reservationToDateChoosed = function(date, datePickerObj) {
         $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
-    }
+    };
+
+    var computeReservationStatusFlags = function(reservation) {
+        var rStatus = reservation.reservation_status;
+        return {
+            isCheckedOut: rStatus === "CHECKEDOUT",
+            isUneditable: rStatus === "CANCELED",
+            isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
+            isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",
+            canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
+            isNoShow: rStatus === "NOSHOW",
+            isGuestAttached: !!reservation.lastname,
+            isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
+        }
+    };
+
+    /**
+     * Initialize important variables here
+     * @return {undefined}
+     */
+    var initializeVariables = function() {
+        _.extend(initialPopupData, $scope.ngDialogData);
+        $scope.reservationStatusFlags = computeReservationStatusFlags($scope.ngDialogData);
+    };
 
     /**
      * utility function to set datepicker options
@@ -265,7 +444,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
             onClose: function(value) {
                 $('#ui-datepicker-div').removeClass('reservation hide-arrow');
                 $('#ui-datepicker-overlay').off('click').remove();
-            }            
+            }
         };
 
         //date picker options - From
@@ -284,7 +463,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
     */
     (function initilizeMe() {
         //variable initilizations
-        _.extend(initialPopupData, $scope.ngDialogData); 
+        initializeVariables();
 
         //date picker
         setDatePickerOptions();

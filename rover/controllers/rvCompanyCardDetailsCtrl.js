@@ -75,11 +75,17 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
 		});
-
-
+		var setBackButtonCaption = function(){
+	        if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
+	        {
+	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
+	        }else{
+	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+	        }
+        };
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
-		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+		setBackButtonCaption();
 		$scope.headerBackButtonClicked = function() {
 
 			// Save details if made changes.
@@ -93,11 +99,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				$scope.$broadcast("saveArAccount");
 			}
 
-			$state.go(
-				"rover.companycardsearch", {
-					"textInQueryBox": $stateParams.query
-				}
-			);
+			$state.go($rootScope.previousState, $rootScope.previousStateParams);
 		};
 		$scope.isContactInformationSaved = false;
 		//inheriting some useful things
@@ -203,7 +205,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-			//$scope.$apply();
+
 		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {
@@ -250,7 +252,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-			}
+			};
 
 			var successCallbackFetchArDetails = function(data) {
 				$scope.$emit("hideLoader");
@@ -292,8 +294,13 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 		};
-
-
+		/**
+		 * successcall back of commssion detail
+		 */
+		var successCallbackOffetchCommissionDetail = function(data){
+			$scope.$emit("hideLoader");
+			$scope.contactInformation["commission_details"] = data.commission_details;
+		}
 
 		/**
 		 * successcall back of country list fetch
@@ -321,7 +328,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
-
+			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetail, data, successCallbackOffetchCommissionDetail);
 		}
 		//we are checking for edit screen
 		else if (typeof id !== 'undefined' && id !== "") {
@@ -451,10 +458,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			else if ($stateParams.isBackFromStaycard){
 				// Back navigation from stay card.Do nothing here.
 				//CICO-11664 to handle the back navigation from staycard.
-				console.log("Back navigation from stay card.");
 			}
 			else if ($scope.isContactInformationSaved){
-				console.log("Card already saved");
 			}
 			else{
 
@@ -509,7 +514,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
 			 */
 			$timeout(function() {
-				angular.element('#uplaodCompanyLogo').trigger('click')
+				angular.element('#uplaodCompanyLogo').trigger('click');
 			}, 0, false);
 		};
 

@@ -17,7 +17,7 @@
         <!-- Results / content -->
         <div class="wrapper">
             <ul id="search-cards-results" class="search-results" >
-                 <li class="card" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
+                 <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
                     <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type, query :textInQueryBox})">
 
@@ -33,7 +33,12 @@
                         <div class="data">
                             <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
                         </div>
-                        <div class="status company" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" >{{row.account_type}}</div>
+
+                        <div class="rate" ng-if="row.current_contracts.length > 0">
+                            <span class="label">Rate</span>
+                            {{row.current_contracts[0].based_on.name}}
+                        </div>
+                        <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple Contracts</span>
                     </a>
                 </li>
                 <!-- No results / no content when searched query not found-->

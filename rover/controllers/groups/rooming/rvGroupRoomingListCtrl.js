@@ -11,6 +11,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
   'rvGroupConfigurationSrv',
   '$state',
   '$window',
+  '$stateParams',
   function (
     $scope,
     $rootScope,
@@ -23,7 +24,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     ngDialog,
     rvGroupConfigurationSrv,
     $state,
-    $window) {
+    $window,
+    $stateParams) {
 
         BaseCtrl.call(this, $scope);
 
@@ -82,22 +84,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          */
         $scope.shouldShowAutoRoomAssignmentButton = function() {
             return (!$scope.shouldShowNoReservations());
-        };
-
-        /**
-         * Function to decide whether to disable room type changing from edit reservation popup
-         * @param {Object} - reservation
-         * @return {Boolean}
-         */
-        $scope.shouldDisableReservationRoomTypeChange = function(reservation) {
-            //as per CICO-17082, we need to show the room type in select box of edit with others
-            //but should be disabled
-            var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
-            	containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
-            	rStatus = reservation.reservation_status;
-            
-            //CICO-18717: disable room type switch once a user checks in
-            return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
         };
 
         /**
@@ -215,32 +201,32 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             var class_ = '';
             switch (reservationStatus.toUpperCase()) {
                 case "RESERVED":
-                    class_ = 'arrival'
+                    class_ = 'arrival';
                     break;
 
                 case "CHECKING_IN":
-                    class_ = 'check-in'
+                    class_ = 'check-in';
                     break;
 
                 case "CHECKEDIN":
-                    class_ = 'inhouse'
+                    class_ = 'inhouse';
                     break;
 
                 case "CHECKING_OUT":
-                    class_ = 'check-out'
+                    class_ = 'check-out';
                     break;
 
                 case "CHECKEDOUT":
-                    class_ = 'departed'
+                    class_ = 'departed';
                     break;
 
                 case "CANCELED":
-                    class_ = 'cancel'
+                    class_ = 'cancel';
                     break;
 
                 case "NOSHOW":
                 case "NOSHOW_CURRENT":
-                    class_ = 'no-show'
+                    class_ = 'no-show';
                     break;
 
                 default:
@@ -355,6 +341,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     var correspondingActualData = _.findWhere(data.result, {
                         room_type_id: roomTypeData.room_type_id
                     });
+
+                    //CICO-20169 Handles cases where total rooms are updated in room block
+                    _.extend(roomTypeData, correspondingActualData);
+
                     roomTypeData.availableRoomCount = toI(correspondingActualData.total_rooms) - toI(correspondingActualData.total_pickedup_rooms);
                 });
 
@@ -381,7 +371,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //we have to populate possible number of rooms & occupancy against a
             $scope.changedSelectedRoomType();
-        }
+        };
 
 
         /**
@@ -391,7 +381,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var attachBillingInfoToReservations = function() {
 
             // we need to attach billing info of group to all the  corresponding reservations
-            var reservationIds = _.pluck($scope.newReservations, "id")
+            var reservationIds = _.pluck($scope.newReservations, "id");
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 reservation_ids: reservationIds
@@ -471,6 +461,11 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 return showNoRoomTypesAttachedPopUp();
             }
 
+            if(!$scope.possibleNumberOfRooms.length){
+                $scope.errorMessage = ['No Rooms have been added for the selected Room in the Room Block.'];
+                return;
+            }
+
             //wiping the weepy
             $scope.errorMessage = '';
 
@@ -525,6 +520,10 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             if (activeTab !== 'ROOMING') {
                 return;
             }
+
+            //re-initializing date pickers as there is to update from other tab & come back here
+            setDatePickerOptions();
+
             //calling initially required APIs
             callInitialAPIs();
         });
@@ -576,6 +575,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             //mass checkin/checkout
             $scope.qualifiedReservations = [];
             $scope.messageForMassCheckin = '';
+
+            //variables for state maintanace - D
+            $scope.roomingListState = {
+                editedReservationStart: "",
+                editedReservationEnd: ""
+            };
         };
 
         /**
@@ -1257,6 +1262,151 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         };
 
         /**
+         * we want to verify from the user before going into mass checkout
+         * @return undefined
+         */
+        var openCheckoutConfirmationPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupMassCheckoutSomeResReadyPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * when no reservations meet checkin criteria
+         * @return undefined
+         */
+        var openNoReservationMeetCheckoutCriteria = function() {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupMassCheckoutNoResMeetCriteria.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openMassCheckoutSuccessPopup = function(data) {
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupResMassCheckoutSuccessPopUp.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(data),
+                controller: 'rvGroupRoomingMassCheckoutPopUpCtrl'
+            });
+        };
+
+        /**
+         * we will show mass checkin success pop up on completed success
+         * @return undefined
+         */
+        var openMassCheckoutFailedPopup = function(errorMessage) {
+            var errorMessageForPopup = {
+                errorMessage: errorMessage
+            };
+
+            ngDialog.open({
+                template: '/assets/partials/groups/rooming/popups/massCheckout/rvGroupResMassCheckoutFailedPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: JSON.stringify(errorMessageForPopup)
+            });
+        };
+
+        /**
+         * when selected reservations meet the criteria and user confirmed to go ahead
+         * @return undefined
+         */
+        $scope.checkOutQualifiedReservations = function() {
+            $scope.closeDialog();
+            $timeout(function() {
+                var params = {
+                    group_id: $scope.groupConfigData.summary.group_id,
+                    reservation_ids: _.pluck($scope.qualifiedReservations, "id")
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: successCallBackOfCheckoutQualifiedReservations,
+                    failureCallBack: failureCallBackOfCheckoutQualifiedReservations
+                };
+                $scope.callAPI(rvGroupRoomingListSrv.performMassCheckout, options);
+            }, 800);
+        };
+
+        /**
+         * to perform mass checkout
+         * @return undefined
+         */
+        $scope.groupCheckout = function() {
+            var qualifiedRes = _.where($scope.selected_reservations, {
+                    'can_checkout': true
+                }),
+                qualifiedResCount = qualifiedRes.length,
+                selectedResCount = $scope.selected_reservations.length;
+
+            if (qualifiedResCount > 0) {
+                $scope.qualifiedReservations = qualifiedRes;
+                $scope.messageForMassCheckout = (selectedResCount === qualifiedResCount) ?
+                    '' : 'GROUP_MASS_CHECKOUT_CONFIRMATION_PARTIALLY_OKEY';
+                openCheckoutConfirmationPopup();
+            } else {
+                openNoReservationMeetCheckoutCriteria();
+            }
+        };
+
+        /**
+         * we want to refresh the listing reservation when mass checkout completed
+         * @return undefined
+         */
+        $scope.closeMassCheckoutSuccessPopup = function() {
+            $scope.closeDialog();
+            //resetting the selected reservations
+            $scope.selected_reservations = [];
+
+            $timeout(function() {
+                callInitialAPIs();
+            }, 800);
+        };
+
+        /**
+         * when the mass checkout is success (api will return success even if it includes some of the reservation which are failed during the operation)
+         * @return undefined
+         */
+        var successCallBackOfCheckoutQualifiedReservations = function(data) {
+            var failureReservations = data.failure_reservation_ids;
+
+            if (failureReservations.length > 0) {
+                data.failedReservations = [];
+                _.each(data.failure_reservation_ids, function(reservation_id) {
+                    data.failedReservations.push(_.findWhere($scope.selected_reservations, {
+                        id: reservation_id
+                    }));
+                });
+            }
+            openMassCheckoutSuccessPopup(data);
+        };
+
+        /**
+         * When there is some failure in API side on mass checkout
+         * @return undefined
+         */
+        var failureCallBackOfCheckoutQualifiedReservations = function(errorMessage) {
+            openMassCheckoutFailedPopup(errorMessage);
+        };
+
+        /**
          * [successFetchOfAllReqdForRoomingList description]
          * @param  {[type]} data [description]
          * @return {[type]}      [description]
@@ -1335,7 +1485,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     assignedRoom = [];
 
                 selectedReservation.roomsAvailableToAssign = [];
-                
+
                 if (roomId !== null && roomId !== '') {
                     assignedRoom = [{
                         id: roomId,
@@ -1380,7 +1530,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 }
 
                 _.extend(reservationData, {
-                    reservationStatusFlags: getReservationStatusFlags(selectedReservation),
                     arrival_date: new tzIndependentDate(reservationData.arrival_date),
                     departure_date: new tzIndependentDate(reservationData.departure_date),
                     //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
@@ -1403,12 +1552,12 @@ sntRover.controller('rvGroupRoomingListCtrl', [
              * when we failed to fetch some of the api need to show the reservation details popup
              */
             var failedToFetchOfAllReqdForReservationEdit = function(errorMessage) {
-                $scope.$emit('hideLoader');                
+                $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
 
             /**
-             * we need to fetch some data before reservation edit pop up showing 
+             * we need to fetch some data before reservation edit pop up showing
              * @param  {Object} reservation
              * @return {undefined}
              */
@@ -1458,8 +1607,8 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 callNeccessaryApiForReservationDetailsShowing (reservation);
             };
 
-        }());        
-    	
+        }());
+
     	/**
     	 * event exposed for other (mainly for children) controllers to update the data
     	 */
@@ -1467,20 +1616,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
     		//calling initially required APIs
             callInitialAPIs();
     	});
-
-        var getReservationStatusFlags = function(reservation) {
-            var rStatus = reservation.reservation_status;
-            return {
-                isCheckedOut: rStatus === "CHECKEDOUT",
-                isUneditable: rStatus === "CANCELED",
-                isExpected: rStatus === "RESERVED" || rStatus === "CHECKING_IN",
-                isStaying: rStatus === "CHECKEDIN" || rStatus === "CHECKING_OUT",                
-                canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
-                isNoShow: rStatus === "NOSHOW",
-                isGuestAttached: !!reservation.lastname,
-                isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
-            }
-        };
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
@@ -1542,7 +1677,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                     }, 1200);
                 });
 
-        }
+        };
 
         /**
          * add the print orientation before printing
@@ -1570,7 +1705,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
             $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
             $scope.reservations = data.results;
             $scope.print_type = 'rooming_list';
-        }
+        };
 
         /**
          * Function to fetch Rooming list for print.
@@ -1603,7 +1738,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                         closeByEscape: false
                     });
                 }
-            }
+            };
             /**
              * Function to send e-mail of Rooming list.API call goes here.
              * @return - None
@@ -1615,17 +1750,17 @@ sntRover.controller('rvGroupRoomingListCtrl', [
                 mailFailed = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
                     $scope.closeDialog();
-                }
+                };
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id
-            }
+            };
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,
                 failureCallBack: mailFailed,
                 params: params
             });
-        }
+        };
 
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing
@@ -1705,7 +1840,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * Function to toggle show rate checkbox value
          */
         $scope.clickedShowRate = function(){
-            
+
             var params = {
                 'group_id'      : $scope.groupConfigData.summary.group_id,
                 'hide_rates'    : !$scope.groupConfigData.summary.hide_rates
@@ -1722,7 +1857,7 @@ sntRover.controller('rvGroupRoomingListCtrl', [
          * @return {undefined}
          */
         var setActiveLeftSideMenu = function () {
-            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";         
+            var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 
@@ -1733,13 +1868,6 @@ sntRover.controller('rvGroupRoomingListCtrl', [
         var initializeMe = function() {
             //updating the left side menu
             setActiveLeftSideMenu();
-
-            //variables for state maintanace
-            $scope.roomingListState = {
-                editedReservationStart: "",
-                editedReservationEnd: ""
-            }
-
 
             //IF you are looking for where the hell the API is CALLING
             //scroll above, and look for the event 'GROUP_TAB_SWITCHED'
@@ -1755,16 +1883,17 @@ sntRover.controller('rvGroupRoomingListCtrl', [
 
             //pagination
             initialisePagination();
-
             //calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
             var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
-            	comingFromStaycard = ("rover.reservation.staycard.reservationcard.reservationdetails" === $rootScope.getPrevStateName());
-            	
-            if (isInRoomingList && comingFromStaycard) {
-                callInitialAPIs();
+            	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
+
+            if (isInRoomingList && (amDirectlyComingToRoomingList)) {
+                $timeout(function(){
+                    callInitialAPIs();
+                }, 10);                
             }
         }();
-        
+
     }
 ]);

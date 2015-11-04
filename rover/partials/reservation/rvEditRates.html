@@ -4,12 +4,13 @@
 		    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
 
 		    <div class="modal-header">
-		        <h1>Rate Details</h1>
+		        <h1>Rate Details</h1>		        
 		        <em>{{ngDialogData.room.roomTypeName}}<br/>{{ngDialogData.room.rateName}}</em>
 		    </div>
-
-		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails">
+		    
+		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails" ng-iscroll-delay="2000">		    	
 		        <div class="wrapper">
+		        	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		            <table class="rate-grid">
 		                <thead>
 		                    <tr>
@@ -32,7 +33,7 @@
 		                        </td>
 		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed != 'true'">
 		                        	{{currencySymbol}}
-		                        	<input ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || pastDay(date) || !!reservationData.group.name" type="text" value="" ng-model="stayDay.rateDetails.modified_amount" />
+		                        	<input ng-disabled="shouldDisableRateChange(stayDay, date)" type="text" value="" ng-model="stayDay.rateDetails.modified_amount" />
 		                        </td>
 		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed == 'true'">
 		                        	SR
@@ -40,8 +41,14 @@
 		                    </tr>		                    
 		                </tbody>
 		            </table>
-		            <div class="entry full-width" ng-disabled="stayDay.rateDetails.is_discount_allowed == 'false' || pastDay(date)">
-		                <label for="adjustment-reason">Adjustment reason (<span>optional</span>)</label>
+		            <div class="entry full-width">
+		                <label ng-hide="otherData.forceAdjustmentReason" for="adjustment-reason">
+		                	Adjustment reason (<span>optional</span>)
+		                </label>
+		                <label ng-show="otherData.forceAdjustmentReason" for="adjustment-reason">
+		                	Adjustment reason 
+		                	<strong>*</strong>
+		                </label>		                
 		                <textarea id="adjustment-reason" placeholder="Rate Adjusted because ...." rows="2" ng-model="adjustment_reason"/>
             		</div>
 		        </div>

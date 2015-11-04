@@ -8,22 +8,37 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 			//As per CICO-9832
 			scope: $scope,
 			callback: 'backToStayCard'
-		}
+		};
 
 		$scope.heading = 'Room Upgrades';
 		$scope.setHeadingTitle($scope.heading);
+                
+                $scope.buttonText = {
+                  noThanks: 'NO THANKS, proceed with Check In'  
+                };
+                
+                $scope.initAdvQueCheck = function(){
+                    var adv = $rootScope.advanced_queue_flow_enabled;
+                    var viaQueue = $scope.$parent.reservation.check_in_via_queue;
+                    $scope.buttonText.noThanks = 'No Thanks, proceed with Check In';
 
-
-		$scope.$parent.myScrollOptions = {
-			'upgradesView': {
-				scrollX: true,
-				scrollY: false,
-				scrollbars: true,
-				snap: false,
-				hideScrollbar: false,
-				preventDefault: false
-			}
-		};
+                    if (adv && viaQueue){
+                        $scope.buttonText.noThanks = 'No thanks, proceed to queue';
+                    }
+                };
+                $scope.initAdvQueCheck();
+                if (typeof $scope.$parent === typeof {}){
+                    $scope.$parent.myScrollOptions = {
+                            'upgradesView': {
+                                    scrollX: true,
+                                    scrollY: false,
+                                    scrollbars: true,
+                                    snap: false,
+                                    hideScrollbar: false,
+                                    preventDefault: false
+                            }
+                    };
+                }
 
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.upgradesList = [];
@@ -47,7 +62,11 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 				$scope.setUpgradesDescriptionInitialStatuses();
 				$scope.$emit('hideLoader');
 				setTimeout(function() {
-						$scope.$parent.myScroll['upgradesView'].refresh();
+                                            if (typeof $scope.$parent === typeof {}){
+                                                if (typeof $scope.$parent.myScroll === typeof {}){
+                                                    $scope.$parent.myScroll['upgradesView'].refresh();
+                                                }
+                                            }
 					},
 					3000);
 			};
@@ -244,7 +263,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		 * function to set the color coding for the room number based on the room status
 		 */
 		$scope.getTopbarRoomStatusClass = function() {
-			var reservationStatus = $scope.reservationData.reservation_card.reservation_status
+			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
 			var foStatus = $scope.reservationData.reservation_card.fo_status;
 			var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
@@ -262,11 +281,37 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		$scope.getHorizontalScrollWidth = function() {
 			return 465 * $scope.upgradesList.length;
 		};
-		$scope.goToCheckinScreen = function() {
+                
+                
+                $scope.putGuestInQueue = false;
+                if (!$rootScope.reservationUpgradeWatch){//alternative to $destroy, this is an init-once method
+                    $rootScope.reservationUpgradeWatch = 1;
+
+                    $rootScope.$on('putGuestInQueue',function(){
+                        if ($rootScope.advanced_queue_flow_enabled){
+                            $scope.putGuestInQueue = true;
+                        } else {
+                            $scope.putGuestInQueue = false;
+                        }
+                        
+                    });
+                }
+                
+		$scope.goToCheckinScreen = function(putGuestInQueue) {
+                   // var adv = $rootScope.advanced_queue_flow_enabled;
+                  //  var viaQueue = $scope.$parent.reservation.check_in_via_queue;
+                    /*
+                    if ($scope.putGuestInQueue || (adv && viaQueue)){
+                        $rootScope.$emit('putInQueueAdvanced');
+                        $scope.backToStayCard();
+                    } else {
+                        */
 			$state.go('rover.reservation.staycard.billcard', {
 				"reservationId": $scope.reservationData.reservation_card.reservation_id,
 				"clickedButton": "checkinButton"
 			});
+                    //}
+                        
 		};
 
 		/**
@@ -278,7 +323,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 				return "room-grey";
 			}
 			return statusClass;
-		}
+		};
 
 	}
 ]);

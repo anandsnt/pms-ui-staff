@@ -16,5 +16,5 @@ sntRover.directive('imageLoad', function () {
                 });
             }
 
-    }
+    };
 });

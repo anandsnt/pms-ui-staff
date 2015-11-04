@@ -7,7 +7,6 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 
 
 	$scope.fetchTableData = function($defer, params){
-		console.log('fetchTableData');
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
@@ -24,8 +23,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 	};
 
 
-	$scope.loadTable = function(){
-		console.log("loadTable");
+	$scope.loadTable = function() {
 		$scope.data = [];
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
@@ -57,8 +55,8 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 			}
 
 			$scope.reloadTable();
-		}
-		var params = {"id" : id}
+		};
+		var params = {"id" : id};
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 

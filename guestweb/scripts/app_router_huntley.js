@@ -2,7 +2,7 @@
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/checkoutRoomVerification");
+    $urlRouterProvider.otherwise("/noOptionAvailable");
 
     // checkout now states
 
@@ -93,11 +93,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	 	  // pre checkin states
 
-    $stateProvider.state('preCheckinTripDetails', {
-    	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'Pre Check-in'
-	}).state('preCheckinStatus', {
+    $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/Huntley/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
@@ -106,14 +102,23 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 
 	$stateProvider.state('externalVerification', {
-    	url: '/externalVerification',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/externalVerification.html',
+	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
-	});
+	 }).state('externalVerificationError', {
+	 	url: '/verificationError',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/externalVerificationError.html',
+	 	controller:'verificationErrorController',
+	 	title: 'External verification Error'
+	 });
 
-	$stateProvider.state('earlyCheckinOptions', {
-    	url: '/noOptions',
+
+
+	$stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
+
 }]);

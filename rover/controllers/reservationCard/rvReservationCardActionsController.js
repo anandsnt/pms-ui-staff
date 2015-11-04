@@ -13,7 +13,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.actions.departureDateString = '';
 
         $scope.selectedAction = {};
-        $scope.selectedAction.created_by = 'StayNtouch';
         $scope.selectedAction.created_by_null = false;
         $scope.selectedAction.created_at;
         $scope.selectedAction.created_at_time;
@@ -33,8 +32,23 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
-
+        $scope.actionsSyncing = false;
+        
+        $scope.reservationId = '';
+        $scope.isStandAlone = true;
+        
+        $scope.editingDescriptionInline = false;
+        
         var init = function() {
+            if ($rootScope.isStandAlone){
+                $scope.isStandAlone = true;
+            } else {
+                $scope.isStandAlone = false;
+            }
+            
+            if ($scope.$parent.reservationData.reservation_card.reservation_id){
+                $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
+            }
             $scope.populateTimeFieldValue();
             $scope.setScroller("rvActionListScroller");
 
@@ -44,6 +58,98 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
            };
             $scope.$watch('RVReservationCardSrv.data',  setActionsCount);
             $scope.setUpData();
+            
+            if (!$scope.isStandAlone){
+                $scope.syncActions($scope.reservationId);
+            }
+        };
+        $scope.lastSavedDescription = '';
+        $scope.updateActionDescription = function(description_old, description_new){
+            var params = {
+                'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
+                'action_task':{
+                    'id':$scope.selectedAction.id
+                }
+            };
+            
+            params.action_task.description = description_new;
+            
+            var onSuccess = function(response){
+                        $scope.lastSavedDescription = response.data.description;
+                        $scope.savingDescription = false;
+                        $scope.$emit('hideLoader');
+            };
+            var onFailure = function(response){
+                        $scope.savingDescription = false;
+                        $scope.$emit('hideLoader');
+            };
+            if ($scope.savingDescription){
+                if ($scope.lastSavedDescription !== description_new){
+                    if (description_new && description_new !== ''){
+                        $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
+                    } else {
+                      $scope.selectedAction.description = $scope.lastSavedDescription;  
+                      $scope.editingDescriptionValue = $scope.lastSavedDescription;  
+                    }
+                } 
+            }
+        };
+        $scope.savingDescription = false;
+        
+        
+        $scope.stopEditClick = function(ent){
+            if (!$scope.starting || ent){//ent = enter on keyboard hit, user was in txt input and hits enter, forcing a save request
+                setTimeout(function(){
+                    $scope.editingDescriptionInline = false;
+
+                    if (!$scope.isStandAlone){
+                        if ($scope.lastSavedDescription !== $scope.selectedAction.description){
+                            ///push up
+                            if (!$scope.savingDescription){
+                                $scope.savingDescription = true;
+                                $scope.updateActionDescription($scope.editingDescriptionValue, $scope.selectedAction.description);
+                            }
+                        }
+                    }
+                },250);
+            } else {
+                 $scope.startEditDescription();   
+            }   
+
+        };
+        
+        $scope.starting = false;
+        $scope.startEditDescription = function(){
+            $scope.starting = true;
+            if (!$scope.isStandAlone){
+                if ($scope.isTrace($scope.selectedAction.action_task_type)){//only overlay traces for now (sprint 37) CICO-17112
+                    $scope.editingDescriptionInline = true;
+                }
+                $scope.starting = false;
+                $scope.editingDescriptionValue = $scope.selectedAction.description;
+            } else {
+                $scope.starting = false;
+                $scope.editingDescriptionInline = false;
+            }
+        };
+        
+        $scope.actionsSyncd = false;
+        $scope.syncActions = function(id){
+            /*
+             * method to sync action count for the staycard
+             * this reaches out to 
+             */
+            var onSuccess = function(data){
+              $scope.actions.totalCount = data.total_count;
+              $scope.actions.pendingCount = data.pending_count;
+              $scope.actionsSyncd = true;
+              $scope.$emit('hideLoader');
+            };
+            var onFailure = function(response){
+                
+              $scope.actionsSyncd = true;
+            };
+            $scope.invokeApi(rvActionTasksSrv.syncActionCount, id, onSuccess, onFailure);
         };
 
         $scope.setInitialActionsCount = function(data){
@@ -52,7 +158,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.actions.pendingCount = data.pending_action_count;
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
-                if (total === 0 && pending === 0){
+                if (total === 0){
                     $scope.actionsCount = 'none';//none, pending, all-completed
                 } else if (total > 0 && pending === 0){
                     $scope.actionsCount = 'all-completed';
@@ -140,6 +246,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 $scope.actions.totalCount = data.data.action_count;
                 $scope.actions.pendingCount = data.data.pending_action_count;
+                if ($scope.actions.totalCount === 0){
+                    $scope.actionSelected = 'new';
+                }
+                
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
                 if (total === 0 && pending === 0){
@@ -151,7 +261,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 } else {
                     $scope.actionsCount = 'pending';
                 }
-
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
@@ -178,13 +287,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectAction = function(a){
             var action = a;
             $scope.selectedAction = action;
+            $scope.lastSavedDescription = action.description;
+            
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
         };
         $scope.setRightPane = function(toView){
             //selected, new, assign, comment
             $scope.actionSelected = toView;
-
         };
         $scope.clearNewAction = function(){
             $scope.closeSelectedCalendar();
@@ -256,8 +366,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
 
 
-
-
 	$scope.setUpData = function() {
             var businessDate = tzIndependentDate($rootScope.businessDate);
                 var nd = new Date(businessDate);
@@ -323,7 +431,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
             };
 
-            //reservation_id=1616903&action_task[description]=test
+
             var params = {
                 'reservation_id':$scope.$parent.reservationData.reservation_card.reservation_id,
                 'action_task':{
@@ -377,7 +485,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.getDateObj = function(dateStr, delim){
             var year, month, day;
             var spl = dateStr.split(delim);
-            day = spl[1], month = spl[0], year = spl[2];
+            day = spl[1]; month = spl[0]; year = spl[2];
 
             return {day:day,month:month,year:year};
         };
@@ -413,7 +521,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.initNewAction = function(){
             $scope.clearNewAction();
             $scope.setRightPane('new');
-            //$scope.selectedAction.id = -1;//de-select the selected action
+
 
         };
         $scope.getDefaultDueDate = function(){
@@ -443,7 +551,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
         };
         $scope.lastSelectedItemId = '';
-        $scope.refreshActionList = function(){
+        $scope.refreshActionList = function(del, selected){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
                 $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
@@ -475,16 +583,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
-
                     if (list[x].action_status === "COMPLETED"){
                         list[x].isCompleted = true;
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
                     }
+                    
                 }
 
 
-                //$scope.actions = list;
+
                 var inActions = false;
                 var listItem, actionItem;
 
@@ -496,8 +604,19 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         for (var i in $scope.actions){
                             actionItem = $scope.actions[i];
                             if (actionItem.id === listItem.id){
-                                $scope.actions[i] = listItem;
-                                inActions = true;
+                                if ($scope.isStandAlone){
+                                    $scope.actions[i] = listItem;
+                                    inActions = true;
+                                } else if (!$scope.isStandAlone){
+                                    if (del === 'delete'){//flag to delete an item (overlay)
+                                        if (selected.id === listItem.id){
+                                            inActions = true;//skips 
+                                        }
+                                    } else {
+                                        $scope.actions[i] = listItem;
+                                        inActions = true;
+                                    }
+                                }
                             }
                         }
                         if (!inActions){
@@ -505,14 +624,50 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         }
                     }
                 }
-
+                
+                //hide the element that was deleted; and refresh the scroller,
+                //this also sets focus to the first item in the list
+                for (var xi in $scope.actions){
+                    if ($scope.actions[xi].id === selected.id){
+                        $scope.actions[xi].is_deleted = true;
+                        refreshScroller();
+                    }
+                }
+                
+                
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
+                var isStandAlone = $scope.isStandAlone;
                 if ($scope.lastSelectedItemId){
                     for (var a in $scope.actions){
-                        if ($scope.lastSelectedItemId === $scope.actions[a].id){
-                            $scope.selectAction($scope.actions[a]);
+                        if (isStandAlone){
+                            if ($scope.lastSelectedItemId === $scope.actions[a].id){
+                                $scope.selectAction($scope.actions[a]);
+                            }
+                        } else if (!$scope.isStandAlone){
+                            //overlay has some alerts which can get deleted; these are just hidden from view until the next full refresh / api call is done
+                            //since the action object still exists, upon deleting an action, select the next (visible) action starting at the index (0)
+                            if ($scope.lastSelectedItemId === $scope.actions[a].id && !del){
+                                $scope.selectAction($scope.actions[a]);
+                            } else {
+                                if (!$scope.actions[0].is_deleted){
+                                    $scope.selectAction($scope.actions[0]);
+                                } else {
+                                    if (!$scope.actions[a].is_deleted){
+                                        $scope.selectAction($scope.actions[a]);
+                                    } else {
+                                        for (var i in $scope.actions){//select next non-deleted action
+                                            if (!$scope.actions[i].is_deleted){
+                                                $scope.selectAction($scope.actions[i]);
+                                                $scope.$parent.$emit('hideLoader');
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
+                        
                     }
                 } else {
                     $scope.setDefaultActionSelected(0);
@@ -527,6 +682,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
 
         };
+        
+        
+        $scope.isDeletePending = function(id, a){
+            for (var i in a){
+                if (a[i] === id){
+                    return true;
+                }
+            } return false;
+        };
+        
         $scope.convertMilTime = function(milStr){
           //converts "16:10:00" into "04:10 PM"
             var str = milStr.split(' ');
@@ -534,12 +699,52 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var hour = strArray[0], min = strArray[1];
             return getFormattedTime(hour+''+min);
         };
+        $scope.capped = function(str){
+            if (str){
+                var s = str.toLowerCase();
+                s[0].toUpperCase();
+            }
+            return s;
+        };
+        
+        $scope.eitherString = function(str, val){
+            if (val){
+                if (str === val){
+                    return true;
+                } else if (str === val.toUpperCase()){
+                    return true;
+                } else if (str === val.toLowerCase()){
+                    return true;
+                } else if (str === $scope.capped(val)){
+                    return true;
+                } else return false;
+            } else return false;
+        };
+        
+        $scope.isAlert = function(v){
+           var str = 'ALERT';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
+        $scope.isRequest = function(v){
+           var str = 'REQUEST';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
+        $scope.isTrace = function(v){
+           var str = 'TRACE';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
 
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
                 $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
-                
+
                 var list = data.data;
                 var matchObj;
                 for (var x in list){
@@ -551,7 +756,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     if (typeof list[x].time_due === typeof 'string'){
                         matchObj = getTimeObj(list[x].time_due);
                         list[x].due_at_time = matchObj;
-                        //list[x].due_at_time = getTimeFromDateMilli(list[x].time_due);
+
                     } else {
                         list[x].due_at_time = $scope.timeFieldValue[0];
                     }
@@ -573,13 +778,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
                         list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
                     }
+                    
                 }
                 $scope.actions = list;
 
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
                 $scope.setDefaultActionSelected(0);
-                //$scope.refreshActionsList();
+
                 if ($scope.openingPopup){
                     setTimeout(function(){
                         $scope.initPopup();
@@ -651,9 +857,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var dateStr = d.split('T');
                 var month, day, year;
                 var formatDate = dateStr[0].split('-');
-                year = formatDate[0],
-                        month = formatDate[1],
-                        day = formatDate[2];
+                year = formatDate[0];
+                month = formatDate[1];
+                day = formatDate[2];
 
                 return month+'-'+day+'-'+year;
             }
@@ -719,7 +925,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             return getFormattedTime(hours+''+minutes);
         };
         var formatTime = function(timeInMs, via) {
-            var dt = new Date(timeInMs);          
+            var dt = new Date(timeInMs);
             var hours, minutes,seconds;
             if (via === 'created_at_time'){
                      hours = dt.getHours();
@@ -741,7 +947,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
              seconds = '0' + seconds;
             }
             return getFormattedTime(hours+''+minutes);
-      //      return hours + ":" + minutes + ":" + seconds;
+
         };
         var getFormattedTime = function (fourDigitTime){
             var hours24 = parseInt(fourDigitTime.substring(0,2));
@@ -849,14 +1055,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
         };
 
-        $scope.completeAction = function(){
+        $scope.completeAction = function(del, selected){
             //mark the selected action as complete, notify the api
             var params = $scope.getBaseParams();
                 params.action_task.id  = $scope.selectedAction.id;
                 params.is_complete = true;
                 var onSuccess = function(){
+                    $scope.actions.totalCount--;
                     $scope.lastSelectedItemId = params.action_task.id;
-                    $scope.refreshActionList();
+                    $scope.refreshActionList(del, selected);
                 };
                 var onFailure = function(data){
                     if (data[0]){

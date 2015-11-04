@@ -20,7 +20,7 @@ sntRover.controller('rvActivityCtrl', [
 	        $scope.end = 0;
 	        $scope.setScroller('report_content');
 
-		}
+		};
 		$scope.$on('PopulateLogData',function(e,data){
 			$scope.count = data.total_count;
 			$scope.activityLogData = data.results;
@@ -40,7 +40,7 @@ sntRover.controller('rvActivityCtrl', [
 	        $scope.end = $scope.start + $scope.dataLength - 1;
 	        $scope.$emit('hideLoader');
 	        $scope.refreshScroller('report_content');
-		})
+		});
 		/**
 		 * load next page
 		 */
@@ -48,7 +48,7 @@ sntRover.controller('rvActivityCtrl', [
 	        $scope.nextAction = true;
 	        $scope.prevAction = false;
 	        $scope.updateReport();
-		}
+		};
 
 		/**
 		 * load Previous page
@@ -57,7 +57,7 @@ sntRover.controller('rvActivityCtrl', [
 	        $scope.nextAction = false;
 	        $scope.prevAction = true;
 	        $scope.updateReport();
-		}
+		};
 
 		/**
 		 * checking Whether oldvalue of detail have any value
@@ -69,7 +69,7 @@ sntRover.controller('rvActivityCtrl', [
 	        	}else{
 	            return true;
 	        	}
-    	}
+    	};
 
 		/**
 		 * for pagination
@@ -81,7 +81,7 @@ sntRover.controller('rvActivityCtrl', [
 	            isDisabled = true;
 	        }
 	        return isDisabled;
-		}
+		};
 
 		/**
 		 * for pagination
@@ -93,7 +93,7 @@ sntRover.controller('rvActivityCtrl', [
 	            isDisabled = true;
 	        }
 	        return isDisabled;
-		}
+		};
 
 		/*
 		*@param {none}
@@ -107,7 +107,7 @@ sntRover.controller('rvActivityCtrl', [
 	        $scope.sortOrderOfUserDSC = false;
 	        $scope.sortOrderOfDateDSC = false;
 	        $scope.sortOrderOfActionDSC = false;
-	    }
+	    };
 
 	    /**	@param {none}
 		 * selecting sorting order for user field
@@ -126,7 +126,7 @@ sntRover.controller('rvActivityCtrl', [
 	            $scope.sort_order="asc";
 	        }
         	$scope.updateReport();
-    	}
+    	};
 
     	/**	@param {none}
 		 * selecting sorting order for date
@@ -145,7 +145,7 @@ sntRover.controller('rvActivityCtrl', [
 	            $scope.sort_order="asc";
 	        }
 	        $scope.updateReport();
-    	}
+    	};
 
     	/**	@param {none}
 		 * selecting sorting order for Action
@@ -164,7 +164,7 @@ sntRover.controller('rvActivityCtrl', [
 	            $scope.sort_order="asc";
 	        }
 	        $scope.updateReport();
-	    }
+	    };
 		$scope.updateReport = function(){
 	        var params = {
 	            page: $scope.prevAction?$scope.page - 1:($scope.nextAction?$scope.page + 1:$scope.page),
@@ -173,7 +173,7 @@ sntRover.controller('rvActivityCtrl', [
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field;
 	        $scope.$emit("updateLogdata",params);
-    	}
+    	};
     	$scope.init();
 	}
 ]);

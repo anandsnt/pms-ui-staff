@@ -26,7 +26,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         var companyCardFetchInterval = '';
 
         var headerHeight = 60;//Top header showing Rate manager title
-        var heightOfFixedComponents = 150;// Includes 'Filter options title;, 'show rates buttons'
+        var heightOfFixedComponents = 150;
         //and little blank space between show rate button and the scolling content
         var maxSize = $(window).height() - headerHeight;
 
@@ -83,19 +83,14 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 filterData.allRates = data.results;
                 filterData.rates = data.results;
 
-                /*if(filterData.rate_types.length > 0) {
-                    filterData.isResolved = true;
-                }*/
+
             },
             fetchRateTypesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
                 filterData.rate_types = data;
 
-                /*if(filterData.allRates.length > 0 &&
-                   filterData.rates.length > 0) {
-                    filterData.isResolved = true;
-                }*/
+
             };
 
             $scope.invokeApi(RMFilterOptionsSrv.fetchRates, {}, fetchRatesSuccessCallback).then(function(data) {
@@ -160,8 +155,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             }
 
             $scope.refreshFilterScroll();
+            if (filterData.rate_type_selected_list.length === 0){
+                $scope.resetRatesList();
+            }
         };
-
+        $scope.resetRatesList = function(){
+            filterData.rates = filterData.allRates;
+        };
         /**
         * Display the selected rates in a list having close button.
         * Duplicates are not allowed in the list.
@@ -328,6 +328,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 !$scope.currentFilterData.end_date || // Need to filter only when date range is provided
                 !rate.end_date || // Need to filter only rates which have an expiry date (end date)
                 (new tzIndependentDate($scope.currentFilterData.begin_date) < new tzIndependentDate(rate.end_date)); //Blocking only expired rates... rates expiring in the date range would still show up.
-        }
+        };
     }
 ]);

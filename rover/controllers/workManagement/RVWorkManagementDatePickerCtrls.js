@@ -11,7 +11,7 @@ sntRover.controller('RVWorkManagementSearchDatePickerController', ['$scope', '$r
 					ngDialog.close();
 				}
 
-			}
+			};
 		};
 		$scope.setUpData();
 
@@ -30,7 +30,7 @@ sntRover.controller('RVWorkManagementCreateDatePickerController', ['$scope', '$r
 				onSelect: function(dateText, inst) {
 					$("#" + ngDialog.latestID).remove();
 				}
-			}
+			};
 		};
 		$scope.setUpData();
 
@@ -49,7 +49,7 @@ sntRover.controller('RVWorkManagementMultiDatePickerController', ['$scope', '$ro
 					$scope.onDateChanged();
 					ngDialog.close();
 				}
-			}
+			};
 		};
 		$scope.setUpData();
 	}

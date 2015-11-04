@@ -1,4 +1,4 @@
-<div id="credit-card-options" ng-show="reservationData.paymentType.type.value=='CC'"> <!-- If hidden by default, add class="hidden" -->
+<div id="credit-card-options" ng-show="reservationData.paymentType.type.value=='CC' || reservationData.paymentType.type.value=='GIFT_CARD'"> <!-- If hidden by default, add class="hidden" -->
     
     <!-- Card toggle - Use only if there are exsiting cards on file -->
     <ul class="card-toggle" ng-show="reservationData.payment" ng-if="cards.available">

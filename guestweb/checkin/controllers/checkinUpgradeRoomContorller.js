@@ -1,4 +1,7 @@
-
+/*
+  Checkin Room Upgrade Ctrl 
+  This displays the available rooms for upgrading.
+*/
 (function() {
   var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
 
@@ -60,7 +63,7 @@
     });
 
 
-  }
+  };
 
   $scope.noThanksClicked = function(){
     if($rootScope.isAutoCheckinOn){
@@ -98,7 +101,7 @@ snt.controller('checkinUpgradeRoomController', dependencies);
         element.append(createList(attrs.template));
         $compile(element.contents())(scope);
       }
-    }
+    };
   });
 
   // Setup directive to handle image not found case
@@ -110,5 +113,5 @@ snt.controller('checkinUpgradeRoomController', dependencies);
           element.attr('src', attrs.errSrc);
         });
       }
-    }
+    };
   });

@@ -1,122 +1,164 @@
-<!-- Content PAYMENTS-->
-<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalPaymentController" ng-iscroll='payment_content' ng-click="clickedOnPayment($event)">
-    
-    <div class="wrapper">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isPaymentToggleSummaryActive}">
+<span ng-controller="RVJournalPaymentController" ng-click="clickedOnPayment($event)">
+    <!-- Grouped -->
+    <ul class="journal-groups">
+        <li ng-click="clickedPaymentGroup('')" ng-class="{'active':data.activePaymentTab === ''}"><span class="icons icon-navbar only-icon icon-total"></span>{{'TOTAL' | translate}}</li>
 
-            <ul class="grid-header payment">
-                <li class="name" translate>PAYMENT_TYPE</li>
-                <li class="code" translate>CHARGE_CODE</li>
-                <li class="number" translate>NUMBER</li>
-                <li class="value" translate>AMOUNT</li>
-            </ul>
+        <li ng-click="clickedPaymentGroup('PRE_STAY')" ng-class="{'active':data.activePaymentTab === 'PRE_STAY'}"><span class="icons icon-navbar only-icon icon-prestay" ng-click="prestay=true"></span>{{'PRE_STAY' | translate}}</li>
 
-            <!-- First level - payment types -->
-            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" class="grid-group">
-                <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="payment-title toggle">
-                    <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
-                    <span class="code">{{escapeNullData(level1.charge_code)}}</span>  
-                    <span class="number">{{escapeNullData(level1.number)}}</span>
-                    <span class="value">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
-                </a>
+        <li ng-click="clickedPaymentGroup('IN_HOUSE')" ng-class="{'active':data.activePaymentTab === 'IN_HOUSE'}"><span class="icons icon-navbar only-icon icon-inhouse"></span>{{'IN_HOUSE' | translate}}</li>
 
-                <!-- Second level - credit cards - if Payment type is Credit Card -->
-                <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
+        <li ng-click="clickedPaymentGroup('POST_STAY')" ng-class="{'active':data.activePaymentTab === 'POST_STAY'}"><span class="icons icon-navbar only-icon icon-poststay"></span>{{'POST_STAY' | translate}}</li>
+    </ul>
 
-                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title  toggle">
-                        <span class="code">{{escapeNullData(level2.charge_code)}}</span>
-                        <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
-                        <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
+    <!-- Print header -->
+    <ul class="journal-header-print">
+        <li ng-if="data.activePaymentTab === 'PRE_STAY'">
+            Pre-Stay Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+        <li ng-if="data.activePaymentTab === 'IN_HOUSE'">
+            In-house Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+        <li ng-if="data.activePaymentTab === 'POST_STAY'">
+            Post-Stay Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+        <li ng-if="data.activePaymentTab === ''">
+            Total Payments
+            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+        </li>
+    </ul>
+
+
+    <!-- Content PAYMENTS-->
+    <div id="journal-content" class="journal-content grouped scrollable" ng-iscroll='payment_content'>
+        
+        <div class="wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isPaymentToggleSummaryActive}">
+
+                <ul class="grid-header payment">
+                    <li class="name" translate>PAYMENT_TYPE</li>
+                    <li class="code" translate>CHARGE_CODE</li>
+                    <li class="number" translate>NUMBER</li>
+                    <li class="value" translate>AMOUNT</li>
+                </ul>
+
+                <!-- First level - payment types -->
+                <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" class="grid-group">
+                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="payment-title toggle">
+                        <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
+                        <span class="code">{{escapeNullData(level1.charge_code)}}</span>  
+                        <span class="number">{{escapeNullData(level1.number)}}</span>
+                        <span class="value">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
                     </a>
 
-                    <!-- Third level - transactions -->
-                    <table ng-show="level2.active" class="grid-items">
-                        <thead>
-                            <tr ng-show="level2.transactions.length > 0">
-                                <th scope="col" translate>ROOM_LABEL</th>
-                                <th scope="col" translate>NAME</th>
-                                <th scope="col" translate>RESERVATION_NUMBER</th>
-                                <th scope="col" translate>DETAILS</th>
-                                <th scope="col" translate>TIME</th>                            
-                                <th scope="col" translate>CREDIT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="(index3 ,level3) in level2.transactions" class="grid-item">
-                                <td>{{level3.room}}<br/>{{level3.account_no}}</td>
-                                <td>{{level3.name}}<br/>{{level3.account_name}}</td>
-                                <td>{{level3.reservation_number}}</td>
-                                <td ng-bind-html="level3.details"></td>
-                                <td>{{getTimeString(level3.date, level3.time)}}</td>                              
-                                <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td>
-                            </tr>
+                    <!-- Second level - credit cards - if Payment type is Credit Card -->
+                    <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
-                            <!-- Pagination row -->
-                            <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
-                                <td colspan="6">
-                                    <div class="search-pagination">
-                                        <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
-                                        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
-                                        <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                                    </div>
-                                </td>
-                            </tr>
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title  toggle">
+                            <span class="code">{{escapeNullData(level2.charge_code)}}</span>
+                            <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
+                            <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
+                        </a>
 
-                        </tbody>
-                    </table>
+                        <!-- Third level - transactions -->
+                        <table ng-show="level2.active" class="grid-items">
+                            <thead>
+                                <tr ng-show="level2.transactions.length > 0">
+                                    <th scope="col" translate>ROOM_LABEL</th>
+                                    <th scope="col" translate>NAME</th>
+                                    <th scope="col" translate>RESERVATION_NUMBER</th>
+                                    <th scope="col" translate>DETAILS</th>
+                                    <th scope="col" translate>TIME</th>                            
+                                    <th scope="col" translate>CREDIT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(index3 ,level3) in level2.transactions" class="grid-item">
+                                    <td>{{level3.room}}<br/>{{level3.account_no}}</td>
+                                    <td>{{level3.name}}<br/>{{level3.account_name}}</td>
+                                    <td>{{level3.reservation_number}}</td>
+                                    <td ng-bind-html="level3.details"></td>
+                                    <td>{{getTimeString(level3.date, level3.time)}}</td>                              
+                                    <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td>
+                                </tr>
+
+                                <!-- Pagination row -->
+                                <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
+                                    <td colspan="6">
+                                        <div class="search-pagination">
+                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
+                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
+                                            <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Second level -transactions - if Payment type is not Credit Card -->
+                    <div ng-if="level1.payment_type !== 'Credit Card'" >
+                        
+                        <table ng-show="level1.active" class="grid-items">
+                            <thead>
+                                <tr ng-show="level1.transactions.length > 0">
+                                    <th scope="col" translate>ROOM_LABEL</th>
+                                    <th scope="col" translate>NAME</th>
+                                    <th scope="col" translate>RESERVATION_NUMBER</th>
+                                    <th scope="col" translate>DETAILS</th>
+                                    <th scope="col" translate>TIME</th>                               
+                                    <th scope="col" translate>CREDIT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(index2 ,level2) in level1.transactions" class="grid-item">
+                                    <td>{{level2.room}}<br/>{{level2.account_no}}</td>
+                                    <td>{{level2.name}}<br/>{{level2.account_name}}</td>
+                                    <td>{{level2.reservation_number}}</td>
+                                    <td ng-bind-html="level2.details"></td>
+                                    <td>{{getTimeString(level2.date, level2.time)}}</td>
+                                    <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>
+                                </tr>
+
+                                <!-- Pagination row -->
+                                <tr class="pagination" ng-show="level1.total_count > data.filterData.perPage && level1.transactions.length > 0">
+                                    <td colspan="6">
+                                        <div class="search-pagination">
+                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1,false)" ng-disabled="isNextButtonDisabled(index1,false)" translate>NEXT</button>
+                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1,false)" ng-disabled="isPrevButtonDisabled(index1,false)" translate>PREVIOUS</button>
+                                            <p>{{ 'SHOWING' | translate }} <strong>{{ level1.start }}-{{ level1.end }}</strong> {{ 'OF' | translate }} <strong>{{ level1.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-
-                <!-- Second level -transactions - if Payment type is not Credit Card -->
-                <div ng-if="level1.payment_type !== 'Credit Card'" >
-                    
-                    <table ng-show="level1.active" class="grid-items">
-                        <thead>
-                            <tr ng-show="level1.transactions.length > 0">
-                                <th scope="col" translate>ROOM_LABEL</th>
-                                <th scope="col" translate>NAME</th>
-                                <th scope="col" translate>RESERVATION_NUMBER</th>
-                                <th scope="col" translate>DETAILS</th>
-                                <th scope="col" translate>TIME</th>                               
-                                <th scope="col" translate>CREDIT</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="(index2 ,level2) in level1.transactions" class="grid-item">
-                                <td>{{level2.room}}<br/>{{level2.account_no}}</td>
-                                <td>{{level2.name}}<br/>{{level2.account_name}}</td>
-                                <td>{{level2.reservation_number}}</td>
-                                <td ng-bind-html="level2.details"></td>
-                                <td>{{getTimeString(level2.date, level2.time)}}</td>
-                                <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>
-                            </tr>
-
-                            <!-- Pagination row -->
-                            <tr class="pagination" ng-show="level1.total_count > data.filterData.perPage && level1.transactions.length > 0">
-                                <td colspan="6">
-                                    <div class="search-pagination">
-                                        <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1,false)" ng-disabled="isNextButtonDisabled(index1,false)" translate>NEXT</button>
-                                        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1,false)" ng-disabled="isPrevButtonDisabled(index1,false)" translate>PREVIOUS</button>
-                                        <p>{{ 'SHOWING' | translate }} <strong>{{ level1.start }}-{{ level1.end }}</strong> {{ 'OF' | translate }} <strong>{{ level1.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                                    </div>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+                <div class="grid-footer">
+                    <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</p>
                 </div>
-
             </div>
 
-            <div class="grid-footer">
-                <p class="filters-applied">
-                    <span><label>{{'EMPLOYEE / DEPARTMENT / HOUSE' | translate}}: </label> {{ data.filterTitle }}</span>
-                    <span><label>Date Range - From:</label> {{ data.fromDate | date : dateFormat }} <label>To: </label>{{ data.toDate | date : dateFormat }}</span>
-                    <span ng-if="data.uiSelectedPaymentType"><label>{{'PAYMENT_TYPE' | translate}} / {{'CHARGE_CODE' | translate}}: </label>  {{ data.uiSelectedPaymentType }}</span>
-                </p>
-                <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</p>
-            </div>
         </div>
 
     </div>
-</div>
+
+    <ul class="journal-footer-print">
+        <li>
+            From <span>{{ data.fromDate | date : dateFormat }}</span> to <span>{{ data.toDate | date : dateFormat }}</span><br />
+            Departments(s) <span>{{data.selectedDepartmentName.join(', ')}}</span><br />
+            Employee(s) <span>{{data.selectedEmployeesName.join(', ')}}</span><br />
+            Payment Type(s) <span>{{data.uiSelectedPaymentType}}</span>
+        </li>
+        <li>
+            Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+            User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+        </li>
+    </ul>
+</span>

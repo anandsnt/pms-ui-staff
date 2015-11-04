@@ -35,7 +35,9 @@
 "BILLING_GROUP_NAME": "Name",
 "BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
 "TAKE_FROM_INVENTORY": "Take from inventory",
-"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status"
+"HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status",
+"ALLOTMENT_ONLY": "Allotment only",
+"GROUP_ONLY": "Group only"
 ,"CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
@@ -123,7 +125,22 @@
 "UNIT_PRICE":"Unit Price",
 "UNIT_PRICE_PLACEHOLDER":"Enter Unit Price",
 "SELECT_CHARGE_CODE":"Select Charge Code",
-"FAVOURITE":"Favorite", 
+"FAVOURITE":"Favorite",
+    "COMMISSION" : "Commission",
+    "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
+    "PREPAID": "Prepaid",
+    "PER_STAY": "Per Stay",
+    "PER_NIGHT": "Per Night",
+    "PER_STAY_OR_PER_NIGHT" : "Per Stay/Per Night",
+    "SELECT_CHARGE_CODE" : "Select Charge Code",
+    "CHARGE_CODE" : "Charge Code",
+    "CHARGE_CODES" : "Charge Codes",
+    "ON" : "On",
+    "OFF" : "Off",
+    "TAX_ON_COMMISSIONS" : "Tax On Commissions",
+    "TAX_TRANSACTION_CODE" : "Tax Transaction Code",
+    "SELECT_PREPAID_COMMISSION_CHARGE_CODE": "Select Prepaid Commission Charge Code",
+    "SELECT_TAX_TRANSACTION_CODE" : "Select Tax Transaction Code", 
     "EDIT": "Edit",
     "ALL": "All",
     "ADD":"Add",
@@ -240,7 +257,8 @@
 "CLOSE":"Close",
 "RATE_MANAGER_EXITS":"Rate Manager updates exist for these values",
 "OVERWRITE_RATE_MANAGER":"Overwrite Rate Manager",
-"DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager"
+"DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager",
+"ASK_GUEST_ADDRESS_DETAILS":"ASK GUEST ADDRESS DETAILS"
 ,
 
 
@@ -267,6 +285,7 @@
 "NO_OF_ITEMS_LABEL": "No. of items",
 "STATUS_LABEL": "Status",
 "TYPE_LABEL": "Type",
+"SCREEN_ID_LABEL": "screen id",
 "DELETE_LABEL": "delete",
 
 "EDIT_SECTION_LABEL": "Edit Section",
@@ -289,6 +308,14 @@
 "LINK_LABEL": "Link",
 "SCREEN_LABEL": "Screen",
 "ADDON_LABEL": "Add On",
+"SPACE_LABEL": "Space",
+"SPACE_MAX_OCCUPANCY_LABEL": "Maximum Occupancy",
+"SPACE_MAX_OCCUPANCY_PLACEHOLDER": "No of People",
+"SPACE_DURATION_LABEL": "Duration",
+"SPACE_FULFILLMENT_LABEL": "FULFILLMENT",
+"SPACE_FULFILLMENT_NONE": "None",
+"SPACE_FULFILLMENT_EMAIL": "Email",
+"SPACE_FULFILLMENT_EMAIL_ACCOUNTS_LABEL": "Email Accounts (separated by semi-colon ;)",
 "ADDON_DESCRIPTION_LABEL": "Add On Description",
 "ADDON_PRICE_LABEL": "Add On Price",
 "ADDON_MIN_DURATION_LABEL": "Minimum duration [days]",
@@ -297,6 +324,7 @@
 "PHONE_LABEL": "Phone",
 "ADDRESS_LABEL": "Address",
 "URL_LABEL": "URL",
+"SCREEN_ID_LABEL":"screen id",
 
 "SECTION_ICON_LABEL": "Section icon",
 "CATEGORY_ICON_LABEL": "Category icon",
@@ -320,13 +348,18 @@
 "REPLACE_ICON_LABEL" : "Replace icon",
 "REPLACE_IMAGE_LABEL" : "Replace image",
 "ADD_ICON_LABEL" : "Add icon",
-"ADD_IMAGE_LABEL" : "Add image"
+"ADD_IMAGE_LABEL" : "Add image",
+"SECTION_DESCRIPTION_VISIBLE_LABEL": "SECTION DESCRIPTION VISIBLE",
+"SECTION_DESCRIPTION_ALIGNMENT_LABEL": "SECTION DESCRIPTION ALIGNMENT",
+"SECTION_DESCRIPTION_LABEL": "SECTION DESCRIPTION"
+
 
 ,"EARLY_CHECKIN_UPSELL": "Early Checkin Upsell",
 "EARLY_CHECKIN" : "Early Checkin",
 "EARLY_CHECKIN_GENERAL": "GENERAL",
 "EARLY_CHECKIN_UPSELL_WINDOWS": "Early Checkin Upsell Windows",
 "EARLY_CHECKIN_START_TIME" : "Start Time",
+"EARLY_CHECKIN_END_TIME": "EARLY CHECKIN TIME ENDS AT",
 "EARLY_CHECKIN_CHARGE" : "Charge",
 "EARLY_CHECKIN_ADDON" : "Add On",
 "EARLY_CHECKIN_BY_RATE" : "RATE CODES BYPASS EARLY CHECK IN OFFER",
@@ -382,6 +415,15 @@
 "NO_RESULT_FOUND":"No Result Found",
 "NO_ROOMS":"No Rooms"
 
+,"GIVEX_SETUP_HEADER": "Givex Setup",
+"GIVEX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"GIVEX_SUB_TITLE": "Givex API Access Configuration",
+"GIVEX_USERNAME_LABEL": "User Name",
+"GIVEX_PASSWORD_LABEL": "Password",
+"GIVEX_ACCESS_URL_LABEL": "URL",
+"GIVEX_SECONDARY_ACCESS_URL_LABEL": "SECONDARY URL",
+"GIVEX_TIMEOUT_LABEL": "Timeout",
+"GIVEX_REQUESTOR_ID_LABEL": "Requester ID"
 ,    
     
     "FROM": "From",
@@ -533,7 +575,8 @@
 	"WORKSTATIONS":"Work Stations",
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
-	"ENCODER_ID_PLACEHOLDER": "Enter encoder id"
+	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
+        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
 
 ,
 	"PAYMENT_METHODS": "Payment Methods",
@@ -597,6 +640,12 @@
 "DASHBOARD": "Dashboard",
 
 
+"ACTIONS_USERNAME": "Username",
+"ACTIONS_DATETIME": "Date / Time",
+"ACTIONS_ACTION_TYPE": "Action Type",
+"ACTIONS_ACTION_DETAILS": "Details",
+
+
 "MARKET":"Markets",
 "USE_MARKETS":"Use markets",
 "MARKET_NAME_PLACEHOLDER":"Enter market name",
@@ -625,7 +674,9 @@
 
 "BALANCE_INVENTORY": "Balance Inventory",
 "START_JOB": "Start Job",
-"REFRESH_STATUS": "Refresh Status"
+"REFRESH_STATUS": "Refresh Status",
+"FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
+"SHOW_OVERBOOKING_ALERT" : "SHOW OVERBOOKING ALERT"
 ,
 
     "ROOMS":"Rooms",
@@ -702,6 +753,7 @@
 "USE_INSPECTED_ROOM_STATUS":"Use Inspected room status",
 "USE_PICKUP_ROOM_STATUS":"Use Pick-up room status",
 "ENABLE_QUEUE_ROOMS":"Enable Queue Rooms",
+"ENABLE_ADVANCED_QUEUE_PRECHECKIN":"Enable Advanced Queue",
 "EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT":"EMAIL ACCOUNTS TO RECEIVE QUEUE RESERVATION ALERT",
 "CHECK_IN_TO_INSPECTED_ROOMS_ONLY":"Check in to inspected rooms only",
 "ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
@@ -749,6 +801,8 @@
     "RATE_ONLY":"Rate Only",
     "RESERVATION_ONLY":"Reservation Only",
     "MANUAL_POSTING":"Manual Posting",
+    "FORECAST_FOR_NEXT_DAY":"Forecast for Next Day",
+    "CHARGE_FULL_WEEKS_ONLY":"Charge full weeks only",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
@@ -791,7 +845,8 @@
     "SELECT_CHARGE_CODE":"Select Charge Code",
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
-    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code"
+    "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "MAX_ROOM_QUANTITY" :"Max Rooms"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
@@ -804,7 +859,8 @@
 "SITEMINDER_SUB_TITLE": "SiteMinder API Access Configuration",
 "MAPPINGS_ACTIVATE_INACTIVATE": "Mappings - Activate/Inactivate",
 "SITEMINDER_FULL_REFRESH": "Full Refresh",
-"SITEMINDER_LAST_REFRESH": "Last Refresh",
+"SITEMINDER_LAST_REFRESH": "Last Period Refresh",
+"SITEMINDER_DATEPICKER_LABEL": "Refresh Since",
 "RUN_REFRESH_BUTTON": "Run",
 "SITEMINDER_USERNAME_LABEL": "User Name",
 "SITEMINDER_DEFAULT_BOOKING_ORIGIN": "Default Origin of Booking",
@@ -815,7 +871,7 @@
 "SITEMINDER_REQUESTOR_ID_LABEL": "Requester ID"
 ,
 
-	"STATIONARY":"Stationery",
+	"STATIONARY":"Stationary",
 	"CUSTOMIZE":"Customize",
 	"GUEST_BILL_TITLE": "Guest Bill",
 	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
@@ -861,10 +917,15 @@
 	"SOCIAL_NETWORK_URL": "Social Network URL",
 	"SOCIAL_NETWORK" : "Social Network",
 	"CONFIRMATION_LETTER_TEXT" : "CONFIRMATION LETTER TEXT",
-	"SEND_CANCELLATION_LETTER":"Send Cancellation Letter",
-	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS":"Print Cancellation And Confirmation Letters",
-	"PRINT_CANCELLATION_LETTER":"Print Cancellation Letter",
-	"PRINT_CONFIRMATION_LETTER":"Print Confirmation Letter"
+	"SEND_CANCELLATION_LETTER": "Send Cancellation Letter",
+	"PRINT_CANCELLATION_AND_CONFIRMATION_LETTERS": "Print Cancellation And Confirmation Letters",
+	"PRINT_CANCELLATION_LETTER": "Print Cancellation Letter",
+	"PRINT_CONFIRMATION_LETTER": "Print Confirmation Letter",
+	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
+	"ENTER_SUBJECT": "Enter Subject",
+	"CANCELLATION_EMAIL_BODY": "Cancellation Email Body",
+	"CANCELLATION_LETTER_BODY": "Cancellation Letter Body"
+
 
 
 
@@ -894,7 +955,15 @@
 "TERMINAL_NAME":"Terminal Name",
 "TERMINAL_NAME_PLACEHOLDER":"Enter Terminal Name",
 "TERMINAL_ID":"Terminal ID",
-"TERMINAL_ID_PLACEHOLDER":"Enter Terminal ID",
+"TERMINAL_ID_PLACEHOLDER":"Enter Terminal ID","ZDIRECT_SETUP_HEADER": "Z-Direct Setup",
+"ZDIRECT_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"ZDIRECT_SUB_TITLE": "Z-Direct API Access Configuration",
+"ZDIRECT_USERNAME_LABEL": "User Name",
+"ZDIRECT_PASSWORD_LABEL": "Password",
+"ZDIRECT_ACCESS_URL_LABEL": "URL",
+"ZDIRECT_CUSTOMER_NAME_LABEL": "Customer Name",
+"ZDIRECT_PROPERTY_NAME_LABEL": "Property Name",
+"ZDIRECT_HOTEL_CODE_LABEL": "Hotel Code",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
@@ -940,4 +1009,18 @@
 "GUEST_ACTIONS_SWITCH_LABEL": "Guest Actions With ADD ONS",
 "DISPLAY_ADDONS_SWITCH_LABEL": "Display purchased Add Ons",
 "ALLOW_CANCELLATION_SWITCH_LABEL": "Allow cancellation of purchased Add Ons",
-"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing"}
+"AVAILABLE_ADDONS_SWITCH_LABEL" : "Display available Add Ons and enable purchasing",
+
+"ZESTSTATION_TITLE": "Zest Station Settings",
+"ZESTSTATION_BACK": "Back to Zest",
+"COLOR_SEC_LABEL": "Color details",
+        
+"TEXT_COLOR": "Text Color",
+"BUTTON_COLOR": "Button Color",
+"BG_COLOR": "Background Color",
+"TRANS_COLOR": "Transparent Color",
+"IN_FIELD_BG": "Input Field Background",
+"HEADER_ICONS_COLOR": "Header Icons Color",
+"HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)"
+        
+        }

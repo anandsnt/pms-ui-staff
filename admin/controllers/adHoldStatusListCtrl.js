@@ -27,21 +27,21 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 		$scope.holdstatusData={};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
-		$scope.data.holdStatuses.map(function(x){
-			if(x.id===id)
-				{
-				$scope.holdstatusData.name =x.name;
-				$scope.holdstatusData.id =x.id;
-				$scope.holdstatusData.is_take_from_inventory =x.is_take_from_inventory;
-				$scope.holdstatusData.is_system=x.is_system;
-				}
+		$scope.holdstatusData = _.findWhere($scope.data.holdStatuses, {
+			id: id
 		});
 	};
    /*
     * Render add hold status screen
     */
 	$scope.addNew = function()	{
-		$scope.holdstatusData={};
+		$scope.holdstatusData={
+			name: null,
+			is_system: false,
+			is_take_from_inventory: false,
+			is_group_only: false,
+			is_allotment_only: false,
+		};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
 		$timeout(function() {
@@ -70,12 +70,14 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     		$scope.$emit('hideLoader');
 			if($scope.isAddMode){
 				// To add new data to scope
-    			$scope.data.holdStatuses.push(data.data);
+    			$scope.data.holdStatuses.push(data);
 	    	} else {
 	    		//To update data with new value
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].name = $scope.holdstatusData.name;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_take_from_inventory = $scope.holdstatusData.is_take_from_inventory;
 	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_system=$scope.holdstatusData.is_system;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_group_only=$scope.holdstatusData.is_group_only;
+	    		$scope.data.holdStatuses[parseInt($scope.currentClickedElement)].is_allotment_only=$scope.holdstatusData.is_allotment_only;
 	    	}
     		$scope.currentClickedElement = -1;
     	};

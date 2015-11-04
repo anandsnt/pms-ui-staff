@@ -6,10 +6,11 @@
         <div class="wrapper">
             <ul class="reports-list">
                 <li ng-repeat="item in reportList" ngrepeatend>
-                    <a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
+                    <a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter(item)">
                         <span ng-class="item.reportIconCls"></span>
                         <div class="data">
-                            <h2>{{ item.title }}
+                            <h2 ng-class="{'single-title': !item.description}">
+                                {{ item.title }}
                                 <span ng-if="item.sub_title">{{ item.sub_title }}</span>
                             </h2>
                             <em>{{ item.description }}</em>

@@ -2,7 +2,7 @@
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/checkoutRoomVerification");
+    $urlRouterProvider.otherwise("/noOptionAvailable");
 
     // checkout now states
 
@@ -92,27 +92,47 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 });
 	  // pre checkin states
 
-    $stateProvider.state('preCheckinTripDetails', {
-    	url: '/tripDetails',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'Pre Check-in'
-	}).state('preCheckinStatus', {
+    $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/Row_nyc/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
-	
-	$stateProvider.state('externalVerification', {
-    	url: '/externalVerification',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'External verification'
-	});
 
-	$stateProvider.state('earlyCheckinOptions', {
-    	url: '/noOptions',
+    $stateProvider.state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/Row_nyc/earlyCheckinOptions.html',
+	 	controller : 'earlyCheckinOptionsController',
+	 	title: 'Early Check-in'
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/Row_nyc/earlyCheckinFinal.html',
+	 	controller : 'earlyCheckinFinalController',
+	 	title: 'Early Check-in'
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/checkin/partials/Row_nyc/lateArrivalDetails.html',
+	 	controller : 'checkinArrivalDetailsController',
+	    title: 'Early Check-in'
+	 });
+
+	 $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Row_nyc/externalVerification.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 }).state('externalVerificationError', {
+	 	url: '/verificationError',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
+	 	controller:'verificationErrorController',
+	 	title: 'External verification Error'
+	 });
+
+	
+	 $stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
-
+	 
 }]);

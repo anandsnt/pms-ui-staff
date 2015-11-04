@@ -1,7 +1,7 @@
 <!-- Checkin screen -->
 <form id="signature-pad" class="complete-registration form" ng-if="clickedButton == 'checkinButton' && $index === 0">
-	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN'" translate>PLEASE_SIGN_BELOW</h2>
-	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
+	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN' && reservationBillData.signature_details.is_signed === 'false'" translate>PLEASE_SIGN_BELOW</h2>
+	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'  && reservationBillData.signature_details.is_signed === 'false'">
 		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
 			
 		</div>
@@ -18,9 +18,32 @@
 	</div>
 	<div class="actions">
 		<!-- Complete checkin button disabled out until ready / vacant room is assigned -->
-		<button id="checkin-button" ng-click="clickedCompleteCheckin()" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green" translate>
+                
+		<!-- Advance put in Queue flow now exists, from admin -> rooms -> housekeeping -> ENABLE ADVANCED QUEUE PRE-CHECKIN -->
+		<!--  if using the advanced queue flow, only via 'Put in Queue' will the button text change, all other functionality is the same: CICO-19673-->
+		<button ng-show="!putInQueue"
+                    id="checkin-button" ng-click="clickedCompleteCheckin()" 
+                        data-room-status="READY" 
+                        data-reseravation-status="CHECKING_IN" 
+                        data-required-signature="CHECKIN" 
+                        data-key-settings="encode" 
+                        data-fo-status="VACANT" 
+                        class="button green" translate>
 			COMPLETE_CHECKIN
 		</button>
+		<button ng-show="putInQueue"
+                    id="checkin-button" ng-click="clickedCompleteAddToQueue()" 
+                        data-room-status="READY" 
+                        data-reseravation-status="CHECKING_IN" 
+                        data-required-signature="CHECKIN" 
+                        data-key-settings="encode" 
+                        data-fo-status="VACANT" 
+                        class="button green" translate>
+			COMPLETE_ADD_TO_QUEUE
+		</button>
+                
+                
+                
 		<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
 			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()' translate>CLEAR_SIGNATURE</a>
 		</div>

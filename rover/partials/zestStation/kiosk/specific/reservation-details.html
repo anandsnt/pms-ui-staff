@@ -1,0 +1,47 @@
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "reservation-details"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>Check your reservation details</h1>
+        <div id="flex-holder">
+            <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                - if some <h> elements are missing just exclude them or use 0. 
+                - 8 is added to make sure bottom rounded corner is set off screen
+            -->
+            <div id="textual" class="reservation-details pull-left" > <!-- Add ng-scroll here style="max-height:{maxheight}px;" -->
+                <div class="wrapper">
+                    <div id="guests">
+                        <p>
+                            <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>                          
+                            <span>{{selectedReservation.guest_details.length}} residents</span>
+                            {{selectedReservation.stay_dates[0].room_type}}
+                        </p>
+                        <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">Additional Guests ({{selectedReservation.guest_details.length-1}})</p>
+                        <button type="button" class="button" touch-press="goToScreen(null, 'add-guests', true, 'reservation-details')">Add / Remove Guests</button>
+                    </div>
+                    <ul id="rate">
+                        <li>Nights<span>{{selectedReservation.total_nights}}</span></li>
+                        <li ng-hide="is_rates_suppressed" >Average Daily Rate<span>{{currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span></li>
+                        
+                        <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
+                            {{addon.name}} ({{addon.addon_count}})
+                            <span>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
+                        </li>
+                        
+                        <li class="break"></li>
+                        
+                        <li ng-hide="is_rates_suppressed" class="sub">Taxes / Fees<span>{{currencySymbol}}{{selectedReservation.reservation_details.taxes}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">Subtotal<span>{{currencySymbol}}{{selectedReservation.reservation_details.sub_total}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">Deposits<span>- {{currencySymbol}}{{selectedReservation.reservation_details.deposits}}</span></li>
+                        <li class="total">Balance due<span>{{currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="actions" class="pull-right">
+                <!-- button type="button" class="button" touch-press="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button -->
+                <button type="button" class="button" touch-press="goToScreen(null, 'terms-conditions', true, 'reservation-details')">Next</button>
+                <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
+            </div>
+        </div>
+    </div>
+<ng-include src="'assets/partials/zestStation/rvTabletFooter.html'" ></ng-include>
+</section>

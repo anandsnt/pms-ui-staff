@@ -1,10 +1,8 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv',
-	function($scope, $rootScope, $filter, $stateParams, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv','rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv , RVReservationCardSrv) {
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
-
-
 
 		/**
 		 * to run angular digest loop,
@@ -42,9 +40,9 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission'])
+				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission']);
 			}
-		}
+		};
 
 		/**
 		 * Whether our summary data has changed
@@ -70,7 +68,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				isDemographicsPopupOpen: false,
 				newNote: "",
 				demographics: null
-			}
+			};
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
 			// Have a handler to update the summary - IFF in edit mode
 			var callUpdate = function() {
@@ -80,7 +78,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					//call the updateAccountSummary method from the parent controller
 					$scope.updateAccountSummary();
 				}
-			}
+			};
 
 			if (!$scope.isInAddMode()) {
 				$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
@@ -92,7 +90,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					callUpdate();
 				});
 			}
-		}
+		};
 
 		/**
 		 * get Balance Amount in format
@@ -102,9 +100,13 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			if (typeof amount === 'undefined') {
 				return "";
 			}
-			return $rootScope.currencySymbol + $filter('number')(amount, 2)
-		}
+			return $rootScope.currencySymbol + $filter('number')(amount, 2);
+		};
 
+		//Update the balance after payment
+		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
+			$scope.accountConfigData.summary.balance = balance;
+		});
 
 		/**
 		 * Place holder method for future implementation of mandatory demographic data
@@ -112,12 +114,12 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 */
 		$scope.isDemographicsFormValid = function() {
 			return true;
-		}
+		};
 
 		$scope.closeDemographicsPopup = function() {
 			$scope.accountSummaryData.isDemographicsPopupOpen = false;
 			$scope.closeDialog();
-		}
+		};
 
 		/**
 		 * Demographics Popup Handler
@@ -142,7 +144,6 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					showDemographicsPopup();
 				},
 				onFetchDemographicsFailure = function(errorMessage) {
-					console.log(errorMessage);
 				};
 
 			if ($scope.accountSummaryData.demographics === null) {
@@ -155,7 +156,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				showDemographicsPopup();
 			}
 
-		}
+		};
 
 		$scope.saveDemographicsData = function() {
 			if ($scope.isInAddMode()) {
@@ -166,11 +167,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 			$scope.updateAccountSummary();
 			$scope.closeDemographicsPopup();
-		}
+		};
 
 		$scope.cancelDemographicChanges = function() {
 			$scope.accountConfigData.summary.demographics = demographicsMemento;
-		}
+		};
 
 		/**
 		 * Method to save a note
@@ -204,9 +205,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					}
 				});
 			} else {
-				console.warn("Trying to save empty Note!");
 			}
-		}
+		};
 
 		$scope.removeAccountNote = function(noteId) {
 			var onRemoveAccountNoteSuccess = function(data, params) {
@@ -229,16 +229,16 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					"noteId": noteId
 				}
 			});
-		}
+		};
 
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";
 			$scope.closeDialog();
-		}
+		};
 
 		$scope.onAccountTypeModification = function() {
 			$scope.updateAccountSummary();
-		}
+		};
 
 		$scope.onAccountStatusModification = function() {
 			//  dont allow to close account with balance -gt 0
@@ -253,7 +253,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			} else {
 				$scope.updateAccountSummary();
 			}
-		}
+		};
 
 		/**
 		 * success call back of summary details fetch
@@ -263,7 +263,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		var onAccountSummaryDetailsFetchSuccess = function(data) {
 			$scope.accountConfigData.summary = data;
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
-		}
+		};
 
 		/**
 		 * when we are switching between tabs, we need to update the summary data
@@ -279,7 +279,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			};
 
 			$scope.callAPI(rvAccountsConfigurationSrv.getAccountSummary, options);
-		}
+		};
 
 		initAccountSummaryView();
 
@@ -308,5 +308,74 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				refreshSummaryData();
 			}
 		});
+
+		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
+
+		$scope.paymentTypes = [];
+		$scope.creditCardTypes = [];
+
+		// Prefetching payment details
+		var successCallBackOfFetchPayment = function (data) {
+			$scope.$emit('hideLoader');
+			$scope.paymentTypes = data;
+			angular.forEach($scope.paymentTypes, function (item, key) {
+				if(item.name == 'CC'){
+					$scope.creditCardTypes = item.values;
+				}
+			});
+		};
+		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
+		// Show DEPOSIT/BALANCE popup 
+		$scope.openDepositBalanceModal = function() {
+			var dataToSrv = {
+				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
+			};
+			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
+		};
+ 
+		$scope.successCallBackFetchDepositBalance = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.depositBalanceData = data;
+			
+			$scope.passData = {
+				"origin": "GROUP",
+				"details": {
+					"firstName": "",
+					"lastName": "",
+					"paymentTypes": $scope.paymentTypes,
+					"accountId" : $scope.accountConfigData.summary.posting_account_id
+				}
+			};
+
+			ngDialog.open({
+				template: '/assets/partials/depositBalance/rvModifiedDepositBalanceModal.html',
+				controller: 'RVDepositBalanceAccountsCtrl',
+				className: 'ngdialog-theme-default1',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
+		/*
+		 *	MLI SWIPE actions
+		 */
+		var processSwipedData = function(swipedCardData) {
+			var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
+		};
+		// Catching Swipe here 
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			var swipeOperationObj = new SwipeOperation();
+			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+			var tokenizeSuccessCallback = function(tokenValue) {
+				$scope.$emit('hideLoader');
+				swipedCardData.token = tokenValue;
+				processSwipedData(swipedCardData);
+			};
+			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback );
+		});
+
+		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 	}
 ]);

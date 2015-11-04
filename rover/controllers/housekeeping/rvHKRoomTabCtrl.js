@@ -6,7 +6,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 	'$filter',
 	'RVHkRoomDetailsSrv',
 	'ngDialog',
-	function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog) {
+	'rvUtilSrv',
+	'$timeout',
+	function($scope, $rootScope, $state, $stateParams, $filter, RVHkRoomDetailsSrv, ngDialog, util, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -49,7 +51,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
 			to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
 			selected_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
-			room_service_status_id: $_originalStatusId
+			room_service_status_id: $_originalStatusId,
+			begin_time: '',
+			end_time: ''
 		};
 
 		// captures the oo/os status details in this
@@ -63,12 +67,21 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		$scope.serviceStatus = {};
 
+		var intervalForTimeSelector = 15,
+			mode = 12;
+		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
+
+		//for fixing the issue of 24 hour long OOO thing
+		$scope.timeSelectorList.push ({
+			text: "11:59 PM",
+			value: "23:59"
+		});
 
 		/* ***** ***** ***** ***** ***** */
 
 		$scope.setClass = function(day) {
 			return [true, ($scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')] && $scope.serviceStatus[$filter('date')(tzIndependentDate(day), 'yyyy-MM-dd')].id > 1 ? 'room-out' : '')];
-		}
+		};
 
 
 		// fetch callback of saved oo/os details
@@ -104,7 +117,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				return item.id === $_originalStatusId;
 			});
 
-			// $scope.ooOsTitle = item.description;
+
 
 			// check and update if room in service
 			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;
@@ -208,7 +221,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		$scope.closeDialog = function() {
 			ngDialog.close();
-		}
+		};
 
 		var datePickerCommon = {
 			dateFormat: $rootScope.jqDateFormat,
@@ -222,7 +235,6 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				setTimeout(function() {
 					$('body').find('#ui-datepicker-overlay')
 						.on('click', function() {
-							console.log('hey clicked');
 							$('#room-out-from').blur();
 							$('#room-out-to').blur();
 						});
@@ -239,7 +251,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd');
 			}
 			$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateService.from_date), $rootScope.dateFormat);
-		}
+		};
 
 		$scope.fromDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
@@ -274,11 +286,129 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			}
 		}, datePickerCommon);
 
+		/**
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowTimeSelector = function() {
+			//as per CICO-11840 we will show this for hourly hotels only
+			return $rootScope.isHourlyRateOn
+		};
 
+		/**
+		 * @param  {Date}
+		 * @return {String}
+		 */
+		var getApiFormattedDate = function(date) {
+			return ($filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI));
+		};
+
+		/**
+		 * CICO-11840
+		 * when there is a third party api is in progress with reservation booking
+		 * we need to show this popup
+		 * @return undefined
+		 */
+		var showWebInProgressPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabWebInProgressPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+		};
+
+		/**
+		 * CICO-11840
+		 * when there is some reservation attached to room & user tries to put into OOS/OOO
+		 * we need to show this popup
+		 * @return undefined
+		 */
+		var showAlreadyAssignedToReservationsPopup = function(reservationList) {
+			var data = {
+				reservations : reservationList
+			};
+
+            ngDialog.open({
+                template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabReservationExist.html',
+                className: '',
+                scope: $scope,
+                data: JSON.stringify(data),
+                closeByDocument: false,
+                closeByEscape: false
+            });
+		};
+
+		/**
+		 * @param  {[type]}
+		 * @return {[type]}
+		 */
+		var successCallbackOfRoomStatusChangePossible = function(data) {
+			var isWebInProgress = data.is_locked_room,
+				alreadyAssignedToReservations = data.is_room_already_assigned;
+
+			if (isWebInProgress) {
+				showWebInProgressPopup ();
+			}
+			else if (alreadyAssignedToReservations) {
+				showAlreadyAssignedToReservationsPopup (data.reservations);
+			}
+			else {
+				$scope.update ();
+			}
+			
+		};
+
+		/**
+		 * @param  {[type]}
+		 * @return {[type]}
+		 */
+		var failureCallbackOfRoomStatusChangePossible = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		/**
+		 * CICO-11840
+		 * check whether the room status change possible
+		 * when it is locked via web api interface or it is already assigned
+		 */
+		$scope.checkWhetherRoomStatusChangePossible = function() {
+			//As per requirement initially we are restricting this feature to hourly hotels only
+			if (!$rootScope.isHourlyRateOn) {
+				$scope.update ();
+				return;
+			}
+
+			//for hourly hotels as of now
+			var params = {
+				from_date	: 	getApiFormattedDate($scope.updateService.from_date),
+				to_date		: 	getApiFormattedDate($scope.updateService.to_date),
+				room_id 	: 	$scope.roomDetails.id,
+				begin_time	: 	$scope.updateService.begin_time,
+				end_time	: 	$scope.updateService.end_time
+			};
+			
+			var options = {
+				params : params,
+				successCallBack: successCallbackOfRoomStatusChangePossible,
+                failureCallBack: failureCallbackOfRoomStatusChangePossible
+			};
+
+			$scope.callAPI(RVHkRoomDetailsSrv.checkWhetherRoomStatusChangePossible, options);
+		};
 
 		/* ***** ***** ***** ***** ***** */
 
-
+		/**
+		 * when the user chooses for force fully put room oos/ooo from popup
+		 * @return {[type]} [description]
+		 */
+		$scope.forcefullyPutRoomToOOSorOOO = function() {
+			$scope.closeDialog ();
+			$timeout(function(){
+				$scope.update();
+			}, 700);
+		};
 
 		$scope.update = function() {
 			var _error = function(errorMessage) {
@@ -367,11 +497,22 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			}
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomStatus, params, onFetchSuccess, onFetchFailure);
-		}
+		};
 
 		$scope.updateCalendar = function(year, month) {
 			function onFetchSuccess(data) {
 				angular.extend($scope.serviceStatus, data.service_status);
+				
+				var isNotInService 		= $scope.updateService.room_service_status_id > 1,
+					selectedServiceData = $scope.serviceStatus[$scope.updateService.selected_date],
+					hourlyEnabledHotel 	= $rootScope.isHourlyRateOn;
+
+				//CICO-11840
+				if (isNotInService && hourlyEnabledHotel) {
+					$scope.updateService.begin_time 	= selectedServiceData.from_time;
+					$scope.updateService.end_time 		= selectedServiceData.to_time;
+				}
+
 				$('.ngmodal-uidate-wrap').datepicker('refresh');
 				$scope.$emit('hideLoader');
 			}
@@ -385,7 +526,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				month: month || tzIndependentDate($scope.updateService.selected_date).getMonth(),
 				room_id: $scope.roomDetails.id
 			}, onFetchSuccess, onFetchFailure);
-		}
+		};
 
 		$scope.$watch("updateService.selected_date", function() {
 			if ($scope.updateService.room_service_status_id > 1) {
@@ -396,11 +537,11 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.showSaved = false;
 			}
 			$scope.refreshScroller('room-tab-scroll');
-		})
+		});
 
 
 		$scope.onViewDateChanged = function() {
-			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd')
+			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd');
 			$scope.updateService.room_service_status_id = $scope.serviceStatus[$scope.updateService.selected_date].id;
 			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...
 			$_originalStatusId = $scope.updateService.room_service_status_id;
@@ -447,7 +588,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					}
 				}
 			}
-		}
+		};
 
 	}
 ]);

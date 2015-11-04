@@ -1,8 +1,11 @@
-
+/*
+	Early Checkin final Ctrl 
+	The early checkin purcahse is done here on entering to this page itself.
+*/
 (function() {
 	var earlyCheckinFinalController = function($scope,$rootScope,$state,$stateParams,earlyCheckinService) {
 
-	
+
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
@@ -13,7 +16,7 @@
 	}
 	else{
 		$scope.pageValid = true;
-	}		
+	}
 
 	if($scope.pageValid){
 		$scope.checkinTime = $stateParams.time;
@@ -21,7 +24,7 @@
 		var offerId= $stateParams.id;
 		$scope.isPosting = true;
 		var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
-		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {				
+		earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {
 			$scope.isPosting = false;
 		},function(){
 			$scope.netWorkError = true;
@@ -31,8 +34,8 @@
 		$scope.nextButtonClicked =  function(){
 			$state.go('preCheckinStatus');
 		};
-	};
-}
+	}
+};
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','earlyCheckinService',

@@ -64,7 +64,7 @@ sntRover.service('rvUtilSrv', [function(){
 		    }
 
 		    return datesBetween;
-		}
+		};
 
 		/**
 		 * to get the millisecond value against a date/date string
@@ -92,7 +92,7 @@ sntRover.service('rvUtilSrv', [function(){
 		 * @return {String}            [millisecond]
 		 */
 		this.addOneDay = function(date_){
-			return (this.toMilliSecond (date_) + (24 * 3600 * 1000))
+			return (this.toMilliSecond (date_) + (24 * 3600 * 1000));
 		};
 
 		/**
@@ -133,7 +133,7 @@ sntRover.service('rvUtilSrv', [function(){
     	*/
     	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber){
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseInt (string)};
+    		if (self.isNumeric (string)) { return parseInt (string);}
     		return withWhatToBeReplacedifNotANumber;
     	};
 
@@ -145,7 +145,7 @@ sntRover.service('rvUtilSrv', [function(){
     	*/
     	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber){
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseFloat (string)};
+    		if (self.isNumeric (string)) { return parseFloat (string);}
     		return withWhatToBeReplacedifNotANumber;
     	};
 
@@ -155,11 +155,69 @@ sntRover.service('rvUtilSrv', [function(){
     	 * @param  {String} seperator   default will be /
     	 * @return {String}             date string
     	 */
-    	this.get_date_from_date_picker = function (date_picker, seperator){
+		this.get_date_from_date_picker = function (date_picker, seperator){
     		if (typeof seperator === "undefined") {
     			seperator = "/";
     		}
     		return (date_picker.selectedYear + seperator + (date_picker.selectedMonth + 1) + seperator
     				+ date_picker.selectedDay);
     	};
+
+		/**
+		 * to get the list for time selector like 1:00 AM, 1:15 AM, 1:30 AM..
+		 * @param  {Integer} - interval in minutes - default 15 min
+		 * @param  {String} - 24/12 hour mode - default 12 hour mode
+		 * @return {Array of Objects}
+		 */
+		this.getListForTimeSelector = function(interval, mode) {
+			//TODO: Add Date and check for DST
+			var listOfTimeSelectors = [],
+				i 		= 0,
+				hours 	= 0,
+				minutes = 0,
+				ampm 	= null,
+				value 	= '',
+				text 	= '';
+
+			//setting the defaults
+			if (_.isUndefined (mode)) {
+				mode = 12;
+			}
+			if (_.isUndefined (interval)) {
+				interval = 15;
+			}
+
+			for(; i < 1440; i += interval) {
+		        hours 	= Math.floor(i / 60);
+
+		        minutes = i % 60;
+		        if (minutes < 10){
+		            minutes = '0' + minutes; // adding leading zero
+		        }
+
+		        ampm 	= hours % 24 < 12 ? 'AM' : 'PM';
+		        
+		        value 	= ((hours < 10) ? ("0" + hours) : hours) + ':' + minutes;
+				
+				hours 	= hours % mode;
+		        if ((hours === 0 && mode === 12) ||(hours === 0 && mode === 24 && i <= 60)){
+		            hours = 12;
+		        }
+
+		        text = hours + ':' + minutes;
+
+		        //is 12 hour mode enabled
+		        if (mode === 12) {
+					text 	+= ' ' + ampm;
+		        }
+
+		        listOfTimeSelectors.push ({
+					value: value,
+					text: text
+				});
+		    }
+
+
+		    return listOfTimeSelectors;
+		};
 }]);

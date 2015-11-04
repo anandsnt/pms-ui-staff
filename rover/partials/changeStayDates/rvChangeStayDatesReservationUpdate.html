@@ -172,6 +172,6 @@
 	</div>
 
 	<!-- Find rooms and rates option is not available for non-standalone PMS (ROOM_TYPE_AVAILABLE, ROOM_NOT_AVAILABLE) -->
-	<button type="button" id="find-rooms-and-rates" class="button green" ng-click="goToRoomAndRates()" ng-hide="!isStandAlone || rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
-	rightSideReservationUpdates=='HAS_MULTIPLE_RATES'" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+	<button type="button" id="find-rooms-and-rates" class="button green" ng-click="goToRoomAndRates()" ng-hide="!isStandAlone || rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
+	rightSideReservationUpdates=='HAS_MULTIPLE_RATES' || rightSideReservationUpdates=='RESTRICTION_EXISTS'" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 </div>

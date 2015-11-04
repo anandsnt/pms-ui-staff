@@ -56,7 +56,66 @@
 ,
 "ACTIVITY_LOG_TITLE" : "Activity Log",
 "FROM_DATE":"From date",
-"TO_DATE":"To Date",    
+"TO_DATE":"To Date",
+    "ALLOTMENTS": "Allotments",
+    "NEW_ALLOTMENT": "New Allotment",
+    "AVAILABILITY_ALLOTMENT": "Availability: ",
+    "ADD_MORE_TO_THIS_ALLOTMENT": "ADD MORE TO THIS ALLOTMENT",
+    "ALLOTMENT_SUMMARY": "Summary",
+    "ALLOTMENT_RESERVATIONS": "Reservations",
+    "ALLOTMENT_ACTIVITY": "Activity Log",
+    "ALLOTMENT_DETAILS": "Allotment Details",
+    "ALLOTMENT_INFO" : "Allotment Info",
+    "ALLOTMENT_CODE" : "Allotment Code",
+    "ALLOTMENT_APR" :"Actual / Potential Revenue",
+    "ALLOTMENT_ADD_RESERVATIONS": "Add Reservations",
+    "ALLOTMENT_NO__OF_ROOMS": "No. of Rooms",
+    "ALLOTMENT_ROOM_TYPE": "Room Type",
+    "ALLOTMENT_OCCUPANCY": "Occupancy",
+    "ALLOTMENT_SINGLE": "Single",
+    "ALLOTMENT_DOUBLE": "Double",
+    "ALLOTMENT_TRIPLE": "Triple",
+    "ALLOTMENT_QUADRUPLE": "Quadruple",
+    "ALLOTMENT_NO_RESERVATIONS":"No Reservations",
+    "ALLOTMENT_ADD_RESERVATIONS_TO_ROOMING_LIST":"Add reservations to Rooming List",
+    "ALLOTMENT_ROOM":"Room",
+    "ALLOTMENT_PENDING":"Pending",
+    "ALLOTMENT_UNASSIGNED":"Unassigned",
+    "ALLOTMENT_CHECK-IN":"check-in",
+    "ALLOTMENT_CHECK-OUT":"check-out",
+    "ALLOTMENT_GUEST_NAME":"Guest Name",
+    "ALLOTMENT_ARRIVAL":"Arrival",
+    "ALLOTMENT_DEPARTURE":"Departure",
+    "ALLOTMENT_ROOM_TYPE":"Room Type",
+    "ALLOTMENT_ROOM RATE": "Rate",
+    "ALLOTMENT_STATUS":"Status",
+    "ALLOTMENT_PICKED_UP":"Picked Up",
+    "ALLOTMENT_CHECK_IN":"Check In",
+    "ALLOTMENT_CHECK_OUT":"Check Out",
+    "ALLOTMENT_SET_CUTOFF": "SET CUT-OFF",
+    "ALLOTMENT_RELEASE_DATE": "Allotment Release Date",
+    "ALLOTMENT_RELEASE_NOW": "Release Now",
+    "ALLOTMENT_AUTO_ASSIGN_ROOMS":"Auto-Assign Rooms",
+    "ALLOTMENT_EMAIL":"Email",
+    "ALLOTMENT_PRINT":"Print",
+    "ALLOTMENT_DOWNLOAD":"Download",
+    "ALLOTMENT_BATCH" : "Reg.card",
+    "ALLOTMENT_MASTER_CUTOFF": "MASTER CUT-OFF DATE",
+    "ALLOTMENT_MASS_CHECKIN_CONFIRMATION": "Confirm Check In",
+    "ALLOTMENT_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet check in criteria: Guest not arriving today or name is missing | Room not ready or not assigned",
+    "ALLOTMENT_NO_RESERVATIONS_MEET_CHECKIN_CRITERIA": "No reservations meet check in criteria",
+    "ALLOTMENT_MASS_CHECKIN_FAILED_IN_PROCESSING": "Sorry, Allotment checkin has failed for some reason. Please retry after closing this",
+    "ALLOTMENT_SELECTED_RESERVATIONS_ARE_ALREADY_ROOM_ASSIGNED": "Sorry, selected reservations are already room assigned",
+    "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
+    "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
+    "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this",
+    "INSUFFICIENT_INV_ALLOTMENT_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Allotment, please review Allotment Room Block",
+    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"   
+
+
+
+
+,    
     
     "STAY_CARD": "Stay Card",
     "ROOM_STATUS": "Room Status",
@@ -166,6 +225,20 @@
 
 	
 ,    
+    "COMMISSION" : "Commission",
+    "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
+    "PREPAID": "Prepaid",
+    "PER_STAY": "Per Stay",
+    "PER_NIGHT": "Per Night",
+    "PER_STAY_OR_PER_NIGHT" : "Per Stay/Per Night",
+    "SELECT_CHARGE_CODE" : "Select Charge Code",
+    "CHARGE_CODE" : "Charge Code",
+    "ON" : "On",
+    "OFF" : "Off"
+    
+   
+
+,    
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
@@ -206,6 +279,9 @@
     "MENU_GROUPS": "Groups",
     "MENU_CREATE_GROUP": "New Group",
     "MENU_MANAGE_GROUP": "Manage Groups",
+    "MENU_ALLOTMENTS": "Allotments",
+    "MENU_CREATE_ALLOTMENT": "New Allotment",
+    "MENU_MANAGE_ALLOTMENT": "Manage Allotment",
     "MENU_ACCOUNTS": "Accounts",
     
     "DUEIN_TITLE": "Checking In",
@@ -324,11 +400,9 @@
     "AVAILABLE_AMOUNT": "Available amount",
     "AMOUNT": "Amount",
     "SAVE": "Save",
-    "CANCEL": "Cancel"
-
-
-
-	
+    "CANCEL": "Cancel",
+    "COMPANY_CARD_DETACH_BILLING_INFO_WARNING": "Removing card may update Billing and Rate Information",
+    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity."
 ,    
     
     "GREETING_MORNING": "Good Morning",
@@ -361,7 +435,7 @@
     "CONTINUE_WITH_END_OF_DAY":"Continue with end of day",
     "YES":"yes",
     "NO":"No",
-    "END_OF_DAY":"END OF DAY",    
+    "END_OF_DAY":"END OF DAY",
     
     "FROM": "From",
     "TO": "To",
@@ -440,14 +514,29 @@
     "GROUP_BATCH" : "Reg.card",
     "GROUP_MASS_CHECKIN_CONFIRMATION": "Confirm Check In",
     "GROUP_MASS_CHECKIN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet check in criteria: Guest not arriving today or name is missing | Room not ready or not assigned",
-    "GROUP_NO_RESERVATIONS_MEET_CHECKIN_CRITERIA": "No reservations meet check in criteria",
+    "GROUP_NO_RESERVATIONS_MEET_CHECKIN_CRITERIA": "No reservations meet check in criteria!",
     "GROUP_MASS_CHECKIN_FAILED_IN_PROCESSING": "Sorry, Group checkin has failed for some reason. Please retry after closing this",
     "GROUP_SELECTED_RESERVATIONS_ARE_ALREADY_ROOM_ASSIGNED": "Sorry, selected reservations are already room assigned",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION": "Confirm Room Assign",
     "GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
-    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this"
-
-
+    "GROUP_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Group auto room assignment has failed for some reason. Please retry after closing this",
+    "GROUP_MASS_CHECKOUT_CONFIRMATION": "Confirm Check Out",
+    "GROUP_MASS_CHECKOUT_CONFIRMATION_PARTIALLY_OKEY": "Some reservations do not meet checkout criteria.",
+    "GROUP_NO_RESERVATIONS_MEET_CHECKOUT_CRITERIA": "No reservations meet check out criteria!",
+    "GROUP_MASS_CHECKOUT_FAILED_IN_PROCESSING": "Sorry, Group checkout has failed for some reason. Please retry after closing this",
+    "GROUP_LATER_ARR_DATE_CHANGE_WARNING": "Reservations are due to depart on/prior to new arrival date. Please amend reservations before moving group dates.",
+    "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING": "Reservations are due to arrive on/after new departure date. Please amend reservations before moving group dates.",
+    "GROUP_MOVE_CONFIRM": "Move group and associated reservations?",
+    "ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES": "Room Block Allocation exceeds Room Type availability",
+    "GROUP_CUSTOM_RATE_HAS_CHANGED": "Group Custom Rate has Changed",
+    "APPLY_TO_NEW_AND_EXISTING_RESERVATIONS": "Apply to New &amp; Existing Reservations",
+    "APPLY_TO_NEW_RESERVATIONS_ONLY": "Apply to New Reservations Only",
+    "INHOUSE_RESERVATIONS_EXISTS_BUT_ARE_EXCLUDED_FROM_THIS_RATE_UPDATE": "Inhouse Reservations exists but are excluded from this rate update",
+    "ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room type Availability.",
+    "HOUSE_OVERBOOK": "Room Block Allocation exceeds House Availability.",
+    "HOUSE_AND_ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room Type availability and House availability.",
+    "INSUFFICIENT_INV_GROUP_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Group, please review Group Room Block",
+    "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review"
 
 
 ,	
@@ -538,10 +627,13 @@
 	"STAYOVERS" : "Stayovers",
 	"COMPLETED" : "Completed",
 	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
-	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms.",
+	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
+
+
 ,	
 
-	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Department / House",
+	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Dept. / House",
 	"ALL_DEPARTMENTS":"All Departments",
 	"SELECT":"Select",
 	"EMPLOYEES":"Employees",
@@ -578,7 +670,19 @@
 	"TOTAL_CLOSING_BALANCE_CHECK_MSG":"Total Closing Balance Check",
 	"CLOSE_SHIFT":"Close Shift",
 	"CASH_SUBMITTED":"Cash submitted",
-	"CHECKS_SUBMITTED":"Checks submitted",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"CHECKS_SUBMITTED":"Checks submitted",
+	"PRE_STAY" : "Pre-Stay",
+	"IN_HOUSE" : "In-House",
+	"POST_STAY" : "Post-Stay",
+	"BAL_AS_OF_EOD" : "Balances as of EOD",
+	"AR_BALANCE" : "A/R Balance",
+	"TOTALS" : "TOTALS",
+	"GUEST_BAL" : "Guest Balance",
+	"DEPOSIT_BAL" : "Deposit Balance",
+	"OPENING" : "Opening",
+	"DEBIT" : "Debit",
+	"CREDIT" : "Credit",
+	"CLOSING" : "Closing",    "PRINT_ROOM_KEY" : "Print Room Key",
     "PRINT_NEW_ROOM_KEY" : "Print New Key(s)",
     "PRINT_DUPLICATE_ROOM_KEY" : "Duplicate Key(s)",
     "WILL_NOT_VALIDATE_PREVIOUS" : " Will Not ",
@@ -619,7 +723,7 @@
     "WRITING_BAND_TYPE": "Writing band type..",
     "KEY_BAND_CREATED_SUCCESSFULLY": "Key, Band created successfully",
     "KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE": "Key created, Band Added, Writing band type failed.."
-,    
+,"DEFAULT_TITLE" : "Hotel Self-Service",    
     
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
@@ -729,6 +833,7 @@
     "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
+    "RESV_ALL_RATES" : "All Rate Types",
     "NO_ROOM_RATE_MSG": "No Availability. Please select to show Closed Rates or change Room Type selection.",
     "NO_AVAILABILITY": "No Availability",
     "RESV_RECOMMENDED" : "Recommended",
@@ -765,28 +870,34 @@
     "NIGHTS":"nights",
     "CHECKIN":"check-in",
     "CHECKOUT":"check-out",
+    "AVAILABLE" : "Available",
     "SELECT_ROOM_TYPE":"Select Room Type",
     "SET_DATES":"Set Dates", 
     "DRAG_AND_DROP_TEXT":"Drag &amp; drop to change stay dates",
     "ARRIVAL":"Arrival",
+    "ARRIVAL_UNAVAILABLE" : "Arrival Unavailable",
     "MID_STAY":"Mid stay",
+    "RESTRICTIONS_APPLY" : "Restrictions Apply",
     "DEPARTURE":"Departure",
     "ROOM_TYPE_AVAILABLE":"Room Type available",
     "NO_TYPE_AVAILABLE":"No Type availability",
     "NO_HOUSE_AVAILABLE":"No House availability",
+    "NO_ROOM_TYPE_AVAILABLE" : "NO Room Type available",
     "HOUSE":"House",
     "OVERBOOK_TEXT":"availability on one or more of the selected dates. Overbook?",
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "SHOW_CLOSED_RATES": "Show Closed Rates",
+    "ONLY_AVAILABLE_ROOMS" : "Only Available Rooms",
+    "SEARCH_WITH_RESTRICTIONS" : "Search With Restrictions",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
     "START_PAYMENT_PROCESS": "Start Payment Process",
-    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "Conflicting Billing Information exists for",
     "CARD": "card",
-    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually.",
     "OK": "ok",
     "BILLING_INFORMATION_FOUND": "Billing information found",
     "ON_SELECTED_CARD": "On selected card",
@@ -811,6 +922,7 @@
     "CONFIRM_RESERVATION"   : "Confirm Reservation",
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
     "RESERVATION_CANCELLED" : "Reservation cancelled"
+
 
 ,    
     
@@ -977,6 +1089,7 @@
     "T_AND_C_TEXT": "By Checking this box you hereby agree to the Terms & Conditions",
     "PROMO_NEWS_BY_EMAIL_TEXT": "Please send me promotions and news via email.",
     "COMPLETE_CHECKIN" : "Complete checkin",
+    "COMPLETE_ADD_TO_QUEUE" : "Add to queue",
     "CLEAR_SIGNATURE": "Clear signature",
     "PHONE_EMAIL_MISSING" : "Phone &amp; e-mail missing!",
     "PHONE_MISSING" : "Phone missing!",
@@ -986,6 +1099,8 @@
     "EMAIL" : "E-mail",
     "SUBMIT_AND_GOTO_CHECKIN" : "Submit and go to check in",
     "IGNORE_AND_GOTO_CHECKIN" : "Ignore and go to check in",
+    "SUBMIT_AND_GOTO_PUTINQUEUE" : "Submit and go to put in queue",
+    "IGNORE_AND_GOTO_PUTINQUEUE" : "Ignore and go to put in queue",
     "ASK_GUEST_TO_PROVIDE_EMAIL" : "Ask the guest to provide email",
     "SUBMIT": "Submit",
     "KEY_NOT_PRINTED": "Keys not printed",
@@ -1086,4 +1201,12 @@
     "NOT_DEFINED": "Not Defined",
     "DONT_PRINT_RATE" : "Don't Print Rate"
 
-}
+,
+
+
+    "TERMS_AGREE_TEXT": "Please agree to the Terms and Conditions below in order to check in.",
+    "TERMS_SUBHEADING": "subheader",
+    "TERMS_SUBHEADING_TEXT": "subheader",
+    "TERMS_ACCEPT": "Accept",
+    "TERMS_CANCEL": "Cancel"
+            }

@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv, RVReservationCardSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -30,6 +30,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var hasPermissionToRefundPayment = function() {
 			return rvPermissionSrv.getPermissionValue ('POST_REFUND');
 		};
+                 $scope.$on('isGiftCardPmt',function(v){
+                     $scope.isGiftCardPmt = v;
+                 });
 
 		var init = function(){
 			$scope.saveData = {};
@@ -61,7 +64,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
 		};
 		init();
-
+                
 
 		/**
 		 * to run angular digest loop,
@@ -210,7 +213,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var checkReferencetextAvailableForCC = function(){
 			//call utils fn
 			$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
-		}
+		};
 
 
 		/*
@@ -218,18 +221,81 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 */
 		$scope.showCardAddmode = function(){
 			$scope.showCCPage = true;
+                        $scope.swippedCard = true;
 		};
 
-
+                $scope.showSelectedCreditCardButton = function(){
+                    if ($scope.showCreditCardInfo && !$scope.showCCPage && ($scope.paymentGateway !== 'sixpayments' || $scope.isManual) && $scope.saveData.paymentType === 'CC' && !$scope.depositPaidSuccesFully){
+                        return true;
+                    } else return false;
+                };
 		/**
 		 * change payment type action - override parent's method so as to deal with referance and fees
 		 */
+    $scope.giftCardAmountAvailable = false;
+    $scope.giftCardAvailableBalance = 0;
+
+    $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
+       $scope.giftCardAvailableBalance = giftCardData.amount;
+    });
+
+    $scope.timer = null;
+
+    $scope.cardNumberInput = function (n, e) {
+        if ($scope.isGiftCardPmt){
+            var len = n.length;
+            $scope.num = n;
+            if (len >= 8 && len <= 22){
+                //then go check the balance of the cardd
+                $('[name=card-number]').keydown(function(){
+                    clearTimeout($scope.timer); 
+                    $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
+                });
+            } else {
+                //hide the field and reset the amount stored
+                $scope.giftCardAmountAvailable = false;
+            }
+        }
+    };
+
+    $scope.num;
+    $scope.fetchGiftCardBalance = function () {
+        console.info('fetching card balance...');
+        if ($scope.isGiftCardPmt){
+               //switch this back for the UI if the payment was a gift card
+           var fetchGiftCardBalanceSuccess = function (giftCardData) {
+               $scope.giftCardAvailableBalance = giftCardData.amount;
+               $scope.giftCardAmountAvailable = true;
+               $scope.$emit('giftCardAvailableBalance',giftCardData);
+               //data.expiry_date //unused at this time
+               $scope.$emit('hideLoader');
+           };
+           $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+       } else {
+           $scope.giftCardAmountAvailable = false;
+       }
+    };
+
+                
+                
+                
 		$scope.changePaymentType = function(){
-			if($scope.saveData.paymentType === "CC"&& $scope.paymentGateway !== 'sixpayments'){
+                    console.log(arguments);
+			if($scope.saveData.paymentType === "CC" && $scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showCardAddmode();
+                                if ($rootScope.isStandAlone){
+                                    $rootScope.$broadcast('CLICK_ADD_NEW_CARD');
+                                }
 			} else {
 				$scope.showCreditCardInfo = false;
 			};
+                        console.info('$scope.saveData.paymentType: '+$scope.saveData.paymentType)
+                        if ($scope.saveData.paymentType === "GIFT_CARD"){
+                            $rootScope.$broadcast('giftCardSelectedFromGroups');
+                            $scope.isGiftCardPmt = true;
+                        } else {
+                            $scope.isGiftCardPmt = false;
+                        }
 			checkReferencetextAvailable();
 			checkforFee();
 		};
@@ -349,6 +415,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 		 	$scope.saveData.payment_type_id = data.id;
 		 	$scope.showCCPage = false;
+                        $scope.swippedCard = false;
 		 	$scope.showCreditCardInfo = true;
 		 	$scope.newCardAdded = true;
 		 	$scope.swipedCardDataToSave = {};
@@ -397,6 +464,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		$scope.$on("TOKEN_CREATED", function(e, data){
 		 	$scope.newPaymentInfo = data;
 		 	$scope.showCCPage = false;
+                        $scope.swippedCard = false;
 		 	setTimeout(function(){
 		 		savePayment(data);
 		 	}, 200);
@@ -415,6 +483,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 */
 		$scope.$on('cancelCardSelection',function(e,data){
 			$scope.showCCPage = false;
+                        $scope.swippedCard = false;
 			$scope.isManual = false;
 			$scope.saveData.paymentType = "";
 		});
@@ -425,6 +494,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
 			//set variables to display the add mode
 			$scope.showCCPage 						 = true;
+                        $scope.swippedCard = true;
 			$scope.addmode                 			 = true;
 			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		});
@@ -492,7 +562,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 				}
 			};
 			return params;
-		}
+		};
 
 		var proceedPayment = function(arType){
 
@@ -523,7 +593,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		var showCreateArAccountPopup  = function(account_id,arType){
 			ngDialog.close();
 			var paymentDetails = setUpPaymentParams(arType);
-			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails}
+			var data = {"account_id":account_id,"is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,"paymentDetails":paymentDetails};
 			$scope.$emit('arAccountWillBeCreated',data);
 		};
 
@@ -535,7 +605,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("company");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.company_id,"company")
+					showCreateArAccountPopup($scope.ArDetails.company_id,"company");
 				}
 			}
 			else{
@@ -543,7 +613,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					proceedPayment("travel_agent");
 				}
 				else{
-					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent")
+					showCreateArAccountPopup($scope.ArDetails.travel_agent_id,"travel_agent");
 				}
 			};
 		};
@@ -571,7 +641,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 						proceedPayment("company");
 					}
 					else{
-						showCreateArAccountPopup($scope.ArDetails.company_id)
+						showCreateArAccountPopup($scope.ArDetails.company_id);
 					}
 				}
 				else if(data.travel_agent_present){
@@ -579,7 +649,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 						proceedPayment("travel_agent");
 					}
 					else{
-						showCreateArAccountPopup($scope.ArDetails.travel_agent_id)
+						showCreateArAccountPopup($scope.ArDetails.travel_agent_id);
 					}
 
 				}

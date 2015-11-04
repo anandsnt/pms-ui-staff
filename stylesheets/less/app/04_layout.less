@@ -233,7 +233,8 @@ body { overflow: hidden; }
 			&#dashboard-search,
 			&#search,
 			&#find-group,
-			&#find-account {
+			&#find-account,
+			&#find-allotment {
 				top: 120px;
 				.calc-height(100, 180);
 
@@ -395,7 +396,7 @@ body { overflow: hidden; }
 	.nav-bar { 
 		position: relative;
 		height: 50px;
-		padding: 5px 10px;
+		padding: 5px 80px;
 		text-align: center;
 		z-index: 99;
 		.show;
@@ -408,6 +409,7 @@ body { overflow: hidden; }
 			font-weight: 700;
 			vertical-align: middle;
 			clear: none;
+			.nowrap();
 
 			.hotel,
 			.user {
@@ -485,7 +487,7 @@ body { overflow: hidden; }
 	@media only screen and (min-width: 768px) {
 		.nav-bar { 
 			text-align: center;
-			padding: 10px 60px;
+			padding: 10px 220px;
 
 			.switch-button {
 				position: absolute;
@@ -1970,100 +1972,102 @@ body { overflow: hidden; }
 	}
 
 /* Left sidebar			 	==============================*/
-	.sidebar-left {
-		position: absolute;
-		top: 150px;
-		left: 0;
-		padding-right: 25px;
-		z-index: 1040;
-		width: 30px;
-		.calc-height(100, 150);
-		.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-		.show;
-
-		.scrollable {
-			position: relative;
-			background: @rcardTexture1;
-			height: 100%;
-			.box-shadow(1px 0 1px rgba(0,0,0,.2));
-
-			> .wrapper { padding: 0; }
-			> .iScrollVerticalScrollbar { 
-				right: 7px;
-
-				.iScrollIndicator { background: rgba(0,0,0,.05); }
-			}
-
-			.settings-title {
-				font-size: 16px;
-				text-transform: uppercase;
-				font-weight: 600;
-				line-height: 40px;
-				color: @textColor;
-				background-color: rgba(0,0,0,.05);
-				width: 235px;
-				padding: 0 20px;
-				.float;
-
-				.title {
-					width: 155px;
-					padding: 12px 0 9px;
-					line-height: 1.2;
-					.pull-left;
-				}
-
-				.value {
-					width: 20px;
-					text-align: right;
-					.pull-left;
-				}
-			}
-
-			.settings-content {
-				width: 235px;
-				padding: 20px;
-
-				label:not(.radio) {
-					font-size: 14px;
-					text-transform: uppercase;
-					color: @textColor;
-
-					span,
-					&.label { color: @grey3; }
-				}
-			}
-
-			@media @highdpi { background-size: 40px; }
-		}
-
-		&#report-update {
-			top: 50px;
-			.calc-height(100, 50);
+	@media not print {
+		.sidebar-left {
+			position: absolute;
+			top: 150px;
+			left: 0;
+			padding-right: 25px;
+			z-index: 1040;
+			width: 30px;
+			.calc-height(100, 150);
 			.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
-
-			&.open {
-				width: 260px;
-			}
+			.show;
 
 			.scrollable {
+				position: relative;
+				background: @rcardTexture1;
+				height: 100%;
+				.box-shadow(1px 0 1px rgba(0,0,0,.2));
 
-				> .wrapper { padding-bottom: 80px; }
-				> .iScrollVerticalScrollbar {
-					bottom: 100px;
-					z-index: 4; 
+				> .wrapper { padding: 0; }
+				> .iScrollVerticalScrollbar { 
+					right: 7px;
+
+					.iScrollIndicator { background: rgba(0,0,0,.05); }
 				}
-				
-				.actions {
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					padding: 20px;
-					background: #bfbfbf @darkTexture;
-					z-index: 9;
-					.box-shadow(0 -1px 1px rgba(0,0,0,.15));
-					.size(80px, 100%);
 
-					.button { width: 100%; }
+				.settings-title {
+					font-size: 16px;
+					text-transform: uppercase;
+					font-weight: 600;
+					line-height: 40px;
+					color: @textColor;
+					background-color: rgba(0,0,0,.05);
+					width: 235px;
+					padding: 0 20px;
+					.float;
+
+					.title {
+						width: 155px;
+						padding: 12px 0 9px;
+						line-height: 1.2;
+						.pull-left;
+					}
+
+					.value {
+						width: 20px;
+						text-align: right;
+						.pull-left;
+					}
+				}
+
+				.settings-content {
+					width: 235px;
+					padding: 20px;
+
+					label:not(.radio) {
+						font-size: 14px;
+						text-transform: uppercase;
+						color: @textColor;
+
+						span,
+						&.label { color: @grey3; }
+					}
+				}
+
+				@media @highdpi { background-size: 40px; }
+			}
+
+			&#report-update {
+				top: 50px;
+				.calc-height(100, 50);
+				.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
+
+				&.open {
+					width: 260px;
+				}
+
+				.scrollable {
+
+					> .wrapper { padding-bottom: 80px; }
+					> .iScrollVerticalScrollbar {
+						bottom: 100px;
+						z-index: 4; 
+					}
+					
+					.actions {
+						position: absolute;
+						bottom: 0;
+						left: 0;
+						padding: 20px;
+						background: #bfbfbf @darkTexture;
+						z-index: 9;
+						.box-shadow(0 -1px 1px rgba(0,0,0,.15));
+						.size(80px, 100%);
+
+						.button { width: 100%; }
+					}
 				}
 			}
 		}
@@ -2292,10 +2296,10 @@ body { overflow: hidden; }
 
 		                .icon-action {
 		                	position: absolute;
-		                	top: 10px;
+		                	top: 8px !important;
 		                	left: 10px;
 		                	font-size: 10px;
-		                	line-height: 1;
+		                	line-height: 1 !important;
 		                	text-transform: uppercase;
 		                	font-weight: 600;
 		                	text-align: center;
@@ -2339,6 +2343,10 @@ body { overflow: hidden; }
 		                	bottom: 10px;
 		                	right: 10px;
 		                	font-size: 14px;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                    width: 135px;
+                                    white-space: nowrap;
 	                        line-height: 20px;
 	                        text-transform: uppercase;
 	                        text-align: right;
@@ -2662,6 +2670,75 @@ body { overflow: hidden; }
 
 			.button { .pull-right; }
 		}
+	}
+
+/* Dual Calendar Legend		==============================*/
+	.calendar-legend {
+		overflow: hidden;
+		padding: 10px 0;
+        .size(45px, 100%);
+        .show;
+       	.float;
+
+        li {
+            font-size: 14px;
+            line-height: 25px;
+            vertical-align: middle;
+            text-transform: uppercase;
+            margin-right: 10px;
+            .pull-left;
+
+            &.break {
+                padding-right: 10px;
+                .box-shadow(1px 0 0 @grey2);
+            }
+
+            span {
+                margin-right: 10px;
+                .square(25px);
+                .show;
+                .pull-left;
+
+                &.check-in,
+                &.check-out { 
+                    background-image: @icons;
+                    background-repeat: no-repeat;
+
+                    @media @highdpi {
+                        background-image: @icons2x;
+                        background-size: 120px;
+                    }
+                }
+
+                &.availabile { background-color: rgba(137,189,85,.3); }
+                
+                &.unavailable { background-color: rgba(230,56,56,.3); }
+
+                &.check-in { 
+                    background-color: @green;
+                    background-position: 6px -115px; 
+
+                    &.unavailable { 
+                    	background-position: 7px -595px;
+                    	.rotate(180deg);
+                    }
+                }
+                
+                &.check-out { 
+                    background-color: @red;
+                    background-position: 6px -155px;
+                }
+
+                &.restrictions {
+                	color: rgba(0,0,0,.3);
+					text-align: center;
+					font-weight: 600;
+					background-color: rgba(0,0,0,.1);
+                }
+            }
+
+            &:last-child { margin-right: 0; }
+        }
 	}
 
 /* 6. IE

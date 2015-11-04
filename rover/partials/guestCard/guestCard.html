@@ -8,6 +8,8 @@
             <section ng-include="'/assets/partials/cards/header/companyCardHeader.html'"></section>
             <!-- Travel Agent Card Header-->
             <section ng-include="'/assets/partials/cards/header/travelAgentCardHeader.html'"></section>
+            <!-- Group Card Header -->
+            <section ng-include="'/assets/partials/cards/header/groupCardHeader.html'" ng-if="!isHourlyRateOn"></section>            
         </header>
 
         <!-- Cards Content -->
@@ -18,6 +20,8 @@
             <section ng-include="'/assets/partials/cards/companyCardContent.html'"></section>
             <!-- TA Card Content-->
             <section ng-include="'/assets/partials/cards/travelAgentCardContent.html'"></section>
+            <!-- Group Card Content -->
+            <section ng-include="'/assets/partials/cards/groupCardContent.html'" ng-if="!isHourlyRateOn"></section>            
         </div>
     </div>
 </div>

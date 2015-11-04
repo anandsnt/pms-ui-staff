@@ -19,7 +19,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		$scope.fetchTableData = function($defer, params){
 			var getParams = $scope.calculateGetParams(params);
-			console.log(getParams);
 			var fetchSuccessOfItemList = function(data){
 				$scope.$emit('hideLoader');
 				//No expanded rate view
@@ -55,31 +54,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		/*
 		 * To fetch charge code list
 		 */
-		/*$scope.fetchChargeCodes = function() {
-			var fetchSuccessCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.data = data;
 
-				// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-				$scope.tableParams = new ngTableParams({
-					page: 1, // show first page
-					count: 10000, // count per page - Need to change when on pagination implemntation
-					sorting: {
-						charge_code: 'asc' // initial sorting
-					}
-				}, {
-					total: $scope.data.charge_codes.length, // length of data
-					getData: function($defer, params) {
-						// use build-in angular filter
-						var orderedData = params.sorting() ? $filter('orderBy')($scope.data.charge_codes, params.orderBy()) : $scope.data.charge_codes;
-						$scope.orderedData = orderedData;
-						$defer.resolve(orderedData);
-					}
-				});
-			};
-			$scope.invokeApi(ADChargeCodesSrv.fetch, {}, fetchSuccessCallback);
-		};
-		$scope.fetchChargeCodes();*/
 		/*
 		 * To fetch the charge code details for add screen.
 		 */
@@ -121,7 +96,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.editId = value;
 			var data = {
 				'editId': value
-			}
+			};
 
 			var editSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -210,12 +185,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var saveSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
+                                    var p = parseInt($scope.currentClickedElement);
+                                    if ($scope.orderedData){
+                                    if ($scope.orderedData[p]){
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 					$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
-					// $scope.tableParams.reload();
+                                    }
+                                    }
+
 				} else {
 					$scope.data.charge_codes.push(data);
 					$scope.tableParams.reload();
@@ -248,7 +228,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if($scope.prefetchData.selected_fees_code ===""){
 				$scope.prefetchData.selected_fees_code = null;
 			};
-			//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
+
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
@@ -264,6 +244,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					delete item["id"];
 				}
 			});
+                        
+                        if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group){
+                            $scope.errorMessage = 'Group Charge Code Required';
+                            $scope.validForm = false;
+                            return;
+                        }
+                        
+                        
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
 		/*
@@ -429,19 +417,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.prefetchData.linked_charge_codes.splice(index, 1);
 
 			//2.
-			/**
-			 * 	Hi Nicole,
-					Regarding comment #2 in CICO-9576
-					In case there are 2 taxes added and the second tax has a calculation rule set as Base + Tax 1, and the user proceeds to delete the first tax, should we reset the already applied calculation rule as it depends on the deleted one?
-					Kindly clarify.
-				Thanks,
-				Dilip
-
-			 * 	Hi Dilip,
-					Good point, yes, I would say that if taxes get deleted, the calculation rules should be reset for the user to adjust manually.
-				Thanks,
-				Nicki
-			 */
+			// https://stayntouch.atlassian.net/browse/CICO-9576?focusedCommentId=52342&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52342
 			_.each($scope.prefetchData.linked_charge_codes, function(tax) {
 				tax.selected_calculation_rule = 0;
 			});
@@ -449,7 +425,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			//3.
 			//NA as there is a save changes button
 
-		}
+		};
 
 	}
 ]);

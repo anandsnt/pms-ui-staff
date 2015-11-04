@@ -13,7 +13,6 @@ login.config([
 			controller: 'loginCtrl',
 			title: 'Login'
 		});
-
 		$stateProvider.state('resetpassword', {
 			url: '/reset/:token/:notifications',
 			templateUrl: '/assets/partials/reset.html',
