@@ -87,7 +87,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                  params.departure_date  = $state.input.date;
             }
             if ($state.lastAt === 'find-by-confirmation'){
-                 params.confirmation = $state.input.confirmation;
+                 params.alt_confirmation_number = $state.input.confirmation;//alt_confirmation_number is to fetch both internal and external confirmation numbers
             }
             return params;
             
