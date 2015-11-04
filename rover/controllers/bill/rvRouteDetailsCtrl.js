@@ -438,7 +438,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         var params = {};
         params.id = $scope.selectedEntity.id;
         params.entity_type = $scope.selectedEntity.entity_type;
-
+        if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+            params.entity_type = "ALLOTMENT";
+        }
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, successCallback);
     };
     /**
@@ -639,8 +641,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 if($scope.billingEntity === "GROUP_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE")){
                     params.entity_type  = $scope.selectedEntity.entity_type;
                 }
-                if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "ALLOTMENT")) {
-                    params.entity_type  = $scope.selectedEntity.entity_type;
+                if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING" ) {
+                    params.entity_type  = "ALLOTMENT";
                     $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess);
                 } else {
 	               $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);

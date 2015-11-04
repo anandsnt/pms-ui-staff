@@ -101,6 +101,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "images": data.images,
+                "reservation_status" : data.reservation_status,
+                "is_opted_late_checkout" : data.is_opted_late_checkout,
+                "name": data.firstname + " " + data.lastname,
+                "entity_type": "RESERVATION",
+                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
                 "bill_no": "",
                 "is_new" : true,
                 "credit_card_details": {}
@@ -110,17 +115,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "id": $scope.allotmentId,
                     "allotment_id": $scope.allotmentId,
                     "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "RESERVATION",
-                    "entity_type": "ALLOTMENT",
+                    "charge_routes_recipient_type": "RESERVATION"
                 });
             } else {
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
-                    "id": data.id,
-                    "reservation_status" : data.reservation_status,
-                    "is_opted_late_checkout" : data.is_opted_late_checkout,
-                    "name": data.firstname + " " + data.lastname,
-                    "entity_type": "RESERVATION",
-                    "has_accompanying_guests" : ( data.images.length >1 ) ? true : false
+                    "id": data.id
                 });
             }
 
@@ -146,17 +145,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "id": $scope.allotmentId,
                     "allotment_id": $scope.allotmentId,
                     "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "ACCOUNT",
-                    "entity_type": "ALLOTMENT",
+                    "charge_routes_recipient_type": "ACCOUNT"
                 });
             }
-            else {
-    			if(data.account_type === 'COMPANY'){
-    				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
-    			}
-                else if(data.account_type === 'TRAVELAGENT'){
-                    $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
-                }
+    		if(data.account_type === 'COMPANY'){
+    			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+    		}
+            else if(data.account_type === 'TRAVELAGENT'){
+                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
             }
         }
         else if(type === 'GROUP' || type === 'HOUSE'){
