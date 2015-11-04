@@ -103,6 +103,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/generic/modal.html'
          });
          
+         $stateProvider.state('zest_station.talk_to_staff', {
+             url: '/talk_to_staff/:mode', 
+             controller: 'zsCommonCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
          
          $stateProvider.state('zest_station.delivery_options', {
             url       : '/delivery_options/:mode',

@@ -1,4 +1,4 @@
-sntZestStation.controller('zsHomeCtrl', [
+sntZestStation.controller('zsCommonCtrl', [
 	'$scope',
 	'$state',
 	'zsModeConstants',
@@ -34,7 +34,32 @@ sntZestStation.controller('zsHomeCtrl', [
                 mode: zsModeConstants.CHECKOUT_MODE
             });
 	};
+        
+        $scope.navToHome = function(){
+          $state.go('zest_station.home');
+        };
 
+        $scope.setTalkToStaff = function(){
+            $scope.at = 'talk-to-staff';
+            $scope.headingText = 'Speak to a staff member.';
+            $scope.subHeadingText = 'A staff member at the front desk will assist you';
+
+            $scope.modalBtn1 = 'Return';
+            $scope.modalBtn2 = '';
+        };
+
+
+        $scope.init = function(){
+            var current = $state.current.name;
+          
+            switch(current){
+                case "zest_station.talk_to_staff":
+                    $scope.setTalkToStaff();
+                    break;
+            }
+            
+            
+        };
 	/**
 	 * [initializeMe description]
 	 */
@@ -44,49 +69,8 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		//show close button
 		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
+                $scope.init();
 	}();
 
-	/**
-	 * admin popup actions starts here
-	 */
-	var openAdminPopup = function() {
-        $scope.idle_timer_enabled = false;
-        ngDialog.open({
-            template: '/assets/partials/rvTabletAdminPopup.html',
-            className: 'ngdialog-theme-default',
-            scope: $scope,
-            closeByDocument: false,
-            closeByEscape: false
-        });
-    };
-
-    ($stateParams.isadmin == "true") ? openAdminPopup() : "";
-
-
-    $scope.cancelAdminSettings = function(){
-    	$scope.closeDialog();
-    };
-
-    $scope.updateSettings = function(value){
-    	$scope.zestStationData.idle_timer.enabled = (value === 'true') ? true:false;
-    };
-
-    $scope.saveAdminSettings = function(){
-    	var saveCompleted = function(){
-    		$scope.$emit('hideLoader');
-    		$scope.closeDialog();
-    	}
-    	var params = {
-                        'kiosk': {
-                            'idle_timer':$scope.zestStationData.idle_timer
-                        }
-                	};
-
-        var options = {
-    		params: 			params,
-    		successCallBack: 	saveCompleted
-        };
-		$scope.callAPI(zsTabletSrv.saveSettings, options);
-    };
 
 }]);

@@ -7,31 +7,31 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" touch-press='goToScreen($event,"input-last", true, "no-match")'>
+                    <button type="button" class="button option" touch-press='reEnter("last")'>
                         <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
                     </button>
                     Re-Enter
-                    <span>"{{input.last_name}}"</span>
+                    <span>"{{input.last}}"</span>
                 </li>
                 <li class="break">
                     <span>Or</span>
                 </li>
-                <li ng-show="selectedFindBy === 'find-by-email'">
-                    <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-email", true, "no-match")'>
+                <li ng-show="lastAt === 'find-by-email'">
+                    <button type="button" class="button option" touch-press='reEnter("email")'>
                         <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
                     </button>
                     Re-Enter
-                    <span>"{{input.lastEmailValue}}"</span>
+                    <span>"{{input.email}}"</span>
                 </li>
-                <li ng-show="selectedFindBy === 'find-by-confirmation'">
-                    <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-confirmation", true, "no-match")'>
+                <li ng-show="lastAt === 'find-by-confirmation'">
+                    <button type="button" class="button option" touch-press='reEnter("confirmation")'>
                         <ng-include src="'assets/css/icons/confirmation.svg'"></ng-include>
                     </button>
                     Re-Enter
-                    <span>"{{input.lastConfirmationValue}}"</span>
+                    <span>"{{input.confirmation}}"</span>
                 </li>
-                <li ng-show="selectedFindBy === 'find-by-date'">
-                    <button type="button" class="button option" touch-press='goToScreen($event,"re-enter-date", true, "no-match")'>
+                <li ng-show="lastAt === 'find-by-date'">
+                    <button type="button" class="button option" touch-press='reEnter("date")'>
                         <ng-include src="'assets/css/icons/moon.svg'"></ng-include>
                     </button>
                     Re-Enter
@@ -41,7 +41,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-staff", true, "no-match")'>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
                         <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
                     </button>
                     Talk
