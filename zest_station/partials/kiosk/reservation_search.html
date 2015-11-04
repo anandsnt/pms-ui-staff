@@ -1,7 +1,8 @@
 <!-- search mode -->
-<ng-include src="'assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() || mode !== 'no-match'"></ng-include>
+<ng-include src="'assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match' && mode !== 'speak-to-staff'"></ng-include>
+
 <!-- reservation list view -->
-<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match'" click-touch="resetTime()">
+<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match' || mode === 'speak-to-staff'" click-touch="resetTime()">
     <div id="content" ng-show="shouldShowSearchResults()">
         <h1>Select a Reservation</h1>
         <div id="labels">
@@ -31,7 +32,7 @@
 </section>
 
 <!-- no match -->
-<section id="main" class="centered" role="main" ng-hide='mode !== "no-match"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show='mode === "no-match"' click-touch='resetTime()'>
     <div id="content">
         <h1 style="padding-top: 23px;">Sorry.</h1>
         <h2>We can't seem to find your reservation.</h2>
@@ -58,7 +59,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-staff", true, "no-match")'>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
                         <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
                     </button>
                     Talk
@@ -67,5 +68,15 @@
             </ul>
         </nav>
     </div>
-<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>
+
+<!-- speak to staff -->
+<section id="main" class="centered" role="main" ng-show='mode === "speak-to-staff"'>
+    <div id="content">
+        <h1>Speak To A Staff Member</h1>
+        <h2 class="nocaps">A staff member at the front desk will assist you</h2>
+        <button type="button" class="button" ui-sref="zest_station.home">Return</button>
+    </div>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
 </section>

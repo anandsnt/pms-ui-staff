@@ -102,24 +102,29 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 			return true;
 		}
 	};
+	
+	/*
+	* 	There are two steps for checkout
+	*	1.enter last name
+	*	2.enter room number
+	*/
+	var goToNextForCheckout = function(){
+		if($scope.mode === "search-mode"){
+			$scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
+			$scope.input.inputTextValue = "";
+			$scope.headingText = "Next, Type your room number";
+			$scope.mode = "search-final-mode";
+		}
+		else{
+			$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
+			$scope.searchReservations();
+		};
+	};
 
 	$scope.goToNext =  function(){
-		/*
-		* 	There are two steps for checkout
-		*	1.enter last name
-		*	2.enter room number
-		*/
+		
 		if($scope.isInCheckoutMode()){
-			if($scope.mode === "search-mode"){
-				$scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
-				$scope.input.inputTextValue = "";
-				$scope.headingText = "Next, Type your room number";
-				$scope.mode = "search-final-mode";
-			}
-			else{
-				$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
-				$scope.searchReservations();
-			}
+			goToNextForCheckout();
 		}
 	};
 
@@ -130,6 +135,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	$scope.reEnterRoomNumber = function(){
 		$scope.mode = "search-final-mode";
 		$scope.input.inputTextValue = $scope.reservationParams.room_no;
+	};
+
+	$scope.talkToStaff = function(){
+		$scope.mode = "speak-to-staff";
 	};
         
     $scope.setDueInOut = function(params){
