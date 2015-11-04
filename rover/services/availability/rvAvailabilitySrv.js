@@ -255,7 +255,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				var detail ={
 					"id":ele.group_id,
 					"Name":ele.name,
-					"date":element.date,					
+					"date":element.date,
 					"total_blocked_rooms":ele.total_blocked_rooms,
 					"total_pickedup_rooms":ele.total_pickedup_rooms
 				};
@@ -376,14 +376,32 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	var formGridAdditionalData = function(roomAvailabilityAdditionalData){
 		console.log(roomAvailabilityAdditionalData);
 		var additionalData = {};
-		var outOfOrder =[];
+		var outOfOrder =[],
+		roomtypeDetails = [];
+		var roomTypeNames =[];
+		
 		_.each(roomAvailabilityAdditionalData.results,function(item){
 			outOfOrder.push(item.house.out_of_order);
+			roomtypeDetails.push(item.detailed_room_types);
+
+		});
+		//Forms roomtype names array
+		_.each(roomAvailabilityAdditionalData.results[0].detailed_room_types, function(item){
+			var roomTypeName;
+			_.map(roomAvailabilityAdditionalData.room_types,function(roomType){
+				if(roomType.id === item.id){
+					roomTypeName = roomType.name;
+				}
+			});
+			roomTypeNames.push(roomTypeName);			
 		});
 
 		additionalData ={
-			'outOfOrder' 	: 	outOfOrder
+			'outOfOrder' 			: 	outOfOrder,
+			'roomTypeWiseDetails' 	: 	_.zip.apply(null, roomtypeDetails),
+			'roomTypeNames' 		: 	roomTypeNames
 		};
+
 		return additionalData;
 	};
 

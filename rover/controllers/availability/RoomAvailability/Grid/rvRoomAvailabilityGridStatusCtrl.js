@@ -12,6 +12,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			$scope.toggleStatusOf['availableRooms'] = false;
 			$scope.toggleStatusOf['roomsSold'] = false;
 			$scope.toggleStatusOf['occupancy'] = false;
+			$scope.toggleStatusOf['roomInventory'] = false;
 			$scope.data = rvAvailabilitySrv.getGridData();
 
 			//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
