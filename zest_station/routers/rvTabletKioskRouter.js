@@ -28,6 +28,29 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller  : 'zsReservationSearchCtrl'
         });
 
+         $stateProvider.state('zest_station.speak_to_staff', {
+            url         : '/speak_to_staff',
+            templateUrl : '/assets/partials/kiosk/specific/speak-to-staff.html',
+            controller  : 'zsReservationSearchCtrl'
+        });
+        
+
+        
+         // //check-out [ review_bill ]
+         $stateProvider.state('zest_station.review_bill', {
+            url        : '/review_bill/:res_id/:checked_out',
+            templateUrl: '/assets/partials/kiosk/specific/reservation_bill.html',
+            controller: 'zsReservationBillDetailsCtrl'
+         });
+
+         // //check-out [ review_bill ]
+         $stateProvider.state('zest_station.reservation_checked_out', {
+            url        : '/reservation_checked_out/:res_id/:email',
+            templateUrl: '/assets/partials/kiosk/specific/reservation-checked-out.html',
+            controller: 'zsReservationCheckedOutCtrl'
+         });
+
+
         // //check-in [ reservation-details ]
          $stateProvider.state('zest_station.reservation_details', {
             url        : '/reservation_details/:mode',

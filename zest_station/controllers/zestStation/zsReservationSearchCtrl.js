@@ -102,7 +102,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 			return true;
 		}
 	};
-	
+
 	/*
 	* 	There are two steps for checkout
 	*	1.enter last name
@@ -117,7 +117,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		}
 		else{
 			$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
-			$scope.searchReservations();
+			$state.go('zest_station.review_bill',{"res_id":1333,"checked_out":false});
 		};
 	};
 
@@ -193,8 +193,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.selectReservation = function(r){
             //pass reservation as a state param
             $state.selectedReservation = r;
+            console.log(r)
             if($scope.isInCheckoutMode()){
-            	$state.go('zest_station.reservation_details',{"mode":zsModeConstants.CHECKOUT_MODE});
+            	// $state.go('zest_station.review_bill',{"res_id":r.id});
             }
             else{
             	$state.go('zest_station.reservation_details');
