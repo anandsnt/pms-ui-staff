@@ -57,6 +57,28 @@ sntZestStation.controller('zsFindReservationCtrl', [
 
                     }
             };
+            
+            
+            $scope.reEnter = function(value){
+                $state.lastSearchWith = $state.lastAt;
+                $state.lastAt = 'no-match';
+                $state.reEntered = value;
+                switch($state.reEntered){
+                    case "email":
+                        $state.go('zest_station.find_by_email');
+                        break;
+                    case "last":
+                        $state.go('zest_station.find_reservation_input_last');
+                        break;
+                    case "confirmation":
+                        $state.go('zest_station.find_by_confirmation');
+                        break;
+                    case "date":
+                        $state.go('zest_station.find_by_date');
+                        break;
+                }
+            };
+            
             $scope.showDatePicker = function(){
                     $scope.showDatePick = true;
                     $("#picker").datepicker( "option", "minDate", $scope.datePickerMin);
@@ -112,74 +134,182 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.go('zest_station.find_by_confirmation');
         };
         
+        $scope.searchWithEmail = function(){
+            $state.search = true; 
+            $state.lastAt = 'find-by-email';
+            if (!$state.input){
+                $state.input = {};
+            }
+            $state.input.email = $scope.input.inputTextValue;
+            $state.go('zest_station.reservation_search');
+        };
+        $scope.searchWithDate = function(){
+            $state.search = true; 
+            $state.lastAt = 'find-by-date';
+            if (!$state.input){
+                $state.input = {};
+            }
+            $state.input.date = $scope.input.date;
+            $state.go('zest_station.reservation_search');
+        };
+        $scope.searchWithConfirmation = function(){
+            $state.search = true; 
+            $state.lastAt = 'find-by-confirmation';
+            if (!$state.input){
+                $state.input = {};
+            }
+            $state.input.confirmation = $scope.input.inputTextValue;
+            $state.go('zest_station.reservation_search');
+        };
+        $scope.goToFindReservation = function(){
+            if (!$state.input){
+                $state.input = {};
+            }
+            $state.lastAt = 'input-last';
+            $state.input.last = $scope.input.inputTextValue;
+            $state.go('zest_station.find_reservation');
+        };
+        $scope.searchWithUpdated = function(){
+            //this method is to re-run search using the 'updated' text from the user
+            //determine which search was run from $state.lastSearchWith
+            $state.lastAt = $state.lastSearchWith;
+            $state.search = true;
+            var updated = $state.reEntered;
+            console.info('updated: '+updated)
+            switch(updated){
+                case "email":
+                    $state.input.email = $state.lastInput;
+                    break;
+                case "last":
+                    $state.input.last = $state.lastInput;
+                    break;
+                case "confirmation":
+                    $state.input.confirmation = $state.lastInput;
+                    break;
+                case "date":
+                    $state.input.date = $scope.input.date;
+                    break;
+            }
+            $state.go('zest_station.reservation_search');
+        };
+        
+        $scope.talkToStaff = function(){
+            $state.go('zest_station.talk_to_staff');
+        };
         
         $scope.goToNext = function(){
             $state.lastInput = $scope.input.inputTextValue; 
-            $state.lastAt = $scope.at;
-            if ($scope.at === 'find-by-email'){
-                $state.search = true; 
-                $state.lastAt = 'find-by-email';
-                if (!$state.input){
-                    $state.input = {};
-                }
-                $state.input.email = $scope.input.inputTextValue;
-                $state.go('zest_station.reservation_search');
-                
-                
-            } else if ($scope.at === 'input-last'){
-                if (!$state.input){
-                    $state.input = {};
-                }
-                $state.lastAt = 'input-last';
-                $state.input.last = $scope.input.inputTextValue;
-                $state.go('zest_station.find_reservation');
-                
-            };
-            
-            
-            
+            if ($state.lastAt !== 'no-match'){
+                $state.lastAt = $scope.at;
+            }
+            var at = $state.lastAt;
+            console.log(at);
+            switch(at){
+                case "find-by-email":
+                    $scope.searchWithEmail();
+                    break;
+                    
+                case "find-by-confirmation":
+                    $scope.searchWithConfirmation();
+                    break;
+                    
+                case "find-by-date":
+                    $scope.searchWithDate();
+                    break;
+                    
+                case "input-last":
+                    $scope.goToFindReservation();
+                    break;
+                    
+                case "no-match":
+                    $scope.searchWithUpdated();
+                    break;
+            }
         };
         
+        $scope.setFindByDate = function(){
+            $scope.at = 'find-by-date';
+            $scope.input.date = '';
+            $scope.datepicker_heading = 'Find By Date';
+            $scope.hideNavBtns = false;
+            
+            if ($state.lastAt === 'no-match'){
+                $scope.input.date = $state.input.date;
+            }
+            $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {
+                'successCallBack':fetchBizDateComplete
+            });
+        };
+        $scope.setFindByEmail = function(){
+            $scope.at = 'find-by-email';
+            $scope.headingText = 'Type Your Email Address';
+            $scope.subHeadingText = '';
+            $scope.inputTextPlaceholder = '';
+            $scope.hideNavBtns = false;
+            
+            if ($state.lastAt === 'no-match'){
+                $scope.input.inputTextValue = $state.input.email;
+            }
+        };
+        $scope.setFindByConfirmation = function(){
+            $scope.at = 'find-by-confirmation';
+            $scope.headingText = 'Type Your Confirmation Number';
+            $scope.subHeadingText = '';
+            $scope.inputTextPlaceholder = '';
+            $scope.input.inputTextValue = '';
+            
+            if ($state.lastAt === 'no-match'){
+                $scope.input.inputTextValue = $state.input.confirmation;
+            }
+        };
+        $scope.setInputLast = function(){
+            $scope.at = 'input-last';
+            $scope.headingText = 'Type Your Last Name';
+            $scope.subHeadingText = '';
+            $scope.inputTextPlaceholder = '';
+            if ($state.lastAt === 'no-match'){
+                $scope.input.inputTextValue = $state.input.last;
+            }
+        };
+        $scope.setNoMatch = function(){
+            $scope.at = 'no-match';
+            if (!$scope.input){
+                $scope.input = {};
+            }
+            $scope.input.last = $state.input.last;
+            $scope.input.date = $state.input.date;
+            $scope.input.email = $state.input.email;
+            $scope.input.confirmation = $state.input.confirmation;
+            $scope.lastAt = $state.lastAt;
+        };
+
 
         $scope.init = function(){  
             if (!$scope.input){
                 $scope.input = {};
             }
-          var current = $state.current.name;
-          if (current === 'zest_station.find_by_date'){
-                $scope.at = 'find-by-date';
-                           $scope.input.date = '';
-                            $scope.datepicker_heading = 'Find By Date';
-                            $scope.hideNavBtns = false;
-                            $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {
-                                'successCallBack':fetchBizDateComplete
-                            });
-          } else if (current === 'zest_station.find_by_email'){
-                $scope.at = 'find-by-email';
-                            $scope.headingText = 'Type Your Email Address';
-                            $scope.subHeadingText = '';
-                            $scope.inputTextPlaceholder = '';
-                            $scope.hideNavBtns = false;
-                            
-          } else if (current === 'zest_station.find_by_confirmation'){
-                $scope.at = 'find-by-confirmation';
-                
-                            $scope.headingText = 'Type Your Confirmation Number';
-                            $scope.subHeadingText = '';
-                            $scope.inputTextPlaceholder = '';
-                            $scope.input.inputTextValue = '';
-                            
-          } else if (current === 'zest_station.find_reservation_input_last'){
-                $scope.at = 'input-last';
-                            $scope.headingText = 'Type Your Last Name';
-                            $scope.subHeadingText = '';
-                            $scope.inputTextPlaceholder = '';
-                            
-          } else if (current === 'zest_station.find_reservation'){
-                            $scope.at = 'find-reservation';
-          } else if (current === 'zest_station.find_reservation_no_match'){
-                            $scope.at = 'no-match';
-          }
+            var current = $state.current.name;
+          
+            switch(current){
+                case "zest_station.find_by_date":
+                    $scope.setFindByDate();
+                    break;
+                case "zest_station.find_by_email":
+                    $scope.setFindByEmail();
+                    break;
+                case "zest_station.find_by_confirmation":
+                    $scope.setFindByConfirmation();
+                    break;
+                case "zest_station.find_reservation_input_last":
+                    $scope.setInputLast();
+                    break;
+                case "zest_station.find_reservation":
+                    $scope.at = 'find-reservation';
+                    break;
+                case "zest_station.find_reservation_no_match":
+                    $scope.setNoMatch();
+                    break;
+            }
           
           
         };
@@ -188,12 +318,12 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	 * [initializeMe description]
 	 */
 	var initializeMe = function() {
-		//show back button
-        $scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
+                    //show back button
+            $scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
 
-        //show close button
-        $scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
-                
-        $scope.init();
+            //show close button
+            $scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
+
+            $scope.init();
 	}();
 }]);
