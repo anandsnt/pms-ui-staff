@@ -11,7 +11,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		return that.data.graphData;
 	};
 	this.getGridData = function(){
-		console.log(that.data)
 		return that.data.gridData;
 	};
 	this.getGridDataForGroupAvailability = function(){
@@ -370,8 +369,21 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				'bookedRooms' 		: bookedRooms				
 			});
 		}
-		console.log(gridData);
 		return gridData;
+	};
+
+	var formGridAdditionalData = function(roomAvailabilityAdditionalData){
+		console.log(roomAvailabilityAdditionalData);
+		var additionalData = {};
+		var outOfOrder =[];
+		_.each(roomAvailabilityAdditionalData.results,function(item){
+			outOfOrder.push(item.house.out_of_order);
+		});
+
+		additionalData ={
+			'outOfOrder' 	: 	outOfOrder
+		};
+		return additionalData;
 	};
 
 
@@ -394,7 +406,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			.then(function(resultFromAPI) {
 				//storing response temporarily in that.data, will change in occupancy call
 				that.data.gridDataForAllotmentAvailability = formGridDataForAllotmentAvailability(resultFromAPI);
-				console.log(that.data);
 				deferred.resolve(that.data);
 			},function(data){
 				deferred.reject(data);
@@ -496,7 +507,36 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var deferred = $q.defer();
 		var url = 'api/availability_main';
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
+			that.data.gridData ={};
 			that.data.gridData = formGridDataV1(resultFromAPI);
+			deferred.resolve(resultFromAPI);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+
+	/**
+	* function to fetch availability between from date & to date
+	*/
+	this.fetchAvailabilityAdditionalDetails = function(params){
+		var firstDate 	= params.from_date;
+		var secondDate 	= params.to_date;
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = 'api/calendar_availability';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
+			_.extend (that.data.gridData,
+			{
+				'additionalData' 		: formGridAdditionalData(resultFromAPI)				
+			});
 			deferred.resolve(resultFromAPI);
 		},function(data){
 			deferred.reject(data);

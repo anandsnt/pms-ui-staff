@@ -28,13 +28,13 @@
 			<tbody>
 				<!-- Total % -->
 				<tr class="main">
-					<th class="heading rows-toggle" scope="row">Occupancy %</th> <!-- TODO: toggle visibility of inventory, OOO and rooms to sell when clciked. When opening, don't show room types. When closing, hide room types as well -->
+					<th class="heading rows-toggle" scope="row" ng-click="toggle('occupancy')">Occupancy %</th> <!-- TODO: toggle visibility of inventory, OOO and rooms to sell when clciked. When opening, don't show room types. When closing, hide room types as well -->
 					<td ng-repeat="occupancy in data.occupancies track by $index">
 						<div class="inner">{{occupancy | number : 0 }}%</div>
 					</td>
 				</tr>
 				<!-- Inventory -->
-				<tr class="hidden">
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
 					<th class="rows-toggle" scope="row">Rooms Inventory</th> <!-- TODO: toggle visibility of room types inventory -->
 					<td ng-repeat="bookableRoom in data.bookableRooms track by $index">
 						<div class="inner" ng-bind="bookableRoom"></div>
@@ -48,14 +48,14 @@
 					</td>
 				</tr> -->
 				<!-- OOO -->
-				<tr class="hidden">
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
 					<th scope="row">OOO Rooms</th>
-					<td ng-repeat="outOfOrderRoom in data.outOfOrderRooms track by $index">
+					<td ng-repeat="outOfOrderRoom in data.additionalData.outOfOrder track by $index">
 						<div class="inner" ng-bind="outOfOrderRoom"></div>
 					</td>
 				</tr>
 				<!-- Rooms to Sell -->
-				<tr class="hidden">
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
 					<th scope="row">Rooms To Sell</th>
 					<td ng-repeat="availableRoom in data.availableRooms track by $index">
 						<div class="inner" ng-bind="availableRoom"></div>
@@ -72,13 +72,13 @@
 			</colgroup>
 			<tbody>
 				<tr class="main">
-					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseAvailableRooms()">Available Rooms</th>
+					<th class="heading rows-toggle" ng-click="toggle('availableRooms')">Available Rooms</th>
 					<td ng-repeat="availableRoom in data.availableRooms track by $index">
 						<div class="inner" ng-bind="availableRoom"></div>
 					</td>
 				</tr>
 				<!-- Room types -->
-				<tr class="italic" ng-class="{'hidden': !showRoomTypeWiseAvailableRooms}" ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
+				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.availableRooms}" ng-repeat="individualAvailableRoomList in data.individualAvailableRooms track by $index">
 					<th scope="row" ng-bind="individualAvailableRoomList.name"></th>
 					<td ng-repeat="individualAvailableRoom in individualAvailableRoomList.availableRoomNumberList track by $index">
 						<div class="inner" ng-bind="individualAvailableRoom"></div>
@@ -95,19 +95,19 @@
 			</colgroup>
 			<tbody>
 				<tr class="main" ng-if="!isHourlyRateOn">
-					<th class="heading rows-toggle" ng-click="toggleShowRoomTypeWiseBookedRooms()">Rooms Sold</th>
+					<th class="heading rows-toggle" ng-click="toggle('roomsSold')">Rooms Sold</th>
 					<td ng-repeat="bookedRoom in data.bookedRooms track by $index">
 						<div class="inner" ng-bind="bookedRoom"></div>
 					</td>
 				</tr>
 				<!-- Adults / Children -->
-				<tr ng-class="{'hidden': !showRoomTypeWiseBookedRooms }"> <!-- TODO: Add data -->
+				<tr ng-class="{'hidden': !toggleStatusOf.roomsSold }"> <!-- TODO: Add data -->
 					<th scope="row">Adults / Children</th>
 					<td>
 						<div class="inner">-</div>
 					</td>
 				</tr>
-				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !showRoomTypeWiseBookedRooms }" ng-repeat="individualBookedRoomList in data.individualBookedRooms track by $index">
+				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !toggleStatusOf.roomsSold }" ng-repeat="individualBookedRoomList in data.individualBookedRooms track by $index">
 					<th scope="row" ng-bind="individualBookedRoomList.name" ></th>
 					<td ng-repeat="individualBookedRoom in individualBookedRoomList.bookedNumberList track by $index">
 						<div class="inner" ng-bind="individualBookedRoom"></div>
