@@ -78,8 +78,11 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  */
 	 $scope.submit = function() {
 	 	$scope.hasLoader = true;
+	 	$scope.successMessage = "";
  		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
+
+
 
 	/*
 	  * successCallback of forgot password action
