@@ -45,6 +45,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.showReportDetails = false;
 
+		// CICO-21232
+		// HIDE export option in ipad and other devices
+		// RESTRICT to ONLY desktop
+		$scope.hideExportOption = !!sntapp.cordovaLoaded || !!navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);
+
 		var addonsCount = 0;
 		_.each ($scope.addons, function (each) {
 			addonsCount += each.list_of_addons.length;
