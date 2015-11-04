@@ -56,11 +56,9 @@ var GlobalApp = function(){
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
-
+        that.cordovaLoaded = true;
         try{
-
     	   that.cardReader = new CardOperation();
-    	   that.cordovaLoaded = true;
         }
         catch(er){
         };
