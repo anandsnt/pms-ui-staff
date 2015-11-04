@@ -29,6 +29,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       var fetchRoomUpsellDetailsSuccessCallback = function (data) {
         $scope.$emit('hideLoader');
         $scope.upsellData = data;
+        $scope.availableChargeCodes = data.charge_codes;
         $scope.levelOne = $scope.upsellData.upsell_room_levels[0].room_types;
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
@@ -36,6 +37,13 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         $scope.upsellData.deleted_room_types = [];
         isRoomTypesSelected();
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
+        _.each(data.charge_codes, function(code) {
+            if(code.value === data.selected_charge_code){
+            $scope.selectedChargeCode = code;
+            $scope.upsellData.selected_charge_code = code.value;
+            $scope.chargecodeData.chargeCodeSearchText = code.name;
+                   }
+       });
       };
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
     };
@@ -164,4 +172,89 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       };
       $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback);
     };
+
+
+  /*----------------------------edit charge drop down implementation--------------------------------------*/
+    $scope.chargecodeData = {};
+    $scope.chargeCodeSearchResults = [];
+    var scrollerOptionsForSearch = {click: true, preventDefault: false};
+    $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
+
+    $scope.selectChargeCode = function(id){
+       for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+         if($scope.availableChargeCodes[i].value === id){
+          $scope.selectedChargeCode = $scope.availableChargeCodes[i];
+          $scope.upsellData.selected_charge_code = $scope.selectedChargeCode.value;
+          $scope.chargecodeData.chargeCodeSearchText = $scope.selectedChargeCode.name;
+         }
+       }
+      $scope.showChargeCodes = false;
+
+    };
+      /**
+    * function to perform filering on results.
+    * if not fouund in the data, it will request for webservice
+    */
+    var displayFilteredResultsChargeCodes = function(){
+      $scope.chargeCodeSearchResults = [];
+      //if the entered text's length < 3, we will show everything, means no filtering
+      if($scope.chargecodeData.chargeCodeSearchText.length < 3){
+        //based on 'is_row_visible' parameter we are showing the data in the template
+        for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+            $scope.availableChargeCodes[i].is_row_visible = true;
+            $scope.availableChargeCodes[i].is_selected = true;
+        }
+        $scope.refreshScroller('chargeCodesList');
+        // we have changed data, so we are refreshing the scrollerbar
+
+      }
+      else{
+        $scope.showChargeCodes = true;
+        var value = "";
+        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+        //if it is zero, then we will request for webservice
+        for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+          value = $scope.availableChargeCodes[i];
+          if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ||
+              ($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 )
+              {
+                $scope.chargeCodeSearchResults.push($scope.availableChargeCodes[i]);
+                $scope.availableChargeCodes[i].is_row_visible = true;
+              }
+          else {
+            $scope.availableChargeCodes[i].is_row_visible = false;
+          }
+
+        }
+        // we have changed data, so we are refreshing the scrollerbar
+
+        $scope.refreshScroller('chargeCodesList');
+      }
+    };
+    /**
+      * function to clear the charge code search text
+      */
+    $scope.clearResults = function(){
+        $scope.chargecodeData.chargeCodeSearchText = "";
+    };
+    /**
+    * function to show available charge code list on clicking the dropdown
+    */
+    $scope.showAvailableChargeCodes = function(){
+        $scope.clearResults ();
+        displayFilteredResultsChargeCodes();
+        $scope.showChargeCodes = !$scope.showChargeCodes;
+    };
+
+     /**
+    * function to trigger the filtering when the search text is entered
+    */
+    $scope.chargeCodeEntered = function(){
+        $scope.showChargeCodes = false;
+      displayFilteredResultsChargeCodes();
+      var queryText = $scope.chargecodeData.chargeCodeSearchText;
+      $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+    };
+
+
   }]);
