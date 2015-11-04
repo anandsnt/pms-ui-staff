@@ -61,7 +61,14 @@
 						
 						<div class="select select-col col1-3 ">
 							<select ng-model="prefetchData.selected_amount_sign" class="styled">
-	                        	<option ng-repeat="sign in ['+','-']" ng-selected="sign==prefetchData.selected_amount_sign" value="{{sign}}">{{sign}}</option>
+								<!-- Default to positive values for TAX / FEES -->
+	                        	<option value="+" ng-selected="prefetchData.selected_amount_sign == '+'" translate>
+	                        		POSITIVE_SIGN
+	                        	</option> 
+	                        	<!-- RESTRICT only positive valuse for taxes! -->
+	                        	<option ng-if="prefetchData.selected_charge_code_type != '1'" value="_" ng-selected="prefetchData.selected_amount_sign == '-'" translate>
+	                        		NEGATIVE_SIGN
+	                        	</option> 
 	                        </select>
 						</div>
 						<div class=" select-col col1-3 " >
