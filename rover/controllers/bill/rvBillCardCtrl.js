@@ -1448,11 +1448,12 @@ sntRover.controller('RVbillCardController',
         
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom){
+                
             
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
-		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+		else if(($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED') && !$rootScope.queuedCheckIn){
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,
@@ -1484,15 +1485,6 @@ sntRover.controller('RVbillCardController',
             
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
-		}
-		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
-			//TO DO:Go to room assignemt view
-			$state.go("rover.reservation.staycard.roomassignment", {
-				"reservation_id": $scope.reservationBillData.reservation_id,
-				"room_type": $scope.reservationBillData.room_type,
-				"clickedButton": "checkinButton"
-			});
-			return false;
 		}
 
 		var errorMsg = "", signatureData = $scope.getSignature();
@@ -2138,7 +2130,7 @@ sntRover.controller('RVbillCardController',
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
 		 	//CICO-10906 review process continues after payment.
-			if( data.bill_balance === 0.0 && $scope.isViaReviewProcess ){
+			if( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ){
 				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
 						$scope.clickedReviewButton(data.billNumber-1);
 			}

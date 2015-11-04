@@ -56,22 +56,22 @@ sntRover.service('RVReservationPackageSrv', ['$http', '$q', 'rvBaseWebSrvV2', fu
 			addonItem.is_inclusive = item.is_inclusive;
 		}
 		addonItem.chargefullweeksonly = item.charge_full_weeks_only;
+		addonItem.is_rate_addon = item.is_rate_addon;
 		return addonItem;
 	};
 
 	this.parseRateAddonItem = function(addon) {
-		var newAddonToReservation = {};
-		newAddonToReservation.id = addon.id;
-		newAddonToReservation.quantity = 1;
-		newAddonToReservation.title = addon.name;
-		newAddonToReservation.totalAmount = (newAddonToReservation.quantity) * (addon.amount);
-		newAddonToReservation.price_per_piece = addon.amount;
-		newAddonToReservation.amount_type = addon.amount_type.description;
-		newAddonToReservation.post_type = addon.post_type.description;
-		newAddonToReservation.is_inclusive = !!addon.is_inclusive;
-		return newAddonToReservation;
+		return   {
+			id : addon.id,
+			quantity : 1, //Rate associated Addons have quantity ONE
+			title : addon.name,
+			totalAmount : addon.amount, //Rate associated Addons have quantity ONE
+			price_per_piece : addon.amount,
+			amount_type : addon.amount_type.description,
+			post_type : addon.post_type.description,
+			is_inclusive : !!addon.is_inclusive,
+			is_rate_addon : true	
+		};
 	}
-
-
 
 }]);

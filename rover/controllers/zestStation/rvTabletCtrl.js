@@ -110,6 +110,14 @@ sntRover.controller('rvTabletCtrl', [
             $scope.subHeadingText = 'Subheader Text Here';
             $scope.inputTextPlaceholder = 'Input Text Here';
             $scope.currencySymbol = '';
+
+            //set Home screen options based on admin settings
+            var setHomeScreenOptions   = function(data){
+                $scope.show.pickupkey  = data.home_screen.pickup_keys;
+                $scope.show.check_out  = data.home_screen.check_out;
+                $scope.show.check_in   = data.home_screen.check_in;
+            };
+
             var initTabletConfig = function(){
 //                $('head').append('<link rel="stylesheet" type="text/css" href="../assets/css/zestStation/zoku.css">');
                 //$scope.settings = $rootScope.kiosk;
@@ -117,6 +125,7 @@ sntRover.controller('rvTabletCtrl', [
                     $scope.settings = data;
                     //fetch the idle timer settings
                     $scope.setupIdleTimer();
+                    setHomeScreenOptions(data);
                     $scope.$emit('hideLoader');
                 };
                 var fetchHotelCompleted = function(data){

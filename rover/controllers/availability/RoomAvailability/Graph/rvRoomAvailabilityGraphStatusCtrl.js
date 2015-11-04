@@ -69,8 +69,6 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			return max;
 		};
 
-
-
 		var formGraphData = function(){
 			$scope.graphData = [{
 				name: 'Bookable Rooms',
