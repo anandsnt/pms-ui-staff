@@ -82,8 +82,17 @@ sntRover.controller('roomAvailabilityMainController', [
 			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 			'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 		};
-
 		return dataForWebservice;
+	};
+
+	/**
+	* Api to fetch additional data
+	*/
+	$scope.fetchAdditionalData = function(){
+		$timeout(function(){
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
+		}, 0);
+
 	};
 
 
