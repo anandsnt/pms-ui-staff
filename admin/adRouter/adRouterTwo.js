@@ -350,7 +350,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.ratesAddons', {
 			templateUrl: '/assets/partials/rates/adRatesAddons.html',
 			controller: 'ADRatesAddonsCtrl',
-			url : '/rates_addons'
+			url : '/rates_addons',
+			resolve:{
+				activeRates: function(ADPromotionsSrv) {
+					return ADPromotionsSrv.getActiveRates();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.ratesSequence', {
