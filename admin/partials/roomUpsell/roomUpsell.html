@@ -77,30 +77,23 @@
 
 
                         <!-- Search available charge codes -->
-                        <div id="autocomplete-charge-codes" class="search-codes charge-code-select" ng-show = "!isBillingGroup">
-                            <div class="entry" ng-class="styleclass">
-                                <label> Charge Code </label>
-                                <input ng-model="chargecodeData.chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
-                                <div ng-show="showChargeCodes">
-
-                                <!-- Charge code Results / content -->
-                                    <div class="billing-info-charges charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
-                                        <div class="search-results" >
-                                            <ul id="search-list" >
-                                                <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id)" >
-                                                    <h4 class="text-bold" ng-bind-html="chargeCode.name"></h4>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                        <div class="entry has-autocomplete" ng-show="!isBillingGroup">
+                            <label for="search-codes">Charge Code</label>
+                            <input ng-model="chargecodeData.chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
+                            <div class="autocomplete-results" ng-show="showChargeCodes" ng-hide="availableChargeCodes.length === 0">
+                                <div class="scrollable" ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
+                                    <ul class="wrapper">
+                                        <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id)" >
+                                            <span ng-bind-html="chargeCode.name"></span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-
                         </div>
 
 
                     </fieldset>
-                    <div class="entry"></div>
+
                     <fieldset class="holder full-width">
                         <div class="form-title">
                             <h3><span translate>DAILY_UPSELL</span> {{'LEVELS'|translate}} </h3>
