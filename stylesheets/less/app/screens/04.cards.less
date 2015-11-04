@@ -1209,7 +1209,8 @@
                                 &:after { .hide; }
                             }
 
-                            &.status { width: 160px; }
+                            &.status,
+                            &.date { width: 160px; }
 
                             &.date-range {
                                 margin-right: 0;
@@ -1266,6 +1267,26 @@
                             .button {
                                 font-size: 24px;
                                 line-height: 70px;
+                            }
+                        }
+
+                        .next-dates {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            color: @logoPrimary;
+                            line-height: 1;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            z-index: 9920;
+                            background: @background;
+                            .size(100%, 80px);
+
+                            .has-arrow {
+                                margin: 5px auto;
+                                background-position: 50% 0;
+                                .show;
+                                .size(20px, 100%);
                             }
                         }
 
@@ -1689,6 +1710,16 @@
                                     .cell { .calc-width(33.33333, 6.66666); }
 
                                     &:first-child { width: 310px; }
+                                }
+                            }
+                        }
+
+                        .room-block-timeline,
+                        .room-block-grid {
+                            &.paginated {
+                                .wrapper { 
+                                    padding-right: 100px; 
+                                    .float; 
                                 }
                             }
                         }
