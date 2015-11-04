@@ -818,10 +818,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
                     }
                     _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
-                        addonsForRoomType.push({
-                            id: addon.id,
-                            quantity: addon.quantity || 1
-                        });
+                        //skip rate associated addons on create/update calls --> they will be taken care off by API 
+                        if(!addon.is_rate_addon){
+                            addonsForRoomType.push({
+                                id: addon.id,
+                                quantity: addon.quantity || 1
+                            });
+                        }   
                     });
                 }
                 if (!$scope.reservationData.isHourly) {

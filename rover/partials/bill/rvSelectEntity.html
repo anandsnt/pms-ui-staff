@@ -96,25 +96,25 @@
 			<ul class="wrapper">
 
 				<div class="entity" ng-repeat="row in results.accounts"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNT')">
-                    <!-- image -->
-                	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-                      <img ng-src="{{row.company_logo}}" alt="">
-                    </figure>
+          <!-- image -->
+          <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+            <img ng-src="{{row.company_logo}}" alt="">
+          </figure>
 
-                    <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
-                      <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
-                      <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
-                    </figure>
-                    <!-- heading -->
-                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-                    <!-- icon -->
-                  	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
-                </div>
+          <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
+            <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
+            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
+          </figure>
+          <!-- heading -->
+          <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+          <!-- icon -->
+          <div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
+        </div>
 
-                <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
-                 	<div class="group-info">A</div>
-                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-                </div>
+        <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
+         	<div class="group-info">A</div>
+            <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+        </div>
 
 			</ul>
 			<!-- No results / no content when searched query not found-->
