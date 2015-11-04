@@ -148,6 +148,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		// returning object
 		var graphData = {};
 
+		return graphData;
+
 		//array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [];
 		var bookableRooms 		= [];
@@ -540,49 +542,59 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* function to fetch availability between from date & to date
 	*/
 	this.fetchAvailabilityAdditionalDetails = function(params){
-		var firstDate 	= params.from_date;
-		var secondDate 	= params.to_date;
-
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			'from_date'                   : params.from_date,
+			'to_date'	                  : params.to_date,
+			'is_from_availability_screen' : true
 		};
 
 		//Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/calendar_availability';
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
-			_.extend (that.data.gridData,
-			{
-				'additionalData' 		: formGridAdditionalData(resultFromAPI)				
+
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
+			.then(function(availabilityAdditionalFromAPI) {
+
+				that.fetchOccupancyDetails(params)
+					.then(function(occupancyDataFromAPI) {
+						_.extend(that.data.gridData, {
+							'additionalData'      : formGridAdditionalData( availabilityAdditionalFromAPI ),
+							'additionalGraphData' : formGraphData( availabilityAdditionalFromAPI, occupancyDataFromAPI ),
+						});
+
+						// passing on gridData is a waste, sort of.
+						// but we sure gotta resolve!
+						deferred.resolve(that.data.gridData);
+					}, function(data) {
+						deferred.reject(data);
+					});
+
+			}, function(data) {
+				deferred.reject(data);
 			});
-			deferred.resolve(resultFromAPI);
-		},function(data){
-			deferred.reject(data);
-		});
+
 		return deferred.promise;
 	};
 
 	/*
 	* function to fetch occupancy details date wise
 	*/
-	this.fetchOccupancyDetails = function(params, deferred){
-		var firstDate 	= params.from_date;
-		var secondDate 	= params.to_date;
-
+	this.fetchOccupancyDetails = function(params){
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			'from_date' : params.from_date,
+			'to_date'   : params.to_date
 		};
 
+		var deferred = $q.defer();
 		var url = 'api/daily_occupancies';
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(responseFromAPI) {
-			that.data.gridData 	= formGridData(availabilityGridDataFromAPI);
-			that.data.graphData = formGraphData(availabilityGridDataFromAPI, responseFromAPI);
-			deferred.resolve(that.data);
-		},function(data){
-			deferred.reject(data);
-		});
+
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
+			.then(function(responseFromAPI) {
+				deferred.resolve(that.data);
+			},function(data){
+				deferred.reject(data);
+			});
+
 		return deferred.promise;
 	};
 
