@@ -165,7 +165,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	};
 
 	$scope.talkToStaff = function(){
-		$scope.mode = "speak-to-staff";
+		$state.go('zest_station.speak_to_staff');
 	};
         
     $scope.setDueInOut = function(params){
