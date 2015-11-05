@@ -145,7 +145,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		}
 
 		//Display the key encoder popup
-		else if(keySettings === "encode"){
+		else if(keySettings === "encode" || keySettings === "mobile_key_encode"){
             if($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
                 fetchEncoderTypes();
             } else {
