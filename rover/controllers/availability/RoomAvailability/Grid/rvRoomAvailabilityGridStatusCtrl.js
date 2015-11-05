@@ -33,9 +33,11 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 		$scope.toggle = function(source){
 			$scope.toggleStatusOf[source] = !$scope.toggleStatusOf[source];
-			if(!isFullDataAvaillable()){
+
+			if( 'occupancy' != source && 'roomInventory' != source && !isFullDataAvaillable() ){
 				$scope.$parent.fetchAdditionalData();
 			};
+
 			$scope.refreshScroller('room_availability_scroller');
 		};
 
