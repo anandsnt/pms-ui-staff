@@ -40,9 +40,6 @@ sntRover.controller('roomAvailabilityMainController', [
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
 
 
-
-
-
 	// To popup contract start date
 	$scope.clickedOnDatePicker = function() {
 		ngDialog.open({
@@ -58,11 +55,21 @@ sntRover.controller('roomAvailabilityMainController', [
 	* success call of availability data fetch
 	*/
 	var successCallbackOfAvailabilityFetch = function(data){
+		if($scope.selectedView === 'graph'){
+			$scope.fetchAdditionalData();
+			}else{
+			$scope.$emit("hideLoader");
+			$scope.$broadcast("changedRoomAvailableData");
+		}
+
+	};
+	/**
+	* success call of availability additional data fetch
+	*/
+
+	var successCallbackOfAvailabilityAdditionalDataFetch = function(data){
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
-		// for this successcallback we are not hiding the activty indicator
-		// we will hide it only after template loading.
-
 	};
 
 	/**
@@ -90,12 +97,10 @@ sntRover.controller('roomAvailabilityMainController', [
 	*/
 	$scope.fetchAdditionalData = function(){
 		$timeout(function(){
-			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityAdditionalDataFetch, failureCallbackOfAvailabilityFetch);
 		}, 0);
 
 	};
-
-
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/

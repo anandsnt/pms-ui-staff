@@ -9,10 +9,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		var init = function(){
 			$scope.hideMeBeforeFetching = false;
 			$scope.toggleStatusOf = {};
-			$scope.toggleStatusOf['availableRooms'] = false;
-			$scope.toggleStatusOf['roomsSold'] = false;
-			$scope.toggleStatusOf['occupancy'] = false;
-			$scope.toggleStatusOf['roomInventory'] = false;
+			initToggleStatus();
 			$scope.data = rvAvailabilitySrv.getGridData();
 
 			//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
@@ -25,6 +22,13 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 				$scope.hideMeBeforeFetching = true;
 				$scope.$emit("hideLoader");
 			}
+		};
+
+		var initToggleStatus = function(){
+			$scope.toggleStatusOf['availableRooms'] = false;
+			$scope.toggleStatusOf['roomsSold'] = false;
+			$scope.toggleStatusOf['occupancy'] = false;
+			$scope.toggleStatusOf['roomInventory'] = false;
 		};
 
 		$scope.toggle = function(source){
@@ -48,7 +52,11 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
 		$scope.$on("changedRoomAvailableData", function(event){
+			console.log("in");
 			$scope.data = rvAvailabilitySrv.getGridData();
+			if(!isFullDataAvaillable()){
+				initToggleStatus();
+			}
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
