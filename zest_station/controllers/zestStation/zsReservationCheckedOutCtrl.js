@@ -21,27 +21,27 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 	});
 
 
-    var init = function(){
+  var init = function(){
 
-       $scope.email = "";
+     $scope.email = "";
 
-       // we check if the reservation has an email id and the admin settings for 
-       // email bill is set as true
-       if($stateParams.email.length === 0 && $scope.zestStationData.guest_bill.email){
-            $scope.mode       = "email-mode";
-            $scope.emailError = false;
-       }
-       //else we check if admin settings for print bill is set as true
-       else if($scope.zestStationData.guest_bill.print){
-            $scope.mode       = "print-mode";
-            $scope.email      = $stateParams.email;
-       }
-       else{
-             $scope.mode = "final-mode";
-       }
-       
-       $scope.printOpted = false;
-    };
+     // we check if the reservation has an email id and the admin settings for 
+     // email bill is set as true
+     if($stateParams.email.length === 0 && $scope.zestStationData.guest_bill.email){
+          $scope.mode       = "email-mode";
+          $scope.emailError = false;
+     }
+     //else we check if admin settings for print bill is set as true
+     else if($scope.zestStationData.guest_bill.print){
+          $scope.mode       = "print-mode";
+          $scope.email      = $stateParams.email;
+     }
+     else{
+           $scope.mode = "final-mode";
+     }
+     
+     $scope.printOpted = false;
+  };
 
 
 
@@ -64,41 +64,39 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
   $scope.clickedNoThanks = function(){
       $scope.mode = "final-mode";
   };
-
-  $scope.goToNext = function(){
-      $scope.mode = "final-mode";
-  };
       
   $scope.saveEmail = function(){
-      if($scope.email.length === 0){
-          return;
-      }
-      else{
-          if(zsUtilitySrv.isValidEmail($scope.email)){
-            $scope.zestStationData.guest_bill.print ? $scope.mode = "print-mode" : $scope.mode = "final-mode";;
-          }
-          else{
-              $scope.emailError = true;
-          }
-      }
-    };
+    if($scope.email.length === 0){
+        return;
+    }
+    else{
+        if(zsUtilitySrv.isValidEmail($scope.email)){
+          //check if admin settings for print bill is set as true
+          $scope.zestStationData.guest_bill.print ? $scope.mode = "print-mode" : $scope.mode = "final-mode";;
+        }
+        else{
+            $scope.emailError = true;
+        }
+    }
+  };
 
-    $scope.reTypeEmail = function(){
-        $scope.emailError = false;
-    };
-    $scope.printBill= function(){
+  $scope.reTypeEmail = function(){
+      $scope.emailError = false;
+  };
+
+  $scope.printBill= function(){
+      // print section - if its from device call cordova.
+      try{
+        $window.print();
+        if ( sntapp.cordovaLoaded ) {
+            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+        };
+        $scope.printOpted = true;
+        $scope.mode = "final-mode";
+      }
+      catch(e){
         
-        try{
-          $window.print();
-          if ( sntapp.cordovaLoaded ) {
-              cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-          };
-          $scope.printOpted = true;
-          $scope.mode = "final-mode";
-        }
-        catch(e){
-          
-        }
-    };  
+      }
+  };  
 
 }]);
