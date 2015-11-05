@@ -178,6 +178,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
 
          
+        // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.input_reservation_email_after_swipe', {
+             url: '/zest_station', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html',
+         });
          
          
 
@@ -208,11 +214,6 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 
         
-        // //check-in [ find-by-email ]
-        // $stateProvider.state('station.tab-kiosk-input-email', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/generic/input-text.html',
-        // });
 
 
 
