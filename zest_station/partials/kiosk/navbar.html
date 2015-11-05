@@ -1,0 +1,16 @@
+<nav id="header" role="nav">
+    <!-- Back button, if applicable -->
+    <button type="button" id="back-button" class="button blank" ng-hide="!hasPrev">
+        <ng-include src="'assets/css/icons/back.svg'"></ng-include>
+    </button>
+
+    <!-- Hotel logo -->
+    <div id="logo">
+        <ng-include src="hotelLogo"></ng-include>
+    </div>
+
+    <!-- Close button, if applicable -->
+    <button type="button" id="close-button" class="button blank">
+        <ng-include src="'assets/partials/zestStation/zestStation/icons/close.svg'" ng-hide="hideNavBtns"></ng-include>
+    </button>
+</nav> 

@@ -1,0 +1,13 @@
+<!-- Content -->
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{headingText}}</h1>
+        <h2>{{subHeadingText}}</h2>
+        
+        <div id="keys">
+                <ng-include src="'assets/css/icons/create-key.svg'" style='fill:green' ng-class="{'green': greenKey == true}"></ng-include>
+        </div>
+        
+    </div>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>

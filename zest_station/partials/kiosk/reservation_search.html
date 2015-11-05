@@ -1,0 +1,72 @@
+<!-- search mode -->
+<ng-include src="'assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match'"></ng-include>
+
+<!-- reservation list view -->
+<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match'" click-touch="resetTime()">
+    <div id="content" ng-show="shouldShowSearchResults()">
+        <h1>Select a Reservation</h1>
+        <div id="labels">
+            <span class="label">Name</span>
+            <span class="label">Check Out Date / Room Type</span>
+        </div>
+        
+        <ul id="selection"> <!-- Show no more than 3 results per page -->
+            <li ng-repeat="reservation in reservations">
+                <div class="details" touch-press="selectReservation(reservation)">
+                    <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
+                    <div class="date">
+                        {{reservation.arrival_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} {{hoursNights}})
+                        <!--span>{{reservation.room_type}}</span-->
+                        <span>{{reservation.stay_dates[0].room_type}}</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="actions" class='select-reservation'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+            <button type="button" class="button transparent prev" touch-press='fetchPreviousReservationList()' ng-class='{"overlay":reservationPageNum==1}'>Previous</button>
+            <label>{{page}} / {{totalPages}}</label>
+            <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":reservationPageNum==reservationPages}'>Next</button>
+        </div> 
+    </div>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>
+
+<!-- no match -->
+<section id="main" class="centered" role="main" ng-show='mode === "no-match"' click-touch='resetTime()'>
+    <div id="content">
+        <h1 style="padding-top: 23px;">Sorry.</h1>
+        <h2>We can't seem to find your reservation.</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='reEnterLastName()'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{reservationParams.last_name}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li ng-show="showRoomEnter">
+                    <button type="button" class="button option" touch-press='reEnterRoomNumber()'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{reservationParams.room_no}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                    </button>
+                    Talk
+                    <span>To a Staff Member</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>
