@@ -79,9 +79,15 @@ sntRover.controller('RVReservationAddonsCtrl', [
             },
             goToSummaryAndConfirm = function() {
                 if ($scope.fromPage === "staycard") {
-                    var saveData = {};
-                    saveData.addons = _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon});
-                    saveData.reservationId = $scope.reservationData.reservationId;
+
+                    var saveData = {
+                        reservationId: $scope.reservationData.reservationId,
+                        room_types: [{
+                            id: $scope.reservationData.rooms[0].roomTypeId ,
+                            num_rooms: 1,
+                            addons: _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon})
+                        }]
+                    }
 
                     var successCallBack = function() {
                         $scope.$emit('hideLoader');
@@ -161,9 +167,12 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                     // initialize addons for display
                     $scope.addons = [];
+                    var currentRate = parseInt($scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId, 10);
                     _.each(data.results, function(item) {
                         if (!!item) {
-                            $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));
+                            if(!item.allow_rate_exclusion || (item.allow_rate_exclusion && _.indexOf(item.excluded_rate_ids, currentRate) < 0)){
+                                $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));   
+                            }
                         }
                     });
                     // refresh scroller

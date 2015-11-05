@@ -10,9 +10,14 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.getGraphData = function(){
 		return that.data.hasOwnProperty('gridData') && that.data.gridData.additionalGraphData;
 	};
-	this.getGridData = function(){
+	this.getGridData = function () {
 		return that.data.gridData;
 	};
+
+	this.getGridDataForInventory = function () {
+		return that.data.gridDataForItemInventory;
+	};
+
 	this.getGridDataForGroupAvailability = function(){
 		return that.data.gridDataForGroupAvailability;
 	};
@@ -229,7 +234,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* param - Object from api/group_availability response
 	* return - Object 
 	*/
-	var formGridDataForGroupAvailability = function(datafromApi){
+	var formGridDataForGroupAvailability = function (datafromApi) {
 		var gridDataForGroupAvailability = {};
 		var dates = [];
 		var groupTotalRooms =[];
@@ -284,6 +289,20 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		};
 		return gridDataForGroupAvailability;
 	}
+
+	var formGridDataForItemInventory = function (response) {
+		var dates = [];
+		//extracting dates from response
+		_.each(response.addons[0].availability_details, function (key) {
+			var dateToCheck = tzIndependentDate(key.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			var eachDate = {"date" : key.date, "isWeekend" : isWeekend};
+			dates.push(eachDate);
+		});
+		var result = { "addons": response.addons, "dates": dates };
+		return result;
+	};
+
 	/*
 	* param - Group id
 	* return Group name
@@ -311,6 +330,30 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
 			//storing response temporarily in that.data, will change in occupancy call
 			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
+			deferred.resolve(that.data);
+		},function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	* function to fetch item inventory between from date & to date
+	*/
+	this.fetchItemInventoryDetails = function (params) {
+		var firstDate 	= (params.from_date),
+			secondDate 	= (params.to_date);
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+		//Webservice calling section
+		var deferred = $q.defer(),
+			url = '/api/availability/addons';
+		
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
+			that.data.gridDataForItemInventory = formGridDataForItemInventory(resultFromAPI);
 			deferred.resolve(that.data);
 		},function(data){
 			deferred.reject(data);

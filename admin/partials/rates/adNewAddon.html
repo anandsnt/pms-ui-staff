@@ -1,207 +1,189 @@
 <div style="display: block;" id="add-new" class="edit-data" ng-cloak>
-	<div class="data-holder">
-		<form id="add-addon" name="add-addon" class="form inline-form float">
-			<div class="form-title">
-				<h3>
+    <div class="data-holder">
+        <form id="add-addon" name="add-addon" class="form inline-form float">
+            <div class="form-title">
+                <h3>
 					<span>{{ addonTitle }}</span>
 					{{ addonSubtitle }}
 				</h3>
-				<em class="status">
+                <em class="status">
 					{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
 					<strong>*</strong>
 					{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
 				</em>
-			</div>
-			
-			<fieldset class="holder left float">
-				<ad-textbox styleclass="full-width"
-					value="singleAddon.name"
-					name="name"
-					id="name"
-					label="{{'NAME' | translate}}"
-					placeholder="{{'ENTER_ADDON_NAME' | translate}}"
-					required="yes"></ad-textbox>
-
-				<ad-textarea rows="4"
-					div-class="full-width"
-					text-area-class="full-width"
-					value="singleAddon.description"
-					name="desc"
-					id="desc"
-					label="{{'DESCRIPTION' | translate}}"
-					placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}"
-					required="yes"></ad-textarea>
-
-				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
-						<label>{{'BESTSELLER' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.bestseller">
-					</label>
-				</div>
-
-				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
-						<label>{{'RATE_ONLY' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.rate_code_only" ng-change="rateOnlyChanged()">
-					</label>
-				</div>
-
-				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_reservation_only }"></span>
-						<label>{{'RESERVATION_ONLY' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.is_reservation_only" ng-change="reservationOnlyChanged()">
-					</label>
-				</div>
-
-				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
-				<ad-textbox styleclass="full-width"
-						value="singleAddon.inventory_count"
-						name="inventory"
-						id="inventory"
-						label="{{'Inventory' | translate}}"
-						placeholder="Enter the count"
-						required="yes"></ad-textbox>
-				</div>
-
-			</fieldset>
-
-
-			<fieldset class="holder right float">
-				<div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
+            </div>
+            <fieldset class="holder left float">
+                <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleAddon.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
+                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
+                        <label>{{'BESTSELLER' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.bestseller">
+                    </label>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
+                        <label>{{'RATE_ONLY' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.rate_code_only" ng-change="rateOnlyChanged()">
+                    </label>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_reservation_only }"></span>
+                        <label>{{'RESERVATION_ONLY' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.is_reservation_only" ng-change="reservationOnlyChanged()">
+                    </label>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                    <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count" required="yes"></ad-textbox>
+                </div>
+            </fieldset>
+            <fieldset class="holder right float">
+                <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'FROM_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
                     <button ng-click="popupCalendar('From')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
-                         ...
+                        ...
                     </button>
                     <div class="date-delete-wrapper">
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('From')">&nbsp;</span>
                     </div>
                 </div>
-
-				
-				<div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
+                <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'TO_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
                     <button ng-click="popupCalendar('To')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
-                         ...
+                        ...
                     </button>
                     <div class="date-delete-wrapper">
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('To')">&nbsp;</span>
                     </div>
                 </div>
-			
-
-				<div ng-hide="isConnectedToPMS" class="entry">
-					<div class="entry full-width">
-						<label for="charge-group-id">
-							{{'CHARGE_GROUP' | translate}}
-							<strong>*</strong>
-						</label>
-						<div class="select">
-							<select name="charge-group-id"
-								id="charge-group-id"
-								ng-model="singleAddon.charge_group_id"
-								ng-options="group.id as group.name for group in chargeGroups"
-								ng-change="chargeGroupChage()"
-								></select>
-						</div>
-					</div>
-				</div>
-				<div ng-hide="isConnectedToPMS" class="entry">
-					<div class="entry full-width">
-						<label for="charge-group-id">
-							{{'CHARGE_CODE' | translate}}
-							<strong>*</strong>
-						</label>
-						<div class="select">
-							<select name="charge-code-id"
-								id="charge-code-id"
-								ng-model="singleAddon.charge_code_id"
-								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodesForChargeGrp"></select>
-						</div>
-					</div>
-				</div>							
-				
-				<div class="entry">
-					<ad-textbox styleclass="full-width"
-						value="singleAddon.amount"
-						name="amount"
-						id="amount"
-						label="{{'AMOUNT' | translate}} [{{currencySymbol}}]"
-						placeholder="Enter the amount"
-						required="yes"></ad-textbox>
-				</div>
-				<div ng-hide="isConnectedToPMS" class="entry">
-					<div class="entry full-width">
-						<label for="amount-type-id">
-							{{'AMOUNT_TYPE' | translate}} 
-							<strong>*</strong>
-						</label>
-						<div class="select">
-							<select name="amount-type-id"
-								id="amount-type-id"
-								ng-model="singleAddon.amount_type_id"
-								ng-options="type.id as type.description for type in amountTypes"></select>
-						</div>
-					</div>
-				</div>
-
-				<div ng-hide="isConnectedToPMS" class="entry full-width">
-					<label for="amount-type-id">
-						{{'POST_TYPE' | translate}}
-						<strong>*</strong>
-					</label>
-					<div class="select">
-						<select name="post-type-id"
-							id="post-type-id"
-							ng-model="singleAddon.post_type_id"
-							ng-options="type.id as type.description for type in postTypes"></select>
-					</div>
-				</div>
-
-				<div ng-hide="isConnectedToPMS" class="entry radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
-						<label>{{'MANUAL_POSTING' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.manual_posting">
-					</label>
-				</div>
-
-				<div ng-hide="isConnectedToPMS" class="entry radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.forecast_for_next_day }"></span>
-						<label>{{'FORECAST_FOR_NEXT_DAY' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
-					</label>
-				</div>
-				<div ng-show="showChargeFullWeeksOnly()" class="entry radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.charge_full_weeks_only }"></span>
-						<label>{{'CHARGE_FULL_WEEKS_ONLY' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.charge_full_weeks_only">
-					</label>
-				</div>
-				
-			</fieldset>
-
-
-			<div class="actions float">
-				<button type="button"
-					id="cancel"
-					class="button blank add-data-inline"
-					ng-click="cancelCliked()">{{'CANCEL' | translate}}</button>
-				<button type="button"
-					like-type="common"
-					id="update"
-					class="button green add-data-inline"
-					ng-click="addUpdateAddon()">{{'SAVE_CHANGES' | translate}}</button>
-			</div>
-
-		</form>
-	</div>
+                <div ng-hide="isConnectedToPMS" class="entry">
+                    <div class="entry full-width">
+                        <label for="charge-group-id">
+                            {{'CHARGE_GROUP' | translate}}
+                            <strong>*</strong>
+                        </label>
+                        <div class="select">
+                            <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.charge_group_id" ng-options="group.id as group.name for group in chargeGroups" ng-change="chargeGroupChage()"></select>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry">
+                    <div class="entry full-width">
+                        <label for="charge-group-id">
+                            {{'CHARGE_CODE' | translate}}
+                            <strong>*</strong>
+                        </label>
+                        <div class="select">
+                            <select name="charge-code-id" id="charge-code-id" ng-model="singleAddon.charge_code_id" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodesForChargeGrp"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="entry">
+                    <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}} [{{currencySymbol}}]" placeholder="Enter the amount" required="yes"></ad-textbox>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry">
+                    <div class="entry full-width">
+                        <label for="amount-type-id">
+                            {{'AMOUNT_TYPE' | translate}}
+                            <strong>*</strong>
+                        </label>
+                        <div class="select">
+                            <select name="amount-type-id" id="amount-type-id" ng-model="singleAddon.amount_type_id" ng-options="type.id as type.description for type in amountTypes"></select>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry full-width">
+                    <label for="amount-type-id">
+                        {{'POST_TYPE' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <div class="select">
+                        <select name="post-type-id" id="post-type-id" ng-model="singleAddon.post_type_id" ng-options="type.id as type.description for type in postTypes"></select>
+                    </div>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
+                        <label>{{'MANUAL_POSTING' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.manual_posting">
+                    </label>
+                </div>
+                <div ng-hide="isConnectedToPMS" class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.forecast_for_next_day }"></span>
+                        <label>{{'FORECAST_FOR_NEXT_DAY' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
+                    </label>
+                </div>
+                <div ng-show="showChargeFullWeeksOnly()" class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.charge_full_weeks_only }"></span>
+                        <label>{{'CHARGE_FULL_WEEKS_ONLY' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.charge_full_weeks_only">
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="holder holder full-width">
+                <div class="form-title">
+                    <h3>
+                        <span>Exclude from&nbsp;</span>                                                    
+                        Rate
+                    </h3>
+                </div>
+                <ad-toggle-button div-class="full-width" label="{{'EXCLUDE_FROM_RATE' | translate}}" is-checked="singleAddon.allow_rate_exclusions"></ad-toggle-button>
+                <section ng-show="singleAddon.allow_rate_exclusions">
+                    <div class="entry has-sortable no-margin-right">
+                        <label class="center_align">
+                            <em class="rate_roomtype_text">Available Rates</em>
+                        </label>
+                        <ul class="boxes sortable ui-sortable short-list" data-type="source" ng-model="singleAddon.availableRates" data-drop="true" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
+                            <li ng-repeat="rate in singleAddon.availableRates" data-drag="true" ng-model="singleAddon.availableRates" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailableRate($index)" ng-class='{selected: state.selectedAvailableRate === $index}'>
+                                <span class="icons icon-handle"></span>
+                                <span class="icons icon-handle"></span> {{rate.name}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry movers rates_mover">
+                        <div class="top_mover">
+                            <span class="icons icon-mover-right to-target" data-type="target" ng-click="excludeSelectedRate(singleAddon)" ng-class="{active: state.selectedAvailableRate > -1}" data-type="source">
+                                Exlude rate(s)
+                            </span>
+                            <span class="icons icon-mover-left to-source" data-type="source" ng-click="includeSelectedRate(singleAddon)" ng-class="{active: state.selectedAssignedRate > -1}">
+                                Include rate(s)
+                            </span>
+                        </div>
+                        <div>
+                            <div class="green_gradient icons">
+                                <span class="to-source green_mover icons_rates" data-type="source" ng-click="includeAllRates(singleAddon)">Include All Rate(s)</span>
+                            </div>
+                            <div class="red_gradient icons">
+                                <span class="to-target  red_mover icons_rates" data-type="target" ng-click="excludeAllRates(singleAddon)">Exclude All Rate(s)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entry has-sortable no-margin-right">
+                        <label class="center_align">
+                            <span class="assigned_room_text">Excluded from Rates</span></label>
+                        <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="singleAddon.excludedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
+                            <li ng-repeat="rate in singleAddon.excludedRates" ng-model="singleAddon.excludedRates" ng-click="toggleExcludedRate($index)" ng-class='{selected: state.selectedAssignedRate === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                                <span class="icons icon-handle"></span>
+                                <span class="icons icon-handle"></span> {{rate.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelCliked()">{{'CANCEL' | translate}}</button>
+                <button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="addUpdateAddon()">{{'SAVE_CHANGES' | translate}}</button>
+            </div>
+        </form>
+    </div>
 </div>
