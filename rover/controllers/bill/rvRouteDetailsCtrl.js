@@ -600,6 +600,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.selectedEntity.reservation_id = $scope.reservationData.reservation_id;
             }
 
+            if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" && $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING") {
+                $scope.selectedEntity.from_date = $scope.routeDates.from;
+                $scope.selectedEntity.to_date = $scope.routeDates.to;
+            }
+
             /*
             * If user selects the new bill option,
             * we'll first create the bill and then save the route for that bill
@@ -905,5 +910,46 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.$on('CHANGE_IS_MANUAL', function(e, value){
         	$scope.sixIsManual = value;
         });
+
+        if($scope.billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING') {
+        var arrivalDate,
+            departureDate;
+        if ($scope.reservation) {
+            arrivalDate = $scope.reservation.reservation_card.arrival_date,
+            departureDate = $scope.reservation.reservation_card.departure_date;
+        }
+
+        if ($scope.billingEntity === 'GROUP_DEFAULT_BILLING') {
+            arrivalDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
+            departureDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd');
+        }
+
+        defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
+
+        $scope.routeDates = {
+            from : defaultRouteFromDate,
+            to : departureDate
+        };
+
+        $scope.routingDateFromOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate(arrivalDate),
+            maxDate : tzIndependentDate($scope.routeDates.to)
+        };
+
+        $scope.routingDateToOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate(arrivalDate),
+            maxDate : tzIndependentDate($scope.routeDates.to)
+        };
+
+        /**
+            Watch the changes on from and to dates and set their format
+        **/
+        $scope.$watch('routeDates', function() {      
+          $scope.routeDates.from = $filter('date')(tzIndependentDate($scope.routeDates.from), 'yyyy-MM-dd');
+          $scope.routeDates.to   = $filter('date')(tzIndependentDate($scope.routeDates.to), 'yyyy-MM-dd');
+        }, true);
+    }
 
 }]);
