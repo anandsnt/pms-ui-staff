@@ -328,7 +328,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		nonGroupRooms 			= [],
 		groupAndAllotments 		= [],
 		outOfOrder  			= [],
-		inventory				= [];
+		inventory				= [],
+		roomTypeCount           = [];
 
 		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
 
@@ -364,14 +365,29 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			}
 		});
 
+		 var key;
+		 var v = [{'v': 100}, {'a': 101}, {'l': 102}];
+		 // roomAvailabilityData['room_type_count']
+		_.each(v, function(item) {
+			key = _.keys(item)[0];
+
+			console.log(key);
+
+			roomTypeCount.push({
+				'name'  : key,
+				'value' : item[key]
+			});
+		});
+
 		gridData = {
 			'dates'				: dates,
 			'occupancies'		: occupancies,
 			'availableRooms'	: availableRooms,
 			'nonGroupRooms'		: nonGroupRooms,
 			'groupAndAllotments': groupAndAllotments,			
-			'outOfOrder' 		: 	outOfOrder,
-			'inventory'			: inventory
+			'outOfOrder' 		: outOfOrder,
+			'inventory'			: inventory,
+			'roomTypeCount'     : roomTypeCount
 		};
 		//CICO-13590
 		if (!isHourlyRateOn) {
