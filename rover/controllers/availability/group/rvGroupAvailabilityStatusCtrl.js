@@ -66,26 +66,17 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		 */
 		$scope.getWidthForTable = function() {
 
-			//if no data exist we will just return 0
-			if (!_.has($scope.data, 'dates')) {
+			var leftMostRowCaptionWidth = 130, // 120px cell width + 10px cell spacing
+				totalColumns = $scope.data && $scope.data.dates && $scope.data.dates.length,
+				individualColWidth = 60; // 55px cell width + 5px cell spacing
+
+			if (!_.has($scope.data, 'dates') && totalColumns < 30) {
 				return 0;
 			};
 
-			var leftMostRowCaptionWidth = 273,
-				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
-				individualColWidth 		= 0;
-
-			//on each column length, width is different
-			if (totalColumns <= 7) {
-				individualColWidth = 147;
+			if (totalColumns == 30) {
+				return 'width:' + (totalColumns * individualColWidth + leftMostRowCaptionWidth) + 'px';
 			}
-			else if (totalColumns <= 14) {
-				individualColWidth = 71;
-			}
-			else if (totalColumns <= 30) {
-				individualColWidth = 55;
-			}			
-			return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 		};
 
 		/*

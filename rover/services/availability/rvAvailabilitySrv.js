@@ -8,139 +8,23 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.data = {};
 
 	this.getGraphData = function(){
-		return that.data.graphData;
+		return that.data.hasOwnProperty('gridData') && that.data.gridData.additionalGraphData;
 	};
 	this.getGridData = function(){
 		return that.data.gridData;
 	};
 	this.getGridDataForGroupAvailability = function(){
 		return that.data.gridDataForGroupAvailability;
+	};
+	this.getGridDataForAllotmentAvailability = function(){
+		return that.data.gridDataForAllotmentAvailability;
 	};	
 
 	this.updateData = function(data){
 		that.data = data;
 	};
 
-	var formGridData = function(roomAvailabilityData){
-		var gridData = {};
-
-		//array to keep all data, we will append these to above dictionary after calculation
-		var dates 				= [];
-		var occupancies 		= [];
-		var bookableRooms 		= [];
-		var availableRooms 		= [];
-		var outOfOrderRooms 	= [];
-		var reservedRooms 		= [];
-		var overBookableRooms 	= [];
-		var availableRoomsWithBookableRooms = [];
-		var individualAvailableRooms = [];
-
-		//CICO-13590:
-		var bookedRooms 		= [];
-		var individualBookedRooms = [];
-		var groupTotalRooms 	= [];
-		var groupTotalPickedUp 	= [];
-		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
-
-		var currentRow = null;
-		var totalRooms = roomAvailabilityData.physical_count;
-
-		//web service response is arrogant!!, requested to change. no use
-		// before looking into the code, please have good look in the webservice response.
-		// Also please console the end data model, so that you will get clarity when looking the code
-		//creating list of room types
-		for(var i = 0; i < roomAvailabilityData.room_types.length; i++){
-			individualAvailableRooms.push({
-				'id' 	: roomAvailabilityData.room_types[i].id,
-				'name'	: roomAvailabilityData.room_types[i].name,
-				'availableRoomNumberList': []
-			});
-
-			//CICO-13590:
-			individualBookedRooms.push ({
-				'id' 	: roomAvailabilityData.room_types[i].id,
-				'name'	: roomAvailabilityData.room_types[i].name,
-				'bookedNumberList': []
-			});
-		}
-
-		for(i = 0; i < roomAvailabilityData.results.length; i++){
-			currentRow = roomAvailabilityData.results[i];
-
-			var dateToCheck = tzIndependentDate(currentRow.date);
-			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
-			dates.push({'date': currentRow.date, 'isWeekend': isWeekend, 'dateObj': new Date(currentRow.date)});
-
-			occupancies.push((currentRow.house.sold / totalRooms) * 100);
-
-			bookableRooms.push(totalRooms - currentRow.house.out_of_order);
-
-			availableRooms.push(currentRow.house.availability);
-
-			//CICO-13590
-			if (!isHourlyRateOn) { //we are enabling this for non-hourly hotels only
-				bookedRooms.push (currentRow.house.sold);
-				groupTotalRooms.push (currentRow.house.group_total_rooms);
-				groupTotalPickedUp.push (currentRow.house.group_total_pickups);
-
-				for(var j = 0; j < currentRow.room_types.length; j++){
-					var id = currentRow.room_types[j].id;
-					for(var k = 0; k < individualBookedRooms.length; k++){
-						if(individualBookedRooms[k].id === id){
-							individualBookedRooms[k].bookedNumberList.push(currentRow.room_types[j].sold);
-							break;
-						}
-					}
-				}
-
-			}
-
-			//web service response is arrogant!!, requested to change. no use :(
-			for(var j = 0; j < currentRow.room_types.length; j++){
-				var id = currentRow.room_types[j].id;
-				for(var k = 0; k < individualAvailableRooms.length; k++){
-					if(individualAvailableRooms[k].id === id){
-						individualAvailableRooms[k].availableRoomNumberList.push(currentRow.room_types[j].availability);
-						break;
-					}
-				}
-			}
-
-			outOfOrderRooms.push(currentRow.house.out_of_order);
-
-			reservedRooms.push(currentRow.house.sold);
-			//hardcoded
-			overBookableRooms.push(1);
-			availableRoomsWithBookableRooms.push(3);
-
-		}
-		gridData = {
-			'dates'				: dates,
-			'occupancies'		: occupancies,
-			'bookableRooms'		: bookableRooms,
-			'availableRooms'	: availableRooms,
-			'outOfOrderRooms'	: outOfOrderRooms,
-			'reservedRooms'		: reservedRooms,
-			'overBookableRooms'	: overBookableRooms,
-			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
-			'individualAvailableRooms': individualAvailableRooms,
-			'totalRooms'		: roomAvailabilityData.physical_count
-		};
-
-		//CICO-13590
-		if (!isHourlyRateOn) {
-			_.extend (gridData,
-			{
-				'bookedRooms' 		: bookedRooms,
-				'individualBookedRooms': individualBookedRooms,
-				'groupTotalRooms'	: groupTotalRooms,
-				'groupTotalPickedUp': groupTotalPickedUp
-			});
-		}
-		return gridData;
-	};
-
-	var formGraphData = function(dataFromAvailability, occupancyData){
+	var formGraphData = function(availabilityAdditionalFromAPI, occupancyDataFromAPI){
 		// returning object
 		var graphData = {};
 
@@ -164,10 +48,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var occupanciesActualForADay	= '';
 		var occupanciesTargetedForADay 	= '';
 		var date 						= '';
-		var totalRoomCount = dataFromAvailability.physical_count;
+		var totalRoomCount = availabilityAdditionalFromAPI.physical_count;
 		var currentRow = null;
-		for(var i = 0; i < dataFromAvailability.results.length; i++){
-			currentRow = dataFromAvailability.results[i];
+		for(var i = 0; i < availabilityAdditionalFromAPI.results.length; i++){
+			currentRow = availabilityAdditionalFromAPI.results[i];
 
 			// date for th day
 			date = {'dateObj': new Date(currentRow.date)};
@@ -192,11 +76,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			outOfOrderRooms.push(outOfOrderRoomForADay);
 			reservedRooms.push(reservedRoomForADay);
 			availableRooms.push(availableRoomForADay);
-		}
+		};
 
 		//since occupancy data is from another API, results may have length  lesser/greater than availability
-		for(i = 0; i < occupancyData.results.length; i++){
-			currentRow = occupancyData.results[i];
+		for(i = 0; i < occupancyDataFromAPI.results.length; i++){
+			currentRow = occupancyDataFromAPI.results[i];
 			occupanciesActualForADay = escapeNull(currentRow.actual) === "" ? 0 : currentRow.actual;
 			occupanciesTargetedForADay = escapeNull(currentRow.target) === "" ? 0 : currentRow.target;
 			occupanciesActual.push(occupanciesActualForADay);
@@ -237,7 +121,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		_.each(datafromApi.results,function(element,index,lis){
 			var temp = [];
-			//Extracting date detail		
+			//Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
@@ -251,7 +135,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 				var detail ={
 					"id":ele.group_id,
 					"Name":ele.name,
-					"date":element.date,					
+					"date":element.date,
 					"total_blocked_rooms":ele.total_blocked_rooms,
 					"total_pickedup_rooms":ele.total_pickedup_rooms
 				};
@@ -314,6 +198,219 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		});
 		return deferred.promise;
 	};
+	/**
+	* function to re-structure API response to UI data model.
+	*/
+	var formGridData = function(roomAvailabilityData){
+		var gridData = {};
+
+		//array to keep all data, we will append these to above dictionary after calculation
+		var dates 				= [],
+		occupancies  			= [],
+		availableRooms   		= [],
+		bookedRooms  			= [],
+		nonGroupRooms 			= [],
+		groupAndAllotments 		= [],
+		outOfOrder  			= [],
+		inventory				= [],
+		roomToSell				= [],
+		roomTypes               = [];
+
+		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
+
+		_.each(roomAvailabilityData.results,function(item){
+
+			//Extracting date detail
+			var dateToCheck = tzIndependentDate(item.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
+
+			//Extracting Occupancy details
+			occupancies.push(item.occupancy.percentage);
+
+			//Extracting Availability details
+			availableRooms.push(item.available_rooms);
+
+			//Extracting Availability details
+			nonGroupRooms.push(item.non_group_rooms);
+
+			groupAndAllotments.push(item.group_and_allotment);
+
+			//Extracting inventory count
+			inventory.push(item.physical_room_count);
+
+			//Extracting OOO
+			outOfOrder.push(item.occupancy.out_of_order);
+
+			//Extracting room to sell
+			roomToSell.push(item.rooms_to_sell);
+
+
+			//CICO-13590
+			//we are enabling this for non-hourly hotels only
+			if (!isHourlyRateOn) {
+				bookedRooms.push (item.rooms_sold);
+			}
+		});
+
+		gridData = {
+			'dates'				: dates,
+			'occupancies'		: occupancies,
+			'availableRooms'	: availableRooms,
+			'nonGroupRooms'		: nonGroupRooms,
+			'groupAndAllotments': groupAndAllotments,			
+			'outOfOrder' 		: outOfOrder,
+			'inventory'			: inventory,
+			'roomTypes'         : roomAvailabilityData['room_types'],
+			'roomToSell'		: roomToSell
+		};
+		//CICO-13590
+		if (!isHourlyRateOn) {
+			_.extend (gridData,
+			{
+				'bookedRooms' 		: bookedRooms				
+			});
+		}
+		return gridData;
+	};
+	/**
+	* function to add additional data to UI data model.
+	*/
+	var formGridAdditionalData = function(roomAvailabilityAdditionalData){
+		var additionalData = {};
+		var roomtypeDetails = [];
+		var roomTypeNames =[],
+		adultsChildrenCount = [];
+		
+		_.each(roomAvailabilityAdditionalData.results,function(item){
+			//Extracts roomtype details			
+			roomtypeDetails.push(item.detailed_room_types);
+			//Extracts adult child count
+			adultsChildrenCount.push(item.adults_children_count);
+
+		});
+
+		//Forms roomtype names array
+		_.each(roomAvailabilityAdditionalData.results[0].detailed_room_types, function(item){
+			var roomTypeName;
+			_.map(roomAvailabilityAdditionalData.room_types,function(roomType){
+				if(roomType.id === item.id){
+					roomTypeName = roomType.name;
+				}
+			});
+			roomTypeNames.push(roomTypeName);			
+		});
+
+		additionalData ={
+			'roomTypeWiseDetails' 	: 	_.zip.apply(null, roomtypeDetails),
+			'roomTypeNames' 		: 	roomTypeNames,
+			'adultsChildrenCount'	: 	adultsChildrenCount
+		};
+
+		return additionalData;
+	};
+	/**
+	* function to fetch allotment availability between from date & to date
+	*/
+	this.fetchAllotmentAvailabilityDetails = function(params){
+		var firstDate 	= (params.from_date);
+		var secondDate 	= (params.to_date);
+
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = 'api/allotment_availability';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
+			.then(function(resultFromAPI) {
+				//storing response temporarily in that.data, will change in occupancy call
+				that.data.gridDataForAllotmentAvailability = formGridDataForAllotmentAvailability(resultFromAPI);
+				deferred.resolve(that.data);
+			},function(data){
+				deferred.reject(data);
+			});
+		return deferred.promise;
+	};
+
+	/*
+	* param - Group id
+	* return Group name
+	*/
+	var getAllotmentName = function(GroupId, holdstatuses){
+		return _.find(holdstatuses, function(elem){ 
+				return (elem.id === GroupId)?true:false;
+				}).name;
+	};
+
+	/*
+	* param - Object from api/group_availability response
+	* return - Object 
+	*/
+	var formGridDataForAllotmentAvailability = function(datafromApi){
+		var gridDataForAllotmentAvailability = {};
+		var dates = [];
+		var groupTotalRooms =[];
+		var groupTotalPickedUps = [];
+		var holdstatus = [];
+		var groupDetails =[];
+		var groupDetail = [];		
+
+		_.each(datafromApi.results,function(element,index,lis){
+			var temp = [];
+
+			//Extracting date detail		
+			var dateToCheck = tzIndependentDate(element.date);
+			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
+
+			//Extracting groupTotalRooms
+			groupTotalRooms.push(element.total_rooms);
+
+			//Extracting groupTotal picked ups
+			groupTotalPickedUps.push(element.total_pickups);			
+			holdstatus.push(element.hold_status);
+
+			//Forms array(temp) of details of groups date wise
+			_.each(element.availability,function(ele, ind, list){
+				var detail ={
+					"id":ele.id,
+					"Name":ele.name, 
+					"date":element.date, // is needed, not in API				
+					"total_blocked_rooms":ele.total_blocked_rooms,
+					"total_pickedup_rooms":ele.total_pickedup_rooms
+				};
+				temp.push(detail);
+			});
+
+			//Forms two dimensional array[datewise][groupwise]
+			groupDetail.push(temp);
+		});
+
+		//Forms groupwise Details. 
+		_.each(datafromApi.results[0].availability, function(element, index, list){
+			var groupdetail ={
+				"name":element.name,
+				"id":element.id,
+				"holdStatusName":getAllotmentName(element.hold_status_id, datafromApi.hold_status),
+				"details":_.zip.apply(null, groupDetail)[index]
+			};
+			groupDetails.push(groupdetail);
+		});
+		
+		gridDataForAllotmentAvailability = {
+			'dates'	: dates,
+			'groupTotalRooms': groupTotalRooms,
+			'groupTotalPickedUps':groupTotalPickedUps,
+			'holdstatuses': _.zip.apply(null, holdstatus),
+			'groupDetails':groupDetails,
+			'holdStatus':datafromApi.hold_status
+		};
+
+		return gridDataForAllotmentAvailability;
+	};
 
 
 	/**
@@ -330,37 +427,75 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		//Webservice calling section
 		var deferred = $q.defer();
-		var url = 'api/availability';
+		var url = 'api/availability_main';
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
-			//storing response temporarily in that.data, will change in occupancy call
-			availabilityGridDataFromAPI= resultFromAPI;
-			return that.fetchOccupancyDetails(params, deferred);
+			that.data.gridData ={};
+			that.data.gridData = formGridData(resultFromAPI);
+			deferred.resolve(resultFromAPI);
 		},function(data){
 			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
 
+
+	/**
+	* function to fetch availability between from date & to date
+	*/
+	this.fetchAvailabilityAdditionalDetails = function(params){
+		var dataForWebservice = {
+			'from_date'                   : params.from_date,
+			'to_date'	                  : params.to_date,
+			'is_from_availability_screen' : true
+		};
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = 'api/calendar_availability';
+
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
+			.then(function(availabilityAdditionalFromAPI) {
+
+				that.fetchOccupancyDetails(params)
+					.then(function(occupancyDataFromAPI) {
+						_.extend(that.data.gridData, {
+							'additionalData'      : formGridAdditionalData( availabilityAdditionalFromAPI ),
+							'additionalGraphData' : formGraphData( availabilityAdditionalFromAPI, occupancyDataFromAPI ),
+						});
+
+						// passing on gridData is a waste, sort of.
+						// but we sure gotta resolve!
+						deferred.resolve(that.data.gridData);
+					}, function(data) {
+						deferred.reject(data);
+					});
+
+			}, function(data) {
+				deferred.reject(data);
+			});
+
+		return deferred.promise;
+	};
+
 	/*
 	* function to fetch occupancy details date wise
 	*/
-	this.fetchOccupancyDetails = function(params, deferred){
-		var firstDate 	= params.from_date;
-		var secondDate 	= params.to_date;
-
+	this.fetchOccupancyDetails = function(params){
 		var dataForWebservice = {
-			from_date	: firstDate,
-			to_date		: secondDate
+			'from_date' : params.from_date,
+			'to_date'   : params.to_date
 		};
 
+		var deferred = $q.defer();
 		var url = 'api/daily_occupancies';
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(responseFromAPI) {
-			that.data.gridData 	= formGridData(availabilityGridDataFromAPI);
-			that.data.graphData = formGraphData(availabilityGridDataFromAPI, responseFromAPI);
-			deferred.resolve(that.data);
-		},function(data){
-			deferred.reject(data);
-		});
+
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
+			.then(function(responseFromAPI) {
+				deferred.resolve(responseFromAPI);
+			},function(data){
+				deferred.reject(data);
+			});
+
 		return deferred.promise;
 	};
 
@@ -472,6 +607,40 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		});
 
 	return houseDetails;
+	};
+
+	this.fetchGrpNAllotAvailDetails = function(params) {
+		var deferred = $q.defer();
+
+		var count = 2;
+
+		var shallWeResolve = function() {
+			if ( count == 0 ) {
+				deferred.resolve();
+			};
+		};
+
+		var success = function() {
+			count--;
+			shallWeResolve();
+		};
+
+		var failed = function() {
+			count--;
+			shallWeResolve();
+		};
+
+		that.fetchGroupAvailabilityDetails({
+			from_date : params.from_date,
+			to_date   : params.to_date
+		}).then(success, failed);
+
+		that.fetchAllotmentAvailabilityDetails({
+			from_date : params.from_date,
+			to_date   : params.to_date
+		}).then(success, failed);
+
+		return deferred.promise;
 	};
 
 }]);

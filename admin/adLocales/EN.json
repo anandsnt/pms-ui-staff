@@ -578,7 +578,9 @@
 	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
         "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
 
-,
+,"LETSHARE_SETUP_HEADER": "LetShare Setup",
+"LETSHARE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"LETSHARE_SUB_TITLE": "LetShare API Access Configuration",
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",
@@ -733,6 +735,7 @@
 "ROVER":"Rover",
 "MAKE_KEY_FOR_RFID_READER":"Make Key from RFID reader at Tablet",
 "SHOW_QR_CODE_FOR_ROOM_KEY":"Show QR code for room key on Tablet",
+"USE_MOBILE_PHONE_KEY":"Use Mobile Phone Key",
 "ROOM_KEY_SYSTEM_VENDOR":"Room Key System Vendor",
 "KEY_SYSTEM_ACCESS_URL":"Key System Access URL",
 "KEY_SYSTEM_ACCESS_URL_PLACEHOLDER":"Enter Key System Access URL",
@@ -1021,6 +1024,14 @@
 "TRANS_COLOR": "Transparent Color",
 "IN_FIELD_BG": "Input Field Background",
 "HEADER_ICONS_COLOR": "Header Icons Color",
-"HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)"
+"HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)",
+
+"GUEST_BILL_DELIVERY":"Guest bill delivery options",
+"EMAIL":"Email",
+"PRINT":"Print",
+"HOME_SCREEN_OPTIONS":"Home screen options",
+"PICKUP_KEYS":"Pickup Keys",
+"CHECKOUT":"Check Out",
+"CHECKIN":"Check In"
         
         }

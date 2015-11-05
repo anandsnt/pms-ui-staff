@@ -2130,7 +2130,7 @@ sntRover.controller('RVbillCardController',
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
 		 	//CICO-10906 review process continues after payment.
-			if( data.bill_balance === 0.0 && $scope.isViaReviewProcess ){
+			if( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ){
 				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
 						$scope.clickedReviewButton(data.billNumber-1);
 			}

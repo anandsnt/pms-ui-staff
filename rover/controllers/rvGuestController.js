@@ -500,9 +500,9 @@ sntRover.controller('guestCardController', [
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 			$scope.guestCardVisible = false;
-			$timeout(function () {
-				$scope.$emit('hideLoader');
-			},2000);
+			// $timeout(function () {
+			// 	$scope.$emit('hideLoader');
+			// },2000);
 		};
 
 		$scope.handleDrawClosing = function() {
@@ -710,7 +710,8 @@ sntRover.controller('guestCardController', [
 			} else {
 				var dataForPopup = {
 					cardTypeText: "Guest Card",
-					cardType: "guest"
+					cardType: "guest",
+					cardId: $scope.reservationDetails.guestCard.id
 				}
 				ngDialog.open({
 					template: '/assets/partials/cards/alerts/detachCard.html',
@@ -723,15 +724,7 @@ sntRover.controller('guestCardController', [
 			}
 		};
 
-		$scope.deleteCard = function(cardType, cardId) {
-			$scope.closeDialog();
-			$timeout(function() {
-				$scope.closeGuestCard();
-				$scope.removeCard(cardType, cardId);
-			}, 700);
-		};
-
-		$scope.$on("CARD_REMOVED", function(event, card) {
+		var broadCastDetachEvent = function(card){
 			if (card === 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
 			} else if (card === 'company') {
@@ -739,10 +732,23 @@ sntRover.controller('guestCardController', [
 			} else if (card === 'guest') {
 				$scope.$broadcast('guestCardDetached');
 			}
+		}
+
+		$scope.deleteCard = function(cardType, cardId) {
+			$scope.closeDialog();
+			broadCastDetachEvent(cardType);
+
+			$timeout(function() {
+				$scope.closeGuestCard();
+				$scope.removeCard(cardType, cardId);
+			}, 700);
+		};
+
+		$scope.$on("CARD_REMOVED", function(event, card) {
+			broadCastDetachEvent(card);
 		});
 
 		// init staycard header
-
 		$scope.searchGuest = function() {
 			var successCallBackFetchGuest = function(data) {
 				$scope.$emit("hideLoader");
@@ -1584,7 +1590,8 @@ sntRover.controller('guestCardController', [
 		// To handle card selection from COMPANY / TA.
 		$scope.selectCardType = function(cardData, $event) {
 			$event.stopPropagation();
-
+			// Card draw is closed on select
+			$scope.closeGuestCard();
 			if (cardData.account_type === 'COMPANY') {
 				if (!!cardData.rate && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 					showContractRatePopup(cardData);
