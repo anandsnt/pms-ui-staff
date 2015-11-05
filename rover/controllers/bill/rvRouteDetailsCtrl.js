@@ -912,8 +912,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         }
 
         if ($scope.billingEntity === 'GROUP_DEFAULT_BILLING') {
-            arrivalDate = $scope.groupConfigData.summary.block_from,
-            departureDate = $scope.groupConfigData.summary.block_to;
+            arrivalDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
+            departureDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd');
         }
 
         defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
@@ -921,17 +921,18 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.routeDates = {
             from : defaultRouteFromDate,
             to : departureDate
-        };    
+        };
 
         $scope.routingDateFromOptions = {       
-            dateFormat : "dd-mm-yy",
-            minDate : arrivalDate,
-            maxDate : $scope.routeDates.to
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate(arrivalDate),
+            maxDate : tzIndependentDate($scope.routeDates.to)
         };
+
         $scope.routingDateToOptions = {       
-            dateFormat : "dd-mm-yy",
-            minDate : arrivalDate,
-            maxDate : $scope.routeDates.to
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate(arrivalDate),
+            maxDate : tzIndependentDate($scope.routeDates.to)
         };
 
         /**
@@ -939,9 +940,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             the allowed range
         **/
         $scope.$watch('routeDates', function() {      
-          $scope.routingDateFromOptions.maxDate = $scope.routeDates.to,
-          $scope.routingDateToOptions.minDate   = $scope.routeDates.from;
-        }, true); 
+          $scope.routeDates.from = $filter('date')(tzIndependentDate($scope.routeDates.from), 'yyyy-MM-dd');
+          $scope.routeDates.to   = $filter('date')(tzIndependentDate($scope.routeDates.to), 'yyyy-MM-dd');
+        }, true);
     }
-    console.log($scope.groupConfigData.summary.block_from);
+
 }]);
