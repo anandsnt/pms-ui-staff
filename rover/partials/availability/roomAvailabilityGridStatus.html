@@ -41,10 +41,10 @@
 					</td>
 				</tr>
 				
-				<tr class="italic " ng-class="{'hidden': !toggleStatusOf.occupancy || !toggleStatusOf.roomInventory}" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
-					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index]"></th>
-					<td>
-						<div class="inner">-</div>
+				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.roomInventory || !toggleStatusOf.roomInventory}" ng-repeat="roomType in data.roomTypes track by $index">
+					<th scope="row" ng-bind="roomType.name"></th>
+					<td ng-repeat="eachDate in data.dates">
+						<div class="inner" ng-bind="roomType.rooms_inventory"></div>
 					</td>
 				</tr>
 				<!-- OOO -->

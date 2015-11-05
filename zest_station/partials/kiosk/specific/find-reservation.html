@@ -1,0 +1,39 @@
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "find-reservation"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>Next, type one of the following</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
+                        <ng-include src="'assets/css/icons/moon.svg'"></ng-include>
+                    </button>
+                    Departure Date
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='findByEmail(); resetTime(); clearInputText();'>
+                        <ng-include src="'assets/css/icons/email.svg'"></ng-include>
+                    </button>
+                    E-mail
+                    <span>Used to make Reservation</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='findByConfirmation(); resetTime()'>
+                        <ng-include src="'assets/css/icons/confirmation.svg'"></ng-include>
+                    </button>
+                    Confirmation
+                    <span>Number</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>
+
+        

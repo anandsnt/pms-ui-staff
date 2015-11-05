@@ -37,7 +37,7 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	//default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
-	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
+	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, 'dd-MM-yyyy');
 
 
 	// To popup contract start date

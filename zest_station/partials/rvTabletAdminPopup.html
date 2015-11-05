@@ -1,0 +1,50 @@
+<!-- Popup -->
+<div role="dialog" id="modal" class="modal-show">
+	<form method="post" class="modal-content" id='tablet-popup' click-touch='resetCounter();'>
+            <table class='admin-table'>
+                <tr>
+                <h2 class="nocaps header">Kiosk Admin</h2>
+                </tr>
+                <tr>
+                    <td><label class='admin-item-label'>Kiosk Idle Timer</label></td>
+                    <td>
+                        <div class="entry">
+                                <!--input type="checkbox" ng-change='updateSettings("enabled", settings.adminIdleTimeEnabled)' /need style added for kiosk-->
+                                <button ng-hide="zestStationData.idle_timer.enabled" style="float:right" type="button" class="button grey" touch-press="updateSettings('true');">
+                                        Disabled
+                                </button>
+                                <button ng-hide="!zestStationData.idle_timer.enabled"  style="float:right" type="button" class="button green" touch-press="updateSettings('false');">
+                                        Enabled
+                                </button>
+                        </div>
+                    </td>
+                    
+                    
+                </tr>
+
+                <tr>
+                    <td><label class='admin-item-label'>Idle Time (Seconds)</label></td>
+                    <td><input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.max'  class='admin-input'/></td>
+                </tr>
+
+                <tr class='admin-item'>
+                    <td>
+                        <label class='admin-item-label'>Idle Screen Prompt Time (Seconds)</label>
+                    </td>
+                    <td>
+                        <input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
+                    </td>
+                    <td>
+                        <button type="button" class="button" touch-press='saveAdminSettings()'>Save</button>
+                    </td>
+                </tr>
+
+            </table>
+
+        </form>
+</div>
