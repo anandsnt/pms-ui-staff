@@ -600,7 +600,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.selectedEntity.reservation_id = $scope.reservationData.reservation_id;
             }
 
-            if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" && $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING") {
+            if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" && $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" && $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
                 $scope.selectedEntity.from_date = $scope.routeDates.from;
                 $scope.selectedEntity.to_date = $scope.routeDates.to;
             }
