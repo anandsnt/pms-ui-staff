@@ -117,6 +117,7 @@
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
     "START_PAYMENT_PROCESS": "Start Payment Process",
     "CONFLICTING_BILLING_INFO_EXISTS_ON": "Conflicting Billing Information exists for",
+    "CONFLICTING_BILLING_INFO_EXISTS": "Conflicting Billing Information exists",
     "CARD": "card",
     "PLEASE_UPDATE_MANUALLY": "Please update manually.",
     "OK": "ok",

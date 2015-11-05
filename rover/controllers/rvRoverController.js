@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -525,16 +525,6 @@ sntRover.controller('roverController',
       }
     };
 
-    // Method to check whether the rover is accessed via devices or not.
-    var isAccessedFromDevice = function(){
-        var isDevice = false; //initiate as false
-        // device detection
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-          isDevice = true;
-        }
-        return isDevice;
-    };
-
     /*
      * Start Card reader now!.
      */
@@ -542,7 +532,7 @@ sntRover.controller('roverController',
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
-      if($rootScope.desktopSwipeEnabled && !isAccessedFromDevice()){
+      if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
   			initiateDesktopCardReader();
   		}
       else {

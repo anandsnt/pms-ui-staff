@@ -1,0 +1,29 @@
+<!--  Home -->
+<section id="main" class="centered kiosk" role="main" >
+	<div id="content">
+		<nav id="options" class="large-icons" role="nav">
+			<ul role="menu">
+				<li ng-if="zestStationData.home_screen.pickup_keys">
+					<button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
+						<ng-include src="'assets/css/icons/key.svg'"></ng-include>
+					</button>
+					Pick up Key
+					<span>If you have already checked in online.</span>
+				</li>
+				<li ng-if="zestStationData.home_screen.check_in">
+					<button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
+						<ng-include src="'assets/css/icons/checkin.svg'"></ng-include>
+					</button>
+					Check In
+				</li>
+				<li ng-if="zestStationData.home_screen.check_out">
+					<button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
+						<ng-include src="'assets/css/icons/checkout.svg'"></ng-include>
+					</button>
+					Check Out
+				</li>
+			</ul>
+		</nav>
+	</div>
+<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>

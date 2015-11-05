@@ -474,5 +474,16 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 			return deferred.promise;
 		};
 
+		this.copyDefaultBillingInfo = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/default_account_routings/copy_default_billing_info_to_allotments';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
 	}
 ]);

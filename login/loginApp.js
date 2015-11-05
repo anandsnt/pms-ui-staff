@@ -34,6 +34,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	document.getElementById("email").focus();
 	 }
 	 $scope.errorMessage = "";
+	 $scope.successMessage = "";
 	 $scope.errorMessage = resetSrv.getErrorMessage();
 	 /*
 	  * successCallback of login action
@@ -79,6 +80,37 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	$scope.hasLoader = true;
  		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
+
+	/*
+	  * successCallback of forgot password action
+	  */
+	 $scope.successCallbackForgotPassword = function(data){
+	 	$scope.hasLoader = false;
+	 	$scope.successMessage = data.message;
+	 };
+
+	 /*
+	  * Failure call back of forgot password action
+	  */
+	 $scope.failureCallBackForgotPassword = function(errorMessage){
+	 	$scope.hasLoader = false;
+	 	$scope.errorMessage = errorMessage;
+	 };
+
+	/*
+	 * Forgot password action 
+	 */
+	 $scope.forgotPassword = function() {
+	 	var errorMessage = ["Please enter your Login email address"];
+	 	if($scope.data.email === ""){
+	 		$scope.errorMessage = errorMessage;
+	 	} else {
+	 		$scope.errorMessage = "";
+	 		var dataToPost = {"email" :$scope.data.email};
+	 		$scope.hasLoader = true;
+ 			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
+	 	}
+	 }
 
 
 }]);

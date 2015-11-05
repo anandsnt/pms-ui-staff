@@ -1,0 +1,20 @@
+
+    <!-- Content -->
+  <section id="main" class="centered test" role="main" ng-show='at === "add-guests"' click-touch='resetTime()'>
+      <div id="content" style='height: 80%'>
+            <h1 translate>{{addGuestsHeading}}</h1>
+            <ul id="selection" class="editable">
+                
+                <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='$index === 0'>
+                    <span class="details">{{guest.last_name}}, {{guest.first_name}}</span>
+                    <button type="button" class="button" click-touch='removeGuest($index)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>Remove</button>
+                </li>
+
+            </ul>
+            <div id="actions">
+                <button type="button" class="button prev" click-touch="goToScreen(null, 'add-guest-last', true)" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>+ Add A Guest</button>
+                <button type="button" class="button next" click-touch="goToScreen(null, 'reservation-details', true)">Next</button>
+            </div>
+        </div>
+        <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+    </section>
