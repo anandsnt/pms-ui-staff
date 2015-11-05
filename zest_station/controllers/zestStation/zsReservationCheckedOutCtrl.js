@@ -92,9 +92,9 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
           $window.print();
           if ( sntapp.cordovaLoaded ) {
               cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-              $scope.printOpted = true;
-              $scope.mode = "final-mode";
           };
+          $scope.printOpted = true;
+          $scope.mode = "final-mode";
         }
         catch(e){
           
