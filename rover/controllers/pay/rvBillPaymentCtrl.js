@@ -693,7 +693,8 @@ console.log(arguments)
 				"postData": {
 					"bill_number": $scope.renderData.billNumberSelected,
 					"payment_type": $scope.saveData.paymentType,
-					"amount": $scope.renderData.defaultPaymentAmount
+					"amount": $scope.renderData.defaultPaymentAmount,
+					"is_split_payment": $scope.splitSelected && !$scope.depositPaidSuccesFully //CICO-21725 Overide duplicate payment check on API side in case of split payments
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
