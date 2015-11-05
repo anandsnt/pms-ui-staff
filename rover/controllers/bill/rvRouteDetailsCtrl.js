@@ -415,8 +415,21 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
-
-            $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
+            // CICO-19848: In case of allotment
+            if (data.charge_routes_recipient) {
+                if(data.type === "TRAVELAGENT") {
+                    data.type = "TRAVEL_AGENT";
+                }
+                else if (data.type === "COMPANY") {
+                    data.type = "COMPANY_CARD";
+                } else {
+                    data.type = data.charge_routes_recipient.type;
+                    data.reservation_status = data.status;
+                    if (data.images) data.images[0].guest_image = data.images[0].image;
+                }
+                $scope.selectedEntity = _.extend($scope.selectedEntity, data);
+                $scope.selectedEntity.entity_type = data.type;
+            }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
             if(!isEmptyObject(data.credit_card_details)){
 	            $scope.renderAddedPayment = data.credit_card_details;
