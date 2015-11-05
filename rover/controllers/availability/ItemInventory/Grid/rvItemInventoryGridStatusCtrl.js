@@ -1,4 +1,4 @@
-sntRover.controller('rvRoomAvailabilityGridStatusController', [
+sntRover.controller('rvItemInventoryGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	function($scope, rvAvailabilitySrv){
@@ -9,8 +9,8 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		$scope.showRoomTypeWiseAvailableRooms = false;
 		$scope.showRoomTypeWiseBookedRooms = false;
 
-		$scope.data = rvAvailabilitySrv.getGridData();
-
+		$scope.data = rvAvailabilitySrv.getGridDataForInventory();
+		
 		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
 			$scope.refreshScroller('room_availability_scroller');
@@ -30,8 +30,8 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		$scope.$on("changedRoomAvailableData", function(event){
-			$scope.data = rvAvailabilitySrv.getGridData();
+		$scope.$on("changedRoomAvailableData", function (event) {
+			$scope.data = rvAvailabilitySrv.getGridDataForInventory();
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
@@ -61,21 +61,16 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		 * @return {Integer}
 		 */
 		$scope.getWidthForTable = function() {
-
 			//if no data exist we will just return 0
 			if (!_.has($scope.data, 'dates')) {
 				return 0;
 			};
-
 			var leftMostRowCaptionWidth = 273,
 				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
 				individualColWidth 		= 0;
 
 			//on each column length, width is different
-			if (totalColumns <= 7) {
-				individualColWidth = 147;
-			}
-			else if (totalColumns <= 14) {
+			if (totalColumns <= 14) {
 				individualColWidth = 71;
 			}
 			else if (totalColumns <= 30) {
@@ -83,6 +78,5 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			}			
 			return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 		};
-
 	}
 ]);
