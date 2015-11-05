@@ -54,7 +54,6 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
 		$scope.$on("changedRoomAvailableData", function(event){
-			console.log("in");
 			$scope.data = rvAvailabilitySrv.getGridData();
 			if(!isFullDataAvaillable()){
 				initToggleStatus();
