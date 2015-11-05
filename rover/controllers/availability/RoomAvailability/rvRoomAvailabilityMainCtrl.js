@@ -75,9 +75,8 @@ sntRover.controller('roomAvailabilityMainController', [
 	/**
 	* error call of availability data fetch
 	*/
-	var failureCallbackOfAvailabilityFetch = function(errorMessage){
+	var fetchApiFailed = function(errorMessage){
 		$scope.$emit("hideLoader");
-
 	};
 
 	//calculating date after number of dates selected in the select box
@@ -89,6 +88,7 @@ sntRover.controller('roomAvailabilityMainController', [
 			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 			'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 		};
+
 		return dataForWebservice;
 	};
 
@@ -97,16 +97,43 @@ sntRover.controller('roomAvailabilityMainController', [
 	*/
 	$scope.fetchAdditionalData = function(){
 		$timeout(function(){
-			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityAdditionalDataFetch, failureCallbackOfAvailabilityFetch);
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityAdditionalDataFetch, fetchApiFailed);
 		}, 0);
 
 	};
+
+	var successCallbackOfGrpNAllotDataFetch = function(data){
+		$scope.$emit("hideLoader");
+		$scope.$broadcast("changedGrpNAllotData");
+	};
+
+	/**
+	* Api to fetch group AND Allotment data
+	*/
+	$scope.fetchGrpNAllotData = function() {
+		var isSameData = function() {
+			var newParams = $scope.getDateParams(),
+				oldParams = $scope.oldDateParams || { 'from_date': '', 'to_date': '' };
+
+			return newParams.from_date == oldParams.from_date && newParams.to_date == oldParams.to_date;
+		};
+
+		if ( isSameData() ) {
+			successCallbackOfGrpNAllotDataFetch();
+		} else {
+			$timeout(function(){
+				$scope.oldDateParams = $scope.getDateParams();
+				$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.getDateParams(), successCallbackOfGrpNAllotDataFetch, fetchApiFailed);
+			}, 0);
+		};
+	};
+
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
 	$scope.changedAvailabilityDataParams = function(){
 		$timeout(function(){
-			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
 		}, 0);
 
 	};

@@ -64,47 +64,26 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			$scope.$emit("hideLoader");
 		});
 
+		$scope.$on('changedGrpNAllotData', function() {
+			$scope.data.gridDataForGroupAvailability     = rvAvailabilitySrv.getGridDataForGroupAvailability();
+			$scope.data.gridDataForAllotmentAvailability = rvAvailabilitySrv.getGridDataForAllotmentAvailability();
+
+			$scope.showShowGroupAllotmentTotals = true;
+
+			$scope.refreshScroller('room_availability_scroller');
+			$scope.$emit("hideLoader");
+		});
+
 		/*
 		* function to toggle the display of individual group/allotmet on clicking
 		* the toogle button
 		*/
 		$scope.toggleShowGroupAllotmentTotals = function() {
-			var gridDataForGroupAvailability     = rvAvailabilitySrv.data.hasOwnProperty( 'gridDataForGroupAvailability' ),
-				gridDataForAllotmentAvailability = rvAvailabilitySrv.data.hasOwnProperty( 'gridDataForAllotmentAvailability' );
-
-			var success = function() {
-				$scope.data.gridDataForGroupAvailability     = rvAvailabilitySrv.getGridDataForGroupAvailability();
-				$scope.data.gridDataForAllotmentAvailability = rvAvailabilitySrv.getGridDataForAllotmentAvailability();
-
-				$timeout(function() {
-					$scope.$emit( 'hideLoader' );
-					$scope.showShowGroupAllotmentTotals = true;
-					$scope.refreshScroller('room_availability_scroller');
-				}, 100);
-			};
-
-			var failed = function() {
-				$scope.refreshScroller('room_availability_scroller');
-				$scope.$emit( 'hideLoader' );
-			};
-
-			var isSameData = function() {
-				var newParams = $scope.$parent.getDateParams(),
-					oldParams = $scope.oldDateParams || { 'from_date': '', 'to_date': '' };
-
-				return newParams.from_date == oldParams.from_date && newParams.to_date == oldParams.to_date;
-			};
-
 			if ( $scope.showShowGroupAllotmentTotals ) {
 				$scope.showShowGroupAllotmentTotals = false;
 				$scope.refreshScroller('room_availability_scroller');
 			} else {
-				if ( isSameData() ) {
-					success();
-				} else {
-					$scope.oldDateParams = $scope.$parent.getDateParams();
-					$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.oldDateParams, success, failed);
-				};
+				$scope.$parent.fetchGrpNAllotData();
 			};
 		};
 
