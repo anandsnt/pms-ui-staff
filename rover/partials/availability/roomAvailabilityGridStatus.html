@@ -37,21 +37,21 @@
 				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-click="toggle('roomInventory')">
 					<th class="rows-toggle" scope="row">Rooms Inventory</th> <!-- TODO: toggle visibility of room types inventory -->
 					<td ng-repeat="inventory in data.inventory track by $index">
-						<div class="inner" ng-bind="inventory"></div>
+						<div class="inner" ng-bind="inventory" ng-class="{ 'unavailable': 0 > inventory, 'warning': 3 >= inventory}"></div>
 					</td>
 				</tr>
 				
-				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.roomInventory}" ng-repeat="roomType in data.roomTypeCount track by $index">
-					<th scope="row">roomType.name</th>
+				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.roomInventory || !toggleStatusOf.roomInventory}" ng-repeat="roomType in data.roomTypes track by $index">
+					<th scope="row" ng-bind="roomType.name"></th>
 					<td ng-repeat="eachDate in data.dates">
-						<div class="inner">roomType.value</div>
+						<div class="inner" ng-bind="roomType.rooms_inventory"></div>
 					</td>
 				</tr>
 				<!-- OOO -->
 				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
 					<th scope="row">OOO Rooms</th>
 					<td ng-repeat="outOfOrderRoom in data.outOfOrder track by $index">
-						<div class="inner" ng-bind="outOfOrderRoom"></div>
+						<div class="inner" ng-bind="outOfOrderRoom" ng-class="{ 'unavailable': 0 > outOfOrderRoom, 'warning': 3 >= outOfOrderRoom}"></div>
 					</td>
 				</tr>
 				<!-- Rooms to Sell -->
@@ -74,7 +74,7 @@
 				<tr class="main">
 					<th class="heading rows-toggle" ng-click="toggle('availableRooms')">Available Rooms</th>
 					<td ng-repeat="availableRoom in data.availableRooms track by $index">
-						<div class="inner" ng-bind="availableRoom"></div>
+						<div class="inner" ng-bind="availableRoom" ng-class="{ 'unavailable': 0 > availableRoom, 'warning': 3 >= availableRoom}"></div>
 					</td>
 				</tr>
 				<!-- Room types -->
@@ -97,14 +97,14 @@
 				<tr class="main" ng-if="!isHourlyRateOn">
 					<th class="heading rows-toggle" ng-click="toggle('roomsSold')">Rooms Sold</th>
 					<td ng-repeat="bookedRoom in data.bookedRooms track by $index">
-						<div class="inner" ng-bind="bookedRoom"></div>
+						<div class="inner" ng-bind="bookedRoom" ng-class="{ 'unavailable': 0 > bookedRoom, 'warning': 3 >= bookedRoom}"></div>
 					</td>
 				</tr>
 				<!-- Adults / Children -->
 				<tr ng-class="{'hidden': !toggleStatusOf.roomsSold }"> <!-- TODO: Add data -->
 					<th scope="row">Adults / Children</th>
 					<td ng-repeat="adultsChildrenCount in data.additionalData.adultsChildrenCount track by $index">
-						<div class="inner" ng-bind="adultsChildrenCount"></div>
+						<div class="inner" ng-bind="adultsChildrenCount" ng-class="{ 'unavailable': 0 > adultsChildrenCount, 'warning': 3 >= adultsChildrenCount}"></div>
 					</td>
 				</tr>
 				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !toggleStatusOf.roomsSold }" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">

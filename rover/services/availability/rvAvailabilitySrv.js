@@ -329,7 +329,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		groupAndAllotments 		= [],
 		outOfOrder  			= [],
 		inventory				= [],
-		roomTypeCount           = [];
+		roomTypes               = [];
 
 		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
 
@@ -365,19 +365,15 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			}
 		});
 
-		 var key;
-		 var v = [{'v': 100}, {'a': 101}, {'l': 102}];
-		 // roomAvailabilityData['room_type_count']
-		_.each(v, function(item) {
-			key = _.keys(item)[0];
+		//  var key;
+		// _.each(roomAvailabilityData['room_types'], function(item) {
+		// 	key = _.keys(item)[0];
 
-			console.log(key);
-
-			roomTypeCount.push({
-				'name'  : key,
-				'value' : item[key]
-			});
-		});
+		// 	roomTypes.push({
+		// 		'name'  : item.name,
+		// 		'value' : item[key]
+		// 	});
+		// });
 
 		gridData = {
 			'dates'				: dates,
@@ -387,7 +383,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'groupAndAllotments': groupAndAllotments,			
 			'outOfOrder' 		: outOfOrder,
 			'inventory'			: inventory,
-			'roomTypeCount'     : roomTypeCount
+			'roomTypes'         : roomAvailabilityData['room_types']
 		};
 		//CICO-13590
 		if (!isHourlyRateOn) {

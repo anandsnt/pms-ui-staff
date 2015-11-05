@@ -51,6 +51,14 @@ module.exports = function(grunt) {
                 options: {
                     prefix: '/assets/'
                 }
+            },
+            sntZestStation: {
+                cwd: 'zest_station/',
+                src: 'partials/**/*.html',
+                dest: 'build/zest_station_templates.js',
+                options: {
+                    prefix: '/assets/'
+                }               
             }
         },
         bower: {

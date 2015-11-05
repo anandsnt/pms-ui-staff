@@ -51,7 +51,10 @@ sntRover.controller('RVOutsidePostChargeController',
 			* function used for refreshing the scroller
 			*/
 			var refreshScroller = function(){
-				setTimeout(function() {
+				$timeout(function() {
+					if ($scope.myScroll && $scope.myScroll['result_showing_area_post_charg']) {
+						$scope.myScroll['result_showing_area_post_charg'].refresh();
+					}
 					$scope.refreshScroller('result_showing_area_post_charg');
 				}, 500);
 			};
