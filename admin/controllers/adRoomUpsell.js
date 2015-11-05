@@ -29,7 +29,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       var fetchRoomUpsellDetailsSuccessCallback = function (data) {
         $scope.$emit('hideLoader');
         $scope.upsellData = data;
-        $scope.availableChargeCodes = data.charge_codes;
         $scope.levelOne = $scope.upsellData.upsell_room_levels[0].room_types;
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
@@ -38,11 +37,8 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         isRoomTypesSelected();
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
 
-        $scope.selectedChargeCode = _.findWhere(data.charge_codes, {
-          value: data.selected_charge_code
-        });
-        $scope.upsellData.selected_charge_code = $scope.selectedChargeCode.value;
-        $scope.chargecodeData.chargeCodeSearchText = $scope.selectedChargeCode.name;
+        $scope.upsellData.selected_charge_code = data.selected_charge_code_id;
+        $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
       };
 
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
@@ -184,12 +180,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
    * Set the charge code to item selected from auto complete list
    * @param {Integer} charge code value
    */
-  $scope.selectChargeCode = function(id){
-    $scope.selectedChargeCode = _.findWhere($scope.availableChargeCodes, {
-      value: id
-    });
-    $scope.upsellData.selected_charge_code = $scope.selectedChargeCode.value;
-    $scope.chargecodeData.chargeCodeSearchText = $scope.selectedChargeCode.name;
+  $scope.selectChargeCode = function(id, name){
+    $scope.upsellData.selected_charge_code = id;
+    $scope.chargecodeData.chargeCodeSearchText = name;
     $scope.showChargeCodes = false;
   };
 

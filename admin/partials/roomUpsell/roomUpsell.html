@@ -83,7 +83,7 @@
                             <div class="autocomplete-results" ng-show="showChargeCodes" ng-hide="availableChargeCodes.length === 0">
                                 <div class="scrollable" ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
                                     <ul class="wrapper">
-                                        <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id)" >
+                                        <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id, chargeCode.name)" >
                                             <span ng-bind-html="chargeCode.name"></span>
                                         </li>
                                     </ul>
