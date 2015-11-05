@@ -60,6 +60,13 @@
 								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="qr_code_tablet" name="guest-zest" id="type3" class="change-data">
 								{{'SHOW_QR_CODE_FOR_ROOM_KEY' | translate }}
 							</label>
+
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'mobile_key_encode'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'mobile_key_encode'}"></span>
+								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="mobile_key_encode" name="guest-zest" id="type3" class="change-data">
+								{{'USE_MOBILE_PHONE_KEY' | translate }}
+							</label>
+
 						</div>
 					</div>
 					
