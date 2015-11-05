@@ -329,7 +329,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		availableRooms   		= [],
 		bookedRooms  			= [],
 		nonGroupRooms 			= [],
-		groupAndAllotments 		= [];
+		groupAndAllotments 		= [],
+		outOfOrder  			= [],
+		inventory				= [];
 
 		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
 
@@ -351,6 +353,13 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 			groupAndAllotments.push(item.group_and_allotment);
 
+			//Extracting inventory count
+			inventory.push(item.occupancy.room_inventory);
+
+			//Extracting OOO
+			outOfOrder.push(item.occupancy.out_of_order);
+
+
 			//CICO-13590
 			//we are enabling this for non-hourly hotels only
 			if (!isHourlyRateOn) {
@@ -363,7 +372,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			'occupancies'		: occupancies,
 			'availableRooms'	: availableRooms,
 			'nonGroupRooms'		: nonGroupRooms,
-			'groupAndAllotments': groupAndAllotments
+			'groupAndAllotments': groupAndAllotments,			
+			'outOfOrder' 		: 	outOfOrder,
+			'inventory'			: inventory
 		};
 		//CICO-13590
 		if (!isHourlyRateOn) {
@@ -378,13 +389,13 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	var formGridAdditionalData = function(roomAvailabilityAdditionalData){
 		console.log(roomAvailabilityAdditionalData);
 		var additionalData = {};
-		var outOfOrder =[],
-		roomtypeDetails = [];
-		var roomTypeNames =[];
+		var roomtypeDetails = [];
+		var roomTypeNames =[],
+		adultsChildrenCount = [];
 		
-		_.each(roomAvailabilityAdditionalData.results,function(item){
-			outOfOrder.push(item.house.out_of_order);
+		_.each(roomAvailabilityAdditionalData.results,function(item){			
 			roomtypeDetails.push(item.detailed_room_types);
+			adultsChildrenCount.push(item.adults_children_count);
 
 		});
 		//Forms roomtype names array
@@ -399,9 +410,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		});
 
 		additionalData ={
-			'outOfOrder' 			: 	outOfOrder,
 			'roomTypeWiseDetails' 	: 	_.zip.apply(null, roomtypeDetails),
-			'roomTypeNames' 		: 	roomTypeNames
+			'roomTypeNames' 		: 	roomTypeNames,
+			'adultsChildrenCount'	: 	adultsChildrenCount
 		};
 
 		return additionalData;
