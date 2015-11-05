@@ -75,6 +75,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 			var failed = function() {
 				$scope.refreshScroller('room_availability_scroller');
+				$scope.$emit( 'hideLoader' );
 			};
 
 			var isSameData = function() {
@@ -86,6 +87,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 			if ( $scope.showShowGroupAllotmentTotals ) {
 				$scope.showShowGroupAllotmentTotals = false;
+				$scope.refreshScroller('room_availability_scroller');
 			} else {
 				if ( isSameData() ) {
 					success();
