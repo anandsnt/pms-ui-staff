@@ -220,4 +220,17 @@ sntRover.service('rvUtilSrv', [function(){
 
 		    return listOfTimeSelectors;
 		};
+
+		/** Method to check if the web app is accessed from a device */
+		this.checkDevice = {
+			any : function(){
+				return !!navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);
+			},
+			iOS : function(){
+				return !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
+			}, 
+			android: function() {
+        		return navigator.userAgent.match(/Android/i);
+    		}
+		};
 }]);

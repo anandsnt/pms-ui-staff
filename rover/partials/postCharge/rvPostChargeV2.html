@@ -1,10 +1,10 @@
 <div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}"  >
-	<form id="post-charge" class="modal-content post-charge" ng-class="{ 'extended': isOutsidePostCharge }" ng-click="setPosition()" ng-cloak>
+	<div id="post-charge" class="modal-content post-charge" ng-class="{ 'extended': isOutsidePostCharge }" ng-click="setPosition()" ng-cloak>
 
 		<button type="button" id="modal-close" class="modal-close" ng-class="{ 'dark-title': isOutsidePostCharge }" ng-click="closeDialog()">
 			<span class="icons icon-close" ng-class="{ 'invert': !isOutsidePostCharge }"></span>
 		</button>
-		
+
 		<span ng-if="isOutsidePostCharge">
 			<!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div -->
 		    <div id="cant-post" class="inner-overlay" ng-class="{'visible': noGuestOrRoomSelected == true}">
@@ -15,7 +15,7 @@
 					<button type="button" class="button blank" ng-click="clickedAddGuestOrRoomCancel()" translate>CANCEL</button>
 				</div>
 			</div>
-		
+
 			<div id="not-checked-in" class="inner-overlay" ng-class="{'visible': guestHasNotCheckedin == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>GUEST_NOT_CHECKEDIN_MSG</span>
@@ -24,7 +24,7 @@
 					<button type="button" class="button blank" ng-click="clickedPostChargeCancel()" translate>CANCEL</button>
 				</div>
 			</div>
-		
+
 			<div id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>CHARGE_POSTED</span>
@@ -32,7 +32,7 @@
 					<button type="button" class="button blank modal-close" ng-click="clickedPostAnotherChargeCancel()" translate>CLOSE_WINDOW</button>
 				</div>
 			</div>
-		
+
 			<!-- Card search -->
 			<div class="cards guest-card" role="complementary" ng-class="{'cards-list open': showSearchScreen }">
 				<div class="cards-wrapper">
@@ -50,7 +50,7 @@
 						                <div class="entry">
 						                    <input ng-click="showHideInitialSearchScreen()" ng-keydown="keyDownRoom()" ng-blur="keyBlurRoom()" ng-model="search.room" placeholder="{{'ROOM_NUMBER' | translate}}" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" ng-class="(roomSearchStatus) ? 'searchTextOrange': ''" function-to-fire="searchForResults"/>
 											<input ng-click="showHideInitialSearchScreen()" ng-keydown="keyDownGuestCompany()" ng-blur="keyBlurGuestCompany()" ng-model="search.guest_company_agent" placeholder="{{'GUEST_COMPANY_AGENT' | translate}}" value="" type="text" ng-class="(guestCompanySearchStatus) ? 'searchTextOrange': ''"  class="query masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
-						                </div>               
+						                </div>
 						            </div>
 						        </div>
 						        <div class="card-actions">
@@ -59,10 +59,10 @@
 						    </div>
 						    <!-- 2. Card attached -->
 						    <div ng-show="isCardAttched">
-				            	
-				            	<figure class="guest-image" ng-show="cardAttached.images.length!=0 " ng-class="{'accompany': cardAttached.images.length >1}">	
-									<img ng-repeat="image in cardAttached.images" 
-									ng-src="{{image.guest_image}}" 
+
+				            	<figure class="guest-image" ng-show="cardAttached.images.length!=0 " ng-class="{'accompany': cardAttached.images.length >1}">
+									<img ng-repeat="image in cardAttached.images"
+									ng-src="{{image.guest_image}}"
 
 									ng-class="{'first-image':(cardAttached.images.length >1 && image.is_primary==true),
 
@@ -70,7 +70,7 @@
 
 									<span class="vip" ng-show="cardAttached.vip==true" translate>VIP</span>
 								</figure>
-												
+
 						        <div class="card-details">
 						        	<div class="holder">
 						        		<h1>{{cardAttached.firstname}} {{cardAttached.lastname}}</h1>
@@ -90,20 +90,19 @@
 						    </div>
 					    </div>
 				    </header>
-			
+
 				    <!-- Cards Content -->
 				    <div class="cards-content">
 				    	<div class="card-search card-content" ng-class="{'display-card-search': showSearchScreen}">
 				    		<!-- Initially, when no results -->
-				    		<div id="search-guests-for-charge-no-results" class="search-cards no-content show-initial-search" ng-show="showInitialSearchScreen" >
+				    		<div id="search-guests-for-charge-no-results" class="search-cards no-content show-initial-search" ng-show="showInitialSearchScreen">
 				                <div class="info">
 				                    <span class="icon-no-content icon-guest"></span>
 				                    <strong class="h1" translate>SEARCH_NORMAL</strong>
 				                    <span class="h2">{{'SEARCH' | translate}} <em>{{'ROOM_LABEL' | translate}}</em> {{'BY'| translate}} <strong>{{'NUMBER' | translate}}</strong> {{'OR' | translate}} <em>Reservation</em> {{'BY'| translate}} <strong>{{'GUEST' | translate}}</strong>, <strong>{{'COMPANY' | translate}}</strong> {{'OR' | translate}} <strong>{{'TRAVELAGENT' | translate}}</strong> {{'NAME' | translate}}</span>
 				                </div>
 				            </div>
-
-		            		<div id="search-guests-for-charge-no-matches" class="search-cards no-content show-initial-search" ng-show="showNoMatches" >
+		            		<div id="search-guests-for-charge-no-matches" class="search-cards no-content show-initial-search" ng-show="showNoMatches">
 		                        <div class="info">
 		    						<span class="icon-no-content icon-search"></span>
 		    						<strong class="h1">No matches </strong>
@@ -112,55 +111,48 @@
 		    						<span ng-show="results.length==0 && showAddNewGuestButton"> or  <a>Add a New Guest <a/> </span>
 		    					</div>
 		                    </div>
-			
-				    		<!-- When you have results, use the same markup as on reservation search screen. -->
-				        	
-				        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll="result_showing_area_post_charg" ng-iscroll-delay="1000" ng-show="!showInitialSearchScreen" ng-class="{'hidden': itemsVisible}">
+
+				    		<!-- Search results -->
+				        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll="result_showing_area_post_charg" ng-iscroll-delay="1000" ng-show="!showInitialSearchScreen" ng-hide="showInitialSearchScreen || showNoMatches">
 				                <div class="wrapper">
 				                    <ul id="search-guests-for-charge-results" class="search-results">
-				                    	<li class="reservation" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
+				                    	<li class="reservation post-charge" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
 				                    		<a ng-class="getReservationClass(row.reservation_status)" ng-click="selectReservation(row)">
-				                    			<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
-													<img ng-repeat="image in row.images" 
-													ng-src="{{image.guest_image}}" 
-					
-													ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
-					
-													'second-image':(row.images.length >1 && image.is_primary==false)}">
-					
+
+				                    			<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">
+				                    				<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}">
 													<span class="vip" ng-show="row.vip==true">VIP</span>
-												</figure>
-					
-												<span class="data">
-													<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:search.guest_company_agent:false" 
-					
-													ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
-													<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
-													<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
-													</span>
-													<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:search.guest_company_agent:false"></em>
-												</span>	
-					
-												<span class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
-													<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
+				                    			</figure>
+
+				                    			<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}">
+				                    				<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:search.guest_company_agent:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"></h2>
+				                    				<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
+				                    				<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
+				                    			</div>
+
+				                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)==''">
+							                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:search.guest_company_agent:false">{{row.company}}</span>
+							                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:search.guest_company_agent:false">{{row.travel_agent}}</span>
+							                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:search.guest_company_agent:false"></span>
+							                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:search.guest_company_agent:false"></span>
+							                    </div>
+
+							                    <div class="reservation-info">
+							                    	<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}"></span>
+							                    	<strong class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)">
+														<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }">{{row.room}}</span>
+													</strong>
+
+							                    	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+
+							                    	<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 														{{row.late_checkout_time}}
 													</span>
-					
-													<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
-													</span>
-												</span>	
-					
-												<strong class="room-number room-result" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-													<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }" >
-														{{row.room}}
-													</span>			
-												</strong>
-					
-					
-												<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+
+							                    	<span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"></span>
+				                    			</div>
 				                    		</a>
 				                    	</li>
-				                    	
 				                    </ul>
 				                </div>
 				            </div>
@@ -168,9 +160,7 @@
 				    </div>
 				</div>
 			</div>
-
 		</span>
-
 
 		<span ng-controller="RVPostChargeControllerV2">
 			<!-- Left side -->
@@ -190,7 +180,7 @@
 						</select>
 					</div>
 					<div class="entry">
-						<button type="button" class="clear-query" ng-click="clearQuery()" ng-class="{'visible':query}"> 
+						<button type="button" class="clear-query" ng-click="clearQuery()" ng-class="{'visible':query}">
 							<span class="icons icon-clear-search">Clear query</span>
 						</button>
 						<button type="button" name="submit" class="icons icon-search">
@@ -202,7 +192,7 @@
 				<div id="items-listing" class="scrollable" ng-iscroll="items_list">
 					<ul id="search-item-results" class="wrapper">
 						<li id="items-list" ng-repeat="each in fetchedItems" ng-click="addItem(each)">
-							
+
 							<a class="button white" ng-if="each.type === 'ITEM'">
 								<span ng-bind-html="{{convertToJSONString(each.name)}} | highlight:query:false"></span>
 								<span class="price">
@@ -232,7 +222,6 @@
                     <p><strong>{{ fetchedData.start }}-{{ fetchedData.end }}</strong> {{ 'OF' | translate }} <strong>{{ fetchedData.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
 
 				</div>
-
 			</fieldset>
 			<!-- Right side -->
 			<fieldset class="content-right">
@@ -247,7 +236,7 @@
 						    </option>
 						    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="fetchedData.bill_numbers.length<10 && isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 						</select>
-					</div> 
+					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->
 					<div id="select-bill-number" class="select" ng-hide="passActiveBillNo || isStandAlone">
 						<select ng-model="billNumber">
@@ -255,7 +244,7 @@
 						        {{ no }}
 						    </option>
 						</select>
-					</div> 
+					</div>
 				</span>
 				<div id="no-items-added" class="no-content" ng-hide="showItemSummaryList()">
 					<div class="info">
@@ -264,9 +253,9 @@
 				</div>
 				<div id="items-added" ng-show="showItemSummaryList()" >
 					<div id="items-summary" class="scrollable" ng-iscroll="items_summary">
-						
+
 						<ul class="wrapper">
-							
+
 							<li ng-repeat="each in selectedChargeItemHash" ng-class="{'selected': each.name === selectedChargeItem.name}" ng-click="selectUnselect(each)">
 								{{ each.name }}
 								<span count ng-show="each.count > 1">({{ each.count }})</span>
@@ -276,7 +265,7 @@
 									<span class="value">{{ each.total_price | number : 2 }}</span>
 								</span>
 							</li>
-							
+
 						</ul>
 
 					</div>
@@ -347,8 +336,6 @@
 					</div>
 				</div>
 			</fieldset>
-
 		</span>
-
-	</form>
+	</div>
 </div>

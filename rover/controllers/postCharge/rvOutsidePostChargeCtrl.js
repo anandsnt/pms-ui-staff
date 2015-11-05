@@ -51,7 +51,10 @@ sntRover.controller('RVOutsidePostChargeController',
 			* function used for refreshing the scroller
 			*/
 			var refreshScroller = function(){
-				setTimeout(function() {
+				$timeout(function() {
+					if ($scope.myScroll && $scope.myScroll['result_showing_area_post_charg']) {
+						$scope.myScroll['result_showing_area_post_charg'].refresh();
+					}
 					$scope.refreshScroller('result_showing_area_post_charg');
 				}, 500);
 			};
@@ -116,7 +119,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				if(oldSearchGuestText.length > 0){
 					if((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !==-1 )){
-						$scope.refreshApi = false;
+						$scope.refreshApi = true;
 					}
 				}
 

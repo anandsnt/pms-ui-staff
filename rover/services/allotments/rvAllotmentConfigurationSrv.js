@@ -425,8 +425,8 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.releaseRooms = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/allotments/' + data.allotmentId + '/release_now';
-			rvBaseWebSrvV2.postJSON(url, data)
+				url = 'api/allotments/' + data.allotmentId + '/release_now?date=' + data.date;
+			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
@@ -466,6 +466,17 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/allotments/' + params.allotment_id + '/change_rate';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		this.copyDefaultBillingInfo = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/default_account_routings/copy_default_billing_info_to_allotments';
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {

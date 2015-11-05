@@ -25,10 +25,10 @@
                             {{errorMessage}}
             </span>
     </div>
-    <section class="actions-content" role="main" ng-show='actions.totalCount > 0 || refreshing'> <!-- Add class "no-content" if no actions for room -->
+    <section class="actions-content" role="main" ng-show='(actions.totalCount > 0 || refreshing) && !refreshToEmpty'> 
 
         <!-- Actions list -->
-        <div class="content-left" ng-if='actions.totalCount > 0 || refreshing'>
+        <div class="content-left" ng-show='actions.totalCount > 0 || refreshing'>
             <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"> <!-- Attach iScroll here -->
                 <ul class="wrapper">
                     <li ng-repeat="action in actions" ng-hide="action.is_deleted" click-touch="selectAction(action)" ng-class="{'active': action.id == selectedAction.id}"> <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
@@ -72,7 +72,6 @@
                         </span>
                         
                         
-                        
                         <div class="data">
                             <h3>{{action.description}}</h3>
                             <em ng-show="!isTrace(action.action_task_type) && !isRequest(action.action_task_type) && !isAlert(action.action_task_type)">{{action.due_at_date}} &#8226; {{action.due_at_time.value}}</em>
@@ -86,7 +85,7 @@
         </div>
 
         <!-- Action summary -->
-        <div class="content-right" ng-show="actionSelected === 'selected'" ng-click="stopEditClick()"> 
+        <div class="content-right" ng-show="actionSelected === 'selected' || (actionSelected === 'selected' && refreshing)" ng-click="stopEditClick()"> 
             <div class="summary">
                 <div id="action-summary"><!-- only in overlay hide -->
                     
@@ -135,7 +134,7 @@
                     {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
                 </div> 
                 
-                <div class="detail-actions col-2" ng-hide="(isStandAlone && selectedAction.date_completed) || (!isStandAlone && isRequest(selectedAction.action_task_type))">
+                <div class="detail-actions col-2" ng-hide="(!isStandAlone && isRequest(selectedAction.action_task_type)) || selectedAction.date_completed">
                     <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
                     <button ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
@@ -147,7 +146,7 @@
             </div>
         </div>
         
-        <div class="content-right" ng-show="actionSelected === 'assign'"> 
+        <div class="content-right" ng-show="actionSelected === 'assign' || (actionSelected === 'assign' && refreshing)"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</span>
@@ -168,7 +167,7 @@
                 </div>
             </div>
         </div>
-        <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
+        <div class="content-right" ng-show="actionSelected === 'new' || refreshing" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
                     <span class="h2 message">New Action</span>
@@ -203,7 +202,7 @@
                         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
-                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes  || (!departmentSelected && !isStandAlone)}">Post Action</button> 
                         <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
                     </div> 
                 </div> 
@@ -211,7 +210,7 @@
             </div>
         
     </section>
-    <section class="actions-content" role="main" ng-show='actions.totalCount === 0 && actionSelected === "new"'>
+    <section class="actions-content" role="main" ng-show='actions.totalCount === 0 && actionSelected === "new" && !refreshToEmpty'>
         <div class="content-right" ng-show="actionSelected === 'new'" ng-class="{'full-width': actions.totalCount === 0}"> 
             <div class="summary">
                 <div class="add-content">
@@ -247,7 +246,7 @@
                         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
                     </div> 
                     <div>
-                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes}">Post Action</button> 
+                        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
                         <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
                     </div> 
                 </div> 
@@ -255,7 +254,7 @@
             </div>
     </section>
     
-    <section class="actions-content no-content" role="main" ng-show='actions.totalCount === 0'>
+    <section class="actions-content no-content" role="main" ng-show='(actions.totalCount === 0 && actionSelected === "none") || refreshToEmpty'>
         <!-- if no actions for room -->
          <div class="info">
             <span class="icon-no-content icon-actions"></span>
