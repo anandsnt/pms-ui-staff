@@ -8,8 +8,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	this.data = {};
 
 	this.getGraphData = function(){
-		console.log(that.data)
-		return that.data.graphData;
+		return that.data.hasOwnProperty('gridData') && that.data.gridData.additionalGraphData;
 	};
 	this.getGridData = function(){
 		return that.data.gridData;
@@ -144,11 +143,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		return gridData;
 	};
 
-	var formGraphData = function(dataFromAvailability, occupancyData){
+	var formGraphData = function(availabilityAdditionalFromAPI, occupancyDataFromAPI){
 		// returning object
 		var graphData = {};
-
-		return graphData;
 
 		//array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [];
@@ -170,10 +167,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var occupanciesActualForADay	= '';
 		var occupanciesTargetedForADay 	= '';
 		var date 						= '';
-		var totalRoomCount = dataFromAvailability.physical_count;
+		var totalRoomCount = availabilityAdditionalFromAPI.physical_count;
 		var currentRow = null;
-		for(var i = 0; i < dataFromAvailability.results.length; i++){
-			currentRow = dataFromAvailability.results[i];
+		for(var i = 0; i < availabilityAdditionalFromAPI.results.length; i++){
+			currentRow = availabilityAdditionalFromAPI.results[i];
 
 			// date for th day
 			date = {'dateObj': new Date(currentRow.date)};
@@ -198,11 +195,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			outOfOrderRooms.push(outOfOrderRoomForADay);
 			reservedRooms.push(reservedRoomForADay);
 			availableRooms.push(availableRoomForADay);
-		}
+		};
 
 		//since occupancy data is from another API, results may have length  lesser/greater than availability
-		for(i = 0; i < occupancyData.results.length; i++){
-			currentRow = occupancyData.results[i];
+		for(i = 0; i < occupancyDataFromAPI.results.length; i++){
+			currentRow = occupancyDataFromAPI.results[i];
 			occupanciesActualForADay = escapeNull(currentRow.actual) === "" ? 0 : currentRow.actual;
 			occupanciesTargetedForADay = escapeNull(currentRow.target) === "" ? 0 : currentRow.target;
 			occupanciesActual.push(occupanciesActualForADay);
@@ -590,7 +587,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
 			.then(function(responseFromAPI) {
-				deferred.resolve(that.data);
+				deferred.resolve(responseFromAPI);
 			},function(data){
 				deferred.reject(data);
 			});

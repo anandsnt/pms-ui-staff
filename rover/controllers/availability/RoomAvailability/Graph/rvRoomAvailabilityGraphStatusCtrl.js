@@ -140,12 +140,14 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		var doInitialOperation = function(){
 			$scope.data = rvAvailabilitySrv.getGraphData();
 
+			console.log( $scope.data );
+
 			formGraphData();
 
 			Highcharts.theme = {
 				colors: colors,
 				chart: {
-					backgroundColor: 'white'  ,
+					backgroundColor: 'white',
 					borderColor: '#FFFF',
 					borderWidth: 2,
 					plotBackgroundColor: '#F7F7F7',
