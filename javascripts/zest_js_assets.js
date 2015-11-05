@@ -1,6 +1,6 @@
 //=require ../shared/lib/js/jquery.js
-//=require ../shared/lib/js/jquery.ui.touch-punch.js
 //=require ../shared/lib/js/jquery-ui.min.js
+//=require ../shared/lib/js/jquery.ui.touch-punch.js
 //=require ../shared/lib/js/angular.min.js
 //=require ../shared/lib/js/angular-route.js
 //=require ../shared/lib/js/angular-ui-router.js
