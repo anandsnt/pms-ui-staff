@@ -138,12 +138,14 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		var doInitialOperation = function(){
 			$scope.data = rvAvailabilitySrv.getGraphData();
 
+			console.log( $scope.data );
+
 			formGraphData();
 
 			Highcharts.theme = {
 				colors: colors,
 				chart: {
-					backgroundColor: 'white'  ,
+					backgroundColor: 'white',
 					borderColor: '#FFFF',
 					borderWidth: 2,
 					plotBackgroundColor: '#F7F7F7',
@@ -316,7 +318,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		$scope.data = rvAvailabilitySrv.getGraphData();
   		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
-			formGraphData();
+			//formGraphData();
 			doInitialOperation();
 
 			$scope.$emit("hideLoader");
@@ -331,12 +333,14 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 
         	}, 500);
 
+		}else{
+			$scope.$parent.fetchAdditionalData();
 		}
 
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		var cr = $scope.$on("changedRoomAvailableData", function(event){
+		var cr = $scope.$on("changedRoomAvailableData", function(event){			
 			if(!isAlreadyRemoved){
 				$scope.hideMeBeforeFetching = false;
 				doInitialOperation();
