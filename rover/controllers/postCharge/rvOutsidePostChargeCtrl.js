@@ -119,7 +119,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				if(oldSearchGuestText.length > 0){
 					if((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !==-1 )){
-						$scope.refreshApi = false;
+						$scope.refreshApi = true;
 					}
 				}
 
