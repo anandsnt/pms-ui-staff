@@ -41,14 +41,14 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         
          // //check-out [ review_bill ]
          $stateProvider.state('zest_station.review_bill', {
-            url        : '/review_bill/:res_id/:checked_out',
+            url        : '/review_bill',
             templateUrl: '/assets/partials/kiosk/specific/reservation_bill.html',
             controller: 'zsReservationBillDetailsCtrl'
          });
 
          // //check-out [ review_bill ]
          $stateProvider.state('zest_station.reservation_checked_out', {
-            url        : '/reservation_checked_out/:res_id/:email',
+            url        : '/reservation_checked_out',
             templateUrl: '/assets/partials/kiosk/specific/reservation-checked-out.html',
             controller: 'zsReservationCheckedOutCtrl'
          });

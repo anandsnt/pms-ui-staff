@@ -7,8 +7,8 @@
                 <div class="wrapper">
                     <div id="bill">
                         <p>
-                            <strong>{{billData.guest_name}}</strong>                          
-                            <span>{{billData.days_of_stay}} nights</span>
+                            <strong>{{zestStationData.reservationData.first_name}}&nbsp;{{zestStationData.reservationData.last_name}}</strong>                          
+                            <span>{{zestStationData.reservationData.days_of_stay}} nights</span>
                         </p>
                         <div id="bill-grid">
                             <div id="grid-head">
@@ -19,18 +19,18 @@
                                 </div>
                             </div>
                             <div id="grid-body">
-                                <div class="row" ng-repeat="charge_code in billData.charge_codes">
-                                    <span class="cell date">{{charge_code.date}}</span>
-                                    <span class="cell desc">{{charge_code.type}}</span>
-                                    <span class="cell amount">{{billData.currency}}{{charge_code.value}}</span>
+                                <div class="row" ng-repeat="bill in billData">
+                                    <span class="cell date">{{ bill.date}}</span>
+                                    <span class="cell desc">{{bill.description}}</span>
+                                    <span class="cell amount">{{currency}}{{bill.amount}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <ul id="rate">
-                        <li class="sub">Subtotal<span>{{billData.currency}}{{billData.sub-total}}</span></li>
-                        <li class="sub">Deposits<span>{{billData.currency}}{{billData.deposit}}</span></li>
-                        <li class="total">Balance due<span>{{billData.currency}}{{billData.balance}}</span></li>
+                        <li class="sub">Subtotal<span>{{currency}}{{net_amount}}</span></li>
+                        <li class="sub">Deposits<span>{{currency}}{{deposit}}</span></li>
+                        <li class="total">Balance due<span>{{currency}}{{balance}}</span></li>
                     </ul>
                 </div>
             </div>
