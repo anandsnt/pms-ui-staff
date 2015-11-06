@@ -859,6 +859,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     else if(toReservationOrAccount === "companyOrTA"){
                         data.account_id = $scope.selectedEntity.id;
                     }
+                    else if(toReservationOrAccount === "allotment"){
+                        data.allotment_id = $scope.selectedEntity.allotment_id;
+                    }
                     else {
 						data.group_id = $scope.selectedEntity.id;
 					}
@@ -878,6 +881,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 					}
                     else if(toReservationOrAccount === "companyOrTA"){
                         data.account_id = $scope.selectedEntity.id;
+                    }
+                    else if(toReservationOrAccount === "allotment"){
+                        data.allotment_id = $scope.selectedEntity.allotment_id;
                     }
                     else {
 						data.group_id = $scope.selectedEntity.id;
@@ -905,6 +911,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 				}
                 else if(toReservationOrAccount === "companyOrTA"){
                     data.account_id = $scope.selectedEntity.id;
+                }
+                else if(toReservationOrAccount === "allotment"){
+                    data.allotment_id = $scope.selectedEntity.allotment_id;
                 }
                 else {
 					data.group_id = $scope.selectedEntity.id;
