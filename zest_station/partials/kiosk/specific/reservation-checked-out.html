@@ -70,6 +70,7 @@
 </section>
 <!-- hidden view for print action -->
 <div class="printable-bill-view">
+    <p class="heading-text">Invoice</p>
     <div>
         <p class="bill-heading">{{zestStationData.reservationData.first_name}}&nbsp;{{zestStationData.reservationData.last_name}}</p>
         <p class="bill-heading nights-text">
@@ -80,17 +81,32 @@
     <table class="bill-table" >
         <th>DATE</th>
         <th>DESCRIPTION</th>
+        <th></th>
         <th>AMOUNT</th>
         <tr ng-repeat="bill in zestStationData.billData">
             <td>{{bill.date}}</td>
             <td>{{bill.description}}</td>
-            <td>{{bill.amount}}</td>
+            <td></td>
+            <td class="amount">{{zestStationData.currency}}{{bill.amount}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Subtotal:</td>
+            <td>{{zestStationData.currency}}{{zestStationData.net_amount}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Deposit:</td>
+            <td>{{zestStationData.currency}}{{zestStationData.deposit}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Balance:</td>
+            <td>{{zestStationData.currency}}{{zestStationData.balance}}</td>
         </tr>
     </table>
-    <div class="bill-footer">
-        <p>Subtotal: {{zestStationData.currency}}{{zestStationData.net_amount}}</p>
-        <p>Deposit: {{zestStationData.currency}}{{zestStationData.deposit}}</p>
-        <p>Balance: {{zestStationData.currency}}{{zestStationData.balance}}</p>
-    </div>
 </div>
 
