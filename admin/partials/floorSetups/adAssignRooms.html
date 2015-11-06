@@ -6,8 +6,8 @@
             <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" ng-model='UserRoles'>
                 <li ng-repeat="floor in floorsList" ng-click="selectFloor($index)" ng-class="{'ui-tabs-active': roomAssignment.selectedFloorIndex === $index }">
                     <a class="ui-tabs-anchor" role="presentation"> 
-                            FLOOR {{floor.floor_number}}
-                        </a>
+                        FLOOR {{floor.floor_number}}
+                    </a>
                 </li>
             </ul>
         </div>
@@ -36,13 +36,13 @@
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
                 <tbody>
                     <tr ng-repeat="room in $data">
-                        <td data-title="'ROOM NO.'" sortable="'room_number'" header-class="width-40">
-                            <a class="edit-data" ng-click="editRatesClicked(rate.id, $index)">
+                        <td data-title="'ROOM NO.'" sortable="'room_no'" header-class="width-40">
+                            <a class="edit-data" ng-click="toggleSelectRoom($index)">
                                 <strong> {{room.room_number}}</strong>
                             </a>
                         </td>
-                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40">
-                            {{room.type}}
+                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40" ng-click="toggleSelectRoom($index)">
+                            {{room.room_type}}
                         </td>
                         <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom($index)">
                             <ad-checkbox is-checked="room.isSelected"></ad-checkbox>

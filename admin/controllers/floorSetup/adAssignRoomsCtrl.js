@@ -66,7 +66,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                 page: 1, // show first page
                 count: $scope.displyCount, // count per page
                 sorting: {
-                    rate: 'asc' // initial sorting
+                    room_no: 'asc' // initial sorting
                 }
             }, {
                 total: 0, // length of data
