@@ -1,60 +1,103 @@
 sntRover.controller('rvRoomAvailabilityGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
-	function($scope, rvAvailabilitySrv){
+	'$timeout',
+	function($scope, rvAvailabilitySrv, $timeout){
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.hideMeBeforeFetching = false;
-		$scope.showRoomTypeWiseAvailableRooms = false;
-		$scope.showRoomTypeWiseBookedRooms = false;
+		var init = function(){
+			$scope.hideMeBeforeFetching = false;
+			initToggleStatus();
+			$scope.data = rvAvailabilitySrv.getGridData();
 
-		$scope.data = rvAvailabilitySrv.getGridData();
+			//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
+			var scrollerOptions = {scrollX: true, preventDefault: false};
+  			$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
-		//if already fetched we will show without calling the API
-		if(!isEmptyObject($scope.data)){
+  			//if already fetched we will show without calling the API
+			if(!isEmptyObject($scope.data)){
+				$scope.refreshScroller('room_availability_scroller');
+				$scope.hideMeBeforeFetching = true;
+				$scope.$emit("hideLoader");
+			}
+		};
+		/*
+		* Function to set all toggle to close
+		*/
+		var initToggleStatus = function(){			
+			$scope.toggleStatusOf = {};
+			$scope.toggleStatusOf['availableRooms'] = false;
+			$scope.toggleStatusOf['roomsSold'] = false;
+			$scope.toggleStatusOf['occupancy'] = false;
+			$scope.toggleStatusOf['roomInventory'] = false;
+		};
+
+		$scope.toggle = function(source){
+			$scope.toggleStatusOf[source] = !$scope.toggleStatusOf[source];
+			//fetches additional data if not available.
+			if(!isFullDataAvaillable()){
+				$scope.$parent.fetchAdditionalData();
+			};
 			$scope.refreshScroller('room_availability_scroller');
-			$scope.hideMeBeforeFetching = true;
-			$scope.$emit("hideLoader");
-		}
-
-		//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
-		var scrollerOptions = {scrollX: true, preventDefault: false};
-  		$scope.setScroller ('room_availability_scroller', scrollerOptions);
+		};
 
 		$scope.$on('$includeContentLoaded', function(event){
 			$scope.$emit("hideLoader");
 			$scope.refreshScroller('room_availability_scroller');
 		});
+		/*
+		*  Checks whether additional data available or not
+		*/
+		var isFullDataAvaillable = function(){
+			return $scope.data.hasOwnProperty('additionalData');
+		};
 
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
 		$scope.$on("changedRoomAvailableData", function(event){
 			$scope.data = rvAvailabilitySrv.getGridData();
+			if(!isFullDataAvaillable()){
+				initToggleStatus();
+			}
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
 		});
 
+		$scope.$on('changedGrpNAllotData', function() {
+			$scope.data.gridDataForGroupAvailability     = rvAvailabilitySrv.getGridDataForGroupAvailability();
+			$scope.data.gridDataForAllotmentAvailability = rvAvailabilitySrv.getGridDataForAllotmentAvailability();
+
+			$scope.showShowGroupAllotmentTotals = true;
+
+			$scope.refreshScroller('room_availability_scroller');
+			$scope.$emit("hideLoader");
+		});
+
 		/*
-		* function to toggle the display of individual room type booked list on clicking
+		* function to toggle the display of individual group/allotmet on clicking
 		* the toogle button
 		*/
-		$scope.toggleShowRoomTypeWiseBookedRooms = function(){
-			$scope.showRoomTypeWiseBookedRooms  = !$scope.showRoomTypeWiseBookedRooms ;
-			$scope.refreshScroller('room_availability_scroller');
+		$scope.toggleShowGroupAllotmentTotals = function() {
+			if ( $scope.showShowGroupAllotmentTotals ) {
+				$scope.showShowGroupAllotmentTotals = false;
+				$scope.refreshScroller('room_availability_scroller');
+			} else {
+				$scope.$parent.fetchGrpNAllotData();
+			};
 		};
-
 
 		/*
-		* function to toggle the display of individual room type available list on clicking
-		* the toogle button
+		* param - Holdstatus id
+		* return Hold status name
 		*/
-		$scope.toggleShowRoomTypeWiseAvailableRooms = function(){
-			$scope.showRoomTypeWiseAvailableRooms  = !$scope.showRoomTypeWiseAvailableRooms ;
-			$scope.refreshScroller('room_availability_scroller');
+		$scope.getGroupAllotmentName = function(source, id){
+			var found = _.findWhere(source.holdStatus, {id: id});
+			return found && found.name;
 		};
+
 
 		/**
 		 * For iScroll, we need width of the table
@@ -62,27 +105,20 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		 */
 		$scope.getWidthForTable = function() {
 
-			//if no data exist we will just return 0
-			if (!_.has($scope.data, 'dates')) {
+			var leftMostRowCaptionWidth = 130, // 120px cell width + 10px cell spacing
+				totalColumns = $scope.data && $scope.data.dates && $scope.data.dates.length,
+				individualColWidth = 60; // 55px cell width + 5px cell spacing
+
+			if (!_.has($scope.data, 'dates') && totalColumns < 30) {
 				return 0;
 			};
 
-			var leftMostRowCaptionWidth = 273,
-				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
-				individualColWidth 		= 0;
-
-			//on each column length, width is different
-			if (totalColumns <= 7) {
-				individualColWidth = 147;
+			if (totalColumns == 30) {
+				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 			}
-			else if (totalColumns <= 14) {
-				individualColWidth = 71;
-			}
-			else if (totalColumns <= 30) {
-				individualColWidth = 60;
-			}			
-			return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 		};
+
+		init();
 
 	}
 ]);
