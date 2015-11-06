@@ -1,15 +1,15 @@
-admin.service('adPabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('adBritePabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
 	
 	/**
-	 * to get the pabx configraton values
+	 * to get the BritePabX configraton values
 	 * @return {undefined}
 	 */
-	this.fetchPabXConfiguration = function() {
+	this.fetchBritePabXConfiguration = function() {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			deferred.resolve(data.pabx);
+			deferred.resolve(data.brite);
 		},function(data){
 			deferred.reject(data);
 		});
@@ -17,10 +17,10 @@ admin.service('adPabXSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http
 	};
 
 	/**
-	 * to save the pabx configration values
+	 * to save the BritePabX configration values
 	 * @return {undefined}
 	 */
-	this.savePabXConfiguration = function(params) {
+	this.saveBritePabXConfiguration = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings/change_settings';
 

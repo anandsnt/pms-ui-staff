@@ -40,7 +40,10 @@
 "HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status",
 "ALLOTMENT_ONLY": "Allotment only",
 "GROUP_ONLY": "Group only"
-,"CAMPAIGNS_LIST_TITLE": "Campaigns",
+,"BRITE_PABX_SETUP_HEADER": "Brite PabX Setup",
+"BRITE_PABX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"BRITE_PABX_SUB_TITLE": "API Access Configuration",
+"BRITE_PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number","CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
@@ -584,10 +587,7 @@
 
 ,"LETSHARE_SETUP_HEADER": "LetShare Setup",
 "LETSHARE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
-"LETSHARE_SUB_TITLE": "LetShare API Access Configuration","PABX_SETUP_HEADER": "PabX Setup",
-"PABX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
-"PABX_SUB_TITLE": "PabX API Access Configuration",
-"PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number",
+"LETSHARE_SUB_TITLE": "LetShare API Access Configuration",
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",

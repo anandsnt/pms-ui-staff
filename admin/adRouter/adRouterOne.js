@@ -30,13 +30,13 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 
-		$stateProvider.state('admin.pabxSetup', {
-			templateUrl: '/assets/partials/pabx/pabxSetup.html',
-			controller: 'adPabXSetupSetupCtrl',
-			url : '/pabx/setup',
+		$stateProvider.state('admin.britePabXSetup', {
+			templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
+			controller: 'adBritePabXSetupCtrl',
+			url : '/britePabX/setup',
 			resolve: {
-				pabxSetupValues: ['adPabXSetupSrv', function(adPabXSetupSrv) {
-					return adPabXSetupSrv.fetchPabXConfiguration();
+				britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
+					return adBritePabXSetupSrv.fetchBritePabXConfiguration();
 				}]
 			}
 		});
