@@ -8,7 +8,8 @@
                     <div id="bill">
                         <p>
                             <strong>{{zestStationData.reservationData.first_name}}&nbsp;{{zestStationData.reservationData.last_name}}</strong>                          
-                            <span>{{zestStationData.reservationData.days_of_stay}} nights</span>
+                            <span ng-show="!zestStationData.hotel_settings.is_hourly_rate_on">{{zestStationData.reservationData.days_of_stay}} nights</span>
+                            <span ng-show="zestStationData.hotel_settings.is_hourly_rate_on">{{zestStationData.reservationData.hours_of_stay}} hours</span>
                         </p>
                         <div id="bill-grid">
                             <div id="grid-head">
