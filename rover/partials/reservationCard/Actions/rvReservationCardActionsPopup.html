@@ -50,12 +50,14 @@
                                   
                                   
                                   <span class="actions-overdue-font" 
-                                  ng-class="{'active': action.id == selectedAction.id}">
+                                  ng-class="{'active': action.id == selectedAction.id, 'ng-hide':action.action_status === 'COMPLETED'}">
                                 {{action.action_task_type}}</span>
                             
                         </span>
                         <span ng-show="!isStandAlone && isRequest(action.action_task_type)" class="icon-action special-request-icon" 
-                              ng-class="{'active': action.id == selectedAction.id,'special-request-icon':
+                              ng-class="{
+                              'active': action.id == selectedAction.id,
+                                      'special-request-icon':
                                           (!isStandAlone && action.action_status === 'COMPLETED'  && isRequest(action.action_task_type))
                               }"> <!-- makes each icon a white version for visibility when section is 'active'-->
                             <!-- If overdue, output "Overdue " -->
@@ -66,7 +68,7 @@
                                   ng-class="{'active': action.id == selectedAction.id}" translate>OVERDUE</span><br />
                                   
                                   <span class="actions-overdue-font" style="margin-left:2px;" 
-                                  ng-class="{'active': action.id == selectedAction.id}">
+                                  ng-class="{'active': action.id == selectedAction.id, 'ng-hide':action.action_status === 'COMPLETED'}">
                                 {{action.action_task_type}}</span>
                             
                         </span>

@@ -82,6 +82,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					value: $rootScope.currencySymbol,
 					name: "amount"
 				}];
+				// Default amount sign for FEES and TAXES to be positive
+				$scope.prefetchData.selected_amount_sign = '+';
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);

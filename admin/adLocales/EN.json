@@ -735,6 +735,7 @@
 "ROVER":"Rover",
 "MAKE_KEY_FOR_RFID_READER":"Make Key from RFID reader at Tablet",
 "SHOW_QR_CODE_FOR_ROOM_KEY":"Show QR code for room key on Tablet",
+"USE_MOBILE_PHONE_KEY":"Use Mobile Phone Key",
 "ROOM_KEY_SYSTEM_VENDOR":"Room Key System Vendor",
 "KEY_SYSTEM_ACCESS_URL":"Key System Access URL",
 "KEY_SYSTEM_ACCESS_URL_PLACEHOLDER":"Enter Key System Access URL",
