@@ -15,6 +15,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     return $sce.trustAsHtml(val);
                 };
             });
+            $scope.emailOptional = true;
 	/**
 	 * when the back button clicked
 	 * @param  {[type]} event
@@ -67,6 +68,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.at = 'email-delivery';
         };
         
+        $scope.skipEmailEntryAfterSwipe = function(){
+            $state.go('zest_station.check_in_keys');
+        };
+        
         $scope.sendRegistration = function(){
             var fetchHotelCompleted = function(response){
                 $scope.at = 'send-registration';
@@ -91,6 +96,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.navToHome = function(){
 		$state.go ('zest_station.home');
         };
+        
+        $scope.goToNext = function(){
+            if ($scope.at === 'input-email'){
+                $state.input.email = $scope.input.inputTextValue;
+                $state.go('zest_station.check_in_keys');
+            }
+                
+        };
 
         $scope.init = function(){
             var current = $state.current.name;
@@ -103,6 +116,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.selectedReservation = $state.selectedReservation;
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
+            } else if (current === 'zest_station.input_reservation_email_after_swipe'){
+                $scope.at = 'input-email';
+                $scope.from = 'card-swipe';
             }
             
             
