@@ -48,7 +48,6 @@ sntRover.controller('allotmentAvailabilityMainController', [
 	*/
 	var failureCallbackOfAvailabilityFetch = function(errorMessage){
 		$scope.$emit("hideLoader");
-
 	};
 
 
