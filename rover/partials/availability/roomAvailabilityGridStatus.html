@@ -28,14 +28,14 @@
 			<tbody>
 				<!-- Total % -->
 				<tr class="main">
-					<th class="heading rows-toggle" scope="row" ng-click="toggle('occupancy')">Occupancy %</th> <!-- TODO: toggle visibility of inventory, OOO and rooms to sell when clciked. When opening, don't show room types. When closing, hide room types as well -->
+					<th class="heading rows-toggle" ng-class="{'active' : toggleStatusOf.occupancy }" scope="row" ng-click="toggle('occupancy')">Occupancy %</th> <!-- TODO: toggle visibility of inventory, OOO and rooms to sell when clciked. When opening, don't show room types. When closing, hide room types as well -->
 					<td ng-repeat="occupancy in data.occupancies track by $index">
 						<div class="inner">{{occupancy | number : 0 }}%</div>
 					</td>
 				</tr>
 				<!-- Inventory -->
 				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-click="toggle('roomInventory')">
-					<th class="rows-toggle" scope="row">Rooms Inventory</th> <!-- TODO: toggle visibility of room types inventory -->
+					<th class="rows-toggle" scope="row" ng-class="{'active' : toggleStatusOf.roomInventory }">Rooms Inventory</th> <!-- TODO: toggle visibility of room types inventory -->
 					<td ng-repeat="inventory in data.inventory track by $index">
 						<div class="inner" ng-bind="inventory" ng-class="{ 'unavailable': 0 > inventory, 'warning': 3 >= inventory}"></div>
 					</td>
@@ -61,6 +61,13 @@
 						<div class="inner" ng-bind="roomToSell"></div>
 					</td>
 				</tr>
+				<!-- Best Available Rate -->
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
+					<th scope="row">Best Available Rate</th>
+					<td ng-repeat="bestAvailabilityRate in data.additionalData.bestAvailabilityRate track by $index">
+						<div class="inner" ng-bind="bestAvailabilityRate"></div>
+					</td>
+				</tr>
 			</tbody>
 		</table> 
 
@@ -72,7 +79,7 @@
 			</colgroup>
 			<tbody>
 				<tr class="main">
-					<th class="heading rows-toggle" ng-click="toggle('availableRooms')">Available Rooms</th>
+					<th class="heading rows-toggle" ng-click="toggle('availableRooms')" ng-class="{'active' : toggleStatusOf.availableRooms }">Available Rooms</th>
 					<td ng-repeat="availableRoom in data.availableRooms track by $index">
 						<div class="inner" ng-bind="availableRoom" ng-class="{ 'unavailable': 0 > availableRoom, 'warning': 3 >= availableRoom}"></div>
 					</td>
@@ -95,7 +102,7 @@
 			</colgroup>
 			<tbody>
 				<tr class="main" ng-if="!isHourlyRateOn">
-					<th class="heading rows-toggle" ng-click="toggle('roomsSold')">Rooms Sold</th>
+					<th class="heading rows-toggle" ng-click="toggle('roomsSold')" ng-class="{'active' : toggleStatusOf.roomsSold }">Rooms Sold</th>
 					<td ng-repeat="bookedRoom in data.bookedRooms track by $index">
 						<div class="inner" ng-bind="bookedRoom" ng-class="{ 'unavailable': 0 > bookedRoom, 'warning': 3 >= bookedRoom}"></div>
 					</td>
@@ -140,7 +147,7 @@
 			</colgroup>
 			<tbody>
 				<tr class="main">
-					<th class="heading rows-toggle" scope="row" ng-click="toggleShowGroupAllotmentTotals()">Group / Allotment</th>
+					<th class="heading rows-toggle" scope="row" ng-click="toggleShowGroupAllotmentTotals()" ng-class="{'active' : showShowGroupAllotmentTotals }">Group / Allotment</th>
 					<td ng-repeat="groupAndAllotment in data.groupAndAllotments track by $index">
 						<div class="inner" ng-bind="groupAndAllotment"></div>
 					</td>

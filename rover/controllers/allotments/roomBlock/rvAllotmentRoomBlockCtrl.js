@@ -1339,10 +1339,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		});
 
 		// removing event listners when scope is destroyed
-		$scope.$on( 'destroy', updateRateEvent );
-		$scope.$on( 'destroy', tabSwitchEvent );
-		$scope.$on( 'destroy', summaryUpdateEvent );
-		$scope.$on( 'destroy', summaryUpdateFailEvent );
+		$scope.$on( '$destroy', updateRateEvent );
+		$scope.$on( '$destroy', tabSwitchEvent );
+		$scope.$on( '$destroy', summaryUpdateEvent );
+		$scope.$on( '$destroy', summaryUpdateFailEvent );
+		$scope.$on( '$destroy', self.destroyScrolls );
+
 		/**
 		 * we want to display date in what format set from hotel admin
 		 * @param {String/DateObject}
@@ -1558,9 +1560,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				}, 350);
 			};
 
+			var destroyScrolls = function() {
+				parentScope.myScroll[ ROOM_BLOCK_SCROLL ].destroy();
+				delete mainCtrlScope.myScroll[ ROOM_BLOCK_SCROLL ];
+
+				parentScope.myScroll[ TIMELINE_SCROLL ].destroy();
+				delete mainCtrlScope.myScroll[ TIMELINE_SCROLL ];
+
+				parentScope.myScroll[ RATE_GRID_SCROLL ].destroy();
+				delete mainCtrlScope.myScroll[ RATE_GRID_SCROLL ];
+			};
+
 			// Exports local methods.
 			exports.setScroller = setScroller;
 			exports.refreshScroller = refreshScroller;
+			exports.destroyScrolls = destroyScrolls;
 
 		})(this);
 
