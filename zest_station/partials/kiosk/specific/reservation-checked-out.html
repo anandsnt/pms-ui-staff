@@ -6,7 +6,7 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" touch-press='clickedPrint()'>
+                    <button type="button" class="button option" touch-press='printBill()'>
                         <ng-include src="'assets/css/icons/print.svg'"></ng-include>
                     </button>
                     Print Bill
@@ -32,7 +32,7 @@
         <h1>Type your email address</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="goToNext()" value="" touch-press />
+                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">Next</button>

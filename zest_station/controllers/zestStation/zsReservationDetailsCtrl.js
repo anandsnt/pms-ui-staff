@@ -56,18 +56,16 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.init = function(r){
             $scope.selectedReservation = $state.selectedReservation;
             $scope.selectedReservation.reservation_details = {};
-            
-            var fetchHotelCompleted = function(data){
-                $scope.hotel_settings = data;
-                $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
-                
-                //fetch the idle timer settings
-                $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
-                $scope.$emit('hideLoader');
-            };
+               console.info('$scope.zestStationData: ',$scope.zestStationData)
+            $scope.hotel_settings = $scope.zestStationData;
+            $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
+            //fetch the idle timer settings
+            $scope.currencySymbol = $scope.zestStationData.currencySymbol;
             
             
-            $scope.invokeApi(zsTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
+            
+            
+            
             $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
                 'id': $scope.selectedReservation.confirmation_number
             }, $scope.onSuccessFetchReservationDetails);
