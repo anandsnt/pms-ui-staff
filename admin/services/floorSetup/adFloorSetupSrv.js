@@ -70,9 +70,8 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
     */
 	this.getFloorDetails = function(params){
 		var deferred = $q.defer();
-		var floorID = params.floorID;
-		var url = '/api/floors/' + floorID + ".json";
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		var url = '/api/floors/' + params.floorID + ".json";
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

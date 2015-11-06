@@ -31,14 +31,14 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         };
 
         $scope.toggleAvailableRooms = function() {
-            $scope.roomAssignment.activeTab = $scope.roomAssignment.activeTab === "AVAILABLE" ? "ASSIGNED" : "AVAILABLE"
+            $scope.roomAssignment.activeTab = $scope.roomAssignment.activeTab === "AVAILABLE" ? "ASSIGNED" : "AVAILABLE";
+            $scope.reloadTable();
         };
 
         $scope.fetchTableData = function($defer, params) {
             var getParams = $scope.calculateGetParams(params),
                 fetchSuccessOfItemList = function(data) {
                     $scope.$emit('hideLoader');
-                    //No expanded rate view
                     $scope.currentClickedElement = -1;
                     $scope.totalCount = data.total_count;
                     $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
@@ -50,7 +50,10 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             if($scope.roomAssignment.activeTab === "AVAILABLE"){
                 $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
             }else{
-                $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
+                getParams = _.extend(getParams,{
+                    floorID: $scope.floorsList[$scope.roomAssignment.selectedFloorIndex].id
+                });
+                $scope.invokeApi(ADFloorSetupSrv.getFloorDetails, getParams, fetchSuccessOfItemList);
             }
         };
 
@@ -79,6 +82,14 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         $scope.toggleSelectRoom = function(roomIdx) {
             $scope.data[roomIdx].isSelected = $scope.data[roomIdx].isSelected;
             updateSelectedList();
+        };
+
+        $scope.assignRooms = function(){
+
+        };
+
+        $scope.unAssignRooms = function(){
+
         };
 
         initController();
