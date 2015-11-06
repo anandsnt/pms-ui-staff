@@ -43,16 +43,16 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         //process bill data
         var billsData     = response.bill_details.fee_details;
-        $scope.billData   = [];
-        $scope.currency   = response.bill_details.currency;
-        $scope.net_amount = response.bill_details.total_fees;
-        $scope.deposit    = response.bill_details.credits;
-        $scope.balance    = $scope.zestStationData.reservationData.balance = response.bill_details.balance;
+        $scope.zestStationData.billData   = [];
+        $scope.zestStationData.currency   = response.bill_details.currency;
+        $scope.zestStationData.net_amount = response.bill_details.total_fees;
+        $scope.zestStationData.deposit    = response.bill_details.credits;
+        $scope.zestStationData.balance    = response.bill_details.balance;
 
         angular.forEach(billsData, function(billData, key) {
           angular.forEach(billData.charge_details, function(chargeDetail, key) {
                 var bill_details = {"date" : billData.date,"description":chargeDetail.description,"amount":chargeDetail.amount};
-                $scope.billData.push(bill_details);
+                $scope.zestStationData.billData.push(bill_details);
           });
         });
 
