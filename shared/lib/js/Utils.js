@@ -309,8 +309,14 @@ tzIndependentDate = function(st) {
     if ( d.getTimezoneOffset() < 0 ) {
         r -= d.getTimezoneOffset() * 60 * 1000;
     }
-    
-    return new Date(r);
+
+    var adjustedDate = new Date(r)
+
+    if(adjustedDate.isOnDST()){
+        return new Date(r += Math.abs(d.getDSTDifference()) * 60 * 1000);
+    }
+
+    return adjustedDate;
 };
 
 
