@@ -50,7 +50,7 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 			$timeout(function(){
 				$state.go('rover.allotments.config', {
 					id: GroupId,
-					activeTab: 'ROOM_BLOCK'
+					activeTab: 'RESERVATIONS'
 				});
 				$scope.$emit('showLoader');
 			}, 1000);
