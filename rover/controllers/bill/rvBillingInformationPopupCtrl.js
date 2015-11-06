@@ -11,6 +11,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.routes = [];
     $scope.errorMessage = '';
     $scope.isInitialPage = true;
+    $scope.selectedEntityChanged = false;
     $scope.saveData = {};
     $scope.saveData.payment_type =  "";
     $scope.saveData.payment_type_description =  "";
@@ -81,6 +82,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.errorMessage = "";
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
+        $scope.selectedEntityChanged = true;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
@@ -114,8 +116,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
                     "id": $scope.allotmentId,
                     "allotment_id": $scope.allotmentId,
-                    "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "RESERVATION"
+                    'charge_routes_recipient': {
+                        'id': data.id,
+                        'type': 'RESERVATION'
+                    }
                 });
             } else {
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
@@ -144,8 +148,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
                     "id": $scope.allotmentId,
                     "allotment_id": $scope.allotmentId,
-                    "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "ACCOUNT"
+                    'charge_routes_recipient': {
+                        'id': data.id,
+                        'type': 'ACCOUNT'
+                    }
                 });
             }
     		if(data.account_type === 'COMPANY'){
@@ -189,8 +195,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "id": data.id,
                     "name": data.account_name,
                     "bill_no": "",
-                    "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "ACCOUNT",
+                    'charge_routes_recipient': {
+                        'id': data.id,
+                        'type': 'POSTING_ACCOUNT'
+                    },
                     "attached_charge_codes": [],
                     "attached_billing_groups": [],
                     "is_new" : true,
