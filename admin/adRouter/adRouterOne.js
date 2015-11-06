@@ -29,7 +29,18 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 				}]
 			}
 		});
-		
+
+		$stateProvider.state('admin.pabxSetup', {
+			templateUrl: '/assets/partials/pabx/pabxSetup.html',
+			controller: 'adPabXSetupSetupCtrl',
+			url : '/pabx/setup',
+			resolve: {
+				pabxSetupValues: ['adPabXSetupSrv', function(adPabXSetupSrv) {
+					return adPabXSetupSrv.fetchPabXConfiguration();
+				}]
+			}
+		});
+
 		$stateProvider.state('admin.afasSetup', {
 			templateUrl: '/assets/partials/afas/afasSetup.html',
 			controller: 'adAfasSetupCtrl',
