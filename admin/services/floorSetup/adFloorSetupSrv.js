@@ -79,4 +79,26 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		return deferred.promise;
 	};
 
+	this.assignRooms = function(params){
+		var deferred = $q.defer();
+		var url = '/api/floors/' + params.floorID + "/assign";
+		ADBaseWebSrvV2.putJSON(url, params.payLoad).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.unAssignRooms = function(params){
+		var deferred = $q.defer();
+		var url = '/api/floors/' + params.floorID + "/unassign";
+		ADBaseWebSrvV2.putJSON(url, params.payLoad).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 }]);

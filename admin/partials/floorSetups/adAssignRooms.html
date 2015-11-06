@@ -1,68 +1,85 @@
-<!-- Toggle between assigned & available rooms -->
-<div class="actions float pull-right">
-    <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'AVAILABLE', 'white' : roomAssignment.activeTab !== 'AVAILABLE'}">
-        AVAILABLE
-    </button>
-    <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white' : roomAssignment.activeTab!== 'ASSIGNED'}">
-        ASSIGNED
-    </button>
-</div>
-<!-- Config section and search come here! -->
-<span class="count-show">Show</span>
-<div class="select table-count rates-table-count">
-    <select ng-model="displyCount" ng-options="perPageOption for perPageOption in displayCountList"></select>
-</div>
-<span class="count-entries">entries</span>
-<div class="table-search">
-    <span class="search-text">Search</span>
-    <span class="icons icon-search" name="submit" type="submit"></span>
-    <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
-</div>
-<!--ng-table component -->
-<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
-    <tbody>
-        <tr ng-repeat="room in $data">
-            <td data-title="'ROOM NO.'" sortable="'rate'" header-class="width-40">
-                <a class="edit-data" ng-click="editRatesClicked(rate.id, $index)">
-                    <strong> {{room.room_number}}</strong>
-                </a>
-            </td>
-            <td data-title="'ROOM TYPE'" sortable="'based_on'" header-class="width-40">
-                {{room.type}}
-            </td>
-            <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom($index)">
-                <ad-checkbox is-checked="room.isSelected"></ad-checkbox>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<!--Custom pagination footer goes here-->
-<script type="text/ng-template" id="custom/pager">
-    <div class="pager">
-        <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
-        <span ng-show="totalCount==0">Showing 0 items</span>
-        <ul class="ng-cloak">
-            <li ng-repeat="page in pages" ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
-                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
-                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
-                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
-                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
-                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
-            </li>
-        </ul>
+<section class="content-scroll" ng-if="stateVariables.activeTab === 'ASSIGN'" ng-controller="ADAssignRoomsCtrl">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <!-- Roles permissions navigation -->
+    <div id="permissions" class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all" data-tabs="details-tabs">
+        <div class="entry has-sortable locked">
+            <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" ng-model='UserRoles'>
+                <li ng-repeat="floor in floorsList" ng-click="selectFloor($index)" ng-class="{'ui-tabs-active': roomAssignment.selectedFloorIndex === $index }">
+                    <a class="ui-tabs-anchor" role="presentation"> 
+                            FLOOR {{floor.floor_number}}
+                        </a>
+                </li>
+            </ul>
+        </div>
+        <form class="form float ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+            <!-- Toggle between assigned & available rooms -->
+            <div class="actions float pull-right">
+                <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'AVAILABLE', 'white' : roomAssignment.activeTab !== 'AVAILABLE'}">
+                    AVAILABLE
+                </button>
+                <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white' : roomAssignment.activeTab!== 'ASSIGNED'}">
+                    ASSIGNED
+                </button>
+            </div>
+            <!-- Config section and search come here! -->
+            <span class="count-show">Show</span>
+            <div class="select table-count rates-table-count">
+                <select ng-model="displyCount" ng-options="opt for opt in displayCountList" ng-change="onDisplayCountChange()"></select>
+            </div>
+            <span class="count-entries">entries</span>
+            <div class="table-search">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+            </div>
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+                <tbody>
+                    <tr ng-repeat="room in $data">
+                        <td data-title="'ROOM NO.'" sortable="'room_number'" header-class="width-40">
+                            <a class="edit-data" ng-click="editRatesClicked(rate.id, $index)">
+                                <strong> {{room.room_number}}</strong>
+                            </a>
+                        </td>
+                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40">
+                            {{room.type}}
+                        </td>
+                        <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom($index)">
+                            <ad-checkbox is-checked="room.isSelected"></ad-checkbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--Custom pagination footer goes here-->
+            <script type="text/ng-template" id="custom/pager">
+                <div class="pager">
+                    <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                    <span ng-show="totalCount==0">Showing 0 items</span>
+                    <ul class="ng-cloak">
+                        <li ng-repeat="page in pages" ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                            <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                            <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                            <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                            <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                            <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                            <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                        </li>
+                    </ul>
+                </div>
+            </script>
+            <!--end-->
+            <!-- Action Buttons Here -->
+            <div class="actions ">
+                <button type="button" id="cancel" class="button blank" ng-click="onCancelChanges()" translate>
+                    CANCEL
+                </button>
+                <button type="button" ng-hide="roomAssignment.activeTab === 'ASSIGNED'" like-type="common" ng-show="" class="button " ng-click="onSaveChanges()" ng-disabled="!roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected" ng-class="{'green': roomAssignment.areAllRoomsSelected || roomAssignment.areSomeRoomsSelected, 'grey': !roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected}" translate>
+                    ASSIGN_SELECTED
+                </button>
+                <button type="button" ng-show="roomAssignment.activeTab === 'ASSIGNED'" like-type="common" class="button " ng-click="onSaveChanges()" ng-disabled="!roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected" ng-class="{'red': roomAssignment.areAllRoomsSelected || roomAssignment.areSomeRoomsSelected, 'grey': !roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected}" translate>
+                    UNASSIGN_SELECTED
+                </button>
+            </div>
+        </form>
     </div>
-</script>
-<!--end-->
-<!-- Action Buttons Here -->
-<div class="actions ">
-    <button type="button" id="cancel" class="button blank" ng-click="onCancelChanges()" translate>
-        CANCEL
-    </button>
-    <button type="button" ng-hide="roomAssignment.activeTab === 'ASSIGNED'" like-type="common" ng-show="" class="button " ng-click="assignRooms()" ng-disabled="!roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected" ng-class="{'green': roomAssignment.areAllRoomsSelected || roomAssignment.areSomeRoomsSelected, 'grey': !roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected}" translate>
-        ASSIGN_SELECTED
-    </button>
-    <button type="button" ng-show="roomAssignment.activeTab === 'ASSIGNED'" like-type="common" class="button " ng-click="unAssignRooms()" ng-disabled="!roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected" ng-class="{'red': roomAssignment.areAllRoomsSelected || roomAssignment.areSomeRoomsSelected, 'grey': !roomAssignment.areSomeRoomsSelected && !roomAssignment.areAllRoomsSelected}" translate>
-        UNASSIGN_SELECTED
-    </button>
-</div>
+</section>

@@ -12,20 +12,23 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     areSomeRoomsSelected: false
                 };
                 $scope.loadTable();
-            }, 
+            },
             updateSelectedList = function() {
-                $scope.roomAssignment.selectedCount = _.where($scope.data,{
-                    isSelected : true
+                $scope.roomAssignment.selectedCount = _.where($scope.data, {
+                    isSelected: true
                 }).length;
 
                 $scope.roomAssignment.areAllRoomsSelected = $scope.roomAssignment.selectedCount === $scope.data.length;
                 $scope.roomAssignment.areSomeRoomsSelected = $scope.roomAssignment.selectedCount > 0 && !$scope.roomAssignment.areAllRoomsSelected;
+            },
+            onSaveSuccess = function() {
+                $scope.reloadTable();
             };
 
         $scope.selectFloor = function(floorIdx) {
             $scope.roomAssignment.selectedFloorIndex = floorIdx;
             // IFF activeTab is ASSIGNED Redo the table --> call the API
-            if($scope.roomAssignment.activeTab === "ASSIGNED"){
+            if ($scope.roomAssignment.activeTab === "ASSIGNED") {
                 $scope.reloadTable();
             }
         };
@@ -47,10 +50,10 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     params.total(data.total_count);
                     $defer.resolve($scope.data);
                 };
-            if($scope.roomAssignment.activeTab === "AVAILABLE"){
+            if ($scope.roomAssignment.activeTab === "AVAILABLE") {
                 $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
-            }else{
-                getParams = _.extend(getParams,{
+            } else {
+                getParams = _.extend(getParams, {
                     floorID: $scope.floorsList[$scope.roomAssignment.selectedFloorIndex].id
                 });
                 $scope.invokeApi(ADFloorSetupSrv.getFloorDetails, getParams, fetchSuccessOfItemList);
@@ -84,12 +87,26 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             updateSelectedList();
         };
 
-        $scope.assignRooms = function(){
-
+        $scope.onSaveChanges = function() {
+            var selectedRooms = _.where($scope.data, {
+                    isSelected: true
+                }),
+                params = {
+                    floorID: $scope.floorsList[$scope.roomAssignment.selectedFloorIndex].id,
+                    payLoad: {
+                        room_ids: _.pluck(selectedRooms, 'id')
+                    }
+                };
+            //TODO - Throw popup here
+            if ($scope.roomAssignment.activeTab === "AVAILABLE") {
+                $scope.invokeApi(ADFloorSetupSrv.assignRooms, params, onSaveSuccess);
+            } else {
+                $scope.invokeApi(ADFloorSetupSrv.unAssignRooms, params, onSaveSuccess);
+            }
         };
 
-        $scope.unAssignRooms = function(){
-
+        $scope.onCancelChanges = function() {
+            //TODO: Handle Cancel Action - probably have to clear the form here!
         };
 
         initController();
