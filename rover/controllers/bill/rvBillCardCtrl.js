@@ -777,9 +777,9 @@ sntRover.controller('RVbillCardController',
 
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
-	 		
+
 	 		// commenting out the below code to close ngDialog which is wrong
-	 		// The broadcast event will not happpen if the dialog is close. - CICO-21772
+	 		// The broadcast event will not happpen if the dialog is closed. - CICO-21772
 
                 //ngDialog.close();//close the dialog if one exists, set data after, so duplicates are not created
                 //this needs to be moved after 1.13.0 to better detect where the swipe happens and do proper broadcasts to set carddata
