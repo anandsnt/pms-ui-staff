@@ -3,8 +3,19 @@
 		<h2 translate> FLOORS </h2>
 		<span class="count"> ({{data.floors.length}}) </span>
 		<a class="action add" ng-click="gotoAddFloor()"  translate>ADD_NEW</a>
+		<div class="actions float pull-right">
+			<button type="button" class="button add-data-inline ng-scope" ng-click="toggleAssignFloors()" 
+				ng-class="{'orange' : stateVariables.activeTab === 'MANAGE', 'white' : stateVariables.activeTab !== 'MANAGE'}">
+				MANAGE FLOORS
+			</button>
+			<button type="button" class="button add-data-inline ng-scope" ng-click="toggleAssignFloors()" 
+				ng-class="{'orange' : stateVariables.activeTab === 'ASSIGN', 'white' : stateVariables.activeTab !== 'ASSIGN'}">
+				ASSIGN ROOMS
+			</button>
+		</div>
 	</header>
-	<section class="content-scroll">
+	<!-- Manage Floors Section -->
+	<section class="content-scroll" ng-if="stateVariables.activeTab === 'MANAGE'">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>		
 		<table class="grid datatable" ng-table="tableParams" template-pagination="" 
 		ng-show="showTableDetails">
@@ -27,5 +38,24 @@
 				</tr>
 			<!--</tbody> -->
 		</table>
+	</section>
+	<!-- Assign Rooms Section -->
+	<section class="content-scroll" ng-if="stateVariables.activeTab === 'ASSIGN'" ng-controller="ADAssignRoomsCtrl">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		      <!-- Roles permissions navigation -->
+        <div id="permissions" class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all" data-tabs="details-tabs">
+            <div class="entry has-sortable locked">
+	            <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" ng-model='UserRoles'>
+	                <li ng-repeat="floor in floorsList" ng-click="selectFloor($index)" ng-class="{'ui-tabs-active': roomAssignment.selectedFloorIndex === $index }">
+	                	<a class="ui-tabs-anchor" role="presentation"> 
+	                		FLOOR {{floor.floor_number}}
+	                	</a>
+	                </li>                           
+	            </ul>
+            </div>
+            <form class="form float ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+            	<section ng-include="'/assets/partials/floorSetups/adAssignRooms.html'"></section>
+            </form>
+        </div>
 	</section>
 </section>
