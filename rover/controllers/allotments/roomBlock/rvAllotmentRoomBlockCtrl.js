@@ -430,6 +430,40 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+		 * CICO-21222
+		 * function to load next 14 days data.
+		 */
+		$scope.fetchNextSetOfRoomBlockData = function() {
+			// CICO-21222 Introduced pagination in room block timeline.
+			var nextStartDay = new tzIndependentDate($scope.timeLineStartDate);
+			nextStartDay.setDate(nextStartDay.getDate() + 14);
+
+			var options = {
+				start_date: nextStartDay,
+				count: 14
+			}
+			$scope.fetchRoomBlockGridDetails(options);
+		};
+
+		$scope.fetchCurrentSetOfRoomBlockData = function() {
+			// CICO-21222 Introduced pagination in room block timeline.
+			var options = {
+				start_date: $scope.timeLineStartDate,
+				count: 14
+			}
+			$scope.fetchRoomBlockGridDetails(options);
+		};
+
+		/**
+		 * Function to fire when user selects date
+		 * @return {undefined}
+		 */
+		$scope.onTimeLineStartDatePicked = function(date, datePickerObj) {
+			$scope.timeLineStartDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+			fetchCurrentSetOfRoomBlockData();
+		};
+
+		/**
 		 * when the booking data changing
 		 * @return undefined
 		 */
@@ -1277,9 +1311,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		/**
 		 * To fetch room block details
+		 * @param {Object} Pagination Options
 		 * @return {undefined}
 		 */
-		$scope.fetchRoomBlockGridDetails = function() {
+		$scope.fetchRoomBlockGridDetails = function(paginationOptions) {
+			paginationOptions = paginationOptions || {};
 			var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
 				hasPermissionToEditRoomBlock());
 
@@ -1287,9 +1323,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				return;
 			}
 
-			var params = {
-				allotment_id: $scope.allotmentConfigData.summary.allotment_id
-			};
+			var params = _.extend(paginationOptions, {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+			});
 
 			var options = {
 				params: params,
@@ -1374,7 +1410,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForContractViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 280 + 40) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 280 + 180) + 'px';
 		};
 
 		/**
@@ -1382,7 +1418,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForCurrentViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 180) + 'px';
 		};
 
 		/**
@@ -1390,7 +1426,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForReleaseViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 40) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 180) + 'px';
 		};
 
 		/**
@@ -1574,6 +1610,35 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+		 * function used to set date picker
+		 * will create date picker options & initial values
+		 * @return - None
+		 */
+		var setDatePickers = function() {
+
+			//default start date
+			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+
+			//referring data model -> from allotment summary
+			var refData = $scope.allotmentConfigData.summary;
+
+			//date picker options - Common
+			var commonDateOptions = {
+				dateFormat: $rootScope.jqDateFormat,
+				numberOfMonths: 1
+			};
+
+			//date picker options - Start Date
+			$scope.startDateOptions = _.extend({
+				minDate: new tzIndependentDate($rootScope.businessDate),
+				maxDate: $scope.allotmentConfigData.summary.block_to,
+				onSelect: onTimeLineStartDatePicked
+			}, commonDateOptions);
+
+		};
+
+
+		/**
 		 * Initialize scope variables
 		 * @return {undefined}
 		 */
@@ -1600,7 +1665,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		var initializeRoomBlockDetails = function(){
-			$scope.fetchRoomBlockGridDetails();
+			// CICO-21222 Introduced pagination in room block timeline.
+			var options = {
+				start_date: $rootScope.businessDate,
+				count: 14
+			}
+			$scope.fetchRoomBlockGridDetails(options);
 		};
 
 		/**
@@ -1618,6 +1688,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//IF you are looking for where the hell the API is CALLING
 			//scroll above, and look for the event 'ALLOTMENT_TAB_SWITCHED'
+
+			//date related setups and things
+			setDatePickers();
 
 			//setting scrollers
 			self.setScroller();
