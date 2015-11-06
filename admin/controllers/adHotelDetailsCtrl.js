@@ -210,6 +210,13 @@ admin.controller('ADHotelDetailsCtrl', [
 	};
 
 	/**
+	 * when clicked on Hold Status flag
+	 */
+	$scope.toggleTheHoldStatusValue = function() {
+		$scope.data.is_hold_flag_enabled = !$scope.data.is_hold_flag_enabled;
+	};
+
+	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleClicked = function(){
