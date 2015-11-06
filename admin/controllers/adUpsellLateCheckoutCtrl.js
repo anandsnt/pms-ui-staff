@@ -1,4 +1,4 @@
-admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
+admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService','ADChargeCodesSrv',  function($scope,$rootScope,$state,adUpsellLatecheckoutService, ADChargeCodesSrv){
 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
@@ -34,6 +34,8 @@ $scope.fetchUpsellDetails = function(){
        isRoomTypesSelected();
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);
        $scope.startWatching();
+       // CICO-19130
+       $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
    };
    $scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };
@@ -256,5 +258,72 @@ $scope.deleteRoomType = function(value,name){
     isRoomTypesSelected();
     $scope.upsellData.selected_room_type = "";
 };
+
+
+  // CICO-19130 //
+  /**
+   * Set the charge code to item selected from auto complete list
+   * @param {Integer} charge code value
+   */
+  $scope.selectChargeCode = function(id, name){
+    $scope.upsellData.selected_charge_code = id;
+    $scope.chargecodeData.chargeCodeSearchText = name;
+    $scope.showChargeCodes = false;
+  };
+
+  /**
+   * Fired after charge code search has completed. used to show result set in auto complete list.
+   * @param {Object} API response data
+   */
+  var successCallBackForChargeCodeSearch = function(data) {
+    if (data.results && data.results.length) {
+      // change results set to suite our needs
+      $scope.chargeCodeSearchResults = data.results;
+      $scope.showChargeCodes = true;
+      $scope.refreshScroller('chargeCodesList');
+    }
+  };
+
+  var callSearchChargeCodesAPI = function(searchQuery) {
+    var params = {
+        query: searchQuery
+    };
+    ADChargeCodesSrv.searchChargeCode(params).then(successCallBackForChargeCodeSearch);
+  };
+
+  /**
+   * function to perform filering on results.
+   * if not fouund in the data, it will request for webservice
+   */
+  var displayFilteredResultsChargeCodes = function(){
+    $scope.chargeCodeSearchResults = [];
+    //if the entered text's length < 3, we will show everything, means no filtering
+    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
+      //callSearchChargeCodesAPI("");
+      $scope.refreshScroller('chargeCodesList');
+    }
+    else{
+      callSearchChargeCodesAPI($scope.chargecodeData.chargeCodeSearchText);
+    }
+
+  };
+
+  /**
+   * function to clear the charge code search text
+   */
+  $scope.clearResults = function(){
+    $scope.chargecodeData.chargeCodeSearchText = "";
+  };
+
+  /**
+   * function to trigger the filtering when the search text is entered
+   */
+  $scope.chargeCodeEntered = function(){
+    $scope.showChargeCodes = true;
+    displayFilteredResultsChargeCodes();
+    var queryText = $scope.chargecodeData.chargeCodeSearchText;
+    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+  };
+
 
 }]);
