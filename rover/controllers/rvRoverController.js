@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -106,6 +106,7 @@ sntRover.controller('roverController',
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
     $rootScope.paymentGateway = hotelDetails.payment_gateway;
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
+    $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
@@ -524,16 +525,6 @@ sntRover.controller('roverController',
       }
     };
 
-    // Method to check whether the rover is accessed via devices or not.
-    var isAccessedFromDevice = function(){
-        var isDevice = false; //initiate as false
-        // device detection
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-          isDevice = true;
-        }
-        return isDevice;
-    };
-
     /*
      * Start Card reader now!.
      */
@@ -541,7 +532,7 @@ sntRover.controller('roverController',
   		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
        * desktopSwipeEnabled flag is true
       */
-      if($rootScope.desktopSwipeEnabled && !isAccessedFromDevice()){
+      if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
   			initiateDesktopCardReader();
   		}
       else {

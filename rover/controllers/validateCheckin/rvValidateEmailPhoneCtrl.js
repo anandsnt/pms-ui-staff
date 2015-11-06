@@ -69,14 +69,38 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		ngDialog.close();
 		$scope.goToNextView();
 	};
+         $scope.reservationIsQueued = function(){
+                    //checks current reservation data to see if it is in Queue or not
+                    if ($scope.reservationData.reservation_card.is_reservation_queued === 'true'){
+                        return true;
+                    } else return false;
+                };
         $scope.roomAssignmentNeeded = function(){
-            if ($scope.reservationData.reservation_card.room_number === '' || $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || $scope.reservationData.reservation_card.room_status !== 'READY' || $scope.reservationData.reservation_card.fo_status !== 'VACANT'){
+            if ($scope.reservationData.reservation_card.room_number === '' || 
+                    $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || 
+                    $scope.reservationData.reservation_card.room_status !== 'READY' || 
+                    $scope.reservationData.reservation_card.fo_status !== 'VACANT'){
+                
+                    if ($scope.reservationData.reservation_card.room_number === '' && ($scope.reservationIsQueued() || $scope.putInQueue)){
+                        return true;
+                    }
+                    if ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && ($scope.reservationIsQueued() || $scope.putInQueue)){
+                        return false;
+                    }
+                
                 return true;
             } else return false;
         };
         $scope.upsellNeeded = function(){
             if ($scope.reservationData.reservation_card.is_force_upsell === "true" && 
                     $scope.reservationData.reservation_card.is_upsell_available === "true"){
+                
+                if ($scope.putInQueue){
+                    return true;//go to room upgrade if adding to queue
+                } else if ($scope.reservationIsQueued()){
+                    return false;//skip if already in queue and checking in
+                }
+                
                 return true;
             } else return false;
         };
@@ -88,55 +112,47 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
                 return true;
             } else return false;
         };
+        $scope.goToRoomAssignment = function(){
+            $state.go("rover.reservation.staycard.roomassignment", {
+                "reservation_id" : $scope.reservationData.reservation_card.reservation_id, 
+                "room_type": $scope.reservationData.reservation_card.room_type_code, 
+                "clickedButton": "checkinButton"
+            });
+        };
+        $scope.goToUpgrades = function(){
+            $state.go('rover.reservation.staycard.upgrades', {
+                "reservation_id" : $scope.reservationData.reservation_card.reservation_id, 
+                "clickedButton": "checkinButton"
+            });
+        };
+        $scope.goToBillCard = function(){
+          $state.go('rover.reservation.staycard.billcard', {
+                "reservationId": $scope.reservationData.reservation_card.reservation_id, 
+                "clickedButton": "checkinButton"
+            });  
+        };
+        $scope.emitPutGuestInQueue = function(){
+            if ($scope.putGuestInQueue){
+                setTimeout(function(){
+                  $rootScope.$emit('putGuestInQueue');
+              },1000);
+            }
+        };
 	$scope.goToNextView = function(){
-            var avoidingBillCard = false;
-            
-            if ((!$scope.checkGuestInFromQueue || !$rootScope.checkGuestInFromQueue) && ($scope.putGuestInQueue || $rootScope.putGuestInQueue)){
-                avoidingBillCard = false;
-            } else {
-                 avoidingBillCard = false;
-            }
-            
-            
-            if ($scope.readyToPutInQueue() && avoidingBillCard){
-                //close dialog (which is done at this point, then just upadate the queue)
-                $rootScope.$emit('putInQueueAdvanced');
-                $rootScope.$emit('putGuestInQueue');
-                return;
-            }
-            
-            
-		if(($scope.hasAnySharerCheckedin() && !avoidingBillCard) || $scope.checkGuestInFromQueue) {//straight to signature, skip room upgrades CICO-19673
-			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		if($scope.hasAnySharerCheckedin() || $scope.checkGuestInFromQueue) {//straight to signature, skip room upgrades CICO-19673
+			$scope.goToBillCard();
                         
 		} else if($scope.roomAssignmentNeeded()){
 			//TO DO:Go to room assignemt viw
-			$state.go("rover.reservation.staycard.roomassignment", {
-                            "reservation_id" : $scope.reservationData.reservation_card.reservation_id, 
-                            "room_type": $scope.reservationData.reservation_card.room_type_code, 
-                            "clickedButton": "checkinButton"
-                        });
-                        if ($scope.putGuestInQueue){
-                              setTimeout(function(){
-                                $rootScope.$emit('putGuestInQueue');
-                            },1000);
-                          }
+			$scope.goToRoomAssignment();
+                        $scope.emitPutGuestInQueue();
                         
 		} else if ($scope.upsellNeeded() && !$scope.checkGuestInFromQueue){
 			//TO DO : GO TO ROOM UPGRAFED VIEW
-			  $state.go('rover.reservation.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-                          if ($scope.putGuestInQueue){
-                              setTimeout(function(){
-                                $rootScope.$emit('putGuestInQueue');
-                            },1000);
-                          }
-                          
-                          
-		} else{
-                    if (!avoidingBillCard){
-			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-                    } //else just close the popup
-                        
+			  $scope.goToUpgrades();
+                          $scope.emitPutGuestInQueue();
+                } else{
+                    $scope.goToBillCard();
 		}
                 
                 

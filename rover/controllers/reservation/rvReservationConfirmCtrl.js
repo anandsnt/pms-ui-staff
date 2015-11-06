@@ -369,6 +369,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.reservationData.isSameCard = true;
 			$scope.otherData.reservationCreated = true;
 
+			//As we are creating a new reservation for the same guest, we are to show the user occupancy alert popups
+			_.each($scope.reservationData.rooms, function(roomData){
+				roomData.isOccupancyCheckAlerted = "";
+			});
+
 			// Clear depositData as well CICO-17912
 			$scope.reservationData.depositData = false;
 

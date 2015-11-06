@@ -778,6 +778,8 @@ sntRover.controller('RVbillCardController',
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 
+                ngDialog.close();//close the dialog if one exists, set data after, so duplicates are not created
+                //this needs to be moved after 1.13.0 to better detect where the swipe happens and do proper broadcasts to set carddata
 	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
 			} else if ($scope.billingInfoModalOpened) {
@@ -1195,6 +1197,7 @@ sntRover.controller('RVbillCardController',
 	};
         
         $scope.goToStayCardFromAddToQueue = function(){
+            $scope.isRefreshOnBackToStaycard = true;
             $scope.goBackToStayCard();
         };
         
@@ -1209,13 +1212,9 @@ sntRover.controller('RVbillCardController',
             });
             $rootScope.$on('checkGuestInFromQueue', function() {
                 $scope.checkGuestInFromQueue = true;
-                //if checking guest in from queue, then signature details should have already been collected, submit those with the cc auth request
-                var signature;
-                if ($scope.reservationBillData.signature_details){
-                    signature = $scope.reservationBillData.signature_details.signed_image;
-                } else {
-                    signature = '[]';
-                }
+                //if checking guest in from queue, then signature details should have already been collected, dont re-submit the signature, this will fix an issue getting internal server error
+                var signature = 'isSigned';
+                  //  signature = $scope.reservationBillData.signature_details.signed_image;
                 $scope.initCompleteCheckin(false, signature);
             });
         }
@@ -1231,7 +1230,45 @@ sntRover.controller('RVbillCardController',
 		});
 		return isSharerCheckedin;
 	};
-        
+
+        $scope.putInQueueAdvanced = function(saveData){
+                   var reservationId = $scope.reservationBillData.reservation_id;
+                   $scope.reservationData.check_in_via_queue = false;//set flag for checking in via put-in-queue
+
+                   var data = {
+                           "reservationId": reservationId,
+                           "status": "true"
+                   };
+                   if (saveData && saveData.signature !== '[]'){
+                       data.signature = saveData.signature;
+                   }
+                   if (saveData.is_promotions_and_email_set !== undefined){
+                       data.is_promotions_and_email_set = saveData.is_promotions_and_email_set;
+                   }
+                   data.viaAdvancedQueue = true;
+
+                   $scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack, $scope.failPutInQueueCallBack);
+               };
+                
+            $scope.successPutInQueueCallBack = function() {
+                    $scope.$emit('hideLoader');
+                    $scope.reservationData.reservation_card.is_reservation_queued = "true";
+                    $scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
+                    RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+
+                    var useAdvancedQueFlow = $rootScope.advanced_queue_flow_enabled;
+                    if (useAdvancedQueFlow){
+                        setTimeout(function(){
+                            //then prompt for keys
+                            $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
+                        },1250);
+                        $scope.goToStayCardFromAddToQueue();
+                    }
+            };
+            $scope.failPutInQueueCallBack = function(err) {
+                    $scope.$emit('hideLoader');
+                    $scope.errorMessage = err;
+            };
         
 
 	// Handle checkin process with Autherization..
@@ -1248,7 +1285,7 @@ sntRover.controller('RVbillCardController',
                         //----> upon check-in w/ res. queued, Immediately check-in guest in Opera and advance Rover to key generation screen
                         data.authorize_credit_card = false;        
                         if ($scope.putInQueue || queueRoom === true){
-                            $rootScope.$emit('putInQueueAdvanced', data);
+                            $scope.putInQueueAdvanced(data);
                             //Now, we need to go ahead and produce the keys so the user doesn't need key creation at check-in if (queued room)
                             
                         }else {
@@ -1332,6 +1369,10 @@ sntRover.controller('RVbillCardController',
                 return signatureData;
         };
         $scope.signatureNeeded = function(signatureData){
+                if ($scope.reservationBillData.signature_details.is_signed === 'true'){
+                    signatureData = $scope.reservationBillData.signature_details.signed_image;
+                    return false;
+                };
                 
 		if(signatureData === "[]" && $scope.reservationBillData.required_signature_at === "CHECKIN"){
                     return true;
@@ -1407,11 +1448,12 @@ sntRover.controller('RVbillCardController',
         
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom){
+                
             
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
-		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
+		else if(($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED') && !$rootScope.queuedCheckIn){
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,
@@ -1443,15 +1485,6 @@ sntRover.controller('RVbillCardController',
             
 		if($scope.hasAnySharerCheckedin()){
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
-		}
-		else if($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED'){
-			//TO DO:Go to room assignemt view
-			$state.go("rover.reservation.staycard.roomassignment", {
-				"reservation_id": $scope.reservationBillData.reservation_id,
-				"room_type": $scope.reservationBillData.room_type,
-				"clickedButton": "checkinButton"
-			});
-			return false;
 		}
 
 		var errorMsg = "", signatureData = $scope.getSignature();
@@ -1500,6 +1533,9 @@ sntRover.controller('RVbillCardController',
 	 		    }
                             if (!$scope.putInQueue){
                                 setFlagForPreAuthPopup();
+                            }
+                            if (signatureData === 'isSigned' || signatureData === '[]'){
+                                delete data.signature;
                             }
                             
 	 		    if(typeof isCheckinWithoutPreAuthPopup !== 'undefined' && isCheckinWithoutPreAuthPopup){
@@ -2094,7 +2130,7 @@ sntRover.controller('RVbillCardController',
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
 		 	//CICO-10906 review process continues after payment.
-			if( data.bill_balance === 0.0 && $scope.isViaReviewProcess ){
+			if( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ){
 				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
 						$scope.clickedReviewButton(data.billNumber-1);
 			}

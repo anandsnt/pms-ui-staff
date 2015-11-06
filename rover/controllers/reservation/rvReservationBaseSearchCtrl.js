@@ -39,8 +39,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;
             };
-            if ($scope.reservationData.resHours && $scope.reservationData.resHours < 3) {
-                $timeout(correctHours.bind(null, 3), 100);
+            if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours && $scope.reservationData.resHours < $rootScope.minimumHourlyReservationPeriod) {
+                $timeout(correctHours.bind(null, $rootScope.minimumHourlyReservationPeriod), 100);
             };
 
             var checkinHour = parseInt($scope.reservationData.checkinTime.hh);
@@ -93,6 +93,29 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
 
+        /**
+         * [isInteger description]
+         * @param  {[type]}  value [description]
+         * @return {Boolean}       [description]
+         */
+        var isInteger = function(n) {
+            // It is == ON PURPOSE
+            return Number(n) == n && n % 1 === 0;
+        };
+
+        $scope.clearNumNightIfWrong = function() {
+            if (!isInteger($scope.reservationData.numNights)) {
+                $scope.reservationData.numNights = 1;
+                $scope.errorMessage = ['Number of nights can only be a numeric value'];
+            }
+        };
+
+        $scope.clearNumHoursIfWrong = function() {
+            if (!isInteger($scope.reservationData.resHours)) {
+                $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
+                $scope.errorMessage = ['Number of hours can only be a numeric value'];
+            }
+        };
         /*
          * To setup arrival time based on hotel time
          *
@@ -153,15 +176,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.refreshScroller('search_reservation');
             };
 
-        var fetchMinTimeSucess = function(data) {
-            var intVal = parseInt(data.min_hours);
-
-            if (isNaN(intVal) || intVal < 3) {
-                $scope.reservationData.resHours = 3;
-            } else {
-                $scope.reservationData.resHours = intVal;
-            };
-        };
 
         /**
          *   We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -251,8 +265,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.isNightsActive = false;
                 $scope.shouldShowNights = false;
                 $scope.shouldShowHours = true;
-
-                $scope.invokeApi(RVReservationBaseSearchSrv.fetchMinTime, {}, fetchMinTimeSucess);
+                $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, fetchCurrentTimeSucess);
             } else {
                 $scope.isNightsActive = true;
@@ -268,13 +281,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
-            if ($scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
+            if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
+                $scope.reservationData.numNights = '';
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
+           
         };
 
         $scope.setNumberOfNights = function() {
@@ -350,14 +365,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             //if selected thing is 'hours'
             if (!$scope.isNightsActive) {
                 var reservationDataToKeepinVault = {},
-                    roomData = $scope.reservationData.rooms[0];
+                    roomData = $scope.reservationData.rooms[0],
+                    numberOfHours = $scope.reservationData.resHours;
 
+                if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours === ''|| !$scope.reservationData.resHours) {
+                    numberOfHours = $rootScope.minimumHourlyReservationPeriod;
+                }
                 _.extend(reservationDataToKeepinVault, {
                     'fromDate': new tzIndependentDate($scope.reservationData.arrivalDate).getTime(),
                     'toDate': new tzIndependentDate($scope.reservationData.departureDate).getTime(),
                     'arrivalTime': $scope.reservationData.checkinTime,
                     'departureTime': $scope.reservationData.checkoutTime,
-                    'minHours': $scope.reservationData.resHours,
+                    'minHours': numberOfHours,
                     'adults': roomData.numAdults,
                     'children': roomData.numChildren,
                     'infants': roomData.numInfants,
@@ -380,6 +399,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
+                
+                $scope.setNumberOfNights();
+
                 for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
                 }

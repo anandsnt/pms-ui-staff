@@ -69,6 +69,16 @@ sntRover.controller('RVDailyProdReportCtrl', [
 		};
 		isScrollReady();
 
+		var destroyScrolls = function() {
+			mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ].destroy();
+			delete mainCtrlScope.myScroll[ LEFT_PANE_SCROLL ];
+
+			mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ].destroy();
+			delete mainCtrlScope.myScroll[ RIGHT_PANE_SCROLL ];
+		};
+
+		$scope.$on( 'destroy', destroyScrolls );
+
 		
 
 
@@ -98,11 +108,11 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			};
 
 			$scope.$emit('showLoader');
-			$timeout( reInit, 100 );
+			$timeout( reInit, 300 );
 		});
 
 
-		var calThings = function() {
+		var processData = function() {
 			var SUB_HEADER_NAMES = [
 				'Rooms #',
 				'Avl. Rooms',
@@ -252,19 +262,36 @@ sntRover.controller('RVDailyProdReportCtrl', [
 			$timeout(function() {
 				refreshScrollers();
 				$scope.$emit('hideLoader');
-			}, 500 );
+			}, 300 );
 		};
 
 
+		function renderReact (args) {
+			var args  = args || {},
+				props = _.extend(args, {
+					'rightPaneWidth' : $scope.rightPaneWidth,
+					'colspan'        : $scope.colSpan,
+					'headerTop'      : $scope.headerTop,
+					'headerBot'      : $scope.headerBot,
+					'reportData'     : $scope.reportData
+				});
+
+			React.renderComponent(
+				DPContent(props),
+				document.getElementById('daily-production-render')
+			);
+		};
 
 		function init (argument) {
-			calThings();
+			processData();
+			renderReact();
 		};
 
 		init();
 
 		function reInit (argument) {
-			calThings();
+			processData();
+			renderReact();
 		};
 
 

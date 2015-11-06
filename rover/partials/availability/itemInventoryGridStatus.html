@@ -1,0 +1,31 @@
+<div id="availability-grid" ng-controller="rvItemInventoryGridStatusController" class="availability-grid scrollable" ng-iscroll='room_availability_scroller' ng-iscroll-delay="100" ng-show="hideMeBeforeFetching">
+	<div class="wrapper" style="width: {{getWidthForTable()}}px">
+		<table class="dates-grid">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="heading"></th>
+					<th ng-repeat="eachDate in data.dates">
+						<div class="inner" ng-class="{'weekend': eachDate.isWeekend}">
+							<span ng-bind="eachDate.date|date:dayInWeek"></span>{{eachDate.date|date:shortMonthAndDate}}
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="addon in data.addons track by $index">
+					<th class="heading" scope="row" ng-bind="addon.name"></th>
+					<td ng-repeat="date in addon.availability_details track by $index">
+						<div class="inner" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : (date.availability <= 3) }">
+						</div>
+						<div ng-if="date.availability === null" class="inner disabled">N/A
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

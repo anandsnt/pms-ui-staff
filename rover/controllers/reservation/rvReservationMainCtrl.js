@@ -124,49 +124,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationDetails = RVReservationDataService.getReservationDetailsModel();
         };
 
-        $scope.reset_guest_details = function() {
-            $scope.reservationData.guest = {
-                id: null, // if new guest, then it is null, other wise his id
-                firstName: '',
-                lastName: '',
-                email: '',
-                city: '',
-                loyaltyNumber: '',
-                sendConfirmMailTo: ''
-            };
-            $scope.reservationDetails.guestCard = {
-                id: "",
-                futureReservations: 0
-            };
-
-        };
-
-        $scope.reset_company_details = function() {
-            $scope.reservationData.company = {
-                id: null, // if new company, then it is null, other wise his id
-                name: '',
-                corporateid: '' // Add different fields for company as in story
-            };
-
-            $scope.reservationDetails.companyCard = {
-                id: "",
-                futureReservations: 0
-            };
-
-        };
-
-        $scope.reset_travel_details = function() {
-            $scope.reservationData.travelAgent = {
-                id: null, // if new , then it is null, other wise his id
-                name: '',
-                iataNumber: '' // Add different fields for travelAgent as in story
-            };
-            $scope.reservationDetails.travelAgent = {
-                id: "",
-                futureReservations: 0
-            };
-        };
-
         $scope.initReservationDetails = function() {
             // Initiate All Cards
             $scope.reservationDetails = RVReservationDataService.getReservationDetailsModel();
@@ -643,7 +600,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //
             $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
             $scope.otherData.segments = baseData.demographics.segments;
-            $scope.checkOccupancyLimit();
         };
 
         var openRateAdjustmentPopup = function(room, index, lastReason) {
@@ -812,7 +768,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
                             children_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
                             infants_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
-                            rate_amount: (date === $scope.reservationData.departureDate) ? ((room.stayDates[$scope.reservationData.arrivalDate] && room.stayDates[$scope.reservationData.arrivalDate].rateDetails && room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0)
+                            rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((room.stayDates[$scope.reservationData.arrivalDate] && room.stayDates[$scope.reservationData.arrivalDate].rateDetails && room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0))
 
                         });
                     });
@@ -862,10 +818,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
                     }
                     _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
-                        addonsForRoomType.push({
-                            id: addon.id,
-                            quantity: addon.quantity || 1
-                        });
+                        //skip rate associated addons on create/update calls --> they will be taken care off by API 
+                        if(!addon.is_rate_addon){
+                            addonsForRoomType.push({
+                                id: addon.id,
+                                quantity: addon.quantity || 1
+                            });
+                        }   
                     });
                 }
                 if (!$scope.reservationData.isHourly) {

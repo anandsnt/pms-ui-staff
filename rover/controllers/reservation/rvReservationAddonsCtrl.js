@@ -79,9 +79,15 @@ sntRover.controller('RVReservationAddonsCtrl', [
             },
             goToSummaryAndConfirm = function() {
                 if ($scope.fromPage === "staycard") {
-                    var saveData = {};
-                    saveData.addons = $scope.addonsData.existingAddons;
-                    saveData.reservationId = $scope.reservationData.reservationId;
+
+                    var saveData = {
+                        reservationId: $scope.reservationData.reservationId,
+                        room_types: [{
+                            id: $scope.reservationData.rooms[0].roomTypeId ,
+                            num_rooms: 1,
+                            addons: _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon})
+                        }]
+                    }
 
                     var successCallBack = function() {
                         $scope.$emit('hideLoader');
@@ -161,9 +167,12 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     }
                     // initialize addons for display
                     $scope.addons = [];
+                    var currentRate = parseInt($scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId, 10);
                     _.each(data.results, function(item) {
                         if (!!item) {
-                            $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));
+                            if(!item.allow_rate_exclusion || (item.allow_rate_exclusion && _.indexOf(item.excluded_rate_ids, currentRate) < 0)){
+                                $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));   
+                            }
                         }
                     });
                     // refresh scroller
@@ -181,8 +190,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             for (i = startIndex; i <= endIndex; i++) {
                                 $scope.reservationData.rooms[i].addons = [];
                             }
+                            //This is for addons associated with the RATE!!!
                             _.each(data.rate_addons, function(addon) {
                                 //Set this flag when there is Children in reservation & addon on for child.
+                                addon.is_rate_addon = true; // This is true as these addons are rate associated addons
                                 var flag = addon.amount_type.value === "CHILD" && $scope.reservationData.tabs[$scope.activeRoom].numChildren === 0,
                                     roomIndex;
                                 if (!flag) {
@@ -259,7 +270,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amountType: addon.amountType,
                             postType: addon.postType,
                             taxDetail: addon.taxes,
-                            chargefullweeksonly:addon.chargefullweeksonly
+                            chargefullweeksonly:addon.chargefullweeksonly,
+                            is_rate_addon : addon.is_rate_addon
                         });
                     }
                 }
@@ -392,7 +404,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     /*
                      *  if the available count is less we prompts warning popup
                      */
-                    if (remainingCount >= 0 || availableAddonCount === null) {
+                    if (remainingCount > 0 || availableAddonCount === null) {
                         insertAddon(addon, addonQty);
                     } else {
                         $scope.addon = addon;
@@ -412,10 +424,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     };
                 };
 
+               
+                // Set the departure date for the query as the date before actual departure and in case of day reservations,
+                // make it the arrival date.
+                // Change made for CICO-21037
+                var adjustedQueryEndDate = new tzIndependentDate($scope.reservationData.arrivalDate);
+                adjustedQueryEndDate.setDate(adjustedQueryEndDate.getDate() + (($scope.reservationData.numNights || 1) - 1));
+
                 var paramDict = {
                     'addon_id': addon.id,
                     'from_date': $scope.reservationData.arrivalDate,
-                    'to_date': $scope.reservationData.departureDate,
+                    'to_date':  $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
                 }
                 $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
             }
@@ -488,7 +507,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             price_per_piece: item.amount,
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
-                            is_inclusive: item.is_inclusive
+                            is_inclusive: item.is_inclusive,
+                            is_rate_addon : item.is_rate_addon 
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -503,7 +523,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 title: addonsData.title,
                                 totalAmount: addonsData.totalAmount,
                                 is_inclusive: addonsData.is_inclusive,
-                                taxes: item.taxes
+                                taxes: item.taxes,
+                                is_rate_addon: item.is_rate_addon 
                             });
                         }
 

@@ -28,35 +28,19 @@
         <span class="text">Card will be charged with a {{currencySymbol}}{{ ngDialogData.penalty }} penalty.</span>
 
         <div id="set-payment" class="payment-form">
-            <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-controller="RVCardOptionsCtrl" ng-show="showCC"></div>
+            <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-controller="RVCardOptionsCtrl" ng-show="showCCPage"></div>
 
-                  <!-- Payment type -->
-            <div id="payment-type" class="entry full-width" ng-hide="showCC">
-                <label for="payment-type" translate>PAYMENT_TYPE</label>
-                <div class="select">
-                    <select id="payment-options" ng-model="cancellationData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
-                        <option value="" translate>SELECT_PAYMENT_TYPE</option>
-                        <option ng-repeat="paymentData in passData.details.paymentTypes" value="{{paymentData.name}}" ng-selected="{{paymentData.name === depositData.paymentType}}">{{paymentData.description}}</option>
-                    </select>
-                </div>
-            </div>
+             <!-- Payment type -->
+               <div ng-init="isCancelReservation = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
+                 
+                  
              <!-- Card Input type - output only if Six Payments and payment type is CC -->
-            <div class="entry" ng-show="paymentGateway === 'sixpayments' && cancellationData.paymentType ==='CC' && !showCC">
-                <label for="card-source">Card Input</label>
-                <div class="switch-button" ng-class="{'on': !isManual}">
-                    <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
-                    <label class="data-off">
-                        <span class="value">C &amp; P</span>
-                        <span class="switch-icon">Manual</span>
-                    </label>
-                    <label class="data-on">
-                        <span class="switch-icon">C &amp; P</span>
-                        <span class="value">Manual</span>
-                    </label>
-                </div>
+            <div class="entry" ng-show="paymentGateway === 'sixpayments' && cancellationData.paymentType ==='CC' && !showCCPage">
+                <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
             </div>
+             
              <!-- Selected/added credit card -->
-            <div id="selected-card" class="entry full-width" ng-show="!showCC && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && cancellationData.cardNumber.length>0" ng-click="onCardClick()">
+            <div id="selected-card" class="entry full-width" ng-show="!showCCPage && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && cancellationData.cardNumber.length>0" ng-click="onCardClick()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -67,7 +51,7 @@
                 </label>
             </div>
 
-            <div class="entry full-width" ng-hide="showCC || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
+            <div class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
                 <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
                 
                 <!-- CICO-12408 : Use only when fee exsists -->
@@ -85,12 +69,12 @@
 
             </div>
             <!-- Reference field - use only when it exsits -->
-            <div class="entry full-width reference" ng-hide="showCC || !isDisplayReference ||depositPaidSuccesFully">
+            <div class="entry full-width reference" ng-hide="showCCPage || !isDisplayReference ||depositPaidSuccesFully">
                 <label for="reference">Reference</label>
                 <input name="reference" id="reference" ng-model="referanceText" type="text" />
             </div>
             
-            <div class="entry full-width" ng-show="!showCC && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && newCardAdded && !depositPaidSuccesFully">
+            <div class="entry full-width" ng-show="!showCCPage && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && newCardAdded && !depositPaidSuccesFully">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cancellationData.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': cancellationData.addToGuestCard}"></span>
                     <input ng-model="cancellationData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
@@ -118,12 +102,12 @@
 
 
             <!-- Buttons -->
-            <div class="actions" ng-hide="showCC || depositPaidSuccesFully">
+            <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                 <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()">Close</button>
                 <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
             </div>
             <div class="actions" ng-hide="!depositPaidSuccesFully">
-                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation()" translate>CANCEL_RESERVATION</button>
+                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation(true)" translate>CANCEL_RESERVATION</button>
              </div>   
         </div>
     </fieldset>

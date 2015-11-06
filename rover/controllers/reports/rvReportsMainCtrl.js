@@ -10,7 +10,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'RVReportNamesConst',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+	'rvUtilSrv',
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -43,6 +44,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 		$scope.showReportDetails = false;
+
+		// CICO-21232
+		// HIDE export option in ipad and other devices
+		// RESTRICT to ONLY desktop
+		$scope.hideExportOption = !!sntapp.cordovaLoaded || util.checkDevice.any();
 
 		var addonsCount = 0;
 		_.each ($scope.addons, function (each) {
@@ -235,6 +241,33 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
+		/**
+		 * utility method to get date after one year
+		 * @param  {Object/String} date [if String, should be valid date format string]
+		 * @return {Object}      [Date]
+		 */
+		var getDateAfterOneYear = function (date) {
+			var dateAfter1Year 	= new Date (date);
+			dateAfter1Year.setFullYear( dateAfter1Year.getFullYear() + 1 );
+			return dateAfter1Year;
+		};
+
+		//for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
+		$scope.fromDateOptionsOneYearLimit = angular.extend({
+			onSelect: function(value, datePickerObj) {
+				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+				$scope.toDateOptionsOneYearLimit.minDate = selectedDate;
+				$scope.toDateOptionsOneYearLimit.maxDate = getDateAfterOneYear (selectedDate);
+			}
+		}, datePickerCommon);
+		var datesUsedForCalendar = reportUtils.processDate();
+
+		$scope.toDateOptionsOneYearLimit = angular.extend({
+			minDate: datesUsedForCalendar.monthStart,
+			maxDate: getDateAfterOneYear (datesUsedForCalendar.monthStart)
+		}, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -401,6 +434,8 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.sortByChanged = function(item) {
             var _sortBy;
+
+            console.log(item.chosenSortBy);
 
             // un-select sort dir of others
             // and get a ref to the chosen item
@@ -1129,6 +1164,40 @@ sntRover.controller('RVReportsMainCtrl', [
 			return params;
 		};
 
+		/**
+		 * Should we show export button
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowExportButton = function(name) {
+			//As per CICO-21232 we should show this for DAILY PRODUCTION REPORT
+			return (name === reportNames['DAILY_PRODUCTION']);
+		};
+
+		/**
+		 * function to get the export url for a report
+		 * @return {String}
+		 */
+		$scope.getExportUrl = function(chosenReport) {
+			var exportUrl 				= "",
+				loadPage 				= 1,
+				resultPerPageOverride 	= true;
+
+			if (!chosenReport) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+				return exportUrl;
+			}
+
+			switch ( chosenReport.title ) {
+				case reportNames['DAILY_PRODUCTION']: 
+					exportUrl = "/api/reports/30/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
+					break;
+				
+				default:
+					exportUrl = "";
+					break;					
+			}
+			
+			return exportUrl;
+		};
 
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {

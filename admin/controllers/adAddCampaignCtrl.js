@@ -8,7 +8,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.delivery_primetime = "AM";
 		$scope.campaignData.alert_max_length = 120;
 		$scope.campaignData.messageSubjectMaxLength = 60;
-		$scope.campaignData.messageBodyMaxLength = 320;
+		$scope.campaignData.messageBodyMaxLength = 2000;
 		$scope.campaignData.callToActionLabelMaxLength = 30;
 		$scope.campaignData.delivery_details = "";
 		$scope.campaignData.target_type = "URL";

@@ -564,6 +564,8 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
 				$timeout(function() {
 					$scope.updateGroupSummary();
+					//for updating the room block after udating the summary
+					$scope.hasBlockDataUpdated = true; //as per variable name, it should be false, but in this contrler it should be given as true other wise its not working
 				}, 100);				
 			}
 

@@ -8,7 +8,8 @@ sntRover.service('RVReservationStateService', [
 
 		self.reservationFlags = {
 			outsideStaydatesForGroup: false,
-			RATE_CHANGED: false
+			RATE_CHANGED: false,
+			RATE_CHANGE_FAILED: false
 		};
 
 		self.bookMark = {
@@ -242,13 +243,15 @@ sntRover.service('RVReservationStateService', [
 		};
 
 
-		self.shouldPostAddon = function(frequency, present, arrival, departure, chargefullweeksonly) {
+		self.shouldPostAddon = function(frequency, present, arrival, departure, chargeFullLengthOnly) {
 			if (frequency === 0 && present === arrival) {
 				return true;
 			}
-			var dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / (24 * 3600 * 1000), 10);
-			var remainingDayIndex = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / (24 * 3600 * 1000), 10);
-			return (dayIndex % frequency === 0) && (remainingDayIndex >= frequency);
+			var msPerDay = 24 * 3600 * 1000,
+				dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / msPerDay, 10),
+				remainingDays = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / msPerDay, 0);
+				
+			return (dayIndex % frequency === 0) && (!chargeFullLengthOnly || (chargeFullLengthOnly && (remainingDays >= frequency)));
 		};
 
 		self.applyDiscount = function(amount, discount, numNights) {
@@ -392,7 +395,7 @@ sntRover.service('RVReservationStateService', [
 						_.each(associatedAddons, function(addon) {
 							var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
 								taxOnCurrentAddon = 0.0,
-								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival, addon.charge_full_weeks_only);
+								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival, departure, addon.charge_full_weeks_only);
 							if (applyPromotion) {
 								currentAddonAmount = parseFloat(self.applyDiscount(currentAddonAmount, code.discount, numNights));
 							}
@@ -476,7 +479,7 @@ sntRover.service('RVReservationStateService', [
 						appliedPromotion: code,
 						isMember: ratesMeta[rate_id].is_member && membershipValidity,
 						isGroupRate: ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup,
-						isAllotmentRate: ratesMeta[rate_id].rate_type.name === !!selectedAllotment
+						isAllotmentRate: ratesMeta[rate_id].rate_type.name === "Allotment Rate" || !!selectedAllotment
 					};
 
 					var currentRoomRateDetails = currentRoom.ratedetails[for_date][rate_id];
@@ -526,7 +529,7 @@ sntRover.service('RVReservationStateService', [
 						currentRoom.total[rate_id].total += currentRoomRateDetails.total;
 						var stayLength = numNights;
 						// Handle single days for calculating rates
-						if (stayLength === 0) {
+						if (parseInt(stayLength, 10) === 0) {
 							stayLength = 1;
 						}
 						rooms[currentRoomId].total[rate_id].average = parseFloat(currentRoom.total[rate_id].totalRate / stayLength);

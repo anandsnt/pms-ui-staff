@@ -24,11 +24,17 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.isPromotional = function() {
-            var ispromo = false;
+            var ispromo = false, classification = '';
             if ($scope.rateTypesDetails) {
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
                     if ($scope.rateData.rate_type.id === rate_type.id) {
-                        if (rate_type.name === "Specials & Promotions") {
+                        if ($scope.rateData.classification){
+                            classification = $scope.rateData.classification.toLowerCase();
+                        } else {
+                            classification = '';
+                        }
+                        
+                        if (classification === 'specials') {
                             ispromo = true;
                         } else {
                             ispromo = false;
@@ -42,11 +48,17 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
 
         $scope.hideBasedOn = function() {
-            var hideBasedOn = false;
+            var hideBasedOn = false, classification = '';
             if ($scope.rateTypesDetails) {
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
                     if ($scope.rateData.rate_type.id === rate_type.id) {
-                        if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rate_type.name) >= 0) {
+                        if ($scope.rateData.classification){
+                            classification = $scope.rateData.classification.toLowerCase();
+                        } else {
+                            classification = '';
+                        }
+                        
+                        if (classification === "corporate") {
                             hideBasedOn = true;
                         } else {
                             hideBasedOn = false;
@@ -185,7 +197,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'commission_details':commissions,
                 'is_member': $scope.rateData.is_member_rate,
                 'is_pms_only' : $scope.rateData.is_pms_only,
-                'is_channel_only' : $scope.rateData.is_channel_only
+                'is_channel_only' : $scope.rateData.is_channel_only,
+                'code':$scope.rateData.code
             };
 
             // Save Rate Success Callback

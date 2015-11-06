@@ -228,7 +228,15 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         numberOfMonths: 1
       };
 
-      var possibleDefaultDate = refData.block_from;
+      var possibleStartDefaultDate = refData.block_from;
+
+      if (!(possibleStartDefaultDate instanceof Date)) {
+        possibleStartDefaultDate = new tzIndependentDate(possibleStartDefaultDate);
+      }
+
+      if (possibleStartDefaultDate < new tzIndependentDate($rootScope.businessDate)) {
+        possibleStartDefaultDate = new tzIndependentDate($rootScope.businessDate);
+      }      
 
       //if we are in edit mode, we have to set the min/max date
       if (!$scope.isInAddMode()) {
@@ -238,18 +246,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         });
       }
 
-      if (possibleDefaultDate < new tzIndependentDate($rootScope.businessDate)) {
-        possibleDefaultDate = new tzIndependentDate($rootScope.businessDate);
-      }
+      $scope.reservationAddFromDate = possibleStartDefaultDate;
 
-      //default from date, as per CICO-13900 it will be block_from date
-      $scope.reservationAddFromDate = possibleDefaultDate;
+      $scope.reservationAddToDate = new tzIndependentDate(refData.block_to);
 
-      //default to date, as per CICO-13900 it will be block_to date
-      $scope.reservationAddToDate = refData.block_to;
-
-      $scope.reservationSearchFromDate = possibleDefaultDate;
-      $scope.reservationSearchToDate = refData.block_to;
+      $scope.reservationSearchFromDate  = possibleStartDefaultDate;
+      $scope.reservationSearchToDate    = new tzIndependentDate(refData.block_to);
 
       //date picker options - Reservation Add From
       $scope.reservationAddFromDateOptions = _.extend({
@@ -258,13 +260,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       //date picker options - Reservation to From
       $scope.reservationAddToDateOptions = _.extend({
-        onSelect: reservationAddToDateChoosed,
-        minDate: new tzIndependentDate(refData.block_from)
+        onSelect: reservationAddToDateChoosed
       }, commonDateOptions);
 
       //date picker options - Reservation Add From
       $scope.reservationSearchFromDateOptions = _.extend({
-        minDate: '',
         onSelect: reservationSearchFromDateChoosed
       }, commonDateOptions);
 
@@ -272,7 +272,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.reservationSearchToDateOptions = _.extend({
         onSelect: reservationSearchToDateChoosed
       }, commonDateOptions);
-      $scope.reservationSearchToDateOptions.minDate = new tzIndependentDate($scope.reservationSearchToDate);
+
+      if (!$scope.isInAddMode()) {
+        $scope.reservationAddToDateOptions.minDate      = possibleStartDefaultDate;
+        $scope.reservationSearchFromDateOptions.minDate = new tzIndependentDate(refData.block_from);
+        $scope.reservationSearchToDateOptions.minDate   = new tzIndependentDate(refData.block_from);
+      }
     };
 
     /**
@@ -464,7 +469,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {[type]}      [description]
      */
     var mailSent = function(data) {
-      $scope.successMessage = 'e-email sent successfully';
+      $scope.successMessage = 'e-mail sent successfully';
       $scope.closeDialog();
     };
 
@@ -768,6 +773,9 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       if (activeTab !== 'RESERVATIONS') {
         return;
       }
+      //as the date may get change from other tab
+      setDatePickerOptions();
+
       //calling initially required APIs
       callInitialAPIs();
     });
@@ -1329,22 +1337,22 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       //what is page that we are requesting in the API
       $scope.page     = 1;
     };
- 
+
     /**
      * Function to handle success, failure callbacks for toggleHideRate
      */
-    var sucessCallbackToggleHideRate = function(data){
-        $scope.allotmentConfigData.summary.hide_rates = !$scope.allotmentConfigData.summary.hide_rates;
+    var sucessCallbackToggleHideRate = function(data) {
+      $scope.allotmentConfigData.summary.hide_rates = !$scope.allotmentConfigData.summary.hide_rates;
     };
 
-    var failureCallbackToggleHideRate = function(errorData){
-        $scope.errorMessage = errorData;
+    var failureCallbackToggleHideRate = function(errorData) {
+      $scope.errorMessage = errorData;
     };
 
     /**
      * Function to toggle show rate checkbox value
      */
-    $scope.clickedShowRate = function(){
+    $scope.clickedShowRate = function() {
       var params = {
         'id'        : $scope.allotmentConfigData.summary.allotment_id,
         'hide_rates': !$scope.allotmentConfigData.summary.hide_rates

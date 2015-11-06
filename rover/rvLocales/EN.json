@@ -895,9 +895,10 @@
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
     "INVALID_CREDIT_CARD": "There is a problem with your credit card",
     "START_PAYMENT_PROCESS": "Start Payment Process",
-    "CONFLICTING_BILLING_INFO_EXISTS_ON": "conflicting billing info exists on",
+    "CONFLICTING_BILLING_INFO_EXISTS_ON": "Conflicting Billing Information exists for",
+    "CONFLICTING_BILLING_INFO_EXISTS": "Conflicting Billing Information exists",
     "CARD": "card",
-    "PLEASE_UPDATE_MANUALLY": "Please update manually",
+    "PLEASE_UPDATE_MANUALLY": "Please update manually.",
     "OK": "ok",
     "BILLING_INFORMATION_FOUND": "Billing information found",
     "ON_SELECTED_CARD": "On selected card",
@@ -921,7 +922,8 @@
 
     "CONFIRM_RESERVATION"   : "Confirm Reservation",
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
-    "RESERVATION_CANCELLED" : "Reservation cancelled"
+    "RESERVATION_CANCELLED" : "Reservation cancelled",
+    "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
 
 
 ,    

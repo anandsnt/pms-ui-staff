@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv', 'RVReservationPackageSrv',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -393,6 +393,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		 * Handle swipe action in reservationdetails card
 		 */
 
+                 $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG',function(evt, val){
+                     $scope.isDepositBalanceScreenOpened = val;
+                 });
+                 
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.isDepositBalanceScreenOpened) {
 				swipedCardData.swipeFrom = "depositBalance";
@@ -416,7 +420,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			} else {
 				swipedCardData.swipeFrom = "stayCard";
 			}
-                        
+                        if (swipedCardData.swipeFrom !== 'guestCard'){
+                            $scope.$emit('isFromGuestCardFalse');
+                        }
                         
                         
                         
@@ -430,6 +436,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                                 
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
+                                if (swipedCardData.swipeFrom !== 'guestCard'){
+                                    $scope.$emit('isFromGuestCardFalse');
+                                }
 			};
                         
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
@@ -539,25 +548,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				return false;
 			};
 
-			// TODO : This following LOC has to change if the room number changes to an array
-			// to handle multiple rooms in future
-			if ($rootScope.isStandAlone) {
-				//If standalone, go to change staydates calendar if rooms is assigned.
-				//If no room is assigned, go to stay dates calendar. (REQUIREMENT HAS CHANGED - CICO-13566)
-				if (true) { // -- CICO-13566  (reservationMainData.rooms[0].roomNumber !== "") - <<<< ALWAYS ROUTE TO THE STAYDATES SCREEN >>>>
-					$state.go('rover.reservation.staycard.changestaydates', {
-						reservationId: reservationMainData.reservationId,
-						confirmNumber: reservationMainData.confirmNum
-					});
-				}
-
-			} else {
-				//If ext PMS connected, go to change staydates screen
-				$state.go('rover.reservation.staycard.changestaydates', {
-					reservationId: reservationMainData.reservationId,
-					confirmNumber: reservationMainData.confirmNum
-				});
-			}
+			$state.go("rover.reservation.staycard.changestaydates", {
+				reservationId: reservationMainData.reservationId,
+				confirmNumber: reservationMainData.confirmNum
+			});
 		};
 
 		var editPromptDialogId;
@@ -612,6 +606,36 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$timeout(navigateToRoomAndRates, timer);
 		};
 
+		$scope.updateRoomRate = function() {
+			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservation_card.reservation_id, function(response) {
+					
+				$scope.$emit('hideLoader');
+
+				var roomData = $scope.$parent.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
+
+				// Reset addons package
+				roomData.addons = [];
+
+				angular.forEach(response.existing_packages, function(addon) {
+					roomData.addons.push({
+						quantity: addon.addon_count,
+						id: addon.id,
+						price: parseFloat(addon.amount),
+						amountType: addon.amount_type,
+						postType: addon.post_type,
+						title: addon.name,
+						totalAmount: addon.addon_count * parseFloat(addon.amount),
+						is_inclusive: addon.is_inclusive,
+						taxes: addon.taxes,
+						is_rate_addon: addon.is_rate_addon,
+						allow_rate_exclusion: addon.allow_rate_exclusion,
+						excluded_rate_ids: addon.excluded_rate_ids
+					});
+				});
+
+				$scope.goToRoomAndRates('ROOM_RATE');
+			});
+		};
 
 		$scope.goToRoomAndRates = function(state) {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
@@ -698,11 +722,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
-                                    
-                                    
-                                    
+				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && 
+                                        swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && 
+                                        swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
+                                        console.info('doing open pmt window with pass data')
 					$scope.openPaymentDialogModal(passData, paymentData);
+                                        
+                                        
 				} else if (swipedCardDataToRender.swipeFrom === "stayCardDeposit") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
                                         

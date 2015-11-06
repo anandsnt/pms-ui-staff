@@ -1,0 +1,17 @@
+<!-- Content -->
+<section id="main" class="centered test" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{headingText}}</h1>
+        <h3>{{subHeadingText}}</h3>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">Next</button>
+            </div>
+        </form>
+        <button ng-show='at === "input-email" && from === "card-swipe" && emailOptional' type='button' class='button' touch-press='skipEmailEntryAfterSwipe()'>Skip</button>
+    </div>
+<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>

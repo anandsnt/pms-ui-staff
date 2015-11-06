@@ -1374,8 +1374,18 @@
 
                 .scrollable { .calc-height(100, 45); }
 
-                .wrapper { .float; }
+                .wrapper { 
+                    min-height: 420px;
+                    height: auto;
+                    padding-bottom: 10px;
+                    .float; 
+                }
 
+                .iScrollVerticalScrollbar { 
+                    top: 0; 
+                    bottom: 10px;
+                }
+                
                 .calendar-left,
                 .calendar-right {
                     position: relative;

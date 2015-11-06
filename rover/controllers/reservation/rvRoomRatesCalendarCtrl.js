@@ -18,10 +18,13 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		var getDayOfMonth = function(date){
 			var date = new Date(date),
 				y = date.getFullYear(),
-				m = date.getMonth();
-            day = m > parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
+				m = date.getMonth(),
+				businessDate = tzIndependentDate($rootScope.businessDate),
+				businessM = businessDate.getMonth(),
+				businessY = businessDate.getFullYear();
+            day = (m + (y*100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
-		}
+		};
 
 		var getLastDayOfMonth = function(date) {
 			var date = new Date(date),
@@ -292,7 +295,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isProcessingLeftSideCalendar = function(dailyData) {
 			//if the month of left calndr and date are same, it means
-			return ($scope.leftCalendarOptions.month === new tzIndependentDate(dailyData.date).getMonth());
+			//add 12 to the 'month' value in the options to tackle negative values
+			return (($scope.leftCalendarOptions.month + 12) % 12 === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
 		/**
@@ -302,7 +306,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 		 */
 		var isProcessingRightSideCalendar = function(dailyData) {
 			//if the month of right calndr and date are same, it means
-			return ($scope.rightCalendarOptions.month === new tzIndependentDate(dailyData.date).getMonth());
+			//add 12 to the 'month' value in the options to tackle negative values
+			return (($scope.rightCalendarOptions.month + 12) % 12  === new tzIndependentDate(dailyData.date).getMonth() % 12);
 		};
 
 
@@ -463,12 +468,12 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 
 
 		$scope.isPrevButtonDisabled = function() {
-			var disabled = false;
-			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) === parseInt($scope.leftCalendarOptions.month)) {
-				disabled = true;
-			}
-			return disabled;
-
+			var startDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month), 
+				calFrom = new tzIndependentDate(getFirstDayOfMonth(startDate)),
+				calTo = new tzIndependentDate(getLastDayOfNextMonth(startDate)),
+				busDate = new tzIndependentDate($rootScope.businessDate);
+			// Disable prev button if current business date is visible in the calendar
+			return busDate <= calTo && busDate >=calFrom;
 		};
 
 		/**
