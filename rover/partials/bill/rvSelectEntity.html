@@ -76,9 +76,27 @@
                  </li>
 
                 <!-- If group added -->
-                <li class="entity group" ng-show="attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
+                <li class="entity guest" ng-show="billingEntity === 'GROUP_DEFAULT_BILLING' && attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
                     <div class="group-info">A</div>
                     <h2>{{attachedEntities.posting_account.name}}</h2>
+                </li>
+
+                <li class="entity group" ng-show="billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-click="selectAttachedEntity(-1, 'ALLOTMENT')">
+                  <figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
+                    <img src="{{selectedEntity.images[0].guest_image}}" alt="" />
+                  </figure>
+
+                  <figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
+                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
+                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
+                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+                  </figure>
+
+                  <h2>{{selectedEntity.name}}</h2>
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+                  <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
+
                 </li>
             </ul>
          </div>

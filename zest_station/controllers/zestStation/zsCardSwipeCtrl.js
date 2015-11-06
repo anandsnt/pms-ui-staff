@@ -90,7 +90,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     $scope.clearInputText();
                     $scope.from = 'input-email';
                     $scope.setLast('input-email');
-                    $scope.goToScreen(null, 'select-keys-after-checkin', true, 'input-email');
+                    
+                    //$scope.goToScreen(null, 'select-keys-after-checkin', true, 'input-email');
+                    $state.go('zest_station.input_reservation_email_after_swipe');
                 }
             };
             
@@ -138,7 +140,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     return;
                 }
                 
-                $scope.goToScreen(null, 'input-email', true, $scope.from);
+                //$scope.goToScreen(null, 'input-email', true, $scope.from);
+                $state.go('zest_station.input_reservation_email_after_swipe');
                 
                 $scope.clearSignature();
             };

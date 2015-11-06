@@ -42,14 +42,14 @@
                   <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
 				</div>
 
-				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE' || selectedEntity.entity_type == 'ALLOTMENT') && (billingEntity !== 'GROUP_DEFAULT_BILLING' || billingEntity !== 'ALLOTMENT_DEFAULT_BILLING'))">Payment
+				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity !== 'GROUP_DEFAULT_BILLING'))">Payment
 					<button type="button" id="edit-entity" ng-click="renderAddedPayment = null; isAddPayment = false" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null">
 						<span class="icons icon-pencil" ></span>
 					</button>
 				</div>
 
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(((selectedEntity.entity_type == 'ALLOTMENT' || selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
 					<div class="wrapper">
 						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
@@ -66,7 +66,7 @@
 					</div>
 				</div>
 
-				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && ( (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE' && selectedEntity.entity_type !== 'ALLOTMENT') || billingEntity == 'ALLOTMENT_DEFAULT_BILLING' || billingEntity == 'GROUP_DEFAULT_BILLING' || billingEntity == 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING')">
+				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && ( (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE') || billingEntity == 'GROUP_DEFAULT_BILLING' || billingEntity == 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING')">
 						<!-- add class active when selected -->
 						<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 							<figure class="card-logo">
@@ -80,7 +80,7 @@
 				</div>
 
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="billingEntity == 'ALLOTMENT_DEFAULT_BILLING' || (reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity === 'GROUP_DEFAULT_BILLING')) || renderAddedPayment != null">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity === 'GROUP_DEFAULT_BILLING')) || renderAddedPayment != null">+ New Payment Method</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>

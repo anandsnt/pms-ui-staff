@@ -130,11 +130,11 @@
 				                    				<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
 				                    			</div>
 
-				                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)==''">
-							                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:guest_company_agent:false">{{row.company}}</span>
-							                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:guest_company_agent:false">{{row.travel_agent}}</span>
-							                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:guest_company_agent:false"></span>
-							                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:guest_company_agent:false"></span>
+				                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
+							                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:search.guest_company_agent:false">{{row.company}}</span>
+							                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:search.guest_company_agent:false">{{row.travel_agent}}</span>
+							                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:search.guest_company_agent:false"></span>
+							                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:search.guest_company_agent:false"></span>
 							                    </div>
 
 							                    <div class="reservation-info">
