@@ -77,20 +77,7 @@
 
 
                         <!-- Search available charge codes -->
-                        <div class="entry has-autocomplete" ng-show="!isBillingGroup">
-                            <label for="search-codes">Charge Code</label>
-                            <input ng-model="chargecodeData.chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
-                            <div class="autocomplete-results" ng-show="showChargeCodes" ng-hide="availableChargeCodes.length === 0">
-                                <div class="scrollable" ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
-                                    <ul class="wrapper">
-                                        <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id, chargeCode.name)" >
-                                            <span ng-bind-html="chargeCode.name"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
+                        <charge-code-search charge-code="upsellData.selected_charge_code" is-billing-group="{{isBillingGroup}}" charge-code-name="upsellData.selected_charge_code_name"></charge-code-search>
 
                     </fieldset>
 
