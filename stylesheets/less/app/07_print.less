@@ -1748,6 +1748,43 @@ table {
         &.occupancy-footer { display: table; }
     }
 
+/* Housekeeping             ==============================*/
+    #rooms.hidden { display: block !important; }
+    .worksheet-options { .hide; }
+    
+    .worksheet-summary { 
+        text-align: center;
+        margin-bottom: 12pt;
+        .show;
+
+        li {
+            display: inline-block;
+            font-size: 8pt;
+            line-height: 1;
+            text-transform: uppercase;
+            .float;
+
+            strong {
+                color: @grey3;
+                font-weight: 400;
+                .show;
+            }
+
+            span { 
+                display: inline-block;
+                font-size: 12pt;
+                font-weight: 300;
+                
+                &.delimiter {
+                    padding: 0 2pt;
+                    text-align: center;
+                }
+            }
+
+            &:not(:last-child) { margin-right: 20pt; }
+        }
+    }
+
 /* Work Management          ==============================*/
     #worksheet-content {
 
@@ -1959,39 +1996,6 @@ table {
         /* Assigned rooms ***/
         .assigned-rooms {
 
-            &.single-sheet {
-                .worksheet-summary { 
-                    text-align: center;
-                    margin-bottom: 12pt;
-                    .show;
-
-                    li {
-                        display: inline-block;
-                        font-size: 8pt;
-                        line-height: 1;
-                        text-transform: uppercase;
-                        text-align: left;
-                        color: @grey3;
-                        margin: 0 4pt 0 0;
-                        padding-right: 4pt;
-                        border-right: 1px solid rgba(0,0,0,.1);
-
-                        span { 
-                            font-size: 12pt;
-                            font-weight: 300;
-                            color: @textColor;
-                            .show;
-                        }
-
-                        &:last-child {
-                            margin-right: 0;
-                            padding-right: 0;
-                            border-right: 0;
-                        }
-                    }
-                }
-            }
-
             &.multi-sheet {
                 .sheet-content {
                     page-break-after: always;
@@ -2007,33 +2011,6 @@ table {
                         .box-shadow(none);
                         .no-transition;
                         .show;
-                    }
-
-                    .data {
-                        text-align: center;
-                        margin-bottom: 12pt;
-                        .show;
-
-                        li {
-                            display: inline-block;
-                            font-size: 12pt;
-                            line-height: 1;
-                            font-weight: 300;
-                            text-transform: uppercase;
-                            text-align: left;
-                            margin: 0 8pt 0 0;
-
-                            span { 
-                                .show;
-
-                                &.total { 
-                                    border-top: 1px solid rgba(0,0,0,.1);
-                                    color: @grey3; 
-                                }
-                            }
-
-                            &:last-child { margin-right: 0; }
-                        }
                     }
                 }
             }
