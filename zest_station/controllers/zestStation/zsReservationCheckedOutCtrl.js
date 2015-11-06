@@ -6,7 +6,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     'zsEventConstants',
     '$stateParams',
     'zsModeConstants',
-	function($scope, $state,zsUtilitySrv, zsTabletSrv,zsEventConstants,$stateParams,zsModeConstants) {
+    '$window',
+	function($scope, $state,zsUtilitySrv, zsTabletSrv,zsEventConstants,$stateParams,zsModeConstants,$window) {
 
 	BaseCtrl.call(this, $scope);
     
@@ -59,39 +60,45 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         init();
 	}();
 
-
-    $scope.clickedPrint = function(){
-        $scope.mode = "final-mode";
-        $scope.printOpted = true;
-    };
     
-    $scope.clickedNoThanks = function(){
-        $scope.mode = "final-mode";
-    };
+  $scope.clickedNoThanks = function(){
+      $scope.mode = "final-mode";
+  };
 
-    $scope.goToNext = function(){
-        $scope.mode = "final-mode";
-    };
-        
-    $scope.saveEmail = function(){
-        if($scope.email.length === 0){
-            return;
-        }
-        else{
-            if(zsUtilitySrv.isValidEmail($scope.email)){
-                $scope.mode = "print-mode";
-            }
-            else{
-                $scope.emailError = true;
-            }
-        }
+  $scope.goToNext = function(){
+      $scope.mode = "final-mode";
+  };
+      
+  $scope.saveEmail = function(){
+      if($scope.email.length === 0){
+          return;
+      }
+      else{
+          if(zsUtilitySrv.isValidEmail($scope.email)){
+            $scope.zestStationData.guest_bill.print ? $scope.mode = "print-mode" : $scope.mode = "final-mode";;
+          }
+          else{
+              $scope.emailError = true;
+          }
+      }
     };
 
     $scope.reTypeEmail = function(){
         $scope.emailError = false;
     };
     $scope.printBill= function(){
-        $scope.mode = "final-mode";
+        
+        try{
+          $window.print();
+          if ( sntapp.cordovaLoaded ) {
+              cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+              $scope.printOpted = true;
+              $scope.mode = "final-mode";
+          };
+        }
+        catch(e){
+          
+        }
     };  
 
 }]);
