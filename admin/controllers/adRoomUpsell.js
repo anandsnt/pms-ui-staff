@@ -37,7 +37,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         isRoomTypesSelected();
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
 
-        $scope.upsellData.selected_charge_code = data.selected_charge_code_id;
+        // CICO-19130
         $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
       };
 
@@ -170,7 +170,8 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     };
 
 
-/*----------------------------edit charge drop down implementation--------------------------------------*/
+/*------------------// CICO-19130 :: Edit charge drop down implementation //------------------------------*/
+
   $scope.chargecodeData = {};
   $scope.chargeCodeSearchResults = [];
   var scrollerOptionsForSearch = {click: false, preventDefault: false};

@@ -34,6 +34,7 @@ $scope.fetchUpsellDetails = function(){
        isRoomTypesSelected();
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);
        $scope.startWatching();
+
        // CICO-19130
        $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
    };
@@ -260,7 +261,13 @@ $scope.deleteRoomType = function(value,name){
 };
 
 
-  // CICO-19130 //
+/*------------------// CICO-19130 :: Edit charge drop down implementation //------------------------------*/
+  
+  $scope.chargecodeData = {};
+  $scope.chargeCodeSearchResults = [];
+  var scrollerOptionsForSearch = {click: false, preventDefault: false};
+  $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
+
   /**
    * Set the charge code to item selected from auto complete list
    * @param {Integer} charge code value
