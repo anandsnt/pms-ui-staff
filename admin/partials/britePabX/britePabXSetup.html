@@ -21,9 +21,12 @@
                             <span class="switch-icon"></span>
                         </div>
                     </div>
-                    <!-- <input type="text">
-                    auto-complete auto-options="detailsUserAutoCompleteOptions" 
-                    <charge-code-search charge-code="brite.charge_code_id" charge-code-name="brite.charge_name" ng-if="brite.enabled"></charge-code-search> -->
+                    <div class="entry" ng-if="brite.enabled">
+                        <label>
+                            Charge Code
+                        </label>
+                        <input type="text" ng-model="brite.charge_code_name" placeholder="Charge code" auto-complete auto-complete-options="chargeCodeAutocompleteOptions" ul-class="ui-autocomplete">
+                    </div>
                     <ad-textbox value="brite.account_number" name="account-number" id="account-number" label="{{'BRITE_PABX_DEFAULT_ACCOUNT_NUMBER'| translate}}" styleclass="full-width" ng-if="brite.enabled"></ad-textbox>
                 </fieldset>
             </fieldset>
