@@ -1630,6 +1630,80 @@
                 }        
             }
 
+            &.production-reports {
+                thead {
+                    tr {
+
+                        th {
+                            line-height: 30px;
+                            padding: 0;
+                            vertical-align: top;
+
+                            span,
+                            em {
+                                color: @white;
+                                padding: 0 10px;
+                                margin-right: 5px;
+                                .show;
+                                .nowrap();
+                                
+                            }
+
+                            &:last-child {
+                                span { margin-right: 0; }
+                            }
+                        }
+
+                        &.top-row {
+                            th {
+                                span {
+                                    background-color: @gcard; 
+                                    text-align: center;
+                                }
+                            }
+                        }
+
+                        &.bottom-row {
+                            th {
+                                font-weight: 600;
+
+                                span,
+                                em {
+                                    background-color: @grey2;
+                                    .calc-width(100, 5);
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                    &.sort {
+                                        cursor: pointer;
+                                        background: darken(@grey2, 10) @arrowSort no-repeat;
+                                        background-position: -webkit-calc(~"100% - 10px") 50%;
+                                        background-position: -moz-calc(~"100% - 10px") 50%;
+                                        background-position: calc(~"100% - 10px") 50%;
+                                        padding-right: 40px;
+
+                                        &.sorting-asc { background-image: @arrowSortAsc; }
+                                        &.sorting-desc { background-image: @arrowSortDesc; }
+                                    }
+                                }
+
+                                em { font-weight: 400; }
+
+                                &:last-child {
+                                    span,
+                                    em { width: 100%; }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    text-transform: none;
+
+                    em { color: @grey3; }
+                }
+            }
+
             &.occupancy-footer { .hide; }
         }
 
