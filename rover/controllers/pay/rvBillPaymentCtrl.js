@@ -634,8 +634,8 @@ console.log(arguments)
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
 		data.billNumber = $scope.renderData.billNumberSelected;
-		$scope.$emit('PAYMENT_SUCCESS',data);
                 $scope.mapPayMentToBill();
+		$scope.$emit('PAYMENT_SUCCESS',data);
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = $scope.defaultPaymentTypeCard;
 			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
@@ -936,10 +936,10 @@ console.log(arguments)
                 "bill_number": $scope.currentActiveBillNumber
             };
            var paymentMapSuccess = function(response){
-               $scope.$emit('REFRESH_BILLCARD_VIEW');
+               //bill card should be updated upon successful payment
            };
            var paymentMapFailure = function(response){
-               console.warn(response);
+               console.warn(response);//this shouldnt be an issue unless api changes
            };
             $scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
         };
