@@ -960,22 +960,24 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     };
 
     var setRoutingDateOptions = function () {
-        $scope.routeDates = {
-            from : $scope.arrivalDate,
-            to : $scope.departureDate
-        };
+        if ($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
+            $scope.routeDates = {
+                from : $scope.arrivalDate,
+                to : $scope.departureDate
+            };
 
-        $scope.routingDateFromOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
-            maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
-        };
+            $scope.routingDateFromOptions = {       
+                dateFormat: 'dd-mm-yy',
+                minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
+                maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
+            };
 
-        $scope.routingDateToOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
-            maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
-        };
+            $scope.routingDateToOptions = {       
+                dateFormat: 'dd-mm-yy',
+                minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
+                maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
+            };
+        }
     };
 
 }]);
