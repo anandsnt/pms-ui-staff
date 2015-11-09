@@ -153,18 +153,33 @@
 						<div class="inner" ng-bind="groupAndAllotment"></div>
 					</td>
 				</tr>
+
 				<tr ng-repeat="rowData in data.gridDataForGroupAvailability.holdstatuses track by $index" ng-class="{'hidden': !showShowGroupAllotmentTotals}">
 					<th scope="row">Group Blocks {{ getGroupAllotmentName(data.gridDataForGroupAvailability, rowData[0].id) }}</th>
 					<td ng-repeat="cellData in rowData track by $index">
 						<div class="inner" ng-class="{ 'unavailable': 0 >= cellData.total_number_of_rooms_blocked, 'warning': 5 >= cellData.total_number_of_rooms_blocked }">{{ cellData.total_number_of_rooms_blocked }}</div>
 					</td>
 				</tr>
+				<tr ng-class="{'hidden': !showShowGroupAllotmentTotals}">
+					<th scope="row">Group Picked Up</th>
+					<td ng-repeat="groupPickedUp in data.gridDataForGroupAvailability.groupTotalPickedUps track by $index">
+						<div class="inner" ng-class="{ 'unavailable': 0 >= groupPickedUp, 'warning': 5 >= groupPickedUp }">{{ groupPickedUp }}</div>
+					</td>
+				</tr>
+
 				<tr ng-repeat="rowData in data.gridDataForAllotmentAvailability.holdstatuses track by $index" ng-class="{'hidden': !showShowGroupAllotmentTotals}">
 					<th scope="row">Allotment {{ getGroupAllotmentName(data.gridDataForAllotmentAvailability, rowData[0].id) }}</th>
 					<td ng-repeat="cellData in rowData track by $index">
 						<div class="inner" ng-class="{ 'unavailable': 0 >= cellData.total_number_of_rooms_blocked, 'warning': 5 >= cellData.total_number_of_rooms_blocked }">{{ cellData.total_number_of_rooms_blocked }}</div>
 					</td>
 				</tr>
+				<tr ng-class="{'hidden': !showShowGroupAllotmentTotals}">
+					<th scope="row">Allotment Picked Up</th>
+					<td ng-repeat="allotmentPickedUp in data.gridDataForAllotmentAvailability.groupTotalPickedUps track by $index">
+						<div class="inner" ng-class="{ 'unavailable': 0 >= allotmentPickedUp, 'warning': 5 >= allotmentPickedUp }">{{ allotmentPickedUp }}</div>
+					</td>
+				</tr>
+
 			</tbody>
 		</table>
 	</div>
