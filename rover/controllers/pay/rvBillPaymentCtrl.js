@@ -936,10 +936,10 @@ console.log(arguments)
                 "bill_number": $scope.currentActiveBillNumber
             };
            var paymentMapSuccess = function(response){
-               //bill card should be updated upon successful payment
+               $scope.$emit('REFRESH_BILLCARD_VIEW');
            };
            var paymentMapFailure = function(response){
-               console.warn(response);//this shouldnt be an issue unless api changes
+               console.warn(response);
            };
             $scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
         };
