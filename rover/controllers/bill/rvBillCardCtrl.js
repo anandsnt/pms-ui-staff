@@ -1158,7 +1158,8 @@ sntRover.controller('RVbillCardController',
 		}
 
 		//Display the key encoder popup
-		else if(keySettings === "encode"){
+		//https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
+		else if(keySettings === "encode"  || keySettings === "mobile_key_encode"){
 			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
