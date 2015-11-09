@@ -18,7 +18,7 @@
                     AVAILABLE
                 </button>
                 <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white' : roomAssignment.activeTab!== 'ASSIGNED'}">
-                    ASSIGNED
+                    ASSIGNED ({{floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count}})
                 </button>
             </div>
             <!-- Config section and search come here! -->

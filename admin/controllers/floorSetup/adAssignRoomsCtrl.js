@@ -26,6 +26,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     $scope.closeDialog();
                 }
                 $scope.reloadTable();
+                $scope.$emit("ASSIGNMENT_CHANGED");
             },
             resetSelectedCount = function() {
                 $scope.roomAssignment.areAllRoomsSelected = false;

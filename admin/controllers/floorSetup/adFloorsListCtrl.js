@@ -111,6 +111,10 @@ admin.controller('ADFloorsListCtrl',
         $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
     };
 
+    $scope.$on("ASSIGNMENT_CHANGED",function(){
+         $scope.listFloorTypes();
+    });
+
     $scope.toggleAssignFloors = function(){
         $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
     }
