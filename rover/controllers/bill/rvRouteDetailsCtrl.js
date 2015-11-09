@@ -415,26 +415,14 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
-            $scope.arrivalDate = "08-08-2015";
-            $scope.departureDate = "09-08-2015";
-            if($scope.billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING') {
-                $scope.routeDates = {
-                    from : $scope.arrivalDate,
-                    to : $scope.departureDate
-                };
-
-                $scope.routingDateFromOptions = {       
-                    dateFormat: 'dd-mm-yy',
-                    minDate : tzIndependentDate($scope.arrivalDate),
-                    maxDate : tzIndependentDate($scope.routeDates.to)
-                };
-
-                $scope.routingDateToOptions = {       
-                    dateFormat: 'dd-mm-yy',
-                    minDate : tzIndependentDate($scope.arrivalDate),
-                    maxDate : tzIndependentDate($scope.routeDates.to)
-                };
+            if (data.from_date !== null) {
+                $scope.arrivalDate = data.from_date;
+                $scope.departureDate = data.to_date;
             }
+            else {
+                setDefaultRoutingDates();
+            }
+            setRoutingDateOptions();
 
             // CICO-19848: In case of allotment
             if (data.charge_routes_recipient) {
@@ -636,8 +624,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
 
             if ($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" && $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" && $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
-                $scope.selectedEntity.from_date = $scope.routeDates.from;
-                $scope.selectedEntity.to_date = $scope.routeDates.to;
+                $scope.selectedEntity.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
+                $scope.selectedEntity.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
             }
 
             /*
@@ -963,6 +951,31 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         	$scope.sixIsManual = value;
         });
 
-        
+    var setDefaultRoutingDates = function () {
+        if ($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
+            $scope.arrivalDate = $scope.groupConfigData.summary.block_from;
+            $scope.departureDate = $scope.groupConfigData.summary.block_to;
+        }
+        $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+    };
+
+    var setRoutingDateOptions = function () {
+        $scope.routeDates = {
+            from : $scope.arrivalDate,
+            to : $scope.departureDate
+        };
+
+        $scope.routingDateFromOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
+            maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
+        };
+
+        $scope.routingDateToOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
+            maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
+        };
+    };
 
 }]);

@@ -63,6 +63,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.headerButtonClicked = function(){
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
+        setDefaultRoutingDates();
+        setRoutingDateOptions();
         if($scope.isInitialPage  && $scope.isReloadNeeded){
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
@@ -78,6 +80,15 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
 	$scope.selectEntity = function(index,type){
+        if ($scope.routes[index].from_date !== null) {
+            $scope.arrivalDate = $scope.routes[index].from_date;
+            $scope.departureDate = $scope.routes[index].to_date;
+        }
+        else {
+            setDefaultRoutingDates();
+        }
+        setRoutingDateOptions();
+
         $scope.errorMessage = "";
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
@@ -361,33 +372,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.fetchRoutes = function(){
 
             var successCallback = function(data) {
-                $scope.arrivalDate = "08-08-2015";
-                 $scope.departureDate = "09-08-2015";
-                 if($scope.billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING') {
-                    /*if () {
-                        arrivalDate = $scope.reservation.reservation_card.arrival_date,
-                        departureDate = $scope.reservation.reservation_card.departure_date;
-                    }*/
-                    $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
-            
-                    $scope.routeDates = {
-                        from : $scope.arrivalDate,
-                        to : $scope.departureDate
-                    };
-
-                    $scope.routingDateFromOptions = {       
-                        dateFormat: 'dd-mm-yy',
-                        minDate : tzIndependentDate($scope.arrivalDate),
-                        maxDate : tzIndependentDate($scope.routeDates.to)
-                    };
-
-                    $scope.routingDateToOptions = {       
-                        dateFormat: 'dd-mm-yy',
-                        minDate : tzIndependentDate($scope.arrivalDate),
-                        maxDate : tzIndependentDate($scope.routeDates.to)
-                    };
-                }
-
                  $scope.routes = data;
                  $scope.fetchEntities();
             };
@@ -399,6 +383,31 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
             $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };
+
+    var setDefaultRoutingDates = function () {
+        $scope.arrivalDate = $scope.reservation.reservation_card.arrival_date,
+        $scope.departureDate = $scope.reservation.reservation_card.departure_date;
+        $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+    }
+
+    var setRoutingDateOptions = function () {
+        $scope.routeDates = {
+            from : $scope.arrivalDate,
+            to : $scope.departureDate
+        };
+
+        $scope.routingDateFromOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+        };
+
+        $scope.routingDateToOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+        };
+    }
 
     /**
     * function to fetch the attached entity list
