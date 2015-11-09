@@ -416,7 +416,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
         var successCallback = function(data) {
             // CICO-19848: In case of allotment
-            if (data.charge_routes_recipient) {
+            if (!$scope.selectedEntityChanged && data.charge_routes_recipient !== undefined) {
                 if(data.type === "TRAVELAGENT") {
                     data.type = "TRAVEL_AGENT";
                 }
