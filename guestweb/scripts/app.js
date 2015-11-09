@@ -1,7 +1,7 @@
 
-var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate']);
 
-snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
+sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
 	var that = this;
 	//load the style elements. Done to reduce the loading time of web page.

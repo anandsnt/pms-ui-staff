@@ -29,5 +29,5 @@
 	checkinKeysService
 	];
 
-	snt.factory('checkinKeysService', dependencies);
+	sntGuestWeb.factory('checkinKeysService', dependencies);
 })();
