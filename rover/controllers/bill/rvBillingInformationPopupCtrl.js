@@ -180,33 +180,18 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "credit_card_details": {},
                     "entity_type": data.account_type
                 };
+                if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+                    $scope.selectedEntity = _.extend($scope.selectedEntity, {
+                        "id": $scope.allotmentId,
+                        "allotment_id": $scope.allotmentId,
+                        'charge_routes_recipient': {
+                            'id': data.id,
+                            'type': 'POSTING_ACCOUNT'
+                        }
+                    });
+                }
             }
 
-        }
-        else if (type === "ALLOTMENT") {
-            if(isRoutingForPostingAccountExist()){
-                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
-                $scope.isEntitySelected = false;
-                $scope.isInitialPage = true;
-            }
-            else{
-                var data = $scope.results.posting_accounts[index];
-                $scope.selectedEntity = {
-                    "id": data.id,
-                    "name": data.account_name,
-                    "bill_no": "",
-                    'charge_routes_recipient': {
-                        'id': data.id,
-                        'type': 'POSTING_ACCOUNT'
-                    },
-                    "attached_charge_codes": [],
-                    "attached_billing_groups": [],
-                    "is_new" : true,
-                    "selected_payment" : "",
-                    "credit_card_details": {},
-                    "entity_type": data.account_type
-                };
-            }
         }
 	};
 
