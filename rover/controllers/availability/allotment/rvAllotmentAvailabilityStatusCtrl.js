@@ -50,7 +50,7 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 			$timeout(function(){
 				$state.go('rover.allotments.config', {
 					id: GroupId,
-					activeTab: 'ROOM_BLOCK'
+					activeTab: 'RESERVATIONS'
 				});
 				$scope.$emit('showLoader');
 			}, 1000);
@@ -152,22 +152,24 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 		 */
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
-					//: Handle successful release
+					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
 					$scope.$parent.changedAvailabilityDataParams();
 				},
 				onReleaseRoomsFailure = function(errorMessage) {
+					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
 					$scope.errorMessage = errorMessage;
-				};
-			$scope.callAPI(rvAllotmentConfigurationSrv.releaseRooms, {
-				successCallBack: onReleaseRoomsSuccess,
-				failureCallBack: onReleaseRoomsFailure,
-				params: {
+				},
+				params = {
 					allotmentId:$scope.data.clickedHeldRoomDetail.id,
 					date:$scope.data.clickedHeldRoomDetail.date
-				}
-			});
+				};
+
+			$scope.$emit( 'showLoader' );
+			$timeout(function() {
+				$scope.invokeApi(rvAllotmentConfigurationSrv.releaseRooms, params, onReleaseRoomsSuccess, onReleaseRoomsFailure);
+			}, 0);
 		};
 		/*
 		* Initialisation goes here!

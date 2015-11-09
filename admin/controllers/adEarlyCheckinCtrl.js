@@ -126,21 +126,15 @@ $scope.fetchUpsellDetails = function(){
        $scope.upsellData.deleted_room_types = [];
        isRoomTypesSelected();
        $scope.setRateFlag();
-       $scope.fetchChargeCodes();
+       $scope.fetchAddons();
        $scope.setUpUpsellWindowData();
        $scope.setEarlyCheckinTimeForRates();
        $scope.startWatching();
+
+       // CICO-19130
+       $scope.chargecodeData.chargeCodeSearchText = data.early_checkin_charge_code_name;
    };
    $scope.invokeApi(adUpsellEarlyCheckinService.fetch, {},fetchUpsellDetailsSuccessCallback);
-};
-$scope.fetchChargeCodes = function(){
-    var fetchSuccessOfChargeCodes = function(data) {
-       $scope.charge_codes = $scope.getChargeCodesWithNameValues(data.charge_codes);
-       $scope.fetchAddons();
-   };
-   var params = {};
-   params.is_no_pagination = true;
-   $scope.invokeApi(ADChargeCodesSrv.fetch, params, fetchSuccessOfChargeCodes);
 };
 
 $scope.fetchAddons = function(){
@@ -157,14 +151,6 @@ $scope.fetchRates = function(){
        $scope.rates = $scope.getRatesWithNameValues(data.results);
    };
    $scope.invokeApi(ADRatesSrv.fetchRates, {}, fetchSuccessOfRates);
-};
-
-$scope.getChargeCodesWithNameValues = function(chargecodes){
-        angular.forEach(chargecodes,function(item, index) {
-       item.name = item.charge_code + " " +item.description;
-       item.value = item.charge_code;
-  });
-        return chargecodes;
 };
 
 $scope.getAddonsWithNameValues = function(addons){
@@ -452,6 +438,5 @@ $scope.startWatching = function(){
         }
    });
 };
-
 
 }]);

@@ -1,0 +1,13 @@
+<div class="entry has-autocomplete" ng-show="!isBillingGroup">
+    <label for="search-codes">Charge Code</label>
+    <input ng-model="chargeCodeName" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
+    <div class="autocomplete-results" ng-show="showChargeCodes">
+        <div class="scrollable" ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
+            <ul class="wrapper">
+                <li ng-repeat="chargeCode in chargeCodeSearchResults" ng-click="selectChargeCode(chargeCode.id, chargeCode.name)" >
+                    <span ng-bind-html="chargeCode.name"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
