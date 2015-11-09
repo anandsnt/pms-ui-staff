@@ -37,10 +37,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.showRoomEnter = $scope.isInCheckoutMode() ?  true : false;
                 $scope.mode = 'no-match';
                 $scope.at = 'no-match';
+                
                 if ($scope.isInCheckinMode()){
                     $state.go('zest_station.find_reservation_no_match');
                 }
-            } else {
+            } else if ($scope.reservations.length === 1){
+                $scope.selectReservation($scope.reservations[0]);
+            } {
                 $scope.mode = "reservations-list";
             }
 	};
