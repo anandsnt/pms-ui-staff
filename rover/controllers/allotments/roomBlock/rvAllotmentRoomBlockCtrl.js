@@ -429,20 +429,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.bookingDataChanging();
 		};
 
+		// TO DO:
+		$scope.shouldShowLoadNextSetButton = function() {
+			// return true when user reaches end of horizontal scroll.
+			return true;
+		};
+
 		/**
 		 * CICO-21222
 		 * function to load next 14 days data.
 		 */
 		$scope.fetchNextSetOfRoomBlockData = function() {
-			// CICO-21222 Introduced pagination in room block timeline.
-			var nextStartDay = new tzIndependentDate($scope.timeLineStartDate);
-			nextStartDay.setDate(nextStartDay.getDate() + 14);
-
-			var options = {
-				start_date: nextStartDay,
-				count: 14
-			}
-			$scope.fetchRoomBlockGridDetails(options);
+			// Set start date 14 days ahead.
+			$scope.timeLineStartDate.setDate($scope.timeLineStartDate.getDate() + 14);
+			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
 		$scope.fetchCurrentSetOfRoomBlockData = function() {
@@ -460,7 +460,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.onTimeLineStartDatePicked = function(date, datePickerObj) {
 			$scope.timeLineStartDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-			fetchCurrentSetOfRoomBlockData();
+			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
 		/**
@@ -1643,10 +1643,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			};
 
 			//date picker options - Start Date
-			$scope.startDateOptions = _.extend({
+			$scope.timeLineStartDateOptions = _.extend({
 				minDate: new tzIndependentDate($rootScope.businessDate),
 				maxDate: $scope.allotmentConfigData.summary.block_to,
-				onSelect: onTimeLineStartDatePicked
+				onSelect: $scope.onTimeLineStartDatePicked
 			}, commonDateOptions);
 
 		};
