@@ -76,12 +76,12 @@
                  </li>
 
                 <!-- If group added -->
-                <li class="entity guest" ng-show="billingEntity === 'GROUP_DEFAULT_BILLING' && attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
+                <li class="entity group" ng-show="billingEntity === 'GROUP_DEFAULT_BILLING' && attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
                     <div class="group-info">A</div>
                     <h2>{{attachedEntities.posting_account.name}}</h2>
                 </li>
 
-                <li class="entity group" ng-show="billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-click="selectAttachedEntity(-1, 'ALLOTMENT')">
+                <li class="entity guest" ng-show="billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-click="selectAttachedEntity(-1, 'ALLOTMENT')">
                   <figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
                     <img src="{{selectedEntity.images[0].guest_image}}" alt="" />
                   </figure>

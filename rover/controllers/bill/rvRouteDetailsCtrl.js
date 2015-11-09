@@ -425,12 +425,15 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             setRoutingDateOptions();
 
             // CICO-19848: In case of allotment
-            if (data.charge_routes_recipient) {
+            if (!$scope.selectedEntityChanged && data.charge_routes_recipient !== undefined) {
                 if(data.type === "TRAVELAGENT") {
                     data.type = "TRAVEL_AGENT";
                 }
                 else if (data.type === "COMPANY") {
                     data.type = "COMPANY_CARD";
+                }
+                else if (data.posting_account_type) {
+                    data.type = data.posting_account_type;
                 } else {
                     data.type = data.charge_routes_recipient.type;
                     data.reservation_status = data.status;
