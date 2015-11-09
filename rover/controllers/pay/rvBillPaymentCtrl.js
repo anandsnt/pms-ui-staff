@@ -635,6 +635,7 @@ console.log(arguments)
 		updateDefaultPaymentAmount();
 		data.billNumber = $scope.renderData.billNumberSelected;
 		$scope.$emit('PAYMENT_SUCCESS',data);
+                $scope.mapPayMentToBill();
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = $scope.defaultPaymentTypeCard;
 			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
@@ -736,6 +737,7 @@ console.log(arguments)
 					dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
 				}
 			}
+                
 			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC"){
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
@@ -923,5 +925,25 @@ console.log(arguments)
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
+        
+        
+        $scope.mapPayMentToBill = function(){
+            //save payment/success will init flag to refresh staycard on back button
+            //this method is called to update the bill card payment info and use the latest payment method in the staycard for the reservation
+           var data = {
+                "reservation_id":	$scope.reservationData.reservationId,
+                "user_payment_type_id":	$scope.saveData.payment_type_id,
+                "bill_number": $scope.currentActiveBillNumber
+            };
+           var paymentMapSuccess = function(response){
+               $scope.$emit('REFRESH_BILLCARD_VIEW');
+           };
+           var paymentMapFailure = function(response){
+               console.warn(response);
+           };
+            $scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
+        };
+
+        
 
 }]);

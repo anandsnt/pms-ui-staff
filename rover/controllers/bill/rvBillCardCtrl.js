@@ -375,6 +375,7 @@ sntRover.controller('RVbillCardController',
 
         $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
+                $scope.lastResBillData = reservationBillData;//used if refreshing screen manually
                 $scope.isStandAlone = $rootScope.isStandAlone;
                 var viaQueue = false;
                     if ($scope.$parent){
@@ -470,7 +471,24 @@ sntRover.controller('RVbillCardController',
 	        }, 200);
 		$scope.reservationBillData.roomChargeEnabled = !$scope.reservationBillData.roomChargeEnabled;
 	};
-
+        $scope.$on('REFRESH_BILLCARD_VIEW',function(){
+            $scope.refreshBillView();
+            setTimeout(function(){
+		$scope.isRefreshOnBackToStaycard = true;
+                var fetchBillDataSuccessCallback = function(billData){
+		 	$scope.$emit('hideLoader');
+		 	reservationBillData = billData;
+		 	$scope.init(billData);
+		 	$scope.calculateBillDaysWidth();
+		};
+                
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
+                $scope.$apply();
+            },1000);
+        });
+        $scope.refreshBillView = function(){
+            $scope.init($scope.lastResBillData);
+        };
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
 		ngDialog.open({
