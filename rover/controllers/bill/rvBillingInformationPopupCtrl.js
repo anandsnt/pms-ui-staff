@@ -361,6 +361,33 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.fetchRoutes = function(){
 
             var successCallback = function(data) {
+                $scope.arrivalDate = "08-08-2015";
+                 $scope.departureDate = "09-08-2015";
+                 if($scope.billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING') {
+                    /*if () {
+                        arrivalDate = $scope.reservation.reservation_card.arrival_date,
+                        departureDate = $scope.reservation.reservation_card.departure_date;
+                    }*/
+                    $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+            
+                    $scope.routeDates = {
+                        from : $scope.arrivalDate,
+                        to : $scope.departureDate
+                    };
+
+                    $scope.routingDateFromOptions = {       
+                        dateFormat: 'dd-mm-yy',
+                        minDate : tzIndependentDate($scope.arrivalDate),
+                        maxDate : tzIndependentDate($scope.routeDates.to)
+                    };
+
+                    $scope.routingDateToOptions = {       
+                        dateFormat: 'dd-mm-yy',
+                        minDate : tzIndependentDate($scope.arrivalDate),
+                        maxDate : tzIndependentDate($scope.routeDates.to)
+                    };
+                }
+
                  $scope.routes = data;
                  $scope.fetchEntities();
             };
@@ -467,6 +494,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         }
     };
 
+    
     init();
 
 }]);

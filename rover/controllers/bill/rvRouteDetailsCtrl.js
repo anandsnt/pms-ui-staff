@@ -415,6 +415,27 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
+            $scope.arrivalDate = "08-08-2015";
+            $scope.departureDate = "09-08-2015";
+            if($scope.billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING') {
+                $scope.routeDates = {
+                    from : $scope.arrivalDate,
+                    to : $scope.departureDate
+                };
+
+                $scope.routingDateFromOptions = {       
+                    dateFormat: 'dd-mm-yy',
+                    minDate : tzIndependentDate($scope.arrivalDate),
+                    maxDate : tzIndependentDate($scope.routeDates.to)
+                };
+
+                $scope.routingDateToOptions = {       
+                    dateFormat: 'dd-mm-yy',
+                    minDate : tzIndependentDate($scope.arrivalDate),
+                    maxDate : tzIndependentDate($scope.routeDates.to)
+                };
+            }
+
             // CICO-19848: In case of allotment
             if (data.charge_routes_recipient) {
                 if(data.type === "TRAVELAGENT") {
@@ -942,45 +963,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         	$scope.sixIsManual = value;
         });
 
-        if($scope.billingEntity !== 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity !== 'COMPANY_CARD_DEFAULT_BILLING') {
-        var arrivalDate,
-            departureDate;
-        if ($scope.reservation) {
-            arrivalDate = $scope.reservation.reservation_card.arrival_date,
-            departureDate = $scope.reservation.reservation_card.departure_date;
-        }
-
-        if ($scope.billingEntity === 'GROUP_DEFAULT_BILLING') {
-            arrivalDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
-            departureDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd');
-        }
-
-        defaultRouteFromDate = $rootScope.businessDate > arrivalDate ? $rootScope.businessDate : arrivalDate;
-
-        $scope.routeDates = {
-            from : defaultRouteFromDate,
-            to : departureDate
-        };
-
-        $scope.routingDateFromOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate(arrivalDate),
-            maxDate : tzIndependentDate($scope.routeDates.to)
-        };
-
-        $scope.routingDateToOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate(arrivalDate),
-            maxDate : tzIndependentDate($scope.routeDates.to)
-        };
-
-        /**
-            Watch the changes on from and to dates and set their format
-        **/
-        $scope.$watch('routeDates', function() {      
-          $scope.routeDates.from = $filter('date')(tzIndependentDate($scope.routeDates.from), 'yyyy-MM-dd');
-          $scope.routeDates.to   = $filter('date')(tzIndependentDate($scope.routeDates.to), 'yyyy-MM-dd');
-        }, true);
-    }
+        
 
 }]);
