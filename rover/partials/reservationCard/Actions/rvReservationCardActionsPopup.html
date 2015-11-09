@@ -37,7 +37,7 @@
                                   ng-class="{'active': action.id == selectedAction.id, 
                                               'ng-hide':action.is_deleted,
                                               'action-set-mid': (isStandAlone && action.over_due == false && action.action_task_type == null) || 
-                                              (isStandAlone && action.action_status === 'COMPLETED')
+                                              (action.action_status === 'COMPLETED')
                                   }"> <!-- makes each icon a white version for visibility when section is 'active'-->
                                 <!-- If overdue, output "Overdue " -->
 
