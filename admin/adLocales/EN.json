@@ -1,4 +1,6 @@
-{
+{"AFAS_SETUP_HEADER": "AFAS Setup",
+"AFAS_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"AFAS_SUB_TITLE": "Applications For Administrative Software Configuration",
 
 
 "ANALYTIC_SETUP_HEADER": "Analytic Setup",
@@ -126,6 +128,8 @@
 "UNIT_PRICE_PLACEHOLDER":"Enter Unit Price",
 "SELECT_CHARGE_CODE":"Select Charge Code",
 "FAVOURITE":"Favorite",
+"POSITIVE_SIGN": "+",
+"NEGATIVE_SIGN": "-",
     "COMMISSION" : "Commission",
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
@@ -413,7 +417,10 @@
 "ASSIGN_SELECTED": "Assign Selected",
 "FIND_ROOMS":"Find Rooms",
 "NO_RESULT_FOUND":"No Result Found",
-"NO_ROOMS":"No Rooms"
+"NO_ROOMS":"No Rooms",
+"UNASSIGN_SELECTED": "Unassign Selected",
+"LEAVE_ASSIGNED" : "Leave Assigned",
+"GO_BACK" : "Go Back"
 
 ,"GIVEX_SETUP_HEADER": "Givex Setup",
 "GIVEX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
@@ -849,7 +856,8 @@
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
     "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
-    "MAX_ROOM_QUANTITY" :"Max Rooms"
+    "MAX_ROOM_QUANTITY" :"Max Rooms",
+    "EXCLUDE_FROM_RATE" : "Exclude from rate"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",

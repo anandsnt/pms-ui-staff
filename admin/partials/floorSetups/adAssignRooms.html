@@ -45,7 +45,7 @@
                             {{room.room_type}}
                         </td>
                         <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom($index)">
-                            <ad-checkbox is-checked="room.isSelected"></ad-checkbox>
+                            <ad-checkbox is-checked="room.isSelected" ng-click="toggleSelectRoom($index)"></ad-checkbox>
                         </td>
                     </tr>
                 </tbody>
