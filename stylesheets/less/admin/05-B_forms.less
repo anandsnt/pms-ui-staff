@@ -456,6 +456,33 @@
                 }
             }
 
+            /* Has autocomplete ***/
+            &.has-autocomplete {
+                position: relative;
+                z-index: 1;
+
+                .autocomplete-results {
+                    top: 64px;
+                    left: 0;
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: 24px;
+                    right: 0;
+                    .gradient-with-image(@selectArrow, @grey1, #d1d1d1);
+                    background-repeat: no-repeat, repeat;
+                    background-position: 50% 50%, 0 0;
+                    background-size: 6px 4px, 100% 100%;
+                    pointer-events: none;
+                    z-index: 99;
+                    cursor: pointer;
+                    .square(40px);
+                    #border-radius > .rounded();
+                }
+            }
+
             &:last-child { margin-bottom: 0; }
         }
 
