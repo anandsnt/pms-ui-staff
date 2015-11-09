@@ -420,7 +420,10 @@
 "ASSIGN_SELECTED": "Assign Selected",
 "FIND_ROOMS":"Find Rooms",
 "NO_RESULT_FOUND":"No Result Found",
-"NO_ROOMS":"No Rooms"
+"NO_ROOMS":"No Rooms",
+"UNASSIGN_SELECTED": "Unassign Selected",
+"LEAVE_ASSIGNED" : "Leave Assigned",
+"GO_BACK" : "Go Back"
 
 ,"GIVEX_SETUP_HEADER": "Givex Setup",
 "GIVEX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
