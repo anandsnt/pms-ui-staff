@@ -75,11 +75,12 @@
                         <input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
                         <input type="hidden" value="3" name="total_level_count" id="total_level_count">
 
-                        <ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes"
-                                     selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
+
+                        <!-- Search available charge codes -->
+                        <charge-code-search charge-code="upsellData.selected_charge_code" is-billing-group="{{isBillingGroup}}" charge-code-name="upsellData.selected_charge_code_name"></charge-code-search>
 
                     </fieldset>
-                    <div class="entry"></div>
+
                     <fieldset class="holder full-width">
                         <div class="form-title">
                             <h3><span translate>DAILY_UPSELL</span> {{'LEVELS'|translate}} </h3>

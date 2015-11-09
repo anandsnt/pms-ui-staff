@@ -75,7 +75,7 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 			};
 
 			if (totalColumns == 30) {
-				return 'width:' + (totalColumns * individualColWidth + leftMostRowCaptionWidth) + 'px';
+				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 			}
 		};
 
