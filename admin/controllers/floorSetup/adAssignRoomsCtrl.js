@@ -119,23 +119,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         }
 
         $scope.onSaveChanges = function() {
-            if ($scope.roomAssignment.activeTab === "AVAILABLE") {
-                $scope.commitChanges();
-                return;
-            }
-
-            ngDialog.open({
-                template: '/assets/partials/floorSetups/adRoomAssignmentConfirmationPopup.html',
-                scope: $scope,
-                closeByDocument: true,
-                className: 'ngdialog-theme-default single-calendar-modal',
-                data: JSON.stringify({
-                    roomCount: _.where($scope.data, {
-                        isSelected: true
-                    }).length,
-                    floorName: $scope.floorsList[$scope.roomAssignment.selectedFloorIndex].floor_number
-                })
-            });
+            $scope.commitChanges();
         };
 
         $scope.onCancelChanges = function() {
