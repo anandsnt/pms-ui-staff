@@ -283,9 +283,18 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
                 
                 $scope.actionsCount = $scope.getActionsCountStatus(data);
+                if ($scope.recountAfterDelete){
+                    if ($scope.actions.totalCount === 1 && $scope.actions[0].is_deleted){
+                        $scope.actions.totalCount = 0;
+                        $scope.actionSelected === "none";
+                        $scope.setRightPane('none');
+                    }
+                    $scope.recountAfterDelete = false;
+                }
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
+                $scope.refreshing = false;
             };
             
             if ($scope.isRefreshing){
@@ -615,10 +624,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
         $scope.refreshingToNonEmpty = function(){
           if ($scope.refreshing && !$scope.refreshToEmpty){
-              console.info('true!')
               return true;
           } else {
-              console.log('false;')
               return false;
           };
             
@@ -784,7 +791,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                         for (var i in $scope.actions){//select next non-deleted action
                                             if (!$scope.actions[i].is_deleted){
                                                 $scope.selectAction($scope.actions[i]);
-                                                console.info('hide loader');
                                                 $scope.$parent.$emit('hideLoader');
                                                 break;
                                             }
@@ -1210,7 +1216,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var removingLastAction = ($scope.actions.totalCount - 1 <= 0);
             if (deleting && removingLastAction){
                 $scope.refreshToEmpty = true;
-                
+                $scope.actionSelected = 'none';
+                $scope.actions.totalCount = 0;
+                $scope.recountAfterDelete = true;
             } else {//complete action (non-delete)
                 $scope.refreshing = true;
                 $scope.refreshToEmpty = false;

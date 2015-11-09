@@ -1,4 +1,6 @@
-{
+{"AFAS_SETUP_HEADER": "AFAS Setup",
+"AFAS_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"AFAS_SUB_TITLE": "Applications For Administrative Software Configuration",
 
 
 "ANALYTIC_SETUP_HEADER": "Analytic Setup",
@@ -38,7 +40,10 @@
 "HOLD_STATUS_NAME_PLACEHOLDER": "Enter hold status",
 "ALLOTMENT_ONLY": "Allotment only",
 "GROUP_ONLY": "Group only"
-,"CAMPAIGNS_LIST_TITLE": "Campaigns",
+,"BRITE_PABX_SETUP_HEADER": "Brite PabX Setup",
+"BRITE_PABX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"BRITE_PABX_SUB_TITLE": "API Access Configuration",
+"BRITE_PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number","CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
@@ -126,6 +131,8 @@
 "UNIT_PRICE_PLACEHOLDER":"Enter Unit Price",
 "SELECT_CHARGE_CODE":"Select Charge Code",
 "FAVOURITE":"Favorite",
+"POSITIVE_SIGN": "+",
+"NEGATIVE_SIGN": "-",
     "COMMISSION" : "Commission",
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
@@ -778,7 +785,8 @@
 "MIFARE_AUTHENTICATION": "MiFare Authentication",
 "OTHER_SETTINGS" : "Other settings",
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
-"ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest"
+"ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
+"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
 
 
 
@@ -849,7 +857,8 @@
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
     "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
-    "MAX_ROOM_QUANTITY" :"Max Rooms"
+    "MAX_ROOM_QUANTITY" :"Max Rooms",
+    "EXCLUDE_FROM_RATE" : "Exclude from rate"
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",

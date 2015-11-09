@@ -375,6 +375,7 @@ sntRover.controller('RVbillCardController',
 
         $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
+                $scope.lastResBillData = reservationBillData;//used if refreshing screen manually
                 $scope.isStandAlone = $rootScope.isStandAlone;
                 var viaQueue = false;
                     if ($scope.$parent){
@@ -470,7 +471,9 @@ sntRover.controller('RVbillCardController',
 	        }, 200);
 		$scope.reservationBillData.roomChargeEnabled = !$scope.reservationBillData.roomChargeEnabled;
 	};
-
+        $scope.refreshBillView = function(){
+            $scope.init($scope.lastResBillData);
+        };
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
 		ngDialog.open({
