@@ -28,6 +28,15 @@
     <li>Total Web Check-Ins<span>{{ summaryCounts.total_checkin }}</span></li>
 </ul>
 
+<!-- Web check in -->
+<ul ng-if="isThisReport( 'WEB_CHECK_IN_CONV_BY_DAY' )" class="totals">
+    <li>Emails sent<span>{{ summaryCounts.emails_sent }}</span></li>
+    <li>Up Sell Conversion<span class="brand-colors">{{ summaryCounts.up_sell_conv }}</span></li>
+    <li>Revenue<span>{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Conversion<span class="brand-colors">{{ summaryCounts.conversion }}</span></li>
+    <li>Total Web Check-Ins<span>{{ summaryCounts.total_checkin }}</span></li>
+</ul>
+
 <!-- Web check out -->
 <ul ng-if="isThisReport( 'WEB_CHECK_OUT_CONVERSION' )" class="totals">
     <li>Emails sent<span>{{  summaryCounts.emails_sent }}</span></li>
