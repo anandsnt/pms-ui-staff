@@ -1,6 +1,7 @@
 <!-- Load next 14 days, remove class "hidden" when user reaches end of horizontal scroll -->
 <button type="button" class="next-dates"
-    ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }">
+    ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
+    ng-click="fetchNextSetOfRoomBlockData()">
     Next 14 Days
     <span class="has-arrow next-view"></span>
 </button>
