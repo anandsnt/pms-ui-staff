@@ -8,6 +8,7 @@
 "DELIVER_QR_CODE_TO_GUESTZEST_APP":"Deliver QR code to GuestZest App on Guests Smartphone",
 "DELIVER_MSG_TO_GUEST":"Deliver message to guest to pick up key from front desk",
 "ROVER":"Rover",
+"USE_MOBILE_PHONE_KEY":"Use Mobile Phone Key",
 "MAKE_KEY_FOR_RFID_READER":"Make Key from RFID reader at Tablet",
 "SHOW_QR_CODE_FOR_ROOM_KEY":"Show QR code for room key on Tablet",
 "ROOM_KEY_SYSTEM_VENDOR":"Room Key System Vendor",

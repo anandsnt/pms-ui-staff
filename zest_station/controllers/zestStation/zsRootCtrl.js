@@ -1,8 +1,8 @@
 sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$state','zsTabletSrv','$rootScope','ngDialog',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog) {
+	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog,$sce) {
 
 	BaseCtrl.call(this, $scope);
 	/**
@@ -104,11 +104,30 @@ sntZestStation.controller('zsRootCtrl', [
 	var fetchCompleted =  function(data){
 		$scope.$emit('hideLoader');
 		$scope.zestStationData = data;
+		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
+                $scope.fetchHotelSettings();
 	};
 	$scope.failureCallBack =  function(data){
 		$state.go('zest_station.error_page');
 	};
-
+        $scope.fetchHotelSettings = function(){
+            var onSuccess = function(data){
+                    $scope.zestStationData.hotel_settings = data;
+                    $scope.zestStationData.hotel_terms_and_conditions = $sce.trustAsHtml(data.terms_and_conditions).$$unwrapTrustedValue();
+                    //fetch the idle timer settings
+                    $scope.zestStationData.currencySymbol = data.currency.symbol;
+                    $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
+                    $scope.$emit('hideLoader');
+            };
+            
+            
+		var options = {
+                    params:                 {},
+                    successCallBack: 	    onSuccess,
+                    failureCallBack:        $scope.failureCallBack
+                };
+		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
+        };
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -125,10 +144,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
 		var options = {
-    		params: 			{},
-    		successCallBack: 	fetchCompleted,
-    		failureCallBack: $scope.failureCallBack
-        };
+                    params: 			{},
+                    successCallBack: 	fetchCompleted,
+                    failureCallBack:    $scope.failureCallBack
+                };
 		$scope.callAPI(zsTabletSrv.fetchSettings, options);
 	}();
 }]);

@@ -1,4 +1,4 @@
-admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
+admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService','ADChargeCodesSrv',  function($scope,$rootScope,$state,adUpsellLatecheckoutService, ADChargeCodesSrv){
 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
@@ -34,6 +34,9 @@ $scope.fetchUpsellDetails = function(){
        isRoomTypesSelected();
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);
        $scope.startWatching();
+
+       // CICO-19130
+       $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
    };
    $scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };

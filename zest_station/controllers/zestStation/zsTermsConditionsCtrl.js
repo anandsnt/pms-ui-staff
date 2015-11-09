@@ -86,22 +86,15 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 
                 $scope.at = 'terms-conditions';
                 
-           
-                var fetchHotelCompleted = function(data){
-                    $scope.hotel_settings = data;
-                    $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
-                    //fetch the idle timer settings
-                    $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
-                    setTermsConditionsHeight();
-                    $timeout(function() {
-						refreshScroller();
-					}, 300);
-                    $scope.$emit('hideLoader');
-                };
-    
+                $scope.hotel_settings = $scope.zestStationData;
+                $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
+                //fetch the idle timer settings
+                $scope.currencySymbol = $scope.zestStationData.currencySymbol;
                 
-                $scope.invokeApi(zsTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
-                
+                setTermsConditionsHeight();
+                $timeout(function() {
+                            refreshScroller();
+                }, 600);
             
             
             

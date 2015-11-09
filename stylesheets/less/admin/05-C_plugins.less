@@ -191,6 +191,48 @@
             }
         }
     }
+
+/* Autocomplete             ==============================*/
+    .autocomplete-results {
+        position: absolute;
+        width: 100%;
+        z-index: 999;
+
+        .scrollable {
+            overflow: hidden;
+            max-height: 320px;
+            width: 100%;
+        }
+      
+        .wrapper { 
+            padding: 10px;
+            background: @white;
+        }
+
+        li {
+            font-weight: 600;
+            cursor: pointer;
+
+            &:not(:last-child) { border-bottom: 1px solid rgba(0,0,0,.1); }
+        }
+
+        .iScrollVerticalScrollbar {
+            position: absolute;
+            width: 4px;
+            top: 5px;
+            right: 5px;
+            bottom: 5px;
+            z-index: 99;
+            
+            .iScrollIndicator {
+                position: absolute;
+                width: 100%;
+                background: @logoGradientStart;
+                #border-radius > .rounded(4px);
+            }
+        }        
+    }
+
     
 /* 6. IE
 ==========================================================*/
