@@ -953,7 +953,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
     var setDefaultRoutingDates = function () {
         if ($scope.billingEntity == "GROUP_DEFAULT_BILLING") {
-            $scope.arrivalDate = $scope.groupConfigData.summary.block_from;
+            $scope.arrivalDate = $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), "yyyy-MM-dd");
             $scope.departureDate = $scope.groupConfigData.summary.block_to;
         }
         $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
