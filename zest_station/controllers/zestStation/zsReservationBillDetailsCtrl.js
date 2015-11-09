@@ -107,7 +107,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
      *  If so we redirect to the staff
      */
     $scope.nextClicked = function(){
-        if(!$scope.zestStationData.reservationData.has_cc && $scope.billData.balance > 0){
+        if(!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.balance > 0){
             $state.go('zest_station.speak_to_staff');
         }
         else{
