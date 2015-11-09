@@ -53,7 +53,8 @@
 "MIFARE_AUTHENTICATION": "MiFare Authentication",
 "OTHER_SETTINGS" : "Other settings",
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
-"ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest"
+"ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
+"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
 
 
 

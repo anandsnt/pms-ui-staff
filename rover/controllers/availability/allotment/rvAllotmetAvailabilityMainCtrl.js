@@ -10,7 +10,7 @@ sntRover.controller('allotmentAvailabilityMainController', [
 
 	BaseCtrl.call(this, $scope);
 
-	$scope.page.title = "Availability";
+	$scope.page.title = "Allotments";
 	//default number of selected days is 14
 	$scope.numberOfDaysSelected = 14;
 
@@ -48,7 +48,6 @@ sntRover.controller('allotmentAvailabilityMainController', [
 	*/
 	var failureCallbackOfAvailabilityFetch = function(errorMessage){
 		$scope.$emit("hideLoader");
-
 	};
 
 

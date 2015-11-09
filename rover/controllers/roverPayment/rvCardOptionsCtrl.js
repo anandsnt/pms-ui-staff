@@ -93,15 +93,15 @@ sntRover.controller('RVCardOptionsCtrl',
                 });
                 $scope.$on('SHOW_SWIPED_DATA_ON_PAY_SCREEN',function(){
                     $scope.clickedAddNewCard();
-                    $scope.$apply();
+                    !$scope.$$phase ? $scope.$apply():"";
                 });
                 $scope.$on('SHOW_SWIPED_DATA_ON_BILLING_SCREEN',function(){
                     $scope.clickedAddNewCard();
-                    $scope.$apply();
+                    !$scope.$$phase ? $scope.$apply():"";
                 });
                 $scope.$on('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN',function(){
                     $scope.clickedAddNewCard();
-                    $scope.$apply();
+                    !$scope.$$phase ? $scope.$apply():"";
                 });
                 $scope.clickedAddNewCard = function(){
                     $scope.shouldShowIframe = false; 
