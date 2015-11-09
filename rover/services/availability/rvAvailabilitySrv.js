@@ -287,9 +287,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			//Extracts roomtype details			
 			roomtypeDetails.push(item.detailed_room_types);
 			//Extracts adult child count
-			adultsChildrenCount.push(item.adults_children_count);
+			//the count could be nothing
+			adultsChildrenCount.push(item.adults_children_count || 0);
 			//Extracts BAR details
-			bestAvailabilityRate.push((item.best_available_rate_amount.rate_amount ==='CLOSED')?'C':item.best_available_rate_amount.rate_amount);
+			bestAvailabilityRate.push( (0 == item.best_available_rate_amount.rate_amount) ? 'C' : item.best_available_rate_amount.rate_amount );
 
 		});
 
