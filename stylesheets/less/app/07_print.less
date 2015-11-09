@@ -2059,8 +2059,6 @@ table {
 
             span { color: @textColor; }
         }
-
-        &.summary { margin: 0 2cm; }
     }
 
     .journal-header-print {
@@ -2116,7 +2114,6 @@ table {
         /* Summary ***/
         .journal-summary {
             padding: 8pt 0;
-            margin: 0 2cm;
             border-bottom: 1px solid @grey2;
             .flex(center);
             .float;
@@ -2129,6 +2126,8 @@ table {
                 text-align: left;
                 width: 4cm;
                 .pull-left;
+
+                &.toggle { background: transparent; }
             }
 
             ul {
@@ -2443,6 +2442,9 @@ table {
                 }
             }
         }
+
+        /* Summary ***/
+        &.summary { padding: 0 2cm; }
     }
 
 /* Registration             ==============================*/
