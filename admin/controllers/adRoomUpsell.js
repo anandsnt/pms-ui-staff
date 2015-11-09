@@ -1,5 +1,5 @@
-admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomUpsellService',
-  function ($scope, $rootScope, $state, adRoomUpsellService) {
+admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomUpsellService', 'ADChargeCodesSrv',
+  function ($scope, $rootScope, $state, adRoomUpsellService, ADChargeCodesSrv) {
 
     BaseCtrl.call(this, $scope);
     $scope.upsellData = {};
@@ -36,7 +36,10 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         $scope.upsellData.deleted_room_types = [];
         isRoomTypesSelected();
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
+
+
       };
+
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
     };
 
@@ -164,4 +167,5 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       };
       $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback);
     };
+
   }]);
