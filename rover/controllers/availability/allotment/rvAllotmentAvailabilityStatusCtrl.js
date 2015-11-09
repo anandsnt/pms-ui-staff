@@ -99,14 +99,27 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 
 		/*
 		* return class name for holdstatus row in picked up
+		* DEFAULT: must always show 'CANCEL'
 		*/
-		$scope.getClassForHoldStatusRowInPickedUp = function(id){
-			if(!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked){
-				return 'hidden';
-			}else{
-				return '';
+		$scope.getClassForHoldStatusRowInPickedUp = function(id) {
+			var group,
+				isDeduct,
+				retCls;
+
+			if ( $scope.hideHoldStatusOf.groupRoomPicked ) {
+				retCls = 'hidden';
+			} else {
+				group    = _.findWhere($scope.data.holdStatus, { id: id });
+				isDeduct = group && group['is_take_from_inventory'];
+
+				if ( group && (isDeduct || 'Cancel' == group.name) ) {
+					retCls = '';
+				} else {
+					retCls = 'hidden';
+				};
 			};
 
+			return retCls;
 		};
 
 		/*
