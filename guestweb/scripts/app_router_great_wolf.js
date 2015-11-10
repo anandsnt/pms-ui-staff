@@ -37,7 +37,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/MGM/checkOutLaterSuccess.html',
+		templateUrl: '/assets/common_templates/partials/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
