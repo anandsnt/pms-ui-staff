@@ -10,12 +10,17 @@
 }
 .top-spacing {
   margin-top: calc(4.5%);
+  text-align:center;
+}
+.no-side-padding{
+  padding-left:0;
+  padding-right:0;
 }
 .btn{
     border-radius:0px !important;
 }
 .checkout-btn,.accept-charges{
-    padding: 10% 20%;
+    padding: 10% 22%;
     font-size: 24px;
 }
 .dual-button{
@@ -107,10 +112,11 @@
     padding:0 !important;
 }
 .calendar-button{
-    background-image:url('calender_icon.png'); 
+    background-image:url('/assets/common_images/calender_icon.png'); 
     background-repeat: no-repeat; 
     background-position: 96% 3px;
     background-size:40px 35px;
+    cursor:pointer;
 }
 .vertical-line {
    border-left: 1px solid #D0D0D0;
@@ -176,6 +182,15 @@
 
 .room-info{
     padding:5% 2%;
+}
+.checkout-icon,.late-checkout-icon,.accept-charge-icon{
+  width:48px;
+  height:48px;
+  background-size: 48px auto;
+  margin:1% auto;
+}
+.checkout-icon{
+  background-image: url('/assets/common_images/checkout_icon.png');
 }
 
 /*---------------- carousal ---------------------------*/
@@ -278,3 +293,4 @@
         margin: -1px 0 0 10px;
       }
 }
+

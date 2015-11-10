@@ -19,7 +19,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/MGM/checkoutConfirmation.html',
+       	templateUrl:  '/assets/common_templates/partials/gwCheckout.html',
 		title: 'Confirm - Check-out Now'
     });
 
