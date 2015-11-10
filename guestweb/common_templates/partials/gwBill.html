@@ -38,7 +38,7 @@
                 <div class="down-arrow-button">&nbsp;</div>VIEW BILL
             </div>
         </div>
-           <!--  -->
+        <!--  bill content -->
         <div class="show-bill-wrap" ng-show="showBill" >
             <div class="overlay-bg">
                 <div class="show-bill">
@@ -52,6 +52,7 @@
                                 <p class="left-align">Room {{ roomNo }}</p>
                                 <p class="left-align">{{ userName }}<span ng-show="userCity.length > 0 || userState.length > 0"> | </span> {{ userCity }}<span ng-show="userCity.length > 0 && userState.length > 0">,</span> {{ userState }}</p>
                             </div>
+                            <!-- bill list -->
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -83,8 +84,8 @@
                                             <span>{{ amountDetails.amount }}</span>
                                         </td>
                                     </tr>
-                                    </tbody>
-                                    <tfoot>
+                                </tbody>
+                                <tfoot>
                                         <tr class="total">
                                             <td>TOTAL</td>
                                             <td>{{billData.total_fees}}</td>
@@ -97,16 +98,14 @@
                                             <td>BALANCE</td>
                                             <td class="balance">{{billData.balance}}</td>
                                         </tr>
-                                    </tfoot>    
-                                </table>
-                            </div>
+                                </tfoot>    
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>  
-
-
-    <!--  -->
+            </div>
+        </div>  
+        <!--  bill content ends here-->
         <div class="col-md-1"></div>
         <div class="col-md-3 top-spacing sm-no-top-spacing margin-top-10">
                  <a class="btn accept-charges">
