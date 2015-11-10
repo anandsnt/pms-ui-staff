@@ -8,13 +8,13 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/MGM/checkoutBalance.html',
+       	templateUrl: '/assets/common_templates/partials/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/MGM/checkOutStatus.html',
+       	templateUrl: '/assets/common_templates/partials/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
@@ -83,7 +83,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/MGM/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/common_templates/partials/gwRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
