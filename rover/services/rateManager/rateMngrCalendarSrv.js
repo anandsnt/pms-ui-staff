@@ -2,6 +2,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	var that = this;
 	that.allRestrictionTypes = [];
 
+	this.restrictionsIndependentOfDays = [1, 2, 3]; // CICO-21942 1:Closed , 2: Closed for Arrival , 3 : Closed for departure
+
 	this.fetchAllRestrictionTypes = function(onComplete, params, url){
 		//TODO: Modify to handle case of date range changes, if needed.
 		var url =  '/api/restriction_types';
@@ -284,8 +286,17 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		angular.forEach(that.roomTypeRates.results, function(item){
 		   	datesList.push(item.date);
+		   	
+		   	// CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+		   	_.each(item.rate_restrictions,function(rate){
+		   		if(_.indexOf(that.restrictionsIndependentOfDays, parseInt(rate.restriction_type_id, 10)) > -1){
+		   			rate.days = null;
+		   		}
+		   	});
+
 		   	//UI requires al-rates separated from daily rates.
-		   	ratesRestrictions[item.date] = item.rate_restrictions;
+		   	ratesRestrictions[item.date] = item.rate_restrictions; 	
+		  
 
 		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
 		   	for(var ri in item.room_rates){
@@ -309,6 +320,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   			roomRateData.push(rateData);
 		   		}
 		   		var rr = {};
+		   		// CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+			   	_.each(rate.restrictions,function(rate){
+			   		if(_.indexOf(that.restrictionsIndependentOfDays, parseInt(rate.restriction_type_id, 10)) > -1){
+			   			rate.days = null;
+			   		}
+			   	});
 		   		rr.restrictions = rate.restrictions;
 		   		rr.single = rate.single;
 		   		rr["double"] = rate["double"];
