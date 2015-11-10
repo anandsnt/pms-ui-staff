@@ -281,15 +281,26 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var additionalData = {};
 		var roomtypeDetails = [];
 		var roomTypeNames =[],
-		bestAvailabilityRate = [],
-		adultsChildrenCount = [];
+			bestAvailabilityRate = [],
+			adultsChildrenCounts = [];
+
+		var adultsCount,
+			childrenCount;
 		
 		_.each(roomAvailabilityAdditionalData.results,function(item){
 			//Extracts roomtype details			
 			roomtypeDetails.push(item.detailed_room_types);
+
 			//Extracts adult child count
 			//the count could be nothing
-			adultsChildrenCount.push(item.adults_children_count || 0);
+			adultsCount   = item.adults_count || 0;
+			childrenCount = item.children_count || 0;
+			adultsChildrenCounts.push({
+				'bothCount' : adultsCount + '/' + childrenCount,
+				'showWarn'  : ( 5 >= adultsCount && 5 >= childrenCount ),
+				'isWarning' : ( 0 >= adultsCount && 0 >= childrenCount )
+			});
+
 			//Extracts BAR details
 			bestAvailabilityRate.push( (0 == item.best_available_rate_amount.rate_amount) ? 'C' : item.best_available_rate_amount.rate_amount );
 
@@ -309,7 +320,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		additionalData ={
 			'roomTypeWiseDetails' 	: 	_.zip.apply(null, roomtypeDetails),
 			'roomTypeNames' 		: 	roomTypeNames,
-			'adultsChildrenCount'	: 	adultsChildrenCount,
+			'adultsChildrenCounts'	: 	adultsChildrenCounts,
 			'bestAvailabilityRate'	: 	bestAvailabilityRate
 		};
 
