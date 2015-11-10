@@ -415,14 +415,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
-            if (data.from_date !== null) {
-                $scope.arrivalDate = data.from_date;
-                $scope.departureDate = data.to_date;
+            if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
+                if (data.from_date) {
+                    $scope.arrivalDate = data.from_date;
+                    $scope.departureDate = data.to_date;
+                }
+                else {
+                    setDefaultRoutingDates();
+                }
+                setRoutingDateOptions();
             }
-            else {
-                setDefaultRoutingDates();
-            }
-            setRoutingDateOptions();
 
             // CICO-19848: In case of allotment
             if (!$scope.selectedEntityChanged && data.charge_routes_recipient !== undefined) {
