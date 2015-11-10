@@ -85,9 +85,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.arrivalDate = $scope.routes[index].from_date;
             $scope.departureDate = $scope.routes[index].to_date;
         }
-        else {
-            setDefaultRoutingDates();
-        }
         setRoutingDateOptions();
 
         $scope.errorMessage = "";

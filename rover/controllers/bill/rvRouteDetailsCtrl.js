@@ -419,9 +419,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.arrivalDate = data.from_date;
                 $scope.departureDate = data.to_date;
             }
-            else {
-                setDefaultRoutingDates();
-            }
             setRoutingDateOptions();
 
             // CICO-19848: In case of allotment
