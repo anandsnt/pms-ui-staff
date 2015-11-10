@@ -296,9 +296,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 			adultsCount   = item.adults_count || 0;
 			childrenCount = item.children_count || 0;
 			adultsChildrenCounts.push({
-				'bothCount' : adultsCount + '/' + childrenCount,
-				'showWarn'  : ( 5 >= adultsCount && 5 >= childrenCount ),
-				'isWarning' : ( 0 >= adultsCount && 0 >= childrenCount )
+				'bothCount'     : adultsCount + '/' + childrenCount,
+				'isWarning'     : ( 5 >= adultsCount && 5 >= childrenCount ),
+				'isUnavailable' : ( 0 >= adultsCount && 0 >= childrenCount )
 			});
 
 			//Extracts BAR details
