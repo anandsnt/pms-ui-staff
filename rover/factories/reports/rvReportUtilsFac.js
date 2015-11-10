@@ -1071,18 +1071,19 @@ sntRover.factory('RVReportUtilsFac', [
                         });
                     };
 
-                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
 
-                    if ( !!foundCG ) {
-                        foundCG['filled'] = true;
+                    if ( !!foundCC ) {
+                        foundCC['filled'] = true;
                         __setData(report, 'hasByChargeCode', {
                             type         : 'FAUX_SELECT',
-                            filter       : foundCG,
+                            filter       : foundCC,
                             show         : false,
                             selectAll    : selected,
                             defaultTitle : 'Select Codes',
                             title        : selected ? 'All Selected' : 'Select Codes',
-                            data         : angular.copy( processedCGCC.chargeCodes )
+                            data         : angular.copy( processedCGCC.chargeCodes ),
+                            originalData : angular.copy( processedCGCC.chargeCodes )
                         });
                     };
                 });
