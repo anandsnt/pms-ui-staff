@@ -9,6 +9,7 @@
 }
 .date-text,.pickadate-next,.pickadate-prev{
   text-transform: uppercase;
+  font-size:12px;
 }
 
 .calendar-selection-button {
@@ -143,7 +144,7 @@
 
 .pickadate-cell .pickadate-active {
   background-color: #AE222B !important;
-  color:#FFFFFF;
+  color:#FFFFFF !important;
 }
 
 .pickadate-cell .pickadate-head {
@@ -157,7 +158,7 @@
   text-transform: uppercase;
   font-weight: normal;
   text-align: center;
-  font-size: 1em;
+  font-size: 14px;
   margin: 13px 0 13px 0;
 }
 
@@ -165,6 +166,7 @@
   position: absolute;
   z-index: 10;
   width: 100%;
+  padding:0 10px;
 }
 
 .pickadate-controls .pickadate-next {
@@ -187,7 +189,7 @@
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
   // date must be hidden
   // user must not see or select it
-  color: #DEDCD0;
+  color: #fff;
   color: transparent;
 
   cursor: default;
