@@ -64,8 +64,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.headerButtonClicked = function(){
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
-        setDefaultRoutingDates();
-        setRoutingDateOptions();
+        if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
+            setDefaultRoutingDates();
+            setRoutingDateOptions();
+        }
         if($scope.isInitialPage  && $scope.isReloadNeeded){
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
@@ -81,11 +83,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
 	$scope.selectEntity = function(index,type){
-        if ($scope.routes[index].from_date !== null) {
-            $scope.arrivalDate = $scope.routes[index].from_date;
-            $scope.departureDate = $scope.routes[index].to_date;
+
+        if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
+            if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
+                $scope.arrivalDate = $scope.routes[index].from_date;
+                $scope.departureDate = $scope.routes[index].to_date;
+            }
+            setRoutingDateOptions();
         }
-        setRoutingDateOptions();
 
         $scope.errorMessage = "";
 		$scope.isEntitySelected = true;

@@ -1576,7 +1576,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			exports.refreshScroller = refreshScroller;
 			exports.destroyScrolls = destroyScrolls;
 
-		})(this);
+		})(self);
 
 		/**
 		 * to set the active left side menu
