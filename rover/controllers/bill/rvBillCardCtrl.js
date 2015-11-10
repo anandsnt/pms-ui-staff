@@ -375,6 +375,7 @@ sntRover.controller('RVbillCardController',
 
         $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
+                $scope.lastResBillData = reservationBillData;//used if refreshing screen manually
                 $scope.isStandAlone = $rootScope.isStandAlone;
                 var viaQueue = false;
                     if ($scope.$parent){
@@ -470,7 +471,24 @@ sntRover.controller('RVbillCardController',
 	        }, 200);
 		$scope.reservationBillData.roomChargeEnabled = !$scope.reservationBillData.roomChargeEnabled;
 	};
-
+        $scope.$on('REFRESH_BILLCARD_VIEW',function(){
+            $scope.refreshBillView();
+            setTimeout(function(){
+		$scope.isRefreshOnBackToStaycard = true;
+                var fetchBillDataSuccessCallback = function(billData){
+		 	$scope.$emit('hideLoader');
+		 	reservationBillData = billData;
+		 	$scope.init(billData);
+		 	$scope.calculateBillDaysWidth();
+		};
+                
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
+                $scope.$apply();
+            },1000);
+        });
+        $scope.refreshBillView = function(){
+            $scope.init($scope.lastResBillData);
+        };
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
 		ngDialog.open({
@@ -778,7 +796,10 @@ sntRover.controller('RVbillCardController',
 	 $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 	 	if(!$scope.isGuestCardVisible){
 
-                ngDialog.close();//close the dialog if one exists, set data after, so duplicates are not created
+	 		// commenting out the below code to close ngDialog which is wrong
+	 		// The broadcast event will not happpen if the dialog is closed. - CICO-21772
+
+                //ngDialog.close();//close the dialog if one exists, set data after, so duplicates are not created
                 //this needs to be moved after 1.13.0 to better detect where the swipe happens and do proper broadcasts to set carddata
 	 	    if($scope.paymentModalOpened){
 				swipedCardData.swipeFrom = "payButton";
@@ -1158,7 +1179,8 @@ sntRover.controller('RVbillCardController',
 		}
 
 		//Display the key encoder popup
-		else if(keySettings === "encode"){
+		//https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
+		else if(keySettings === "encode"  || keySettings === "mobile_key_encode"){
 			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {

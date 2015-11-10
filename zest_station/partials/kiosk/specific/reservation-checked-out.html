@@ -68,4 +68,45 @@
         <button  type="button" class="button" click-touch='clickedOnCloseButton()'>DONE</button>
     </div>
 </section>
+<!-- hidden view for print action -->
+<div class="printable-bill-view">
+    <p class="heading-text">Invoice</p>
+    <div>
+        <p class="bill-heading">{{zestStationData.reservationData.first_name}}&nbsp;{{zestStationData.reservationData.last_name}}</p>
+        <p class="bill-heading nights-text">
+            <span ng-show="!zestStationData.hotel_settings.is_hourly_rate_on">{{zestStationData.reservationData.days_of_stay}} nights</span>
+            <span ng-show="zestStationData.hotel_settings.is_hourly_rate_on">{{zestStationData.reservationData.hours_of_stay}} hours</span>
+        </p>
+    </div>
+    <table class="bill-table" >
+        <th>DATE</th>
+        <th>DESCRIPTION</th>
+        <th></th>
+        <th>AMOUNT</th>
+        <tr ng-repeat="bill in zestStationData.billData">
+            <td>{{bill.date}}</td>
+            <td>{{bill.description}}</td>
+            <td></td>
+            <td class="amount">{{zestStationData.currency}}{{bill.amount}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Subtotal:</td>
+            <td>{{zestStationData.currency}}{{zestStationData.net_amount}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Deposit:</td>
+            <td>{{zestStationData.currency}}{{zestStationData.deposit}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Balance:</td>
+            <td>{{zestStationData.currency}}{{zestStationData.balance}}</td>
+        </tr>
+    </table>
+</div>
 

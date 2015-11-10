@@ -1,0 +1,10 @@
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-cloak>
+<form class="modal-content form">
+	<h3 translate>THERE ARE {{ngDialogData.roomCount}} ROOMS SELECTED IN FLOOR {{ngDialogData.floorName}}</h3>
+    <fieldset  class="actions">
+        <button type="button" class="button red margin-top-bottom" ng-click="commitChanges()" translate>UNASSIGN</button>
+        <button type="button" class="button green margin-top-bottom" ng-click="onCancelChanges()" translate>LEAVE_ASSIGNED</button>
+        <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>GO_BACK</button> 
+    </fieldset>
+</form>
+</div>

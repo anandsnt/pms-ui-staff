@@ -124,6 +124,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             
             
         };
+        
+        $scope.clickedPrint = function(){
+            
+        };
 
 
 

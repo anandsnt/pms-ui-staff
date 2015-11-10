@@ -1,4 +1,4 @@
-admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
 
 	/**
     *   A getter method to return the charge codes list
@@ -77,6 +77,20 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		var url = '/admin/charge_codes/import';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+    *   Service to search charge code
+    */
+	this.searchChargeCode = function(params){
+		var deferred = $q.defer();
+		var url = '/api/charge_codes/search';
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

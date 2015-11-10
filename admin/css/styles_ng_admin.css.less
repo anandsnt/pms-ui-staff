@@ -21,17 +21,17 @@
 	height: 300px !important;
 }
 
-.no-animation * { 
-  -webkit-transition: none !important; 
-  -moz-transition: none !important; 
-  -o-transition: none !important; 
-  -ms-transition: none !important; 
-  transition: none !important; 
-  -webkit-transform: none !important; 
-  -moz-transform: none !important; 
-  -ms-transform: none !important; 
-  -o-transform: none !important; 
-  transform: none !important; 
+.no-animation * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+  transform: none !important;
 }
 .add-tax{
   background-position: 1px -341px !important;
@@ -76,3 +76,10 @@
   left:auto !important;
 }
 
+/* CICO-11897 */
+.search-results li.reservation:not(.no-content) a .room-highlight, .search-results li.reservation:not(.no-content) .faux-anchor .room-highlight{
+  display: inline-block;
+  margin-left: -10px;
+  padding-left: 10px;
+  border-left: 4px solid #f6991b;
+}

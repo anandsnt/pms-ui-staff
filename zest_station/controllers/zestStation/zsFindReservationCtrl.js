@@ -37,7 +37,30 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     }
                 }
             };
-                
+            $scope.getDateRenderFormat = function(d){
+              var str = d.split('-');
+              var month = zsUtilitySrv.getMonthName(parseInt(str[1])-1),
+                      day = str[2],
+                      year = str[0];
+              
+              return month+'-'+day+'-'+year;
+            };
+            $scope.getZSDateFormat = function(d){
+                var str = d;
+                var s = str.split('-');
+                var month = parseInt(zsUtilitySrv.getMonthN(s[0]))+1,
+                day = parseInt(s[1]),
+                year = parseInt(s[2]);
+
+                if (parseInt(day) < 10){
+                    day = '0'+day;
+                }
+                if (parseInt(month) < 10){
+                    month = '0'+month;
+                }
+
+                return year+'-'+month+'-'+day;
+            };
             $scope.dateOptions = {
                     dateFormat: 'MM-dd-yy',
                     yearRange: "0:+10",
@@ -48,7 +71,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
                             $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
                             $('#datepicker').val(value);
                             $state.setDate = value;
-                            $scope.input.lastDateValue = value;
+                            $scope.input.lastDateValue = $scope.getZSDateFormat(value);
+                            
                             setTimeout(function(){
                                 $scope.showDatePick = false;  
                                 $scope.$apply();
@@ -149,7 +173,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
             if (!$state.input){
                 $state.input = {};
             }
-            $state.input.date = $scope.input.date;
+            $state.input.date = $scope.input.lastDateValue;
+            
             $state.go('zest_station.reservation_search');
         };
         $scope.searchWithConfirmation = function(){
@@ -175,7 +200,6 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.lastAt = $state.lastSearchWith;
             $state.search = true;
             var updated = $state.reEntered;
-            console.info('updated: '+updated)
             switch(updated){
                 case "email":
                     $state.input.email = $state.lastInput;
@@ -187,7 +211,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     $state.input.confirmation = $state.lastInput;
                     break;
                 case "date":
-                    $state.input.date = $scope.input.date;
+                    $state.input.date = $scope.getZSDateFormat($scope.input.date);
                     break;
             }
             $state.go('zest_station.reservation_search');
@@ -234,7 +258,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.hideNavBtns = false;
             
             if ($state.lastAt === 'no-match'){
-                $scope.input.date = $state.input.date;
+                $scope.input.date = $scope.getDateRenderFormat($state.input.date);
+                $scope.input.lastDateValue = $state.input.date;
             }
             $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {
                 'successCallBack':fetchBizDateComplete
