@@ -2,7 +2,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	var that = this;
 	that.allRestrictionTypes = [];
 
-	this.restrictionsIndependentOfDays = [1, 2, 3]; // CICO-21942 1:Closed , 2: Closed for Arrival , 3 : Closed for departure
+	this.restrictionsIndependentOfDays = []; // CICO-21942
 
 	this.fetchAllRestrictionTypes = function(onComplete, params, url){
 		//TODO: Modify to handle case of date range changes, if needed.
@@ -16,6 +16,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				for(var i in data.results) {
 					if(data.results[i].activated && !data.results[i].editable){
 						that.allRestrictionTypes.push(data.results[i]);
+						if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(data.results[i].value) >= 0){
+							 that.restrictionsIndependentOfDays.push(data.results[i].id);
+						}
 					}
 				}
 				deferred.resolve(data);
