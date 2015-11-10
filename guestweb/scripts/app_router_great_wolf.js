@@ -8,7 +8,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/common_templates/partials/checkoutBalance.html',
+       	templateUrl: '/assets/common_templates/partials/gwBill.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
