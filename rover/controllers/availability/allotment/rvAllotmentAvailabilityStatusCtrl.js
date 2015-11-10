@@ -112,7 +112,7 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 				group    = _.findWhere($scope.data.holdStatus, { id: id });
 				isDeduct = group && group['is_take_from_inventory'];
 
-				if ( group && (isDeduct || 'Cancel' == group.name) ) {
+				if ( group && isDeduct ) {
 					retCls = '';
 				} else {
 					retCls = 'hidden';
