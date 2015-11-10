@@ -138,6 +138,5 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	};
 
-
 	$scope.changedAvailabilityDataParams();
 	}]);
