@@ -88,7 +88,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/MGM/ccVerification.html',
+	 	templateUrl: '/assets/common_templates/partials/gwCcEntry.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
