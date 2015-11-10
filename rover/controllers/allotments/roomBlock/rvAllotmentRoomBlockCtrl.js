@@ -463,19 +463,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 		$scope.fetchCurrentSetOfRoomBlockData = function() {
 			// CICO-21222 Introduced pagination in room block timeline.
+			var allotmentStartDate = $scope.allotmentConfigData.summary.block_from,
+					allotmentEndDate 	 = $scope.allotmentConfigData.summary.block_to;
+
+			if (allotmentStartDate > $scope.timeLineStartDate) {
+				$scope.timeLineStartDate = new tzIndependentDate(allotmentStartDate);
+			}
 			$scope.timeLineEndDate.setDate($scope.timeLineStartDate.getDate() + 14);
 
 			// check date validity
-			if ($scope.timeLineStartDate > $scope.allotmentConfigData.summary.block_to) {
-				$scope.timeLineStartDate = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
+			if ($scope.timeLineStartDate > allotmentEndDate) {
+				$scope.timeLineStartDate = new tzIndependentDate(allotmentEndDate);
 			}
-			if ($scope.timeLineEndDate > $scope.allotmentConfigData.summary.block_to) {
-				$scope.timeLineEndDate = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
+			if ($scope.timeLineEndDate > allotmentEndDate) {
+				$scope.timeLineEndDate = new tzIndependentDate(allotmentEndDate);
 			}
 
 			var options = {
-				start_date: $filter('date')($scope.timeLineStartDate, $rootScope.dateFormatForAPI),
-				end_date: $filter('date')($scope.timeLineEndDate, $rootScope.dateFormatForAPI)
+				start_date: formatDateForAPI($scope.timeLineStartDate),
+				end_date: formatDateForAPI($scope.timeLineEndDate)
 			}
 			$scope.fetchRoomBlockGridDetails(options);
 		};
@@ -1437,6 +1443,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			return (returnString);
 		};
 
+		var formatDateForAPI = function(date) {
+			return $filter('date')(date, $rootScope.dateFormatForAPI)
+		};
 
 		/**
 		 * To get css width for grid timeline
@@ -1744,6 +1753,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// CICO-21222 Introduced pagination in room block timeline.
 			//default start date
 			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+
+			// call API. date range end will be calculated in next function.
 			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
