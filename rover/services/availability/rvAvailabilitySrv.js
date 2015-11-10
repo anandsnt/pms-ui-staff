@@ -171,9 +171,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* return Group name
 	*/
 	var getGroupName = function(GroupId, holdstatuses){
-		return _.find(holdstatuses, function(elem){ 
-				return (elem.id === GroupId)?true:false;
-				}).name;
+		var grp = _.find(holdstatuses, function(elem){ 
+			return (elem.id === GroupId)?true:false;
+		});
+
+		return !!grp ? grp.name : '';
 	};
 	/**
 	* function to fetch group availability between from date & to date
@@ -357,9 +359,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* return Group name
 	*/
 	var getAllotmentName = function(GroupId, holdstatuses){
-		return _.find(holdstatuses, function(elem){ 
-				return (elem.id === GroupId)?true:false;
-				}).name;
+		var grp = _.find(holdstatuses, function(elem){ 
+			return (elem.id === GroupId)?true:false;
+		});
+
+		return !!grp ? grp.name : '';
 	};
 
 	/*
