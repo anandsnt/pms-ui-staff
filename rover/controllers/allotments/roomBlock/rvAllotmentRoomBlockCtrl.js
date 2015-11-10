@@ -1742,11 +1742,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		var initializeRoomBlockDetails = function(){
 			// CICO-21222 Introduced pagination in room block timeline.
-			var options = {
-				start_date: $rootScope.businessDate,
-				count: 14
-			}
-			$scope.fetchRoomBlockGridDetails(options);
+			//default start date
+			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
 		/**
