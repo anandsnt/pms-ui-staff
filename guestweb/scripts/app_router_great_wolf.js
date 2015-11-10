@@ -14,7 +14,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/common_templates/partials/checkOutStatus.html',
+       	templateUrl: '/assets/common_templates/partials/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
