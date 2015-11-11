@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         connect = {
             options: {
                 port: 9000,
-                hostname: 'localhost',
+                hostname: 'localhost',  
                 livereload: 35729
             }
         };
@@ -59,6 +59,14 @@ module.exports = function(grunt) {
                 options: {
                     prefix: '/assets/'
                 }               
+            },
+            login: {
+                cwd: 'login/',
+                src: 'partials/**/*.html',
+                dest: 'build/login_templates.js',
+                options: {
+                    prefix: '/assets/'
+                }
             }
         },
         bower: {
