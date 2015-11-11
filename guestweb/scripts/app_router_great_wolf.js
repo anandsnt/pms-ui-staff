@@ -3,6 +3,30 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
+    // External verification
+
+    $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/common_templates/partials/gwExternal.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 });
+
+
+    //room and cc verification 
+
+	 $stateProvider.state('checkoutRoomVerification', {
+	 	url: '/checkoutRoomVerification',
+	 	templateUrl: '/assets/common_templates/partials/gwRoomVerification.html',
+	 	controller : 'checkoutRoomVerificationViewController',
+	 	title: 'Room verification'
+	 }).state('ccVerification', {
+	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
+	 	templateUrl: '/assets/common_templates/partials/gwCcEntry.html',
+	 	controller : 'ccVerificationViewController',
+	 	title: 'CC verification'
+	 });
+
     // checkout now states
 
 	$stateProvider.state('checkoutBalance', {
@@ -66,7 +90,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	 	templateUrl: '/assets/common_templates/partials/gwAlreadyCheckedIn.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
@@ -79,19 +103,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 })
-	 //room verification
-
-	 $stateProvider.state('checkoutRoomVerification', {
-	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/common_templates/partials/gwRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
-	 	title: 'Room verification'
-	 }).state('ccVerification', {
-	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/common_templates/partials/gwCcEntry.html',
-	 	controller : 'ccVerificationViewController',
-	 	title: 'CC verification'
-	 });
+	 
 
 	// pre checkin states
 
@@ -119,19 +131,9 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	    title: 'Early Check-in'
 	 });
 
-
-	 $stateProvider.state('externalVerification', {
-	 	url: '/externalVerification',
-	 	templateUrl: '/assets/common_templates/partials/gwExternal.html',
-	 	controller : 'externalVerificationViewController',
-	 	title: 'External verification'
-	 });
-
-
-
 	 $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/common_templates/partialsgwNoOption.html',
 	 	title: 'Feature not available'
 	});
 
