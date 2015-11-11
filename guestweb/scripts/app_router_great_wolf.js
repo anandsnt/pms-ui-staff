@@ -56,7 +56,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/common_templates/partials/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/common_templates/partials/gwRoomUpgrades.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
