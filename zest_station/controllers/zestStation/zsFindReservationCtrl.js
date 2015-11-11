@@ -133,7 +133,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                         //day of wk = d[0]
                         var year = d[3]+'',
                                 month = zsUtilitySrv.getMonthN(d[1])-1,//this method is 1 based, adjust for 0-based date obj
-                                day = d[2]+'';
+                                day = parseInt(d[2])+'';
                         if (parseInt(day) < 10){
                             day = '0'+day;
                         }

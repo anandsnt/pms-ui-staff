@@ -153,7 +153,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var current=$state.current.name;
             if (current === 'zest_station.card_sign'){
                  $scope.signaturePluginOptions = {
-                    height : 130,
+                    height : 230,
                     width : $(window).width() - 120,
                     lineWidth : 1
                 };

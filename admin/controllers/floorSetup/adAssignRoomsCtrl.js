@@ -18,7 +18,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     isSelected: true
                 }).length;
 
-                $scope.roomAssignment.areAllRoomsSelected = $scope.roomAssignment.selectedCount === $scope.data.length;
+                $scope.roomAssignment.areAllRoomsSelected = $scope.data.length > 0 && $scope.roomAssignment.selectedCount === $scope.data.length;
                 $scope.roomAssignment.areSomeRoomsSelected = $scope.roomAssignment.selectedCount > 0 && !$scope.roomAssignment.areAllRoomsSelected;
             },
             onSaveSuccess = function() {

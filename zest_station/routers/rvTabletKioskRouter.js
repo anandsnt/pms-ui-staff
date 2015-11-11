@@ -185,6 +185,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/generic/input-text.html',
          });
          
+        // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.registration_printed', {
+             url: '/zest_station', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
          
 
 
