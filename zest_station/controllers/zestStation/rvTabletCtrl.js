@@ -40,7 +40,7 @@ sntZestStation.controller('rvTabletCtrl', [
             //options fo signature plugin
             var screenWidth = angular.element($window).width(); // Calculating screen width.
             $scope.signaturePluginOptions = {
-                            height : 130,
+                            height : 230,
                             width : screenWidth-60,
                             lineWidth : 1
             };

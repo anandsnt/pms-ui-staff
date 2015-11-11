@@ -305,6 +305,10 @@ sntRover.controller('RateCalendarCtrl', [
                                     if (restriction[rir].restriction_type_id === $scope.closedRateRestrictionId){
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
+                                    // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(restriction[rir].restriction_type_id, 10)) > -1){
+                                        restriction[rir].restriction_type_id.days = null;
+                                    }
                                 }
                                 
                             }
@@ -347,6 +351,10 @@ sntRover.controller('RateCalendarCtrl', [
                                     if (_restriction === $scope.closedRateRestrictionId){
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
+                                    // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction,10)) > -1){
+                                        _row[_date].restrictions[a].days = null;
+                                    }
                                 }
                             } else {
                                for (var a in _row[_date]){
@@ -354,6 +362,10 @@ sntRover.controller('RateCalendarCtrl', [
 
                                     if (_restriction === $scope.closedRateRestrictionId){
                                         $scope.anyRoomHasClosedRestriction = true;
+                                    }
+                                    // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction,10)) > -1){
+                                        _row[_date][a].days = null;
                                     }
                                 }
                             }
