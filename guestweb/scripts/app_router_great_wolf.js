@@ -75,7 +75,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'Arrival Details - Check-in'
 	 }).state('guestDetails', {
 	 	url: '/guestDetails',
-	 	templateUrl: '/assets/common_templates/partials/guestDetails.html',
+	 	templateUrl: '/assets/common_templates/partials/gwGuestDetail.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 })
