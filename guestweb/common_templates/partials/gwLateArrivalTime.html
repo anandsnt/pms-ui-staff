@@ -28,7 +28,10 @@
     <div class="row" ng-hide="isLoading || netWorkError">
         <div class="col-md-1"></div>
         <div class="col-md-4 top-spacing section-container">
-            <p class="main-text">Arrival Details</p>
+            <p class="main-text">Early Check-in Alert</p>
+            <p class="sub-main-text">
+                You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). Please request a Check-in time after {{earlyCheckinRestrictLimit}} to proceed with your check in without a fee.
+            </p>
         </div>
         <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
@@ -62,11 +65,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <p class="sub-text left-align margin-top-20">LET US KNOW ANY QUESTION OR COMMENT</p>
-            <div class="row">
-                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class = "col-xs-12 sub-text" placeholder="Comments here">
-                </textarea>
             </div>
              <!--  submit button-->
             <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">Continue</a>
