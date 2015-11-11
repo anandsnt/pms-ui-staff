@@ -22,8 +22,8 @@
                 </button>
             </div>
             <!-- Config section and search come here! -->
-            <span class="count-show">Show</span>
             <div class="select table-count rates-table-count">
+                <span class="count-show">Show</span>
                 <select ng-model="displyCount" ng-options="opt for opt in displayCountList" ng-change="onDisplayCountChange()"></select>
             </div>
             <span class="count-entries">entries</span>
@@ -37,15 +37,15 @@
                 <tbody>
                     <tr ng-repeat="room in $data">
                         <td data-title="'ROOM NO.'" sortable="'room_no'" header-class="width-40">
-                            <a class="edit-data" ng-click="toggleSelectRoom($index)">
+                            <a class="edit-data" ng-click="toggleSelectRoom(room)">
                                 <strong> {{room.room_number}}</strong>
                             </a>
                         </td>
-                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40" ng-click="toggleSelectRoom($index)">
+                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40" ng-click="toggleSelectRoom(room)">
                             {{room.room_type}}
                         </td>
-                        <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom($index)">
-                            <ad-checkbox is-checked="room.isSelected" ng-click="toggleSelectRoom($index)"></ad-checkbox>
+                        <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom(room)">
+                            <ad-checkbox is-checked="room.isSelected"></ad-checkbox>
                         </td>
                     </tr>
                 </tbody>
