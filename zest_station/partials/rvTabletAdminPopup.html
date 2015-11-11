@@ -1,7 +1,7 @@
 <!-- Popup -->
 <div role="dialog" id="modal" class="modal-show">
 	<form method="post" class="modal-content" id='tablet-popup' click-touch='resetCounter();'>
-            <table class='admin-table'>
+            <table class='admin-table' id="popup-content">
                 <tr>
                 <h2 class="nocaps header">Kiosk Admin</h2>
                 </tr>
@@ -35,6 +35,23 @@
                         <input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input'/>
                     </td>
                 </tr>
+                
+                <tr class='admin-item'>
+                    <td>
+                        <label class='admin-item-label'>Key Encoder</label>
+                    </td>
+                    <td>
+                         <select id='selectEncoder' class='admin-input'
+                              ng-options="encoder.encoder_id as encoder.description for encoder in zestStationData.key_encoders" ng-model="zestStationData.selectedKeyEncoder">
+                             <option style="display:none" value="">select an encoder</option>
+                        </select>
+                    </td>
+                </tr>
+                
+                
+                
+                
+                
                 <tr>
                     <td>
                         <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>

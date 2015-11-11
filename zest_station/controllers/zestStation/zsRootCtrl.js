@@ -106,10 +106,26 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData = data;
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
+                $scope.fetchKeyEncoderList();
 	};
 	$scope.failureCallBack =  function(data){
 		$state.go('zest_station.error_page');
 	};
+        $scope.fetchKeyEncoderList = function(){
+            console.log('fetching key encoders')
+            var onSuccess = function(data){
+                console.info('got key encoders: ',data.results)
+                    $scope.zestStationData.key_encoders = data.results;
+                    $scope.$emit('hideLoader');
+            };
+            
+            var options = {
+                params:                 {},
+                successCallBack: 	    onSuccess,
+                failureCallBack:        $scope.failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.fetchEncoders, options);
+        };
         $scope.fetchHotelSettings = function(){
             var onSuccess = function(data){
                     $scope.zestStationData.hotel_settings = data;
