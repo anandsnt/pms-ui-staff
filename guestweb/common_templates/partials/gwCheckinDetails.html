@@ -1,0 +1,113 @@
+<!-- navbar -->
+<div class="row header-bar">
+    <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-4 top-spacing res-date-container">
+           <!--  -->
+            <p class="sub-text light-text">RESERVATION #{{confirmationNumber}}</p>
+            <p class="main-text" ng-hide="ShowupgradedLabel">
+                Your stay Details
+            </p>
+            <p class="main-text" ng-show="ShowupgradedLabel">
+                Your New Stay Details
+            </p>
+            <div class="margin-top-10 bottom-border">
+                <div class="row">
+                    <div class="col-xs-6 left-align">
+                        <div class="sub-text light-text">
+                            ARRIVAL DATE
+                        </div>
+                        <div class="res-date">
+                            {{reservationData.arrival_date}}
+                        </div>
+                    </div>
+                    <div class="col-xs-6 left-align">
+                        <div class="sub-text light-text">
+                            DEPARTURE DATE
+                        </div>
+                        <div class="res-date">
+                         {{reservationData.departure_date}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-20">
+                <div class="col-xs-12 left-align">
+                    <div class="sub-text light-text">
+                        ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
+                    </div>
+                    <div class="res-date">
+                        {{reservationData.room_type}}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-10">
+                <div class="col-xs-12 left-align">
+                    <div class="sub-text light-text">
+                        RATE
+                    </div>
+                    <div class="res-date">
+                     {{reservationData.room_rate}}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-10">
+                <div class="col-xs-12 left-align">
+                    <div class="sub-text light-text">
+                        AVERAGE RATE PER NIGHT
+                    </div>
+                    <div class="res-date">
+                        {{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+                    </div>
+                </div>
+            </div>
+            <div class="row applycharge margin-top-10">
+                <div class="col-xs-12 left-align">
+                    <input type="checkbox" ng-click="termsClicked()" ng-model="checked"  ng-checked="checkedApplyCharges">
+                    <span class="sub-text">I ACCEPT ALL TERMS AND CONDITIONS</span>
+                </div>
+            </div>
+            <div class="row margin-top-10">
+                <div class="col-xs-12 left-align">
+                    <div class="sub-text">
+                        QUESTIONS? <a href="tel: 121313"><u class="black-text">CALL US AT  {{hotelPhone}}.</u></a>
+                    </div>
+                </div>
+            </div>
+        <!--  -->
+        </div>
+        <div class="col-md-2 top-spacing">
+        	<div class="vertical-line">&nbsp;</div>
+        </div>
+         <div class="col-md-3 lonely-btn">
+             <center>
+                 <a class="btn btn-template margin-top-10" ng-click="checkInButtonClicked()"> Continue</a>
+             </center>
+        </div>
+        <div class="col-md-1">
+        </div>                   
+    </div>
+</div>
+<!-- terms starts here -->
+<div class="date-picker-bg" ng-show="showTermsPopup">
+    <div class="modal-content full-screen">
+        <div class="terms-alert">
+            <div>
+                <div class="left-align green-text">
+                    <p class="terms-main">To complete Check-in,</p>
+                    <p class="terms-sub"> Please read and agree to the following:</p>
+                </div>
+                <description class="terms-desc" template="{{reservationData.terms_and_conditions}}">
+                </description>
+            </div>
+            <div class="button-actions center-align">
+                <button type="button" ng-click="agreeClicked()" class="btn green-button">I AGREE</button>
+                <button type="button" ng-click="cancel()" class="btn grey-terms-button">CANCEL</button>
+            </div>
+        </div>
+    </div>
+</div>

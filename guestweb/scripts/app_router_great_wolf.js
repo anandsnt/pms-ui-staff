@@ -46,12 +46,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/MGM/checkInConfirmation.html',
+	 	templateUrl: '/assets/common_templates/partials/gwCheckin.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/MGM/checkInReservationDetails.html',
+	 	templateUrl: '/assets/common_templates/partials/gwCheckinDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
@@ -61,7 +61,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/MGM/checkInKeys.html',
+	 	templateUrl: '/assets/common_templates/partials/gwCheckinFinal.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
