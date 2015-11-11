@@ -97,7 +97,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/MGM/preCheckinStatus.html',
+		templateUrl: '/assets/common_templates/partials/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
@@ -125,11 +125,6 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/common_templates/partials/gwExternal.html',
 	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
-	 }).state('externalVerificationError', {
-	 	url: '/verificationError',
-	 	templateUrl: '/assets/checkoutnow/partials/common-black/externalVerificationError.html',
-	 	controller:'verificationErrorController',
-	 	title: 'External verification Error'
 	 });
 
 
