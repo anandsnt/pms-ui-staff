@@ -258,14 +258,14 @@ sntRover.controller('RVReportsMainCtrl', [
 				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 				$scope.toDateOptionsOneYearLimit.minDate = selectedDate;
-				$scope.toDateOptionsOneYearLimit.maxDate = getDateAfterOneYear (selectedDate);
+				$scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;
 			}
 		}, datePickerCommon);
 		var datesUsedForCalendar = reportUtils.processDate();
 
 		$scope.toDateOptionsOneYearLimit = angular.extend({
 			minDate: datesUsedForCalendar.monthStart,
-			maxDate: getDateAfterOneYear (datesUsedForCalendar.monthStart)
+			maxDate: reportUtils.processDate(datesUsedForCalendar.monthStart).aYearAfter
 		}, datePickerCommon);
 
 		// custom from and untill date picker options
@@ -280,6 +280,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			// touched by the user
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
+
+			if (item.title === reportNames['DAILY_PRODUCTION']) {
+				if (item.fromDate > item.untilDate) {
+					item.untilDate = item.fromDate;
+				}
+			}
 
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {

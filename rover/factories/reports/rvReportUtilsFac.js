@@ -1480,7 +1480,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'monthStart'   : new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30)
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
+                'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
             };
 
             if ( parseInt(xDays) !== NaN ) {
