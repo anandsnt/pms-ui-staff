@@ -148,7 +148,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     // Logic for pagination starts here ..
     $scope.loadNextSet = function(index1, index2){
 
-        if(typeof index2 === 'undefined' || index2 === 'false' ){
+        if(typeof index2 === 'undefined' || index2 === false ){
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -161,7 +161,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     };
 
     $scope.loadPrevSet = function(index1, index2){
-        if(typeof index2 === 'undefined' || index2 === 'false'){
+        if(typeof index2 === 'undefined' || index2 === false ){
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -175,7 +175,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     $scope.isNextButtonDisabled = function(index1, index2){
 
-        if(typeof index2 === 'undefined' || index2 === 'false'){
+        if(typeof index2 === 'undefined' || index2 === false ){
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
@@ -191,7 +191,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     $scope.isPrevButtonDisabled = function(index1, index2){
 
-        if(typeof index2 === 'undefined' || index2 === 'false'){
+        if(typeof index2 === 'undefined' || index2 === false ){
             var item = $scope.data.paymentData.payment_types[index1];
         }
         else{
