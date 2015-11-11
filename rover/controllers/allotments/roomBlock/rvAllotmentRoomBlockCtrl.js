@@ -28,8 +28,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			roomsAndRatesSelected,
 			updated_contract_counts = false,
 			updated_current_counts = false,
-			timeLineScrollEndReached = false,
-			isMassUpdate = false;
+			timeLineScrollEndReached = false;
 
 		/**
 		 * util function to check whether a string is empty
@@ -349,21 +348,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copySingleContractValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.single_contract = cellData.single_contract;
 			});
 			//we changed something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		$scope.copySingleHeldValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.single = cellData.single;
 			});
 			//we changed something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		/**
@@ -374,21 +373,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyDoubleContractValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.double_contract = cellData.double_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		$scope.copyDoubleHeldValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.double = cellData.double;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		/**
@@ -399,21 +398,22 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyTripleContractValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.triple_contract = cellData.triple_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		$scope.copyTripleHeldValueToOtherBlocks = function(cellData, rowData) {
+			// for mass update set copy_to_all flag to true
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.triple = cellData.triple;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		/**
@@ -424,21 +424,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyQuadrupleContractValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.quadruple_contract = cellData.quadruple_contract;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		$scope.copyQuadrupleHeldValueToOtherBlocks = function(cellData, rowData) {
+			rowData.copy_values_to_all = true;
 			_.each(rowData.dates, function(element) {
 				element.quadruple = cellData.quadruple;
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
-			isMassUpdate = true;
 		};
 
 		/**
@@ -471,6 +471,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if (allotmentStartDate > $scope.timeLineStartDate) {
 				$scope.timeLineStartDate = new tzIndependentDate(allotmentStartDate);
 			}
+			$scope.timeLineEndDate = new tzIndependentDate($scope.timeLineStartDate);
 			$scope.timeLineEndDate.setDate($scope.timeLineStartDate.getDate() + 14);
 
 			// check date validity
@@ -666,7 +667,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.hasBookingDataChanged = false;
 			updated_contract_counts = false;
 			updated_current_counts = false;
-			isMassUpdate = false;
 		};
 
 		var successCallBackOfSaveRoomBlock = function(data) {
@@ -680,7 +680,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// reset flags
 			updated_contract_counts = !updated_contract_counts;
 			updated_current_counts = !updated_current_counts;
-			isMassUpdate = false;
 
 			//we have saved everything we have
 			//so our data is new
@@ -794,8 +793,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,
 				forcefully_overbook_and_assign_rooms: forceOverbook,
-				is_contract_save: isContratUpdate,
-				copy_values_to_all: isMassUpdate
+				is_contract_save: isContratUpdate
 			};
 
 			var options = {
@@ -1320,12 +1318,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			});
 
 			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(each) {
+				each.copy_values_to_all = true;
 				_.each(each['dates'], function(date) {
 					date['release_days'] = value;
 				});
 			});
 
-			isMassUpdate = true;
 			$scope.releaseDaysEdited = true;
 		};
 
