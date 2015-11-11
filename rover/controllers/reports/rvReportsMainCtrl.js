@@ -235,6 +235,33 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
+		/**
+		 * utility method to get date after one year
+		 * @param  {Object/String} date [if String, should be valid date format string]
+		 * @return {Object}      [Date]
+		 */
+		var getDateAfterOneYear = function (date) {
+			var dateAfter1Year 	= new Date (date);
+			dateAfter1Year.setFullYear( dateAfter1Year.getFullYear() + 1 );
+			return dateAfter1Year;
+		};
+
+		//for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
+		$scope.fromDateOptionsOneYearLimit = angular.extend({
+			onSelect: function(value, datePickerObj) {
+				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+				$scope.toDateOptionsOneYearLimit.minDate = selectedDate;
+				$scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;
+			}
+		}, datePickerCommon);
+		var datesUsedForCalendar = reportUtils.processDate();
+
+		$scope.toDateOptionsOneYearLimit = angular.extend({
+			minDate: datesUsedForCalendar.monthStart,
+			maxDate: reportUtils.processDate(datesUsedForCalendar.monthStart).aYearAfter
+		}, datePickerCommon);
+
 		// custom from and untill date picker options
 		// with no limits to choose dates
 		$scope.fromDateOptionsNoLimit = angular.extend({}, datePickerCommon);
@@ -247,6 +274,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			// touched by the user
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
+
+			if (item.title === reportNames['DAILY_PRODUCTION']) {
+				if (item.fromDate > item.untilDate) {
+					item.untilDate = item.fromDate;
+				}
+			}
 
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
