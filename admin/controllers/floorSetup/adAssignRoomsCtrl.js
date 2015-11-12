@@ -3,7 +3,12 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         BaseCtrl.call(this, $scope);
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-        var initController = function() {
+        var outwardNavigation = {
+                "MANAGE_FLOORS": 0,
+                "TAB_SWITCH": 1,
+                "FLOOR_CHANGE": 3
+            },
+            initController = function() {
                 $scope.roomAssignment = {
                     selectedFloorIndex: 0,
                     activeTab: $scope.floorsList && $scope.floorsList[0] && $scope.floorsList[0].assigned_rooms_count > 0 ? "ASSIGNED" : "AVAILABLE", // Available options are AVAILABLE and ASSIGNED
@@ -23,18 +28,23 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                 $scope.roomAssignment.areAllRoomsSelected = $scope.data.length > 0 && $scope.roomAssignment.currentSelectedCount === $scope.data.length;
                 $scope.roomAssignment.areSomeRoomsSelected = $scope.roomAssignment.currentSelectedCount > 0 && !$scope.roomAssignment.areAllRoomsSelected;
             },
+            updateParentsAboutSelectedRooms = function() {
+                if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+                    $scope.$emit("UNCOMMITED_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT");
+                } else {
+                    $scope.$emit("ZERO_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT");
+                }
+            },
             onSaveSuccess = function() {
                 if ($scope.roomAssignment.activeTab === "ASSIGNED") {
                     $scope.closeDialog();
                 }
                 $scope.reloadTable();
                 $scope.roomAssignment.selectedRooms = [];
+                updateParentsAboutSelectedRooms();
                 $scope.$emit("ASSIGNMENT_CHANGED");
             },
-            resetSelectedCount = function() {
-                $scope.roomAssignment.areAllRoomsSelected = false;
-                $scope.roomAssignment.areSomeRoomsSelected = false;
-            },
+
             persistSelection = function(room, toggleIndividualRoom) {
                 //In case room is already available in selected list --> remove it! else append it to the list
                 var inList = _.detect($scope.roomAssignment.selectedRooms, {
@@ -45,6 +55,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                 } else {
                     $scope.roomAssignment.selectedRooms.push(room);
                 }
+                updateParentsAboutSelectedRooms();
             },
             updateSelectedStatus = function() {
                 _.each($scope.roomAssignment.selectedRooms, function(room) {
@@ -55,18 +66,40 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                         roomInPage.isSelected = true;
                     }
                 });
+            },
+            promptUserCommit = function(userAction, params) {
+                ngDialog.open({
+                    template: '/assets/partials/floorSetups/adRoomAssignmentConfirmationPopup.html',
+                    scope: $scope,
+                    closeByDocument: true,
+                    className: 'ngdialog-theme-default single-calendar-modal',
+                    data: JSON.stringify({
+                        roomCount: $scope.roomAssignment.selectedRooms.length,
+                        floorName: $scope.floorsList[$scope.roomAssignment.selectedFloorIndex].floor_number,
+                        userAction: userAction,
+                        params: params
+                    })
+                });
             };
 
+        // /===================/ METHODS IN SCOPE /===================/ //
+
         $scope.selectFloor = function(floorIdx) {
-            $scope.roomAssignment.selectedFloorIndex = floorIdx;
-            if ($scope.roomAssignment.activeTab === "AVAILABLE" && $scope.floorsList[floorIdx].assigned_rooms_count > 0) {
-                $scope.roomAssignment.activeTab = "ASSIGNED";
-                $scope.reloadTable();
-            } else if ($scope.roomAssignment.activeTab === "ASSIGNED") {
-                if ($scope.floorsList[floorIdx].assigned_rooms_count <= 0) {
-                    $scope.roomAssignment.activeTab = "AVAILABLE";
+            if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+                promptUserCommit(outwardNavigation.FLOOR_CHANGE, {
+                    floorIdx: floorIdx
+                });
+            } else {
+                $scope.roomAssignment.selectedFloorIndex = floorIdx;
+                if ($scope.roomAssignment.activeTab === "AVAILABLE" && $scope.floorsList[floorIdx].assigned_rooms_count > 0) {
+                    $scope.roomAssignment.activeTab = "ASSIGNED";
+                    $scope.reloadTable();
+                } else if ($scope.roomAssignment.activeTab === "ASSIGNED") {
+                    if ($scope.floorsList[floorIdx].assigned_rooms_count <= 0) {
+                        $scope.roomAssignment.activeTab = "AVAILABLE";
+                    }
+                    $scope.reloadTable();
                 }
-                $scope.reloadTable();
             }
         };
 
@@ -75,9 +108,14 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         };
 
         $scope.toggleAvailableRooms = function() {
-            $scope.roomAssignment.activeTab = $scope.roomAssignment.activeTab === "AVAILABLE" ? "ASSIGNED" : "AVAILABLE";
-            $scope.reloadTable();
-            $scope.roomAssignment.selectedRooms = [];
+            if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+                promptUserCommit(outwardNavigation.TAB_SWITCH)
+            } else {
+                $scope.roomAssignment.activeTab = $scope.roomAssignment.activeTab === "AVAILABLE" ? "ASSIGNED" : "AVAILABLE";
+                $scope.reloadTable();
+                $scope.roomAssignment.selectedRooms = [];
+                updateParentsAboutSelectedRooms();
+            }
         };
 
         $scope.fetchTableData = function($defer, params) {
@@ -92,7 +130,8 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     params.total(data.total_count);
                     $defer.resolve($scope.data);
                     updateSelectedStatus();
-                    resetSelectedCount();
+                    updateSelectedList();
+                    $scope.closeDialog();
                 };
             if ($scope.roomAssignment.activeTab === "AVAILABLE") {
                 $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
@@ -152,13 +191,32 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             $scope.commitChanges();
         };
 
-        $scope.onCancelChanges = function() {
+        $scope.onContinueAction = function(userAction, params) {
             $scope.closeDialog();
-            _.each($scope.data, function(room) {
-                room.isSelected = false;
-            });
-            updateSelectedList();
+            // Reset selected Rooms
+            $scope.roomAssignment.selectedRooms = [];
+            updateParentsAboutSelectedRooms();
+            // Continue with user action after the user proceeds to ignore his/her selection of rooms
+            switch (userAction) {
+                case outwardNavigation.MANAGE_FLOORS:
+                    $scope.toggleAssignFloors();
+                    break;
+                case outwardNavigation.TAB_SWITCH:
+                    $scope.toggleAvailableRooms();
+                    break;
+                case outwardNavigation.FLOOR_CHANGE:
+                    $scope.selectFloor(params.floorIdx);
+            }
         };
+
+        $scope.onCancelChanges = function() {
+            // On cancel -> Navigate back to manage floors in case user has nothing selected pending commit
+            $scope.toggleAssignFloors();
+        };
+
+        $scope.$on("CONFIRM_USER_ACTION",function(event, userAction){
+            promptUserCommit(outwardNavigation[userAction]);
+        });
 
         initController();
     }

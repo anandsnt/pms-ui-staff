@@ -4,11 +4,11 @@
 		<span class="count"> ({{data.floors.length}}) </span>
 		<a class="action add" ng-click="gotoAddFloor()"  translate>ADD_NEW</a>
 		<div class="actions float pull-right">
-			<button type="button" class="button add-data-inline ng-scope" ng-click="toggleAssignFloors()" 
+			<button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignFloors()" 
 				ng-class="{'orange' : stateVariables.activeTab === 'MANAGE', 'white' : stateVariables.activeTab !== 'MANAGE'}">
 				MANAGE FLOORS
 			</button>
-			<button type="button" class="button add-data-inline ng-scope" ng-click="toggleAssignFloors()" 
+			<button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignFloors()" 
 				ng-class="{'orange' : stateVariables.activeTab === 'ASSIGN', 'white' : stateVariables.activeTab !== 'ASSIGN'}">
 				ASSIGN ROOMS
 			</button>

@@ -33,7 +33,8 @@ admin.controller('ADFloorsListCtrl',
         $scope.showTableDetails = false;
 
         $scope.stateVariables = {
-            activeTab: "MANAGE" // possible values are MANAGE for 'Manage Floors' & 'ASSIGN' for 'Assign Rooms'
+            activeTab: "MANAGE", // possible values are MANAGE for 'Manage Floors' & 'ASSIGN' for 'Assign Rooms'
+            areUncommitedSelectedRoomsPresent: false
         };
 
 	};
@@ -115,8 +116,20 @@ admin.controller('ADFloorsListCtrl',
          $scope.listFloorTypes();
     });
 
+    $scope.$on("UNCOMMITED_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT",function(){
+         $scope.stateVariables.areUncommitedSelectedRoomsPresent = true;
+    });
+
+    $scope.$on("ZERO_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT",function(){
+         $scope.stateVariables.areUncommitedSelectedRoomsPresent = false;
+    });
+
     $scope.toggleAssignFloors = function(){
-        $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
+        if($scope.stateVariables.activeTab === 'ASSIGN' && $scope.stateVariables.areUncommitedSelectedRoomsPresent){
+            $scope.$broadcast('CONFIRM_USER_ACTION', "MANAGE_FLOORS");
+        }else{            
+            $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
+        }
     }
 
 	initializeMe();
