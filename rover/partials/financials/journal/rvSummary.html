@@ -7,10 +7,10 @@
 </ul>
 
 <!-- Content -->
-<div ng-controller="RVJournalSummaryController" id="journal-content" class="journal-content summary">
+<div ng-controller="RVJournalSummaryController" id="journal-content" ng-iscroll='summary_content' class="journal-content summary scrollable">
     
     <div class="journal-summary first">
-        <h3 translate>DEPOSIT_BAL</h3>
+        <h3 class="has-arrow toggle" ng-click="toggleJournalSummaryItem()" translate>DEPOSIT_BAL</h3>
         <ul>
             <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
             <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
@@ -18,8 +18,69 @@
             <li>{{'CLOSING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
         </ul>
     </div>
+
+    <div class="journal-grid print-details">
+        <table class="grid-items">
+            <thead>
+                <tr>
+                    <th scope="col">Room</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Reservation Number</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <tr>
+                   <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <!-- .. repeat for each posting -->
+                <!-- Pagination row -->
+                <tr class="pagination hidden">
+                    <td colspan="8">
+                        <div class="search-pagination">
+                            <button type="button" class="button dark-grey next">Next</button>
+                            <button type="button" class="button dark-grey prev">Previous</button>
+                            <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="journal-summary">
-        <h3 translate>GUEST_BAL</h3>
+        <h3 class="has-arrow toggle" ng-click="toggleJournalSummaryItem()" translate>GUEST_BAL</h3>
         <ul>
             <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
             <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
@@ -27,8 +88,69 @@
             <li><span>{{currencySymbol}}{{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
         </ul>
     </div>
+
+    <div class="journal-grid print-details">
+        <table class="grid-items">
+            <thead>
+                <tr>
+                    <th scope="col">Room</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Reservation Number</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <!-- .. repeat for each posting -->
+                <!-- Pagination row -->
+                <tr class="pagination hidden">
+                    <td colspan="8">
+                        <div class="search-pagination">
+                            <button type="button" class="button dark-grey next">Next</button>
+                            <button type="button" class="button dark-grey prev">Previous</button>
+                            <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="journal-summary">
-        <h3 translate>AR_BALANCE</h3>
+        <h3 class="has-arrow toggle" ng-click="toggleJournalSummaryItem()" translate>AR_BALANCE</h3>
         <ul>
             <li><span>{{currencySymbol}}{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
             <li><span>{{currencySymbol}}{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
@@ -36,6 +158,67 @@
             <li><span>{{currencySymbol}}{{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
         </ul>
     </div>
+
+    <div class="journal-grid print-details">
+        <table class="grid-items">
+            <thead>
+                <tr>
+                    <th scope="col">Room</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Reservation Number</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <tr>
+                    <td>123</td>
+                    <td>eewee</td>
+                    <td>123</td>
+                    <td>asssss</td>
+                    <td>asdasdasd</td>
+                    <td>122</td>
+                    <td>122</td> 
+                    <td>111</td> 
+                </tr>
+                <!-- .. repeat for each posting -->
+                <!-- Pagination row -->
+                <tr class="pagination hidden">
+                    <td colspan="8">
+                        <div class="search-pagination">
+                            <button type="button" class="button dark-grey next">Next</button>
+                            <button type="button" class="button dark-grey prev">Previous</button>
+                            <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="journal-summary totals">
         <h3 translate>TOTALS</h3>
         <ul>
