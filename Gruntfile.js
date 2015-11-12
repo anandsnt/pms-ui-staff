@@ -51,7 +51,24 @@ module.exports = function(grunt) {
                 options: {
                     prefix: '/assets/'
                 }
+            },
+            sntZestStation: {
+                cwd: 'zest_station/',
+                src: 'partials/**/*.html',
+                dest: 'build/zest_station_templates.js',
+                options: {
+                    prefix: '/assets/'
+                }               
+            },
+            sntGuestWeb: {
+                cwd: 'guestweb/',
+                src: '**/partials/**/*.html',
+                dest: 'build/guest_web_templates.js',
+                options: {
+                    prefix: '/assets/'
+                }             
             }
+
         },
         bower: {
             install: {}
@@ -93,6 +110,17 @@ module.exports = function(grunt) {
             adminGermanJson: {
                 src: ['admin/adLocales/de/*.json'],
                 dest: 'admin/adLocales/DE.json',
+                options: {
+                    // Added to the top of the file
+                    banner: '{',
+                    // Will be added at the end of the file
+                    footer: '}',
+                    separator: ','
+                }
+            },
+            guestWebEnglishJson: {
+                src: ['guestweb/gwLocales/en/*.json'],
+                dest: 'guestweb/gwLocales/EN.json',
                 options: {
                     // Added to the top of the file
                     banner: '{',
