@@ -65,7 +65,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
     //work around to fix flashing of logo before app loads
     $timeout(function() {
         $rootScope.hotelLogo     = $attrs.hotelLogo;
-    }, 250);
+    }, 750);
 
  	if(typeof $attrs.accessToken !== "undefined") {
 		$rootScope.accessToken = $attrs.accessToken	;
