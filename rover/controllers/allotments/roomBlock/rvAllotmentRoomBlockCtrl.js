@@ -1612,7 +1612,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						var block = getScrollerObject (RATE_GRID_SCROLL);
 						block.scrollTo(xPos, block.y);
 
-						// check if edge reached
+						// check if edge reached next button
 						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
 							if (!timeLineScrollEndReached){
 									timeLineScrollEndReached = true;
@@ -1637,6 +1637,19 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						var yPos = this.y;
 						getScrollerObject (TIMELINE_SCROLL).scrollTo(xPos, 0);
 						getScrollerObject (ROOM_BLOCK_SCROLL).scrollTo(0, yPos);
+
+						// check if edge reached and enable next button
+						if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
+							if (!timeLineScrollEndReached){
+									timeLineScrollEndReached = true;
+									runDigestCycle();
+								}
+							} else {
+								if (timeLineScrollEndReached){
+								 	timeLineScrollEndReached = false;
+									runDigestCycle();
+							}
+						}
 					});
 			}, 1000);
 		};
