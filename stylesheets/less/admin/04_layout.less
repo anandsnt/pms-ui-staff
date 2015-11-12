@@ -1029,6 +1029,40 @@ body { overflow: hidden; }
     }
 }
 
+#assignRooms{
+    .controls-holder{
+        width: 100%;
+        clear: both;
+        &.tabs{
+            padding: 10px 0;
+            text-align: center;
+        }
+    }
+    .floor-room-count{
+        width: 10%;
+        float: left;
+        min-height: 35px !important;
+    }
+    .three-column{
+        width:30%;
+        position:relative;
+        float: left;
+        select{
+            width: 60px;
+            margin-right: 5px;
+            &.filter-selected{
+                width: 100px;
+            }
+        }
+        &.table-search{
+            float: right;
+            position: relative;
+            display: block;
+            width: auto;
+        }
+    }
+}
+
 
 
 /* 6. IE

@@ -10,7 +10,8 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     currentSelectedCount: 0,
                     areAllRoomsSelected: false,
                     areSomeRoomsSelected: false,
-                    selectedRooms: [] // This array persists selected rooms across pages
+                    selectedRooms: [], // This array persists selected rooms across pages
+                    filterSelectedRooms: 'ALL'
                 };
                 $scope.loadTable();
             },
@@ -127,7 +128,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         };
 
         $scope.toggleSelectRoom = function(room) {
-            room.isSelected = room.isSelected;
+            room.isSelected = !room.isSelected;
             updateSelectedList();
             persistSelection(room, true); //second param is to toggleIndividualRoom
         };
