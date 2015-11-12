@@ -353,6 +353,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
+				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
+					$scope.$parent.summaryCounts = {
+						'emails_sent'   : totals[0]['value'],
+						'up_sell_conv'  : totals[1]['value'],
+						'revenue'       : totals[2]['value'],
+						'conversion'    : totals[4]['value'],
+						'total_checkin' : totals[3]['value']
+					};
+					break;
+
 				case reportNames['LATE_CHECK_OUT']:
 					$scope.$parent.summaryCounts = {
 						'rooms'   : totals[0]['value'],
@@ -776,6 +786,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CANCELLATION_NO_SHOW']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
+				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
 				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
 				case reportNames['DAILY_TRANSACTIONS']:
 				case reportNames['DAILY_PAYMENTS']:

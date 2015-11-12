@@ -29,7 +29,18 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 				}]
 			}
 		});
-		
+
+		$stateProvider.state('admin.britePabXSetup', {
+			templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
+			controller: 'adBritePabXSetupCtrl',
+			url : '/britePabX/setup',
+			resolve: {
+				britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
+					return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+				}]
+			}
+		});
+
 		$stateProvider.state('admin.afasSetup', {
 			templateUrl: '/assets/partials/afas/afasSetup.html',
 			controller: 'adAfasSetupCtrl',

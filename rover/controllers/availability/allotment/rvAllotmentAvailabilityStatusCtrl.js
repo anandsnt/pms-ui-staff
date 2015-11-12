@@ -50,7 +50,10 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 			$timeout(function(){
 				$state.go('rover.allotments.config', {
 					id: GroupId,
-					activeTab: 'RESERVATIONS'
+					activeTab: 'RESERVATIONS',	
+				},
+				{
+					reload: true
 				});
 				$scope.$emit('showLoader');
 			}, 1000);
@@ -99,14 +102,27 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 
 		/*
 		* return class name for holdstatus row in picked up
+		* DEFAULT: must always show 'CANCEL'
 		*/
-		$scope.getClassForHoldStatusRowInPickedUp = function(id){
-			if(!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked){
-				return 'hidden';
-			}else{
-				return '';
+		$scope.getClassForHoldStatusRowInPickedUp = function(id) {
+			var group,
+				isDeduct,
+				retCls;
+
+			if ( $scope.hideHoldStatusOf.groupRoomPicked ) {
+				retCls = 'hidden';
+			} else {
+				group    = _.findWhere($scope.data.holdStatus, { id: id });
+				isDeduct = group && group['is_take_from_inventory'];
+
+				if ( group && isDeduct ) {
+					retCls = '';
+				} else {
+					retCls = 'hidden';
+				};
 			};
 
+			return retCls;
 		};
 
 		/*

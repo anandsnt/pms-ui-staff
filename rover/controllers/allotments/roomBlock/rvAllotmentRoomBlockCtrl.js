@@ -20,6 +20,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$q,
 		dateFilter) {
 
+		BaseCtrl.call(this, $scope);
+
 		var self = this,
 			summaryMemento,
 			update_existing_reservations_rate = false,
@@ -247,7 +249,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//we added something
 			$scope.bookingDataChanging();
-			self.refreshScroller();
+			refreshScroller();
 		};
 
 		/**
@@ -265,7 +267,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//we added something
 			$scope.bookingDataChanging();
-			self.refreshScroller();
+			refreshScroller();
 		};
 
 		/**
@@ -1185,10 +1187,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				_.each(data.occupancy, function(eachOcc) {
 					eachOcc['ui_release_days'] = '';
 				});
-				roomBlockData.common_ui_release_days = '';
 
-				roomBlockData.selected_room_types_and_bookings = data.results;
-				roomBlockData.selected_room_types_and_occupanies = data.occupancy;
+				_.extend($scope.allotmentConfigData.roomblock, {
+					common_ui_release_days : '',
+					selected_room_types_and_bookings : data.results,
+					selected_room_types_and_occupanies : data.occupancy
+				});
 
 				//our total pickup count may change on coming from other tab (CICO-16835)
 				$scope.totalPickups = data.total_picked_count;
@@ -1198,10 +1202,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				//$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
 				//we changed data, so
-				self.refreshScroller();
+				refreshScroller();
 				$scope.$emit("hideLoader");
 			}, 0);
 		};
+
+		/**
+		 * Event propogated by ngrepeatend directive
+		 * we used to hide activity indicator & refresh scroller
+		 */
+		$scope.$on('NG_REPEAT_COMPLETED_RENDERING', function(event) {
+			$timeout(function(){
+				refreshScroller();
+			}, 0);
+		});
 
 		$scope.releaseDaysEdited = false;
 
@@ -1413,7 +1427,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					}
 
 					//we have to refresh scroller afetr that
-					self.refreshScroller();
+					refreshScroller();
 				}
 
 			};
@@ -1464,119 +1478,81 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * Closure for scroll related metods
+		 * utiltiy function to refresh scroller
+		 * return - None
 		 */
-		(function(exports) {
-			// Scroller constants.
+		var refreshScroller = function() {
+			getScrollerObject('room_block_scroller') && getScrollerObject('room_block_scroller').refresh();
+			getScrollerObject('room_rates_timeline_scroller') && getScrollerObject('room_rates_timeline_scroller').refresh();
+			getScrollerObject('room_rates_grid_scroller') && getScrollerObject('room_rates_grid_scroller').refresh();
+		};
+
+		/**
+		 * [getScrollerObject description]
+		 * @param  {[type]} key [description]
+		 * @return {[type]}     [description]
+		 */
+		var getScrollerObject = function(key) {
+			var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+			if (_.isUndefined (scrollerObject)) {
+				scrollerObject = $scope.myScroll[key];
+			}
+			return scrollerObject;
+		};
+
+		/**
+		 * utiltiy function to set scroller
+		 * return - None
+		 */
+		var setScroller = function() {
 			var ROOM_BLOCK_SCROLL 	= "room_block_scroller",
 				TIMELINE_SCROLL 	= "room_rates_timeline_scroller",
-				RATE_GRID_SCROLL 	= "room_rates_grid_scroller",
-				parentScope 		= $scope.$parent;
+				RATE_GRID_SCROLL 	= "room_rates_grid_scroller";
 
-			/**
-			 * Utility function to turn the scrollers on.
-			 * Call only if related elements are ready.
-			 */
-			var setupScrollListner = function() {
-				parentScope.myScroll[TIMELINE_SCROLL]
+			//setting scroller things
+			var commonScrollerOptions = {
+				tap: true,
+				preventDefault: false,
+				probeType: 3
+			};
+			var scrollerOptionsForRoomRatesTimeline = _.extend({
+				scrollX: true,
+				scrollY: false,
+				scrollbars: false
+			}, util.deepCopy(commonScrollerOptions));
+
+			var scrollerOptionsForRoomRatesGrid = _.extend({
+				scrollY: true,
+				scrollX: true
+			}, util.deepCopy(commonScrollerOptions));
+
+			$scope.setScroller(ROOM_BLOCK_SCROLL, commonScrollerOptions);
+			$scope.setScroller(TIMELINE_SCROLL, scrollerOptionsForRoomRatesTimeline);
+			$scope.setScroller(RATE_GRID_SCROLL, scrollerOptionsForRoomRatesGrid);
+
+			$timeout(function() {
+				getScrollerObject (TIMELINE_SCROLL)
 					.on('scroll', function() {
 						var xPos = this.x;
-						var block = parentScope.myScroll[RATE_GRID_SCROLL];
+						var block = getScrollerObject (RATE_GRID_SCROLL);
 						block.scrollTo(xPos, block.y);
 					});
-				parentScope.myScroll[ROOM_BLOCK_SCROLL]
+				getScrollerObject (ROOM_BLOCK_SCROLL)
 					.on('scroll', function() {
 						var yPos = this.y;
-						var block = parentScope.myScroll[RATE_GRID_SCROLL];
+						var block = getScrollerObject (RATE_GRID_SCROLL);
 						block.scrollTo(block.x, yPos);
 					});
-				parentScope.myScroll[RATE_GRID_SCROLL]
+				getScrollerObject (RATE_GRID_SCROLL)
 					.on('scroll', function() {
 						var xPos = this.x;
 						var yPos = this.y;
-						parentScope.myScroll[TIMELINE_SCROLL].scrollTo(xPos, 0);
-						parentScope.myScroll[ROOM_BLOCK_SCROLL].scrollTo(0, yPos);
+						getScrollerObject (TIMELINE_SCROLL).scrollTo(xPos, 0);
+						getScrollerObject (ROOM_BLOCK_SCROLL).scrollTo(0, yPos);
 					});
-			};
+			}, 1000);
+		};
 
-			/**
-			 * Function to check if scrollers are ready to turn on and do so
-			 */
-			var turnScrollersONifReady = function () {
-				if ( !! parentScope.myScroll.hasOwnProperty(ROOM_BLOCK_SCROLL) &&
-					 !! parentScope.myScroll.hasOwnProperty(TIMELINE_SCROLL) &&
-					 !! parentScope.myScroll.hasOwnProperty(RATE_GRID_SCROLL)) {
-					// all set to proceed
-					setupScrollListner();
-				} else {
-					$timeout(turnScrollersONifReady, 500);
-				};
-			};
-
-			/**
-			 * utiltiy function for setting scroller and things
-			 * return - None
-			 */
-			var setScroller = function() {
-				//setting scroller things
-				var commonScrollerOptions = {
-					tap: true,
-					preventDefault: false,
-					probeType: 3
-				};
-				var scrollerOptionsForRoomRatesTimeline = _.extend({
-					scrollX: true,
-					scrollY: false,
-					scrollbars: false
-				}, util.deepCopy(commonScrollerOptions));
-				var scrollerOptionsForRoomRatesGrid = _.extend({
-					scrollY: true,
-					scrollX: true
-				}, util.deepCopy(commonScrollerOptions));
-
-				$scope.setScroller(ROOM_BLOCK_SCROLL, commonScrollerOptions);
-				$scope.setScroller(TIMELINE_SCROLL, scrollerOptionsForRoomRatesTimeline);
-				$scope.setScroller(RATE_GRID_SCROLL, scrollerOptionsForRoomRatesGrid);
-
-				// Turn the scrollers ON only if everything is setup and ready.
-				turnScrollersONifReady();
-			};
-
-			/**
-			 * utiltiy function to refresh scroller
-			 * return - None
-			 */
-			var refreshScroller = function() {
-				$timeout(function() {
-					if ( !! parentScope.myScroll.hasOwnProperty(ROOM_BLOCK_SCROLL)) {
-						$scope.refreshScroller(ROOM_BLOCK_SCROLL);
-					}
-					if ( !! parentScope.myScroll.hasOwnProperty(TIMELINE_SCROLL)) {
-						$scope.refreshScroller(TIMELINE_SCROLL);
-					}
-					if ( !! parentScope.myScroll.hasOwnProperty(RATE_GRID_SCROLL)) {
-						$scope.refreshScroller(RATE_GRID_SCROLL);
-					}
-				}, 350);
-			};
-
-			var destroyScrolls = function() {
-				parentScope.myScroll[ ROOM_BLOCK_SCROLL ].destroy();
-				delete mainCtrlScope.myScroll[ ROOM_BLOCK_SCROLL ];
-
-				parentScope.myScroll[ TIMELINE_SCROLL ].destroy();
-				delete mainCtrlScope.myScroll[ TIMELINE_SCROLL ];
-
-				parentScope.myScroll[ RATE_GRID_SCROLL ].destroy();
-				delete mainCtrlScope.myScroll[ RATE_GRID_SCROLL ];
-			};
-
-			// Exports local methods.
-			exports.setScroller = setScroller;
-			exports.refreshScroller = refreshScroller;
-			exports.destroyScrolls = destroyScrolls;
-
-		})(this);
 
 		/**
 		 * to set the active left side menu
@@ -1622,8 +1598,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return - None
 		 */
 		var initializeMe = function() {
-			BaseCtrl.call(this, $scope);
-
 			//updating the left side menu
 			setActiveLeftSideMenu();
 
@@ -1634,7 +1608,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			//scroll above, and look for the event 'ALLOTMENT_TAB_SWITCHED'
 
 			//setting scrollers
-			self.setScroller();
+			setScroller();
 
 			// accoridion
 			setUpAccordion();
@@ -1652,7 +1626,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		var reinit = function() {
 
 			//setting scrollers
-			self.setScroller();
+			setScroller();
 
 			// accoridion
 			setUpAccordion();

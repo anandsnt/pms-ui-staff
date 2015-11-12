@@ -6,8 +6,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     'zsEventConstants',
     '$stateParams',
     'zsModeConstants',
-    '$window',
-	function($scope, $state,zsUtilitySrv, zsCheckoutSrv,zsEventConstants,$stateParams,zsModeConstants,$window) {
+    '$window','$timeout',
+	function($scope, $state,zsUtilitySrv, zsCheckoutSrv,zsEventConstants,$stateParams,zsModeConstants,$window,$timeout) {
 
 	BaseCtrl.call(this, $scope);
     
@@ -134,10 +134,14 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       try{
         $window.print();
         if ( sntapp.cordovaLoaded ) {
-            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', ['filep', '1']);
         };
         $scope.printOpted = true;
-        checkOutGuest();
+        // provide a delay for preview to appear
+        $timeout(function() {
+                 checkOutGuest();
+        }, 3000);
+        
       }
       catch(e){
         

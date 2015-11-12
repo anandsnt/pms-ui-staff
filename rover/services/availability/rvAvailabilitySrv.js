@@ -171,9 +171,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* return Group name
 	*/
 	var getGroupName = function(GroupId, holdstatuses){
-		return _.find(holdstatuses, function(elem){ 
-				return (elem.id === GroupId)?true:false;
-				}).name;
+		var grp = _.find(holdstatuses, function(elem){ 
+			return (elem.id === GroupId)?true:false;
+		});
+
+		return !!grp ? grp.name : '';
 	};
 	/**
 	* function to fetch group availability between from date & to date
@@ -281,16 +283,28 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		var additionalData = {};
 		var roomtypeDetails = [];
 		var roomTypeNames =[],
-		bestAvailabilityRate = [],
-		adultsChildrenCount = [];
+			bestAvailabilityRate = [],
+			adultsChildrenCounts = [];
+
+		var adultsCount,
+			childrenCount;
 		
 		_.each(roomAvailabilityAdditionalData.results,function(item){
 			//Extracts roomtype details			
 			roomtypeDetails.push(item.detailed_room_types);
+
 			//Extracts adult child count
-			adultsChildrenCount.push(item.adults_children_count);
+			//the count could be nothing
+			adultsCount   = item.adults_count || 0;
+			childrenCount = item.children_count || 0;
+			adultsChildrenCounts.push({
+				'bothCount'     : adultsCount + '/' + childrenCount,
+				'isWarning'     : ( 5 >= adultsCount && 5 >= childrenCount ),
+				'isUnavailable' : ( 0 >= adultsCount && 0 >= childrenCount )
+			});
+
 			//Extracts BAR details
-			bestAvailabilityRate.push((item.best_available_rate_amount.rate_amount ==='CLOSED')?'C':item.best_available_rate_amount.rate_amount);
+			bestAvailabilityRate.push( (0 == item.best_available_rate_amount.rate_amount) ? 'C' : item.best_available_rate_amount.rate_amount );
 
 		});
 
@@ -308,7 +322,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 		additionalData ={
 			'roomTypeWiseDetails' 	: 	_.zip.apply(null, roomtypeDetails),
 			'roomTypeNames' 		: 	roomTypeNames,
-			'adultsChildrenCount'	: 	adultsChildrenCount,
+			'adultsChildrenCounts'	: 	adultsChildrenCounts,
 			'bestAvailabilityRate'	: 	bestAvailabilityRate
 		};
 
@@ -345,9 +359,11 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSr
 	* return Group name
 	*/
 	var getAllotmentName = function(GroupId, holdstatuses){
-		return _.find(holdstatuses, function(elem){ 
-				return (elem.id === GroupId)?true:false;
-				}).name;
+		var grp = _.find(holdstatuses, function(elem){ 
+			return (elem.id === GroupId)?true:false;
+		});
+
+		return !!grp ? grp.name : '';
 	};
 
 	/*

@@ -2769,6 +2769,89 @@
 								}
 							}
 
+							.entry {
+								padding: 20px;
+								.float;
+
+								.has-datepicker {
+				                    position: relative;
+				                    .calc-width(50, 10);
+				                    .pull-left;
+
+				                    .clear-query {
+				                        position: absolute;
+				                        top: 2px;
+				                        right: 0;
+				                        z-index: 99;
+				                        visibility: hidden;
+				                        background-color: @white;
+				                        .square(38px);
+
+				                        .icons {
+				                            position: absolute;
+				                            top: 10.5px;
+				                            right: 10.5px;
+				                            background-color: @grey2;
+				                            margin: 0;
+				                            .hide-text;
+				                            .square(15px);
+				                            .opacity(0);
+				                            .show;
+				                            #fade > .out();
+				                            #border-radius > .rounded(15px);
+				                        }
+
+				                        &.visible { 
+				                            visibility: visible;
+
+				                            .icons {    
+				                                .opacity(100); 
+				                                #fade > .in(); 
+				                            }
+				                        }
+
+				                        &:hover,
+				                        &.active { 
+				                            .icons { background-color: @logoPrimary; }
+				                        }
+				                    }
+
+				                    label {
+										position: absolute;
+										top: 0;
+										left: 10px;
+										font-size: 12px;
+										text-transform: uppercase;
+										color: @grey3;
+									}
+
+									input {
+										font-size: 18px;
+										line-height: 25px;
+										font-weight: 600;
+										padding-top: 15px;
+										width: 100%;
+
+						                cursor: pointer;
+		                    			background: @white @calendar no-repeat 95% 11px;
+		                    			background-size: 20px;
+						                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
+						                .size(40px, 100%);
+
+						                .no-transition();
+
+				                        &:hover,
+				                        &:active { background-position: 95% -39px; }
+
+						                @media @highdpi {
+				                            background-image: @calendar2x;
+				                        }
+		            				}
+
+		            				&:first-child { margin-right: 20px; }
+		            			}
+							}
+
 							.payment {
 								position: relative;
 								line-height: 30px;
