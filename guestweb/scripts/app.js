@@ -1,7 +1,8 @@
 
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate']);
 
-sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
+sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state','$timeout',
+ function($rootScope,$scope,$attrs,$location,$state,$timeout) {
 
 	var that = this;
 	//load the style elements. Done to reduce the loading time of web page.
@@ -17,7 +18,6 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 	//store basic details as rootscope variables
 
 	$rootScope.hotelName     = $attrs.hotelName;
- 	$rootScope.hotelLogo     = $attrs.hotelLogo;
  	$rootScope.currencySymbol= $attrs.currencySymbol;
 	$rootScope.hotelPhone    = $attrs.hotelPhone;
 	$rootScope.businessDate  = $attrs.businessDate;
@@ -62,6 +62,10 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
     	$rootScope.user_name = $attrs.login;
     }
 
+    //work around to fix flashing of logo before app loads
+    $timeout(function() {
+        $rootScope.hotelLogo     = $attrs.hotelLogo;
+    }, 250);
 
  	if(typeof $attrs.accessToken !== "undefined") {
 		$rootScope.accessToken = $attrs.accessToken	;
