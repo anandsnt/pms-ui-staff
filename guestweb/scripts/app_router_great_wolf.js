@@ -133,7 +133,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/common_templates/partialsgwNoOption.html',
+	 	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
 	 	title: 'Feature not available'
 	});
 
