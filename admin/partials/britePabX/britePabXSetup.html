@@ -21,7 +21,7 @@
                             <span class="switch-icon"></span>
                         </div>
                     </div>
-                    <ad-charge-code-auto-complete ng-model="brite.charge_code_name" selected-charge-code-id="brite.charge_code_id"></ad-charge-code-auto-complete ng-if="brite.enabled" label="Charge Code">
+                    <ad-charge-code-auto-complete ng-model="brite.charge_code_name" ng-if="brite.enabled" selected-charge-code-id="brite.charge_code_id" label="Charge Code"></ad-charge-code-auto-complete>
                     <ad-textbox value="brite.account_number" name="account-number" id="account-number" label="{{'BRITE_PABX_DEFAULT_ACCOUNT_NUMBER'| translate}}" styleclass="full-width" ng-if="brite.enabled"></ad-textbox>
                 </fieldset>
             </fieldset>
