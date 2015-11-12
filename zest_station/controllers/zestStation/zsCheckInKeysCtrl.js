@@ -178,20 +178,24 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.$watch('encoder',function(){
            console.info(arguments) 
         });
+        $scope.makingKey = 1;
         $scope.initMakeKey = function(n){
+            $scope.makingKey = n;
             var successMakeKey = function(response){
                 console.info('success!');
                 console.info(response);
+                
             };
             var failureMakeKey = function(response){
-                console.info('fail!');
-                console.info(response);
+                //$scope.$emit('GENERAL_ERROR',response);
+                $scope.$emit('MAKE_KEY_ERROR',response);
+                
             };
             console.info('$scope.selectedReservation: ',$scope.selectedReservation)
             var options = {
                 card_info: "",
                 is_additional: true,
-                key: 1,
+                key: $scope.makingKey,
                 key_encoder_id: '1',
                 reservation_id: $scope.selectedReservation.id
             };

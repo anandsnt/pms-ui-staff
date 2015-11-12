@@ -89,6 +89,25 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.$on (zsEventConstants.HIDE_CLOSE_BUTTON, function(event) {
 		$scope.hideCloseButton = true;
 	});
+        $scope.setLastErrorReceived = function(response){
+            console.warn(response);
+            if (response && response[0]){
+                $state.errorReceived = response[0];
+            } else {
+                $state.errorReceived = null;
+            }
+        };
+        $scope.$on('GENERAL_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.error');
+        });
+        
+        $scope.$on('MAKE_KEY_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.key_error');
+        });
 
 
 	var routeChange = function(event, newURL) {

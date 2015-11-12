@@ -59,20 +59,26 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
             $scope.checkInGuest();
         };
-        
+        $scope.setCheckInMessage = function(){
+            $state.go('zest_station.checking_in_guest');
+        };
         $scope.checkInGuest = function(){
              var reservation_id = $scope.selectedReservation.id,
                     //payment_type = $scope.selectedReservation.payment_type,
                     signature = $scope.signatureData;
 
-                $scope.invokeApi(zsTabletSrv.checkInGuest, {
-                    'reservation_id':reservation_id, 
-                    "authorize_credit_card": false,
-                    "do_not_cc_auth": false,
-                    "is_promotions_and_email_set": false,
-                    "no_post": "",
-                    'signature':signature
-                }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback);
+                $scope.setCheckInMessage();
+                setTimeout(function(){
+                    $scope.invokeApi(zsTabletSrv.checkInGuest, {
+                     'reservation_id':reservation_id, 
+                     "authorize_credit_card": false,
+                     "do_not_cc_auth": false,
+                     "is_promotions_and_email_set": false,
+                     "no_post": "",
+                     'signature':signature
+                 }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
+                },500);
+                
         };
         $scope.clearSignature = function(){
             $scope.signatureData = '';

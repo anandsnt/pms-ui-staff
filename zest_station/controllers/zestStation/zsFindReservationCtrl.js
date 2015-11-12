@@ -250,6 +250,14 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     break;
             }
         };
+        $scope.setCheckingGuestIn = function(){
+            $scope.at = 'checking_in_guest';
+            $scope.headingText = 'Just a moment as we check you in...';
+            $scope.subHeadingText = '';
+            $scope.inputTextPlaceholder = '';
+            $scope.hideNavBtns = true;
+            
+        };
         
         $scope.setFindByDate = function(){
             $scope.at = 'find-by-date';
@@ -333,6 +341,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     break;
                 case "zest_station.find_reservation_no_match":
                     $scope.setNoMatch();
+                    break;
+                case "zest_station.checking_in_guest":
+                    $scope.setCheckingGuestIn();
                     break;
             }
           
