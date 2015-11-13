@@ -27,7 +27,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.goToAdmin = function() {
 		//disabling for now
-		//$state.go ('zest_station.admin');
+		$state.go ('zest_station.admin');
 	};
 
 	/**
@@ -89,6 +89,25 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.$on (zsEventConstants.HIDE_CLOSE_BUTTON, function(event) {
 		$scope.hideCloseButton = true;
 	});
+        $scope.setLastErrorReceived = function(response){
+            console.warn(response);
+            if (response && response[0]){
+                $state.errorReceived = response[0];
+            } else {
+                $state.errorReceived = null;
+            }
+        };
+        $scope.$on('GENERAL_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.error');
+        });
+        
+        $scope.$on('MAKE_KEY_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.key_error');
+        });
 
 
 	var routeChange = function(event, newURL) {
@@ -107,10 +126,26 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData = data;
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
+                $scope.fetchKeyEncoderList();
 	};
 	$scope.failureCallBack =  function(data){
 		$state.go('zest_station.error_page');
 	};
+        $scope.fetchKeyEncoderList = function(){
+            console.log('fetching key encoders')
+            var onSuccess = function(data){
+                console.info('got key encoders: ',data.results)
+                    $scope.zestStationData.key_encoders = data.results;
+                    $scope.$emit('hideLoader');
+            };
+            
+            var options = {
+                params:                 {},
+                successCallBack: 	    onSuccess,
+                failureCallBack:        $scope.failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.fetchEncoders, options);
+        };
         $scope.fetchHotelSettings = function(){
             var onSuccess = function(data){
                     $scope.zestStationData.hotel_settings = data;

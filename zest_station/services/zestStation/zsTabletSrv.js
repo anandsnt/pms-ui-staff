@@ -18,6 +18,38 @@ sntZestStation.service('zsTabletSrv',
                     return deferred.promise;
                 };
 
+
+                
+                this.fetchEncoders = function () {
+                    var params = {
+                        page: 1,
+                        per_page: 100
+                    };
+                    var deferred = $q.defer(),
+                            url = '/api/key_encoders';
+                    
+                    zsBaseWebSrv.getJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                this.encodeKey = function (params) {
+                    console.info('use params',params)
+                    var deferred = $q.defer(),
+                            url = '/staff/reservation/print_key';
+                    
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+
+
                 /**
                  * function to get business date
                  * @return {Promise} - After resolving it will return the business date
