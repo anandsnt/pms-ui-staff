@@ -25,31 +25,31 @@
 </div>
 <div class="container" ng-hide="isLoading || netWorkError">
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
              <p class="main-text">Ready to Check-out?</p>
              <!--  -->
             <div class="section-container">
                 <!-- room number -->
                 <p class="pull-left sub-text margin-top-10">Your Room Number</p>
-                <input type="text" class="input-field padding-3" ng-model="stayDetails.room_number"></input>
+                <input type="text" class="input-field padding-2" ng-model="stayDetails.room_number"></input>
                 <!-- Lat name -->
                 <p class="pull-left sub-text margin-top-10">Last Name</p>
-                <input type="text" class="input-field padding-3" ng-model="stayDetails.last_name"></input>
+                <input type="text" class="input-field padding-2" ng-model="stayDetails.last_name"></input>
                 <!-- Arrival date -->
                 <p class="pull-left sub-text margin-top-10">Arrival date</p>
-                <input class="input-field padding-3 calendar-button" ng-click="showCalender()" ng-model="stayDetails.arrival_date" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="stayDetails.arrival_date" placeholder="{{dateFormatPlaceholder}}" readonly></input>
                 <!-- email -->
                 <p class="sub-text margin-top-10">To receive a copy of your bill,<br/>
                     please enter your e-mail address
                 </p>
                 <p class="pull-left sub-text margin-top-10">Your e-mail address (optional)</p>
-                <input type="text" class="input-field padding-3" ng-model="stayDetails.email"></input>
+                <input type="text" class="input-field padding-2" ng-model="stayDetails.email"></input>
                 <!-- Submit button -->
-                <a class="btn btn-template margin-top-10 padding-3" ng-click="submit()"> Continue</a>    
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="submit()"> Continue</a>    
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
         </div>                   
     </div>
 </div>
@@ -65,7 +65,7 @@
                 <p>ARRIVAL DATE</p>
                 <p class="date-text">{{date | date:'MMM dd'}}</p>
             </div>
-            <div class="col-xs-2 calendar-selection" ng-click = "dateChoosen()">
+            <div class="col-xs-2 calendar-selection done-calendar" ng-click = "dateChoosen()">
                 <div>DONE</div>
                 <div class="calendar-selection-button calendar-done">&nbsp;</div>
             </div>

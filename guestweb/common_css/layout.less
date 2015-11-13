@@ -8,6 +8,10 @@
 .one-third-width{
     width:33.33%;
 }
+.no-side-margin{
+  margin-left:0;
+  margin-right:0;
+}
 .top-spacing {
   margin-top: calc(4.5%);
   text-align:center;
@@ -68,10 +72,18 @@
     padding:6%;
     max-width:400px;
     max-height:80px;
-    font-size: 20px;
+}
+.btn-template{
+  font-size: 30px;
+}
+.input-field{
+  font-size: 24px;
 }
 .logo-margin{
-    margin:3%;
+  margin:3%;
+}
+.sm-no-top-spacing{
+  text-align:center;
 }
 .section-container{
     max-width: 400px;
@@ -110,6 +122,9 @@
 }
 .padding-3{
     padding:3% !important;
+}
+.padding-2{
+    padding:2% !important;
 }
 .padding-0{
     padding:0 !important;
@@ -226,16 +241,21 @@
 }
 
 .right-arrow-button,.down-arrow-button{
-  width:20px;
-  height:20px;
-  background-size: 20px auto;
+
   margin:1% auto;
+  background-repeat:no-repeat;
 }
 .down-arrow-button{
     background-image:url('/assets/common_images/black/down_arrow.png'); 
+    width:26px;
+    height:18px;
+    background-size: 25px auto;
 }
 .right-arrow-button{
     background-image:url('/assets/common_images/black/right_arrow.png'); 
+    width:18px;
+    height:26px;
+    background-size: 16px auto;
 }
 
 /*---------------- carousal ---------------------------*/

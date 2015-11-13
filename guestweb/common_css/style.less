@@ -16,6 +16,12 @@ body {
     font-size: 100%;
     font-family: 'Source Sans Pro';
 }
+.main-text,.sub-text,.sub-main-text,.footer-text{
+    font-weight:lighter;
+}
+.main-text{
+    font-size: 30px;
+}
 
 .black-text{
     color: @black !important;
@@ -26,7 +32,10 @@ body {
 }
 
 .sub-text{
-    font-size:14px;
+    font-size:12.3px;
+}
+.strong-font{
+    font-weight:600;
 }
 
 .grey-btn,.grey-btn:hover{
@@ -39,6 +48,8 @@ body {
     margin-top:30px;
     margin-bottom:30px;
     font-size: 18px;
+    padding-left:4%;
+    padding-right:4%;
 }
 
 .time,.amount{
@@ -156,17 +167,16 @@ body {
         margin-top: 10px;
       }
 }
-.main-text{
-    font-size: 30px;
-}
+
 .no-thanks{
     font-size: 16px;
+    text-transform:uppercase;
 }
 .view-bill{
     cursor:pointer;
-    font-size:16px;
+    font-size:18px;
     margin: 0 auto;
-    max-width: 100px !important;
+    max-width: 104px !important;
     div,span{
         float:left;
     }
@@ -175,11 +185,17 @@ body {
 
 
 @media (min-width: 990px) {
-    .checkout-btn{
-        padding:25%;
+    .main-text{
+        font-size: 44px;
+    }
+    .sub-text{
+        font-size:24px !important;
     }
     .sub-main-text{
-        font-size: 20px !important;
+        font-size: 24px !important;
+    }
+    .checkout-btn{
+        padding:25%;
     }
     .checkout-btn,.accept-charges{
         width: 420px;
@@ -202,12 +218,6 @@ body {
     }
     .hide-in-mobile{
         display: block;
-    }
-    .main-text{
-        font-size: 36px;
-    }
-    .sub-text{
-        font-size:16px !important;
     }
     .checkout-alone-button{
         float:left;
@@ -263,6 +273,16 @@ body {
     }
     .footer-text{
      font-size: 14px;
+    }
+    .input-field {
+        font-size: 18px;
+        padding: 0;
+    }
+    .done-calendar{
+        padding-left:2px !important;
+    }
+    .calendar-button {
+        background-size: 35px 31px;
     }
 }
 

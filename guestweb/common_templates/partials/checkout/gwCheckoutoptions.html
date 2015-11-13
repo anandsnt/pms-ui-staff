@@ -3,19 +3,19 @@
     <img alt="" class="logo-image" src="{{hotelLogo}}"/>
 </div>
 <!-- main section starts here -->
-<div class="container">
-    <div class="row">
+<div class="container-fluid padding-0">
+    <div class="row padding-0 no-side-margin">
         <div class="col-sm-2"></div>
         <!-- left side -->
         <div class="col-sm-4 top-spacing">
-            <p class="main-text">Read to checkout</p>
-            <p class="sub-main-text template-text">Check-out time is at {{checkoutTime}}. <strong>Request a late check-out if you need more time.</strong></p>
+            <p class="main-text">Late check-out?</p>
+            <p class="sub-main-text template-text">Check-out time is at {{checkoutTime}}. <span class="strong-font">Request a late check-out if you need more time.</span></p>
         </div>
         <div class="col-sm-1"></div>
         <!-- right side -->
-        <div class="col-sm-4 top-spacing">
+        <div class="col-sm-4 no-side-padding top-spacing">
             <div class="section-container">
-                 <a class="btn dual-button half-width pull-left" ui-sref="checkOutConfirmation">
+                 <a class="btn dual-button half-width pull-left light-button" ui-sref="checkOutConfirmation">
                     Checkout<br>Now
                     <div class="checkout-icon"></div>
                  </a>
@@ -28,7 +28,7 @@
         <div class="col-sm-1">
         </div>                   
     </div>
-    <div class="row footer-text">
+    <div class="row footer-text no-side-margin">
             Come back to this page to check-out any time before {{checkoutTime}}.
     </div>
 </div>
