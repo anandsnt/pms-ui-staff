@@ -34,12 +34,17 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };
 
+    // To handle date updation on summary tab
+    $rootScope.$on('summaryDateChanged',function(){
+        initSummaryData();
+    });
+
     /* To fetch the details on each balance tab 
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object} 
      */
     var fetchBalanceDetails = function( balance_type , toggleItem , isFromPagination ){
-
+        
         var successCallBackFetchBalanceDetails = function(responce){
 
             toggleItem.transactions = [];
@@ -68,7 +73,6 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
         // Call api only while expanding the tab ..
         if(!toggleItem.active || isFromPagination) {
-
             var params = {
                 "date": $scope.data.summaryDate,
                 "page_no": 1,
@@ -87,6 +91,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
      *   @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
      */
     $scope.toggleJournalSummaryItem = function( balance_type ) {
+        
         var toggleItem = "";
 
         switch( balance_type ) {
@@ -96,12 +101,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             case 'GUEST_BALANCE' :
                 toggleItem = $scope.data.summaryData.guest_balance;
                 break;
-            case 'GUEST_BALANCE' :
+            case 'AR_BALANCE' :
                 toggleItem = $scope.data.summaryData.ar_balance;
                 break;
         }
-        console.log(toggleItem);
-        //toggleItem.active = !toggleItem.active;
 
         fetchBalanceDetails( balance_type , toggleItem , false );
     };

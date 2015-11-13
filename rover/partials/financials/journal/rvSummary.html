@@ -8,157 +8,157 @@
 
 <!-- Content -->
 <div ng-controller="RVJournalSummaryController" id="journal-content" ng-iscroll='summary_content' class="journal-content summary scrollable">
-    
-    <div class="journal-summary first">
-        <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active'}" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
-        <ul>
-            <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
-            <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
-            <li>{{'CREDIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_credits | number: precisonTwo }}</span></li>
-            <li>{{'CLOSING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
-        </ul>
-    </div>
+    <div class="wrapper"> 
+        <div class="journal-summary first">
+            <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
+            <ul>
+                <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
+                <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
+                <li>{{'CREDIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_credits | number: precisonTwo }}</span></li>
+                <li>{{'CLOSING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
+            </ul>
+        </div>
 
-    <div class="journal-grid print-details">
-        <table class="grid-items">
-            <thead>
-                <tr>
-                    <th scope="col">Room</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Reservation Number</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Debit</th>
-                    <th scope="col">Credit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in data.summaryData.deposit_balance">
-                    <td>{{item.room}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.reservation_number}}</td>
-                    <td>{{item.type}}</td>
-                    <td ng-bind-html="item.details"></td>
-                    <td>{{item.time}}</td>
-                    <td>{{item.debit}}</td>
-                    <td>{{item.credit}}</td>
-                </tr>
-                
-                <!-- .. repeat for each posting -->
-                <!-- Pagination row -->
-                <tr class="pagination hidden">
-                    <td colspan="8">
-                        <div class="search-pagination">
-                            <button type="button" class="button dark-grey next">Next</button>
-                            <button type="button" class="button dark-grey prev">Previous</button>
-                            <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="journal-grid print-details" ng-show="data.summaryData.deposit_balance.active">
+            <table class="grid-items">
+                <thead>
+                    <tr>
+                        <th scope="col">Room</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reservation Number</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Debit</th>
+                        <th scope="col">Credit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in data.summaryData.deposit_balance.transactions">
+                        <td>{{item.room}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.reservation_number}}</td>
+                        <td>{{item.type}}</td>
+                        <td ng-bind-html="item.details"></td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.debit}}</td>
+                        <td>{{item.credit}}</td>
+                    </tr>
+                    
+                    <!-- .. repeat for each posting -->
+                    <!-- Pagination row -->
+                    <tr class="pagination hidden">
+                        <td colspan="8">
+                            <div class="search-pagination">
+                                <button type="button" class="button dark-grey next">Next</button>
+                                <button type="button" class="button dark-grey prev">Previous</button>
+                                <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="journal-summary">
-        <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active'}" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
-        <ul>
-            <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
-            <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
-            <li><span>{{currencySymbol}}{{data.summaryData.guest_credits | number: precisonTwo }}</span></li>
-            <li><span>{{currencySymbol}}{{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
-        </ul>
-    </div>
+        <div class="journal-summary">
+            <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
+            <ul>
+                <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{data.summaryData.guest_credits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
+            </ul>
+        </div>
 
-    <div class="journal-grid print-details">
-        <table class="grid-items">
-            <thead>
-                <tr>
-                    <th scope="col">Room</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Reservation Number</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Debit</th>
-                    <th scope="col">Credit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in data.summaryData.guest_balance">
-                    <td>{{item.room}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.reservation_number}}</td>
-                    <td>{{item.type}}</td>
-                    <td ng-bind-html="item.details"></td>
-                    <td>{{item.time}}</td>
-                    <td>{{item.debit}}</td>
-                    <td>{{item.credit}}</td>
-                </tr>
-                <!-- .. repeat for each posting -->
-                <!-- Pagination row -->
-                <tr class="pagination hidden">
-                    <td colspan="8">
-                        <div class="search-pagination">
-                            <button type="button" class="button dark-grey next">Next</button>
-                            <button type="button" class="button dark-grey prev">Previous</button>
-                            <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="journal-grid print-details" ng-show="data.summaryData.guest_balance.active">
+            <table class="grid-items">
+                <thead>
+                    <tr>
+                        <th scope="col">Room</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reservation Number</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Debit</th>
+                        <th scope="col">Credit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in data.summaryData.guest_balance.transactions">
+                        <td>{{item.room}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.reservation_number}}</td>
+                        <td>{{item.type}}</td>
+                        <td ng-bind-html="item.details"></td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.debit}}</td>
+                        <td>{{item.credit}}</td>
+                    </tr>
+                    <!-- .. repeat for each posting -->
+                    <!-- Pagination row -->
+                    <tr class="pagination hidden">
+                        <td colspan="8">
+                            <div class="search-pagination">
+                                <button type="button" class="button dark-grey next">Next</button>
+                                <button type="button" class="button dark-grey prev">Previous</button>
+                                <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="journal-summary">
-        <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active'}" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
-        <ul>
-            <li><span>{{currencySymbol}}{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
-            <li><span>{{currencySymbol}}{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
-            <li><span>{{currencySymbol}}{{data.summaryData.ar_credits | number: precisonTwo }}</span></li>
-            <li><span>{{currencySymbol}}{{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
-        </ul>
-    </div>
+        <div class="journal-summary">
+            <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active }" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
+            <ul>
+                <li><span>{{currencySymbol}}{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{data.summaryData.ar_credits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
+            </ul>
+        </div>
 
-    <div class="journal-grid print-details">
-        <table class="grid-items">
-            <thead>
-                <tr>
-                    <th scope="col">Room</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Reservation Number</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Debit</th>
-                    <th scope="col">Credit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in data.summaryData.ar_balance">
-                    <td>{{item.room}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.reservation_number}}</td>
-                    <td>{{item.type}}</td>
-                    <td ng-bind-html="item.details"></td>
-                    <td>{{item.time}}</td>
-                    <td>{{item.debit}}</td>
-                    <td>{{item.credit}}</td>
-                </tr>
-                <!-- .. repeat for each posting -->
-                <!-- Pagination row -->
-                <tr class="pagination hidden">
-                    <td colspan="8">
-                        <div class="search-pagination">
-                            <button type="button" class="button dark-grey next">Next</button>
-                            <button type="button" class="button dark-grey prev">Previous</button>
-                            <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="journal-grid print-details" ng-show="data.summaryData.ar_balance.active">
+            <table class="grid-items">
+                <thead>
+                    <tr>
+                        <th scope="col">Room</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reservation Number</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Debit</th>
+                        <th scope="col">Credit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in data.summaryData.ar_balance.transactions">
+                        <td>{{item.room}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.reservation_number}}</td>
+                        <td>{{item.type}}</td>
+                        <td ng-bind-html="item.details"></td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.debit}}</td>
+                        <td>{{item.credit}}</td>
+                    </tr>
+                    <!-- .. repeat for each posting -->
+                    <!-- Pagination row -->
+                    <tr class="pagination hidden">
+                        <td colspan="8">
+                            <div class="search-pagination">
+                                <button type="button" class="button dark-grey next">Next</button>
+                                <button type="button" class="button dark-grey prev">Previous</button>
+                                <p>Showing <strong>1-{limit}</strong> of <strong>{total}</strong> items</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="journal-summary totals">
             <h3 translate>TOTALS</h3>
