@@ -75,6 +75,52 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
         return deferred.promise;
     };
 
+    /*
+     * Service function to fetch journal summary
+     * @return {object} journal summary
+     */
+    that.fetchBalanceDetails = function (params) {
+    	var deferred = $q.defer();
+        var url = "api/financial_transactions/daily_balance_details?date="+params.date+"&page_no="+params.page_no+"&per_page="+params.per_page+"&type="+params.type;
+        var data = {
+				    "total_count": 100,
+				    "transactions": [
+				        {
+				            "id": 2186818,
+				            "room": "137",
+				            "name": "Kathleen Holley",
+				            "reservation_number": "108606",
+				            "type": "EOD",
+				            "details": "<br />- End of Day",
+				            "time": "01:12 am",
+				            "debit": "5.94",
+				            "credit": ""
+				        },
+				        {
+				            "id": 2186821,
+				            "room": "314",
+				            "name": "Michael Merlino",
+				            "reservation_number": "100090",
+				            "type": "EOD",
+				            "details": "<br />- End of Day",
+				            "time": "01:12 am",
+				            "debit": "5.4",
+				            "credit": ""
+				        }
+				    ],
+				    "is_eod_in_progress": false,
+				    "is_eod_manual_started": false
+				};
+
+		deferred.resolve(data);
+        /*BaseWebSrvV2.getJSON(url).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });*/
+        return deferred.promise;
+    };
+
     /*********************************************************************************************
 
     Flags used for REVENUE DATA and PAYMENTS DATA.

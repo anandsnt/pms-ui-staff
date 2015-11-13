@@ -10,7 +10,7 @@
 <div ng-controller="RVJournalSummaryController" id="journal-content" ng-iscroll='summary_content' class="journal-content summary scrollable">
     
     <div class="journal-summary first">
-        <h3 class="has-arrow toggle" ng-click="toggleJournalSummaryItem()" translate>DEPOSIT_BAL</h3>
+        <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active'}" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
         <ul>
             <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
             <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
@@ -34,36 +34,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
+                <tr ng-repeat="item in data.summaryData.deposit_balance">
+                    <td>{{item.room}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.reservation_number}}</td>
+                    <td>{{item.type}}</td>
+                    <td ng-bind-html="item.details"></td>
+                    <td>{{item.time}}</td>
+                    <td>{{item.debit}}</td>
+                    <td>{{item.credit}}</td>
                 </tr>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
-                </tr>
-                <tr>
-                   <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
-                </tr>
+                
                 <!-- .. repeat for each posting -->
                 <!-- Pagination row -->
                 <tr class="pagination hidden">
@@ -80,7 +61,7 @@
     </div>
 
     <div class="journal-summary">
-        <h3 class="has-arrow toggle" ng-click="toggleJournalSummaryItem()" translate>GUEST_BAL</h3>
+        <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active'}" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
         <ul>
             <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
             <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
@@ -104,35 +85,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
-                </tr>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
-                </tr>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
+                <tr ng-repeat="item in data.summaryData.guest_balance">
+                    <td>{{item.room}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.reservation_number}}</td>
+                    <td>{{item.type}}</td>
+                    <td ng-bind-html="item.details"></td>
+                    <td>{{item.time}}</td>
+                    <td>{{item.debit}}</td>
+                    <td>{{item.credit}}</td>
                 </tr>
                 <!-- .. repeat for each posting -->
                 <!-- Pagination row -->
@@ -150,7 +111,7 @@
     </div>
 
     <div class="journal-summary">
-        <h3 class="has-arrow toggle" ng-click="toggleJournalSummaryItem()" translate>AR_BALANCE</h3>
+        <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active'}" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
         <ul>
             <li><span>{{currencySymbol}}{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
             <li><span>{{currencySymbol}}{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
@@ -174,35 +135,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
-                </tr>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
-                </tr>
-                <tr>
-                    <td>123</td>
-                    <td>eewee</td>
-                    <td>123</td>
-                    <td>asssss</td>
-                    <td>asdasdasd</td>
-                    <td>122</td>
-                    <td>122</td> 
-                    <td>111</td> 
+                <tr ng-repeat="item in data.summaryData.ar_balance">
+                    <td>{{item.room}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.reservation_number}}</td>
+                    <td>{{item.type}}</td>
+                    <td ng-bind-html="item.details"></td>
+                    <td>{{item.time}}</td>
+                    <td>{{item.debit}}</td>
+                    <td>{{item.credit}}</td>
                 </tr>
                 <!-- .. repeat for each posting -->
                 <!-- Pagination row -->
