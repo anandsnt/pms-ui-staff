@@ -2,6 +2,7 @@
     /* Journal options ***/
     .journal-header {
         position: relative;
+        padding-left: 20px;
         height: 90px;
         background: rgba(0,0,0,.1);
         .float;
@@ -60,7 +61,7 @@
                 position: relative;
                 #border-radius > .rounded();
                 .box-shadow();
-                .size(50px, 160px);
+                .size(50px, 100%);
                 .show;
 
                 input {
@@ -100,37 +101,29 @@
                 &:hover { background-position: 92% -34px; }
             } 
 
-            &.filter { 
-                margin-left: 20px;
-                width: 180px; 
-            }
+            &.filter { width: 180px; }
+            &.date { width: 175px; }
 
-            &.date { width: 160px; }
-        }
+            &.summary {
+                position: relative;
+                margin-right: 0;
+                .calc-width(100, 440);
 
-        .summary {
-            position: relative;
-            padding: 20px;
-            text-transform: uppercase;
-            line-height: 1;
-            .calc-width(100, 440);
-            .pull-left;
+                .entry-data {
+                    width: 225px;
 
-            span {
-                font-size: 14px;
-                .show;
-            }
+                    .month,
+                    .year { 
+                        left: 65px;
+                    }
+                }
 
-            strong {
-                font-size: 36px;
-                font-weight: 300;
-                .show;
-            }
-
-            .button {
-                position: absolute;
-                top: 25px;
-                right: 25px;
+                .button {
+                    position: absolute;
+                    top: 30px;
+                    right: 20px;
+                    line-height: 50px;
+                }
             }
         }
 
@@ -249,14 +242,8 @@
                 .faux-select { 
                     &.active { width: 100%; }
                 }
-
-                &.date { margin-left: 20px; }
-
-                &.filter { 
-                    margin-left: 0;
-                    width: 180px; 
-                    position: relative;
-                }
+                
+                &.filter { position: relative; }
 
                 &.action {
                     margin-top: 20px;
