@@ -52,14 +52,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	};
         
          $scope.generalError = function(response){
-            $scope.$emit('hideLoader');
-            console.log(arguments);
-            if (response && response[0]){
-                $state.errorReceived = response[0];
-            } else {
-                $state.errorReceived = null;
-            }
-            $state.go('zest_station.error');
+            $scope.$emit('GENERAL_ERROR',response);
         };
         
         
@@ -92,9 +85,18 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                                             Please find a staff member to help you.';
                 $scope.modalBtn1 = 'Done';
         };
+        $scope.initKeyErrorScreen = function(){
+                $scope.at = 'key-error';
+                $scope.headingText = 'We were not able to make keys.';
+                $scope.subHeadingText = 'Please re-try or speak to a staff member.';
+                $scope.modalBtn1 = '';
+        };
         
         $scope.navToHome = function(){
 		$state.go ('zest_station.home');
+        };
+        $scope.initStaff = function(){
+            $state.go('zest_station.speak_to_staff');
         };
         
         $scope.goToNext = function(){
@@ -116,20 +118,39 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.selectedReservation = $state.selectedReservation;
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
+            } else if (current === 'zest_station.key_error'){
+                $scope.initKeyErrorScreen();
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
+            } else if (current === 'registration_printed'){
+                $scope.printOpted = true;
+                $scope.at = 'registration_printed';
+                $scope.from = 'deliver-registration';
             }
-            
-            
             
         };
         
-        $scope.clickedPrint = function(){
-            
-        };
 
+        $scope.clickedPrint= function(){
+            // print section - if its from device call cordova.
+            try{
+              window.print();
+              if ( sntapp.cordovaLoaded ) {
+                  cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', ['filep', '1']);
+              };
+              $scope.printOpted = true;
+              // provide a delay for preview to appear
+              $timeout(function() {
+                  $state.go('zest_station.registration_printed');
+                     //  checkOutGuest();
+              }, 3000);
 
+            }
+            catch(e){
+
+            }
+        };  
 
         $scope.getLastInputEmail = function(){
             if ($state.input && $state.input.lastEmailValue){

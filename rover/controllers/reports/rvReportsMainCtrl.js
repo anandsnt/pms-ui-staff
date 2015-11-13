@@ -258,14 +258,14 @@ sntRover.controller('RVReportsMainCtrl', [
 				var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
 				$scope.toDateOptionsOneYearLimit.minDate = selectedDate;
-				$scope.toDateOptionsOneYearLimit.maxDate = getDateAfterOneYear (selectedDate);
+				$scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;
 			}
 		}, datePickerCommon);
 		var datesUsedForCalendar = reportUtils.processDate();
 
 		$scope.toDateOptionsOneYearLimit = angular.extend({
 			minDate: datesUsedForCalendar.monthStart,
-			maxDate: getDateAfterOneYear (datesUsedForCalendar.monthStart)
+			maxDate: reportUtils.processDate(datesUsedForCalendar.monthStart).aYearAfter
 		}, datePickerCommon);
 
 		// custom from and untill date picker options
@@ -280,6 +280,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			// touched by the user
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
+
+			if (item.title === reportNames['DAILY_PRODUCTION']) {
+				if (item.fromDate > item.untilDate) {
+					item.untilDate = item.fromDate;
+				}
+			}
 
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
@@ -519,6 +525,41 @@ sntRover.controller('RVReportsMainCtrl', [
 			};
 
 			return selectedItems;
+		};
+
+		//Get the charge codes corresponding to selected charge groups
+		$scope.chargeGroupfauxSelectChange = function (reportItem, fauxDS, allTapped) {
+			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+
+			_.each (reportItem.hasByChargeCode.originalData, function (each) {
+				each.disabled = true;
+			});
+
+			_.each (reportItem.hasByChargeCode.originalData, function (each) {
+				_.each (each.associcated_charge_groups, function (chargeGroup) {
+					_.each (selectedItems, function (eachItem) {
+						if (chargeGroup.id === eachItem.id) {
+							each.disabled = false;
+						}
+					});
+				});
+			});
+
+			$scope.chargeCodeFauxSelectChange(reportItem, reportItem.hasByChargeCode, allTapped);
+		};
+
+		//Refill hasByChargeCode.data with the charge codes corresponding to selected charge groups
+		$scope.chargeCodeFauxSelectChange = function (reportItem, fauxDS, allTapped) {
+			var requiredChardeCodes = [];
+
+			_.each (fauxDS.originalData, function (each) {
+				if (!each.disabled) {
+					requiredChardeCodes.push(each);
+				}
+			});
+
+			fauxDS.data = requiredChardeCodes;
+			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
 		};
 
 		// show the no.of addons selected
@@ -1190,12 +1231,12 @@ sntRover.controller('RVReportsMainCtrl', [
 				case reportNames['DAILY_PRODUCTION']: 
 					exportUrl = "/api/reports/30/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
 					break;
-				
+
 				default:
 					exportUrl = "";
-					break;					
+					break;
 			}
-			
+
 			return exportUrl;
 		};
 
