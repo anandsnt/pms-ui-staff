@@ -574,12 +574,9 @@ sntRover.controller('roverController',
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
-
-      //to add stjepan's popup showing animation
-      $rootScope.modalOpened = false;
+      ngDialog.close();
 
       setTimeout(function() {
-        ngDialog.close();
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);
@@ -655,11 +652,6 @@ sntRover.controller('roverController',
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
         LastngDialogId = $dialog.attr('id');
-        //to add stjepan's popup showing animation
-        $rootScope.modalOpened = false;
-        $timeout(function() {
-            $rootScope.modalOpened = true;
-        }, 300);
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {

@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+<div id="modal" class="modal-show" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
 <form ng-show="!shouldShowWaiting" method="post" action="cancel-reservation" id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-class="{'select-card':ngDialogData.state == 'PENALTY'}"><!-- Add class "select-card" when applying penalty charge -->
     <button class="modal-close" id="modal-close" type="button" ng-click="completeCancellationProcess()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>   

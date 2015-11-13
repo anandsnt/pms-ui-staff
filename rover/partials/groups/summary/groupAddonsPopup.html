@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" role="dialog" ng-cloak>
     <div class="modal-content" ng-class="{'alert': groupConfigData.selectedAddons.length === 0, 'room-enhancements':groupConfigData.selectedAddons.length>0}">
         <span class="h2 message" ng-show="groupConfigData.selectedAddons.length > 0">{{groupConfigData.summary.group_name}} Enhancements</span>
         <span class="icons icon-popup-alert" ng-show="groupConfigData.selectedAddons.length === 0"></span>
