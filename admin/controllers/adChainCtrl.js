@@ -38,8 +38,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 				$scope.editData.lov.push({'value':'','name':''});
 			}
 			$scope.isEditmode = true;
-			$scope.fileName = ($scope.editData.ca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
-			$scope.apns_file = ( $scope.editData.apns_certificate_exists) ? 'Certificate Attached' :'Choose file ...';
+			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' :'Choose file ...';
+			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' :'Choose file ...';
 		};
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
