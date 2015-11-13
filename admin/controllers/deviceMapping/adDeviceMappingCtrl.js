@@ -171,7 +171,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 			"identifier": $scope.mapping.station_identifier
 		};
                 if (typeof $scope.mapping.selectedKeyEncoder !== typeof undefined){
-                    data.key_encoder = $scope.mapping.selectedKeyEncoder;
+                    data.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
                 }
 		if($scope.isAddMode){
 			$scope.invokeApi(ADDeviceSrv.createMapping, data , successCallbackSave);
