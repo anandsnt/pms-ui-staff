@@ -1,5 +1,6 @@
 admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTableParams', 'ngDialog', 'adTransactionCenterSrv', '$state',
     function($scope, ADFloorSetupSrv, ngTableParams, ngDialog, adTransactionCenterSrv, $state) {
+        
         BaseCtrl.call(this, $scope);
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
@@ -91,7 +92,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         // /===================/ METHODS IN SCOPE /===================/ //
 
         $scope.selectFloor = function(floorIdx) {
-            if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+            if (!!$scope.roomAssignment.selectedRooms.length) {
                 promptUserCommit(outwardNavigation.FLOOR_CHANGE, {
                     floorIdx: floorIdx
                 });
@@ -114,7 +115,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         };
 
         $scope.toggleAvailableRooms = function() {
-            if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+            if (!!$scope.roomAssignment.selectedRooms.length) {
                 promptUserCommit(outwardNavigation.TAB_SWITCH)
             } else {
                 $scope.roomAssignment.activeTab = $scope.roomAssignment.activeTab === "AVAILABLE" ? "ASSIGNED" : "AVAILABLE";
@@ -228,14 +229,18 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             $scope.toggleAssignFloors();
         };
 
-        $scope.$on("CONFIRM_USER_ACTION", function(event, message) {
+        // /===================/ LISTENERS /===================/ //
+
+        var eventListener = $scope.$on("CONFIRM_USER_ACTION", function(event, message) {
             // Additional Check here as Emits and Broadcasts are used to communicate between parents and children
-            if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+            if (!!$scope.roomAssignment.selectedRooms.length) {
                 promptUserCommit(outwardNavigation[message.userAction], message.params);
             } else {
                 $scope.onContinueAction(outwardNavigation[message.userAction], message.params)
             }
         });
+
+        $scope.$on('$destroy', eventListener);
 
         initController();
     }
