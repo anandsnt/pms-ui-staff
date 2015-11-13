@@ -1,5 +1,5 @@
-admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', '$timeout', '$location', '$anchorScroll',
-					function(ngTableParams, $scope, $state, ADDeviceSrv, $timeout, $location, $anchorScroll){
+admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', '$timeout', '$location', '$anchorScroll',
+					function(ngTableParams, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, $timeout, $location, $anchorScroll){
 
 	$scope.errorMessage = '';
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -40,9 +40,32 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		        getData: $scope.listDevices
 		    }
 		);
+            $scope.fetchKeyEncoderList();
+                
 	};
 
+        
+        
+	$scope.failureCallBack =  function(response){
+            console.warn(response);
+	};
+        $scope.key_encoders = [];
+        $scope.selectedKeyEncoder;
+        $scope.fetchKeyEncoderList = function(){
+            var onSuccess = function(data){
+                    $scope.key_encoders = data.results;
+                    $scope.$emit('hideLoader');
+            };
+            var options = {
+                params:                 {},
+                successCallBack: 	    onSuccess,
+                failureCallBack:        $scope.failureCallBack
+            };
+            $scope.callAPI(ADKeyEncoderSrv.fetchEncoders, options);
+        };
+        
 	$scope.loadTable();
+        
 	//To list device mappings
 	/*
     * To render edit device mapping screen
@@ -115,6 +138,14 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	/*
 	 * To save mapping
 	 */
+        
+        $scope.isValidWorkStation = function(){
+            //check if required fields are filled out
+            if (!$scope.mapping.name || !$scope.mapping.station_identifier){
+                return false;
+            } else return true;
+            
+        };
 	$scope.saveMapping = function(){
 		var successCallbackSave = function(successData){
     		$scope.$emit('hideLoader');
@@ -139,6 +170,9 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 			"name": $scope.mapping.name,
 			"identifier": $scope.mapping.station_identifier
 		};
+                if (typeof $scope.mapping.selectedKeyEncoder !== typeof undefined){
+                    data.key_encoder = $scope.mapping.selectedKeyEncoder;
+                }
 		if($scope.isAddMode){
 			$scope.invokeApi(ADDeviceSrv.createMapping, data , successCallbackSave);
 		} else {

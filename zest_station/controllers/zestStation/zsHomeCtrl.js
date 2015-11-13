@@ -75,12 +75,13 @@ sntZestStation.controller('zsHomeCtrl', [
     	var saveCompleted = function(){
     		$scope.$emit('hideLoader');
     		$scope.closeDialog();
-    	}
+    	};
     	var params = {
-                        'kiosk': {
-                            'idle_timer':$scope.zestStationData.idle_timer
-                        }
-                	};
+            'kiosk': {
+                'idle_timer':$scope.zestStationData.idle_timer,
+                'work_station':$scope.zestStationData.selectedWorkStation
+            }
+        };
 
         var options = {
     		params: 			params,

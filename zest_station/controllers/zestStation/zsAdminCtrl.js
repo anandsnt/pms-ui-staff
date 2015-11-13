@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
 	'$scope',
-	'$state','zsEventConstants',
-	function($scope, $state,zsEventConstants) {
+	'$state','zsEventConstants', 'zsTabletSrv',
+	function($scope, $state,zsEventConstants, zsTabletSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -20,6 +20,53 @@ sntZestStation.controller('zsAdminCtrl', [
 		$scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
 	}
 
+        
+        $scope.zestStationData.workstations = [];
+	$scope.getWorkStationList = function($defer, params){
+            console.info('$scope.getWorkStationList')
+	/*	
+            var getParams = $scope.calculateGetParams(params);
+		var fetchSuccessOfItemList = function(data){
+			$scope.$emit('hideLoader');
+			//No expanded rate view
+			$scope.currentClickedElement = -1;
+			$scope.totalCount = data.total_count;
+			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.data = data.work_stations;
+			$scope.currentPage = params.page();
+        	params.total(data.total_count);
+        	$scope.isAddMode = false;
+            $defer.resolve($scope.data);
+		};
+		$scope.invokeApi(ADDeviceSrv.fetch, getParams, fetchSuccessOfItemList);
+                
+                */
+                var onSuccess = function(response){
+                    if (response){
+                        $scope.zestStationData.workstations = response.work_stations;
+                    }
+                };
+                var onFail = function(response){
+                    console.warn('fetching workstation list failed:',response);
+                };
+            //?page=1&per_page=10&query=&sort_dir=true&sort_field=name
+            var options = {
+                
+                params:                 {
+                    page: 1,
+                    per_page: 100,
+                    query:'',
+                    sort_dir: true,
+                    sort_field: 'name'
+                },
+                successCallBack: 	    onSuccess,
+                failureCallBack:        onFail
+            };
+            $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+                
+	};
+
+
 	// initialize
 
 	var initialize = function(){	
@@ -27,6 +74,7 @@ sntZestStation.controller('zsAdminCtrl', [
 		$scope.userName = "";
 		$scope.passWord = "";
 		hideNavButtons();
+                $scope.getWorkStationList();
         //mode
         $scope.mode        = 'options-mode';
 	};
@@ -54,6 +102,8 @@ sntZestStation.controller('zsAdminCtrl', [
 		$scope.headingText = 'Admin Username';
 		showNavButtons();
 	};
+        
+        
 
 	$scope.goToNext  = function(){
 		if($scope.mode   === "admin-name-mode"){
