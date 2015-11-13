@@ -51,9 +51,13 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                 var inList = _.detect($scope.roomAssignment.selectedRooms, {
                     id: room.id
                 });
-                if (!!inList && !!inList.id && toggleIndividualRoom) {
+                // Remove ONLY existing rooms
+                // To handle multi select toggle, if the room is in selected state ; 
+                // DO NOT remove it from persisted list; (we should only add others to the list in such a case)
+                if (!!inList && !!inList.id && (toggleIndividualRoom || (!toggleIndividualRoom && !room.isSelected))) {
                     $scope.roomAssignment.selectedRooms = _.without($scope.roomAssignment.selectedRooms, inList);
-                } else {
+                } 
+                else if(!inList){ //Add only rooms that arent in the list already!
                     $scope.roomAssignment.selectedRooms.push(room);
                 }
                 updateParentsAboutSelectedRooms();
