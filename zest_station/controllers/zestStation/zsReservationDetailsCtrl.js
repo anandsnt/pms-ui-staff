@@ -78,12 +78,20 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             $scope.at = 'add-guest-last';
             $state.lastAt = 'add-guests';
             $scope.headingText = 'Enter the Guests Last Name';
+            setTimeout(function(){
+                $scope.clearInputText();
+            },50)
+            
+            
             $scope.hideNavBtns = false;
         };
         $scope.setAddGuestFirst = function(){
             $scope.at = 'add-guest-first';
             $state.lastAt = 'add-guests';
             $scope.headingText = 'Enter the Guests First Name';
+            setTimeout(function(){
+                $scope.clearInputText();
+            },50)
             $scope.hideNavBtns = false;
         };
 
@@ -93,7 +101,9 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             $scope.addGuestsHeading = 'Additional Guests';
             $scope.hideNavBtns = false;
         };
-
+        $scope.formatCurrency = function(amt){
+            return parseFloat(amt).toFixed(2);
+         };
 
 
         $scope.init = function(r){
@@ -136,6 +146,9 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             }
         };
         
+        $scope.clearInputText = function(){
+            $scope.input.inputTextValue = '';
+        };
         
         $scope.addAGuest = function(){
             $state.go('zest_station.add_guest_first');
@@ -176,7 +189,14 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         };
         
             $scope.clearInputText = function(){
-                $scope.input.inputTextValue = '';
+                if ($scope.input){
+                    $scope.input.inputTextValue = '';
+                } else {
+                    $scope.input = {
+                        inputTextValue: ""
+                    };
+                    $scope.$digest();
+                }
             };
         
             $scope.goToTerms = function(){

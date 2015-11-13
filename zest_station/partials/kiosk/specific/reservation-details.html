@@ -24,7 +24,8 @@
                         
                         <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
-                            <span>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
+                            <span ng-show='{{!addon.is_inclusive}}'>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
+                            <span ng-show='{{addon.is_inclusive}}'>INCLUDED</span>
                         </li>
                         
                         <li class="break"></li>
