@@ -7,7 +7,7 @@ admin.controller('ADFloorsListCtrl',
         '$anchorScroll',
         '$timeout',
         '$location',
-        '$state',
+        'adTransactionCenterSrv',
     function(
         $scope,
         $state,
@@ -17,7 +17,7 @@ admin.controller('ADFloorsListCtrl',
         $anchorScroll,
         $timeout,
         $location,
-        $state){
+        adTransactionCenterSrv){
 
 	BaseCtrl.call(this, $scope);
 
@@ -33,8 +33,7 @@ admin.controller('ADFloorsListCtrl',
         $scope.showTableDetails = false;
 
         $scope.stateVariables = {
-            activeTab: "MANAGE", // possible values are MANAGE for 'Manage Floors' & 'ASSIGN' for 'Assign Rooms'
-            areUncommitedSelectedRoomsPresent: false
+            activeTab: "MANAGE" // possible values are MANAGE for 'Manage Floors' & 'ASSIGN' for 'Assign Rooms'
         };
 
 	};
@@ -116,17 +115,11 @@ admin.controller('ADFloorsListCtrl',
          $scope.listFloorTypes();
     });
 
-    $scope.$on("UNCOMMITED_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT",function(){
-         $scope.stateVariables.areUncommitedSelectedRoomsPresent = true;
-    });
-
-    $scope.$on("ZERO_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT",function(){
-         $scope.stateVariables.areUncommitedSelectedRoomsPresent = false;
-    });
-
     $scope.toggleAssignFloors = function(){
-        if($scope.stateVariables.activeTab === 'ASSIGN' && $scope.stateVariables.areUncommitedSelectedRoomsPresent){
-            $scope.$broadcast('CONFIRM_USER_ACTION', "MANAGE_FLOORS");
+        if(adTransactionCenterSrv.isTransactionRunning('SELECT_ROOMS_IN_ASSIGN_FLOORS')){
+            $scope.$broadcast('CONFIRM_USER_ACTION', {
+                userAction : "MANAGE_FLOORS"
+            });
         }else{            
             $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
         }

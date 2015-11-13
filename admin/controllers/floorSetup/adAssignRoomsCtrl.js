@@ -1,12 +1,14 @@
-admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTableParams', 'ngDialog',
-    function($scope, ADFloorSetupSrv, ngTableParams, ngDialog) {
+admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTableParams', 'ngDialog', 'adTransactionCenterSrv', '$state',
+    function($scope, ADFloorSetupSrv, ngTableParams, ngDialog, adTransactionCenterSrv, $state) {
         BaseCtrl.call(this, $scope);
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         var outwardNavigation = {
                 "MANAGE_FLOORS": 0,
                 "TAB_SWITCH": 1,
-                "FLOOR_CHANGE": 3
+                "FLOOR_CHANGE": 3,
+                "STATE_CHANGE": 4,
+                "OPEN_MENU": 5
             },
             initController = function() {
                 $scope.roomAssignment = {
@@ -30,9 +32,9 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             },
             updateParentsAboutSelectedRooms = function() {
                 if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
-                    $scope.$emit("UNCOMMITED_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT");
+                    adTransactionCenterSrv.beginTransaction('SELECT_ROOMS_IN_ASSIGN_FLOORS');
                 } else {
-                    $scope.$emit("ZERO_SELECTED_ROOMS_IN_FLOOR_ASSIGNEMENT");
+                    adTransactionCenterSrv.endTransaction('SELECT_ROOMS_IN_ASSIGN_FLOORS');
                 }
             },
             onSaveSuccess = function() {
@@ -40,11 +42,9 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     $scope.closeDialog();
                 }
                 $scope.reloadTable();
-                $scope.roomAssignment.selectedRooms = [];
-                updateParentsAboutSelectedRooms();
+                clearPersistedRoomsList();
                 $scope.$emit("ASSIGNMENT_CHANGED");
             },
-
             persistSelection = function(room, toggleIndividualRoom) {
                 //In case room is already available in selected list --> remove it! else append it to the list
                 var inList = _.detect($scope.roomAssignment.selectedRooms, {
@@ -68,6 +68,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                 });
             },
             promptUserCommit = function(userAction, params) {
+
                 ngDialog.open({
                     template: '/assets/partials/floorSetups/adRoomAssignmentConfirmationPopup.html',
                     scope: $scope,
@@ -80,6 +81,11 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                         params: params
                     })
                 });
+
+            },
+            clearPersistedRoomsList = function() {
+                $scope.roomAssignment.selectedRooms = [];
+                updateParentsAboutSelectedRooms();
             };
 
         // /===================/ METHODS IN SCOPE /===================/ //
@@ -113,8 +119,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             } else {
                 $scope.roomAssignment.activeTab = $scope.roomAssignment.activeTab === "AVAILABLE" ? "ASSIGNED" : "AVAILABLE";
                 $scope.reloadTable();
-                $scope.roomAssignment.selectedRooms = [];
-                updateParentsAboutSelectedRooms();
+                clearPersistedRoomsList();
             }
         };
 
@@ -194,8 +199,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         $scope.onContinueAction = function(userAction, params) {
             $scope.closeDialog();
             // Reset selected Rooms
-            $scope.roomAssignment.selectedRooms = [];
-            updateParentsAboutSelectedRooms();
+            clearPersistedRoomsList();
             // Continue with user action after the user proceeds to ignore his/her selection of rooms
             switch (userAction) {
                 case outwardNavigation.MANAGE_FLOORS:
@@ -206,16 +210,31 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     break;
                 case outwardNavigation.FLOOR_CHANGE:
                     $scope.selectFloor(params.floorIdx);
+                    break;
+                case outwardNavigation.STATE_CHANGE:
+                    $state.go(params.toState.name, params.toParams);
+                    break;
+                case outwardNavigation.OPEN_MENU:
+                    $scope.$emit('navToggled');
+                    break;
+                default:
+                    console.log("user action" + userAction + "NOT handled", params);
             }
         };
 
         $scope.onCancelChanges = function() {
             // On cancel -> Navigate back to manage floors in case user has nothing selected pending commit
+            clearPersistedRoomsList();
             $scope.toggleAssignFloors();
         };
 
-        $scope.$on("CONFIRM_USER_ACTION",function(event, userAction){
-            promptUserCommit(outwardNavigation[userAction]);
+        $scope.$on("CONFIRM_USER_ACTION", function(event, message) {
+            // Additional Check here as Emits and Broadcasts are used to communicate between parents and children
+            if (!!$scope.roomAssignment.selectedRooms && !!$scope.roomAssignment.selectedRooms.length) {
+                promptUserCommit(outwardNavigation[message.userAction], message.params);
+            } else {
+                $scope.onContinueAction(outwardNavigation[message.userAction], message.params)
+            }
         });
 
         initController();
