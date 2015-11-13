@@ -1,0 +1,31 @@
+<!-- navbar -->
+<div class="row header-bar">
+    <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing">
+            <p class="main-text">Read to checkout</p>
+            <p class="sub-main-text">{{checkoutTimessage}} {{checkoutTime}}</p>
+        </div>
+        <div class="col-md-2"></div>
+        <!-- right side -->
+        <div class="col-md-3 top-spacing sm-no-top-spacing no-side-padding">
+            <a class="btn checkout-btn" ui-sref="checkoutBalance">
+                <div class="pull-left">Checkout Now</div>
+                <br class="hide-in-desktop"/>
+                <div class="checkout-icon checkout-alone-button">
+                </div>
+            </a>
+        </div>
+        <div class="col-md-1">
+        </div>                   
+    </div>
+    <div class="row footer-text">
+            <em class = "base-text">{{footerMessage1}}</em><br>
+            Come back to this page to check-out at any time before {{checkoutTime}}.
+    </div>
+</div>
