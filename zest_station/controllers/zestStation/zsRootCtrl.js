@@ -27,7 +27,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.goToAdmin = function() {
 		//disabling for now
-		//$state.go ('zest_station.admin');
+		$state.go ('zest_station.admin');
 	};
 
 	/**
