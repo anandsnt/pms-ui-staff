@@ -22,8 +22,26 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
+            console.info('called go back');
             //$state.go ('zest_station.home');//go back to reservation search results
+            
+            var current = $state.current.name;
+            console.info("current: ",current)
+            if (current === 'zest_station.delivery_options'){
+                $scope.at = 'deliver-registration';
+                $scope.selectedReservation = $state.selectedReservation;
+                
+            } else if (current === 'zest_station.error'){
+                $scope.initErrorScreen();
+            } else if (current === 'zest_station.key_error'){
+                $scope.initKeyErrorScreen();
+            } else if (current === 'zest_station.input_reservation_email_after_swipe'){
+                $scope.at = 'input-email';
+                $scope.from = 'card-swipe';
+            } else if (current === 'registration_printed'){
+                $scope.from = 'deliver-registration';
+            }
+            
 	});
 
 
@@ -106,6 +124,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
                 
         };
+        $scope.setDeliveryParams = function(){
+            $scope.at = 'deliver-registration';
+            $scope.selectedReservation = $state.selectedReservation;
+            $scope.headingText = "Your Registration is Ready";
+            $scope.subHeadingText = "Please select how to receive your registration";
+        };
 
         $scope.init = function(){
             var current = $state.current.name;
@@ -114,16 +138,20 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
             
             if (current === 'zest_station.delivery_options'){
-                $scope.at = 'deliver-registration';
-                $scope.selectedReservation = $state.selectedReservation;
+                $scope.setDeliveryParams();
+                
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
+                
             } else if (current === 'zest_station.key_error'){
                 $scope.initKeyErrorScreen();
+                
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
+                
             } else if (current === 'registration_printed'){
+                
                 $scope.printOpted = true;
                 $scope.at = 'registration_printed';
                 $scope.from = 'deliver-registration';

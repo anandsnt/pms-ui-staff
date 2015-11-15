@@ -52,7 +52,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
-            console.log('and key success')
             setTimeout(function(){
                 $state.go('zest_station.key_success')
             },500);
@@ -100,18 +99,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.input.madeKey = 0;
             };
             
-            var oneKeySuccess = function(){
-                setTimeout(function(){
-                    
-                    $scope.goToKeySuccess();
-
-                    $scope.headingText = 'Success!';
-                    $scope.subHeadingText = 'Please grab your key from the target below';
-                    $scope.modalBtn1 = 'Next';
-                    $scope.input.madeKey = 1;
-                    
-                },2500);
-            };
+            
 
 
             var keyOneOfTwoSetup = function(){
@@ -175,6 +163,17 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             
         };
         
+       $scope.oneKeySuccess = function(){
+            $scope.goToKeySuccess();
+
+            $scope.headingText = 'Success!';
+            $scope.subHeadingText = 'Please grab your key from the target below';
+            $scope.modalBtn1 = 'Next';
+            $scope.input.madeKey = 1;
+        };
+        
+        
+        
         $scope.$watch('encoder',function(){
            console.info(arguments) 
         });
@@ -184,7 +183,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             var successMakeKey = function(response){
                 console.info('success!');
                 console.info(response);
-                
+                $scope.oneKeySuccess();
             };
             var failureMakeKey = function(response){
                 //$scope.$emit('GENERAL_ERROR',response);

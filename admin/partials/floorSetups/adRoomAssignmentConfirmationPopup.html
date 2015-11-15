@@ -1,9 +1,14 @@
 <div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-cloak>
 <form class="modal-content form">
 	<h3 translate>THERE ARE {{ngDialogData.roomCount}} ROOMS SELECTED IN FLOOR {{ngDialogData.floorName}}</h3>
-    <fieldset  class="actions">
+    <fieldset  class="actions" ng-if="roomAssignment.activeTab === 'ASSIGNED'">
         <button type="button" class="button red margin-top-bottom" ng-click="commitChanges()" translate>UNASSIGN</button>
-        <button type="button" class="button green margin-top-bottom" ng-click="onCancelChanges()" translate>LEAVE_ASSIGNED</button>
+        <button type="button" class="button green margin-top-bottom" ng-click="onContinueAction(ngDialogData.userAction, ngDialogData.params)" translate>LEAVE_ASSIGNED</button>
+        <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>GO_BACK</button> 
+    </fieldset>
+    <fieldset  class="actions" ng-if="roomAssignment.activeTab === 'AVAILABLE'">
+        <button type="button" class="button red margin-top-bottom" ng-click="commitChanges()" translate>ASSIGN</button>
+        <button type="button" class="button green margin-top-bottom" ng-click="onContinueAction(ngDialogData.userAction, ngDialogData.params)" translate>LEAVE_UNASSIGNED</button>
         <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>GO_BACK</button> 
     </fieldset>
 </form>
