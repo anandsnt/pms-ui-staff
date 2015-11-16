@@ -824,6 +824,8 @@
                             font-size: 14px;
                             padding: 0 20px; 
                             height: 40px;
+
+                            &:not(:last-child) { margin-right: 10px; }
                         }
 
                         .actions {
@@ -1098,33 +1100,19 @@
                     }
                 }
 
-                /* Contracts & Reservations ***/
-                &.contracts,
-                &.reservations {
+                /* Contracts ***/
+                &.contracts {
+                    
                     .tab-header {
                         padding: 20px;
 
-                        .entry { 
-                            width: 340px; 
+                        .entry {
+                            .float;
 
-                            &.date-range {
-                                .float;
-
-                                .has-datepicker {
-                                    width: 140px;
-                                    .pull-left;
-
-                                    input { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
-                                }
-
-                                span {
-                                    color: @grey3;
-                                    font-size: 14px;
-                                    text-transform: uppercase;
-                                    line-height: 40px;
-                                    margin: 0 10px;
-                                    .pull-left;
-                                }
+                            .select { 
+                                margin-right: 10px;
+                                width: 240px;
+                                .pull-left; 
                             }
                         }
                     }
@@ -1151,6 +1139,37 @@
                                 }
                             }
                         }
+                    }
+                }
+
+                /* Reservations ***/
+                &.reservations {
+
+                    .tab-header {
+                        padding: 20px;
+
+                        .date-range {
+                            .float;
+
+                            .has-datepicker {
+                                width: 140px;
+                                .pull-left;
+
+                                input { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
+                            }
+
+                            span {
+                                color: @grey3;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                line-height: 40px;
+                                margin: 0 10px;
+                                .pull-left;
+                            }
+                        }
+                    }
+
+                    .tab-details {
 
                         .search-results {
                             padding: 0;
@@ -1183,11 +1202,7 @@
                                 }
                             }
                         }
-                    }
-                }
 
-                &.reservations {
-                    .tab-details {
                         &.with-pagination { .calc-height(100, 140); }
                     }
                 }
