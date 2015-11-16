@@ -348,21 +348,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copySingleContractValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.single_contract = cellData.single_contract;
-			});
-			//we changed something
-			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'single_contract',
+				value: cellData.single_contract
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		$scope.copySingleHeldValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.single = cellData.single;
-			});
-			//we changed something
-			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'single',
+				value: cellData.single
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		/**
@@ -373,21 +373,23 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyDoubleContractValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.double_contract = cellData.double_contract;
-			});
-			//we chnged something
 			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'double_contract',
+				value: cellData.double_contract
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		$scope.copyDoubleHeldValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.double = cellData.double;
-			});
-			//we chnged something
 			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'double',
+				value: cellData.double
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		/**
@@ -398,22 +400,23 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyTripleContractValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.triple_contract = cellData.triple_contract;
-			});
-			//we chnged something
 			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'triple_contract',
+				value: cellData.triple_contract
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		$scope.copyTripleHeldValueToOtherBlocks = function(cellData, rowData) {
-			// for mass update set copy_to_all flag to true
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.triple = cellData.triple;
-			});
-			//we chnged something
 			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'triple',
+				value: cellData.triple
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		/**
@@ -424,21 +427,39 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyQuadrupleContractValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.quadruple_contract = cellData.quadruple_contract;
-			});
-			//we chnged something
 			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'quadruple_contract',
+				value: cellData.quadruple_contract
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
 		};
 
 		$scope.copyQuadrupleHeldValueToOtherBlocks = function(cellData, rowData) {
-			rowData.copy_values_to_all = true;
-			_.each(rowData.dates, function(element) {
-				element.quadruple = cellData.quadruple;
-			});
-			//we chnged something
 			$scope.bookingDataChanging();
+			var data = {
+				occupancy: 'quadruple',
+				value: cellData.quadruple
+			};
+			$scope.selectedRoomType = rowData;
+			$scope.showMassUpdateEndDateConfirmation(data);
+		};
+
+		/**
+		 * Shows the confirmation popup with ability to select an end date defaulting to allotment
+		 * end date for mass update.
+		 */
+		$scope.showMassUpdateEndDateConfirmation = function(data) {
+			ngDialog.open({
+				template: '/assets/partials/allotments/details/rvAllotmentConfirmMassUpdatePopup.html',
+				scope: $scope,
+				className: '',
+				closeByDocument: false,
+				closeByEscape: false,
+				data: JSON.stringify(data),
+				controller: "rvAllotmentRoomBlockMassUpdatePopupCtrl"
+			});
 		};
 
 		/**
@@ -1670,10 +1691,11 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return - None
 		 */
 		var setDatePickers = function() {
+			var summaryData = $scope.allotmentConfigData.summary;
 
 			//default start date
 			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
-			$scope.timeLineEndDate = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
+			$scope.timeLineEndDate = new tzIndependentDate(summaryData.block_to);
 
 			//referring data model -> from allotment summary
 			var refData = $scope.allotmentConfigData.summary;
@@ -1686,8 +1708,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//date picker options - Start Date
 			$scope.timeLineStartDateOptions = _.extend({
-				minDate: $scope.allotmentConfigData.summary.block_from,
-				maxDate: $scope.allotmentConfigData.summary.block_to,
+				minDate: summaryData.block_from,
+				maxDate: summaryData.block_to,
 				onSelect: $scope.onTimeLineStartDatePicked,
 			}, commonDateOptions);
 
