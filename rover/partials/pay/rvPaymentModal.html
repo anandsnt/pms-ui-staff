@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
     <form ng-show="!shouldShowWaiting" method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill" ng-class="{'has-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close invert"></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>

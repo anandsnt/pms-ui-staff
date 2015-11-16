@@ -568,15 +568,20 @@ sntRover.controller('roverController',
     $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
       $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
+
+    $rootScope.modalClosing = false;
+
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
-      ngDialog.close();
-
+      
+      $rootScope.modalClosing = true;
       setTimeout(function() {
+        ngDialog.close();
+        $rootScope.modalClosing = false;
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);

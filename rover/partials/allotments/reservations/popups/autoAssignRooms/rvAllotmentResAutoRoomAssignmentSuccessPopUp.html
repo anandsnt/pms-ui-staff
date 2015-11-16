@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
 	<div class="modal-content form group-checkin" ng-if="ngDialogData.failure_reservation_ids.length == 0">
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeAutoRoomAssignSuccessPopup()" ><span class="icons icon-close invert"></button>
 		<span class="icons icon-popup-success"></span>

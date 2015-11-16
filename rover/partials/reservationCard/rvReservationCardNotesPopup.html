@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog" ng-controller = "RVReservationNotesPopupCtrl">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-controller = "RVReservationNotesPopupCtrl">
     <form method="post" action="post-note" id="notes" class="modal-content form staycard-notes" ng-click="clearMessage()">
         <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog();"><span class="icons icon-close"></span></button>
         <div class="modal-header">
