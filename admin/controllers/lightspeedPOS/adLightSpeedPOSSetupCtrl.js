@@ -78,10 +78,24 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	};
 
 	/**
+	 * @return {Boolean}
+	 */
+	$scope.shouldEnableImportButton = function() {
+		if ($scope.lightspeed.enabled) {
+			return false;
+		}
+
+		var requiredKeyValuesToEnable = _.pick($scope.lightspeed, 'rover_unique_id', 'charge_code_id', 'url', 'username', 'password');
+
+		console.log (requiredKeyValuesToEnable);
+	};
+
+	/**
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
 	var initializeMe = function() {
+		$scope.copy_lightspeed_settings = lightSpeedSetupValues;
 		$scope.lightspeed = lightSpeedSetupValues;
 	}();
 }])
