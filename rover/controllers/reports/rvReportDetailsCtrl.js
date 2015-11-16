@@ -861,11 +861,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.emailReport = function() {
-			alert( 'Email Report API yet to be completed/implemented/integrated' );
+			console.warn( 'Email Report API yet to be completed/implemented/integrated' );
 		};
 
 		$scope.saveFullReport = function() {
-			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
+			console.warn( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
 
 		$scope.hasSubString = function(subString, string) {

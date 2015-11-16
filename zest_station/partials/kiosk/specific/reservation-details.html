@@ -16,7 +16,7 @@
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
                         <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">Additional Guests ({{selectedReservation.guest_details.length-1}})</p>
-                        <button type="button" class="button" touch-press="goToScreen(null, 'add-guests', true, 'reservation-details')" ng-hide="isInCheckoutMode()">Add / Remove Guests</button>
+                        <button type="button" class="button" touch-press="addRemoveGuests()" ng-hide="isInCheckoutMode()">Add / Remove Guests</button>
                     </div>
                     <ul id="rate">
                         <li>Nights<span>{{selectedReservation.total_nights}}</span></li>
@@ -24,7 +24,8 @@
                         
                         <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
-                            <span>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
+                            <span ng-show='{{!addon.is_inclusive}}'>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
+                            <span ng-show='{{addon.is_inclusive}}'>INCLUDED</span>
                         </li>
                         
                         <li class="break"></li>

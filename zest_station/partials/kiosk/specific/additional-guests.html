@@ -12,8 +12,8 @@
 
             </ul>
             <div id="actions">
-                <button type="button" class="button prev" click-touch="goToScreen(null, 'add-guest-last', true)" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>+ Add A Guest</button>
-                <button type="button" class="button next" click-touch="goToScreen(null, 'reservation-details', true)">Next</button>
+                <button type="button" class="button prev" click-touch="addAGuest()" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>+ Add A Guest</button>
+                <button type="button" class="button next" click-touch="goToNext()">Next</button>
             </div>
         </div>
         <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
