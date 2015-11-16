@@ -10,7 +10,8 @@ sntRover.controller('RVReportsMainCtrl', [
 	'RVReportNamesConst',
 	'$filter',
 	'$timeout',
-	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout) {
+	'rvUtilSrv',
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -43,6 +44,11 @@ sntRover.controller('RVReportsMainCtrl', [
 
 
 		$scope.showReportDetails = false;
+
+		// CICO-21232
+		// HIDE export option in ipad and other devices
+		// RESTRICT to ONLY desktop
+		$scope.hideExportOption = !!sntapp.cordovaLoaded || util.checkDevice.any();
 
 		var addonsCount = 0;
 		_.each ($scope.addons, function (each) {
@@ -1199,6 +1205,40 @@ sntRover.controller('RVReportsMainCtrl', [
 			return params;
 		};
 
+		/**
+		 * Should we show export button
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowExportButton = function(name) {
+			//As per CICO-21232 we should show this for DAILY PRODUCTION REPORT
+			return (name === reportNames['DAILY_PRODUCTION']);
+		};
+
+		/**
+		 * function to get the export url for a report
+		 * @return {String}
+		 */
+		$scope.getExportUrl = function(chosenReport) {
+			var exportUrl 				= "",
+				loadPage 				= 1,
+				resultPerPageOverride 	= true;
+
+			if (!chosenReport) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+				return exportUrl;
+			}
+
+			switch ( chosenReport.title ) {
+				case reportNames['DAILY_PRODUCTION']: 
+					exportUrl = "/api/reports/30/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
+					break;
+
+				default:
+					exportUrl = "";
+					break;
+			}
+
+			return exportUrl;
+		};
 
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {

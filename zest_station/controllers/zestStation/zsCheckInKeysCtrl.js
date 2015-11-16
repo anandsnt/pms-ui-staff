@@ -99,6 +99,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.modalBtn1 = 'Next';
                 $scope.input.madeKey = 0;
             };
+            
             var oneKeySuccess = function(){
                 setTimeout(function(){
                     
@@ -157,7 +158,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
             if (make_1_key){
                 oneKeySetup();
-                oneKeySuccess();
+                $scope.initMakeKey(1);
+                //oneKeySuccess();
+                
             } else if (make_2_keys){
                 //at first key
                 if ($scope.input.madeKey === 0){
@@ -171,7 +174,39 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             
             
         };
-
+        
+        $scope.$watch('encoder',function(){
+           console.info(arguments) 
+        });
+        $scope.makingKey = 1;
+        $scope.initMakeKey = function(n){
+            $scope.makingKey = n;
+            var successMakeKey = function(response){
+                console.info('success!');
+                console.info(response);
+                
+            };
+            var failureMakeKey = function(response){
+                //$scope.$emit('GENERAL_ERROR',response);
+                $scope.$emit('MAKE_KEY_ERROR',response);
+                
+            };
+            console.info('$scope.selectedReservation: ',$scope.selectedReservation)
+            var options = {
+                card_info: "",
+                is_additional: true,
+                key: $scope.makingKey,
+                key_encoder_id: '1',
+                reservation_id: $scope.selectedReservation.id
+            };
+            console.info('encoder selected: ',$scope.zestStationData.selectedKeyEncoder)
+            $scope.callAPI(zsTabletSrv.encodeKey, {
+                params: options,
+                'successCallBack':successMakeKey,
+                'failureCallBack':failureMakeKey
+            });
+            
+        };
 
         $scope.deliverRegistration = function(){
             $state.go('zest_station.delivery_options');

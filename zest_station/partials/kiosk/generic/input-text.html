@@ -3,7 +3,7 @@
     <div id="content" ng-hide='at === "registration_printed"'>
         <h1>{{headingText}}</h1>
         <h3>{{subHeadingText}}</h3>
-        <form method="post" class="form">
+        <form method="post" class="form" ng-hide='at === "checking_in_guest"'>
             <div class="entry input">
                 <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
             </div>
