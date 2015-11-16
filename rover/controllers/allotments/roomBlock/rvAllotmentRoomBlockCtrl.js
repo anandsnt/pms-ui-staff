@@ -1335,19 +1335,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ( '' == days || isNaN(value) ) {
 				return;
 			};
+			var data = {
+				value: days,
+				isReleaseDays: true
+			};
+			$scope.showMassUpdateEndDateConfirmation(data);
 
-			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies, function(each) {
-				each['ui_release_days'] = value;
-			});
-
-			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(each) {
-				each.copy_values_to_all = true;
-				_.each(each['dates'], function(date) {
-					date['release_days'] = value;
-				});
-			});
-
-			$scope.releaseDaysEdited = true;
 		};
 
 		$scope.releaseDateChanging = function() {

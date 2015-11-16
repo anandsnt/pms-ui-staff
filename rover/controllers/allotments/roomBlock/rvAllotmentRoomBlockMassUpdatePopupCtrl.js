@@ -21,23 +21,73 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		};
 
 		/**
+		 * Utility for checking date validity.
+		 * @param {String} Date in API format
+		 * @return {Boolean} validity
+		 */
+		var isDateInsideLimit = function(date) {
+			var day = new tzIndependentDate(date);
+			return (day <= $scope.massUpdateEndDate);
+		};
+
+		/**
+		 * Utility function to propogate a value of a property through an array
+		 * @param {Array} Array containing objects
+		 * @param {String} property whose value is to be changed
+		 * @param {Integer} new value
+		 * @return {undefined}
+		 */
+		var copyValuesThroughDates = function(dates, property, value) {
+			dates.every(function(each) {
+				if(isDateInsideLimit(each.date)) {
+					each[property] = parseInt(value);
+					return true;
+				}
+				return false;
+			});
+		};
+
+		/**
 		 * Tells room block controller to save roomblock data with selected end date.
+		 * @return {undefined}
 		 */
 		$scope.clickedOnSaveButton = function () {
-			var roomTypeData = $scope.selectedRoomType,
-				occupancy 	 = $scope.ngDialogData.occupancy,
-				value 		 = $scope.ngDialogData.value;
 
-			// Confirmed. propogate values to show.
-			_.each(roomTypeData.dates, function(element) {
-				element[occupancy] = value;
-			});
-			roomTypeData.copy_values_to_all = true;
-			roomTypeData.start_date = formatDateForAPI($scope.allotmentConfigData.summary.block_from);
-			roomTypeData.end_date = formatDateForAPI($scope.massUpdateEndDate);
+			var roomBlockData = $scope.allotmentConfigData.roomblock,
+				isReleaseDays = $scope.ngDialogData.isReleaseDays,
+				value 		  = $scope.ngDialogData.value,
+				timeLineStart = $scope.timeLineStartDate,
+				endDate 	  = $scope.massUpdateEndDate;
 
-			//we changed something
-			$scope.bookingDataChanging();
+			// If we are updating release days the logic defers.
+			if (isReleaseDays) {
+				// copy values horizontally
+				copyValuesThroughDates(roomBlockData.selected_room_types_and_occupanies, 'ui_release_days', value);
+
+				_.each(roomBlockData.selected_room_types_and_bookings, function(each) {
+					// propogate values
+					copyValuesThroughDates(each.dates, 'release_days', value);
+					each.copy_values_to_all = true;
+					each.start_date = formatDateForAPI($scope.allotmentConfigData.summary.block_from);
+					each.end_date = formatDateForAPI($scope.massUpdateEndDate);
+				});
+				//we changed something
+				$scope.releaseDateChanging();
+
+			}
+			// Copying contract or held counts
+			else {
+				var roomTypeData  = $scope.selectedRoomType,
+					occupancy 	  = $scope.ngDialogData.occupancy;
+
+				copyValuesThroughDates(roomTypeData.dates, occupancy, value);
+				roomTypeData.copy_values_to_all = true;
+				roomTypeData.start_date = formatDateForAPI($scope.allotmentConfigData.summary.block_from);
+				roomTypeData.end_date = formatDateForAPI($scope.massUpdateEndDate);
+
+				//we changed something
+				$scope.bookingDataChanging();
+			}
 
 			$scope.closeDialog();
 		};
