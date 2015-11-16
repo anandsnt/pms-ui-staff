@@ -32,5 +32,5 @@ var dependencies = [
 BillService
 ];
 
-snt.factory('BillService', dependencies);
+sntGuestWeb.factory('BillService', dependencies);
 })();
