@@ -70,36 +70,36 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/common_templates/partials/gwCheckin.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckin.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/common_templates/partials/gwCheckinDetails.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwCheckinDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/common_templates/partials/gwRoomUpgrades.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwRoomUpgrades.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/common_templates/partials/gwCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwCheckinFinal.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/common_templates/partials/gwAlreadyCheckedIn.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwAlreadyCheckedIn.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/common_templates/partials/gwArrivalTime.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwArrivalTime.html',
 	 	title: 'Arrival Details - Check-in'
 	 }).state('guestDetails', {
 	 	url: '/guestDetails',
-	 	templateUrl: '/assets/common_templates/partials/gwGuestDetail.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwGuestDetail.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 })
@@ -109,24 +109,24 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/common_templates/partials/gwPreCheckinFinal.html',
+		templateUrl: '/assets/common_templates/partials//checkin/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/common_templates/partials/gwEarlyCheckinOptions.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwEarlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/common_templates/partials/gwEarlyCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwEarlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/common_templates/partials/gwLateArrivalTime.html',
+	 	templateUrl: '/assets/common_templates/partials//checkin/gwLateArrivalTime.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
