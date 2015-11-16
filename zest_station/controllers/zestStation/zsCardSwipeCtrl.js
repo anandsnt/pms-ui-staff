@@ -117,9 +117,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
             };
             
-        $scope.afterGuestCheckinCallback = function(){
-                $scope.$emit('hideLoader');
-                 var guestEmailEnteredOrOnReservation = function(){
+            $scope.guestEmailOnFile = function(){
                     var useEmail = '';
                     
                     if ($scope.getLastInputEmail() !== ''){
@@ -138,18 +136,27 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         return false;
                     }
                 };
-                var haveValidGuestEmail = guestEmailEnteredOrOnReservation();//also sets the email to use for delivery
-
+            
+        $scope.afterGuestCheckinCallback = function(response){
+            console.info('response from guest check-in',response)
+                $scope.$emit('hideLoader');
+                
+                var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
+                var successfulCheckIn = (response.status === "success")? true : false;
+                console.info('successfulCheckIn: ',successfulCheckIn);
                 //detect if coming from email input
-                if (haveValidGuestEmail){
-                        $state.go('zest_station.check_in_keys')
+                if (haveValidGuestEmail && successfulCheckIn){
+                        $state.go('zest_station.check_in_keys');
                     return;
+                } else if (!successfulCheckIn) {
+                    console.warn(response);
+                    $scope.$emit('hideLoader');
+                    $state.go('zest_station.error');
+                    
+                } else {//successful check-in but missing email on reservation
+                    $state.go('zest_station.input_reservation_email_after_swipe');
                 }
                 
-                //$scope.goToScreen(null, 'input-email', true, $scope.from);
-                $state.go('zest_station.input_reservation_email_after_swipe');
-                
-                $scope.clearSignature();
             };
         
         
