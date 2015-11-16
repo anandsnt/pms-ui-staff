@@ -19,9 +19,9 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             $scope.data.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.data.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end ' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.data.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end ' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.data.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end ' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.data.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.data.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.data.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
 			
             $scope.errorMessage = "";
             refreshSummaryScroller();
@@ -75,7 +75,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         if(!toggleItem.active || isFromPagination) {
             var params = {
                 "date": $scope.data.summaryDate,
-                "page_no": 1,
+                "page_no": toggleItem.page_no,
                 "per_page": $scope.data.filterData.perPage,
                 "type": balance_type
             };
