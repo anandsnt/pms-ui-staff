@@ -150,6 +150,20 @@ sntZestStation.service('zsTabletSrv',
                 };
                 
                 
+                this.fetchWorkStations = function(params){
+                        var deferred = $q.defer();
+                        var url = '/api/workstations.json';
+
+                        zsBaseWebSrv.getJSON(url, params).then(function (data) {
+                            deferred.resolve(data);
+                        },function(data){
+                            deferred.reject(data);
+                        });
+                        return deferred.promise;
+                };
+                
+                
+                
                 this.checkInGuest = function (params) {
                     var deferred = $q.defer(),
                             url = '/staff/checkin';
