@@ -45,7 +45,7 @@
              <center>
                  <div class="section-container">
                     <p class="sub-text pull-left upper-case">Departure date</p>
-                    <input class="input-field padding-3 calendar-button" ng-click="showCalender()" ng-model="departureDate" readonly></input>
+                    <input class="input-field padding-3 calendar-button" placeholder="{{dateFormatPlaceholder}}" ng-click="showCalender()" ng-model="departureDate" readonly></input>
                     <!-- CC field will be shown for precheckin if CC is attached only -->
                     <p class="sub-text pull-left margin-top-10">LAST 4 DIGITS OF CREDIT CARD USED</p>
                     <input type="password" ng-model="cardDigits" class="input-field padding-3"></input>
@@ -70,8 +70,8 @@
                 <p class="date-text">{{date | date:'MMM dd'}}</p>
             </div>
             <div class="col-xs-2 calendar-selection" ng-click = "dateChoosen()">
-                <div>DONE</div>
                 <div class="calendar-selection-button calendar-done">&nbsp;</div>
+                <div class="calendar-done-text">DONE</div>
             </div>
         </div>
         <div class="col-xs-12 no-side-padding">
