@@ -1,0 +1,126 @@
+<!-- Travel Agent Card Tab - Commisions -->
+<form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions">
+    <div class="tab-header with-filters">
+        <div class="search-form"> <!-- Add class "hidden" when selecting all/individual commisions -->
+            <div class="entry date-range">
+                <div class="entry-data has-datepicker">
+                    <label for="commision-date-from">Start Date</label>
+                    <button class="clear-query"> <!-- Add class 'visible' when date is selected -->
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input id="commision-date-from" type="text" class="datepicker" value="" readonly ng-click="clickedFromDate()"/>
+                </div>
+                <div class="entry-data has-datepicker">
+                    <label for="commision-date-to">End Date</label>
+                    <button class="clear-query"> <!-- Add class 'visible' when date is selected -->
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input id="commision-date-to" type="text" class="datepicker" value="" readonly />
+                </div>
+            </div>
+            <div class="entry">
+                <label for="commision-status">Status</label>
+                <div class="select">
+                    <select id="commision-status">
+                        <option value="commisionable" selected>Commisionable</option>
+                        <option value="non-commisionable">Non-Commisionable</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="commision-paid">Paid Status</label>
+                <div class="select">
+                    <select id="commision-paid">
+                        <option value="">Set Status</option>
+                        <option value="unpaid" selected>Unpaid</option>
+                        <option value="paid">Paid</option>
+                        <option value="prepaid">Prepaid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="button green">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="tab-details" ng-class="{'with-pagination' : shouldShowPagination()}"> <!-- Add class "with-pagination" when pagination is shown -->
+        <ul class="totals"> <!-- Add class "selected" when selecting all/individual commisions -->
+    <li>Unpaid <span class="value">${value}</span></li>
+    <li>Total Revenue <span class="value">${value}</span></li>
+    <li>Commission To Date <span class="value">${value}</span></li>
+    <li class="action no-margin">
+        <button type="button" class="button blue with-icon only-icon">
+            <span class="icons icon-print"></span>
+        </button>
+    </li>
+    <li class="action">
+        <label class="checkbox inline">
+            Select
+            <input id="commisions-select" value="" type="checkbox" />
+        </label>
+    </li>
+    <li class="action hidden"> <!-- Remove class "hidden" when selecting all/individual commisions -->
+        <div class="select">
+            <select id="selected-paid" class="placeholder">
+                <option value="">Set Paid Status</option>
+                <option value="unpaid">Unpaid</option>
+                <option value="paid">Paid</option>
+                <option value="prepaid">Prepaid</option>
+            </select>
+        </div>
+    </li>
+</ul>
+
+<div id="travel-agent-commision-list" class="scrollable" ng-show="commissionDetails.length > 0">
+    <ul class="search-results wrapper">
+        <li class="reservation commision in-card">
+            <!-- Clicking L32 block should open Stay Card for this reservation -->
+            <div class="faux-anchor has-arrow next-view"> <!-- Add class "selected" when selecting all/individual commisions. -->
+                <div class="data">
+                    <h2>{Last Name}, {First Name}</h2>
+                    <span class="confirmation">{Confirmation No.}</span>
+                </div>
+                <div class="values">
+                    <div class="value-block">Revenue<strong>${amount}</strong></div>
+                    <div class="value-block">%/$<strong>{$value or value %}</strong></div>
+                    <div class="value-block">Commision<strong>${acmount}</strong></div>
+                    <div class="value-block">Tax<strong>${acmount}</strong></div>
+                </div>
+                <div class="switch-button"> <!-- add class "on" when L44 checked -->
+                    <input value="" type="checkbox" />
+                    <label class="data-off">
+                        <span class="value">Open</span>
+                        <span class="switch-icon">Paid</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">Open</span>
+                        <span class="value">Paid</span>
+                    </label>
+                </div>
+                <label class="checkbox inline"> <!-- add class "checked" when L56 checked -->
+                    <span class="icon-form icon-checkbox"></span> <!-- add class "checked" when L56 checked -->
+                    <input value="" type="checkbox" />
+                </label>
+            </div>
+        </li>
+        ... repeat
+    </ul>
+</div>
+    </div>
+    <!-- Pagination -->
+<div class="search-pagination" ng-show="shouldShowPagination()">
+    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
+    <p >{{'ACCOUNTS_SHOWING'|translate}} <strong>{{pagination.start}}-{{pagination.end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{pagination.totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
+    <p>Showing <strong>{{pagination.start}}-{{pagination.end}}</strong> of <strong id="total-count">{{pagination.totalResultCount}}</strong> items</p>
+</div>
+
+    <!-- When no data to show, replace L89-93 with this -->
+    <div class="tab-details no-content" ng-show="commissionDetails.length <= 0">
+        <div class="info">
+            <span class="icon-no-content icon-ok"></span>
+            <strong class="h1">No Commisions</strong>
+            <span class="h2">No Commisions for selected Date Range, Commisionable & Paid Statuses</span>
+        </div>
+    </div>
+</form>

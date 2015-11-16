@@ -3,6 +3,10 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		var self = this;
 
+		//some default values
+		this.DEFAULT_PER_PAGE 	= 50;
+		this.DEFAULT_PAGE 		= 1;
+
 		/** contact information area */
 
 		/**
@@ -351,6 +355,20 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     });
                     return deferred.promise;
                 };
+
+        /**
+		 * Service for getting the commission details of a travel agent
+		 */
+        this.fetchTACommissionDetails = function(params) {
+			var deferred = $q.defer();
+			var url = ' /api/accounts/' + params.id + '/commission_details';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
 	}
 ]);
