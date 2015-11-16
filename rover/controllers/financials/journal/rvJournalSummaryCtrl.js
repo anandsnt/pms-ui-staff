@@ -11,6 +11,28 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         refreshSummaryScroller();
     });
 
+    /* Utility method to get the summary type details.
+        @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
+        @return {object} 
+     */
+    var getSummaryItemByBalanceType = function( balance_type ){
+        
+        var summaryItem = "";
+        
+        switch( balance_type ) {
+            case 'DEPOSIT_BALANCE'  :
+                summaryItem = $scope.data.summaryData.deposit_balance;
+                break;
+            case 'GUEST_BALANCE' :
+                summaryItem = $scope.data.summaryData.guest_balance;
+                break;
+            case 'AR_BALANCE' :
+                summaryItem = $scope.data.summaryData.ar_balance;
+                break;
+        }
+        return summaryItem;
+    };
+
 	var initSummaryData = function(){
 
 		var successCallBackFetchSummaryData = function(responce){
@@ -43,27 +65,29 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object} 
      */
-    var fetchBalanceDetails = function( balance_type , toggleItem , isFromPagination ){
+    var fetchBalanceDetails = function( balance_type , isFromPagination ){
         
+        var summaryItem = getSummaryItemByBalanceType( balance_type );
+
         var successCallBackFetchBalanceDetails = function(responce){
 
-            toggleItem.transactions = [];
-            toggleItem.transactions = responce.transactions;
-            toggleItem.total_count  = responce.total_count;
-            toggleItem.end = toggleItem.start + toggleItem.transactions.length - 1;
+            summaryItem.transactions = [];
+            summaryItem.transactions = responce.transactions;
+            summaryItem.total_count  = responce.total_count;
+            summaryItem.end = summaryItem.start + summaryItem.transactions.length - 1;
 
             if(isFromPagination){
                 // Compute the start, end and total count parameters
-                if(toggleItem.nextAction){
-                    toggleItem.start = toggleItem.start + $scope.data.filterData.perPage;
+                if(summaryItem.nextAction){
+                    summaryItem.start = summaryItem.start + $scope.data.filterData.perPage;
                 }
-                if(toggleItem.prevAction){
-                    toggleItem.start = toggleItem.start - $scope.data.filterData.perPage;
+                if(summaryItem.prevAction){
+                    summaryItem.start = summaryItem.start - $scope.data.filterData.perPage;
                 }
-                toggleItem.end = toggleItem.start + toggleItem.transactions.length - 1;
+                summaryItem.end = summaryItem.start + summaryItem.transactions.length - 1;
             }
-            else if(toggleItem.transactions.length > 0){
-                toggleItem.active = !toggleItem.active;
+            else if(summaryItem.transactions.length > 0){
+                summaryItem.active = !summaryItem.active;
             }
 
             $scope.errorMessage = "";
@@ -72,43 +96,71 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         };
 
         // Call api only while expanding the tab ..
-        if(!toggleItem.active || isFromPagination) {
+        if(!summaryItem.active || isFromPagination) {
             var params = {
                 "date": $scope.data.summaryDate,
-                "page_no": toggleItem.page_no,
+                "page_no": summaryItem.page_no,
                 "per_page": $scope.data.filterData.perPage,
                 "type": balance_type
             };
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
         }
         else{
-            toggleItem.active = !toggleItem.active;
+            summaryItem.active = !summaryItem.active;
         }
     };
-
+    
     /* 
      *   Handle Expand/Collapse on balance each type 
      *   @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
      */
     $scope.toggleJournalSummaryItem = function( balance_type ) {
         
-        var toggleItem = "";
-
-        switch( balance_type ) {
-            case 'DEPOSIT_BALANCE'  :
-                toggleItem = $scope.data.summaryData.deposit_balance;
-                break;
-            case 'GUEST_BALANCE' :
-                toggleItem = $scope.data.summaryData.guest_balance;
-                break;
-            case 'AR_BALANCE' :
-                toggleItem = $scope.data.summaryData.ar_balance;
-                break;
-        }
-
-        fetchBalanceDetails( balance_type , toggleItem , false );
+        var toggleItem = getSummaryItemByBalanceType( balance_type );
+        
+        fetchBalanceDetails( balance_type, false );
     };
 
 	initSummaryData();
+
+    // Logic for pagination starts here ..
+    $scope.loadNextSet = function( balance_type ){
+        var item = getSummaryItemByBalanceType( balance_type );
+        item.page_no ++;
+        item.nextAction = true;
+        item.prevAction = false;
+        fetchBalanceDetails( balance_type, true );
+    };
+
+    $scope.loadPrevSet = function( balance_type ){
+        var item = getSummaryItemByBalanceType( balance_type );
+        item.page_no --;
+        item.nextAction = false;
+        item.prevAction = true;
+        fetchBalanceDetails( balance_type, true );
+    };
+
+    $scope.isNextButtonDisabled = function( balance_type ){
+
+        var item = getSummaryItemByBalanceType( balance_type ),
+            isDisabled = false;
+
+        if(item.end >= item.total_count){
+            isDisabled = true;
+        }
+        return isDisabled;
+    };
+
+    $scope.isPrevButtonDisabled = function( balance_type ){
+
+        var item = getSummaryItemByBalanceType( balance_type ),
+            isDisabled = false;
+
+        if(item.page_no === 1){
+            isDisabled = true;
+        }
+        return isDisabled;
+    };
+    // Pagination logic ends ...
 
 }]);
