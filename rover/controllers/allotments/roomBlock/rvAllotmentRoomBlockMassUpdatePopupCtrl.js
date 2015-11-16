@@ -16,6 +16,9 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		util,
 		rvAllotmentConfigurationSrv) {
 
+		var formatDateForAPI = function(date) {
+			return $filter('date')(date, $rootScope.dateFormatForAPI)
+		};
 
 		/**
 		 * Tells room block controller to save roomblock data with selected end date.
@@ -30,8 +33,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				element[occupancy] = value;
 			});
 			roomTypeData.copy_values_to_all = true;
-			roomTypeData.start_date = $scope.formatDateForAPI($scope.allotmentConfigData.summary.block_from);
-			roomTypeData.end_date = $scope.formatDateForAPI($scope.massUpdateEndDate);
+			roomTypeData.start_date = formatDateForAPI($scope.allotmentConfigData.summary.block_from);
+			roomTypeData.end_date = formatDateForAPI($scope.massUpdateEndDate);
 
 			//we changed something
 			$scope.bookingDataChanging();
