@@ -92,7 +92,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 		}
 		
 		for (; i < requiredKeys.length; i++) {
-			curVal = $scope.lightspeed[i];
+			curVal = $scope.copy_lightspeed_settings[requiredKeys[i]];
 			//we cannot use !! or _.compact here since we want 0 in some case :(
 			if(curVal === '' || typeof curVal === "undefined" || curVal === null) {
 				valueToReturn = true;
@@ -106,7 +106,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	 * @return {undefiend}
 	 */
 	var initializeMe = function() {
-		$scope.copy_lightspeed_settings = lightSpeedSetupValues;
+		$scope.copy_lightspeed_settings = _.extend({}, lightSpeedSetupValues);
 		$scope.lightspeed = lightSpeedSetupValues;
 	}();
 }])
