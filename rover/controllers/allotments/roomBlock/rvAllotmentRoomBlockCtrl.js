@@ -1254,6 +1254,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				$scope.hasBookingDataChanged = false;
 
 				_.each(data.results, function(eachRoomType) {
+					eachRoomType.copy_values_to_all = false;
+					eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
 					_.each(eachRoomType.dates, function(dateData) {
 
 						//we need indivual room type total bookings of each date initially,
