@@ -80,14 +80,25 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	/**
 	 * @return {Boolean}
 	 */
-	$scope.shouldEnableImportButton = function() {
-		if ($scope.lightspeed.enabled) {
-			return false;
+	$scope.shouldDisableImportButton = function() {
+		var requiredKeys = ['rover_unique_id', 'charge_code_id', 
+			'url', 'username', 'password'],
+			valueToReturn = false,
+			curVal = '',
+			i = 0;
+
+		if (!$scope.copy_lightspeed_settings.enabled) {
+			return true;
 		}
-
-		var requiredKeyValuesToEnable = _.pick($scope.lightspeed, 'rover_unique_id', 'charge_code_id', 'url', 'username', 'password');
-
-		console.log (requiredKeyValuesToEnable);
+		
+		for (; i < requiredKeys.length; i++) {
+			curVal = $scope.lightspeed[i];
+			//we cannot use !! or _.compact here since we want 0 in some case :(
+			if(curVal === '' || typeof curVal === "undefined" || curVal === null) {
+				valueToReturn = true;
+			}
+		}
+		return valueToReturn;
 	};
 
 	/**

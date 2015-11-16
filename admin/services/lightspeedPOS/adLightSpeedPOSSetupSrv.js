@@ -7,6 +7,7 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 	this.fetchLightSpeedPOSConfiguration = function() {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings.json';
+		//var url = "ui/show?json_input=lightspeed/settings.json&format=json";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.lightspeed);

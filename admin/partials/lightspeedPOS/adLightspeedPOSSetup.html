@@ -35,7 +35,7 @@
                 <div class="form-title full-width">
                     <h3><span translate>LIGHT_SPEED_POS_IMPORT_TITLE</span></h3>
                 </div>
-                <button type="button" id="import-product" class="button green add-data-inline" ng-click="importProducts()" translate>
+                <button type="button" id="import-product" class="button add-data-inline" ng-class="{'green': !shouldDisableImportButton(), 'grey': shouldDisableImportButton()}" ng-click="importProducts()" ng-disabled="shouldDisableImportButton()" translate>
                     LIGHT_SPEED_POS_IMPORT
                 </button>
             </fieldset>
