@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
 	<div class="modal-content form update-room-status">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 

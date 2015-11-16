@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
     <form method="post" action="" class="modal-content form demographics" ng-cloak>
 
         <button ng-click="closeDialog()" ng-hide="groupSummaryData.promptMandatoryDemographics" id="modal-close" class="modal-close" type="button"><span class="icons icon-close invert"></span></button>
