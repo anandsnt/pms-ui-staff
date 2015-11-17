@@ -45,7 +45,7 @@
                         </button>
                         <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
                         </button>
-                        <a href="{{getExportUrl(chosenReport)}}" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(parsedApiFor) && !hideExportOption"><span class="icons icon-save"></span>
+                        <a href="{{getExportUrl()}}" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(parsedApiFor) && !hideExportOption"><span class="icons icon-save"></span>
                         </a>
                         
                         <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
