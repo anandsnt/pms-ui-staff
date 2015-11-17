@@ -163,16 +163,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.clickedPrint= function(){
             // print section - if its from device call cordova.
             try{
-              window.print();
-              if ( sntapp.cordovaLoaded ) {
-                  cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', ['filep', '1']);
-              };
-              $scope.printOpted = true;
-              // provide a delay for preview to appear
-              $timeout(function() {
-                  $state.go('zest_station.registration_printed');
-                     //  checkOutGuest();
-              }, 3000);
+                $window.print();
+                if ( sntapp.cordovaLoaded ) {
+                    var printer = (sntZestStation.selectedPrinter);
+                    cordova.exec(function(success) {
+                        $state.go('zest_station.registration_printed');
+                    }, function(error) {
+                        $state.go('zest_station.error');
+                    }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                };
+                $scope.printOpted = true;
+              
 
             }
             catch(e){

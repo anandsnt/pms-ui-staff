@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content key-delivery new-key" ng-class="data.colorCodeClass">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div class="modal-content confirmation">

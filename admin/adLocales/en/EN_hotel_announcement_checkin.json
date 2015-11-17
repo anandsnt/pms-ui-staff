@@ -14,6 +14,7 @@
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
     "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS": "SEND EMAIL TO GUESTS ON DAY BEFORE ARRIVAL",
     "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",

@@ -1,6 +1,6 @@
 // to be deleted
 
-snt.factory('authInterceptor', function ($rootScope, $q,$location) {
+sntGuestWeb.factory('authInterceptor', function ($rootScope, $q,$location) {
 	return {
 		request: function (config) {
 			config.headers = config.headers || {};
@@ -24,7 +24,7 @@ snt.factory('authInterceptor', function ($rootScope, $q,$location) {
 });
 
 
-snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
+sntGuestWeb.factory('timeoutHttpIntercept', function ($rootScope, $q) {
     return {
       'request': function(config) {
         config.timeout = 80000; // set timeout
@@ -33,14 +33,14 @@ snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
     };
  });
 
-snt.config(function ($httpProvider) {
+sntGuestWeb.config(function ($httpProvider) {
 	$httpProvider.interceptors.push('authInterceptor');
 	$httpProvider.interceptors.push('timeoutHttpIntercept');
 });
 
 
 
-snt.run(function($rootScope, $location, $http){
+sntGuestWeb.run(function($rootScope, $location, $http){
 
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
