@@ -68,7 +68,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					// propogate values
 					copyValuesThroughDates(each.dates, 'release_days', value);
 					each.copy_values_to_all = true;
-					each.start_date = formatDateForAPI($scope.allotmentConfigData.summary.block_from);
+					each.start_date = formatDateForAPI(timeLineStart);
 					each.end_date = formatDateForAPI($scope.massUpdateEndDate);
 				});
 				//we changed something
@@ -86,7 +86,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 				copyValuesThroughDates(roomTypeData.dates, occupancy, value);
 				roomTypeData.copy_values_to_all = true;
-				roomTypeData.start_date = formatDateForAPI($scope.allotmentConfigData.summary.block_from);
+				roomTypeData.start_date = formatDateForAPI(timeLineStart);
 				roomTypeData.end_date = formatDateForAPI($scope.massUpdateEndDate);
 
 				//we changed something
