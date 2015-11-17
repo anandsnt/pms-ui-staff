@@ -61,6 +61,7 @@
 "ADDON_MAX_ORDER_LABEL": "Maximum order",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
+"EMAIL_LABEL": "Email",
 "ADDRESS_LABEL": "Address",
 "URL_LABEL": "URL",
 "SCREEN_ID_LABEL":"screen id",
