@@ -759,6 +759,46 @@ table {
                                 }       
                             }              
                         }
+
+                        /* Commisions ***/
+                        &.commisions {
+                            .tab-details {
+                                .totals {
+                                    margin-bottom: 8pt;
+                                    clear: both;
+                                    .float;
+
+                                    li {
+                                        font-size: 8pt;
+                                        line-height: 1;
+                                        text-align: left;
+                                        color: @grey3;
+                                        text-transform: uppercase;
+                                        .pull-left;
+
+                                        .value {
+                                            font-size: 12pt;
+                                            line-height: 1;
+                                            font-weight: 300;
+                                            color: @textColor;
+                                            .show;
+                                        }
+
+                                        &:not(:nth-last-child(4)) {
+                                            margin-right: 8pt;
+                                            padding-right: 8pt;
+                                            border-right: 1px solid @grey2;
+                                        }
+
+                                        &.action { .hide; }
+                                    }
+                                }
+
+                                .print-selected {
+                                    .reservation:not(.selected) { .hide; }
+                                }
+                            }
+                        }
                     }
                 }
             }

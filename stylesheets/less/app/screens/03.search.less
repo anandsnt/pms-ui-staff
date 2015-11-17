@@ -589,17 +589,19 @@
                                 background-color: @grey2;
                             }
                         }
+                    }
 
-                        .selected {
+                    &.selected {
+                        .values {
                             .value-block {
                                 strong { color: @logoPrimary; }
                             }
+                        }
 
-                            .prepaid,
-                            .switch-button { 
-                                visibility: hidden;
-                                #fade > .out();
-                            }
+                        .prepaid,
+                        .switch-button { 
+                            visibility: hidden;
+                            #fade > .out();
                         }
                     }
                 }
