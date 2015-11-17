@@ -168,6 +168,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
     	};
 		var data = {//not getting list of printers from the api at this point, 
                             //so we will have to rely on zest station or another UI to update the workstation with a default printer
+
 			"name": $scope.mapping.name,
 			"identifier": $scope.mapping.station_identifier
 		};
