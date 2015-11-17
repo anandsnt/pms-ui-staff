@@ -1,5 +1,5 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
+  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
     $scope.$emit("changedSelectedMenu", 8);
     $scope.errorMessage = '';
     $scope.successMessage = '';
@@ -209,7 +209,12 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.$emit('hideLoader');
       } else {
         $scope.data = data;
-
+        if (data.data.product_cross_customer){
+            if (typeof data.data.product_cross_customer.default_rate === typeof 123){
+                data.data.product_cross_customer.default_rate = data.data.product_cross_customer.default_rate+"";
+                $scope.setDefaultRate();
+            }
+        }
         //load up origins and payment methods
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
@@ -217,12 +222,25 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.setRefreshTime();
       }
     };
+    
+    
+    $scope.setDefaultRate = function(){
+        var value = $scope.data.data.product_cross_customer.default_rate;
+        if (typeof value !== typeof undefined) {
+            setTimeout(function(){
+                var el = $('[name=default-rate]');
+                $(el).val(value);
+            },50);
+        };
+    };
+    
     $scope.fetchFailSuccessCallback = function (data) {
       //load up origins and payment methods
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
     };
     $scope.fetchSetup = function () {
+        $scope.fetchManagerDetails();
       if ($scope.interfaceName !== 'Givex') {
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id': $scope.interfaceId}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
       } else {
@@ -268,6 +286,31 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             };
         };
     }
+    $scope.populateRateSelection = function(){
+        $scope.rateSelection = [];
+        var rates = $scope.channel_manager_rates;
+        var rate;
+        for (var i in rates){
+            rate = rates[i].rate;
+            if (rate){
+                $scope.rateSelection.push(rate);
+            }
+        }
+    };
+    $scope.rateSelection = [];
+    
+    $scope.fetchManagerDetails = function(){
+        var fetchSuccess = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.channel_manager_rates = data.data.channel_manager_rates;
+            $scope.populateRateSelection();
+        };
+        var fetchFailure = function(data){
+            $scope.errorMessage = data;
+            $scope.$emit('hideLoader');
+        };
+        $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interfaceId}, fetchSuccess, fetchFailure);
+    };
 
     $scope.init();
     //////////////////////

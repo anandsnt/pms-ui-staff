@@ -46,27 +46,35 @@ sntZestStation.controller('zsHomeCtrl', [
 		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
 	}();
 
+
+
+
+
 	/**
 	 * admin popup actions starts here
 	 */
-	var openAdminPopup = function() {
-           
-            
-            $scope.idle_timer_enabled = false;
-            ngDialog.open({
-                template: '/assets/partials/rvTabletAdminPopup.html',
-              //  className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false
-            });
-            setTimeout(function(){
-                $('.ngdialog-close').hide();
-            },50);
-        };
+    var openAdminPopup = function() {
+
+        $scope.idle_timer_enabled = false;
+        ngDialog.open({
+            template: '/assets/partials/rvTabletAdminPopup.html',
+          //  className: 'ngdialog-theme-default',
+            scope: $scope,
+            closeByDocument: false,
+            closeByEscape: false
+        });
+        setTimeout(function(){
+            $('.ngdialog-close').hide();
+        },50);
+    };
 
     ($stateParams.isadmin == "true") ? openAdminPopup() : "";
-
+    
+        if (typeof cordova !== typeof undefined){
+            $scope.ipad = true;
+        } else {
+            $scope.ipad = false;
+        }
 
     $scope.cancelAdminSettings = function(){
     	$scope.closeDialog();
@@ -77,26 +85,26 @@ sntZestStation.controller('zsHomeCtrl', [
     };
     
 
-        $scope.openPrinterMenu = function(){
-            var onSuccess = function(success){
-                alert(JSON.stringify(success));
-            };
-            var onFail = function(err){
-                alert(JSON.stringify(err));
-            };
-            if (typeof cordova !== typeof undefined){
-                //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
-            cordova.exec(
-                    function(success){
-                        //sntZestStation.selectedPrinter = JSON.stringify(success);
-                        sntZestStation.selectedPrinter = success;
-                        
-                    }, function(error) {
-                        alert('printer selection failed');
-                    }, 'RVCardPlugin', 'selectPrinter'
-                );
-            }
+    $scope.openPrinterMenu = function(){
+        var onSuccess = function(success){
+            alert(JSON.stringify(success));
         };
+        var onFail = function(err){
+            alert(JSON.stringify(err));
+        };
+        if (typeof cordova !== typeof undefined){
+            //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
+        cordova.exec(
+                function(success){
+                    //sntZestStation.selectedPrinter = JSON.stringify(success);
+                    sntZestStation.selectedPrinter = success;
+
+                }, function(error) {
+                    alert('printer selection failed');
+                }, 'RVCardPlugin', 'selectPrinter'
+            );
+        }
+    };
         
     $scope.saveAdminSettings = function(){
     	var saveCompleted = function(){
