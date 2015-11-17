@@ -40,14 +40,14 @@
                     <td>
                         <label class='admin-item-label'>Work Station</label>
                     </td>
-                    <td>
-                         <select touch-press id='selectEncoder' class='admin-input'
+                    <td type='input'>
+                         <select touch-press id='selectEncoder' class='admin-input select table-count rates-table-count'
                               ng-options="workstation.station_identifier as workstation.name for workstation in zestStationData.workstations" ng-model="zestStationData.selectedWorkStation">
                              <option style="display:none" value="">Select a Work Station</option>
                         </select>
                     </td>
                 </tr>
-                <tr class='admin-item'>
+                <tr class='admin-item' ng-if='ipad'>
                     <td>
                         <label class='admin-item-label'>Select Printer</label>
                     </td>

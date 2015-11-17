@@ -22,10 +22,10 @@
                    ng-model="selectedMenu.components" 
 
                    ng-class="{'moved': submenu.is_bookmarked}">
-                    {{submenu.name}}
+                    {{submenu.description}}
                 </a>
 
-                <a ng-controller="ADMappingCtrl" class="text" data-type="load-listing" ng-click="clickedInterfaceMenuItem($event, 'admin.mapping', submenu)">{{submenu.name}}</a>
+                <a ng-controller="ADMappingCtrl" class="text" data-type="load-listing" ng-click="clickedInterfaceMenuItem($event, 'admin.mapping', submenu)">{{submenu.description}}</a>
             </li>
         </ul>  
     </section>  
