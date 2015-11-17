@@ -373,7 +373,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyDoubleContractValueToOtherBlocks = function(cellData, rowData) {
-			$scope.bookingDataChanging();
 			var data = {
 				occupancy: 'double_contract',
 				value: cellData.double_contract
@@ -383,7 +382,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.copyDoubleHeldValueToOtherBlocks = function(cellData, rowData) {
-			$scope.bookingDataChanging();
 			var data = {
 				occupancy: 'double',
 				value: cellData.double
@@ -400,7 +398,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyTripleContractValueToOtherBlocks = function(cellData, rowData) {
-			$scope.bookingDataChanging();
 			var data = {
 				occupancy: 'triple_contract',
 				value: cellData.triple_contract
@@ -410,7 +407,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.copyTripleHeldValueToOtherBlocks = function(cellData, rowData) {
-			$scope.bookingDataChanging();
 			var data = {
 				occupancy: 'triple',
 				value: cellData.triple
@@ -427,7 +423,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return undefined
 		 */
 		$scope.copyQuadrupleContractValueToOtherBlocks = function(cellData, rowData) {
-			$scope.bookingDataChanging();
 			var data = {
 				occupancy: 'quadruple_contract',
 				value: cellData.quadruple_contract
@@ -437,7 +432,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.copyQuadrupleHeldValueToOtherBlocks = function(cellData, rowData) {
-			$scope.bookingDataChanging();
 			var data = {
 				occupancy: 'quadruple',
 				value: cellData.quadruple
