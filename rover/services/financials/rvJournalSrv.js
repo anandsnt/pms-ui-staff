@@ -7,11 +7,10 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
  	// get filter details
     this.fetchGenericData = function () {
-        var deferred = $q.defer();
 
         that.fetchCashiers = function () {
-            var url = "/api/cashier_periods";
-            var data = {'date':$rootScope.businessDate};
+            var url = "/api/cashier_periods",
+            	data = {'date':$rootScope.businessDate};
             BaseWebSrvV2.getJSON(url,data).then(function (data) {
                 that.filterData.cashiers = data.cashiers;
                 that.filterData.selectedCashier = data.current_user_id;
@@ -24,7 +23,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
         };
 
         // fetch employees deatils
-        var url = "/api/users/active.json?journal=true";
+        var deferred = $q.defer(),
+        	url = "/api/users/active.json?journal=true";
         BaseWebSrvV2.getJSON(url).then(function (data) {
             that.filterData.employees = data;
             angular.forEach(that.filterData.employees,function(item, index) {
@@ -45,8 +45,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
      * @return {object} departments
      */
     that.fetchDepartments = function () {
-    	var deferred = $q.defer();
-        var url = "/admin/departments.json";
+    	var deferred = $q.defer(),
+        	url = "/admin/departments.json";
         RVBaseWebSrv.getJSON(url).then(function (data) {
             angular.forEach(data.departments,function(item, index) {
 	       		item.checked = false;
@@ -65,8 +65,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
      * @return {object} journal summary
      */
     that.fetchSummaryData = function (params) {
-    	var deferred = $q.defer();
-        var url = "api/financial_transactions/daily_balance_details?date="+params.date;
+    	var deferred = $q.defer(),
+        	url = "api/financial_transactions/daily_balance_details?date="+params.date;
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
@@ -80,10 +80,9 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
      * @return {object} journal summary
      */
     that.fetchBalanceDetails = function (params) {
-    	var deferred = $q.defer();
-    	var url = "http://localhost:3000/ui/show.json?json_input=financial/summary.json&is_hash_map=true";
-        //var url = "api/financial_transactions/daily_balance_details?date="+params.date+"&page_no="+params.page_no+"&per_page="+params.per_page+"&type="+params.type;
-        BaseWebSrvV2.getJSON(url).then(function (data) {
+    	var deferred = $q.defer(),
+        	url = "api/financial_transactions/daily_balance_details";
+        BaseWebSrvV2.postJSON(url,params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
@@ -103,12 +102,12 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
     ***********************************************************************************************/
 
 	this.fetchRevenueDataByChargeGroups = function(params){
-		var deferred = $q.defer();
 
 		if(typeof params.charge_group_id === "undefined") {
 			params.charge_group_id = "";
 		}
-		var url = '/api/financial_transactions/revenue_by_charge_groups';
+		var deferred = $q.defer(),
+			url = '/api/financial_transactions/revenue_by_charge_groups';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 
@@ -123,12 +122,12 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.fetchRevenueDataByChargeCodes = function(params){
-		var deferred = $q.defer();
 
 		if(typeof params.charge_code_id === "undefined") {
 			params.charge_code_id = "";
 		}
-		var url = '/api/financial_transactions/revenue_by_charge_codes';
+		var deferred = $q.defer(),
+			url = '/api/financial_transactions/revenue_by_charge_codes';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 
@@ -148,9 +147,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.fetchRevenueDataByTransactions = function(params){
-		var deferred = $q.defer();
-
-		var url = '/api/financial_transactions/revenue_by_transactions';
+		var deferred = $q.defer(),
+			url = '/api/financial_transactions/revenue_by_transactions';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 		   	deferred.resolve(data);
@@ -161,12 +159,12 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.fetchPaymentDataByPaymentTypes = function(params){
-		var deferred = $q.defer();
 
 		if(typeof params.charge_code_id === "undefined") {
 			params.charge_code_id = "";
 		}
-		var url = '/api/financial_transactions/payments_by_payment_types';
+		var deferred = $q.defer(),
+			url = '/api/financial_transactions/payments_by_payment_types';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 
@@ -199,8 +197,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.fetchPaymentDataByTransactions = function(params){
-		var deferred = $q.defer();
-		var url = '/api/financial_transactions/payments_by_transactions';
+		var deferred = $q.defer(),
+			url = '/api/financial_transactions/payments_by_transactions';
 
 		BaseWebSrvV2.postJSON(url,params).then(function(data) {
 		   	deferred.resolve(data);
@@ -211,8 +209,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.fetchCashierDetails = function(data){
-		var deferred = $q.defer();
-		var url ='/api/cashier_periods/history';
+		var deferred = $q.defer(),
+			url ='/api/cashier_periods/history';
 		BaseWebSrvV2.postJSON(url,data).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
@@ -222,8 +220,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.reOpenCashier = function(updateData){
-		var deferred = $q.defer();
-		var url ='/api/cashier_periods/'+updateData.id+'/reopen';
+		var deferred = $q.defer(),
+			url ='/api/cashier_periods/'+updateData.id+'/reopen';
 		BaseWebSrvV2.postJSON(url).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
@@ -233,8 +231,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 	};
 
 	this.closeCashier = function(updateData){
-		var deferred = $q.defer();
-		var url ='/api/cashier_periods/'+updateData.id+'/close';
+		var deferred = $q.defer(),
+			url ='/api/cashier_periods/'+updateData.id+'/close';
 		BaseWebSrvV2.postJSON(url,updateData.data).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
