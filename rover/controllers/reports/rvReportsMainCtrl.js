@@ -659,7 +659,7 @@ sntRover.controller('RVReportsMainCtrl', [
             $scope.invokeApi(reportsSubSrv.fetchAddons, groupIds, sucssCallback, errorCallback);
         };
 
-		function genParams (report, page, perPage) {
+		function genParams (report, page, perPage, changeAppliedFilter) {
 			var params = {
 				'id'       : report.id,
 				'page'     : page,
@@ -673,22 +673,26 @@ sntRover.controller('RVReportsMainCtrl', [
 				checkOutKey = '',
 				selected    = [];
 
+			var changeAppliedFilter = 'boolean' == typeof changeAppliedFilter ? changeAppliedFilter : true;
+
 			// capturing the filters applied to be
 			// shown on the report details footer
-			$scope.appliedFilter = {
-				'options'      : [],
-				'display'      : [],
-				'markets'      : [],
-				'sources'      : [],
-				'origins'      : [],
-				'guarantees'   : [],
-				'chargeGroups' : [],
-				'chargeCodes'  : [],
-				'holdStatuses' : [],
-				'addonGroups'  : [],
-				'addons'       : [],
-				'reservationStatus' : [],
-				'guestOrAccount': []
+			if ( changeAppliedFilter ) {
+				$scope.appliedFilter = {
+					'options'      : [],
+					'display'      : [],
+					'markets'      : [],
+					'sources'      : [],
+					'origins'      : [],
+					'guarantees'   : [],
+					'chargeGroups' : [],
+					'chargeCodes'  : [],
+					'holdStatuses' : [],
+					'addonGroups'  : [],
+					'addons'       : [],
+					'reservationStatus' : [],
+					'guestOrAccount': []
+				};
 			};
 
 			// include dates
@@ -699,8 +703,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
-				$scope.appliedFilter['toDate']   = angular.copy( report.untilDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
+					$scope.appliedFilter['toDate']   = angular.copy( report.untilDate );
+				}	
 			};
 
 			// include cancel dates
@@ -711,8 +717,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromCancelDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilCancelDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['cancelFromDate'] = angular.copy( report.fromCancelDate );
-				$scope.appliedFilter['cancelToDate']   = angular.copy( report.untilCancelDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['cancelFromDate'] = angular.copy( report.fromCancelDate );
+					$scope.appliedFilter['cancelToDate']   = angular.copy( report.untilCancelDate );
+				};
 			};
 
 			// include arrival dates -- IFF both the limits of date range have been selected
@@ -723,8 +731,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromArrivalDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilArrivalDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
-				$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['arrivalFromDate'] = angular.copy( report.fromArrivalDate );
+					$scope.appliedFilter['arrivalToDate']   = angular.copy( report.untilArrivalDate );
+				};
 			};
 
 			// include group start dates -- IFF both the limits of date range have been selected
@@ -735,8 +745,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.groupStartDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.groupEndDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['groupFromDate'] = angular.copy( report.groupStartDate );
-				$scope.appliedFilter['groupToDate']   = angular.copy( report.groupEndDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['groupFromDate'] = angular.copy( report.groupStartDate );
+					$scope.appliedFilter['groupToDate']   = angular.copy( report.groupEndDate );
+				};
 			};
 
 			// include deposit due dates
@@ -747,8 +759,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromDepositDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilDepositDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['depositFromDate'] = angular.copy( report.fromDepositDate );
-				$scope.appliedFilter['depositToDate']   = angular.copy( report.untilDepositDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['depositFromDate'] = angular.copy( report.fromDepositDate );
+					$scope.appliedFilter['depositToDate']   = angular.copy( report.untilDepositDate );
+				};
 			};
 
 			// include paid dates
@@ -759,8 +773,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromPaidDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilPaidDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['paidFromDate'] = angular.copy( report.fromPaidDate );
-				$scope.appliedFilter['paidToDate']   = angular.copy( report.untilPaidDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['paidFromDate'] = angular.copy( report.fromPaidDate );
+					$scope.appliedFilter['paidToDate']   = angular.copy( report.untilPaidDate );
+				};
 			};
 
 			// include create dates
@@ -771,8 +787,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromCreateDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilCreateDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['createFromDate'] = angular.copy( report.fromCreateDate );
-				$scope.appliedFilter['createToDate']   = angular.copy( report.untilCreateDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['createFromDate'] = angular.copy( report.fromCreateDate );
+					$scope.appliedFilter['createToDate']   = angular.copy( report.untilCreateDate );
+				};
 			};
 
 			// include single dates
@@ -781,7 +799,9 @@ sntRover.controller('RVReportsMainCtrl', [
 				/**/
 				params[key] = $filter('date')(report.singleValueDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
+				};
 			};
 
 			// include rate adjustment dates
@@ -792,8 +812,10 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[fromKey]  = $filter('date')(report.fromAdjustmentDate, 'yyyy/MM/dd');
 				params[untilKey] = $filter('date')(report.untilAdjustmentDate, 'yyyy/MM/dd');
 				/**/
-				$scope.appliedFilter['adjustmentFromDate'] = angular.copy( report.fromAdjustmentDate );
-				$scope.appliedFilter['adjustmentToDate']   = angular.copy( report.untilAdjustmentDate );
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['adjustmentFromDate'] = angular.copy( report.fromAdjustmentDate );
+					$scope.appliedFilter['adjustmentToDate']   = angular.copy( report.untilAdjustmentDate );
+				};
 			};
 
 			// include times
@@ -802,14 +824,18 @@ sntRover.controller('RVReportsMainCtrl', [
 					key         = reportParams['FROM_TIME'];
 					params[key] = report.fromTime;
 					/**/
-					$scope.appliedFilter['fromTime'] = angular.copy( report.fromTime );
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['fromTime'] = angular.copy( report.fromTime );
+					};
 				};
 
 				if ( report.untilTime ) {
 					key         = reportParams['TO_TIME'];
 					params[key] = report.untilTime;
 					/**/
-					$scope.appliedFilter['toTime'] = angular.copy( report.untilTime );
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['toTime'] = angular.copy( report.untilTime );
+					};
 				};
 			};
 
@@ -821,13 +847,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[checkInKey]  = getProperCICOVal('checked_in');
 				params[checkOutKey] = getProperCICOVal('checked_out');
 				/**/
-				if ( params[checkInKey] && params[checkOutKey] ) {
-					$scope.appliedFilter['cicoTypes'] = 'Check Ins & Check Outs';
-				} else if ( params[checkInKey] ) {
-					$scope.appliedFilter['cicoTypes'] = 'Only Check Ins';
-				} else if ( params[checkOutKey] ) {
-					$scope.appliedFilter['cicoTypes'] = 'Only Check Outs';
-				}
+				if ( changeAppliedFilter ) {
+					if ( params[checkInKey] && params[checkOutKey] ) {
+						$scope.appliedFilter['cicoTypes'] = 'Check Ins & Check Outs';
+					} else if ( params[checkInKey] ) {
+						$scope.appliedFilter['cicoTypes'] = 'Only Check Ins';
+					} else if ( params[checkOutKey] ) {
+						$scope.appliedFilter['cicoTypes'] = 'Only Check Outs';
+					};
+				};
 			};
 
 			// include user ids
@@ -839,15 +867,17 @@ sntRover.controller('RVReportsMainCtrl', [
 					params[key].push( user );
 				});
 				/**/
-				$scope.appliedFilter['users'] = [];
-				_.each(report.chosenUsers, function (id) {
-					var _user = _.find($scope.activeUserList, function (each) {
-						return each.id === id;
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['users'] = [];
+					_.each(report.chosenUsers, function (id) {
+						var _user = _.find($scope.activeUserList, function (each) {
+							return each.id === id;
+						});
+						if ( !! _user ) {
+							$scope.appliedFilter['users'].push( _user.full_name );
+						};
 					});
-					if ( !! _user ) {
-						$scope.appliedFilter['users'].push( _user.full_name );
-					};
-				});
+				};
 			};
 
 			// include sort bys
@@ -865,11 +895,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					params[key] = _chosenSortBy.sortDir;
 				};
 				/**/
-				if ( !! _chosenSortBy ) {
-					$scope.appliedFilter['sortBy'] = _chosenSortBy.description;
-				};
-				if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
-					$scope.appliedFilter['sortDir'] = _chosenSortBy.sortDir ? 'Ascending' : 'Descending';
+				if ( changeAppliedFilter ) {
+					if ( !! _chosenSortBy ) {
+						$scope.appliedFilter['sortBy'] = _chosenSortBy.description;
+					};
+					if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
+						$scope.appliedFilter['sortDir'] = _chosenSortBy.sortDir ? 'Ascending' : 'Descending';
+					};
 				};
 			};
 
@@ -887,16 +919,21 @@ sntRover.controller('RVReportsMainCtrl', [
 
 				/**/
 				if ( !! key ) {
-					params[key]                     = true;
-					$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' )
-														 .replace( '_', ' ' );
+					params[key] = true;
+					/**/
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' ).replace( '_', ' ' );
+					};
 				};
 
 				// patch
 				if ( 'ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy ) {
 					key = reportParams['ADDON_GROUP_BY'];
 					params[key] = report.chosenGroupBy;
-					$scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
+					/**/
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
+					};
 				}
 			};
 
@@ -910,7 +947,9 @@ sntRover.controller('RVReportsMainCtrl', [
 						params[key]                     = true;
 						report.chosenOptions[key] = true;
 						/**/
-						$scope.appliedFilter.options.push( each.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.options.push( each.description );
+						};
 					} else if ( ! each.selected && each.mustSend ) {
 						key         = each.paramKey;
 						params[key] = false;
@@ -925,7 +964,9 @@ sntRover.controller('RVReportsMainCtrl', [
 						key         = each.paramKey;
 						params[key] = true;
 						/**/
-						$scope.appliedFilter.display.push( each.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.display.push( each.description );
+						};
 					};
 				});
 			};
@@ -937,7 +978,9 @@ sntRover.controller('RVReportsMainCtrl', [
 						key         = each.paramKey;
 						params[key] = true;
 						/**/
-						$scope.appliedFilter.guestOrAccount.push( each.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.guestOrAccount.push( each.description );
+						};
 					};
 				});
 			};
@@ -947,7 +990,9 @@ sntRover.controller('RVReportsMainCtrl', [
 				key         = report.hasIncludeComapnyTaGroup.value.toLowerCase();
 				params[key] = report.chosenIncludeComapnyTaGroup;
 				/* Note: Using the ui value here */
-				$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeComapnyTaGroup;
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeComapnyTaGroup;
+				};		
 			};
 
 			// selected markets
@@ -961,11 +1006,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(market) {
 						params[key].push( market.value );
 						/**/
-						$scope.appliedFilter.markets.push( market.name );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.markets.push( market.name );
+						};
 					});
 
 					// in case if all markets are selected
-					if ( report['hasMarketsList']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasMarketsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.markets = ['All Markets'];
 					};
 				};
@@ -982,11 +1029,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(source) {
 						params[key].push( source.value );
 						/**/
-						$scope.appliedFilter.sources.push( source.name );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.sources.push( source.name );
+						};
 					});
 
 					// in case if all sources are selected
-					if ( report['hasSourcesList']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasSourcesList']['data'].length === selected.length ) {
 						$scope.appliedFilter.sources = ['All Sources'];
 					};
 				};
@@ -1003,11 +1052,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(origin) {
 						params[key].push( origin.value );
 						/**/
-						$scope.appliedFilter.origins.push( origin.name );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.origins.push( origin.name );
+						};
 					});
 
 					// in case if all origins are selected
-					if ( report['hasOriginsList']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasOriginsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.origins = ['All Origins'];
 					};
 				};
@@ -1024,11 +1075,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(guarantee) {
 						params[key].push( guarantee.name );
 						/**/
-						$scope.appliedFilter.guarantees.push( guarantee.name );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.guarantees.push( guarantee.name );
+						};
 					});
 
 					// in case if all guarantee type is selected
-					if ( report['hasGuaranteeType']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasGuaranteeType']['data'].length === selected.length ) {
 						$scope.appliedFilter.guarantees = ['All Guarantees'];
 					};
 				};
@@ -1045,11 +1098,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(cg) {
 						params[key].push( cg.id );
 						/**/
-						$scope.appliedFilter.chargeGroups.push( cg.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.chargeGroups.push( cg.description );
+						};
 					});
 
 					// in case if all charge groups is selected
-					if ( report['hasByChargeGroup']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
 					};
 				};
@@ -1066,11 +1121,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(cc) {
 						params[key].push( cc.id );
 						/**/
-						$scope.appliedFilter.chargeCodes.push( cc.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.chargeCodes.push( cc.description );
+						};
 					});
 
 					// in case if all charge code is selected
-					if ( report['hasByChargeCode']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasByChargeCode']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeCodes = ['All Codes'];
 					};
 				};
@@ -1087,11 +1144,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(status) {
 						params[key].push( status.id );
 						/**/
-						$scope.appliedFilter.holdStatuses.push( status.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.holdStatuses.push( status.description );
+						};		
 					});
 
 					// in case if all charge code is selected
-					if ( report['hasHoldStatus']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasHoldStatus']['data'].length === selected.length ) {
 						$scope.appliedFilter.holdStatuses = ['All Status'];
 					};
 				};
@@ -1108,11 +1167,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(group) {
 						params[key].push( group.id );
 						/**/
-						$scope.appliedFilter.addonGroups.push( group.description );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.addonGroups.push( group.description );
+						};
 					});
 
 					// in case if all addon groups are selected
-					if ( report['hasAddonGroups']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasAddonGroups']['data'].length === selected.length ) {
 						$scope.appliedFilter.addonGroups = ['All Addon Groups'];
 					};
 				};
@@ -1137,11 +1198,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(each) {
 						params[key].push( each.addon_id );
 						/**/
-						$scope.appliedFilter.addons.push( each.addon_name );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.addons.push( each.addon_name );
+						};
 					});
 
 					// in case if all addon groups are selected
-					if ( addonsLength === selected.length ) {
+					if ( changeAppliedFilter && addonsLength === selected.length ) {
 						$scope.appliedFilter.addons = ['All Addons'];
 					};
 				};
@@ -1158,11 +1221,13 @@ sntRover.controller('RVReportsMainCtrl', [
 					_.each(selected, function(each) {
 						params[key].push( each.id );
 						/**/
-						$scope.appliedFilter.reservationStatus.push( each.status );
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.reservationStatus.push( each.status );
+						};
 					});
 
 					// in case if all reservation status are selected
-					if ( report['hasReservationStatus']['data'].length === selected.length ) {
+					if ( changeAppliedFilter && report['hasReservationStatus']['data'].length === selected.length ) {
 						$scope.appliedFilter.reservationStatus = ['All Reservation Status'];
 					};
 				};
@@ -1193,7 +1258,9 @@ sntRover.controller('RVReportsMainCtrl', [
 							params['group_by_group_name'] = undefined;
 						};
 						/**/
-						$scope.appliedFilter['groupBy'] = undefined;
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter['groupBy'] = undefined;
+						}
 						break;
 					};
 				};
@@ -1218,24 +1285,29 @@ sntRover.controller('RVReportsMainCtrl', [
 		 * function to get the export url for a report
 		 * @return {String}
 		 */
-		$scope.getExportUrl = function(chosenReport) {
-			var exportUrl 				= "",
-				loadPage 				= 1,
-				resultPerPageOverride 	= true;
+		$scope.getExportUrl = function(report) {
+			var chosenReport = report || reportsSrv.getChoosenReport();
 
-			if (!chosenReport) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+			var exportUrl 		      = "",
+				loadPage 			  = 1,
+				resultPerPageOverride = true,
+				changeAppliedFilter   = false,
+				params;
+
+			if ( _.isEmpty(chosenReport) ) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
-			}
+			};
 
 			switch ( chosenReport.title ) {
-				case reportNames['DAILY_PRODUCTION']: 
-					exportUrl = "/api/reports/30/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
+				case reportNames['DAILY_PRODUCTION']:
+					params = jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter) );
+					exportUrl = "/api/reports/" + chosenReport.id + "/submit.csv?" + params;
 					break;
 
 				default:
 					exportUrl = "";
 					break;
-			}
+			};
 
 			return exportUrl;
 		};
