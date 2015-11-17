@@ -99,6 +99,7 @@ sntZestStation.controller('zsHomeCtrl', [
         };
         
     $scope.saveAdminSettings = function(){
+        //alert('saving workstation settings')
     	var saveCompleted = function(){
     		$scope.$emit('hideLoader');
     		$scope.closeDialog();
@@ -114,7 +115,44 @@ sntZestStation.controller('zsHomeCtrl', [
     		params: 			params,
     		successCallBack: 	saveCompleted
         };
-		$scope.callAPI(zsTabletSrv.saveSettings, options);
+        
+        
+       // alert('updating mapping to: '+sntZestStation.selectedPrinter);
+        
+        //also update the workstation printer
+        var successCallbackSave = function(){
+            console.info('success save printer to workstation');
+            console.log(arguments);
+        };
+        var data = {};
+        data.id = $scope.workStationObj.id;
+        data.name = $scope.workStationObj.name;
+        data.identifier = $scope.workStationObj.station_identifier;
+        //data.printer = sntZestStation.selectedPrinter;
+        data.printer = 'sntZestStation.selectedPrinter test 3';
+        console.log($scope.zestStationData.selectedWorkStation)
+        
+        var mapping_options = {
+    		params: 			data,
+    		successCallBack: 	successCallbackSave
+        };
+        
+        
+        $scope.callAPI(zsTabletSrv.saveSettings, options);
+        $scope.callAPI(zsTabletSrv.updateWorkStationMapping, mapping_options);
+        
     };
-
+    $scope.workStationObj = {};
+    $scope.$watch('zestStationData.selectedWorkStation',function(){
+        $scope.workStationObj = {};
+        for (var i in $scope.zestStationData.workstations){
+            if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
+                $scope.workStationObj = $scope.zestStationData.workstations[i];
+                console.info('found it:!');
+                console.log($scope.workStationObj);
+                console.info(' - - - - - - ');
+            }
+        }
+    });
+    
 }]);

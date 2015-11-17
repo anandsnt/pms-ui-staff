@@ -188,4 +188,16 @@ sntZestStation.service('zsTabletSrv',
                     return deferred.promise;
                 };
                 
+                this.updateWorkStationMapping = function(data){
+                    var deferred = $q.defer();
+                    var url = '/api/workstations/'+data.id;
+
+                    zsBaseWebSrv.putJSON(url, data).then(function(data) {
+                        deferred.resolve(data);
+                    },function(data){
+                        deferred.reject(data);
+                    });
+		return deferred.promise;
+	};
+                
             }]);
