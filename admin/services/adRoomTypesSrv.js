@@ -1,5 +1,5 @@
-admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADDailyWorkAssignmentSrv',
-	function($http, $q, ADBaseWebSrv, ADDailyWorkAssignmentSrv) {
+admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADDailyWorkAssignmentSrv',
+	function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADDailyWorkAssignmentSrv) {
 		/**
 		 * To fetch the list of room types
 		 * @return {object} room types list json
@@ -16,6 +16,17 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADDailyWorkAssi
 			});
 			return deferred.promise;
 		};
+
+		this.fetchRoomClasses = function () {
+	        var deferred = $q.defer(),
+	        url = '/admin/room_classes';
+	        ADBaseWebSrvV2.getJSON(url).then(function (data) {
+	            deferred.resolve(data);
+	            }, function (data) {
+	                deferred.reject(data);
+	            });
+	            return deferred.promise;
+    	};
 
 		/*
 		 * To get the details of the selected room type
