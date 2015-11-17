@@ -5,7 +5,8 @@
         <h3>{{subHeadingText}}</h3>
         <form method="post" class="form" ng-hide='at === "checking_in_guest"'>
             <div class="entry input">
-                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
+                <input ng-hide='passwordField' class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
+                <input ng-show='passwordField' class="start-focused" type="password" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">Next</button>
