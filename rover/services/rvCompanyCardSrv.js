@@ -361,8 +361,8 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
         this.fetchTACommissionDetails = function(reqData) {
 			var deferred = $q.defer();
-			//var url = ' api/accounts/' + reqData.accountId + '/commission_details';
-			var url = "/assets/sampleJson/commissionTa"+ reqData.params.page + ".json";
+			var url = ' api/accounts/' + reqData.accountId + '/commission_details';
+			//var url = "/assets/sampleJson/commissionTa"+ reqData.params.page + ".json";
 
 			rvBaseWebSrvV2.getJSON(url, reqData.params).then(function(data) {
 				deferred.resolve(data);

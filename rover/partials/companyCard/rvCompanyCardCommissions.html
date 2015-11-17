@@ -50,9 +50,9 @@
         <!-- Add class "with-pagination" when pagination is shown -->
         <ul class="totals" ng-class="{'selected' : selectAll || selectedCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
-            <li>Unpaid <span class="value">{{commissionSummary.totalUnpaidCommission}}</span></li>
-            <li>Total Revenue <span class="value">{{commissionSummary.totalRevenue}}</span></li>
-            <li>Commission To Date <span class="value">{{commissionSummary.totalCommission}}</span></li>
+            <li>Unpaid <span class="value">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission}}</span></li>
+            <li>Total Revenue <span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue}}</span></li>
+            <li>Commission To Date <span class="value">{{ currencySymbol }}{{commissionSummary.totalCommission}}</span></li>
             <li class="action no-margin">
                 <button type="button" class="button blue with-icon only-icon">
                     <span class="icons icon-print"></span>
@@ -88,10 +88,10 @@
                             <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                         </div>
                         <div class="values">
-                            <div class="value-block">Revenue<strong>${{commissionDetail.reservation_revenue}}</strong></div>
-                            <div class="value-block">%/$<strong>{{commissionDetail.commission_rate}}</strong></div>
-                            <div class="value-block">Commision<strong>${{commissionDetail.commission_amount}}</strong></div>
-                            <div class="value-block">Tax<strong>${{commissionDetail.commission_tax}}</strong></div>
+                            <div class="value-block">Revenue<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue}}</strong></div>
+                            <div class="value-block">%/$<strong>{{ currencySymbol }}{{commissionDetail.commission_rate}}</strong></div>
+                            <div class="value-block">Commision<strong>{{ currencySymbol }}{{commissionDetail.commission_amount}}</strong></div>
+                            <div class="value-block">Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_tax}}</strong></div>
                         </div>
                         <div class="switch-button" ng-class="{'on': commissionDetail.commission_paid_status === 'paid'}">
                             <!-- add class "on" when L44 checked -->
