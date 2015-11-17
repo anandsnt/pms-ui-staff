@@ -424,7 +424,8 @@
 "NO_ROOMS":"No Rooms",
 "UNASSIGN_SELECTED": "Unassign Selected",
 "LEAVE_ASSIGNED" : "Leave Assigned",
-"GO_BACK" : "Go Back"
+"GO_BACK" : "Go Back",
+"LEAVE_UNASSIGNED" : "Leave Unassigned"
 
 ,"GIVEX_SETUP_HEADER": "Givex Setup",
 "GIVEX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
@@ -536,6 +537,7 @@
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
     "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS": "SEND EMAIL TO GUESTS ON DAY BEFORE ARRIVAL",
     "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
@@ -790,7 +792,8 @@
 "OTHER_SETTINGS" : "Other settings",
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
 "ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
-"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
+"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
+"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In"
 
 
 
