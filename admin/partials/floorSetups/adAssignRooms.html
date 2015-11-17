@@ -1,4 +1,4 @@
-<section class="content-scroll" ng-if="stateVariables.activeTab === 'ASSIGN'" ng-controller="ADAssignRoomsCtrl">
+<section id="assignRooms" class="content-scroll" ng-if="stateVariables.activeTab === 'ASSIGN'" ng-controller="ADAssignRoomsCtrl">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Roles permissions navigation -->
     <div id="permissions" class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all" data-tabs="details-tabs">
@@ -13,39 +13,47 @@
         </div>
         <form class="form float ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
             <!-- Toggle between assigned & available rooms -->
-            <div class="actions float pull-right">
-                <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'AVAILABLE', 'white' : roomAssignment.activeTab !== 'AVAILABLE'}">
+            <div class="controls-holder tabs">
+                <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'AVAILABLE', 'white grey-bg' : roomAssignment.activeTab !== 'AVAILABLE'}">
                     AVAILABLE
                 </button>
-                <button type="button" class="button add-data-inline ng-scope" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white' : roomAssignment.activeTab!== 'ASSIGNED'}">
-                    ASSIGNED ({{floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count}})
+                <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white grey-bg' : roomAssignment.activeTab!== 'ASSIGNED'}">
+                    ASSIGNED
+                    <span class="bubble" ng-class="{'selected' : floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count > 0}"> {{floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count}} </span>
                 </button>
             </div>
             <!-- Config section and search come here! -->
-            <span class="count-show">Show</span>
-            <div class="select table-count rates-table-count">
-                <select ng-model="displyCount" ng-options="opt for opt in displayCountList" ng-change="onDisplayCountChange()"></select>
-            </div>
-            <span class="count-entries">entries</span>
-            <div class="table-search">
-                <span class="search-text">Search</span>
-                <span class="icons icon-search" name="submit" type="submit"></span>
-                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+            <div class="controls-holder filters">
+                <span class="count-show">Show</span>
+                <div class="select floor-room-count">
+                    <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+                </div>
+                <span class="count-entries">entries</span>
+                <!-- 3. search -->
+                <div class="table-search three-column">
+                    <span class="search-text">Search</span>
+                    <span class="icons icon-search" name="submit" type="submit"></span>
+                    <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+                </div>
             </div>
             <!--ng-table component -->
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
                 <tbody>
-                    <tr ng-repeat="room in $data">
+                    <tr ng-repeat="room in $data" ng-click="toggleSelectRoom(room)" ng-class="{'selected': room.isSelected}">
                         <td data-title="'ROOM NO.'" sortable="'room_no'" header-class="width-40">
-                            <a class="edit-data" ng-click="toggleSelectRoom($index)">
-                                <strong> {{room.room_number}}</strong>
+                            <a class="room-number">
+                                <strong ng-class="{'selected': room.isSelected, 'green': roomAssignment.activeTab === 'AVAILABLE', 'red': roomAssignment.activeTab === 'ASSIGNED'}"> {{room.room_number}} </strong>
                             </a>
                         </td>
-                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40" ng-click="toggleSelectRoom($index)">
+                        <td data-title="'ROOM TYPE'" sortable="'room_type'" header-class="width-40">
                             {{room.room_type}}
                         </td>
-                        <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'" ng-click="toggleSelectRoom($index)">
-                            <ad-checkbox is-checked="room.isSelected" ng-click="toggleSelectRoom($index)"></ad-checkbox>
+                        <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/floorSetups/adTableHeaderCheckBox.html'">
+                            <div class="entry radio-check">
+                                <label class="checkbox" ng-class="{'checked': room.isSelected}">
+                                    <span class="icon-form icon-checkbox" ng-class="{'checked': room.isSelected, 'green': roomAssignment.activeTab === 'AVAILABLE', 'red': roomAssignment.activeTab === 'ASSIGNED'}"></span>
+                                </label>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

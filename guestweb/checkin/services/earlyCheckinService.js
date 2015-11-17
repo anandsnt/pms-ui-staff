@@ -31,5 +31,5 @@ var dependencies = [
 earlyCheckinService
 ];
 
-snt.factory('earlyCheckinService', dependencies);
+sntGuestWeb.factory('earlyCheckinService', dependencies);
 })();

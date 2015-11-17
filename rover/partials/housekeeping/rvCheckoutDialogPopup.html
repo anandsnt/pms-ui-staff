@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
       <div class="modal-content alert" ng-if="!isSuccess">
             <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
                   <span class="icons icon-close invert"></span>

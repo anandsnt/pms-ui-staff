@@ -39,5 +39,5 @@ var dependencies = [
 earlyCheckinOptionsController
 ];
 
-snt.controller('earlyCheckinOptionsController', dependencies);
+sntGuestWeb.controller('earlyCheckinOptionsController', dependencies);
 })();

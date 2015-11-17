@@ -2,15 +2,15 @@
 	<header class="content-title">
 		<h2 translate> FLOORS </h2>
 		<span class="count"> ({{data.floors.length}}) </span>
-		<a class="action add" ng-click="gotoAddFloor()"  translate>ADD_NEW</a>
+		<a class="action add" ng-click="gotoAddFloor()"  ng-show="stateVariables.activeTab === 'MANAGE'" translate>ADD_NEW</a>
 		<div class="actions float pull-right">
-			<button type="button" class="button add-data-inline ng-scope" ng-click="toggleAssignFloors()" 
+			<button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignFloors()" 
 				ng-class="{'orange' : stateVariables.activeTab === 'MANAGE', 'white' : stateVariables.activeTab !== 'MANAGE'}">
 				MANAGE FLOORS
 			</button>
-			<button type="button" class="button add-data-inline ng-scope" ng-click="toggleAssignFloors()" 
+			<button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignFloors()" 
 				ng-class="{'orange' : stateVariables.activeTab === 'ASSIGN', 'white' : stateVariables.activeTab !== 'ASSIGN'}">
-				ASSIGN ROOMS
+				MANAGE ROOMS
 			</button>
 		</div>
 	</header>

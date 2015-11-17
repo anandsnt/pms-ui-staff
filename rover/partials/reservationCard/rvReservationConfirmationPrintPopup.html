@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
     <form method="post" action="confirm-reservation" id="confirm-reservation" class="modal-content form confirm-reservation">
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         

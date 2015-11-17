@@ -7,7 +7,6 @@ admin.controller('ADFloorsListCtrl',
         '$anchorScroll',
         '$timeout',
         '$location',
-        '$state',
     function(
         $scope,
         $state,
@@ -16,8 +15,7 @@ admin.controller('ADFloorsListCtrl',
         $filter,
         $anchorScroll,
         $timeout,
-        $location,
-        $state){
+        $location){
 
 	BaseCtrl.call(this, $scope);
 
@@ -115,7 +113,7 @@ admin.controller('ADFloorsListCtrl',
          $scope.listFloorTypes();
     });
 
-    $scope.toggleAssignFloors = function(){
+    $scope.toggleAssignFloors = function(){           
         $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
     }
 

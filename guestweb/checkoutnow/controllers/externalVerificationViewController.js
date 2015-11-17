@@ -94,10 +94,10 @@ var dependencies = [
 externalVerificationViewController
 ];
 
-snt.controller('externalVerificationViewController', dependencies);
+sntGuestWeb.controller('externalVerificationViewController', dependencies);
 })();
 
-snt.controller('verificationErrorController', ['$scope', function($scope) {
+sntGuestWeb.controller('verificationErrorController', ['$scope', function($scope) {
 
 	$scope.doneClicked = function(){
 
