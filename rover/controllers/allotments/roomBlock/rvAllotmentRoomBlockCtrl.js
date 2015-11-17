@@ -82,17 +82,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		var isContractHeld = function(){
-			var contractIsHeld = true; 
-			
+			var contractIsHeld = true;
+
 			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,function(roomData){
 				_.each(roomData.dates,function(config){
 					contractIsHeld = contractIsHeld && config.single === config.single_contract &&
 						config.double === config.double_contract &&
 						  config.triple === config.triple_contract &&
 						  	config.quadruple === config.quadruple_contract;
-					
+
 				});
-			}); 
+			});
 
 			return contractIsHeld;
 		};
@@ -473,23 +473,29 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * function to load next 14 days data.
 		 */
 		$scope.fetchNextSetOfRoomBlockData = function() {
-			// Set start date 14 days ahead.
 			$scope.timeLineStartDate.setDate($scope.timeLineStartDate.getDate() + 14);
 			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
+		/**
+		 * Calls API to fetch room block data for a specific date range
+		 * Start date is selected from date picker, End date is computed
+		 */
 		$scope.fetchCurrentSetOfRoomBlockData = function() {
 			// CICO-21222 Introduced pagination in room block timeline.
 			var allotmentStartDate = $scope.allotmentConfigData.summary.block_from,
-					allotmentEndDate 	 = $scope.allotmentConfigData.summary.block_to;
+				allotmentEndDate   = $scope.allotmentConfigData.summary.block_to;
 
+			// check lower  bound
 			if (allotmentStartDate > $scope.timeLineStartDate) {
 				$scope.timeLineStartDate = new tzIndependentDate(allotmentStartDate);
 			}
+
+			// 14 days are shown by default.
 			$scope.timeLineEndDate = new tzIndependentDate($scope.timeLineStartDate);
 			$scope.timeLineEndDate.setDate($scope.timeLineStartDate.getDate() + 14);
 
-			// check date validity
+			// check upper bound
 			if ($scope.timeLineStartDate > allotmentEndDate) {
 				$scope.timeLineStartDate = new tzIndependentDate(allotmentEndDate);
 			}
@@ -1395,14 +1401,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * when a tab switch is there, parant controller will propogate
-		 * API, we will get this event, we are using this to fetch new room block deails
+		 * when a tab switch is there, we will get this event,
+		 * we are using this to fetch/refresh room block deails
 		 */
 		var tabSwitchEvent = $scope.$on("ALLOTMENT_TAB_SWITCHED", function(event, activeTab) {
 			if (activeTab !== 'ROOM_BLOCK') {
 				return;
 			}
 			$scope.$emit("FETCH_SUMMARY");
+
 			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
 			$scope.fetchCurrentSetOfRoomBlockData();
 
@@ -1439,7 +1446,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.$on( '$destroy', tabSwitchEvent );
 		$scope.$on( '$destroy', summaryUpdateEvent );
 		$scope.$on( '$destroy', summaryUpdateFailEvent );
-		$scope.$on( '$destroy', self.destroyScrolls );
 
 		/**
 		 * we want to display date in what format set from hotel admin
