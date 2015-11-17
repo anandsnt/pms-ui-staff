@@ -350,7 +350,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.copySingleContractValueToOtherBlocks = function(cellData, rowData) {
 			var data = {
 				occupancy: 'single_contract',
-				value: cellData.single_contract
+				value: cellData.single_contract,
+				isContract: true
 			};
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
@@ -375,7 +376,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.copyDoubleContractValueToOtherBlocks = function(cellData, rowData) {
 			var data = {
 				occupancy: 'double_contract',
-				value: cellData.double_contract
+				value: cellData.double_contract,
+				isContract: true
 			};
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
@@ -400,7 +402,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.copyTripleContractValueToOtherBlocks = function(cellData, rowData) {
 			var data = {
 				occupancy: 'triple_contract',
-				value: cellData.triple_contract
+				value: cellData.triple_contract,
+				isContract: true
 			};
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
@@ -425,7 +428,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.copyQuadrupleContractValueToOtherBlocks = function(cellData, rowData) {
 			var data = {
 				occupancy: 'quadruple_contract',
-				value: cellData.quadruple_contract
+				value: cellData.quadruple_contract,
+				isContract: true
 			};
 			$scope.selectedRoomType = rowData;
 			$scope.showMassUpdateEndDateConfirmation(data);
@@ -688,6 +692,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.hasBookingDataChanged = false;
 			updated_contract_counts = false;
 			updated_current_counts = false;
+			$scope.massUpdateSelected = false;
 		};
 
 		var successCallBackOfSaveRoomBlock = function(data) {
@@ -701,6 +706,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// reset flags
 			updated_contract_counts = !updated_contract_counts;
 			updated_current_counts = !updated_current_counts;
+			$scope.massUpdateSelected = false;
 
 			//we have saved everything we have
 			//so our data is new
@@ -806,13 +812,21 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {boolean} forceOverbook
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate) {
+		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate, massUpdate) {
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
+			massUpdate = massUpdate || false;
+
+			if ($scope.massUpdateSelected || massUpdate) {
+				$scope.massUpdateSelected = true;
+				var data = [$scope.selectedRoomType];
+			} else {
+				data = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings
+			}
 
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
-				results: $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,
+				results: data,
 				forcefully_overbook_and_assign_rooms: forceOverbook,
 				is_contract_save: isContratUpdate
 			};
@@ -1247,6 +1261,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
 			$scope.$emit("showLoader");
+			$scope.massUpdateSelected = false;
 			$timeout(function() {
 				var roomBlockData = $scope.allotmentConfigData.roomblock;
 
@@ -1729,6 +1744,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
+
+			$scope.massUpdateSelected = false;
 		};
 
 

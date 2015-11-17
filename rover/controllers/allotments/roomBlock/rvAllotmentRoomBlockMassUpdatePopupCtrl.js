@@ -54,7 +54,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		$scope.clickedOnSaveButton = function () {
 
 			var roomBlockData = $scope.allotmentConfigData.roomblock,
-				isReleaseDays = $scope.ngDialogData.isReleaseDays,
+				isReleaseDays = $scope.ngDialogData.isReleaseDays || false,
 				value 		  = $scope.ngDialogData.value,
 				timeLineStart = $scope.timeLineStartDate,
 				endDate 	  = $scope.massUpdateEndDate;
@@ -74,11 +74,15 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				//we changed something
 				$scope.releaseDateChanging();
 
+				// Save room block now.
+				$scope.saveReleaseDays();
+
 			}
 			// Copying contract or held counts
 			else {
 				var roomTypeData  = $scope.selectedRoomType,
-					occupancy 	  = $scope.ngDialogData.occupancy;
+					occupancy 	  = $scope.ngDialogData.occupancy,
+					isContract 	  = $scope.ngDialogData.isContract || false;
 
 				copyValuesThroughDates(roomTypeData.dates, occupancy, value);
 				roomTypeData.copy_values_to_all = true;
@@ -87,6 +91,9 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 				//we changed something
 				$scope.bookingDataChanging();
+
+				// Save room block now.
+				$scope.saveRoomBlock(false, isContract, true);
 			}
 
 			$scope.closeDialog();
