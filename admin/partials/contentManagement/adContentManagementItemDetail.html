@@ -80,9 +80,13 @@
                     <label for="item-description" ><span translate>DESCRIPTION_LABEL</span> <strong ng-show="data.page_template=='SCREEN'">*</strong></label>
                     <textarea name="item-description" ng-model="data.description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
                 </div>
-                <div class="entry" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
                     <label for="item-phone" translate>PHONE_LABEL</label>
                     <input type="text" name="item-phone" ng-model="data.phone" id="item-phone" placeholder="Enter Phone number" value="" />
+                </div>
+                <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
+                    <label for="item-email" translate>EMAIL_LABEL</label>
+                    <input type="text" name="item-email" ng-model="data.email" id="item-email" placeholder="Enter Email Id" value="" />
                 </div>
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
                     <label for="item-address"><span translate>ADDRESS_LABEL</span> <strong ng-show="data.page_template=='POI'">*</strong></label>
