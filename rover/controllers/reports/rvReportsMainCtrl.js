@@ -241,17 +241,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			}
 		}, datePickerCommon);
 
-		/**
-		 * utility method to get date after one year
-		 * @param  {Object/String} date [if String, should be valid date format string]
-		 * @return {Object}      [Date]
-		 */
-		var getDateAfterOneYear = function (date) {
-			var dateAfter1Year 	= new Date (date);
-			dateAfter1Year.setFullYear( dateAfter1Year.getFullYear() + 1 );
-			return dateAfter1Year;
-		};
-
 		//for some of the reports we need to restrict max date selection to 1 year (eg:- daily production report)
 		$scope.fromDateOptionsOneYearLimit = angular.extend({
 			onSelect: function(value, datePickerObj) {
