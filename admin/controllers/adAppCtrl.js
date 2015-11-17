@@ -520,6 +520,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isFFPActive = data.is_ffp_active;
 			$rootScope.isHLPActive = data.is_hlp_active;
 			$rootScope.isPromoActive = data.is_promotion_active;
+			//CICO-21697
+			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
