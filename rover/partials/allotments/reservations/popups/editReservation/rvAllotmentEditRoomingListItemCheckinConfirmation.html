@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
 	<div class="modal-content form confirmation">
 	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
 	    <span class="message h2" translate>GROUP_MASS_CHECKIN_CONFIRMATION</span>

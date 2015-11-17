@@ -48,5 +48,5 @@ var dependencies = [
 checkInKeysController
 ];
 
-snt.controller('checkInKeysController', dependencies);
+sntGuestWeb.controller('checkInKeysController', dependencies);
 })();
