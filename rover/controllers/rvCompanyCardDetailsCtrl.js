@@ -68,6 +68,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			if (tabToSwitch === 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
+			if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("refreshComissionsScroll");
+			}
 
 			$scope.currentSelectedTab = tabToSwitch;
 		};

@@ -4,7 +4,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		var self = this;
 
 		//some default values
-		this.DEFAULT_PER_PAGE 	= 50;
+		this.DEFAULT_PER_PAGE 	= 8;
 		this.DEFAULT_PAGE 		= 1;
 
 		/** contact information area */
@@ -359,16 +359,34 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         /**
 		 * Service for getting the commission details of a travel agent
 		 */
-        this.fetchTACommissionDetails = function(params) {
+        this.fetchTACommissionDetails = function(reqData) {
 			var deferred = $q.defer();
-			var url = ' /api/accounts/' + params.id + '/commission_details';
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			//var url = ' api/accounts/' + reqData.accountId + '/commission_details';
+			var url = "/assets/sampleJson/commissionTa"+ reqData.params.page + ".json";
+
+			rvBaseWebSrvV2.getJSON(url, reqData.params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
+
+		/**
+		 * Service for saving the commission details of travel agents
+		 */
+        this.saveTACommissionDetails = function(reqData) {
+			var deferred = $q.defer();
+			var url = 'api/accounts/' + reqData.accountId +'/save_commission_details';
+			rvBaseWebSrvV2.postJSON(url, reqData.commissionDetails).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+
 
 	}
 ]);
