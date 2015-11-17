@@ -50,7 +50,6 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.getRoomClassList = function(){
 		var successCallbackFetch = function(data){
 			$scope.roomClasses = data;
-			console.log($scope.roomClasses);
 		};
 		$scope.invokeApi(ADRoomTypesSrv.fetchRoomClasses, {} , successCallbackFetch);
 	};
