@@ -50,26 +50,62 @@
         margin: 20px 20px 0;
 
         li {
-            line-height: 40px;
-            vertical-align: middle;
-            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 1;
             text-transform: uppercase;
-            width: 100%;
-            border-bottom: 1px solid rgba(0,0,0,.1);
+            text-align: center;
+            margin-bottom: 20px;
+            .float;
+
+            strong {
+                font-weight: 400;
+                .show;
+            }
 
             span {
                 font-size: 30px;
-                line-height: 40px;
                 font-weight: 300;
-                color: @textColor;
                 .show;
-                .pull-right;
+                .pull-left;
+
+                &.value { 
+                    text-align: right;
+                    padding-right: 10px;
+                    width: 48%;
+                }
+
+                &.total {
+                    text-align: left;
+                    padding-left: 10px;
+                    width: 48%;
+                }
+
+                &.delimiter {
+                    width: 4%;
+                    text-align: center;
+                }
             }
 
-            &:last-child {
-                margin-bottom: 0;
-                border-bottom: 0;
+            &.shift { 
+                .total { color: @grey3; }
             }
+            
+            &.departures { 
+                .value,
+                .total { color: @red; }
+            }
+            
+            &.stayovers { 
+                .value,
+                .total { color: @blue; }
+            }
+
+            &.completed { 
+                .value,
+                .total { color: @green; }
+            }
+
+            &:first-child { margin-top: 20px; }
         }
     }
 
@@ -562,28 +598,18 @@
     .worksheet-summary {
         margin: 20px auto;
         display: table;
+        .float;
 
         li {
             display: inline-block;
-            font-size: 14px;
-            line-height: 20px;
-            text-align: center;
             width: auto;
-            margin: 0 20px 0 0;
-            padding-right: 20px;
-            border-bottom: 0;
-            border-right: 1px solid rgba(0,0,0,.1);
+            margin-bottom: 0;
 
-            span {
-                float: none;
-                font-size: 48px;
-            }
+            span { font-size: 40px; }
 
-            &:last-child {
-                margin-right: 0;
-                padding-right: 0;
-                border-right: 0;
-            }
+            &:first-child { margin-top: 0; }
+
+            &:not(:last-child) { margin-right: 20px; }
         }
 
         &.hidden { display: table !important; }
