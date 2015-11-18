@@ -5,7 +5,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
     'RVCompanyCardSrv',
     'ngDialog',
     '$timeout',
-function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout) {
+    'rvUtilSrv',
+function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, util) {
     BaseCtrl.call(this, $scope);
 
     //Get the request parameters for the commission filtering
@@ -166,10 +167,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout)
             totalRevenue = 0,
             totalCommission = 0;
         commissionList.forEach(function(commission) {
-            if (commission.commission_paid_status == 'Unpaid') {
-               unpaidCommission += commission.commission_amount;
+            if(!isEmptyObject(commission.commission_data)) {
+                if (commission.commission_data.paid_status == 'Unpaid') {
+                    unpaidCommission += commission.commission_data.amount;
+                }
+                totalCommission += commission.commission_data.amount;
             }
-            totalCommission += commission.commission_amount;
+
             totalRevenue += commission.reservation_revenue;
         });
 
@@ -227,7 +231,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout)
     $scope.togglePaidStatus = function(commission) {
         var commissionToUpdate = {};
         commissionToUpdate.reservation_id = commission.reservation_id;
-        commissionToUpdate.status = commission.commission_paid_status == "Paid" ? "Unpaid" : "Paid";
+        commissionToUpdate.status = commission.commission_data.paid_status == "Paid" ? "Unpaid" : "Paid";
 
         var requestData = {};
         requestData.accountId = $scope.accountId;
@@ -268,6 +272,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout)
             start : 1
         };
         $scope.accountId = $stateParams.id;
+        $scope.isEmpty = util.isEmpty;
 
         $scope.pagination = {
           start : 1,

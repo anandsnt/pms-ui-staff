@@ -1,5 +1,5 @@
 <!-- Travel Agent Card Tab - Commisions -->
-<form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions">
+<form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
     <div class="tab-header with-filters">
         <div class="search-form" ng-class="{'hidden' : selectAll || selectedCommissions.length > 0}">
             <!-- Add class "hidden" when selecting all/individual commisions -->
@@ -90,11 +90,11 @@
                         </div>
                         <div class="values">
                             <div class="value-block">Revenue<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue}}</strong></div>
-                            <div class="value-block">%/$<strong>{{ currencySymbol }}{{commissionDetail.commission_rate}}</strong></div>
-                            <div class="value-block">Commision<strong>{{ currencySymbol }}{{commissionDetail.commission_amount}}</strong></div>
-                            <div class="value-block">Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_tax}}</strong></div>
+                            <div class="value-block">%/$<strong>{{ currencySymbol }}{{commissionDetail.commission_data.rate}}</strong></div>
+                            <div class="value-block">Commision<strong>{{ currencySymbol }}{{commissionDetail.commission_data.amount}}</strong></div>
+                            <div class="value-block">Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_data.tax}}</strong></div>
                         </div>
-                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_paid_status === 'Paid'}" ng-show="commissionDetail.commission_paid_status != 'Prepaid'">
+                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid'}" ng-show="(commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid'">
                             <!-- add class "on" when L44 checked -->
                             <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                             <label class="data-off">
@@ -106,8 +106,8 @@
                                 <span class="value">PAID</span>
                             </label>
                         </div>
-                        <div class="prepaid" ng-show="commissionDetail.commission_paid_status == 'Prepaid'">Prepaid</div>
-                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}">
+                        <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'">Prepaid</div>
+                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" ng-hide="isEmpty(commissionDetail.commission_data)">
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                             <!-- add class "checked" when L56 checked -->
