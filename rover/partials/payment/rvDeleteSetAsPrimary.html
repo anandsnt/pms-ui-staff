@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<form name="edit-payment" method="post" id="edit-payment" class="modal-content form confirmation" action="index.html">
 		<button type="button" id="credit-card-set-as-primary" class="button green modal-close" ng-click="setAsPrimary()">
 			Set as primary

@@ -109,5 +109,5 @@ var dependencies = [
 checkinArrivalDetailsController
 ];
 
-snt.controller('checkinArrivalDetailsController', dependencies);
+sntGuestWeb.controller('checkinArrivalDetailsController', dependencies);
 })();

@@ -1,0 +1,333 @@
+
+
+
+@import "variables.less";
+@import "base.less";
+@import "font.less";
+@import "layout.less";
+@import "state.less";
+@import "date-picker.less";
+@import "bill-popup.less";
+@import "modal-styles.less";
+
+
+
+body {
+    font-size: 100%;
+    font-family: 'Source Sans Pro';
+}
+.main-text,.sub-text,.sub-main-text,.footer-text{
+    font-weight:lighter;
+}
+.main-text{
+    font-size: 30px;
+}
+
+.black-text{
+    color: @black !important;
+}
+
+.sub-main-text{
+    font-size:15px !important;
+}
+
+.sub-text{
+    font-size:12.3px;
+    text-transform:uppercase;
+}
+.strong-font{
+    font-weight:600;
+}
+
+.no-text-transform{
+    text-transform:none !important;
+}
+
+.grey-btn,.grey-btn:hover{
+    background:#8B8B8B !important;
+}
+
+.footer-text{
+    text-align: center;
+    font-style: italic;
+    margin-top:30px;
+    margin-bottom:30px;
+    font-size: 18px;
+    padding-left:4%;
+    padding-right:4%;
+}
+
+.time,.amount{
+    font-size: 24px;
+}
+.ap,.for{
+    font-size:16px;
+}
+.balance-amount{
+    font-size:30px;
+}
+.request-text,.error-text{
+    color:@black;
+    font-size:22px;
+}
+.phone-text,.phone-text:hover{
+    color:@black !important;
+    text-decoration:underline;
+}
+.query-text,.query-text:hover{
+    cursor:pointer;
+    font-size:12px;
+    text-decoration:underline;
+    .black-text;
+}
+.res-date{
+    font-size:18px;
+    color:@white;
+}
+.upgrade-details {
+    background-color: #fff;
+    p {
+         text-align: left;
+    }
+}
+.rate-info,.room-name{
+    font-size:30px;
+}
+.rate-desc{
+    padding-left:10px;
+    font-size:14px;
+}
+.rate-info,.rate-desc{
+    float:left;
+}
+
+
+/*-------------------------------- terms & conditions ------------------------------------------------*/
+.terms-and-conditions-container{
+    width:95%;
+}
+.terms-alert{
+    padding:4% 4% 10%;
+}
+.grey-terms-button,.green-button{
+    float:left;
+    width:200px;
+    color:@white;
+}
+.grey-terms-button,.grey-terms-button:hover{
+    background: #787878;
+    color:@white;
+}
+.green-button{
+    padding:2%;
+}
+.grey-terms-button{
+  margin-top:10px;
+  margin-left:15px;   
+  padding:1%;
+}
+.green-text{
+    color:@green;
+}
+.terms-main,.terms-sub{
+    text-align:left;
+}
+.terms-main{
+    font-size:22px;
+}
+.terms-sub{
+   font-size:15px;
+}
+.button-actions{
+    margin-top:3%;
+}
+.full-screen {
+    height: 90% !important;
+    overflow: scroll;
+    width: 95%;
+    margin: 2% auto;
+}
+.logo-image{
+    max-width:300px;
+    margin:3% auto 0;
+}
+.carousel-inner{
+    padding-bottom:2%;
+}
+/*-------------------------------- CC page------------------------------*/
+.cc-alert{
+  padding-top:10%;
+  padding-bottom:10%;
+
+  p{
+    margin:none;
+  }
+}
+
+.cc-close{
+  margin:5% auto;
+}
+.cc-number-description{
+      padding:0 10%;
+      font-size:13px;
+      .ccv-headings{
+        font-weight:bold;
+        font-size: 15px;
+        margin-top: 10px;
+      }
+}
+
+.no-thanks{
+    font-size: 16px;
+    text-transform:uppercase;
+}
+.view-bill{
+    cursor:pointer;
+    font-size:18px;
+    margin: 0 auto;
+    max-width: 104px !important;
+    div,span{
+        float:left;
+    }
+}
+
+.footer-sub-text,.footer-sub-text:hover{
+    font-size:18px !important;
+    color:@white;
+}
+.res-details-heading,.res-details-heading:hover{
+    font-size:18px !important;
+    color:#8e8e8e;
+}
+.horizontal-line-sep-mobile {
+    border-top: 1px solid white; 
+    width:100%;
+    margin-bottom:10px;
+    display: none;
+}
+/*-------------------------------- responsive code starts here------------------------------*/
+
+
+@media (min-width: 990px) {
+    .main-text{
+        font-size: 44px;
+    }
+    .sub-text{
+        font-size:18px !important;
+    }
+    .sub-main-text{
+        font-size: 24px !important;
+    }
+    .checkout-btn{
+        padding:25%;
+    }
+    .checkout-btn,.accept-charges{
+        width: 420px;
+        font-size: 30px;
+    }
+    .hide-in-desktop{
+        display: none;
+    }
+    .accept-charges{
+        padding:15%;
+    }
+    .vertical-line{
+        display:block;
+    }
+    .res-date{
+        font-size:24px;
+    }
+    .lonely-btn {
+        margin-top: 15%;
+    }
+    .hide-in-mobile{
+        display: block;
+    }
+    .checkout-alone-button{
+        float:left;
+        margin-left:10px;
+    }
+    .final-text{
+        font-size:34px !important;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .container{
+        width:90%;
+    }
+    .sm-no-top-spacing{
+       margin-top: 0; 
+    }
+    .sm-icon{
+        margin-top:10px;
+    }
+    .sm-full-strech{
+        width:100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .options-container{
+        width:100% !important;
+    }
+    .one-third-width{
+        max-width: 110px;
+    }
+    .request-text,.error-text{
+        font-size:16px;
+    }
+    .lonely-btn {
+        margin-bottom: 15%;
+    }
+    .logo-margin{
+        margin:6%;
+    }
+    .proceed-to-checkin {
+        position:fixed;
+        bottom:0;
+    }
+    .grey-terms-button{
+        margin-top:10px;
+        margin-left:0px;   
+    }
+    .grey-terms-button,.green-button{
+        float:none;
+    }
+    .logo-image{
+        max-width:250px;
+        margin:6% auto;
+    }
+    .footer-text{
+     font-size: 14px;
+    }
+    .input-field {
+        font-size: 18px;
+        padding: 0;
+    }
+    .done-calendar{
+        padding-left:2px !important;
+    }
+    .calendar-button {
+        background-size: 35px 31px;
+    }
+    .footer-sub-text,.footer-sub-text:hover,.res-details-heading,.res-details-heading:hover{
+        font-size:12px !important;
+    }
+    .early-checkin-button,.early-checkin-button:hover{
+        font-size:24px !important;
+    }
+    .accept-checkbox{
+      transform: scale(1.2);
+    }
+    .horizontal-line-sep-mobile {
+        display: block;
+    }
+}
+
+@media (min-width: 480px) {
+  .proceed-to-checkin {
+        position: static;
+        border-radius: 10px;
+    }
+}

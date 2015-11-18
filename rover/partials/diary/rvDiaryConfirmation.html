@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
     <div ng-cloak class="modal-content diary-confirmation">
     <!--<form method="post" action="" id="confirm-diary-reservation" name="confirm-diary-reservation" class="modal-content diary-confirmation">-->
         <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>

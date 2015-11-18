@@ -107,7 +107,7 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 			var deferred = $q.defer(),
 				url = '/api/allotments/' + param.allotment_id + '/inventories';
 
-			rvBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url, param).then(
 				function(data) {
 					deferred.resolve(data);
 				},

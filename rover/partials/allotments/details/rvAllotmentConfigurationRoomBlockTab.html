@@ -14,7 +14,12 @@
                 </select>
             </div>
         </div>
-
+        <div class="entry date" ng-show="shouldShowRoomBlockActions()">
+            <label for="allotment-start-view">Go To Date</label>
+            <input id="allotment-start-date" class="datepicker" 
+                ui-date="timeLineStartDateOptions"
+                rv-set-textbox-value listen-this="timeLineStartDate | date:dateFormat" readonly />
+        </div>
         <div class="actions" ng-show="shouldShowRoomBlockActions()">
             <!-- If block was created -->
             <button type="button" class="button red"
