@@ -1233,7 +1233,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					break;
 
 				default:
-					exportUrl = "";
+					exportUrl = "/api/reports/"+ chosenReport.id +"/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
 					break;
 			}
 

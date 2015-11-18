@@ -164,7 +164,8 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_TAX'        : true,
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
-            'INCLUDE_ADDONS': true
+            'INCLUDE_ADDONS': true,
+            'EXCLUDE_TAX' : true
         };
 
         var __displayFilterNames = {
