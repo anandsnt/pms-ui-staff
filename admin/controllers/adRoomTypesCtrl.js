@@ -1,4 +1,4 @@
-admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 
 	
 	var init = function(){
@@ -8,7 +8,9 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.successMessage = "";
 	$scope.errorMessage ="";
 	$scope.fileName = "Choose File....";
-	$scope.getRoomClassList();
+	if($rootScope.isEnabledRoomTypeByRoomClass){
+		$scope.getRoomClassList();
+	}	
 	//To list room types
 	$scope.listRoomTypes();
 	}

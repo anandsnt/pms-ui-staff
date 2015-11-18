@@ -269,6 +269,13 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
+			<div class="entry is-pms-tokenized">
+				<label>Enable Room Type by room class</label>
+				<div class="switch-button single" ng-class="{ on : data.enable_room_type_by_class == true }" ng-click="data.enable_room_type_by_class = !data.enable_room_type_by_class">
+					<input type="checkbox" value="{{data.enable_room_type_by_class}}">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
 
 			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="use-snt-entity-id-for-checkin-checkout">Use SNT entity id in Check In/Out</label>
@@ -552,13 +559,7 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-			<div class="entry full-width">
-				<label>Enable Room Type by room class</label>
-				<div class="switch-button single" ng-class="{ on : data.enable_room_type_by_class == true }" ng-click="data.enable_room_type_by_class = !data.enable_room_type_by_class">
-					<input type="checkbox" value="{{data.enable_room_type_by_class}}">
-					<span class="switch-icon"></span>
-				</div>
-			</div>
+			
 		</fieldset>
 		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">
