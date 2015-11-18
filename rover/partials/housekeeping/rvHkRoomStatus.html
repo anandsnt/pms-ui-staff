@@ -76,10 +76,24 @@
 </ul>
 
 <ul id="my-worksheet-summary" class="worksheet-summary" ng-if="!!hasActiveWorkSheet" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
-    <li>Time Allocated <span>{{ counts.allocated }}</span></li>
-    <li>Departures <span>{{ counts.departures }}</span></li>
-    <li>Stayovers <span>{{ counts.stayover }}</span></li>
-    <li>Completed <span>{{ counts.completed }}/{{ counts.total }}</span></li>
+    <li class="shift">
+        <strong class="title">Time Allocated</strong>
+        <span class="value">{{ counts.allocated }}</span>
+    </li>
+    <li class="departures">
+        <strong class="title">Departures</strong>
+        <span class="value">{{ counts.departures }}</span>
+    </li>
+    <li class="stayovers">
+        <strong class="title">Stayovers</strong>
+        <span class="value">{{ counts.stayover }}</span>
+    </li>
+    <li class="completed">
+        <strong class="title">Completed</strong>
+        <span class="value">{{ counts.completed }}</span>
+        <span class="delimiter">|</span>
+        <span class="total">{{ counts.total }}</span>
+    </li>
 </ul>
 
 <!-- Rooms list -->
