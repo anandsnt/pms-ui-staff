@@ -100,5 +100,4 @@
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "COMPANY_CARD_DETACH_BILLING_INFO_WARNING": "Removing card may update Billing and Rate Information",
-    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity.",
-    "COMMISSIONS" : "Commissions"
+    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity."

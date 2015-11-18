@@ -5,7 +5,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
     'RVCompanyCardSrv',
     'ngDialog',
     '$timeout',
-function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout) {
+    'rvPermissionSrv',
+function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv) {
     BaseCtrl.call(this, $scope);
 
     //Get the request parameters for the commission filtering
@@ -68,6 +69,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout)
         requestData.params = getRequestParams();
         requestData.accountId = $scope.accountId;
         $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
+    };
+
+    $scope.hasCCAuthPermission = function() {
+        return rvPermissionSrv.getPermissionValue ('');
     };
 
     $scope.loadNextSet = function(){

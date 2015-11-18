@@ -5,44 +5,44 @@
             <!-- Add class "hidden" when selecting all/individual commisions -->
             <div class="entry date-range">
                 <div class="entry-data has-datepicker">
-                    <label for="commision-date-from">Start Date</label>
+                    <label for="commision-date-from" translate>COMMISSION_START_DATE</label>
                     <button class="clear-query" ng-click="$event.preventDefault(); clearFromDateField();" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
                         <!-- Add class 'visible' when date is selected -->
-                        <span class="icons icon-clear-search">Clear query</span>
+                        <span class="icons icon-clear-search" translate>COMMISSION_CLEAR_QUERY</span>
                     </button>
                     <input id="commision-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
                 </div>
                 <div class="entry-data has-datepicker">
-                    <label for="commision-date-to">End Date</label>
+                    <label for="commision-date-to" translate>COMMISSION_END_DATE</label>
                     <button class="clear-query" ng-click="$event.preventDefault(); clearToDateField();" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
                         <!-- Add class 'visible' when date is selected -->
-                        <span class="icons icon-clear-search">Clear query</span>
+                        <span class="icons icon-clear-search" translate>COMMISSION_CLEAR_QUERY</span>
                     </button>
                     <input id="commision-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()"  readonly />
                 </div>
             </div>
             <div class="entry">
-                <label for="commision-status">Status</label>
+                <label for="commision-status" translate>COMMISSION_STATUS</label>
                 <div class="select">
                     <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
-                        <option value="commissionable" selected>Commisionable</option>
-                        <option value="non-commisionable">Non-Commisionable</option>
+                        <option value="commissionable" selected translate>COMMISSION_COMMISSIONABLE</option>
+                        <option value="non-commisionable" translate>COMMISSION_NON_COMMISSIONABLE</option>
                     </select>
                 </div>
             </div>
             <div class="entry">
-                <label for="commision-paid">Paid Status</label>
+                <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
                 <div class="select">
                     <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
-                        <option value="">Set Status</option>
-                        <option value="unpaid" selected>Unpaid</option>
-                        <option value="paid">Paid</option>
-                        <option value="prepaid">Prepaid</option>
+                        <option value="" translate>COMMISSION_SET_STATUS</option>
+                        <option value="unpaid" selected translate>COMMISSION_UNPAID</option>
+                        <option value="paid" translate>COMMISSION_PAID</option>
+                        <option value="prepaid" translate>COMMISSION_PREPAID</option>
                     </select>
                 </div>
             </div>
             <div class="actions">
-                <button type="button" class="button green">Update</button>
+                <button type="button" class="button green" translate>COMMISSION_UPDATE</button>
             </div>
         </div>
     </div>
@@ -50,9 +50,9 @@
         <!-- Add class "with-pagination" when pagination is shown -->
         <ul class="totals" ng-class="{'selected' : selectAll || selectedCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
-            <li>Unpaid <span class="value">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission}}</span></li>
-            <li>Total Revenue <span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue}}</span></li>
-            <li>Commission To Date <span class="value">{{ currencySymbol }}{{commissionSummary.totalCommission}}</span></li>
+            <li translate>COMMISSION_UNPAID <span class="value">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission}}</span></li>
+            <li translate>COMMISSION_TOTEL_REVENUE<span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue}}</span></li>
+            <li translate>COMMISSION_TO_DATE <span class="value">{{ currencySymbol }}{{commissionSummary.totalCommission}}</span></li>
             <li class="action no-margin">
                 <button type="button" class="button blue with-icon only-icon">
                     <span class="icons icon-print"></span>
@@ -69,10 +69,10 @@
                 <!-- Remove class "hidden" when selecting all/individual commisions -->
                 <div class="select">
                     <select id="selected-paid" class="placeholder" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange()">
-                        <option value="">Set Paid Status</option>
-                        <option value="unpaid">Unpaid</option>
-                        <option value="paid">Paid</option>
-                        <option value="prepaid">Prepaid</option>
+                        <option value="" translate>COMMISSION_SET_PAID_STATUS</option>
+                        <option value="unpaid" translate>COMMISSION_UNPAID</option>
+                        <option value="paid" translate>COMMISSION_PAID</option>
+                        <option value="prepaid" translate>COMMISSION_PREPAID</option>
                     </select>
                 </div>
             </li>
@@ -88,21 +88,21 @@
                             <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                         </div>
                         <div class="values">
-                            <div class="value-block">Revenue<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue}}</strong></div>
+                            <div class="value-block" translate>COMMISSION_REVENUE<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue}}</strong></div>
                             <div class="value-block">%/$<strong>{{ currencySymbol }}{{commissionDetail.commission_rate}}</strong></div>
-                            <div class="value-block">Commision<strong>{{ currencySymbol }}{{commissionDetail.commission_amount}}</strong></div>
+                            <div class="value-block" translate>COMMISSION<strong>{{ currencySymbol }}{{commissionDetail.commission_amount}}</strong></div>
                             <div class="value-block">Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_tax}}</strong></div>
                         </div>
                         <div class="switch-button" ng-class="{'on': commissionDetail.commission_paid_status === 'paid'}">
                             <!-- add class "on" when L44 checked -->
                             <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                             <label class="data-off">
-                                <span class="value">UNPAID</span>
-                                <span class="switch-icon">PAID</span>
+                                <span class="value" translate>COMMISSION_UNPAID</span>
+                                <span class="switch-icon" translate>COMMISSION_PAID</span>
                             </label>
                             <label class="data-on">
-                                <span class="switch-icon">UNPAID</span>
-                                <span class="value">PAID</span>
+                                <span class="switch-icon" translate>COMMISSION_UNPAID</span>
+                                <span class="value" translate>COMMISSION_PAID</span>
                             </label>
                         </div>
                         <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}">
@@ -118,9 +118,9 @@
     </div>
     <!-- Pagination -->
     <div class="search-pagination" ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-        <p>Showing <strong>{{pagination.start}}-{{pagination.end}}</strong> of <strong id="total-count">{{pagination.totalResultCount}}</strong> items</p>
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate translate>COMMISSION_NEXT</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate translate>COMMISSION_PREVIOUS</button>
+        <p translate>COMMISSION_SHOWING<strong>{{pagination.start}}-{{pagination.end}}</strong> of <strong id="total-count">{{pagination.totalResultCount}}</strong translate>COMMISSION_ITEMS</p>
     </div>
     <!-- When no data to show, replace L89-93 with this -->
     <div class="tab-details no-content" ng-show="commissionDetails.length == 0">
