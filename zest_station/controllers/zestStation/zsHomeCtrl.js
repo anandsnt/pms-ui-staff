@@ -5,6 +5,7 @@ sntZestStation.controller('zsHomeCtrl', [
 	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
 	function($scope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
             $scope.storageKey = 'snt_zs_workstation';
+            $scope.storageKeyEncoder = 'snt_zs_encoder';
 	/**
 	 * when we clicked on pickup key from home screen
 	 */
@@ -181,6 +182,18 @@ sntZestStation.controller('zsHomeCtrl', [
             }
             //also update and save off the printer value to the workstation
             $scope.saveWorkStationPrinter();
+            $scope.setStationEncoder();
+    };
+    $scope.setStationEncoder = function(){
+         var storageKeyEncoder = $scope.storageKeyEncoder,
+                storage = localStorage;
+        var encoder = $scope.getWorkStation();
+        
+            try {
+                storage.setItem(storageKeyEncoder, encoder.station_identifier);
+            } catch(err){
+                console.warn(err);
+            }
     };
     $scope.getWorkStation = function(){
         /*
@@ -218,5 +231,9 @@ sntZestStation.controller('zsHomeCtrl', [
     $scope.closeWorkStationList = function(){
         $scope.showWorkStationList = false;
     };
+    
+    
+    
+    
 
 }]);
