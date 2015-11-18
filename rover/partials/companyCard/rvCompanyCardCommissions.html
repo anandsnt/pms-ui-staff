@@ -60,13 +60,13 @@
                 </button>
             </li>
             <li class="action">
-                <label class="checkbox inline">
+                <label class="checkbox inline" ng>
                     Select
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : selectAll}"></span>
                     <input id="commisions-select" ng-model="selectAll" type="checkbox" ng-change="toggleSelection()" />
                 </label>
             </li>
-            <li class="action" ng-class="{'hidden' : !selectAll && selectedCommissions.length == 0}">
+            <li class="action" ng-class="{'hidden' : (filterData.commissionStatus == 'Non-commissionable' || (!selectAll && selectedCommissions.length == 0)) }">
                 <!-- Remove class "hidden" when selecting all/individual commisions -->
                 <div class="select">
                     <select id="selected-paid" class="placeholder" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange()">
@@ -107,7 +107,7 @@
                             </label>
                         </div>
                         <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'">Prepaid</div>
-                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" ng-hide="isEmptyObject(commissionDetail.commission_data)">
+                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                             <!-- add class "checked" when L56 checked -->

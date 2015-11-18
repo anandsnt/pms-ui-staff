@@ -185,7 +185,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Selecting individual record checkbox
     $scope.onCheckBoxSelection = function(commission) {
         commission.is_checked = !commission.is_checked;
-        if (commission.is_checked) {
+        if (commission.is_checked && commission.commission_data.paid_status != 'Prepaid') {
             $scope.selectedCommissions.push(commission);
         } else {
             $scope.selectedCommissions = _.filter($scope.selectedCommissions, function(value) {
@@ -258,38 +258,40 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         updatePaidStatus(requestData);
     };
 
+
+
     // To print the current screen details.
-        $scope.clickedPrintButton = function(){
+    $scope.clickedPrintButton = function(){
 
-            // CICO-11667 to enable landscpe printing on transactions page.
-            // Sorry , we have to access the DOM , so using jQuery..
-            $("body").prepend("<style id='paper-orientation'>@page { size: landscape; }</style>");
+        // CICO-11667 to enable landscpe printing on transactions page.
+        // Sorry , we have to access the DOM , so using jQuery..
+        $("body").prepend("<style id='paper-orientation'>@page { size: landscape; }</style>");
 
+        /*
+         *  ======[ READY TO PRINT ]======
+         */
+        // this will show the popup
+        $timeout(function() {
             /*
-             *  ======[ READY TO PRINT ]======
-             */
-            // this will show the popup
-            $timeout(function() {
-                /*
-                 *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                 */
-
-                $window.print();
-
-                if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-                };
-
-                // Removing the style after print.
-                $("#paper-orientation").remove();
-
-            }, 100);
-
-            /*
-             *  ======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
+             *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
              */
 
-        };
+            $window.print();
+
+            if ( sntapp.cordovaLoaded ) {
+                cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+            };
+
+            // Removing the style after print.
+            $("#paper-orientation").remove();
+
+        }, 100);
+
+        /*
+         *  ======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
+         */
+
+    };
 
     //Initailizes the controller
     var init = function() {
@@ -306,6 +308,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
+        $scope.isEmptyObject = isEmptyObject;
 
         $scope.pagination = {
           start : 1,
@@ -318,6 +321,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.status = {
            groupPaidStatus : ""
         };
+        $scope.showSelectAll = true;
         fetchCommissionDetails(true);
     };
 
