@@ -55,7 +55,7 @@
             <li>Total Revenue <span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue}}</span></li>
             <li>Commission To Date <span class="value">{{ currencySymbol }}{{commissionSummary.totalCommission}}</span></li>
             <li class="action no-margin">
-                <button type="button" class="button blue with-icon only-icon">
+                <button type="button" class="button blue with-icon only-icon" ng-click="clickedPrintButton()">
                     <span class="icons icon-print"></span>
                 </button>
             </li>
@@ -94,7 +94,7 @@
                             <div class="value-block">Commision<strong>{{ currencySymbol }}{{commissionDetail.commission_data.amount}}</strong></div>
                             <div class="value-block">Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_data.tax}}</strong></div>
                         </div>
-                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid'}" ng-show="(commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid'">
+                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid'}" ng-show="(commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid')">
                             <!-- add class "on" when L44 checked -->
                             <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                             <label class="data-off">
@@ -107,7 +107,7 @@
                             </label>
                         </div>
                         <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'">Prepaid</div>
-                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" ng-hide="isEmpty(commissionDetail.commission_data)">
+                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" ng-hide="isEmptyObject(commissionDetail.commission_data)">
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                             <!-- add class "checked" when L56 checked -->

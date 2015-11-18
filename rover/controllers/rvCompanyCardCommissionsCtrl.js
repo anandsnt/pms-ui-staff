@@ -258,6 +258,39 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         updatePaidStatus(requestData);
     };
 
+    // To print the current screen details.
+        $scope.clickedPrintButton = function(){
+
+            // CICO-11667 to enable landscpe printing on transactions page.
+            // Sorry , we have to access the DOM , so using jQuery..
+            $("body").prepend("<style id='paper-orientation'>@page { size: landscape; }</style>");
+
+            /*
+             *  ======[ READY TO PRINT ]======
+             */
+            // this will show the popup
+            $timeout(function() {
+                /*
+                 *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                 */
+
+                $window.print();
+
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
+
+                // Removing the style after print.
+                $("#paper-orientation").remove();
+
+            }, 100);
+
+            /*
+             *  ======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
+             */
+
+        };
+
     //Initailizes the controller
     var init = function() {
         $scope.commissionDetails = [];
