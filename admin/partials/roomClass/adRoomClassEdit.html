@@ -1,0 +1,32 @@
+<div style="display: block;" id="add-new" class="edit-data" >
+		<div class="data-holder"> 
+			<!-- Edit Room Class -->
+			<form class="form inline-form float">
+				<div class="form-title">
+					<h3 translate><span></span> EDIT </h3>
+					<em class="status" > {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+				</div>
+				<fieldset class="holder left float">
+					<ad-textbox inputtype="text" value="roomClassData.code" 
+						label = "{{'CODE' | translate}}" placeholder = "{{'CODE' | translate}}"  
+						styleclass="full-width" required="yes"></ad-textbox>
+				</fieldset>
+				<fieldset class="holder right float">
+					<ad-textbox inputtype="text" value="roomClassData.description" 
+						label = "{{'DESCRIPTION' | translate}}" placeholder = "{{'DESCRIPTION' | translate}}"  
+						styleclass="full-width" required="yes"></ad-textbox>
+				</fieldset>
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
+						CANCEL
+					</button>
+					<button type="button" id="save" class="button green edit-data-inline" ng-click="saveRoomClass()" translate>
+						SAVE_CHANGES
+					</button>
+					<button type="button" id="delete" class="button red edit-data-inline" ng-click="deleteRoomClass(currentClickedElement, roomClassData.id)" translate>
+					DELETE
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>

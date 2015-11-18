@@ -14,6 +14,19 @@
 
 			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="roomTypeData.snt_description" name = "snt-desc" id = "snt-desc" label = "{{ 'SNT_DESCRIPTION' | translate }}" placeholder = "{{ 'SNT_DESCRIPTION_PLACE_HOLDER' | translate }}"></ad-textarea>
 
+			<div class="entry full-width" ng-style="" ng-if ="isEnabledRoomTypeByRoomClass">  
+				<div class="select">
+				    <select id="" name="" class="" ng-style="0" ng-model="roomTypeData.room_class_id">
+				      <option value="" ng-hide="labelInDropDown.length===0 || !labelInDropDown" class="ng-binding">
+				        Select Room Class
+				      </option>
+				      <option value="{{roomClass.id}}" ng-repeat= "roomClass in roomClasses">
+				        {{roomClass.description}}
+				      </option>
+				    </select>
+  				</div>
+			</div>
+
 		</fieldset>
 		<fieldset class="holder right float">
 			<ad-textbox value="roomTypeData.room_type_code" name = "room-type-code" id = "room-type-code" label = "{{ 'CODE' | translate }}" placeholder = "{{ 'ROOM_TYPE__CODE_PLACE_HOLDER' | translate }}" required = "yes" ></ad-textbox>
