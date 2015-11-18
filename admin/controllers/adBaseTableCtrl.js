@@ -48,7 +48,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
 
     $scope.reloadTable = function(){
         $scope.tableParams.page(1);
-        $scope.tableParams.reload();
+        //$scope.tableParams.reload();
     };
 
     $scope.filterFetchSuccess = function(data){
