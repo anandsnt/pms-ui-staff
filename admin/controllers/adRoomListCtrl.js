@@ -47,7 +47,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);
-        	$scope.tableParams.reload();
+        	//$scope.tableParams.reload();
 		};
 	$scope.invokeApi(ADRoomSrv.deleteRoom, {'room_id': room_id}, successCallBack);
 	};
