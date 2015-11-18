@@ -66,7 +66,7 @@
                     <input id="commisions-select" ng-model="selectAll" type="checkbox" ng-change="toggleSelection()" />
                 </label>
             </li>
-            <li class="action" ng-class="{'hidden' : (filterData.commissionStatus == 'Non-commissionable' || (!selectAll && selectedCommissions.length == 0)) }">
+            <li class="action" ng-class="{'hidden' : (filterData.commissionStatus == 'Non-commissionable' || filterData.paidStatus == 'Prepaid' || (!selectAll && selectedCommissions.length == 0)) }">
                 <!-- Remove class "hidden" when selecting all/individual commisions -->
                 <div class="select">
                     <select id="selected-paid" class="placeholder" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange()">

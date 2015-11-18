@@ -185,7 +185,8 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Selecting individual record checkbox
     $scope.onCheckBoxSelection = function(commission) {
         commission.is_checked = !commission.is_checked;
-        if (commission.is_checked && commission.commission_data.paid_status != 'Prepaid') {
+        //&& commission.commission_data.paid_status != 'Prepaid'
+        if (commission.is_checked) {
             $scope.selectedCommissions.push(commission);
         } else {
             $scope.selectedCommissions = _.filter($scope.selectedCommissions, function(value) {
@@ -244,11 +245,15 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         var commissionListToUpdate = [];
         if($scope.selectAll) {
            $scope.commissionDetails.forEach(function(commission) {
-                commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                if(commission.commission_data.paid_status != 'Prepaid'){
+                    commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                }
            });
         } else {
             $scope.selectedCommissions.forEach(function(commission) {
-                commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                if(commission.commission_data.paid_status != 'Prepaid'){
+                    commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                }
             });
         }
 
