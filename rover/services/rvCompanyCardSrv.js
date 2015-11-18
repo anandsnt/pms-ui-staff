@@ -376,9 +376,11 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		 * Service for saving the commission details of travel agents
 		 */
         this.saveTACommissionDetails = function(reqData) {
-			var deferred = $q.defer();
+			var deferred = $q.defer(),
+				params = {};
+			params.reservations = reqData.commissionDetails;
 			var url = 'api/accounts/' + reqData.accountId +'/save_commission_details';
-			rvBaseWebSrvV2.postJSON(url, reqData.commissionDetails).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
