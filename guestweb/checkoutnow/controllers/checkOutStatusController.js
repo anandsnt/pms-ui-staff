@@ -56,5 +56,5 @@ var dependencies = [
 checkOutStatusController
 ];
 
-snt.controller('checkOutStatusController', dependencies);
+sntGuestWeb.controller('checkOutStatusController', dependencies);
 })();

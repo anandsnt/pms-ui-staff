@@ -118,6 +118,27 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			}
 		};
 
+		$scope.getClassForHoldStatusRow = function(source, id) {
+			var group,
+				isDeduct,
+				retCls;
+
+			if ( !$scope.showShowGroupAllotmentTotals || !source ) {
+				retCls = 'hidden';
+			} else {
+				group    = _.findWhere(source.holdStatus, { id: id });
+				isDeduct = group && group['is_take_from_inventory'];
+
+				if ( group && isDeduct ) {
+					retCls = '';
+				} else {
+					retCls = 'hidden';
+				};
+			};
+
+			return retCls;
+		};
+
 		init();
 
 	}

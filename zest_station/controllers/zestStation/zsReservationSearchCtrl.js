@@ -37,10 +37,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 // $scope.showRoomEnter = $scope.isInCheckoutMode() ?  true : false;
                 $scope.mode = 'no-match';
                 $scope.at = 'no-match';
+                
                 if ($scope.isInCheckinMode()){
                     $state.go('zest_station.find_reservation_no_match');
                 }
-            } else {
+            } else if ($scope.reservations.length === 1){
+                $scope.selectReservation($scope.reservations[0]);
+            } {
                 $scope.mode = "reservations-list";
             }
 	};
@@ -147,14 +150,20 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	*	2.enter room number
 	*/
 	var goToNextForCheckout = function(){
-		if($scope.mode === "search-mode"){
+		if($scope.mode === "search-mode" && !$scope.reEnteredNameInfo){
 			$scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
 			$scope.input.inputTextValue = "";
 			$scope.headingText = "Next, Type your room number";
 			$scope.mode = "search-final-mode";
 		}
 		else{
+                    if ($scope.reEnteredNameInfo){
+			$scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
+                    } else if ($scope.reEnteredRoomInfo){
+                        $scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
+                    } else {
 			$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
+                    }
 			//call Zest station settings API
 			var options = {
 	    		params: 			{"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no},
@@ -163,20 +172,28 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	        };
 			$scope.callAPI(zsCheckoutSrv.findReservation, options);
 		};
+                
+	    		var params = {"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no};
+                        console.log(params);
 	};
 
 	$scope.goToNext =  function(){
-		
-		if($scope.isInCheckoutMode()){
-			goToNextForCheckout();
-		}
+            if($scope.isInCheckoutMode()){
+                    goToNextForCheckout();
+            }
 	};
-
+        
+        $scope.reEnteredNameInfo = false;
+        $scope.reEnteredRoomInfo = false;
 	$scope.reEnterLastName = function(){
+                $scope.reEnteredNameInfo = true;
+                $scope.reEnteredRoomInfo = false;
 		$scope.mode = "search-mode";
 		$scope.input.inputTextValue = $scope.reservationParams.last_name;
 	};
 	$scope.reEnterRoomNumber = function(){
+                $scope.reEnteredRoomInfo = true;
+                $scope.reEnteredNameInfo = false;
 		$scope.mode = "search-final-mode";
 		$scope.input.inputTextValue = $scope.reservationParams.room_no;
 	};

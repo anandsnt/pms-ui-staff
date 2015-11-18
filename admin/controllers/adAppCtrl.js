@@ -409,8 +409,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-			// Show a loading message until promises are not resolved
-			$scope.$emit('showLoader');
+				// Show a loading message until promises are not resolve
+				$scope.$emit('showLoader');
 		});
 
 		$rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {

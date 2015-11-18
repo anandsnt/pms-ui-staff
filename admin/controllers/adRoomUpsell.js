@@ -37,8 +37,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         isRoomTypesSelected();
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
 
-        // CICO-19130
-        $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
+
       };
 
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);

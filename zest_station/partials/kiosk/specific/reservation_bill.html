@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                             <div id="grid-body">
-                                <div class="row" ng-repeat="bill in billData">
+                                <div class="row" ng-repeat="bill in zestStationData.billData">
                                     <span class="cell date">{{ bill.date}}</span>
                                     <span class="cell desc">{{bill.description}}</span>
                                     <span class="cell amount">{{currency}}{{bill.amount}}</span>
@@ -29,9 +29,9 @@
                         </div>
                     </div>
                     <ul id="rate">
-                        <li class="sub">Subtotal<span>{{currency}}{{net_amount}}</span></li>
-                        <li class="sub">Deposits<span>{{currency}}{{deposit}}</span></li>
-                        <li class="total">Balance due<span>{{currency}}{{balance}}</span></li>
+                        <li class="sub">Subtotal<span>{{zestStationData.currency}}{{zestStationData.net_amount}}</span></li>
+                        <li class="sub">Deposits<span>{{zestStationData.currency}}{{zestStationData.deposit}}</span></li>
+                        <li class="total">Balance due<span>{{zestStationData.currency}}{{zestStationData.balance}}</span></li>
                     </ul>
                 </div>
             </div>

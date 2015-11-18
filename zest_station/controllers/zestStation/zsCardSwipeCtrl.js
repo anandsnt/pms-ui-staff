@@ -59,20 +59,26 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
             $scope.checkInGuest();
         };
-        
+        $scope.setCheckInMessage = function(){
+            $state.go('zest_station.checking_in_guest');
+        };
         $scope.checkInGuest = function(){
              var reservation_id = $scope.selectedReservation.id,
                     //payment_type = $scope.selectedReservation.payment_type,
                     signature = $scope.signatureData;
 
-                $scope.invokeApi(zsTabletSrv.checkInGuest, {
-                    'reservation_id':reservation_id, 
-                    "authorize_credit_card": false,
-                    "do_not_cc_auth": false,
-                    "is_promotions_and_email_set": false,
-                    "no_post": "",
-                    'signature':signature
-                }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback);
+                $scope.setCheckInMessage();
+                setTimeout(function(){
+                    $scope.invokeApi(zsTabletSrv.checkInGuest, {
+                     'reservation_id':reservation_id, 
+                     "authorize_credit_card": false,
+                     "do_not_cc_auth": false,
+                     "is_promotions_and_email_set": false,
+                     "no_post": "",
+                     'signature':signature
+                 }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
+                },500);
+                
         };
         $scope.clearSignature = function(){
             $scope.signatureData = '';
@@ -111,9 +117,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
             };
             
-        $scope.afterGuestCheckinCallback = function(){
-                $scope.$emit('hideLoader');
-                 var guestEmailEnteredOrOnReservation = function(){
+            $scope.guestEmailOnFile = function(){
                     var useEmail = '';
                     
                     if ($scope.getLastInputEmail() !== ''){
@@ -132,18 +136,27 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         return false;
                     }
                 };
-                var haveValidGuestEmail = guestEmailEnteredOrOnReservation();//also sets the email to use for delivery
-
+            
+        $scope.afterGuestCheckinCallback = function(response){
+            console.info('response from guest check-in',response)
+                $scope.$emit('hideLoader');
+                
+                var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
+                var successfulCheckIn = (response.status === "success")? true : false;
+                console.info('successfulCheckIn: ',successfulCheckIn);
                 //detect if coming from email input
-                if (haveValidGuestEmail){
-                        $state.go('zest_station.check_in_keys')
+                if (haveValidGuestEmail && successfulCheckIn){
+                        $state.go('zest_station.check_in_keys');
                     return;
+                } else if (!successfulCheckIn) {
+                    console.warn(response);
+                    $scope.$emit('hideLoader');
+                    $state.go('zest_station.error');
+                    
+                } else {//successful check-in but missing email on reservation
+                    $state.go('zest_station.input_reservation_email_after_swipe');
                 }
                 
-                //$scope.goToScreen(null, 'input-email', true, $scope.from);
-                $state.go('zest_station.input_reservation_email_after_swipe');
-                
-                $scope.clearSignature();
             };
         
         
@@ -153,7 +166,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var current=$state.current.name;
             if (current === 'zest_station.card_sign'){
                  $scope.signaturePluginOptions = {
-                    height : 130,
+                    height : 230,
                     width : $(window).width() - 120,
                     lineWidth : 1
                 };

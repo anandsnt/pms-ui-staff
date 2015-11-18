@@ -7,7 +7,6 @@ admin.controller('ADFloorsListCtrl',
         '$anchorScroll',
         '$timeout',
         '$location',
-        '$state',
     function(
         $scope,
         $state,
@@ -16,8 +15,7 @@ admin.controller('ADFloorsListCtrl',
         $filter,
         $anchorScroll,
         $timeout,
-        $location,
-        $state){
+        $location){
 
 	BaseCtrl.call(this, $scope);
 
@@ -31,6 +29,11 @@ admin.controller('ADFloorsListCtrl',
 
         //show Table
         $scope.showTableDetails = false;
+
+        $scope.stateVariables = {
+            activeTab: "MANAGE" // possible values are MANAGE for 'Manage Floors' & 'ASSIGN' for 'Assign Rooms'
+        };
+
 	};
 
     /**
@@ -79,6 +82,7 @@ admin.controller('ADFloorsListCtrl',
 	$scope.listFloorTypes = function(){
 		var successCallbackFetch = function(data){
 			$scope.data = data;
+            $scope.floorsList = $scope.data.floors;
             $scope.setUptable ();
 		};
 
@@ -104,6 +108,14 @@ admin.controller('ADFloorsListCtrl',
         };
         $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
     };
+
+    $scope.$on("ASSIGNMENT_CHANGED",function(){
+         $scope.listFloorTypes();
+    });
+
+    $scope.toggleAssignFloors = function(){           
+        $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
+    }
 
 	initializeMe();
 
