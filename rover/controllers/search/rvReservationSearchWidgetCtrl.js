@@ -474,7 +474,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			/*
 			 * function used in template to map the reservation status to the view expected format
 			 */
-		$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
+		$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn, isPrecheckin, arrivalDate) {
 			var viewStatus = "";
 			if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
 				viewStatus = "late-check-out";
@@ -495,7 +495,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
 				viewStatus = "no-show";
 			} else if (isPrecheckin) {
-				viewStatus = "pre-check-in";
+				// CICO-21296 - Add 'no-image' class for the guests on the day before arrival.
+				viewStatus = (arrivalDate === $rootScope.businessDate) ? "pre-check-in" : "pre-check-in no-image"
 			}
 			return viewStatus;
 		};
