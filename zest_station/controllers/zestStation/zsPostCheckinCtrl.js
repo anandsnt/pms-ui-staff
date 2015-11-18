@@ -113,6 +113,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.navToHome = function(){
 		$state.go ('zest_station.home');
         };
+        $scope.navToPrev = function(){
+                $state.go('zest_station.check_in_keys');
+        };
         $scope.initStaff = function(){
             $state.go('zest_station.speak_to_staff');
         };
