@@ -9,7 +9,7 @@
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
 
-            <fieldset class="holder left">
+            <fieldset class="holder full-width">
                 <div class="form-title full-width">
                     <h3><span translate>LIGHT_SPEED_POS_SUB_TITLE</span> </h3>
                 </div>
@@ -20,24 +20,15 @@
                         <span class="switch-icon"></span>
                     </div>
                 </div>
-                <fieldset class="holder full-width">
+                <fieldset class="holder left">
                     <ad-textbox inputtype="text" value="lightspeed.rover_unique_id" name="rover-unique-id" id="rover-unique-id" label="{{'LIGHT_SPEED_POS_ROVER_UNIQUE_ID'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                     <ad-charge-code-auto-complete ng-model="lightspeed.charge_code_name" selected-charge-code-id="lightspeed.charge_code_id" ng-if="lightspeed.enabled" label="Charge Code" entry-div-class="full-width"></ad-charge-code-auto-complete>                    
                 </fieldset>
-                <fieldset class="holder full-width">
+                <fieldset class="holder right">
                     <ad-textbox value="lightspeed.url" name="url" id="url" label="{{'LIGHT_SPEED_POS_URL'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                     <ad-textbox value="lightspeed.username" name="username" id="username" label="{{'LIGHT_SPEED_POS_USERNAME'| translate}}" ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
                     <ad-textbox inputtype="password" value="lightspeed.password" name="password" id="password" label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                 </fieldset>
-            </fieldset>
-
-            <fieldset class="holder right" ng-if="lightspeed.enabled">
-                <div class="form-title full-width">
-                    <h3><span translate>LIGHT_SPEED_POS_IMPORT_TITLE</span></h3>
-                </div>
-                <button type="button" id="import-product" class="button add-data-inline" ng-class="{'green': !shouldDisableImportButton(), 'grey': shouldDisableImportButton()}" ng-click="importProducts()" ng-disabled="shouldDisableImportButton()" translate>
-                    LIGHT_SPEED_POS_IMPORT
-                </button>
             </fieldset>
 
             <div class="actions float">
