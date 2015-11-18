@@ -496,7 +496,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				viewStatus = "no-show";
 			} else if (isPrecheckin) {
 				// CICO-21296 - Add 'no-image' class for the guests on the day before arrival.
-				viewStatus = (arrivalDate === $rootScope.businessDate) ? "pre-check-in" : "pre-check-in no-image"
+				viewStatus = (arrivalDate === $rootScope.businessDate) ? "pre-check-in" : "pre-check-in no-image";
 			}
 			return viewStatus;
 		};
