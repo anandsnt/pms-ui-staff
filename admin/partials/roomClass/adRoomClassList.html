@@ -15,7 +15,7 @@
 				<tbody>
 					<tr ng-repeat="roomClass in roomClasses" ng-class="{'edit-data': currentClickedElement == $index}"> 
 						<td ng-click="editRoomClass($index,roomClass.id)" ng-hide="currentClickedElement == $index" >
-							<a data-item="3" data-colspan="2" class="edit-data-inline">{{roomClass.description}} </a>
+							<a data-item="3" data-colspan="2" class="edit-data-inline">{{roomClass.code}} </a>
 						</td>
 						<td class="delete" ng-hide="currentClickedElement == $index" >
 							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteRoomClass($index, roomClass.id)"></a>
