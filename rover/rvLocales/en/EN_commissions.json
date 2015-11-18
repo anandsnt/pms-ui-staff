@@ -29,7 +29,9 @@
     "COMMISSION_NEXT" : "NEXT",
     "COMMISSION_PREVIOUS" : "PREVIOUS",
     "COMMISSION_ITEMS" : "items",
-    "COMMISSION_SHOWING" : "Showing"
+    "COMMISSION_SHOWING" : "Showing",
+    "COMMISSIONS" : "Commissions",
+    "COMMISSION_ALL" : "All"
 
     
    
