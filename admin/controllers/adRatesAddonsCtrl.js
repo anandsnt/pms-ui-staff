@@ -7,7 +7,8 @@ admin.controller('ADRatesAddonsCtrl', [
 	'ngTableParams',
 	'ngDialog',
 	'$timeout',
-	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout) {
+	'activeRates',
+	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates) {
 
 
 
@@ -29,6 +30,9 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = -1;
 			$scope.errorMessage = "";
 			$scope.successMessage = "";
+			$scope.state = {
+				rates: activeRates.results
+			};
 		};
 
 		$scope.isConnectedToPMS = false;
@@ -196,6 +200,9 @@ admin.controller('ADRatesAddonsCtrl', [
             // the inital dates to business date // CICO-17736 Addons can have blank begin-end dates
    			$scope.singleAddon.begin_date = null;
 			$scope.singleAddon.end_date   = null;
+
+			//initate to include all rates here
+			$scope.filterRates($scope.singleAddon);
 		};
 
 		// listen for datepicker update from ngDialog
@@ -292,6 +299,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.singleAddon.begin_date = $scope.singleAddon.begin_date;
 				$scope.singleAddon.end_date   =$scope.singleAddon.end_date;
 
+				$scope.filterRates($scope.singleAddon);
+
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchSingle, $scope.currentAddonId, callback);
@@ -308,25 +317,25 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// on save add/edit addon
 		$scope.addUpdateAddon = function() {
-
-
-
-			var singleAddonData = {};
-			singleAddonData.activated = $scope.singleAddon.activated;
-			singleAddonData.amount = $scope.singleAddon.amount;
-			singleAddonData.amount_type_id = $scope.singleAddon.amount_type_id;
-			singleAddonData.bestseller = $scope.singleAddon.bestseller;
-			singleAddonData.charge_code_id = $scope.singleAddon.charge_code_id;
-			singleAddonData.charge_group_id = $scope.singleAddon.charge_group_id;
-			singleAddonData.description = $scope.singleAddon.description;
-			singleAddonData.is_reservation_only = $scope.singleAddon.is_reservation_only;
-			singleAddonData.inventory_count = parseInt($scope.singleAddon.inventory_count);
-			singleAddonData.name = $scope.singleAddon.name;
-			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
-			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
-			singleAddonData.manual_posting = $scope.singleAddon.manual_posting;
-			singleAddonData.forecast_for_next_day = $scope.singleAddon.forecast_for_next_day;
-			singleAddonData.charge_full_weeks_only = (($scope.singleAddon.post_type_id ===3)&& $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only)?true:false;
+			var singleAddonData = {
+				activated : $scope.singleAddon.activated,
+				amount : $scope.singleAddon.amount,
+				amount_type_id : $scope.singleAddon.amount_type_id,
+				bestseller : $scope.singleAddon.bestseller,
+				charge_code_id : $scope.singleAddon.charge_code_id,
+				charge_group_id : $scope.singleAddon.charge_group_id,
+				description : $scope.singleAddon.description,
+				is_reservation_only : $scope.singleAddon.is_reservation_only,
+				inventory_count : parseInt($scope.singleAddon.inventory_count),
+				name : $scope.singleAddon.name,
+				post_type_id : $scope.singleAddon.post_type_id,
+				rate_code_only : $scope.singleAddon.rate_code_only,
+				manual_posting : $scope.singleAddon.manual_posting,
+				forecast_for_next_day : $scope.singleAddon.forecast_for_next_day,
+				charge_full_weeks_only : (($scope.singleAddon.post_type_id ===3)&& $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only)?true:false,
+				allow_rate_exclusions : $scope.singleAddon.allow_rate_exclusions,
+				excluded_rate_ids : _.pluck($scope.singleAddon.excludedRates, 'id')
+			};
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
@@ -455,6 +464,63 @@ admin.controller('ADRatesAddonsCtrl', [
 			    }, 1000);
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
+		};
+
+		$scope.filterRates = function(addon) {
+			addon.excludedRates = [];
+			addon.availableRates = [];
+			_.each($scope.state.rates, function(rate) {
+				if (_.indexOf(addon.excluded_rate_ids, rate.id) > -1) {
+					addon.excludedRates.push(rate);
+				} else {
+					addon.availableRates.push(rate);
+				}
+			});
+		};
+
+		$scope.toggleAvailableRate = function(index) {
+			if (index !== $scope.state.selectedAvailableRate) {
+				$scope.state.selectedAvailableRate = index;
+			} else {
+				$scope.state.selectedAvailableRate = -1;
+			}
+		};
+
+		$scope.toggleExcludedRate = function(index) {
+			if (index !== $scope.state.selectedAssignedRate) {
+				$scope.state.selectedAssignedRate = index;
+			} else {
+				$scope.state.selectedAssignedRate = -1;
+			}
+		};
+
+		$scope.includeAllRates = function(addon) {
+			Array.prototype.push.apply(addon.excludedRates, addon.availableRates);
+			addon.availableRates = [];
+			$scope.state.selectedAssignedRate = -1;
+			$scope.state.selectedAvailableRate = -1;
+		};
+
+		$scope.excludeAllRates = function(addon) {
+			Array.prototype.push.apply(addon.availableRates, addon.excludedRates);
+			addon.excludedRates = [];
+			$scope.state.selectedAssignedRate = -1;
+			$scope.state.selectedAvailableRate = -1;
+		};
+
+
+		$scope.excludeSelectedRate = function(addon) {
+			if ($scope.state.selectedAvailableRate > -1) {
+				addon.excludedRates.push(addon.availableRates.splice($scope.state.selectedAvailableRate, 1)[0]);
+				$scope.state.selectedAvailableRate = -1;
+			}
+		};
+
+		$scope.includeSelectedRate = function(addon) {
+			if ($scope.state.selectedAssignedRate > -1) {
+				addon.availableRates.push(addon.excludedRates.splice($scope.state.selectedAssignedRate, 1)[0]);
+				$scope.state.selectedAssignedRate = -1;
+			}
 		};
 
 	}

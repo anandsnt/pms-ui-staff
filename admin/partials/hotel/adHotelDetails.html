@@ -293,6 +293,14 @@
 				</div>
 			</div>
 
+			<!-- will show only for standalone  & snt admin -->
+			<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ===''">
+				<label for="hold-status-flag-enabled">Enable HOLD - flag for IBE</label>
+				<div class="switch-button single" ng-class="{ on : data.is_hold_flag_enabled }" ng-click="toggleTheHoldStatusValue()">
+					<input type="checkbox" value="{{data.is_hold_flag_enabled}}" name="hold-status-flag-enabled" id="hold-status-flag-enabled">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
 			<!-- <div class="entry">
 				<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
 				<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -602,6 +610,57 @@
 				<label for="mli-hotel-code"> CC Swipe Listening Port </label>
 				<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
 			</div>
+
+		</fieldset>
+
+		<fieldset class="holder right" ng-if="isAdminSnt">
+			<div class="form-title">
+				<h3><span>Hotel</span> Zest App Payment Processor </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<div class="entry full-width">
+				
+				<label class="radio" ng-class="{checked:data.zest_payment_gateway == 'none'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.zest_payment_gateway == 'NONE'}"></span>
+					<input type="radio" ng-model="data.zest_payment_gateway" value="NONE" class="change-data">
+					None
+				</label>
+				<label class="radio" ng-class="{checked:data.zest_payment_gateway == 'SAFERPAY'}">
+						<span class="icon-form icon-radio " ng-class="{checked:data.zest_payment_gateway == 'SAFERPAY'}"></span>
+						<input type="radio" ng-model="data.zest_payment_gateway" value="SAFERPAY" class="change-data">
+						Saferpay
+				</label>				
+			</div>
+			<div class="entry full-width" ng-if="data.zest_payment_gateway === 'SAFERPAY' && data.payment_gateway != 'SAFERPAY'">
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay ACCOUNT ID
+				</label>
+				<input type="text" ng-model="data.saferpay_account_id">
+			</div>
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay HTTPS Password
+				</label>
+				<input type="text" ng-model="data.saferpay_https_password">
+			</div>
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay auth URL
+				</label>
+				<input type="text" ng-model="data.saferpay_auth_url" readonly="readonly">
+			</div>
+			<div class="entry" ng-if="data.zest_payment_gateway === 'SAFERPAY'" >
+				<label>
+					Saferpay settlement URL
+				</label>
+				<input type="text" ng-model="data.saferpay_settlement_url" readonly="readonly">
+			</div>
+			</div>
+
+			
+			
 
 		</fieldset>
 

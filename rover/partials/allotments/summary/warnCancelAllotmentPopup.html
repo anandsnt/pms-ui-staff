@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <form method="post" action="cancel-group" id="cancel-group" name="cancel-group" class="modal-content form cancel-reservation">
         <button class="modal-close" id="modal-close" type="button" ng-click="abortCancelAllotment();">
             <span class="icons icon-close invert"></span>

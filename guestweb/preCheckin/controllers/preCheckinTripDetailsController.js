@@ -34,5 +34,5 @@ var dependencies = [
 preCheckinTripDetailsController
 ];
 
-snt.controller('preCheckinTripDetailsController', dependencies);
+sntGuestWeb.controller('preCheckinTripDetailsController', dependencies);
 })();

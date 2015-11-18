@@ -1,0 +1,15 @@
+<div id ="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<div class="modal-content confirmation">
+	    <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    	<span class="h2 message" translate>CONFLICTING_BILLING_INFO_EXISTS</span>
+		<!--<span ng-repeat="card in conflctCards">{{card}} {{$last ? '. ' : ', '}}</span>-->
+
+	    <div class="actions">
+	        <button type="button" class="button green" ng-click="copyDefaultBillingFromCards('COMPANY')" translate>Copy From Company Card</button>
+	        <button type="button" class="button green" ng-click="copyDefaultBillingFromCards('TRAVEL_AGENT')" translate>Copy From TA Card</button>
+	        <button type="button" class="button red" ng-click="cancelCopyDefaultBilling()" translate>DONT_APPLY</button> 
+	    </div>
+	</div>
+</div>
+
+

@@ -10,7 +10,7 @@ sntRover.controller('groupAvailabilityMainController', [
 
 	BaseCtrl.call(this, $scope);
 
-	$scope.page.title = "Availability";
+	$scope.page.title = "Groups";
 	//default number of selected days is 14
 	$scope.numberOfDaysSelected = 14;
 
@@ -19,7 +19,7 @@ sntRover.controller('groupAvailabilityMainController', [
 
 	//default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
-	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
+	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, 'dd-MM-yyyy');
 
 	// To popup contract start date
 	$scope.clickedOnDatePicker = function() {

@@ -1,4 +1,4 @@
-var login = angular.module('login',['ui.router', 'ng-iscroll', 'documentTouchMovePrevent']);
+var login = angular.module('login',['ui.router', 'documentTouchMovePrevent']);
 
 /*
  * Set page Titles
@@ -34,17 +34,13 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	document.getElementById("email").focus();
 	 }
 	 $scope.errorMessage = "";
+	 $scope.successMessage = "";
 	 $scope.errorMessage = resetSrv.getErrorMessage();
 	 /*
 	  * successCallback of login action
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
-                 if (data.redirect_url === '/zest_station'){
-                     localStorage['isKiosk'] = true;
-                 } else {
-                     localStorage['isKiosk'] = false;
-                 }
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 	 	while(i--) {
@@ -77,8 +73,43 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  */
 	 $scope.submit = function() {
 	 	$scope.hasLoader = true;
+	 	$scope.successMessage = "";
  		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
+
+
+
+	/*
+	  * successCallback of forgot password action
+	  */
+	 $scope.successCallbackForgotPassword = function(data){
+	 	$scope.hasLoader = false;
+	 	$scope.successMessage = data.message;
+	 };
+
+	 /*
+	  * Failure call back of forgot password action
+	  */
+	 $scope.failureCallBackForgotPassword = function(errorMessage){
+	 	$scope.hasLoader = false;
+	 	$scope.errorMessage = errorMessage;
+	 };
+
+	/*
+	 * Forgot password action
+	 */
+	 $scope.forgotPassword = function() {
+        $scope.errorMessage = "";
+        $scope.successMessage = "";
+	 	var errorMessage = ["Please enter your Login email address"];
+	 	if($scope.data.email === ""){
+	 		$scope.errorMessage = errorMessage;
+	 	} else {
+	 		var dataToPost = {"email" :$scope.data.email};
+	 		$scope.hasLoader = true;
+ 			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
+	 	}
+	 }
 
 
 }]);

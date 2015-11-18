@@ -292,14 +292,52 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			}
 
 		};
-		$scope.openBillingInformation = function() {
-			if ($scope.isInAddMode()) {
-				// If the allotment has not been saved yet, prompt user for the same
-				$scope.errorMessage = ["Please save the allotment first"];
-				return;
-			}
-			var summaryData = $scope.allotmentConfigData.summary;
 
+		$scope.cancelCopyDefaultBilling = function() {
+			openBillingInformationPopup();
+		};
+
+		var successCallBackOfCopyDefaultBilling = function() {
+			$scope.$emit('hideLoader');
+			openBillingInformationPopup();
+		};
+
+		var failureCallBackOfCopyDefaultBilling = function(error) {
+			$scope.errorMessage = error;
+		};
+
+		$scope.copyDefaultBillingFromCards = function(card) {
+			var params = {
+				"allotment_id": $scope.allotmentConfigData.summary.allotment_id,
+				"is_company_card": (card == 'COMPANY') ? true : false,
+				"is_travel_agent": (card == 'TRAVEL_AGENT') ? true : false
+			};
+			var options = {
+				successCallBack: successCallBackOfCopyDefaultBilling,
+				failureCallBack: failureCallBackOfCopyDefaultBilling,
+				params: params
+			}
+			$scope.callAPI(rvAllotmentConfigurationSrv.copyDefaultBillingInfo, options);
+		};
+
+		var showConfirmRoutingPopup = function(type, id) {
+			ngDialog.open({
+				template: '/assets/partials/allotments/summary/rvBillingInfoConfirmPopup.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		};
+
+		var showConflictRoutingPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/allotments/summary/rvBillingInfoConflict.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		};
+
+		var openBillingInformationPopup = function() {
+			var summaryData = $scope.allotmentConfigData.summary;
 			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
 			$scope.billingInfoModalOpened = true;
 			$scope.attachedEntities = {};
@@ -308,7 +346,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				name: summaryData.posting_account_name,
 				logo: "ALLOTMENT_DEFAULT"
 			});
-
 			ngDialog.open({
 				template: '/assets/partials/bill/rvBillingInformationPopup.html',
 				controller: 'rvBillingInformationPopupCtrl',
@@ -316,11 +353,45 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				closeByDocument: true,
 				scope: $scope
 			});
+		};
+
+		$scope.openBillingInformation = function() {
+			if ($scope.isInAddMode()) {
+				// If the allotment has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the allotment first"];
+				return;
+			}
+
+			var summaryData = $scope.allotmentConfigData.summary;
+			// check if billing info does not exist and default biling info can be copied from either company or TA.
+			if (summaryData.default_billing_info_present) {
+				openBillingInformationPopup();
+				return;
+			}
+
+			var billingInfoExistsForCompany = summaryData.company && summaryData.company.default_billing_info_present,
+				billingInfoExistsForTA 		= summaryData.travel_agent && summaryData.travel_agent.default_billing_info_present;
+
+			if ( billingInfoExistsForCompany && billingInfoExistsForTA) {
+				$scope.conflctCards = [summaryData.company.name, summaryData.travel_agent.name];
+				showConflictRoutingPopup();
+			}
+			else if ( billingInfoExistsForCompany) {
+				$scope.contractRoutingType = 'COMPANY';
+				showConfirmRoutingPopup();
+			}
+			else if (billingInfoExistsForTA) {
+				$scope.contractRoutingType = 'TRAVEL_AGENT';
+				showConfirmRoutingPopup();
+			}
+			else {
+				openBillingInformationPopup();
+			}
 
 		};
 
 		$scope.$on("BILLINGINFOADDED", function() {
-			$scope.allotmentConfigData.summary.posting_account_billing_info = true;
+			$scope.allotmentConfigData.summary.default_billing_info_present = true;
 		});
 
 		$scope.saveDemographicsData = function() {

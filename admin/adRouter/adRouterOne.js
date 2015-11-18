@@ -19,6 +19,38 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/propertyinterface/setup'
 		});
 
+		$stateProvider.state('admin.letshareSetup', {
+			templateUrl: '/assets/partials/letshare/letShareSetup.html',
+			controller: 'adLetShareSetupCtrl',
+			url : '/letshare/setup',
+			resolve: {
+				letsShareSetupValues: ['adLetShareSetupSrv', function(adLetShareSetupSrv) {
+					return adLetShareSetupSrv.fetchLetShareConfiguration();
+				}]
+			}
+		});
+
+		$stateProvider.state('admin.britePabXSetup', {
+			templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
+			controller: 'adBritePabXSetupCtrl',
+			url : '/britePabX/setup',
+			resolve: {
+				britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
+					return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+				}]
+			}
+		});
+
+		$stateProvider.state('admin.afasSetup', {
+			templateUrl: '/assets/partials/afas/afasSetup.html',
+			controller: 'adAfasSetupCtrl',
+			url : '/letshare/setup',
+			resolve: {
+				afasSetupValues: ['adAfasSetupSrv', function(adAfasSetupSrv) {
+					return adAfasSetupSrv.fetchAfasConfiguration();
+				}]
+			}
+		});
 
 		$stateProvider.state('admin.permissions', {
 			templateUrl: '/assets/partials/hotel/adUserRolePermissions.html',

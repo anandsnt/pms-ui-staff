@@ -8,5 +8,10 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require '../rover/css/zestStation.css.less'
+ *= require '../zest_station/css/zoku.less'
+ *= require '../shared/lib/css/ngDialog.css'
+ *= require '../shared/lib/css/ngDialog-theme-default.css'
+ *= require '../shared/lib/css/ngDialog-theme-plain.css'
+ *= require '../shared/lib/css/date-picker.css.less'
+ *= require '../shared/lib/css/advanced_date_picker.css'
  */
