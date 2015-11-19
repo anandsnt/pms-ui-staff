@@ -1,11 +1,19 @@
-admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 
+	
+	var init = function(){
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};
 	$scope.successMessage = "";
 	$scope.errorMessage ="";
 	$scope.fileName = "Choose File....";
+	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone){
+		$scope.getRoomClassList();
+	}	
+	//To list room types
+	$scope.listRoomTypes();
+	}
 
    /*
     * To fetch list of room types
@@ -38,8 +46,17 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		};
 		$scope.invokeApi(ADRoomTypesSrv.fetch, {} , successCallbackFetch);
 	};
-	//To list room types
-	$scope.listRoomTypes();
+	 /*
+    * To fetch list of room classes
+    */
+	$scope.getRoomClassList = function(){
+		var successCallbackFetch = function(data){
+			$scope.roomClasses = data;
+		};
+		$scope.invokeApi(ADRoomTypesSrv.fetchRoomClasses, {} , successCallbackFetch);
+	};
+	
+	
    /*
     * To render edit room types screen
     * @param {index} index of selected room type
@@ -176,7 +193,8 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 			"is_pseudo_room_type": "",
 			"is_suite": "",
 			"image_of_room_type": "",
-			"is_room_type_ows_request_per_status_type": false
+			"is_room_type_ows_request_per_status_type": false,
+			"room_class_id":""
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');
@@ -205,4 +223,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		};
 	$scope.invokeApi(ADRoomTypesSrv.deleteRoomTypes, {'roomtype_id': roomtype_id}, successCallBack);
 	};
+
+	init();
+
 }]);

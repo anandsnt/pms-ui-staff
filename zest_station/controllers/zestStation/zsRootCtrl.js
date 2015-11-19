@@ -5,6 +5,7 @@ sntZestStation.controller('zsRootCtrl', [
 	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog,$sce) {
 
 	BaseCtrl.call(this, $scope);
+         $scope.storageKey = 'snt_zs_workstation';
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -27,7 +28,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.goToAdmin = function() {
 		//disabling for now
-		//$state.go ('zest_station.admin');
+		$state.go ('zest_station.admin');
 	};
 
 	/**
@@ -126,11 +127,67 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData = data;
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
-                $scope.fetchKeyEncoderList();
+                $scope.getWorkStation();
+                //$scope.fetchKeyEncoderList(); //using workstations instead
 	};
+        
+        $scope.getWorkStation = function(){
+            var onSuccess = function(response){
+                if (response){
+                    $scope.zestStationData.workstations = response.work_stations;
+                    $scope.setWorkStation();
+                }
+            };
+            var onFail = function(response){
+                console.warn('fetching workstation list failed:',response);
+            };
+            var options = {
+                
+                params:                 {
+                    page: 1,
+                    per_page: 100,
+                    query:'',
+                    sort_dir: true,
+                    sort_field: 'name'
+                },
+                successCallBack: 	    onSuccess,
+                failureCallBack:        onFail
+            };
+            $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+        };  
+        $scope.setWorkStation = function(){
+            /*
+             * This method will get the device's last saved workstation, and from the last fetched list of workstations
+             * will set the workstation for the UI, which is also used in determining the device's default printer
+             */
+             var storageKey = $scope.storageKey,
+                    storage = localStorage,
+                    storedWorkStation = '',
+                    station;
+
+            try {
+               storedWorkStation = storage.getItem(storageKey);
+            } catch(err){
+                console.warn(err);
+            }
+            if ($scope.zestStationData){
+                if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0){
+                    for (var i in $scope.zestStationData.workstations){
+                        if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
+                            station = $scope.zestStationData.workstations[i];
+                        }
+                    }
+                }
+            }
+            $scope.zestStationData.encoder = station.station_identifier;
+            console.info('workstation found!: ',station.name);
+            console.log(station)
+            return station;
+        };
 	$scope.failureCallBack =  function(data){
 		$state.go('zest_station.error_page');
 	};
+        /*
         $scope.fetchKeyEncoderList = function(){
             console.log('fetching key encoders')
             var onSuccess = function(data){
@@ -145,7 +202,7 @@ sntZestStation.controller('zsRootCtrl', [
                 failureCallBack:        $scope.failureCallBack
             };
             $scope.callAPI(zsTabletSrv.fetchEncoders, options);
-        };
+        };*/
         $scope.fetchHotelSettings = function(){
             var onSuccess = function(data){
                     $scope.zestStationData.hotel_settings = data;

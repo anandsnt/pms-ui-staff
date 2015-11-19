@@ -13,7 +13,17 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         $stateProvider.state('zest_station.home', {
             url         : '/home',
             templateUrl : '/assets/partials/kiosk/home.html',
-            controller  : 'zsHomeCtrl'
+            controller  : 'zsHomeCtrl',
+            resolve: {
+                beforeRender: function() {
+                    //console.info('doing render apply to see if svg rendering bug is resolved -after render- safari issue');
+                    setTimeout(function(){
+                        var scope = angular.element($('.root-view')[0]).scope();
+                        scope.$apply();
+                    });
+                    return null;
+                }
+            }
         });
 
         $stateProvider.state('zest_station.home-admin', {

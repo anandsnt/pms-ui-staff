@@ -17,5 +17,5 @@
 		};
 	};
 
-	snt.filter('format12', format12);
+	sntGuestWeb.filter('format12', format12);
 })();

@@ -33,5 +33,5 @@ var dependencies = [
 checkinRoomUpgradeOptionsService
 ];
 
-snt.factory('checkinRoomUpgradeOptionsService', dependencies);
+sntGuestWeb.factory('checkinRoomUpgradeOptionsService', dependencies);
 })();

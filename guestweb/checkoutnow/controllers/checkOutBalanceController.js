@@ -63,5 +63,5 @@ var dependencies = [
 checkOutBalanceController
 ];
 
-snt.controller('checkOutBalanceController', dependencies);
+sntGuestWeb.controller('checkOutBalanceController', dependencies);
 })();
