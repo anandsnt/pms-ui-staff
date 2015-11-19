@@ -43,7 +43,7 @@ angular.module('allotmentModule', [])
 
         //group summary : CICO-12790
         $stateProvider.state('rover.allotments.config', {
-            url: '/config/:id/:activeTab',
+            url: '/config/:id/:activeTab/:newAllotmentName',
             templateUrl: '/assets/partials/allotments/rvAllotmentConfiguration.html',
             controller: 'rvAllotmentConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
