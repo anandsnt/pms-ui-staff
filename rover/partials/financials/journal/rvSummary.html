@@ -44,7 +44,7 @@
                         <td>{{item.debit}}</td>
                         <td>{{item.credit}}</td>
                     </tr>
-                    <tr class="pagination">
+                    <tr class="pagination" ng-show="data.summaryData.deposit_balance.total_count > data.filterData.perPage && data.summaryData.deposit_balance.transactions > 0">
                         <td colspan="8">
                             <div class="search-pagination">
                                 <button type="button" class="button dark-grey next" ng-click="loadNextSet('DEPOSIT_BALANCE')" ng-disabled="isNextButtonDisabled('DEPOSIT_BALANCE')" translate>NEXT</button>
@@ -92,7 +92,7 @@
                         <td>{{item.debit}}</td>
                         <td>{{item.credit}}</td>
                     </tr>
-                    <tr class="pagination">
+                    <tr class="pagination" ng-show="data.summaryData.guest_balance.total_count > data.filterData.perPage && data.summaryData.guest_balance.transactions > 0">
                         <td colspan="8">
                             <div class="search-pagination">
                                 <button type="button" class="button dark-grey next" ng-click="loadNextSet('GUEST_BALANCE')" ng-disabled="isNextButtonDisabled('GUEST_BALANCE')" translate>NEXT</button>
@@ -140,7 +140,7 @@
                         <td>{{item.debit}}</td>
                         <td>{{item.credit}}</td>
                     </tr>
-                    <tr class="pagination">
+                    <tr class="pagination" ng-show="data.summaryData.ar_balance.total_count > data.filterData.perPage && data.summaryData.ar_balance.transactions > 0">
                         <td colspan="8">
                             <div class="search-pagination">
                                 <button type="button" class="button dark-grey next" ng-click="loadNextSet('AR_BALANCE')" ng-disabled="isNextButtonDisabled('AR_BALANCE')" translate>NEXT</button>
