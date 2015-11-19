@@ -50,5 +50,5 @@
 		baseWebService
 	];
 
-	snt.factory('baseWebService', dependencies);
+	sntGuestWeb.factory('baseWebService', dependencies);
 })();

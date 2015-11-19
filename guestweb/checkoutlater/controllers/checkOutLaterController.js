@@ -63,5 +63,5 @@ var dependencies = [
 checkOutLaterController
 ];
 
-snt.controller('checkOutLaterController', dependencies);
+sntGuestWeb.controller('checkOutLaterController', dependencies);
 })();

@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
    <form id="edit-payment" class="modal-content form confirmation" name="edit-payment" method="post" action="index.html">
       <button id="modal-close" class="modal-close" ng-click = "closeDialog()" type="button">
       <span class="icons icon-close invert"></span>

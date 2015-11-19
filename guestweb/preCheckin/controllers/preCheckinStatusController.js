@@ -24,5 +24,5 @@ var dependencies = [
 preCheckinStatusController
 ];
 
-snt.controller('preCheckinStatusController', dependencies);
+sntGuestWeb.controller('preCheckinStatusController', dependencies);
 })();

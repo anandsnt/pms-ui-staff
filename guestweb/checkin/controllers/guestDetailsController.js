@@ -138,5 +138,5 @@ var dependencies = [
 guestDetailsController
 ];
 
-snt.controller('guestDetailsController', dependencies);
+sntGuestWeb.controller('guestDetailsController', dependencies);
 })();

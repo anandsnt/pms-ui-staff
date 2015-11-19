@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout', 'adTransactionCenterSrv',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout, adTransactionCenterSrv) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout) {
 
 		//hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -409,23 +409,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-			var currentTransactions = adTransactionCenterSrv.getRunningTransactions();
-			if(!!currentTransactions.length){
-				console.warn("CANNOT proceed - TRANSACTION(S) are RUNNING!");
-				_.each(currentTransactions,function(transaction){
-					$scope.$broadcast(transaction.broadcastMessage, {
-						userAction: "STATE_CHANGE",
-						params:{
-							toState: toState,
-							toParams: toParams
-						}
-					});
-				});
-				event.preventDefault();
-			}else{
 				// Show a loading message until promises are not resolve
 				$scope.$emit('showLoader');
-			}
 		});
 
 		$rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -576,18 +561,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		});
 
 		$scope.$on("navToggled", function() {
-			var currentTransactions = adTransactionCenterSrv.getRunningTransactions();
-			if(!$scope.menuOpen && !!currentTransactions.length){
-				console.warn("CANNOT proceed - TRANSACTION(S) are RUNNING!");
-				_.each(currentTransactions,function(transaction){
-					$scope.$broadcast(transaction.broadcastMessage, {
-						userAction: "OPEN_MENU"
-					});
-				});
-			}else{
-				$scope.menuOpen = !$scope.menuOpen;
-				$scope.showSubMenu = false;
-			}	
+			$scope.menuOpen = !$scope.menuOpen;
+			$scope.showSubMenu = false;
 		});
 
 		$scope.isMenuOpen = function() {
