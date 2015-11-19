@@ -19,7 +19,7 @@ module.exports = function(gulp, $, options) {
 	gulp.task('compile-login-js-production', ['copy-all-dev'], function(){
 	    return gulp.src(LOGIN_JS_ASSET_LIST)
 	        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
-	        .pipe($.uglify({mangle:false}))
+	        .pipe($.uglify({mangle:false, compress:true}))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(LOGIN_JS_MANIFEST_FILE))
@@ -82,6 +82,7 @@ module.exports = function(gulp, $, options) {
 	            module: 'login',
 	            root: URL_APPENDER + "/partials/"
 	        }))
+	        .pipe($.uglify({compress:true}))
 			.pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(LOGIN_TEMPLTE_MANFEST_FILE))
@@ -124,7 +125,9 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('login-less-production', ['copy-all-dev'], function () {
 	  return gulp.src('stylesheets/login.css')
-	        .pipe($.less())
+	        .pipe($.less({
+	        	compress: true
+	        }))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(LOGIN_CSS_MANIFEST_FILE))
