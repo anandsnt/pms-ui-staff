@@ -59,20 +59,22 @@
     <label>{{ item.hasDateFilter.description }}</label>
     <button type="button" class="set-to-tomorrow button blue" ng-if="item.hasAddonGroups" ng-click="setTomorrowDate(item)">Set To Tomorrow</button>
     <div class="has-datepicker">    
-        <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit  && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneYearLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
         </button>
     </div>
     <span class="span-to"> To </span>
     <div class="has-datepicker">
-        <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
         </button>
@@ -239,11 +241,11 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasByChargeGroup.show }">
         <label class="checkbox inline" ng-show="item.hasByChargeGroup.data.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasByChargeGroup.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasByChargeGroup.selectAll" ng-change="fauxSelectChange(item, item.hasByChargeGroup, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasByChargeGroup.selectAll" ng-change="chargeGroupfauxSelectChange(item, item.hasByChargeGroup, true)" name="room-filters"> Select All
         </label>
         <label class="checkbox inline" ng-repeat="group in item.hasByChargeGroup.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : group.selected}"></span>
-            <input type="checkbox" ng-model="group.selected" ng-change="fauxSelectChange(item, item.hasByChargeGroup)" name="room-filters"> {{ group.description }}
+            <input type="checkbox" ng-model="group.selected" ng-change="chargeGroupfauxSelectChange(item, item.hasByChargeGroup)" name="room-filters"> {{ group.description }}
         </label>
     </div>
 </div>
@@ -252,13 +254,13 @@
     <label for="report-options">Charge Code(s)</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasByChargeCode)">{{ item.hasByChargeCode.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasByChargeCode.show }">
-        <label class="checkbox inline" ng-show="item.hasByChargeCode.data.length > 1">
+        <label class="checkbox inline" ng-show="item.hasByChargeCode.originalData.length > 1">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasByChargeCode.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasByChargeCode.selectAll" ng-change="fauxSelectChange(item, item.hasByChargeCode, true)" name="room-filters"> Select All
+            <input type="checkbox" ng-model="item.hasByChargeCode.selectAll" ng-change="chargeCodeFauxSelectChange(item, item.hasByChargeCode, true)" name="room-filters"> Select All
         </label>
-        <label class="checkbox inline" ng-repeat="code in item.hasByChargeCode.data">
+        <label class="checkbox inline" ng-repeat="code in item.hasByChargeCode.originalData" ng-hide="code.disabled">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : code.selected}"></span>
-            <input type="checkbox" ng-model="code.selected" ng-change="fauxSelectChange(item, item.hasByChargeCode)" name="room-filters"> {{ code.description }}
+            <input type="checkbox" ng-model="code.selected" ng-change="chargeCodeFauxSelectChange(item, item.hasByChargeCode)" name="room-filters"> {{ code.description }}
         </label>
     </div>
 </div>
@@ -428,5 +430,7 @@
     </div>
 </div>
 
-<a class="button green" ng-click="setnGenReport()">Show</a>
+<a class="button green" ng-click="setnGenReport(item)">Show</a>
+
+<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(item.title) && !hideExportOption"><span class="icons icon-save">Export</span></a>
 

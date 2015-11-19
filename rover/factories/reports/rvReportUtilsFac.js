@@ -420,6 +420,11 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['hasDateLimit']  = false;
+                    report['canRemoveDate'] = true;
+                    break;
+
                 case reportNames['GROUP_DEPOSIT_REPORT']:
                     report['hasDateLimit']  = false;
                     report['canRemoveDate'] = false;
@@ -459,8 +464,8 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DAILY_PRODUCTION']:
-                    report['hasDateLimit']  = false;
-                    report['canRemoveDate'] = true;
+                    report['canRemoveDate']     = true;
+                    report['hasOneYearLimit']   = true;
                     break;
 
                 default:
@@ -1066,18 +1071,19 @@ sntRover.factory('RVReportUtilsFac', [
                         });
                     };
 
-                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
 
-                    if ( !!foundCG ) {
-                        foundCG['filled'] = true;
+                    if ( !!foundCC ) {
+                        foundCC['filled'] = true;
                         __setData(report, 'hasByChargeCode', {
                             type         : 'FAUX_SELECT',
-                            filter       : foundCG,
+                            filter       : foundCC,
                             show         : false,
                             selectAll    : selected,
                             defaultTitle : 'Select Codes',
                             title        : selected ? 'All Selected' : 'Select Codes',
-                            data         : angular.copy( processedCGCC.chargeCodes )
+                            data         : angular.copy( processedCGCC.chargeCodes ),
+                            originalData : angular.copy( processedCGCC.chargeCodes )
                         });
                     };
                 });
@@ -1433,6 +1439,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.businessDate;
                     break;
 
+                case reportNames['IN_HOUSE_GUEST']:
+                    report['singleValueDate']  = _getDates.businessDate;
+                    break;
+
                 // by default date range must be from a week ago to current business date
                 default:
                     report['fromDate']            = _getDates.aWeekAgo;
@@ -1471,7 +1481,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'monthStart'   : new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30)
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
+                'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
             };
 
             if ( parseInt(xDays) !== NaN ) {

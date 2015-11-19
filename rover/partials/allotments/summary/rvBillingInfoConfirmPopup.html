@@ -1,0 +1,21 @@
+<div id ="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<div class="modal-content confirmation">
+	    <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+	    <span class="h2 message" translate>BILLING_INFORMATION_FOUND</span>
+	    <span class="text" ng-if="contractRoutingType == 'TRAVEL_AGENT'">
+	    	<span translate>ON_SELECTED_CARD</span>
+	    	<strong> {{allotmentConfigData.summary.travel_agent.name}}</strong>
+	    </span>
+	    <span class="text" ng-if="contractRoutingType == 'COMPANY'">
+	    	<span translate>ON_SELECTED_CARD</span>
+	    	<strong> {{allotmentConfigData.summary.company.name}}</strong>
+	    </span>
+
+	    <div class="actions">
+	        <button type="button" class="button green" ng-click="copyDefaultBillingFromCards(contractRoutingType)" translate>Apply To Allotment<span ng-if="reservationData.isHourly && reservationData.reservations.length > 1">s</span></button>
+	        <button type="button" class="button red" ng-click="cancelCopyDefaultBilling()" translate>DONT_APPLY</button> 
+	    </div>
+	</div>
+</div>
+
+

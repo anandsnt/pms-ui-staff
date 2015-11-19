@@ -1,0 +1,54 @@
+
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "no-match"' click-touch='resetTime()'>
+    <div id="content">
+        <h1 style="padding-top: 23px;">Sorry.</h1>
+        <h2>We can't seem to find your reservation.</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='reEnter("last")'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.last}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li ng-show="lastAt === 'find-by-email'">
+                    <button type="button" class="button option" touch-press='reEnter("email")'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.email}}"</span>
+                </li>
+                <li ng-show="lastAt === 'find-by-confirmation'">
+                    <button type="button" class="button option" touch-press='reEnter("confirmation")'>
+                        <ng-include src="'assets/css/icons/confirmation.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.confirmation}}"</span>
+                </li>
+                <li ng-show="lastAt === 'find-by-date'">
+                    <button type="button" class="button option" touch-press='reEnter("date")'>
+                        <ng-include src="'assets/css/icons/moon.svg'"></ng-include>
+                    </button>
+                    Re-Enter
+                    <span>"{{getDateRenderFormat(input.date)}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                    </button>
+                    Talk
+                    <span>To a Staff Member</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+</section>

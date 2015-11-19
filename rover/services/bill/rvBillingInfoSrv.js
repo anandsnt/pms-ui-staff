@@ -124,6 +124,18 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		return deferred.promise;
 	};
 
+	this.saveAllotmentDefaultAccountRouting = function(data) {
+		var deferred = $q.defer();
+		var url = 'api/default_account_routings/save_allotment_default_billing_info';
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+		   	 	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+
+		return deferred.promise;
+	};
+
 	this.deleteRoute = function(data){
 		var deferred = $q.defer();
 		var url = 'api//bill_routings/delete_routing';

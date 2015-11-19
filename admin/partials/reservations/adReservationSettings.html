@@ -9,7 +9,7 @@
 
 		<form style="overflow-y:auto;" class="form float" >
 			<fieldset class="holder full-width">
-				<fieldset class="holder left">
+				<fieldset class="holder left"  ng-if="isStandAlone">
 					<div style="height:20px;"></div>
 					<!-- <ad-checkbox is-checked="reservationSettingsData.recommended_rate_display" label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" div-class="full-width"></ad-checkbox> -->
 					<ad-toggle-button label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" is-checked="reservationSettingsData.recommended_rate_display" ></ad-toggle-button>
@@ -24,7 +24,7 @@
 
 				<!-- max guest counts starts here -->
 
-				<fieldset class="holder right">
+				<fieldset class="holder right"  ng-if="isStandAlone">
 					<div class="entry full-width"> 
 						<div class=" col1-3 actions_margin_top">           
 							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_adults" styleclass = "col1-3"
@@ -51,7 +51,7 @@
 
 				<!-- max guest counts ends here -->	
 
-				<fieldset class="holder left">					
+				<fieldset class="holder left" ng-if="isStandAlone">					
 					<div class="entry full-width" >
 						<label translate>CC AUTHORIZATION AT CHECK IN</label>
 						<div class="select col1-2">
@@ -82,7 +82,7 @@
 					</div>
 				</fieldset>
 
-				<fieldset class="holder right">					
+				<fieldset class="holder right"  ng-if="isStandAlone">					
 					<div class="entry full-width" >
 						<label translate>CC_AUTHORIZATION_for_STAY_EXTENSIONS</label>
 						<div class="select col1-2">
@@ -114,12 +114,12 @@
 				</fieldset>
 
 
-				<fieldset class="holder left">
+				<fieldset class="holder left" ng-if="isStandAlone">
 					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
 				</fieldset>
-				<fieldset class="holder right  margin-bottom-20-important">
+				<fieldset class="holder right  margin-bottom-20-important" ng-if="isStandAlone">
 
 					<ad-toggle-button label="Commissions" is-checked="reservationSettingsData.has_enabled_commissions"  div-class=""></ad-toggle-button>				
 
@@ -160,10 +160,10 @@
 					<ad-checkbox is-checked="reservationSettingsData.disable_cc_swipe" label="{{ 'DISABLE_CC_SWIPE_AT_CHECK_IN' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="reservationSettingsData.disable_terms_conditions_checkin" label="{{ 'DISABLE_TERMS_AND_CONDITIONS_AT_CHECK_IN' | translate}}" div-class="full-width"  ></ad-checkbox>
 					<ad-checkbox is-checked="reservationSettingsData.disable_email_phone_dialog" label="{{ 'DISABLE_EMAIL_PHONE_DIALOGUE' | translate}}" div-class="full-width" ></ad-checkbox>
-					<ad-checkbox is-checked="reservationSettingsData.disable_early_departure_penalty" label="{{ 'DISABLE_EARLY_DEPARTURE_PENALTY' | translate}}" div-class="full-width" ></ad-checkbox>
-					<ad-checkbox is-checked="reservationSettingsData.disable_reservation_posting_control" label="{{ 'DISABLE_RESERVATION_POSTING_CONTROL' | translate}}" div-class="full-width" ></ad-checkbox>
+					<ad-checkbox ng-if="isStandAlone" is-checked="reservationSettingsData.disable_early_departure_penalty" label="{{ 'DISABLE_EARLY_DEPARTURE_PENALTY' | translate}}" div-class="full-width" ></ad-checkbox>
+					<ad-checkbox ng-if="isStandAlone" is-checked="reservationSettingsData.disable_reservation_posting_control" label="{{ 'DISABLE_RESERVATION_POSTING_CONTROL' | translate}}" div-class="full-width" ></ad-checkbox>
 				</fieldset>
-				<fieldset class="holder right">					
+				<fieldset class="holder right" ng-if="isStandAlone">					
 					<ad-checkbox is-checked="reservationSettingsData.force_source_code" label="{{ 'FORCE_SOURCE_CODE' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="reservationSettingsData.force_reservation_type" label="{{ 'FORCE_RESERVATION_TYPE' | translate}}" div-class="full-width"  ></ad-checkbox>
 					<ad-checkbox is-checked="reservationSettingsData.force_market_code" label="{{ 'FORCE_MARKET_CODE' | translate}}" div-class="full-width" ></ad-checkbox>

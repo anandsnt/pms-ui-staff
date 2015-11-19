@@ -16,7 +16,7 @@
                             <em>{{ item.description }}</em>
                         </div>
                     </a>
-                    <div class="configure-report" ng-show="item.show_filter" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
+                    <div class="configure-report" ng-class="{'two-buttons': shouldShowExportButton(item.title)}" ng-show="item.show_filter" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
                 </li>
             </ul>
         </div>
@@ -45,6 +45,9 @@
                         </button>
                         <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
                         </button>
+                        <a href="{{getExportUrl()}}" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(parsedApiFor) && !hideExportOption"><span class="icons icon-save"></span>
+                        </a>
+                        
                         <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
                         </button>
                     </div>

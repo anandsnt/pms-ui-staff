@@ -53,5 +53,5 @@ var dependencies = [
 preCheckinSrv
 ];
 
-snt.factory('preCheckinSrv', dependencies);
+sntGuestWeb.factory('preCheckinSrv', dependencies);
 })();

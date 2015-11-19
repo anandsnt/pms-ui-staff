@@ -1,3 +1,10 @@
+<!-- Load next 14 days, remove class "hidden" when user reaches end of horizontal scroll -->
+<button type="button" class="next-dates"
+    ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
+    ng-click="fetchNextSetOfRoomBlockData()">
+    Next 14 Days
+    <span class="has-arrow next-view"></span>
+</button>
 <!-- If new allotment and/or room block have not been set: -->
 <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
     <div class="info">
@@ -44,7 +51,7 @@
             ng-repeat="roomtype_rate in allotmentConfigData.roomblock.selected_room_types_and_bookings"
             ui-jq="accordion"
             ui-options="accordionInitiallyNotCollapsedOptions"
-            ng-init="roomtype_rate.isCollapsed = true">
+            ng-init="roomtype_rate.isCollapsed = true" ngrepeatend>
 
             <!-- Toggle class "active" when clicked/tapped -->
             <p class="line line-toggle"
@@ -91,7 +98,7 @@
 </div>
 
 <!-- Room block days -->
-<div class="room-block-timeline release-range scrollable"
+<div class="room-block-timeline release-range paginated scrollable"
     ng-iscroll="room_rates_timeline_scroller"
     ng-show="shouldHideAddRoomsButton()"
     bindonce>
@@ -118,11 +125,11 @@
 </div>
 
 <!-- Room block grid -->
-<div class="room-block-grid release-range scrollable" ng-iscroll="room_rates_grid_scroller"
+<div class="room-block-grid release-range paginated scrollable" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldHideAddRoomsButton()">
     <div class="wrapper" bindonce style="width:{{getWidthForReleaseViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-        <div class="row" ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
+        <div class="row" ngrepeatend ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">
             <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
             <div class="column" ng-repeat="dateData in roomType.dates">

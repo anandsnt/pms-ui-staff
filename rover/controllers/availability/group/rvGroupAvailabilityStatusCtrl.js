@@ -48,9 +48,14 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		$scope.$on('CLOSED_AVAILIBILTY_SLIDER', function(event){
 			var GroupId = $scope.selectedGroupId;
 			$timeout(function(){
-				$state.go('rover.groups.config', {
+				$state.go('rover.groups.config', 
+				{
 					id: GroupId,
-					activeTab: 'ROOMING'
+					activeTab: 'ROOMING',
+
+				},
+				{
+					reload: true
 				});
 				$scope.$emit('showLoader');
 			}, 1000);
@@ -66,26 +71,17 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		 */
 		$scope.getWidthForTable = function() {
 
-			//if no data exist we will just return 0
-			if (!_.has($scope.data, 'dates')) {
+			var leftMostRowCaptionWidth = 130, // 120px cell width + 10px cell spacing
+				totalColumns = $scope.data && $scope.data.dates && $scope.data.dates.length,
+				individualColWidth = 60; // 55px cell width + 5px cell spacing
+
+			if (!_.has($scope.data, 'dates') && totalColumns < 30) {
 				return 0;
 			};
 
-			var leftMostRowCaptionWidth = 273,
-				totalColumns 			= $scope.data && $scope.data.dates && $scope.data.dates.length,
-				individualColWidth 		= 0;
-
-			//on each column length, width is different
-			if (totalColumns <= 7) {
-				individualColWidth = 147;
+			if (totalColumns == 30) {
+				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 			}
-			else if (totalColumns <= 14) {
-				individualColWidth = 71;
-			}
-			else if (totalColumns <= 30) {
-				individualColWidth = 55;
-			}			
-			return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 		};
 
 		/*

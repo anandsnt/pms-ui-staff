@@ -37,10 +37,7 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	//default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
-	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
-
-
-
+	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, 'dd-MM-yyyy');
 
 
 	// To popup contract start date
@@ -58,40 +55,88 @@ sntRover.controller('roomAvailabilityMainController', [
 	* success call of availability data fetch
 	*/
 	var successCallbackOfAvailabilityFetch = function(data){
+		if($scope.selectedView === 'graph'){
+			$scope.fetchAdditionalData();
+			}else{
+			$scope.$emit("hideLoader");
+			$scope.$broadcast("changedRoomAvailableData");
+		}
+
+	};
+	/**
+	* success call of availability additional data fetch
+	*/
+
+	var successCallbackOfAvailabilityAdditionalDataFetch = function(data){
 		$scope.$emit("hideLoader");
 		$scope.$broadcast("changedRoomAvailableData");
-		// for this successcallback we are not hiding the activty indicator
-		// we will hide it only after template loading.
-
 	};
 
 	/**
 	* error call of availability data fetch
 	*/
-	var failureCallbackOfAvailabilityFetch = function(errorMessage){
+	var fetchApiFailed = function(errorMessage){
 		$scope.$emit("hideLoader");
+	};
+
+	//calculating date after number of dates selected in the select box
+	$scope.getDateParams = function() {
+		var dateAfter = tzIndependentDate ($scope.data.selectedDate);
+
+		dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
+		var dataForWebservice = {
+			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
+			'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
+		};
+
+		return dataForWebservice;
+	};
+
+	/**
+	* Api to fetch additional data
+	*/
+	$scope.fetchAdditionalData = function(){
+		$timeout(function(){
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityAdditionalDetails, $scope.getDateParams(), successCallbackOfAvailabilityAdditionalDataFetch, fetchApiFailed);
+		}, 0);
 
 	};
 
+	var successCallbackOfGrpNAllotDataFetch = function(data){
+		$scope.$emit("hideLoader");
+		$scope.$broadcast("changedGrpNAllotData");
+	};
+
+	/**
+	* Api to fetch group AND Allotment data
+	*/
+	$scope.fetchGrpNAllotData = function() {
+		var isSameData = function() {
+			var newParams = $scope.getDateParams(),
+				oldParams = $scope.oldDateParams || { 'from_date': '', 'to_date': '' };
+
+			return newParams.from_date == oldParams.from_date && newParams.to_date == oldParams.to_date;
+		};
+
+		if ( isSameData() ) {
+			successCallbackOfGrpNAllotDataFetch();
+		} else {
+			$timeout(function(){
+				$scope.oldDateParams = $scope.getDateParams();
+				$scope.invokeApi(rvAvailabilitySrv.fetchGrpNAllotAvailDetails, $scope.getDateParams(), successCallbackOfGrpNAllotDataFetch, fetchApiFailed);
+			}, 0);
+		};
+	};
 
 	/**
 	* When there is any change of for availability data params we need to call the api
 	*/
 	$scope.changedAvailabilityDataParams = function(){
 		$timeout(function(){
-		//calculating date after number of dates selected in the select box
-			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
-
-			dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
-			var dataForWebservice = {
-				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
-				'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
-			};
-			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
 		}, 0);
 
 	};
-
 
 	$scope.changedAvailabilityDataParams();
 	}]);

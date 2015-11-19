@@ -26,7 +26,7 @@
 			</colgroup>
 			<tbody>
 				<tr class="main">
-					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Group Rooms (Total)</th>
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomTotal')">Allotments Rooms (Total)</th>
 					<td ng-repeat="groupTotalRoom in data.groupTotalRooms track by $index">
 						<div class="inner">{{groupTotalRoom}}</div>
 					</td>
@@ -48,7 +48,7 @@
 			</colgroup>
 			<tbody>			
 				<tr class="main">
-					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Group Rooms (Picked Up)</th> 
+					<th class="heading rows-toggle" scope="row" ng-click="togleHoldStatusVisibility('groupRoomPicked')">Allotments Rooms (Picked Up)</th> 
 					<td ng-repeat="groupTotalPickedUp in data.groupTotalPickedUps track by $index">
 						<div class="inner green">{{groupTotalPickedUp}}</div>
 					</td>
@@ -78,7 +78,7 @@
 								<span class="label">Hold Status:</span>
 								{{groupDetail.holdStatusName}}
 							</div>
-							<button type="button" class="has-arrow next-view" ng-click="gotoAllotmentScreen(groupDetail.id)">Group Details</button>
+							<button type="button" class="has-arrow next-view" ng-click="gotoAllotmentScreen(groupDetail.id)">Details</button>
 						</div>
 					</th>
 				</tr>

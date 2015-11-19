@@ -107,10 +107,24 @@
             <li ng-bind="idToVal(singleState.workSheet.work_type_id, 'name', workTypes)"></li>
         </ul>
         <ul class="worksheet-summary">
-            <li>{{'TIME_ALLOCATED' | translate}} <span>{{singleState.summary.timeAllocated}}</span></li>
-            <li>{{'DASHBOARD_SEARCH_CHECKINGOUT' | translate}} <span>{{singleState.summary.departures}}</span></li>
-            <li>{{'STAYOVERS' | translate}} <span>{{singleState.summary.stayovers}}</span></li>
-            <li>{{'COMPLETED' | translate}}<span>{{singleState.summary.completed}} / {{singleState.assigned.length}}</span></li>
+            <li class="shift">
+                <strong class="title">{{'TIME_ALLOCATED' | translate}}</strong>
+                <span class="value">{{ singleState.summary.timeAllocated }}</span>
+            </li>
+            <li class="departures">
+                <strong class="title">{{'DASHBOARD_SEARCH_CHECKINGOUT' | translate}}</strong>
+                <span class="value">{{singleState.summary.departures}}</span>
+            </li>
+            <li class="stayovers">
+                <strong class="title">{{'STAYOVERS' | translate}} </strong>
+                <span class="value">{{ singleState.summary.stayovers }}</span>
+            </li>
+            <li class="completed">
+                <strong class="title">{{'COMPLETED' | translate}}</strong>
+                <span class="value">{{ singleState.summary.completed }}</span>
+                <span class="delimiter">|</span>
+                <span class="total">{{ singleState.assigned.length }}</span>
+            </li>
         </ul>         
         <div id="worksheet-assigned-rooms" class="worksheet-content scrollable" 
             data-drop="true" 

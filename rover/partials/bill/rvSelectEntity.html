@@ -76,9 +76,27 @@
                  </li>
 
                 <!-- If group added -->
-                <li class="entity group" ng-show="attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
+                <li class="entity group" ng-show="billingEntity === 'GROUP_DEFAULT_BILLING' && attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
                     <div class="group-info">A</div>
                     <h2>{{attachedEntities.posting_account.name}}</h2>
+                </li>
+
+                <li class="entity guest" ng-show="billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-click="selectAttachedEntity(-1, 'ALLOTMENT')">
+                  <figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
+                    <img src="{{selectedEntity.images[0].guest_image}}" alt="" />
+                  </figure>
+
+                  <figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
+                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
+                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
+                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+                  </figure>
+
+                  <h2>{{selectedEntity.name}}</h2>
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+                  <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
+
                 </li>
             </ul>
          </div>
@@ -96,25 +114,25 @@
 			<ul class="wrapper">
 
 				<div class="entity" ng-repeat="row in results.accounts"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.accounts.length == 0" ng-click="selectEntity($index,'ACCOUNT')">
-                    <!-- image -->
-                	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-                      <img ng-src="{{row.company_logo}}" alt="">
-                    </figure>
+          <!-- image -->
+          <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+            <img ng-src="{{row.company_logo}}" alt="">
+          </figure>
 
-                    <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
-                      <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
-                      <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
-                    </figure>
-                    <!-- heading -->
-                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-                    <!-- icon -->
-                  	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
-                </div>
+          <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
+            <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
+            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
+          </figure>
+          <!-- heading -->
+          <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+          <!-- icon -->
+          <div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
+        </div>
 
-                <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
-                 	<div class="group-info">A</div>
-                    <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
-                </div>
+        <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">
+         	<div class="group-info">A</div>
+            <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+        </div>
 
 			</ul>
 			<!-- No results / no content when searched query not found-->
