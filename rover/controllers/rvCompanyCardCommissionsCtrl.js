@@ -7,7 +7,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
     '$timeout',
     'rvPermissionSrv',
     'rvUtilSrv',
-function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv,util) {
+    '$window',
+function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv,util,$window ) {
     BaseCtrl.call(this, $scope);
 
     //Get the request parameters for the commission filtering
