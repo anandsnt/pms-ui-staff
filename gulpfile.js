@@ -5,11 +5,10 @@
 
 var gulp 	  = require('gulp'),
 	$         = require('gulp-load-plugins')(),
-    tmplCache = require('gulp-angular-templatecache'),
     options   = {
         DEST_ROOT_PATH  : '../../public/assets/',
-        URL_APPENDER    :   '/assets',
-        TEMPLATE_CACHE  : tmplCache
+        URL_APPENDER    : '/assets',
+        TEMPLATE_CACHE  : require('gulp-angular-templatecache')
     };
 
 require('./gulp/gulp_default')(gulp, $, options);  
