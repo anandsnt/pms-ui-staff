@@ -74,8 +74,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
     };
 
-    $scope.hasCCAuthPermission = function() {
-        return rvPermissionSrv.getPermissionValue ('');
+    /* Checking permission for edit PAID & UNPAID   */
+
+    $scope.hasPermissionToEditPaid = function() {
+        return rvPermissionSrv.getPermissionValue ('EDIT_COMMISSIONS_TAB');
     };
 
     $scope.loadNextSet = function(){
