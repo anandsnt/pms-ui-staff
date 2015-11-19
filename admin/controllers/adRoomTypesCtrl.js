@@ -201,7 +201,6 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 			var actualIndex = $scope.data.room_types.map(function(x){return x.id; }).indexOf(roomtype_id);
       		$scope.data.room_types.splice(actualIndex, 1);
 			$scope.tableParams.page(1);
-        	//$scope.tableParams.reload();
 		};
 	$scope.invokeApi(ADRoomTypesSrv.deleteRoomTypes, {'roomtype_id': roomtype_id}, successCallBack);
 	};
