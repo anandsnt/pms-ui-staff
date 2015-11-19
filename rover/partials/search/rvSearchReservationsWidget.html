@@ -105,7 +105,7 @@
                     	</div>
 
                     	<!-- Display arrival and departure dates . Do not display the room number -->
-	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' )">
+	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' && !row.is_pre_checkin)">
 	                        <!-- this is arrival date -->
 	                        <div class="arrival-departure">
 	                            <span class="guest-status {{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
