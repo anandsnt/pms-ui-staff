@@ -641,6 +641,12 @@
                         td { 
                             vertical-align: top;
                             word-wrap: break-word;
+
+                            /* Fix for line break as first child ***/
+                            br { 
+                                content: "" !important;
+                                display: block !important;
+                            }
                         }
 
                         &:nth-child(odd) {
