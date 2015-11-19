@@ -225,6 +225,11 @@ sntRover.factory('RVReportUtilsFac', [
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
 
+            if (objRef['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
+                selected = true;
+                objRef['hasGeneralOptions']['title'] = filter.description;
+            }
+
             // if filter is this, make it selected by default
             if ( objRef['title'] == reportNames['DAILY_PRODUCTION'] && filter.value == 'INCLUDE_ADDONS' ) {
                 selected = true;
@@ -245,10 +250,18 @@ sntRover.factory('RVReportUtilsFac', [
          * @param {Object} filter The ith report's filter object
          */
         var __pushDisplayData = function(objRef, filter) {
+
+            var selected = false;
+            
+            if ( objRef['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
+                selected = true;
+                objRef['hasDisplay']['title'] = filter.description;
+            };
+
             objRef['hasDisplay']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
-                selected    : false
+                selected    : selected
             });
         };
 
@@ -468,7 +481,6 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate']     = true;
                     report['hasOneYearLimit']   = true;
                     break;
-
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -1436,6 +1448,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DAILY_PRODUCTION']:
+                    report['fromDate']  = _getDates.monthStart;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
+                case reportNames['DAILY_PRODUCTION_DEMO']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
                     break;
