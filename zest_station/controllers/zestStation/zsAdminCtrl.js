@@ -62,7 +62,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 failureCallBack:        onFail
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
-                
 	};
 
 
@@ -157,8 +156,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     "email": $scope.userName, 
                     "password": $scope.passWord
                 };
- 		zsLoginSrv.login(params, $scope.successCallback, $scope.failureCallBack);
+ 		//zsLoginSrv.login(params, $scope.successCallback, $scope.failureCallBack);
+                    $scope.goToAdminPrompt();
 	};
-        
 	
 }]);
