@@ -21,13 +21,7 @@
                     </div>
                 </div>
                 <fieldset class="holder left">
-                    <ad-textbox inputtype="text" value="lightspeed.rover_unique_id" name="rover-unique-id" id="rover-unique-id" label="{{'LIGHT_SPEED_POS_ROVER_UNIQUE_ID'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                     <ad-charge-code-auto-complete ng-model="lightspeed.charge_code_name" selected-charge-code-id="lightspeed.charge_code_id" ng-if="lightspeed.enabled" label="Charge Code" entry-div-class="full-width"></ad-charge-code-auto-complete>                    
-                </fieldset>
-                <fieldset class="holder right">
-                    <ad-textbox value="lightspeed.url" name="url" id="url" label="{{'LIGHT_SPEED_POS_URL'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
-                    <ad-textbox value="lightspeed.username" name="username" id="username" label="{{'LIGHT_SPEED_POS_USERNAME'| translate}}" ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
-                    <ad-textbox inputtype="password" value="lightspeed.password" name="password" id="password" label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                 </fieldset>
             </fieldset>
 

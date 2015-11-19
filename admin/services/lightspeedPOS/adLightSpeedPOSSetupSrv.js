@@ -32,17 +32,4 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
 		});
 		return deferred.promise;
 	};
-
-	this.importProductsFromLightspeedPOS = function() {
-		var deferred = $q.defer();
-		var url = '/api_for_product_import_from_light_speed';
-
-		ADBaseWebSrvV2.postJSON(url).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
-		return deferred.promise;
-	};
-
 }]);

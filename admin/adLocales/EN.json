@@ -597,8 +597,6 @@
 "LIGHT_SPEED_POS_USERNAME": "Username",
 "LIGHT_SPEED_POS_PASSWORD": "Password",
 "LIGHT_SPEED_POS_ROVER_UNIQUE_ID": "Rover Unique ID",
-"LIGHT_SPEED_POS_IMPORT_TITLE": "Import Products from Lightspeed POS",
-"LIGHT_SPEED_POS_IMPORT": "Import",
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",

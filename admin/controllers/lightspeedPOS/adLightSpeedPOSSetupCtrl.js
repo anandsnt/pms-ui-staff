@@ -29,26 +29,6 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
         $scope.lightspeed.charge_code_name 	= '';
 	};
 
-	var successCallBackOfImportProducts = function() {
-		$scope.successMessage = 'Successfully imported product & product groups from Lightspeed POS';
-	};
-
-	var failureCallBackOfImportProducts = function() {
-		$scope.errorMessage = ['Failed to import product & product groups from Lightspeed POS'];
-	};
-	
-	/**
-	 * import products from light speed POS
-	 * @return {undefined}
-	 */
-	$scope.importProducts = function() {
-        var options = {
-            successCallBack : successCallBackOfImportProducts,
-            failureCallBack : failureCallBackOfImportProducts
-        };
-        $scope.callAPI(adLightSpeedPOSSetupSrv.importProductsFromLightspeedPOS, options);
-	};
-
 	/**
 	 * when we clicked on save button
 	 * @return {undefiend}
