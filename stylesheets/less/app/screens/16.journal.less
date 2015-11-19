@@ -2,6 +2,7 @@
     /* Journal options ***/
     .journal-header {
         position: relative;
+        padding-left: 20px;
         height: 90px;
         background: rgba(0,0,0,.1);
         .float;
@@ -60,7 +61,7 @@
                 position: relative;
                 #border-radius > .rounded();
                 .box-shadow();
-                .size(50px, 160px);
+                .size(50px, 100%);
                 .show;
 
                 input {
@@ -100,37 +101,29 @@
                 &:hover { background-position: 92% -34px; }
             } 
 
-            &.filter { 
-                margin-left: 20px;
-                width: 180px; 
-            }
+            &.filter { width: 180px; }
+            &.date { width: 175px; }
 
-            &.date { width: 160px; }
-        }
+            &.summary {
+                position: relative;
+                margin-right: 0;
+                .calc-width(100, 440);
 
-        .summary {
-            position: relative;
-            padding: 20px;
-            text-transform: uppercase;
-            line-height: 1;
-            .calc-width(100, 440);
-            .pull-left;
+                .entry-data {
+                    width: 225px;
 
-            span {
-                font-size: 14px;
-                .show;
-            }
+                    .month,
+                    .year { 
+                        left: 65px;
+                    }
+                }
 
-            strong {
-                font-size: 36px;
-                font-weight: 300;
-                .show;
-            }
-
-            .button {
-                position: absolute;
-                top: 25px;
-                right: 25px;
+                .button {
+                    position: absolute;
+                    top: 30px;
+                    right: 20px;
+                    line-height: 50px;
+                }
             }
         }
 
@@ -249,14 +242,8 @@
                 .faux-select { 
                     &.active { width: 100%; }
                 }
-
-                &.date { margin-left: 20px; }
-
-                &.filter { 
-                    margin-left: 0;
-                    width: 180px; 
-                    position: relative;
-                }
+                
+                &.filter { position: relative; }
 
                 &.action {
                     margin-top: 20px;
@@ -443,13 +430,19 @@
                 text-transform: uppercase;
                 text-align: right;
                 margin-bottom: 0;
-                width: 160px;
+                width: 200px;
                 .pull-left;
+
+                &.toggle {
+                    cursor: pointer;
+                    background-position: 100% 50%;
+                    padding-right: 40px;
+                }
             }
 
             ul {
                 padding-left: 40px;
-                .calc-width(100, 160);
+                .calc-width(100, 200);
                 .pull-left;
 
                 li {
@@ -467,6 +460,7 @@
                         line-height: 40px;
                         font-weight: 300;
                         color: @textColor;
+                        .nowrap();
                         .show;
                     }
 
@@ -477,7 +471,11 @@
             &.first { 
                 padding-top: 0; 
 
-                h3 { padding-top: 24px; }
+                h3 { 
+                    padding-top: 24px; 
+
+                    &.toggle { background-position: 100% 26px; }
+                }
             }
 
             &.totals {
@@ -889,7 +887,21 @@
         }
 
         /* Summary ***/
-        &.summary { padding: 60px 40px 0; }
+        &.summary { 
+            .wrapper { padding: 60px 40px 20px 40px; }
+
+            .journal-grid {
+                margin-top: -20px;
+                padding: 20px 0;
+                .background;
+
+                .grid-items {
+                    table-layout: auto;
+                    width: 100%;
+                    margin: 0;
+                }
+            }
+        }
 
         /* Revenue / Payments groups ***/
         &.grouped {

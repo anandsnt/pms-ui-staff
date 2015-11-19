@@ -74,6 +74,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 		popupCalendar('CASHIER');
 	};
 
+    $scope.clickedSummaryDate = function(){
+        popupCalendar('SUMMARY');
+    };
+
     // Filter by Logged in user id.
     var filterByLoggedInUser = function(){
         angular.forEach($scope.data.filterData.employees,function(item, index) {
@@ -290,6 +294,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         }
     	else if(tabName === 'PAYMENTS'){
             $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+        }
+        else if (tabName === 'SUMMARY') {
+            $rootScope.$broadcast('REFRESHSUMMARYCONTENT');
         }
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
