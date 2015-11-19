@@ -14,6 +14,9 @@ sntRover.controller('RVJournalDatePickerController',['$scope','$rootScope','ngDi
     else if($scope.clickedOn === 'TRANSACTIONS'){
         $scope.date =  $scope.data.transactionDate;
     }
+    else if($scope.clickedOn === 'SUMMARY'){
+        $scope.date =  $scope.data.summaryDate;
+    }
 
     $scope.setUpData = function(){
         $scope.dateOptions = {
@@ -39,6 +42,10 @@ sntRover.controller('RVJournalDatePickerController',['$scope','$rootScope','ngDi
                 else if($scope.clickedOn === 'TRANSACTIONS'){
                   $scope.data.transactionDate = $scope.date;
                   $rootScope.$emit('transactionDateChanged');
+                }
+                else if($scope.clickedOn === 'SUMMARY'){
+                  $scope.data.summaryDate = $scope.date;
+                  $rootScope.$emit('summaryDateChanged');
                 }
                 ngDialog.close();
             }

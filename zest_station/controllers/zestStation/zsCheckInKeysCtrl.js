@@ -190,15 +190,13 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.$emit('MAKE_KEY_ERROR',response);
                 
             };
-            console.info('$scope.selectedReservation: ',$scope.selectedReservation)
             var options = {
                 card_info: "",
                 is_additional: true,
                 key: $scope.makingKey,
-                key_encoder_id: '1',
+                key_encoder_id: $scope.zestStationData.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
-            console.info('encoder selected: ',$scope.zestStationData.selectedKeyEncoder)
             $scope.callAPI(zsTabletSrv.encodeKey, {
                 params: options,
                 'successCallBack':successMakeKey,
