@@ -27,16 +27,20 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
     };
 
-    // Refresh the scroller when the tab is active.
-    $rootScope.$on("refreshComissionsScroll", function(event) {
+    $scope.setScroller('commission-list');
+    var refreshScroll = function(){
         $timeout(function() {
             $scope.refreshScroller('commission-list');
         }, 100);
-    });
+    };
+    refreshScroll();
+    // Refresh the scroller when the tab is active.
+    $scope.$on("refreshComissionsScroll", refreshScroll);
 
     //Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
         var onCommissionFetchSuccess = function(data) {
+            console.log(data);
                 _.each(data.commission_details, function(element, index) {
                     _.extend(element, {is_checked: false});
                 });
@@ -45,9 +49,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                 $scope.commissionSummary.totalCommission = data.total_commission;
                 $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
 
-                $timeout(function() {
-                    $scope.refreshScroller('commission-list');
-                }, 100);
+                refreshScroll();
                 //set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
                 if($scope.nextAction && isPageChanged){
