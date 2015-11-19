@@ -32,7 +32,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     var refreshScroll = function(){
         $timeout(function() {
             $scope.refreshScroller('commission-list');
-        }, 100);
+        }, 2000);
     };
     refreshScroll();
     // Refresh the scroller when the tab is active.
@@ -41,7 +41,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
         var onCommissionFetchSuccess = function(data) {
-            console.log(data);
+            
                 _.each(data.commission_details, function(element, index) {
                     _.extend(element, {is_checked: false});
                 });
@@ -49,8 +49,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                 $scope.commissionSummary.totalRevenue = data.total_revenue;
                 $scope.commissionSummary.totalCommission = data.total_commission;
                 $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
-
-                refreshScroll();
+                
                 //set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
                 if($scope.nextAction && isPageChanged){
@@ -64,6 +63,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
                 }
                 $scope.$emit('hideLoader');
+                refreshScroll();
             },
             onCommissionFetchFailure = function(error) {
                 $scope.$emit('hideLoader');

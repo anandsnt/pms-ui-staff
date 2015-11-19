@@ -78,7 +78,7 @@
                 </div>
             </li>
         </ul>
-        <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'selected' : (selectAll || selectedCommissions.length > 0)}" ng-iscroll="commission-list">
+        <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'selected' : (selectAll || selectedCommissions.length > 0)}" ng-iscroll="commission-list" ng-iscroll-delay="100">
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (selectAll || commissionDetail.is_checked)}">
                     <!-- Clicking L32 block should open Stay Card for this reservation -->
