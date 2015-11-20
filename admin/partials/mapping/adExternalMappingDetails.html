@@ -23,7 +23,7 @@
                 <div class="entry sntvalue">
                     <label for="snt-value"> Snt Value <strong>*</strong> </label>
                     <div class="select">
-                        <select ng-model="editData.snt_value" ng-options="option.name as option.name for option in editData.sntValues">
+                        <select ng-model="editData.snt_value" ng-options="option.name as option.description for option in editData.sntValues">
                             <option ng-disabled="true"  ng-selected="true" value="">Snt Value</option>
                         </select>
                     </div>
