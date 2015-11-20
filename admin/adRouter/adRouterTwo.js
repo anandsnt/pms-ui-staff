@@ -68,6 +68,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
+		
+		$stateProvider.state('admin.roomclasses', {
+			templateUrl: '/assets/partials/roomClass/adRoomClassList.html',
+			controller: 'ADRoomClassListCtrl',
+			url : '/roomclasses'
+		});
 
 		$stateProvider.state('admin.floorsetups', {
 			templateUrl: '/assets/partials/floorSetups/adFloors.html',

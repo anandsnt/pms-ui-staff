@@ -329,6 +329,7 @@
 "ADDON_MAX_ORDER_LABEL": "Maximum order",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
+"EMAIL_LABEL": "Email",
 "ADDRESS_LABEL": "Address",
 "URL_LABEL": "URL",
 "SCREEN_ID_LABEL":"screen id",
@@ -584,6 +585,7 @@
 ,	
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
+	"STATION_PRINTER": "Work Station Printer",
 	"STATION_ID": "Work Station Id",
 	"WORKSTATIONS":"Work Stations",
 	"LOCATION_LABEL": "Location",
@@ -864,6 +866,7 @@
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
     "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate for External Systems",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
     "EXCLUDE_FROM_RATE" : "Exclude from rate"
 ,	

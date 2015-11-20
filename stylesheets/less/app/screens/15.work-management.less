@@ -597,8 +597,7 @@
                     .calc-width(100, 40);
 
                     li {
-                        margin-right: 10px;
-                        padding-right: 10px;
+                        span { font-size: 24px; }
                     }
                 }
             }
@@ -640,40 +639,58 @@
                         text-overflow: ellipsis;
                     }
 
-                    .data {
+                    .worksheet-summary {
                         margin: 4px 0;
-                        .float;
+                        .show;
 
                         li {
-                            width: 20%;
-                            padding: 0 5px;
-                            margin: 0;
-                            text-align: center;
-                            font-weight: 600;
+                            width: 22%;
+                            line-height: 1.5;
                             .pull-left;
 
+                            strong,
+                            .delimiter { .hide; }
+
                             span { 
-                                .show; 
-                                
-                                &.total { border-top: 1px solid rgba(0,0,0,.2); }
+                                float: none;
+                                font-size: 16px; 
+                                font-weight: 600;
+                                .show;
+
+                                &.value { 
+                                    text-align: center;
+                                    padding-right: 0;
+                                    width: 100%;
+                                }
+
+                                &.total {
+                                    text-align: center;
+                                    padding-left: 0;
+                                    width: 100%;
+                                    border-top: 1px solid rgba(0,0,0,.2);
+                                }
                             }
 
-                            &.shift { 
-                                width: 60%; 
-
-                                .total { color: @grey3; }
+                            &.shift {
+                                width: 34%;
                             }
-                            
+
                             &.departures { 
-                                color: @red;
-
                                 .total { border-color: @red; }
                             }
                             
                             &.stayovers { 
-                                color: @blue;
-
                                 .total { border-color: @blue; }
+                            }
+
+                            &.completed { 
+                                .total { border-color: @green; }
+                            }
+
+                            &:not(:first-child) { padding-left: 5px; }
+                            &:not(:last-child) { 
+                                padding-right: 5px;
+                                margin-right: 0; 
                             }
                         }
                     }
