@@ -4,11 +4,15 @@
 'use strict';
 
 var gulp 	  = require('gulp'),
-	$         = require('gulp-load-plugins')(),
+	$         = require('gulp-load-plugins')({
+		rename: {
+			'gulp-ng-annotate': 'ngAnnotate',
+			'gulp-angular-templatecache': 'templateCache'
+		}
+	}),
     options   = {
         DEST_ROOT_PATH  : '../../public/assets/',
-        URL_APPENDER    : '/assets',
-        TEMPLATE_CACHE  : require('gulp-angular-templatecache')
+        URL_APPENDER    : '/assets'
     };
 
 require('./gulp/gulp_default')(gulp, $, options);  

@@ -2,7 +2,6 @@ module.exports = function(gulp, $, options) {
 
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
-		TEMPLATE_CACHE 			= options['TEMPLATE_CACHE'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    LOGIN_ASSET_LIST_ROOT   = '../login/',
 	    LOGIN_JS_ASSET_LIST     = require ("./asset_list/loginJsAssetList").getList(),
@@ -19,6 +18,7 @@ module.exports = function(gulp, $, options) {
 	gulp.task('compile-login-js-production', ['copy-all-dev'], function(){
 	    return gulp.src(LOGIN_JS_ASSET_LIST)
 	        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
+	        .pipe($.ngAnnotate({single_quotes: true}))
 	        .pipe($.uglify({mangle:false, compress:true}))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
@@ -78,7 +78,7 @@ module.exports = function(gulp, $, options) {
 	//Be careful: PRODUCTION
 	gulp.task('login-template-cache-production', function () {
 	  return gulp.src(['partials/**/*.html'], {cwd:'login/'})
-	        .pipe(TEMPLATE_CACHE(LOGIN_TEMPLATES_FILE, {
+	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
 	            module: 'login',
 	            root: URL_APPENDER + "/partials/"
 	        }))
@@ -95,7 +95,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('login-template-cache-dev', function () {
 	  return gulp.src(['partials/**/*.html'], {cwd:'login/'})
-	        .pipe(TEMPLATE_CACHE(LOGIN_TEMPLATES_FILE, {
+	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
 	            module: 'login',
 	            root: URL_APPENDER + "/partials/"
 	        }))
