@@ -88,8 +88,8 @@
                         <div class="values">
                             <div class="value-block">{{'COMMISSION_REVENUE' | translate}}<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue}}</strong></div>
                             <div class="value-block">%/$<strong>{{commissionDetail.commission_data.rate}}</strong></div>
-                            <div class="value-block">{{'COMMISSION' | translate}}<strong>{{ currencySymbol }}{{commissionDetail.commission_data.amount}}</strong></div>
-                            <div class="value-block" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_data.tax}}</strong></div>
+                            <div class="value-block">{{'COMMISSION' | translate}}<strong><span ng-if="commissionDetail.commission_data.length">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount}}</strong></div>
+                            <div class="value-block" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}Tax<strong><span ng-if="commissionDetail.commission_data.length">{{ currencySymbol }}</span>{{commissionDetail.commission_data.tax}}</strong></div>
                         </div>
                         <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid'">
                             <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
