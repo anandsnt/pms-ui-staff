@@ -137,6 +137,10 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
             }
 
+            // If allotment name is passsed to create a new one
+            if ( !!$stateParams.newAllotmentName ) {
+                $scope.allotmentConfigData.summary.allotment_name = $stateParams.newAllotmentName;
+            };
         };
 
         /**
