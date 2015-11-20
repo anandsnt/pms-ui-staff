@@ -107,6 +107,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         }
         else{
             summaryItem.active = !summaryItem.active;
+            refreshSummaryScroller();
         }
     };
     
