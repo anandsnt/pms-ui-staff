@@ -133,7 +133,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     };
 
     var initPaginationParams = function(){
-        $scope.filterData.pageNo = 1;
+        $scope.filterData.page = 1;
         $scope.pagination.start = 1;
         $scope.nextAction = false;
         $scope.prevAction = false;
@@ -207,7 +207,9 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         }
         if($scope.selectedCommissions.length == 0) {
             fetchCommissionDetails(false);
+            $scope.status.groupPaidStatus = "";
         } else {
+            $scope.status.groupPaidStatus = "";
            updateCommissionSummary($scope.selectedCommissions);
        }
     };
@@ -225,10 +227,12 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
             updateCheckedStatus(true);
             $scope.selectedCommissions = [];
             updateCommissionSummary($scope.commissionDetails);
+            $scope.status.groupPaidStatus = "";
         } else {
            updateCheckedStatus(false);
            $scope.selectedCommissions = [];
            fetchCommissionDetails(false);
+           $scope.status.groupPaidStatus = "";
 
         }
 
@@ -271,13 +275,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         if($scope.filterData.selectAll) {
            $scope.commissionDetails.forEach(function(commission) {
                 if(commission.commission_data.paid_status != 'Prepaid'){
-                    commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                    commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
                 }
            });
         } else {
             $scope.selectedCommissions.forEach(function(commission) {
                 if(commission.commission_data.paid_status != 'Prepaid'){
-                    commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                    commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
                 }
             });
         }
@@ -288,7 +292,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         updatePaidStatus(requestData);
     };
 
-
+    $scope.showToggleButton = function(commissionDetail) {
+        var hasShownToggleBtn = commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid';
+        return (hasShownToggleBtn ? {'visibility': 'visible'} : {'visibility': 'hidden'});
+    };
 
     // To print the current screen details.
     $scope.clickedPrintButton = function(){

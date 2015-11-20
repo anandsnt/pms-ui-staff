@@ -7,7 +7,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		/* Checking permision to show Commission Tab */
 
 		$scope.hasPermissionToViewCommissionTab = function() {
-		return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
 		};
 
 		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
