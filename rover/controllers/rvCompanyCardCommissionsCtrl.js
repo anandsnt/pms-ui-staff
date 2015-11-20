@@ -32,7 +32,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     var refreshScroll = function(){
         $timeout(function() {
             $scope.refreshScroller('commission-list');
-        }, 1000);
+        }, 3000);
     };
     refreshScroll();
     // Refresh the scroller when the tab is active.
