@@ -10,7 +10,8 @@
 <div ng-controller="RVJournalSummaryController" id="journal-content" ng-iscroll='summary_content' class="journal-content summary scrollable">
     <div class="wrapper"> 
         <div class="journal-summary first">
-            <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
+            <h3 ng-if="(data.summaryData.deposit_debits !== 0 || data.summaryData.deposit_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
+            <h3 ng-if="(data.summaryData.deposit_debits === 0 && data.summaryData.deposit_credits === 0)" translate>DEPOSIT_BAL</h3>
             <ul>
                 <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
                 <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
@@ -41,8 +42,8 @@
                         <td>{{item.type}}</td>
                         <td ng-bind-html="item.details"></td>
                         <td>{{item.time}}</td>
-                        <td>{{item.debit}}</td>
-                        <td>{{item.credit}}</td>
+                        <td>{{item.debit | number: precisonTwo}}</td>
+                        <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
                     <tr class="pagination" ng-show="data.summaryData.deposit_balance.total_count > data.filterData.perPage && data.summaryData.deposit_balance.transactions > 0">
                         <td colspan="8">
@@ -58,7 +59,8 @@
         </div>
 
         <div class="journal-summary">
-            <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
+            <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_debits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
+            <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_debits === 0)" translate>GUEST_BAL</h3>
             <ul>
                 <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
                 <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
@@ -89,8 +91,8 @@
                         <td>{{item.type}}</td>
                         <td ng-bind-html="item.details"></td>
                         <td>{{item.time}}</td>
-                        <td>{{item.debit}}</td>
-                        <td>{{item.credit}}</td>
+                        <td>{{item.debit | number: precisonTwo}}</td>
+                        <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
                     <tr class="pagination" ng-show="data.summaryData.guest_balance.total_count > data.filterData.perPage && data.summaryData.guest_balance.transactions > 0">
                         <td colspan="8">
@@ -106,7 +108,8 @@
         </div>
 
         <div class="journal-summary">
-            <h3 class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active }" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
+            <h3 ng-if="(data.summaryData.ar_debits !== 0 || data.summaryData.ar_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active }" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
+            <h3 ng-if="(data.summaryData.ar_debits === 0 && data.summaryData.ar_credits === 0)" translate>AR_BALANCE</h3>
             <ul>
                 <li><span>{{currencySymbol}}{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
                 <li><span>{{currencySymbol}}{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
@@ -137,8 +140,8 @@
                         <td>{{item.type}}</td>
                         <td ng-bind-html="item.details"></td>
                         <td>{{item.time}}</td>
-                        <td>{{item.debit}}</td>
-                        <td>{{item.credit}}</td>
+                        <td>{{item.debit | number: precisonTwo}}</td>
+                        <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
                     <tr class="pagination" ng-show="data.summaryData.ar_balance.total_count > data.filterData.perPage && data.summaryData.ar_balance.transactions > 0">
                         <td colspan="8">

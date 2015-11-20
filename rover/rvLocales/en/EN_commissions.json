@@ -8,7 +8,32 @@
     "SELECT_CHARGE_CODE" : "Select Charge Code",
     "CHARGE_CODE" : "Charge Code",
     "ON" : "On",
-    "OFF" : "Off"
+    "OFF" : "Off",
+    "COMMISSION_START_DATE" : "Start Date",
+    "COMMISSION_CLEAR_QUERY" : "Clear query",
+    "COMMISSION_END_DATE" : "End Date",
+    "COMMISSION_COMMISSIONABLE" : "Commisionable",
+    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commisionable",
+    "COMMISSION_PAID_STATUS" : "Paid Status",
+    "COMMISSION_SET_STATUS" : "Set Status",
+    "COMMISSION_UNPAID" : "Unpaid",
+    "COMMISSION_PAID" : "Paid",
+    "COMMISSION_STATUS" : "Status",
+    "COMMISSION_PREPAID" : "Prepaid",
+    "COMMISSION_UPDATE" : "Update",
+    "COMMISSION_TOTEL_REVENUE" : "Total Revenue",
+    "COMMISSION_TO_DATE" : "Commission To Date",
+    "COMMISSION_SELECT" : "Select",
+    "COMMISSION_SET_PAID_STATUS" : "Set Paid Status",
+    "COMMISSION_REVENUE" : "Revenue",
+    "COMMISSION_NEXT" : "NEXT",
+    "COMMISSION_PREVIOUS" : "PREVIOUS",
+    "COMMISSION_ITEMS" : "items",
+    "COMMISSION_SHOWING" : "Showing",
+    "COMMISSIONS" : "Commissions",
+    "COMMISSION_ALL" : "All",
+    "COMMISSION_Tax" : "Tax"
+
     
    
 

@@ -525,6 +525,92 @@ table {
 
                 .icon-queued { .pull-right; }
             } 
+
+            /* Commisions ***/
+            &.commision {
+
+                .has-arrow { background: transparent; }
+
+                .data {
+                    .pull-left;
+
+                    .confirmation {
+                        line-height: 10px;
+                        color: @grey3;
+                        .show;
+                    }
+                }
+
+                .values {
+                    margin: 0;
+                    .pull-left;
+
+                    .value-block {
+                        line-height: 1;
+                        color: @grey3;
+                        padding: 0 16pt;
+                        .pull-left; 
+
+                        strong {
+                            color: @textColor;
+                            font-weight: 600;
+                            .show;
+                        }
+
+                        &:not(:last-child) { border-right: 1px solid @grey2; }
+                    }
+                }
+
+                &.in-card {
+                    .data { .calc-width(35, 30); }
+
+                    .values { .calc-width(65, 30); }
+
+                    .prepaid,
+                    .switch-button {
+                        line-height: 20px;
+                        text-align: right;
+                        text-transform: uppercase;
+                        .size(20px, 60px);
+                        .pull-left;
+                    }
+
+                    .prepaid { color: @grey3; }
+
+                    .switch-button { 
+                        input { .hide; }
+
+                        .data-on,
+                        .data-off {
+                            .switch-icon { .hide; }
+                        }
+
+                        .data-on { 
+                            .hide; 
+
+                            .value { color: @grey3; }
+                        }
+
+                        .data-off { 
+                            .show; 
+
+                            .value { 
+                                color: @textColor;
+                                font-weight: 600;
+                            }
+                        }
+
+                        &.on {
+                            .data-on { .show; }
+                            .data-off { .hide; }
+                        }
+                    }
+
+                    .checkbox { .hide; }
+                }
+
+                &:last-child { border-bottom: 0; }
+            }
         }
     }
 
@@ -681,6 +767,46 @@ table {
                                     }
                                 }       
                             }              
+                        }
+
+                        /* Commisions ***/
+                        &.commisions {
+                            .tab-details {
+                                .totals {
+                                    margin-bottom: 8pt;
+                                    clear: both;
+                                    .float;
+
+                                    li {
+                                        font-size: 8pt;
+                                        line-height: 1;
+                                        text-align: left;
+                                        color: @grey3;
+                                        text-transform: uppercase;
+                                        .pull-left;
+
+                                        .value {
+                                            font-size: 12pt;
+                                            line-height: 1;
+                                            font-weight: 300;
+                                            color: @textColor;
+                                            .show;
+                                        }
+
+                                        &:not(:nth-last-child(4)) {
+                                            margin-right: 8pt;
+                                            padding-right: 8pt;
+                                            border-right: 1px solid @grey2;
+                                        }
+
+                                        &.action { .hide; }
+                                    }
+                                }
+
+                                .print-selected {
+                                    .reservation:not(.selected) { .hide; }
+                                }
+                            }
                         }
                     }
                 }
