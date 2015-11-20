@@ -30,7 +30,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="filterData.commissionStatus == 'Commissionable'">
                 <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
                 <div class="select">
                     <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
@@ -91,7 +91,7 @@
                             <div class="value-block">{{'COMMISSION' | translate}}<strong>{{ currencySymbol }}{{commissionDetail.commission_data.amount}}</strong></div>
                             <div class="value-block" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_data.tax}}</strong></div>
                         </div>
-                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="(commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid')">
+                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-style="showToggleButton(commissionDetail)">
                             <!-- add class "on" when L44 checked -->
                             <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                             <label class="data-off">
@@ -103,7 +103,7 @@
                                 <span class="value" translate>COMMISSION_PAID</span>
                             </label>
                         </div>
-                        <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'"translate>COMMISSION_PREPAID</div>
+                        <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
                         <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
