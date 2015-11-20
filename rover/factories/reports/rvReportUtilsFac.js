@@ -481,6 +481,9 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate']     = true;
                     report['hasOneYearLimit']   = true;
                     break;
+                case reportNames['DAILY_PRODUCTION_DEMO']:
+                    report['hasOneYearLimit']   = true;
+                    break;
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
