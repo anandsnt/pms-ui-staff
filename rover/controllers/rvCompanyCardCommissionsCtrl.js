@@ -41,7 +41,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
         var onCommissionFetchSuccess = function(data) {
-            
+
                 _.each(data.commission_details, function(element, index) {
                     _.extend(element, {is_checked: false});
                 });
@@ -49,7 +49,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                 $scope.commissionSummary.totalRevenue = data.total_revenue;
                 $scope.commissionSummary.totalCommission = data.total_commission;
                 $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
-                
+
                 //set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
                 if($scope.nextAction && isPageChanged){
@@ -203,7 +203,11 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                                                 return value.reservation_id != commission.reservation_id;
                                             });
         }
-        updateCommissionSummary($scope.selectedCommissions);
+        if($scope.selectedCommissions.length == 0) {
+            fetchCommissionDetails(false);
+        } else {
+           updateCommissionSummary($scope.selectedCommissions);
+       }
     };
 
     //Updates the checked status of the current  page records while making the whole selection
@@ -218,9 +222,11 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.selectAll = !$scope.selectAll;
         if($scope.selectAll) {
             updateCheckedStatus(true);
+            $scope.selectedCommissions = [];
             updateCommissionSummary($scope.commissionDetails);
         } else {
            updateCheckedStatus(false);
+           $scope.selectedCommissions = [];
            fetchCommissionDetails(false);
 
         }
@@ -230,12 +236,20 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Updates the paid status to the server
     var updatePaidStatus = function(reqData) {
         var onCommissionStatusUpdateSuccess = function(data) {
+                clearSelectionAfterPaidStatusUpdate();
                 fetchCommissionDetails(false);
             },
             onCommissionStatusUpdateFailure = function(error) {
+                clearSelectionAfterPaidStatusUpdate();
                 fetchCommissionDetails(false);
             };
         $scope.invokeApi(RVCompanyCardSrv.saveTACommissionDetails, reqData, onCommissionStatusUpdateSuccess, onCommissionStatusUpdateFailure);
+    };
+
+    //Clear the selections after the paid status updation as we are refreshing the list after that
+    var clearSelectionAfterPaidStatusUpdate = function() {
+        $scope.selectedCommissions = [];
+        $scope.selectAll = false;
     };
 
     //Action for the paid/unpaid toggle button for individual record

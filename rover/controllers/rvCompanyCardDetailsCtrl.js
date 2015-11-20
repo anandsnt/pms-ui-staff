@@ -526,6 +526,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			}, 0, false);
 		};
 
+		$scope.isEmptyObject = isEmptyObject;
+
 
 	}
 ]);
