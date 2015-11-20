@@ -1833,7 +1833,7 @@ sntRover.controller('RVbillCardController',
 	 *
 	 */
 	$scope.showAdvancedBillDialog = function(){
-		if($scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && (!$scope.reservationBillData.is_hourly ||$scope.reservationBillData.is_hourly === null)){
+		if($rootScope.isStandAlone && $scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && !$scope.reservationBillData.is_hourly){
 		 		ngDialog.open({
 	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
 	    		className: '',
