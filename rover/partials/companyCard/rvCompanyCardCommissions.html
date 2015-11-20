@@ -91,8 +91,7 @@
                             <div class="value-block">{{'COMMISSION' | translate}}<strong>{{ currencySymbol }}{{commissionDetail.commission_data.amount}}</strong></div>
                             <div class="value-block" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}Tax<strong>{{ currencySymbol }}{{commissionDetail.commission_data.tax}}</strong></div>
                         </div>
-                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-style="showToggleButton(commissionDetail)">
-                            <!-- add class "on" when L44 checked -->
+                        <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid'">
                             <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                             <label class="data-off">
                                 <span class="value" translate>COMMISSION_UNPAID</span>
@@ -104,6 +103,7 @@
                             </label>
                         </div>
                         <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
+                        <div class="prepaid" ng-show="isEmptyObject(commissionDetail.commission_data)" translate></div>
                         <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
