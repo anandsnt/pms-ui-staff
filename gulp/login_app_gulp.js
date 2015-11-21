@@ -19,7 +19,9 @@ module.exports = function(gulp, $, options) {
 	    return gulp.src(LOGIN_JS_ASSET_LIST)
 	        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
 	        .pipe($.ngAnnotate({single_quotes: true}))
-	        .pipe($.uglify({mangle:false, compress:true}))
+	        .pipe($.uglify({compress:true, output: {
+	        	space_colon: false
+	        }}))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(LOGIN_JS_MANIFEST_FILE))
@@ -78,11 +80,18 @@ module.exports = function(gulp, $, options) {
 	//Be careful: PRODUCTION
 	gulp.task('login-template-cache-production', function () {
 	  return gulp.src(['partials/**/*.html'], {cwd:'login/'})
+	  		.pipe($.minifyHTML({
+	  			conditionals: true,
+    			spare:true,
+    			empty: true
+	  		}))
 	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
 	            module: 'login',
 	            root: URL_APPENDER + "/partials/"
 	        }))
-	        .pipe($.uglify({compress:true}))
+	        .pipe($.uglify({compress:true, output: {
+	        	space_colon: false
+	        }}))
 			.pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(LOGIN_TEMPLTE_MANFEST_FILE))

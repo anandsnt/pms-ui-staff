@@ -1,0 +1,159 @@
+module.exports = function(gulp, $, options) {
+
+	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
+		URL_APPENDER            = options['URL_APPENDER'],
+		MANIFEST_DIR 			= __dirname + "/manifests/",
+	    ROVER_ASSET_LIST_ROOT   = '../rover/',
+	    ROVER_JS_ASSET_LIST     = require ("./asset_list/roverJsAssetList").getList(),
+	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
+	    ROVER_JS_COMBINED_FILE  = 'rover.js',
+	    ROVER_CSS_FILE  		= 'rover.css',
+	    ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
+	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
+	    ROVER_JS_MANIFEST_FILE  = "rover_js_manifest.json",
+	    ROVER_CSS_MANIFEST_FILE = "rover_css_manifest.json",
+	    ROVER_TEMPLTE_MANFEST_FILE 	= "rover_template_manifest.json";
+
+	//JS - Start
+	gulp.task('compile-rover-js-production', ['copy-all-dev'], function(){
+	    return gulp.src(ROVER_JS_ASSET_LIST)
+	        .pipe($.concat(ROVER_JS_COMBINED_FILE))
+	        .pipe($.ngAnnotate({single_quotes: true}))
+	        .pipe($.uglify({compress:true, output: {
+	        	space_colon: false
+	        }}))
+	        .pipe($.rev())
+	        .pipe(gulp.dest(DEST_ROOT_PATH))
+	        .pipe($.rev.manifest(ROVER_JS_MANIFEST_FILE))
+	        .pipe(gulp.dest(MANIFEST_DIR));
+	});
+
+
+	//Be careful: PRODUCTION
+	gulp.task('build-rover-js-production', ['compile-rover-js-production'], function(){
+	    var js_manifest_json = require(MANIFEST_DIR + ROVER_JS_MANIFEST_FILE),
+	        file_name = js_manifest_json[ROVER_JS_COMBINED_FILE];
+	    
+	    return gulp.src(ROVER_HTML_FILE)
+	        .pipe($.inject(gulp.src(DEST_ROOT_PATH + file_name, {read:false}), {
+	            transform: function(filepath, file, i, length) {
+	                arguments[0] = URL_APPENDER + "/" + file.relative;
+	                return $.inject.transform.apply($.inject.transform, arguments);
+	            }
+	        }))
+	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
+	});
+
+	gulp.task('build-rover-js-dev', ['copy-all-dev'], function(){
+	    return gulp.src(ROVER_HTML_FILE)
+	        .pipe($.inject(gulp.src(ROVER_JS_ASSET_LIST, {read:false}), {
+	            transform: function(filepath, file, i, length) {
+	                arguments[0] = URL_APPENDER + filepath;
+	                return $.inject.transform.apply($.inject.transform, arguments);
+	            }
+	        }))
+	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }));
+	});
+
+	//JS - END
+	
+	//Template - START
+	var templateInjector = function(fileName) {
+		return gulp.src(ROVER_HTML_FILE)
+			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
+	            starttag: '<!-- inject:templates:{{ext}} -->',
+	            transform: function(filepath, file, i, length) {
+	                arguments[0] = URL_APPENDER + "/" + file.relative;
+	                return $.inject.transform.apply($.inject.transform, arguments);
+	            }
+       		}))
+       		.pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }));
+	};
+
+	//Be careful: PRODUCTION
+	gulp.task('build-rover-template-cache-production', ['rover-template-cache-production'], function(){
+		var template_manifest_json = require(MANIFEST_DIR + ROVER_TEMPLTE_MANFEST_FILE),
+	        file_name = template_manifest_json[ROVER_TEMPLATES_FILE];
+	    return templateInjector(file_name);
+	});
+
+	//Be careful: PRODUCTION
+	gulp.task('rover-template-cache-production', function () {
+	  return gulp.src(['partials/**/*.html'], {cwd:'rover/'})
+	  		.pipe($.minifyHTML({
+	  			conditionals: true,
+    			spare:true,
+    			empty: true
+	  		}))
+	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
+	            module: 'sntRover',
+	            root: URL_APPENDER + "/partials/"
+	        }))
+	        .pipe($.uglify({compress:true}))
+			.pipe($.rev())
+	        .pipe(gulp.dest(DEST_ROOT_PATH))
+	        .pipe($.rev.manifest(ROVER_TEMPLTE_MANFEST_FILE))
+	        .pipe(gulp.dest(MANIFEST_DIR));
+	});
+
+	gulp.task('build-rover-template-cache-dev', ['rover-template-cache-dev'], function(){
+	    return templateInjector(ROVER_TEMPLATES_FILE);
+	});
+
+	gulp.task('rover-template-cache-dev', ['copy-all-dev'], function () {
+	  return gulp.src(['partials/**/*.html'], {cwd:'rover/'})
+	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
+	            module: 'sntRover',
+	            root: URL_APPENDER + "/partials/"
+	        }))
+	        .pipe(gulp.dest(DEST_ROOT_PATH));
+	});
+
+	//Template - END
+	
+	//LESS - START
+	var cssInjector = function(fileName) {
+		return gulp.src(ROVER_HTML_FILE)
+			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
+	            starttag: '<!-- inject:less:{{ext}} -->',
+	            transform: function(filepath, file, i, length) {
+	                arguments[0] = URL_APPENDER + "/" + file.relative;
+	                return $.inject.transform.apply($.inject.transform, arguments);
+	            }
+       		}))
+       		.pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }));
+	};
+
+	gulp.task('build-rover-less-production', ['rover-less-production'], function(){
+		var template_manifest_json = require(MANIFEST_DIR + ROVER_CSS_MANIFEST_FILE),
+	        file_name = template_manifest_json[ROVER_CSS_FILE];
+	    return cssInjector(file_name);
+	});
+
+	gulp.task('rover-less-production', ['copy-all-dev'], function () {
+	  return gulp.src('stylesheets/rover.css')
+	        .pipe($.less({
+	        	compress: true
+	        }))
+	        .pipe($.rev())
+	        .pipe(gulp.dest(DEST_ROOT_PATH))
+	        .pipe($.rev.manifest(ROVER_CSS_MANIFEST_FILE))
+	        .pipe(gulp.dest(MANIFEST_DIR));
+	});
+
+	gulp.task('rover-less-dev', ['copy-all-dev'], function () {
+	  return gulp.src('stylesheets/rover.css')
+	        .pipe($.less())
+	        .pipe(gulp.dest(DEST_ROOT_PATH));
+	});
+
+	gulp.task('build-rover-less-dev', ['rover-less-dev'], function(){
+	    return cssInjector(ROVER_CSS_FILE);
+	});
+
+	//LESS END
+	
+	//TASKS
+	gulp.task('build-rover-dev', ['build-rover-js-dev', 'build-rover-template-cache-dev', ]); //, 'build-rover-less-dev'
+	gulp.task('rover-asset-precompile', ['build-rover-js-production', 'build-rover-template-cache-production']); //, 'build-rover-less-production'
+}
