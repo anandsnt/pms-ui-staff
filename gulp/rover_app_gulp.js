@@ -12,7 +12,9 @@ module.exports = function(gulp, $, options) {
 	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
 	    ROVER_JS_MANIFEST_FILE  = "rover_js_manifest.json",
 	    ROVER_CSS_MANIFEST_FILE = "rover_css_manifest.json",
-	    ROVER_TEMPLTE_MANFEST_FILE 	= "rover_template_manifest.json";
+	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
+	    LessPluginCleanCSS = require('less-plugin-clean-css'),
+    	cleancss = new LessPluginCleanCSS({ advanced: true });
 
 	//JS - Start
 	gulp.task('compile-rover-js-production', ['copy-all-dev'], function(){
@@ -27,7 +29,6 @@ module.exports = function(gulp, $, options) {
 	        .pipe($.rev.manifest(ROVER_JS_MANIFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
-
 
 	//Be careful: PRODUCTION
 	gulp.task('build-rover-js-production', ['compile-rover-js-production'], function(){
@@ -133,8 +134,10 @@ module.exports = function(gulp, $, options) {
 	gulp.task('rover-less-production', ['copy-all-dev'], function () {
 	  return gulp.src('stylesheets/rover.css')
 	        .pipe($.less({
-	        	compress: true
+	        	compress: true,
+	        	plugins: [cleancss]
 	        }))
+	        .pipe($.minifyCSS())
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(ROVER_CSS_MANIFEST_FILE))
@@ -143,7 +146,9 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('rover-less-dev', ['copy-all-dev'], function () {
 	  return gulp.src('stylesheets/rover.css')
-	        .pipe($.less())
+	        .pipe($.less({
+				plugins: [cleancss]
+			}))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});
 
@@ -151,9 +156,25 @@ module.exports = function(gulp, $, options) {
 	    return cssInjector(ROVER_CSS_FILE);
 	});
 
+	//inorder to tackle the bug in injector, doing this way
+	//bug noticed: parallel injecting is not possible. When 400+ js injection is going on css injection is failing
+	gulp.task('build-rover-less-js-dev', ['rover-less-dev', 'build-rover-js-dev'], function(){
+	    return cssInjector(ROVER_CSS_FILE);
+	});
 	//LESS END
 	
+	gulp.task('concat-translation-en-files-dev', ['copy-all-dev'], function(){
+		return gulp.src(['rover/rvLocales/en/*.json'])
+			.pipe($.translationConcat(DEST_ROOT_PATH + 'rvLocales/EN.json', {sep: ',', process: function(src){
+				return (src.trim().replace(/\n/g, ''));
+			}}))
+			.pipe($.translationConcat.header('{'))
+			.pipe($.translationConcat.footer('}'))
+			.pipe($.jsonminify())
+			.pipe(gulp.dest(DEST_ROOT_PATH));
+	});
+
 	//TASKS
-	gulp.task('build-rover-dev', ['build-rover-js-dev', 'build-rover-template-cache-dev', ]); //, 'build-rover-less-dev'
-	gulp.task('rover-asset-precompile', ['build-rover-js-production', 'build-rover-template-cache-production']); //, 'build-rover-less-production'
+	gulp.task('build-rover-dev', ['build-rover-less-js-dev', 'build-rover-template-cache-dev', 'concat-translation-en-files-dev']);
+	gulp.task('rover-asset-precompile', ['build-rover-js-production', 'build-rover-template-cache-production', 'build-rover-less-production', 'concat-translation-en-files-dev']);
 }

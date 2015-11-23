@@ -1,5 +1,5 @@
 <div id="modal" style="max-height: 390px;" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
-    <form ng-show="!shouldShowWaiting" style="max-height: 445px; background: url('/assets/texture.png') repeat scroll 0 0 #fcfcfc" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+    <form ng-show="!shouldShowWaiting" style="max-height: 445px; background: url('cssimg/texture.png') repeat scroll 0 0 #fcfcfc" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
        <span class="h2 message">Room {{reservation.reservation_card.room_number}}</span>

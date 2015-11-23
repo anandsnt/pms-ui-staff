@@ -8,7 +8,9 @@ var gulp 	  = require('gulp'),
 		rename: {
 			'gulp-ng-annotate': 'ngAnnotate',
 			'gulp-angular-templatecache': 'templateCache',
-			'gulp-minify-html': 'minifyHTML'
+			'gulp-minify-html': 'minifyHTML',
+			'gulp-minify-css': 'minifyCSS',
+			'gulp-concat-util': 'translationConcat'
 		}
 	}),
     options   = {
