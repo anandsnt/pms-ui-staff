@@ -409,8 +409,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-			// Show a loading message until promises are not resolved
-			$scope.$emit('showLoader');
+				// Show a loading message until promises are not resolve
+				$scope.$emit('showLoader');
 		});
 
 		$rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -505,6 +505,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isFFPActive = data.is_ffp_active;
 			$rootScope.isHLPActive = data.is_hlp_active;
 			$rootScope.isPromoActive = data.is_promotion_active;
+			//CICO-21697
+			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 

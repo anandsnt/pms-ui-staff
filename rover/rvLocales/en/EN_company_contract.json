@@ -1,5 +1,5 @@
 
-	
+
 	"CONTRACTED_NIGHTS": "Contracted Nights",
 	"COPY_VALUES": "Copy values",
 	"COMPANY": "Company",
@@ -8,7 +8,7 @@
     "CONTRACTS": "Contracts",
     "RESERVATIONS": "Reservations",
     "FIND_CARDS":"FIND CARDS",
-    
+
     "COMAPNY_INFO": "Company Info",
     "COUNTRY": "Country",
     "SELECT_COUNTRY": "Select country",
@@ -17,7 +17,7 @@
     "PREVIEW_NOT_AVAILABLE": "Preview not available",
     "EXTENDED_COMPANY_DETAILS": "Extended Company Details",
     "PRIMARY_CONTACT_DETAILS": "Primary Contact Details",
-    
+
     "SELECT_CONTRACT": "Select contract",
     "NEW_CONTRACT": "New Contract",
     "SAVE_CONTRACT": "Save Contract",
@@ -37,7 +37,7 @@
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
     "AVERAGE_RATE": "Average Rate",
-    
+
 	"COMPANY_CARD": "Company Card",
 	"TA_CARD": "Travel Agent Card",
 	"CREATE_NEW": "Create New",

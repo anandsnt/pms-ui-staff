@@ -1,7 +1,7 @@
 <!-- Popup -->
-<div role="dialog" id="modal" class="modal-show">
-	<form method="post" class="modal-content" id='tablet-popup' click-touch='resetCounter();'>
-            <table class='admin-table'>
+<div role="dialog" id="popup" class="open" ng-hide='showWorkStationList' click-touch='resetCounter();'>
+	<form method="post" class="modal-content" id='tablet-popup' >
+            <table class='admin-table' id="popup-content">
                 <tr>
                 <h2 class="nocaps header">Kiosk Admin</h2>
                 </tr>
@@ -35,11 +35,36 @@
                         <input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input'/>
                     </td>
                 </tr>
-                <tr>
+                
+                <tr class='admin-item'>
                     <td>
-                        <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
+                        <label class='admin-item-label'>Work Station</label>
+                    </td>
+                    <td type='input' touch-press='openWorkStationList()'>
+                         <select id='selectEncoder' class='admin-input select table-count rates-table-count'
+                              ng-options="workstation.station_identifier as workstation.name for workstation in zestStationData.workstations" ng-model="zestStationData.selectedWorkStation">
+                             <option style="display:none" value="">Select a Work Station</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr class='admin-item' ng-if='ipad'>
+                    <td>
+                        <label class='admin-item-label'>Select Printer</label>
                     </td>
                     <td>
+                        <button type='button' class='button green' style='float:right;' touch-press='openPrinterMenu()'>
+                            Select
+                        </button>
+                    </td>
+                </tr>
+                
+                
+                
+                <tr>
+                    <td class='save-actions'>
+                        <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
+                    </td>
+                    <td class='save-actions'>
                         <button type="button" class="button" touch-press='saveAdminSettings()'>Save</button>
                     </td>
                 </tr>
@@ -48,3 +73,13 @@
 
         </form>
 </div>
+
+
+    <div id="popup" class="open" ng-show='showWorkStationList'> <!-- Remove class "open" to hide popup content -->
+        <div id="popup-content">
+            <h3 class="nocaps">Select WorkStation</h3>
+            <div ng-repeat="workstation in zestStationData.workstations" >
+               <button style='width:100%; margin-top:5px;' ng-class='{"overlay grey":workstation.selected}' type="button" class="button" touch-press='selectWorkStation(workstation)'>{{workstation.name}}</button>
+            </div>
+        </div>
+    </div>

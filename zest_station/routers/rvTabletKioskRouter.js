@@ -13,7 +13,17 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         $stateProvider.state('zest_station.home', {
             url         : '/home',
             templateUrl : '/assets/partials/kiosk/home.html',
-            controller  : 'zsHomeCtrl'
+            controller  : 'zsHomeCtrl',
+            resolve: {
+                beforeRender: function() {
+                    //console.info('doing render apply to see if svg rendering bug is resolved -after render- safari issue');
+                    setTimeout(function(){
+                        var scope = angular.element($('.root-view')[0]).scope();
+                        scope.$apply();
+                    });
+                    return null;
+                }
+            }
         });
 
         $stateProvider.state('zest_station.home-admin', {
@@ -60,6 +70,26 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
             controller: 'zsReservationDetailsCtrl'
          });
+        // //check-in [ reservation-details ]
+         $stateProvider.state('zest_station.add_remove_guests', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/specific/additional-guests.html',
+            controller: 'zsReservationDetailsCtrl'
+         });
+        // //check-in [ reservation-details ]
+         $stateProvider.state('zest_station.add_guest_first', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/generic/input-text.html',
+            controller: 'zsReservationDetailsCtrl'
+         });
+         $stateProvider.state('zest_station.add_guest_last', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/generic/input-text.html',
+            controller: 'zsReservationDetailsCtrl'
+         });
+         
+         
+         
          
         // //check-in [ terms conditions left ]
          $stateProvider.state('zest_station.terms_conditions', {
@@ -145,6 +175,18 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.checking_in_guest', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+         
+         $stateProvider.state('zest_station.key_error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
          });
 
         // //check-in [ find-by-confirmation ]

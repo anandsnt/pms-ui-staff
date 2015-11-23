@@ -21,7 +21,31 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
+            var current=$state.current.name;
+            if (current === 'zest_station.add_remove_guests'){
+                $state.go('zest_station.reservation_details');
+                
+            } else if (current === 'zest_station.add_guest_first'){
+                $state.go('zest_station.add_remove_guests');
+                
+            }  else if (current === 'zest_station.add_guest_last'){
+                $state.go('zest_station.add_guest_first');
+                
+            } else {
+                if ($state.lastAt === 'find-by-email'){
+                    $state.go('zest_station.find_by_email');
+                        
+                } else if ($state.lastAt === 'find-by-confirmation'){
+                    $state.go('zest_station.find_by_confirmation');
+                    
+                } else if ($state.lastAt === 'find-by-date'){
+                    $state.go('zest_station.find_by_date');
+                    
+                }
+            }
+            
+            
+            
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 
@@ -50,26 +74,130 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 		return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
 	};
 
+        $scope.setAddGuestLast = function(){
+            $scope.at = 'add-guest-last';
+            $state.lastAt = 'add-guests';
+            $scope.headingText = 'Enter the Guests Last Name';
+            setTimeout(function(){
+                $scope.clearInputText();
+            },50)
+            
+            
+            $scope.hideNavBtns = false;
+        };
+        $scope.setAddGuestFirst = function(){
+            $scope.at = 'add-guest-first';
+            $state.lastAt = 'add-guests';
+            $scope.headingText = 'Enter the Guests First Name';
+            setTimeout(function(){
+                $scope.clearInputText();
+            },50)
+            $scope.hideNavBtns = false;
+        };
 
+        $scope.setAddRemoveScreen = function(){
+            $scope.at = 'add-guests';
+            $state.lastAt = 'reservation-details';
+            $scope.addGuestsHeading = 'Additional Guests';
+            $scope.hideNavBtns = false;
+        };
+        $scope.formatCurrency = function(amt){
+            return parseFloat(amt).toFixed(2);
+         };
 
 
         $scope.init = function(r){
+            var current=$state.current.name;
+            console.info('current: ',current);
             $scope.selectedReservation = $state.selectedReservation;
-            $scope.selectedReservation.reservation_details = {};
-               console.info('$scope.zestStationData: ',$scope.zestStationData)
-            $scope.hotel_settings = $scope.zestStationData;
-            $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
-            //fetch the idle timer settings
-            $scope.currencySymbol = $scope.zestStationData.currencySymbol;
+            if (current === 'zest_station.add_remove_guests'){
+                $scope.setAddRemoveScreen();
+                
+            } else if (current === 'zest_station.add_guest_first'){
+                $scope.setAddGuestFirst();
+                
+            }  else if (current === 'zest_station.add_guest_last'){
+                $scope.setAddGuestLast();
+                
+            } else {
+                $scope.selectedReservation.reservation_details = {};
+                   console.info('$scope.zestStationData: ',$scope.zestStationData)
+                $scope.hotel_settings = $scope.zestStationData;
+                $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
+                //fetch the idle timer settings
+                $scope.currencySymbol = $scope.zestStationData.currencySymbol;
+
+                $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
+                    'id': $scope.selectedReservation.confirmation_number
+                }, $scope.onSuccessFetchReservationDetails);
+            }
             
-            
-            
-            
-            
-            $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
-                'id': $scope.selectedReservation.confirmation_number
-            }, $scope.onSuccessFetchReservationDetails);
         };
+        
+        $scope.removeGuest = function(i){//where i is the index in $scope.selectedReservation.guest_details
+            if ($state.selectedReservation.guest_details.length > 1){
+                var guests = [];
+                for (var x = 0; x < $state.selectedReservation.guest_details.length; x++){
+                    if (i !== x){
+                        guests.push($state.selectedReservation.guest_details[x]);
+                    }
+                }
+                $state.selectedReservation.guest_details = guests;
+            }
+        };
+        
+        $scope.clearInputText = function(){
+            $scope.input.inputTextValue = '';
+        };
+        
+        $scope.addAGuest = function(){
+            $state.go('zest_station.add_guest_first');
+        };
+        $scope.goToNext = function(){
+            var current=$state.current.name;
+            if (current === 'zest_station.add_guest_first'){
+                
+                $state.input.addguest_first = $scope.input.inputTextValue;
+                $scope.clearInputText();
+                //$scope.addGuestToReservation($scope.input.addguest_first,$scope.input.addguest_last);
+                
+                $state.go('zest_station.add_guest_last');
+            } else if (current === 'zest_station.add_guest_last'){
+                
+                $state.input.addguest_last = $scope.input.inputTextValue;
+                $scope.clearInputText();
+                $scope.addGuestToReservation($state.input.addguest_first,$state.input.addguest_last);
+                
+                $state.go('zest_station.add_remove_guests');
+            } else if (current === 'zest_station.add_remove_guests'){
+                $state.go('zest_station.reservation_details');
+            }
+        };
+        $scope.addGuestToReservation = function(){
+            
+            var first = $state.input.addguest_first,
+            last = $state.input.addguest_last;
+            console.warn($state.selectedReservation)
+            $state.selectedReservation.guest_details.push({
+                last_name: last,
+                first_name: first
+            });
+            console.info({
+                last_name: last,
+                first_name: first
+            }, 'added')
+        };
+        
+            $scope.clearInputText = function(){
+                if ($scope.input){
+                    $scope.input.inputTextValue = '';
+                } else {
+                    $scope.input = {
+                        inputTextValue: ""
+                    };
+                    $scope.$digest();
+                }
+            };
         
             $scope.goToTerms = function(){
                 $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
@@ -173,7 +301,10 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             };
 
 
-
+            $scope.addRemoveGuests = function(){
+              console.info('add remove guests')  ;
+              $state.go('zest_station.add_remove_guests');
+            };
 
 
 

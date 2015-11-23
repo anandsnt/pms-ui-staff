@@ -5,6 +5,7 @@ sntZestStation.controller('zsRootCtrl', [
 	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog,$sce) {
 
 	BaseCtrl.call(this, $scope);
+         $scope.storageKey = 'snt_zs_workstation';
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -26,6 +27,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.goToAdmin = function() {
+		//disabling for now
 		$state.go ('zest_station.admin');
 	};
 
@@ -88,6 +90,25 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.$on (zsEventConstants.HIDE_CLOSE_BUTTON, function(event) {
 		$scope.hideCloseButton = true;
 	});
+        $scope.setLastErrorReceived = function(response){
+            console.warn(response);
+            if (response && response[0]){
+                $state.errorReceived = response[0];
+            } else {
+                $state.errorReceived = null;
+            }
+        };
+        $scope.$on('GENERAL_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.error');
+        });
+        
+        $scope.$on('MAKE_KEY_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.key_error');
+        });
 
 
 	var routeChange = function(event, newURL) {
@@ -106,10 +127,84 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData = data;
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
+                $scope.getWorkStation();
+                //$scope.fetchKeyEncoderList(); //using workstations instead
 	};
+        
+        $scope.getWorkStation = function(){
+            var onSuccess = function(response){
+                if (response){
+                    $scope.zestStationData.workstations = response.work_stations;
+                    $scope.setWorkStation();
+                }
+            };
+            var onFail = function(response){
+                console.warn('fetching workstation list failed:',response);
+            };
+            var options = {
+                
+                params:                 {
+                    page: 1,
+                    per_page: 100,
+                    query:'',
+                    sort_dir: true,
+                    sort_field: 'name'
+                },
+                successCallBack: 	    onSuccess,
+                failureCallBack:        onFail
+            };
+            $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+        };  
+        $scope.setWorkStation = function(){
+            /*
+             * This method will get the device's last saved workstation, and from the last fetched list of workstations
+             * will set the workstation for the UI, which is also used in determining the device's default printer
+             */
+             var storageKey = $scope.storageKey,
+                    storage = localStorage,
+                    storedWorkStation = '',
+                    station = null;
+
+            try {
+               storedWorkStation = storage.getItem(storageKey);
+            } catch(err){
+                console.warn(err);
+            }
+            if ($scope.zestStationData){
+                if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0){
+                    for (var i in $scope.zestStationData.workstations){
+                        if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
+                            station = $scope.zestStationData.workstations[i];
+                        }
+                    }
+                }
+            }
+                console.log('station', station)
+            if (station !==  null){
+                $scope.zestStationData.encoder = station.key_encoder_id;
+                console.info('workstation found!: ',station.name);
+                }
+            return station;
+        };
 	$scope.failureCallBack =  function(data){
 		$state.go('zest_station.error_page');
 	};
+        /*
+        $scope.fetchKeyEncoderList = function(){
+            console.log('fetching key encoders')
+            var onSuccess = function(data){
+                console.info('got key encoders: ',data.results)
+                    $scope.zestStationData.key_encoders = data.results;
+                    $scope.$emit('hideLoader');
+            };
+            
+            var options = {
+                params:                 {},
+                successCallBack: 	    onSuccess,
+                failureCallBack:        $scope.failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.fetchEncoders, options);
+        };*/
         $scope.fetchHotelSettings = function(){
             var onSuccess = function(data){
                     $scope.zestStationData.hotel_settings = data;

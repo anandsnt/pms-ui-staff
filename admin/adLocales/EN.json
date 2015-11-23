@@ -329,6 +329,7 @@
 "ADDON_MAX_ORDER_LABEL": "Maximum order",
 "DESCRIPTION_LABEL": "Description",
 "PHONE_LABEL": "Phone",
+"EMAIL_LABEL": "Email",
 "ADDRESS_LABEL": "Address",
 "URL_LABEL": "URL",
 "SCREEN_ID_LABEL":"screen id",
@@ -358,7 +359,8 @@
 "ADD_IMAGE_LABEL" : "Add image",
 "SECTION_DESCRIPTION_VISIBLE_LABEL": "SECTION DESCRIPTION VISIBLE",
 "SECTION_DESCRIPTION_ALIGNMENT_LABEL": "SECTION DESCRIPTION ALIGNMENT",
-"SECTION_DESCRIPTION_LABEL": "SECTION DESCRIPTION"
+"SECTION_DESCRIPTION_LABEL": "SECTION DESCRIPTION",
+"ITEM_SEARCH_SWITCH_LABEL": "Enable Item search from zest"
 
 
 ,"EARLY_CHECKIN_UPSELL": "Early Checkin Upsell",
@@ -423,7 +425,8 @@
 "NO_ROOMS":"No Rooms",
 "UNASSIGN_SELECTED": "Unassign Selected",
 "LEAVE_ASSIGNED" : "Leave Assigned",
-"GO_BACK" : "Go Back"
+"GO_BACK" : "Go Back",
+"LEAVE_UNASSIGNED" : "Leave Unassigned"
 
 ,"GIVEX_SETUP_HEADER": "Givex Setup",
 "GIVEX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
@@ -535,6 +538,7 @@
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
     "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS": "SEND EMAIL TO GUESTS ON DAY BEFORE ARRIVAL",
     "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
@@ -581,6 +585,7 @@
 ,	
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
+	"STATION_PRINTER": "Work Station Printer",
 	"STATION_ID": "Work Station Id",
 	"WORKSTATIONS":"Work Stations",
 	"LOCATION_LABEL": "Location",
@@ -590,7 +595,13 @@
 
 ,"LETSHARE_SETUP_HEADER": "LetShare Setup",
 "LETSHARE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
-"LETSHARE_SUB_TITLE": "LetShare API Access Configuration",
+"LETSHARE_SUB_TITLE": "LetShare API Access Configuration","LIGHT_SPEED_POS_SETUP_HEADER": "Lightspeed POS Setup",
+"LIGHT_SPEED_POS_ACTIVATE_INACTIVATE": "Activate / Inactivate",
+"LIGHT_SPEED_POS_SUB_TITLE": "API Access Configuration",
+"LIGHT_SPEED_POS_URL": "Url",
+"LIGHT_SPEED_POS_USERNAME": "Username",
+"LIGHT_SPEED_POS_PASSWORD": "Password",
+"LIGHT_SPEED_POS_ROVER_UNIQUE_ID": "Rover Unique ID",
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)",
 	"CC":"Credit Card",
@@ -789,7 +800,8 @@
 "OTHER_SETTINGS" : "Other settings",
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
 "ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
-"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
+"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
+"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In"
 
 
 
@@ -860,6 +872,7 @@
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
     "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate for External Systems",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
     "EXCLUDE_FROM_RATE" : "Exclude from rate"
 ,	

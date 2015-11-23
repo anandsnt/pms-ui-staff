@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-click="clearErrorMessage()" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
     <div class="modal-content room-enhancements">
         <span class="h2 message">Room {{packageData.room_no}} Enhancements</span>
         <div class="scrollable" ng-iscroll="resultDetails" ng-iscroll-delay="500">        

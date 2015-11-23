@@ -214,7 +214,7 @@ var dependencies = [
 ccVerificationViewController
 ];
 
-snt.controller('ccVerificationViewController', dependencies);
+sntGuestWeb.controller('ccVerificationViewController', dependencies);
 })();
 
 // controller for the modal

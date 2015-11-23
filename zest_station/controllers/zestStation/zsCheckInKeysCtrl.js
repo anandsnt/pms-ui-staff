@@ -52,7 +52,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
-            console.log('and key success')
             setTimeout(function(){
                 $state.go('zest_station.key_success')
             },500);
@@ -99,18 +98,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.modalBtn1 = 'Next';
                 $scope.input.madeKey = 0;
             };
-            var oneKeySuccess = function(){
-                setTimeout(function(){
-                    
-                    $scope.goToKeySuccess();
-
-                    $scope.headingText = 'Success!';
-                    $scope.subHeadingText = 'Please grab your key from the target below';
-                    $scope.modalBtn1 = 'Next';
-                    $scope.input.madeKey = 1;
-                    
-                },2500);
-            };
+            
+            
 
 
             var keyOneOfTwoSetup = function(){
@@ -157,7 +146,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
             if (make_1_key){
                 oneKeySetup();
-                oneKeySuccess();
+                $scope.initMakeKey(1);
+                //oneKeySuccess();
+                
             } else if (make_2_keys){
                 //at first key
                 if ($scope.input.madeKey === 0){
@@ -171,7 +162,48 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             
             
         };
+        
+       $scope.oneKeySuccess = function(){
+            $scope.goToKeySuccess();
 
+            $scope.headingText = 'Success!';
+            $scope.subHeadingText = 'Please grab your key from the target below';
+            $scope.modalBtn1 = 'Next';
+            $scope.input.madeKey = 1;
+        };
+        
+        
+        
+        $scope.$watch('encoder',function(){
+           console.info(arguments) 
+        });
+        $scope.makingKey = 1;
+        $scope.initMakeKey = function(n){
+            $scope.makingKey = n;
+            var successMakeKey = function(response){
+                console.info('success!');
+                console.info(response);
+                $scope.oneKeySuccess();
+            };
+            var failureMakeKey = function(response){
+                //$scope.$emit('GENERAL_ERROR',response);
+                $scope.$emit('MAKE_KEY_ERROR',response);
+                
+            };
+            var options = {
+                card_info: "",
+                is_additional: true,
+                key: $scope.makingKey,
+                key_encoder_id: $scope.zestStationData.encoder,
+                reservation_id: $scope.selectedReservation.id
+            };
+            $scope.callAPI(zsTabletSrv.encodeKey, {
+                params: options,
+                'successCallBack':successMakeKey,
+                'failureCallBack':failureMakeKey
+            });
+            
+        };
 
         $scope.deliverRegistration = function(){
             $state.go('zest_station.delivery_options');

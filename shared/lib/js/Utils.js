@@ -20,7 +20,7 @@ var dclone = function(object, unwanted_keys){
 Date.prototype.stdTimezoneOffset = function() {
     var jan = new Date(this.getFullYear(), 0, 1);
     var jul = new Date(this.getFullYear(), 6, 1);
-    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+    return Math.max(Math.abs(jan.getTimezoneOffset()), Math.abs(jul.getTimezoneOffset()));
 };
 
 

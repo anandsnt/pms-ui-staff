@@ -1391,6 +1391,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     if ($scope.otherData.originIsForced && isValid) {
                         isValid = demographicsData.origin !== "";
                     }
+                    if ($scope.otherData.segmentsIsForced && isValid) {
+                        isValid = demographicsData.segment !== "";
+                    }
                 });
             }
             return isValid;

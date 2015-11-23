@@ -48,6 +48,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "image": '',
 	            "address": "",
 	            "phone": "",
+	            "email": "",
 	            "page_template": "POI",
 	            "website_url": "",
 	            "description": "",

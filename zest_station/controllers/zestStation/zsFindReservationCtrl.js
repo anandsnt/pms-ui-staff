@@ -38,12 +38,14 @@ sntZestStation.controller('zsFindReservationCtrl', [
                 }
             };
             $scope.getDateRenderFormat = function(d){
-              var str = d.split('-');
-              var month = zsUtilitySrv.getMonthName(parseInt(str[1])-1),
-                      day = str[2],
-                      year = str[0];
-              
-              return month+'-'+day+'-'+year;
+                if (d){
+                    var str = d.split('-');
+                    var month = zsUtilitySrv.getMonthName(parseInt(str[1])-1),
+                            day = str[2],
+                            year = str[0];
+
+                    return month+'-'+day+'-'+year;
+              } else return null;
             };
             $scope.getZSDateFormat = function(d){
                 var str = d;
@@ -250,6 +252,14 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     break;
             }
         };
+        $scope.setCheckingGuestIn = function(){
+            $scope.at = 'checking_in_guest';
+            $scope.headingText = 'Just a moment as we check you in...';
+            $scope.subHeadingText = '';
+            $scope.inputTextPlaceholder = '';
+            $scope.hideNavBtns = true;
+            
+        };
         
         $scope.setFindByDate = function(){
             $scope.at = 'find-by-date';
@@ -270,6 +280,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.headingText = 'Type Your Email Address';
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
+            $scope.clearInputText();
             $scope.hideNavBtns = false;
             
             if ($state.lastAt === 'no-match'){
@@ -281,7 +292,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.headingText = 'Type Your Confirmation Number';
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
-            $scope.input.inputTextValue = '';
+            $scope.clearInputText();
+            $scope.hideNavBtns = false;
             
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.confirmation;
@@ -292,9 +304,14 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.headingText = 'Type Your Last Name';
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
+            $scope.clearInputText();
+            $scope.hideNavBtns = false;
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.last;
             }
+        };
+        $scope.clearInputText = function(){
+            $scope.input.inputTextValue = '';
         };
         $scope.setNoMatch = function(){
             $scope.at = 'no-match';
@@ -333,6 +350,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     break;
                 case "zest_station.find_reservation_no_match":
                     $scope.setNoMatch();
+                    break;
+                case "zest_station.checking_in_guest":
+                    $scope.setCheckingGuestIn();
                     break;
             }
           

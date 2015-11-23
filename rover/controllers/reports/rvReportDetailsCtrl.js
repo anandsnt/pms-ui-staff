@@ -223,6 +223,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
+				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
 					break;
@@ -861,11 +862,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.emailReport = function() {
-			alert( 'Email Report API yet to be completed/implemented/integrated' );
+			console.warn( 'Email Report API yet to be completed/implemented/integrated' );
 		};
 
 		$scope.saveFullReport = function() {
-			alert( 'Download Full Report API yet to be completed/implemented/integrated' );
+			console.warn( 'Download Full Report API yet to be completed/implemented/integrated' );
 		};
 
 		$scope.hasSubString = function(subString, string) {

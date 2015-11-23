@@ -3,7 +3,7 @@ sntRover.constant('RVReportNamesConst', {
 	'UPSELL'                       : 'Upsell',
 	'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
 	'WEB_CHECK_IN_CONVERSION'      : 'Web Check In Conversion',
-	'WEB_CHECK_IN_CONV_BY_DAY'     : 'Web Checkin Conversion By Day',
+	'WEB_CHECK_IN_CONV_BY_DAY'     : 'Web Check In Conversion By Day',
 	'LATE_CHECK_OUT'               : 'Late Check Out',
 	'EARLY_CHECKIN'                : 'Early Check In',
 	'IN_HOUSE_GUEST'               : 'In-House Guests',
@@ -28,5 +28,6 @@ sntRover.constant('RVReportNamesConst', {
 	'GUEST_BALANCE_REPORT'		   : 'Guest Balance Report',
 	'ADDON_FORECAST'               : 'Add-On Forecast',
 	'DAILY_PRODUCTION'             : 'Daily Production',
-	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report'
+	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report',
+	'DAILY_PRODUCTION_DEMO'		   : 'Daily Production by Demographics'
 });

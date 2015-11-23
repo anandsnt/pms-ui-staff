@@ -1,44 +1,45 @@
-admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTableParams', 'ngDialog',
-    function($scope, ADFloorSetupSrv, ngTableParams, ngDialog) {
+admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTableParams',
+    function($scope, ADFloorSetupSrv, ngTableParams) {
+
         BaseCtrl.call(this, $scope);
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         var initController = function() {
                 $scope.roomAssignment = {
                     selectedFloorIndex: 0,
-                    activeTab: "AVAILABLE", // Available options are AVAILABLE and ASSIGNED
-                    selectedCount: 0,
+                    activeTab: $scope.floorsList && $scope.floorsList[0] && $scope.floorsList[0].assigned_rooms_count > 0 ? "ASSIGNED" : "AVAILABLE", // Available options are AVAILABLE and ASSIGNED
+                    currentSelectedCount: 0,
                     areAllRoomsSelected: false,
                     areSomeRoomsSelected: false
                 };
                 $scope.loadTable();
             },
             updateSelectedList = function() {
-                $scope.roomAssignment.selectedCount = _.where($scope.data, {
+                $scope.roomAssignment.currentSelectedCount = _.where($scope.data, {
                     isSelected: true
                 }).length;
 
-                $scope.roomAssignment.areAllRoomsSelected = $scope.data.length > 0 && $scope.roomAssignment.selectedCount === $scope.data.length;
-                $scope.roomAssignment.areSomeRoomsSelected = $scope.roomAssignment.selectedCount > 0 && !$scope.roomAssignment.areAllRoomsSelected;
+                $scope.roomAssignment.areAllRoomsSelected = $scope.data.length > 0 && $scope.roomAssignment.currentSelectedCount === $scope.data.length;
+                $scope.roomAssignment.areSomeRoomsSelected = $scope.roomAssignment.currentSelectedCount > 0 && !$scope.roomAssignment.areAllRoomsSelected;
             },
             onSaveSuccess = function() {
-                if ($scope.roomAssignment.activeTab === "ASSIGNED") {
-                    $scope.closeDialog();
-                }
                 $scope.reloadTable();
                 $scope.$emit("ASSIGNMENT_CHANGED");
-            },
-            resetSelectedCount = function() {
-                $scope.roomAssignment.areAllRoomsSelected = false;
-                $scope.roomAssignment.areSomeRoomsSelected = false;
-            };
+                updateSelectedList();
+            }
+
+        // /===================/ METHODS IN SCOPE /===================/ //
 
         $scope.selectFloor = function(floorIdx) {
             $scope.roomAssignment.selectedFloorIndex = floorIdx;
-            // IFF activeTab is ASSIGNED Redo the table --> call the API
-            if ($scope.roomAssignment.activeTab === "ASSIGNED") {
-                $scope.reloadTable();
+            if ($scope.roomAssignment.activeTab === "AVAILABLE" && $scope.floorsList[floorIdx].assigned_rooms_count > 0) {
+                $scope.roomAssignment.activeTab = "ASSIGNED";
+            } else if ($scope.roomAssignment.activeTab === "ASSIGNED") {
+                if ($scope.floorsList[floorIdx].assigned_rooms_count <= 0) {
+                    $scope.roomAssignment.activeTab = "AVAILABLE";
+                }
             }
+            $scope.reloadTable();
         };
 
         $scope.closeDialog = function() {
@@ -61,7 +62,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     $scope.currentPage = params.page();
                     params.total(data.total_count);
                     $defer.resolve($scope.data);
-                    resetSelectedCount();
+                    updateSelectedList();
                 };
             if ($scope.roomAssignment.activeTab === "AVAILABLE") {
                 $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
@@ -95,8 +96,8 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
             updateSelectedList();
         };
 
-        $scope.toggleSelectRoom = function(roomIdx) {
-            $scope.data[roomIdx].isSelected = !$scope.data[roomIdx].isSelected;
+        $scope.toggleSelectRoom = function(room) {
+            room.isSelected = !room.isSelected;
             updateSelectedList();
         };
 
@@ -123,11 +124,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
         };
 
         $scope.onCancelChanges = function() {
-            $scope.closeDialog();
-            _.each($scope.data, function(room) {
-                room.isSelected = false;
-            });
-            updateSelectedList();
+            $scope.toggleAssignFloors();
         };
 
         initController();

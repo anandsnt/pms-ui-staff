@@ -14,5 +14,5 @@
 		checkinDetailsService
 		];
 
-		snt.service('checkinDetailsService', dependencies);
+		sntGuestWeb.service('checkinDetailsService', dependencies);
 	})();

@@ -48,7 +48,7 @@
 					</td>
 				</tr>
 				<!-- OOO -->
-				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-if="!isHourlyRateOn">
 					<th scope="row">OOO Rooms</th>
 					<td ng-repeat="outOfOrderRoom in data.outOfOrder track by $index">
 						<div class="inner" ng-bind="outOfOrderRoom" ng-class="{ 'unavailable': 0 >= outOfOrderRoom, 'warning': 5 >= outOfOrderRoom}"></div>
@@ -62,7 +62,7 @@
 					</td>
 				</tr>
 				<!-- Best Available Rate -->
-				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }">
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-if="!isHourlyRateOn">
 					<th scope="row">Best Available Rate</th>
 					<td ng-repeat="bar in data.additionalData.bestAvailabilityRate track by $index">
 						<div class="inner" ng-if="bar == 'C'" ng-bind="bar"></div>
@@ -125,7 +125,7 @@
 		</table>
 
 		<!-- Non Group Rooms -->
-		<table class="dates-grid">
+		<table class="dates-grid" ng-if="!isHourlyRateOn">
 			<colgroup>
 				<col>
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
@@ -141,7 +141,7 @@
 		</table>
 
 		<!-- Group / Allotment Rooms -->
-		<table class="dates-grid purple">
+		<table class="dates-grid purple" ng-if="!isHourlyRateOn">
 			<colgroup>
 				<col>
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
