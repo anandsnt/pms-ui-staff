@@ -20,25 +20,20 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
-        </div>
+        </div>                   
     </div>
-    <!-- main content -->
     <div class="row" ng-hide="isPosting || netWorkError">
         <div class="col-md-1"></div>
-        <!-- left side -->
-        <div class="col-md-4 top-spacing">
-            <p class="main-text final-text">You're checked in!</p>
-            <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+        <div class="col-md-4 top-spacing section-container">
+            <p class="main-text"> Early check in</p>
+            <p class="sub-main-text"> Thank You. A {{earlyCheckinCharge}} charge for <b>Early check in</b> has been added to your bill.</p>
         </div>
-        <div class="horizontal-line-sep-mobile"></div>
-        <!-- right side -->
         <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
-        <div class="col-md-3 top-spacing sm-no-top-spacing">
-             <p class="sub-main-text">{{responseData.delivery_message}}
-             </p>
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
+            <a class="btn btn-template margin-top-10" ng-click="nextButtonClicked()">Continue</a>
         </div>
         <div class="col-md-1">
         </div>                   

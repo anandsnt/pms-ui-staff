@@ -1,4 +1,3 @@
-
 <!-- navbar -->
 <div class="container-fluid padding-0">
     <div class="row header-bar">
@@ -21,7 +20,7 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>                   
@@ -30,7 +29,10 @@
     <div class="row" ng-hide="isLoading || netWorkError">
         <div class="col-md-1"></div>
         <div class="col-md-4 top-spacing section-container">
-            <p class="main-text">Arrival Details</p>
+            <p class="main-text">Early check in Alert</p>
+            <p class="sub-main-text">
+                You have selected an <b>Early check in Time</b> (standard check in time is {{checkinTime}}). Please request a check in time after {{earlyCheckinRestrictLimit}} to proceed with your check in without a fee.
+            </p>
         </div>
         <div class="col-md-2"><div class="vertical-line vertical-line-long">&nbsp;</div></div>
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
@@ -64,11 +66,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <p class="sub-text left-align margin-top-20">LET US KNOW ANY REQUESTS OR COMMENTS</p>
-            <div class="row">
-                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class = "col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
-                </textarea>
             </div>
              <!--  submit button-->
             <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">Continue</a>

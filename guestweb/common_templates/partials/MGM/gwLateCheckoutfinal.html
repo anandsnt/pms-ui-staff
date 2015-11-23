@@ -7,7 +7,7 @@
 <!-- main section starts here -->
 <div class="container">
     <!-- request text -->
-    <div class="row" ng-show="isPosting && !netWorkError">
+    <div class="row" ng-hide="posted || netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
             <p class="request-text">Your request is being processed.
@@ -20,25 +20,29 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
-        </div>
+        </div>                   
     </div>
-    <!-- main content -->
-    <div class="row" ng-hide="isPosting || netWorkError">
-        <div class="col-md-1"></div>
+    <!-- late checkout success -->
+    <div class="row" ng-show="success">
+        <div class="col-md-2"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-            <p class="main-text final-text">You're checked in!</p>
-            <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+            <p class="main-text">Thank you.</p>
+            <p class="sub-main-text"><em>The following will appear on your bill.</em>
+	        </p>
+	       <p class="sub-main-text">Late check out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+           </p>
+           <p class="sub-main-text">
+            <em>{{keyExpiry}}</em>
+           </p>
         </div>
-        <div class="horizontal-line-sep-mobile"></div>
+        <div class="col-md-1"></div>
         <!-- right side -->
-        <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
         <div class="col-md-3 top-spacing sm-no-top-spacing">
-             <p class="sub-main-text">{{responseData.delivery_message}}
-             </p>
+            <a class="btn btn-template margin-top-10" ui-sref="checkOutConfirmation"> Done</a>
         </div>
         <div class="col-md-1">
         </div>                   
