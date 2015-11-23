@@ -19,7 +19,7 @@
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
                         <label>{{'BESTSELLER' | translate}}</label>
-                        <input type="checkbox" ng-model="singleAddon.bestseller">
+                        <input type="checkbox" ng-model="singleAddon.bestseller" ng-change="bestsellerChanged()">
                     </label>
                 </div>
                 <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
