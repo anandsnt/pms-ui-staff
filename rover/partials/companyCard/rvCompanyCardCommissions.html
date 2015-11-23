@@ -1,7 +1,7 @@
 <!-- Travel Agent Card Tab - Commisions -->
 <form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
     <div class="tab-header with-filters">
-        <div class="search-form" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0}">
+        <div class="search-form" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "hidden" when selecting all/individual commisions -->
             <div class="entry date-range">
                 <div class="entry-data has-datepicker">
@@ -46,7 +46,7 @@
     </div>
     <div class="tab-details" ng-class="{'with-pagination' : shouldShowPagination()}" ng-show="commissionDetails.length > 0">
         <!-- Add class "with-pagination" when pagination is shown -->
-        <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0}">
+        <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
             <li>{{'COMMISSION_UNPAID' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission | number : 2}}</span></li>
             <li>{{'COMMISSION_TOTEL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue | number : 2}}</span></li>
@@ -63,19 +63,18 @@
                     <input id="commisions-select" ng-model="filterData.selectAll" type="checkbox" ng-change="toggleSelection()" />
                 </label>
             </li>
-            <li class="action" ng-class="{'hidden' : (filterData.commissionStatus == 'Non-commissionable' || filterData.paidStatus == 'Prepaid' || (!filterData.selectAll && selectedCommissions.length == 0)) }">
+            <li class="action" ng-class="{'hidden' : (filterData.commissionStatus == 'Non-commissionable' || filterData.paidStatus == 'Prepaid' || (!filterData.selectAll && selectedCommissions.length == 0) || (selectedCommissions.length == 0 && prePaidCommissions.length > 0)) }">
                 <!-- Remove class "hidden" when selecting all/individual commisions -->
                 <div class="select">
                     <select id="selected-paid" class="placeholder" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange()">
                         <option value="" translate>COMMISSION_SET_PAID_STATUS</option>
                         <option value="Unpaid" translate>COMMISSION_UNPAID</option>
                         <option value="Paid" translate>COMMISSION_PAID</option>
-                        <option value="Prepaid" translate>COMMISSION_PREPAID</option>
                     </select>
                 </div>
             </li>
         </ul>
-        <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'print-selected' : (filterData.selectAll || selectedCommissions.length > 0)}" ng-iscroll="commission-list" >
+        <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'print-selected' : (filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0)}" ng-iscroll="commission-list" >
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
                     <!-- Clicking L32 block should open Stay Card for this reservation -->
