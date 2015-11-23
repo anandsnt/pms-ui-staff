@@ -22,7 +22,7 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>                   
@@ -31,7 +31,7 @@
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-4 top-spacing">
-            <p class="main-text">Checkout</p>
+            <p class="main-text">Check Out</p>
             <p class="sub-main-text">Your balance is</p>
             <p class="balance-amount">{{currencySymbol}}{{billData.balance}}</p>
             <div class="view-bill" ng-hide="showBill"  ng-click="showBill = true">
@@ -112,7 +112,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-3 top-spacing sm-no-top-spacing margin-top-10">
                  <a class="btn accept-charges" ng-click="gotToNextStep()">
-                 <div class="">Accept charges <br>and check-out</div>
+                 <div class="">Accept charges <br>and check out</div>
                  <div class="sm-icon margin-top-10">
                      <div class="accept-charge-icon">&nbsp;</div>
                  </div>
