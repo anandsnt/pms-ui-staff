@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 
             admin: {
                 cwd: 'admin/',
-                src: 'partials/**/*.html',
+                src: ['partials/**/*.html', 'directives/**/*.html'],
                 dest: 'build/admin_templates.js',
                 options: {
                     prefix: '/assets/'
