@@ -425,8 +425,8 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 
 		this.releaseRooms = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/allotments/' + data.allotmentId + '/release_now?date=' + data.date;
-			rvBaseWebSrvV2.getJSON(url)
+				url = 'api/allotments/' + data.allotmentId + '/release_now';
+			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {

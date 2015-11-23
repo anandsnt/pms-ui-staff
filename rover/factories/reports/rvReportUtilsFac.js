@@ -1071,18 +1071,19 @@ sntRover.factory('RVReportUtilsFac', [
                         });
                     };
 
-                    foundCG = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
 
-                    if ( !!foundCG ) {
-                        foundCG['filled'] = true;
+                    if ( !!foundCC ) {
+                        foundCC['filled'] = true;
                         __setData(report, 'hasByChargeCode', {
                             type         : 'FAUX_SELECT',
-                            filter       : foundCG,
+                            filter       : foundCC,
                             show         : false,
                             selectAll    : selected,
                             defaultTitle : 'Select Codes',
                             title        : selected ? 'All Selected' : 'Select Codes',
-                            data         : angular.copy( processedCGCC.chargeCodes )
+                            data         : angular.copy( processedCGCC.chargeCodes ),
+                            originalData : angular.copy( processedCGCC.chargeCodes )
                         });
                     };
                 });
@@ -1480,7 +1481,8 @@ sntRover.factory('RVReportUtilsFac', [
                 'monthStart'   : new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30)
+                'aMonthAfter'  : new Date(_year, _month, _date + 30),
+                'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
             };
 
             if ( parseInt(xDays) !== NaN ) {

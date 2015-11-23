@@ -1,6 +1,6 @@
 
         <!-- Content -->
-      <section id="main" class="centered test" role="main" ng-show='at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at ===  "timeout" || at ===  "invalid-email"' click-touch='resetTime()'>
+      <section id="main" class="centered test" role="main" ng-show='at === "key-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at ===  "timeout" || at ===  "invalid-email"' click-touch='resetTime()'>
      <div id="content">
             <h1>{{headingText}}</h1>
             <h2>{{subHeadingText}}</h2>
@@ -15,7 +15,7 @@
                         </li>
                         <!-- deliver-registration -->
                         <li ng-show='at === "deliver-registration"'> 
-                            <button type="button" class="button option" touch-press='goToScreen($event,"print-delivery", false, "deliver-registration")'>
+                            <button type="button" class="button option" touch-press='clickedPrint()'>
                                 <ng-include src="'assets/css/icons/print.svg'"></ng-include>
                             </button>
                             <span translate>Print</span>
@@ -37,6 +37,13 @@
                              <h1>Re-type</h1>
                                  <h3>"{{input.lastEmailValue}}"</h3>
                         </li>
+                        <!-- retry-key -->
+                         <li ng-show='at === "key-error"'> 
+                            <button type="button" class="button option" touch-press='navToPrev()'>
+                                <ng-include src="'assets/css/icons/key.svg'"></ng-include>
+                            </button>
+                             <h1>Re-try</h1>
+                        </li>
                         
                         <!--email-delivery -->
                          <li ng-show='at === "email-delivery"'> 
@@ -45,7 +52,7 @@
                             </button>
                             <span translate>Edit My E-mail Address</span>
                         </li>
-                        <li class="break" ng-show='at === "email-delivery"'>
+                        <li class="break" ng-show='at === "email-delivery" || at === "key-error"'>
                             <span>Or</span>
                         </li>
                          <li ng-show='at === "email-delivery"'> 
@@ -53,6 +60,13 @@
                                 <ng-include src="'assets/css/icons/email.svg'"></ng-include>
                             </button>
                             <span translate>Send E-Mail</span>
+                        </li>
+                         <li ng-show='at === "key-error"'> 
+                            <button type="button" class="button option" touch-press='initStaff()'>
+                                <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                            </button>
+                            <h1>Speak</h1>
+                                 <h4>to a staff member</h4>
                         </li>
                         
                     </ul>

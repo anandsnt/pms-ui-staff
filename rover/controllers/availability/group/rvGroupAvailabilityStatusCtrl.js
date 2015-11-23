@@ -48,9 +48,14 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 		$scope.$on('CLOSED_AVAILIBILTY_SLIDER', function(event){
 			var GroupId = $scope.selectedGroupId;
 			$timeout(function(){
-				$state.go('rover.groups.config', {
+				$state.go('rover.groups.config', 
+				{
 					id: GroupId,
-					activeTab: 'ROOMING'
+					activeTab: 'ROOMING',
+
+				},
+				{
+					reload: true
 				});
 				$scope.$emit('showLoader');
 			}, 1000);
@@ -75,7 +80,7 @@ sntRover.controller('rvGroupAvailabilityStatusController', [
 			};
 
 			if (totalColumns == 30) {
-				return 'width:' + (totalColumns * individualColWidth + leftMostRowCaptionWidth) + 'px';
+				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 			}
 		};
 

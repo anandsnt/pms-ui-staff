@@ -1,8 +1,8 @@
 sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$state','zsTabletSrv','$rootScope','ngDialog',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog) {
+	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog,$sce) {
 
 	BaseCtrl.call(this, $scope);
 	/**
@@ -26,6 +26,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.goToAdmin = function() {
+		//disabling for now
 		$state.go ('zest_station.admin');
 	};
 
@@ -88,6 +89,25 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.$on (zsEventConstants.HIDE_CLOSE_BUTTON, function(event) {
 		$scope.hideCloseButton = true;
 	});
+        $scope.setLastErrorReceived = function(response){
+            console.warn(response);
+            if (response && response[0]){
+                $state.errorReceived = response[0];
+            } else {
+                $state.errorReceived = null;
+            }
+        };
+        $scope.$on('GENERAL_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.error');
+        });
+        
+        $scope.$on('MAKE_KEY_ERROR',function(evt, response){
+            $scope.setLastErrorReceived(response);
+            $scope.$emit('hideLoader');
+            $state.go('zest_station.key_error');
+        });
 
 
 	var routeChange = function(event, newURL) {
@@ -104,11 +124,47 @@ sntZestStation.controller('zsRootCtrl', [
 	var fetchCompleted =  function(data){
 		$scope.$emit('hideLoader');
 		$scope.zestStationData = data;
+		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
+                $scope.fetchHotelSettings();
+                //$scope.fetchKeyEncoderList(); //using workstations instead
 	};
 	$scope.failureCallBack =  function(data){
 		$state.go('zest_station.error_page');
 	};
-
+        /*
+        $scope.fetchKeyEncoderList = function(){
+            console.log('fetching key encoders')
+            var onSuccess = function(data){
+                console.info('got key encoders: ',data.results)
+                    $scope.zestStationData.key_encoders = data.results;
+                    $scope.$emit('hideLoader');
+            };
+            
+            var options = {
+                params:                 {},
+                successCallBack: 	    onSuccess,
+                failureCallBack:        $scope.failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.fetchEncoders, options);
+        };*/
+        $scope.fetchHotelSettings = function(){
+            var onSuccess = function(data){
+                    $scope.zestStationData.hotel_settings = data;
+                    $scope.zestStationData.hotel_terms_and_conditions = $sce.trustAsHtml(data.terms_and_conditions).$$unwrapTrustedValue();
+                    //fetch the idle timer settings
+                    $scope.zestStationData.currencySymbol = data.currency.symbol;
+                    $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
+                    $scope.$emit('hideLoader');
+            };
+            
+            
+		var options = {
+                    params:                 {},
+                    successCallBack: 	    onSuccess,
+                    failureCallBack:        $scope.failureCallBack
+                };
+		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
+        };
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -125,10 +181,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
 		var options = {
-    		params: 			{},
-    		successCallBack: 	fetchCompleted,
-    		failureCallBack: $scope.failureCallBack
-        };
+                    params: 			{},
+                    successCallBack: 	fetchCompleted,
+                    failureCallBack:    $scope.failureCallBack
+                };
 		$scope.callAPI(zsTabletSrv.fetchSettings, options);
 	}();
 }]);

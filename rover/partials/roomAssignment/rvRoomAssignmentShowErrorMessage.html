@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
 	<div class="modal-content form alert" >
 		<button type="button" id="modal-close" class="modal-close"  ng-click="clickedCloseButtonAlreadySelected()">
 			<span class="icons icon-close invert"></span>

@@ -11,6 +11,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.routes = [];
     $scope.errorMessage = '';
     $scope.isInitialPage = true;
+    $scope.selectedEntityChanged = false;
     $scope.saveData = {};
     $scope.saveData.payment_type =  "";
     $scope.saveData.payment_type_description =  "";
@@ -63,6 +64,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.headerButtonClicked = function(){
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
+        if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
+            setDefaultRoutingDates();
+            setRoutingDateOptions();
+        }
         if($scope.isInitialPage  && $scope.isReloadNeeded){
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
@@ -78,9 +83,19 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
 	$scope.selectEntity = function(index,type){
+
+        if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
+            if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
+                $scope.arrivalDate = $scope.routes[index].from_date;
+                $scope.departureDate = $scope.routes[index].to_date;
+            }
+            setRoutingDateOptions();
+        }
+
         $scope.errorMessage = "";
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
+        $scope.selectedEntityChanged = true;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
@@ -114,8 +129,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
                     "id": $scope.allotmentId,
                     "allotment_id": $scope.allotmentId,
-                    "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "RESERVATION"
+                    'charge_routes_recipient': {
+                        'id': data.id,
+                        'type': 'RESERVATION'
+                    }
                 });
             } else {
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
@@ -144,8 +161,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.selectedEntity = _.extend($scope.selectedEntity, {
                     "id": $scope.allotmentId,
                     "allotment_id": $scope.allotmentId,
-                    "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "ACCOUNT"
+                    'charge_routes_recipient': {
+                        'id': data.id,
+                        'type': 'ACCOUNT'
+                    }
                 });
             }
     		if(data.account_type === 'COMPANY'){
@@ -174,31 +193,18 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "credit_card_details": {},
                     "entity_type": data.account_type
                 };
+                if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
+                    $scope.selectedEntity = _.extend($scope.selectedEntity, {
+                        "id": $scope.allotmentId,
+                        "allotment_id": $scope.allotmentId,
+                        'charge_routes_recipient': {
+                            'id': data.id,
+                            'type': 'POSTING_ACCOUNT'
+                        }
+                    });
+                }
             }
 
-        }
-        else if (type === "ALLOTMENT") {
-            if(isRoutingForPostingAccountExist()){
-                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
-                $scope.isEntitySelected = false;
-                $scope.isInitialPage = true;
-            }
-            else{
-                var data = $scope.results.posting_accounts[index];
-                $scope.selectedEntity = {
-                    "id": data.id,
-                    "name": data.account_name,
-                    "bill_no": "",
-                    "charge_routes_recipient_id": data.id,
-                    "charge_routes_recipient_type": "ACCOUNT",
-                    "attached_charge_codes": [],
-                    "attached_billing_groups": [],
-                    "is_new" : true,
-                    "selected_payment" : "",
-                    "credit_card_details": {},
-                    "entity_type": data.account_type
-                };
-            }
         }
 	};
 
@@ -373,6 +379,31 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };
 
+    var setDefaultRoutingDates = function () {
+        $scope.arrivalDate = $scope.reservation.reservation_card.arrival_date,
+        $scope.departureDate = $scope.reservation.reservation_card.departure_date;
+        $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+    }
+
+    var setRoutingDateOptions = function () {
+        $scope.routeDates = {
+            from : $scope.arrivalDate,
+            to : $scope.departureDate
+        };
+
+        $scope.routingDateFromOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+        };
+
+        $scope.routingDateToOptions = {       
+            dateFormat: 'dd-mm-yy',
+            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+        };
+    }
+
     /**
     * function to fetch the attached entity list
     */
@@ -467,6 +498,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         }
     };
 
+    
     init();
 
 }]);

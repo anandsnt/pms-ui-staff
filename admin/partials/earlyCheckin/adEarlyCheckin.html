@@ -24,11 +24,11 @@
 							</div>
 						</div>
 					</fieldset>
-					<fieldset class="holder right">	
-						<!-- charge code -->
-						<ad-dropdown label="{{'CHARGE_CODE' | translate}}" label-in-drop-down="{{'CHARGE_CODE' | translate}}" list="charge_codes" selected-Id='upsellData.early_checkin_charge_code' selbox-class='placeholder'></ad-dropdown>
-					</fieldset>					
-						
+					<fieldset class="holder right">
+						<!-- Search available charge codes -->
+						<charge-code-search charge-code="upsellData.early_checkin_charge_code" is-billing-group="{{isBillingGroup}}" charge-code-name="upsellData.early_checkin_charge_code_name"></charge-code-search>
+					</fieldset>
+
 
 					<div class="form-title full-width">
 						<h3><span translate>EARLY_CHECKIN_UPSELL_WINDOWS</span> </h3>
@@ -185,9 +185,9 @@
 						</div>
 
 					<fieldset class='holder column full-width'>
-						
+
 						<ad-dropdown label-in-drop-down="{{'SELECT_RATE' | translate}}" list="rates" selected-id='upsell_rate.selected_rate_id' selbox-class="placeholder" options = "{'showOptionsIf': isRateAvailable}"></ad-dropdown>
-		
+
 						<div class='entry'>
 							<div class='early_checkin_add_rates'>
 								<button class='button green' id='add-room-type' ng-click="clickAddRoomType()" translate>
@@ -203,7 +203,7 @@
 								<label> <h4 translate>MAX_PER_DAY </h4> </label>
 							</div> -->
 							<div id='room-type-details' ng-repeat="rate in upsellData.early_checkin_rates">
-								
+
 								<div class="entry full-width room-type-details" >
 									<div class="entry">
 										<span class="align-text-center"> {{rate.name}} </span>
@@ -217,15 +217,15 @@
 										</span>
 									</div>
 								</div>
-								
+
 							</div>
 						</div>
 					</fieldset>
 
 					<fieldset class='holder column full-width'>
-						
+
 						<ad-dropdown label="{{'LIMITED_EARLY_CHECK_IN_BY_ROOM_TYPE' | translate}}" label-in-drop-down="{{'SELECT_ROOM_TYPE' | translate}}" list="upsellData.room_type_list" selected-Id='upsellData.selected_room_type' selbox-class="placeholder"></ad-dropdown>
-		
+
 						<div class='entry'>
 							<div class='add-room-type'>
 								<button class='button green' id='add-room-type' ng-click="clickExcludeRoomType()" translate>
@@ -254,14 +254,14 @@
 										</span>
 									</div>
 								</div>
-								
+
 							</div>
 						</div>
 					</fieldset>
 					<fieldset class="holder full-width">
 					<div class="entry">
 						<label translate>BLOCK_CODES_TO_EXCLUDE_FROM_EARLY_CHECK_IN</label>
-						<div     
+						<div
 						multi-select
 						input-model="block_codes"
 						button-label="group_code"
@@ -282,7 +282,7 @@
 						<div class='entry' >
 								<label> <h4 translate>EXCLUDED_BLOCK_CODES</h4> </label>
 						</div>
-						<div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">								
+						<div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">
 							<div class="entry full-width room-type-details" >
 								<div class="entry">
 									<span class="align-text-center"> {{blockCode.group_code}} </span>
@@ -292,12 +292,12 @@
 										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
 									</span>
 								</div>
-							</div>								
+							</div>
 						</div>
-					</div>		
+					</div>
 
-				</fieldset>	
-					
+				</fieldset>
+
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
 							CANCEL

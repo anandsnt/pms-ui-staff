@@ -40,7 +40,7 @@ sntZestStation.controller('rvTabletCtrl', [
             //options fo signature plugin
             var screenWidth = angular.element($window).width(); // Calculating screen width.
             $scope.signaturePluginOptions = {
-                            height : 130,
+                            height : 230,
                             width : screenWidth-60,
                             lineWidth : 1
             };
@@ -128,13 +128,11 @@ sntZestStation.controller('rvTabletCtrl', [
                     setHomeScreenOptions(data);
                     $scope.$emit('hideLoader');
                 };
-                var fetchHotelCompleted = function(data){
-                    $scope.hotel_settings = data;
-                    $scope.hotel_terms_and_conditions = $sce.trustAsHtml($scope.hotel_settings.terms_and_conditions).$$unwrapTrustedValue();
-                    //fetch the idle timer settings
-                $scope.currencySymbol = $scope.hotel_settings.currency.symbol;
-                    $scope.$emit('hideLoader');
-                };
+                
+                $scope.hotel_settings = $scope.zestStationData;
+                $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
+                //fetch the idle timer settings
+                $scope.currencySymbol = $scope.zestStationData.currencySymbol;
     
                 var fetchBizDateComplete = function(data){
                     if (data){
@@ -148,7 +146,6 @@ sntZestStation.controller('rvTabletCtrl', [
                     }
                 };
                 
-                $scope.invokeApi(rvTabletSrv.fetchHotelSettings, {}, fetchHotelCompleted);
                 $scope.invokeApi(rvTabletSrv.fetchSettings, {}, fetchCompleted);
                 $scope.invokeApi(rvTabletSrv.fetchHotelBusinessDate, {}, fetchBizDateComplete);
                 setTitle();

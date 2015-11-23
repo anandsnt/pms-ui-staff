@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
 	<form method="post" action="" id="report-date-range" name="report-date-range" class="modal-content form report-dates">
 	    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert" ng-click="closeDialog()" ></button>
 

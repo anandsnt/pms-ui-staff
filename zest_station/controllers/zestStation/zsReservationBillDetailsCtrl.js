@@ -1,8 +1,8 @@
 sntZestStation.controller('zsReservationBillDetailsCtrl', [
 	'$scope',
 	'$state',
-	'zsTabletSrv','zsEventConstants','$stateParams','zsModeConstants',
-	function($scope, $state, zsTabletSrv,zsEventConstants,$stateParams,zsModeConstants) {
+	'zsCheckoutSrv','zsEventConstants','$stateParams','zsModeConstants',
+	function($scope, $state, zsCheckoutSrv,zsEventConstants,$stateParams,zsModeConstants) {
 
 	BaseCtrl.call(this, $scope);
     console.log(JSON.stringify($stateParams.checked_out));
@@ -17,22 +17,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             mode: zsModeConstants.CHECKOUT_MODE
         });
 	});
-
-    /* 
-    *  To delete
-    */
-
-    var setupBillData = function(){
-        $scope.billData = {"guest_name":"resheil","days_of_stay":3,"email":"","has_cc":true,"currency":"$",
-        "charge_codes":[{"date":"11/10/15","type":"night","value":200},
-        {"date":"11/10/15","type":"night","value":300},
-        {"date":"11/10/15","type":"night","value":400},
-        {"date":"11/10/15","type":"night","value":500},
-        {"date":"11/10/15","type":"night","value":600}],
-        "sub-total":100,
-        "deposit":40,
-        "balance":60};
-    };
 
     /* 
     *  To setup scroll
@@ -54,18 +38,50 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
     var refreshScroller = function(){
         $scope.refreshScroller('bill-list');
     }
+
+    var fetchBillSuccess = function(response){
+
+        //process bill data
+        var billsData     = response.bill_details.fee_details;
+        $scope.zestStationData.billData   = [];
+        $scope.zestStationData.currency   = response.bill_details.currency;
+        $scope.zestStationData.net_amount = response.bill_details.total_fees;
+        $scope.zestStationData.deposit    = response.bill_details.credits;
+        $scope.zestStationData.balance    = response.bill_details.balance;
+
+        angular.forEach(billsData, function(billData, key) {
+          angular.forEach(billData.charge_details, function(chargeDetail, key) {
+                var bill_details = {"date" : billData.date,"description":chargeDetail.description,"amount":chargeDetail.amount};
+                $scope.zestStationData.billData.push(bill_details);
+          });
+        });
+
+        //scroller setup
+        setTermsConditionsHeight();
+        refreshScroller();
+    };
+
+
+    var setupBillData = function(){
+       
+        var options = {
+            params:             {"reservation_id":$scope.zestStationData.reservationData.reservation_id},
+            successCallBack:    fetchBillSuccess,
+            failureCallBack:    $scope.failureCallBack
+        };
+        $scope.callAPI(zsCheckoutSrv.fetchBillDetails, options);
+    };
   
 
     var init = function(){
 
-        if($stateParams.checked_out === "true"){
+        if($scope.zestStationData.reservationData.is_checked_out){
             $scope.alreadyCheckedOut = true;
         }
         else{
             $scope.alreadyCheckedOut = false;
             setupBillData();
-            setTermsConditionsHeight();
-            refreshScroller();
+            
         }
     };
 
@@ -91,11 +107,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
      *  If so we redirect to the staff
      */
     $scope.nextClicked = function(){
-        if(!$scope.billData.has_cc && $scope.billData.balance > 0){
+        if(!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.balance > 0){
             $state.go('zest_station.speak_to_staff');
         }
         else{
-             $state.go('zest_station.reservation_checked_out',{'res_id':$stateParams.res_id,'email':$scope.billData.email});
+             $state.go('zest_station.reservation_checked_out');
         }
     };
         

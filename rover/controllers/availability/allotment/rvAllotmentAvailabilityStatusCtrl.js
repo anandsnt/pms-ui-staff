@@ -50,7 +50,10 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 			$timeout(function(){
 				$state.go('rover.allotments.config', {
 					id: GroupId,
-					activeTab: 'ROOM_BLOCK'
+					activeTab: 'RESERVATIONS',	
+				},
+				{
+					reload: true
 				});
 				$scope.$emit('showLoader');
 			}, 1000);
@@ -99,14 +102,27 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 
 		/*
 		* return class name for holdstatus row in picked up
+		* DEFAULT: must always show 'CANCEL'
 		*/
-		$scope.getClassForHoldStatusRowInPickedUp = function(id){
-			if(!isTakenFromInventory(id) ||$scope.hideHoldStatusOf.groupRoomPicked){
-				return 'hidden';
-			}else{
-				return '';
+		$scope.getClassForHoldStatusRowInPickedUp = function(id) {
+			var group,
+				isDeduct,
+				retCls;
+
+			if ( $scope.hideHoldStatusOf.groupRoomPicked ) {
+				retCls = 'hidden';
+			} else {
+				group    = _.findWhere($scope.data.holdStatus, { id: id });
+				isDeduct = group && group['is_take_from_inventory'];
+
+				if ( group && isDeduct ) {
+					retCls = '';
+				} else {
+					retCls = 'hidden';
+				};
 			};
 
+			return retCls;
 		};
 
 		/*
@@ -152,22 +168,24 @@ sntRover.controller('rvAllotmentAvailabilityStatusController', [
 		 */
 		$scope.releaseRooms = function() {
 			var onReleaseRoomsSuccess = function(data) {
-					//: Handle successful release
+					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
 					$scope.$parent.changedAvailabilityDataParams();
 				},
 				onReleaseRoomsFailure = function(errorMessage) {
+					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
 					$scope.errorMessage = errorMessage;
-				};
-			$scope.callAPI(rvAllotmentConfigurationSrv.releaseRooms, {
-				successCallBack: onReleaseRoomsSuccess,
-				failureCallBack: onReleaseRoomsFailure,
-				params: {
+				},
+				params = {
 					allotmentId:$scope.data.clickedHeldRoomDetail.id,
 					date:$scope.data.clickedHeldRoomDetail.date
-				}
-			});
+				};
+
+			$scope.$emit( 'showLoader' );
+			$timeout(function() {
+				$scope.invokeApi(rvAllotmentConfigurationSrv.releaseRooms, params, onReleaseRoomsSuccess, onReleaseRoomsFailure);
+			}, 0);
 		};
 		/*
 		* Initialisation goes here!

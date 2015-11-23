@@ -51,12 +51,11 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
     */
 	this.getUnAssignedRooms = function(params){
 		var deferred = $q.defer();
-		var data = {
-			query: params.query,
+		params = _.extend(params,{
 			floor_unassigned:true
-		};
+		});
 		var url = '/api/floors/rooms';
-		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -71,9 +70,30 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
     */
 	this.getFloorDetails = function(params){
 		var deferred = $q.defer();
-		var floorID = params.floorID;
-		var url = '/api/floors/' + floorID + ".json";
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		var url = '/api/floors/' + params.floorID + ".json";
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.assignRooms = function(params){
+		var deferred = $q.defer();
+		var url = '/api/floors/' + params.floorID + "/assign";
+		ADBaseWebSrvV2.putJSON(url, params.payLoad).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.unAssignRooms = function(params){
+		var deferred = $q.defer();
+		var url = '/api/floors/' + params.floorID + "/unassign";
+		ADBaseWebSrvV2.putJSON(url, params.payLoad).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

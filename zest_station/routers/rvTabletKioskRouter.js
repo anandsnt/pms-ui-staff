@@ -41,14 +41,14 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         
          // //check-out [ review_bill ]
          $stateProvider.state('zest_station.review_bill', {
-            url        : '/review_bill/:res_id/:checked_out',
+            url        : '/review_bill',
             templateUrl: '/assets/partials/kiosk/specific/reservation_bill.html',
             controller: 'zsReservationBillDetailsCtrl'
          });
 
          // //check-out [ review_bill ]
          $stateProvider.state('zest_station.reservation_checked_out', {
-            url        : '/reservation_checked_out/:res_id/:email',
+            url        : '/reservation_checked_out',
             templateUrl: '/assets/partials/kiosk/specific/reservation-checked-out.html',
             controller: 'zsReservationCheckedOutCtrl'
          });
@@ -60,6 +60,26 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
             controller: 'zsReservationDetailsCtrl'
          });
+        // //check-in [ reservation-details ]
+         $stateProvider.state('zest_station.add_remove_guests', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/specific/additional-guests.html',
+            controller: 'zsReservationDetailsCtrl'
+         });
+        // //check-in [ reservation-details ]
+         $stateProvider.state('zest_station.add_guest_first', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/generic/input-text.html',
+            controller: 'zsReservationDetailsCtrl'
+         });
+         $stateProvider.state('zest_station.add_guest_last', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/generic/input-text.html',
+            controller: 'zsReservationDetailsCtrl'
+         });
+         
+         
+         
          
         // //check-in [ terms conditions left ]
          $stateProvider.state('zest_station.terms_conditions', {
@@ -146,6 +166,18 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsFindReservationCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.checking_in_guest', {
+             url: '/find_reservation', 
+             controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+         
+         $stateProvider.state('zest_station.key_error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
+         });
 
         // //check-in [ find-by-confirmation ]
          $stateProvider.state('zest_station.find_by_confirmation', {
@@ -178,7 +210,19 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
 
          
+        // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.input_reservation_email_after_swipe', {
+             url: '/zest_station', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html',
+         });
          
+        // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.registration_printed', {
+             url: '/zest_station', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
          
 
 
@@ -208,11 +252,6 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 
         
-        // //check-in [ find-by-email ]
-        // $stateProvider.state('station.tab-kiosk-input-email', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/generic/input-text.html',
-        // });
 
 
 

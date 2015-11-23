@@ -11,4 +11,6 @@
 "UNIT_PRICE":"Unit Price",
 "UNIT_PRICE_PLACEHOLDER":"Enter Unit Price",
 "SELECT_CHARGE_CODE":"Select Charge Code",
-"FAVOURITE":"Favorite"
+"FAVOURITE":"Favorite",
+"POSITIVE_SIGN": "+",
+"NEGATIVE_SIGN": "-"

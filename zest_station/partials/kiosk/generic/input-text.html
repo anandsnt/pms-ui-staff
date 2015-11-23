@@ -1,9 +1,9 @@
 <!-- Content -->
 <section id="main" class="centered test" role="main" click-touch='resetTime()'>
-    <div id="content">
+    <div id="content" ng-hide='at === "registration_printed"'>
         <h1>{{headingText}}</h1>
         <h3>{{subHeadingText}}</h3>
-        <form method="post" class="form">
+        <form method="post" class="form" ng-hide='at === "checking_in_guest"'>
             <div class="entry input">
                 <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
             </div>
@@ -13,5 +13,12 @@
         </form>
         <button ng-show='at === "input-email" && from === "card-swipe" && emailOptional' type='button' class='button' touch-press='skipEmailEntryAfterSwipe()'>Skip</button>
     </div>
+    <section id="main" role="main" class="centered" ng-show="at === 'registration_printed'">
+        <div id="content">
+            <h1>Thanks for staying at Zoku!</h1>
+            <h3 ng-show="printOpted">Your registration has been printed below.</h3>
+            <button  type="button" class="button" click-touch='navToHome()'>DONE</button>
+        </div>
+    </section>
 <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
 </section>

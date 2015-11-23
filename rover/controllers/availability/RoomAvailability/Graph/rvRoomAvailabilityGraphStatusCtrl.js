@@ -138,8 +138,6 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		var doInitialOperation = function(){
 			$scope.data = rvAvailabilitySrv.getGraphData();
 
-			console.log( $scope.data );
-
 			formGraphData();
 
 			Highcharts.theme = {
@@ -318,9 +316,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		$scope.data = rvAvailabilitySrv.getGraphData();
   		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
-			//formGraphData();
 			doInitialOperation();
-
 			$scope.$emit("hideLoader");
 
 	       setTimeout(function(){
@@ -334,6 +330,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
         	}, 500);
 
 		}else{
+			//If additional data are not available, fetch the same	
 			$scope.$parent.fetchAdditionalData();
 		}
 

@@ -3,9 +3,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	'$state',
 	'zsModeConstants',
 	'zsEventConstants',
-	'zsTabletSrv',
+	'zsTabletSrv','zsCheckoutSrv',
 	'$stateParams',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, $stateParams) {
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -34,13 +34,16 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		$scope.totalPages	= Math.ceil (data.total_count/$scope.PER_PAGE_RESULTS);
                 
             if ($scope.reservations.length === 0){
-                $scope.showRoomEnter = $scope.isInCheckoutMode() ?  true : false;
+                // $scope.showRoomEnter = $scope.isInCheckoutMode() ?  true : false;
                 $scope.mode = 'no-match';
                 $scope.at = 'no-match';
+                
                 if ($scope.isInCheckinMode()){
                     $state.go('zest_station.find_reservation_no_match');
                 }
-            } else {
+            } else if ($scope.reservations.length === 1){
+                $scope.selectReservation($scope.reservations[0]);
+            } {
                 $scope.mode = "reservations-list";
             }
 	};
@@ -130,6 +133,17 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		}
 	};
 
+	var checkoutVerificationSuccess = function(data){
+		$scope.$emit("hideLoader");
+		$scope.zestStationData.reservationData = data;
+		$state.go('zest_station.review_bill');
+
+	};
+	var checkoutVerificationCallBack = function(){
+		$scope.mode = "no-match";
+		$scope.showRoomEnter = true;
+	};
+
 	/*
 	* 	There are two steps for checkout
 	*	1.enter last name
@@ -144,7 +158,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		}
 		else{
 			$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
-			$state.go('zest_station.review_bill',{"res_id":1333,"checked_out":false});
+			//call Zest station settings API
+			var options = {
+	    		params: 			{"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no},
+	    		successCallBack: 	checkoutVerificationSuccess,
+	    		failureCallBack:    checkoutVerificationCallBack
+	        };
+			$scope.callAPI(zsCheckoutSrv.findReservation, options);
 		};
 	};
 

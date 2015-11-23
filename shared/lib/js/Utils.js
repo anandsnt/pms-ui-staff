@@ -17,6 +17,37 @@ var dclone = function(object, unwanted_keys){
     return newObject;
 };
 
+Date.prototype.stdTimezoneOffset = function() {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+};
+
+
+Date.prototype.isOnDST = function() {
+    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+};
+
+Date.prototype.getDSTDifference = function() {
+    var firstMonth, lastMonth, firstMonthOffset, lastMonthOffset, dstDiff;
+    if(this.getMonth() >= 0 && this.getMonth() <= 6){
+        firstMonth = 0;
+        lastMonth  = 6;
+    }
+    else if(this.getMonth() >6 && this.getMonth() <= 11){
+        firstMonth = 7;
+        lastMonth  = 11;
+    }
+    firstMonth = new Date(this.getFullYear(), firstMonth, 1);
+    firstMonthOffset = firstMonth.getTimezoneOffset();
+    lastMonth = new Date(this.getFullYear(), lastMonth, 1);
+    lastMonthOffset = lastMonth.getTimezoneOffset();
+    dstDiff = (firstMonthOffset - lastMonthOffset);
+    return dstDiff;
+};
+
+
+
 
 /*
 * Currency mappings
@@ -309,8 +340,14 @@ tzIndependentDate = function(st) {
     if ( d.getTimezoneOffset() < 0 ) {
         r -= d.getTimezoneOffset() * 60 * 1000;
     }
-    
-    return new Date(r);
+
+    var adjustedDate = new Date(r)
+
+    if(adjustedDate.isOnDST()){
+        return new Date(r += Math.abs(d.getDSTDifference()) * 60 * 1000);
+    }
+
+    return adjustedDate;
 };
 
 

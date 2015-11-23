@@ -8,7 +8,6 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 		var init = function(){
 			$scope.hideMeBeforeFetching = false;
-			$scope.toggleStatusOf = {};
 			initToggleStatus();
 			$scope.data = rvAvailabilitySrv.getGridData();
 
@@ -23,8 +22,11 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 				$scope.$emit("hideLoader");
 			}
 		};
-
-		var initToggleStatus = function(){
+		/*
+		* Function to set all toggle to close
+		*/
+		var initToggleStatus = function(){			
+			$scope.toggleStatusOf = {};
 			$scope.toggleStatusOf['availableRooms'] = false;
 			$scope.toggleStatusOf['roomsSold'] = false;
 			$scope.toggleStatusOf['occupancy'] = false;
@@ -33,11 +35,10 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 		$scope.toggle = function(source){
 			$scope.toggleStatusOf[source] = !$scope.toggleStatusOf[source];
-
-			if( 'occupancy' != source && 'roomInventory' != source && !isFullDataAvaillable() ){
+			//fetches additional data if not available.
+			if(!isFullDataAvaillable()){
 				$scope.$parent.fetchAdditionalData();
 			};
-
 			$scope.refreshScroller('room_availability_scroller');
 		};
 
@@ -45,7 +46,9 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			$scope.$emit("hideLoader");
 			$scope.refreshScroller('room_availability_scroller');
 		});
-
+		/*
+		*  Checks whether additional data available or not
+		*/
 		var isFullDataAvaillable = function(){
 			return $scope.data.hasOwnProperty('additionalData');
 		};
@@ -111,8 +114,29 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			};
 
 			if (totalColumns == 30) {
-				return 'width:' + (totalColumns * individualColWidth + leftMostRowCaptionWidth) + 'px';
+				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 			}
+		};
+
+		$scope.getClassForHoldStatusRow = function(source, id) {
+			var group,
+				isDeduct,
+				retCls;
+
+			if ( !$scope.showShowGroupAllotmentTotals || !source ) {
+				retCls = 'hidden';
+			} else {
+				group    = _.findWhere(source.holdStatus, { id: id });
+				isDeduct = group && group['is_take_from_inventory'];
+
+				if ( group && isDeduct ) {
+					retCls = '';
+				} else {
+					retCls = 'hidden';
+				};
+			};
+
+			return retCls;
 		};
 
 		init();
