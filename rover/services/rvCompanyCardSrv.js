@@ -4,7 +4,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		var self = this;
 
 		//some default values
-		this.DEFAULT_PER_PAGE 	= 8;
+		this.DEFAULT_PER_PAGE 	= 10;
 		this.DEFAULT_PAGE 		= 1;
 
 		/** contact information area */

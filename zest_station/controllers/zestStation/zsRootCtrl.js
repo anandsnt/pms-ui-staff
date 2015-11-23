@@ -163,7 +163,7 @@ sntZestStation.controller('zsRootCtrl', [
              var storageKey = $scope.storageKey,
                     storage = localStorage,
                     storedWorkStation = '',
-                    station;
+                    station = null;
 
             try {
                storedWorkStation = storage.getItem(storageKey);
@@ -179,9 +179,11 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 }
             }
-            $scope.zestStationData.encoder = station.station_identifier;
-            console.info('workstation found!: ',station.name);
-            console.log(station)
+                console.log('station', station)
+            if (station !==  null){
+                $scope.zestStationData.encoder = station.key_encoder_id;
+                console.info('workstation found!: ',station.name);
+                }
             return station;
         };
 	$scope.failureCallBack =  function(data){

@@ -1,5 +1,5 @@
-admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adBritePabXSetupSrv', 'ADChargeCodesSrv', '$timeout',
-	function($scope, britePabXSetupValues, adBritePabXSetupSrv, ADChargeCodesSrv, $timeout) {
+admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adBritePabXSetupSrv', '$timeout',
+	function($scope, britePabXSetupValues, adBritePabXSetupSrv, $timeout) {
 	
 	BaseCtrl.call (this, $scope);
 	
@@ -18,6 +18,16 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
 		$scope.goBackToPreviousState();
 	};
 
+	// if there is any error occured
+	$scope.$on("showErrorMessage", function($event, errorMessage) {
+		$event.stopPropagation();
+		$scope.errorMessage = errorMessage;
+	});
+
+	var clearConfigValues = function() {
+        $scope.brite.charge_code_id 	= '';
+        $scope.brite.charge_code_name 	= '';
+	};	
 	/**
 	 * when we clicked on save button
 	 * @return {undefiend}
@@ -46,89 +56,11 @@ admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adB
         $scope.callAPI(adBritePabXSetupSrv.saveBritePabXConfiguration, options);
 	};
 
-	var successCallBackOfFetchChargeCodes = function(data, successCallBackParameters) {
-		if (data.results.length === 0) {
-			$scope.errorMessage = ["Unable find charge code against '" + $scope.brite.charge_code_name + "'"];
-			$scope.brite.charge_code_id	= '';
-			return;
-		}
-		successCallBackParameters.callBackToAutoComplete (data.results);
-	};
-
-	/**
-	 * [fetchChargeCodes description]
-	 * @return {[type]} [description]
-	 */
-	var fetchChargeCodes = function(callBackToAutoComplete) {
-		var params = {
-            query: $scope.brite.charge_code_name
-        };
-        var options = {
-            params 			: params,
-            successCallBack : successCallBackOfFetchChargeCodes,
-            successCallBackParameters: {
-				callBackToAutoComplete: callBackToAutoComplete
-			}
-        };
-        $scope.callAPI(ADChargeCodesSrv.searchChargeCode, options);
-	};
-
-	var clearConfigValues = function() {
-        $scope.brite.charge_code_id 	= '';
-        $scope.brite.charge_code_name 	= '';
-	};
-
-    // jquery autocomplete Souce handler
-    // get two arguments - request object and response callback function
-    var autoCompleteSourceHandler = function(request, callBackToAutoComplete) {
-        if (request.term.length === 0) {
-        	clearConfigValues();
-        } 
-        else if (request.term.length > 1) {
-            fetchChargeCodes(callBackToAutoComplete);
-        }
-    };
-
-    /**
-     * to run angular digest loop,
-     * will check if it is not running
-     * return - None
-     */
-    var runDigestCycle = function() {
-        if (!$scope.$$phase) {
-            $scope.$digest();
-        }
-    };
-
-    /**
-     * [autoCompleteSelectHandler description]
-     * @param  {[type]} event [description]
-     * @param  {[type]} ui    [description]
-     * @return {[type]}       [description]
-     */
-    var autoCompleteSelectHandler = function(event, ui) {
-        $scope.brite.charge_code_id 	= ui.item.id;
-        $scope.brite.charge_code_name 	= ui.item.name;
-        runDigestCycle();
-        return false;    
-    };
-
 	/**
 	 * Initialization stuffs
 	 * @return {undefiend}
 	 */
 	var initializeMe = function() {
 		$scope.brite = britePabXSetupValues;
-		$scope.chargeCodeAutocompleteOptions = {
-            delay		: 600,
-            minLength	: 0,
-	        position	: {
-	            my 			: "right top",
-	            at 			: "right bottom",
-	            collision	: 'flip'
-	        },
-            source 		: autoCompleteSourceHandler,
-            select 		: autoCompleteSelectHandler
-		};
 	}();
 }])

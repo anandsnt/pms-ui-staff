@@ -1,4 +1,4 @@
-<section ng-repeat="groupReservation in printRegCardData.group_reservations">
+<section ng-repeat="groupReservation in printRegCardData.group_reservations" ng-class="{'no-print' : !isPrintRegistrationCard}">
     <table class="hotel-guest-info">
         <tbody>
             <tr>
