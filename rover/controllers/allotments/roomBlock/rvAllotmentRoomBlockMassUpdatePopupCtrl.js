@@ -96,7 +96,19 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				$scope.saveRoomBlock(false, isContract, true);
 			}
 
-			$scope.closeDialog();
+			$scope.showSaveButton = false;
+		};
+
+		$scope.clickedOnApplyToHeldCountsButton = function() {
+			copyValuesThroughDates($scope.selectedRoomType.dates, $scope.ngDialogData.occupancy.split("_")[0], $scope.ngDialogData.value);
+			$scope.$parent.clickedOnApplyToHeldCountsButton(true);
+			$timeout($scope.closeDialog, 100);
+		};
+
+		$scope.clickedOnApplyToHeldToContractButton = function() {
+			copyValuesThroughDates($scope.selectedRoomType.dates, $scope.ngDialogData.occupancy+"_contract", $scope.ngDialogData.value);
+			$scope.$parent.clickedOnApplyToHeldToContractButton(true);
+			$timeout($scope.closeDialog, 100);
 		};
 
 		var onEndDatePicked = function (date, datePickerObj) {
@@ -123,7 +135,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 		var init = function () {
 			BaseCtrl.call(this, $scope);
-
+			$scope.showSaveButton = true;
 			setDatePickers();
 		};
 		init();
