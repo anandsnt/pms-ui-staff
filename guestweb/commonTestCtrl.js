@@ -36,7 +36,7 @@ loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-start
 $attrs.isPrecheckinOnly  ='false'; //set to true
 $attrs.reservationStatus ='RESERVED' ;
 $attrs.isAutoCheckin = 'true';//$attrs.isCheckin ='true';
-$attrs.isExternalVerification=  'false';
+$attrs.isExternalVerification=  'true';
 
 // for checkin
 $attrs.isCheckin= 'true'; // set to true
@@ -545,18 +545,9 @@ New checkout time is set and an option to continue the checkout process is prese
     $scope.monthSelected = "";
     $scope.yearSelected ="";
 
-    if($rootScope.isCheckedin){
-      $state.go('checkinSuccess');
-    }
-    else if($rootScope.isCheckin){
-      $state.go('checkinConfirmation');
-    }
-    else if(!$rootScope.isRoomVerified){
-      $state.go('checkoutRoomVerification');
-    }
-    else{
+   
       $scope.pageValid = true;
-    }
+  //}
 
     if($scope.pageValid){
       $scope.roomVerificationInstruction = "ddebfiebhfi hjevuebfbe ehdved e hdevdb ed e dh ed ejd e dkj edj ejd e de dnendn"
