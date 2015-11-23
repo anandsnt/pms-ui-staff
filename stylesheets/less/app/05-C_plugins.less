@@ -2157,14 +2157,19 @@
 								line-height: 16px;
 								text-align: left;
 								padding-left: 30px;
-								/*background-image: @icons;
-                            	background-repeat: no-repeat; */
+								background-image: @icons;
+                            	background-repeat: no-repeat;
                             	width: 160px;
 
                             	span { 
 									font-size: 16px; 
 									.show;
 								}
+
+								@media @highdpi {
+	                                background-image: @icons2x;
+	                                background-size: 120px;
+	                            }
 							}
 
 							&.arrival { background-position: 10px -558px; }
@@ -2180,11 +2185,6 @@
 								&.red { color: darken(@red, 15); }
 								&.green { color: darken(@green, 15); }
 							}
-
-                            @media @highdpi {
-                                /*background-image: @icons2x;
-                                background-size: 120px;*/
-                            }
 						}
 					}
 				}
