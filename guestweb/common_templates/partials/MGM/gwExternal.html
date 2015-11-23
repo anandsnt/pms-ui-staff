@@ -1,0 +1,78 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+</div>
+<div class="container" ng-hide="isLoading || netWorkError">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+             <p class="main-text">Ready to Check-out?</p>
+             <!--  -->
+            <div class="section-container">
+                <!-- room number -->
+                <p class="pull-left sub-text margin-top-10">Your Room Number</p>
+                <input type="text" class="input-field padding-2" ng-model="stayDetails.room_number"></input>
+                <!-- Lat name -->
+                <p class="pull-left sub-text margin-top-10">Last Name</p>
+                <input type="text" class="input-field padding-2" ng-model="stayDetails.last_name"></input>
+                <!-- Arrival date -->
+                <p class="pull-left sub-text margin-top-10">Arrival date</p>
+                <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="stayDetails.arrival_date" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                <!-- email -->
+                <p class="sub-text margin-top-10">To receive a copy of your bill,<br/>
+                    please enter your e-mail address
+                </p>
+                <p class="pull-left sub-text margin-top-10">Your e-mail address (optional)</p>
+                <input type="text" class="input-field padding-2" ng-model="stayDetails.email"></input>
+                <!-- Submit button -->
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="submit()"> Continue</a>    
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>                   
+    </div>
+</div>
+<!-- calendar view -->
+<div class="date-picker-bg" ng-show="calendarView">
+    <div class="date-picker-wrap">
+        <div class="col-xs-12 date-picker-header">
+            <div class="col-xs-2 calendar-selection" ng-click = "closeCalender()">
+                <div class="calendar-selection-button calendar-back">&nbsp;</div>
+                <div >BACK</div>
+            </div>
+            <div class="col-xs-8 centeralign departure-date">
+                <p>ARRIVAL DATE</p>
+                <p class="date-text">{{date | date:'MMM dd'}}</p>
+            </div>
+            <div class="col-xs-2 calendar-selection done-calendar" ng-click = "dateChoosen()">
+                <div class="calendar-selection-button calendar-done">&nbsp;</div>
+                <div class="calendar-done-text">DONE</div>
+            </div>
+        </div>
+        <div class="col-xs-12 no-side-padding">
+            <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
+        </div>
+    </div>
+</div>

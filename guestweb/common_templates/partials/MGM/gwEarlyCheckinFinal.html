@@ -7,7 +7,7 @@
 <!-- main section starts here -->
 <div class="container">
     <!-- request text -->
-    <div class="row" ng-show="isFetching && !netWorkError">
+    <div class="row" ng-show="isPosting && !netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
             <p class="request-text">Your request is being processed.
@@ -25,27 +25,15 @@
         <div class="col-md-2">
         </div>                   
     </div>
-    <!-- main content -->
-    <div class="row" ng-hide="isFetching || netWorkError">
-        <div class="col-md-2"></div>
-        <!-- left side -->
-        <div class="col-md-4 top-spacing">
-            <div class="section-container">
-                <p class="main-text">Ready to check-out?</p>
-                <p class="sub-main-text">To start, Please enter your room number:</p>
-                <p class="sub-main-text margin-10" ng-show ="(roomVerificationInstruction.length>0)">
-                    ({{roomVerificationInstruction}})
-                </p>
-            </div>
-        </div>
+    <div class="row" ng-hide="isPosting || netWorkError">
         <div class="col-md-1"></div>
-        <!-- right side -->
-        <div class="col-md-3 top-spacing">
-            <div class="section-container">
-                <p class="sub-text pull-left">Room Number</p>
-                <input class="input-field padding-3 margin-top-10" ng-model="roomNumber"></input>
-                <a class="btn btn-template margin-top-20"  ng-click="continueButtonClicked()"> Continue</a>    
-            </div>
+        <div class="col-md-4 top-spacing section-container">
+            <p class="main-text"> Early Check-in</p>
+            <p class="sub-main-text"> Thank You. A {{earlyCheckinCharge}} charge for <b>Early Check-in</b> has been added to your bill.</p>
+        </div>
+        <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
+            <a class="btn btn-template margin-top-10" ng-click="nextButtonClicked()">Continue</a>
         </div>
         <div class="col-md-1">
         </div>                   
