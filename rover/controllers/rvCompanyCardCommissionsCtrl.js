@@ -168,7 +168,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.clickedOn = clickedOn;
         ngDialog.open({
             template:'/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
-            controller: 'RVArTransactionsDatePickerController',
+            controller: 'RVCommissionsDatePickerController',
             className: '',
             scope: $scope
         });
