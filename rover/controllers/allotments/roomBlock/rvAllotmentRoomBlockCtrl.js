@@ -611,23 +611,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * CICO-19121:
 		 * Fired when user clickes on the button in contract view.
 		 */
-		$scope.clickedOnApplyToHeldCountsButton = function() {
-			var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
-			// plan A: copy contracted value to held counts by force and call saveRoomBlock()
-			_.each(roomBlockData, function(roomtype) {
-				_.each(roomtype.dates, function(dateData) {
-					dateData.single = dateData.single_contract;
-					dateData.double = dateData.double_contract;
+		$scope.clickedOnApplyToHeldCountsButton = function(massUpdate) {
+			if (!massUpdate) {
+				var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
+				// plan A: copy contracted value to held counts by force and call saveRoomBlock()
+				_.each(roomBlockData, function(roomtype) {
+					_.each(roomtype.dates, function(dateData) {
+						dateData.single = dateData.single_contract;
+						dateData.double = dateData.double_contract;
 
-					if (dateData.triple_contract) {
-						dateData.triple = dateData.triple_contract;
-					}
-					if (dateData.quadruple_contract) {
-						dateData.quadruple = dateData.quadruple_contract;
-					}
+						if (dateData.triple_contract) {
+							dateData.triple = dateData.triple_contract;
+						}
+						if (dateData.quadruple_contract) {
+							dateData.quadruple = dateData.quadruple_contract;
+						}
+					});
 				});
-			});
-			$scope.saveRoomBlock(false);
+			}
+			$scope.saveRoomBlock(false, false, massUpdate);
 		};
 
 		/**
@@ -643,23 +645,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * CICO-19121:
 		 * Copy held counts to contracts
 		 */
-		$scope.clickedOnApplyToHeldToContractButton = function() {
-			var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
-			// plan A: copy held value to contracted counts by force and call saveRoomBlock()
-			_.each(roomBlockData, function(roomtype) {
-				_.each(roomtype.dates, function(dateData) {
-					dateData.single_contract = dateData.single;
-					dateData.double_contract = dateData.double;
+		$scope.clickedOnApplyToHeldToContractButton = function(massUpdate) {
+			if (!massUpdate) {
+				var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
+				// plan A: copy held value to contracted counts by force and call saveRoomBlock()
+				_.each(roomBlockData, function(roomtype) {
+					_.each(roomtype.dates, function(dateData) {
+						dateData.single_contract = dateData.single;
+						dateData.double_contract = dateData.double;
 
-					if (dateData.triple) {
-						dateData.triple_contract = dateData.triple;
-					}
-					if (dateData.quadruple) {
-						dateData.quadruple_contract = dateData.quadruple;
-					}
+						if (dateData.triple) {
+							dateData.triple_contract = dateData.triple;
+						}
+						if (dateData.quadruple) {
+							dateData.quadruple_contract = dateData.quadruple;
+						}
+					});
 				});
-			});
-			$scope.saveRoomBlock(false, true);
+			}
+			$scope.saveRoomBlock(false, true, massUpdate);
 		};
 
 		$scope.clickedOnUpdateCurrentButton = function() {
