@@ -391,19 +391,17 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 var oldAddonQty = 0;
                 angular.forEach(addonsDataCopy, function(item, index) {
                     if (item.id === addon.id) {
-                        oldAddonQty = parseInt(item.quantity) + parseInt(addonQty);
+                        oldAddonQty = parseInt(item.quantity);
                     }
                 });
-                var difference = newAddonQty - oldAddonQty;
-
-                if(difference < 0){
-                    difference = 0;
-                }
 
                 var successCallBackInventoryCheck = function(response) {
                     $scope.$emit('hideLoader');
                     var availableAddonCount = response.available_count;
-                    var remainingCount = availableAddonCount - (headCount * (difference || 1) * addonQty);
+                    // Adjust avbl count with the deleted ones now
+                    // newAddonQty => The existing count in the session
+                    // oldAddonQty => The addon qty count while having come inside the screen (esp. when coming to enhance stays from the stay card)
+                    var remainingCount = (availableAddonCount - (newAddonQty - oldAddonQty)) - (headCount * addonQty);
                     /*
                      *  if the available count is less we prompts warning popup
                      */
