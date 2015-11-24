@@ -32,7 +32,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     var refreshScroll = function(){
         $timeout(function() {
             $scope.refreshScroller('commission-list');
-        }, 1000);
+        }, 3000);
     };
     refreshScroll();
     // Refresh the scroller when the tab is active.
@@ -152,6 +152,8 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Generic function to call on the change of filter parameters
     $scope.onFilterChange = function() {
         initPaginationParams();
+        $scope.selectedCommissions = [];
+        $scope.prePaidCommissions = [];
         fetchCommissionDetails(true);
     };
 
@@ -168,7 +170,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.clickedOn = clickedOn;
         ngDialog.open({
             template:'/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
-            controller: 'RVArTransactionsDatePickerController',
+            controller: 'RVCommissionsDatePickerController',
             className: '',
             scope: $scope
         });
@@ -199,18 +201,26 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         commission.is_checked = !commission.is_checked;
         //&& commission.commission_data.paid_status != 'Prepaid'
         if (commission.is_checked) {
-            $scope.selectedCommissions.push(commission);
+            if (commission.commission_data.paid_status == 'Prepaid') {
+                $scope.prePaidCommissions.push(commission);
+            } else {
+                $scope.selectedCommissions.push(commission);
+            }
         } else {
             $scope.selectedCommissions = _.filter($scope.selectedCommissions, function(value) {
                                                 return value.reservation_id != commission.reservation_id;
                                             });
+            $scope.prePaidCommissions = _.filter($scope.prePaidCommissions, function(value) {
+                                                return value.reservation_id != commission.reservation_id;
+                                            });
         }
-        if($scope.selectedCommissions.length == 0) {
+        if($scope.selectedCommissions.length == 0 && $scope.prePaidCommissions.length == 0) {
             fetchCommissionDetails(false);
             $scope.status.groupPaidStatus = "";
         } else {
             $scope.status.groupPaidStatus = "";
-           updateCommissionSummary($scope.selectedCommissions);
+            var commissionList = $scope.selectedCommissions.concat($scope.prePaidCommissions);
+           updateCommissionSummary(commissionList);
        }
     };
 
@@ -226,11 +236,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         if($scope.filterData.selectAll) {
             updateCheckedStatus(true);
             $scope.selectedCommissions = [];
+            $scope.prePaidCommissions = [];
             updateCommissionSummary($scope.commissionDetails);
             $scope.status.groupPaidStatus = "";
         } else {
            updateCheckedStatus(false);
            $scope.selectedCommissions = [];
+           $scope.prePaidCommissions = [];
            fetchCommissionDetails(false);
            $scope.status.groupPaidStatus = "";
 
@@ -254,6 +266,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Clear the selections after the paid status updation as we are refreshing the list after that
     var clearCurrentSelection = function() {
         $scope.selectedCommissions = [];
+        $scope.prePaidCommissions = [];
         $scope.filterData.selectAll = false;
     };
 
@@ -354,6 +367,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
           totalResultCount : 0
         };
         $scope.selectedCommissions = [];
+        $scope.prePaidCommissions = [];
         $scope.status = {
            groupPaidStatus : ""
         };
