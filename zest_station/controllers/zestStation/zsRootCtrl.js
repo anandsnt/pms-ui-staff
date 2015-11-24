@@ -182,9 +182,7 @@ sntZestStation.controller('zsRootCtrl', [
                 console.log('station', station)
             if (station !==  null){
                 $scope.zestStationData.encoder = station.key_encoder_id;
-                if (sntZestStation.selectedPrinter){
                     sntZestStation.selectedPrinter = station.printer;
-                }
                 console.info('workstation found!: ',station.name);
                 }
             return station;
