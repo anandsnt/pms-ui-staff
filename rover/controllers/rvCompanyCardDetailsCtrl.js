@@ -7,7 +7,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		/* Checking permision to show Commission Tab */
 
 		$scope.hasPermissionToViewCommissionTab = function() {
-		return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
 		};
 
 		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
@@ -525,6 +525,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				angular.element('#uplaodCompanyLogo').trigger('click');
 			}, 0, false);
 		};
+
+		$scope.isEmptyObject = isEmptyObject;
 
 
 	}

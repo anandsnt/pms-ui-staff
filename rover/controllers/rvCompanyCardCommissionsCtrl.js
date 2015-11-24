@@ -32,7 +32,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     var refreshScroll = function(){
         $timeout(function() {
             $scope.refreshScroller('commission-list');
-        }, 2000);
+        }, 1000);
     };
     refreshScroll();
     // Refresh the scroller when the tab is active.
@@ -41,7 +41,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
         var onCommissionFetchSuccess = function(data) {
-            
+
                 _.each(data.commission_details, function(element, index) {
                     _.extend(element, {is_checked: false});
                 });
@@ -49,7 +49,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                 $scope.commissionSummary.totalRevenue = data.total_revenue;
                 $scope.commissionSummary.totalCommission = data.total_commission;
                 $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
-                
+                $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
                 //set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
                 if($scope.nextAction && isPageChanged){
@@ -87,6 +87,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.filterData.page++;
         $scope.nextAction = true;
         $scope.prevAction = false;
+        clearCurrentSelection();
         fetchCommissionDetails(true);
     };
 
@@ -94,6 +95,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.filterData.page--;
         $scope.nextAction = false;
         $scope.prevAction = true;
+        clearCurrentSelection();
         fetchCommissionDetails(true);
     };
 
@@ -131,7 +133,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     };
 
     var initPaginationParams = function(){
-        $scope.filterData.pageNo = 1;
+        $scope.filterData.page = 1;
         $scope.pagination.start = 1;
         $scope.nextAction = false;
         $scope.prevAction = false;
@@ -203,7 +205,13 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
                                                 return value.reservation_id != commission.reservation_id;
                                             });
         }
-        updateCommissionSummary($scope.selectedCommissions);
+        if($scope.selectedCommissions.length == 0) {
+            fetchCommissionDetails(false);
+            $scope.status.groupPaidStatus = "";
+        } else {
+            $scope.status.groupPaidStatus = "";
+           updateCommissionSummary($scope.selectedCommissions);
+       }
     };
 
     //Updates the checked status of the current  page records while making the whole selection
@@ -215,13 +223,16 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
 
     //Select all checkbox action
     $scope.toggleSelection = function() {
-        $scope.selectAll = !$scope.selectAll;
-        if($scope.selectAll) {
+        if($scope.filterData.selectAll) {
             updateCheckedStatus(true);
+            $scope.selectedCommissions = [];
             updateCommissionSummary($scope.commissionDetails);
+            $scope.status.groupPaidStatus = "";
         } else {
            updateCheckedStatus(false);
+           $scope.selectedCommissions = [];
            fetchCommissionDetails(false);
+           $scope.status.groupPaidStatus = "";
 
         }
 
@@ -230,12 +241,20 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Updates the paid status to the server
     var updatePaidStatus = function(reqData) {
         var onCommissionStatusUpdateSuccess = function(data) {
+                clearCurrentSelection();
                 fetchCommissionDetails(false);
             },
             onCommissionStatusUpdateFailure = function(error) {
+                clearCurrentSelection();
                 fetchCommissionDetails(false);
             };
         $scope.invokeApi(RVCompanyCardSrv.saveTACommissionDetails, reqData, onCommissionStatusUpdateSuccess, onCommissionStatusUpdateFailure);
+    };
+
+    //Clear the selections after the paid status updation as we are refreshing the list after that
+    var clearCurrentSelection = function() {
+        $scope.selectedCommissions = [];
+        $scope.filterData.selectAll = false;
     };
 
     //Action for the paid/unpaid toggle button for individual record
@@ -253,16 +272,16 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     //Updates the paid status of all the selected records
     $scope.onGroupPaidStatusChange = function() {
         var commissionListToUpdate = [];
-        if($scope.selectAll) {
+        if($scope.filterData.selectAll) {
            $scope.commissionDetails.forEach(function(commission) {
                 if(commission.commission_data.paid_status != 'Prepaid'){
-                    commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                    commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
                 }
            });
         } else {
             $scope.selectedCommissions.forEach(function(commission) {
                 if(commission.commission_data.paid_status != 'Prepaid'){
-                    commissionListToUpdate.push({id : commission.reservation_id, status : $scope.status.groupPaidStatus});
+                    commissionListToUpdate.push({reservation_id : commission.reservation_id, status : $scope.status.groupPaidStatus});
                 }
             });
         }
@@ -273,7 +292,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         updatePaidStatus(requestData);
     };
 
-
+    $scope.showToggleButton = function(commissionDetail) {
+        var hasShownToggleBtn = commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid';
+        return (hasShownToggleBtn ? {'visibility': 'visible'} : {'visibility': 'hidden'});
+    };
 
     // To print the current screen details.
     $scope.clickedPrintButton = function(){
@@ -319,7 +341,8 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
             commissionStatus : "Commissionable",
             perPage : RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page : 1,
-            start : 1
+            start : 1,
+            selectAll : false
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
@@ -330,13 +353,10 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
           end : RVCompanyCardSrv.DEFAULT_PER_PAGE,
           totalResultCount : 0
         };
-
-        $scope.selectAll = false;
         $scope.selectedCommissions = [];
         $scope.status = {
            groupPaidStatus : ""
         };
-        $scope.showSelectAll = true;
         fetchCommissionDetails(true);
     };
 
