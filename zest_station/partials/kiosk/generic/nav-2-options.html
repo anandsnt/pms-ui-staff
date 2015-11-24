@@ -1,78 +1,246 @@
 
-        <!-- Content -->
-      <section id="main" class="centered test" role="main" ng-show='at === "key-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at ===  "timeout" || at ===  "invalid-email"' click-touch='resetTime()'>
-     <div id="content">
-            <h1>{{headingText}}</h1>
-            <h2>{{subHeadingText}}</h2>
-                <nav id="options" role="nav">
-                    <ul role="menu">
-                        <!-- card swipe -->
-                         <li ng-show='show.swipecardScreen && at === "card-swipe"'>
-                            <button type="button" class="button option" touch-press='goToCardSign()'>
-                                <ng-include src="'assets/css/icons/creditcard.svg'"></ng-include>
-                            </button>
-                            <span translate>Please Swipe Credit Card</span>
-                        </li>
-                        <!-- deliver-registration -->
-                        <li ng-show='at === "deliver-registration"'> 
-                            <button type="button" class="button option" touch-press='clickedPrint()'>
-                                <ng-include src="'assets/css/icons/print.svg'"></ng-include>
-                            </button>
-                            <span translate>Print</span>
-                        </li>
-                        <li class="break" ng-show='at === "deliver-registration"'>
-                            <span>Or</span>
-                        </li>
-                         <li ng-show='at === "deliver-registration"'> 
-                            <button type="button" class="button option" touch-press='selectEmailDelivery()'>
-                                <ng-include src="'assets/css/icons/email.svg'"></ng-include>
-                            </button>
-                            <span translate>E-Mail</span>
-                        </li>
-                        <!-- invalid-email -->
-                         <li ng-show='at === "invalid-email"'> 
-                            <button type="button" class="button option" touch-press='navToPrev()'>
-                                <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
-                            </button>
-                             <h1>Re-type</h1>
-                                 <h3>"{{input.lastEmailValue}}"</h3>
-                        </li>
-                        <!-- retry-key -->
-                         <li ng-show='at === "key-error"'> 
-                            <button type="button" class="button option" touch-press='navToPrev()'>
-                                <ng-include src="'assets/css/icons/key.svg'"></ng-include>
-                            </button>
-                             <h1>Re-try</h1>
-                        </li>
-                        
-                        <!--email-delivery -->
-                         <li ng-show='at === "email-delivery"'> 
-                            <button type="button" class="button option" touch-press='goToScreen($event,"input-email", false, "email-delivery")'>
-                                <ng-include src="'assets/css/icons/pen.svg'"></ng-include>
-                            </button>
-                            <span translate>Edit My E-mail Address</span>
-                        </li>
-                        <li class="break" ng-show='at === "email-delivery" || at === "key-error"'>
-                            <span>Or</span>
-                        </li>
-                         <li ng-show='at === "email-delivery"'> 
-                            <button type="button" class="button option" touch-press='sendRegistration()'>
-                                <ng-include src="'assets/css/icons/email.svg'"></ng-include>
-                            </button>
-                            <span translate>Send E-Mail</span>
-                        </li>
-                         <li ng-show='at === "key-error"'> 
-                            <button type="button" class="button option" touch-press='initStaff()'>
-                                <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
-                            </button>
-                            <h1>Speak</h1>
-                                 <h4>to a staff member</h4>
-                        </li>
-                        
-                    </ul>
-                    
-                    
-                </nav>
-            </div>
-        <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
-        </section>
+<!-- Content -->
+<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{headingText}}</h1>
+        <h2>{{subHeadingText}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <!-- card swipe -->
+                <li ng-show='show.swipecardScreen && at === "card-swipe"'>
+                    <button type="button" class="button option" touch-press='goToCardSign()'>
+                        <ng-include src="'assets/css/icons/creditcard.svg'"></ng-include>
+                    </button>
+                    <span translate>Please Swipe Credit Card</span>
+                </li>
+                <!-- deliver-registration -->
+                <li ng-show='at === "deliver-registration"'> 
+                    <button type="button" class="button option" touch-press='clickedPrint()'>
+                        <ng-include src="'assets/css/icons/print.svg'"></ng-include>
+                    </button>
+                    <span translate>Print</span>
+                </li>
+                <li class="break" ng-show='at === "deliver-registration"'>
+                    <span>Or</span>
+                </li>
+                <li ng-show='at === "deliver-registration"'> 
+                    <button type="button" class="button option" touch-press='selectEmailDelivery()'>
+                        <ng-include src="'assets/css/icons/email.svg'"></ng-include>
+                    </button>
+                    <span translate>E-Mail</span>
+                </li>
+                <!-- invalid-email -->
+                <li ng-show='at === "invalid-email"'> 
+                    <button type="button" class="button option" touch-press='navToPrev()'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    <h1>Re-type</h1>
+                    <h3>"{{input.lastEmailValue}}"</h3>
+                </li>
+                <!-- retry-key -->
+                <li ng-show='at === "key-error"'> 
+                    <button type="button" class="button option" touch-press='reEncodeKey()'>
+                        <ng-include src="'assets/css/icons/key.svg'"></ng-include>
+                    </button>
+                    <h1>Re-try</h1>
+                </li>
+                <li class="break" ng-show='at === "key-error"'>
+                    <span>Or</span>
+                </li>
+
+                <li ng-show='at === "key-error"'> 
+                    <button type="button" class="button option" touch-press='skipKeys()'>
+                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                    </button>
+                    <h1>Continue</h1>
+                </li>
+
+                <!--email-delivery -->
+                <li ng-show='at === "email-delivery"'> 
+                    <button type="button" class="button option" touch-press='editEmailAddress()'>
+                        <ng-include src="'assets/css/icons/pen.svg'"></ng-include>
+                    </button>
+                    <span translate>Edit My E-mail Address</span>
+                </li>
+                <li class="break" ng-show='at === "email-delivery" || at === "key-error"'>
+                    <span>Or</span>
+                </li>
+                <li ng-show='at === "email-delivery"'> 
+                    <button type="button" class="button option" touch-press='sendRegistration()'>
+                        <ng-include src="'assets/css/icons/email.svg'"></ng-include>
+                    </button>
+                    <span translate>Send E-Mail</span>
+                </li>
+                <li ng-show='at === "key-error"'> 
+                    <button type="button" class="button option" touch-press='initStaff()'>
+                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                    </button>
+                    <h1>Speak</h1>
+                    <h4>to a staff member</h4>
+                </li>
+
+            </ul>
+
+
+        </nav>
+    </div>
+</section>
+
+<!-- hidden view for print action -->
+<div class="printable-bill-view">
+   <table class="bill-table" >
+    <tbody>
+        <tr>
+            <td class="hotel-info">
+                <p>
+                    {{ printRegCardData.hotel_name }} <br>
+                    {{ printRegCardData.street }}<br>                    
+                    {{ printRegCardData.city }}, {{ printRegCardData.state }} {{printRegCardData.zipcode}}<br><br>
+                    Ph: {{ printRegCardData.phone }}
+                </p>
+            </td>
+            <td class="guest-info">
+                <table class="name-addr">
+                    <tr>
+                        <td>
+                            <span>REGISTERED TO:</span>
+                            <strong>{{ printRegCardData.guest_details.first_name }} {{ printRegCardData.guest_details.last_name }}</strong>
+                            <strong>
+                                <label ng-if="printRegCardData.guest_details.street || printRegCardData.guest_details.city">
+                                    {{ printRegCardData.guest_details.street }} {{ printRegCardData.guest_details.city }}, 
+                                </label>
+                                <label>{{ printRegCardData.guest_details.state }} {{ printRegCardData.guest_details.postal_code }}</label>
+                            </strong>
+                        </td>
+                        <td>
+                            <span>BILL TO:</span>
+                            <strong>{{ printRegCardData.bill_to.name }}</strong>
+                            <strong ng-if="printRegCardData.bill_to.street1 || printRegCardData.bill_to.street2">{{ printRegCardData.bill_to.street1 }} {{ printRegCardData.bill_to.street2 }}</strong>
+                            <strong>
+                                <label ng-if="printRegCardData.bill_to.city"> {{ printRegCardData.bill_to.city }},  </label>
+                                <label ng-if="printRegCardData.bill_to.state">{{ printRegCardData.bill_to.state }} </label>
+                                <label>{{ printRegCardData.bill_to.postal_code }}</label>
+                            </strong>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <span>ARRIVAL DATE:</span>
+                            <strong>{{ printRegCardData.arrival_date | date : dateFormat }}</strong>
+                        </td>
+                        <td>
+                            <span>DEPARTURE DATE:</span>
+                            <strong>{{ printRegCardData.dep_date | date : dateFormat }}</strong>
+                        </td>
+                        <td>
+                            <span>CONFIRMATION:</span>
+                            <strong>{{ printRegCardData.confirm_no }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>ARRIVAL TIME:</span>
+                            <strong>{{ printRegCardData.arrival_time }}</strong>
+                            <span>&nbsp;</span>
+                        </td>
+                        <td>
+                            <span>DEPARTURE TIME:</span>
+                            <strong>{{ printRegCardData.departure_time }}</strong>
+                            <span>&nbsp;</span>
+                        </td>
+                        <td>
+                        	<span>ROOM:</span>
+                        	<strong>{{ printRegCardData.room_number}}</strong>
+                        	<span>&nbsp;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>AMOUNT PAID:</span>
+                            <strong>{{ printRegCardData.amount_paid | currency:currencySymbol:2 }}</strong>
+                        </td>
+                        <td>
+                            <span>PAYMENT:</span>
+                            <strong>{{ printRegCardData.payment_type }}</strong>
+                        </td>
+                        <td>
+                            <span>ACCOUNT:</span>
+                            <strong>{{ printRegCardData.account }}</strong>
+                        </td>
+                    </tr>
+                </table>
+                <table class="rate-initial">
+                    <tr>
+                        <td ng-hide="printRegCardData.hide_rates">
+                            <span>AVERAGE DAILY RATE:</span>
+                            <strong>{{ printRegCardData.adr | currency:currencySymbol:2 }}</strong>
+                        </td>
+                        <td>
+                            <span>GUEST INITIALS:</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <table class="bill-details">
+    <thead>
+        <tr>
+            <th>DATE</th>
+            <th ng-hide="printRegCardData.hide_rates">RATE</th>
+            <th ng-hide="printRegCardData.hide_rates">TAXES</th>
+            <th>ADD-ON</th>
+            <th ng-hide="printRegCardData.hide_rates" class="addon-price">ADD-ON PRICE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="each in printRegCardData.daily_instances_info">
+            <td>{{ each.date | date : dateFormat }}</td>
+            <td ng-hide="printRegCardData.hide_rates">{{ each.rate | currency:currencySymbol:2 }}</td>
+            <td ng-hide="printRegCardData.hide_rates">{{ each.tax  | currency:currencySymbol:2 }}</td>
+            <td class="addons" colspan="2">
+                <table>
+                    <tr ng-repeat="item in each.addons">
+                        <td>{{ item.name }}</td>
+                        <td ng-hide="printRegCardData.hide_rates" ng-if="item.price == 'INCLUDED'">{{ item.price }}</td>
+                        <td ng-hide="printRegCardData.hide_rates" ng-if="item.price != 'INCLUDED'">{{ item.price | currency:currencySymbol:2 }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="guest-data-enter" ng-if="printRegCardData.is_show_vehiche_info">
+    <tr>
+        <td>
+            Guest DL/ID #
+        </td>
+        <td class="details">
+            <table>
+                <tr>
+                    <td>Vehicle Make</td>
+                    <td>Lic. Plate #</td>
+                    <td>Lic. Plate State/Prov.</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table class="terms-signature">
+    <tr>
+        <td colspan="2" class="terms" ng-bind-html="printRegCardData.terms_conditions"></td>
+    </tr>
+    <tr>
+        <td>
+            <span class="signature">
+                Guest Signature
+            </span>
+        </td>
+    </tr>
+</table>
+</div>
+

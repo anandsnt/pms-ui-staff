@@ -43,6 +43,7 @@
                     <td type='input' touch-press='openWorkStationList()'>
                          <select id='selectEncoder' class='admin-input select table-count rates-table-count'
                               ng-options="workstation.station_identifier as workstation.name for workstation in zestStationData.workstations" ng-model="zestStationData.selectedWorkStation">
+
                              <option style="display:none" value="">Select a Work Station</option>
                         </select>
                     </td>
@@ -75,7 +76,7 @@
 </div>
 
 
-    <div id="popup" class="open" ng-show='showWorkStationList'> <!-- Remove class "open" to hide popup content -->
+    <div id="popup" class="open" style="background-color:#707070 !important" ng-show='showWorkStationList'> <!-- Remove class "open" to hide popup content -->
         <div id="popup-content">
             <h3 class="nocaps">Select WorkStation</h3>
             <div ng-repeat="workstation in zestStationData.workstations" >

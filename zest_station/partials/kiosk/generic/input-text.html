@@ -5,14 +5,15 @@
         <h3>{{subHeadingText}}</h3>
         <form method="post" class="form" ng-hide='at === "checking_in_guest"'>
             <div class="entry input">
-                <input ng-hide='passwordField' class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
+                <input ng-hide='passwordField || at === "find-by-confirmation" || mode === "search-final-mode"' class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
+                <input ng-show='mode === "search-final-mode" || at === "find-by-confirmation" ' class="start-focused" type="number" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
                 <input ng-show='passwordField' class="start-focused" type="password" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">Next</button>
             </div>
         </form>
-        <button ng-show='at === "input-email" && from === "card-swipe" && emailOptional' type='button' class='button' touch-press='skipEmailEntryAfterSwipe()'>Skip</button>
+        <button id="skipEmailInputBtn" ng-show='at === "input-email" && from === "card-swipe" && emailOptional' type='button' class='button' touch-press='skipEmailEntryAfterSwipe()'>Skip</button>
     </div>
     <section id="main" role="main" class="centered" ng-show="at === 'registration_printed'">
         <div id="content">

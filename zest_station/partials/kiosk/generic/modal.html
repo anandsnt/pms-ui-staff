@@ -13,7 +13,7 @@
         <button ng-show="at === 'talk-to-staff'" type="button" class="button" touch-press="navToHome()">{{modalBtn1}}</button>
         <!--key success screens -->
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 1" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
-        <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 2" type="button" class="button" touch-press="goToScreen(null, 'make-keys', true, 'key-success')">{{modalBtn1}}</button>
+        <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 2" type="button" class="button" touch-press="makeKeyTwo()">{{modalBtn1}}</button>
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 2 && input.makeKeys === 2" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1}}</button>
         <!-- completed check-in -->
         <button ng-show="at === 'last_confirm' && modalBtn2 !== ''"       type="button" class="button" touch-press="navToHome()">{{modalBtn2}}</button> <!-- always exit/return to home -->

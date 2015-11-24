@@ -282,7 +282,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				editable 	: false,
 				title 		: title == "" || title == 'undefined'? bestRateData.bestAvailableRate.toString() : title,
 				toolTipData : bestRateData,
-				currencySymbol : $scope.currencySymbol
+				currencySymbol : $scope.currencySymbol,
+				currentCalendar : ''
 			};
 
 			return eventData;
@@ -326,9 +327,11 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				eventData = formEventData(dailyData);
 
 				if (isProcessingLeftSideCalendar(dailyData)) {
+					eventData.currentCalendar = "left";
 					calendarData.left.push(eventData);
 				} 
 				else if (isProcessingRightSideCalendar(dailyData)) {
+					eventData.currentCalendar = "right";
 					calendarData.right.push(eventData);
 				}
 			});

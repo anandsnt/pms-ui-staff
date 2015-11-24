@@ -76,6 +76,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 				// Save room block now.
 				$scope.saveReleaseDays();
+				$timeout($scope.closeDialog, 100);
 
 			}
 			// Copying contract or held counts
@@ -94,9 +95,21 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 				// Save room block now.
 				$scope.saveRoomBlock(false, isContract, true);
+				$scope.showSaveButton = false;
 			}
 
-			$scope.closeDialog();
+		};
+
+		$scope.clickedOnApplyToHeldCountsButton = function() {
+			copyValuesThroughDates($scope.selectedRoomType.dates, $scope.ngDialogData.occupancy.split("_")[0], $scope.ngDialogData.value);
+			$scope.$parent.clickedOnApplyToHeldCountsButton(true);
+			$timeout($scope.closeDialog, 100);
+		};
+
+		$scope.clickedOnApplyToHeldToContractButton = function() {
+			copyValuesThroughDates($scope.selectedRoomType.dates, $scope.ngDialogData.occupancy+"_contract", $scope.ngDialogData.value);
+			$scope.$parent.clickedOnApplyToHeldToContractButton(true);
+			$timeout($scope.closeDialog, 100);
 		};
 
 		var onEndDatePicked = function (date, datePickerObj) {
@@ -113,17 +126,20 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1
 			};
-			$scope.massUpdateEndDate = new tzIndependentDate(summaryData.block_to);
+			var maxDate = new tzIndependentDate(summaryData.block_to);
+			maxDate.setDate(maxDate.getDate()-1);
+			$scope.massUpdateEndDate = new tzIndependentDate(maxDate);
+
 			$scope.massUpdateEndDateOptions = _.extend({
 				minDate: $scope.timeLineStartDate,
-				maxDate: summaryData.block_to,
+				maxDate: maxDate,
 				onSelect: onEndDatePicked,
 			}, commonDateOptions);
 		};
 
 		var init = function () {
 			BaseCtrl.call(this, $scope);
-
+			$scope.showSaveButton = true;
 			setDatePickers();
 		};
 		init();
