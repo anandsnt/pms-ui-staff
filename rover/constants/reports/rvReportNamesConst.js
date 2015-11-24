@@ -28,5 +28,6 @@ sntRover.constant('RVReportNamesConst', {
 	'GUEST_BALANCE_REPORT'		   : 'Guest Balance Report',
 	'ADDON_FORECAST'               : 'Add-On Forecast',
 	'DAILY_PRODUCTION'             : 'Daily Production',
-	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report'
+	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report',
+	'DAILY_PRODUCTION_DEMO'		   : 'Daily Production by Demographics'
 });
