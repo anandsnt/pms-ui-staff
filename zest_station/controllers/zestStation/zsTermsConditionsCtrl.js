@@ -52,8 +52,6 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 
 
         $scope.agreeTerms = function(){
-            //$scope.goToScreen(null, 'select-keys-after-checkin', true);
-            console.info('goto card swipe');
             $state.go('zest_station.card_swipe');
         };
 

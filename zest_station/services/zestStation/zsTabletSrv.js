@@ -37,7 +37,6 @@ sntZestStation.service('zsTabletSrv',
                 };
                 
                 this.encodeKey = function (params) {
-                    console.info('use params',params)
                     var deferred = $q.defer(),
                             url = '/staff/reservation/print_key';
                     
@@ -198,6 +197,18 @@ sntZestStation.service('zsTabletSrv',
                         deferred.reject(data);
                     });
 		return deferred.promise;
-	};
+                };
+                
+                this.fetchRegistrationCardPrintData = function(params){
+                    var deferred = $q.defer();
+                    var url = '/api/reservations/' + params.id + '/print_registration_card';
+                            zsBaseWebSrv.getJSON(url).then(function(data) {
+                                    deferred.resolve(data);
+                            },function(data){
+                                deferred.reject(data);
+                            });
+
+                    return deferred.promise;
+            };
                 
             }]);

@@ -163,4 +163,9 @@ sntZestStation.controller('zsHomeCtrl', [
         }
     });
     
+    $scope.init = function(){
+        $state.input = {};  
+    };
+    $scope.init();
+    
 }]);

@@ -53,7 +53,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         $scope.goToKeySuccess = function(){
             setTimeout(function(){
-                $state.go('zest_station.key_success')
+                $state.go('zest_station.key_success');
             },500);
             
         };
@@ -67,13 +67,17 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $state.passParams = $scope.input;
           
             $scope.headingText = 'Success!';
-            $scope.subHeadingText = 'Please grab your key from the target below';
+            $scope.subHeadingText = 'Please grab your key(s) from the target below';
             $scope.modalBtn1 = 'Next';
             $scope.input.madeKey = 1;
             $scope.input.makeKeys = 1;
         };
-        
+        $scope.makeKeyTwo = function(){
+            $scope.input.makeKeys = 2;
+            initKeyCreate();  
+        };
         $scope.initKeyCreate = function(){
+            
             $scope.input =  $state.passParams;
             //init key create, set # of keys from the input object
             /*
@@ -89,8 +93,39 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 make_1_key = false;
                 make_2_keys = true;
             }
+            console.info('make key ( '+$scope.input.makeKeys+' )');
 
-            var oneKeySetup = function(){
+            
+            if (make_1_key){
+                $scope.oneKeySetup();
+                $scope.initMakeKey(1);
+                //oneKeySuccess();
+                
+            } else if (make_2_keys){
+                console.info('called make 2 keys, madeKey: '+$scope.input.madeKey)
+                //at first key
+                if ($scope.input.madeKey === 0 || typeof $scope.input.madeKey === typeof undefined){
+                    $scope.keyOneOfTwoSetup();//sets up screen and runs init to make first key
+                    
+                } else if($scope.input.madeKey === 1) {
+                    $scope.keyTwoOfTwoSetup();//sets up screen and runs init to make second key
+                } 
+            }
+            
+            
+        };
+        $scope.keyTwoOfTwoSetup = function(){
+                $scope.at = 'make-keys';
+                
+                $scope.headingText = 'Success! Make your second key';
+                $scope.subHeadingText = 'Remove the first key, select a Blank Key from the Bowl and place it on the target below.\n\
+                                            When the green light appears, the key is made.';
+            
+                setTimeout(function(){
+                    $scope.initMakeKey(2);
+                },2500)
+            };
+        $scope.oneKeySetup = function(){
                 $scope.at = 'make-keys';
 
                 $scope.headingText = 'Make your key.';
@@ -98,70 +133,21 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.modalBtn1 = 'Next';
                 $scope.input.madeKey = 0;
             };
+        $scope.keyTwoOfTwoSuccess = function(){
+                    $scope.input.madeKey = 2;
+                    $scope.goToKeySuccess();
+            };
             
-            
-
-
-            var keyOneOfTwoSetup = function(){
+        $scope.keyOneOfTwoSetup = function(){
                 $scope.input.madeKey = 0;
                 $scope.at = 'make-keys';
 
-                $scope.setLast('select-keys-after-checkin');
+                $scope.from = 'select-keys-after-checkin';
                 $scope.headingText = 'Make your first key!';
                 $scope.subHeadingText = 'Select a Blank Key from the Bowl and place it on the target below. \n\
                                                 When the green light appears, the key is made.';
-            };
-            var keyOneOfTwoSuccess = function(){
-                setTimeout(function(){
-                    $scope.input.madeKey = 1;
-                    $scope.goToKeySuccess();
-
-                    $scope.headingText = 'Success! Make your second key';
-                    $scope.subHeadingText = 'Remove the first key, select a Blank Key from the Bowl and place it on the target below.\n\
-                                                When the green light appears, the key is made.';
-                    $scope.modalBtn1 = 'Make Key 2/2';
-
-                },2500);
-            };
-
-
-            var keyTwoOfTwoSetup = function(){
-                $scope.at = 'make-keys';
-
-                $scope.headingText = 'Make your second key';
-                $scope.subHeadingText = 'Remove the first key, select a Blank Key from the Bowl and place it on the target below.\n\
-                                            When the green light appears, the key is made.';
-            };
-            var keyTwoOfTwoSuccess = function(){
-                setTimeout(function(){
-                    $scope.input.madeKey = 2;
-                    $scope.goToScreen(null, 'key-success', true, $scope.from);
-
-                    $scope.headingText = 'Success!';
-                    $scope.subHeadingText = 'Please grab your keys from the target below';
-                    $scope.modalBtn1 = 'Next';
-                },2500);
-            };
-
-
-            if (make_1_key){
-                oneKeySetup();
                 $scope.initMakeKey(1);
-                //oneKeySuccess();
-                
-            } else if (make_2_keys){
-                //at first key
-                if ($scope.input.madeKey === 0){
-                    keyOneOfTwoSetup();
-                    keyOneOfTwoSuccess();
-                } else if($scope.input.madeKey === 1) {
-                    keyTwoOfTwoSetup();
-                    keyTwoOfTwoSuccess();
-                } 
-            }
-            
-            
-        };
+            };
         
        $scope.oneKeySuccess = function(){
             $scope.goToKeySuccess();
@@ -170,27 +156,50 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.subHeadingText = 'Please grab your key from the target below';
             $scope.modalBtn1 = 'Next';
             $scope.input.madeKey = 1;
+            console.info('success, made key: [ 1 ] of [ 1 ]');
+        };
+       $scope.keyOneOfTwoSuccess = function(){
+            $scope.input.madeKey = 1;
+            console.info('success, made key: [ 1 ] of [ 2 ]');
+            $scope.keyTwoOfTwoSetup();
         };
         
         
-        
         $scope.$watch('encoder',function(){
-           console.info(arguments) 
+           //console.info(arguments) 
         });
         $scope.makingKey = 1;
+        $scope.successfulKeyEncode = function(response){
+            //var success = (response.status === "success")? true : false;
+            var success = true;
+            return success;
+        };
+        
+        $scope.successMakeKey = function(response){
+                var makeKeySuccess = $scope.successfulKeyEncode(response);
+                if (makeKeySuccess){
+                    
+                    if ($scope.makingKey === 1 && $scope.input.makeKeys === 1){
+                        $scope.oneKeySuccess();
+                        
+                    } else if($scope.makingKey === 1 && $scope.input.makeKeys === 2) {
+                        $scope.keyOneOfTwoSuccess();
+                        
+                    } else if($scope.makingKey === 2 && $scope.input.makeKeys === 2) {
+                        $scope.keyTwoOfTwoSuccess();
+                    }
+                    
+                } else {
+                    failureMakeKey(response);
+                }
+            };
+        $scope.failureMakeKey = function(response){
+            $scope.$emit('MAKE_KEY_ERROR',response);
+        };
+            
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
-            var successMakeKey = function(response){
-                console.info('success!');
-                console.info(response);
-                $scope.oneKeySuccess();
-            };
-            var failureMakeKey = function(response){
-                //$scope.$emit('GENERAL_ERROR',response);
-                $scope.$emit('MAKE_KEY_ERROR',response);
-                
-            };
-            console.info('$scope.selectedReservation: ',$scope.selectedReservation)
+            
             var options = {
                 card_info: "",
                 is_additional: true,
@@ -198,11 +207,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 key_encoder_id: '1',
                 reservation_id: $scope.selectedReservation.id
             };
-            console.info('encoder selected: ',$scope.zestStationData.selectedKeyEncoder)
             $scope.callAPI(zsTabletSrv.encodeKey, {
                 params: options,
-                'successCallBack':successMakeKey,
-                'failureCallBack':failureMakeKey
+                'successCallBack':$scope.successMakeKey,
+                'failureCallBack':$scope.failureMakeKey
             });
             
         };
@@ -216,10 +224,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.init = function(){
             $scope.selectedReservation = $state.selectedReservation;
             
-            console.info('$state',$state);
-            console.log('$state.current',$state.current)
             if ($state.current.name === 'zest_station.make_keys'){
-                console.log('going to make keys')
                 $scope.at = 'make-keys';
                 $scope.initKeyCreate();
             } else if($state.current.name === 'zest_station.key_success'){
@@ -227,7 +232,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.initKeySuccess();
             } else {
                 $scope.at = 'select-keys-after-checkin';
-                console.info('select keys ')
             }
         };
 
