@@ -67,10 +67,10 @@
                     <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell"> 
                         <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''" class="cell-container" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''">
                             <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE', true)">
-                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRestrictions.html'"></div>
+                                <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/roomCalendarRestrictions.html'"></div>
                             </div>
                             <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content "  >
-                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRestrictions.html'"></div>
+                                <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/roomCalendarRestrictions.html'"></div>
                             </div>
                         </div>
                     </td>
@@ -80,20 +80,20 @@
                     <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''"  ng-repeat="date in calendarData.dates track by $index" class="cell" ng-hide="currentExpandedRow === $parent.$index && !rate.is_hourly" >
                         <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''" class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
                             <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
-                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarDiv.html'"></div>
+                                <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/roomCalendarDiv.html'"></div>
                             </div>
                             <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content"  >
-                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarDiv.html'"></div>
+                                <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/roomCalendarDiv.html'"></div>
                             </div>
                         </div>
                     </td>
                     <td ng-repeat="date in calendarData.dates track by $index" class="cell" ng-show="currentExpandedRow === $parent.$index && !rate.is_hourly" >
                         <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''"  class="exp cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">
                             <div ng-if="!isHistoryDate(date)" class="exp cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
-                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRoomTypeExpanded.html'"></div>
+                                <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/roomCalendarRoomTypeExpanded.html'"></div>
                             </div>
                             <div ng-if="isHistoryDate(date)" class="exp cell-content isHistory-cell-content">
-                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRoomTypeExpanded.html'"></div>
+                                <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/roomCalendarRoomTypeExpanded.html'"></div>
                             </div>
                         </div>
                     </td>

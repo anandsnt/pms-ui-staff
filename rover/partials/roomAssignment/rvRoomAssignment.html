@@ -34,7 +34,7 @@
 				</div>
 				<div class="results">
 					<!-- Advanced search fields -->					
-					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
+					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'/assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
 					
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 
-			<div ng-include="'assets/partials/roomAssignment/rvUpgrades.html'" ng-show="isUpsellAvailable()" ng-controller="RVUpgradesCtrl"> </div>
+			<div ng-include="'/assets/partials/roomAssignment/rvUpgrades.html'" ng-show="isUpsellAvailable()" ng-controller="RVUpgradesCtrl"> </div>
 			<!-- Upgrades available -->
 			<!-- No upgrades -->
 			<div class="upgrades no-content" ng-show="!isUpsellAvailable()">

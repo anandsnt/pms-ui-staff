@@ -45,10 +45,10 @@
     
     
     <div ng-if='!uiOptions.isIpad' scroll-position="initScrollBind()" class="scrollTable" id="rateViewCalendar" style="height:{{uiOptions.tableHeight}}px;">
-        <div ng-include="'assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
+        <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
     </div>
     <div ng-if='uiOptions.isIpad' scroll-position="initScrollBind()" class="scrollTable" id="rateViewCalendar" style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
-        <div ng-include="'assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
+        <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
     </div>
 </div>
 <div class='pinned-bottom'>

@@ -12,6 +12,7 @@ module.exports = function(gulp, $, options) {
 	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
 	    ROVER_JS_MANIFEST_FILE  = "rover_js_manifest.json",
 	    ROVER_CSS_MANIFEST_FILE = "rover_css_manifest.json",
+	    PARTIALS_PATH_LIST 		= ['**/*.html'],
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
 	    LessPluginCleanCSS = require('less-plugin-clean-css'),
     	cleancss = new LessPluginCleanCSS({ advanced: true });
@@ -80,7 +81,7 @@ module.exports = function(gulp, $, options) {
 
 	//Be careful: PRODUCTION
 	gulp.task('rover-template-cache-production', function () {
-	  return gulp.src(['partials/**/*.html'], {cwd:'rover/'})
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'rover/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare:true,
@@ -102,10 +103,11 @@ module.exports = function(gulp, $, options) {
 	});
 
 	gulp.task('rover-template-cache-dev', ['copy-all-dev'], function () {
-	  return gulp.src(['partials/**/*.html'], {cwd:'rover/'})
+
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'rover/'})
 	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
 	            module: 'sntRover',
-	            root: URL_APPENDER + "/partials/"
+	            root: URL_APPENDER
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});
