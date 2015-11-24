@@ -393,7 +393,7 @@ sntRover.service('RVReservationStateService', [
 						_.each(associatedAddons, function(addon) {
 							var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), adultsOnTheDay, childrenOnTheDay)),
 								taxOnCurrentAddon = 0.0,
-								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival, addon.charge_full_weeks_only);
+								shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, for_date, arrival, departure, addon.charge_full_weeks_only);
 							if (applyPromotion) {
 								currentAddonAmount = parseFloat(self.applyDiscount(currentAddonAmount, code.discount, numNights));
 							}
