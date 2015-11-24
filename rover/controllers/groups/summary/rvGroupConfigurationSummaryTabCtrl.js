@@ -10,7 +10,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var whetherSummaryDataChanged = function() {
-			var currentSummaryData = $scope.groupConfigData.summary;
+			var currentSummaryData = _.omit($scope.groupConfigData.summary, ['rooms_total']);
 			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
@@ -676,7 +676,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.posting_account = _.extend({}, {
 				id: summaryData.group_id,
-				name: summaryData.posting_account_name,
+				name: $scope.accountConfigData.summary.posting_account_name,
 				logo: "GROUP_DEFAULT"
 			});
 

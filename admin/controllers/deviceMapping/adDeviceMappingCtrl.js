@@ -148,25 +148,27 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
         };
 	$scope.saveMapping = function(){
 		var successCallbackSave = function(successData){
-                    $scope.$emit('hideLoader');
-                             if($scope.isAddMode){
-                                    // // To add new data to scope
-                                    var pushData = {
-                                            "id":successData.id,
-                                            "station_identifier": $scope.mapping.station_identifier,
-                                            "name": $scope.mapping.name
-                                    };
-                             $scope.data.push(pushData);
-                             $scope.totalCount++;
-                     } else {
-                            // To update data with new value
-                             $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
-                             $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
-                     }
-                    $scope.currentClickedElement = -1;
-                    $scope.isEditMode = false;
-                };
-		var data = {
+    		$scope.$emit('hideLoader');
+			 if($scope.isAddMode){
+				// // To add new data to scope
+				var pushData = {
+					"id":successData.id,
+					"station_identifier": $scope.mapping.station_identifier,
+					"name": $scope.mapping.name
+				};
+    			 $scope.data.push(pushData);
+    			 $scope.totalCount++;
+	    	 } else {
+	    		// To update data with new value
+	    		 $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
+	    		 $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
+	    	 }
+    		$scope.currentClickedElement = -1;
+    		$scope.isEditMode = false;
+    	};
+		var data = {//not getting list of printers from the api at this point, 
+                            //so we will have to rely on zest station or another UI to update the workstation with a default printer
+
 			"name": $scope.mapping.name,
 			"identifier": $scope.mapping.station_identifier
 		};

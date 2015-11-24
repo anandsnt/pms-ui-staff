@@ -394,6 +394,7 @@
     "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
     "TA_SAVE_PROMPT" : "Please save Travel Agent Card first",
     "ADD_BILLLING_INFORMATION" : "Add Billing Information",
+    "BILLLING_INFORMATION" : "Billing Information",
     "BILLING_INFORMATION" : "Billing information",
     "ROUTES_DEFINED" : "routes defined",
     "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number",

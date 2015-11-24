@@ -630,12 +630,14 @@ console.log(arguments)
 	var successPayment = function(data){
 		$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
+		// A temperory fix, This part (payment screens) of App seems broken in many ways 
+		// Will need to refractor as soon as possible
+		$scope.mapPayMentToBill();
+		$scope.$emit('PAYMENT_SUCCESS',data);
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
 		data.billNumber = $scope.renderData.billNumberSelected;
-                $scope.mapPayMentToBill();
-		$scope.$emit('PAYMENT_SUCCESS',data);
 		if($scope.newPaymentInfo.addToGuestCard){
 			var cardCode = $scope.defaultPaymentTypeCard;
 			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
