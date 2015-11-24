@@ -96,7 +96,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				$scope.saveRoomBlock(false, isContract, true);
 			}
 
-			$scope.showSaveButton = false;
+			//$scope.showSaveButton = false;
+			$timeout($scope.closeDialog, 100);
 		};
 
 		$scope.clickedOnApplyToHeldCountsButton = function() {
