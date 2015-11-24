@@ -43,6 +43,7 @@
                     <td type='input' touch-press='openWorkStationList()'>
                          <select id='selectEncoder' class='admin-input select table-count rates-table-count'
                               ng-options="workstation.station_identifier as workstation.name for workstation in zestStationData.workstations" ng-model="zestStationData.selectedWorkStation">
+
                              <option style="display:none" value="">Select a Work Station</option>
                         </select>
                     </td>
