@@ -30,6 +30,12 @@
 						<td data-title="'Workstation ID'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.station_identifier}}
 						</td>
+						<td data-title="'Key Encoder ID'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.key_encoder_id}}
+						</td>
+						<td data-title="'Selected Printer'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.printer}}
+						</td>
 						<td data-title="'Action'" header-class="width-10" class="delete" ng-hide="currentClickedElement == $index" >
 							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDeviceMapping($index, workStations.id)"></a>
 						</td>

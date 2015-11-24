@@ -1,10 +1,16 @@
-sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope) {
+sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv',
+	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add") ? true : false;
 
+		/* Checking permision to show Commission Tab */
 
+		$scope.hasPermissionToViewCommissionTab = function() {
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+		};
+
+		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
@@ -67,6 +73,9 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			}
 			if (tabToSwitch === 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
+			}
+			if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("refreshComissionsScroll");
 			}
 
 			$scope.currentSelectedTab = tabToSwitch;
@@ -137,7 +146,6 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 
 
 		};
-
 
 		/*-------AR account starts here-----------*/
 
@@ -517,6 +525,8 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				angular.element('#uplaodCompanyLogo').trigger('click');
 			}, 0, false);
 		};
+
+		$scope.isEmptyObject = isEmptyObject;
 
 
 	}

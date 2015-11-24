@@ -400,11 +400,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 var successCallBackInventoryCheck = function(response) {
                     $scope.$emit('hideLoader');
                     var availableAddonCount = response.available_count;
-                    var remainingCount = availableAddonCount - (headCount * difference);
+                    var remainingCount = availableAddonCount - (headCount * (difference || 1));
                     /*
                      *  if the available count is less we prompts warning popup
                      */
-                    if (remainingCount > 0 || availableAddonCount === null) {
+                    if (remainingCount >= 0 || availableAddonCount === null) {
                         insertAddon(addon, addonQty);
                     } else {
                         $scope.addon = addon;

@@ -15,7 +15,7 @@
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
                     <div ng-click="clickedLogo()" class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" translate>
-                    </div> 
+                    </div>
                     <div ng-click="clickedLogo()" class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'TRAVELAGENT'" translate>
                     </div>
                     <form method="post" name="change-company-name" id="change-company-name">
@@ -35,7 +35,7 @@
                             <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
                         </div>
                     </form>
-                    
+
                     <div class="card-actions" ng-show="isAddNewCard">
                         <button class="button green" type="button" ng-click="clikedSaveNewCard()" translate>SAVE_NEW_CARD</button>
                         <button class="button blank" type="button" ng-click="clikedDiscardCard()" translate>DISCARD</button>
@@ -44,7 +44,7 @@
             </header>
 
             <!-- Cards Content -->
-            <div class="cards-content"  >               
+            <div class="cards-content"  >
                 <div id="company-card-content" class="card-tabs card-content" >
                     <!-- company Card tabs navigation -->
                     <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -54,6 +54,10 @@
 
                         <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                             <a translate>CONTRACTS</a>
+                        </li>
+
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="isCommissionTabAvailable && account_type == 'TRAVELAGENT' && !isEmptyObject(contactInformation.commission_details) && contactInformation.commission_details.is_on">
+                            <a translate>COMMISSIONS</a>
                         </li>
 
                         <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-accounts'}" ng-click="switchTabTo($event, 'cc-ar-accounts')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
@@ -73,6 +77,9 @@
                     <span ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></span>
                     <!-- Company Card Tab 2 Contract -->
                     <span ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></span>
+                    <!-- Company Card Tab 3 Commissions -->
+                    <span ng-include="'/assets/partials/companyCard/rvCompanyCardCommissions.html'" ng-controller="companyCardCommissionsCtrl"></span>
+
                     <!-- Company Card Tab 3 Ar accounts -->
                     <span ng-controller="companyCardArAccountCtrl" ng-include="'/assets/partials/companyCard/rvcompanyCardArAccount.html'" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable"></span>
                     <!-- Company Card Tab 4 AR Transactions -->

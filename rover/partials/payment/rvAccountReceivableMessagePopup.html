@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
 	
 		<form id="new-payment" class="modal-content form new-content ng-pristine ng-valid" method="post" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" name="new-payment" ng-click="setPosition()">
 			<button id="modal-close" class="modal-close" ng-click="closeDialog()" type="button">

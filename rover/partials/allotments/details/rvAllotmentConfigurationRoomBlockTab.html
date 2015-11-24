@@ -2,25 +2,31 @@
 
     <div id="allotment-room-block-header" class="tab-header with-filters">
         <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}">
-            <label for="allotment-grid-view" tralslate>Grid View</label>
+            <label for="allotment-grid-view" translate>GRID_VIEW_LABEL</label>
             <div class="select">
                 <select id="allotment-grid-view"
                     ng-model="activeGridView"
                     ng-disabled="shouldDisableGridViewSwitch()"
                     ng-change="activeGridViewChanged()">
-                    <option value="CONTRACT" selected>Contract</option>
-                    <option value="CURRENT">Current Status</option>
-                    <option value="RELEASE">Release Dates</option>
+                    <option value="CONTRACT" selected translate>CONTRACT</option>
+                    <option value="CURRENT" translate>CURRENT_STATUS</option>
+                    <option value="RELEASE" translate>RELEASE_DATES</option>
                 </select>
             </div>
         </div>
-
+        <div class="entry date" ng-show="shouldShowRoomBlockActions()">
+            <label for="allotment-start-view" translate>GO_TO_DATE</label>
+            <input id="allotment-start-date" class="datepicker"
+                ui-date="timeLineStartDateOptions"
+                rv-set-textbox-value listen-this="timeLineStartDate | date:dateFormat" readonly />
+        </div>
         <div class="actions" ng-show="shouldShowRoomBlockActions()">
             <!-- If block was created -->
             <button type="button" class="button red"
                 ng-show="shouldShowDiscardButton()"
-                ng-click="clickedOnDiscardButton()">
-                Discard Changes
+                ng-click="clickedOnDiscardButton()"
+                translate >
+                DISCARD_CHANGES
             </button>
             <button type="button" class="button"
                 ng-class="{ 'grey': shouldDisableApplyToHeldCountsButton(),
@@ -28,15 +34,17 @@
                           }"
                 ng-disabled="shouldDisableApplyToHeldCountsButton()"
                 ng-show="shouldShowApplyToHeldCountsButton()"
-                ng-click="clickedOnApplyToHeldCountsButton()">
-                Apply to Held Room Counts
+                ng-click="clickedOnApplyToHeldCountsButton()"
+                translate >
+                APPLY_TO_HELD
             </button>
             <button type="button" class="button green"
                 ng-class="{ 'grey': shouldDisableApplyToContractButton() }"
                 ng-disabled="shouldDisableApplyToContractButton()"
                 ng-show="shouldShowApplyToContractButton()"
-                ng-click="clickedOnUpdateContractButton()">
-                Update Contract
+                ng-click="clickedOnUpdateContractButton()"
+                translate >
+                UPDATE_CONTRACT
             </button>
             <button type="button" class="button"
                 ng-class="{ 'grey': shouldDisableApplyToHeldToContractButton(),
@@ -44,15 +52,17 @@
                           }"
                 ng-disabled="shouldDisableApplyToHeldToContractButton()"
                 ng-show="shouldShowApplyToHeldToContractButton()"
-                ng-click="clickedOnApplyToHeldToContractButton()">
-                Apply To Held Count To Contract
+                ng-click="clickedOnApplyToHeldToContractButton()"
+                translate >
+                APPLY_TO_CONTRACT
             </button>
             <button type="button" class="button green"
                 ng-class="{ 'grey': shouldDisableApplyToCurrrentButton() }"
                 ng-disabled="shouldDisableApplyToCurrrentButton()"
                 ng-show="shouldShowApplyToCurrentButton()"
-                ng-click="clickedOnUpdateCurrentButton()">
-                Update Current
+                ng-click="clickedOnUpdateCurrentButton()"
+                translate >
+                UPDATE_CURRENT
             </button>
         </div>
     </div>

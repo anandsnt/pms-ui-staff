@@ -66,7 +66,7 @@ var dependencies = [
 checkoutRoomVerificationViewController
 ];
 
-snt.controller('checkoutRoomVerificationViewController', dependencies);
+sntGuestWeb.controller('checkoutRoomVerificationViewController', dependencies);
 })();
 
 

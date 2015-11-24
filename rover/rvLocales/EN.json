@@ -234,7 +234,32 @@
     "SELECT_CHARGE_CODE" : "Select Charge Code",
     "CHARGE_CODE" : "Charge Code",
     "ON" : "On",
-    "OFF" : "Off"
+    "OFF" : "Off",
+    "COMMISSION_START_DATE" : "Start Date",
+    "COMMISSION_CLEAR_QUERY" : "Clear query",
+    "COMMISSION_END_DATE" : "End Date",
+    "COMMISSION_COMMISSIONABLE" : "Commisionable",
+    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commisionable",
+    "COMMISSION_PAID_STATUS" : "Paid Status",
+    "COMMISSION_SET_STATUS" : "Set Status",
+    "COMMISSION_UNPAID" : "Unpaid",
+    "COMMISSION_PAID" : "Paid",
+    "COMMISSION_STATUS" : "Status",
+    "COMMISSION_PREPAID" : "Prepaid",
+    "COMMISSION_UPDATE" : "Update",
+    "COMMISSION_TOTEL_REVENUE" : "Total Revenue",
+    "COMMISSION_TO_DATE" : "Commission To Date",
+    "COMMISSION_SELECT" : "Select",
+    "COMMISSION_SET_PAID_STATUS" : "Set Paid Status",
+    "COMMISSION_REVENUE" : "Revenue",
+    "COMMISSION_NEXT" : "NEXT",
+    "COMMISSION_PREVIOUS" : "PREVIOUS",
+    "COMMISSION_ITEMS" : "items",
+    "COMMISSION_SHOWING" : "Showing",
+    "COMMISSIONS" : "Commissions",
+    "COMMISSION_ALL" : "All",
+    "COMMISSION_Tax" : "Tax"
+
     
    
 
@@ -301,7 +326,7 @@
     "WEBSOCKET_CONNECTION_ERROR":"Could not connect to the card handler service. The card swipe facility will not be available for this session."
 
 ,
-	
+
 	"CONTRACTED_NIGHTS": "Contracted Nights",
 	"COPY_VALUES": "Copy values",
 	"COMPANY": "Company",
@@ -310,7 +335,7 @@
     "CONTRACTS": "Contracts",
     "RESERVATIONS": "Reservations",
     "FIND_CARDS":"FIND CARDS",
-    
+
     "COMAPNY_INFO": "Company Info",
     "COUNTRY": "Country",
     "SELECT_COUNTRY": "Select country",
@@ -319,7 +344,7 @@
     "PREVIEW_NOT_AVAILABLE": "Preview not available",
     "EXTENDED_COMPANY_DETAILS": "Extended Company Details",
     "PRIMARY_CONTACT_DETAILS": "Primary Contact Details",
-    
+
     "SELECT_CONTRACT": "Select contract",
     "NEW_CONTRACT": "New Contract",
     "SAVE_CONTRACT": "Save Contract",
@@ -339,7 +364,7 @@
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
     "AVERAGE_RATE": "Average Rate",
-    
+
 	"COMPANY_CARD": "Company Card",
 	"TA_CARD": "Travel Agent Card",
 	"CREATE_NEW": "Create New",
@@ -369,6 +394,7 @@
     "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
     "TA_SAVE_PROMPT" : "Please save Travel Agent Card first",
     "ADD_BILLLING_INFORMATION" : "Add Billing Information",
+    "BILLLING_INFORMATION" : "Billing Information",
     "BILLING_INFORMATION" : "Billing information",
     "ROUTES_DEFINED" : "routes defined",
     "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number",

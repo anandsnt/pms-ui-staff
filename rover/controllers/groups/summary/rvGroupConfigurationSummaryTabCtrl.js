@@ -676,7 +676,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.posting_account = _.extend({}, {
 				id: summaryData.group_id,
-				name: summaryData.posting_account_name,
+				name: $scope.accountConfigData.summary.posting_account_name,
 				logo: "GROUP_DEFAULT"
 			});
 

@@ -223,6 +223,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
+				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
 					$scope.leftColSpan = 8;
 					$scope.rightColSpan = 8;
 					break;

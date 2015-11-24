@@ -477,6 +477,134 @@
                         }
                     }
                 }
+
+                /* Commisions ***/
+                &.commision {
+
+                    a,
+                    .faux-anchor { background-position: 98%; }
+
+                    .values {
+                        margin: 0;
+                        .pull-left;
+
+                        .value-block {
+                            font-size: 14px;
+                            line-height: 1;
+                            color: @grey3;
+                            padding: 0 20px;
+                            text-align: center;
+                            .pull-left; 
+
+                            strong {
+                                color: @textColor;
+                                font-weight: 600;
+                                line-height: 26px;
+                                .show;
+                            }
+
+                            &:not(:last-child) { .box-shadow(1px 0 0 rgba(0,0,0,.1)); }
+                        }
+                    }
+
+                    &.in-card {
+                        .data {
+                            margin-right: 20px;
+                            .calc-width(45, 148); 
+
+                            h2 {
+                                font-size: 20px;
+                                line-height: 1;
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        .values {
+                            margin-right: 20px;
+                            .calc-width(55, 148);
+                        }
+
+                        .prepaid,
+                        .switch-button {
+                            margin-right: 20px;
+                            visibility: visible;
+                            #fade > .in();
+                            .pull-left;
+                            .size(40px, 150px);
+                        }
+
+                        .prepaid {
+                            text-align: center;
+                            font-size: 14px;
+                            line-height: 40px;
+                            text-transform: uppercase;
+                            color: @logoPrimary;
+                        }
+
+                        .switch-button {
+                            .data-off,
+                            .data-on {
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                line-height: 30px;
+                                height: 30px;
+                                left: auto;
+
+                                &.data-off { 
+                                   right: -100%;
+
+                                    .switch-icon { 
+                                        margin: 0 5px 0 0; 
+                                        .gradient(@greenStart, @greenEnd);                                    
+                                    }
+                                }
+                                
+                                &.data-on { 
+                                    right: 0;
+
+                                    .switch-icon { 
+                                        margin: 0 0 0 5px; 
+                                        .gradient(@redStart, @redEnd);
+                                    }
+                                }
+                            }
+
+                            &.on {
+                                .data-off { right: 0; }
+                                .data-on { right: 100%; }
+                            }
+                        }
+
+                        .checkbox {
+                            padding: 0;
+                            margin: 0;
+                            .square(40px);
+                            .hide-text();
+                            .pull-left;
+
+                            input { .square(40px); }
+
+                            .icon-form { 
+                                left: 10px; 
+                                background-color: @grey2;
+                            }
+                        }
+                    }
+
+                    &.selected {
+                        .values {
+                            .value-block {
+                                strong { color: @logoPrimary; }
+                            }
+                        }
+
+                        .prepaid,
+                        .switch-button { 
+                            visibility: hidden;
+                            #fade > .out();
+                        }
+                    }
+                }
             }
 
             /* Rooms ***/
