@@ -110,7 +110,18 @@
     "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
     "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this",
     "INSUFFICIENT_INV_ALLOTMENT_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Allotment, please review Allotment Room Block",
-    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"   
+    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again",
+    "DISCARD_CHANGES": "Discard Changes",
+    "APPLY_TO_HELD": "Apply to Held Room Counts",
+    "UPDATE_CONTRACT": "Update Contract",
+    "UPDATE_CURRENT": "Update Current",
+    "APPLY_TO_CONTRACT": "Apply To Held Count To Contract",
+    "CONTRACT": "Contract",
+    "CURRENT_STATUS": "Current Status",
+    "RELEASE_DATES": "Release Dates",
+    "GRID_VIEW_LABEL": "Grid View",
+    "ALLOTMENT_NEXT_SET": "Next 14 Days",
+    "GO_TO_DATE": "Go To Date"
 
 
 
@@ -281,6 +292,7 @@
     "MENU_CREATE_RESERVATION" : "Create Reservation",
     "MENU_ROOM_ASSIGNMENT":"Room Assignment",
     "MENU_POST_CHARGES":"Post Charges",
+    "MENU_ACTIONS_MANAGER":"Actions Manager",
     "MENU_CASHIER":"Cashier",
     "MENU_END_OF_DAY":"End of Day",
     "MENU_CONVERSATIONS":"Conversations",
