@@ -121,6 +121,7 @@ sntZestStation.controller('zsHomeCtrl', [
     
         
     $scope.saveAdminSettings = function(){
+        //alert('saving workstation settings')
     	var saveCompleted = function(){
     		$scope.$emit('hideLoader');
                 $scope.saveWorkStation();
@@ -232,8 +233,20 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.showWorkStationList = false;
     };
     
+    $scope.workStationObj = {};
+    $scope.$watch('zestStationData.selectedWorkStation',function(){
+        $scope.workStationObj = {};
+        for (var i in $scope.zestStationData.workstations){
+            if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
+                $scope.workStationObj = $scope.zestStationData.workstations[i];
+                console.log($scope.workStationObj);
+            }
+        }
+    });
     
+    $scope.init = function(){
+        $state.input = {};  
+    };
+    $scope.init();
     
-    
-
 }]);

@@ -8,7 +8,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 	$scope.successMessage = "";
 	$scope.errorMessage ="";
 	$scope.fileName = "Choose File....";
-	if($rootScope.isEnabledRoomTypeByRoomClass){
+	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone){
 		$scope.getRoomClassList();
 	}	
 	//To list room types

@@ -40,7 +40,7 @@
 				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
 			}
 			else {
-				$scope.errorMessage = response.errors[0];
+				$scope.netWorkError = true;
 			}
 		},function(){
 			$scope.netWorkError = true;
