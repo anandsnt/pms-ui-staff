@@ -126,10 +126,13 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1
 			};
-			$scope.massUpdateEndDate = new tzIndependentDate(summaryData.block_to);
+			var maxDate = new tzIndependentDate(summaryData.block_to);
+			maxDate.setDate(maxDate.getDate()-1);
+			$scope.massUpdateEndDate = new tzIndependentDate(maxDate);
+
 			$scope.massUpdateEndDateOptions = _.extend({
 				minDate: $scope.timeLineStartDate,
-				maxDate: summaryData.block_to,
+				maxDate: maxDate,
 				onSelect: onEndDatePicked,
 			}, commonDateOptions);
 		};

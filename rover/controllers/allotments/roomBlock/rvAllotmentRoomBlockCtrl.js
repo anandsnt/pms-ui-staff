@@ -1720,10 +1720,13 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				numberOfMonths: 1
 			};
 
+			var maxDate = new tzIndependentDate(summaryData.block_to);
+			maxDate.setDate(maxDate.getDate()-1);
+
 			//date picker options - Start Date
 			$scope.timeLineStartDateOptions = _.extend({
 				minDate: summaryData.block_from,
-				maxDate: summaryData.block_to,
+				maxDate: maxDate,
 				onSelect: $scope.onTimeLineStartDatePicked,
 			}, commonDateOptions);
 
