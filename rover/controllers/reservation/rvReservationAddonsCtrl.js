@@ -356,37 +356,36 @@ sntRover.controller('RVReservationAddonsCtrl', [
                  *
                  */
                 $scope.selectedAddonName = addon.title;
-                var fetchHeadCount = function(type, count) {
-                        var remainingCount = 0;
-                        if (type === 'Entire Stay') {
-                            remainingCount = $scope.duration_of_stay * count;
+                var getTotalPostedAddons = function(postType, baseCount) {
+                        var postingRythm = parseInt(postType.frequency, 10);
+                        if (postingRythm === 0) {
+                            return baseCount;
+                        } else if (postingRythm === 1) {
+                            return baseCount * $scope.duration_of_stay;
                         } else {
-                            remainingCount = count;
-                        };
-                        return remainingCount;
+                            return baseCount * ($scope.duration_of_stay / postingRythm);
+                        }
                     },
                     headCount = 0,
                     roomCount = $scope.reservationData.tabs[$scope.viewState.currentTab].roomCount;
 
-                if (addon.amountType.description === 'Person') {
-                    headCount = fetchHeadCount(addon.postType.description, $scope.reservationData.number_of_adults + $scope.reservationData.number_of_children);
-                } else if (addon.amountType.description === 'Adult') {
-                    headCount = fetchHeadCount(addon.postType.description, $scope.reservationData.number_of_adults);
-                } else if (addon.amountType.description === 'Child') {
-                    headCount = fetchHeadCount(addon.postType.description, $scope.reservationData.number_of_children);
-                } else if (addon.amountType.description === 'Flat') {
-                    headCount = fetchHeadCount(addon.postType.description, 1);
+                if (addon.amountType.value === 'PERSON') {
+                    headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_adults + $scope.reservationData.number_of_children);
+                } else if (addon.amountType.value === 'ADULT') {
+                    headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_adults);
+                } else if (addon.amountType.value === 'CHILD') {
+                    headCount = getTotalPostedAddons(addon.postType, $scope.reservationData.number_of_children);
+                } else if (addon.amountType.value === 'FLAT') {
+                    headCount = getTotalPostedAddons(addon.postType, 1);
                 };
 
                 // account for room-count
                 headCount = headCount * roomCount;
 
                 var newAddonQty = 0;
-                var alreadyAdded = false;
                 angular.forEach($scope.addonsData.existingAddons, function(item, index) {
                     if (item.id === addon.id) {
                         newAddonQty = parseInt(item.quantity) + parseInt(addonQty);
-                        alreadyAdded = true;
                     }
                 });
                 var oldAddonQty = 0;
@@ -395,12 +394,16 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         oldAddonQty = parseInt(item.quantity) + parseInt(addonQty);
                     }
                 });
-                var difference = alreadyAdded ? ((newAddonQty - oldAddonQty) === 0) ? 1 : (newAddonQty - oldAddonQty) : newAddonQty;
+                var difference = newAddonQty - oldAddonQty;
+
+                if(difference < 0){
+                    difference = 0;
+                }
 
                 var successCallBackInventoryCheck = function(response) {
                     $scope.$emit('hideLoader');
                     var availableAddonCount = response.available_count;
-                    var remainingCount = availableAddonCount - (headCount * (difference || 1));
+                    var remainingCount = availableAddonCount - (headCount * (difference || 1) * addonQty);
                     /*
                      *  if the available count is less we prompts warning popup
                      */
