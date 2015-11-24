@@ -76,6 +76,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 				// Save room block now.
 				$scope.saveReleaseDays();
+				$timeout($scope.closeDialog, 100);
 
 			}
 			// Copying contract or held counts
@@ -94,9 +95,9 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 				// Save room block now.
 				$scope.saveRoomBlock(false, isContract, true);
+				$scope.showSaveButton = false;
 			}
 
-			$scope.showSaveButton = false;
 		};
 
 		$scope.clickedOnApplyToHeldCountsButton = function() {
