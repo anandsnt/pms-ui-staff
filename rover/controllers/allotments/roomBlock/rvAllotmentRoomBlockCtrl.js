@@ -738,6 +738,61 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
+		$scope.checkOverBooking = function(error) {
+			var message 			 	= null,
+				isHouseOverbooked  	 	= error.is_house_overbooked,
+				overBookedRoomTypes  	= [],
+				isRoomTypeOverbooked   	= false,
+				overBookingOccurs		= false,
+				canOverbookHouse		= hasPermissionToOverBookHouse(),
+				canOverbookRoomType		= hasPermissionToOverBookRoomType(),
+				canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
+
+			_.each(error.room_type_hash, function(roomType) {
+				var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
+					editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, {
+													room_type_id: roomType.room_type_id
+								  				});
+
+				// check if overbooking case has occured due to a new change
+				var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
+					function(dateData) {
+						var newTotal 		 = $scope.getTotalHeldOfIndividualRoomType(dateData);
+							detailHasChanged = dateData.old_total != newTotal;
+						return (dateData.availability < 0 && !detailHasChanged);
+					});
+
+				// only mark this roomtype & date if if not already overbooked.
+				if (overBookedDates.length > alreadyOverbooked.length)
+					overBookedRoomTypes.push(roomType);
+			});
+
+			isRoomTypeOverbooked = overBookedRoomTypes.length > 0;
+			overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
+
+			overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
+
+			if (!overBookingOccurs) {
+				return false;
+			}
+
+			// show appropriate overbook message.
+			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
+				return "HOUSE_AND_ROOMTYPE_OVERBOOK";
+			}
+			else if(isHouseOverbooked && canOverbookHouse) {
+				return "HOUSE_OVERBOOK";
+			}
+			else if(isRoomTypeOverbooked && canOverbookRoomType){
+				return "ROOMTYPE_OVERBOOK";
+			}
+			// Overbooking occurs and has no permission.
+			else {
+				return "NO_PERMISSION"
+			}
+
+		};
+
 		/**
 		 * Handles the failure case of inventory save
 		 * A 470 status for response means overbooking occurs.
@@ -747,60 +802,17 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		var failureCallBackOfSaveRoomBlock = function(error) {
 			if(error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
-					var message 			 	= null,
-						isHouseOverbooked  	 	= error.is_house_overbooked,
-						overBookedRoomTypes  	= [],
-						isRoomTypeOverbooked   	= false,
-						overBookingOccurs		= false,
-						canOverbookHouse		= hasPermissionToOverBookHouse(),
-						canOverbookRoomType		= hasPermissionToOverBookRoomType(),
-						canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
-
-					_.each(error.room_type_hash, function(roomType) {
-						var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
-							editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, {
-															room_type_id: roomType.room_type_id
-										  				});
-
-						// check if overbooking case has occured due to a new change
-						var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
-							function(dateData) {
-								var newTotal 		 = $scope.getTotalHeldOfIndividualRoomType(dateData);
-									detailHasChanged = dateData.old_total != newTotal;
-								return (dateData.availability < 0 && !detailHasChanged);
-							});
-
-						// only mark this roomtype & date if if not already overbooked.
-						if (overBookedDates.length > alreadyOverbooked.length)
-							overBookedRoomTypes.push(roomType);
-					});
-
-					isRoomTypeOverbooked = overBookedRoomTypes.length > 0;
-					overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
-
-					// show appropriate overbook message.
-					if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
-						message = "HOUSE_AND_ROOMTYPE_OVERBOOK";
-						showOverBookingPopup(message);
-						return;
-					}
-					else if(isHouseOverbooked && canOverbookHouse) {
-						message = "HOUSE_OVERBOOK";
-						showOverBookingPopup(message);
-						return;
-					}
-					else if(isRoomTypeOverbooked && canOverbookRoomType){
-						message = "ROOMTYPE_OVERBOOK";
-						showOverBookingPopup(message);
-						return;
-					}
-					// Overbooking occurs and has no permission.
-					else if(overBookingOccurs) {
-						showNoPermissionOverBookingPopup();
-						return false;
+					var message = $scope.checkOverBooking(error);
+					if (!message) {
+						// overbooking condition does not exist
+						$scope.saveRoomBlock(true);
 					}
 					else {
-						$scope.saveRoomBlock(true);
+						if (message === "NO_PERMISSION"){
+							showNoPermissionOverBookingPopup();
+						} else {
+							showOverBookingPopup(message);
+						}
 					}
 				}
 			} else {
@@ -814,20 +826,18 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * 	1. The controller $scope.onBlockRoomGrid
 		 * 	2. The warnReleaseRoomsPopup.html template
 		 * @param {boolean} forceOverbook
+		 * @param {boolean} if only contract counts updated
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate, massUpdate) {
+		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate) {
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
-			massUpdate = massUpdate || false;
 
-			if ($scope.massUpdateSelected || massUpdate) {
-				$scope.massUpdateSelected = true;
-				var data = [$scope.selectedRoomType];
-			} else {
-				data = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings
+			if ($scope.massUpdateSelected) {
+				$scope.$broadcast("SAVE_MASS_UPDATE", forceOverbook, isContratUpdate);
 			}
 
+			var data = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: data,
