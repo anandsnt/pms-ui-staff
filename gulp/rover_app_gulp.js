@@ -4,7 +4,7 @@ module.exports = function(gulp, $, options) {
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    ROVER_ASSET_LIST_ROOT   = '../rover/',
-	    ROVER_JS_ASSET_LIST     = require ("./asset_list/roverJsAssetList").getList(),
+	    ROVER_JS_ASSET_LIST     = require ("./asset_list/roverJsAssetList").getList(), //require ("./asset_list/dashboardJsAssetList").getList(),
 	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
 	    ROVER_JS_COMBINED_FILE  = 'rover.js',
 	    ROVER_CSS_FILE  		= 'rover.css',
@@ -89,7 +89,7 @@ module.exports = function(gulp, $, options) {
 	  		}))
 	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {
 	            module: 'sntRover',
-	            root: URL_APPENDER + "/partials/"
+	            root: URL_APPENDER
 	        }))
 	        .pipe($.uglify({compress:true}))
 			.pipe($.rev())
