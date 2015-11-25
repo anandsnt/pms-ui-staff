@@ -2348,6 +2348,7 @@ sntRover.controller('RVbillCardController',
 		$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 	};
 
+	// CICO-22445: Refresh billing screen after entering routing
 	$scope.$on('BILLINGINFOADDED', function () {
     	var fetchBillDataSuccessCallback = function(billData){
 		 	$scope.$emit('hideLoader');
