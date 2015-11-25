@@ -8,8 +8,20 @@
                 rv-set-textbox-value listen-this="massUpdateEndDate | date:dateFormat" readonly />
         </div>
         <div class="actions">
-            <button type="button" class="button green" ng-click="clickedOnSaveButton()" translate>SAVE</a>
-            <button type="button" class="button blank" ng-click="closeDialog()" translate>CANCEL</button>
+            <button type="button" class="button green" ng-show="showSaveButton" ng-click="clickedOnSaveButton()" translate>SAVE</a>
+            <button type="button" class="button brand-colors"
+                ng-show="!showSaveButton && shouldShowApplyToHeldCountsButton()"
+                ng-click="clickedOnApplyToHeldCountsButton();"
+                translate >
+                APPLY_TO_HELD
+            </button>
+            <button type="button" class="button brand-colors"
+                ng-show="!showSaveButton && shouldShowApplyToHeldToContractButton()"
+                ng-click="clickedOnApplyToHeldToContractButton();"
+                translate >
+                APPLY_TO_CONTRACT
+            </button>
+            <button type="button" class="button blank" ng-click="clickedOnDiscardButton(); closeDialog()" translate>CANCEL</button>
         </div>
     </div>
 </div>
