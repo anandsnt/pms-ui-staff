@@ -66,6 +66,7 @@ sntZestStation.controller('zsHomeCtrl', [
         });
         setTimeout(function(){
             $('.ngdialog-close').hide();
+            
         },50);
     };
 
@@ -121,6 +122,7 @@ sntZestStation.controller('zsHomeCtrl', [
     
         
     $scope.saveAdminSettings = function(){
+        //alert('saving workstation settings')
     	var saveCompleted = function(){
     		$scope.$emit('hideLoader');
                 $scope.saveWorkStation();
@@ -227,13 +229,39 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.openWorkStationList = function(){
         $scope.showWorkStationList = true;
+        
+        $('.ngdialog-content').addClass('zoku-style');
+        
     };
     $scope.closeWorkStationList = function(){
         $scope.showWorkStationList = false;
     };
     
+    $scope.workStationObj = {};
+    $scope.$watch('zestStationData.selectedWorkStation',function(){
+        $scope.workStationObj = {};
+        for (var i in $scope.zestStationData.workstations){
+            if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
+                $scope.workStationObj = $scope.zestStationData.workstations[i];
+                console.log($scope.workStationObj);
+            }
+        }
+    });
     
+    $scope.init = function(){
+        $state.input = {};  
+            if (typeof cordova !== typeof undefined){
+        setTimeout(function(){
+                $('.modal-content').addClass('ng-hide');
+                $('.tablet-popup').addClass('size-up');
+            
+            setTimeout(function(){
+                $('.modal-content').removeClass('ng-hide');
+                $scope.$apply();
+            },100);
+                $scope.$apply();
+        },50);}
+    };
+    $scope.init();
     
-    
-
 }]);

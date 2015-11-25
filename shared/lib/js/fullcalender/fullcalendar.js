@@ -1952,6 +1952,21 @@ function getSkinCss(event, opt) {
 	return statements.join(';');
 }
 
+function getTooltipPosition(segment) {
+
+   var toolTipPosition = {};
+   if(segment.event.currentCalendar === "left" && (segment.leftCol === 0 || segment.leftCol === 1)){
+        toolTipPosition.at = 'top center';
+        toolTipPosition.my = 'bottom left';
+   }else if(segment.event.currentCalendar === "right" && (segment.leftCol === 5 || segment.leftCol === 6)){
+    	    	toolTipPosition.at = 'top center';
+               toolTipPosition.my = 'bottom right';
+            } else {
+            	toolTipPosition.at = 'top center';
+                toolTipPosition.my = 'bottom center';
+            }
+    return toolTipPosition;
+}
 
 function applyAll(functions, thisObj, args) {
 	if ($.isFunction(functions)) {
@@ -5376,6 +5391,7 @@ function DayEventRenderer() {
 		// generate a semicolon delimited CSS string for any of the "skin" properties
 		// of the event object (`backgroundColor`, `borderColor` and such)
 		var skinCss = getSkinCss(event, opt);
+		var tooltipPosition = getTooltipPosition(segment);
 
 		if (url) {
 			html += "<a href='" + htmlEscape(url) + "'";
@@ -5389,7 +5405,7 @@ function DayEventRenderer() {
 			" data-room-type='" + htmlEscape(event.roomType || '') + "'";
             if(segment.event.toolTipData && segment.event.toolTipData.bestAvailableRate !== "" && event.toolTipData !== 'undefined'){
                html += "qtipfc qtip-template='/assets/partials/reservation/rvTooltipContent.html'"+
-			"qtip-template-object='segments[" + index + "]'";
+					"qtip-template-object='segments[" + index + "]' qtip-at='"+tooltipPosition.at+"' qtip-my='"+tooltipPosition.my+"'";
             }
 			
             html += " style=" +

@@ -19,7 +19,7 @@
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
                         <label>{{'BESTSELLER' | translate}}</label>
-                        <input type="checkbox" ng-model="singleAddon.bestseller">
+                        <input type="checkbox" ng-model="singleAddon.bestseller" ng-change="bestsellerChanged()">
                     </label>
                 </div>
                 <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
@@ -37,7 +37,7 @@
                     </label>
                 </div>
                 <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
-                    <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count" required="yes"></ad-textbox>
+                    <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count"></ad-textbox>
                 </div>
             </fieldset>
             <fieldset class="holder right float">
