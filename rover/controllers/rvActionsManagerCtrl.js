@@ -304,6 +304,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                     }
                     $scope.recountAfterDelete = false;
                 }
+                
+                if ($scope.actions.totalCount === 0){
+                    $scope.initNewAction();
+                }
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');

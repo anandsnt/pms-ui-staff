@@ -7,9 +7,17 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	$scope.isAddMode = false;
 	$scope.addEditTitle = "";
 	$scope.isEditMode = false;
-   /*
-    * To fetch list of device mappings
-    */
+        /*
+         * To fetch list of device mappings
+         */
+        $scope.getKeyEncoderDescription = function(id){
+            var encoders = $scope.key_encoders;
+            for (var i in encoders){
+                if (encoders[i].id === id){
+                    return encoders[i].description;
+                }
+            }
+        };
 	$scope.listDevices = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
@@ -18,11 +26,16 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+                        
+                        for (var i in data.work_stations){//pull in the description of the key encoder
+                            data.work_stations[i].key_encoder_description = $scope.getKeyEncoderDescription(data.work_stations[i].key_encoder_id);
+                        }
+                        
 			$scope.data = data.work_stations;
 			$scope.currentPage = params.page();
-        	params.total(data.total_count);
-        	$scope.isAddMode = false;
-            $defer.resolve($scope.data);
+                        params.total(data.total_count);
+                        $scope.isAddMode = false;
+                        $defer.resolve($scope.data);
 		};
 		$scope.invokeApi(ADDeviceSrv.fetch, getParams, fetchSuccessOfItemList);
 	};
@@ -40,7 +53,6 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		        getData: $scope.listDevices
 		    }
 		);
-            $scope.fetchKeyEncoderList();
                 
 	};
 
@@ -54,6 +66,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
         $scope.fetchKeyEncoderList = function(){
             var onSuccess = function(data){
                     $scope.key_encoders = data.results;
+                    $scope.loadTable();//this loads up after key encoders so we can get the key encoder description first
                     $scope.$emit('hideLoader');
             };
             var options = {
@@ -64,7 +77,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
             $scope.callAPI(ADKeyEncoderSrv.fetchEncoders, options);
         };
         
-	$scope.loadTable();
+            $scope.fetchKeyEncoderList();
         
 	//To list device mappings
 	/*
@@ -80,6 +93,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){
 	 		$scope.mapping = data;
+                        $scope.mapping.selectedKeyEncoder = data.key_encoder_id;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	$scope.mapping.id = id;
@@ -146,40 +160,57 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
             } else return true;
             
         };
+        $scope.updateCurrentWorkstation = function(){
+            // To update data with new value
+             $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
+             $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
+             $scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.mapping.selectedKeyEncoder;
+             $scope.data[parseInt($scope.currentClickedElement)].key_encoder_id = $scope.mapping.selectedKeyEncoder;
+             $scope.data[parseInt($scope.currentClickedElement)].default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
+             $scope.data[parseInt($scope.currentClickedElement)].key_encoder_description = $scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder);
+        };
+        $scope.addWorkstationRenderData = function(successData){
+                // // To add new data to scope
+                var pushData = {
+                        "id":successData.id,
+                        "encoder_id":$scope.mapping.selectedKeyEncoder,
+                        "station_identifier": $scope.mapping.station_identifier,
+                        "name": $scope.mapping.name,
+                        "key_encoder_id":$scope.mapping.selectedKeyEncoder,
+                        "key_encoder_description":$scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder)
+                };
+             $scope.data.push(pushData);
+             $scope.totalCount++;
+        };
+        $scope.successSaveMapping = function(successData){
+            $scope.$emit('hideLoader');
+            if($scope.isAddMode){
+                $scope.addWorkstationRenderData();
+             } else {
+                 $scope.updateCurrentWorkstation(successData);
+             }
+
+            $scope.currentClickedElement = -1;
+            $scope.isEditMode = false;
+            $scope.loadTable();
+        };
 	$scope.saveMapping = function(){
-		var successCallbackSave = function(successData){
-    		$scope.$emit('hideLoader');
-			 if($scope.isAddMode){
-				// // To add new data to scope
-				var pushData = {
-					"id":successData.id,
-					"station_identifier": $scope.mapping.station_identifier,
-					"name": $scope.mapping.name
-				};
-    			 $scope.data.push(pushData);
-    			 $scope.totalCount++;
-	    	 } else {
-	    		// To update data with new value
-	    		 $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
-	    		 $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
-	    	 }
-    		$scope.currentClickedElement = -1;
-    		$scope.isEditMode = false;
-    	};
 		var data = {//not getting list of printers from the api at this point, 
                             //so we will have to rely on zest station or another UI to update the workstation with a default printer
-
 			"name": $scope.mapping.name,
 			"identifier": $scope.mapping.station_identifier
 		};
                 if (typeof $scope.mapping.selectedKeyEncoder !== typeof undefined){
                     data.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
                 }
+                
+                
 		if($scope.isAddMode){
-			$scope.invokeApi(ADDeviceSrv.createMapping, data , successCallbackSave);
+                    $scope.invokeApi(ADDeviceSrv.createMapping, data , $scope.successSaveMapping);
 		} else {
-			data.id = $scope.mapping.id;
-			$scope.invokeApi(ADDeviceSrv.updateMapping, data , successCallbackSave);
+                    data.id = $scope.mapping.id;
+                    $scope.mapping.selectedKeyEncoder = data.default_key_encoder_id;
+                    $scope.invokeApi(ADDeviceSrv.updateMapping, data , $scope.successSaveMapping);
 		}
 	};
 }]);
