@@ -16,6 +16,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		util,
 		rvAllotmentConfigurationSrv) {
 
+		var overbookingOccurs = false;
+
 		var formatDateForAPI = function(date) {
 			return $filter('date')(date, $rootScope.dateFormatForAPI)
 		};
@@ -135,6 +137,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 							$scope.disableButtons = true;
 						} else {
 							$scope.overBookingMessage = message;
+							overbookingOccurs = true;
 						}
 					}
 				}
@@ -167,6 +170,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.saveMassUpdate, options);
 			lastCalledMassUpdateConfig = config;
+			overbookingOccurs = false;
 		};
 
 		$scope.$on("SAVE_MASS_UPDATE", function(event, forceOverbook, isContratUpdate) {
