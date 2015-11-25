@@ -185,10 +185,10 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
         $scope.successSaveMapping = function(successData){
             $scope.$emit('hideLoader');
             if($scope.isAddMode){
-                $scope.addWorkstationRenderData();
-             } else {
-                 $scope.updateCurrentWorkstation(successData);
-             }
+                $scope.addWorkstationRenderData(successData);
+            } else {
+                $scope.updateCurrentWorkstation();
+            }
 
             $scope.currentClickedElement = -1;
             $scope.isEditMode = false;
