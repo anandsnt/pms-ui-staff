@@ -197,11 +197,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             console.log($scope.zestStationData)
             var options = {
                 card_info: "",
-                is_additional: true,
                 key: $scope.makingKey,
                 key_encoder_id: $scope.zestStationData.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
+            if ($scope.makingKey === 1){
+                options.is_additional = false;
+            } else {
+                options.is_additional = true;
+            }
             $scope.callAPI(zsTabletSrv.encodeKey, {
                 params: options,
                 'successCallBack':$scope.successMakeKey,
