@@ -655,6 +655,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	    	    $scope.headerButtonClicked();
 	    	    $scope.updateCardInfo();
 	    	    $scope.$parent.$emit('BILLINGINFOADDED');
+                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
 	    	};
 
 	    	var defaultRoutingSaveSuccess = function(){
