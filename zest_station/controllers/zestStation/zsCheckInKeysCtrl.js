@@ -165,13 +165,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         
         
-        $scope.$watch('encoder',function(){
-           //console.info(arguments) 
-        });
         $scope.makingKey = 1;
         $scope.successfulKeyEncode = function(response){
-            //var success = (response.status === "success")? true : false;
-            var success = true;
+            var success = (response.status === "success")? true : false;
             return success;
         };
         
@@ -190,25 +186,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
                     
                 } else {
-                    failureMakeKey(response);
+                    $scope.emitKeyError(response);
                 }
             };
-        $scope.failureMakeKey = function(response){
+        $scope.emitKeyError = function(response){
             $scope.$emit('MAKE_KEY_ERROR',response);
         };
-            
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
-            var successMakeKey = function(response){
-                console.info('success!');
-                console.info(response);
-                $scope.oneKeySuccess();
-            };
-            var failureMakeKey = function(response){
-                //$scope.$emit('GENERAL_ERROR',response);
-                $scope.$emit('MAKE_KEY_ERROR',response);
-                
-            };
+            console.log($scope.zestStationData)
             var options = {
                 card_info: "",
                 is_additional: true,
@@ -219,7 +205,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.callAPI(zsTabletSrv.encodeKey, {
                 params: options,
                 'successCallBack':$scope.successMakeKey,
-                'failureCallBack':$scope.failureMakeKey
+                'failureCallBack':$scope.emitKeyError
             });
             
         };
