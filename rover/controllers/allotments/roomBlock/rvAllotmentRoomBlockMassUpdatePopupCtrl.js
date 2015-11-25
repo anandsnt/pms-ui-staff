@@ -102,7 +102,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
             		"old_total", "old_double", "old_double_contract", "old_release_days", "old_single", "old_single_contract"]);
 
 				// Save room block now.
-				$scope.saveMassUpdate(false, isContract, config);
+				$scope.saveMassUpdate(overbookingOccurs, isContract, config);
 			}
 
 		};
