@@ -1791,11 +1791,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			//we have a list of scope varibales which we wanted to initialize
 			initializeVariables();
 
-			//IF you are looking for where the hell the API is CALLING
-			//scroll above, and look for the event 'ALLOTMENT_TAB_SWITCHED'
-
 			//date related setups and things
-			setDatePickers();
+			if (!$scope.isInAddMode()){
+				setDatePickers();
+			}
 
 			//setting scrollers
 			setScroller();
