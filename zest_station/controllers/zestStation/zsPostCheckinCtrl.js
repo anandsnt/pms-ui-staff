@@ -7,7 +7,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	'zsUtilitySrv',
 	'$stateParams',
 	'$sce',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce) {
+	'$window',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $window) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -15,18 +16,16 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     return $sce.trustAsHtml(val);
                 };
             });
-            $scope.emailOptional = true;
+        $scope.emailOptional = true;
 	/**
 	 * when the back button clicked
 	 * @param  {[type]} event
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back');
             //$state.go ('zest_station.home');//go back to reservation search results
             
             var current = $state.current.name;
-            console.info("current: ",current)
             if (current === 'zest_station.delivery_options'){
                 $scope.at = 'deliver-registration';
                 $scope.selectedReservation = $state.selectedReservation;
@@ -38,12 +37,39 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
+                $scope.headingText = 'Enter your email address';
+                $scope.subHeadingText = "You'll be able to receive your bill, check out, order a late check out, and more online!";
+                $scope.inputTextPlaceholder = '';
+                
             } else if (current === 'registration_printed'){
                 $scope.from = 'deliver-registration';
+                
+            }else if (current === 'zest_station.edit_registration_email'){
+                $scope.setupEmailEdit();
             }
+            
+           
             
 	});
 
+            $scope.isValidEmail = function(email){
+                email = email.replace(/\s+/g, '');
+                if ($scope.ValidateEmail(email)){
+                    return false;
+                } else return true;
+                
+            };
+            
+            $scope.ValidateEmail = function(email) {
+                if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+                    return false;
+                } else return true;
+            };
+
+            
+            $scope.clearInputText = function(){
+                $scope.input.inputTextValue = '';
+            };
 
 	/**
 	 * [isInCheckinMode description]
@@ -94,8 +120,15 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             var id = $scope.selectedReservation.id;
             $scope.invokeApi(zsTabletSrv.sendRegistrationByEmail, {'id':id}, fetchHotelCompleted, $scope.generalError);    
         };
-        
-        
+        $scope.editEmailAddress = function(){
+            $state.go('zest_station.edit_registration_email');
+            
+        };
+        $scope.setupEmailEdit = function(){
+            $scope.at = 'email-delivery';
+            $scope.headingText = "We will send your registration to:";
+            $scope.subHeadingText = $state.input.lastEmailValue;
+        };
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
                 $scope.headingText = 'So Sorry.';
@@ -110,9 +143,21 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.modalBtn1 = '';
         };
         
+        $scope.skipKeys = function(){
+            $state.go('zest_station.delivery_options');
+        };
+        
         $scope.navToHome = function(){
 		$state.go ('zest_station.home');
         };
+        $scope.navToPrev = function(){
+                $state.go('zest_station.check_in_keys');
+        };
+        
+        $scope.reEncodeKey = function(){
+		$state.go ('zest_station.check_in_keys');
+        };
+        
         $scope.initStaff = function(){
             $state.go('zest_station.speak_to_staff');
         };
@@ -121,6 +166,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if ($scope.at === 'input-email'){
                 $state.input.email = $scope.input.inputTextValue;
                 $state.go('zest_station.check_in_keys');
+            } else if ($scope.at === 'email-delivery'){
+                $state.input.email = $scope.input.inputTextValue;
+                $state.input.lastEmailValue = $scope.input.inputTextValue;
+                $state.go('zest_station.delivery_options');
             }
                 
         };
@@ -149,36 +198,106 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
+                $scope.headingText = 'Enter your email address';
+                $scope.subHeadingText = "You'll be able to receive your bill, check out, order a late check out, and more online!";
+                $scope.inputTextPlaceholder = '';
                 
             } else if (current === 'registration_printed'){
                 
                 $scope.printOpted = true;
                 $scope.at = 'registration_printed';
                 $scope.from = 'deliver-registration';
+            } else if (current === 'zest_station.edit_registration_email'){
+                $scope.setupEmailEdit();
             }
             
         };
+        $scope.initPrintRegistration = function(){
+            $scope.printRegistrationCard();
+            
+            
+            
+        };
+        
         
 
-        $scope.clickedPrint= function(){
-            // print section - if its from device call cordova.
-            try{
-                $window.print();
-                if ( sntapp.cordovaLoaded ) {
+
+	// add the print orientation before printing
+	var addPrintOrientation = function() {
+		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+	};
+
+	// add the print orientation after printing
+	var removePrintOrientation = function() {
+		$( '#print-orientation' ).remove();
+	};
+
+
+	$scope.printRegistrationCard = function() {
+
+                $scope.isPrintRegistrationCard = true;
+
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = "";
+
+                // CICO-9569 to solve the hotel logo issue
+                $("header .logo").addClass('logo-hide');
+                $("header .h2").addClass('text-hide');
+
+                // add the orientation
+                addPrintOrientation();
+
+                /*
+                *	======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+               setTimeout(function() {
+                   
                     var printer = (sntZestStation.selectedPrinter);
-                    cordova.exec(function(success) {
-                        $state.go('zest_station.registration_printed');
-                    }, function(error) {
-                        $state.go('zest_station.error');
-                    }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-                };
-                $scope.printOpted = true;
-              
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                            cordova.exec(function(success) {}, function(error) {
+                          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                    };
+                }, 100);
 
-            }
-            catch(e){
+                /*
+                *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
+               setTimeout(function() {
+                    $scope.isPrintRegistrationCard = false;
 
-            }
+                            // CICO-9569 to solve the hotel logo issue
+                            $("header .logo").removeClass('logo-hide');
+                            $("header .h2").addClass('text-hide');
+
+                            // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 100);
+
+            };
+
+        
+        
+        
+        $scope.setupPrintView = function(){
+            $scope.isPrintRegistrationCard = true;
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = "";
+        };
+        $scope.fetchRegistrationPrintView = function(){
+            var fetchPrintViewCompleted = function(data){
+                $scope.$emit('hideLoader');
+                // print section - if its from device call cordova.
+                $scope.printRegCardData = data;
+                $scope.setupPrintView();
+                $scope.initPrintRegistration();
+            };
+            var id = $scope.selectedReservation.id;
+            $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
+        };
+        $scope.clickedPrint = function(){
+            $scope.fetchRegistrationPrintView();
         };  
 
         $scope.getLastInputEmail = function(){

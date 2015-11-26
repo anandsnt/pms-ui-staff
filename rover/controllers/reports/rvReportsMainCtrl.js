@@ -270,6 +270,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
+			if (item.title === reportNames['DAILY_PRODUCTION_DEMO']) {
+				if (item.fromDate > item.untilDate) {
+					item.untilDate = item.fromDate;
+				}
+			}
+
 			if (item.title === reportNames['DAILY_PRODUCTION']) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
@@ -1292,7 +1298,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					break;
 
 				default:
-					exportUrl = "";
+					exportUrl = "/api/reports/"+ chosenReport.id +"/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
 					break;
 			};
 

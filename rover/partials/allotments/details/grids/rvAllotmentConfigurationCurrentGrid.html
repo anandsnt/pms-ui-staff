@@ -1,3 +1,10 @@
+<!-- Load next 14 days, remove class "hidden" when user reaches end of horizontal scroll -->
+<button type="button" class="next-dates"
+    ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
+    ng-click="fetchNextSetOfRoomBlockData()">
+    {{'ALLOTMENT_NEXT_SET' | translate}}
+    <span class="has-arrow next-view"></span>
+</button>
 <!-- If new allotment and/or room block have not been set: -->
 <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
     <div class="info">
@@ -78,7 +85,7 @@
 </div>
 
 <!-- Room block days -->
-<div class="room-block-timeline extended-timeline scrollable"
+<div class="room-block-timeline extended-timeline paginated scrollable"
     ng-iscroll="room_rates_timeline_scroller"
     ng-show="shouldHideAddRoomsButton()"
     bindonce>
@@ -106,7 +113,7 @@
 </div>
 
 <!-- Room block grid -->
-<div class="room-block-grid extended-timeline scrollable" ng-iscroll="room_rates_grid_scroller"
+<div class="room-block-grid extended-timeline paginated scrollable" ng-iscroll="room_rates_grid_scroller"
     ng-show="shouldHideAddRoomsButton()">
     <div class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->

@@ -1209,7 +1209,8 @@
                                 &:after { .hide; }
                             }
 
-                            &.status { width: 160px; }
+                            &.status,
+                            &.date { width: 160px; }
 
                             &.date-range {
                                 margin-right: 0;
@@ -1266,6 +1267,26 @@
                             .button {
                                 font-size: 24px;
                                 line-height: 70px;
+                            }
+                        }
+
+                        .next-dates {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            color: @logoPrimary;
+                            line-height: 1;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            z-index: 9920;
+                            background: @background;
+                            .size(100%, 80px);
+
+                            .has-arrow {
+                                margin: 5px auto;
+                                background-position: 50% 0;
+                                .show;
+                                .size(20px, 100%);
                             }
                         }
 
@@ -1692,6 +1713,16 @@
                                 }
                             }
                         }
+
+                        .room-block-timeline,
+                        .room-block-grid {
+                            &.paginated {
+                                .wrapper { 
+                                    padding-right: 100px; 
+                                    .float; 
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -1702,6 +1733,7 @@
                 &.activity {
                     .tab-header {
                         .totals {
+                            position: relative;
                             padding: 20px;
 
                             li {
@@ -1747,10 +1779,12 @@
                                 }
                                 
                                 &:last-child { 
+                                    position: absolute;
+                                    top: 20px;
+                                    right: 20px;
                                     text-align: right;
                                     padding-right: 0;
                                     border-right: 0; 
-                                    .pull-right;
                                 }
                             }
                         }
@@ -2113,6 +2147,163 @@
 
                             &.with-pagination { .calc-height(100, 50); }
                         }
+                    }
+                }
+
+                /* Commisions ***/
+                &.commisions {
+                    .tab-header {
+                        .float;
+
+                        .search-form { 
+                            text-align: left;
+                            padding: 5px 20px;
+                            background: @rcardTexture1;
+                            visibility: visible;
+                            #fade > .in();
+                            .size(80px, 100%);
+
+                            .entry {
+                                padding: 0;
+                                margin-right: 20px;
+                                width: 160px;
+                                .box-shadow(none);
+
+                                label { margin: 0; }
+
+                                &.date-range { 
+                                    .calc-width(100, 620);
+
+                                    .has-datepicker {
+                                        .calc-width(50, 10);
+                                        .pull-left;
+
+                                        &:first-child { margin-right: 20px; }
+                                    } 
+
+                                    .clear-query {
+                                        position: absolute;
+                                        top: 26px;
+                                        right: 0;
+                                        background-color: @white;
+                                        .square(38px);
+
+                                        .icons {
+                                            top: 11px;
+                                            right: 11px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .actions {
+                                margin-top: 24px;
+                                .pull-right;
+
+                                .button { 
+                                    padding: 0 20px;
+
+                                    &.red,
+                                    &.grey,
+                                    &.brand-colors {
+                                        &:not(:last-child) { margin-right: 10px; }
+                                    }                                
+                                }
+                            }
+
+                            &.hidden,
+                            &.ng-hide { 
+                                visibility: hidden;
+                                #fade > .out(); 
+                            }
+                        }
+                    }
+
+                    .tab-details {
+
+                        .totals {
+                            padding: 20px;
+                            height: 80px;
+                            overflow: hidden;
+
+                            li {
+                                margin-bottom: 0;
+                                color: @grey3;
+                                font-size: 15px;
+                                line-height: 15px;
+                                text-align: center;
+                                margin-right: 40px;
+                                .pull-left;
+
+                                .value {
+                                    font-size: 24px;
+                                    line-height: 25px;
+                                    color: @textColor;
+                                    .show;
+                                }
+
+                                &.action {
+                                    margin-right: 20px;
+                                    .pull-right;
+
+                                    .checkbox {
+                                        font-size: 14px;
+                                        line-height: 1;
+                                        text-align: center;
+                                        padding: 0;
+                                        margin: -5px 0 0 0;
+                                        .square(45px);
+
+                                        .icon-form {
+                                            top: 20px;
+                                            left: 50%;
+                                            margin-left: -10px;
+                                            background-color: @grey2;
+                                        }
+                                    }
+
+                                    .select {
+                                        text-align: left;
+                                        width: 160px;
+                                        .placeholder-text(14px, 30px, 400, @logoPrimary);
+
+                                        select,
+                                        option { color: @logoPrimary; }
+
+                                        .placeholder {
+                                            color: @logoPrimary;
+                                        }
+                                    }
+
+                                    .button { .square(40px); }
+
+                                    &.no-margin { margin-right: 0; }
+                                }
+                            }
+
+                            &.selected {
+                                li { 
+                                    .value { color: @logoPrimary; }
+
+                                    &.action {
+                                        .button {
+                                            .button > .orange();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .scrollable {
+                            position: relative;
+                            .calc-height(100, 80);
+
+                            .search-results { padding: 0 20px 20px; }
+
+                            .iScrollVerticalScrollbar { top: 0; }
+                        }
+
+                        &.with-pagination { .calc-height(100, 140); }
                     }
                 }
             }

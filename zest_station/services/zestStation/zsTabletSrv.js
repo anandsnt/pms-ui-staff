@@ -37,7 +37,6 @@ sntZestStation.service('zsTabletSrv',
                 };
                 
                 this.encodeKey = function (params) {
-                    console.info('use params',params)
                     var deferred = $q.defer(),
                             url = '/staff/reservation/print_key';
                     
@@ -162,6 +161,17 @@ sntZestStation.service('zsTabletSrv',
                         return deferred.promise;
                 };
                 
+                this.updateWorkStations = function (params) {
+                    var deferred = $q.defer(),
+                         url = '/api/workstations/'+params.id;
+
+                    zsBaseWebSrv.putJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
                 
                 
                 this.checkInGuest = function (params) {
@@ -187,5 +197,29 @@ sntZestStation.service('zsTabletSrv',
                     });
                     return deferred.promise;
                 };
+                
+                this.updateWorkStationMapping = function(data){
+                    var deferred = $q.defer();
+                    var url = '/api/workstations/'+data.id;
+
+                    zsBaseWebSrv.putJSON(url, data).then(function(data) {
+                        deferred.resolve(data);
+                    },function(data){
+                        deferred.reject(data);
+                    });
+		return deferred.promise;
+                };
+                
+                this.fetchRegistrationCardPrintData = function(params){
+                    var deferred = $q.defer();
+                    var url = '/api/reservations/' + params.id + '/print_registration_card';
+                            zsBaseWebSrv.getJSON(url).then(function(data) {
+                                    deferred.resolve(data);
+                            },function(data){
+                                deferred.reject(data);
+                            });
+
+                    return deferred.promise;
+            };
                 
             }]);

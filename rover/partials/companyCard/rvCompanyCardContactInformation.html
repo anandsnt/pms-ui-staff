@@ -99,7 +99,8 @@
                         <span translate>ROUTES_DEFINED</span>) 
                     </span>
                 </label>
-                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone" translate>ADD_BILLLING_INFORMATION</a>
+                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone && contactInformation.account_details.routes_count > 0" translate>BILLLING_INFORMATION</a>
+                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone && contactInformation.account_details.routes_count === 0" translate>ADD_BILLLING_INFORMATION</a>
             </div>
 
             <!-- <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox> -->

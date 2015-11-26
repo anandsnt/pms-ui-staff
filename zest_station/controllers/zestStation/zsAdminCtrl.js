@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
 	'$scope',
-	'$state','zsEventConstants', 'zsTabletSrv',
-	function($scope, $state,zsEventConstants, zsTabletSrv) {
+	'$state','zsEventConstants', 'zsTabletSrv', 'zsLoginSrv',
+	function($scope, $state,zsEventConstants, zsTabletSrv, zsLoginSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -23,7 +23,6 @@ sntZestStation.controller('zsAdminCtrl', [
         
         $scope.zestStationData.workstations = [];
 	$scope.getWorkStationList = function($defer, params){
-            console.info('$scope.getWorkStationList')
 	/*	
             var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
@@ -63,7 +62,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 failureCallBack:        onFail
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
-                
 	};
 
 
@@ -98,12 +96,22 @@ sntZestStation.controller('zsAdminCtrl', [
 
 
 	$scope.loginAdmin = function(){
-		$scope.mode   = "admin-name-mode";
-		$scope.headingText = 'Admin Username';
-		showNavButtons();
+            $scope.mode   = "admin-name-mode";
+            $scope.headingText = 'Admin Username';
+            $scope.passwordField = false;
+            showNavButtons();
 	};
         
-        
+        $scope.goToAdminPrompt = function(){
+        setTimeout(function(){
+                if (typeof cordova !== typeof undefined){
+                    $('.modal-content').addClass('re-centered');
+                }
+                $scope.$apply();
+            },000);
+            $state.go('zest_station.home-admin',{'isadmin':true});
+            
+        };
 
 	$scope.goToNext  = function(){
 		if($scope.mode   === "admin-name-mode"){
@@ -111,13 +119,52 @@ sntZestStation.controller('zsAdminCtrl', [
 			$scope.input.inputTextValue = "";
 			$scope.mode   = "admin-password-mode";
 			$scope.headingText = 'Admin Password';
+                        $scope.passwordField = true;
 		}
 		else{
 			$scope.passWord = angular.copy($scope.input.inputTextValue);
-			console.log($scope.userName + $scope.passWord)
-			$state.go('zest_station.home-admin',{'isadmin':true});
+                        $scope.submitLogin();
 		}
 	};
+        
+        
+        /*
+         * These methods are for the log-in part of Zest Station admin
+         */
 	
+	 $scope.successCallback = function(data){
+                $scope.$emit("showLoader");
+
+                //we need to show the animation before redirecting to the url, so introducing a timeout there
+                setTimeout(function(){
+                    $scope.goToAdminPrompt();
+                    $scope.$emit("hideLoader");
+                }, 300);
+	 };
+	 /*
+	  * Failure call back of login
+	  */
+	 $scope.failureCallBack = function(errorMessage){
+                $scope.$emit("hideLoader");
+	 	$scope.errorMessage = errorMessage;
+                //until fixed;
+                setTimeout(function(){
+                    $scope.goToAdminPrompt();
+                    $scope.$emit("hideLoader");
+                }, 300);
+	 };
+	 /*
+	  * Submit action of login
+	  */
+	 $scope.submitLogin = function() {
+	 	$scope.hasLoader = true;
+	 	$scope.successMessage = "";
+                var params = {
+                    "email": $scope.userName, 
+                    "password": $scope.passWord
+                };
+ 		//zsLoginSrv.login(params, $scope.successCallback, $scope.failureCallBack);
+                    $scope.goToAdminPrompt();
+	};
 	
 }]);

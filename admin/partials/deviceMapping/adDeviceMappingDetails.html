@@ -16,13 +16,16 @@
 						styleclass="full-width" required="yes"></ad-textbox>
                                     <div class='entry full-width'>    
                                         <div class=''>
-                                    <label class='admin-item-label'>Key Encoder</label>
-                                         <select id='selectEncoder' class='placeholder'
-                                              ng-options="encoder.encoder_id as encoder.description for encoder in key_encoders | filter:{enabled: true}" ng-model="mapping.selectedKeyEncoder">
-                                             <option style="display:none" value="">Select an Encoder</option>
-                                        </select>
+                                            <label class='admin-item-label'>Key Encoder</label>
+                                            <select id='selectEncoder' class='placeholder'
+                                                 ng-options="encoder.id as encoder.description for encoder in key_encoders | filter:{enabled: true}" ng-model="mapping.selectedKeyEncoder">
+                                                <option style="display:none" value="">Select an Encoder</option>
+                                           </select>
+                                        </div>
                                     </div>
-                                    </div>
+                                    <ad-textbox inputtype="text" value="mapping.printer" 
+						label = "{{'STATION_PRINTER' | translate}}" placeholder = "{{'STATION_PRINTER'| translate}}"  
+						styleclass="full-width overlay grey" required="no"></ad-textbox>
                                     
 				</fieldset>
 				
