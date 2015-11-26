@@ -160,8 +160,9 @@ sntRover.controller('RVMoveChargeCtrl',
 			};
 			var chargesMovedSuccess = function(){
 				$scope.$emit("hideLoader");
-				$scope.closeDialog();
 				$scope.$emit('moveChargeSuccsess');
+				$scope.closeDialog();
+				
 			};
 			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess);
 		};

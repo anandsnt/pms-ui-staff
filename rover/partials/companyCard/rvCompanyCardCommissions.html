@@ -86,7 +86,7 @@
                         </div>
                         <div class="values">
                             <div class="value-block revenue">{{'COMMISSION_REVENUE' | translate}}<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</strong></div>
-                            <div class="value-block type">%/$<strong>{{commissionDetail.commission_data.rate}}</strong></div>
+                            <div class="value-block type">%/{{currencySymbol}}<strong>{{commissionDetail.commission_data.rate}}</strong></div>
                             <div class="value-block amount">{{'COMMISSION' | translate}}<strong><span ng-if="commissionDetail.commission_data.amount !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount | number : 2}}</strong></div>
                             <div class="value-block tax" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}<strong><span ng-if="commissionDetail.commission_data.tax !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.tax | number : 2}}</strong></div>
                         </div>

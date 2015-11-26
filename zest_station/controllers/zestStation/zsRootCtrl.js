@@ -164,7 +164,7 @@ sntZestStation.controller('zsRootCtrl', [
                     storage = localStorage,
                     storedWorkStation = '',
                     station = null;
-            console.log('storageKey: ',storageKey)
+                console.log('storageKey: ',storageKey)
             try {
                storedWorkStation = storage.getItem(storageKey);
             } catch(err){
@@ -183,6 +183,7 @@ sntZestStation.controller('zsRootCtrl', [
             if (station !==  null){
                 $scope.zestStationData.encoder = station.key_encoder_id;
                     sntZestStation.selectedPrinter = station.printer;
+                    sntZestStation.encoder = station.key_encoder_id;
                 console.info('workstation found!: ',station.name);
                 }
             return station;
