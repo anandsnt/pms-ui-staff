@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv', 'RVReservationCardSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv, RVReservationCardSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','$filter', '$timeout', 'rvAccountTransactionsSrv','rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter, $timeout, rvAccountTransactionsSrv,rvPermissionSrv, RVReservationCardSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -669,7 +669,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					});
 		};
 
-
 		/*
 		* Action - On click submit payment button
 		*/
@@ -677,7 +676,13 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		    // if payment is from groups and payment type is direct bill
 		    // we check if AR account is present or not
 		    // if not present we inform the user with a popup
-			($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
+			if ($scope.renderData.defaultPaymentAmount > 0 || $scope.renderData.defaultPaymentAmount < 0) {
+				($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
+			} else {
+				$timeout(function () {
+		 			$scope.errorMessage = ["Please enter amount to pay"];
+		 		}, 200);
+		 	}
 		};
 
 }]);
