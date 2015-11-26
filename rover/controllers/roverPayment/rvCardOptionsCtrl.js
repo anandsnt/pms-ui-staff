@@ -55,7 +55,6 @@ sntRover.controller('RVCardOptionsCtrl',
                 
                 //also if !standalone, check if gift card allowed
                 $scope.checkForGiftCard = function(){
-                     $scope.addmode = false; 
                      $scope.isGiftCard = false;
                     if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
                          $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
