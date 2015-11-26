@@ -451,8 +451,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.deleteDefaultRouting = function(){
         var successCallback = function(data) {
             $scope.$emit('hideLoader');
-            $scope.closeDialog();
             $scope.$emit('BILLINGINFODELETED');
+            $scope.closeDialog();
+            
         };
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');
