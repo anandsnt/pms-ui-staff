@@ -97,10 +97,6 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					end_date: formatDateForAPI($scope.massUpdateEndDate),
 					bulk_updated_for: occupancy.toUpperCase(),
 				});
-				config = _.pick(config, ["allotment_id", "forcefully_overbook_and_assign_rooms", "start_date",
-					"end_date", "is_contract_save", 'bulk_updated_for', "room_type_id", "room_type_name",
-            		"release_days", "single", "single_contract", "double", "double_contract",
-            		"old_total", "old_double", "old_double_contract", "old_release_days", "old_single", "old_single_contract"]);
 
 				// Save room block now.
 				$scope.saveMassUpdate(overbookingOccurs, isContractUpdate, config);
@@ -152,6 +148,11 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
 			config = config || {};
+			config = _.pick(config, ["allotment_id", "forcefully_overbook_and_assign_rooms", "start_date",
+					"end_date", "is_contract_save", 'bulk_updated_for', "room_type_id", "room_type_name",
+            		"release_days", "single", "single_contract", "double", "double_contract",
+            		"old_total", "old_double", "old_double_contract", "old_release_days", "old_single", "old_single_contract",
+            		"quadruple", "quadruple_contract","triple", "triple_contract","old_quadruple", "old_quadruple_contract","old_triple", "old_triple_contract"]);
 
 			var params = _.extend(config, {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
@@ -169,13 +170,6 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			lastCalledMassUpdateConfig = config;
 			overbookingOccurs = false;
 		};
-
-		$scope.$on("SAVE_MASS_UPDATE", function(event, forceOverbook, isContratUpdate) {
-			forceOverbook = forceOverbook || false;
-			isContratUpdate = isContratUpdate || false;
-
-			$scope.saveMassUpdate(forceOverbook, isContratUpdate, lastCalledMassUpdateConfig);
-		});
 
 		var onEndDatePicked = function (date, datePickerObj) {
 			$scope.massUpdateEndDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
