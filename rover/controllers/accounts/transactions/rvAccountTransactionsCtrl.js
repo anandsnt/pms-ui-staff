@@ -58,7 +58,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				isAllChargeCodesSelected = false;
 			}
 			else{
-				console.log(billTabsData[$scope.currentActiveBill]);
 				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
 		        if (chargeCodes){
 		            if(chargeCodes.length > 0){
