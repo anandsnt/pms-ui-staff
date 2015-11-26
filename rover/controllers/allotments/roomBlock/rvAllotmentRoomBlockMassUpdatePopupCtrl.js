@@ -16,7 +16,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		util,
 		rvAllotmentConfigurationSrv) {
 
-		var overbookingOccurs = false;
+		var overbookingOccurs = false,
+			isContractUpdate  = false;
 
 		var formatDateForAPI = function(date) {
 			return $filter('date')(date, $rootScope.dateFormatForAPI)
@@ -83,9 +84,9 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			}
 			// Copying contract or held counts
 			else {
-				var roomTypeData  = $scope.selectedRoomType,
-					occupancy 	  = $scope.ngDialogData.occupancy,
-					isContract 	  = $scope.ngDialogData.isContract || false;
+				var roomTypeData  	 = $scope.selectedRoomType,
+					occupancy 	  	 = $scope.ngDialogData.occupancy,
+					isContractUpdate = $scope.ngDialogData.isContract || false;
 
 				var data = _.omit(roomTypeData, ['dates']);
 				data = _.extend(data, roomTypeData.dates[0]);
@@ -102,12 +103,12 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
             		"old_total", "old_double", "old_double_contract", "old_release_days", "old_single", "old_single_contract"]);
 
 				// Save room block now.
-				$scope.saveMassUpdate(overbookingOccurs, isContract, config);
+				$scope.saveMassUpdate(overbookingOccurs, isContractUpdate, config);
 			}
 
 		};
 
-		var successCallBackOfSaveMassUpdate = function() {
+		var successCallBackOfSaveMassUpdate = function(data) {
 			// CICO-18621: Assuming room block will be saved if I call
 			// it with force flag.
 			if (!data.saved_room_block) {
@@ -116,12 +117,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			}
 
 			// Room block saved
-			if ($scope.showSaveButton) {
-				$scope.showSaveButton = false;
-			} else {
-				$scope.fetchCurrentSetOfRoomBlockData();
-				$scope.closeDialog();
-			}
+			$scope.fetchCurrentSetOfRoomBlockData();
+			$scope.closeDialog();
 		};
 
 		var failureCallBackOfSaveMassUpdate = function(error) {
@@ -180,16 +177,6 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			$scope.saveMassUpdate(forceOverbook, isContratUpdate, lastCalledMassUpdateConfig);
 		});
 
-		$scope.clickedOnApplyToHeldCountsButton = function() {
-			config.bulk_updated_for = $scope.ngDialogData.occupancy.split("_")[0].toUpperCase();
-			$scope.saveMassUpdate(forceOverbook, false, lastCalledMassUpdateConfig);
-		};
-
-		$scope.clickedOnApplyToHeldToContractButton = function() {
-			config.bulk_updated_for = ($scope.ngDialogData.occupancy+"_contract").toUpperCase();
-			$scope.saveMassUpdate(forceOverbook, true, lastCalledMassUpdateConfig);
-		};
-
 		var onEndDatePicked = function (date, datePickerObj) {
 			$scope.massUpdateEndDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 		};
@@ -217,9 +204,10 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 
 		var init = function () {
 			BaseCtrl.call(this, $scope);
+			setDatePickers();
+
 			$scope.showSaveButton = true;
 			$scope.overBookingMessage = '';
-			setDatePickers();
 		};
 		init();
 	}
