@@ -262,6 +262,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 data.to_bill = $scope.selectedEntity.to_bill;
             }
             data.is_new = $scope.selectedEntity.is_new;
+            //CICO-22444 - Added inorder to allow the same charge codes for different date range
+            data.from_date = $scope.routeDates.from;
+            data.to_date = $scope.routeDates.to;
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };
@@ -310,6 +313,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 data.to_bill = $scope.selectedEntity.to_bill;
             }
             data.is_new = $scope.selectedEntity.is_new;
+
+            //CICO-22444 - Added inorder to allow the same charge codes for different date range
+            data.from_date = $scope.routeDates.from;
+            data.to_date = $scope.routeDates.to;
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, data, successCallback, errorCallback);
     };
@@ -415,7 +422,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
-            
+
             if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
                 if (data.from_date) {
                     $scope.arrivalDate = data.from_date;
@@ -970,13 +977,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 to : $scope.departureDate
             };
 
-            $scope.routingDateFromOptions = {       
+            $scope.routingDateFromOptions = {
                 dateFormat: 'dd-mm-yy',
                 minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
             };
 
-            $scope.routingDateToOptions = {       
+            $scope.routingDateToOptions = {
                 dateFormat: 'dd-mm-yy',
                 minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
