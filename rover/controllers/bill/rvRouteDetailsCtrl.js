@@ -651,17 +651,17 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	    	$scope.saveSuccessCallback = function(data) {
 	    	    $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFOADDED');
 	    	    $scope.setReloadOption(true);
 	    	    $scope.headerButtonClicked();
 	    	    $scope.updateCardInfo();
-	    	    $scope.$parent.$emit('BILLINGINFOADDED');
                 $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
 	    	};
 
 	    	var defaultRoutingSaveSuccess = function(){
 	    	    $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFOADDED');
 	    	    ngDialog.close();
-	    	    $scope.$parent.$emit('BILLINGINFOADDED');
 	    	};
 
 	    	if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
