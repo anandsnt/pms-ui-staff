@@ -1544,7 +1544,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {String} [with px]
 		 */
 		$scope.getWidthForReleaseViewTimeLine = function() {
-			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 180) + 'px';
+			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_occupanies.length * 190 + 140) + 'px';
 		};
 
 		/**
