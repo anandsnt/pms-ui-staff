@@ -689,6 +689,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					dateData['single']          = dateData['old_single'];
 					dateData['single_contract'] = dateData['old_single_contract'];
 					dateData['single_pickup']   = dateData['old_single_pickup'];
+					dateData['triple']   		= dateData['old_triple'];
+					dateData['triple_contract'] = dateData['old_triple_contract'];
+					dateData['triple_pickup'] 	= dateData['old_triple_pickup'];
+					dateData['quadruple']   	= dateData['old_quadruple'];
+					dateData['quadruple_contract'] = dateData['old_quadruple_contract'];
+					dateData['quadruple_pickup'] = dateData['old_quadruple_pickup'];
 				});
 			});
 
@@ -727,6 +733,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					dateData['old_single']          = dateData['single'];
 					dateData['old_single_contract'] = dateData['single_contract'];
 					dateData['old_single_pickup']   = dateData['single_pickup'];
+					dateData['old_triple']   		= dateData['triple'];
+					dateData['old_triple_contract'] = dateData['triple_contract'];
+					dateData['old_triple_pickup'] 	= dateData['triple_pickup'];
+					dateData['old_quadruple']   	= dateData['quadruple'];
+					dateData['old_quadruple_contract'] = dateData['quadruple_contract'];
+					dateData['old_quadruple_pickup'] = dateData['quadruple_pickup'];
 				});
 			});
 
@@ -1299,6 +1311,12 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 						dateData['old_single']          = dateData['single'];
 						dateData['old_single_contract'] = dateData['single_contract'];
 						dateData['old_single_pickup']   = dateData['single_pickup'];
+						dateData['old_triple']   		= dateData['triple'];
+						dateData['old_triple_contract'] = dateData['triple_contract'];
+						dateData['old_triple_pickup'] 	= dateData['triple_pickup'];
+						dateData['old_quadruple']   	= dateData['quadruple'];
+						dateData['old_quadruple_contract'] = dateData['quadruple_contract'];
+						dateData['old_quadruple_pickup'] = dateData['quadruple_pickup'];
 					});
 				});
 
