@@ -1,0 +1,654 @@
+/* Colors ***/
+	/* Blacks	***/
+	@black:				#202225;
+	@grey4: 			#6b6c6e;
+	@grey3: 			#9d9d9d;
+	@grey2: 			#d8d8d8;
+	@grey1: 			#f5f5f5;
+	@white:				#fcfcfc;
+
+	/* Primary colors ***/
+	@orange:			#f6991b;
+	@green:				#89bd55;
+	@red: 				#e63838;
+	@blue: 				#82c3de;
+	@yellow: 			#f3ce0d;
+
+    /* Client colors ***/
+    @clientColor:       #2b929b;
+    @background:        @grey1;
+    @inputBackground:   #fff;
+    @greyText:          @grey3;
+
+/* Mixins ***/
+    #font {
+        #family {
+            .sans-serif() {
+                font-family: sans-serif;
+				text-rendering: optimizeLegibility;
+				-webkit-font-smoothing: antialiased;
+            }
+        }
+
+        .sans-serif(@size: 16px, @weight: normal, @lineHeight: 1) {
+            #font > #family > .sans-serif;
+            font-size: @size;
+            font-weight: @weight;
+            line-height: @lineHeight;
+        }
+    }
+
+    .size(@height, @width) {
+        width: @width;
+        height: @height;
+    }
+
+    .calc-width(@percentage, @pixels) {
+        width: -webkit-calc(~"@{percentage}% - @{pixels}px");
+        width: -moz-calc(~"@{percentage}% - @{pixels}px");
+        width: calc(~"@{percentage}% - @{pixels}px");
+    }
+
+    .calc-height(@percentage, @pixels) {
+        height: -webkit-calc(~"@{percentage}% - @{pixels}px");
+        height: -moz-calc(~"@{percentage}% - @{pixels}px");
+        height: calc(~"@{percentage}% - @{pixels}px");
+    }
+
+    .float {
+		*zoom: 1;
+
+		&:before,
+		&:after {
+		    content: "";
+		    display: table;
+		}
+		&:after {
+		    clear: both;
+		}
+	}
+
+	.label {
+		display: block;
+        font-size: 14px;
+		line-height: 20px;
+		text-transform: uppercase;
+		cursor: pointer;
+		color: @black;
+	}
+
+    .input(@height: 45px, @width: 100%) {
+        line-height: @height; 
+        padding: 0 10px;
+        margin: 0;
+        border: 0;
+        background: @inputBackground;
+        border-radius: 2px;
+        transition: all .3s cubic-bezier(.10, .10, .25, .90);
+        box-shadow: inset 1px 1px 1px rgba(0,0,0,.15);
+        .size(@height, @width);
+
+        &:focus,
+        &:active {
+            box-shadow: inset 1px 1px 1px rgba(0,0,0,.5);
+        }
+    }
+
+    .select(@height: 45px) {
+        cursor: pointer;
+        line-height: @height;
+        height: @height;
+        padding: 0 10px;
+        border: 0;
+        background: @inputBackground;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 2px;
+        box-shadow: 1px 1px 0 rgba(0,0,0,.15);
+        
+        option[value=""] { 
+            color: @greyText; 
+            font-style: italic;
+        }
+    }
+
+/* Reset ***/
+    * { 
+        margin: 0;
+        padding: 0;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    *, 
+    *:after, 
+    *:before { 
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box; 
+        box-sizing: border-box;
+    }
+
+    body, div, fieldset, form, html, label {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-weight: inherit;
+        font-style: inherit;
+        vertical-align: baseline;
+    }
+
+/* Layout ***/
+  
+    html { 
+        background: @background;
+        #font > .sans-serif();
+    }
+
+    body { 
+    	min-width: 100%;
+    	max-width: 100%;
+    	padding: 0;
+    	#font > .sans-serif(); 
+    }
+
+    header { 
+        position: relative;
+        display: block;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 1px 2px rgba(0,0,0,.1);
+        .size(50px, 100%);
+
+        h1 {
+            font-size: 18px;
+            line-height: 30px;
+            color: @black;
+            margin: 0;
+            float: none;
+        }
+
+        figure {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0;
+            .size(30px, auto);
+
+            .img-logo {
+                max-height: 30px;
+                max-width: auto;
+                .size(30px, auto);
+            }
+        }
+    }
+
+    footer { 
+        padding: 10px;
+        box-shadow: 0 -1px 0 rgba(0,0,0,.1);
+
+        a { 
+            display: block;
+            text-align: center;
+            line-height: 40px;
+            width: 100%;
+            color: @clientColor;
+            transition: all .3s cubic-bezier(.10, .10, .25, .90);
+
+            &.btn-back { text-align: left; }
+            &.btn-abort { color: @red; }
+
+            &:hover,
+            &:active,
+            &:focus { color: darken(@clientColor, 10); }
+        }        
+    }
+
+    .btn-next {
+        font-size: 16px;
+        line-height: 40px;
+        border-radius: 2px;
+        padding: 0 20px;
+        border: 0;
+        box-shadow: inset 0 -2px 0 rgba(0,0,0,.2);
+        background: @clientColor;
+        cursor: pointer;
+
+        &:hover,
+        &:active,
+        &:focus { background: darken(@clientColor, 10); }
+
+        &:focus,
+        &:active {
+            box-shadow: inset 2px 2px 4px 1px rgba(0,0,0,.2);
+        }
+    }
+
+    input,
+    select,
+    button { #font > .sans-serif(); }
+
+/* Alert ***/
+    .box {
+
+    	.icon-information,
+    	.icon-success,
+    	.icon-error {
+    		margin-left: 10px;
+    	}
+
+    	.text { padding: 0 10px 0 40px; }
+
+        &.box-error, 
+        &.box-information, 
+        &.box-success {
+            font-size: 12px;
+            line-height: 20px;
+            text-transform: uppercase;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border: 0;
+            border-radius: 3px;
+        }
+
+    	&.box-error {
+	    	color: darken(@red, 15);
+	    	background: lighten(@red, 30);   	
+	    }
+
+        &.box-information {
+            color: darken(@blue, 40);
+            background: lighten(@blue, 10);       
+        }
+
+        &.box-success {
+            color: darken(@green, 15);
+            background: lighten(@green, 30);       
+        }
+    }
+
+/* Payment Selection ***/
+    .page-paymentselection {
+        display: block;
+
+        header {
+            &:after {
+                font-size: 18px;
+                line-height: 30px;
+                font-weight: 700;
+                color: @black;
+                margin: 0;
+                text-align: center;
+                width: 100%;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
+
+        main { 
+            display: block;
+            padding: 20px;
+            .float;
+
+            section { 
+                display: block; 
+                float: left;
+                padding: 0;
+                width: 50%;
+
+                ul {
+                    margin: 0;
+                    width: 100%;
+
+                    li {
+                        margin: 0 !important;
+
+                        button {
+                            position: relative;
+                            color: @white;
+                            text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+                            padding: 50px 10px 0 10px;
+                            border: 0;
+                            max-width: 180px;
+                            border-radius: 3px;
+                            box-shadow: inset 0 -2px 0 rgba(0,0,0,.1);
+                            background: @clientColor;
+                            transition: all .3s cubic-bezier(.10, .10, .25, .90);
+                            .size(120px, 100%);
+
+                            > span:nth-of-type(1) {
+                                position: absolute;
+                                top: 20px;
+                                left: 50%;
+                                padding: 0;
+                                margin: 0 0 0 -40px;
+                                .size(auto, 80px);
+                            }
+
+                            img {
+                                display: inline;
+                                margin: 0;
+                                font-size: 1;
+                                max-height: auto;
+                                max-width: 80px;
+
+                            }
+
+                            &:hover,
+                            &:focus,
+                            &:active { 
+                                animation: none; 
+                                background: darken(@clientColor, 10);
+                            }
+
+                            &:focus,
+                            &:active {
+                                box-shadow: inset 2px 2px 4px 1px rgba(0,0,0,.2);
+                            }
+
+                        }
+                    }
+
+                    &:before { display: none; }
+                }
+
+                &.paymentgroup-creditcard { padding-right: 10px; }
+                &.paymentgroup-directdebit { padding-left: 10px; }
+            }
+
+            section + section {
+                border: 0;
+            }
+        }
+
+        footer { display: none; }
+    }
+
+/* Forms ***/
+    .page-card,
+    .page-directdebit {
+        main {
+            padding: 10px;
+
+            fieldset {
+                margin: 0;
+                padding: 0;
+                background: transparent;
+                border-radius: 0px;
+                .float;
+                .size(auto, 100%);
+
+                legend {
+                    position: static;
+                    color: @black;
+                    font-weight: 600;
+                    font-size: 16px;
+                    letter-spacing: 0px;
+                    text-transform: uppercase;
+                    display: none;
+                }
+
+                .form-group {
+                    display: block;
+                    margin-bottom: 20px;
+                    width: 100%;
+
+                    .icon-required { color: @red; }
+
+                    label { .label(); }
+                    input[type=text] { .input(); }
+                }
+            }
+        }
+    }
+
+	.page-card {
+		main {
+			fieldset {
+				.form-group {
+				    &:nth-of-type(1),
+                    &:nth-of-type(3) {
+				    	label { .label(); }
+				    	input { .input(); }
+				    }
+
+				    &:nth-of-type(2) {
+				    	padding: 0;
+
+                        label { .label(); }
+
+				    	.form-input {
+                            position: relative;
+                            .float;
+
+                            select { 
+                                .calc-width(50, 9);
+                                .select(); 
+
+                                &:first-child { margin-right: 10px; }
+                            }
+
+                            &:before,
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                top: 5px;
+                                background: @white url(https://pms.stayntouch.com/assets/select-arrow.png) no-repeat 50% 50%;
+                                background-size: 6px 4px;
+                                pointer-events: none;
+                                z-index: 99;
+                                border-top-right-radius: 2px;
+                                border-bottom-right-radius: 2px;
+                                .size(35px, 20px);
+                            }
+
+                            &:before { 
+                                left: -webkit-calc(~"50% - 40px");
+                                left: -moz-calc(~"50% - 40px");
+                                left: calc(~"50% - 40px");
+                            }
+                            
+                            &:after { right: 10px; }
+				    	}			    	
+				    }
+
+                    &:nth-of-type(4) {
+                        position: static;
+                        padding: 0;
+                        margin: 0;
+                        background: transparent;
+                        
+                        .form-input { .float; }
+
+                        label:not(.details-summary-widget) { .label(); }
+                        
+                        .input-small { 
+                            float: left;
+                            .input(45px);
+                            .calc-width(50, 45);
+                        }
+
+                        .details-summary-widget {
+                            position: relative;
+                            float: left;
+                            display: block;
+                            text-align: center;
+                            .size(45px, 45px);
+
+                            input {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                display: block;
+                                opacity: 0;
+                                cursor: pointer;
+                                .size(100%, 100%);
+                            }
+
+                            .icon-hint {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                margin: -8px 0 0 -4px;
+                                font-size: 16px;
+                                font-weight: 700;
+                                color: @clientColor;
+                            }
+
+                            span ~ span { display: none; }
+                        }
+
+                        label > input:checked + span ~ span {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            z-index: 9999;
+                            text-align: left;
+                            background: @white;
+                            padding: 20px;
+                            border-radius: 0px;
+                            overflow-x: hidden;
+                            overflow-y: auto;
+                            -webkit-overflow-scrolling: touch;
+                            display: block;
+                            .size(100%, 100%);
+
+                            b { 
+                                display: block;
+                                font-size: 18px;
+                                margin: 1.414em 0 .5em 0; 
+
+                                &:first-child { margin-top: 0; }
+                            }
+
+                            br { display: none; }
+
+                            img {
+                                margin: 10px 0;
+                                max-width: 100%;
+                            }
+
+                            &:after { display: none; }
+                        }
+                    }							    
+				}
+			}
+		}
+	} 
+
+    .page-directdebit {
+        main {
+            fieldset {
+                h2 { 
+                    text-align: center;
+                    font-size: 18px;
+                    line-height: 50px;
+                    font-weight: 700;
+                    color: @greyText;
+                }
+
+                .form-input {
+                    .float;
+
+                    label {
+                        float: left;
+                        margin-left: 10px;
+                        .calc-width(100, 30);
+                    }
+
+                    input[type="checkbox"] {
+                        float: left;
+                        background: @white;
+                        padding: 0;
+                        border: 0;
+                        border-radius: 2px;
+                        transition: all .3s cubic-bezier(.10, .10, .25, .90);
+                        box-shadow: inset 1px 1px 1px rgba(0,0,0,.15);
+                        cursor: pointer;
+                        .size(20px, 20px);
+                        
+                        &:checked { 
+                            background: @clientColor;
+                            box-shadow: inset 1px 1px 1px rgba(0,0,0,.5);
+                        }
+
+                        &:focus,
+                        &:active {
+                            box-shadow: inset 1px 1px 1px rgba(0,0,0,.5);
+                        }
+                    }
+                }
+            }
+        }
+    }    
+
+/* Cofirmation ***/
+    .page-confirmation {
+        main {
+            padding: 10px;
+
+            dl {
+                background-color: @white;
+                padding: 20px;
+                margin-bottom: 20px;
+                border-radius: 2px;
+                box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+
+                dt {
+                    float: none;
+                    clear: none;
+                    width: 100%;
+                    font-size: 16px;
+                    line-height: 30px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                }
+
+                dd {
+                    font-size: 14px;
+                    margin-left: 0;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;q
+
+                    &:not(:last-child) {
+                        padding-bottom: 10px;
+                        margin-bottom: 10px;
+                        box-shadow: 0 1px 0 rgba(0,0,0,.1);
+                    }
+                }
+            }
+
+            p {
+                font-size: 14px;
+                text-align: center;
+                text-transform: uppercase;
+                color: @green;
+                margin-bottom: 20px;
+            }
+
+            input { .input(); }
+        }
+    }
+
+/* Redirect ***/
+    .page-redirect {
+        main {
+            padding: 40px 10px;
+
+            p { 
+                text-align: center;
+
+                &:not(:last-child) { margin-bottom: 1.5rem; }
+            }
+        }
+    }
