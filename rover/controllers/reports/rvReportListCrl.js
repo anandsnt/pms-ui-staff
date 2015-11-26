@@ -94,13 +94,26 @@ sntRover.controller('RVReportListCrl', [
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function(reportItem) {
-            // this.item.show_filter = this.item.show_filter ? false : true;
-            // $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        $scope.toggleFilter = function(e, reportItem) {
+            if ( e ) {
+                e.preventDefault();
+                e.stopPropagation();
+            };
 
             var toggle = function() {
                 reportItem.show_filter = reportItem.show_filter ? false : true;
                 $scope.refreshScroller( LIST_ISCROLL_ATTR );
+
+                // close any open 'FAUX_SELECT'
+                _.each($scope.$parent.reportList, function(thatReport, index) {
+                    if ( thatReport.id != reportItem.id ) {
+                        _.each(thatReport, function(value, key) {
+                            if ( !!value && value.type === 'FAUX_SELECT' ) {
+                                value.show = false;
+                            };
+                        });
+                    };
+                });
             };
 
             var callback = function() {
