@@ -5,7 +5,8 @@
                     <span>Manual update is disabled for {{popupData.rate_name}} rate, as its based on another rate.</span>
                 </div> 
                 <div ng-show='!calendarData.is_child' ng-hide="calendarData.is_child">
-		<em ng-if="!data.isHourly">Adjust price for all room types</em>
+		<em ng-if="!data.isHourly && popupData.all_data_selected">Adjust price for all room types</em>
+		<em ng-if="!data.isHourly && !popupData.all_data_selected">Adjust price for this room type</em>
 		<em ng-if="data.isHourly">Price adjustment for all Occupancies</em>
                 </div>
 	</div>
