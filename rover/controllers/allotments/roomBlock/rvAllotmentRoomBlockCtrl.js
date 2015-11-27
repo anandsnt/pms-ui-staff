@@ -751,42 +751,35 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.checkOverBooking = function(error) {
-			var message 			 	= null,
-				isHouseOverbooked  	 	= error.is_house_overbooked,
-				overBookedRoomTypes  	= [],
-				isRoomTypeOverbooked   	= false,
-				overBookingOccurs		= false,
+			var isHouseOverbooked  	 	= error.is_house_overbooked,
+				isRoomTypeOverbooked   	= error.is_room_type_overbooked,
 				canOverbookHouse		= hasPermissionToOverBookHouse(),
 				canOverbookRoomType		= hasPermissionToOverBookRoomType(),
 				canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
 
-			_.each(error.room_type_hash, function(roomType) {
-				var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
-					editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, {
-													room_type_id: roomType.room_type_id
-								  				});
+			// DEPRICATED FROM API, keep for future reference
+			// _.each(error.room_type_hash, function(roomType) {
+			// 	var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
+			// 		editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, {
+			// 										room_type_id: roomType.room_type_id
+			// 					  				});
 
-				// check if overbooking case has occured due to a new change
-				var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
-					function(dateData) {
-						var newTotal 		 = $scope.getTotalHeldOfIndividualRoomType(dateData);
-							detailHasChanged = dateData.old_total != newTotal;
-						return (dateData.availability < 0 && !detailHasChanged);
-					});
+			// 	// check if overbooking case has occured due to a new change
+			// 	var alreadyOverbooked = _.filter(editedRoomTypeDetails.dates,
+			// 		function(dateData) {
+			// 			var newTotal 		 = $scope.getTotalHeldOfIndividualRoomType(dateData);
+			// 				detailHasChanged = dateData.old_total != newTotal;
+			// 			return (dateData.availability < 0 && !detailHasChanged);
+			// 		});
 
-				// only mark this roomtype & date if if not already overbooked.
-				if (overBookedDates.length > alreadyOverbooked.length)
-					overBookedRoomTypes.push(roomType);
-			});
+			// 	// only mark this roomtype & date if if not already overbooked.
+			// 	if (overBookedDates.length > alreadyOverbooked.length)
+			// 		overBookedRoomTypes.push(roomType);
+			// });
 
-			isRoomTypeOverbooked = overBookedRoomTypes.length > 0;
-			overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
-
-			overBookingOccurs	 = isRoomTypeOverbooked || isHouseOverbooked;
-
-			if (!overBookingOccurs) {
+			if ( !(isRoomTypeOverbooked || isHouseOverbooked) ) {
 				return false;
-			}
+			};
 
 			// show appropriate overbook message.
 			if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
@@ -801,7 +794,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// Overbooking occurs and has no permission.
 			else {
 				return "NO_PERMISSION"
-			}
+			};
 
 		};
 
