@@ -149,7 +149,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       upsell_setup.total_upsell_target_rooms = $scope.upsellData.upsell_setup.total_upsell_target_rooms;
       data.upsell_setup = upsell_setup;
       data.upsell_amounts = $scope.upsellData.upsell_amounts;
-      data.charge_code = $scope.upsellData.selected_charge_code;
+      data.charge_code = $scope.upsellData.selected_charge_code_id;
       data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
       data.room_types = [];
       data.deleted_room_types = [];

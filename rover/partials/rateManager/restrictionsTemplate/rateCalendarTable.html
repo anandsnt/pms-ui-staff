@@ -21,7 +21,7 @@
             <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell" >
                 <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
 
-                    <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
+                    <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', (ratesRoomsToggle === 'ROOMS' ? 'ROOM_TYPE' : 'RATE_TYPE'), true)">
                         <div ng-include="'assets/partials/rateManager/restrictionsTemplate/restrictionsDivCalendarData.html'">
                         </div>
                     </div>
@@ -36,7 +36,7 @@
 
             <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell" >
                 <div class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
-                    <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, rate.room_type_id, 'RATE_TYPE', false)">
+                    <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, rate.room_type_id, (ratesRoomsToggle === 'ROOMS' ? 'ROOM_TYPE' : 'RATE_TYPE'), false)">
                         <div ng-include="'assets/partials/rateManager/restrictionsTemplate/restrictionsDivRateData.html'">
                         </div>
                     </div>

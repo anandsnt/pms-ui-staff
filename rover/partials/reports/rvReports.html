@@ -1,4 +1,4 @@
-<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }" ng-click="fauxSelectClicked(); catchFauxSelectClick();">
+<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
     <div ng-include="'/assets/partials/common/header.html'"></div>
 
     <!-- the listing page where all the available reports are listed -->
@@ -6,7 +6,7 @@
         <div class="wrapper">
             <ul class="reports-list">
                 <li ng-repeat="item in reportList" ngrepeatend>
-                    <a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter(item)">
+                    <a href="#" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter($event, item)">
                         <span ng-class="item.reportIconCls"></span>
                         <div class="data">
                             <h2 ng-class="{'single-title': !item.description}">
