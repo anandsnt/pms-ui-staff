@@ -235,7 +235,7 @@
 
 
 	
-,    
+,
     "COMMISSION" : "Commission",
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
@@ -249,8 +249,8 @@
     "COMMISSION_START_DATE" : "Start Date",
     "COMMISSION_CLEAR_QUERY" : "Clear query",
     "COMMISSION_END_DATE" : "End Date",
-    "COMMISSION_COMMISSIONABLE" : "Commisionable",
-    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commisionable",
+    "COMMISSION_COMMISSIONABLE" : "Commissionable",
+    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commissionable",
     "COMMISSION_PAID_STATUS" : "Paid Status",
     "COMMISSION_SET_STATUS" : "Set Status",
     "COMMISSION_UNPAID" : "Unpaid",
@@ -271,8 +271,8 @@
     "COMMISSION_ALL" : "All",
     "COMMISSION_Tax" : "Tax"
 
-    
-   
+
+
 
 ,    
     "ALL": "All",
