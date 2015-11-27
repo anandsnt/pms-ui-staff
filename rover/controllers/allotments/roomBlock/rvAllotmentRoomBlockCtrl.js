@@ -751,9 +751,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.checkOverBooking = function(error) {
-			var message 			 	= null,
-				isHouseOverbooked  	 	= error.is_house_overbooked,
-				overBookedRoomTypes  	= [],
+			var isHouseOverbooked  	 	= error.is_house_overbooked,
 				isRoomTypeOverbooked   	= error.is_house_overbooked,
 				canOverbookHouse		= hasPermissionToOverBookHouse(),
 				canOverbookRoomType		= hasPermissionToOverBookRoomType(),
