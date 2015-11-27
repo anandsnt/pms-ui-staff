@@ -90,7 +90,8 @@
                 </div>
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
                     <label for="item-address"><span translate>ADDRESS_LABEL</span> <strong ng-show="data.page_template=='POI'">*</strong></label>
-                    <input type="text" name="aitem-ddress" ng-model="data.address" id="item-address" placeholder="Enter Address" value=""  />
+                    
+                    <textarea name="item-address" ng-model="data.address" id="item-address" rows="4" placeholder="Enter Address"></textarea>
                 </div>
                 
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN' || data.page_template=='ADDON' || data.page_template=='SPACE'">
