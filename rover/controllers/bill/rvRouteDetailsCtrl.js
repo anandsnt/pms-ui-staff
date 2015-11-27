@@ -792,8 +792,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
               var defaultRoutingSaveSuccess = function(){
                 $scope.$parent.$emit('hideLoader');
-                ngDialog.close();
                 $scope.$parent.$emit('BILLINGINFOADDED');
+                ngDialog.close();
               };
         	 var successCallback = function(data) {
         	 	$scope.$parent.$emit('hideLoader');
