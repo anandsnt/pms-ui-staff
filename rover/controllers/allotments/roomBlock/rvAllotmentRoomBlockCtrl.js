@@ -757,6 +757,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				canOverbookRoomType		= hasPermissionToOverBookRoomType(),
 				canOverBookBoth			= canOverbookHouse && canOverbookRoomType;
 
+			// DEPRICATED FROM API, keep for future reference
 			// _.each(error.room_type_hash, function(roomType) {
 			// 	var overBookedDates 		= _.where(roomType.details, {is_overbooked: true}),
 			// 		editedRoomTypeDetails  	= _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, {
