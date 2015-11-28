@@ -7,7 +7,7 @@ admin.controller('addonsDatesRangeCtrl',
         function($scope, $rootScope, $filter, ngDialog) {
 
             // quick reference to the underlaying page $scope
-            $scope.parentScope = $scope.$parent.$parent;
+            $scope.parentScope = $scope.$parent; // CICO-22499 Shoddy Fix -- If time permits ;) Visit again
 
             BaseCtrl.call(this, $scope);
 
