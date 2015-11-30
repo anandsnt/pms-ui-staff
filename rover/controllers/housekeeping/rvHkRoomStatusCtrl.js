@@ -613,8 +613,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			_payload = {
-				'room_ids'     : $scope.multiRoomAction.allChosen ? $scope.allRoomIDs : $scope.multiRoomAction.rooms,
-				'hk_status_id' : $scope.multiRoomAction.hkStatusId
+				'room_ids'     : [],
+		    	'hk_status_id' : $scope.multiRoomAction.hkStatusId
+			};
+
+			if ( (1 == $scope.multiRoomAction.rooms.length == $scope.uiTotalCount) &&  $scope.multiRoomAction.allChosen ) {
+				_payload['room_ids'].push( $scope.multiRoomAction.rooms[0] );
+			} else if ( $scope.multiRoomAction.allChosen ) {
+				_payload['room_ids'] = $scope.allRoomIDs;
+			} else {
+				_payload['room_ids'] = $scope.multiRoomAction.rooms;
 			};
 
 			_callback = function(data) {
