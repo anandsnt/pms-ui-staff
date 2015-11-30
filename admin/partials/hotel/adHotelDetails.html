@@ -581,8 +581,8 @@
 					 MerchantLink Token Certificate
 				</label>
 				<div class="file-upload">
-					<span class="input">{{fileName}}</span>
-					<input type="file" ng-model="certificate" accept="*" app-filereader emit-data="cert_string" />
+					<span class="input">{{mli_pem_certificate_file_name}}</span>
+					<input type="file" ng-model="mli.certificate" accept="*" app-filereader emit-data="cert_string" />
 					<button type="button" class="button brand-colors">
 						Attach Certificate
 					</button>
