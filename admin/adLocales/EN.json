@@ -265,7 +265,10 @@
 "RATE_MANAGER_EXITS":"Rate Manager updates exist for these values",
 "OVERWRITE_RATE_MANAGER":"Overwrite Rate Manager",
 "DONT_OVERWRITE_RATE_MANAGER":"Do not Overwrite Rate Manager",
-"ASK_GUEST_ADDRESS_DETAILS":"ASK GUEST ADDRESS DETAILS"
+"ASK_GUEST_ADDRESS_DETAILS":"ASK GUEST ADDRESS DETAILS",
+
+"MENU_CREATE_ALLOTMENT": "New Allotment",
+"MENU_MANAGE_ALLOTMENT": "Manage Allotment"
 ,
 
 
@@ -875,12 +878,13 @@
     "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate for External Systems",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
     "EXCLUDE_FROM_RATE" : "Exclude from rate"
-,	
+,
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
     "CC_BATCH_PROCESSING" : "CC Batch Processing",
-    "AUTO_SETTLEMENT_BY_EOD" : "Auto-Settlement by EOD"
+    "AUTO_SETTLEMENT_BY_EOD" : "Auto-Settlement by EOD",
+    "EMAIL_RECIPIENT_FOR_EOD_REPORTS" : "Email Recipient for EOD Reports"
 
 
 ,"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
