@@ -7,7 +7,7 @@ admin.controller('ADJobDatePicker', [
         BaseCtrl.call(this, $scope);
 
         // quick reference to the underlaying page $scope
-        $scope.parentScope = $scope.$parent.$parent;
+        $scope.parentScope = $scope.$parent;
         $scope.dateNeeded = $scope.parentScope.dateNeeded;
 
         var calWeekAfter = function(today) {
