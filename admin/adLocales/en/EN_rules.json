@@ -61,5 +61,6 @@
     "NO_SHOW_CHARGE_CODE":"No show charge code",
     "ADDONS_FOR_RESERVATIONS" : "Add-ons for Reservations",
     "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
+    "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
     "EXCLUDE_FROM_RATE" : "Exclude from rate"
