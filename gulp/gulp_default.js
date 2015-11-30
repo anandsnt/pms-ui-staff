@@ -2,7 +2,9 @@ module.exports = function(gulp, $, options) {
 	
 	var del = require('del'),
 		DEST_ROOT_PATH = '../../public/assets/',
-		allPaths = ['**/*.*', '!node_modules/**/*.*', '!package.json']; //will be running from app/assets, so..
+		allPaths = ['**/*.*', '!node_modules/**/*.*', 
+		'!bower.json', '!Gruntfile.js', '!gulpfile.js',
+		'!package.json', '!gulp/**/*.*']; //will be running from app/assets, so..
 	
 	gulp.task('clean', function () {
 	    del([DEST_ROOT_PATH], {force: true });

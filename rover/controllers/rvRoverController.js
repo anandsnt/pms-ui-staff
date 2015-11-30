@@ -191,7 +191,6 @@ sntRover.controller('roverController',
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
-    RVDashboardSrv.getUserRole($rootScope.userId, $scope);
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {

@@ -4,7 +4,7 @@ module.exports = function(gulp, $, options) {
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    ROVER_ASSET_LIST_ROOT   = '../rover/',
-	    ROVER_JS_ASSET_LIST     = require ("./asset_list/roverJsAssetList").getList(), //require ("./asset_list/dashboardJsAssetList").getList(),
+	    ROVER_JS_ASSET_LIST     = require ("../asset_list/js/dashboardJsAssetList").getList(), //require ("./asset_list/roverJsAssetList").getList()
 	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
 	    ROVER_JS_COMBINED_FILE  = 'rover.js',
 	    ROVER_CSS_FILE  		= 'rover.css',
@@ -14,6 +14,7 @@ module.exports = function(gulp, $, options) {
 	    ROVER_CSS_MANIFEST_FILE = "rover_css_manifest.json",
 	    PARTIALS_PATH_LIST 		= ['**/*.html'],
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
+	    generated = "____generated",
 	    LessPluginCleanCSS = require('less-plugin-clean-css'),
     	cleancss = new LessPluginCleanCSS({ advanced: true });
 
@@ -44,6 +45,37 @@ module.exports = function(gulp, $, options) {
 	            }
 	        }))
 	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
+	});
+
+	gulp.task('rover-generate-mapping-list-dev', ['copy-all-dev'], function(){
+		var glob = require('glob-all'),
+			stateMappingList = require('../asset_list/stateJsMapping/rover/roverStateJsMappings').getStateMappingList(),
+			fileList = [],
+			extendedMappings = {},
+			fs = require('fs'),
+			mkdirp = require('mkdirp'),
+			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
+				+ generated + 'StateJsMappings/' 
+				+ generated + 'rover/',
+			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json';
+		
+		for (state in stateMappingList){
+			fileList = require(stateMappingList[state]).getList();
+			extendedMappings[state] = glob.sync(fileList).map(function(e){
+				return "/assets/" + e;
+			});
+		}
+
+		mkdirp(roverGenDir, function (err) {
+		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
+		    else console.log('rover mapping directory created (' + roverGenDir + ')');
+	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('rover mapping file failed!! (' + err + ')');
+			    }
+			    console.log('rover mapping file created (' + roverGenFile + ')');
+			}); 
+		});
 	});
 
 	gulp.task('build-rover-js-dev', ['copy-all-dev'], function(){
@@ -177,6 +209,6 @@ module.exports = function(gulp, $, options) {
 	});
 
 	//TASKS
-	gulp.task('build-rover-dev', ['build-rover-less-js-dev', 'build-rover-template-cache-dev', 'concat-translation-en-files-dev']);
+	gulp.task('build-rover-dev', ['build-rover-less-js-dev', 'build-rover-template-cache-dev', 'concat-translation-en-files-dev', 'rover-generate-mapping-list-dev']);
 	gulp.task('rover-asset-precompile', ['build-rover-js-production', 'build-rover-template-cache-production', 'build-rover-less-production', 'concat-translation-en-files-dev']);
 }

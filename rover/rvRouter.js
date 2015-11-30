@@ -35,7 +35,15 @@ sntRover.config([
                 },
                 permissions: function (rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
-                }
+                },
+                mappingList: ['$q', 'rvBaseWebSrvV2', function($q, rvBaseWebSrvV2){
+                    var deferred = $q.defer();
+                    rvBaseWebSrvV2.getJSON('/assets/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json')
+                    .then(function(data){
+                        deferred.resolve(data);
+                    });
+                    return deferred.promise;
+                }]
             }
 
 

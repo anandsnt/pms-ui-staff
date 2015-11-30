@@ -24,39 +24,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		});
 		return deferred.promise;
 	};
-        
-        this.getUserRole = function(id, $scope){
-            var deferred = $q.defer();
-            var url = '/admin/users/'+id+'/edit.json';
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                var roles = [], role, roleId;
-                userDetails.hasKioskRole = false;
-                if (userDetails.userRoles){
-                    if (userDetails.userRoles.length > 0){
-                        for (var i in userDetails.userRoles){
-                            roleId = userDetails.userRoles[i].value;
-                            for (var x in data.user_roles){
-                                role = data.user_roles[x];
-                                if (roleId == role){
-                                    roles.push({'name': userDetails.userRoles[i].name, 'id':userDetails.userRoles[i].value});
-                                    if (userDetails.userRoles[i].name === 'Kiosk' || userDetails.userRoles[i].name === 'Zest Station'){
-                                        userDetails.hasKioskRole = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                userDetails.roles = roles;
-                
-                deferred.resolve(data);
-            },function(data){
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
+    
  	this.fetchDashboardStatisticData = function(){
 	    var deferred = $q.defer();
 

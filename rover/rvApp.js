@@ -3,13 +3,11 @@ var sntRover = angular.module('sntRover',[
 		'ui.router',
 		'ui.utils',
 		'ng-iscroll',
-		'highcharts-ng',
 		'ngDialog',
 		'ngAnimate',
 		'ngSanitize',
 		'pascalprecht.translate',
 		'ui.date',
-		'ui.calendar',
 		'dashboardModule',
 		'companyCardModule',
 		'stayCardModule',
@@ -21,18 +19,16 @@ var sntRover = angular.module('sntRover',[
 		'accountsModule',
 		'FinancialsModule',
 		'cacheVaultModule',
-		'twoMonthscalendar',
 		'documentTouchMovePrevent',
 		'divTouchMoveStopPropogate',
 		'pasvaz.bindonce',
 		'sharedHttpInterceptor',
 		'orientationInputBlurModule',
-		'multi-select',
 		'ngDragDrop',
 		'iscrollStopPropagation',
-		'ngReact',
 		'ngClassWithoutAnimation',
-		'qtip3']);
+		'clickTouch',
+		'oc.lazyLoad']);
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed

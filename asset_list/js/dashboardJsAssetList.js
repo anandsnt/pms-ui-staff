@@ -14,6 +14,7 @@ module.exports = {
 			jsLibRoot + 'angular-ui-router.js', 
 			jsLibRoot + 'angular-animate.js', 
 			jsLibRoot + 'angular-dragdrop.min.js',
+			jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
 
 			jsLibRoot + 'angular-sanitize.js',
 			jsLibRoot + 'angular-translate.js',
@@ -22,16 +23,11 @@ module.exports = {
 			jsLibRoot + 'bindonce.js',
 			jsLibRoot + 'underscore.min.js',
 
-			jsLibRoot + 'signature/**/*.js', 
 			jsLibRoot + 'iscroll.js', 
 			jsLibRoot + 'ng-iscroll.js', 
 			jsLibRoot + 'ngDialog.min.js',
-			jsLibRoot + 'highcharts.js', 
-			jsLibRoot + 'angular-highcharts.js', 
+
 			jsLibRoot + 'Utils.js',
-			jsLibRoot + 'ng-table.js', 
-			jsLibRoot + 'highcharts.js', 
-			jsLibRoot + 'angular-highcharts.js',
 
 			sharedRoot + 'interceptors/**/*.js',
 			sharedRoot + 'directives/**/*.js',
@@ -51,10 +47,7 @@ module.exports = {
 			roverRoot + 'controllers/rvRoverController.js',
 			roverRoot + 'controllers/dashboard/**/*.js',
 			roverRoot + 'controllers/availability/rvAvailabilityButtonCtrl.js',
-			roverRoot + 'controllers/search/rvManagerDashboardSearchCtrl.js',
-			roverRoot + 'controllers/search/rvFrontDeskDashboardSearchCtrl.js',
-			roverRoot + 'controllers/search/rvHouseKeepingDashboardRoomSearchCtrl.js',
-			roverRoot + 'controllers/search/rvReservationSearchWidgetCtrl.js',
+			roverRoot + 'controllers/search/**/*.js',
 
 			roverRoot + 'services/baseWebSrvV2.js',
 			roverRoot + 'services/rvBaseWebSrv.js',
@@ -65,7 +58,9 @@ module.exports = {
 			roverRoot + 'services/rvSearchSrv.js',
 			roverRoot + 'services/rvHotelDetailsSrv.js',
 			roverRoot + 'services/util/rvUtilSrv.js',
-			roverRoot + 'services/availability/rvAvailabilitySrv.js'];		
+			roverRoot + 'services/availability/rvAvailabilitySrv.js',
+			roverRoot + 'filters/roundFilter.js',
+			'jspm_packages/system.js'];		
 		
 		return roverJsAssets;
 	}
