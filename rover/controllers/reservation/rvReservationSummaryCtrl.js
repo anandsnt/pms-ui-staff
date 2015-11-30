@@ -1226,6 +1226,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             }
         };
 
+        // CICO-22544: Update billing info button after adding or deleting routes
+        $scope.$on("BILLINGINFOADDED", function () {
+            $scope.reservationData.is_routing_available = true;
+        });
+
+        $scope.$on("BILLINGINFODELETED", function (event, routes) {
+            if (routes.length === 0) {
+                $scope.reservationData.is_routing_available = false;
+            }
+        });
 
         /**
          * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also.

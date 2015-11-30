@@ -43,6 +43,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
         var successCallback = function(data) {
                 $scope.routes.splice(index, 1);
                 $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFODELETED', $scope.routes);
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
