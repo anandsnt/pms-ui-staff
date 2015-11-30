@@ -105,7 +105,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * To save/Update payment method details
 	 */
 	$scope.savePaymentMethod = function() {
-
 		var successCallbackSaveCC = function(data){
 			$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = data;
 			$scope.$emit('hideLoader');
@@ -221,8 +220,13 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.deletePaymentMethod = function(id) {
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
+			if($scope.currentClickedElementCC === -1){
 			$scope.data.payments.splice($scope.currentClickedElement, 1);
 			$scope.currentClickedElement = -1;
+			}else{
+			$scope.data.credit_card_types.splice($scope.currentClickedElementCC, 1);
+			$scope.currentClickedElementCC = -1;
+			}
 		};
 		$scope.invokeApi(ADPaymentMethodsSrv.deletePaymentMethod, id , successCallbackDelete);
 	};
