@@ -5269,8 +5269,6 @@
 				content: '';
 				position: absolute;
 				bottom: -10px;
-				left: 50%;
-				margin-left: -5px;
 				width: 0; 
 				height: 0; 
 				border-left: 10px solid transparent;
@@ -5278,6 +5276,21 @@
 				border-top: 10px solid @white;
 				clear: none;
 				.show;
+			}
+
+			&.position-left { 
+				&:after { left: 20px; }
+			}
+			
+			&.position-right { 
+				&:after { right: 20px; }
+			}
+
+			&.position-center {
+				&:after { 
+					left: 50%;
+					margin-left: -5px;
+				}
 			}
 		}
 	}

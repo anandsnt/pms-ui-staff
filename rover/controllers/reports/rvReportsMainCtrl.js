@@ -102,7 +102,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				e.stopPropagation();
 			} else {
 				$scope.showSidebar = false;
-			}
+			};
 		};
 
 		$scope.filterItemsToggle = {
@@ -479,11 +479,11 @@ sntRover.controller('RVReportsMainCtrl', [
 			fauxDS.show = !fauxDS.show;
 		};
 
-		$scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
-			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
-		};
+		// $scope.fauxSelectChange = function(reportItem, fauxDS, allTapped) {
+		// 	var selectedItems = $scope.fauxSelectChange(reportItem, fauxDS, allTapped);
+		// };
 
-		var getSelectedItems = function (reportItem, fauxDS, allTapped) {
+		$scope.fauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
 
 			if ( allTapped ) {
@@ -504,6 +504,7 @@ sntRover.controller('RVReportsMainCtrl', [
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
+                	fauxDS.selectAll = false;
                     fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
                     fauxDS.selectAll = true;
@@ -522,7 +523,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		//Get the charge codes corresponding to selected charge groups
 		$scope.chargeGroupfauxSelectChange = function (reportItem, fauxDS, allTapped) {
-			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+			var selectedItems = $scope.fauxSelectChange(reportItem, fauxDS, allTapped);
 
 			_.each (reportItem.hasByChargeCode.originalData, function (each) {
 				each.disabled = true;
@@ -552,7 +553,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			});
 
 			fauxDS.data = requiredChardeCodes;
-			var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+			var selectedItems = $scope.fauxSelectChange(reportItem, fauxDS, allTapped);
 		};
 
 		// show the no.of addons selected
@@ -601,7 +602,7 @@ sntRover.controller('RVReportsMainCtrl', [
         };
 
         $scope.getAddons = function (reportItem, fauxDS, allTapped) {
-        	var selectedItems = getSelectedItems(reportItem, fauxDS, allTapped);
+        	var selectedItems = $scope.fauxSelectChange(reportItem, fauxDS, allTapped);
 
             if (isNotTimeOut) {
                 clearTimeout(timeOut);
@@ -1291,14 +1292,15 @@ sntRover.controller('RVReportsMainCtrl', [
 				return exportUrl;
 			};
 
+			param = genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter);
+
 			switch ( chosenReport.title ) {
 				case reportNames['DAILY_PRODUCTION']:
-					params = jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter) );
 					exportUrl = "/api/reports/" + chosenReport.id + "/submit.csv?" + params;
 					break;
 
 				default:
-					exportUrl = "/api/reports/"+ chosenReport.id +"/submit.csv?" + jQuery.param( genParams(chosenReport, loadPage, resultPerPageOverride) );
+					exportUrl = "/api/reports/"+ chosenReport.id +"/submit.csv?" + param;
 					break;
 			};
 
