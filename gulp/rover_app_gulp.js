@@ -208,7 +208,14 @@ module.exports = function(gulp, $, options) {
 			.pipe(gulp.dest(DEST_ROOT_PATH));
 	});
 
+	var production_tasks = ['build-rover-js-production', 'build-rover-template-cache-production', 'build-rover-less-production', 'concat-translation-en-files-dev'];
+
+	gulp.task('deleteUnwantedFiles', production_tasks, function(){
+		var del = require('del');
+		del([MANIFEST_DIR], {force: true });
+	});
+
 	//TASKS
 	gulp.task('build-rover-dev', ['build-rover-less-js-dev', 'build-rover-template-cache-dev', 'concat-translation-en-files-dev', 'rover-generate-mapping-list-dev']);
-	gulp.task('rover-asset-precompile', ['build-rover-js-production', 'build-rover-template-cache-production', 'build-rover-less-production', 'concat-translation-en-files-dev']);
+	gulp.task('rover-asset-precompile', production_tasks);
 }

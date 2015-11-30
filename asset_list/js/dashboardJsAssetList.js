@@ -59,8 +59,7 @@ module.exports = {
 			roverRoot + 'services/rvHotelDetailsSrv.js',
 			roverRoot + 'services/util/rvUtilSrv.js',
 			roverRoot + 'services/availability/rvAvailabilitySrv.js',
-			roverRoot + 'filters/roundFilter.js',
-			'jspm_packages/system.js'];		
+			roverRoot + 'filters/roundFilter.js'];		
 		
 		return roverJsAssets;
 	}
