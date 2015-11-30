@@ -170,6 +170,7 @@ sntRover.controller('RVroomAssignmentController',[
 			}
 		}
 	};
+
 	$scope.openApplyChargeDialog = function(){
 		ngDialog.open({
 	          template: '/assets/partials/roomAssignment/rvApplyRoomCharge.html',
@@ -776,4 +777,26 @@ sntRover.controller('RVroomAssignmentController',[
 			!r_data.is_hourly_reservation &&
 			r_data.reservation_status !== "CHECKEDIN");
 	};
+
+	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	$scope.displayRoomAssignementError = function(errorMessage) {
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
+			className 	: 'ngdialog-theme-default',
+			scope       : $scope,
+			data        : JSON.stringify({
+                                error: errorMessage
+                          })
+        });
+	};
+
+	$scope.clickedCancelButton = function(){
+		$scope.getRooms(true);
+		$scope.closeDialog();
+	};
+
 }]);

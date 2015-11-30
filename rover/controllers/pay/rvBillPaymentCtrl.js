@@ -305,7 +305,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         };
         $scope.isGiftCardPmt = false;
 	$scope.changePaymentType = function(){
-console.log(arguments)
                 $scope.showGuestAddCard = false;
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
                     $scope.resetSplitPaymentDetailForGiftCard();
@@ -943,7 +942,11 @@ console.log(arguments)
            var paymentMapFailure = function(response){
                console.warn(response);
            };
-            $scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
+
+           // CICO-22447: Call API only when payment method is already defined
+           if (!!$scope.saveData.payment_type_id) {
+        		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
+           }
         };
 
         
