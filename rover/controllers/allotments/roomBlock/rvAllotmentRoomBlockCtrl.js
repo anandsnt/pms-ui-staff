@@ -1354,7 +1354,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.releaseDaysEdited = false;
 		};
 
-		var failureCallBackOfFetchRoomBlockGridDetails = function(error) {
+		var failureCallBackOfFetchRoomBlockGridDetails = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
 		};
 
