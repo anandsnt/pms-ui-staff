@@ -176,6 +176,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsFindReservationCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
+
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.invalid_email_retry', {
+             url: '/find_reservation', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
          // //check-in [ find-by-email ]
          $stateProvider.state('zest_station.edit_registration_email', {
              url: '/find_reservation', 
