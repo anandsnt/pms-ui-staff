@@ -263,8 +263,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
             data.is_new = $scope.selectedEntity.is_new;
             //CICO-22444 - Added inorder to allow the same charge codes for different date range
-            data.from_date = $scope.routeDates.from;
-            data.to_date = $scope.routeDates.to;
+            data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
+            data.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };
@@ -315,8 +315,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             data.is_new = $scope.selectedEntity.is_new;
 
             //CICO-22444 - Added inorder to allow the same charge codes for different date range
-            data.from_date = $scope.routeDates.from;
-            data.to_date = $scope.routeDates.to;
+            data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
+            data.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, data, successCallback, errorCallback);
     };
@@ -989,6 +989,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
             };
         }
+    };
+
+    //Updates the charge codes and billing groups upon changing the route date range
+    $scope.onRouteDateChange = function() {
+        $scope.fetchAvailableChargeCodes();
     };
 
 }]);
