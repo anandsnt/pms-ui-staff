@@ -385,7 +385,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 var newAddonQty = 0;
                 angular.forEach($scope.addonsData.existingAddons, function(item, index) {
                     if (item.id === addon.id) {
-                        newAddonQty = parseInt(item.quantity) + parseInt(addonQty);
+                        newAddonQty = parseInt(item.quantity);
                     }
                 });
                 var oldAddonQty = 0;
