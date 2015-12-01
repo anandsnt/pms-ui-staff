@@ -640,7 +640,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			};
 
 			var successCallback = function() {
-				// no op, button always show
+				$scope.fetchCurrentSetOfRoomBlockData();
 			};
 
 			var errorCallback = function(error) {
