@@ -310,7 +310,7 @@
     </div>
 </div>
 
-<div class="options" ng-if="item.hasAddonGroups.data.length">
+<div class="options" ng-if="item.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
     <label for="addons">Add-On(s)</label>
     <div class="faux-select placeholder" ng-click="toggleAddons()">{{ item.hasAddons.title }}</div>
     <div class="faux-select-options cols-2" ng-show="isVisible">

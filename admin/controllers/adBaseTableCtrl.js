@@ -38,12 +38,13 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.$watch("filterType", function (newValue, oldValue) {
         if(newValue !== oldValue){
             $scope.reloadTable();
+            $scope.tableParams.reload();
         }
     });
 
     $scope.searchEntered = function() {
         $scope.reloadTable();
-
+        $scope.tableParams.reload();
     };
 
     $scope.reloadTable = function(){
