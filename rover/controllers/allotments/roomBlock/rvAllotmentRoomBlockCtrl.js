@@ -161,13 +161,16 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
-			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
+			// var hasBookingDataChanged = $scope.hasBookingDataChanged,
+			// 	isInContractGridView  = $scope.activeGridView === 'CONTRACT';
 
-			// When the contract is saved without using the "copy to held" button 
-			// it is now clear that the button should be there if afterwards you go back to the contract view.
-			// https://stayntouch.atlassian.net/browse/CICO-19121?focusedCommentId=57106&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-57106
-			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged  || !isContractHeld()) );
+			// // When the contract is saved without using the "copy to held" button 
+			// // it is now clear that the button should be there if afterwards you go back to the contract view.
+			// // https://stayntouch.atlassian.net/browse/CICO-19121?focusedCommentId=57106&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-57106
+			// return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged  || !isContractHeld()) );
+
+			// CICO-22506: simplified the functionality of the apply to held
+			return $scope.activeGridView === 'CONTRACT';
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
@@ -611,25 +614,45 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * CICO-19121:
 		 * Fired when user clickes on the button in contract view.
 		 */
-		$scope.clickedOnApplyToHeldCountsButton = function(massUpdate) {
-			if (!massUpdate) {
-				var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
-				// plan A: copy contracted value to held counts by force and call saveRoomBlock()
-				_.each(roomBlockData, function(roomtype) {
-					_.each(roomtype.dates, function(dateData) {
-						dateData.single = dateData.single_contract;
-						dateData.double = dateData.double_contract;
+		$scope.clickedOnApplyToHeldCountsButton = function() {
+			// if (!massUpdate) {
+			// 	var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
+			// 	// plan A: copy contracted value to held counts by force and call saveRoomBlock()
+			// 	_.each(roomBlockData, function(roomtype) {
+			// 		_.each(roomtype.dates, function(dateData) {
+			// 			dateData.single = dateData.single_contract;
+			// 			dateData.double = dateData.double_contract;
 
-						if (dateData.triple_contract) {
-							dateData.triple = dateData.triple_contract;
-						}
-						if (dateData.quadruple_contract) {
-							dateData.quadruple = dateData.quadruple_contract;
-						}
-					});
-				});
-			}
-			$scope.saveRoomBlock(false, false, massUpdate);
+			// 			if (dateData.triple_contract) {
+			// 				dateData.triple = dateData.triple_contract;
+			// 			}
+			// 			if (dateData.quadruple_contract) {
+			// 				dateData.quadruple = dateData.quadruple_contract;
+			// 			}
+			// 		});
+			// 	});
+			// }
+			// $scope.saveRoomBlock(false, false, massUpdate);
+
+			var params = {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				forcefully_overbook_and_assign_rooms: true
+			};
+
+			var successCallback = function() {
+				// no op, button always show
+			};
+
+			var errorCallback = function(error) {
+				$scope.errorMessage = error;
+			};
+
+			var options = {
+				params: params,
+				successCallBack: successCallback,
+				failureCallBack: errorCallback
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.copyContactToHeld, options);
 		};
 
 		/**
