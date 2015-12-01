@@ -27,19 +27,14 @@ sntRover.config([
             templateUrl: '/assets/partials/rvRover.html',
             controller: 'roverController',
             resolve: {
-                mappingList: ['$q', 'rvBaseWebSrvV2', function($q, rvBaseWebSrvV2){
-                    var deferred = $q.defer();
-                    rvBaseWebSrvV2.getJSON('/assets/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json')
-                    .then(function(data){
-                        deferred.resolve(data);
-                    });
-                    return deferred.promise;
-                }],
+                mappingList: function(jsMappings) {
+                    return jsMappings.fetchMappingList();
+                },
                 hotelDetails: function(RVHotelDetailsSrv) {
                     return RVHotelDetailsSrv.fetchHotelDetails();
                 },
                 userInfoDetails: function(RVDashboardSrv) {
-                        return RVDashboardSrv.fetchUserInfo();
+                    return RVDashboardSrv.fetchUserInfo();
                 },
                 permissions: function (rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();

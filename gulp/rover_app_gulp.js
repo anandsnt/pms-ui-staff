@@ -66,7 +66,6 @@ module.exports = function(gulp, $, options) {
 				return "/assets/" + e;
 			});
 		}
-
 		mkdirp(roverGenDir, function (err) {
 		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
 		    else console.log('rover mapping directory created (' + roverGenDir + ')');

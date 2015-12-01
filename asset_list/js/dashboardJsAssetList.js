@@ -54,6 +54,7 @@ module.exports = {
 			roverRoot + 'services/rvBaseWebSrvV2.js',
 			roverRoot + 'services/rvDashboardSrv.js',
 			roverRoot + 'services/menu/rvMenuSrv.js',
+			roverRoot + 'services/jsMappings/jsMappingsSrv.js',
 			roverRoot + 'services/permissions/rvPermissionSrv.js',
 			roverRoot + 'services/rvSearchSrv.js',
 			roverRoot + 'services/rvHotelDetailsSrv.js',

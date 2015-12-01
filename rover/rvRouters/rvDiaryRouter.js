@@ -6,14 +6,8 @@ angular
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            diaryAssets: function(mappingList, $ocLazyLoad) {
-                return $ocLazyLoad.load(
-                {
-                    serie: true,
-                    files: mappingList['rover.diary']
-                }).then(function(){
-                    $ocLazyLoad.inject('ngReact');
-                });
+            diaryAssets: function(jsMappings) {
+                return jsMappings.fetchAssets('rover.diary', ['ngReact']);
             },
             propertyTime: function(RVReservationBaseSearchSrv, diaryAssets) {
                 return RVReservationBaseSearchSrv.fetchCurrentTime();

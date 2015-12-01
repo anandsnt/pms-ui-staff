@@ -2,7 +2,7 @@ module.exports = {
 	getList : function() {
 		var jsLibRoot 	= 'shared/lib/js/',
 		roverRoot 		= 'rover/',
-		reportReactViewRoot = roverRoot + 'react/diary/reports/',
+		reportReactViewRoot = roverRoot + 'react/reports/',
 		reportJsAssets 	= [
 
 			jsLibRoot + "react/react.min.js",
