@@ -75,6 +75,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             $scope.setHeadingTitle($scope.heading);
             $scope.fetchActionsList();
             
+            $scope.initNewAction();//remove once hooked up to api
             
         };
         $scope.lastSavedDescription = '';
@@ -318,6 +319,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 $scope.refreshing = true;
             }
             
+            $scope.setRightPane('new');//remove once hooked up to api
           //  var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
            // $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
         };
@@ -458,7 +460,28 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 $scope.newAction.time_due = $scope.timeFieldValue[0];
             }
         };
-
+        $scope.filterDate = {};
+        $scope.actionsFilterDateOptions = {
+             firstDay: 1,
+             changeYear: true,
+             changeMonth: true,
+             //minDate: tzIndependentDate($rootScope.businessDate),
+             yearRange: "0:+10",
+             onSelect: function(date, dateObj) {
+                 console.log(arguments)
+                 if ($scope.dateSelection !== null){
+                     if ($scope.dateSelection === 'select'){
+                        $scope.filterDate.due_at_date = $scope.reformatDateOption(date, '/', '-');
+                        $scope.updateFilter();
+                     } 
+                 }
+                    $scope.closeDateFilter();
+            }
+        };
+        $scope.updateFilter = function(){
+            console.info('filder down',$scope.actions);
+            console.log('by date:  ',$scope.filterDate);
+        };
         $scope.actionsDateOptions = {
              firstDay: 1,
              changeYear: true,
@@ -567,15 +590,30 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         $scope.showSelectCalendar = function(){
             //to ensure same day due to utc hour, set utc hour to 0100
             //if newAction = set start date to today, otherwise set it to the selectedAction due date
-            var fmObj = $scope.getDateObj($scope.selectedAction.due_at_date, '-');
-            $scope.actionsSelectedDate = fmObj.year+'-'+fmObj.month+'-'+fmObj.day;
+            if ($scope.selectedAction.due_at_date){
+                var fmObj = $scope.getDateObj($scope.selectedAction.due_at_date, '-');
+                $scope.actionsSelectedDate = fmObj.year+'-'+fmObj.month+'-'+fmObj.day;
+                $scope.usingCalendar = true;
+                $scope.dateSelection = 'select';
+                $scope.selectCalendarShow = true;
+            }
+        };
+        $scope.showFilterCalendar = function(){
+            //to ensure same day due to utc hour, set utc hour to 0100
+            //if newAction = set start date to today, otherwise set it to the selectedAction due date
+            if (!actionsSelectedFilterDate){
+                var fmObj = $scope.getDateObj($rootScope.businessDate, '-');
+            } else {
+                var fmObj = $scope.getDateObj($scope.actionsSelectedFilterDate);
+            }
+            $scope.actionsSelectedFilterDate = fmObj.year+'-'+fmObj.month+'-'+fmObj.day;
             $scope.usingCalendar = true;
             $scope.dateSelection = 'select';
-            $scope.selectCalendarShow = true;
+            $scope.filterCalendarShow = true;
         };
 
         $scope.closeSelectedCalendar = function(){
-        $scope.usingCalendar = false;
+            $scope.usingCalendar = false;
             $scope.dateSelection = null;
             $scope.selectCalendarShow = false;
         };
@@ -1470,6 +1508,18 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 $('#search-guest-or-room').val(info.lastname+', '+info.firstname);
             };
             
+            
+            
+            $scope.openDateFilter = function(){
+                $scope.filterCalendarShow = true;
+                
+            };
+            $scope.closeDateFilter = function(){
+                $scope.filterCalendarShow = false;
+                
+            };
+            
+            
 
 
 		//function that converts a null value to a desired string.
@@ -1495,6 +1545,9 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                         }
 			return valueToReturn;
 		};
+
+
+
 
 
 
