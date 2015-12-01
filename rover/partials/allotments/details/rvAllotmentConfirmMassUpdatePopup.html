@@ -20,27 +20,10 @@
                           }"
                 translate>SAVE
             </button>
-            <button type="button" class="button"
-                ng-show="!showSaveButton && shouldShowApplyToHeldCountsButton()"
-                ng-disabled="disableButtons"
-                ng-click="clickedOnApplyToHeldCountsButton();"
-                ng-class="{ 'grey': disableButtons,
-                            'brand-colors': !disableButtons
-                          }"
-                translate >
-                APPLY_TO_HELD
+            <button type="button" class="button blank"
+                ng-click="closeDialog()"
+                translate>CANCEL
             </button>
-            <button type="button" class="button brand-colors"
-                ng-show="!showSaveButton && shouldShowApplyToHeldToContractButton()"
-                ng-disabled="disableButtons"
-                ng-click="clickedOnApplyToHeldToContractButton();"
-                ng-class="{ 'grey': disableButtons,
-                            'brand-colors': !disableButtons
-                          }"
-                translate >
-                APPLY_TO_CONTRACT
-            </button>
-            <button type="button" class="button blank" ng-click="clickedOnDiscardButton(); closeDialog()" translate>CANCEL</button>
         </div>
     </div>
 </div>

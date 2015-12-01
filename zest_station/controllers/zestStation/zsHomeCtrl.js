@@ -66,6 +66,7 @@ sntZestStation.controller('zsHomeCtrl', [
         });
         setTimeout(function(){
             $('.ngdialog-close').hide();
+            
         },50);
     };
 
@@ -228,6 +229,9 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.openWorkStationList = function(){
         $scope.showWorkStationList = true;
+        
+        $('.ngdialog-content').addClass('zoku-style');
+        
     };
     $scope.closeWorkStationList = function(){
         $scope.showWorkStationList = false;
@@ -246,6 +250,17 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.init = function(){
         $state.input = {};  
+            if (typeof cordova !== typeof undefined){
+        setTimeout(function(){
+                $('.modal-content').addClass('ng-hide');
+                $('.tablet-popup').addClass('size-up');
+            
+            setTimeout(function(){
+                $('.modal-content').removeClass('ng-hide');
+                $scope.$apply();
+            },100);
+                $scope.$apply();
+        },50);}
     };
     $scope.init();
     

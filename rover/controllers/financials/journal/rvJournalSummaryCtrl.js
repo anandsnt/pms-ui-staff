@@ -21,6 +21,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         
         switch( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
+
                 summaryItem = $scope.data.summaryData.deposit_balance;
                 break;
             case 'GUEST_BALANCE' :
@@ -31,6 +32,29 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
                 break;
         }
         return summaryItem;
+    };
+
+    var updateTotalForBalanceType = function( balance_type, opening_balance, debit_sum, credit_sum, closing_balance ){
+        switch( balance_type ) {
+            case 'DEPOSIT_BALANCE'  :
+                $scope.data.summaryData.deposit_closing_balance = closing_balance;
+                $scope.data.summaryData.deposit_credits = credit_sum;
+                $scope.data.summaryData.deposit_debits = debit_sum;
+                $scope.data.summaryData.deposit_opening_balance = opening_balance;
+                break;
+            case 'GUEST_BALANCE' :
+                $scope.data.summaryData.guest_closing_balance = closing_balance;
+                $scope.data.summaryData.guest_credits = credit_sum;
+                $scope.data.summaryData.guest_debits = debit_sum;
+                $scope.data.summaryData.guest_opening_balance = opening_balance;
+                break;
+            case 'AR_BALANCE' :
+                $scope.data.summaryData.ar_closing_balance = closing_balance;
+                $scope.data.summaryData.ar_credits = credit_sum;
+                $scope.data.summaryData.ar_debits = debit_sum;
+                $scope.data.summaryData.ar_opening_balance = opening_balance;
+                break;
+        }
     };
 
 	var initSummaryData = function(){
@@ -75,6 +99,8 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             summaryItem.transactions = responce.transactions;
             summaryItem.total_count  = responce.total_count;
             summaryItem.end = summaryItem.start + summaryItem.transactions.length - 1;
+
+            updateTotalForBalanceType( balance_type, responce.opening_balance, responce.debit_sum, responce.credit_sum, responce.closing_balance );
 
             if(isFromPagination){
                 // Compute the start, end and total count parameters
@@ -146,7 +172,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         var item = getSummaryItemByBalanceType( balance_type ),
             isDisabled = false;
 
-        if(item.end >= item.total_count){
+        if(!!item && item.end >= item.total_count){
             isDisabled = true;
         }
         return isDisabled;
@@ -157,7 +183,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         var item = getSummaryItemByBalanceType( balance_type ),
             isDisabled = false;
 
-        if(item.page_no === 1){
+        if(!!item && item.page_no === 1){
             isDisabled = true;
         }
         return isDisabled;

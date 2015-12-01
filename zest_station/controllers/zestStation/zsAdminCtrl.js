@@ -103,7 +103,14 @@ sntZestStation.controller('zsAdminCtrl', [
 	};
         
         $scope.goToAdminPrompt = function(){
+        setTimeout(function(){
+                if (typeof cordova !== typeof undefined){
+                    $('.modal-content').addClass('re-centered');
+                }
+                $scope.$apply();
+            },000);
             $state.go('zest_station.home-admin',{'isadmin':true});
+            
         };
 
 	$scope.goToNext  = function(){
