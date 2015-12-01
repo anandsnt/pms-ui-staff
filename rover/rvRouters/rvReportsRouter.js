@@ -6,7 +6,16 @@ angular.module('reportsModule', [])
         templateUrl: '/assets/partials/reports/rvReports.html',
         controller: 'RVReportsMainCtrl',
         resolve: {
-            payload: function(RVreportsSrv) {
+            reportsAssets: function(mappingList, $ocLazyLoad) {
+                return $ocLazyLoad.load(
+                {
+                    serie: true,
+                    files: mappingList['rover.reports']
+                }).then(function(){
+                    $ocLazyLoad.inject('ngReact');
+                });
+            },
+            payload: function(RVreportsSrv, reportsAssets) {
                 return RVreportsSrv.reportApiPayload();
             }
 

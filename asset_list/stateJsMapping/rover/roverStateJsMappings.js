@@ -1,8 +1,9 @@
 module.exports = {
 	getStateMappingList : function () {
+		var jsListRoot = '../asset_list/js/';
 		return {
-			'rover.diary': '../asset_list/js/diaryJsAssetList.js',
-			'rover.dashboard': '../asset_list/js/dashboardJsAssetList.js'
+			'rover.diary': jsListRoot + 'diaryJsAssetList.js',
+			'rover.reports': jsListRoot + 'reportsJsAssetList.js'
 		}
 	}
 }

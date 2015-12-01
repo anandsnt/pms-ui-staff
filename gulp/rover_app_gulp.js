@@ -16,6 +16,7 @@ module.exports = function(gulp, $, options) {
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
 	    generated = "____generated",
 	    LessPluginCleanCSS = require('less-plugin-clean-css'),
+	    ROVER_JS_MAPPING_FILE = '../asset_list/stateJsMapping/rover/roverStateJsMappings',
     	cleancss = new LessPluginCleanCSS({ advanced: true });
 
 	//JS - Start
@@ -49,7 +50,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('rover-generate-mapping-list-dev', ['copy-all-dev'], function(){
 		var glob = require('glob-all'),
-			stateMappingList = require('../asset_list/stateJsMapping/rover/roverStateJsMappings').getStateMappingList(),
+			stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 			fileList = [],
 			extendedMappings = {},
 			fs = require('fs'),
@@ -76,6 +77,60 @@ module.exports = function(gulp, $, options) {
 			    console.log('rover mapping file created (' + roverGenFile + ')');
 			}); 
 		});
+	});
+
+	gulp.task('rover-generate-mapping-list-prod',  function(){
+		var glob = require('glob-all'),
+			stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
+			fileList = [],
+			extendedMappings = {},
+			fs = require('fs'),
+			es = require('event-stream'),
+			mkdirp = require('mkdirp'),
+			edit = require('gulp-json-editor'),
+			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
+				+ generated + 'StateJsMappings/' 
+				+ generated + 'rover/',
+			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json';
+		
+		for (state in stateMappingList){
+			fileList = require(stateMappingList[state]).getList();
+			extendedMappings[state] = glob.sync(fileList);
+		}
+
+		var createMappingFile = function(){
+			mkdirp(roverGenDir, function (err) {
+			    if (err) console.error('rover mapping directory failed!! (' + err + ')');
+		    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
+				    if(err) {
+				        return console.error('rover mapping file failed!! (' + err + ')');
+				    }
+				    console.log('rover mapping file created (' + roverGenFile + ')');
+				}); 
+			});
+		};
+
+		var tasks = Object.keys(extendedMappings).map(function(key, index){
+			console.log ('rover-mapping-generation-started: ' + key);
+			return gulp.src(extendedMappings[key])
+	        .pipe($.concat(key.replace(/\./g, "-")+".min.js"))
+	        .pipe($.ngAnnotate({single_quotes: true}))
+	        .pipe($.uglify({compress:true, output: {
+	        	space_colon: false
+	        }}))
+	        .pipe($.rev())
+	        .pipe(gulp.dest(DEST_ROOT_PATH))
+	        .pipe($.rev.manifest())
+	        .pipe(edit(function(manifest){
+	        	Object.keys(manifest).forEach(function (path, orig) {
+			    	extendedMappings[key] = [URL_APPENDER + "/" + manifest[path]];
+			    });
+			    console.log ('rover-mapping-generation-end: ' + key);
+	        	return {};
+	        }));
+		});
+
+		return es.merge(tasks).on('end', createMappingFile);
 	});
 
 	gulp.task('build-rover-js-dev', ['copy-all-dev'], function(){
@@ -208,7 +263,7 @@ module.exports = function(gulp, $, options) {
 			.pipe(gulp.dest(DEST_ROOT_PATH));
 	});
 
-	var production_tasks = ['build-rover-js-production', 'build-rover-template-cache-production', 'build-rover-less-production', 'concat-translation-en-files-dev'];
+	var production_tasks = ['build-rover-js-production', 'build-rover-template-cache-production', 'build-rover-less-production', 'concat-translation-en-files-dev', 'rover-generate-mapping-list-prod'];
 
 	gulp.task('deleteUnwantedFiles', production_tasks, function(){
 		var del = require('del');

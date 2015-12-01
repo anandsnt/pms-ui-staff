@@ -15,12 +15,15 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
-	gulp.task('build-dev', ['build-rover-dev', 'build-admin-dev', 'build-login-dev']);
+	//development
+	gulp.task('build', ['build-rover-dev', 'build-admin-dev', 'build-login-dev']);
+
+	//produciton
 	gulp.task('asset-precompile', ['rover-asset-precompile', 'admin-asset-precompile', 'login-asset-precompile']);
 
 	gulp.task('watch', function(){
-		gulp.watch(allPaths, ['build-dev'])
+		gulp.watch(allPaths, ['build'])
 	});
 
-	gulp.task('default', ['build-dev', 'watch'])
+	gulp.task('default', ['build', 'watch'])
 }

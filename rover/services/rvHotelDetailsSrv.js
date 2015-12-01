@@ -2,6 +2,7 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 
    	var that = this;
    	this.hotelDetails = {};
+   	var business_date = null;
 	this.fetchUserHotels = function(){
 		var deferred = $q.defer();
 		var url = '/api/current_user_hotels';
@@ -23,6 +24,7 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 			_.extend(that.hotelDetails, {
 				business_date: data.business_date
 			});
+			business_date = data.business_date;
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -47,6 +49,10 @@ sntRover.service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBa
 		var deferred = $q.defer(),
 			promises = [that.fetchUserHotels(), that.fetchHotelBusinessDate(), that.fetchHotelSettings()];
 		$q.all(promises).then(function(data){
+			//look this.fetchHotelBusinessDate
+			//since api/hotelsettings.json is returing a business date key and that is not the buiness date :(
+			that.hotelDetails.business_date = business_date;
+
 			deferred.resolve(that.hotelDetails);
 		},
 		function(error){
