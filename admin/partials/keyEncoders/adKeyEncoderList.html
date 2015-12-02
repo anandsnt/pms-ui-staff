@@ -53,6 +53,10 @@
 								<span class="switch-icon"></span>
 							</div>
 						</td>
+
+						<td header-class="width-10" ng-hide="currentClickedElement == $index">
+							 <span class="icons delete_small cursor_pointer" ng-click="deleteEncoder($index,encoder.id)" ng-hide="false">&nbsp;</span>
+						</td>
 						
 						<td colspan="5" header-class="width-0" ng-include="getTemplateUrl($index, encoder.id)" ></td>
 					</tr> 
