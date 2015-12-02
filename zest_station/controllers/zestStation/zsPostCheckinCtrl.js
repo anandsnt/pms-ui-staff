@@ -254,6 +254,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = "Your Registration Has Been sent to:";
                 $scope.subHeadingText = $scope.getLastInputEmail();
                 $scope.at = 'last_confirm';   
+                $scope.modalBtn1 = '';
+                $scope.modalBtn2 = 'Exit';
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
                 

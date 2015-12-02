@@ -18,6 +18,14 @@
   .iScrollIndicator{
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
   }
+
+  .calendar-rate-table {
+    width: ~"-webkit-calc(100% - 240px)";
+    width: ~"-moz-calc(100% - 240px)";
+    width: ~"calc(100% - 240px)";
+    position: relative;
+  }
+
   #roomTypeViewCalendar{
    // margin-left:22%;
 
@@ -370,6 +378,7 @@
 
     .iScrollHorizontalScrollbar {
       top: auto !important;
+      bottom: 0;
     }
   }
   #rate-manager-not-configured {
@@ -444,7 +453,6 @@
     .first-row {
       height: 71px !important;
       text-align: right;
-      padding: 20px;
       vertical-align: middle;  
       >div{
           >span{
@@ -515,7 +523,6 @@
 
   td {
     vertical-align: middle;
-    padding: 0 5px 0 5px;
   }
 
 //  thead tr th:not(:first-child) {
