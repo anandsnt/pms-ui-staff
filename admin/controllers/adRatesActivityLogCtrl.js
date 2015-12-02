@@ -120,7 +120,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         var params = {
                 id: $stateParams.rateId,
                 page: $scope.start,
-                per_page: $scope.end
+                per_page: 50
         };
         if($scope.isUpdateReportFilter){
             $scope.fromDate = $('#activity-range-from').val();
