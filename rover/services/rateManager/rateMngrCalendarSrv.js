@@ -1,4 +1,4 @@
-sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
+angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 	var that = this;
 	that.allRestrictionTypes = [];
 

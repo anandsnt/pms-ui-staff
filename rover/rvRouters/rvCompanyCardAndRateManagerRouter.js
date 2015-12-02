@@ -19,10 +19,13 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/rateManager/dashboard.html',
             controller  : 'RMDashboradCtrl',
             resolve: {
-                sortOrder: function(RateMngrCalendarSrv) {
+                rateMangerAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('rover.ratemanager', ['highcharts-ng']);
+                },
+                sortOrder: function(RateMngrCalendarSrv, rateMangerAssets) {
                     return RateMngrCalendarSrv.fetchSortPreferences();
                 },
-                sortOptions: function(RateMngrCalendarSrv) {
+                sortOptions: function(RateMngrCalendarSrv, rateMangerAssets) {
                     return RateMngrCalendarSrv.fetchSortOptions();
                 }
             }
