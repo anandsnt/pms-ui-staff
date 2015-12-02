@@ -1416,6 +1416,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ($scope.hasBlockDataUpdated) {
 				$scope.fetchCurrentSetOfRoomBlockData();
 			}
+			setDatePickers();
 		});
 
 		/**
