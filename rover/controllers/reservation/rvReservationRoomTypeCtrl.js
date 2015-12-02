@@ -119,31 +119,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				$scope.rooms = $scope.reservationData.rooms;
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
-				if ($stateParams.view === "DEFAULT") {
-					var isRoomAvailable = true;
-					var isHouseAvailable = true;
-					_.each(roomRates.results, function(dayInfo, index) {
-						if (isHouseAvailable && dayInfo.house.availability < 1) {
-							isHouseAvailable = false;
-						}
-						if (isRoomAvailable && $scope.reservationData.tabs[$scope.activeRoom].roomTypeId !== "") {
-							var roomStatus = _.findWhere(dayInfo.room_types, {
-								"id": $scope.reservationData.tabs[$scope.activeRoom].roomTypeId
-							});
-							if (typeof roomStatus !== "undefined" && roomStatus.availability < 1) {
-								isRoomAvailable = false;
-							}
-						}
-					});
-
-					$scope.isHouseAvailable = isHouseAvailable;
-					// CICO-21313
-					// While coming in from staycard even if no avbl -- DO NOT go into calendar view
-					// clarified the same with the product team as well. (w. Nicole)
-					if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime && $stateParams.fromState !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
-						$scope.toggleCalendar();
-					}
-				} else if ($stateParams.view === "CALENDAR" && isCallingFirstTime) {
+				// CICO-21661 Never default to Room & Rates view! Unless specified in the stateparams to do so
+				if ($stateParams.view === "CALENDAR" && isCallingFirstTime) {
 					$scope.toggleCalendar();
 				}
 				//CICO-6069 Init selectedDay
@@ -551,43 +528,47 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 			var arrival = $scope.reservationData.arrivalDate,
 				departure = $scope.reservationData.departureDate,
-				exhaustedRateAddons = [];
+				exhaustedRateAddons = [],
+				updateExhaustedAddonsList = function(addon) {
+					// Need to see the applicable count based on the amount_type
+					var applicableCount = RVReservationStateService.getApplicableAddonsCount(
+						addon.amountType,
+						addon.postType,
+						parseInt(addon.postFrequency, 10),
+						parseInt($scope.reservationData.tabs[$scope.viewState.currentTab].numAdults, 10),
+						parseInt($scope.reservationData.tabs[$scope.viewState.currentTab].numChildren, 10),
+						parseInt($scope.reservationData.numNights, 10)
+					) * parseInt($scope.reservationData.tabs[$scope.viewState.currentTab].roomCount, 10);
+
+
+					if (_.isNumber(addon.inventory) && addon.inventory < applicableCount) {
+						var currentIndex = _.findIndex(exhaustedRateAddons, {
+							id: addon.id
+						});
+						if (currentIndex > -1) { //entry exists already
+							if (exhaustedRateAddons[currentIndex].inventory > addon.inventory) {
+								exhaustedRateAddons[currentIndex].inventory = addon.inventory; //reset to the minimum of the counts	
+							}
+						} else {
+							exhaustedRateAddons.push(addon);
+						}
+					}
+				};
 
 			if (!$scope.stateCheck.stayDatesMode) { // Not in stay dates mode
 				_.each($scope.roomAvailability[roomId].ratedetails, function(rateDetail, forDate) {
 					if (forDate === arrival || forDate !== departure) {
 						_.each(rateDetail[rateId].associatedAddons, function(addon) {
-
-							// TODO: Need to see the applicable count based on the amount_type
-							var applicableCount = 1;
-
-							if (_.isNumber(addon.inventory) && addon.inventory < applicableCount) {
-								var currentIndex = _.findIndex(exhaustedRateAddons, {
-									id: addon.id
-								});
-								if (currentIndex > -1) { //entry exists already
-									if (exhaustedRateAddons[currentIndex].inventory > addon.inventory) {
-										exhaustedRateAddons[currentIndex].inventory = addon.inventory; //reset to the minimum of the counts	
-									}
-								} else {
-									exhaustedRateAddons.push(addon);
-								}
-							}
+							updateExhaustedAddonsList(addon);
 						});
 					}
 				});
 			} else { // In stay dates mode
 				_.each($scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate][rateId].associatedAddons, function(addon) {
-
-					// TODO: Need to see the applicable count based on the amount_type
-					var applicableCount = 1;
-
-					if (_.isNumber(addon.inventory) && addon.inventory < applicableCount) {
-						exhaustedRateAddons.push(addon);
-					}
+					updateExhaustedAddonsList(addon);
 				});
 			}
-
+			
 			return exhaustedRateAddons;
 		};
 
