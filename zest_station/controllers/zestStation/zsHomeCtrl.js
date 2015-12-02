@@ -157,13 +157,17 @@ sntZestStation.controller('zsHomeCtrl', [
     		$scope.$emit('hideLoader');
     	};
         var station = $scope.getWorkStation();
-        console.info('save station encoder id from: ',station)
     	var params = {
             'default_key_encoder_id': station.key_encoder_id,
             'identifier': station.station_identifier,
             'name': station.name,
             'id':station.id
         };
+       
+        if (typeof params.default_key_encoder_id !== typeof undefined){
+        //first set as a convenient global, then save to localstorage
+            sntZestStation.encoder = params.default_key_encoder_id;
+        }
        
         if (sntZestStation.selectedPrinter){
             params.printer = sntZestStation.selectedPrinter;
@@ -244,7 +248,6 @@ sntZestStation.controller('zsHomeCtrl', [
         for (var i in $scope.zestStationData.workstations){
             if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
                 $scope.workStationObj = $scope.zestStationData.workstations[i];
-                console.log($scope.workStationObj);
             }
         }
     });

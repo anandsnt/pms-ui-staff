@@ -130,6 +130,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
       
       
+         $stateProvider.state('zest_station.last_confirm', {
+             url: '/key_success/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
+      
          $stateProvider.state('zest_station.key_success', {
              url: '/key_success/:mode', 
              controller: 'zsCheckInKeysCtrl',

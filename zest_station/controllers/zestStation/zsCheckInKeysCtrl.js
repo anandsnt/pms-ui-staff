@@ -198,7 +198,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             var options = {
                 card_info: "",
                 key: $scope.makingKey,
-                key_encoder_id: $scope.zestStationData.encoder,
+                key_encoder_id: sntZestStation.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
             if ($scope.makingKey === 1){
