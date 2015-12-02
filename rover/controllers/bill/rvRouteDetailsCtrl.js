@@ -91,7 +91,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.cardData = data;
         $scope.renderAddedPayment = {};
         $scope.renderAddedPayment.payment_type = "CC";
-        $scope.isAddPayment = true;
+        $scope.isAddPayment = false;
         $scope.showPayment  = true;
 
         $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
