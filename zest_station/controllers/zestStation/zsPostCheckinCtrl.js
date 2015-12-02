@@ -115,10 +115,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         
         $scope.sendRegistration = function(){
             var fetchHotelCompleted = function(response){
-                $scope.at = 'send-registration';
-                $scope.headingText = "Your Registration Has Been sent to:";
-                $scope.subHeadingText = $scope.getLastInputEmail();
-                $scope.at = 'last_confirm'; 
+                $state.go('zest_station.last_confirm');
                 $scope.$emit('hideLoader');
             };
             var id = $scope.selectedReservation.id;
@@ -253,6 +250,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
                 
+            } else if (current === 'zest_station.last_confirm'){
+                $scope.headingText = "Your Registration Has Been sent to:";
+                $scope.subHeadingText = $scope.getLastInputEmail();
+                $scope.at = 'last_confirm';   
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
                 
