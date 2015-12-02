@@ -117,19 +117,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 	return (!roomTypesConfigured);
 		 };
 
-		 /**
-		  * Apply to held counts button will be disabled by default.
-		  * It should be enabled after clicking apply to contract button.
-		  * @return {Boolean} Whether button should be disabled or not
-		  */
-		 $scope.shouldDisableApplyToHeldCountsButton = function() {
-		 	return (isContractHeld());
-		 };
-
-		 $scope.shouldDisableApplyToContractButton = function() {
-		 	return (updated_contract_counts);
-		 };
-
 
 		 /**
 		  * Apply to held counts to contract button will be disabled by default.
@@ -161,13 +148,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
-			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInContractGridView  = $scope.activeGridView === 'CONTRACT';
-
-			// When the contract is saved without using the "copy to held" button 
-			// it is now clear that the button should be there if afterwards you go back to the contract view.
-			// https://stayntouch.atlassian.net/browse/CICO-19121?focusedCommentId=57106&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-57106
-			return ( isInContractGridView && ( updated_contract_counts || hasBookingDataChanged  || !isContractHeld()) );
+			// CICO-22506: simplified the functionality of the apply to held
+			return $scope.activeGridView === 'CONTRACT';
 		};
 
 		$scope.shouldShowApplyToContractButton = function() {
@@ -182,13 +164,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				isInCurrentGridView  = $scope.activeGridView === 'CURRENT';
 
 			return ( hasBookingDataChanged && isInCurrentGridView );
-		};
-
-		$scope.shouldShowApplyToHeldToContractButton = function() {
-			var hasBookingDataChanged = $scope.hasBookingDataChanged,
-				isInCurrentGridView	  = $scope.activeGridView === 'CURRENT';
-
-			return ( isInCurrentGridView && ( updated_current_counts || hasBookingDataChanged ) );
 		};
 
 		/**
@@ -608,28 +583,29 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
-		 * CICO-19121:
-		 * Fired when user clickes on the button in contract view.
+		 * CICO-22506:
+		 * Copy entire contract to held once the user is ready to do so.
 		 */
-		$scope.clickedOnApplyToHeldCountsButton = function(massUpdate) {
-			if (!massUpdate) {
-				var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
-				// plan A: copy contracted value to held counts by force and call saveRoomBlock()
-				_.each(roomBlockData, function(roomtype) {
-					_.each(roomtype.dates, function(dateData) {
-						dateData.single = dateData.single_contract;
-						dateData.double = dateData.double_contract;
+		$scope.clickedOnApplyToHeldCountsButton = function() {
+			var params = {
+				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
+				forcefully_overbook_and_assign_rooms: true
+			};
 
-						if (dateData.triple_contract) {
-							dateData.triple = dateData.triple_contract;
-						}
-						if (dateData.quadruple_contract) {
-							dateData.quadruple = dateData.quadruple_contract;
-						}
-					});
-				});
-			}
-			$scope.saveRoomBlock(false, false, massUpdate);
+			var successCallback = function() {
+				$scope.fetchCurrentSetOfRoomBlockData();
+			};
+
+			var errorCallback = function(error) {
+				$scope.errorMessage = error;
+			};
+
+			var options = {
+				params: params,
+				successCallBack: successCallback,
+				failureCallBack: errorCallback
+			};
+			$scope.callAPI(rvAllotmentConfigurationSrv.copyContactToHeld, options);
 		};
 
 		/**
@@ -639,31 +615,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		$scope.clickedOnUpdateContractButton = function() {
 			$scope.saveRoomBlock(false, true);
-		};
-
-		/**
-		 * CICO-19121:
-		 * Copy held counts to contracts
-		 */
-		$scope.clickedOnApplyToHeldToContractButton = function(massUpdate) {
-			if (!massUpdate) {
-				var roomBlockData = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
-				// plan A: copy held value to contracted counts by force and call saveRoomBlock()
-				_.each(roomBlockData, function(roomtype) {
-					_.each(roomtype.dates, function(dateData) {
-						dateData.single_contract = dateData.single;
-						dateData.double_contract = dateData.double;
-
-						if (dateData.triple) {
-							dateData.triple_contract = dateData.triple;
-						}
-						if (dateData.quadruple) {
-							dateData.quadruple_contract = dateData.quadruple;
-						}
-					});
-				});
-			}
-			$scope.saveRoomBlock(false, true, massUpdate);
 		};
 
 		$scope.clickedOnUpdateCurrentButton = function() {
@@ -702,7 +653,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.hasBookingDataChanged = false;
 			updated_contract_counts = false;
 			updated_current_counts = false;
-			$scope.massUpdateSelected = false;
 		};
 
 		var successCallBackOfSaveRoomBlock = function(data) {
@@ -716,7 +666,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// reset flags
 			updated_contract_counts = !updated_contract_counts;
 			updated_current_counts = !updated_current_counts;
-			$scope.massUpdateSelected = false;
 
 			//we have saved everything we have
 			//so our data is new
@@ -837,10 +786,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate) {
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
-
-			if ($scope.massUpdateSelected) {
-				$scope.$broadcast("SAVE_MASS_UPDATE", forceOverbook, isContratUpdate);
-			}
 
 			var data = $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings;
 			var params = {
@@ -1280,7 +1225,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 */
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
 			$scope.$emit("showLoader");
-			$scope.massUpdateSelected = false;
 			$timeout(function() {
 				var roomBlockData = $scope.allotmentConfigData.roomblock;
 
@@ -1410,7 +1354,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.releaseDaysEdited = false;
 		};
 
-		var failureCallBackOfFetchRoomBlockGridDetails = function(error) {
+		var failureCallBackOfFetchRoomBlockGridDetails = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
 		};
 
@@ -1472,6 +1416,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			if ($scope.hasBlockDataUpdated) {
 				$scope.fetchCurrentSetOfRoomBlockData();
 			}
+			setDatePickers();
 		});
 
 		/**
@@ -1773,7 +1718,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
 
-			$scope.massUpdateSelected = false;
 		};
 
 

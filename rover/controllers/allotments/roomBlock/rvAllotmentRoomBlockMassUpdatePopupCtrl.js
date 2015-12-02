@@ -74,8 +74,6 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					each.start_date = formatDateForAPI(timeLineStart);
 					each.end_date = formatDateForAPI($scope.massUpdateEndDate);
 				});
-				//we changed something
-				$scope.releaseDateChanging();
 
 				// Save room block now.
 				$scope.saveReleaseDays();

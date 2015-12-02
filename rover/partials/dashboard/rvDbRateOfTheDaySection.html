@@ -9,7 +9,7 @@
         	<span class="value" ng-if="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.today.amount | number : 2}}
             </span>  
-            <span class="value" ng-if="isEmptyObject(statisticsData.rate_of_day.today)">
+            <span class="value" ng-hide="!!statisticsData.rate_of_day.today.amount">
                 CLOSED
             </span>              
                    
@@ -21,7 +21,7 @@
             <span class="value" ng-if="escapeNull(statisticsData.rate_of_day.tomorrow.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.tomorrow.amount | number : 2}}
             </span> 
-            <span class="value" ng-if="isEmptyObject(statisticsData.rate_of_day.tomorrow)">
+            <span class="value" ng-hide="!!statisticsData.rate_of_day.tomorrow.amount">
                 CLOSED
             </span>                        
         </li>
@@ -32,7 +32,7 @@
             <span class="value" ng-if="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.day_after_tomorrow.amount | number : 2}}
             </span> 
-            <span class="value" ng-if="isEmptyObject(statisticsData.rate_of_day.day_after_tomorrow)">
+            <span class="value" ng-hide="!!statisticsData.rate_of_day.day_after_tomorrow.amount">
                 CLOSED
             </span>                        
         </li>      
