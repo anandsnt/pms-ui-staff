@@ -625,7 +625,7 @@ sntRover.controller('RateCalendarCtrl', [
             $scope.popupData.selectedRoomType = roomType;
             $scope.popupData.fromRoomTypeView = false;
 
-            if (type === 'ROOM_TYPE') {
+            if (type === 'ROOM_TYPE' && $scope.ratesRoomsToggle === "RATES") {
                 $scope.popupData.fromRoomTypeView = true;
             }
 
