@@ -821,7 +821,8 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                     scrollX: true,
                     scrollY: true,
                     probeType: 3,
-                    tap: true
+                    click: true,
+                    mouseWheel: true
                 },
                 rateGridAllRoomTypeAllRatesOptions  = _.extend({}, util.deepCopy(scrollOptions)),
                 leftAllRoomTypeAllRatesOptions      = _.extend({scrollX: false, scrollbars: false }, util.deepCopy(scrollOptions)),

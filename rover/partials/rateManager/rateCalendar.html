@@ -6,7 +6,7 @@
 	</div>
 	<div class="calendar-wraper">
 		<div ng-show = "currentFilterData.filterConfigured && calendarMode == 'RATE_VIEW'">
-		    <div style="width: 240px;overflow:hidden;height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="all-room-type-rate-left-scroller">
+		    <div style="width: 240px;overflow:hidden;max-height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="all-room-type-rate-left-scroller">
 		    	<div class="wrapper">
 			        <table class='rate-calendar'>
 			            <thead>
@@ -53,7 +53,7 @@
 		    </div>
 		    
 		    
-		    <div ng-iscroll="all-room-type-rate-grid-scroller" style="height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
+		    <div ng-iscroll="all-room-type-rate-grid-scroller" style="max-height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
 		    	<div class="wrapper" style="width:{{uiOptions.tableWidth}}px;">
 			        <table class="rate-calendar">
 			            <thead>
@@ -110,7 +110,7 @@
 		    </div>
 		</div>
 		<div ng-show="currentFilterData.filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'">
-		    <div style="width: 240px;overflow:hidden;height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="room-type-details-left-scroller">
+		    <div style="width: 240px;overflow:hidden;max-height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="room-type-details-left-scroller">
 		        <table class='rate-calendar'>
 		            <thead>
 		                <tr>
@@ -155,7 +155,7 @@
 		        </table>
 		    </div>
 
-		    <div ng-iscroll="room-type-details-grid-scroller" style="height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
+		    <div ng-iscroll="room-type-details-grid-scroller" style="max-height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
 		    	<div class="wrapper" style="width:{{uiOptions.tableWidth}}px;">
 			        <table class="rate-calendar">
 			            <thead>
