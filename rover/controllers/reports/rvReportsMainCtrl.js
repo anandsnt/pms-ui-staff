@@ -1292,11 +1292,11 @@ sntRover.controller('RVReportsMainCtrl', [
 				return exportUrl;
 			};
 
-			param = genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter);
+			param = jQuery.param(genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter));
 
 			switch ( chosenReport.title ) {
 				case reportNames['DAILY_PRODUCTION']:
-					exportUrl = "/api/reports/" + chosenReport.id + "/submit.csv?" + params;
+					exportUrl = "/api/reports/" + chosenReport.id + "/submit.csv?" + param;
 					break;
 
 				default:

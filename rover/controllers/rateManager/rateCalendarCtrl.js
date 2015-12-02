@@ -854,12 +854,14 @@ sntRover.controller('RateCalendarCtrl', [
                 }
                 return false;
             } else if ($scope.lastChildRates) {
-                 for (var i in $scope.lastChildRates) {
+                 for (var i=0; i< $scope.lastChildRates.length; i++) {
                     if ($scope.lastChildRates[i] === rate.id) {
                         return true;
                     };
                 }
-            } else return false;
+            }
+            // Return FALSE by DEFAULT
+            return false;
         };
 
 

@@ -9,11 +9,11 @@
 	                <div class="entry">
 	                    <div class="has-datepicker">
 	                        <label for="routing-range-from">From</label>
-	                        <input id="routing-range-from" ui-date="routingDateFromOptions" class="range-datepicker" ng-model="routeDates.from" readonly />
+	                        <input id="routing-range-from" ui-date="routingDateFromOptions" class="range-datepicker" ng-model="routeDates.from" ng-change="onRouteDateChange()" readonly />
 	                    </div>
 	                    <div class="has-datepicker">
 	                        <label for="routing-range-to">To</label>
-	                        <input id="routing-range-to" ui-date="routingDateToOptions"  class="range-datepicker" ng-model="routeDates.to" readonly />
+	                        <input id="routing-range-to" ui-date="routingDateToOptions"  class="range-datepicker" ng-model="routeDates.to" ng-change="onRouteDateChange()" readonly />
 	                    </div>
 	                </div>
                 </div>
