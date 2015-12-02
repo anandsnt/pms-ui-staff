@@ -85,15 +85,15 @@
         </div>
         <div class="summary">
             <!-- Action summary -->
-            <div  ng-show="showActionSummary()" ng-click="stopEditClick()" class="scrollable" ng-iscroll="rvActionContentScroller" ng-iscroll-delay="500">
-                <div ng-include=" '/assets/partials/common/actions_summary.html'" style="height:100%" ></div>
+            <div  ng-show="showActionSummary()" ng-click="stopEditClick()" class="scrollable">
+                <div ng-include=" '/assets/partials/common/actions_summary.html'" ></div>
             </div>
             <!-- Action Assignment -->
-            <div ng-show="showAssignScreen()" class="scrollable" ng-iscroll="rvActionContentScroller" ng-iscroll-delay="500">
+            <div ng-show="showAssignScreen()" class="scrollable">
                 <div ng-include=" '/assets/partials/common/actions_assign.html'"></div>
             </div>
 
-            <div  ng-show="showNewAction()" ng-class="{'full-width': actions.totalCount === 0}" class="scrollable action-mgr-new" ng-iscroll="rvActionContentScroller" ng-iscroll-delay="500">
+            <div  ng-show="showNewAction()" ng-class="{'full-width': actions.totalCount === 0}" class=" action-mgr-new" >
                 <div ng-include=" '/assets/partials/common/actions_new_action.html'"></div>
             </div>
         
