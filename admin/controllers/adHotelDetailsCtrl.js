@@ -16,7 +16,10 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.fileName = "Choose File....";
 	$scope.hotel_logo_file = $scope.fileName;
 	$scope.hotel_template_logo_file = $scope.fileName;
-	$scope.certificate = "";
+	$scope.mli_pem_certificate_file_name = "Choose File....";
+	$scope.mli = {
+		certificate: ''
+	};
 	$scope.isHotelChainEditable =  true;
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
@@ -60,8 +63,8 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data = data.data;
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
-				if(data.mli_pem_certificate_loaded){
-					$scope.fileName = "Certificate Attached";
+				if($scope.data.mli_pem_certificate_loaded){
+					$scope.mli_pem_certificate_file_name = "Certificate Attached";
 				}
 				if($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
 					$scope.data.check_in_time.primetime = "AM";
@@ -134,15 +137,13 @@ admin.controller('ADHotelDetailsCtrl', [
     *   A post method for Test MliConnectivity for a hotel
     */
 	$scope.clickedTestMliConnectivity = function(){
-            if ($('#cert_string').val() !== ''){
-                $scope.certificate = $('#cert_string').val();
-            }
 		var postData = {
 			"mli_chain_code": $scope.data.mli_chain_code,
-			"mli_hotel_code": $scope.data.mli_hotel_code,
-			"mli_pem_certificate": $scope.certificate
+			"mli_hotel_code": $scope.data.mli_hotel_code
 		};
-
+		if ($scope.mli.certificate != "") {
+			postData.mli_pem_certificate = $scope.mli.certificate;
+		}
 		var testMliConnectivitySuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.successMessage = "Connection Valid";
@@ -159,7 +160,9 @@ admin.controller('ADHotelDetailsCtrl', [
 		if($scope.isAdminSnt){
 			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo", "languages", "hotel_template_logo"];
 			var data = dclone($scope.data, unwantedKeys);
-			data.mli_certificate = $scope.certificate;
+			if ($scope.mli.certificate != "") {
+				data.mli_certificate = $scope.mli.certificate;
+			}
 
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');

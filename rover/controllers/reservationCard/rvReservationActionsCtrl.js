@@ -540,9 +540,6 @@ sntRover.controller('reservationActionsController', [
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
 						}
-						if (isPercent) {
-							return $rootScope.currencySymbol + penalty; //as calculated amount based on percentage is provided from API
-						}
 						return $rootScope.currencySymbol + $filter('number')(penalty, 2);
 					}())
 				})

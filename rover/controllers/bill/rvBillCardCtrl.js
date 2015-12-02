@@ -2350,4 +2350,9 @@ sntRover.controller('RVbillCardController',
 		$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 	};
 
+
+	$scope.$on('PAYMENT_MAP_ERROR',function(event,data){
+        $scope.errorMessage = data;
+    });
+
 }]);
