@@ -6,7 +6,7 @@
 	</div>
 	<div class="calendar-wraper">
 		<div ng-show = "currentFilterData.filterConfigured && calendarMode == 'RATE_VIEW'">
-		    <div style="width: 240px;overflow:hidden;height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="rate-calendar-left">
+		    <div style="width: 240px;overflow:hidden;height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="all-room-type-rate-left-scroller">
 		    	<div class="wrapper">
 			        <table class='rate-calendar'>
 			            <thead>
@@ -53,7 +53,7 @@
 		    </div>
 		    
 		    
-		    <div ng-iscroll="calendar-table-scroller" style="height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
+		    <div ng-iscroll="all-room-type-rate-grid-scroller" style="height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
 		    	<div class="wrapper" style="width:{{uiOptions.tableWidth}}px;">
 			        <table class="rate-calendar">
 			            <thead>
@@ -109,6 +109,115 @@
 		        </div>
 		    </div>
 		</div>
+		<div ng-show="currentFilterData.filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'">
+		    <div style="width: 240px;overflow:hidden;height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="room-type-details-left-scroller">
+		        <table class='rate-calendar'>
+		            <thead>
+		                <tr>
+		                    <th class="cell first-row actions"><!--  style="{width:th.width}" -->
+		                        <button ng-click="openCloseAllRestrictions('remove')" 	
+		                                class="button" 
+		                                ng-class="{'green': anyRoomHasClosedRestriction,'grey': !anyRoomHasClosedRestriction}" 
+		                                ng-disabled="!anyRoomHasClosedRestriction"> 
+		                            Open All
+		                        </button>
+		                        
+		                        <button ng-click="openCloseAllRestrictions('add')" 
+		                                class="button" 
+		                                ng-class="{'red': !calendarData.disableCloseAllBtn,'grey': calendarData.disableCloseAllBtn}" 
+		                                ng-disabled="calendarData.disableCloseAllBtn"> 
+		                            Close All
+		                        </button>
+		                    </th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <tr ng-if="calendarData.data.length > 1">
+		                    <td class="first-row cell">
+		                        <span class="bolder">All room types</span>
+		                        <span>&nbsp;</span>
+		                    </td>
+		                </tr>
+
+		                <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'expandedFirstRow': currentExpandedRow === $index}" ng-class="{'last': $last}"> 
+		                    <td class="first-row force-align">    
+		                        <span ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
+		                        <span style="float:right" ng-hide="currentExpandedRow === $index || !!rate.is_hourly">
+		                            <img class="down" src="/assets/arrow-down.png" ng-click="expandRow($index)">
+		                        </span>
+		                        <span style="float:right" ng-show="currentExpandedRow === $index && !rate.is_hourly">
+		                            <img class="up" src="/assets/arrow-up.png" ng-click="expandRow($index)">
+		                        </span>
+		                    </td>
+		                </tr>
+		                
+		            </tbody>
+		        </table>
+		    </div>
+
+		    <div ng-iscroll="room-type-details-grid-scroller" style="height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
+		    	<div class="wrapper" style="width:{{uiOptions.tableWidth}}px;">
+			        <table class="rate-calendar">
+			            <thead>
+			                <tr class="cell">
+			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" 
+			                        style="width:{{uiOptions.columnWidth}}px;">
+			                        <div  ng-if="!isHistoryDate(date)" class="date-header" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">
+			                            <span class="week-day">{{date| date:'EEEE'}}</span>
+			                            <span>{{date| date:'MMMM dd'}}</span>
+			                        </div>
+			                        <div ng-if="isHistoryDate(date)" class="date-header isHistory-cell-content" style="opacity:0.7;">
+			                            <span class="week-day">{{date| date:'EEEE'}}</span>
+			                            <span>{{date| date:'MMMM dd'}}</span>
+			                        </div>
+			                    </th>
+			                </tr>
+			            </thead>
+
+			            <tbody>
+			                <tr ng-if="calendarData.data.length > 1">
+			                    <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" class="cell"> 
+			                        <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''" class="cell-container" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''">
+			                            <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE', true)">
+			                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRestrictions.html'"></div>
+			                            </div>
+			                            <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content "  >
+			                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRestrictions.html'"></div>
+			                            </div>
+			                        </div>
+			                    </td>
+			                </tr>
+
+			                <tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}"> 
+			                    <td ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''"  ng-repeat="date in calendarData.dates track by $index" class="cell" ng-hide="currentExpandedRow === $parent.$index && !rate.is_hourly" >
+			                        <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''" class="cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''"  ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
+			                            <div ng-if="!isHistoryDate(date)" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
+			                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarDiv.html'"></div>
+			                            </div>
+			                            <div ng-if="isHistoryDate(date)" class="cell-content isHistory-cell-content"  >
+			                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarDiv.html'"></div>
+			                            </div>
+			                        </div>
+			                    </td>
+			                    <td ng-repeat="date in calendarData.dates track by $index" class="cell" ng-show="currentExpandedRow === $parent.$index && !rate.is_hourly" >
+			                        <div ng-class="(!isHistoryDate(date) && currentExpandedRow === $parent.$index && !rate.is_hourly && {{isWeekend(date)}}) ? 'expandedContainerWeekend' : ''"  class="exp cell-container" ng-class="{{isHistoryDate(date)}} ? 'history_cell_container' : ''" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">
+			                            <div ng-if="!isHistoryDate(date)" class="exp cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
+			                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRoomTypeExpanded.html'"></div>
+			                            </div>
+			                            <div ng-if="isHistoryDate(date)" class="exp cell-content isHistory-cell-content">
+			                                <div ng-include="'assets/partials/rateManager/restrictionsTemplate/roomCalendarRoomTypeExpanded.html'"></div>
+			                            </div>
+			                        </div>
+			                    </td>
+			                </tr>
+			                
+			            </tbody>
+			        </table>
+		        </div>
+		    </div>
+		    
+		</div>
+
 		<div class='pinned-bottom'>
 		    <ul class="restriction-legends" >
 		        <li ng-repeat="restrictionType in calendarData.restriction_types">
@@ -118,7 +227,6 @@
 		    </ul>
 		</div>
 	</div>
-	<div ng-if = "currentFilterData.filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'" ng-include="'/assets/partials/rateManager/roomTypeViewCalendar.html'" class="calendar-wraper"></div>
 </span>
 
 

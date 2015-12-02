@@ -818,37 +818,56 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
         var setScroller = function() {
 
             var scrollOptions = {
-                scrollX: true,
-                scrollY: true,
-                probeType: 3,
-                tap: true
-            };
+                    scrollX: true,
+                    scrollY: true,
+                    probeType: 3,
+                    tap: true
+                },
+                rateGridAllRoomTypeAllRatesOptions  = _.extend({}, util.deepCopy(scrollOptions)),
+                leftAllRoomTypeAllRatesOptions      = _.extend({scrollX: false, scrollbars: false }, util.deepCopy(scrollOptions)),
+                rateGridRoomTypeDetailOptions       = util.deepCopy(rateGridAllRoomTypeAllRatesOptions),
+                leftRoomTypeDetailOptions           = util.deepCopy(leftAllRoomTypeAllRatesOptions);
 
-            $scope.setScroller('calendar-table-scroller', _.extend({}, util.deepCopy(scrollOptions)));
+            $scope.setScroller('all-room-type-rate-grid-scroller', rateGridAllRoomTypeAllRatesOptions);
+            $scope.setScroller('all-room-type-rate-left-scroller', leftAllRoomTypeAllRatesOptions);
 
-            $scope.setScroller('rate-calendar-left', _.extend({scrollX: false, scrollbars: false }, util.deepCopy(scrollOptions)));
+            $scope.setScroller('room-type-details-grid-scroller', rateGridRoomTypeDetailOptions);
+            $scope.setScroller('room-type-details-left-scroller', leftRoomTypeDetailOptions);
         };
 
         var setUpScrollerListenerEvents = function() {
-            var leftScroller = $scope.getScroller('rate-calendar-left'),
-                rateCalendarSc = $scope.getScroller('calendar-table-scroller');          
+            var leftScrollerAllRoomRateSc = $scope.getScroller('all-room-type-rate-left-scroller'),
+                gridAllRoomRateSc = $scope.getScroller('all-room-type-rate-grid-scroller'),
+                leftScrollerRoomTypeDetailsSc = $scope.getScroller('room-type-details-left-scroller'),
+                gridRoomTypeDetailsSc = $scope.getScroller('room-type-details-grid-scroller');          
             
-            leftScroller.off('scroll');
-            rateCalendarSc.off('scroll');
+            leftScrollerAllRoomRateSc.off('scroll');
+            gridAllRoomRateSc.off('scroll');
+            leftScrollerRoomTypeDetailsSc.off('scroll');
+            gridRoomTypeDetailsSc.off('scroll');
 
-            leftScroller.on('scroll', function() {
-                rateCalendarSc.scrollTo(rateCalendarSc.x, this.y);
+            leftScrollerAllRoomRateSc.on('scroll', function() {
+                gridAllRoomRateSc.scrollTo(gridAllRoomRateSc.x, this.y);
             });
 
-            rateCalendarSc.on('scroll', function() {
-                leftScroller.scrollTo(leftScroller.x, this.y);
+            gridAllRoomRateSc.on('scroll', function() {
+                leftScrollerAllRoomRateSc.scrollTo(leftScrollerAllRoomRateSc.x, this.y);
             });
 
+            leftScrollerRoomTypeDetailsSc.on('scroll', function() {
+                gridRoomTypeDetailsSc.scrollTo(gridRoomTypeDetailsSc.x, this.y);
+            });
+
+            gridRoomTypeDetailsSc.on('scroll', function() {
+                leftScrollerRoomTypeDetailsSc.scrollTo(leftScrollerRoomTypeDetailsSc.x, this.y);
+            });
         };
 
         var refreshScroller = function() {
-            $scope.refreshScroller('rate-calendar-left');
-            $scope.refreshScroller('calendar-table-scroller');
+            $scope.refreshScroller('all-room-type-rate-grid-scroller');
+            $scope.refreshScroller('all-room-type-rate-left-scroller');
+            $scope.refreshScroller('room-type-details-grid-scroller');
+            $scope.refreshScroller('room-type-details-left-scroller');
         };
 
         var refreshScrollerAndAttachEvents = function(){
