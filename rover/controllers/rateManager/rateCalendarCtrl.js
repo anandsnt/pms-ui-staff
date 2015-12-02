@@ -1,15 +1,9 @@
-sntRover.controller('RateCalendarCtrl', [
-    '$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', '$stateParams',
-    function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog, $stateParams) {
-        $scope.$parent.myScrollOptions = {
-            RateCalendarCtrl: {
-                scrollX: true,
-                scrollbars: true,
-                interactiveScrollbars: true,
-                click: true,
-                snap: false
-            }
-        };
+angular.module('sntRover').controller('RateCalendarCtrl', [
+    '$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', '$stateParams', 'rvUtilSrv',
+    function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog, $stateParams, util) {
+
+        BaseCtrl.call(this, $scope);
+
         /* Cute workaround. ng-iscroll creates myScroll array in its Scope's $parent.
          * Since our controller's scope is two step above the scroll div,
          * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
@@ -25,8 +19,6 @@ sntRover.controller('RateCalendarCtrl', [
 
         $scope.activityObj = {};
         $scope.activityObj.changedField = '';
-
-        $scope.$parent.myScroll = [];
         $scope.isWeekend = function(date) {
             //get the 'day' format, sat/sun and return true if its considered a weekend
             var day = new Date(date).getDay();
@@ -44,8 +36,6 @@ sntRover.controller('RateCalendarCtrl', [
                 $scope.viaSection = arguments[1].via;
             }
         });
-
-        BaseCtrl.call(this, $scope);
 
         $scope.init = function() {
             $scope.currentExpandedRow = -1;
@@ -70,12 +60,11 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.expandRow = function(index) {
             if ($scope.currentExpandedRow === index) {
                 $scope.currentExpandedRow = -1;
-                $scope.refreshScroller();
-
+               refreshScrollerAndAttachEvents();
                 return false;
             }
             $scope.currentExpandedRow = index;
-            $scope.refreshScroller();
+           refreshScrollerAndAttachEvents();
         };
 
         $scope.isExpandedRow = function(idx) {
@@ -94,15 +83,6 @@ sntRover.controller('RateCalendarCtrl', [
                 }
             } else {
                 return 8;
-            }
-        };
-
-        $scope.refreshScroller = function() {
-            $scope.initScrollBind();
-            if ($scope.$parent.myScroll.RateCalendarCtrl) {
-                setTimeout(function() {
-                    $scope.$parent.myScroll.RateCalendarCtrl.refresh();
-                }, 0);
             }
         };
 
@@ -375,6 +355,8 @@ sntRover.controller('RateCalendarCtrl', [
                             
                         }
                     }
+
+                    refreshScrollerAndAttachEvents();
                     
                 };
                 //Set the current business date value to the service. Done for calculating the history dates
@@ -431,15 +413,13 @@ sntRover.controller('RateCalendarCtrl', [
 
 
         function finalizeCapture() {
-            $scope.initScrollBind();
+            //$scope.initScrollBind();
             $scope.loading = false;
             $scope.currentFilterData.filterConfigured = true;
 
             $scope.$emit('computeColumWidth');
 
-            if ($scope.$parent.myScroll.RateCalendarCtrl) {
-                $scope.refreshScroller();
-            }
+            refreshScrollerAndAttachEvents();
         }
 
         /**
@@ -676,13 +656,6 @@ sntRover.controller('RateCalendarCtrl', [
             return ret;
         };
 
-        $scope.initScrollBind = function() {
-            var scrollTable = $(".scrollTable");
-            scrollTable.scroll(function() {
-                scrollTable.scrollTop($(this).scrollTop());
-            });
-        };
-
         $scope.toggleRestrictionIconView = function() {
             return !$scope.loading;
         };
@@ -841,6 +814,53 @@ sntRover.controller('RateCalendarCtrl', [
                 $scope.hideRoomsDownArrow = false;
             }
         });
+
+        var setScroller = function() {
+
+            var scrollOptions = {
+                scrollX: true,
+                scrollY: true,
+                probeType: 3,
+                tap: true
+            };
+
+            $scope.setScroller('calendar-table-scroller', _.extend({}, util.deepCopy(scrollOptions)));
+
+            $scope.setScroller('rate-calendar-left', _.extend({scrollX: false, scrollbars: false }, util.deepCopy(scrollOptions)));
+        };
+
+        var setUpScrollerListenerEvents = function() {
+            var leftScroller = $scope.getScroller('rate-calendar-left'),
+                rateCalendarSc = $scope.getScroller('calendar-table-scroller');          
+            
+            leftScroller.off('scroll');
+            rateCalendarSc.off('scroll');
+
+            leftScroller.on('scroll', function() {
+                rateCalendarSc.scrollTo(rateCalendarSc.x, this.y);
+            });
+
+            rateCalendarSc.on('scroll', function() {
+                leftScroller.scrollTo(leftScroller.x, this.y);
+            });
+
+        };
+
+        var refreshScroller = function() {
+            $scope.refreshScroller('rate-calendar-left');
+            $scope.refreshScroller('calendar-table-scroller');
+        };
+
+        var refreshScrollerAndAttachEvents = function(){
+            refreshScroller();
+            setUpScrollerListenerEvents();
+        };
+
+        setScroller();
+
+        var initializeMe = function(){
+            
+        };
 
         $scope.rateIsChild = function(rate) {
             if ($scope.calendarData.isChildRate){
