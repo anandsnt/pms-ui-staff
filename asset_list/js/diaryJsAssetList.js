@@ -7,7 +7,7 @@ module.exports = {
 		diaryJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + "react/react.min.js",
-				jsLibRoot + "react/JSXTransformer.js",
+				jsLibRoot + "react/JSXTransformer.min.js",
 				jsLibRoot + "react/react-with-addons.min.js",
 				roverRoot + "directives/ngReact/ngReact.js"
 			],

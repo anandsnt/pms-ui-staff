@@ -4,7 +4,6 @@ module.exports = function(gulp, $, options) {
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    LOGIN_ASSET_LIST_ROOT   = '../login/',
-	    LOGIN_JS_ASSET_LIST     = require ("../asset_list/js/loginJsAssetList").getList(),
 	    LOGIN_TEMPLATES_FILE    = 'login_templates.js',
 	    LOGIN_JS_COMBINED_FILE  = 'login.js',
 	    LOGIN_CSS_FILE  		= 'login.css',
@@ -16,12 +15,23 @@ module.exports = function(gulp, $, options) {
 
 	//JS - Start
 	gulp.task('compile-login-js-production', function(){
-	    return gulp.src(LOGIN_JS_ASSET_LIST)
+		var mappingList 		= require("../asset_list/js/loginJsAssetList").getList(),
+			nonMinifiedFiles 	= mappingList.nonMinifiedFiles,
+			minifiedFiles 		= mappingList.minifiedFiles,
+			stream 				= require('merge-stream');
+
+		var nonMinifiedStream = gulp.src(nonMinifiedFiles)
+		        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
+		        .pipe($.ngAnnotate({single_quotes: true}))
+		        .pipe($.uglify({compress:true, output: {
+		        	space_colon: false
+		        }})),
+
+		    minifiedStream = gulp.src(minifiedFiles)
+		    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
+
+	    return stream(minifiedStream, nonMinifiedStream)
 	        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
-	        .pipe($.ngAnnotate({single_quotes: true}))
-	        .pipe($.uglify({compress:true, output: {
-	        	space_colon: false
-	        }}))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(LOGIN_JS_MANIFEST_FILE))

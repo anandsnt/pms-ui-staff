@@ -3,18 +3,21 @@ module.exports = {
 		var jsLibRoot 	= 'shared/lib/js/',
 		roverRoot 		= 'rover/',
 		reportReactViewRoot = roverRoot + 'react/reports/',
-		reportJsAssets 	= [
-
-			jsLibRoot + "react/react.min.js",
-			jsLibRoot + "react/JSXTransformer.js",
-			jsLibRoot + "react/react-with-addons.min.js",
-			roverRoot + "directives/ngReact/ngReact.js",
-			roverRoot + "services/reports/**/*.js",
-			roverRoot + "factories/reports/**/*.js",
-			roverRoot + "constants/reports/**/*.js",
-			roverRoot + "controllers/reports/**/*.js",
-			reportReactViewRoot + "**/*.js"
-		];
+		reportJsAssets 	= {
+			minifiedFiles: [
+				jsLibRoot + "react/react.min.js",
+				jsLibRoot + "react/JSXTransformer.min.js",
+				jsLibRoot + "react/react-with-addons.min.js",
+				roverRoot + "directives/ngReact/ngReact.js"
+			],
+			nonMinifiedFiles: [
+				roverRoot + "services/reports/**/*.js",
+				roverRoot + "factories/reports/**/*.js",
+				roverRoot + "constants/reports/**/*.js",
+				roverRoot + "controllers/reports/**/*.js",
+				reportReactViewRoot + "**/*.js"
+			]
+		};
 		return reportJsAssets;
 	}
 };

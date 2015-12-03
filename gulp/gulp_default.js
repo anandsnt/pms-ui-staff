@@ -10,8 +10,13 @@ module.exports = function(gulp, $, options) {
 	    del([DEST_ROOT_PATH], {force: true });
 	});
 
+	gulp.task('copy-all-prod', ['clean'], function() {
+	    return gulp.src(allPaths)
+	        .pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+	});
+
 	gulp.task('copy-all-dev', function() {
-	    return gulp.src(allPaths, {read: false, buffer: false})
+	    return gulp.src(allPaths)
 	        .pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 

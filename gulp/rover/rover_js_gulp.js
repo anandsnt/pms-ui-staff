@@ -6,32 +6,16 @@ module.exports = function(gulp, $, options) {
 		ROVER_JS_MANIFEST_FILE  = "rover_js_manifest.json",
 		ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
 	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
-	    ROVER_JS_COMBINED_FILE 	= "rover.js",
+	    extendedMappings 		= {},
 	    generated 				= "____generated",
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    ROVER_JS_MAPPING_FILE 	= '../../asset_list/stateJsMapping/rover/roverStateJsMappings';
-	
-	//JS - Start
-	gulp.task('compile-rover-js-production', function(){
-	    return gulp.src(ROVER_JS_ASSET_LIST)
-	        .pipe($.concat(ROVER_JS_COMBINED_FILE))
-	        .pipe($.ngAnnotate({single_quotes: true}))
-	        .pipe($.uglify({compress:true, output: {
-	        	space_colon: false
-	        }}))
-	        .pipe($.rev())
-	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest(ROVER_JS_MANIFEST_FILE))
-	        .pipe(gulp.dest(MANIFEST_DIR));
-	});
 
 	//Be careful: PRODUCTION
-	gulp.task('build-rover-js-production', ['compile-rover-js-production'], function(){
-	    var js_manifest_json = require(MANIFEST_DIR + ROVER_JS_MANIFEST_FILE),
-	        file_name = js_manifest_json[ROVER_JS_COMBINED_FILE];
-	    
+	gulp.task('build-rover-js-production', ['rover-generate-mapping-list-prod'], function(){
+	    var file_name = extendedMappings['rover.dashboard'][0];
 	    return gulp.src(ROVER_HTML_FILE)
-	        .pipe($.inject(gulp.src(DEST_ROOT_PATH + file_name, {read:false}), {
+	        .pipe($.inject(gulp.src('../../public' + file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
@@ -44,7 +28,6 @@ module.exports = function(gulp, $, options) {
 		var glob = require('glob-all'),
 			stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 			fileList = [],
-			extendedMappings = {},
 			fs = require('fs'),
 			mkdirp = require('mkdirp'),
 			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
@@ -70,11 +53,10 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
-	gulp.task('rover-generate-mapping-list-prod', function(){
+	gulp.task('rover-generate-mapping-list-prod', ['copy-all-prod'], function(){
 		var glob = require('glob-all'),
 			stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 			fileList = [],
-			extendedMappings = {},
 			fs = require('fs'),
 			es = require('event-stream'),
 			mkdirp = require('mkdirp'),
@@ -83,11 +65,6 @@ module.exports = function(gulp, $, options) {
 				+ generated + 'StateJsMappings/' 
 				+ generated + 'rover/',
 			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json';
-		
-		for (state in stateMappingList){
-			fileList = require(stateMappingList[state]).getList();
-			extendedMappings[state] = glob.sync(fileList.nonMinifiedFiles);
-		}
 
 		var createMappingFile = function(){
 			mkdirp(roverGenDir, function (err) {
@@ -101,26 +78,37 @@ module.exports = function(gulp, $, options) {
 			});
 		};
 
-		var tasks = Object.keys(extendedMappings).map(function(key, index){
-			console.log ('rover-mapping-generation-started: ' + extendedMappings[key]);
-			return gulp.src(extendedMappings[key])
-	        .pipe($.concat(key.replace(/\./g, "-")+".min.js"))
-	        .pipe($.ngAnnotate({single_quotes: true}))
-	        .pipe($.uglify({compress:true, output: {
-	        	space_colon: false
-	        }}))
-	        .pipe($.rev())
-	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest())
-	        .pipe(edit(function(manifest){
-	        	Object.keys(manifest).forEach(function (path, orig) {
-			    	extendedMappings[key] = [URL_APPENDER + "/" + manifest[path]];
-			    });
-			    console.log ('rover-mapping-generation-end: ' + key);
-	        	return {};
-	        }));
-		});
+		var tasks = Object.keys(stateMappingList).map(function(state, index){
+			console.log ('rover-mapping-generation-started: ' + state);
+			var mappingList  		= require(stateMappingList[state]).getList(),
+				nonMinifiedFiles 	= mappingList.nonMinifiedFiles,
+				minifiedFiles 		= mappingList.minifiedFiles,
+				fileName 			= state.replace(/\./g, "-")+".min.js",
+				stream 				= require('merge-stream');
 
+			var nonMinifiedStream = gulp.src(nonMinifiedFiles)
+			        .pipe($.concat(fileName))
+			        .pipe($.ngAnnotate({single_quotes: true}))
+			        .pipe($.uglify({compress:true, output: {
+			        	space_colon: false
+			        }})),
+
+			    minifiedStream = gulp.src(minifiedFiles)
+			    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
+			
+			return stream(minifiedStream, nonMinifiedStream)
+		        .pipe($.concat(fileName))
+		        .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	Object.keys(manifest).forEach(function (path, orig) {
+				    	extendedMappings[state] = [URL_APPENDER + "/" + manifest[path]];
+				    });
+				    console.log ('rover-mapping-generation-end: ' + state);
+		        	return {};
+		        }));
+		});
 		return es.merge(tasks).on('end', createMappingFile);
 	});
 
