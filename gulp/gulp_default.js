@@ -11,7 +11,7 @@ module.exports = function(gulp, $, options) {
 	});
 
 	gulp.task('copy-all-dev', function() {
-	    return gulp.src(allPaths)
+	    return gulp.src(allPaths, {read: false, buffer: false})
 	        .pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
@@ -21,9 +21,7 @@ module.exports = function(gulp, $, options) {
 	//produciton
 	gulp.task('asset-precompile', ['rover-asset-precompile', 'admin-asset-precompile', 'login-asset-precompile']);
 
-	gulp.task('watch', function(){
-		gulp.watch(allPaths, ['build'])
-	});
+	gulp.task('watch', ['watch-rover-files']);
 
-	gulp.task('default', ['build', 'watch'])
+	gulp.task('default', ['build', 'start-server', 'watch']);
 }

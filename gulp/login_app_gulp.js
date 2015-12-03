@@ -15,7 +15,7 @@ module.exports = function(gulp, $, options) {
 	    LOGIN_TEMPLTE_MANFEST_FILE 	= "login_template_manifest.json";
 
 	//JS - Start
-	gulp.task('compile-login-js-production', ['copy-all-dev'], function(){
+	gulp.task('compile-login-js-production', function(){
 	    return gulp.src(LOGIN_JS_ASSET_LIST)
 	        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
 	        .pipe($.ngAnnotate({single_quotes: true}))
@@ -132,7 +132,7 @@ module.exports = function(gulp, $, options) {
 	    return cssInjector(file_name);
 	});
 
-	gulp.task('login-less-production', ['copy-all-dev'], function () {
+	gulp.task('login-less-production', function () {
 	  return gulp.src('stylesheets/login.css')
 	        .pipe($.less({
 	        	compress: true

@@ -7,7 +7,7 @@ var gulp 	  = require('gulp'),
 	rename    = {
 					'gulp-ng-annotate': 'ngAnnotate', 'gulp-angular-templatecache': 'templateCache', 
 					'gulp-minify-html': 'minifyHTML', 'gulp-minify-css': 'minifyCSS',
-					'gulp-concat-util': 'translationConcat' 
+					'gulp-concat-util': 'translationConcat'
 				},
 	$         = require('gulp-load-plugins')({rename: rename }),
     options   = {
@@ -21,7 +21,8 @@ var gulp 	  = require('gulp'),
 				    }
     			};
 
-require('./gulp/gulp_default')(gulp, $, options);  
+require('./gulp/gulp_default')(gulp, $, options);
+require('./gulp/gulp_dev_server')(gulp, $, options); 
 require('./gulp/login_app_gulp')(gulp, $, options);
 require('./gulp/rover_app_gulp')(gulp, $, options);
 require('./gulp/admin_app_gulp')(gulp, $, options);

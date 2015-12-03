@@ -19,7 +19,7 @@ module.exports = function(gulp, $, options) {
 		onError  = options.onError;
 
 	//JS - Start
-	gulp.task('compile-admin-js-production', ['copy-all-dev'], function(){
+	gulp.task('compile-admin-js-production',  function(){
 	    return gulp.src(ADMIN_JS_ASSET_LIST)
 	        .pipe($.concat(ADMIN_JS_COMBINED_FILE))
 	        .pipe($.ngAnnotate({single_quotes: true}))
@@ -80,7 +80,7 @@ module.exports = function(gulp, $, options) {
 	});
 
 	//Be careful: PRODUCTION
-	gulp.task('admin-template-cache-production', ['copy-all-dev'], function () {
+	gulp.task('admin-template-cache-production', function () {
 	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'admin/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
@@ -132,7 +132,7 @@ module.exports = function(gulp, $, options) {
 	    return cssInjector(file_name);
 	});
 
-	gulp.task('admin-less-production', ['copy-all-dev'], function () {
+	gulp.task('admin-less-production',  function () {
 	  return gulp.src('stylesheets/admin.css')
 	        .pipe($.less({
 	        	compress: true
@@ -160,7 +160,7 @@ module.exports = function(gulp, $, options) {
 
 	//LESS END
 	
-	gulp.task('concat-translation-en-admin-files-dev', ['copy-all-dev'], function(){
+	gulp.task('concat-translation-en-admin-files-dev', function(){
 		return gulp.src(['admin/adLocales/en/*.json'])
 			.pipe($.translationConcat(DEST_ROOT_PATH + 'adLocales/EN.json', {sep: ',', process: function(src){
 				return (src.trim().replace(/\n/g, ''));
