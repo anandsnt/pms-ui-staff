@@ -119,7 +119,7 @@
 				                    	<li class="reservation post-charge" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
 				                    		<a ng-class="getReservationClass(row.reservation_status)" ng-click="selectReservation(row)">
 
-				                    			<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">
+				                    			<figure class="guest-image" ng-class="{'accompany': row.images.length >1}">
 				                    				<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}">
 													<span class="vip" ng-show="row.vip==true">VIP</span>
 				                    			</figure>
