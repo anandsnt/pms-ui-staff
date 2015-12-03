@@ -26,7 +26,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             //$state.go ('zest_station.home');//go back to reservation search results
             
             var current = $state.current.name;
-            console.info('current,' ,current)
             if (current === 'zest_station.delivery_options'){
                 $scope.at = 'deliver-registration';
                 $scope.selectedReservation = $state.selectedReservation;
@@ -182,7 +181,11 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.updateGuestEmail = function(){
             var updateComplete = function(response){
                 if (response.status === 'success'){
-                    $state.go('zest_station.delivery_options');
+                    if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
+                        $state.go('zest_station.check_in_keys');
+                    } else {
+                        $state.go('zest_station.delivery_options');
+                    }
                     //$scope.selectEmailDelivery();
                 } else {
                     $scope.initErrorScreen();
@@ -205,10 +208,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
         };
         $scope.goToNext = function(){
-            console.info('$scope.from , ',$scope.from);
-            if ($state.from === 'email-delivery'){
+          /*  if ($state.from === 'email-delivery'){
                 
-            }
+            } */
             
             
             if ($scope.at === 'input-email'){

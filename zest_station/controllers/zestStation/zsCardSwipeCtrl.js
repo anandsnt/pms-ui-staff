@@ -66,7 +66,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
              * this method will check the guest in after swiping a card
              */
             $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-            $scope.checkInGuest();
+            if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]'){
+                $scope.checkInGuest();
+            }
         };
         $scope.setCheckInMessage = function(){
             $state.go('zest_station.checking_in_guest');
