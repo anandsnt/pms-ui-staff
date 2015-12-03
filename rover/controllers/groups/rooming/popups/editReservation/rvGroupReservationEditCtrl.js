@@ -21,7 +21,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         ngDialog) {
 
     BaseCtrl.call(this, $scope);
-
+    var parentScope = $scope.$parent;
     //variables
     var initialPopupData = {};
 
@@ -215,7 +215,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         ngDialog.open({
             template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckoutConfirmation.html',
             className: '',
-            scope: $scope.$parent,
+            scope: parentScope,
             closeByDocument: false,
             closeByEscape: false,
             controller: 'rvGroupReservationCheckoutCtrl',
@@ -227,7 +227,7 @@ sntRover.controller('rvGroupReservationEditCtrl', [
         ngDialog.open({
             template: '/assets/partials/groups/rooming/popups/editReservation/rvGroupEditRoomingListItemCheckinConfirmation.html',
             className: '',
-            scope: $scope.$parent,
+            scope: parentScope,
             closeByDocument: false,
             closeByEscape: false,
             controller: 'rvGroupReservationCheckinCtrl',
