@@ -22,8 +22,17 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
-            //$state.go ('zest_station.home');//go back to reservation search results
+             var current=$state.current.name;
+            if (current === 'zest_station.card_sign'){
+                $state.go ('zest_station.card_swipe');
+            } else if(current === 'zest_station.card_swipe'){
+                $state.go ('zest_station.terms_conditions');
+                
+            }
+            
+            
+            
+            
 	});
 
 
