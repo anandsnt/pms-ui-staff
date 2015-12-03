@@ -69,8 +69,8 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
                 });
             }
             else{
-                    that.reservationData.demographics.is_use_markets = sourcesData.sourcesData;
-                    that.reservationData.demographics.markets = sourcesData.sources;
+                    that.reservationData.demographics.is_use_sources = sourcesData.is_use_sources;
+                    that.reservationData.demographics.sources = sourcesData.sources;
             };
 
         };

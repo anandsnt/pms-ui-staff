@@ -161,7 +161,8 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				},
 				"new": {
 					type: data.cardType,
-					id: data.id
+					id: data.id,
+					use_card_rate: data.useCardRate
 				},
 				"change_all_reservations": data.future
 			};

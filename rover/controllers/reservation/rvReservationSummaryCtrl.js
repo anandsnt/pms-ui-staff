@@ -403,6 +403,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $scope.depositData.depositAttemptFailure = false;
         };
 
+        var runDigestCycle = function(){
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
+
         $scope.payDeposit = function() {
             var onPaymentSuccess = function(data) {
                     //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
@@ -415,7 +421,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.selectedPaymentId = data.payment_method.id;
 
                     $scope.reservationData.depositData = angular.copy($scope.depositData);
-
+                    runDigestCycle();
                     //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
                     $scope.$emit('hideLoader');
                 },
@@ -425,6 +431,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                     $scope.reservationData.depositData = angular.copy($scope.depositData);
 
                     $scope.paymentErrorMessage = errorMessage[0];
+                    runDigestCycle();
                     $scope.$emit('hideLoader');
                 };
 

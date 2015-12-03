@@ -306,6 +306,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         $scope.isGiftCardPmt = false;
 	$scope.changePaymentType = function(){
 console.log(arguments)
+                $scope.showGuestAddCard = false;
                 if ($scope.saveData.paymentType === "GIFT_CARD"){
                     $scope.resetSplitPaymentDetailForGiftCard();
                     $scope.shouldShowMakePaymentButton = true;
@@ -316,12 +317,16 @@ console.log(arguments)
                     $scope.isGiftCardPmt = false;
                 }
                 $scope.$emit('isGiftCardPmt',$scope.isGiftCardPmt);
-
 		if($scope.saveData.paymentType === "CC"){
 			if($scope.paymentGateway !== 'sixpayments'){
 				($scope.isExistPaymentType) ? $scope.showCreditCardInfo = true :$scope.showGuestCreditCardList();
 				 refreshCardsList();
 			}
+                        if ($scope.cardsList){
+                           if ($scope.cardsList.length === 0){
+                               $scope.$broadcast('CLICK_ADD_NEW_CARD');
+                           }
+                        }
                         if ($scope.isGiftCardPmt === true){
                             $scope.showCC = false;
                         }
@@ -688,7 +693,8 @@ console.log(arguments)
 				"postData": {
 					"bill_number": $scope.renderData.billNumberSelected,
 					"payment_type": $scope.saveData.paymentType,
-					"amount": $scope.renderData.defaultPaymentAmount
+					"amount": $scope.renderData.defaultPaymentAmount,
+					"is_split_payment": $scope.splitSelected && !$scope.depositPaidSuccesFully //CICO-21725 Overide duplicate payment check on API side in case of split payments
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
@@ -880,8 +886,16 @@ console.log(arguments)
 		$scope.setCreditCardFromList(data.index);
 	});
 
-	$scope.$on("TOKEN_CREATED", function(e,data){
+        $scope.showGuestAddCard = false;
+        $scope.showAddtoGuestCardBox = function(){
+            if ($scope.showGuestAddCard){
+               return true;
+            } else return false;
+        }
+        
 
+	$scope.$on("TOKEN_CREATED", function(e,data){
+            $scope.showGuestAddCard = true;
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
 		$scope.swippedCard = false;
