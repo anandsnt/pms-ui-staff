@@ -18,6 +18,7 @@ module.exports = {
 			jsLibRoot + 'angular-translate-loader-static-files.min.js', 
 			jsLibRoot + 'ui-utils.min.js', 
 			jsLibRoot + 'bindonce.js',
+			jsLibRoot + 'sortable.js',
 
 			jsLibRoot + 'underscore.min.js',
 			jsLibRoot + 'fastclick.js',
@@ -27,12 +28,16 @@ module.exports = {
 			jsLibRoot + 'ng-iscroll.js', 
 			jsLibRoot + 'ngDialog.min.js', 
 			jsLibRoot + 'Utils.js',
-			jsLibRoot + 'ng-table.js', 
-			jsLibRoot + 'highcharts.js', 
-			jsLibRoot + 'angular-highcharts.js',
+			jsLibRoot + 'ng-table.js',
 
 			sharedRoot + 'interceptors/**/*.js',
 			sharedRoot + 'directives/documentTouchMovePrevent/*.js',
+			sharedRoot + 'directives/divTouchMoveStopPropogate/*.js',
+			sharedRoot + 'directives/orientationInputBlur/*.js',
+			sharedRoot + 'directives/fauxMultiSelect/*.js',
+			sharedRoot + 'directives/eventReachedRoot/*.js',
+			sharedRoot + 'directives/ngClassWithoutAnimation/*.js',
+			sharedRoot + 'directives/tooltip/qtip2.js',
 			sharedRoot + 'baseCtrl.js',
 			sharedRoot + 'iBeaconOperations.js',
 

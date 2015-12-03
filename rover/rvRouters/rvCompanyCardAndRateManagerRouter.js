@@ -4,14 +4,24 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
         $stateProvider.state('rover.companycardsearch', {
             url: '/cardsearch/:textInQueryBox',
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
-            controller: 'searchCompanyCardController'
+            controller: 'searchCompanyCardController',
+            resolve: {
+                comapanycardSearchAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('rover.companycardsearch');
+                }
+            }
         });
 
         //company card details
         $stateProvider.state('rover.companycarddetails', {
             url: '/companycard/:type/:id/:query/:isBackFromStaycard',
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
-            controller: 'companyCardDetailsController'
+            controller: 'companyCardDetailsController',
+            resolve: {
+                comapanycardDetailsAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('rover.companycarddetails');
+                }
+            }
         });
         //Rate Manager
         $stateProvider.state('rover.ratemanager', {

@@ -17,7 +17,8 @@ module.exports = function(gulp, $, options) {
 	    generated = "____generated",
 	    LessPluginCleanCSS = require('less-plugin-clean-css'),
 	    ROVER_JS_MAPPING_FILE = '../asset_list/stateJsMapping/rover/roverStateJsMappings',
-    	cleancss = new LessPluginCleanCSS({ advanced: true });
+    	cleancss = new LessPluginCleanCSS({ advanced: true }),
+		onError  = options.onError;
 
 	//JS - Start
 	gulp.task('compile-rover-js-production', ['copy-all-dev'], function(){

@@ -1,4 +1,4 @@
-sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout',
+angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout',
 	function($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout) {
 
 		BaseCtrl.call(this, $scope);

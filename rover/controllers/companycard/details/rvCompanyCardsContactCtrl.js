@@ -1,4 +1,4 @@
-sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
 	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
 		BaseCtrl.call(this, $scope);
 

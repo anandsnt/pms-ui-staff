@@ -12,7 +12,11 @@ module.exports = function(gulp, $, options) {
 	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html',
 	    ADMIN_JS_MANIFEST_FILE  = "admin_js_manifest.json",
 	    ADMIN_CSS_MANIFEST_FILE = "admin_css_manifest.json",
-	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json";
+	    PARTIALS_PATH_LIST 		= ['**/*.html'],
+	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json",
+	    LessPluginCleanCSS = require('less-plugin-clean-css'),
+		cleancss = new LessPluginCleanCSS({ advanced: true }),
+		onError  = options.onError;
 
 	//JS - Start
 	gulp.task('compile-admin-js-production', ['copy-all-dev'], function(){
@@ -77,7 +81,7 @@ module.exports = function(gulp, $, options) {
 
 	//Be careful: PRODUCTION
 	gulp.task('admin-template-cache-production', ['copy-all-dev'], function () {
-	  return gulp.src(['partials/**/*.html'], {cwd:'admin/'})
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'admin/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare:true,
@@ -85,7 +89,7 @@ module.exports = function(gulp, $, options) {
 	  		}))
 	        .pipe($.templateCache(ADMIN_TEMPLATES_FILE, {
 	            module: 'admin',
-	            root: URL_APPENDER + "/partials/"
+	            root: URL_APPENDER
 	        }))
 	        .pipe($.uglify({compress:true}))
 			.pipe($.rev())
@@ -99,10 +103,10 @@ module.exports = function(gulp, $, options) {
 	});
 
 	gulp.task('admin-template-cache-dev', ['copy-all-dev'], function () {
-	  return gulp.src(['partials/**/*.html'], {cwd:'admin/'})
+	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'admin/'})
 	        .pipe($.templateCache(ADMIN_TEMPLATES_FILE, {
 	            module: 'admin',
-	            root: URL_APPENDER + "/partials/"
+	            root: URL_APPENDER 
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});
@@ -133,7 +137,9 @@ module.exports = function(gulp, $, options) {
 	        .pipe($.less({
 	        	compress: true
 	        }))
+	        .on('error', onError)
 	        .pipe($.rev())
+	        .on('error', onError)
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(ADMIN_CSS_MANIFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));
@@ -141,7 +147,10 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('admin-less-dev', ['copy-all-dev'], function () {
 	  return gulp.src('stylesheets/admin.css')
-	        .pipe($.less())
+	        .pipe($.less({
+				plugins: [cleancss]
+			}))
+			.on('error', onError)
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});
 
@@ -151,7 +160,24 @@ module.exports = function(gulp, $, options) {
 
 	//LESS END
 	
+	gulp.task('concat-translation-en-admin-files-dev', ['copy-all-dev'], function(){
+		return gulp.src(['admin/adLocales/en/*.json'])
+			.pipe($.translationConcat(DEST_ROOT_PATH + 'adLocales/EN.json', {sep: ',', process: function(src){
+				return (src.trim().replace(/\n/g, ''));
+			}}))
+			.pipe($.translationConcat.header('{'))
+			.pipe($.translationConcat.footer('}'))
+			.pipe($.jsonminify())
+			.pipe(gulp.dest(DEST_ROOT_PATH));
+	});
+
+	//inorder to tackle the bug in injector, doing this way
+	//bug noticed: parallel injecting is not possible. When 400+ js injection is going on css injection is failing
+	gulp.task('build-admin-less-js-dev', ['admin-less-dev', 'build-admin-js-dev'], function(){
+	    return cssInjector(ADMIN_CSS_FILE);
+	});
+
 	//TASKS
-	gulp.task('build-admin-dev', ['build-admin-js-dev', 'build-admin-template-cache-dev']); //, 'build-admin-less-dev'
+	gulp.task('build-admin-dev', ['build-admin-less-js-dev', 'build-admin-template-cache-dev', 'concat-translation-en-admin-files-dev']); //, 
 	gulp.task('admin-asset-precompile', ['build-admin-js-production', 'build-admin-template-cache-production']); //, 'build-admin-less-production'
 }

@@ -29,7 +29,9 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
   this.fetchAssets = function(key, modules_to_inject) {
     if (!!mappingList) {
       return $ocLazyLoad.load({ serie: true, files: mappingList[key] }).then(function() {
+        if (typeof modules_to_inject !== "undefined") {
          $ocLazyLoad.inject(modules_to_inject);
+        }
       });
     } else {
       console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');

@@ -1,4 +1,4 @@
-sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, RVBaseWebSrvV2) {
 		//Meta Data for Work Management
 		// 1. Maids

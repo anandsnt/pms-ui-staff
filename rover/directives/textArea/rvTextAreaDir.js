@@ -16,7 +16,7 @@ sntRover.directive('rvTextarea', function($timeout) {
             required: '=required',
             maxlength: '@maxlength'
 	    },
-    	templateUrl: '../../assets/directives/textArea/rvTextArea.html'
+    	templateUrl: '/assets/directives/textArea/rvTextArea.html'
 
 	   };
 

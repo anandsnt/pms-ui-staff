@@ -1,4 +1,4 @@
-sntRover.controller('rvHkServiceStatusDateSelectorCtrl', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', '$filter',
+angular.module('sntRover').controller('rvHkServiceStatusDateSelectorCtrl', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', '$filter',
 	function($scope, $rootScope, ngDialog, dateFilter, $filter) {
 
 		$scope.setUpData = function() {
