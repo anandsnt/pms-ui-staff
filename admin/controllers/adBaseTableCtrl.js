@@ -24,7 +24,6 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.$watch("displyCount", function (newValue, oldValue) {
         if(newValue !== oldValue){
             $scope.tableParams.count($scope.displyCount);
-            $scope.reloadTable();
         }
     });
 
@@ -38,42 +37,42 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.$watch("filterType", function (newValue, oldValue) {
         if(newValue !== oldValue){
             $scope.reloadTable();
-            $scope.tableParams.reload();
         }
     });
 
     $scope.searchEntered = function() {
         $scope.reloadTable();
-        $scope.tableParams.reload();
     };
 
     $scope.reloadTable = function(){
         $scope.tableParams.page(1);
+        $scope.tableParams.reload();
     };
 
     $scope.filterFetchSuccess = function(data){
-    	$scope.filterList = data;
-    	$scope.$emit('hideLoader');
+        $scope.filterList = data;
+        $scope.$emit('hideLoader');
     };
 
-   	$scope.calculateGetParams = function(tableParams){
+    $scope.calculateGetParams = function(tableParams){
 
-    	var getParams = {};
-		getParams.per_page = $scope.displyCount;
-		getParams.page = tableParams.page();
-		if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
-			getParams.rate_type_id = $scope.filterType.id;
+        var getParams = {};
+        getParams.per_page = $scope.displyCount;
+        getParams.page = tableParams.page();
+        if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
+            getParams.rate_type_id = $scope.filterType.id;
         }
-		getParams.query = $scope.searchTerm;
-		var sortData = tableParams.sorting();
+        getParams.query = $scope.searchTerm;
+        var sortData = tableParams.sorting();
 
-		var sortField = Object.keys(sortData)[0];
-		getParams.sort_field = sortField;
-		getParams.sort_dir = sortData[sortField] === "desc"? false :true;
+        var sortField = Object.keys(sortData)[0];
+        getParams.sort_field = sortField;
+        getParams.sort_dir = sortData[sortField] === "desc"? false :true;
 
-		return getParams;
+        return getParams;
 
     };
+
     $scope.fetchTableData = function(){
 
     };
