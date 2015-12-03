@@ -9,14 +9,14 @@
                 <!-- card swipe -->
                 <li ng-show='show.swipecardScreen && at === "card-swipe"'>
                     <button type="button" class="button option" touch-press='goToCardSign()'>
-                        <ng-include src="'assets/css/icons/creditcard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/creditcard.svg'"></div>
                     </button>
                     <span translate>Please Swipe Credit Card</span>
                 </li>
                 <!-- deliver-registration -->
                 <li ng-show='at === "deliver-registration"'> 
                     <button type="button" class="button option" touch-press='clickedPrint()'>
-                        <ng-include src="'assets/css/icons/print.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/print.svg'"></div>
                     </button>
                     <span translate>Print</span>
                 </li>
@@ -25,14 +25,14 @@
                 </li>
                 <li ng-show='at === "deliver-registration"'> 
                     <button type="button" class="button option" touch-press='selectEmailDelivery()'>
-                        <ng-include src="'assets/css/icons/email.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/email.svg'"></div>
                     </button>
                     <span translate>E-Mail</span>
                 </li>
                 <!-- invalid-email -->
                 <li ng-show='at === "invalid-email"'> 
                     <button type="button" class="button option" touch-press='navToPrev()'>
-                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     <h1>Re-type</h1>
                     <h3>"{{input.lastEmailValue}}"</h3>
@@ -40,7 +40,7 @@
                 <!-- retry-key -->
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
-                        <ng-include src="'assets/css/icons/key.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/key.svg'"></div>
                     </button>
                     <h1>Re-try</h1>
                 </li>
@@ -50,7 +50,7 @@
 
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='skipKeys()'>
-                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     <h1>Continue</h1>
                 </li>
@@ -58,7 +58,7 @@
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
-                        <ng-include src="'assets/css/icons/pen.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/pen.svg'"></div>
                     </button>
                     <span translate>Edit My E-mail Address</span>
                 </li>
@@ -67,13 +67,13 @@
                 </li>
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='sendRegistration()'>
-                        <ng-include src="'assets/css/icons/email.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/email.svg'"></div>
                     </button>
                     <span translate>Send E-Mail</span>
                 </li>
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
-                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>
                     <h1>Speak</h1>
                     <h4>to a staff member</h4>
