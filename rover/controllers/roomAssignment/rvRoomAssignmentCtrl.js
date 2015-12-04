@@ -678,7 +678,7 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.getRoomIdsInSelectedFloor = function(){
 		var roomsInSelectedFloor = [];
 		$scope.floors.forEach(function(element){
-					if(element.id === $scope.floorFilterData.selectedFloorId){
+					if(element.id === parseInt($scope.floorFilterData.selectedFloorId)){
 							roomsInSelectedFloor = element.room_ids;
 						}
 					});

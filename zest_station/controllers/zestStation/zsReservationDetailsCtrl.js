@@ -7,7 +7,8 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 	'zsUtilitySrv',
 	'$stateParams',
 	'$sce',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce) {
+	'$timeout',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $timeout) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -131,6 +132,12 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     'id': $scope.selectedReservation.confirmation_number
                 }, $scope.onSuccessFetchReservationDetails);
             }
+            
+            
+            setDetailsHeight();
+            $timeout(function() {
+                    refreshScroller();
+            }, 600);
             
         };
         
@@ -269,6 +276,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                              $scope.selectedReservation.addons[i].isLastAddon = false;
                          }
                      }
+                     refreshScroller();
                      
                  };
                   $scope.invokeApi(zsTabletSrv.fetchAddonDetails, {
@@ -309,6 +317,22 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
 
 
+ 		$scope.setScroller('details');
+
+ 		var setDetailsHeight = function(){
+ 			if($('#textual').length) {
+		        var $contentHeight = ($('#content').outerHeight()),
+		            $h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
+		            $h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
+		            $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
+		            $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
+		            $textualHeight = parseFloat($contentHeight-$headingsHeight);		
+		       		$('#textual').css('max-height', $textualHeight + 'px');
+   		 	}
+ 		};
+        var refreshScroller = function(){
+        	$scope.refreshScroller('details');
+        };
 
 
 

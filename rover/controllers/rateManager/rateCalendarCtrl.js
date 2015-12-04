@@ -1,15 +1,9 @@
-sntRover.controller('RateCalendarCtrl', [
-    '$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', '$stateParams',
-    function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog, $stateParams) {
-        $scope.$parent.myScrollOptions = {
-            RateCalendarCtrl: {
-                scrollX: true,
-                scrollbars: true,
-                interactiveScrollbars: true,
-                click: true,
-                snap: false
-            }
-        };
+angular.module('sntRover').controller('RateCalendarCtrl', [
+    '$scope', '$rootScope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', '$stateParams', 'rvUtilSrv',
+    function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog, $stateParams, util) {
+
+        BaseCtrl.call(this, $scope);
+
         /* Cute workaround. ng-iscroll creates myScroll array in its Scope's $parent.
          * Since our controller's scope is two step above the scroll div,
          * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
@@ -25,8 +19,6 @@ sntRover.controller('RateCalendarCtrl', [
 
         $scope.activityObj = {};
         $scope.activityObj.changedField = '';
-
-        $scope.$parent.myScroll = [];
         $scope.isWeekend = function(date) {
             //get the 'day' format, sat/sun and return true if its considered a weekend
             var day = new Date(date).getDay();
@@ -44,8 +36,6 @@ sntRover.controller('RateCalendarCtrl', [
                 $scope.viaSection = arguments[1].via;
             }
         });
-
-        BaseCtrl.call(this, $scope);
 
         $scope.init = function() {
             $scope.currentExpandedRow = -1;
@@ -70,12 +60,11 @@ sntRover.controller('RateCalendarCtrl', [
         $scope.expandRow = function(index) {
             if ($scope.currentExpandedRow === index) {
                 $scope.currentExpandedRow = -1;
-                $scope.refreshScroller();
-
+               refreshScrollerAndAttachEvents();
                 return false;
             }
             $scope.currentExpandedRow = index;
-            $scope.refreshScroller();
+           refreshScrollerAndAttachEvents();
         };
 
         $scope.isExpandedRow = function(idx) {
@@ -94,15 +83,6 @@ sntRover.controller('RateCalendarCtrl', [
                 }
             } else {
                 return 8;
-            }
-        };
-
-        $scope.refreshScroller = function() {
-            $scope.initScrollBind();
-            if ($scope.$parent.myScroll.RateCalendarCtrl) {
-                setTimeout(function() {
-                    $scope.$parent.myScroll.RateCalendarCtrl.refresh();
-                }, 0);
             }
         };
 
@@ -375,6 +355,8 @@ sntRover.controller('RateCalendarCtrl', [
                             
                         }
                     }
+
+                    refreshScrollerAndAttachEvents();
                     
                 };
                 //Set the current business date value to the service. Done for calculating the history dates
@@ -431,15 +413,13 @@ sntRover.controller('RateCalendarCtrl', [
 
 
         function finalizeCapture() {
-            $scope.initScrollBind();
+            //$scope.initScrollBind();
             $scope.loading = false;
             $scope.currentFilterData.filterConfigured = true;
 
             $scope.$emit('computeColumWidth');
 
-            if ($scope.$parent.myScroll.RateCalendarCtrl) {
-                $scope.refreshScroller();
-            }
+            refreshScrollerAndAttachEvents();
         }
 
         /**
@@ -625,7 +605,7 @@ sntRover.controller('RateCalendarCtrl', [
             $scope.popupData.selectedRoomType = roomType;
             $scope.popupData.fromRoomTypeView = false;
 
-            if (type === 'ROOM_TYPE') {
+            if (type === 'ROOM_TYPE' && $scope.ratesRoomsToggle === "RATES") {
                 $scope.popupData.fromRoomTypeView = true;
             }
 
@@ -674,13 +654,6 @@ sntRover.controller('RateCalendarCtrl', [
                 ret = true;
             }
             return ret;
-        };
-
-        $scope.initScrollBind = function() {
-            var scrollTable = $(".scrollTable");
-            scrollTable.scroll(function() {
-                scrollTable.scrollTop($(this).scrollTop());
-            });
         };
 
         $scope.toggleRestrictionIconView = function() {
@@ -841,6 +814,74 @@ sntRover.controller('RateCalendarCtrl', [
                 $scope.hideRoomsDownArrow = false;
             }
         });
+
+        var setScroller = function() {
+
+            var scrollOptions = {
+                    scrollX: true,
+                    scrollY: true,
+                    probeType: 3,
+                    click: true,
+                    mouseWheel: true,
+                    interactiveScrollbars: true
+                },
+                rateGridAllRoomTypeAllRatesOptions  = _.extend({}, util.deepCopy(scrollOptions)),
+                leftAllRoomTypeAllRatesOptions      = _.extend({scrollX: false, scrollbars: false }, util.deepCopy(scrollOptions)),
+                rateGridRoomTypeDetailOptions       = util.deepCopy(rateGridAllRoomTypeAllRatesOptions),
+                leftRoomTypeDetailOptions           = util.deepCopy(leftAllRoomTypeAllRatesOptions);
+
+            $scope.setScroller('all-room-type-rate-grid-scroller', rateGridAllRoomTypeAllRatesOptions);
+            $scope.setScroller('all-room-type-rate-left-scroller', leftAllRoomTypeAllRatesOptions);
+
+            $scope.setScroller('room-type-details-grid-scroller', rateGridRoomTypeDetailOptions);
+            $scope.setScroller('room-type-details-left-scroller', leftRoomTypeDetailOptions);
+        };
+
+        var setUpScrollerListenerEvents = function() {
+            var leftScrollerAllRoomRateSc = $scope.getScroller('all-room-type-rate-left-scroller'),
+                gridAllRoomRateSc = $scope.getScroller('all-room-type-rate-grid-scroller'),
+                leftScrollerRoomTypeDetailsSc = $scope.getScroller('room-type-details-left-scroller'),
+                gridRoomTypeDetailsSc = $scope.getScroller('room-type-details-grid-scroller');          
+            
+            leftScrollerAllRoomRateSc.off('scroll');
+            gridAllRoomRateSc.off('scroll');
+            leftScrollerRoomTypeDetailsSc.off('scroll');
+            gridRoomTypeDetailsSc.off('scroll');
+
+            leftScrollerAllRoomRateSc.on('scroll', function() {
+                gridAllRoomRateSc.scrollTo(gridAllRoomRateSc.x, this.y);
+            });
+
+            gridAllRoomRateSc.on('scroll', function() {
+                leftScrollerAllRoomRateSc.scrollTo(leftScrollerAllRoomRateSc.x, this.y);
+            });
+
+            leftScrollerRoomTypeDetailsSc.on('scroll', function() {
+                gridRoomTypeDetailsSc.scrollTo(gridRoomTypeDetailsSc.x, this.y);
+            });
+
+            gridRoomTypeDetailsSc.on('scroll', function() {
+                leftScrollerRoomTypeDetailsSc.scrollTo(leftScrollerRoomTypeDetailsSc.x, this.y);
+            });
+        };
+
+        var refreshScroller = function() {
+            $scope.refreshScroller('all-room-type-rate-grid-scroller');
+            $scope.refreshScroller('all-room-type-rate-left-scroller');
+            $scope.refreshScroller('room-type-details-grid-scroller');
+            $scope.refreshScroller('room-type-details-left-scroller');
+        };
+
+        var refreshScrollerAndAttachEvents = function(){
+            refreshScroller();
+            setUpScrollerListenerEvents();
+        };
+
+        setScroller();
+
+        var initializeMe = function(){
+            
+        };
 
         $scope.rateIsChild = function(rate) {
             if ($scope.calendarData.isChildRate){

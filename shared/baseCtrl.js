@@ -225,8 +225,24 @@ function BaseCtrl($scope) {
     			if( key in $scope.$parent.myScroll ){
     				$scope.$parent.myScroll[key].refresh();
     			}
-    		};
+    		}
+    		if($scope.hasOwnProperty('myScroll') && (key in $scope.myScroll)){
+    			$scope.myScroll[key].refresh();
+    		}
     	}, $scope.timeOutForScrollerRefresh);
+    };
+
+    $scope.getScroller = function(key) {
+		if ( !!$scope.$parent && $scope.$parent.myScroll ) {
+			if( key in $scope.$parent.myScroll ){
+				return $scope.$parent.myScroll[key];
+			}
+		}
+
+		if($scope.hasOwnProperty('myScroll') && (key in $scope.myScroll)){
+			return $scope.myScroll[key];
+		}
+		return null;
     };
 
     /*

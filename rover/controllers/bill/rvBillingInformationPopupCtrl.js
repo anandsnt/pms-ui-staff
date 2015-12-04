@@ -1,6 +1,7 @@
 sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 
+    $scope.isInAddRoutesMode = false;
 	$scope.isInitialPage = true;
     $scope.isEntitySelected = false;
 
@@ -62,6 +63,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to handle the click 'all routes' and 'add routes' button
     */
 	$scope.headerButtonClicked = function(){
+        $scope.isInAddRoutesMode = true;
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
         if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
@@ -94,6 +96,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
         $scope.errorMessage = "";
 		$scope.isEntitySelected = true;
+        $scope.isInAddRoutesMode = false;
         $scope.isInitialPage = false;
         $scope.selectedEntityChanged = true;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
@@ -380,9 +383,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     };
 
     var setDefaultRoutingDates = function () {
-        $scope.arrivalDate = $scope.reservation.reservation_card.arrival_date,
-        $scope.departureDate = $scope.reservation.reservation_card.departure_date;
-        $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+        if (!!$scope.reservation) {
+            $scope.arrivalDate = $scope.reservation.reservation_card.arrival_date,
+            $scope.departureDate = $scope.reservation.reservation_card.departure_date;
+            $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+        }
     }
 
     var setRoutingDateOptions = function () {
@@ -391,17 +396,19 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             to : $scope.departureDate
         };
 
-        $scope.routingDateFromOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
-        };
+        if (!!$scope.reservation) {
+            $scope.routingDateFromOptions = {       
+                dateFormat: 'dd-mm-yy',
+                minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+                maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            };
 
-        $scope.routingDateToOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
-        };
+            $scope.routingDateToOptions = {       
+                dateFormat: 'dd-mm-yy',
+                minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+                maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            };
+        }
     }
 
     /**
