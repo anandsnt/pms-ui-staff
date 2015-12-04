@@ -860,3 +860,52 @@
     #skipEmailInputBtn{
         margin-top: 10px !important;
     }
+    
+    
+/* Popup ***/
+    #popup {
+        position: fixed;
+        top: 15%;
+        left: 25%;
+        z-index: 9000;
+        visibility: hidden;
+      //  .translate3d(-50%, -50%, 0);
+
+        #popup-content {
+            min-width: 320px;
+            padding: 40px;
+            z-index: 9000;
+            color: @black;
+            background: @white;
+            opacity: 0;
+            #flexbox > .flex();
+            #flexbox > .parent(column wrap, center, center, '');
+            #rounded > .round(5px);
+          //  .scale3d(0.5, 0.5, 1);
+          //  .transition();
+        }
+
+        &.open {
+            visibility: visible; 
+
+            #popup-content {
+                opacity: 1;
+                overflow: hidden;
+                display: block;
+          //      .scale3d(1, 1, 1);
+            }
+        }
+    }
+
+    #popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 8000;
+        opacity: 0;
+        .square(100%);
+        .transition();
+
+        &.open { opacity: 1; }
+    }

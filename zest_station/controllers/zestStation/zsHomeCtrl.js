@@ -51,24 +51,41 @@ sntZestStation.controller('zsHomeCtrl', [
 
 
 
-
-
+        
+        $scope.oosStatus = 'disabled';
+        
+        $scope.getOOSCurrentSetting = function(){
+             var storageKey = $scope.oosKey,
+                    storage = localStorage;
+                console.log('storageKey: ',storageKey);
+            try {
+               if (storage.getItem(storageKey)){
+                   $scope.oosStatus = 'enabled';
+               } else {
+                   $scope.oosStatus = 'disabled';
+               }
+               console.log('oos is currently '+$scope.oosStatus);
+            } catch(err){
+                console.warn(err);
+            }
+            console.info(storage.getItem(storageKey));
+        };
+        
 	/**
 	 * admin popup actions starts here
 	 */
     var openAdminPopup = function() {
-
+           $scope.oosStatus = 'test';
+        $scope.getOOSCurrentSetting();
         $scope.idle_timer_enabled = false;
         ngDialog.open({
-            template: '/assets/partials/rvTabletAdminPopup.html',
+            template: '/assets/partials/rvAdminPopup.html',
           //  className: 'ngdialog-theme-default',
-            scope: $scope,
             closeByDocument: false,
             closeByEscape: false
         });
         setTimeout(function(){
             $('.ngdialog-close').hide();
-            
         },50);
     };
 
@@ -122,6 +139,7 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.closeWorkStationList();
     };
     $scope.toggleOOS = function(){
+        console.info('toggleOOS');
         if ($state.isOOS){
             $rootScope.$emit(zsEventConstants.OOS_OFF);
         } else {
