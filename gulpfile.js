@@ -15,7 +15,8 @@ var gulp 	  = require('gulp'),
 			        URL_APPENDER    : '/assets',
 				    onError: function (error) {
 				    	console.log ('--------GULP TASK FAILED---\n\n')
-				    	console.log(error);
+				    	
+				    	console.trace(error);
 				    	console.log('\n\n---END OF GULP ERROR MESSAGE--')
 				    	require('exit')(0);
 				    }

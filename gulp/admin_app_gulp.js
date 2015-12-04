@@ -14,22 +14,39 @@ module.exports = function(gulp, $, options) {
 	    ADMIN_CSS_MANIFEST_FILE = "admin_css_manifest.json",
 	    PARTIALS_PATH_LIST 		= ['**/*.html'],
 	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json",
-	    LessPluginCleanCSS = require('less-plugin-clean-css'),
+	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
+	    stateMappingList 		= require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 		cleancss = new LessPluginCleanCSS({ advanced: true }),
 		onError  = options.onError;
 
 	//JS - Start
-	gulp.task('compile-admin-js-production',  function(){
-	    return gulp.src(ADMIN_JS_ASSET_LIST)
+	gulp.task('compile-admin-js-production', function(){
+		var mappingList 		= require("../asset_list/js/adminJsAssetList").getList(),
+			nonMinifiedFiles 	= mappingList.nonMinifiedFiles,
+			minifiedFiles 		= mappingList.minifiedFiles,
+			stream 				= require('merge-stream');
+
+		var nonMinifiedStream = gulp.src(nonMinifiedFiles)
+				.pipe($.jsvalidate())
+				.on('error', onError)
+		        .pipe($.concat(ADMIN_JS_COMBINED_FILE))
+		        .pipe($.ngAnnotate({single_quotes: true}))
+		        .pipe($.uglify({compress:true, output: {
+		        	space_colon: false
+		        }})),
+
+		    minifiedStream = gulp.src(minifiedFiles)
+		    	.pipe($.jsvalidate())
+				.on('error', onError)
+		    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
+
+	    return stream(minifiedStream, nonMinifiedStream)
 	        .pipe($.concat(ADMIN_JS_COMBINED_FILE))
-	        .pipe($.ngAnnotate({single_quotes: true}))
-	        .pipe($.uglify({compress:true}))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(ADMIN_JS_MANIFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
-
 
 	//Be careful: PRODUCTION
 	gulp.task('build-admin-js-production', ['compile-admin-js-production'], function(){
@@ -44,6 +61,36 @@ module.exports = function(gulp, $, options) {
 	            }
 	        }))
 	        .pipe(gulp.dest(ADMIN_TEMPLATE_ROOT, { overwrite: true }))
+	});
+
+	gulp.task('admin-generate-mapping-list-dev', ['copy-all-dev'], function(){
+		var glob 		= require('glob-all'),
+			fileList 	= [],
+			fs 			= require('fs'),
+			mkdirp 		= require('mkdirp'),
+			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
+				+ generated + 'StateJsMappings/' 
+				+ generated + 'rover/',
+			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json',
+			combinedList = [];
+		
+		for (state in stateMappingList){
+			combinedList 	= require(stateMappingList[state]).getList();
+			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
+			extendedMappings[state] = glob.sync(fileList).map(function(e){
+				return "/assets/" + e;
+			});
+		}
+		mkdirp(roverGenDir, function (err) {
+		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
+		    else console.log('rover mapping directory created (' + roverGenDir + ')');
+	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('rover mapping file failed!! (' + err + ')');
+			    }
+			    console.log('rover mapping file created (' + roverGenFile + ')');
+			}); 
+		});
 	});
 
 	gulp.task('build-admin-js-dev', ['copy-all-dev'], function(){
@@ -179,5 +226,5 @@ module.exports = function(gulp, $, options) {
 
 	//TASKS
 	gulp.task('build-admin-dev', ['build-admin-less-js-dev', 'build-admin-template-cache-dev', 'concat-translation-en-admin-files-dev']); //, 
-	gulp.task('admin-asset-precompile', ['build-admin-js-production', 'build-admin-template-cache-production']); //, 'build-admin-less-production'
+	gulp.task('admin-asset-precompile', ['build-admin-js-production', 'build-admin-template-cache-production', 'build-admin-less-production']); //, 
 }

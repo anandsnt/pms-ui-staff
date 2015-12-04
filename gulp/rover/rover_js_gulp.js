@@ -8,8 +8,10 @@ module.exports = function(gulp, $, options) {
 	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
 	    extendedMappings 		= {},
 	    generated 				= "____generated",
+	    ROVER_JS_MAPPING_FILE 	= '../../asset_list/stateJsMapping/rover/roverStateJsMappings',
+	    stateMappingList 		= require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
-	    ROVER_JS_MAPPING_FILE 	= '../../asset_list/stateJsMapping/rover/roverStateJsMappings';
+	    onError  = options.onError;
 
 	//Be careful: PRODUCTION
 	gulp.task('build-rover-js-production', ['rover-generate-mapping-list-prod'], function(){
@@ -24,38 +26,8 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('rover-generate-mapping-list-dev', ['copy-all-dev'], function(){
-		var glob = require('glob-all'),
-			stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
-			fileList = [],
-			fs = require('fs'),
-			mkdirp = require('mkdirp'),
-			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
-				+ generated + 'StateJsMappings/' 
-				+ generated + 'rover/',
-			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json';
-		
-		for (state in stateMappingList){
-			fileList = require(stateMappingList[state]).getList();
-			extendedMappings[state] = glob.sync(fileList).map(function(e){
-				return "/assets/" + e;
-			});
-		}
-		mkdirp(roverGenDir, function (err) {
-		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
-		    else console.log('rover mapping directory created (' + roverGenDir + ')');
-	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
-			    if(err) {
-			        return console.error('rover mapping file failed!! (' + err + ')');
-			    }
-			    console.log('rover mapping file created (' + roverGenFile + ')');
-			}); 
-		});
-	});
-
 	gulp.task('rover-generate-mapping-list-prod', ['copy-all-prod'], function(){
 		var glob = require('glob-all'),
-			stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 			fileList = [],
 			fs = require('fs'),
 			es = require('event-stream'),
@@ -87,16 +59,24 @@ module.exports = function(gulp, $, options) {
 				stream 				= require('merge-stream');
 
 			var nonMinifiedStream = gulp.src(nonMinifiedFiles)
+					.pipe($.jsvalidate())
+					.on('error', onError)
 			        .pipe($.concat(fileName))
-			        .pipe($.ngAnnotate({single_quotes: true}))
+			        .on('error', onError)
+			        .pipe($.ngAnnotate({single_quotes: true, debug: true}))
+			        .on('error', onError)
 			        .pipe($.uglify({compress:true, output: {
 			        	space_colon: false
-			        }})),
+			        }}))
+			        .on('error', onError),
 
 			    minifiedStream = gulp.src(minifiedFiles)
+			    	.pipe($.jsvalidate())
+					.on('error', onError)
 			    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
 			
 			return stream(minifiedStream, nonMinifiedStream)
+				.on('error', onError)
 		        .pipe($.concat(fileName))
 		        .pipe($.rev())
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
@@ -112,9 +92,47 @@ module.exports = function(gulp, $, options) {
 		return es.merge(tasks).on('end', createMappingFile);
 	});
 
-	gulp.task('build-rover-js-dev', ['copy-all-dev'], function(){
+
+	gulp.task('rover-generate-mapping-list-dev', ['copy-all-dev'], function(){
+		var glob 		= require('glob-all'),
+			fileList 	= [],
+			fs 			= require('fs'),
+			mkdirp 		= require('mkdirp'),
+			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
+				+ generated + 'StateJsMappings/' 
+				+ generated + 'rover/',
+			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json',
+			combinedList = [];
+		
+		for (state in stateMappingList){
+			combinedList 	= require(stateMappingList[state]).getList();
+			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
+			extendedMappings[state] = glob.sync(fileList).map(function(e){
+				return "/assets/" + e;
+			});
+		}
+		mkdirp(roverGenDir, function (err) {
+		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
+		    else console.log('rover mapping directory created (' + roverGenDir + ')');
+	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('rover mapping file failed!! (' + err + ')');
+			    }
+			    console.log('rover mapping file created (' + roverGenFile + ')');
+			}); 
+		});
+	});
+
+	gulp.task('build-rover-js-dev', ['rover-generate-mapping-list-dev'], function(){
+		//since extendedMappings contains /assets/ and that is not a valid before gulp.src
+		var dashboardFiles = extendedMappings['rover.dashboard']
+			.map(function(e){  
+				e = e.replace("/assets/", "");
+				return e;
+			});
+
 	    return gulp.src(ROVER_HTML_FILE)
-	        .pipe($.inject(gulp.src(ROVER_JS_ASSET_LIST, {read:false}), {
+	        .pipe($.inject(gulp.src(dashboardFiles, {read:false}), {
 	            transform: function(filepath, file, i, length) {
 	                arguments[0] = URL_APPENDER + filepath;
 	                return $.inject.transform.apply($.inject.transform, arguments);
@@ -126,12 +144,13 @@ module.exports = function(gulp, $, options) {
 	//JS - END
 	
 	gulp.task('rover-watch-js-files', function(){
-		var paths = ROVER_JS_ASSET_LIST,
+		var paths = [],
 			glob = require('glob-all'),
-			otherPaths = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
-		for (state in otherPaths){
-			fileList = require(otherPaths[state]).getList();
-			paths = paths.concat(glob.sync(fileList));
+			combinedList = [];
+		for (state in stateMappingList){
+			combinedList 	= require(stateMappingList[state]).getList();
+			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
+			paths 			= paths.concat(glob.sync(fileList));
 		}
 		gulp.watch(paths, ['build-rover-js-dev'])
 	});

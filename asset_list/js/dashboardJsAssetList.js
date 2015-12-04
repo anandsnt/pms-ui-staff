@@ -19,7 +19,8 @@ module.exports = {
 				jsLibRoot + 'angular-translate-loader-static-files.min.js', 
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
-				jsLibRoot + 'ngDialog.min.js'				
+				jsLibRoot + 'ngDialog.min.js',
+				jsLibRoot + 'fastclick.min.js'				
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',

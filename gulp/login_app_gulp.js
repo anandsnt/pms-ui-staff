@@ -11,7 +11,8 @@ module.exports = function(gulp, $, options) {
 	    LOGIN_HTML_FILE     	= LOGIN_TEMPLATE_ROOT + 'new.html',
 	    LOGIN_JS_MANIFEST_FILE  = "login_js_manifest.json",
 	    LOGIN_CSS_MANIFEST_FILE = "login_css_manifest.json",
-	    LOGIN_TEMPLTE_MANFEST_FILE 	= "login_template_manifest.json";
+	    LOGIN_TEMPLTE_MANFEST_FILE 	= "login_template_manifest.json",
+	    onError = options.onError;
 
 	//JS - Start
 	gulp.task('compile-login-js-production', function(){
@@ -21,6 +22,8 @@ module.exports = function(gulp, $, options) {
 			stream 				= require('merge-stream');
 
 		var nonMinifiedStream = gulp.src(nonMinifiedFiles)
+				.pipe($.jsvalidate())
+				.on('error', onError)
 		        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
 		        .pipe($.ngAnnotate({single_quotes: true}))
 		        .pipe($.uglify({compress:true, output: {
@@ -28,6 +31,8 @@ module.exports = function(gulp, $, options) {
 		        }})),
 
 		    minifiedStream = gulp.src(minifiedFiles)
+		    	.pipe($.jsvalidate())
+				.on('error', onError)
 		    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
 
 	    return stream(minifiedStream, nonMinifiedStream)
