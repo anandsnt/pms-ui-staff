@@ -1,5 +1,5 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv','hotelDetails', '$state', '$stateParams',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, hotelDetails, $state, $stateParams) {
+sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv','hotelDetails', '$timeout', '$state', '$stateParams',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, hotelDetails, $timeout, $state, $stateParams) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -76,7 +76,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             $scope.fetchActionsList();
             
             $scope.initNewAction();//remove once hooked up to api
-            
+           
+            setDetailsHeight();
+            $timeout(function() {
+                    refreshScroller();
+            }, 600);
+           
         };
         $scope.lastSavedDescription = '';
         $scope.updateActionDescription = function(description_old, description_new){
@@ -1546,7 +1551,22 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
 			return valueToReturn;
 		};
 
+                $scope.setScroll = function(){
+                    setDetailsHeight();
+                    refreshScroller();
+                };
+ 		$scope.setScroller('details');
 
+                    var setDetailsHeight = function(){
+                            if($('#summary').length) {
+                                var $contentHeight = ($('#newaction').outerHeight()),
+                                    $textualHeight = parseFloat($contentHeight);		
+                                        $('#newaction').css('max-height', $textualHeight + 'px');
+                            }
+                    };
+                var refreshScroller = function(){
+                        $scope.refreshScroller('details');
+                };
 
 
 
