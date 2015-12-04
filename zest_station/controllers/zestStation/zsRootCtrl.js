@@ -164,6 +164,14 @@ sntZestStation.controller('zsRootCtrl', [
                 //$scope.fetchKeyEncoderList(); //using workstations instead
 	};
         
+    $scope.toggleOOS = function(){
+        console.info('toggleOOS')
+        if ($state.isOOS){
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        } else {
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        }
+    };
         $scope.getWorkStation = function(){
             var onSuccess = function(response){
                 if (response){
@@ -173,6 +181,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response){
                 console.warn('fetching workstation list failed:',response);
+                $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
                 
