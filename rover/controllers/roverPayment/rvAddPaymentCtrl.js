@@ -591,9 +591,13 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
                 
-                if ($scope.dataToSave.addToGuestCard){
-                    data.addToGuestCard = $scope.dataToSave.addToGuestCard;
-                }
+        if ($scope.dataToSave.addToGuestCard){
+            data.addToGuestCard = $scope.dataToSave.addToGuestCard;
+        };
+
+        if(typeof $scope.passData.fromBill !== "undefined"){
+			data.bill_number = $scope.passData.fromBill;
+		};
 		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
 			successSwipePayment();
@@ -653,6 +657,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		};
 		$scope.cardsList.push(dataToGuestList);
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		$scope.closeDialog();
 	};
 
 		/*
