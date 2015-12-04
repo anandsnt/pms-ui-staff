@@ -594,6 +594,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
         if ($scope.dataToSave.addToGuestCard){
             data.addToGuestCard = $scope.dataToSave.addToGuestCard;
         };
+
         if(typeof $scope.passData.fromBill !== "undefined"){
 			data.bill_number = $scope.passData.fromBill;
 		};
