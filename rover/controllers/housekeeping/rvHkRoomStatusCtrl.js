@@ -11,7 +11,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'roomTypes',
 	'floors',
 	'hkStatusList',
-	'allRoomIDs',
 	'ngDialog',
 	'RVWorkManagementSrv',
 	function(
@@ -27,7 +26,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		roomTypes,
 		floors,
 		hkStatusList,
-		allRoomIDs,
 		ngDialog,
 		RVWorkManagementSrv
 	) {
@@ -137,7 +135,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			hkStatusId : ''
 		};
 		$scope.hkStatusList = hkStatusList;
-		$scope.allRoomIDs   = allRoomIDs;
+		$scope.allRoomIDs   = fetchPayload.roomList['all_room_ids'];
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -731,6 +729,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.rooms              = [];
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
+			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
 
 			if ( $_page === 1 ) {
 				$scope.resultFrom = 1;
