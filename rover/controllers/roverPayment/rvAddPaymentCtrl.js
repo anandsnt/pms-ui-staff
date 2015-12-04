@@ -653,6 +653,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		};
 		$scope.cardsList.push(dataToGuestList);
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		$scope.closeDialog();
 	};
 
 		/*
