@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupSearchCtrl', [
+angular.module('sntRover').controller('rvGroupSearchCtrl', [
     '$scope',
     '$rootScope',
     'rvGroupSrv',

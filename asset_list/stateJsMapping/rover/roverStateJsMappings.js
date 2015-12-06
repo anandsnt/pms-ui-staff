@@ -10,7 +10,9 @@ module.exports = {
 			'rover.ratemanager': jsListRoot + 'rateManagerJsAssetList.js',
 			'rover.housekeeping': jsListRoot + 'houseKeepingJsAssetList.js',
 			'rover.companycardsearch': jsListRoot + 'companyCardSearchJsAssetList.js',
-			'rover.companycarddetails': jsListRoot + 'companyCardDetailsJsAssetList.js'
+			'rover.companycarddetails': jsListRoot + 'companyCardDetailsJsAssetList.js',
+			'rover.groups': jsListRoot + 'groupJsAssetList.js',
+			'rover.allotments': jsListRoot + 'allotmentJsAssetList.js'
 		}
 	}
 }
