@@ -94,6 +94,14 @@ sntZestStation.controller('zsAdminCtrl', [
 		$state.go ('zest_station.home');
 	};
 
+    $scope.toggleOOS = function(){
+        console.info('toggleOOS')
+        if ($state.isOOS){
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        } else {
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        }
+    };
 
 	$scope.loginAdmin = function(){
             $scope.mode   = "admin-name-mode";

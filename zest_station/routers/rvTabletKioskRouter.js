@@ -32,6 +32,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller  : 'zsHomeCtrl'
         });
 
+        $stateProvider.state('zest_station.oos', {
+            url         : '/oos',
+            templateUrl : '/assets/partials/kiosk/specific/oos.html',
+            controller  : 'zsHomeCtrl'
+        });
+
         $stateProvider.state('zest_station.reservation_search', {
             url         : '/reservation_search/:mode',
             templateUrl : '/assets/partials/kiosk/reservation_search.html',

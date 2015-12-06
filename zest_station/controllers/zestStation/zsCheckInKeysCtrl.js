@@ -22,7 +22,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
+            var current=$state.current.name;
+            if (current === 'zest_station.check_in_keys'){
+                $state.go ('zest_station.card_sign')
+            }
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 

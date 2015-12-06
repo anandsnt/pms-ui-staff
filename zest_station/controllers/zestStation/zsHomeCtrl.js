@@ -1,10 +1,12 @@
 sntZestStation.controller('zsHomeCtrl', [
 	'$scope',
+	'$rootScope',
 	'$state',
 	'zsModeConstants',
 	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
-	function($scope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
+	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
             $scope.storageKey = 'snt_zs_workstation';
+            $scope.oosKey = 'snt_zs_workstation.in_oos';
             $scope.storageKeyEncoder = 'snt_zs_encoder';
 	/**
 	 * when we clicked on pickup key from home screen
@@ -49,24 +51,41 @@ sntZestStation.controller('zsHomeCtrl', [
 
 
 
-
-
+        
+        $scope.oosStatus = 'disabled';
+        
+        $scope.getOOSCurrentSetting = function(){
+             var storageKey = $scope.oosKey,
+                    storage = localStorage;
+                console.log('storageKey: ',storageKey);
+            try {
+               if (storage.getItem(storageKey)){
+                   $scope.oosStatus = 'enabled';
+               } else {
+                   $scope.oosStatus = 'disabled';
+               }
+               console.log('oos is currently '+$scope.oosStatus);
+            } catch(err){
+                console.warn(err);
+            }
+            console.info(storage.getItem(storageKey));
+        };
+        
 	/**
 	 * admin popup actions starts here
 	 */
     var openAdminPopup = function() {
-
+           $scope.oosStatus = 'test';
+        $scope.getOOSCurrentSetting();
         $scope.idle_timer_enabled = false;
         ngDialog.open({
-            template: '/assets/partials/rvTabletAdminPopup.html',
+            template: '/assets/partials/rvAdminPopup.html',
           //  className: 'ngdialog-theme-default',
-            scope: $scope,
             closeByDocument: false,
             closeByEscape: false
         });
         setTimeout(function(){
             $('.ngdialog-close').hide();
-            
         },50);
     };
 
@@ -119,7 +138,14 @@ sntZestStation.controller('zsHomeCtrl', [
         }
         $scope.closeWorkStationList();
     };
-    
+    $scope.toggleOOS = function(){
+        console.info('toggleOOS');
+        if ($state.isOOS){
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        } else {
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        }
+    };
         
     $scope.saveAdminSettings = function(){
         //alert('saving workstation settings')
@@ -191,6 +217,26 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.saveWorkStationPrinter();
             $scope.setStationEncoder();
     };
+    
+        $scope.checkOOSInBrowser = function(){
+             var storageKey = $scope.oosKey,
+                    storage = localStorage,
+                    oos = {};
+            
+                console.log('storageKey: ',storageKey);
+            try {
+               oos = storage.getItem(storageKey);
+            } catch(err){
+                console.warn(err);
+            }
+            console.info('oos; ',oos);
+            if (oos){
+                $rootScope.$broadcast(zsEventConstants.PUT_OOS);
+                $state.isOOS = true;
+            } else {
+                $state.isOOS = false;
+            }
+        };
     $scope.setStationEncoder = function(){
          var storageKeyEncoder = $scope.storageKeyEncoder,
                 storage = localStorage;
@@ -253,19 +299,23 @@ sntZestStation.controller('zsHomeCtrl', [
     });
     
     $scope.init = function(){
+        $scope.checkOOSInBrowser(); //this will check if the device was put into OOS, if the device has been reset this should place it back into OOS
         $state.input = {};  
             if (typeof cordova !== typeof undefined){
-        setTimeout(function(){
-                $('.modal-content').addClass('ng-hide');
-                $('.tablet-popup').addClass('size-up');
-            
             setTimeout(function(){
-                $('.modal-content').removeClass('ng-hide');
-                $scope.$apply();
-            },100);
-                $scope.$apply();
-        },50);}
+                    $('.modal-content').addClass('ng-hide');
+                    $('.tablet-popup').addClass('size-up');
+
+                    setTimeout(function(){
+                        $('.modal-content').removeClass('ng-hide');
+                        $scope.$apply();
+                    },100);
+                        $scope.$apply();
+                },50);
+            }
     };
+    
+    
     $scope.init();
     
 }]);

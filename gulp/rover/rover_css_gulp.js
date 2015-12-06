@@ -31,7 +31,7 @@ module.exports = function(gulp, $, options) {
 	    return cssInjector(file_name);
 	});
 
-	gulp.task('rover-less-production', function () {
+	gulp.task('rover-less-production', ['rover-copy-less-files'], function () {
 	  return gulp.src(LESS_SOURCE_FILE)
 	        .pipe($.less({
 	        	compress: true,
@@ -44,7 +44,7 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
-	gulp.task('rover-less-dev', ['copy-all-dev'], function () {
+	gulp.task('rover-less-dev', ['rover-copy-less-files'], function () {
 	  return gulp.src(LESS_SOURCE_FILE)
 	        .pipe($.less({
 				plugins: [cleancss]
@@ -65,6 +65,12 @@ module.exports = function(gulp, $, options) {
 	//
 	
 	gulp.task('rover-watch-less-files', function(){
-		gulp.watch(LESS_SOURCE_FILE, ['build-rover-less-dev']);
+		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'rover/css/**/*.*']);
+		gulp.watch(paths, ['build-rover-less-dev']);
+	});
+
+	gulp.task('rover-copy-less-files', function(){
+		return gulp.src(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'rover/css/**/*.*'], {base: '.'})
+			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 }

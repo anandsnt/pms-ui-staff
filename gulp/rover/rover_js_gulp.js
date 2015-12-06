@@ -26,7 +26,7 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('rover-generate-mapping-list-prod', ['copy-all-prod'], function(){
+	gulp.task('rover-generate-mapping-list-prod', function(){
 		var glob = require('glob-all'),
 			fileList = [],
 			fs = require('fs'),
@@ -93,7 +93,7 @@ module.exports = function(gulp, $, options) {
 	});
 
 
-	gulp.task('rover-generate-mapping-list-dev', ['copy-all-dev'], function(){
+	gulp.task('rover-generate-mapping-list-dev', ['rover-copy-js-files'], function(){
 		var glob 		= require('glob-all'),
 			fileList 	= [],
 			fs 			= require('fs'),
@@ -154,5 +154,16 @@ module.exports = function(gulp, $, options) {
 		}
 		gulp.watch(paths, ['build-rover-js-dev'])
 	});
+	
+	gulp.task('rover-copy-js-files', function(){
+		var fileList = [];
+		for (state in stateMappingList){
+			combinedList 	= require(stateMappingList[state]).getList();
+			fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
+		}
+		return gulp.src(fileList, {base: '.'})
+			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+	});
+
 
 }

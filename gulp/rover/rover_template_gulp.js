@@ -52,7 +52,7 @@ module.exports = function(gulp, $, options) {
 	    return templateInjector(ROVER_TEMPLATES_FILE);
 	});
 
-	gulp.task('rover-template-cache-dev', ['copy-all-dev'], function () {
+	gulp.task('rover-template-cache-dev', function () {
 
 	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'rover/'})
 	        .pipe($.templateCache(ROVER_TEMPLATES_FILE, {

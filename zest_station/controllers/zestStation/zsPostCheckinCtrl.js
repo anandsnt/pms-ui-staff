@@ -32,8 +32,11 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
-            } else if (current === 'zest_station.invalid_email_retry'){
+            } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
                 $state.go('zest_station.input_reservation_email_after_swipe');
+                
+            }else if (current === 'zest_station.invalid_email_retry' && $state.from === 'email-delivery'){
+               $scope.selectEmailDelivery();
                 
             } else if (current === 'zest_station.key_error'){
                 $scope.initKeyErrorScreen();
@@ -47,8 +50,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'registration_printed'){
                 $scope.from = 'deliver-registration';
                 
-            }else if (current === 'zest_station.edit_registration_email'){
-                $scope.setupEmailEdit();
+            } else if (current === 'zest_station.edit_registration_email'){
+                    $state.go('zest_station.delivery_options');
             }
             
            
@@ -122,6 +125,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.invokeApi(zsTabletSrv.sendRegistrationByEmail, {'id':id}, fetchHotelCompleted, $scope.generalError);    
         };
         $scope.editEmailAddress = function(){
+            $state.from = 'email-delivery';
             $state.go('zest_station.edit_registration_email');
             
         };
@@ -129,6 +133,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.at = 'email-delivery';
             $scope.headingText = "We will send your registration to:";
             $scope.subHeadingText = $state.input.lastEmailValue;
+            $scope.input.inputTextValue = $state.input.lastEmailValue;
         };
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
@@ -176,7 +181,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.updateGuestEmail = function(){
             var updateComplete = function(response){
                 if (response.status === 'success'){
-                    $state.go('zest_station.delivery_options');
+                    if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
+                        $state.go('zest_station.check_in_keys');
+                    } else {
+                        $state.go('zest_station.delivery_options');
+                    }
+                    //$scope.selectEmailDelivery();
                 } else {
                     $scope.initErrorScreen();
                 }
@@ -198,6 +208,11 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
         };
         $scope.goToNext = function(){
+          /*  if ($state.from === 'email-delivery'){
+                
+            } */
+            
+            
             if ($scope.at === 'input-email'){
                 $state.input.email = $scope.input.inputTextValue;
                 
@@ -265,11 +280,15 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.invalid_email_retry'){
                 $scope.at = 'invalid-email';
                 $scope.headingText = 'Hm.';
-                $scope.subHeadingText = 'This does not appear to be a valid e-mail address.'; 
+                $scope.subHeadingText = 'This does not appear to be a valid e-mail address.';
+                if ($state.from === 'card-swipe'){
+                    $scope.from = 'card-swipe';
+                }
                 
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
+                $state.from = 'card-swipe';
                 $scope.headingText = 'Enter your email address';
                 $scope.subHeadingText = "You'll be able to receive your bill, check out, order a late check out, and more online!";
                 $scope.inputTextPlaceholder = '';
