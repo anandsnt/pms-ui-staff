@@ -275,7 +275,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				roomRates = data;
 				init();
 				if (isfromCalendar) {
-					populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId);
+					populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId, $scope.activeRoom);
 					selectRoomAndRate();
 				}
 			};
@@ -493,7 +493,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					}
 					$scope.reservationData.rateDetails[roomIndex] = $scope.roomAvailability[$scope.reservationData.tabs[$scope.activeRoom].roomTypeId].ratedetails;
 					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
-						populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId);
+						populateStayDates($scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id, $scope.reservationData.rooms[0].roomTypeId, $scope.activeRoom);
 					}
 				}
 				$scope.computeTotalStayCost();
