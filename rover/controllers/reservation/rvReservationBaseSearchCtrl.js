@@ -202,6 +202,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.heading = 'Reservations';
             $scope.setHeadingTitle($scope.heading);
 
+            //Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
+            //in the confirmation screen
+            $scope.viewState.currentTab = 0;
+
             // Check flag to retain the card details
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
@@ -401,6 +405,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                  */
                 
                 $scope.setNumberOfNights();
+
+                // Fix for CICO-11333
+                $scope.clearArrivalAndDepartureTime();
 
                 for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
@@ -730,7 +737,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else {
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
-                $scope.clearArrivalAndDepartureTime();
             };
         };
 

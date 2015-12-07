@@ -305,6 +305,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.reservationDetails.allotment.id = reservationDetails.reservation_card.allotment_id || '';
 
 		angular.copy(reservationListData, $scope.reservationListData);
+		 //Reset to firstTab in case in case of coming into staycard from the create reservation screens 
+         //after creating multiple reservations
+        $scope.viewState.currentTab = 0;
+
 		$scope.populateDataModel(reservationDetails);
 
 		$scope.$emit('cardIdsFetched', {
