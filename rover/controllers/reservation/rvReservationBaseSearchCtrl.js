@@ -406,6 +406,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 
                 $scope.setNumberOfNights();
 
+                // Fix for CICO-11333
+                $scope.clearArrivalAndDepartureTime();
+
                 for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
                 }
@@ -734,7 +737,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else {
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
-                $scope.clearArrivalAndDepartureTime();
             };
         };
 
