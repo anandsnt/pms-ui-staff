@@ -58,19 +58,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
 
-		// The filters should be re initialized if we are navigating from dashborad to search
-		// In back navigation (From room details to search), we would retain the filters.
-		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
-				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
-
-				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				RVHkRoomStatusSrv.resetRoomTypes();
-
-				localStorage.removeItem( 'roomListScrollTopPos' );
-			};
-		});
-
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -304,6 +291,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
+			console.log('clearFilters autocalled')
 			$scope.roomTypes = RVHkRoomStatusSrv.resetRoomTypes();
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
