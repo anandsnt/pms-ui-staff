@@ -21,11 +21,13 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
+            $state.go('zest_station.reservation_details');
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 
-
+        $scope.navToPrev = function(){
+            $scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
+        };
 	/**
 	 * [isInCheckinMode description]
 	 * @return {Boolean} [description]

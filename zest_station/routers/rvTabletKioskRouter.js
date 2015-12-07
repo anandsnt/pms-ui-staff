@@ -32,6 +32,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller  : 'zsHomeCtrl'
         });
 
+        $stateProvider.state('zest_station.oos', {
+            url         : '/oos',
+            templateUrl : '/assets/partials/kiosk/specific/oos.html',
+            controller  : 'zsHomeCtrl'
+        });
+
         $stateProvider.state('zest_station.reservation_search', {
             url         : '/reservation_search/:mode',
             templateUrl : '/assets/partials/kiosk/reservation_search.html',
@@ -129,6 +135,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/specific/make-key.html',
          });
       
+      
+         $stateProvider.state('zest_station.last_confirm', {
+             url: '/key_success/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
       
          $stateProvider.state('zest_station.key_success', {
              url: '/key_success/:mode', 

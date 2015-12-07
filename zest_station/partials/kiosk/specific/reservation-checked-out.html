@@ -7,7 +7,7 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='printBill()'>
-                        <ng-include src="'assets/css/icons/print.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/print.svg'"></div>
                     </button>
                     Print Bill
                 </li>
@@ -16,7 +16,7 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='clickedNoThanks()'>
-                        <ng-include src="'assets/css/icons/no-print.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/no-print.svg'"></div>
                     </button>
                     No, thanks
                 </li>
@@ -47,7 +47,7 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reTypeEmail()'>
-                         <ng-include src="'assets/css/icons/keyboard.svg'">
+                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     Re-Type
                     <span>{{email}}</span>

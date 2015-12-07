@@ -28,7 +28,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 
     var params   = {
                     "reservation_id":$scope.zestStationData.reservationData.reservation_id,
-                    "kiosk":true
+                    "is_kiosk":true
                   };
     var options = {
                     params:             params     ,
