@@ -280,14 +280,16 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var deferred = $q.defer();
 
 			if ( this.roomTypes.length ) {
-				this.resetRoomTypes();
 				deferred.resolve(this.roomTypes);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						this.roomTypes = data.results;
 
-						this.resetRoomTypes();
+						angular.forEach(this.roomTypes, function(type, i) {
+							type.isSelected = false;
+						});
+
 						deferred.resolve(this.roomTypes);
 					}.bind(this), function(data) {
 						deferred.reject(data);
