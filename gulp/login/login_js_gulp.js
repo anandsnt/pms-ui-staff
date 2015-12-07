@@ -59,7 +59,7 @@ module.exports = function (gulp, $, options) {
 			minifiedFiles 		= LOGIN_JS_LIST.minifiedFiles;
 
 	    return gulp.src(LOGIN_HTML_FILE)
-	        .pipe($.inject(gulp.src(nonMinifiedFiles.concat(minifiedFiles), {read:false}), {
+	        .pipe($.inject(gulp.src(minifiedFiles.concat(nonMinifiedFiles), {read:false}), {
 	            transform: function(filepath, file, i, length) {
 	                arguments[0] = URL_APPENDER + filepath;
 	                return $.inject.transform.apply($.inject.transform, arguments);
