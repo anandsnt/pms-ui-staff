@@ -1,7 +1,8 @@
 <!-- Popup -->
-<div role="dialog" id="popup" class="open" ng-hide='showWorkStationList' click-touch='resetCounter();'>
-	<form method="post" class="modal-content" id='tablet-popup' >
-            <table class='admin-table' id="popup-content">
+<div id="popup" class="open" ng-hide='showWorkStationList' click-touch='resetCounter();'> <!-- Remove class "open" to hide popup content -->
+    <div id="popup-content">
+        
+        <table class='admin-table' id="popup-content">
                 <tr>
                 <h2 class="nocaps header">Kiosk Admin</h2>
                 </tr>
@@ -82,16 +83,24 @@
                 </tr>
 
             </table>
-
-        </form>
+        
+        
+        
+    </div>
 </div>
+<div id="popup-overlay" class="open"></div> <!-- Remove class "open" to hide popup overlay -->
+
+
+
 
 
     <div id="popup" class="open" style="background-color:#707070 !important" ng-show='showWorkStationList'> <!-- Remove class "open" to hide popup content -->
         <div id="popup-content">
             <h3 class="nocaps">Select WorkStation</h3>
-            <div ng-repeat="workstation in zestStationData.workstations" >
-               <button style='width:100%; margin-top:5px;' ng-class='{"overlay grey":workstation.selected}' type="button" class="button" touch-press='selectWorkStation(workstation)'>{{workstation.name}}</button>
-            </div>
+            
+            <button ng-show="{{!workstation.name}}" type="button" class="button" touch-press='selectWorkStation(workstation)'>Select</button>
+            <button ng-show="{{workstation.name}}" type="button" class="button" touch-press='selectWorkStation(workstation)'>{{workstation.name}}</button>
+            
+            
         </div>
     </div>
