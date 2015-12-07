@@ -2443,5 +2443,16 @@
                 .gradient-horizontal(@allotmentcard, @groupcard);
             }
         }
+
+        /* Hourly has 3 cards only ***/
+        &.hourly {
+            .card-header {
+                &.first { .calc-width(100, 100); }
+
+                &.second { #calc-position > .left(100, 100); }
+
+                &.third { #calc-position > .left(100, 50); }
+            }
+        }
     }
 }
