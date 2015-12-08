@@ -31,7 +31,7 @@ sntRover.service('RVReservationStateService', [
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});
-			if (rateAddons.associated_addons) {
+			if (rateAddons && rateAddons.associated_addons) {
 				return rateAddons.associated_addons;
 			} else {
 				return null;
