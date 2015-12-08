@@ -279,7 +279,7 @@ sntZestStation.controller('zsRootCtrl', [
                 };
 		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
         };
-        
+        /*
         $scope.disableTimeout = function(){
             zsTimeoutEnabled = false;
         };
@@ -356,11 +356,10 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.resetTime = function(){
                 $scope.closePopup();
-            if ($scope.at !== 'home'){ 
-                clearInterval($scope.idleTimer);
-                $scope.startCounter();
-            }
-               
+                if ($scope.at !== 'home'){ 
+                    clearInterval($scope.idleTimer);
+                    $scope.startCounter();
+                }   
             };
             
             $scope.startCounter = function(){
@@ -402,7 +401,7 @@ sntZestStation.controller('zsRootCtrl', [
             
         
         
-        
+        */
         
         
         
