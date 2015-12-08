@@ -19,10 +19,15 @@ sntRover.service('RVReservationStateService', [
 
 		/**
 		 * Method to get the addons associated with a Rate
-		 * @param  {[type]} rateId [description]
+		 * @param  {Array or a String} rateId [description]
 		 * @return {[type]}        [description]
 		 */
 		self.fetchAssociatedAddons = function(rateId) {
+			// In case of multiple rates, rateId might come in as an array
+			// In such a case, take the rate for the first night
+			if(_.isArray(rateId)){
+				rateId = rateId[0]
+			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});

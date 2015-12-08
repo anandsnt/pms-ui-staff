@@ -51,9 +51,6 @@ angular.module('housekeepingModule', [])
                 },
                 hkStatusList: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchHkStatusList();
-                },
-                allRoomIDs: function(RVHkRoomStatusSrv) {
-                    return RVHkRoomStatusSrv.fetchAllRoomIDs();
                 }
             }
         });

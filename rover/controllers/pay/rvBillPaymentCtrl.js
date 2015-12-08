@@ -614,8 +614,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.clearPaymentErrorMessage();
 		//TO CONFIRM AND REMOVE COMMENT OR TO DELETE
 
-
-		($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) ? $scope.closeDialog():'';
+		//($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) -> this was the condtition before
+		// had to remove the isCheckout flag which was causing the popup to close even if split payment is
+		// selected
+		(!$scope.splitBillEnabled) ? $scope.closeDialog():'';
 	};
 	/*
 	* updates DefaultPaymentAmount

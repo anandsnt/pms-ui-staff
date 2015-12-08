@@ -20,10 +20,10 @@
                 </div>
             </li>
         </ul>
-        <div id="actions" class='select-reservation'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
-            <button type="button" class="button transparent prev" touch-press='reservationPreviousPage()' ng-class='{"overlay":reservationPageNum==1}'>Previous</button>
+        <div id="actions" class='select-reservation selectPagingBtns'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+            <button type="button" class="button transparent prev" touch-press='reservationPreviousPage()' ng-class='{"overlay":page ==1 }'>Previous</button>
             <label ng-show='reservationPages > 1' ng-hide='reservationPages == 1'>{{reservationPageNum}} / {{reservationPages}}</label>
-            <button type="button" class="button transparent next" touch-press='reservationNextPage()' ng-class='{"overlay":reservationPageNum==reservationPages}'>Next</button>
+            <button type="button" class="button transparent next" touch-press='reservationNextPage()' ng-class='{"overlay":page==totalPages}'>Next</button>
         </div> 
     </div> 
     

@@ -48,7 +48,7 @@ sntZestStation.service('zsCheckoutSrv',
                 // save email to the reservation
                 this.checkoutGuest = function (params) {
                     var deferred = $q.defer(),
-                            url = '/staff/checkout';
+                            url = '/guest_web/home/checkout_guest.json';
                     zsBaseWebSrv2.postJSON(url,params).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
