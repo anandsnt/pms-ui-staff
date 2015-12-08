@@ -8,7 +8,7 @@
 		<div ng-show = "currentFilterData.filterConfigured && calendarMode == 'RATE_VIEW'">
 		    <div style="width: 240px;overflow:hidden;max-height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="all-room-type-rate-left-scroller">
 		    	<div class="wrapper">
-			        <table class='rate-calendar'>
+			        <table class='rate-calendar' style="width: 240px;">
 			            <thead>
 			                <tr>
 			                    <th class="cell" style="height: 53px; padding: 0 20 0 0;">
@@ -112,7 +112,7 @@
 		<div ng-show="currentFilterData.filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'">
 		    <div style="width: 240px;overflow:hidden;max-height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="room-type-details-left-scroller">
 		        <table class='rate-calendar'>
-		            <thead>
+		            <thead style="width:240px">
 		                <tr>
 		                    <th class="cell first-row actions"><!--  style="{width:th.width}" -->
 		                        <button ng-click="openCloseAllRestrictions('remove')" 	
@@ -156,10 +156,10 @@
 		    </div>
 
 		    <div ng-iscroll="room-type-details-grid-scroller" style="max-height:{{uiOptions.tableHeight}}px;" class="calendar-rate-table scrollable" id="rateViewCalendar">
-		    	<div class="wrapper" style="width:{{uiOptions.tableWidth}}px;">
+		    	<div class="wrapper" style="width:{{uiOptions.tableWidth}}px;" id="roomTypeViewCalendar">
 			        <table class="rate-calendar">
 			            <thead>
-			                <tr class="cell">
+ 			                <tr class="cell">
 			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" 
 			                        style="width:{{uiOptions.columnWidth}}px;">
 			                        <div  ng-if="!isHistoryDate(date)" class="date-header" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">

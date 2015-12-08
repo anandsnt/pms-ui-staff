@@ -143,7 +143,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			    return typeof room_rate !== "undefined" ? "" : "undefined";
 			}else if($scope.stateVariables.selectedRate !== ""){
 				var rate = _.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate});
-				if(typeof rate !== undefined &&  _.reduce(rate.room_rates, function(a, b){
+				if(rate &&  _.reduce(rate.room_rates, function(a, b){
 					return b.availability > 0 ? a.concat(b) : a;
 				}, []).length > 0 )
                     return "";

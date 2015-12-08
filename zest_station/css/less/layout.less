@@ -78,7 +78,7 @@
 
         #content {
             position: relative;
-            overflow: hidden;
+            overflow:visible;
             max-width: 1280px;
             .square(100%);
             > .button { 
@@ -95,15 +95,14 @@
             height: 100%;
             #flexbox > .parent('', '', center, '');
 
-            #content { height: auto; padding-bottom:90px; }
+            #content { height: auto; }
         }
 
         @media only screen and (min-height: 1024px) { padding-top: 200px; }
     }
     #content{
-        top: 42px !important;
-        //height: 50% !important;
-        //padding-top: 50px;
+     //   top: 42px !important;
+        max-height: 60% !important;
     }
     .timer-checkbox{
       background-color: transparent;
@@ -317,6 +316,9 @@
 
 /* Textual block /w scroll ***/
     #textual {
+        &.fill-height{
+            max-height: 63% !important;
+        }
         position: relative;
         color: @black;
         background-color: @white;
@@ -403,8 +405,16 @@
 
 /* Actions ***/
     #actions {
+        &.selectPagingBtns{
+            position: relative !important;
+            bottom: 5%;
+        }
+        &.sign-screen-nav{
+            margin-bottom:-8%;
+        }
+        
         position: absolute;
-        bottom: 40px;
+        bottom: 0px;
         left: 0;
         width: 100%;
         z-index: 5;
@@ -537,11 +547,14 @@
         }
     }
 
+    .px-space{//used in reservation details for the appearance for better alignment
+        padding-left:1px;
+    }
 /* Reservation details ***/
     #guests {
         font-size: 14px;
         color: lighten(@black, 30);
-        width: 50%;
+        width: 25%;
 
         strong,
         span { .show; }
@@ -562,7 +575,7 @@
     }
 
     #rate {
-        width: 50%;
+        width: 65%;
 
         li {
             margin-bottom: 10px;
@@ -671,6 +684,13 @@
                 fill:green;
             }
         }
+    }
+    
+    #oos {
+        background-image: "" !important;
+        position: relative;
+        margin-top: 40px;
+        z-index: 10;
     }
 
     #key-options {
@@ -838,5 +858,63 @@
         }
     }
     #skipEmailInputBtn{
-        margin-top: 10px;
+        margin-top: 10px !important;
     }
+    
+    
+        .admin-input{
+            margin-top: 5px;
+        }
+/* Popup ***/
+    #popup {
+        position: fixed;
+        top: 15%;
+        left: 30%;
+        z-index: 9000;
+        visibility: hidden;
+        &.workstations{
+            left: 36% !important;
+        }
+        
+      //  .translate3d(-50%, -50%, 0);
+        #popup-content {
+            min-width: 320px;
+            padding: 40px;
+            z-index: 9000;
+            color: @black;
+            background: @white;
+            opacity: 0;
+            #flexbox > .flex();
+            #flexbox > .parent(column wrap, center, center, '');
+            #rounded > .round(5px);
+            
+            
+          //  .scale3d(0.5, 0.5, 1);
+          //  .transition();
+        }
+
+        &.open {
+            visibility: visible; 
+
+            #popup-content {
+                opacity: 1;
+                overflow: hidden;
+                display: block;
+          //      .scale3d(1, 1, 1);
+            }
+        }
+    }
+
+    #popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 8000;
+        opacity: 0;
+        .square(100%);
+        .transition();
+
+        &.open { opacity: 1; }
+    }
+   

@@ -24,7 +24,9 @@
     .reservation-summary .rooms .button{
       margin-left: 1%;
       margin-top: 20px;
-      width: 48%;
+      width: 46%;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     ul.rooms-and-rates.wrapper{
@@ -208,6 +210,15 @@
       width: 60px; 
       margin-right: 5px;
       padding: 10px;
+  }
+  .action-mgr-new{
+      overflow: auto;
+      min-height:500px;
+      -webkit-overflow-scrolling: touch
+  }
+  .action-mgr-screen{
+      height:123%;
+      overflow:auto;
   }
   .actions-overdue-font{
       font-size: smaller;

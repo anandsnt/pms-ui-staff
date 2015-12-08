@@ -32,6 +32,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller  : 'zsHomeCtrl'
         });
 
+        $stateProvider.state('zest_station.oos', {
+            url         : '/oos',
+            templateUrl : '/assets/partials/kiosk/specific/oos.html',
+            controller  : 'zsHomeCtrl'
+        });
+
         $stateProvider.state('zest_station.reservation_search', {
             url         : '/reservation_search/:mode',
             templateUrl : '/assets/partials/kiosk/reservation_search.html',
@@ -130,6 +136,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
       
       
+         $stateProvider.state('zest_station.last_confirm', {
+             url: '/key_success/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
+      
          $stateProvider.state('zest_station.key_success', {
              url: '/key_success/:mode', 
              controller: 'zsCheckInKeysCtrl',
@@ -174,6 +186,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_by_email', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.invalid_email_retry', {
+             url: '/find_reservation', 
+             controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
          // //check-in [ find-by-email ]

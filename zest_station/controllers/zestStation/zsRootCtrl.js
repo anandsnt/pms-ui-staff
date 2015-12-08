@@ -2,10 +2,12 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog,$sce) {
+	'zsUtilitySrv',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv) {
 
 	BaseCtrl.call(this, $scope);
          $scope.storageKey = 'snt_zs_workstation';
+         $scope.oosKey = 'snt_zs_workstation.in_oos';
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -81,7 +83,48 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.$on (zsEventConstants.SHOW_CLOSE_BUTTON, function(event) {
 		$scope.hideCloseButton = false;
 	});
+        
+        //OOS to be turned on in Sprint44+
+	/*$scope.$on (zsEventConstants.PUT_OOS, function(event) {//not used yet
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+            $scope.$emit(zsEventConstants.HIDE_LOADER);
 
+            $scope.disableTimeout();
+           // $scope.setOOSInBrowser(true);
+            $state.go('zest_station.oos');
+	});
+            
+        
+	$scope.$on (zsEventConstants.OOS_OFF, function(event) {
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+            $scope.$emit(zsEventConstants.HIDE_LOADER);
+
+            $scope.disableTimeout();
+          //  $scope.setOOSInBrowser(false);
+            $state.go('zest_station.oos');
+	});
+            
+            
+            
+            
+        $scope.setOOSInBrowser = function(t){
+             var storageKey = $scope.oosKey,
+                    storage = localStorage;
+                console.log('storageKey: ',storageKey);
+            try {
+               storage.setItem(storageKey, t);
+            } catch(err){
+                console.warn(err);
+            }
+            console.info(storage.getItem(storageKey));
+        };
+            */
+           
+           
+           
+           
 	/**
 	 * event for hiding the close button
 	 * @param  {[type]} event
@@ -112,12 +155,12 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 	var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+            event.preventDefault();
+            return;
+          };
 
-    $rootScope.$on('$locationChangeStart', routeChange);
-    window.history.pushState("initial", "Showing Dashboard", "#/zest_station/home");
+        $rootScope.$on('$locationChangeStart', routeChange);
+        window.history.pushState("initial", "Showing Dashboard", "#/zest_station/home");
 
 	/**
 	 * Set zest admin settings data.
@@ -131,6 +174,13 @@ sntZestStation.controller('zsRootCtrl', [
                 //$scope.fetchKeyEncoderList(); //using workstations instead
 	};
         
+    $scope.toggleOOS = function(){
+        if ($state.isOOS){
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        } else {
+            $rootScope.$emit(zsEventConstants.OOS_OFF);
+        }
+    };
         $scope.getWorkStation = function(){
             var onSuccess = function(response){
                 if (response){
@@ -140,6 +190,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response){
                 console.warn('fetching workstation list failed:',response);
+//                $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
                 
@@ -177,11 +228,14 @@ sntZestStation.controller('zsRootCtrl', [
                             station = $scope.zestStationData.workstations[i];
                         }
                     }
+                } else {
+                    $scope.zestStationData.workstations = 'Select';
                 }
+            } else {
+                $scope.zestStationData.workstations = 'Select';
             }
                 console.log('station', station)
             if (station !==  null){
-                $scope.zestStationData.encoder = station.key_encoder_id;
                     sntZestStation.selectedPrinter = station.printer;
                     sntZestStation.encoder = station.key_encoder_id;
                 console.info('workstation found!: ',station.name);
@@ -224,6 +278,13 @@ sntZestStation.controller('zsRootCtrl', [
                     failureCallBack:        $scope.failureCallBack
                 };
 		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
+        };
+        
+        $scope.disableTimeout = function(){
+            zsTimeoutEnabled = false;
+        };
+        $scope.enableTimeout = function(){
+            zsTimeoutEnabled = true;
         };
 	/**
 	 * [initializeMe description]

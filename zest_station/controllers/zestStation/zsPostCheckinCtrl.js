@@ -32,6 +32,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
+            } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
+                $state.go('zest_station.input_reservation_email_after_swipe');
+                
+            }else if (current === 'zest_station.invalid_email_retry' && $state.from === 'email-delivery'){
+               $scope.selectEmailDelivery();
+                
             } else if (current === 'zest_station.key_error'){
                 $scope.initKeyErrorScreen();
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
@@ -44,8 +50,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'registration_printed'){
                 $scope.from = 'deliver-registration';
                 
-            }else if (current === 'zest_station.edit_registration_email'){
-                $scope.setupEmailEdit();
+            } else if (current === 'zest_station.edit_registration_email'){
+                    $state.go('zest_station.delivery_options');
             }
             
            
@@ -53,6 +59,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	});
 
             $scope.isValidEmail = function(email){
+                if (!email){return false;}
                 email = email.replace(/\s+/g, '');
                 if ($scope.ValidateEmail(email)){
                     return false;
@@ -111,16 +118,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         
         $scope.sendRegistration = function(){
             var fetchHotelCompleted = function(response){
-                $scope.at = 'send-registration';
-                $scope.headingText = "Your Registration Has Been sent to:";
-                $scope.subHeadingText = $scope.getLastInputEmail();
-                $scope.at = 'last_confirm'; 
+                $state.go('zest_station.last_confirm');
                 $scope.$emit('hideLoader');
             };
             var id = $scope.selectedReservation.id;
             $scope.invokeApi(zsTabletSrv.sendRegistrationByEmail, {'id':id}, fetchHotelCompleted, $scope.generalError);    
         };
         $scope.editEmailAddress = function(){
+            $state.from = 'email-delivery';
             $state.go('zest_station.edit_registration_email');
             
         };
@@ -128,6 +133,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.at = 'email-delivery';
             $scope.headingText = "We will send your registration to:";
             $scope.subHeadingText = $state.input.lastEmailValue;
+            $scope.input.inputTextValue = $state.input.lastEmailValue;
         };
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
@@ -161,15 +167,85 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.initStaff = function(){
             $state.go('zest_station.speak_to_staff');
         };
-        
+        $scope.getPrimaryGuest = function(guestDetails){
+            var primaryGuest = null;
+            for (var i in guestDetails){
+                if (guestDetails[i]){
+                    if (guestDetails[i].is_primary){
+                        primaryGuest = guestDetails[i];
+                    }
+                }
+            }
+            return primaryGuest;
+        };
+        $scope.updateGuestEmail = function(){
+            var updateComplete = function(response){
+                if (response.status === 'success'){
+                    if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
+                        $state.go('zest_station.check_in_keys');
+                    } else {
+                        $state.go('zest_station.delivery_options');
+                    }
+                    //$scope.selectEmailDelivery();
+                } else {
+                    $scope.initErrorScreen();
+                }
+                $scope.$emit('hideLoader');
+            };
+            
+            var guestDetails = $state.selectedReservation.guest_details;
+            var primaryGuest = $scope.getPrimaryGuest(guestDetails);
+            if (primaryGuest !== null){
+                primaryGuest.email = $state.input.email;
+                $scope.invokeApi(zsTabletSrv.updateGuestEmail, primaryGuest, updateComplete, updateComplete);   
+            }  
+        };
+        $scope.validEmailAddress = function(useEmail){
+            if (useEmail !== '' && $scope.isValidEmail(useEmail)){
+                return true;
+            } else {
+                return false;
+            }
+        };
         $scope.goToNext = function(){
+          /*  if ($state.from === 'email-delivery'){
+                
+            } */
+            
+            
             if ($scope.at === 'input-email'){
                 $state.input.email = $scope.input.inputTextValue;
-                $state.go('zest_station.check_in_keys');
+                
+                var isValidEmail = $scope.validEmailAddress($state.input.email);
+                if (isValidEmail){
+                    $scope.updateGuestEmail();
+                } else {
+                    $state.go('zest_station.invalid_email_retry');
+                }
+                
+                
+                
+            } if ($scope.at === 'invalid-email'){
+                $state.input.email = $scope.input.inputTextValue;
+                
+                var isValidEmail = $scope.validEmailAddress($state.input.email);
+                if (isValidEmail){
+                    $scope.updateGuestEmail();
+                } else {
+                    $state.go('zest_station.invalid_email_retry');
+                }
+                
+                
+                
             } else if ($scope.at === 'email-delivery'){
                 $state.input.email = $scope.input.inputTextValue;
                 $state.input.lastEmailValue = $scope.input.inputTextValue;
-                $state.go('zest_station.delivery_options');
+                var isValidEmail = $scope.validEmailAddress($state.input.email);
+                if (isValidEmail){
+                    $scope.updateGuestEmail();//redirects to delivery_options
+                } else {
+                    $state.go('zest_station.invalid_email_retry');
+                }
             }
                 
         };
@@ -189,15 +265,30 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
                 
+            } else if (current === 'zest_station.last_confirm'){
+                $scope.headingText = "Your Registration Has Been sent to:";
+                $scope.subHeadingText = $scope.getLastInputEmail();
+                $scope.at = 'last_confirm';   
+                $scope.modalBtn1 = '';
+                $scope.modalBtn2 = 'Exit';
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
                 
             } else if (current === 'zest_station.key_error'){
                 $scope.initKeyErrorScreen();
                 
+            } else if (current === 'zest_station.invalid_email_retry'){
+                $scope.at = 'invalid-email';
+                $scope.headingText = 'Hm.';
+                $scope.subHeadingText = 'This does not appear to be a valid e-mail address.';
+                if ($state.from === 'card-swipe'){
+                    $scope.from = 'card-swipe';
+                }
+                
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
+                $state.from = 'card-swipe';
                 $scope.headingText = 'Enter your email address';
                 $scope.subHeadingText = "You'll be able to receive your bill, check out, order a late check out, and more online!";
                 $scope.inputTextPlaceholder = '';
