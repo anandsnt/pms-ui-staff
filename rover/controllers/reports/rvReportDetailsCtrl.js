@@ -811,12 +811,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
 
 			// hide #loader by adding '.ng-hide' class
-			$( '#loading' ).addClass( 'ng-hide' );
+			$( '#loading' ).addClass( 'ng-hide' )
+				.css({
+					'display': 'none !important',
+					'z-index': -99999
+				});
 		};
 
 		// add the print orientation after printing
 		var removePrintOrientation = function() {
 			$( '#print-orientation' ).remove();
+
+			$( '#loading' ).removeAttr('style');
 		};
 
 		// print the page
