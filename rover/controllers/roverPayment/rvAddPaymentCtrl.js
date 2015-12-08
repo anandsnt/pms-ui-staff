@@ -590,9 +590,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
-                
+        
+        var unwantedKeys = ["addToGuestCard"];
+  		data = dclone(data, unwantedKeys); 
+        
         if ($scope.dataToSave.addToGuestCard){
-            data.addToGuestCard = $scope.dataToSave.addToGuestCard;
+            data.add_to_guest_card = $scope.dataToSave.addToGuestCard;
         };
 
         if(typeof $scope.passData.fromBill !== "undefined"){
