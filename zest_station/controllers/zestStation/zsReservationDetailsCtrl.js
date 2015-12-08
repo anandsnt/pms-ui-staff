@@ -89,7 +89,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.setAddGuestFirst = function(){
             $scope.at = 'add-guest-first';
             $state.lastAt = 'add-guests';
-            $scope.headingText = 'Enter the Guests First Name';
+            $scope.headingText = 'Enter the Residents First Name';
             setTimeout(function(){
                 $scope.clearInputText();
             },50)
@@ -99,7 +99,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.setAddRemoveScreen = function(){
             $scope.at = 'add-guests';
             $state.lastAt = 'reservation-details';
-            $scope.addGuestsHeading = 'Additional Guests';
+            $scope.addGuestsHeading = 'Additional Residents';
             $scope.hideNavBtns = false;
         };
         $scope.formatCurrency = function(amt){
