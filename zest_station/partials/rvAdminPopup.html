@@ -10,10 +10,10 @@
                     <td>
                         <div class="entry">
                                 <!--input type="checkbox" ng-change='updateSettings("enabled", settings.adminIdleTimeEnabled)' /need style added for kiosk-->
-                                <button ng-hide="zestStationData.idle_timer.enabled" style="float:right" type="button" class="button grey admin-input" touch-press="updateSettings('true');">
+                                <button ng-hide="zestStationData.idle_timer.enabled" style="float:right; margin-bottom: -5px;" type="button" class="button grey admin-input" touch-press="updateSettings('true');">
                                         Disabled
                                 </button>
-                                <button ng-hide="!zestStationData.idle_timer.enabled"  style="float:right" type="button" class="button green admin-input" touch-press="updateSettings('false');">
+                                <button ng-hide="!zestStationData.idle_timer.enabled"  style="float:right; margin-bottom: -5px;" type="button" class="button green admin-input" touch-press="updateSettings('false');">
                                         Enabled
                                 </button>
                         </div>
@@ -98,11 +98,16 @@
     <div id="popup-content" ng-hide="!showWorkStationList">
         <h3 class="nocaps">Select WorkStation</h3><br>    
         <table>
-            <tbody  ng-repeat="item in workstations">
+            <tbody>
                 <tr>
                     <div ng-repeat="workstation in zestStationData.workstations" >
                     <button style='width:100%; margin-top:5px;' ng-class='{"overlay grey":workstation.selected}' type="button" class="button" touch-press='selectWorkStation(workstation)'>{{workstation.name}}</button>
                  </div>
+                </tr>
+                <tr>
+                    <div>
+                        <button style='width:100%; margin-top:20px;' type="button" class="button" touch-press='selectWorkStation(null)'>Close</button>
+                    </div>
                 </tr>
             </tbody>
         </table>  
