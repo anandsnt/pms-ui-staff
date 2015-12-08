@@ -1,8 +1,8 @@
 <!-- print option -->
 <section id="main" role="main" class="centered" ng-show="mode === 'print-mode'">
     <div id="content">
-        <h1>Thanks for staying at Zoku!</h1>
-        <h3 ng-show="email.length>0">We e-mailed your bill to you. Do you want to print it now?</h3>
+        <h1>Thanks for doing Zoku.</h1>
+        <h3 ng-show="email.length>0">We’ve already e-mailed your bill. But perhaps you want it printed?</h3>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
@@ -41,7 +41,7 @@
     </div>
     <!-- Email invalid -->
     <div id="content" ng-show="emailError">
-        <h1>Hm.</h1>
+        <h1>Hmm..</h1>
         <h2>This does not appear to be a valid e-mail address.</h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -63,7 +63,7 @@
 <!-- Final view-->
 <section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
     <div id="content">
-        <h1>Thanks for staying at Zoku!</h1>
+        <h1>Hope to see you again soon!</h1>
         <h3 ng-show="printOpted">Your bill has been printed below.</h3>
         <button  type="button" class="button" click-touch='clickedOnCloseButton()'>DONE</button>
     </div>

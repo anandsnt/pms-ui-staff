@@ -411,6 +411,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 
+		$scope.$on("showValidationErrorPopup", function(event, errorMessage) {
+			$scope.status = "error";
+			$scope.popupMessage = errorMessage;
+			$timeout(function() {
+				ngDialog.open({
+		    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+		    		controller: 'RVShowValidationErrorCtrl',
+		    		scope: $scope
+		    	});
+			}, 100);
+		});
+
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
