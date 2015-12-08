@@ -84,16 +84,17 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.hideCloseButton = false;
 	});
         
-        
-	$scope.$on (zsEventConstants.PUT_OOS, function(event) {
+        //OOS to be turned on in Sprint44+
+	/*$scope.$on (zsEventConstants.PUT_OOS, function(event) {//not used yet
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
             $scope.$emit(zsEventConstants.HIDE_LOADER);
 
             $scope.disableTimeout();
-            $scope.setOOSInBrowser(true);
+           // $scope.setOOSInBrowser(true);
             $state.go('zest_station.oos');
 	});
+            
         
 	$scope.$on (zsEventConstants.OOS_OFF, function(event) {
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -101,9 +102,13 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit(zsEventConstants.HIDE_LOADER);
 
             $scope.disableTimeout();
-            $scope.setOOSInBrowser(false);
+          //  $scope.setOOSInBrowser(false);
             $state.go('zest_station.oos');
 	});
+            
+            
+            
+            
         $scope.setOOSInBrowser = function(t){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
@@ -115,6 +120,11 @@ sntZestStation.controller('zsRootCtrl', [
             }
             console.info(storage.getItem(storageKey));
         };
+            */
+           
+           
+           
+           
 	/**
 	 * event for hiding the close button
 	 * @param  {[type]} event
@@ -165,7 +175,6 @@ sntZestStation.controller('zsRootCtrl', [
 	};
         
     $scope.toggleOOS = function(){
-        console.info('toggleOOS')
         if ($state.isOOS){
             $rootScope.$emit(zsEventConstants.OOS_OFF);
         } else {
@@ -181,7 +190,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response){
                 console.warn('fetching workstation list failed:',response);
-                $scope.$emit(zsEventConstants.PUT_OOS);
+//                $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
                 
@@ -219,7 +228,11 @@ sntZestStation.controller('zsRootCtrl', [
                             station = $scope.zestStationData.workstations[i];
                         }
                     }
+                } else {
+                    $scope.zestStationData.workstations = 'Select';
                 }
+            } else {
+                $scope.zestStationData.workstations = 'Select';
             }
                 console.log('station', station)
             if (station !==  null){
