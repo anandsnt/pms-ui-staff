@@ -811,18 +811,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
 
 			// hide #loader by adding '.ng-hide' class
-			$( '#loading' ).addClass( 'ng-hide' )
-				.css({
-					'display': 'none !important',
-					'z-index': -99999
-				});
+			$( '#loading' ).addClass( 'ng-hide' );
 		};
 
 		// add the print orientation after printing
 		var removePrintOrientation = function() {
 			$( '#print-orientation' ).remove();
-
-			$( '#loading' ).removeAttr('style');
 		};
 
 		// print the page
@@ -846,7 +840,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		        if ( sntapp.cordovaLoaded ) {
 		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		        };
-		    }, 100);
+		    }, 1000);
 
 		    /*
 		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
@@ -855,6 +849,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
+		    	$rootScope.msgMe = 'Vijay';
+
 		    	// remove the orientation
 				removePrintOrientation();
 
@@ -867,7 +863,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );
-		    }, 100);
+		    }, 2000);
 		};
 
 		$scope.emailReport = function() {
