@@ -286,6 +286,150 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.enableTimeout = function(){
             zsTimeoutEnabled = true;
         };
+        
+        
+        
+        
+            $scope.idlePopup = function() {
+                if ($scope.at === 'cc-sign'){
+                    //$scope.goToScreen({},'timeout',true, 'idle');
+                    $scope.goToScreen(null, 'cc-sign-time-out', true, 'cc-sign');
+                    $scope.$apply();
+                } else {
+                    if ($scope.at !== 'home' && $scope.at !== 'cc-sign' && $scope.at !== 'cc-sign-time-out'){
+                        ngDialog.open({
+                                template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
+                                className: 'ngdialog-theme-default',
+                                scope: $scope,
+                                closeByDocument: false,
+                                closeByEscape: false
+                        });
+                    }
+                }
+                    
+            };
+
+            $scope.settingsTimerToggle = function(){
+                if ($scope.settings){
+                    if ($scope.settings.idle_timer.enabled){
+                        $scope.settings.idle_timer.enabled = !$scope.settings.idle_timer.enabled;
+                    }
+                }
+            };
+            
+            
+            $scope.setupIdleTimer = function(){
+                if ($scope.settings){
+                    var settings = $scope.settings.idle_timer;
+                    if (settings){
+                        if (typeof settings.prompt !== typeof undefined && typeof settings.enabled !== typeof undefined) {
+                            if (settings.prompt !== null && settings.enabled !== null){
+                                $scope.idle_prompt = settings.prompt;
+                                $scope.idle_timer_enabled = settings.enabled;
+                                $scope.idle_max = settings.max;
+                                
+
+                                $scope.adminIdleTimeEnabled = settings.enabled;
+                                $scope.adminIdleTimePrompt = settings.prompt;
+                                $scope.adminIdleTimeMax = settings.max;
+
+                                $scope.settings.adminIdleTimeEnabled = settings.enabled;
+                                $scope.settings.adminIdleTimePrompt = settings.prompt;
+                                $scope.settings.adminIdleTimeMax = settings.max;
+                                
+                                
+                            } else {
+                                $scope.idle_timer_enabled = false;
+                            }
+                        } else {
+                            $scope.idle_timer_enabled = false;
+                        }
+                    }
+                }
+                    if ($scope.at !== 'home'){
+                        $scope.resetTime();
+                    }
+            };
+            
+            $scope.resetCounter = function(){
+               clearInterval($scope.idleTimer);
+            };
+            $scope.resetTime = function(){
+                $scope.closePopup();
+            if ($scope.at !== 'home'){ 
+                clearInterval($scope.idleTimer);
+                $scope.startCounter();
+            }
+               
+            };
+            
+            $scope.startCounter = function(){
+                var time = $scope.idle_max, promptTime = $scope.idle_prompt;
+                
+                    var timer = time, minutes, seconds;
+                    var timerInt = setInterval(function () {
+                        if ($scope.idle_timer_enabled && $scope.at !== 'home'){
+                                
+                                minutes = parseInt(timer / 60, 10);
+                                seconds = parseInt(timer % 60, 10);
+
+                                minutes = minutes < 10 ? "0" + minutes : minutes;
+                                seconds = seconds < 10 ? "0" + seconds : seconds;
+                                
+                                if (timer === promptTime){
+                                    $scope.idlePopup();
+                                }
+                                
+                                if (--timer < 0) {
+                                    setTimeout(function(){
+                                        //setup a timeout @ logic depending on which screen you are, you may get a "Are you still there" different look
+                                        //like re-swipe card, etc.;
+                                        $scope.handleIdleTimeout();
+                                    },1000);
+                                    
+                                    clearInterval(timerInt);
+                                    return;
+                                    //timer = duration;
+                                }
+                        }
+                    }, 1000);
+                    $scope.idleTimer = timerInt;
+            };
+            
+            $scope.handleIdleTimeout = function(){
+                $scope.navToHome();
+            };
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -308,4 +452,18 @@ sntZestStation.controller('zsRootCtrl', [
                 };
 		$scope.callAPI(zsTabletSrv.fetchSettings, options);
 	}();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 }]);
