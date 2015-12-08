@@ -1,4 +1,4 @@
-sntRover.service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
 	function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 		this.saveContactInfo = function(param) {

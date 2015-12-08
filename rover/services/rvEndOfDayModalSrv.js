@@ -1,4 +1,4 @@
-sntRover.service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
 		/**

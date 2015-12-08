@@ -1,4 +1,4 @@
-sntRover.service('RVSmartBandSrv',['$q', 'BaseWebSrvV2', function($q, BaseWebSrvV2){
+angular.module('sntRover').service('RVSmartBandSrv',['$q', 'BaseWebSrvV2', function($q, BaseWebSrvV2){
 
 	this.createSmartBand = function(data){
 		var deferred = $q.defer();

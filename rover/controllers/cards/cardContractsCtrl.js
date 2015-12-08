@@ -1,4 +1,4 @@
-sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
+angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
 	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout) {
 		BaseCtrl.call(this, $scope);
 		$scope.highchartsNG = {};

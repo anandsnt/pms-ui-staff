@@ -54,6 +54,7 @@ module.exports = {
 				roverRoot + 'services/permissions/rvPermissionSrv.js',
 				roverRoot + 'services/rvSearchSrv.js',
 				roverRoot + 'services/rvHotelDetailsSrv.js',
+				roverRoot + 'services/housekeeping/rvHkRoomStatusSrv.js',
 				roverRoot + 'services/util/rvUtilSrv.js',
 				roverRoot + 'services/availability/rvAvailabilitySrv.js',
 				roverRoot + 'filters/roundFilter.js'

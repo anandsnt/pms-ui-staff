@@ -1,4 +1,4 @@
-sntRover.service('rvMenuSrv',
+angular.module('sntRover').service('rvMenuSrv',
 	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
 

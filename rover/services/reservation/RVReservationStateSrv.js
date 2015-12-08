@@ -1,4 +1,4 @@
-sntRover.service('RVReservationStateService', [
+angular.module('sntRover').service('RVReservationStateService', [
 	function() {
 		var self = this;
 		self.metaData = {

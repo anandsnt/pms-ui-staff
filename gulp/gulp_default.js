@@ -17,5 +17,5 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('watch', ['watch-rover-files', 'watch-login-files', 'watch-admin-files']);
 
-	gulp.task('default', ['build', 'watch', 'start-server']);
+	gulp.task('default', ['build', 'watch']);
 }

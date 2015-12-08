@@ -4,6 +4,7 @@ module.exports = {
 		return {
 			'rover.diary': jsListRoot + 'diaryJsAssetList.js',
 			'rover.dashboard': jsListRoot + 'dashboardJsAssetList.js',
+			'rover.reservation': jsListRoot + 'stayCardJsAssetList.js',
 			'rover.availability': jsListRoot + 'availabilityJsAssetList.js',
 			'rover.reports': jsListRoot + 'reportsJsAssetList.js',
 			'rover.availability': jsListRoot + 'availabilityJsAssetList.js',
