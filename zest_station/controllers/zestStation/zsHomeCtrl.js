@@ -140,14 +140,18 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     $scope.selectWorkStation = function(selected){
-        $scope.closeWorkStationList();
-        if (selected){
-            for (var i in $scope.zestStationData.workstations){
-                if ($scope.zestStationData.workstations[i].id === selected.id){
-                    $scope.zestStationData.workstations[i].selected = true;
-                    $scope.zestStationData.selectedWorkStation = selected.station_identifier;
-                } else {
-                    $scope.zestStationData.workstations[i].selected = false;
+        if (selected === null){
+            $scope.closeWorkStationList();
+        } else {
+            $scope.closeWorkStationList();
+            if (selected){
+                for (var i in $scope.zestStationData.workstations){
+                    if ($scope.zestStationData.workstations[i].id === selected.id){
+                        $scope.zestStationData.workstations[i].selected = true;
+                        $scope.zestStationData.selectedWorkStation = selected.station_identifier;
+                    } else {
+                        $scope.zestStationData.workstations[i].selected = false;
+                    }
                 }
             }
         }
