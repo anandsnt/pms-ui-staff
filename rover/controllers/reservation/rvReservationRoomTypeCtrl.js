@@ -249,7 +249,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 				// CICO-6079
 				var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[date] && $scope.roomAvailability[roomId].ratedetails[date][rateId].rate ||
 					$scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].rate;
-				calculatedAmount =  $filter('number')(calculatedAmount, 2);
+				calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
 				details.rateDetails = {
 					actual_amount: calculatedAmount,
 					modified_amount: calculatedAmount,
@@ -501,7 +501,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 							details.rate.name = $scope.displayData.allRates[rateId].name;
 							var calculatedAmount = $scope.roomAvailability[roomId].ratedetails[date] && $scope.roomAvailability[roomId].ratedetails[date][rateId].rate ||
 								$scope.roomAvailability[roomId].ratedetails[$scope.reservationData.arrivalDate][rateId].rate;
-							calculatedAmount = $filter('number')(calculatedAmount, 2);
+							calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
 							details.rateDetails = {
 								actual_amount: calculatedAmount,
 								modified_amount: calculatedAmount,
@@ -759,7 +759,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					$scope.roomAvailability[roomId].ratedetails[activeDate][rateId].rate ||
 					$scope.roomAvailability[roomId].ratedetails[activeDate][rateId].rate;
 
-				calculatedAmount = parseFloat(calculatedAmount).toFixed(2);
+				calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
 				for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
 					currentRoom = $scope.reservationData.rooms[roomIndex];
 					currentRoom.stayDates[activeDate].rateDetails = {
