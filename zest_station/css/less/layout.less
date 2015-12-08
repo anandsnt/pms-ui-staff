@@ -862,15 +862,21 @@
     }
     
     
+        .admin-input{
+            margin-top: 5px;
+        }
 /* Popup ***/
     #popup {
         position: fixed;
         top: 15%;
-        left: 25%;
+        left: 30%;
         z-index: 9000;
         visibility: hidden;
+        &.workstations{
+            left: 36% !important;
+        }
+        
       //  .translate3d(-50%, -50%, 0);
-
         #popup-content {
             min-width: 320px;
             padding: 40px;
@@ -881,6 +887,8 @@
             #flexbox > .flex();
             #flexbox > .parent(column wrap, center, center, '');
             #rounded > .round(5px);
+            
+            
           //  .scale3d(0.5, 0.5, 1);
           //  .transition();
         }
@@ -909,3 +917,4 @@
 
         &.open { opacity: 1; }
     }
+   
