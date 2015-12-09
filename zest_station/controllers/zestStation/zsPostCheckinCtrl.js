@@ -43,8 +43,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.input_reservation_email_after_swipe'){
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
-                $scope.headingText = 'Enter your email address';
-                $scope.subHeadingText = "You'll be able to receive your bill, check out, order a late check out, and more online!";
+                $scope.headingText = 'Type in your e-mail address';
+                $scope.subHeadingText = "You can receive your bill, check-out (or order a late check-out) and all sorts of other wonderful things…";
                 $scope.inputTextPlaceholder = '';
                 
             } else if (current === 'registration_printed'){
@@ -68,6 +68,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             };
             
             $scope.ValidateEmail = function(email) {
+               // EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})\Z/;
+                //if (EMAIL_REGEX.test(email)){
                 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
                     return false;
                 } else return true;
@@ -138,14 +140,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
                 $scope.headingText = 'So Sorry.';
-                $scope.subHeadingText = 'Something is broken.\n\
-                                            Please find a staff member to help you.';
+                $scope.subHeadingText = 'Something broke. \n\
+                                            Our bad. Please reach out to a Sidekick.';
                 $scope.modalBtn1 = 'Done';
         };
         $scope.initKeyErrorScreen = function(){
                 $scope.at = 'key-error';
                 $scope.headingText = 'We were not able to make keys.';
-                $scope.subHeadingText = 'Please re-try or speak to a staff member.';
+                $scope.subHeadingText = 'Oopsie. Unable to make key.';
                 $scope.modalBtn1 = '';
         };
         
@@ -252,8 +254,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.setDeliveryParams = function(){
             $scope.at = 'deliver-registration';
             $scope.selectedReservation = $state.selectedReservation;
-            $scope.headingText = "Your Registration is Ready";
-            $scope.subHeadingText = "Please select how to receive your registration";
+            $scope.headingText = "Your registration is ready for lift-off.";
+            $scope.subHeadingText = "How would you like to receive it?";
         };
 
         $scope.init = function(){
@@ -266,7 +268,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.setDeliveryParams();
                 
             } else if (current === 'zest_station.last_confirm'){
-                $scope.headingText = "Your Registration Has Been sent to:";
+                $scope.headingText = "The e-mail is now living in your inbox.";
                 $scope.subHeadingText = $scope.getLastInputEmail();
                 $scope.at = 'last_confirm';   
                 $scope.modalBtn1 = '';
@@ -279,7 +281,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.invalid_email_retry'){
                 $scope.at = 'invalid-email';
-                $scope.headingText = 'Hm.';
+                $scope.headingText = 'Oopsie.';
                 $scope.subHeadingText = 'This does not appear to be a valid e-mail address.';
                 if ($state.from === 'card-swipe'){
                     $scope.from = 'card-swipe';
@@ -289,8 +291,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.at = 'input-email';
                 $scope.from = 'card-swipe';
                 $state.from = 'card-swipe';
-                $scope.headingText = 'Enter your email address';
-                $scope.subHeadingText = "You'll be able to receive your bill, check out, order a late check out, and more online!";
+                $scope.headingText = 'Type in your e-mail address';
+                $scope.subHeadingText = "You'll be able to receive your bill, check-out (or order a late check-out) and all sorts of other wonderful things…";
                 $scope.inputTextPlaceholder = '';
                 
             } else if (current === 'registration_printed'){
