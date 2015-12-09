@@ -619,14 +619,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		$scope.showErrorPopup = function(errorMessage){
-			$scope.status = "error";
-			$scope.popupMessage = errorMessage;
-			ngDialog.open({
-	    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
-	    		controller: 'RVShowValidationErrorCtrl',
-	    		className: '',
-	    		scope: $scope
-	    	});
+			$scope.$emit("showValidationErrorPopup", errorMessage);
 		};
 
 		var checkIfARAccountisPresent = function(){
@@ -654,10 +647,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 				}
 				else{
-					//close payment popup
-					ngDialog.close();
 					//notify user that AR account is not attached
 					$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT'));
+					$timeout(function() {
+						//close payment popup
+						ngDialog.close();
+					}, 100);
 				};
 			};
             var params = {
