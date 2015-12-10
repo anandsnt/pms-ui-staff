@@ -4,7 +4,7 @@
 	update the guest birthday details here.
 */
 (function() {
-	var birthDataDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
+	var birthDateDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
 
 	$scope.pageValid = false;
 
@@ -142,8 +142,8 @@ goToNextStep();
 
 var dependencies = [
 '$scope','$rootScope','$state','guestDetailsService','$modal',
-birthDataDetailsController
+birthDateDetailsController
 ];
 
-sntGuestWeb.controller('birthDataDetailsController', dependencies);
+sntGuestWeb.controller('birthDateDetailsController', dependencies);
 })();
