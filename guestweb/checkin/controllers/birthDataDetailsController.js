@@ -66,17 +66,26 @@
 		};
 
 		var goToNextStep = function(){
-			if($rootScope.upgradesAvailable){
-				$state.go('checkinUpgrade');
+			if($rootScope.guestPromptAddressOn){
+				$state.go('promptGuestDetails');
+			}
+			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified){
+				// if room upgrades are available
+				if($rootScope.upgradesAvailable){
+					$state.go('checkinUpgrade');
+				}
+				else{
+					  if($rootScope.isAutoCheckinOn){
+					    $state.go('checkinArrival');
+					  }
+					  else{
+					    $state.go('checkinKeys');
+					  }
+				};
 			}
 			else{
-				  if($rootScope.isAutoCheckinOn){
-				    $state.go('checkinArrival');
-				  }
-				  else{
-				    $state.go('checkinKeys');
-				  }
-			};
+					$state.go('guestDetails');	
+			}		
 		};
 
 		function getAge(birthDateString) {
@@ -97,15 +106,16 @@
 			$scope.isLoading 		= false;
 			if(getAge(birthday) > $rootScope.minimumAge){
 				$scope.isLoading 		= true;
-				var dataToSave 			= getDataToSave();
-				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
-					$scope.isLoading 	= false;
-					$rootScope.isGuestAddressVerified =  true;
-					goToNextStep();
-				},function(){
-					$rootScope.netWorkError = true;
-					$scope.isLoading = false;
-				});
+				// var dataToSave 			= getDataToSave();
+				// guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
+				// 	$scope.isLoading 	= false;
+				// 	$rootScope.isGuestAddressVerified =  true;
+				// 	goToNextStep();
+				// },function(){
+				// 	$rootScope.netWorkError = true;
+				// 	$scope.isLoading = false;
+				// });
+goToNextStep();
 			}
 			else{
 				$state.go('guestNotEligible');
