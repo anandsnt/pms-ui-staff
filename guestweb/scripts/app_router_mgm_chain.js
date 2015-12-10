@@ -102,7 +102,22 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestDetail.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
-	 })
+	 });
+	 // state('bithDateDetails', {
+	 // 	url: '/bithDateDetails',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
+	 // 	controller : 'birthDateDetailsController',
+	 //    title: 'Birthdate'
+	 // }).state('promptGuestDetails', {
+	 // 	url: '/promptGuestDetails',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
+	 // 	controller : 'guestDetailsController',
+	 //    title: 'Guest Details'
+	 // }).state('guestNotEligible', {
+	 // 	url: '/guestNotEligible',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestNotEligible.html',
+	 //    title: 'Guest Details'
+	 // });
 	 
 
 	// pre checkin states
