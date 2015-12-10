@@ -183,7 +183,10 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'start_auto_checkin_to': startAutoCheckinTo,
       'start_auto_checkin_to_prime_time': $scope.checkinData.start_auto_checkin_to_prime_time,
       'excluded_room_types': excluded_room_types,
-      'guest_address_on': $scope.checkinData.guest_address_on
+      'guest_address_on': $scope.checkinData.guest_address_on,
+      'birthdate_on': $scope.checkinData.birthdate_on,
+      'minimum_age' : $scope.checkinData.minimum_age,
+      'prompt_for_address_on':$scope.checkinData.prompt_for_address_on
 
     };
 
