@@ -280,6 +280,36 @@
     </div>
 </div>
 
+<div class="options long-list" ng-if="item.hasExclusions.data.length" ng-click="catchFauxSelectClick($event, 'hasExclusions')">
+    <label for="report-options">Exclude</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasExclusions)">{{ item.hasExclusions.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasExclusions.show }">
+        <label class="checkbox inline" ng-show="item.hasExclusions.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasExclusions.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasExclusions.selectAll" ng-change="fauxSelectChange(item, item.hasExclusions, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="exclusion in item.hasExclusions.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : exclusion.selected }"></span>
+            <input type="checkbox" ng-model="exclusion.selected" ng-change="fauxSelectChange(item, item.hasExclusions)" name="room-filters"> {{ exclusion.description }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasShowOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasShowOptions')">
+    <label for="report-options">Exclude</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasShowOptions)">{{ item.hasShowOptions.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasShowOptions.show }">
+        <label class="checkbox inline" ng-show="item.hasShowOptions.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasShowOptions.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasShowOptions.selectAll" ng-change="fauxSelectChange(item, item.hasShowOptions, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="exclusion in item.hasShowOptions.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : exclusion.selected }"></span>
+            <input type="checkbox" ng-model="exclusion.selected" ng-change="fauxSelectChange(item, item.hasShowOptions)" name="room-filters"> {{ exclusion.description }}
+        </label>
+    </div>
+</div>
+
 <div class="options long-list" ng-if="item.hasHoldStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasHoldStatus')">
     <label for="report-options">Hold Status(es)</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasHoldStatus)">{{ item.hasHoldStatus.title }}</div>

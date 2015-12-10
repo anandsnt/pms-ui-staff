@@ -164,8 +164,16 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_TAX'        : true,
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
-            'INCLUDE_ADDONS': true,
+            'INCLUDE_ADDONS': true
+        };
+
+        var __excludeFilterNames = {
             'EXCLUDE_TAX' : true
+        };
+
+        var __showFilterNames = {
+            'INCLUDE_RATE'  : true,
+            'INCLUDE_RATE_TYPE'  : true
         };
 
         var __displayFilterNames = {
@@ -484,6 +492,9 @@ sntRover.factory('RVReportUtilsFac', [
                 case reportNames['DAILY_PRODUCTION_DEMO']:
                     report['hasOneYearLimit']   = true;
                     break;
+                case reportNames['DAILY_PRODUCTION_RATE']:
+                    report['hasOneYearLimit']   = true;
+                    break;
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -541,6 +552,27 @@ sntRover.factory('RVReportUtilsFac', [
                 selectAll    : false,
                 defaultTitle : 'Select displays',
                 title        : 'Select displays',
+                data         : []
+            });
+
+
+            // create DS for Exclude combo box
+            __setData(report, 'hasExclusions', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : false,
+                defaultTitle : 'Exclude',
+                title        : 'Exclude',
+                data         : []
+            });
+
+            // create DS for Show combo box
+            __setData(report, 'hasShowOptions', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : false,
+                defaultTitle : 'Show',
+                title        : 'Show All',
                 data         : []
             });
 
@@ -749,6 +781,33 @@ sntRover.factory('RVReportUtilsFac', [
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
                     __pushGeneralOptionData( report, filter );
+                };
+
+                 // fill up DS for options combo box
+                if ( __excludeFilterNames[filter.value] ) {
+                    
+                    var selected = false;
+            
+                    if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO']) {
+                        selected = true;
+                        report['hasExclusions']['title'] = filter.description;
+                    };
+
+                    report['hasExclusions']['data'].push({
+                        paramKey    : filter.value.toLowerCase(),
+                        description : filter.description,
+                        selected    : selected
+                    });
+                };
+
+                 // fill up DS for show combo box
+                if ( __showFilterNames[filter.value] ) {
+                    selected = true;
+                    report['hasShowOptions']['data'].push({
+                        paramKey    : filter.value.toLowerCase(),
+                        description : filter.description,
+                        selected    : selected
+                    });
                 };
 
                 // fill up DS for display combo box
@@ -1456,6 +1515,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DAILY_PRODUCTION_DEMO']:
+                    report['fromDate']  = _getDates.monthStart;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
+                case reportNames['DAILY_PRODUCTION_RATE']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
                     break;
