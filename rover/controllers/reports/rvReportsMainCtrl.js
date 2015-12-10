@@ -133,7 +133,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_25: false,
 			item_26: false,
 			item_27: false,
-			item_28: false
+			item_28: false,
+			item_29: false, // Exclude Options
+			item_30: false  // Show Options
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -958,6 +960,34 @@ sntRover.controller('RVReportsMainCtrl', [
 						key         = each.paramKey;
 						params[key] = true;
 						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.display.push( each.description );
+						};
+					};
+				});
+			};
+
+			// generate params for selected exclusions
+			if ( report['hasExclusions']['data'].length ) {
+				_.each(report['hasExclusions']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.display.push( each.description );
+						};
+					};
+				});
+			};
+
+			// generate params for selected exclusions
+			if ( report['hasShowOptions']['data'].length ) {
+				_.each(report['hasShowOptions']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.display.push( each.description );
 						};
