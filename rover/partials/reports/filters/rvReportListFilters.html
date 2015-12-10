@@ -430,9 +430,9 @@
     </div>
 </div>
 
-<a ng-if="!item.is_export_only" class="button green" ng-click="setnGenReport(item)">Show</a>
+<a class="button green" ng-click="setnGenReport(item)">Show</a>
 
-<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.is_export_only || (shouldShowExportButton(item.title) && !hideExportOption)">
+<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.show_export && !hideExportOption">
     <span class="icons icon-save">Export</span>
 </a>
 
