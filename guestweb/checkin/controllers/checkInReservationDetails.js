@@ -45,7 +45,13 @@
 
 	$scope.checkInButtonClicked = function(){
 		if($scope.checked){
-			if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified){
+			if($rootScope.guestBirthdateOn){
+				$state.go('bithDateDetails');
+			}
+			else if($rootScope.guestPromptAddressOn){
+				$state.go('promptGuestDetails');
+			}
+			else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified){
 				// if room upgrades are available
 				if($rootScope.upgradesAvailable){
 					$state.go('checkinUpgrade');

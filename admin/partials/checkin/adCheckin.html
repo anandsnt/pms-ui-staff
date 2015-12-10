@@ -394,7 +394,9 @@
 					<!-- flag to check if we need to ask for guset details  -->
 					<ad-toggle-button is-checked="checkinData.guest_address_on" label="{{ 'ASK_GUEST_ADDRESS_DETAILS' | translate}}" div-class="full-width"></ad-toggle-button>
 					<!-- flag to check if we need to check for guset birthdate  -->
-					<ad-toggle-button is-checked="checkinData.birthdate_on" label="{{ 'BIRTHDATE_IS_MANDATORY' | translate}}" div-class="full-width"></ad-toggle-button>
+					<ad-toggle-button is-checked="checkinData.birthdate_on" label="{{ 'PROMPT_FOR_BIRTHDATE' | translate}}" div-class="full-width"></ad-toggle-button>
+					<!-- flag to check if we need to check for guset birthdate  -->
+					<ad-toggle-button is-checked="checkinData.birthdate_mandatory" label="{{ 'BIRTHDATE_IS_MANDATORY' | translate}}" div-class="full-width"></ad-toggle-button>
 					<!-- field to set age restriction -->
 					<div class="entry full-width">
 						<label>
