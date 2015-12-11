@@ -388,7 +388,7 @@
 
         <!-- item_29: Exclude options -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'active': filterItemsToggle.item_29 }" ng-click="toggleFilterItems('item_29')">
-            <span class="title">Display(s)</span>
+            <span class="title">Exclude </span>
         </a>
         <div class="settings-content" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_29 }">
             <div class="faux-select-options">
@@ -409,7 +409,7 @@
         
         <!-- item_30: Show options -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasShowOptions.data.length" ng-class="{ 'active': filterItemsToggle.item_30 }" ng-click="toggleFilterItems('item_30')">
-            <span class="title">Display(s)</span>
+            <span class="title">Show</span>
         </a>
         <div class="settings-content" ng-if="chosenReport.hasShowOptions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_30 }">
             <div class="faux-select-options">
@@ -421,6 +421,25 @@
                     <label class="checkbox" ng-repeat="choice in chosenReport.hasShowOptions.data">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : choice.selected }"></span>
                         <input type="checkbox" ng-model="choice.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShowOptions)" name="room-filters"> {{ choice.description }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+         <!-- item_31: Reservation Addons -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasReservationAddons.data.length" ng-class="{ 'active': filterItemsToggle.item_31 }" ng-click="toggleFilterItems('item_31')">
+            <span class="title">Reservation Add-ons</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasReservationAddons.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_31 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasReservationAddons.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasReservationAddons.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasReservationAddons.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasReservationAddons, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasReservationAddons.data.length > 1 && chosenReport.hasReservationAddons.selectAll) }">
+                    <label class="checkbox" ng-repeat="choice in chosenReport.hasReservationAddons.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : choice.selected }"></span>
+                        <input type="checkbox" ng-model="choice.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasReservationAddons)" name="room-filters"> {{ choice.name }}
                     </label>
                 </div>
             </div>

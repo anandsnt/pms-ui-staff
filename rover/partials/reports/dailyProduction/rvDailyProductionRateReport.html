@@ -8,7 +8,7 @@
 </div>
 
 <!-- <div ng-hide="hasNoResults" -->
-<div ng-hide="hasNoResults" id="report-content" class="report-content statistics" ng-controller="RVDailyProdReportCtrl">
+<div ng-hide="hasNoResults" id="report-content" class="report-content statistics" ng-controller="RVDailyProdRateReportCtrl">
 
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
@@ -38,9 +38,9 @@
                         </label>
                     </div>
                 </li>
-                <li ng-repeat="name in roomNames track by $index">
-                    <span ng-show="!$last">{{ name }}</span>
-                    <strong ng-show="$last">{{ name }}</strong>
+                <li ng-repeat="label in yAxisLabels track by $index">
+                    <span ng-show="!$last && !label.is_rate_type">{{ label.name }}</span>
+                    <strong ng-show="$last || label.is_rate_type">{{ label.name }}</strong>
                 </li>
             </ul>
         </div>

@@ -296,7 +296,7 @@
 </div>
 
 <div class="options long-list" ng-if="item.hasShowOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasShowOptions')">
-    <label for="report-options">Exclude</label>
+    <label for="report-options">Show</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasShowOptions)">{{ item.hasShowOptions.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasShowOptions.show }">
         <label class="checkbox inline" ng-show="item.hasShowOptions.data.length > 1">
@@ -378,6 +378,21 @@
         <label class="checkbox inline" ng-repeat="each in item.hasReservationStatus.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
             <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ each.status }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasReservationAddons.data.length" ng-click="catchFauxSelectClick($event, 'hasReservationAddons')">
+    <label for="addon-status">Reservation Add-ons</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasReservationAddons)">{{ item.hasReservationAddons.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasReservationAddons.show }">
+        <label class="checkbox inline" ng-show="item.hasReservationAddons.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasReservationAddons.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasReservationAddons.selectAll" ng-change="fauxSelectChange(item, item.hasReservationAddons, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="each in item.hasReservationAddons.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationAddons)" name="addon-status"> {{ each.name }}
         </label>
     </div>
 </div>

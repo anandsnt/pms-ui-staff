@@ -30,5 +30,5 @@ sntRover.constant('RVReportNamesConst', {
 	'DAILY_PRODUCTION'             : 'Daily Production',
 	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report',
 	'DAILY_PRODUCTION_DEMO'		   : 'Daily Production by Demographics',
-	'DAILY_PRODUCTION_RATE'		   : 'Daily Production by Rate',
+	'DAILY_PRODUCTION_RATE'		   : 'Daily Production by Rate'
 });
