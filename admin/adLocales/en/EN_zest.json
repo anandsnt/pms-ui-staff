@@ -39,8 +39,17 @@
 
 
 "BACK_TO_ZEST_SETUP":"Back to Zest Setup",
+"ZEST_SETUP_HEADER":"Zest Setup",
 "BACK_TO_ZEST":"Back to Zest",
+
+"ZEST_SETUP_DIRECT":"Direct URL",
+"ZEST_SETUP_DIRECT_HEADER":"Check-In By Direct URL Setup",
+"ZEST_SETUP_CHECKIN_DIRECT_TOGGLE": "Check in by Direct URL",
+"ZEST_SETUP_DIRECT_URL": "URL",
+"ZEST_SETUP_DIRECT_BTN":"Direct URL",
+
 "ZEST_SETUP_EMAIL_BTN":"Email From Guest",
+"ZEST_SETUP_EMAIL_CHECK_IN_URL":"Zest Check In URL",
 "ZEST_SETUP_EMAIL_HEADER":"Check-In By Email From Guest Setup",
 "ZEST_SETUP_EMAIL_ADD": "Email Address",
 "ZEST_SETUP_CHECKIN_EMAIL_TOGGLE": "Check in by Guest Initiated Email",

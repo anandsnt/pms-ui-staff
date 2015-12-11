@@ -176,6 +176,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADZestCheckinEmailCtrl',
 			url : '/zestsetupemail'
 		});
+		$stateProvider.state('admin.zest_setup_direct', {
+			templateUrl: '/assets/partials/zestSetup/adCheckinEmailSetup.html',
+			controller: 'ADZestCheckinEmailCtrl',
+			url : '/zestsetupdirect'
+		});
 
 
 });

@@ -1,8 +1,10 @@
 <section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
-        <h2>{{ 'ZEST_SETUP_EMAIL_HEADER' | translate}}</h2>
-        <a ng-show="showView" ng-click="goBackToMain()" data-type="load-details" class="action back">{{ 'BACK_TO_ZEST_SETUP' | translate}}</a>
-        <a ng-hide="showView" ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK_TO_ZEST' | translate}}</a>
+        <h2 ng-hide="showView">{{ 'ZEST_SETUP_HEADER' | translate}}</h2>
+        <h2 ng-show="showEmailSetupView">{{ 'ZEST_SETUP_EMAIL_HEADER' | translate}}</h2>
+        <h2 ng-show="showDirectSetupView">{{ 'ZEST_SETUP_DIRECT_HEADER' | translate}}</h2>
+        
+        <a ng-show="showView" ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK_TO_ZEST_SETUP' | translate}}</a>
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -20,7 +22,13 @@
                 <button class="green button" ng-click="showEmailSetup()">{{ 'ZEST_SETUP_EMAIL_BTN' | translate}}</button>
             </fieldset>
             
-            <div ng-show="showEmailSetupView" ng-include="'/assets/partials/zestSetup/adZestSetupEmail.html'"></div> 
+            <fieldset class="holder left holder_margin" ng-hide="showView">
+                <button class="green button" ng-click="showDirectSetup()">{{ 'ZEST_SETUP_DIRECT_BTN' | translate}}</button>
+            </fieldset>
+            
+            
+            <div ng-show="showEmailSetupView" ng-include="'/assets/partials/zestSetup/adZestSetupEmail.html'"></div>
+            <div ng-show="showDirectSetupView" ng-include="'/assets/partials/zestSetup/adZestSetupDirect.html'"></div> 
             
             
             
