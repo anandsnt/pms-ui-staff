@@ -13,7 +13,6 @@
 "EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
 "EMAIL_ACCOUNTS_LABEL2":"EMAIL ACCOUNTS TO RECEIVE LATE CHECK OUT ALERT ONLY (Seperated by semicolon [;]) ",
 "BACK_TO_SETUP":"Back to setup",
-"BACK_TO_ZEST":"Back to Zest",
 "SOCIAL_LOBBY_SETUP":"Social Lobby Setup",
 "SOCIAL_LOBBY":"Social Lobby",
 "MY_GROUP":"My group",
@@ -39,7 +38,10 @@
 "EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES",
 
 
-"ZEST_EMAIL_SETUP_HEADER":"Check-In By Email From Guest Setup",
+"BACK_TO_ZEST_SETUP":"Back to Zest Setup",
+"BACK_TO_ZEST":"Back to Zest",
+"ZEST_SETUP_EMAIL_BTN":"Email From Guest",
+"ZEST_SETUP_EMAIL_HEADER":"Check-In By Email From Guest Setup",
 "ZEST_SETUP_EMAIL_ADD": "Email Address",
 "ZEST_SETUP_CHECKIN_EMAIL_TOGGLE": "Check in by Guest Initiated Email",
 "ZEST_SETUP_SUBJECT_TEXTAREA_LABEL": "Subject Keywords",

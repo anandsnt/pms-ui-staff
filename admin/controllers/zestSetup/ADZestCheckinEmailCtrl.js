@@ -7,13 +7,32 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope','adZestCheckinCheckoutSrv','
     ADBaseTableCtrl.call(this, $scope);
 
     $scope.init = function(){
-        $scope.fetchSetup();
-
+        $scope.fetchEmailSetup();
+        $scope.showEmailSetupView = false;
+        $scope.showView = false;
+        
     };
+    
+    $scope.showEmailSetup = function(){
+        $scope.showView = true;
+        $scope.showEmailSetupView = true;
+    };
+    
+    $scope.showDirectSetup = function(){
+        $scope.showView = true;
+        $scope.showEmailSetupView = true;
+    };
+    
+    $scope.goBackToMain = function(){
+        $scope.init();
+    };
+    
+    
     $scope.data = {};
     $scope.setData = function(data){
         console.log('set, ',data);
-        $scope.data = data;
+        $scope.data = data.data;
+        
     };
     
     $scope.failureCallBack = function(data){
@@ -21,7 +40,7 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope','adZestCheckinCheckoutSrv','
         $scope.errorMessage = data;
     };
     
-    $scope.fetchSetup = function(){
+    $scope.fetchEmailSetup = function(){
         $scope.callAPI(adZestCheckinCheckoutSrv.fetchSetup, {
             params:                 {},
             successCallBack: 	    $scope.setData,
@@ -31,10 +50,11 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope','adZestCheckinCheckoutSrv','
     $scope.saveSetup = function(){
             var onSuccess = function(data){
                 $scope.$emit('hideLoader');
+                $scope.successMessage = "Success";
             };
             $scope.callAPI(adZestCheckinCheckoutSrv.saveSetup, {
                 params: {
-                    'zest_station_setup': $scope.data
+                    'zest_station_setup': $scope.data.zest_station_setup
                 },
                 successCallBack: 	    onSuccess,
                 failureCallBack:        $scope.failureCallBack
