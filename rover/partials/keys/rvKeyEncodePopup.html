@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	
 	<form id="print-key" name="print-key" class="modal-content form key-delivery" ng-class="data.colorCodeClass">
 		<button ng-if="!viewFromBillScreen" id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-class="data.colorCodeClassForClose">

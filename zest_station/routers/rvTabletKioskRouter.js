@@ -13,12 +13,28 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         $stateProvider.state('zest_station.home', {
             url         : '/home',
             templateUrl : '/assets/partials/kiosk/home.html',
-            controller  : 'zsHomeCtrl'
+            controller  : 'zsHomeCtrl',
+            resolve: {
+                beforeRender: function() {
+                    //console.info('doing render apply to see if svg rendering bug is resolved -after render- safari issue');
+                    setTimeout(function(){
+                        var scope = angular.element($('.root-view')[0]).scope();
+                        scope.$apply();
+                    });
+                    return null;
+                }
+            }
         });
 
         $stateProvider.state('zest_station.home-admin', {
             url         : '/home/:isadmin',
             templateUrl : '/assets/partials/kiosk/home.html',
+            controller  : 'zsHomeCtrl'
+        });
+
+        $stateProvider.state('zest_station.oos', {
+            url         : '/oos',
+            templateUrl : '/assets/partials/kiosk/specific/oos.html',
             controller  : 'zsHomeCtrl'
         });
 
@@ -120,6 +136,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
       
       
+         $stateProvider.state('zest_station.last_confirm', {
+             url: '/key_success/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
+      
          $stateProvider.state('zest_station.key_success', {
              url: '/key_success/:mode', 
              controller: 'zsCheckInKeysCtrl',
@@ -164,6 +186,19 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_by_email', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.invalid_email_retry', {
+             url: '/find_reservation', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/input-text.html'
+         });
+         // //check-in [ find-by-email ]
+         $stateProvider.state('zest_station.edit_registration_email', {
+             url: '/find_reservation', 
+             controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
          // //check-in [ find-by-email ]

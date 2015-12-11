@@ -22,8 +22,17 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
-            //$state.go ('zest_station.home');//go back to reservation search results
+             var current=$state.current.name;
+            if (current === 'zest_station.card_sign'){
+                $state.go ('zest_station.card_swipe');
+            } else if(current === 'zest_station.card_swipe'){
+                $state.go ('zest_station.terms_conditions');
+                
+            }
+            
+            
+            
+            
 	});
 
 
@@ -57,7 +66,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
              * this method will check the guest in after swiping a card
              */
             $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-            $scope.checkInGuest();
+            if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]'){
+                $scope.checkInGuest();
+            }
         };
         $scope.setCheckInMessage = function(){
             $state.go('zest_station.checking_in_guest');
@@ -117,9 +128,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
             };
             
-        $scope.afterGuestCheckinCallback = function(){
-                $scope.$emit('hideLoader');
-                 var guestEmailEnteredOrOnReservation = function(){
+            $scope.guestEmailOnFile = function(){
                     var useEmail = '';
                     
                     if ($scope.getLastInputEmail() !== ''){
@@ -138,18 +147,27 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         return false;
                     }
                 };
-                var haveValidGuestEmail = guestEmailEnteredOrOnReservation();//also sets the email to use for delivery
-
+            
+        $scope.afterGuestCheckinCallback = function(response){
+            console.info('response from guest check-in',response)
+                $scope.$emit('hideLoader');
+                
+                var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
+                var successfulCheckIn = (response.status === "success")? true : false;
+                console.info('successfulCheckIn: ',successfulCheckIn);
                 //detect if coming from email input
-                if (haveValidGuestEmail){
-                        $state.go('zest_station.check_in_keys')
+                if (haveValidGuestEmail && successfulCheckIn){
+                        $state.go('zest_station.check_in_keys');
                     return;
+                } else if (!successfulCheckIn) {
+                    console.warn(response);
+                    $scope.$emit('hideLoader');
+                    $state.go('zest_station.error');
+                    
+                } else {//successful check-in but missing email on reservation
+                    $state.go('zest_station.input_reservation_email_after_swipe');
                 }
                 
-                //$scope.goToScreen(null, 'input-email', true, $scope.from);
-                $state.go('zest_station.input_reservation_email_after_swipe');
-                
-                $scope.clearSignature();
             };
         
         

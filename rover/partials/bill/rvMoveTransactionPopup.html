@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
 	<form id="move-room" name="move-room" class="modal-content form move-charge" ng-class="{'searching':!targetSelected}"> <!-- Remove class searching when guest/account is selected -->
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
 		<span class="h2 message">Move Charge(s)</span>

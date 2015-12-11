@@ -4,11 +4,19 @@
 
     <!-- Header -->
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
-        <div class="summary" ng-show="data.activeTab === 'SUMMARY'">
-            <span>{{'BAL_AS_OF_EOD' | translate}}</span>
-            <strong>{{ data.summaryDate | date : 'MMMM d, y'}}</strong>
+        
+        <div class="entry summary" ng-show="data.activeTab === 'SUMMARY'">
+            <label for="journal-from-date" translate>BAL_AS_OF_EOD</label>
+            <!-- Datepicker for summary tab -->
+            <div class="entry-data" ng-click="clickedSummaryDate()">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker hasDatepicker" readonly />
+                <strong id="revenue-date-day" class="day">{{data.summaryDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.summaryDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.summaryDate | date:'y'}}</span>
+            </div>
             <button ng-click="printSummary()" type="button" class="button blue" translate>PRINT</button>
         </div>
+
         <div class="entry filter" ng-show="data.activeTab === 'REVENUE' || data.activeTab === 'PAYMENTS'">
             <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
             <div class="faux-select" ng-class="{'active':data.isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();">
@@ -50,6 +58,7 @@
                 <select ng-model="data.filterData.selectedCashier" ng-options="cashier.id as cashier.name for cashier in data.filterData.cashiers" ng-change="cashierFilterChanged()"></select>
             </div>
         </div>
+        
         <!-- Datepicker for revenue tab (from date)-->
         <div class="entry date" ng-click="clickedFromDate()" ng-show="data.activeTab === 'REVENUE' || data.activeTab === 'PAYMENTS'">
             <label for="revenue-from-date" translate>DATE_FROM</label>

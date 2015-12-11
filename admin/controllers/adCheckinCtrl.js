@@ -145,6 +145,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     });
     //to reset time incase of an invalid time selection
     var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour + ":" + $scope.checkinData.checkin_alert_time_minute : "";
+    var nextDayCheckinAlertTime = ($scope.checkinData.next_day_checkin_alert_time_hour !== "" && $scope.checkinData.next_day_checkin_alert_time_minute !== "" && $scope.checkinData.next_day_checkin_alert_time_hour && $scope.checkinData.next_day_checkin_alert_time_minute) ? $scope.checkinData.next_day_checkin_alert_time_hour + ":" + $scope.checkinData.next_day_checkin_alert_time_minute : "";
     var zestCheckinAlertTime = ($scope.checkinData.zest_checkin_alert_time_hour !== "" && $scope.checkinData.zest_checkin_alert_time_min !== "" && $scope.checkinData.zest_checkin_alert_time_hour && $scope.checkinData.zest_checkin_alert_time_min) ? $scope.checkinData.zest_checkin_alert_time_hour + ":" + $scope.checkinData.zest_checkin_alert_time_min : "";
     var startAutoCheckinFrom = ($scope.checkinData.auto_checkin_from_hour !== "" && $scope.checkinData.auto_checkin_from_minute !== "" && $scope.checkinData.auto_checkin_from_hour && $scope.checkinData.auto_checkin_from_minute) ? $scope.checkinData.auto_checkin_from_hour + ":" + $scope.checkinData.auto_checkin_from_minute : "";
     var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour + ":" + $scope.checkinData.auto_checkin_to_minute : "";
@@ -158,8 +159,10 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'is_zest_checkin_alert_on': $scope.checkinData.is_send_zest_alert,
       'is_send_checkin_staff_alert': $scope.checkinData.is_send_checkin_staff_alert,
       'prime_time': $scope.checkinData.checkin_alert_primetime,
+      'next_day_prime_time': $scope.checkinData.next_day_checkin_alert_primetime,
       'zest_alert_prime_time': $scope.checkinData.zest_checkin_alert_primetime,
       'checkin_alert_time': checkinAlertTime,
+      'next_day_checkin_alert_time': nextDayCheckinAlertTime,
       'zest_app_checkin_alert_time': zestCheckinAlertTime,
       'require_cc_for_checkin_email': $scope.checkinData.require_cc_for_checkin_email,
       'is_precheckin_only': $scope.checkinData.is_precheckin_only ? 'true' : 'false',

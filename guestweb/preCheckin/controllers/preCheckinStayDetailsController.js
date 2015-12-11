@@ -58,5 +58,5 @@ var dependencies = [
 preCheckinStayDetailsController
 ];
 
-snt.controller('preCheckinStayDetailsController', dependencies);
+sntGuestWeb.controller('preCheckinStayDetailsController', dependencies);
 })();

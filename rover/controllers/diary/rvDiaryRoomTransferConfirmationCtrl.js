@@ -78,15 +78,5 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 		$scope.confirm = function() {
 			$scope.reserveRoom($scope.roomXfer.next.room, $scope.roomXfer.next.occupancy);
 		};
-
-		$scope.closeDialog = function() {
-            //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false;
-            $timeout(function(){
-                ngDialog.close();
-            }, 300);
-		};
-
-
 	}
 ]);

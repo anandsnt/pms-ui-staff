@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-cloak ng-click="clearErrorMessage()">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage()">
 	
 	<form ng-show="!shouldShowWaiting" name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDepositModal()">

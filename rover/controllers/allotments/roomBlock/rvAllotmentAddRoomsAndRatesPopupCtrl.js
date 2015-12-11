@@ -162,7 +162,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		};
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function(data) {
-			$scope.fetchRoomBlockGridDetails();
+			$scope.fetchCurrentSetOfRoomBlockData();
 			$scope.closeDialog();
 		};
 

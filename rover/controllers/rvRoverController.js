@@ -568,18 +568,20 @@ sntRover.controller('roverController',
     $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
       $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
+
+    $rootScope.modalClosing = false;
+
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
-
-      //to add stjepan's popup showing animation
-      $rootScope.modalOpened = false;
-
+      
+      $rootScope.modalClosing = true;
       setTimeout(function() {
         ngDialog.close();
+        $rootScope.modalClosing = false;
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);
@@ -655,11 +657,6 @@ sntRover.controller('roverController',
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
         LastngDialogId = $dialog.attr('id');
-        //to add stjepan's popup showing animation
-        $rootScope.modalOpened = false;
-        $timeout(function() {
-            $rootScope.modalOpened = true;
-        }, 300);
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {

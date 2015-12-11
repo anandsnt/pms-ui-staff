@@ -1,5 +1,5 @@
 
-snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 

@@ -82,18 +82,24 @@
     <div class="assigned-rooms multi-sheet" ng-if="multiSheetState.selectedEmployees.length > 0">
         <div ng-repeat="employee in multiSheetState.selectedEmployees" class="sheet-content">
             <a ng-click="navigateToIndvl(multiSheetState.assignments[employee.id].worksheetId)" class="button brand-colors">{{employee.maid_name}}</a>
-            <ul class="data">
+            <ul class="worksheet-summary">
                 <li class="shift">
-                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.shift.completed}}</span>
-                    <span class="total">{{multiSheetState.assignments[employee.id].summary.shift.total}}</span>
+                    <strong class="title">Time Allocated</strong>
+                    <span class="value">{{ multiSheetState.assignments[employee.id].summary.shift.completed }}</span>
+                    <span class="delimiter">|</span>
+                    <span class="total">{{ multiSheetState.assignments[employee.id].summary.shift.total }}</span>
                 </li>
                 <li class="departures">
-                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.departures.completed}}</span>
-                    <span class="total">{{multiSheetState.assignments[employee.id].summary.departures.total}}</span>
+                    <strong class="title">Departures</strong>
+                    <span class="value">{{ multiSheetState.assignments[employee.id].summary.departures.completed }}</span>
+                    <span class="delimiter">|</span>
+                    <span class="total">{{ multiSheetState.assignments[employee.id].summary.departures.total }}</span>
                 </li>
                 <li class="stayovers">
-                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.stayovers.completed}}</span>
-                    <span class="total">{{multiSheetState.assignments[employee.id].summary.stayovers.total}}</span>
+                    <strong class="title">Stayovers</strong>
+                    <span class="value">{{ multiSheetState.assignments[employee.id].summary.shift.completed }}</span>
+                    <span class="delimiter">|</span>
+                    <span class="total">{{ multiSheetState.assignments[employee.id].summary.departures.total }}</span>
                 </li>
             </ul>
             <div id="{{employee.id}}" class="worksheet-content scrollable"

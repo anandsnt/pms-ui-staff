@@ -2255,6 +2255,63 @@ body { overflow: hidden; }
 		}
 	}
 
+        
+        #actions-search&.action_filters_visible{
+                height:107px !important;
+        }
+        .actions-manager > .content-right > .summary > div > div > .summary > .add-content > div {
+            #notes,#search-guest-or-room{
+                width:100% !important;
+            }
+            > .find-guest{
+                background-color: white;
+                position: absolute;
+                z-index: 999;
+                border-radius: 3px;
+                width: 93%;
+                text-align: left;
+                margin: 0 4px 0px 5px;
+                > li > a > .room{
+                    float: right !important;
+                    margin-right: 35px;
+                    color:@grey3
+                }
+                 > li > a > .name{
+                    color:@grey3
+                }
+            }
+            > ul > .auto-complete-result{
+                font-size: 1em;
+                line-height: 1.5em;
+                margin-bottom: 1em;
+                height: 51px;
+                border: lightgrey;
+                border-width: 1px;
+                border-style: solid;
+                margin-bottom: 3px !important;
+            }
+            button {//post and cancel buttons from new action
+                width: 100% !important;
+            }
+            
+        }
+        .actions-manager > .content-right > .summary > div > div > .summary > .add-content {
+            .h2{
+                font-size: 24px;
+                line-height: 30px;
+                font-weight: 600;
+                text-align: center;
+            }
+            >#new_action_post{
+                margin: auto;
+                width: 70%;
+                /* border: 3px solid #73AD21; */
+                padding: 10px;
+            }
+            >div >#due-date{
+                width:100% !important;
+            }
+        }
 /* Actions					==============================*/
 	@media not print {
 		.actions-content {

@@ -196,14 +196,5 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             $scope.renderGrid();
         };
 
-        $scope.closeDialog = function() {
-            //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false;
-            $timeout(function(){
-                ngDialog.close();
-                $scope.cancelSelection();
-                $scope.renderGrid();
-            }, 300);
-        };
     }
 ]);

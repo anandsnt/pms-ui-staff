@@ -91,7 +91,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.cardData = data;
         $scope.renderAddedPayment = {};
         $scope.renderAddedPayment.payment_type = "CC";
-        $scope.isAddPayment = true;
+        $scope.isAddPayment = false;
         $scope.showPayment  = true;
 
         $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
@@ -262,6 +262,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 data.to_bill = $scope.selectedEntity.to_bill;
             }
             data.is_new = $scope.selectedEntity.is_new;
+            //CICO-22444 - Added inorder to allow the same charge codes for different date range
+            data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
+            data.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };
@@ -310,6 +313,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 data.to_bill = $scope.selectedEntity.to_bill;
             }
             data.is_new = $scope.selectedEntity.is_new;
+
+            //CICO-22444 - Added inorder to allow the same charge codes for different date range
+            data.from_date = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
+            data.to_date = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, data, successCallback, errorCallback);
     };
@@ -415,7 +422,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchDefaultAccountRouting = function(){
 
         var successCallback = function(data) {
-            
+
             if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
                 if (data.from_date) {
                     $scope.arrivalDate = data.from_date;
@@ -651,16 +658,17 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	    	$scope.saveSuccessCallback = function(data) {
 	    	    $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFOADDED');
 	    	    $scope.setReloadOption(true);
 	    	    $scope.headerButtonClicked();
 	    	    $scope.updateCardInfo();
-	    	    $scope.$parent.$emit('BILLINGINFOADDED');
+                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
 	    	};
 
 	    	var defaultRoutingSaveSuccess = function(){
 	    	    $scope.$parent.$emit('hideLoader');
+                $scope.$parent.$emit('BILLINGINFOADDED');
 	    	    ngDialog.close();
-	    	    $scope.$parent.$emit('BILLINGINFOADDED');
 	    	};
 
 	    	if($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING" ||
@@ -791,8 +799,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
               var defaultRoutingSaveSuccess = function(){
                 $scope.$parent.$emit('hideLoader');
-                ngDialog.close();
                 $scope.$parent.$emit('BILLINGINFOADDED');
+                ngDialog.close();
               };
         	 var successCallback = function(data) {
         	 	$scope.$parent.$emit('hideLoader');
@@ -969,18 +977,23 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 to : $scope.departureDate
             };
 
-            $scope.routingDateFromOptions = {       
+            $scope.routingDateFromOptions = {
                 dateFormat: 'dd-mm-yy',
                 minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
             };
 
-            $scope.routingDateToOptions = {       
+            $scope.routingDateToOptions = {
                 dateFormat: 'dd-mm-yy',
                 minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
             };
         }
+    };
+
+    //Updates the charge codes and billing groups upon changing the route date range
+    $scope.onRouteDateChange = function() {
+        $scope.fetchAvailableChargeCodes();
     };
 
 }]);

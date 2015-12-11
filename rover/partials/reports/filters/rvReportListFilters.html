@@ -310,7 +310,7 @@
     </div>
 </div>
 
-<div class="options" ng-if="item.hasAddonGroups.data.length">
+<div class="options" ng-if="item.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
     <label for="addons">Add-On(s)</label>
     <div class="faux-select placeholder" ng-click="toggleAddons()">{{ item.hasAddons.title }}</div>
     <div class="faux-select-options cols-2" ng-show="isVisible">
@@ -430,8 +430,10 @@
     </div>
 </div>
 
-<a class="button green" ng-click="setnGenReport()">Show</a>
+<a ng-if="!item.is_export_only" class="button green" ng-click="setnGenReport(item)">Show</a>
 
-<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(item.title) && !hideExportOption"><span class="icons icon-save">Export</span>
-                        </a>
+<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.is_export_only || (shouldShowExportButton(item.title) && !hideExportOption)">
+    <span class="icons icon-save">Export</span>
+</a>
+
 

@@ -93,7 +93,7 @@ var dependencies = [
 checkInConfirmationViewController
 ];
 
-snt.controller('checkInConfirmationViewController', dependencies);
+sntGuestWeb.controller('checkInConfirmationViewController', dependencies);
 })();
 
 

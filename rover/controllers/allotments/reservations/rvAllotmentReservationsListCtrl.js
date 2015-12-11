@@ -103,6 +103,23 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     };
 
     /**
+     * Function to decide whether to show a particular occupancy
+     * based on the key that we getting from the function we are deciding
+     * @return {Boolean}
+     */
+    $scope.shouldShowThisOccupancyAgainstRoomType = function(keyToCheck) {
+        //finding the selected room type data
+        var selectedRoomType = _.findWhere($scope.roomTypesAndData, {
+            room_type_id: parseInt($scope.selectedRoomType)
+        });
+        //we are hiding the occupancy if selected room type is undefined
+        if (typeof selectedRoomType === "undefined") {
+            return false;
+        }
+        return selectedRoomType[keyToCheck];
+    };
+
+    /**
      * Function to clear from Date
      * @return {None}
      */

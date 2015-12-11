@@ -27,5 +27,5 @@
 		checkinConfirmationService
 		];
 
-		snt.factory('checkinConfirmationService', dependencies);
+		sntGuestWeb.factory('checkinConfirmationService', dependencies);
 	})();

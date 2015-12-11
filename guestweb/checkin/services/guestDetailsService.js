@@ -54,5 +54,5 @@ var dependencies = [
 guestDetailsService
 ];
 
-snt.factory('guestDetailsService', dependencies);
+sntGuestWeb.factory('guestDetailsService', dependencies);
 })();

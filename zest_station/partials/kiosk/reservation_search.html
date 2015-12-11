@@ -22,10 +22,10 @@
                 </div>
             </li>
         </ul>
-        <div id="actions" class='select-reservation'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
-            <button type="button" class="button transparent prev" touch-press='fetchPreviousReservationList()' ng-class='{"overlay":reservationPageNum==1}'>Previous</button>
+        <div id="actions" class='select-reservation selectPagingBtns'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+            <button type="button" class="button transparent prev" touch-press='fetchPreviousReservationList()' ng-class='{"overlay":page == 1}'>Previous</button>
             <label>{{page}} / {{totalPages}}</label>
-            <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":reservationPageNum==reservationPages}'>Next</button>
+            <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":page == totalPages}'>Next</button>
         </div> 
     </div>
     <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
@@ -35,12 +35,12 @@
 <section id="main" class="centered" role="main" ng-show='mode === "no-match"' click-touch='resetTime()'>
     <div id="content">
         <h1 style="padding-top: 23px;">Sorry.</h1>
-        <h2>We can't seem to find your reservation.</h2>
+        <h2>We can't seem to find you.</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reEnterLastName()'>
-                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     Re-Enter
                     <span>"{{reservationParams.last_name}}"</span>
@@ -50,7 +50,7 @@
                 </li>
                 <li ng-show="showRoomEnter">
                     <button type="button" class="button option" touch-press='reEnterRoomNumber()'>
-                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     Re-Enter
                     <span>"{{reservationParams.room_no}}"</span>
@@ -60,10 +60,10 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
-                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>
                     Talk
-                    <span>To a Staff Member</span>
+                    <span>To a Sidekick</span>
                 </li>
             </ul>
         </nav>

@@ -58,7 +58,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				isAllChargeCodesSelected = false;
 			}
 			else{
-				console.log(billTabsData[$scope.currentActiveBill]);
 				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
 		        if (chargeCodes){
 		            if(chargeCodes.length > 0){
@@ -411,6 +410,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.paymentModalOpened = true;
 		};
 
+
+		$scope.$on("showValidationErrorPopup", function(event, errorMessage) {
+			$scope.status = "error";
+			$scope.popupMessage = errorMessage;
+			$timeout(function() {
+				ngDialog.open({
+		    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+		    		controller: 'RVShowValidationErrorCtrl',
+		    		scope: $scope
+		    	});
+			}, 100);
+		});
 
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {

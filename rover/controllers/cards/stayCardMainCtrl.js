@@ -734,7 +734,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 */
 			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
 				$scope.navigateToRoomAndRates();
-			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
+			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined" && !$scope.viewState.lastCardSlot) {
 				if (RVReservationStateService.getReservationFlag('RATE_CHANGE_FAILED')) {
 					RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', false);
 					ngDialog.open({

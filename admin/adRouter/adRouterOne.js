@@ -30,6 +30,17 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 
+		$stateProvider.state('admin.lightspeedPosSetup', {
+			templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
+			controller: 'adLightSpeedPOSSetupCtrl',
+			url : '/lightspeedpos/setup',
+			resolve: {
+				lightSpeedSetupValues: ['adLightSpeedPOSSetupSrv', function(adLightSpeedPOSSetupSrv) {
+					return adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration();
+				}]
+			}
+		});
+
 		$stateProvider.state('admin.britePabXSetup', {
 			templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
 			controller: 'adBritePabXSetupCtrl',

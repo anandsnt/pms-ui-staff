@@ -462,6 +462,11 @@ sntRover.controller('guestCardController', [
 			if ($scope.cardVisible) {
 				cls += " open";
 			}
+
+			if($rootScope.isHourlyRateOn){
+				cls += " hourly";
+			}
+
 			return cls;
 		};
 

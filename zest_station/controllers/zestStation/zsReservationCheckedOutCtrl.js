@@ -28,7 +28,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 
     var params   = {
                     "reservation_id":$scope.zestStationData.reservationData.reservation_id,
-                    "kiosk":true
+                    "is_kiosk":true
                   };
     var options = {
                     params:             params     ,
@@ -134,14 +134,15 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       try{
         $window.print();
         if ( sntapp.cordovaLoaded ) {
-            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', ['filep', '1']);
+            var printer = (sntZestStation.selectedPrinter);
+            cordova.exec(function(success) {
+                checkOutGuest();
+            }, function(error) {
+                $state.go('zest_station.error');
+            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
         };
         $scope.printOpted = true;
         // provide a delay for preview to appear
-        $timeout(function() {
-                 checkOutGuest();
-        }, 3000);
-        
       }
       catch(e){
         

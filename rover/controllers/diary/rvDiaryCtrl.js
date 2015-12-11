@@ -2009,14 +2009,6 @@ sntRover
 		$rootScope.modalOpened = false;
 	});
 
-	$scope.closeDialog = function(){
-		//to add stjepan's popup showing animation
-		$rootScope.modalOpened = false;
-		$timeout(function(){
-			ngDialog.close();
-		}, 300);
-	};
-
 	$scope.compCardOrTravelAgSelected = function(){
 		if (!$scope.gridProps.edit.active) {
 			$scope.Availability();

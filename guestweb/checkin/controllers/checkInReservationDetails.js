@@ -77,5 +77,5 @@ var dependencies = [
 checkInReservationDetails
 ];
 
-snt.controller('checkInReservationDetails', dependencies);
+sntGuestWeb.controller('checkInReservationDetails', dependencies);
 })();

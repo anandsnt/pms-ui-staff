@@ -42,5 +42,5 @@ var dependencies = [
 earlyCheckinFinalController
 ];
 
-snt.controller('earlyCheckinFinalController', dependencies);
+sntGuestWeb.controller('earlyCheckinFinalController', dependencies);
 })();

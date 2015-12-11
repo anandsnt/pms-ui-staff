@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content new-content form warning">
 		<div>
 			<span translate> {{'NO' | translate}} <span ng-if="houseNotAvailableForBooking" translate>HOUSE</span><span ng-if="roomTypeNotAvailableForBooking" translate>RESV_ROOM</span> {{'OVERBOOK_TEXT' | translate}}</span>
