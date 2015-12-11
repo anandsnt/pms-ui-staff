@@ -106,16 +106,15 @@
 			$scope.isLoading 		= false;
 			if(getAge(birthday) > $rootScope.minimumAge){
 				$scope.isLoading 		= true;
-				// var dataToSave 			= getDataToSave();
-				// guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
-				// 	$scope.isLoading 	= false;
-				// 	$rootScope.isGuestAddressVerified =  true;
-				// 	goToNextStep();
-				// },function(){
-				// 	$rootScope.netWorkError = true;
-				// 	$scope.isLoading = false;
-				// });
-goToNextStep();
+				var dataToSave 			= getDataToSave();
+				guestDetailsService.postGuestBirthDate(dataToSave).then(function(response) {
+					$scope.isLoading 	= false;
+					$rootScope.isGuestAddressVerified =  true;
+					goToNextStep();
+				},function(){
+					$rootScope.netWorkError = true;
+					$scope.isLoading = false;
+				});
 			}
 			else{
 				$state.go('guestNotEligible');
