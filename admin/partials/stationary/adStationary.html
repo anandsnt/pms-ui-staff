@@ -172,6 +172,51 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_letter_body" label="{{'CANCELLATION_LETTER_BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
                 </div>
             </fieldset>
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3>
+                        <span>{{'CUSTOMIZE' | translate}}</span>
+                        {{'SALUTATION' | translate}}
+                    </h3>
+                </div>
+                <div class="entry full-width">
+                    <label for="item-type"><span translate>GUEST_SALUTATION_TYPES</span></label>
+                    <div class="boxes">
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}"> 
+                            <span class="icon-form icon-radio " ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_name" value="FIRST_NAME" />
+                            <span translate>BY_FIRST_NAME</span> 
+                        </label>
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_last_name" value="LAST_NAME" />
+                            <span translate>BY_LAST_NAME</span> 
+                        </label>
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='BOTH'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='BOTH'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_last_name" value="BOTH" />
+                           <span translate>BY_FIRST_LAST_NAME</span> 
+                        </label>
+
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_custom_text" value="CUSTOM" />
+                           <span translate>BY_CUSTOM_TEXT</span> 
+                        </label>
+
+                        <div class="entry" ng-show="data.salutation_by =='CUSTOM'">
+                            <label for="screen-id"><span translate>CUSTOM_SALUTATION</span></label>
+                             <input type="text" name="custom_text" ng-model="data.salutaion_custom_text" id="item-name" placeholder="Enter salutaion" value="{Item Name}" required />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="entry full-width">
+                    <ad-checkbox is-checked="data.is_include_title" label="{{ 'INCLUDE_TITLE' | translate}}" div-class="full-width"></ad-checkbox>
+                </div>
+
+            </fieldset>
             <fieldset class="holder right">
                 <div class="form-title">
                     <h3>
