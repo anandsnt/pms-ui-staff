@@ -58,6 +58,7 @@
 //=require ../rover/react/diary/diary-content.js
 
 //=require ../rover/react/reports/dailyProductionReport/daily-production-content.js
+//=require_tree ../rover/react/reports/dailyProductionDemographics/
 
 //=require ../rover/rvRouter.js
 //=require ../rover/rvCardOperations.js
