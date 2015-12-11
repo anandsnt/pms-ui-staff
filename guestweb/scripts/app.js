@@ -52,11 +52,10 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
  	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
  	$rootScope.isGuestAddressVerified =  false;
 
- 	$rootScope.guestBirthdateOn = ($attrs.guestBirthdateOn === 'true') ? true :false;
- 	$rootScope.guestBirthdateMandatory = ($attrs.guestBirthdateMandatory === 'true') ? true :false;
-	$rootScope.guestPromptAddressOn = ($attrs.guestPromptAddressOn === 'true') ? true :false;
+ 	$rootScope.guestBirthdateOn = ($attrs.birthdateOn === 'true') ? true :false;
+ 	$rootScope.guestBirthdateMandatory = ($attrs.birthdateMandatory === 'true') ? true :false;
+	$rootScope.guestPromptAddressOn = ($attrs.promptForAddressOn === 'true') ? true :false;
 	$rootScope.minimumAge = parseInt($attrs.minimumAge);
-
 
     //Params for zest mobile and desktop screens
     if($attrs.hasOwnProperty('isPasswordReset')){
