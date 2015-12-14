@@ -121,10 +121,19 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 
 
-	 $stateProvider.state('noOptionAvailable', {
+	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
+
+
+	$stateProvider.state('externalCheckinVerification', {
+	 	url: '/externalCheckinVerification',
+	 	templateUrl: '/assets/checkin/partials/MGM/externalCheckinLanding.html',
+	 	controller : 'externalCheckinVerificationViewController',
+	 	title: 'External verification'
+	 });
+
 
 }]);
