@@ -49,8 +49,8 @@
             </div>
          </div>
          <div class="entry">
-           <label for="company-payment-terms">Payment Terms (Due Days)</label>
-           <input id="company-payment-terms" ng-model="arAccountDetails. payment_due_days" type="text" />
+           <label for="company-payment-terms" translate>PAYMENT_TERMS</label>
+           <input id="company-payment-terms" ng-model="arAccountDetails.payment_due_days" type="text" placeholder = "Enter Payment Terms" />
          </div>
          <!-- Show when use main address set to "no" -->
          <div id="company-main-address-fields" class="entry full-width" ng-show="!arAccountDetails.is_use_main_address">

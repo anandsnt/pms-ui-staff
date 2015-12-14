@@ -50,8 +50,8 @@
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
             <div class="entry">
-                <label for="company-corporate-vat">Tax ID</label>
-                <input id="company-corporate-vat" ng-model="contactInformation.account_details.tax_number" type="text" />
+                <label for="company-corporate-vat" translate>TAX_ID</label>
+                <input id="company-corporate-vat" ng-model="contactInformation.account_details.tax_number" placeholder = "Enter Tax ID" type="text" />
             </div>
 
             <div class="entry commission margin" ng-show ="!isEmpty(contactInformation.commission_details)&& account_type == 'TRAVELAGENT'">
