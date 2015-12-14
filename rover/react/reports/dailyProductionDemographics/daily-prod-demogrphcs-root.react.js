@@ -82,7 +82,7 @@ var DailyProductionByDemographics = React.createClass({
   },
 
   componentDidUpdate: function() {
-    this.props.completedRendering();
+    this.props.completedUpdating();
   },
 
   componentWillUnmount: function() {
@@ -94,9 +94,8 @@ var DailyProductionByDemographics = React.createClass({
     leftSc.destroy();
     rightSc.destroy();
   },
-  
+
   render: function() {
-    this.props.startedRendering();
     return React.DOM.span({}, DailyProductionLeftSide(this.state),
 			DailyProductionRightSide(this.state));
   }

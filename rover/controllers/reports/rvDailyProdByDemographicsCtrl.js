@@ -15,24 +15,41 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
     }, 0);
   };
 
+  var completedUpdating = function() {
+    $timeout(function() {
+      $scope.$emit('hideLoader');
+    }, 2 * $scope.results.dates.length);
+  };
+
   var renderReport = function() {
     var props = {
       data 				: $scope.results,
       startedRendering 	: startedRendering,
-      completedRendering: completedRendering
+      completedRendering: completedRendering,
+      completedUpdating	: completedUpdating
     };
     startedRendering();
     React.renderComponent(
-    DailyProductionByDemographics(props),
-    document.getElementById('daily-prod-demographics')
+	    DailyProductionByDemographics(props),
+	    document.getElementById('daily-prod-demographics')
     );
+  };
+
+  var reRenderReport = function(){
+  	$timeout(function(){
+  		startedRendering();
+  	}, 50);
+  	
+  	$timeout(function(){
+  		renderReport();
+  	}, 65);
   };
 
   // re-render must be initiated before for taks like printing.
   var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], renderReport);
   var reportPrinting    = $scope.$on(reportMsgs['REPORT_PRINTING'], renderReport);
-  var reportUpdated     = $scope.$on(reportMsgs['REPORT_UPDATED'], renderReport);
-  var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], renderReport);
+  var reportUpdated     = $scope.$on(reportMsgs['REPORT_UPDATED'], reRenderReport);
+  var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reRenderReport);
 
   $scope.$on('destroy', reportSubmited);
   $scope.$on('destroy', reportUpdated);
