@@ -66,6 +66,7 @@
 "EVERYONE":"Everyone",
 "SPECIFIC_USERS":"Specific User(s)",
 "EXTERNAL_CHECKIN":"External Checkin",
+"ON_CHECKIN" : "On Checkin",
 "EXTERNAL_CHECKOUT":"External Checkout",
 
 "MESSAGE":"Message",
