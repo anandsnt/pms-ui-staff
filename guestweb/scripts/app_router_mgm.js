@@ -78,8 +78,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/guestDetails.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
-	 }).state('bithDateDetails', {
-	 	url: '/bithDateDetails',
+	 }).state('birthDateDetails', {
+	 	url: '/birthDateDetails',
 	 	templateUrl: '/assets/checkin/partials/MGM/birthDataDetails.html',
 	 	controller : 'birthDateDetailsController',
 	    title: 'Birthdate'

@@ -46,7 +46,7 @@
 	$scope.checkInButtonClicked = function(){
 		if($scope.checked){
 			if($rootScope.guestBirthdateOn){
-				$state.go('bithDateDetails');
+				$state.go('birthDateDetails');
 			}
 			else if($rootScope.guestPromptAddressOn){
 				$state.go('promptGuestDetails');

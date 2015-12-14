@@ -103,8 +103,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 });
-	 // state('bithDateDetails', {
-	 // 	url: '/bithDateDetails',
+	 // state('birthDateDetails', {
+	 // 	url: '/birthDateDetails',
 	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
 	 // 	controller : 'birthDateDetailsController',
 	 //    title: 'Birthdate'
