@@ -51,7 +51,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.id = data.id;
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
-		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin;
+		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin < 10 ? "0"+data.delay_after_checkin : "" + data.delay_after_checkin;
 		$scope.campaignData.delivery_details = data.delivery_details;
 		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? "SCREEN" : "URL";
 		$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? data.screen_type_id : "";
