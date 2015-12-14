@@ -8,10 +8,10 @@
 			<a id="add-new-button" class="action add ng-scope" ng-click="openWorkTypeForm('new')" translate="">Add Work Type</a>
 		</header>
 		<div id="new-form-holder-work-type" ng-show="workTypeClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddWorkType.html'"></div>
-		<table id="task-types" class="grid datatable table " ng-table="tableParams">
+		<table id="task-types" class="grid datatable table" ng-table="tableParams" template-pagination="myOwnPaginationTemplate.html">
 			<tbody>
 				<tr ng-repeat="item in workType">
-					<td header-class="width-30" data-title="'Work Type'" ng-click="openWorkTypeForm($index)" ng-hide="workTypeClickedElement == $index">
+					<td header-class="width-30" data-title="'Work Type'" ng-click="openWorkTypeForm($index, item.is_system)" ng-hide="workTypeClickedElement == $index">
 						<a>{{ item.name }}</a>
 						<!-- <span  class="bold">{{ item.name }}</span> -->
 						<em ng-if="item.is_system">&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>

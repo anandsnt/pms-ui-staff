@@ -18,6 +18,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.workType = data;
+
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchWorkType, {}, callback);
@@ -35,25 +36,30 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.workTypeForm = 'add';
 
-		$scope.openWorkTypeForm = function(typeIndex) {
-			if (typeIndex === 'new') {
-				$scope.workTypeForm = 'add';
-				$scope.workTypeClickedElement = 'new';
-				resetEachWorkType();
-				$timeout(function() {
-					$location.hash('new-form-holder-work-type');
-					$anchorScroll();
-				});
+		$scope.openWorkTypeForm = function(typeIndex, isSystemDefined) {
+			if(!isSystemDefined)
+			{
+				if (typeIndex === 'new') {
+					$scope.workTypeForm = 'add';
+					$scope.workTypeClickedElement = 'new';
+					resetEachWorkType();
+					$timeout(function() {
+						$location.hash('new-form-holder-work-type');
+						$anchorScroll();
+					});
 
+				} else {
+					$scope.workTypeForm = 'edit';
+					$scope.workTypeClickedElement = typeIndex;
+					$scope.eachWorkType = {
+						name: this.item.name,
+						is_active: this.item.is_active,
+						hotel_id: $rootScope.hotelId,
+						id: this.item.id
+					};
+				}
 			} else {
-				$scope.workTypeForm = 'edit';
-				$scope.workTypeClickedElement = typeIndex;
-				$scope.eachWorkType = {
-					name: this.item.name,
-					is_active: this.item.is_active,
-					hotel_id: $rootScope.hotelId,
-					id: this.item.id
-				};
+				return false;
 			}
 		};
 
