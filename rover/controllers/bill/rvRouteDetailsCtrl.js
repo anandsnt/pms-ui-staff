@@ -46,6 +46,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.setScroller('paymentList', scrollerOptions);
     $scope.setScroller('billingGroups', scrollerOptions);
     $scope.setScroller('chargeCodes', scrollerOptions);
+    $scope.setScroller('routeDetails', scrollerOptions);
     var scrollerOptionsForSearch = {click: true};
     $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
     $scope.chargeCodesListDivHgt = 250;
@@ -56,6 +57,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.refreshScroller('billingGroups');
         $scope.refreshScroller('chargeCodes');
         $scope.refreshScroller('chargeCodesList');
+        $scope.refreshScroller('routeDetails');
         },
     500);
 

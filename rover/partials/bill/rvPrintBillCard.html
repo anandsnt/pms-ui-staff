@@ -8,11 +8,13 @@
             <th translate>GUEST_FULL_NAME</th>
             <th translate>ARRIVAL_DATE</th>
             <th translate>DEPARTURE_DATE</th>
+            <th translate>INVOICE_NO</th>
         </tr>
         <tr>
             <td>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
             <td>{{printData.arrival_date | date:dateFormat}}</td>
             <td>{{printData.departure_date | date:dateFormat}}</td>
+            <td>{{printData.invoice_number}}</td>
         </tr>
         <tr>
             <th translate>CITY</th>
@@ -30,7 +32,7 @@
             <th translate>CONFIRMATION_NO</th>
             <th translate>ROOM_NO</th>
             <th translate>TAX_NO</th>
-            <th translate>INVOICE_NO</th>
+            <th translate>REFERENCE_NO</th>
         </tr>
         <tr>
             <td>{{printData.confirmation_number}}</td>

@@ -1227,6 +1227,7 @@
     "ROOM_NO":"Room No.",
     "TAX_NO":"Tax No.",
     "INVOICE_NO":"Invoice No.",
+    "REFERENCE_NO": "Reference Number",
     "INVOICE_DATE":"Invoice date",
     "DATE_OF_CHARGE":"Date of Charge",
     "CHARGE_DESC":"Charge description",

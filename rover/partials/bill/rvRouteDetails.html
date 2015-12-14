@@ -1,6 +1,6 @@
 <div id="billing-content" class="content-wrapper" ng-controller="rvRouteDetailsCtrl">
 	<fieldset class="content-left">
-		<div id="entity-details" class="entity-details scrollable">
+		<div id="entity-details" ng-iscroll='routeDetails' ng-iscroll-delay='100' class="entity-details scrollable">
 			<div class="wrapper">
 				<div ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
 					<div class="title">
@@ -85,6 +85,21 @@
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 				  <!-- <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-controller="RVCardOptionsCtrl" ng-if = "isAddPayment && showPayment && paymentDetails == null"></div> -->
+				<!-- Posting Amount -->
+                <div class="title">
+                    Posting Cap <span>($)</span>
+                </div>
+                <div class="entry">
+                    <input type="number" value="" />
+                </div>
+
+                <!-- Reference No. -->
+                <div class="title">
+                    Reference Number
+                </div>
+                <div class="entry">
+                    <input type="text" value="" />
+                </div>
 			</div>
 		</div>
 	</fieldset>
