@@ -570,7 +570,7 @@ sntRover.factory('RVReportUtilsFac', [
             __setData(report, 'hasShowOptions', {
                 type         : 'FAUX_SELECT',
                 show         : false,
-                selectAll    : false,
+                selectAll    : true,
                 defaultTitle : 'Show',
                 title        : 'Show All',
                 data         : []

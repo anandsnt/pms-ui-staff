@@ -118,56 +118,62 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				if (2 == $scope.colSpan) {
 					eachDateVal.push({
 						value: dateObj['total_reservations_count'],
-						isAvail: true
+						isAvail: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: dateObj['available_rooms_count'],
 						isAvail: true,
-						cls: 'last-day'
+						cls: 'last-day',
+						isRateType: isRateType
 					});
 				} else if (3 == $scope.colSpan) {
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-						isRev: true
+						isRev: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-						isRev: true
+						isRev: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
 						isRev: true,
-						cls: 'last-day'
+						cls: 'last-day',
+						isRateType: isRateType
 					});
 				} else if (5 == $scope.colSpan) {
 					eachDateVal.push({
 						value: dateObj['total_reservations_count'],
-						isAvail: true
+						isAvail: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: dateObj['available_rooms_count'],
-						isAvail: true
+						isAvail: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-						isRev: true
+						isRev: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-						isRev: true
+						isRev: true,
+						isRateType: isRateType
 					});
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
 						isRev: true,
-						cls: 'last-day'
+						cls: 'last-day',
+						isRateType: isRateType
 					});
 				};
 
-				parsedData = parsedData.concat(_.extend(eachDateVal, {
-					isRateType: isRateType
-				}));
-
-
+				parsedData = parsedData.concat(eachDateVal);
 
 			});
 
@@ -244,108 +250,51 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				noOfDays += 1;
 			}
 
-			var results = {
-					rates: [{
-						rate_name: "A Rate",
-						rate_type_id: 1,
-						data: {
-							"2015-09-01": {
-								"available_rooms_count": -1,
-								"total_reservations_count": 6,
-								"rate_revenue": "517.00",
-								"adr": "86.17",
-								"actual_revenue": "290.38"
-							},
-							"2015-09-02": {
-								"available_rooms_count": -2,
-								"total_reservations_count": 6,
-								"rate_revenue": "517.00",
-								"adr": "86.17",
-								"actual_revenue": "290.38"
-							}
-						}
-					}, {
-						rate_name: "B Rate",
-						rate_type_id: 1,
-						data: {
-							"2015-09-01": {
-								"available_rooms_count": -3,
-								"total_reservations_count": 6,
-								"rate_revenue": "517.00",
-								"adr": "86.17",
-								"actual_revenue": "290.38"
-							},
-							"2015-09-02": {
-								"available_rooms_count": -4,
-								"total_reservations_count": 6,
-								"rate_revenue": "517.00",
-								"adr": "86.17",
-								"actual_revenue": "290.38"
-							}
-						}
-					}],
-					rate_types: [{
-						rate_type_name: 'A Rate Type',
-						rate_type_id: 1,
-						data: {
-							"2015-09-01": {
-								"available_rooms_count": -5,
-								"total_reservations_count": 6,
-								"rate_revenue": "517.00",
-								"adr": "86.17",
-								"actual_revenue": "290.38"
-							},
-							"2015-09-02": {
-								"available_rooms_count": -6,
-								"total_reservations_count": 6,
-								"rate_revenue": "517.00",
-								"adr": "86.17",
-								"actual_revenue": "290.38"
-							}
-						}
-					}]
-				},
-				showRates = true,
-				showRateTypes = true,
-				primaryDataSet = results.rates;
-
-			if (!showRates) {
-				primaryDataSet = result.rate_types;
-			}
+			var results = $scope.results,
+				optionShowRate = _.findWhere($scope.chosenReport.hasShowOptions.data, {
+					paramKey: 'rate'
+				}),
+				optionShowRateTypes = _.findWhere($scope.chosenReport.hasShowOptions.data, {
+					paramKey: 'rate_type'
+				})
+				showRates = optionShowRate && optionShowRate.selected,
+				showRateTypes = optionShowRateTypes && optionShowRateTypes.selected;
 
 			//Parse Rates OR Rate Types based on the filter here
-			_.each(primaryDataSet, function(rate, rateId) {
+			if (showRateTypes) {
+				_.each(results.rate_types, function(rateTypeData) {
+					$scope.yAxisLabels.push({
+						name: rateTypeData.rate_type_name,
+						rate_type_id: rateTypeData.rate_type_id,
+						is_rate_type: true
+					});
 
-				if (showRateTypes) {
-					var isAlreadyAccounted = _.findWhere($scope.yAxisLabels, {
-						rate_type_id: rate.rate_type_id
-					});
-					var rateTypeData = _.findWhere(results.rate_types, {
-						rate_type_id: rate.rate_type_id
-					});
-					if (!isAlreadyAccounted) {
-						$scope.yAxisLabels.push({
-							name: rateTypeData.rate_type_name,
+					$scope.reportData.push(parseDailyData(rateTypeData.data, true));
+					//Put rates under the rate type
+					if (showRates) {
+						var rates = _.filter(results.rates, {
 							rate_type_id: rateTypeData.rate_type_id,
-							is_rate_type: true
 						});
-
-						$scope.reportData.push(parseDailyData(rateTypeData.data, true));
+						_.each(rates, function(rate) {
+							$scope.yAxisLabels.push({
+								name: rate.rate_name,
+								rate_type_id: rate.rate_type_id,
+								is_rate_type: false
+							});
+							$scope.reportData.push(parseDailyData(rate.data, false));
+						});
 					}
-
-
-				}
-
-				if (showRates) {
+				});
+			} else if (showRates) {
+				_.each(results.rates, function(rate) {
 					$scope.yAxisLabels.push({
 						name: rate.rate_name,
 						rate_type_id: rate.rate_type_id,
 						is_rate_type: false
 					});
 					$scope.reportData.push(parseDailyData(rate.data, false));
-				}
-
-			});
+				});
+			}
 
 			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
 
@@ -363,7 +312,8 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					'colspan': $scope.colSpan,
 					'headerTop': $scope.headerTop,
 					'headerBot': $scope.headerBot,
-					'reportData': $scope.reportData
+					'reportData': $scope.reportData,
+					'isLastRowSum' : false
 				});
 
 			React.renderComponent(
