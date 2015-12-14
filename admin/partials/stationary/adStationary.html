@@ -172,6 +172,9 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_letter_body" label="{{'CANCELLATION_LETTER_BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
                 </div>
             </fieldset>
+
+            <!-- Customize salutation Section -->
+            
             <fieldset class="holder left">
                 <div class="form-title">
                     <h3>
@@ -206,7 +209,7 @@
 
                         <div class="entry" ng-show="data.salutation_by =='CUSTOM'">
                             <label for="screen-id"><span translate>CUSTOM_SALUTATION</span></label>
-                             <input type="text" name="custom_text" ng-model="data.salutaion_custom_text" id="item-name" placeholder="Enter salutaion" value="{Item Name}" required />
+                             <input type="text" name="custom_text" ng-model="data.salutation_custom_text" id="item-name" placeholder="Enter salutaion" value="{Item Name}" required />
                         </div>
 
                     </div>
