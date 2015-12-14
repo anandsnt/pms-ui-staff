@@ -132,6 +132,13 @@
     <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
+<!-- Daily production by demographics -->
+<ul ng-if="isThisReport( 'DAILY_PRODUCTION_DEMO' )" class="totals">
+    <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
+    <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
+
 <!-- Guest Balance Report -->
 <ul ng-if="isThisReport( 'GUEST_BALANCE_REPORT' )" class="totals">
     <li>Records<span>{{ summaryCounts.records }}</span></li>

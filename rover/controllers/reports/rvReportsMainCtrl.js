@@ -1270,9 +1270,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		 * Should we show export button
 		 * @return {Boolean}
 		 */
-		$scope.shouldShowExportButton = function(name) {
-			//As per CICO-21232 we should show this for DAILY PRODUCTION REPORT
-			return (name === reportNames['DAILY_PRODUCTION']);
+		$scope.shouldShowExportButton = function(report) {
+			var chosenReport = report || reportsSrv.getChoosenReport();
+			return !_.isUndefined(chosenReport) && !_.isEmpty(chosenReport) && chosenReport.show_export;
 		};
 
 		/**

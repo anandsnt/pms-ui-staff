@@ -161,35 +161,35 @@ sntRover.factory('RVReportParserFac', [
                 sources     = _.pluck(apiResponse[firstDate].sources, "name" ),
                 origins     = _.pluck(apiResponse[firstDate].origins, "name" ),
                 segments    = _.pluck(apiResponse[firstDate].segments, "name" ),
-                parsedData  = [],
+                parsedDataListing  = [],
                 e = null;
 
             /* forming the left side */
             //market
-            parsedData.push (initPrdDemoGrphcsRow(true, 'Market', 'market_totals'));
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Market', 'market_totals'));
             markets.map(function(value){
-                parsedData.push (initPrdDemoGrphcsRow(false, value, 'markets'));
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'markets'));
             });
 
             //sources
-            parsedData.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
             sources.map(function(value){
-                parsedData.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
             });
 
             //origins
-            parsedData.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
             origins.map(function(value){
-                parsedData.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
             });
 
             //segments
-            parsedData.push (initPrdDemoGrphcsRow(true, 'Segement', 'segment_totals'));
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Segment', 'segment_totals'));
             segments.map(function(value){
-                parsedData.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
             });
 
-            _.each(parsedData, function(rowData){
+            _.each(parsedDataListing, function(rowData){
                 _.each(apiResponse, function(dateData){
                     e = dateData[rowData['key-in-api']];
                     if (e instanceof Array) {
@@ -197,16 +197,19 @@ sntRover.factory('RVReportParserFac', [
                         e = _.findWhere(e, { 'name': rowData.displayLabel }); 
                     }
                     rowData.valueList = rowData.valueList.concat([
-                        e.available_rooms_count,
-                        e.total_reservations_count,
-                        e.rate_revenue,
-                        e.adr,
-                        e.actual_revenue
+                       { key: 'res_count' , value: e.total_reservations_count },
+                       { key: 'available' , value: e.available_rooms_count },
+                       { key: 'rate_revenue' , value: e.rate_revenue },
+                       { key: 'adr' , value: e.adr },
+                       { key: 'actual_revenue' , value: e.actual_revenue }
                     ]);
                 });
             });
-            console.log(parsedData);
-            return parsedData;
+            
+            return {
+                listing: parsedDataListing,
+                dates: dateList
+            };
         };
 
 
