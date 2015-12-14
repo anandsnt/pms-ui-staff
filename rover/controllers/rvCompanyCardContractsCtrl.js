@@ -13,6 +13,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.contractList.history_contracts = [];
 		$scope.contractList.isAddMode = false;
 		$scope.errorMessage = "";
+		$scope.autoCompleteState = {};
 		var contractInfo = {};
 		var ratesList = [];
 
@@ -121,6 +122,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
+
+			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
+			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
 			/*
 			 *Nights pop up should be triggered only after contract details are saved
 			 *and refetched in the case of add mode
@@ -510,6 +514,57 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';
 			}
 		});
+
+		var rateSource = function(request, response){
+
+			// fetch data from server
+            var fetchData = function() {
+                if (request.term !== '' && $scope.autoCompleteState.lastSearchText !== request.term) {
+                    $scope.invokeApi(RVCompanyCardSrv.fetchRates, {
+                        'query': request.term
+                    }, function(data){
+                    	$scope.$emit('hideLoader');
+                    	var processedResults = [];
+                    	_.each(data.contract_rates,function(result){
+                    		processedResults.push({
+                    			label: result.name,
+	                            value: result.name,
+	                            type: 'CORP',
+	                            id: result.id
+                    		});
+                    	});
+                    	response(processedResults);
+                    });
+                    $scope.autoCompleteState.lastSearchText = request.term;
+                }
+            };
+
+
+			if (request.term.length === 0) {
+                companyCardResults = [];
+                $scope.autoCompleteState.lastSearchText = "";
+                $scope.autoCompleteState.selectedRate = {}
+            } else if (request.term.length > 2) {
+                fetchData();
+            }
+		};
+
+		var onRateSelect = function(event, rate){
+			$scope.contractData.contracted_rate_selected = rate.item.id;
+			$scope.contractData.contractedRate = rate.item.label;
+		};
+
+		$scope.autoCompleteRates = {
+			delay: 0,
+            minLength: 0,
+            position: {
+                my: 'left bottom',
+                at: 'left top',
+                collision: 'flip'
+            },
+            source: rateSource,
+            select: onRateSelect
+		};
 
 	}
 ]);

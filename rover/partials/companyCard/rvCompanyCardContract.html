@@ -35,7 +35,7 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3" translate>DETAILS</strong>
-                <div class="entry margin">
+                <!-- <div class="entry margin">
                     <label for="company-rate" translate>CONTRACTED_RATE</label>
                     <div class="select">
 		                <select iscroll-stop-propagation name="company-contract" ng-model="contractData.contracted_rate_selected">
@@ -43,6 +43,23 @@
 		                    <option ng-repeat="rate in contractData.rates"  ng-selected="rate.id==contractData.contracted_rate_selected"  value="{{rate.id}}">{{rate.name}}</option>
 		                </select>
 		            </div>
+                </div> -->
+                <div class="entry find-rate margin">
+                    <label for="company-rate">Contracted Rate</label>
+                    <button id="company-rate-clear-query" class="clear-query"> <!-- Add class 'visible' when rate is set. Clicking this removes selected rate -->
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input id="company-rate-query" auto-complete-rate auto-complete-options="autoCompleteRates" autocomplete="off" type="text" ul-class="find-rates" placeholder="Search or Select Rate" ng-model="contractData.contractedRate" />
+                    <div class="mini-select">
+                        <select id="company-rates-list"> <!-- When rate selecte by search mark it as selected in here / When rate selected here set it's name as value in L8 -->
+                            <optgroup label="Corporate Rates">
+                                <option ng-repeat="rate in contractData.rates"  ng-selected="rate.id==contractData.contracted_rate_selected"  value="{{rate.id}}">{{rate.name}}</option>
+                            </optgroup>
+                            <optgroup label="Public Rates" ng-if="false">
+                                <option ng-repeat="rate in contractData.rates"  ng-selected="rate.id==contractData.contracted_rate_selected"  value="{{rate.id}}">{{rate.name}}</option>
+                            </optgroup>
+                        </select>
+                    </div>
                 </div>
                 <div class="entry price-adjust no-label">
                      <div class="select">

@@ -12,6 +12,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		$scope.contractList.history_contracts = [];
 		$scope.contractList.isAddMode = false;
 		$scope.errorMessage = "";
+		$scope.autoCompleteState = {};
 		var contractInfo = {};
 		var ratesList = [];
 
@@ -507,6 +508,57 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';
 			}
 		});
+
+		var rateSource = function(request, response){
+
+			// fetch data from server
+            var fetchData = function() {
+                if (request.term !== '' && $scope.autoCompleteState.lastSearchText !== request.term) {
+                    $scope.invokeApi(RVCompanyCardSrv.fetchRates, {
+                        'query': request.term
+                    }, function(data){
+                    	$scope.$emit('hideLoader');
+                    	var processedResults = [];
+                    	_.each(data.contract_rates,function(result){
+                    		processedResults.push({
+                    			label: result.name,
+	                            value: result.name,
+	                            type: 'GROUP',
+	                            id: group.id,
+	                            code: group.code
+                    		});
+                    	});
+                    	response(processedResults);
+                    });
+                    $scope.autoCompleteState.lastSearchText = request.term;
+                }
+            };
+
+
+			if (request.term.length === 0) {
+                companyCardResults = [];
+                $scope.autoCompleteState.lastSearchText = "";
+                $scope.autoCompleteState.selectedRate = {}
+            } else if (request.term.length > 2) {
+                fetchData();
+            }
+		};
+
+		var onRateSelect = function(){
+
+		};
+
+		$scope.autoCompleteRates = {
+			delay: 0,
+            minLength: 0,
+            position: {
+                my: 'left bottom',
+                at: 'left top',
+                collision: 'flip'
+            },
+            source: rateSource,
+            select: onRateSelect
+		};
 
 	}
 ]);
