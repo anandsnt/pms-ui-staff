@@ -83,6 +83,10 @@ var DailyProductionByDemographics = React.createClass({
 
   componentDidUpdate: function() {
     this.props.completedUpdating();
+    var leftSc 	= this.state.scroll.left,
+    rightSc	= this.state.scroll.right;
+    leftSc.scrollTo(0, 0);
+    rightSc.scrollTo(0, 0);
   },
 
   componentWillUnmount: function() {
