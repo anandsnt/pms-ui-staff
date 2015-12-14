@@ -14,9 +14,19 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.subject_keywords" label = "{{ 'ZEST_SETUP_SUBJECT_TEXTAREA_LABEL' | translate}}" placeholder = ""></ad-textarea>
                     <br />
                 -->
-                    <ad-textbox value="data.zest_station_setup.checkin_static_uri" label = "{{'ZEST_SETUP_EMAIL_CHECK_IN_URL' | translate}}" placeholder = ""  styleclass="full-width" ></ad-textbox>
+                <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_EMAIL_CHECK_IN_URL</span></label><br><br>
+                <table class="zest-admin-top"><tbody>
+                    <tr>
+                        <td>
+                            <label class="zest-admin-label-inline zest-nowrap-inline"><span translate>{{data.zest_station_setup.base_uri}}</span></label>
+                        </td>
+                        <td>    
+                            <ad-textbox class="zest-admin-url-box" value="data.zest_station_setup.checkin_static_uri" label = "" placeholder = ""  styleclass="full-width" ></ad-textbox>
+                        </td>
+                    </tr>
+                </tbody></table>
                 
-                    <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_AVAILABILITY_LABEL</span></label>
+                            <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_AVAILABILITY_LABEL</span></label>
                     <ad-checkbox is-checked="data.zest_station_setup.zest_email_checkin_day_of_arrival" label="{{ 'ZEST_SETUP_AVAIL_DO_LABEL' | translate}}" div-class="full-width" ></ad-checkbox>
                     <ad-checkbox is-checked="data.zest_station_setup.zest_email_checkin_day_before_arrival" label="{{ 'ZEST_SETUP_AVAIL_DB_LABEL' | translate}}" div-class="full-width" ></ad-checkbox>
                     <br />
