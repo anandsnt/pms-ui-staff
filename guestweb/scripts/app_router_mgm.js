@@ -133,7 +133,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/externalCheckinLanding.html',
 	 	controller : 'externalCheckinVerificationViewController',
 	 	title: 'External verification'
+	 }).state('guestCheckinTurnedOff', {
+	 	url: '/guestCheckinTurnedOff',
+	 	templateUrl: '/assets/checkin/partials/MGM/guestCheckinTurnedOff.html',
+	    title: 'Check-in'
 	 });
+	
 
 
 }]);
