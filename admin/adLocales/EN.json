@@ -299,6 +299,7 @@
 "STATUS_LABEL": "Status",
 "TYPE_LABEL": "Type",
 "SCREEN_ID_LABEL": "screen id",
+"SCREEN_TITLE_LABEL": "screen title",
 "DELETE_LABEL": "delete",
 
 "EDIT_SECTION_LABEL": "Edit Section",
@@ -959,8 +960,16 @@
 	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
 	"ENTER_SUBJECT": "Enter Subject",
 	"CANCELLATION_EMAIL_BODY": "Cancellation Email Body",
-	"CANCELLATION_LETTER_BODY": "Cancellation Letter Body"
+	"CANCELLATION_LETTER_BODY": "Cancellation Letter Body",
 
+	"SALUTATION" : "Salutation",
+	"GUEST_SALUTATION_TYPES" : "Salutation",
+	"BY_FIRST_NAME" : "By First Name",
+	"BY_LAST_NAME" : "By Last Name",
+	"BY_FIRST_LAST_NAME" : "By First and Last name",
+	"BY_CUSTOM_TEXT" : "Custom Text",
+	"CUSTOM_SALUTATION" : "Custom Salutation",
+	"INCLUDE_TITLE" : "Include Title"
 
 
 

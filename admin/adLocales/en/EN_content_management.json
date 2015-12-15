@@ -25,6 +25,7 @@
 "STATUS_LABEL": "Status",
 "TYPE_LABEL": "Type",
 "SCREEN_ID_LABEL": "screen id",
+"SCREEN_TITLE_LABEL": "screen title",
 "DELETE_LABEL": "delete",
 
 "EDIT_SECTION_LABEL": "Edit Section",
