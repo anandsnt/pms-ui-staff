@@ -35,7 +35,7 @@
 	if($scope.pageValid){
 
 		//set up flags related to webservice
-		$scope.isPosting 		 	= false;
+		$scope.isLoading 		 	= false;
 		$rootScope.netWorkError  	= false;
 		$scope.searchMode      		= true;
 		$scope.noMatch    			= false;
@@ -72,10 +72,10 @@
 					data.departure_date  = $scope.departureDate;
 				}
 				
-				$scope.isPosting 		 = true;
+				$scope.isLoading 		 = true;
 				//call service
 				checkinConfirmationService.searchReservation(data).then(function(response) {
-					$scope.isPosting = false;
+					$scope.isLoading = false;
 
 					if(response.results.length ===0){
 						// $scope.searchMode 		= false;
@@ -92,7 +92,7 @@
 					};
 				},function(){
 						$rootScope.netWorkError = true;
-						$scope.isPosting = false;
+						$scope.isLoading = false;
 					});
 				}
 				else{
