@@ -12,8 +12,25 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
+
 		$scope.defaultData = {};
 		$scope.defaultData.defaultTask = 0;
+
+
+		// Task management
+
+		$scope.setTaskManagementShowInHKMenu = function () {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+			};
+			var param = {};
+			$scope.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu ? false : true;
+			param.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK,param,callback);
+
+		};
+
+
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
@@ -142,12 +159,12 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
 
-			$scope.eachWorkType.id = this.item.id;
-			$scope.eachWorkType.name = this.item.name;
-			$scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
-			$scope.eachWorkType.is_active = this.item.is_active;
+			// $scope.eachWorkType.id = this.item.id;
+			// $scope.eachWorkType.name = this.item.name;
+			// $scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
+			// $scope.eachWorkType.is_active = this.item.is_active;
 
-			// $scope.eachWorkType = this.item;
+			 $scope.eachWorkType = this.item;
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
@@ -265,9 +282,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
-
-
-
 
 
 		// fetch task list
@@ -525,12 +539,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var successUpdateTask = function(){
 			$scope.$emit('hideLoader');
 		};
-		$scope.updateDefaultTask = function(workTypeId){
-			console.log($scope.defaultData.defaultTask);
-			var dataToSrv = {
-				id: workTypeId,
-				default_task_id: $scope.defaultData.defaultTask
-			};
+		$scope.updateDefaultTask = function(){
+			var dataToSrv = this.item;
+			dataToSrv.default_task_id= $scope.defaultData.defaultTask;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, dataToSrv, successUpdateTask);
 
 		};
