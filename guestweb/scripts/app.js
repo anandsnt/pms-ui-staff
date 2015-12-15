@@ -55,7 +55,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 
 
  	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestEmailCheckinNoServiceMsg
+ 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestEmailCheckinNoServiceMsg;
 
 
     //Params for zest mobile and desktop screens
