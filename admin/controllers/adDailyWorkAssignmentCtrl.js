@@ -158,7 +158,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			};
 
 			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
-
+			this.item.hotel_id = $rootScope.hotelId;
 			// $scope.eachWorkType.id = this.item.id;
 			// $scope.eachWorkType.name = this.item.name;
 			// $scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
@@ -541,7 +541,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		$scope.updateDefaultTask = function(){
 			var dataToSrv = this.item;
-			dataToSrv.default_task_id= $scope.defaultData.defaultTask;
+			dataToSrv.default_task_id = $scope.defaultData.defaultTask;
+			dataToSrv.hotel_id = $rootScope.hotelId;
+			console.log(dataToSrv)
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, dataToSrv, successUpdateTask);
 
 		};

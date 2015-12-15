@@ -46,7 +46,7 @@
 					<div class="select" ng-show="item.is_default">
 					<select ng-model="defaultData.defaultTask" class="placeholder" ng-change="updateDefaultTask()">
 						<option value=""> Select </option>
-						<option ng-repeat="task in item.tasks" value="{{task.id}}" > {{task.name}} </option>
+						<option ng-repeat="task in item.tasks" value="{{task.id}}" ng-selected="task.is_default"> {{task.name}} </option>
 
 					</select>
 
