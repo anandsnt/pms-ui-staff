@@ -133,7 +133,10 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_25: false,
 			item_26: false,
 			item_27: false,
-			item_28: false
+			item_28: false,
+			item_29: false, // Exclude Options
+			item_30: false, // Show Options
+			item_31: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -685,7 +688,8 @@ sntRover.controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': []
+					'guestOrAccount': [],
+					'reservationAddons': []
 				};
 			};
 
@@ -965,6 +969,34 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			};
 
+			// generate params for selected exclusions
+			if ( report['hasExclusions']['data'].length ) {
+				_.each(report['hasExclusions']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.display.push( each.description );
+						};
+					};
+				});
+			};
+
+			// generate params for selected show options
+			if ( report['hasShowOptions']['data'].length ) {
+				_.each(report['hasShowOptions']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.display.push( each.description );
+						};
+					};
+				});
+			};
+
 			// generate params for guest or account
 			if ( report['hasGuestOrAccountFilter']['data'].length ) {
 				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
@@ -1100,6 +1132,29 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all charge groups is selected
 					if ( changeAppliedFilter && report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
+					};
+				};
+			};
+
+			// include charge groups
+			if (report.hasOwnProperty('hasReservationAddons')) {
+				selected = _.where( report['hasReservationAddons']['data'], { selected: true } );
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['RESERVATION_ADDONS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(cg) {
+						params[key].push( cg.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.reservationAddons.push( cg.description );
+						};
+					});
+
+					// in case if all charge groups is selected
+					if ( changeAppliedFilter && report['hasReservationAddons']['data'].length === selected.length ) {
+						$scope.appliedFilter.reservationAddons = ['All Reservation Addons'];
 					};
 				};
 			};
