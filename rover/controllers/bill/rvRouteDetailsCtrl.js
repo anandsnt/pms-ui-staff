@@ -61,6 +61,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         },
     500);
 
+    $scope.editPaymentMethod = function () {
+        $scope.oldPayment = $scope.renderAddedPayment;
+        $scope.renderAddedPayment = null; 
+        isAddPayment = false;
+    }
+
     /**
     * function to show the payment list on cancelling or adding new payment
     */
@@ -68,6 +74,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.isAddPayment = false;
         $scope.refreshScroller('paymentList');
 	};
+
+    $scope.$on("CANCELLED_PAYMENT", function () {
+        $scope.renderAddedPayment = $scope.oldPayment;
+    });
+
 	//retrieve card expiry based on paymnet gateway
 	var retrieveExpiryDate = function(){
 

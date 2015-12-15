@@ -32,13 +32,13 @@
             <th translate>CONFIRMATION_NO</th>
             <th translate>ROOM_NO</th>
             <th translate>TAX_NO</th>
-            <th translate>REFERENCE_NO</th>
+            <th translate ng-if="printData.reference_number">REFERENCE_NO</th>
         </tr>
         <tr>
             <td>{{printData.confirmation_number}}</td>
             <td>{{printData.room_number}}</td>
             <td>{{printData.tax_number}}</td>
-            <td>{{printData.invoice_number}}</td>
+            <td ng-if="printData.reference_number">{{printData.reference_number}}</td>
         </tr>
     </tbody>
 </table>
