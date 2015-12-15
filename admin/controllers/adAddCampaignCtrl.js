@@ -5,6 +5,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	var init = function(){
 		$scope.campaignData = {};
 		$scope.campaignData.audience_type = "";
+		$scope.campaignData.delayAfterCheckin = "00";
 		$scope.campaignData.delivery_primetime = "AM";
 		$scope.campaignData.alert_max_length = 120;
 		$scope.campaignData.messageSubjectMaxLength = 60;
@@ -14,6 +15,13 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.target_type = "URL";
 		$scope.campaignData.screen_type_id = "";
 		$scope.campaignData.header_file = $scope.fileName;
+
+
+		$scope.minutes = ["00", "05"];
+		for(var i = 10; i < 61; i++){
+               if(i % 5 === 0)
+                  $scope.minutes.push("" + i);
+		}
 
 		$scope.mode = 'ADD';
 		fetchConfig();
@@ -43,6 +51,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		$scope.campaignData.id = data.id;
 		$scope.campaignData.name = data.name;
 		$scope.campaignData.audience_type = data.audience_type;
+		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin;
 		$scope.campaignData.delivery_details = data.delivery_details;
 		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? "SCREEN" : "URL";
 		$scope.campaignData.screen_type_id = (data.screen_type_id !==  "" && data.screen_type_id !==  null)? data.screen_type_id : "";
@@ -103,6 +112,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 		campaign.specific_users = $scope.campaignData.specific_users;
 		}
 		campaign.subject = $scope.campaignData.subject;
+		campaign.delay_after_checkin = $scope.campaignData.delayAfterCheckin;
 		//TODO: Header image
 		campaign.header_image = $scope.campaignData.header_image;
 		campaign.body = $scope.campaignData.body;
