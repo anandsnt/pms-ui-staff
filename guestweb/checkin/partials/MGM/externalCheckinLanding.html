@@ -27,12 +27,12 @@
 					<br/>
 					<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
 						<em class="labelText">LAST NAME ON RESERVATION</em>
-						<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/>
+						<input type="text" ng-model="lastname" class = "col-xs-12 textBox" />
 					</div>
 					<br/>
 					<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
 						<em class="labelText">CONFIRMATION NUMBER</em>
-						<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/>
+						<input type="text" ng-model="confirmationNumber" class = "col-xs-12 textBox"/>
 					</div>
 					<br/>
 					<p class="labelText white-text">OR</p>
@@ -115,5 +115,31 @@
 	</div>
 </div>						
 </div>
+</div>
+<div class="date-picker-bg" ng-show="isCalender">
+	<div class="date-picker-wrap">
+	   <div class="col-xs-12 date-picker-header">
+	      <div class="col-xs-2 date-picker-back" ng-click = "closeCalender()">
+	         <img src="/assets/img/MGM/back_icon.png " width="25" height="20" alt=""/>
+	         <div style="color:#8e6a36;">BACK</div>
+	      </div>
+
+	      <div class="col-xs-8 centeralign departure-date">
+	         <p>DEPARTURE DATE</p>
+
+	         <p class="date-text">{{date | date:'MMM dd'}}</p>
+
+	      </div>
+
+	      <div class="col-xs-2 date-picker-ok" ng-click = "dateChoosen()">
+	      	 <img src="/assets/img/MGM/done_icon.png " width="25" height="20" alt=""/>
+	         <div>DONE</div>
+	      </div>
+	   </div>
+
+	   <div class="col-xs-12">
+	      <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
+	   </div>
+	</div>
 </div>
 

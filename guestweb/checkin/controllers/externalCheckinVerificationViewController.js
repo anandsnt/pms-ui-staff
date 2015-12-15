@@ -30,43 +30,74 @@
 	$scope.minDate  = $rootScope.businessDate;
 	$scope.cardDigits = '';
 
-	//setup options for modal
-	$scope.opts = {
-		backdrop: true,
-		backdropClick: true,
-		templateUrl: '/assets/checkin/partials/errorModal.html',
-		controller: ModalInstanceCtrl
-	};
+	
 
 	if($scope.pageValid){
 
 		//set up flags related to webservice
-		$scope.isPosting 		 = false;
-		$rootScope.netWorkError  = false;
-		$scope.searchMode      = true;
-		$scope.noMatch    		= false;
-		$scope.multipleResults 	= false;
+		$scope.isPosting 		 	= false;
+		$rootScope.netWorkError  	= false;
+		$scope.searchMode      		= true;
+		$scope.noMatch    			= false;
+		$scope.multipleResults 		= false;
+		$scope.lastname         	= "";
+		$scope.confirmationNumber 	= "";
+
+
+		 $scope.errorOpts = {
+	      backdrop: true,
+	      backdropClick: true,
+	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
+	      controller: ccVerificationModalCtrl,
+	      resolve: {
+	        errorMessage:function(){
+	          return "Please fill all the required fields";
+	        }
+	      }
+	    };
 
 
 		//next button clicked actions
 		$scope.nextButtonClicked = function() {
 
-			results = [1,1,1];
+			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || $scope.departureDate.length >0)){
+				var data = {}
+				if($scope.lastname.length >0){
+					data.last_name = $scope.lastname;
+				}
+				if($scope.confirmationNumber.length>0){
+					data.alt_confirmation_number = $scope.confirmationNumber;
+				}
+				if($scope.departureDate.length >0){
+					data.departure_date  = $scope.departureDate;
+				}
+				
+				$scope.isPosting 		 = true;
+				//call service
+				checkinConfirmationService.searchReservation(data).then(function(response) {
+					$scope.isPosting = false;
 
+					if(response.results.length ===0){
+						// $scope.searchMode 		= false;
+						// $scope.noMatch    		= true;
+						// $scope.multipleResults 	= false;
+					}else if(response.results.length >=2)
+					{
+						// $scope.searchMode 		= false;
+						// $scope.noMatch    		= false;
+						// $scope.multipleResults 	= true;
+					}
+					else{
 
-			if(results.length ===0){
-				$scope.searchMode 		= false;
-				$scope.noMatch    		= true;
-				$scope.multipleResults 	= false;
-			}else if(results.length >=2)
-			{
-				$scope.searchMode 		= false;
-				$scope.noMatch    		= false;
-				$scope.multipleResults 	= true;
-			}
-			else{
-
-			};
+					};
+				},function(){
+						$rootScope.netWorkError = true;
+						$scope.isPosting = false;
+					});
+				}
+				else{
+					$modal.open($scope.errorOpts);
+				}
 			
 		};
 
