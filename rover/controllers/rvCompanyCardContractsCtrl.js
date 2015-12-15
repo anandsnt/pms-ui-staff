@@ -550,8 +550,13 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		var onRateSelect = function(event, rate){
-			$scope.contractData.contracted_rate_selected = rate.item.id;
-			$scope.contractData.contractedRate = rate.item.label;
+			if(!$scope.contractList.isAddMode){
+				$scope.contractData.contracted_rate_selected = rate.item.id;
+				$scope.contractData.contractedRate = rate.item.label;
+			}else{
+				$scope.addData.contracted_rate_selected = rate.item.id;
+				$scope.addData.contractedRate = rate.item.label;
+			}
 		};
 
 		$scope.autoCompleteRates = {
