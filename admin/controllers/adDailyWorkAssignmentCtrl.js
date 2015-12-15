@@ -18,6 +18,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.workType = data;
+
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchWorkType, {}, callback);
@@ -28,32 +29,38 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.eachWorkType = {
 				name: '',
 				is_active: true,
-				hotel_id: $rootScope.hotelId
+				hotel_id: $rootScope.hotelId,
+				is_show_on_stay_card: true
 			};
 		};
 		resetEachWorkType();
 
 		$scope.workTypeForm = 'add';
 
-		$scope.openWorkTypeForm = function(typeIndex) {
-			if (typeIndex === 'new') {
-				$scope.workTypeForm = 'add';
-				$scope.workTypeClickedElement = 'new';
-				resetEachWorkType();
-				$timeout(function() {
-					$location.hash('new-form-holder-work-type');
-					$anchorScroll();
-				});
+		$scope.openWorkTypeForm = function(typeIndex, isSystemDefined) {
+			if(!isSystemDefined)
+			{
+				if (typeIndex === 'new') {
+					$scope.workTypeForm = 'add';
+					$scope.workTypeClickedElement = 'new';
+					resetEachWorkType();
+					$timeout(function() {
+						$location.hash('new-form-holder-work-type');
+						$anchorScroll();
+					});
 
+				} else {
+					$scope.workTypeForm = 'edit';
+					$scope.workTypeClickedElement = typeIndex;
+					$scope.eachWorkType = {
+						name: this.item.name,
+						is_active: this.item.is_active,
+						hotel_id: $rootScope.hotelId,
+						id: this.item.id
+					};
+				}
 			} else {
-				$scope.workTypeForm = 'edit';
-				$scope.workTypeClickedElement = typeIndex;
-				$scope.eachWorkType = {
-					name: this.item.name,
-					is_active: this.item.is_active,
-					hotel_id: $rootScope.hotelId,
-					id: this.item.id
-				};
+				return false;
 			}
 		};
 
@@ -118,32 +125,31 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.eachWorkType.id = this.item.id;
 			$scope.eachWorkType.name = this.item.name;
 			$scope.eachWorkType.is_active = this.item.is_active;
+			$scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
+		$scope.setShowOnStayCard= function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
 
+				$scope.workTypeClickedElement = -1;
 
+				fetchWorkType();
+			};
 
+			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
 
+			$scope.eachWorkType.id = this.item.id;
+			$scope.eachWorkType.name = this.item.name;
+			$scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
+			$scope.eachWorkType.is_active = this.item.is_active;
 
+			// $scope.eachWorkType = this.item;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
+		};
 
 
 
@@ -258,38 +264,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
