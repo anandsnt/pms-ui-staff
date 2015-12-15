@@ -42,21 +42,31 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
   	
   	$timeout(function(){
   		renderReport();
-  	}, 65);
+  	}, 100);
   };
 
   // re-render must be initiated before for taks like printing.
-  var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], renderReport);
+//   var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
+//   	$timeout(function(){
+//   		renderReport();
+//   	}, 50);
+//   });
   var reportPrinting    = $scope.$on(reportMsgs['REPORT_PRINTING'], renderReport);
   var reportUpdated     = $scope.$on(reportMsgs['REPORT_UPDATED'], reRenderReport);
   var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reRenderReport);
 
-  $scope.$on('destroy', reportSubmited);
-  $scope.$on('destroy', reportUpdated);
-  $scope.$on('destroy', reportPrinting);
-  $scope.$on('destroy', reportPageChanged);
+  $scope.$on('$destroy', reportSubmited);
+  $scope.$on('$destroy', reportUpdated);
+  $scope.$on('$destroy', reportPrinting);
+  $scope.$on('$destroy', reportPageChanged);
 
   var initializeMe = function() {
-    renderReport();
+  	$timeout(function(){
+  		startedRendering();
+  	}, 0);
+  	
+  	$timeout(function(){
+  		renderReport();
+  	}, 10);
   }();
 }]);

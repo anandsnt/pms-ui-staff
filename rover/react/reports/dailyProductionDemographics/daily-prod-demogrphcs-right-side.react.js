@@ -1,6 +1,6 @@
 var DailyProductionRightSide = React.createClass({
   componentDidMount: function() {
-    $('#stats-report-content .wrapper')[0].style.width = (this.props.header.colspan * 80 * this.props.data.dates.length) + 'px';
+    $('#stats-report-content .wrapper')[0].style.width = (this.props.header.colspan * 110 * this.props.data.dates.length) + 'px';
     var scroll = this.props.scroll.right = new IScroll($('#stats-report-content')[0], {
       probeType: 3,
       scrollbars: 'custom',
@@ -15,7 +15,7 @@ var DailyProductionRightSide = React.createClass({
     }, 150);
   },
   componentDidUpdate: function() {
-    $('#stats-report-content .wrapper')[0].style.width = (this.props.header.colspan * 80 * this.props.data.dates.length) + 'px';
+    $('#stats-report-content .wrapper')[0].style.width = (this.props.header.colspan * 110 * this.props.data.dates.length) + 'px';
     var scroll = this.props.scroll.right;
     setTimeout(function() {
       scroll.refresh();
@@ -23,11 +23,11 @@ var DailyProductionRightSide = React.createClass({
   },
   render: function() {
     return React.DOM.div({
-      id 			: 'stats-report-content',
-      className 	: 'statistics-content scrollable'
+      id      : 'stats-report-content',
+      className   : 'statistics-content scrollable'
     },
-	React.DOM.div({
-			className: 'wrapper'
-	}, DailyProductionByDemographicsTable({data: this.props.data, header: this.props.header})));
+  React.DOM.div({
+      className: 'wrapper'
+  }, DailyProductionByDemographicsTable({data: this.props.data, header: this.props.header})));
   }
 });

@@ -26,15 +26,15 @@ var DailyProductionLeftSide = React.createClass({
       className 	: 'statistics-headings',
       id 			: 'stats-report-heading'
     },
-	React.DOM.div({
-	  className	: 'scrollable',
-	  id 		: 'stats-report-heading-scroll'
-	},
-	DailyProductionListDemographics({
-	  data 				: this.props.data.listing,
-	  header 			: this.props.header,
-	  toggleRevenue 	: this.props.toggleRevenue,
-	  toggleAvailability: this.props.toggleAvailability
-	})));
+  	React.DOM.div({
+  	  className	: 'scrollable',
+  	  id 		: 'stats-report-heading-scroll'
+  	},
+  	DailyProductionListDemographics({
+  	  data 				: this.props.data.listing,
+  	  header 			: this.props.header,
+  	  toggleRevenue 	: this.props.toggleRevenue,
+  	  toggleAvailability: this.props.toggleAvailability
+  	})));
   }
 });
