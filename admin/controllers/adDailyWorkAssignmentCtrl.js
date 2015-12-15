@@ -29,7 +29,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.eachWorkType = {
 				name: '',
 				is_active: true,
-				hotel_id: $rootScope.hotelId
+				hotel_id: $rootScope.hotelId,
+				is_show_on_stay_card: true
 			};
 		};
 		resetEachWorkType();
@@ -124,32 +125,31 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.eachWorkType.id = this.item.id;
 			$scope.eachWorkType.name = this.item.name;
 			$scope.eachWorkType.is_active = this.item.is_active;
+			$scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
+		$scope.setShowOnStayCard= function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
 
+				$scope.workTypeClickedElement = -1;
 
+				fetchWorkType();
+			};
 
+			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
 
+			$scope.eachWorkType.id = this.item.id;
+			$scope.eachWorkType.name = this.item.name;
+			$scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
+			$scope.eachWorkType.is_active = this.item.is_active;
 
+			// $scope.eachWorkType = this.item;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
+		};
 
 
 
@@ -264,38 +264,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
