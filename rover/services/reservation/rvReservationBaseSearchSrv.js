@@ -2,10 +2,10 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
     function($q, RVBaseWebSrvV2) {
         var that = this;
         this.reservation = {
-                                'settings':{},
-                                'roomTypes':{},
-                                'businessDate':{}
-                            };
+            'settings': {},
+            'roomTypes': {},
+            'businessDate': {}
+        };
 
 
 
@@ -24,7 +24,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             };
 
             that.fetchRoomTypes = function() {
-                var url = 'api/room_types.json?is_exclude_pseudo=true';
+                var url = 'api/room_types.json?exclude_pseudo=true';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
                     that.fetchBussinessDate();
@@ -34,18 +34,18 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
                 return deferred.promise;
             };
 
-            if(isEmpty(that.reservation.settings) && isEmpty(that.reservation.roomTypes) && isEmpty(that.reservation.businessDate)){
+            if (isEmpty(that.reservation.settings) && isEmpty(that.reservation.roomTypes) && isEmpty(that.reservation.businessDate)) {
                 var url = '/api/hotel_settings/show_hotel_reservation_settings';
-                RVBaseWebSrvV2.getJSON(url).then(function(data) {        
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.settings = data;
                     that.fetchRoomTypes();
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
-            }else{
+            } else {
                 deferred.resolve(that.reservation);
             };
-            
+
             return deferred.promise;
         };
 
@@ -98,9 +98,9 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             if (!!param.group_id) {
                 url += '&group_id=' + param.group_id;
             }
-            
+
             if (!!param.promotion_code) {
-                url += '&promotion_code=' + encodeURI(param.promotion_code);//to handle special characters
+                url += '&promotion_code=' + encodeURI(param.promotion_code); //to handle special characters
             }
 
             if (!!param.allotment_id) {
@@ -190,5 +190,37 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
+        this.fetchRates = function(params) {
+
+            var deferred = $q.defer(),
+                promises = [];
+
+            promises.push(that.fetchAvailability(params).then(function(){
+                console.log("Normal API Call Success");
+            }));
+
+            // Make this call IFF there is a company / TA card attached
+            if (!!params.company_id || !!params.travel_agent_id) {
+                promises.push(that.fetchAvailability(params).then(function(){
+                    console.log("Contract API Call Success");
+                }));
+            }
+            // Make this call IFF there is a group/ allotment attached
+            if (params.group_id || params.allotment_id) {
+                promises.push(that.fetchAvailability(params).then(function(){
+                    console.log("group API Call Success");
+                }));
+            }
+
+            $q.all(promises).then(function(response) {
+                deferred.resolve(response);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+
+        }
     }
 ]);
