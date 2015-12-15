@@ -27,8 +27,10 @@ sntRover.controller('rvReservationCardHKController',
         };
 
         var fetchInitialDataSuccessCallBack = function(data) {
-            // To Do
-            //$scope.houseKeeping.workTypes = data;
+            $scope.houseKeeping.workTypes = data.work_types;
+            $scope.houseKeeping.serviceEnabled = data.is_room_service_opted;
+            $scope.houseKeeping.reservationTasks = data.reservation_tasks;
+            $scope.houseKeeping.defaultWorkTyoe = data.default_work_type;
         };
 
         var fetchInitialDataFailureCallBack = function(error) {
@@ -42,7 +44,7 @@ sntRover.controller('rvReservationCardHKController',
          */
         var callInitialAPIs = function() {
             var params = {
-                reservation_id: $scope.reservationData.reservation_card.confirmation_num;
+                reservation_id: $scope.reservationData.reservation_card.reservation_id
             };
 
             $scope.invokeApi(rvReservationHouseKeepingSrv.fetch, params, fetchInitialDataSuccessCallBack, fetchInitialDataFailureCallBack);
@@ -50,7 +52,7 @@ sntRover.controller('rvReservationCardHKController',
 
         var init = function(){
             $scope.houseKeeping = {};
-            $scope.houseKeeping.serviceEnabled = false;
+            $scope.houseKeeping.serviceEnabled = true;
             $scope.houseKeeping.hideDetails = true;
 
             // fetch all necessary data
