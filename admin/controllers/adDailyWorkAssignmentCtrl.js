@@ -13,6 +13,19 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
 
+		// Task management 
+
+		$scope.setTaskManagementShowInHKMenu = function () {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+			};
+			var param = {};
+			$scope.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu ? false : true;
+			param.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK,param,callback);
+
+		};
+
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
@@ -264,9 +277,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
-
-
-
 
 
 		// fetch task list
