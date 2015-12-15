@@ -68,7 +68,7 @@
 				if($scope.confirmationNumber.length>0){
 					data.alt_confirmation_number = $scope.confirmationNumber;
 				}
-				if($scope.departureDate.length >0){
+				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0){
 					data.departure_date  = $scope.departureDate;
 				}
 				
