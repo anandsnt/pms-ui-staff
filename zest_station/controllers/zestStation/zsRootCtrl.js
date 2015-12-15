@@ -268,6 +268,9 @@ sntZestStation.controller('zsRootCtrl', [
                     //fetch the idle timer settings
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
+                    $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    console.info('Payment Gateway: ',$scope.zestStationData.hotel_settings.payment_gateway);
+                    console.info('zestStationData,',$scope.zestStationData)
                     $scope.$emit('hideLoader');
             };
             
