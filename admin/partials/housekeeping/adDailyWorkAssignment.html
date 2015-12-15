@@ -27,8 +27,8 @@
 					<td header-class="width-20 text-center-important" data-title="'On Stay Card'" class="delete" ng-hide="workTypeClickedElement == $index">
 						<div class="entry">
 							<label></label>
-							<div class="switch-button single"  ng-class="{ on : item.is_active}" ng-click="toggleActive()">
-								<input type="checkbox" is_system="item.system_defined" value="" name="" id="">
+							<div class="switch-button single"  ng-class="{ on : item.is_show_on_stay_card}" ng-click="setShowOnStayCard()">
+								<input type="checkbox" is_system="item.system_defined" value="" name="" id="" ng-disable="item.is_system">
 								<span class="switch-icon"></span>
 							</div>
 						</div>
@@ -63,20 +63,20 @@
 			<a id="add-new-button" class="action add ng-scope" ng-click="openTaskListForm('new')" translate="">Add Task</a>
 		</header>
 		<div id="new-form-holder-task-list" ng-show="taskListClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></div>
-		<table id="task-types" class="grid">
+		<table id="task-types" class="grid datatable table" ng-table="tableParams" template-pagination="myOwnPaginationTemplate.html">
 			<tbody>
 				<tr ng-repeat="item in taskList">
-					<td width="30%" ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
+					<td header-class="width-30" data-title="'Task'"ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
 						<a ng-class="{'bold' : item.is_system}">{{ item.name }}</a>
 						<em ng-if="item.is_system">&nbsp;{{'SYSTEM_DEFINED' | translate }}</em>
 					</td>
-					<td width="30%" ng-hide="taskListClickedElement == $index">
+					<td header-class="width-30" data-title="'Work Type'" ng-hide="taskListClickedElement == $index">
 						<span>{{ item.work_type_name }}</span>
 					</td>
 					<td ng-hide="taskListClickedElement == $index">
 						<span>{{ item.completion_time }}</span>
 					</td>
-					<td class="delete" ng-hide="taskListClickedElement == $index">
+					<td header-class="width-30" data-title="'Work Type'" ng-hide="taskListClickedElement == $index">
 						<a ng-if="!item.is_system" ng-click="deleteTaskListItem()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
 					<td colspan="4" ng-show="taskListClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></td>
