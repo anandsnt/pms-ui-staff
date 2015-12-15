@@ -78,6 +78,20 @@
 		                </label>
 
 		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='ON_CHECKIN'}"></span>
+		                    <input name="audience" id="audience-users" type="radio" value="ON_CHECKIN" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		                    <span translate>ON_CHECKIN</span>
+		                </label>
+       
+                        <label ng-show="campaignData.audience_type =='ON_CHECKIN'" for="checkin-delay" class="ng-binding">Delay after checkin<span class="ng-binding">(min)</span></label>
+		                <div class="select select-margin campaign-textbox" ng-show="campaignData.audience_type =='ON_CHECKIN'">
+
+                                <select ng-model="campaignData.delayAfterCheckin">
+                                    <option ng-repeat="min  in minutes" value="{{min}}" ng-bind="min"></option>
+                                </select>
+                        </div>
+
+		                <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EXTERNAL_CHECKOUT'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="EXTERNAL_CHECKOUT" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>EXTERNAL_CHECKOUT</span>
@@ -279,6 +293,14 @@
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'EXTERNAL_CHECKIN'}"></span>
 	                <input name="delivery" id="delivery-onetime" value="EXTERNAL_CHECKIN" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
 	                {{'EXTERNAL_CHECKIN'|translate}}
+	            </label>
+	        </div>
+
+	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'ON_CHECKIN'}">
+	            <label class="radio large">
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'ON_CHECKIN'}"></span>
+	                <input name="delivery" id="delivery-on-checkin" value="ON_CHECKIN" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
+	                {{'ON_CHECKIN'|translate}}
 	            </label>
 	        </div>
 
