@@ -22,7 +22,14 @@
 					</td>
  -->
 					<td header-class="width-30 text-center-important" data-title="'Task'" class="delete" ng-hide="workTypeClickedElement == $index">
-					Task drop down
+					<div class="select" ng-show="item.is_default">
+					<select ng-model="defaultData.defaultTask" class="placeholder" ng-change="updateDefaultTask(item.id)">
+						<option value=""> Select </option>
+						<option ng-repeat="task in item.tasks" value="{{task.id}}" > {{task.name}} </option>
+
+					</select>
+
+				</div>
 					</td>
 					<td header-class="width-20 text-center-important" data-title="'On Stay Card'" class="delete" ng-hide="workTypeClickedElement == $index">
 						<div class="entry">

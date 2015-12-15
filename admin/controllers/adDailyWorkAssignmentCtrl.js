@@ -12,13 +12,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
-
+		$scope.defaultData = {};
+		$scope.defaultData.defaultTask = 0;
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.workType = data;
-
+				//$scope.workType.defaultTask = "";
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchWorkType, {}, callback);
@@ -520,6 +521,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				room.hours = hours;
 				room.mins = mins;
 			});
+		};
+		var successUpdateTask = function(){
+			$scope.$emit('hideLoader');
+		};
+		$scope.updateDefaultTask = function(workTypeId){
+			console.log($scope.defaultData.defaultTask);
+			var dataToSrv = {
+				id: workTypeId,
+				default_task_id: $scope.defaultData.defaultTask
+			};
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, dataToSrv, successUpdateTask);
+
 		};
 	}
 ]);
