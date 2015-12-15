@@ -185,3 +185,6 @@
 .ng-table th.padding-checkbox{
 	padding-bottom:8px;
 }
+.ng-table .ng-table-pager {
+    display: none;
+}
