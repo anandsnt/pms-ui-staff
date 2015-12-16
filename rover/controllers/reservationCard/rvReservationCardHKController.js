@@ -70,13 +70,15 @@ sntRover.controller('rvReservationCardHKController',
             $scope.houseKeeping.defaultWorkTyoe = data.default_work_type;
 
             // pair up data.
-            $scope.houseKeeping.reservationTasks.forEach(function(item) {
-                var workType = _.findWhere($scope.houseKeeping.workTypes, {
-                    id: item.work_type_id
+            $scope.houseKeeping.workTypes.forEach(function(workType) {
+                workType.default_task = '';
+                workType.old_default_task
+                var configured = _.findWhere($scope.houseKeeping.reservationTasks, {
+                    work_type_id: workType.id
                 });
-                if (workType) {
-                    workType.default_task = item.task_id;
-                    workType.old_default_task = item.task_id;
+                if (configured) {
+                    workType.default_task = configured.task_id;
+                    workType.old_default_task = configured.task_id;
                 }
             });
         };
