@@ -451,6 +451,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.attachedEntities = [$scope.selectedEntity];
             }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
+            //Added for CICO-22869
+            $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
             if(!isEmptyObject(data.credit_card_details)){
 	            $scope.renderAddedPayment = data.credit_card_details;
 	            $scope.saveData.payment_type = data.credit_card_details.payment_type;

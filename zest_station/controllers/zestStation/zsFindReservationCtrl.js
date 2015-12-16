@@ -91,6 +91,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             
             
             $scope.reEnter = function(value){
+                console.info('mode;; ',$state.mode);
                 $state.lastSearchWith = $state.lastAt;
                 $state.lastAt = 'no-match';
                 $state.reEntered = value;
@@ -99,13 +100,31 @@ sntZestStation.controller('zsFindReservationCtrl', [
                         $state.go('zest_station.find_by_email');
                         break;
                     case "last":
-                        $state.go('zest_station.find_reservation_input_last');
+                        if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
+                            $state.lastAt = 're-enter-last';
+                            $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                            $state.go('zest_station.reservation_search', {
+                                mode: zsModeConstants.PICKUP_KEY_MODE
+                            });
+                        } else {
+                            $state.go('zest_station.find_reservation_input_last');
+                        }
                         break;
                     case "confirmation":
                         $state.go('zest_station.find_by_confirmation');
                         break;
                     case "date":
                         $state.go('zest_station.find_by_date');
+                        break;
+                    case "room"://pick-up-key flow
+                        $state.lastAt = 'pick-up-room';
+                        if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
+                            $state.lastAt = 're-enter-room';
+                            $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                            $state.go('zest_station.reservation_search', {
+                                mode: zsModeConstants.PICKUP_KEY_MODE
+                            });
+                        }
                         break;
                 }
             };
@@ -328,6 +347,11 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.input.email = $state.input.email;
             $scope.input.confirmation = $state.input.confirmation;
             $scope.lastAt = $state.lastAt;
+            if ($scope.lastAt === 'pick-up-room'){
+                $scope.input.room = $state.input.room;
+            }
+            console.info('last at: ',$scope.lastAt);
+            console.info('$state.input.room: ',$state.input.room);
         };
 
 
