@@ -689,6 +689,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var dataToSrv = this.item;
 			dataToSrv.default_task_id = $scope.defaultData.defaultTask;
 			dataToSrv.hotel_id = $rootScope.hotelId;
+			dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, dataToSrv, successUpdateTask);
 		};
 	}
