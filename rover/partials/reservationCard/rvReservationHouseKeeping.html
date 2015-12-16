@@ -1,0 +1,42 @@
+<div class="block-wrapper">
+    <a class="block-title toggle has-arrow" ng-click="toggleHKDetails()">Room Attendance</a>
+
+    <div ng-class="{'hidden': houseKeeping.hideDetails}"> <!-- Toggle class hidden when L2 is clicked -->
+
+        <!-- Service status -->
+        <div class="block-item additional-detail">
+            <h3 class="block-title">Service</h3>
+            <div class="switch-button"
+                ng-class="{'on': houseKeeping.serviceEnabled}"> <!-- Remove class 'on' when L11 unchecked -->
+                <input type="checkbox"
+                    ng-model="houseKeeping.serviceEnabled"
+                    ng-checked="houseKeeping.serviceEnabled"
+                    ng-change="toggleService()" />
+                <label class="data-off">
+                    <span class="value">Off</span>
+                    <span class="switch-icon">On</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon grey">Off</span>
+                    <span class="value">On</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- {Work Type} -->
+        <div class="block-item additional-detail" ng-repeat="workType in houseKeeping.workTypes track by $index">
+            <h3 class="block-title">{{workType.work_type_name}}</h3>
+            <div class="select">
+                <select ng-class="{ 'placeholder': false }" ng-model="workType.default"
+                    ng-change="selectDefaultTask(workType)"> <!-- Add attribute "disabled" when status set to No. Add class="placeholder" when no value option is selected -->
+                    <option value="">Select Task</option>
+                    <!-- .. list tasks -->
+                    <option ng-repeat="task in workType.tasks" value="{{task.task_id}}">{{task.name}}</option>
+                    <!-- .. list tasks -->
+                </select>
+            </div>
+        </div>
+        <!--... repeat L22-L31 for each work type-->
+
+    </div>
+</div>
