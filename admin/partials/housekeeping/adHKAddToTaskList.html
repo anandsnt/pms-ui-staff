@@ -10,29 +10,30 @@
 		</div>
 
 		<fieldset class="holder left float">
-			<div class="entry full-width">
+			<div class="entry" style="padding-right:10px">
 				<label>Task <strong> * </strong></label>
 				<input type="text" placeholder="Enter the task name" ng-model="eachTaskList.name">
 			</div>
-
-			<div class="entry full-width">
-				<label>Work Type <strong> * </strong></label>
-				<div class="select">
-					<select class="daily-task-worktype" ng-model="eachTaskList.work_type_id" ng-options="item.id as item.name for item in workType">
-						<option value="" class="placeholder">Choose work type</option>
-					</select>
+			<div class="full-width">
+				<div class="entry" style="padding-left:10px">
+					<label>Work Type <strong> * </strong></label>
+					<div class="select">
+						<select class="daily-task-worktype" ng-model="eachTaskList.work_type_id" ng-options="item.id as item.name for item in workType">
+							<option value="" class="placeholder">Choose work type</option>
+						</select>
+					</div>
 				</div>
-			</div>
 
-			<div class="entry full-width">
-			    <label for="item-type">Room Type <strong>*</strong></label>
-			    <div class="boxes">
-			        <label class="checkbox inline" ng-repeat="item in roomTypesList">
-			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.room_type_ids[$index]}"></span>
-			            <input type="checkbox" ng-model="eachTaskList.room_type_ids[$index]">
-			            {{ item.name }}
-			        </label>
-			    </div>
+				<div class="entry full-width">
+				    <label for="item-type">Room Type <strong>*</strong></label>
+				    <div class="boxes">
+				        <label class="checkbox inline" ng-repeat="item in roomTypesList">
+				            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.room_type_ids[$index]}"></span>
+				            <input type="checkbox" ng-model="eachTaskList.room_type_ids[$index]">
+				            {{ item.name }}
+				        </label>
+				    </div>
+				</div>
 			</div>
 
 			<div class="entry full-width">
@@ -44,10 +45,7 @@
 			            {{ item.description }}
 			        </label>
 			    </div>
-			</div>
-		</fieldset>
-
-		<fieldset class="holder right float">			
+			</div>			
 			<div class="entry full-width">
 			    <label for="item-type">Fo status <strong>*</strong></label>
 			    <div class="boxes">
@@ -58,8 +56,10 @@
 			        </label>
 			    </div>
 			</div>
+		</fieldset>
 
-			<div class="entry full-width">
+		<fieldset  class="holder right float" ng-if="(eachTaskList.room_type_ids | filter:anySelected(true)).length">
+			<div class="entry">
 				<label>Task completion time</label>
 				<div class="entry full-width float">
 					<div class="select select-col col1-3">
@@ -77,7 +77,7 @@
 				</div>
 			</div>
 
-			<div class="entry full-width">
+			<div class="entry">
 				<label>Task completion HK status</label>
 				<div class="select">
 					<select ng-model="eachTaskList.task_completion_hk_status_id" ng-options="item.id as item.description for item in HkStatusList">
@@ -85,9 +85,6 @@
 					</select>
 				</div>
 			</div>
-		</fieldset>
-
-		<fieldset style="clear:both; width:80%;" ng-if="(eachTaskList.room_type_ids | filter:anySelected(true)).length">
 			<div class="entry full-width">
 				<label>Task completion Time (Individual rooms)</label>
 				<div class="boxes">
@@ -124,7 +121,7 @@
 			<button ng-if="taskListForm == 'add'" type="button" class="button green edit-data-inline" ng-click="addTaskListItem()" translate>SAVE_CHANGES</button>
 			<button ng-if="taskListForm == 'edit'" type="button" class="button green edit-data-inline" ng-click="updateTaskListItem()" translate>SAVE_CHANGES</button>
 
-			<button ng-if="taskListForm == 'edit'" ng-hide="chosenItem.newItem" type="button" class="button red edit-data-inline" ng-click="deleteTaskListItem()" translate>DELETE</button>
+			<!-- <button ng-if="taskListForm == 'edit'" ng-hide="chosenItem.newItem" type="button" class="button red edit-data-inline" ng-click="deleteTaskListItem()" translate>DELETE</button> -->
 		</div>
 	</form>
 </div>
