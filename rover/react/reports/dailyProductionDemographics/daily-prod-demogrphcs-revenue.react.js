@@ -44,7 +44,7 @@ var DailyProductionRevenueToggle = React.createClass({
 						}, 'Revenue'),
 	React.DOM.span({
 	  className: 'switch-icon'
-					}, 'Hidden')
+					}, 'Showing')
 				)
 			);
   }

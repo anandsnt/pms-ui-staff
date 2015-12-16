@@ -40,7 +40,7 @@ var DailyProductionAvailabilityToggle = React.createClass({
 					}, 'Availability'),
 					React.DOM.span({
 						className: 'switch-icon'
-					}, 'Hidden')
+					}, 'Showing')
 				)
 			);
 	}
