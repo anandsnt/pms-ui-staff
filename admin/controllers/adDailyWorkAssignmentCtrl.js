@@ -372,6 +372,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id : '',
 				rooms_task_completion        : initateRoomTaskTimes()
 			};
+
+			var frequencyParams = {};
+			frequencyParams.monday = false;
+			frequencyParams.tuesday = false;
+			frequencyParams.wednesday = false;
+			frequencyParams.thursday = false;
+			frequencyParams.friday = false;
+			frequencyParams.saturday = false;
+			frequencyParams.sunday = false;
+			$scope.eachTaskList.frequency = frequencyParams;
+			$scope.eachTaskList.frequency.days = 0;
 		};
 		resetEachTaskList();
 
@@ -534,18 +545,49 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				rooms_task_completion        : getRoomTaskTimes()
 			};
+			var frequencyParams = {};
+			frequencyParams.monday = false;
+			frequencyParams.tuesday = false;
+			frequencyParams.wednesday = false;
+			frequencyParams.thursday = false;
+			frequencyParams.friday = false;
+			frequencyParams.saturday = false;
+			frequencyParams.sunday = false;
+			if($scope.eachTaskList.isCustom === false){
+
+				if($scope.eachTaskList.isWeekDay === true){
+					frequencyParams.monday = true;
+					frequencyParams.tuesday = true;
+					frequencyParams.wednesday = true;
+					frequencyParams.thursday = true;
+					frequencyParams.friday = true;
+				}
+				if($scope.eachTaskList.isWeekEnd === true){
+					frequencyParams.saturday = true;
+					frequencyParams.sunday = true;
+				}
+				params.frequency = frequencyParams;
+				params.frequency.days = 0;
+			} else {
+				if($scope.eachTaskList.customBy === "weekday"){
+					params.frequency = $scope.eachTaskList.frequency;
+					params.frequency.days = 0;
+				} else {
+					params.frequency = frequencyParams;
+					params.frequency.days = $scope.eachTaskList.days;
+				}
+
+			}
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
 		};
 
 		$scope.updateTaskListItem = function() {
-			console.log("-----------")
-			console.log($scope.eachTaskList)
+
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.taskListClickedElement = -1;
 				resetEachTaskList();
-
 				fetchTaskList();
 			};
 
