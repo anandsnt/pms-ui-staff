@@ -45,6 +45,11 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
   	}, 100);
   };
 
+  var reportSubmited    = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
+  	$timeout(function(){
+  		renderReport();
+  	}, 50);
+  });
   var reportPrinting    = $scope.$on(reportMsgs['REPORT_PRINTING'], renderReport);
   var reportUpdated     = $scope.$on(reportMsgs['REPORT_UPDATED'], reRenderReport);
   var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reRenderReport);
