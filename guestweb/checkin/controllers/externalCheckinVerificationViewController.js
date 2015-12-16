@@ -56,7 +56,8 @@
 	      }
 	    };
 
-
+	    // $state.go('guestCheckinEarly');
+	    // $state.go('guestCheckinLate');
 		//next button clicked actions
 		$scope.nextButtonClicked = function() {
 
