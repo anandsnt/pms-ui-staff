@@ -413,6 +413,33 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			});
 			return idAry;
 		};
+		var checkForFrequencyType = function(frequencyObj){
+			var isCustom = false, isWeekDay = false, isWeekEnd = false;
+			if(frequencyObj.days !== null && frequencyObj.days!== 0){
+				isCustom = true;
+			} else if(frequencyObj.sunday === true && frequencyObj.monday === true
+				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
+				&& frequencyObj.thursday === true && frequencyObj.friday === true
+				&& frequencyObj.saturday === true){
+					isWeekDay = true;
+					isWeekEnd = true;
+			} else if(frequencyObj.sunday === true && frequencyObj.saturday === true){
+					isWeekEnd = true;
+			} else if(frequencyObj.monday === true
+				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
+				&& frequencyObj.thursday === true && frequencyObj.friday === true){
+					isWeekDay = true;
+			} else {
+				isCustom = true;
+			}
+
+			var returnObj = {
+				"isCustom": isCustom,
+				"isWeekDay": isWeekDay,
+				"isWeekEnd" : isWeekEnd
+			}
+			return returnObj;
+		};
 
 		$scope.openTaskListForm = function(typeIndex) {
 			if (typeIndex === 'new') {
@@ -425,6 +452,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				});
 			} else {
 				$scope.taskListForm = 'edit';
+				console.log("--------")
+				console.log(this.item)
+				var frequencyType = checkForFrequencyType(this.item.frequency);
 				$scope.taskListClickedElement = typeIndex;
 				var time = this.item.completion_time;
 				$scope.eachTaskList = {
@@ -439,8 +469,13 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					mins                         : !!time ? time.split(':')[1] : '',
 					task_completion_hk_status_id : this.item.task_completion_hk_status_id,
 					id                           : this.item.id,
-					rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time)
+					rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time),
+					isWeekDay                    :frequencyType.isWeekDay,
+					isWeekEnd                    :frequencyType.isWeekEnd,
+					isCustom                     :frequencyType.isCustom
 				};
+				console.log("---++++++++=-----")
+				console.log($scope.eachTaskList)
 			}
 		};
 
@@ -491,6 +526,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		$scope.updateTaskListItem = function() {
+			console.log("-----------")
+			console.log($scope.eachTaskList)
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.taskListClickedElement = -1;
@@ -512,6 +549,26 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				id                           : $scope.eachTaskList.id,
 				rooms_task_completion        : getRoomTaskTimes()
 			};
+			var freqencyParams = {};
+			freqencyParams.monday = false;
+			freqencyParams.tuesday = false;
+			freqencyParams.wednesday = false;
+			freqencyParams.thursday = false;
+			freqencyParams.friday = false;
+			freqencyParams.saturday = false;
+			freqencyParams.sunday = false;
+			if($scope.eachTaskList.isWeekDay === true){
+				freqencyParams.monday = true;
+				freqencyParams.tuesday = true;
+				freqencyParams.wednesday = true;
+				freqencyParams.thursday = true;
+				freqencyParams.friday = true;
+			}
+			if($scope.eachTaskList.isWeekEnd === true){
+				freqencyParams.saturday = true;
+				freqencyParams.sunday = true;
+			}
+			params.freqency = freqencyParams;
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};
