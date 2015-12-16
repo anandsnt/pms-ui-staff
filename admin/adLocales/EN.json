@@ -272,7 +272,11 @@
 "ASK_GUEST_ADDRESS_DETAILS":"ASK GUEST ADDRESS DETAILS",
 
 "MENU_CREATE_ALLOTMENT": "New Allotment",
-"MENU_MANAGE_ALLOTMENT": "Manage Allotment"
+"MENU_MANAGE_ALLOTMENT": "Manage Allotment",
+"BIRTHDATE_IS_MANDATORY": "Birthdate is mandatory",
+"MINIMUM_AGE_REQUIRED_TO_CHECKIN":"Minimum age required to check in",
+"PROMPT_FOR_GUEST_ADDRESS":"Prompt for guest address",
+"PROMPT_FOR_BIRTHDATE" : "Prompt for guest's Birthdate"
 ,
 
 
@@ -756,6 +760,7 @@
 
 "ROOM_KEY_DELIVERY_SETUP":"Room Key Delivery Setup",
 "ZEST":"Zest",
+"STATION": "Station",
 "CHECKINS":"check in's",
 "DELIVER_QR_CODE_FOR_ROOM_KEY":"Deliver QR code for room key via email",
 "DELIVER_QR_CODE_TO_GUESTZEST_APP":"Deliver QR code to GuestZest App on Guests Smartphone",
@@ -808,7 +813,8 @@
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
 "ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
 "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
-"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In"
+"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In",
+"OFFER_MOBILEKEY_LABEL" : "Offer Option to use Mobile Phone Key"
 
 
 
@@ -960,8 +966,16 @@
 	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
 	"ENTER_SUBJECT": "Enter Subject",
 	"CANCELLATION_EMAIL_BODY": "Cancellation Email Body",
-	"CANCELLATION_LETTER_BODY": "Cancellation Letter Body"
+	"CANCELLATION_LETTER_BODY": "Cancellation Letter Body",
 
+	"SALUTATION" : "Salutation",
+	"GUEST_SALUTATION_TYPES" : "Salutation",
+	"BY_FIRST_NAME" : "By First Name",
+	"BY_LAST_NAME" : "By Last Name",
+	"BY_FIRST_LAST_NAME" : "By First and Last name",
+	"BY_CUSTOM_TEXT" : "Custom Text",
+	"CUSTOM_SALUTATION" : "Custom Salutation",
+	"INCLUDE_TITLE" : "Include Title"
 
 
 
@@ -1036,7 +1050,40 @@
 "CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT": "CHECK IN COMPLETE CONFIRMATION SCREEN TEXT",
 "EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE":"EXCLUDE FOLLOWING ROOM TYPES FROM EMAIL INVITE",
 "EXCLUDE_ROOM_TYPES":"EXCLUDE ROOM TYPES",
-"EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES"
+"EXCLUDED_ROOM_TYPES":"EXCLUDED ROOM TYPES",
+
+
+"BACK_TO_ZEST_SETUP":"Back to Zest Setup",
+"ZEST_SETUP_HEADER":"Zest Setup",
+"BACK_TO_ZEST":"Back to Zest",
+
+"ZEST_SETUP_DIRECT":"Direct URL",
+"ZEST_SETUP_DIRECT_HEADER":"Check-In By Direct URL Setup",
+"ZEST_SETUP_CHECKIN_DIRECT_TOGGLE": "Check in by Direct URL",
+"ZEST_SETUP_DIRECT_URL": "URL",
+"ZEST_SETUP_DIRECT_BTN":"Direct URL",
+
+"ZEST_SETUP_EMAIL_BTN":"Email From Guest",
+"ZEST_SETUP_EMAIL_CHECK_IN_URL":"Zest Check In URL",
+"ZEST_SETUP_EMAIL_HEADER":"Check-In By Email From Guest Setup",
+"ZEST_SETUP_EMAIL_ADD": "Email Address",
+"ZEST_SETUP_CHECKIN_EMAIL_TOGGLE": "Check in by Guest Initiated Email",
+"ZEST_SETUP_SUBJECT_TEXTAREA_LABEL": "Subject Keywords",
+"ZEST_SETUP_AVAILABILITY_LABEL": "Availability to Guests",
+"ZEST_SETUP_AVAIL_DO_LABEL": "Day of Arrival",
+"ZEST_SETUP_AVAIL_DB_LABEL": "Day Before Arrival",
+"ZEST_SETUP_IMMEDIATELY_CHECKIN": "immediately check in for day of arrival guests",
+"ZEST_SETUP_MSG_TO_GUEST_LABEL": "Messages to Guest",
+"ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL": "Service is OFF - Web",
+"ZEST_SETUP_SEND": "Send Message",
+"ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_EMAIL_LABEL": "Service is OFF - Email",
+"ZEST_SETUP_MSG_TO_GUEST_SERVICEON_EMAIL_LABEL": "Service is ON - Start Email",
+"ZEST_SETUP_MSG_TO_GUEST_SERVICEON_NO_RECOG": "Service is ON - Did not recognize keyword"
+
+
+
+
+
 
 ,
 
