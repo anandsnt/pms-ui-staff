@@ -15,7 +15,10 @@ sntRover.controller('rvReservationCardHKController',
         };
 
         $scope.toggleService = function() {
-            // save data
+
+            
+            console.log( 'ff' );
+            $scope.houseKeeping.serviceEnabled = $scope.houseKeeping.serviceEnabled ? false : true;
         };
 
         $scope.selectDefaultTask = function(workType, task) {

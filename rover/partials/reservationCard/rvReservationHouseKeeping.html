@@ -8,10 +8,14 @@
             <h3 class="block-title">Service</h3>
             <div class="switch-button"
                 ng-class="{'on': houseKeeping.serviceEnabled}"> <!-- Remove class 'on' when L11 unchecked -->
+
+                <!-- iscroll stops all events eminating from the input below thus no ng-model change -->
+                <!-- No time to sit down and fix the issues. This is a temp fix, must be fixed properly -->
+                <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleService()"></div>
+
                 <input type="checkbox"
                     ng-model="houseKeeping.serviceEnabled"
-                    ng-checked="houseKeeping.serviceEnabled"
-                    ng-change="toggleService()" />
+                    ng-checked="houseKeeping.serviceEnabled" />
                 <label class="data-off">
                     <span class="value">Off</span>
                     <span class="switch-icon">On</span>
