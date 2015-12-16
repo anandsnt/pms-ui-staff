@@ -12,8 +12,16 @@ sntRover.service('rvReservationHouseKeepingSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.save = function() {
-            // To Do
+        this.save = function(data) {
+            // To Do: after API completion
+            var deferred = $q.defer();
+            var url = '/api/reservations/save_reservation_task';
+            RVBaseWebSrvV2.postJSON(url, data.params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         };
     }
 ]);
