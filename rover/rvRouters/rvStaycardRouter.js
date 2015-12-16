@@ -123,6 +123,9 @@ angular.module('stayCardModule', [])
                         adults: $stateParams.adults,
                         children: $stateParams.children
                     })
+                },
+                ratesMeta: function(RVReservationBaseSearchSrv){
+                    return RVReservationBaseSearchSrv.fetchRatesMeta();
                 }
 
             }

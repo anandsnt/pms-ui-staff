@@ -1,5 +1,5 @@
-sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
-    function($q, RVBaseWebSrvV2) {
+sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
+    function($q, RVBaseWebSrvV2, dateFilter) {
         var that = this;
         this.reservation = {
             'settings': {},
@@ -191,36 +191,89 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.fetchRates = function(params) {
+        this.fetchOrdinaryRates = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/availability/rates';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
+        this.fetchContractRates = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/availability/contracts';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchGroupRates = function(params) {
+            var deferred = $q.defer(),
+                groupId = params.group_id || params.allotment_id;
+
+            var url = '/api/availability/groups/' + groupId;
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchRates = function(params) {
             var deferred = $q.defer(),
                 promises = [];
 
-            promises.push(that.fetchAvailability(params).then(function(){
-                console.log("Normal API Call Success");
+            that['rates'] = [];
+
+            promises.push(that.fetchOrdinaryRates(params).then(function(response) {
+                that['rates'] = that['rates'].concat(response.rates);
             }));
 
             // Make this call IFF there is a company / TA card attached
             if (!!params.company_id || !!params.travel_agent_id) {
-                promises.push(that.fetchAvailability(params).then(function(){
-                    console.log("Contract API Call Success");
+                promises.push(that.fetchContractRates(params).then(function(response) {
+                    // TODO: Add is_group_rate HERE
+                    that['rates'] = that['rates'].concat(response.rates);
                 }));
             }
             // Make this call IFF there is a group/ allotment attached
             if (params.group_id || params.allotment_id) {
-                promises.push(that.fetchAvailability(params).then(function(){
-                    console.log("group API Call Success");
+                promises.push(that.fetchGroupRates(params).then(function(response) {
+                    // TODO: Add is_contract_rate HERE to the values in the response
+                    that['rates'] = that['rates'].concat(response.rates);
                 }));
             }
 
-            $q.all(promises).then(function(response) {
-                deferred.resolve(response);
+            $q.all(promises).then(function() {
+                deferred.resolve(that['rates']);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
 
             return deferred.promise;
 
+        };
+
+        this.fetchRatesMeta = function() {
+            var deferred = $q.defer();
+            var url = '/api/rates/detailed';
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                var rates = [];
+                _.each(response.results, function(rate) {
+                    rates[rate.id] = rate;
+                });
+                deferred.resolve(rates);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         }
     }
 ]);
