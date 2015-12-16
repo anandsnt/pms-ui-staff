@@ -51,20 +51,23 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	 * @return {Boolean} [description]
 	 */
 	$scope.isInPickupKeyMode = function() {
-		return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
+		if ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE){
+                    return true;
+                } else if ($scope.isPickupKeys || $state.isPickupKeys){
+                    return true;
+                } else return false;
 	};
 
         $scope.goToKeySuccess = function(){
-            setTimeout(function(){
+          //  setTimeout(function(){
                 $state.go('zest_station.key_success');
-            },500);
+           // },500);
             
         };
         
         $scope.makeKeys = function(){
             $state.passParams = $scope.input;
             $state.go('zest_station.make_keys');
-          
         };
         $scope.initKeySuccess = function(){
             $state.passParams = $scope.input;
@@ -126,7 +129,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             
                 setTimeout(function(){
                     $scope.initMakeKey(2);
-                },2500)
+                },2500);
             };
         $scope.oneKeySetup = function(){
                 $scope.at = 'make-keys';
@@ -153,6 +156,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             };
         
        $scope.oneKeySuccess = function(){
+           
             $scope.goToKeySuccess();
 
             $scope.headingText = 'Success!';
@@ -198,17 +202,25 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
             console.log($scope.zestStationData)
+            console.log('$scope.zestStationData',$scope.selectedReservation)
             var options = {
                 card_info: "",
                 key: $scope.makingKey,
                 key_encoder_id: sntZestStation.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
+            console.warn('$scope.isInPickupKeyMode(): ',$scope.isInPickupKeyMode())
+            if ($scope.isInPickupKeyMode()){
+                options.reservation_id = $scope.selectedReservation.reservation_id;
+            }
+            
+            
             if ($scope.makingKey === 1){
                 options.is_additional = false;
             } else {
                 options.is_additional = true;
             }
+            
             $scope.callAPI(zsTabletSrv.encodeKey, {
                 params: options,
                 'successCallBack':$scope.successMakeKey,
@@ -218,20 +230,33 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
 
         $scope.deliverRegistration = function(){
-            $state.go('zest_station.delivery_options');
+            if ($scope.isInPickupKeyMode()){
+                $state.go ('zest_station.home');
+            } else {
+                $state.go('zest_station.delivery_options');
+            }
+            
         };
 
 
 
         $scope.init = function(){
             $scope.selectedReservation = $state.selectedReservation;
-            
+            console.info('init: with reservation: ',$scope.selectedReservation);
+            console.info('$state.current.name: ',$state.current.name)
             if ($state.current.name === 'zest_station.make_keys'){
                 $scope.at = 'make-keys';
                 $scope.initKeyCreate();
             } else if($state.current.name === 'zest_station.key_success'){
                 $scope.at = 'key-success';
                 $scope.initKeySuccess();
+            } else if ($state.current.name === 'zest_station.pickup_keys'){
+                $stateParams.mode = zsModeConstants.PICKUP_KEY_MODE;
+                console.info('$stateParams.mode: ',$stateParams.mode)
+                $scope.at = 'select-keys-after-checkin';
+                $scope.isPickupKeys = true;
+                $state.isPickupKeys = true;
+              //  $scope.initKeyCreate();
             } else {
                 $scope.at = 'select-keys-after-checkin';
             }

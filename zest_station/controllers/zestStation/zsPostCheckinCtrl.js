@@ -145,6 +145,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.modalBtn1 = 'Done';
         };
         $scope.initKeyErrorScreen = function(){
+                if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
+                    $scope.pickupkeys = true;
+                }
+            
                 $scope.at = 'key-error';
                 $scope.headingText = 'We were not able to make keys.';
                 $scope.subHeadingText = 'Oopsie. Unable to make key.';
@@ -163,7 +167,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.reEncodeKey = function(){
+            console.info('state mode....',$state.mode);
+            if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
+                $state.go('zest_station.pickup_keys');
+            } else {
 		$state.go ('zest_station.check_in_keys');
+            }
         };
         
         $scope.initStaff = function(){
