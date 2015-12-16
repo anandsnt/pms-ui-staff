@@ -41,11 +41,24 @@
 		return deferred.promise;
 	};
 
+	var postGuestBirthDate = function(data) {
+		var deferred = $q.defer();
+		var url = ' /api/guest_details/'+$rootScope.primaryGuestId+'.json';
+		$http.put(url,data).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
 	return {
 	responseData: responseData,
 	postGuestDetails : postGuestDetails,
 	getGuestDetails:getGuestDetails,
-	fetchCountryList:fetchCountryList
+	fetchCountryList:fetchCountryList,
+	postGuestBirthDate:postGuestBirthDate
 	}
 };
 

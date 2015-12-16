@@ -164,8 +164,16 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_TAX'        : true,
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
-            'INCLUDE_ADDONS': true,
+            'INCLUDE_ADDONS': true
+        };
+
+        var __excludeFilterNames = {
             'EXCLUDE_TAX' : true
+        };
+
+        var __showFilterNames = {
+            'RATE'  : true,
+            'RATE_TYPE'  : true
         };
 
         var __displayFilterNames = {
@@ -484,6 +492,9 @@ sntRover.factory('RVReportUtilsFac', [
                 case reportNames['DAILY_PRODUCTION_DEMO']:
                     report['hasOneYearLimit']   = true;
                     break;
+                case reportNames['DAILY_PRODUCTION_RATE']:
+                    report['hasOneYearLimit']   = true;
+                    break;
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -541,6 +552,27 @@ sntRover.factory('RVReportUtilsFac', [
                 selectAll    : false,
                 defaultTitle : 'Select displays',
                 title        : 'Select displays',
+                data         : []
+            });
+
+
+            // create DS for Exclude combo box
+            __setData(report, 'hasExclusions', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : false,
+                defaultTitle : 'Exclude',
+                title        : 'Exclude',
+                data         : []
+            });
+
+            // create DS for Show combo box
+            __setData(report, 'hasShowOptions', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : true,
+                defaultTitle : 'Show',
+                title        : 'Show All',
                 data         : []
             });
 
@@ -751,6 +783,33 @@ sntRover.factory('RVReportUtilsFac', [
                     __pushGeneralOptionData( report, filter );
                 };
 
+                 // fill up DS for options combo box
+                if ( __excludeFilterNames[filter.value] ) {
+                    
+                    var selected = false;
+            
+                    if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
+                        selected = true;
+                        report['hasExclusions']['title'] = filter.description;
+                    };
+
+                    report['hasExclusions']['data'].push({
+                        paramKey    : filter.value.toLowerCase(),
+                        description : filter.description,
+                        selected    : selected
+                    });
+                };
+
+                 // fill up DS for show combo box
+                if ( __showFilterNames[filter.value] ) {
+                    selected = true;
+                    report['hasShowOptions']['data'].push({
+                        paramKey    : filter.value.toLowerCase(),
+                        description : filter.description,
+                        selected    : selected
+                    });
+                };
+
                 // fill up DS for display combo box
                 if ( __displayFilterNames[filter.value] ) {
 
@@ -847,7 +906,13 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResStatus );
                 }
 
-                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
+                else if ('RESERVATION_ONLY_ADDONS' == filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchReservationAddons()
+                        .then( fillResAddons );
+                }
+
+                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
                     
                     // fetch charge groups
                     requested++;
@@ -1039,6 +1104,34 @@ sntRover.factory('RVReportUtilsFac', [
 
                 completed++;
                 checkAllCompleted();
+            };
+
+            // fill Reservation-Only Addons
+            function fillResAddons (data) {
+                
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_ONLY_ADDONS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        // This is used only in Production Data by Rate and for that it is default none selected
+                        __setData(report, 'hasReservationAddons', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Addon',
+                            title        : 'Select Addon',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+                
             };
 
             // fill charge group and charge codes
@@ -1456,6 +1549,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DAILY_PRODUCTION_DEMO']:
+                    report['fromDate']  = _getDates.monthStart;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
+                case reportNames['DAILY_PRODUCTION_RATE']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
                     break;
