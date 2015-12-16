@@ -34,8 +34,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
+				$scope.is_show_task_management_in_hk_menu = data.is_show_task_management_in_hk_menu;
 				$scope.$emit('hideLoader');
-				$scope.workType = data;
+				$scope.workType = data.results;
 				angular.forEach($scope.workType,function(item, index) {
 		            if(item.is_default === true){
 		            	angular.forEach(item.tasks,function(taskItem, taskIndex) {

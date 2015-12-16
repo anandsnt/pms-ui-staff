@@ -41,7 +41,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
                     _.each(data.results, function(item) {
                         item.is_system_defined = false;
                     });
-                    deferred.resolve(data.results);
+                    deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
