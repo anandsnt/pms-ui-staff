@@ -44,11 +44,10 @@
                     </button>
                     <h1>Try Again</h1>
                 </li>
-                <li class="break" ng-show='at === "key-error"'>
+                <li class="break" ng-show='at === "key-error" && !pickupkeys''>
                     <span>Or</span>
                 </li>
-
-                <li ng-show='at === "key-error"'> 
+                <li ng-show='at === "key-error" && !pickupkeys'> 
                     <button type="button" class="button option" touch-press='skipKeys()'>
                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
