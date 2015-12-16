@@ -4,19 +4,9 @@ sntRover.controller('rvReservationCardHKController',
 
         BaseCtrl.call(this, $scope);
 
-        $scope.toggleHKDetails = function() {
-            $scope.houseKeeping.hideDetails = !$scope.houseKeeping.hideDetails;
-            $scope.refreshScroller('resultDetails');
-            $timeout(function(){
-                $scope.$parent.myScroll['resultDetails'].scrollTo($scope.$parent.myScroll['resultDetails'].maxScrollX,
-                    $scope.$parent.myScroll['resultDetails'].maxScrollY, 500);
-            }, 500);
-
-        };
-
         $scope.toggleService = function() {
 
-            
+
             console.log( 'ff' );
             $scope.houseKeeping.serviceEnabled = $scope.houseKeeping.serviceEnabled ? false : true;
         };
@@ -28,6 +18,8 @@ sntRover.controller('rvReservationCardHKController',
         $scope.save = function() {
             // call put api
         };
+
+        var initApiCalled = false;
 
         var fetchInitialDataSuccessCallBack = function(data) {
             $scope.houseKeeping.workTypes = data.work_types;
@@ -62,5 +54,26 @@ sntRover.controller('rvReservationCardHKController',
             callInitialAPIs();
         };
         init();
+
+        var toggleDetails = function() {
+            $scope.houseKeeping.hideDetails = $scope.houseKeeping.hideDetails ? false : true;
+        };
+
+        $scope.toggleHKDetails = function() {
+            $scope.houseKeeping.hideDetails = !$scope.houseKeeping.hideDetails;
+            $scope.refreshScroller('resultDetails');
+            $timeout(function(){
+                $scope.$parent.myScroll['resultDetails'].scrollTo($scope.$parent.myScroll['resultDetails'].maxScrollX,
+                    $scope.$parent.myScroll['resultDetails'].maxScrollY, 500);
+            }, 500);
+
+
+
+            if ( initApiCalled ) {
+                toggleDetails();
+            } else {
+                callInitialAPIs();
+            };
+        };
     }
 ]);
