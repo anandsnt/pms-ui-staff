@@ -67,8 +67,9 @@
 					No Match
 					<p class="subTitletext">We did not find a matching reservation with the information you provided:</p>
 					<br/>
-					<p class="white-text centerAlign">[Last Name]</p>
-					<p class="white-text centerAlign">[Resheil]</p>
+					<p class="white-text centerAlign" ng-show="lastname.length >0">{{lastname}}</p>
+					<p class="white-text centerAlign" ng-show="confirmationNumber.length>0">{{confirmationNumber}}</p>
+					<p class="white-text centerAlign" ng-show="departureDate.length >0">{{departureDate}}</p>
 				</div>
 				<br/>
 				<div class="row cabin_number_field">			
@@ -92,8 +93,9 @@
 			<div class="chekin-heading centeralign blue-text">
 				Multiple Matches
 				<p class="subTitletext">We found more than one matching reservation with the information you provided. Enter the confirmation number to continue:</p>
-				<p class="white-text centerAlign">[Last Name]</p>
-				<p class="white-text centerAlign">[Resheil]</p>
+				<p class="white-text centerAlign" ng-show="lastname.length >0">{{lastname}}</p>
+				<p class="white-text centerAlign" ng-show="confirmationNumber.length>0">{{confirmationNumber}}</p>
+				<p class="white-text centerAlign" ng-show="departureDate.length >0">{{departureDate}}</p>
 			</div>
 			<br/>
 			<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">

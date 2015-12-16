@@ -56,13 +56,40 @@
 	      }
 	    };
 
-	    // $state.go('guestCheckinEarly');
-	    // $state.go('guestCheckinLate');
+	    var getToken = function(response){
+
+		    // checkinConfirmationService.getToken(data).then(function(tokenData) {
+		    	//set guestweb token
+		    	//$rootScope.accessToken 				= tokenData.guest_web_token;
+
+		    	if(response.is_too_early){
+					$state.go('guestCheckinEarly');
+				}
+				else if(response.is_too_late){
+					$state.go('guestCheckinLate');
+				}
+				else{
+					// display options for room upgrade screen
+					$rootScope.ShowupgradedLabel = false;
+					$rootScope.roomUpgradeheading = "Your trip details";
+					$scope.isResponseSuccess = true;
+					response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
+					checkinDetailsService.setResponseData(response.results[0]);
+					$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
+					//navigate to next page
+					$state.go('checkinReservationDetails');
+				}	
+			// },function(){
+			// 		$rootScope.netWorkError = true;
+			// 		$scope.isLoading = false;
+			// });
+	    }
+
 		//next button clicked actions
 		$scope.nextButtonClicked = function() {
-
-			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || $scope.departureDate.length >0)){
-				var data = {}
+			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))){
+				
+				var data = {"hotel_identifier":$rootScope.hotelIdentifier}
 				if($scope.lastname.length >0){
 					data.last_name = $scope.lastname;
 				}
@@ -72,24 +99,29 @@
 				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0){
 					data.departure_date  = $scope.departureDate;
 				}
+
 				
 				$scope.isLoading 		 = true;
 				//call service
 				checkinConfirmationService.searchReservation(data).then(function(response) {
 					$scope.isLoading = false;
 
-					if(response.results.length ===0){
-						// $scope.searchMode 		= false;
-						// $scope.noMatch    		= true;
-						// $scope.multipleResults 	= false;
-					}else if(response.results.length >=2)
+					if(response.results.length ===0){ // No match
+						$scope.searchMode 		= false;
+						$scope.noMatch    		= true;
+						$scope.multipleResults 	= false;
+					}else if(response.results.length >=2) //Multiple matches
 					{
-						// $scope.searchMode 		= false;
-						// $scope.noMatch    		= false;
-						// $scope.multipleResults 	= true;
+						$scope.searchMode 		= false;
+						$scope.noMatch    		= false;
+						$scope.multipleResults 	= true;
 					}
 					else{
-
+						$rootScope.reservationID = response.results[0].reservation_id;
+						$rootScope.isPrecheckinOnly = (response.results[0].is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
+						$rootScope.isAutoCheckinOn = response.results[0].is_auto_checkin && $rootScope.isPrecheckinOnly;						
+						//retrieve token for guest
+						getToken(response);
 					};
 				},function(){
 						$rootScope.netWorkError = true;

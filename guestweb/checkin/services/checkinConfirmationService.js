@@ -18,20 +18,34 @@
 
 			var searchReservation =  function(data){
 				var deferred = $q.defer();
-				var url = '/api/reservations.json';
-				$http.get(url,data).success(function(response) {
+				var url = '/guest_web/checkin_reservation_search.json';
+				$http.get(url,{params: data}).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
 				});
 				return deferred.promise;
-			}
+			};
+
+
+			var getToken = function(){
+				var deferred = $q.defer();
+				var url = '/guest_web/checkin_reservation_search.json';
+				$http.get(url,{params: data}).success(function(response) {
+					deferred.resolve(response);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;
+			};
 
 			return {
 				responseData: responseData,
 				login : login,
-				searchReservation:searchReservation
+				searchReservation:searchReservation,
+				getToken:getToken
 			};
 		};
 
