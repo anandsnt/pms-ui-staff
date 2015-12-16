@@ -78,7 +78,21 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/guestDetails.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
-	 })
+	 }).state('birthDateDetails', {
+	 	url: '/birthDateDetails',
+	 	templateUrl: '/assets/checkin/partials/MGM/birthDataDetails.html',
+	 	controller : 'birthDateDetailsController',
+	    title: 'Birthdate'
+	 }).state('promptGuestDetails', {
+	 	url: '/promptGuestDetails',
+	 	templateUrl: '/assets/checkin/partials/MGM/promptGuestDetails.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
+	 }).state('guestNotEligible', {
+	 	url: '/guestNotEligible',
+	 	templateUrl: '/assets/checkin/partials/MGM/guestNotEligible.html',
+	    title: 'Guest Details'
+	 });
 	 //room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {

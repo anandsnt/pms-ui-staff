@@ -3,6 +3,7 @@
 
 "ROOM_KEY_DELIVERY_SETUP":"Room Key Delivery Setup",
 "ZEST":"Zest",
+"STATION": "Station",
 "CHECKINS":"check in's",
 "DELIVER_QR_CODE_FOR_ROOM_KEY":"Deliver QR code for room key via email",
 "DELIVER_QR_CODE_TO_GUESTZEST_APP":"Deliver QR code to GuestZest App on Guests Smartphone",
@@ -55,7 +56,8 @@
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
 "ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
 "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
-"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In"
+"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In",
+"OFFER_MOBILEKEY_LABEL" : "Offer Option to use Mobile Phone Key"
 
 
 
