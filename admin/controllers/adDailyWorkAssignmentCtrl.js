@@ -498,8 +498,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
 						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
 					}
-					console.log("---++++++++=-----")
-					console.log($scope.eachTaskList)
 				}
 			}
 		};
