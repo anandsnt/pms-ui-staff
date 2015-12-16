@@ -6,6 +6,27 @@ admin.service('ADDailyWorkAssignmentSrv', [
         var self = this;
 
         /*
+         *  To show/hide Task Management in HK menu
+         * @param {object}
+         * @return {object} defer promise
+         */ 
+
+        this.setTaskManagementShowInHK = function (params) {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/save_hk_task_management';
+
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+
+        };
+
+        /*
          * To fetch task types
          * @param {object}
          * @return {object} defer promise
@@ -20,7 +41,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
                     _.each(data.results, function(item) {
                         item.is_system_defined = false;
                     });
-                    deferred.resolve(data.results);
+                    deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });

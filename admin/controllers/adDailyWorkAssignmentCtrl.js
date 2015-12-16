@@ -12,12 +12,39 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
+		//Have to change when default task is assigned for all work types.
+		$scope.defaultData = {};
+		$scope.defaultData.defaultTask = 0;
+
+
+		// Task management
+
+		$scope.setTaskManagementShowInHKMenu = function () {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+			};
+			var param = {};
+			$scope.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu ? false : true;
+			param.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK,param,callback);
+
+		};
+
 
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
+				$scope.is_show_task_management_in_hk_menu = data.is_show_task_management_in_hk_menu;
 				$scope.$emit('hideLoader');
-				$scope.workType = data;
+				$scope.workType = data.results;
+				angular.forEach($scope.workType,function(item, index) {
+		            if(item.is_default === true){
+		            	angular.forEach(item.tasks,function(taskItem, taskIndex) {
+		            		$scope.defaultData.defaultTask = taskItem.id;
+		            	});
+		            }
+
+		        });
 
 			};
 
@@ -133,21 +160,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.setShowOnStayCard= function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-
 				$scope.workTypeClickedElement = -1;
-
 				fetchWorkType();
 			};
 
 			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
-
-			$scope.eachWorkType.id = this.item.id;
-			$scope.eachWorkType.name = this.item.name;
-			$scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
-			$scope.eachWorkType.is_active = this.item.is_active;
-
-			// $scope.eachWorkType = this.item;
-
+			this.item.hotel_id = $rootScope.hotelId;
+			this.item.default_task_id = $scope.defaultData.defaultTask;
+			$scope.eachWorkType = this.item;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
@@ -266,9 +286,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
-
-
-
 		// fetch task list
 		var fetchTaskList = function() {
 			var callback = function(data) {
@@ -355,6 +372,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id : '',
 				rooms_task_completion        : initateRoomTaskTimes()
 			};
+
+			var frequencyParams = {};
+			frequencyParams.monday = false;
+			frequencyParams.tuesday = false;
+			frequencyParams.wednesday = false;
+			frequencyParams.thursday = false;
+			frequencyParams.friday = false;
+			frequencyParams.saturday = false;
+			frequencyParams.sunday = false;
+			$scope.eachTaskList.frequency = frequencyParams;
+			$scope.eachTaskList.frequency.days = 0;
 		};
 		resetEachTaskList();
 
@@ -397,34 +425,80 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			});
 			return idAry;
 		};
-
-		$scope.openTaskListForm = function(typeIndex) {
-			if (typeIndex === 'new') {
-				$scope.taskListForm = 'add';
-				$scope.taskListClickedElement = 'new';
-				resetEachTaskList();
-				$timeout(function() {
-					$location.hash('new-form-holder-task-list');
-					$anchorScroll();
-				});
+		var checkForFrequencyType = function(frequencyObj){
+			var isCustom = false, isWeekDay = false, isWeekEnd = false, isByWeekDay = false, isByStayDay = false;
+			if(frequencyObj.days !== null && frequencyObj.days!== 0){
+				isCustom = true;
+				isByStayDay = true;
+				isByWeekDay = false;
+			} else if(frequencyObj.sunday === true && frequencyObj.monday === true
+				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
+				&& frequencyObj.thursday === true && frequencyObj.friday === true
+				&& frequencyObj.saturday === true){
+					isWeekDay = true;
+					isWeekEnd = true;
+			} else if(frequencyObj.sunday === true && frequencyObj.saturday === true){
+					isWeekEnd = true;
+			} else if(frequencyObj.monday === true
+				&& frequencyObj.tuesday === true && frequencyObj.wednesday === true
+				&& frequencyObj.thursday === true && frequencyObj.friday === true){
+					isWeekDay = true;
 			} else {
-				$scope.taskListForm = 'edit';
-				$scope.taskListClickedElement = typeIndex;
-				var time = this.item.completion_time;
-				$scope.eachTaskList = {
-					name                         : this.item.name,
-					work_type_id                 : this.item.work_type_id,
-					room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
-					front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
-					reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
-					is_occupied                  : this.item.is_occupied,
-					is_vacant                    : this.item.is_vacant,
-					hours                        : !!time ? time.split(':')[0] : '',
-					mins                         : !!time ? time.split(':')[1] : '',
-					task_completion_hk_status_id : this.item.task_completion_hk_status_id,
-					id                           : this.item.id,
-					rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time)
-				};
+				isCustom = true;
+				isByWeekDay = true;
+				isByStayDay = false;
+			}
+
+			var returnObj = {
+				"isCustom": isCustom,
+				"isWeekDay": isWeekDay,
+				"isWeekEnd" : isWeekEnd,
+				"isByWeekDay": isByWeekDay,
+				"isByStayDay" : isByStayDay
+			}
+			return returnObj;
+		};
+
+		$scope.openTaskListForm = function(typeIndex, isSystemDefined) {
+			if(!isSystemDefined)
+			{
+				if (typeIndex === 'new') {
+					$scope.taskListForm = 'add';
+					$scope.taskListClickedElement = 'new';
+					resetEachTaskList();
+					$timeout(function() {
+						$location.hash('new-form-holder-task-list');
+						$anchorScroll();
+					});
+				} else {
+					$scope.taskListForm = 'edit';
+					var frequencyType = checkForFrequencyType(this.item.frequency);
+					$scope.taskListClickedElement = typeIndex;
+					var time = this.item.completion_time;
+					$scope.eachTaskList = {
+						name                         : this.item.name,
+						work_type_id                 : this.item.work_type_id,
+						room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
+						front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
+						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
+						is_occupied                  : this.item.is_occupied,
+						is_vacant                    : this.item.is_vacant,
+						hours                        : !!time ? time.split(':')[0] : '',
+						mins                         : !!time ? time.split(':')[1] : '',
+						task_completion_hk_status_id : this.item.task_completion_hk_status_id,
+						id                           : this.item.id,
+						rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time),
+						isWeekDay                    :frequencyType.isWeekDay,
+						isWeekEnd                    :frequencyType.isWeekEnd,
+						isCustom                     :frequencyType.isCustom,
+						frequency 					  : this.item.frequency
+					};
+					if(frequencyType.isCustom === true){
+					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
+					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
+						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
+					}
+				}
 			}
 		};
 
@@ -468,18 +542,52 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_vacant                    : $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
-				rooms_task_completion        : getRoomTaskTimes()
+				rooms_task_completion        : getRoomTaskTimes(),
+				is_active				      : true
 			};
+			var frequencyParams = {};
+			frequencyParams.monday = false;
+			frequencyParams.tuesday = false;
+			frequencyParams.wednesday = false;
+			frequencyParams.thursday = false;
+			frequencyParams.friday = false;
+			frequencyParams.saturday = false;
+			frequencyParams.sunday = false;
+			if($scope.eachTaskList.isCustom === false){
+
+				if($scope.eachTaskList.isWeekDay === true){
+					frequencyParams.monday = true;
+					frequencyParams.tuesday = true;
+					frequencyParams.wednesday = true;
+					frequencyParams.thursday = true;
+					frequencyParams.friday = true;
+				}
+				if($scope.eachTaskList.isWeekEnd === true){
+					frequencyParams.saturday = true;
+					frequencyParams.sunday = true;
+				}
+				params.frequency = frequencyParams;
+				params.frequency.days = 0;
+			} else {
+				if($scope.eachTaskList.customBy === "weekday"){
+					params.frequency = $scope.eachTaskList.frequency;
+					params.frequency.days = 0;
+				} else {
+					params.frequency = frequencyParams;
+					params.frequency.days = $scope.eachTaskList.days;
+				}
+
+			}
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
 		};
 
 		$scope.updateTaskListItem = function() {
+
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.taskListClickedElement = -1;
 				resetEachTaskList();
-
 				fetchTaskList();
 			};
 
@@ -496,10 +604,56 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				id                           : $scope.eachTaskList.id,
 				rooms_task_completion        : getRoomTaskTimes()
 			};
+			var frequencyParams = {};
+			frequencyParams.monday = false;
+			frequencyParams.tuesday = false;
+			frequencyParams.wednesday = false;
+			frequencyParams.thursday = false;
+			frequencyParams.friday = false;
+			frequencyParams.saturday = false;
+			frequencyParams.sunday = false;
+			if($scope.eachTaskList.isCustom === false){
+
+				if($scope.eachTaskList.isWeekDay === true){
+					frequencyParams.monday = true;
+					frequencyParams.tuesday = true;
+					frequencyParams.wednesday = true;
+					frequencyParams.thursday = true;
+					frequencyParams.friday = true;
+				}
+				if($scope.eachTaskList.isWeekEnd === true){
+					frequencyParams.saturday = true;
+					frequencyParams.sunday = true;
+				}
+				params.frequency = frequencyParams;
+				params.frequency.days = 0;
+			} else {
+				if($scope.eachTaskList.customBy === "weekday"){
+					params.frequency = $scope.eachTaskList.frequency;
+					params.frequency.days = 0;
+				} else {
+					params.frequency = frequencyParams;
+					params.frequency.days = $scope.eachTaskList.frequency.days;
+				}
+
+			}
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};
+		$scope.handleFrequencySetting = function(type){
+			console.log($scope.eachTaskList)
+			setTimeout(function(){
+				if(type === "custom"){
+					$scope.eachTaskList.isWeekDay = $scope.eachTaskList.isWeekEnd = !$scope.eachTaskList.isCustom;
+				}
+				if(type === "weekday" || type == "weekend"){
+					$scope.eachTaskList.isCustom = false;
+				}
+				$scope.$apply();
 
+			},100)
+
+		};
 		$scope.anySelected = function(bool) {
 			return function(item) {
 				return item === bool;
@@ -520,6 +674,23 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				room.hours = hours;
 				room.mins = mins;
 			});
+		};
+		$scope.toggleActiveInactiveTask = function(){
+			console.log(this.item)
+			var params = this.item;
+			params.is_active = !this.item.is_active;
+			params.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
+		}
+		var successUpdateTask = function(){
+			$scope.$emit('hideLoader');
+		};
+		$scope.updateDefaultTask = function(){
+			var dataToSrv = this.item;
+			dataToSrv.id = $scope.defaultData.defaultTask;
+			dataToSrv.hotel_id = $rootScope.hotelId;
+			dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, dataToSrv, successUpdateTask);
 		};
 	}
 ]);
