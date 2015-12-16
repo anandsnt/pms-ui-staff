@@ -14,6 +14,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         var getTasksForDefaultWorkType = function() {
             var succesCallBack = function(data) {
                 $scope.defaultWorkTypeTasks = data.results;
+                if (!$scope.rateData.task_id){
+                    var defaultTask = _.findWhere(data.results, {
+                        is_default: true
+                    });
+
+                    if (defaultTask) {
+                        $scope.rateData.task_id = defaultTask.id;
+                    }
+                }
             };
             var failureCallBack = function(error) {
                 $scope.errorMessage = error;
