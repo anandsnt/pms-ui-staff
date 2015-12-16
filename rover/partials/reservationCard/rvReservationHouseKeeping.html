@@ -32,7 +32,8 @@
             <h3 class="block-title">{{workType.name}}</h3>
             <div class="select">
                  <!-- Add attribute "disabled" when status set to No. Add class="placeholder" when no value option is selected -->
-                <select ng-class="{ 'placeholder': workType.default_task == '' }"
+                <select iscroll-stop-propagation
+                    ng-class="{ 'placeholder': workType.default_task == '' }"
                     ng-model="workType.default_task"
                     ng-change="selectDefaultTask(workType)"
                     ng-disabled="!houseKeeping.serviceEnabled">

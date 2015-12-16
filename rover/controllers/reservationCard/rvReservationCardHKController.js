@@ -20,10 +20,17 @@ sntRover.controller('rvReservationCardHKController',
          * Calls save api. fired when selecting task for a work type
          */
         $scope.selectDefaultTask = function(workType) {
-            var params = {
+            var params;
+
+            if ( ! workType.default_task && workType.old_default_task == workType.default_task ) {
+                return;
+            };
+
+            params = {
                 old_task_id: workType.old_default_task,
                 new_task_id: workType.default_task
             };
+
             workType.old_default_task = workType.default_task;
             $scope.save(params);
         };
@@ -44,9 +51,6 @@ sntRover.controller('rvReservationCardHKController',
 
         var saveTasksFailureCallBack = function(error) {
             $scope.errorMessage = error;
-
-            // revert all changed value to old values
-            // assignOldValues();
         };
 
         /**
@@ -65,7 +69,7 @@ sntRover.controller('rvReservationCardHKController',
                 failureCallBack: saveTasksFailureCallBack
             };
 
-            $scope.callAPI(rvReservationHouseKeepingSrv.save, options);
+            $scope.callAPI( rvReservationHouseKeepingSrv.save, options );
         };
 
         var fetchInitialDataSuccessCallBack = function(data) {
@@ -77,7 +81,7 @@ sntRover.controller('rvReservationCardHKController',
             // pair up data.
             $scope.houseKeeping.workTypes.forEach(function(workType) {
                 workType.default_task = '';
-                workType.old_default_task
+                workType.old_default_task = '';
                 var configured = _.findWhere($scope.houseKeeping.reservationTasks, {
                     work_type_id: workType.id
                 });
@@ -108,13 +112,13 @@ sntRover.controller('rvReservationCardHKController',
          * @return {undefined}
          */
         var callInitialAPIs = function() {
-            var params = {
-                reservation_id: $scope.reservationData.reservation_card.reservation_id
+            var options = {
+                params          : { reservation_id: $scope.reservationData.reservation_card.reservation_id },
+                successCallBack : fetchInitialDataSuccessCallBack,
+                failureCallBack : fetchInitialDataFailureCallBack
             };
 
-            $scope.invokeApi(rvReservationHouseKeepingSrv.fetch, params,
-                             fetchInitialDataSuccessCallBack,
-                             fetchInitialDataFailureCallBack);
+            $scope.callAPI( rvReservationHouseKeepingSrv.fetch, options );
         };
 
         // Note: self executing
