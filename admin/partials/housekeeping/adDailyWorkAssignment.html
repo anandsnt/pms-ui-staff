@@ -96,7 +96,7 @@
 			<tbody>
 				<tr ng-repeat="item in taskList">
 
-					<td header-class="width-30" data-title="'Task'"ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
+					<td header-class="width-30" data-title="'Task'" ng-click="openTaskListForm($index, item.is_system)" ng-hide="taskListClickedElement == $index">
 						<a ng-class="{'bold' : item.is_system}">{{ item.name }}</a>
 						<em ng-if="item.is_system">&nbsp;{{'SYSTEM_DEFINED' | translate }}</em>
 					</td>
@@ -118,6 +118,7 @@
 							</div>
 						</div>
 					</td>
+
 
 					<td header-class="width-10" data-title="'Delete'" ng-hide="taskListClickedElement == $index" class="delete">
 						<a ng-if="!item.is_system" ng-click="deleteTaskListItem()" class="icons icon-delete large-icon delete_item"></a>

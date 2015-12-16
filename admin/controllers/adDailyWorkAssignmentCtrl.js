@@ -459,47 +459,48 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			return returnObj;
 		};
 
-		$scope.openTaskListForm = function(typeIndex) {
-			if (typeIndex === 'new') {
-				$scope.taskListForm = 'add';
-				$scope.taskListClickedElement = 'new';
-				resetEachTaskList();
-				$timeout(function() {
-					$location.hash('new-form-holder-task-list');
-					$anchorScroll();
-				});
-			} else {
-				$scope.taskListForm = 'edit';
-				console.log("--------")
-				console.log(this.item)
-				var frequencyType = checkForFrequencyType(this.item.frequency);
-				$scope.taskListClickedElement = typeIndex;
-				var time = this.item.completion_time;
-				$scope.eachTaskList = {
-					name                         : this.item.name,
-					work_type_id                 : this.item.work_type_id,
-					room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
-					front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
-					reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
-					is_occupied                  : this.item.is_occupied,
-					is_vacant                    : this.item.is_vacant,
-					hours                        : !!time ? time.split(':')[0] : '',
-					mins                         : !!time ? time.split(':')[1] : '',
-					task_completion_hk_status_id : this.item.task_completion_hk_status_id,
-					id                           : this.item.id,
-					rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time),
-					isWeekDay                    :frequencyType.isWeekDay,
-					isWeekEnd                    :frequencyType.isWeekEnd,
-					isCustom                     :frequencyType.isCustom,
-					frequency 					  : this.item.frequency
-				};
-				if(frequencyType.isCustom === true){
-				//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
-				//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
-					$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
+		$scope.openTaskListForm = function(typeIndex, isSystemDefined) {
+			if(!isSystemDefined)
+			{
+				if (typeIndex === 'new') {
+					$scope.taskListForm = 'add';
+					$scope.taskListClickedElement = 'new';
+					resetEachTaskList();
+					$timeout(function() {
+						$location.hash('new-form-holder-task-list');
+						$anchorScroll();
+					});
+				} else {
+					$scope.taskListForm = 'edit';
+					var frequencyType = checkForFrequencyType(this.item.frequency);
+					$scope.taskListClickedElement = typeIndex;
+					var time = this.item.completion_time;
+					$scope.eachTaskList = {
+						name                         : this.item.name,
+						work_type_id                 : this.item.work_type_id,
+						room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
+						front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
+						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
+						is_occupied                  : this.item.is_occupied,
+						is_vacant                    : this.item.is_vacant,
+						hours                        : !!time ? time.split(':')[0] : '',
+						mins                         : !!time ? time.split(':')[1] : '',
+						task_completion_hk_status_id : this.item.task_completion_hk_status_id,
+						id                           : this.item.id,
+						rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time),
+						isWeekDay                    :frequencyType.isWeekDay,
+						isWeekEnd                    :frequencyType.isWeekEnd,
+						isCustom                     :frequencyType.isCustom,
+						frequency 					  : this.item.frequency
+					};
+					if(frequencyType.isCustom === true){
+					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
+					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
+						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
+					}
+					console.log("---++++++++=-----")
+					console.log($scope.eachTaskList)
 				}
-				console.log("---++++++++=-----")
-				console.log($scope.eachTaskList)
 			}
 		};
 
@@ -633,11 +634,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					params.frequency.days = 0;
 				} else {
 					params.frequency = frequencyParams;
-					params.frequency.days = $scope.eachTaskList.days;
+					params.frequency.days = $scope.eachTaskList.frequency.days;
 				}
 
 			}
-
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};
