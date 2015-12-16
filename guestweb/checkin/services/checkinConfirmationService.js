@@ -16,9 +16,22 @@
 				return deferred.promise;
 			};
 
+			var searchReservation =  function(data){
+				var deferred = $q.defer();
+				var url = '/api/reservations.json';
+				$http.get(url,data).success(function(response) {
+					deferred.resolve(response);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;
+			}
+
 			return {
 				responseData: responseData,
-				login : login
+				login : login,
+				searchReservation:searchReservation
 			};
 		};
 

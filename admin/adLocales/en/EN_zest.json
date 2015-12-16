@@ -56,7 +56,7 @@
 "ZEST_SETUP_SUBJECT_TEXTAREA_LABEL": "Subject Keywords",
 "ZEST_SETUP_AVAILABILITY_LABEL": "Availability to Guests",
 "ZEST_SETUP_AVAIL_DO_LABEL": "Day of Arrival",
-"ZEST_SETUP_AVAIL_DB_LABEL": "Day Before Arrival",
+"ZEST_SETUP_AVAIL_DB_LABEL": "include Day Before Arrival",
 "ZEST_SETUP_IMMEDIATELY_CHECKIN": "immediately check in for day of arrival guests",
 "ZEST_SETUP_MSG_TO_GUEST_LABEL": "Messages to Guest",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL": "Service is OFF - Web",
