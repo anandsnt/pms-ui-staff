@@ -172,6 +172,11 @@
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
 
+		<!-- chosen charge codes -->
+		<div ng-if="appliedFilter.reservationAddons.length">
+			Reservation Addons: <span>{{ appliedFilter.reservationAddons.join(', ') }}</span>
+		</div>
+
 
 		<!-- Never REMOVE this span -->
 		<span> &nbsp; </span>

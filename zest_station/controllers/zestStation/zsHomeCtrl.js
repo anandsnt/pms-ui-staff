@@ -19,6 +19,9 @@ sntZestStation.controller('zsHomeCtrl', [
 	 */
 	$scope.clickedOnPickUpKey = function() {
             $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+            $state.lastAt = 'home';
+            $state.isPickupKeys = true;
+            $state.mode = zsModeConstants.PICKUP_KEY_MODE;
             $state.go('zest_station.reservation_search', {
                 mode: zsModeConstants.PICKUP_KEY_MODE
             });
@@ -29,6 +32,9 @@ sntZestStation.controller('zsHomeCtrl', [
 	 */
 	$scope.clickedOnCheckinButton = function() {
             $state.mode = zsModeConstants.CHECKIN_MODE;
+            $state.isPickupKeys = false;
+            $state.lastAt = 'home';
+            $state.mode = zsModeConstants.CHECKIN_MODE;
             $state.go('zest_station.find_reservation_input_last', {
                 mode: zsModeConstants.CHECKIN_MODE
             });
@@ -38,6 +44,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	 * when we clicked on checkout from home screen
 	 */
 	$scope.clickedOnCheckoutButton = function() {
+            $state.lastAt = 'home';
+            $state.isPickupKeys = false;
             $state.mode = zsModeConstants.CHECKOUT_MODE;
             $state.go('zest_station.reservation_search', {
                 mode: zsModeConstants.CHECKOUT_MODE
