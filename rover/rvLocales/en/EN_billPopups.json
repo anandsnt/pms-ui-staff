@@ -14,7 +14,7 @@
 "FROM_DATE": "From",
 "TO_DATE": "To",
 "PAYMENT": "Payment",
-"NEW_PAYMENT": "+ New Payment",
+"NEW_PAYMENT": "+ New Payment Method",
 "POSTING_CAP": "Posting Cap",
 "REFERENCE_NUMBER": "Reference Number",
 "ENTITY":"Entity",
