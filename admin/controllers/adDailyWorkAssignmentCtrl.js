@@ -681,6 +681,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			console.log(this.item)
 			var params = this.item;
 			params.is_active = !this.item.is_active;
+			params.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
 		}
 		var successUpdateTask = function(){
