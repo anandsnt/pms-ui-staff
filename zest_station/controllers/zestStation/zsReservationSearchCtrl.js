@@ -21,9 +21,32 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	 * @param  {[type]} event
 	 * @return {[type]} 
 	 */
+        
+        var home = function(){$state.go ('zest_station.home');};
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-		$state.go ('zest_station.home');
+            if ($scope.isInPickupKeyMode()){
+                $scope.pickupNavBack();
+            } else {
+                home();
+            }
+            
+            
 	});
+        $scope.pickupNavBack = function(){
+            if ($scope.at === 'input-room'){
+                $scope.backToLastNameInput();
+            } else {
+                home();
+            }
+        };
+        $scope.backToLastNameInput = function(){
+            if ($scope.pickupValues && $scope.pickupValues.last){
+                $scope.input.inputTextValue = $scope.pickupValues.last;
+                $scope.at = 'input-last';
+                $scope.mode = "pickup-mode";
+                $scope.headingText = "Type your Last Name";
+            }
+        };
 
 	/**
 	 * success Call Back Of Search Reservations
@@ -164,24 +187,100 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     } else {
 			$scope.reservationParams.room_no = angular.copy($scope.input.inputTextValue);
                     }
-			//call Zest station settings API
-			var options = {
-	    		params: 			{"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no},
-	    		successCallBack: 	checkoutVerificationSuccess,
-	    		failureCallBack:    checkoutVerificationCallBack
-	        };
-			$scope.callAPI(zsCheckoutSrv.findReservation, options);
+                    var options = {
+                        params: 			{"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no},
+                        successCallBack: 	checkoutVerificationSuccess,
+                        failureCallBack:    checkoutVerificationCallBack
+                    };
+                       $scope.fetchReservations(options);
 		};
                 
 	    		var params = {"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no};
                         console.log(params);
 	};
+        
+        
+        $scope.fetchReservations = function(options){
+            //depending on the mode, will fetch reservations for check-out or pickup key
+            $scope.callAPI(zsCheckoutSrv.findReservation, options);
+        };
 
 	$scope.goToNext =  function(){
             if($scope.isInCheckoutMode()){
                     goToNextForCheckout();
+            } else if ($scope.isInPickupKeyMode() && $scope.at === 'input-last'){
+                    $scope.goToNextForPickup();
+            } else if ($scope.at === 're-input-last'){
+                $scope.pickupValues.last = $scope.input.inputTextValue;
+                $state.input.last = $scope.input.inputTextValue;
+                $scope.pickupValues.room = $state.input.room;
+                
+                var options = $scope.getPickupKeyOptions();
+                $scope.fetchReservations(options);
+            } else if ($scope.at === 're-input-room'){
+                $scope.pickupValues.room = $scope.input.inputTextValue;
+                $state.input.room = $scope.input.inputTextValue;
+                $scope.pickupValues.last = $state.input.last;
+                
+                var options = $scope.getPickupKeyOptions();
+                $scope.fetchReservations(options);
+            }else if ($scope.isInPickupKeyMode() && $scope.at === 'input-room'){
+                $scope.pickupValues.room = $scope.input.inputTextValue;
+                $state.input.room = $scope.input.inputTextValue;
+                var options = $scope.getPickupKeyOptions();
+                $scope.fetchReservations(options);
             }
 	};
+          
+        $scope.initErrorScreen = function(){
+                $scope.at = 'error';
+                $scope.headingText = 'So Sorry.';
+                $scope.subHeadingText = 'Something broke. \n\
+                                            Our bad. Please reach out to a Sidekick.';
+                $scope.modalBtn1 = 'Done';
+                $scope.$emit('hideLoader');
+                $state.go('zest_station.error');
+        };
+        $scope.getPickupKeyOptions = function(){
+            var pickupSuccess = function(response){
+                $state.selectedReservation = response;
+                $state.go('zest_station.pickup_keys');
+            };
+            var pickupFail = function(response){
+                console.log(response);
+                if (response){
+                    if (response[0] === 'Could not find the Reservation'){
+                        $scope.pickupKeyNoMatch();
+                        return;
+                    }
+                }
+                    $scope.initErrorScreen();
+            };
+            var options = {
+                params: 			{"last_name":$scope.pickupValues.last,"room_no":$scope.pickupValues.room},
+                successCallBack:    pickupSuccess,
+                failureCallBack:    pickupFail
+            };
+            return options;
+        };
+        $scope.pickupKeyNoMatch = function(){
+            $scope.mode = 'no-match';
+            $scope.at = 'no-match';
+            $scope.lastAt = 'pick-up-room';
+            $state.lastAt = 'pick-up-room';
+            $state.go('zest_station.find_reservation_no_match');
+        };
+        $scope.pickupValues = {
+          'last':'',
+          'room':''
+        };
+        $scope.goToNextForPickup = function(){
+            $scope.pickupValues.last = $scope.input.inputTextValue;
+            $state.input.last = $scope.input.inputTextValue;
+            $scope.at = 'input-room';
+            $scope.input.inputTextValue = "";
+            $scope.headingText = "Next, Type your room number";
+        };
         
         $scope.reEnteredNameInfo = false;
         $scope.reEnteredRoomInfo = false;
@@ -273,6 +372,26 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             if ($scope.isInCheckoutMode()){
                 $scope.mode = "search-mode";
                 $scope.headingText = "Type your Last Name";
+            }
+            if ($scope.isInPickupKeyMode()){
+                console.info('last at: '+$state.lastAt);
+                
+                $scope.at = 'input-last';
+                $scope.mode = "pickup-mode";
+                $scope.headingText = "Type your Last Name";
+                console.info('pick up key mode init');
+                if ($state.lastAt === 're-enter-last'){
+                $scope.headingText = "Type your Last Name";
+                    
+                    
+                    $scope.input.inputTextValue = $state.input.last;
+                    $scope.at = 're-input-last';
+                } else if ($state.lastAt === 're-enter-room'){
+                    $scope.headingText = "Next, Type your room number";
+                    
+                    $scope.input.inputTextValue = $state.input.room;
+                    $scope.at = 're-input-room';
+                }
             }
         };
 	/**

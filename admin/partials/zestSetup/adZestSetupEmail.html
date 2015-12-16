@@ -1,0 +1,58 @@
+<fieldset class="holder left holder_margin">
+                <div class="entry full-width">
+                    <!-- zest-admin-label-inline : this class puts the label inline with the toggle switch-->
+                    <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_EMAIL_HEADER</span></label>
+                    <ad-toggle-button is-checked="data.zest_station_setup.is_zest_email_checkin" label="" is-disabled="data.zest_station_setup.guest_init_flag_disabled"></ad-toggle-button>
+                    <br />
+                    </div>
+                <div class="entry full-width">
+                    
+                <!-- muted for S43
+                    <ad-textbox value="data.zest_station_setup.zest_setup_email" label = "{{'ZEST_SETUP_EMAIL_ADD' | translate}}" placeholder = ""  styleclass="full-width" ></ad-textbox>
+                    <br />
+                    
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.subject_keywords" label = "{{ 'ZEST_SETUP_SUBJECT_TEXTAREA_LABEL' | translate}}" placeholder = ""></ad-textarea>
+                    <br />
+                -->
+                <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_EMAIL_CHECK_IN_URL</span></label><br><br>
+                <table class="zest-admin-top"><tbody>
+                    <tr>
+                        <td>
+                            <label class="zest-admin-label-inline zest-nowrap-inline"><span translate>{{data.zest_station_setup.base_uri}}</span></label>
+                        </td>
+                        <td>    
+                            <ad-textbox class="zest-admin-url-box" value="data.zest_station_setup.checkin_static_uri" label = "" placeholder = ""  styleclass="full-width" ></ad-textbox>
+                        </td>
+                    </tr>
+                </tbody></table>
+                
+                            <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_AVAILABILITY_LABEL</span></label>
+                    <ad-checkbox is-checked="data.zest_station_setup.zest_email_checkin_day_of_arrival" label="{{ 'ZEST_SETUP_AVAIL_DO_LABEL' | translate}}" div-class="full-width" ></ad-checkbox>
+                    <ad-checkbox is-checked="data.zest_station_setup.zest_email_checkin_day_before_arrival" label="{{ 'ZEST_SETUP_AVAIL_DB_LABEL' | translate}}" div-class="full-width" ></ad-checkbox>
+                    <br />
+                <!-- muted for S43
+                    <label class="zest-admin-label-inline "><span translate>ZEST_SETUP_IMMEDIATELY_CHECKIN</span></label>
+                    <ad-toggle-button is-checked="data.zest_station_setup.day_of_arrival_immediate_checkin" label="" is-disabled="data.zest_station_setup.day_of_arrival_immediate_checkin_disabled"></ad-toggle-button>
+                    <br />
+                -->
+                    <fieldset class="zest-admin-indent-20">
+                    <label class="zest-admin-label-inline hold-left "><span translate>ZEST_SETUP_MSG_TO_GUEST_LABEL</span></label>
+                        <!-- SERVICE IS OFF - WEB -->
+                         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.zest_email_checkin_no_service_msg" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL' | translate}}" placeholder = ""></ad-textarea>
+                         <br />
+                    <!--muted for S43
+                         <label class="zest-admin-label-inline"><span translate>ZEST_SETUP_SEND</span></label>
+                         <ad-toggle-button is-checked="data.zest_station_setup.send_message" label="" is-disabled="data.zest_station_setup.send_message_disabled"></ad-toggle-button>
+                         <br />
+                        // SERVICE IS OFF - EMAIL 
+                         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.service_off_email_message" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_EMAIL_LABEL' | translate}}" placeholder = ""></ad-textarea>
+                         <br />
+                        //SERVICE IS ON - START EMAIL 
+                         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.service_on_start_email_message" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEON_EMAIL_LABEL' | translate}}" placeholder = ""></ad-textarea>
+                         <br />
+                        //SERVICE IS ON - DID NOT RECOGNIZE KEYWORD 
+                         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.service_on_unrecognized_keyword_message" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEON_NO_RECOG' | translate}}" placeholder = ""></ad-textarea>
+                    -->
+                    </fieldset>
+                </div>
+            </fieldset>
