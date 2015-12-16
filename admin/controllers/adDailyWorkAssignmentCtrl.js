@@ -598,7 +598,20 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};
+		$scope.handleFrequencySetting = function(type){
+			console.log($scope.eachTaskList)
+			setTimeout(function(){
+				if(type === "custom"){
+					$scope.eachTaskList.isWeekDay = $scope.eachTaskList.isWeekEnd = !$scope.eachTaskList.isCustom;
+				}
+				if(type === "weekday" || type == "weekend"){
+					$scope.eachTaskList.isCustom = false;
+				}
+				$scope.$apply();
 
+			},100)
+
+		};
 		$scope.anySelected = function(bool) {
 			return function(item) {
 				return item === bool;

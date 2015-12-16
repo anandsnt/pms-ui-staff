@@ -66,17 +66,17 @@
 				<div class="boxes">
 			        <label class="checkbox inline" >
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isWeekDay}"></span>
-			            <input type="checkbox" ng-model="eachTaskList.isWeekDay">
+			            <input type="checkbox" ng-model="eachTaskList.isWeekDay" ng-click="handleFrequencySetting('weekday')">
 			            Weekday
 			        </label>
 			        <label class="checkbox inline" >
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isWeekEnd}"></span>
-			            <input type="checkbox" ng-model="eachTaskList.isWeekEnd">
+			            <input type="checkbox" ng-model="eachTaskList.isWeekEnd" ng-click="handleFrequencySetting('weekend')">
 			            Weekend
 			        </label>
 			        <label class="checkbox inline">
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isCustom}"></span>
-			            <input type="checkbox" ng-model="eachTaskList.isCustom">
+			            <input type="checkbox" ng-model="eachTaskList.isCustom" ng-click="handleFrequencySetting('custom')">
 			            Custom
 			        </label>
 			        <span ng-show="eachTaskList.isCustom">
