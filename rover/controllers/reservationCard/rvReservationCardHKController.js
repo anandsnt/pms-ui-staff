@@ -18,16 +18,22 @@ sntRover.controller('rvReservationCardHKController',
          * Callled when the switch is changed. calls save api
          */
         $scope.toggleService = function() {
-            // any necessary logic
-            $scope.save();
+            var params = {
+                is_room_service_opted: $scope.serviceEnabled
+            };
+            $scope.save(param);
         };
 
         /**
          * Calls save api. fired when selecting task for a work type
          */
-        $scope.selectDefaultTask = function(workType, task) {
-            // any necessary logic
-            $scope.save();
+        $scope.selectDefaultTask = function(workType) {
+            var params = {
+                old_task_id: workType.old_default_task,
+                new_task_id: workType.default_task
+            };
+            workType.old_default_task = workType.default_task;
+            $scope.save(params);
         };
 
         var saveTasksSuccessCallBack = function(data) {
@@ -42,13 +48,11 @@ sntRover.controller('rvReservationCardHKController',
          * [Description]
          * @return {undefined}
          */
-        $scope.save = function() {
+        $scope.save = function(extraParams) {
             // call put api
-            var params = {
-                reservation_id: $scope.reservationData.reservation_card.reservation_id,
-                reservation_tasks: $scope.reservationTasks,
-                is_room_service_opted: $scope.serviceEnabled
-            };
+            var params = _.extend(extraParams, {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id
+            });
 
             var options = {
                 params: params,
@@ -64,6 +68,17 @@ sntRover.controller('rvReservationCardHKController',
             $scope.houseKeeping.serviceEnabled = data.is_room_service_opted;
             $scope.houseKeeping.reservationTasks = data.reservation_tasks;
             $scope.houseKeeping.defaultWorkTyoe = data.default_work_type;
+
+            // pair up data.
+            $scope.houseKeeping.reservationTasks.forEach(function(item) {
+                var workType = _.findWhere($scope.houseKeeping.workTypes, {
+                    id: item.work_type_id
+                });
+                if (workType) {
+                    workType.default_task = item.task_id;
+                    workType.old_default_task = item.task_id;
+                }
+            });
         };
 
         var fetchInitialDataFailureCallBack = function(error) {
@@ -80,7 +95,9 @@ sntRover.controller('rvReservationCardHKController',
                 reservation_id: $scope.reservationData.reservation_card.reservation_id
             };
 
-            $scope.invokeApi(rvReservationHouseKeepingSrv.fetch, params, fetchInitialDataSuccessCallBack, fetchInitialDataFailureCallBack);
+            $scope.invokeApi(rvReservationHouseKeepingSrv.fetch, params,
+                             fetchInitialDataSuccessCallBack,
+                             fetchInitialDataFailureCallBack);
         };
 
         var init = function(){

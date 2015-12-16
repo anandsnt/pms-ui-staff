@@ -27,11 +27,13 @@
         <div class="block-item additional-detail" ng-repeat="workType in houseKeeping.workTypes track by workType.id">
             <h3 class="block-title">{{workType.name}}</h3>
             <div class="select">
-                <select ng-class="{ 'placeholder': false }" ng-model="workType.default"
+                <select ng-class="{ 'placeholder': false }" ng-model="workType.default_task"
                     ng-change="selectDefaultTask(workType)"> <!-- Add attribute "disabled" when status set to No. Add class="placeholder" when no value option is selected -->
                     <option value="">Select Task</option>
                     <!-- .. list tasks -->
-                    <option ng-repeat="task in workType.tasks track by task.id" value="{{task.id}}">{{task.name}}</option>
+                    <option ng-repeat="task in workType.tasks track by task.id" value="{{task.id}}"
+                        ng-selected="task.id == workType.default_task">{{task.name}}
+                    </option>
                     <!-- .. list tasks -->
                 </select>
             </div>
