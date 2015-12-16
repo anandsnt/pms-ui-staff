@@ -4,15 +4,15 @@
 			<div class="wrapper">
 				<div ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
 					<div class="title">
-	                        Date Range
+	                        {{'DATE_RANGE' | translate}}
 	                </div>
 	                <div class="entry">
 	                    <div class="has-datepicker">
-	                        <label for="routing-range-from">From</label>
+	                        <label for="routing-range-from">{{'FROM_DATE' | translate}}</label>
 	                        <input id="routing-range-from" ui-date="routingDateFromOptions" class="range-datepicker" ng-model="routeDates.from" ng-change="onRouteDateChange()" readonly />
 	                    </div>
 	                    <div class="has-datepicker">
-	                        <label for="routing-range-to">To</label>
+	                        <label for="routing-range-to">{{'TO_DATE' | translate}}</label>
 	                        <input id="routing-range-to" ui-date="routingDateToOptions"  class="range-datepicker" ng-model="routeDates.to" ng-change="onRouteDateChange()" readonly />
 	                    </div>
 	                </div>
@@ -42,7 +42,7 @@
                   <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
 				</div>
 
-				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity !== 'GROUP_DEFAULT_BILLING'))">Payment
+				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity !== 'GROUP_DEFAULT_BILLING'))">{{'PAYMENT' | translate}}
 					<button type="button" id="edit-entity" ng-click="editPaymentMethod();" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null">
 						<span class="icons icon-pencil" ></span>
 					</button>
@@ -80,7 +80,7 @@
 				</div>
 
 				<!-- Add new credit card button - remove it when new card is added -->
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity === 'GROUP_DEFAULT_BILLING')) || renderAddedPayment != null">+ New Payment Method</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity === 'GROUP_DEFAULT_BILLING')) || renderAddedPayment != null">{{'NEW_PAYMENT' | translate}}</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
@@ -89,15 +89,15 @@
 				<div ng-show="selectedEntity.entity_type === 'RESERVATION' || selectedEntity.entity_type === 'TRAVEL_AGENT' || selectedEntity.entity_type === 'COMPANY_CARD' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
 					<!-- Posting Amount -->
 	                <div class="title">
-	                    Posting Cap <span>({{currencySymbol}})</span>
+	                    {{'POSTING_CAP' | translate}}<span>({{currencySymbol}})</span>
 	                </div>
 	                <div class="entry">
-	                    <input type="number" ng-model="selectedEntity.credit_limit"/>
+	                    <input type="text" ng-model="selectedEntity.credit_limit"/>
 	                </div>
 
 	                <!-- Reference No. -->
 	                <div class="title">
-	                    Reference Number
+	                    {{'REFERENCE_NUMBER' | translate}}
 	                </div>
 	                <div class="entry" >
 	                    <input type="text" ng-model="selectedEntity.reference_number"/>

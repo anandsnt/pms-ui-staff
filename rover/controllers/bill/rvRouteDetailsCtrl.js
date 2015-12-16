@@ -464,7 +464,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.attachedEntities = [$scope.selectedEntity];
             }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
-            $scope.selectedEntity.credit_limit = parseInt(data.credit_limit);
+            $scope.selectedEntity.credit_limit = data.credit_limit;
             $scope.selectedEntity.reference_number = data.reference_number;
             if(!isEmptyObject(data.credit_card_details)){
 	            $scope.renderAddedPayment = data.credit_card_details;
