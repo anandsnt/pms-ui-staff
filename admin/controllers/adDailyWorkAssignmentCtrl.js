@@ -12,7 +12,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
 		$scope.workShiftClickedElement = -1;
-
+		//Have to change when default task is assigned for all work types.
 		$scope.defaultData = {};
 		$scope.defaultData.defaultTask = 0;
 
@@ -36,7 +36,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.workType = data;
-				//$scope.workType.defaultTask = "";
+				angular.forEach($scope.workType,function(item, index) {
+		            if(item.is_default === true){
+		            	angular.forEach(item.tasks,function(taskItem, taskIndex) {
+		            		$scope.defaultData.defaultTask = taskItem.id;
+		            	});
+		            }
+
+		        });
+
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchWorkType, {}, callback);
@@ -151,21 +159,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.setShowOnStayCard= function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-
 				$scope.workTypeClickedElement = -1;
-
 				fetchWorkType();
 			};
 
 			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
 			this.item.hotel_id = $rootScope.hotelId;
-			// $scope.eachWorkType.id = this.item.id;
-			// $scope.eachWorkType.name = this.item.name;
-			// $scope.eachWorkType.is_show_on_stay_card = this.item.is_show_on_stay_card;
-			// $scope.eachWorkType.is_active = this.item.is_active;
-
-			 $scope.eachWorkType = this.item;
-
+			this.item.default_task_id = $scope.defaultData.defaultTask;
+			$scope.eachWorkType = this.item;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
@@ -543,9 +544,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var dataToSrv = this.item;
 			dataToSrv.default_task_id = $scope.defaultData.defaultTask;
 			dataToSrv.hotel_id = $rootScope.hotelId;
-			console.log(dataToSrv)
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, dataToSrv, successUpdateTask);
-
 		};
 	}
 ]);
