@@ -14,16 +14,49 @@ sntRover.controller('rvReservationCardHKController',
 
         };
 
+        /**
+         * Callled when the switch is changed. calls save api
+         */
         $scope.toggleService = function() {
-            // save data
+            // any necessary logic
+            $scope.save();
         };
 
+        /**
+         * Calls save api. fired when selecting task for a work type
+         */
         $scope.selectDefaultTask = function(workType, task) {
-            // save data
+            // any necessary logic
+            $scope.save();
         };
 
+        var saveTasksSuccessCallBack = function(data) {
+            //
+        };
+
+        var saveTasksFailureCallBack = function(error) {
+            $scope.errorMessage = error;
+        };
+
+        /**
+         * [Description]
+         * @return {undefined}
+         */
         $scope.save = function() {
             // call put api
+            var params = {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                reservation_tasks: $scope.reservationTasks,
+                is_room_service_opted: $scope.serviceEnabled
+            };
+
+            var options = {
+                params: params,
+                successCallBack: saveTasksSuccessCallBack,
+                failureCallBack: saveTasksFailureCallBack
+            };
+
+            $scope.callAPI(rvReservationHouseKeepingSrv.save, options);
         };
 
         var fetchInitialDataSuccessCallBack = function(data) {
