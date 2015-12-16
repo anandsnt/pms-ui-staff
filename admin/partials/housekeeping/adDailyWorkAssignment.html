@@ -54,7 +54,7 @@
 					</td>
 
 					<td header-class="width-20 text-center-important" data-title="'On Stay Card'" class="delete" ng-hide="workTypeClickedElement == $index">
-						<div class="entry">
+						<div class="entry" ng-if="item.is_system">
 							<label></label>
 							<div class="switch-button single"  ng-class="{ on : item.is_show_on_stay_card}" ng-click="setShowOnStayCard()">
 								<input type="checkbox" is_system="item.system_defined" value="" name="" id="" ng-disable="item.is_system">
@@ -96,7 +96,7 @@
 			<tbody>
 				<tr ng-repeat="item in taskList">
 
-					<td header-class="width-30" data-title="'Task'"ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
+					<td header-class="width-30" data-title="'Task'" ng-click="openTaskListForm($index, item.is_system)" ng-hide="taskListClickedElement == $index">
 						<a ng-class="{'bold' : item.is_system}">{{ item.name }}</a>
 						<em ng-if="item.is_system">&nbsp;{{'SYSTEM_DEFINED' | translate }}</em>
 					</td>
@@ -112,12 +112,13 @@
 					<td header-class="width-10" data-title="'Active'" class="activate" ng-hide="taskListClickedElement == $index">
 						<div class="entry" ng-if="!item.is_system">
 							<label></label>
-							<div class="switch-button single"  ng-class="{ on : item.is_active}" ng-click="">
+							<div class="switch-button single"  ng-class="{ on : item.is_active}" ng-click="toggleActiveInactiveTask()">
 								<input type="checkbox" is_system="item.system_defined" value="" name="" id="">
 								<span class="switch-icon"></span>
 							</div>
 						</div>
 					</td>
+
 
 					<td header-class="width-10" data-title="'Delete'" ng-hide="taskListClickedElement == $index" class="delete">
 						<a ng-if="!item.is_system" ng-click="deleteTaskListItem()" class="icons icon-delete large-icon delete_item"></a>
