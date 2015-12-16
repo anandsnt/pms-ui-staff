@@ -27,7 +27,7 @@
 				<div class="entry full-width">
 				    <label for="item-type">Room Type <strong>*</strong></label>
 				    <div class="boxes">
-				        <label class="checkbox inline" ng-repeat="item in roomTypesList">
+				        <label class="checkbox inline" ng-repeat="item in roomTypesList" style="width: 46% !important">
 				            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.room_type_ids[$index]}"></span>
 				            <input type="checkbox" ng-model="eachTaskList.room_type_ids[$index]">
 				            {{ item.name }}
@@ -39,7 +39,7 @@
 			<div class="entry full-width">
 			    <label for="item-type">Reservation status <strong>*</strong></label>
 			    <div class="boxes">
-			        <label class="checkbox inline" ng-repeat="item in resHkStatusList">
+			        <label class="checkbox inline" ng-repeat="item in resHkStatusList" style="width: 29% !important">
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.reservation_statuses_ids[$index]}"></span>
 			            <input type="checkbox" ng-model="eachTaskList.reservation_statuses_ids[$index]">
 			            {{ item.description }}
@@ -49,7 +49,7 @@
 			<div class="entry full-width">
 			    <label for="item-type">Fo status <strong>*</strong></label>
 			    <div class="boxes">
-			        <label class="checkbox inline" ng-repeat="item in foStatusList">
+			        <label class="checkbox inline" ng-repeat="item in foStatusList" style="width: 46% !important">
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.front_office_status_ids[$index]}"></span>
 			            <input type="checkbox" ng-model="eachTaskList.front_office_status_ids[$index]">
 			            {{ item.description }}
