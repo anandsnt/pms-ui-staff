@@ -549,26 +549,26 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				id                           : $scope.eachTaskList.id,
 				rooms_task_completion        : getRoomTaskTimes()
 			};
-			var freqencyParams = {};
-			freqencyParams.monday = false;
-			freqencyParams.tuesday = false;
-			freqencyParams.wednesday = false;
-			freqencyParams.thursday = false;
-			freqencyParams.friday = false;
-			freqencyParams.saturday = false;
-			freqencyParams.sunday = false;
+			var frequencyParams = {};
+			frequencyParams.monday = false;
+			frequencyParams.tuesday = false;
+			frequencyParams.wednesday = false;
+			frequencyParams.thursday = false;
+			frequencyParams.friday = false;
+			frequencyParams.saturday = false;
+			frequencyParams.sunday = false;
 			if($scope.eachTaskList.isWeekDay === true){
-				freqencyParams.monday = true;
-				freqencyParams.tuesday = true;
-				freqencyParams.wednesday = true;
-				freqencyParams.thursday = true;
-				freqencyParams.friday = true;
+				frequencyParams.monday = true;
+				frequencyParams.tuesday = true;
+				frequencyParams.wednesday = true;
+				frequencyParams.thursday = true;
+				frequencyParams.friday = true;
 			}
 			if($scope.eachTaskList.isWeekEnd === true){
-				freqencyParams.saturday = true;
-				freqencyParams.sunday = true;
+				frequencyParams.saturday = true;
+				frequencyParams.sunday = true;
 			}
-			params.freqency = freqencyParams;
+			params.frequency = frequencyParams;
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};

@@ -79,7 +79,55 @@
 			            <input type="checkbox" ng-model="eachTaskList.isCustom">
 			            Custom
 			        </label>
+			        <label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}"></span>
+								<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
+								{{'DELIVER_QR_CODE_FOR_ROOM_KEY' | translate }}
+							</label>
+							 <label class="checkbox inline" >
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isWeekDay}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isWeekDay">
+			            Mon
+			        </label>
+			        <label class="checkbox inline" >
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isWeekEnd}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isWeekEnd">
+			            Tue
+			        </label>
+			        <label class="checkbox inline">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isCustom}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isCustom">
+			            Wed
+			        </label>
+			        <label class="checkbox inline">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isCustom}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isCustom">
+			            Wed
+			        </label>
+			        <label class="checkbox inline">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isCustom}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isCustom">
+			            Wed
+			        </label>
+			        <label class="checkbox inline">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isCustom}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isCustom">
+			            Wed
+			        </label>
+			        <label class="checkbox inline">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.isCustom}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.isCustom">
+			            Wed
+			        </label>
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}"></span>
+								<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="smartphone" name="guest-zest" id="type2" class="change-data">
+								{{'DELIVER_QR_CODE_TO_GUESTZEST_APP' | translate }}
+							</label>
+
+				<input type="text" placeholder="Enter the task name" ng-model="eachTaskList.name"> day(s) after interval
 			    </div>
+
 			</div>
 
 
