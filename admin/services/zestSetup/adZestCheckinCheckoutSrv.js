@@ -13,7 +13,7 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
 
     this.saveEmailSetup = function(data){
         var deferred = $q.defer();
-        var url = '/admin/zest_email_setup';
+        var url = '/admin/zest_email_setups';
 
         ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
                 deferred.resolve(data);
