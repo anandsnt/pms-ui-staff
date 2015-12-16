@@ -686,11 +686,17 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.$emit('hideLoader');
 		};
 		$scope.updateDefaultTask = function(){
-			var dataToSrv = this.item;
-			dataToSrv.id = $scope.defaultData.defaultTask;
-			dataToSrv.hotel_id = $rootScope.hotelId;
-			dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, dataToSrv, successUpdateTask);
+			console.log(this.item)
+			var dataToSrv =
+			{
+				"id" : $scope.defaultData.defaultTask
+			};
+			// var dataToSrv = this.item;
+			// dataToSrv.work_type_id = this.item.id;
+			// dataToSrv.id = $scope.defaultData.defaultTask;
+			// dataToSrv.hotel_id = $rootScope.hotelId;
+			// dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
 		};
 	}
 ]);

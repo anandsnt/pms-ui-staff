@@ -9,7 +9,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
          *  To show/hide Task Management in HK menu
          * @param {object}
          * @return {object} defer promise
-         */ 
+         */
 
         this.setTaskManagementShowInHK = function (params) {
             var deferred = $q.defer(),
@@ -21,6 +21,20 @@ admin.service('ADDailyWorkAssignmentSrv', [
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
+
+            return deferred.promise;
+
+        };
+        this.postDefaultTask = function(params){
+            var deferred = $q.defer(),
+                url = 'api/tasks/'+params.id+'/default_task';
+
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+            });
 
             return deferred.promise;
 
