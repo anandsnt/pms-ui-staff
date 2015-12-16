@@ -18,8 +18,8 @@
 
 	$scope.pageValid = false;
 	var dateToSend = '';
-	if($rootScope.isCheckedin){
-		$state.go('checkinSuccess');
+	if($rootScope.isExternalVerification){
+		$state.go('externalVerification');
 	}
 	else{
 		$scope.pageValid = true;
@@ -28,9 +28,6 @@
 
 	$rootScope.checkedApplyCharges = false;
 	$scope.minDate  = $rootScope.businessDate;
-	$scope.cardDigits = '';
-
-	
 
 	if($scope.pageValid){
 
@@ -56,11 +53,13 @@
 	      }
 	    };
 
+	    //we need a guest token for authentication
+	    //so fetch it with reservation id
 	    var getToken = function(response){
-
-		    // checkinConfirmationService.getToken(data).then(function(tokenData) {
+	    	var data = {"reservation_id":$rootScope.reservationID};
+		    checkinConfirmationService.getToken(data).then(function(tokenData) {
 		    	//set guestweb token
-		    	//$rootScope.accessToken 				= tokenData.guest_web_token;
+		    	$rootScope.accessToken 				= tokenData.guest_web_token;
 
 		    	if(response.is_too_early){
 					$state.go('guestCheckinEarly');
@@ -79,17 +78,19 @@
 					//navigate to next page
 					$state.go('checkinReservationDetails');
 				}	
-			// },function(){
-			// 		$rootScope.netWorkError = true;
-			// 		$scope.isLoading = false;
-			// });
-	    }
+			},function(){
+					$rootScope.netWorkError = true;
+					$scope.isLoading = false;
+			});
+	    };
 
 		//next button clicked actions
 		$scope.nextButtonClicked = function() {
 			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))){
 				
 				var data = {"hotel_identifier":$rootScope.hotelIdentifier}
+
+				//check if all fields are filled
 				if($scope.lastname.length >0){
 					data.last_name = $scope.lastname;
 				}
@@ -127,11 +128,10 @@
 						$rootScope.netWorkError = true;
 						$scope.isLoading = false;
 					});
-				}
-				else{
-					$modal.open($scope.errorOpts);
-				}
-			
+			}
+			else{
+				$modal.open($scope.errorOpts);
+			};
 		};
 
 		$scope.tryAgain = function(){

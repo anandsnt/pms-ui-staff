@@ -54,7 +54,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 
 
 
- 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true") ?true:false;
+ 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true" && $attrs.isZestEmailCheckin ==="true") ?true:false;
  	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestEmailCheckinNoServiceMsg;
  	$rootScope.termsAndConditions = $attrs.termsAndConditions;
 
