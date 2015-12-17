@@ -156,7 +156,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.skipKeys = function(){
-            if ($state.emailEnabled || $state.printEnabled){
+            if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
                 $state.go('zest_station.delivery_options');
             } else {
                 $state.go('zest_station.last_confirm');
@@ -273,8 +273,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 
         $scope.init = function(){
             var current = $state.current.name;
-            $scope.emailEnabled = $state.emailEnabled;
-            $scope.printEnabled = $state.printEnabled;
+            $scope.emailEnabled = $scope.zestStationData.emailEnabled;
+            $scope.printEnabled = $scope.zestStationData.printEnabled;
             
             if (!$scope.input){
                 $scope.input = $state.input;
@@ -285,7 +285,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.last_confirm'){
                 
-                if ($state.emailEnabled || $state.printEnabled){
+                if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
                     $scope.headingText = "The e-mail is now living in your inbox.";
                     $scope.subHeadingText = $scope.getLastInputEmail();
                 } else {
