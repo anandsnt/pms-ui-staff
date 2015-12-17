@@ -812,6 +812,52 @@
                 .no-view,
                 select { width: 100%; }
 
+                /* Toggle ***/
+                .switch-button {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    margin-top: 5px;
+                    #border-radius > .rounded(40px);
+                    .size(40px, 50%);
+
+                    input[type="checkbox"] { 
+                        line-height: 40px;
+                        .size(40px, 100%);
+                    }   
+
+                    .data-off,
+                    .data-on {
+                        left: auto;
+                        line-height: 30px;
+                        height: 30px;
+
+                        &.data-off { 
+                            right: -100%;
+
+                            .switch-icon { 
+                                margin: 0 5px 0 0; 
+                                .gradient(@greenStart, @greenEnd);                                    
+                            }
+                        }
+                        
+                        &.data-on { 
+                            right: 0;
+
+                            .switch-icon { 
+                                margin: 0 0 0 5px; 
+                                .gradient(@redStart, @redEnd);
+
+                                &.grey { .gradient(@grey2, @grey4); }
+                            }
+                        }
+                    }
+
+                    &.on {
+                        .data-off { right: 0; }
+                        .data-on { right: 100%; }
+                    }
+                }
+
                 /* Actions / Notes / Group **/
                 &.item-actions,
                 &.item-notes { 
@@ -865,58 +911,17 @@
                 &.additional-detail { 
                     .calc-width(50, 10); 
 
-                    &:nth-child(odd) { margin-right: 0; }
+                    &:nth-child(even) { margin-right: 0; }
                 }
 
                 &.item-commission {
                     .entry {
                         .float;
 
-                        .switch-button {
-                            font-size: 14px;
-                            text-transform: uppercase;
+                        .switch-button { 
                             margin-right: 10px;
-                            height: 50px;
-                            #border-radius > .rounded(50px);
                             .calc-width(100, 160);
                             .pull-left;
-
-                            input[type="checkbox"] { 
-                                line-height: 50px;
-                                .size(50px, 100%);
-                            }   
-
-                            .data-off,
-                            .data-on {
-                                left: auto;
-                                line-height: 40px;
-                                height: 40px;
-
-                                &.data-off { 
-                                    right: -100%;
-
-                                    .switch-icon { 
-                                        margin: 0 5px 0 0; 
-                                        .gradient(@greenStart, @greenEnd);                                    
-                                    }
-                                }
-                                
-                                &.data-on { 
-                                    right: 0;
-
-                                    .switch-icon { 
-                                        margin: 0 0 0 5px; 
-                                        .gradient(@redStart, @redEnd);
-
-                                        &.grey { .gradient(@grey2, @grey4); }
-                                    }
-                                }
-                            }
-
-                            &.on {
-                                .data-off { right: 0; }
-                                .data-on { right: 100%; }
-                            }
                         }
 
                         input {
