@@ -18,6 +18,14 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                 }
             }
         };
+        $scope.getEmvDescription = function(id){
+            var e = $scope.emv_terminals;
+            for (var i in e){
+                if (e[i].id === id){
+                    return e[i].name;
+                }
+            }
+        };
 	$scope.listDevices = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
@@ -29,6 +37,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                         
                         for (var i in data.work_stations){//pull in the description of the key encoder
                             data.work_stations[i].key_encoder_description = $scope.getKeyEncoderDescription(data.work_stations[i].key_encoder_id);
+                            data.work_stations[i].emv_name = $scope.getEmvDescription(data.work_stations[i].emv_terminal_id);
                         }
                         
 			$scope.data = data.work_stations;
@@ -115,6 +124,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	 	var successCallbackRender = function(data){
 	 		$scope.mapping = data;
                         $scope.mapping.selectedKeyEncoder = data.key_encoder_id;
+                        $scope.mapping.selectedEmvTerminal = data.emv_terminal_id;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	$scope.mapping.id = id;
@@ -190,6 +200,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
              $scope.data[parseInt($scope.currentClickedElement)].emv_terminal_id = $scope.mapping.selectedEmvTerminal;
              $scope.data[parseInt($scope.currentClickedElement)].default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
              $scope.data[parseInt($scope.currentClickedElement)].key_encoder_description = $scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder);
+             $scope.data[parseInt($scope.currentClickedElement)].emv_name = $scope.getEmvDescription($scope.mapping.selectedEmvTerminal);
         };
         $scope.addWorkstationRenderData = function(successData){
                 // // To add new data to scope
