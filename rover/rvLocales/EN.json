@@ -448,7 +448,7 @@
     "CANCEL": "Cancel",
     "COMPANY_CARD_DETACH_BILLING_INFO_WARNING": "Removing card may update Billing and Rate Information",
     "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity.",
-    "PAYMENT_TERMS" : "Payment Terms (Due Days)",
+    "PAYMENT_TERMS" : "Payment Due (Days)",
     "TAX_ID" : "Tax ID"
 ,    
     
@@ -678,7 +678,7 @@
 	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
 
 
-,	
+,
 
 	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Dept. / House",
 	"ALL_DEPARTMENTS":"All Departments",
@@ -729,7 +729,8 @@
 	"OPENING" : "Opening",
 	"DEBIT" : "Debit",
 	"CREDIT" : "Credit",
-	"CLOSING" : "Closing",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"CLOSING" : "Closing",
+	"CHARGE_DESCRIPTION" : "Charge Description",    "PRINT_ROOM_KEY" : "Print Room Key",
     "PRINT_NEW_ROOM_KEY" : "Print New Key(s)",
     "PRINT_DUPLICATE_ROOM_KEY" : "Duplicate Key(s)",
     "WILL_NOT_VALIDATE_PREVIOUS" : " Will Not ",

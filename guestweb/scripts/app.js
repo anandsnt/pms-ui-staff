@@ -52,6 +52,17 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
  	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
  	$rootScope.isGuestAddressVerified =  false;
 
+ 	$rootScope.guestBirthdateOn = ($attrs.birthdateOn === 'true') ? true :false;
+ 	$rootScope.guestBirthdateMandatory = ($attrs.birthdateMandatory === 'true') ? true :false;
+	$rootScope.guestPromptAddressOn = ($attrs.promptForAddressOn === 'true') ? true :false;
+	$rootScope.minimumAge = parseInt($attrs.minimumAge);
+	$rootScope.primaryGuestId = $attrs.primaryGuestId;
+
+
+ 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true") ?true:false;
+ 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestEmailCheckinNoServiceMsg;
+ 	$rootScope.termsAndConditions = $attrs.termsAndConditions;
+
 
     //Params for zest mobile and desktop screens
     if($attrs.hasOwnProperty('isPasswordReset')){
@@ -71,7 +82,13 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 		$rootScope.accessToken = $attrs.accessToken	;
 	}
 	//navigate to different pages
-	if($attrs.isExternalVerification ==="true"){
+	if($attrs.checkinUrlVerification === "true" && $attrs.isZestEmailCheckin ==="false"){
+		$location.path('/guestCheckinTurnedOff');
+	}
+	else if($attrs.checkinUrlVerification === "true"){
+		$location.path('/externalCheckinVerification');
+	}
+	else if($attrs.isExternalVerification ==="true"){
 		$location.path('/externalVerification');
 	}
 	else if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
