@@ -641,7 +641,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		};
 		$scope.handleFrequencySetting = function(type){
-			console.log($scope.eachTaskList)
 			setTimeout(function(){
 				if(type === "custom"){
 					$scope.eachTaskList.isWeekDay = $scope.eachTaskList.isWeekEnd = !$scope.eachTaskList.isCustom;
@@ -676,9 +675,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			});
 		};
 		$scope.toggleActiveInactiveTask = function(){
-			console.log(this.item)
-			var params = this.item;
-			params.is_active = !this.item.is_active;
+			var params = {};
+			this.item.is_active = !this.item.is_active;
+			angular.copy(this.item , params);
 			params.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
 		}
@@ -686,7 +685,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.$emit('hideLoader');
 		};
 		$scope.updateDefaultTask = function(){
-			console.log(this.item)
 			var dataToSrv =
 			{
 				"id" : $scope.defaultData.defaultTask
