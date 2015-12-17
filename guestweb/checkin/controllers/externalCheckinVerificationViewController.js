@@ -113,7 +113,10 @@
 						$rootScope.isPrecheckinOnly = (response.is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
 						$rootScope.isAutoCheckinOn = response.is_auto_checkin && $rootScope.isPrecheckinOnly;						
 						//retrieve token for guest
-						if(response.results[0].is_too_early){
+						if(response.results[0].is_checked_in === "true"){
+							$state.go('checkinSuccess');
+						}
+						else if(response.results[0].is_too_early){
 							$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
 						}
 						else if(response.results[0].is_too_late){
