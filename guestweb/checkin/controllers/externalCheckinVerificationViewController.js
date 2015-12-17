@@ -97,11 +97,14 @@
 				//call service
 				checkinConfirmationService.searchReservation(data).then(function(response) {
 					$scope.isLoading = false;
-
-					if(response.results.length ===0){ // No match
+					var noMatchAction = function(){
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= true;
 						$scope.multipleResults 	= false;
+					};
+
+					if(response.results.length ===0){ // No match
+						noMatchAction();
 					}else if(response.results.length >=2) //Multiple matches
 					{
 						$scope.searchMode 		= false;
@@ -113,7 +116,13 @@
 						$rootScope.isPrecheckinOnly = (response.is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
 						$rootScope.isAutoCheckinOn = response.is_auto_checkin && $rootScope.isPrecheckinOnly;						
 						//retrieve token for guest
-						if(response.results[0].is_checked_in === "true"){
+						if(response.results[0].reservation_status ==='CANCELED'){
+							noMatchAction();
+						}
+						else if(response.results[0].reservation_status ==='NOSHOW'){
+							$state.go('guestCheckinLate');
+						}
+						else if(response.results[0].is_checked_in === "true"){
 							$state.go('checkinSuccess');
 						}
 						else if(response.results[0].is_too_early){
