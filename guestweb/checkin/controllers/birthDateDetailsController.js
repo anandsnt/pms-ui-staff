@@ -88,6 +88,11 @@
 			}		
 		};
 
+
+		$scope.yearOrMonthChanged = function(){
+			$scope.guestDetails.day = "";
+		};
+
 		function getAge(birthDateString) {
 		    var today = new Date();
 		    var birthDate = new Date(birthDateString);
