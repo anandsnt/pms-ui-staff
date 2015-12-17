@@ -58,29 +58,20 @@
 	    var getToken = function(response){
 	    	var data = {"reservation_id":$rootScope.reservationID};
 		    checkinConfirmationService.getToken(data).then(function(tokenData) {
-		    	//set guestweb token
-		    	$rootScope.accessToken 				= tokenData.guest_web_token;
-
-		    	if(response.results[0].is_too_early){
-					$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
-				}
-				else if(response.results[0].is_too_late){
-					$state.go('guestCheckinLate');
-				}
-				else{
-					// display options for room upgrade screen
-					$rootScope.ShowupgradedLabel = false;
-					$rootScope.roomUpgradeheading = "Your trip details";
-					$scope.isResponseSuccess = true;
-					response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
-					checkinDetailsService.setResponseData(response.results[0]);
-					$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
-					//navigate to next page
-					$state.go('checkinReservationDetails');
-				}	
+	    		//set guestweb token
+	    		$rootScope.accessToken 				= tokenData.guest_web_token;
+				// display options for room upgrade screen
+				$rootScope.ShowupgradedLabel = false;
+				$rootScope.roomUpgradeheading = "Your trip details";
+				$scope.isResponseSuccess = true;
+				response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
+				checkinDetailsService.setResponseData(response.results[0]);
+				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
+				//navigate to next page
+				$state.go('checkinReservationDetails');
 			},function(){
-					$rootScope.netWorkError = true;
-					$scope.isLoading = false;
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
 			});
 	    };
 
@@ -119,10 +110,18 @@
 					}
 					else{
 						$rootScope.reservationID = response.results[0].reservation_id;
-						$rootScope.isPrecheckinOnly = (response.results[0].is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
-						$rootScope.isAutoCheckinOn = response.results[0].is_auto_checkin && $rootScope.isPrecheckinOnly;						
+						$rootScope.isPrecheckinOnly = (response.is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
+						$rootScope.isAutoCheckinOn = response.is_auto_checkin && $rootScope.isPrecheckinOnly;						
 						//retrieve token for guest
-						getToken(response);
+						if(response.results[0].is_too_early){
+							$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
+						}
+						else if(response.results[0].is_too_late){
+							$state.go('guestCheckinLate');
+						}
+						else{
+							getToken(response);
+						};
 					};
 				},function(){
 						$rootScope.netWorkError = true;
