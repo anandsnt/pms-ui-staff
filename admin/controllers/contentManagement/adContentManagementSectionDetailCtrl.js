@@ -42,7 +42,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			$scope.sntProducts = data;
 			
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {} , fetchSectionSuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {} , fetchSntProductsSuccessCallback);
 	};
 
     /*Function to fetch the section details
