@@ -96,7 +96,7 @@
 				$scope.isLoading 		 = true;
 				//call service
 				checkinConfirmationService.searchReservation(data).then(function(response) {
-					$scope.isLoading = false;
+					
 					var noMatchAction = function(){
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= true;
@@ -104,34 +104,40 @@
 					};
 
 					if(response.results.length ===0){ // No match
+						$scope.isLoading = false;
 						noMatchAction();
 					}else if(response.results.length >=2) //Multiple matches
 					{
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= false;
 						$scope.multipleResults 	= true;
+						$scope.isLoading = false;
 					}
-					else{
-						$rootScope.reservationID = response.results[0].reservation_id;
-						$rootScope.isPrecheckinOnly = (response.is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
-						$rootScope.isAutoCheckinOn = response.is_auto_checkin && $rootScope.isPrecheckinOnly;						
-						//retrieve token for guest
+					else{						
+						//if reservation status is CANCELED -> No matches
 						if(response.results[0].reservation_status ==='CANCELED'){
+							$scope.isLoading = false;
 							noMatchAction();
 						}
-						else if(response.results[0].reservation_status ==='NOSHOW'){
+						//if reservation status is NOSHOW or to too late -> No matches
+						else if(response.results[0].reservation_status ==='NOSHOW' || response.results[0].is_too_late){
 							$state.go('guestCheckinLate');
 						}
+						//if reservation is aleady checkin
 						else if(response.results[0].is_checked_in === "true"){
 							$state.go('checkinSuccess');
 						}
+						//if reservation is early checkin
 						else if(response.results[0].is_too_early){
 							$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
 						}
-						else if(response.results[0].is_too_late){
-							$state.go('guestCheckinLate');
-						}
 						else{
+							//retrieve token for guest
+							$scope.isLoading = false;
+							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
+							$rootScope.reservationID 	= response.results[0].reservation_id;
+							$rootScope.isPrecheckinOnly = (response.is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
+							$rootScope.isAutoCheckinOn 	= response.is_auto_checkin && $rootScope.isPrecheckinOnly;
 							getToken(response);
 						};
 					};
