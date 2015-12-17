@@ -91,6 +91,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.maxRoomCount = maxRoomCount;
 
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.reservationData.roomsMeta = {};
+            _.each(baseSearchData.roomTypes,function(room){
+                $scope.reservationData.roomsMeta[room.id] = room;
+            });
+            
             $scope.otherData.fromSearch = false;
             $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
             $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;

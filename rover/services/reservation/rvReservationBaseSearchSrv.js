@@ -274,6 +274,39 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
+
+        this.fetchTaxInformation = function(){
+            var deferred = $q.defer(),
+                url = 'api/rates/tax_information';
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response.tax_codes);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchTaxRateAddonMeta = function(params){
+            var deferred = $q.defer(),
+                promises = [];
+
+            that['meta'] = {};
+
+            promises.push(that.fetchTaxInformation().then(function(response){
+                that['meta']['tax-info'] = response;
+            }));
+            promises.push(that.fetchAddonsForRates(params).then(function(response){
+                that['meta']['rate-addons'] = response;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve(that['meta']);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
     }
 ]);

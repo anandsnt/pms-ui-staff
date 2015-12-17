@@ -1,11 +1,12 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'sortOrder', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state',
-	function($rootScope, $scope, sortOrder, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state) {
+	'$rootScope', '$scope', 'sortOrder', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService',
+	function($rootScope, $scope, sortOrder, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService) {
 
 
 		$scope.stateCheck = {
 			baseInfo: rates,
 			activeMode: $stateParams.view && $stateParams.view === "CALENDAR" ? "CALENDAR" : "ROOM_RATE",
+			stayDatesMode: false,
 			calendarState: {
 				showOnlyAvailableRooms: true,
 				searchWithRestrictions: true,
@@ -13,7 +14,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			},
 			roomDetails: {},
 			preferredType: "",
-			lookUp: {}
+			lookUp: {},
+			taxInfo: null
 		};
 
 		$scope.display = {
@@ -61,19 +63,20 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if (!roomTypes[roomType.id]) {
 							roomTypes[currentRoomType] = {
 								id: currentRoomType,
-								name: currentRoomType,
+								name: $scope.reservationData.roomsMeta[currentRoomType].name,
 								rates: {}
 							};
 						}
 
 						roomTypes[currentRoomType].rates[currentRate] = {
-							name: currentRate,
+							name: $scope.reservationData.ratesMeta[currentRate].name,
 							id: currentRate,
 							adr: 0.0,
 							totalAmount: 0.0,
 							isSuppressed: false,
 							isCorporate: false,
-							dates: {}
+							dates: {},
+							showDays: false
 						}
 
 						//for every day
@@ -225,10 +228,38 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			});
 		};
 
+		$scope.getAllRestrictions = function(roomId, rateId) {
+			var restrictions = [];
+			return restrictions;
+		};
+
 		$scope.refreshScroll = function() {
 			$timeout(function() {
 				$scope.refreshScroller('room_types');
 			}, 100);
+		};
+
+		$scope.getBookButtonStyle = function(roomId, rateId) {
+			// If the rate is a contracted rate and it is restricted
+			// if ($scope.stateCheck.restrictedContractedRates[roomId] && $scope.stateCheck.restrictedContractedRates[roomId].indexOf(rateId) > -1) {
+			// 	return 'red';
+			// }
+
+			if (!$scope.stateCheck.stayDatesMode) {
+				if ($scope.getAllRestrictions(roomId, rateId).length > 0) {
+					return 'brand-colors'
+				} else {
+					return 'green'
+				}
+			} else { //Staydates mode
+				if ($scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate] &&
+					$scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate][rateId] &&
+					$scope.roomAvailability[roomId].ratedetails[$scope.stateCheck.dateModeActiveDate][rateId].restrictions.length > 0) {
+					return 'white brand-text'
+				} else {
+					return 'white green-text'
+				}
+			}
 		};
 
 		$scope.handleBooking = function(roomId, rateId, event, flag) {
@@ -265,11 +296,46 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 		};
 
-
-
 		// ROOM RATE VIEW HANDLERS
+		$scope.viewRateBreakUp = function(rate, room) {
+			var computeDetails = function() {
+				_.each(rate.dates, function(dayInfo, date) {
+					var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(date, rate.id, 1, 0, $scope.reservationData.arrivalDate, $scope.reservationData.departureDate, $scope.activeRoom);
+					_.extend(dayInfo, {
+						addon: taxAddonInfo.addon,
+						inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
+						taxes: {
+							incl: 5,
+							excl: 2
+						},
+						total: 5
+					})
+				});
+			};
 
+			if (!rate.showDays && $scope.stateCheck.taxInfo === null) {
+				$scope.invokeApi(RVReservationBaseSearchSrv.fetchTaxRateAddonMeta, {
+					from_date: $scope.reservationData.arrivalDate,
+					to_date: $scope.reservationData.departureDate
+				}, function(response) {
+					$scope.stateCheck.taxInfo = true;
+					RVReservationStateService.metaData.taxDetails = angular.copy(response['tax-info']);
+					RVReservationStateService.metaData.rateAddons = angular.copy(response['rate-addons']);
+					$scope.$emit('hideLoader');
+					computeDetails();
+					rate.showDays = !rate.showDays;
+					$scope.refreshScroller();
 
+				})
+			} else {
+				if (!rate.showDays) {
+					// TODO: Do this IFF this hasn't been done before
+					computeDetails();
+				}
+				rate.showDays = !rate.showDays;
+				$scope.refreshScroller();
+			}
+		};
 
 		// CALENDAR VIEW HANDLERS
 
