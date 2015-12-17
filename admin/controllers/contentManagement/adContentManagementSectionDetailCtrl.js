@@ -16,7 +16,8 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	            "is_description_visible":false,
 	            "description_alignment": "",
 	            "description": "",
-	            "is_search_enabled": false
+	            "is_search_enabled": false,
+	            "product": ""
             };
 
 
