@@ -39,7 +39,7 @@
 
 					<h2>{{selectedEntity.name}}</h2>
 					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
-                  <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
+                  	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
 				</div>
 
 				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity !== 'GROUP_DEFAULT_BILLING'))">{{'PAYMENT' | translate}}
