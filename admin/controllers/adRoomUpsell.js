@@ -13,11 +13,15 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     $scope.fetchUpsellDetails = function () {
       var fetchRoomUpsellDetailsSuccessCallback = function (data) {
         $scope.$emit('hideLoader');
-        console.info('upsell data: ',data)
         $scope.upsellData = data;
         $scope.levelOne = $scope.upsellData.upsell_room_levels[0].room_types;
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
+        
+        if (typeof $scope.upsellData.next_day_selected_charge_code_id === typeof 123){
+            $scope.upsellData.selected_next_day_charge_code_id = $scope.upsellData.next_day_selected_charge_code_id;
+        }
+        
         if (typeof $scope.upsellData.next_day_room_types_list !== typeof []){
             $scope.upsellData.next_day_room_types_list = angular.copy($scope.upsellData.room_types_list);
         }
@@ -108,7 +112,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             n = 'next_day_room_types', s = 'next_day_selected_room_type';
         }
         //While addig a room type, making its max_los defaults to 0.
-        console.info('in..'+n+',   .....  ',$scope.upsellData[n])
         angular.forEach($scope.upsellData[n], function (item, index) {
             if (item.id === parseInt($scope.upsellData[s])) {
               item.max_los = 0;//this makes the added room type visible in the ui
@@ -192,7 +195,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       
       data.upsell_amounts = $scope.upsellData.upsell_amounts;
       data.next_day_upsell_amounts = $scope.upsellData.next_day_upsell_amounts;
-      console.log('amounts: ',$scope.upsellData.next_day_upsell_amounts)
       data.charge_code = $scope.upsellData.selected_charge_code_id;
       data.next_day_charge_code = $scope.upsellData.selected_next_day_charge_code_id;
       data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
@@ -226,7 +228,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
 
         var updateRoomUpsellSuccessCallback = function (data) {
               $scope.$emit('hideLoader');
-              console.info('data: ',data);
               $scope.successMessage = "Success";
         };
         var updateRoomUpsellFailCallback = function (data) {
