@@ -61,10 +61,10 @@
 		    	//set guestweb token
 		    	$rootScope.accessToken 				= tokenData.guest_web_token;
 
-		    	if(response.is_too_early){
-					$state.go('guestCheckinEarly');
+		    	if(response.results[0].is_too_early){
+					$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
 				}
-				else if(response.is_too_late){
+				else if(response.results[0].is_too_late){
 					$state.go('guestCheckinLate');
 				}
 				else{
@@ -171,3 +171,7 @@ sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies
 })();
 
 
+sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope','$stateParams',
+ function($scope,$stateParams) {
+ 	$scope.checkinAvailableDateAfter = $stateParams.date;
+ }]);
