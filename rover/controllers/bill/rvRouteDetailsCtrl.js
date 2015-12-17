@@ -794,6 +794,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.setReloadOption(true);
                 $scope.headerButtonClicked();
                 $scope.$parent.$emit('BILLINGINFOADDED');
+                //Added for CICO-23210
+                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
             };
             $scope.errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
