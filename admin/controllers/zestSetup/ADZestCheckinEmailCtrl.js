@@ -69,7 +69,7 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope', '$state', 'adZestCheckinChe
             };
             $scope.callAPI(adZestCheckinCheckoutSrv.saveEmailSetup, {
                 params: {
-                    'zest_station_setup': $scope.data.zest_station_setup
+                    'zest_email_setup': $scope.data.zest_email_setup
                 },
                 successCallBack: 	    onSuccess,
                 failureCallBack:        $scope.failureCallBack

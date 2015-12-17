@@ -2,7 +2,7 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
     //Email Check-in
     this.fetchEmailSetup = function(data){
         var deferred = $q.defer();
-        var url = '/admin/zest_station_setups';
+        var url = '/admin/zest_email_setups.json';
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
         },function(data){
@@ -13,7 +13,7 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
 
     this.saveEmailSetup = function(data){
         var deferred = $q.defer();
-        var url = '/admin/zest_station_setups';
+        var url = '/admin/zest_email_setups';
 
         ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
                 deferred.resolve(data);

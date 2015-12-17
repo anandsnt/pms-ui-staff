@@ -1,0 +1,173 @@
+/*
+	External Checkin confimation Ctrl 
+	The user enetered last name ,departure date or conf number are verified.
+	The reservation details will be the  in the API response of the verification API.
+*/
+
+(function() {
+	var externalCheckinVerificationViewController = 
+	function($scope,
+		$modal,
+		$rootScope,
+		$state, 
+		dateFilter,
+		$filter,
+		checkinConfirmationService,
+		checkinDetailsService) {
+
+
+	$scope.pageValid = false;
+	var dateToSend = '';
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else{
+		$scope.pageValid = true;
+	}
+	//uncheck checkbox in reservation details page
+
+	$rootScope.checkedApplyCharges = false;
+	$scope.minDate  = $rootScope.businessDate;
+	$scope.cardDigits = '';
+
+	
+
+	if($scope.pageValid){
+
+		//set up flags related to webservice
+		$scope.isLoading 		 	= false;
+		$rootScope.netWorkError  	= false;
+		$scope.searchMode      		= true;
+		$scope.noMatch    			= false;
+		$scope.multipleResults 		= false;
+		$scope.lastname         	= "";
+		$scope.confirmationNumber 	= "";
+
+
+		 $scope.errorOpts = {
+	      backdrop: true,
+	      backdropClick: true,
+	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
+	      controller: ccVerificationModalCtrl,
+	      resolve: {
+	        errorMessage:function(){
+	          return "Please fill all the required fields";
+	        }
+	      }
+	    };
+
+	    var getToken = function(response){
+
+		    // checkinConfirmationService.getToken(data).then(function(tokenData) {
+		    	//set guestweb token
+		    	//$rootScope.accessToken 				= tokenData.guest_web_token;
+
+		    	if(response.is_too_early){
+					$state.go('guestCheckinEarly');
+				}
+				else if(response.is_too_late){
+					$state.go('guestCheckinLate');
+				}
+				else{
+					// display options for room upgrade screen
+					$rootScope.ShowupgradedLabel = false;
+					$rootScope.roomUpgradeheading = "Your trip details";
+					$scope.isResponseSuccess = true;
+					response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
+					checkinDetailsService.setResponseData(response.results[0]);
+					$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
+					//navigate to next page
+					$state.go('checkinReservationDetails');
+				}	
+			// },function(){
+			// 		$rootScope.netWorkError = true;
+			// 		$scope.isLoading = false;
+			// });
+	    }
+
+		//next button clicked actions
+		$scope.nextButtonClicked = function() {
+			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))){
+				
+				var data = {"hotel_identifier":$rootScope.hotelIdentifier}
+				if($scope.lastname.length >0){
+					data.last_name = $scope.lastname;
+				}
+				if($scope.confirmationNumber.length>0){
+					data.alt_confirmation_number = $scope.confirmationNumber;
+				}
+				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0){
+					data.departure_date  = $scope.departureDate;
+				}
+
+				
+				$scope.isLoading 		 = true;
+				//call service
+				checkinConfirmationService.searchReservation(data).then(function(response) {
+					$scope.isLoading = false;
+
+					if(response.results.length ===0){ // No match
+						$scope.searchMode 		= false;
+						$scope.noMatch    		= true;
+						$scope.multipleResults 	= false;
+					}else if(response.results.length >=2) //Multiple matches
+					{
+						$scope.searchMode 		= false;
+						$scope.noMatch    		= false;
+						$scope.multipleResults 	= true;
+					}
+					else{
+						$rootScope.reservationID = response.results[0].reservation_id;
+						$rootScope.isPrecheckinOnly = (response.results[0].is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
+						$rootScope.isAutoCheckinOn = response.results[0].is_auto_checkin && $rootScope.isPrecheckinOnly;						
+						//retrieve token for guest
+						getToken(response);
+					};
+				},function(){
+						$rootScope.netWorkError = true;
+						$scope.isLoading = false;
+					});
+				}
+				else{
+					$modal.open($scope.errorOpts);
+				}
+			
+		};
+
+		$scope.tryAgain = function(){
+			$scope.searchMode      = true;
+			$scope.noMatch    		= false;
+			$scope.multipleResults 	= false;
+		};
+
+		// moved date picker controller logic
+		$scope.isCalender = false;
+		$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
+
+		$scope.showCalender = function(){
+			$scope.isCalender = true;
+		};
+		$scope.closeCalender = function(){
+			$scope.isCalender = false;
+		};
+		$scope.dateChoosen = function(){
+			$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
+			$rootScope.departureDate = $scope.selectedDate;
+
+			dateToSend = dclone($scope.date,[]);
+			dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+			$scope.closeCalender();
+		};
+	}
+};
+
+var dependencies = [
+'$scope','$modal','$rootScope','$state', 'dateFilter', '$filter', 'checkinConfirmationService','checkinDetailsService',
+externalCheckinVerificationViewController
+];
+
+sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies);
+})();
+
+
