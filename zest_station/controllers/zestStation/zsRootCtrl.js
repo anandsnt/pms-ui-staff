@@ -172,9 +172,8 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
                 //set print and email options set from hotel settings > Zest > zest station
-                $state.printEnabled = $scope.zestStationData.guest_bill.print;
-                $state.emailEnabled = $scope.zestStationData.guest_bill.email;
-                //$scope.fetchKeyEncoderList(); //using workstations instead
+                $scope.zestStationData.printEnabled = $scope.zestStationData.guest_bill.print;
+                $scope.zestStationData.emailEnabled = $scope.zestStationData.guest_bill.email;
 	};
         
     $scope.toggleOOS = function(){

@@ -233,7 +233,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             if ($scope.isInPickupKeyMode()){
                 $state.go ('zest_station.home');
             } else {
-                if ($state.emailEnabled || $state.printEnabled){
+                if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
                     $state.go('zest_station.delivery_options');
                 } else {
                     $state.go('zest_station.last_confirm');
