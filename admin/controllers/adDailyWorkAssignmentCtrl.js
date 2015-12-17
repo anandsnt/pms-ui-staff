@@ -307,7 +307,12 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var resHkCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.resHkStatusList = data;
+
+				angular.forEach(data,function(item, index) {
+		           item.is_disabled = false;// Added for CICO-12563
+		        });
+		        $scope.resHkStatusList = data;
+
 			};
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchResHkStatues, {}, resHkCallback);
 
@@ -697,6 +702,32 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			// dataToSrv.hotel_id = $rootScope.hotelId;
 			// dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
+		};
+
+		$scope.onChangeWorkType = function(){
+
+			console.log($scope.eachTaskList.work_type_id)
+			//$scope.resHkStatusList
+
+			var reservation_statuses_ids_array = [];
+
+			angular.forEach($scope.resHkStatusList,function(item, index) {
+				console.log(item);
+				console.log("-------------")
+	            if(item.value === "DUEOUT" || item.value === "DEPARTED"){
+	            	console.log("========"+item.id+">>>>"+item.value)
+
+	            	item.is_disabled = false;
+	            	reservation_statuses_ids_array.push(item.id);
+	            } else {
+	            	console.log("========"+item.id+">>>>"+item.value)
+	            	item.is_disabled = true;
+	            }
+
+	        });
+	        $scope.eachTaskList.reservation_statuses_ids    = applyIds( $scope.resHkStatusList, reservation_statuses_ids_array)
+	        console.log($scope.eachTaskList.reservation_statuses_ids)
+
 		};
 	}
 ]);

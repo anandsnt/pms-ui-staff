@@ -18,9 +18,15 @@
 				<div class="entry" style="padding-left:10px">
 					<label>Work Type <strong> * </strong></label>
 					<div class="select">
-						<select class="daily-task-worktype" ng-model="eachTaskList.work_type_id" ng-options="item.id as item.name for item in workType">
+
+						<select class="daily-task-worktype" ng-model="eachTaskList.work_type_id" ng-change="onChangeWorkType()" ng-options="item.id as item.name for item in workType">
 							<option value="" class="placeholder">Choose work type</option>
 						</select>
+						<!-- <select ng-model="eachTaskList.work_type_id" class="placeholder" ng-change="onChangeWorkType()">
+							<option value=""> Select </option>
+							<option ng-repeat="item in workType" value="{{item.id}}##{{}}" ng-selected="task.is_default"> {{item.name}} </option>
+
+						</select> -->
 					</div>
 				</div>
 
@@ -40,8 +46,8 @@
 			    <label for="item-type">Reservation status <strong>*</strong></label>
 			    <div class="boxes">
 			        <label class="checkbox inline" ng-repeat="item in resHkStatusList" style="width: 29% !important">
-			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.reservation_statuses_ids[$index]}"></span>
-			            <input type="checkbox" ng-model="eachTaskList.reservation_statuses_ids[$index]">
+			            <span class="icon-form icon-checkbox"  ng-class="{'checked' : eachTaskList.reservation_statuses_ids[$index]}"></span>
+			            <input type="checkbox" ng-disabled="item.is_disabled" ng-model="eachTaskList.reservation_statuses_ids[$index]">
 			            {{ item.description }}
 			        </label>
 			    </div>
@@ -128,7 +134,7 @@
 									By Stay Day
 						</label>
 						<span ng-show="eachTaskList.customBy == 'stayday'">
-							<input type="text" placeholder="Enter interval" ng-model="eachTaskList.frequency.days"> 
+							<input type="text" placeholder="Enter interval" ng-model="eachTaskList.frequency.days">
 								day(s) after interval
 						</span>
 			     	</span>
