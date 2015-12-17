@@ -706,23 +706,57 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			console.log($scope.eachTaskList.work_type_id)
 			//$scope.resHkStatusList
-
-			var reservation_statuses_ids_array = [];
-
-			angular.forEach($scope.resHkStatusList,function(item, index) {
-				console.log(item);
-				console.log("-------------")
-	            if(item.value === "DUEOUT" || item.value === "DEPARTED"){
-	            	console.log("========"+item.id+">>>>"+item.value)
-
-	            	item.is_disabled = false;
-	            	reservation_statuses_ids_array.push(item.id);
-	            } else {
-	            	console.log("========"+item.id+">>>>"+item.value)
-	            	item.is_disabled = true;
+			var selectedWorkType = "";
+			angular.forEach($scope.workType,function(item, index) {
+	            if(item.value === "DEPARTURE_CLEAN" && item.id === $scope.eachTaskList.work_type_id){
+	            	selectedWorkType = "DEPARTURE_CLEAN";
+	            } else if(item.value === "STAYOVER_CLEAN" && item.id === $scope.eachTaskList.work_type_id){
+	            	selectedWorkType = "STAYOVER_CLEAN";
+	            } else if(item.value === "LINEN_CHANGE" && item.id === $scope.eachTaskList.work_type_id){
+	            	selectedWorkType = "LINEN_CHANGE";
+	            } else if(item.value === "TURNDOWN" && item.id === $scope.eachTaskList.work_type_id){
+	            	selectedWorkType = "TURNDOWN";
 	            }
 
 	        });
+
+			var reservation_statuses_ids_array = [];
+			if(selectedWorkType === "DEPARTURE_CLEAN"){
+				angular.forEach($scope.resHkStatusList,function(item, index) {
+		            if(item.value === "DUEOUT" || item.value === "DEPARTED"){
+		            	item.is_disabled = false;
+		            	reservation_statuses_ids_array.push(item.id);
+		            } else {
+		            	item.is_disabled = true;
+		            }
+
+		        });
+			} else if(selectedWorkType === "STAYOVER_CLEAN" || selectedWorkType === "LINEN_CHANGE"){
+				angular.forEach($scope.resHkStatusList,function(item, index) {
+		            if(item.value === "STAYOVER"){
+		            	item.is_disabled = false;
+		            	reservation_statuses_ids_array.push(item.id);
+		            } else {
+		            	item.is_disabled = true;
+		            }
+
+		        });
+			} else if(selectedWorkType === "TURNDOWN"){
+				angular.forEach($scope.resHkStatusList,function(item, index) {
+		            if(item.value === "STAYOVER" || item.value === "ARRIVALS" || item.value === "ARRIVED"){
+		            	item.is_disabled = false;
+		            	reservation_statuses_ids_array.push(item.id);
+		            } else {
+		            	item.is_disabled = true;
+		            }
+
+		        });
+			} else {
+				angular.forEach($scope.resHkStatusList,function(item, index) {
+		            item.is_disabled = false;
+		        });
+			}
+
 	        $scope.eachTaskList.reservation_statuses_ids    = applyIds( $scope.resHkStatusList, reservation_statuses_ids_array)
 	        console.log($scope.eachTaskList.reservation_statuses_ids)
 
