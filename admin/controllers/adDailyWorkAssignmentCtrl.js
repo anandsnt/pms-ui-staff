@@ -685,10 +685,16 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			angular.copy(this.item , params);
 			params.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
-		}
+		};
+
+		$scope.clickedDefaultTaskChekbox = function (index){
+			$scope.defaultTask_work_type_id = $scope.taskList[index].work_type_id;
+			$scope.updateDefaultTask();
+		};
 		var successUpdateTask = function(){
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.updateDefaultTask = function(){
 			var dataToSrv =
 			{
