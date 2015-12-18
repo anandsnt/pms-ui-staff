@@ -106,10 +106,10 @@
                             </a>
                             <div class="rate-details" ng-if="rate.showDays">
                                 <ul class="info">
-                                    <li ng-bind-html="room.description"></li>
-                                    <li>{{displayData.allRates[rate].description}}</li>
-                                    <li>{{displayData.allRates[rate].deposit_policy.description}}</li>
-                                    <li>{{displayData.allRates[rate].cancellation_policy.description}}</li>
+                                    <li ng-bind-html="reservationData.roomsMeta[room.id].description"></li>
+                                    <li>{{reservationData.ratesMeta[rate.id].description}}</li>
+                                    <li>{{reservationData.ratesMeta[rate.id].deposit_policy.description}}</li>
+                                    <li>{{reservationData.ratesMeta[rate.id].cancellation_policy.description}}</li>
                                 </ul>
                                 <table class="room-cost">
                                     <thead>
@@ -199,10 +199,10 @@
                     </a>
                     <ul class="rate-details" ng-if="rate.showDays">
                         <ul class="info">
-                            <li ng-bind-html="roomAvailability[selectedRoom].description"></li>
-                            <li>{{displayData.allRates[rate.rate.id].description}}</li>
-                            <li>{{displayData.allRates[rate.rate.id].deposit_policy.description}}</li>
-                            <li>{{displayData.allRates[rate.rate.id].cancellation_policy.description}}</li>
+                            <li ng-bind-html="reservationData.roomsMeta[rate.selectedRoom.id].description"></li>
+                            <li>{{reservationData.ratesMeta[rate.id].description}}</li>
+                            <li>{{reservationData.ratesMeta[rate.id].deposit_policy.description}}</li>
+                            <li>{{reservationData.ratesMeta[rate.id].cancellation_policy.description}}</li>
                         </ul>
                         <table class="room-cost">
                             <thead>
