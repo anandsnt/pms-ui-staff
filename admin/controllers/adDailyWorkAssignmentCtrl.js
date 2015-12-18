@@ -501,7 +501,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 						isWeekDay                    :frequencyType.isWeekDay,
 						isWeekEnd                    :frequencyType.isWeekEnd,
 						isCustom                     :frequencyType.isCustom,
-						frequency 					  : this.item.frequency
+						frequency 					 : this.item.frequency,
+						is_active					 : this.item.is_active	
 					};
 					if(frequencyType.isCustom === true){
 					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
@@ -552,7 +553,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_vacant                    : $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
-				rooms_task_completion        : getRoomTaskTimes()
+				rooms_task_completion        : getRoomTaskTimes(),
+				is_active				     : true
 			};
 			var frequencyParams = {};
 			frequencyParams.monday = false;
@@ -611,7 +613,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				id                           : $scope.eachTaskList.id,
-				rooms_task_completion        : getRoomTaskTimes()
+				rooms_task_completion        : getRoomTaskTimes(),
+				is_active
 			};
 			var frequencyParams = {};
 			frequencyParams.monday = false;
