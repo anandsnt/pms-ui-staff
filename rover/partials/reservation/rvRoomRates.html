@@ -115,7 +115,7 @@
                                     {{displayData.allRates[rate].name}}
                                     <!-- Add class "restricted" if restriction applies -->
                                     <!-- If corporate rate, show: -->
-                                      <span class="corporate" ng-if="displayData.allRates[rate].account_id">COR</span>
+                                      <span class="corporate" ng-if="displayData.allRates[rate].account_id" translate>CORPORATE_LABEL</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].applyPromotion">PROMOTION</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isMember">MEMBER</span>
                                       <span class="corporate" ng-if="roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].isGroupRate">GROUP</span>
@@ -243,7 +243,7 @@
                         <div class="data">
                             <h2>{{rate.rate.name}}</h2>
                             <!-- If corporate rate, show: -->
-                            <span class="corporate" ng-if="rate.rate.account_id">COR</span>
+                            <span class="corporate" ng-if="rate.rate.account_id" translate>CORPORATE_LABEL</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].applyPromotion">PROMOTION</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isMember">MEMBER</span>
                             <span class="corporate" ng-if="roomAvailability[selectedRoom].ratedetails[stateCheck.dateModeActiveDate][rate.rate.id].isGroupRate">GROUP</span>
