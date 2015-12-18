@@ -101,11 +101,11 @@
 						<em ng-if="item.is_system">&nbsp;{{'SYSTEM_DEFINED' | translate }}</em>
 					</td>
 
-					<td header-class="width-15" data-title="'Default Task'" class="activate" ng-hide="taskListClickedElement == $index">
+					<td header-class="width-15 text-center-important" data-title="'Default Task'" class="activate" ng-hide="taskListClickedElement == $index">
 							<label class="checkbox inline">
-					            <span class="icon-form icon-checkbox" ng-class="{'checked' : defaultTask_work_type_id === item.work_type_id}"></span>
-					            <input type="checkbox" ng-model="defaultData.defaultTask"  ng-click="clickedDefaultTaskChekbox($index)">
-					        </label>				
+					            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.is_default}"></span>
+					            <input type="checkbox" ng-model="defaultData.defaultTask"  ng-click="clickedDefaultTaskChekbox(item)">
+					        </label>
 					</td>
 
 					<td header-class="width-20 text-center-important" data-title="'Work Type'" class="delete" ng-hide="taskListClickedElement == $index">

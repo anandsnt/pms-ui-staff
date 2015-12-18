@@ -687,9 +687,34 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
 		};
 
-		$scope.clickedDefaultTaskChekbox = function (index){
-			$scope.defaultTask_work_type_id = $scope.taskList[index].work_type_id;
-			$scope.updateDefaultTask();
+		$scope.clickedDefaultTaskChekbox = function (task){
+			// $scope.defaultTask_work_type_id = $scope.taskList[index].work_type_id;
+			// $scope.updateDefaultTask();
+console.log("+++++++++++++"+task.is_default)
+			angular.forEach($scope.taskList,function(item, index) {
+				if(item.work_type_id === task.work_type_id){
+					if(item.id === task.id){
+						item.is_default = !item.is_default;
+					} else {
+						item.is_default = false;
+					}
+				}
+
+
+	        });
+
+			var dataToSrv =
+			{
+				"id" : $scope.defaultData.defaultTask,
+				"work_type_id"    :task.work_type_id
+			};
+			// var dataToSrv = this.item;
+			// dataToSrv.work_type_id = this.item.id;
+			// dataToSrv.id = $scope.defaultData.defaultTask;
+			// dataToSrv.hotel_id = $rootScope.hotelId;
+			// dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
+
 		};
 		var successUpdateTask = function(){
 			$scope.$emit('hideLoader');
