@@ -74,6 +74,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
         }
+        init();
 	};
     /**
     * function to handle the pencil button click in route detail screen
