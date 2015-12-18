@@ -62,7 +62,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     /**
     * function to handle the click 'all routes' and 'add routes' button
     */
-	$scope.headerButtonClicked = function(){
+	$scope.headerButtonClicked = function () {
         $scope.isInAddRoutesMode = true;
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
@@ -74,7 +74,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
         }
-        init();
+        // While moved to initial screen
+        if ($scope.isInitialPage) {
+            init();
+        }
 	};
     /**
     * function to handle the pencil button click in route detail screen
