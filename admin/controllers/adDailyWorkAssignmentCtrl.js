@@ -164,10 +164,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				fetchWorkType();
 			};
 
-			this.item.is_show_on_stay_card = !!this.item.is_show_on_stay_card ? false : true;
+			this.item.is_show_on_stay_card = !this.item.is_show_on_stay_card;
 			this.item.hotel_id = $rootScope.hotelId;
 			this.item.default_task_id = $scope.defaultData.defaultTask;
 			$scope.eachWorkType = this.item;
+			angular.forEach($scope.taskList,function(itemTask, index) {
+				if(itemTask.work_type_id === item.id){
+					itemTask.is_show_on_stay_card = this.item.is_show_on_stay_card;
+				}
+	        });
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
 
@@ -688,9 +693,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		$scope.clickedDefaultTaskChekbox = function (task){
-			// $scope.defaultTask_work_type_id = $scope.taskList[index].work_type_id;
-			// $scope.updateDefaultTask();
-console.log("+++++++++++++"+task.is_default)
+
 			angular.forEach($scope.taskList,function(item, index) {
 				if(item.work_type_id === task.work_type_id){
 					if(item.id === task.id){
@@ -708,11 +711,6 @@ console.log("+++++++++++++"+task.is_default)
 				"id" : task.id,
 				"work_type_id"    :task.work_type_id
 			};
-			// var dataToSrv = this.item;
-			// dataToSrv.work_type_id = this.item.id;
-			// dataToSrv.id = $scope.defaultData.defaultTask;
-			// dataToSrv.hotel_id = $rootScope.hotelId;
-			// dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
 
 		};
@@ -725,11 +723,6 @@ console.log("+++++++++++++"+task.is_default)
 			{
 				"id" : $scope.defaultData.defaultTask
 			};
-			// var dataToSrv = this.item;
-			// dataToSrv.work_type_id = this.item.id;
-			// dataToSrv.id = $scope.defaultData.defaultTask;
-			// dataToSrv.hotel_id = $rootScope.hotelId;
-			// dataToSrv.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postDefaultTask, dataToSrv, successUpdateTask);
 		};
 
