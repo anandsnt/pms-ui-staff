@@ -705,7 +705,7 @@ console.log("+++++++++++++"+task.is_default)
 
 			var dataToSrv =
 			{
-				"id" : $scope.defaultData.defaultTask,
+				"id" : task.id,
 				"work_type_id"    :task.work_type_id
 			};
 			// var dataToSrv = this.item;

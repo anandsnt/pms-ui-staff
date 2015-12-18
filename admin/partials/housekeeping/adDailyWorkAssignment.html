@@ -37,12 +37,7 @@
 						<!-- <span  class="bold">{{ item.name }}</span> -->
 						<em ng-if="item.is_system">&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
-					<!-- <td data-title="'Work Type'" ng-if="item.is_system">
-						<span class="bold">{{ item.name }}</span>
-						<em>&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
-					</td>
- -->
-					<td header-class="width-30 text-center-important" data-title="'Task'" class="delete" ng-hide="workTypeClickedElement == $index">
+					<!-- <td header-class="width-30 text-center-important" data-title="'Task'" class="delete" ng-hide="workTypeClickedElement == $index">
 					<div class="select" ng-show="item.is_default">
 					<select ng-model="defaultData.defaultTask" class="placeholder" ng-change="updateDefaultTask()">
 						<option value=""> Select </option>
@@ -51,7 +46,7 @@
 					</select>
 
 				</div>
-					</td>
+					</td> -->
 
 					<td header-class="width-20 text-center-important" data-title="'On Stay Card'" class="delete" ng-hide="workTypeClickedElement == $index">
 						<div class="entry" ng-if="item.is_system">
@@ -77,7 +72,7 @@
 						<a ng-if="!item.is_system" ng-click="deleteWorkType()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
 
-					<td colspan="6" ng-show="workTypeClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddWorkType.html'"></td>
+					<td colspan="5" ng-show="workTypeClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddWorkType.html'"></td>
 
 				</tr>
 			</tbody>
@@ -104,7 +99,7 @@
 					<td header-class="width-15 text-center-important" data-title="'Default Task'" class="activate" ng-hide="taskListClickedElement == $index">
 							<label class="checkbox inline">
 					            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.is_default}"></span>
-					            <input type="checkbox" ng-model="defaultData.defaultTask"  ng-click="clickedDefaultTaskChekbox(item)">
+					            <input type="checkbox" ng-disabled="item.is_default"  ng-model="defaultData.defaultTask"  ng-click="clickedDefaultTaskChekbox(item)">
 					        </label>
 					</td>
 
