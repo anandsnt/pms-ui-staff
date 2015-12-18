@@ -553,8 +553,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_vacant                    : $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
-				rooms_task_completion        : getRoomTaskTimes(),
-				is_active				     : true
+				rooms_task_completion        : getRoomTaskTimes(), 
+				is_active   			     : true
 			};
 			var frequencyParams = {};
 			frequencyParams.monday = false;
@@ -614,7 +614,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				id                           : $scope.eachTaskList.id,
 				rooms_task_completion        : getRoomTaskTimes(),
-				is_active
+				is_active					 : $scope.eachTaskList.is_active
 			};
 			var frequencyParams = {};
 			frequencyParams.monday = false;
