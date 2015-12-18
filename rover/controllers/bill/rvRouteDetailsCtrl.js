@@ -46,6 +46,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.setScroller('paymentList', scrollerOptions);
     $scope.setScroller('billingGroups', scrollerOptions);
     $scope.setScroller('chargeCodes', scrollerOptions);
+    $scope.setScroller('routeDetails', scrollerOptions);
     var scrollerOptionsForSearch = {click: true};
     $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
     $scope.chargeCodesListDivHgt = 250;
@@ -56,8 +57,15 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.refreshScroller('billingGroups');
         $scope.refreshScroller('chargeCodes');
         $scope.refreshScroller('chargeCodesList');
+        $scope.refreshScroller('routeDetails');
         },
     500);
+
+    $scope.editPaymentMethod = function () {
+        $scope.oldPayment = $scope.renderAddedPayment;
+        $scope.renderAddedPayment = null; 
+        isAddPayment = false;
+    }
 
     /**
     * function to show the payment list on cancelling or adding new payment
@@ -66,6 +74,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.isAddPayment = false;
         $scope.refreshScroller('paymentList');
 	};
+
+    $scope.$on("CANCELLED_PAYMENT", function () {
+        $scope.renderAddedPayment = $scope.oldPayment;
+    });
+
 	//retrieve card expiry based on paymnet gateway
 	var retrieveExpiryDate = function(){
 
@@ -451,6 +464,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.attachedEntities = [$scope.selectedEntity];
             }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
+            $scope.selectedEntity.credit_limit = data.credit_limit;
+            $scope.selectedEntity.reference_number = data.reference_number;
             //Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
             if(!isEmptyObject(data.credit_card_details)){
