@@ -163,14 +163,16 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workTypeClickedElement = -1;
 				fetchWorkType();
 			};
-
-			this.item.is_show_on_stay_card = !this.item.is_show_on_stay_card;
+			console.log("==========")
+console.log(this.item)
+			var isShowOnStayCard = this.item.is_show_on_stay_card = !this.item.is_show_on_stay_card;
 			this.item.hotel_id = $rootScope.hotelId;
 			this.item.default_task_id = $scope.defaultData.defaultTask;
+			var workTypeId = this.item.id
 			$scope.eachWorkType = this.item;
 			angular.forEach($scope.taskList,function(itemTask, index) {
-				if(itemTask.work_type_id === item.id){
-					itemTask.is_show_on_stay_card = this.item.is_show_on_stay_card;
+				if(itemTask.work_type_id === workTypeId){
+					itemTask.is_show_on_stay_card = isShowOnStayCard;
 				}
 	        });
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
