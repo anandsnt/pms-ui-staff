@@ -128,14 +128,26 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
   $scope.reTypeEmail = function(){
       $scope.emailError = false;
   };
-
+  // add the print orientation before printing
+    var addPrintOrientation = function() {
+      $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+    };
 
     var fetchBillSuccess = function(response){
         $scope.$emit(zsEventConstants.HIDE_LOADER);
-        $scope.printData = response.data;
-        console.log($scope.printData);
+        $scope.printData = response;
+
+        // add the orientation
+        addPrintOrientation();
           // print section - if its from device call cordova.
         try{
+
+            // this will show the popup with full bill
+        $timeout(function() {
+
+          /*
+          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+          */
           $window.print();
           if ( sntapp.cordovaLoaded ) {
               var printer = (sntZestStation.selectedPrinter);
@@ -147,6 +159,9 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
           };
           $scope.printOpted = true;
           // provide a delay for preview to appear
+        }, 100);
+
+        
         }
         catch(e){
           

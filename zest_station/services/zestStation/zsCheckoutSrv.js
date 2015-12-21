@@ -23,21 +23,22 @@ sntZestStation.service('zsCheckoutSrv',
                 this.fetchBillPrintData = function(params){
                     var deferred = $q.defer();
                     var url = 'staff/bills/print_guest_bill';
-                        zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                        zsBaseWebSrv.postJSON(url, params).then(function(prindata) {
+                            var response = prindata.data;
                             // Manually creating charge details list & credit deatils list.
-                            data.charge_details_list = [];
-                            data.credit_details_list = [];
-                            angular.forEach(data.fee_details,function(fees, index1){
+                            response.charge_details_list = [];
+                            response.credit_details_list = [];
+                            angular.forEach(response.fee_details,function(fees, index1){
                                 angular.forEach(fees.charge_details,function(charge, index2){
                                     charge.date=fees.date;
-                                    data.charge_details_list.push(charge);
+                                    response.charge_details_list.push(charge);
                                 });
                                 angular.forEach(fees.credit_details,function(credit, index3){
                                     credit.date=fees.date;
-                                    data.credit_details_list.push(credit);
+                                    response.credit_details_list.push(credit);
                                 });
                             });
-                            deferred.resolve(data);
+                            deferred.resolve(response);
                         },function(data){
                             deferred.reject(data);
                         });
