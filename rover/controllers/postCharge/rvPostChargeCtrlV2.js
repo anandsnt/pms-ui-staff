@@ -452,6 +452,13 @@ sntRover.controller('RVPostChargeControllerV2',
 				// We are disabling the POST CHARGE button on the click itself.
 				$scope.disablePostChargeButton = true;
 
+				var failureCallback = function(errorMessage){
+		  			$scope.$emit('hideLoader');
+		   			$scope.errorMessage = errorMessage;
+		   			// CICO-23196 : Enable POST CHARGE button on error.
+		   			$scope.disablePostChargeButton = false;
+		   		};
+
 				var items = [],
 					each = {};
 
@@ -504,10 +511,10 @@ sntRover.controller('RVPostChargeControllerV2',
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
 					if(isFromAccounts){
-						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
+						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 					}
 					else{
-						$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback);
+						$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback, failureCallback);
 					};
 				}
 				else{
@@ -525,10 +532,10 @@ sntRover.controller('RVPostChargeControllerV2',
 						var createBillSuccessCallback = function(){
 							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
-							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
+							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 
 						};
-						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback, failureCallback);
 					}
 					else{
 						/*
@@ -548,7 +555,7 @@ sntRover.controller('RVPostChargeControllerV2',
 								$scope.reviewStatusArray.push(data);
 							}
 						};
-						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback, failureCallback);
 					}
 				}
 			};

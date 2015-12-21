@@ -33,6 +33,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.defaultPaymentTypeOfBill = '';
 		$scope.shouldShowMakePaymentButton = true;
 		$scope.splitSelected = false;
+		$scope.disableMakePaymentButton = false;
 	};
 
 	var startingAmount = 0;
@@ -674,6 +675,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Failure call back of submitpayment
 	*/
 	var failedPayment = function(data){
+		// CICO-23196 : Enable MAKE PAYMENT button on error.
+		$scope.disableMakePaymentButton = false;
 		$scope.$emit("hideLoader");
 		if($scope.splitBillEnabled){
 			$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
@@ -704,6 +707,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.errorMessage = ["Please enter amount"];
 			}, 1000);
 		} else {
+
+			// CICO-23196 : Disable MAKE PAYMENT button inorder to prevent multiple click.
+			$scope.disableMakePaymentButton = true;
 
 			$scope.errorMessage = "";
 			var dataToSrv = {
@@ -761,6 +767,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.shouldShowWaiting = false;
 					successPayment(response);
 				},function(error){
+					// CICO-23196 : Enable MAKE PAYMENT button on error.
+					$scope.disableMakePaymentButton = false;
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
 					failedPayment(error);
