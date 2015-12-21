@@ -42,5 +42,7 @@ sntRover.constant('RVReportParamsConst', {
     'ADDONS_GROUPS_IDS'      : 'addon_group_ids[]',
     'ADDONS_IDS'             : 'addon_ids[]',
     'RESERVATION_STATUS'     : 'status_ids[]',
-    'RESERVATION_ADDONS'     : 'addon_ids'
+    'RESERVATION_ADDONS'     : 'addon_ids',
+    'RATE_IDS'               : 'rate_ids[]',
+    'RATE_TYPE_IDS'          : 'rate_type_ids[]'
 });
