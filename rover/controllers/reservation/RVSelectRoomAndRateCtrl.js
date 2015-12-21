@@ -493,7 +493,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.preferredType = parseInt(roomId);
 					// Put the selected room as the tab's room type
 					$scope.reservationData.tabs[$scope.activeRoom].roomTypeId = $scope.stateCheck.preferredType;
-					
+
 					for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
 						currentRoom = $scope.reservationData.rooms[roomIndex];
 						currentRoom.roomTypeId = roomId;
@@ -568,12 +568,26 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					rate.selectedRoom.total = 0.0;
 				}
 
+				var stayTax = {
+					excl: {}
+				};
+
+				var updateStayTaxes = function(stayTaxDayInfo) {
+					_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
+						if (stayTax.excl[taxId] === undefined) {
+							stayTax.excl[taxId] = parseFloat(taxAmount);
+						} else {
+							stayTax.excl[taxId] = _.max([stayTax.excl[taxId], parseFloat(taxAmount)]);
+						}
+					});
+				};
+
 				_.each(datesArray, function(dayInfo, date) {
 					var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
 							date,
 							rate.id,
-							1,
-							0,
+							$scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.adults,
+							$scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.children,
 							$scope.reservationData.arrivalDate,
 							$scope.reservationData.departureDate,
 							$scope.activeRoom,
@@ -586,13 +600,29 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
 						tax: taxAddonInfo.tax,
 						total: dayTotal
-					})
+					});
+
+					updateStayTaxes(taxAddonInfo.stayTax);
+
 					if ($scope.stateCheck.activeView === "RATE") {
 						rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(dayTotal);
 					} else {
 						rate.total = parseFloat(rate.total) + parseFloat(dayTotal);
 					}
 				});
+
+				var totalStayTaxes = 0.0;
+				_.each(stayTax.excl, function(tax) {
+					totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
+				});
+
+
+				if ($scope.stateCheck.activeView === "RATE") {
+					rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(totalStayTaxes);
+				} else {
+					rate.total = parseFloat(rate.total) + parseFloat(totalStayTaxes);
+				}
+
 
 			};
 

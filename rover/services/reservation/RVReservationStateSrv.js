@@ -358,7 +358,26 @@ sntRover.service('RVReservationStateService', [
 				totalTax = {
 					incl: 0.0,
 					excl: 0.0
+				},
+				stayTax = {
+					incl: {},
+					excl: {}
 				};
+
+			var updateStayTaxes = function(taxDetails) {
+				_.each(taxDetails, function(taxDetail) {
+					if (taxDetail.postType === 'STAY') {
+						var taxType = taxDetail.isInclusive ? "incl" : "excl",
+							currentTaxId = taxDetail.id;
+						if (stayTax[taxType][currentTaxId] === undefined) {
+							stayTax[taxType][currentTaxId] = parseFloat(taxDetail.amount);
+						} else {
+							stayTax[taxType][currentTaxId] = _.max([stayTax[taxType][currentTaxId], parseFloat(taxDetail.amount)]);
+						}
+					}
+				});
+			};
+
 
 			//ADDON 
 
@@ -372,7 +391,7 @@ sntRover.service('RVReservationStateService', [
 						taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, numAdults, numChildren, true);
 						addonTax.incl = parseFloat(addonTax.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
 						addonTax.excl = parseFloat(addonTax.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
-						// updateStayTaxes(taxOnCurrentAddon.taxDescription);
+						updateStayTaxes(taxOnCurrentAddon.taxDescription);
 					}
 
 					var inventoryForDay = _.findWhere(addon.inventory, {
@@ -420,7 +439,7 @@ sntRover.service('RVReservationStateService', [
 					incl: parseFloat(taxApplied.INCL.NIGHT),
 					excl: parseFloat(taxApplied.EXCL.NIGHT)
 				};
-				// updateStayTaxes(taxApplied.taxDescription);
+				updateStayTaxes(taxApplied.taxDescription);
 			};
 
 			totalTax = {
@@ -434,7 +453,8 @@ sntRover.service('RVReservationStateService', [
 				tax: {
 					incl: totalTax.incl,
 					excl: totalTax.excl
-				}
+				},
+				stayTax: stayTax
 			}
 
 		};
