@@ -73,16 +73,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         $scope.setCheckInMessage = function(){
             $state.go('zest_station.checking_in_guest');
         };
-        $scope.roomIsAssigned = function(){
-          if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
-              return true;
-          }
-          return false;
-        };
         $scope.checkInGuest = function(){
-           // if room is not assigned, go through autoassignment
-            if ($scope.roomIsAssigned()){
-                var reservation_id = $scope.selectedReservation.id,
+             var reservation_id = $scope.selectedReservation.id,
                     //payment_type = $scope.selectedReservation.payment_type,
                     signature = $scope.signatureData;
 
@@ -97,30 +89,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      'signature':signature
                  }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
                 },500);
-            } else {
-                $scope.assignRoomToReseravtion();
-            }
+                
         };
-        
-        $scope.assignRoomToReseravtion = function(){
-             var reservation_id = $scope.selectedReservation.id;
-             
-                    $scope.invokeApi(zsTabletSrv.assignGuestRoom, {
-                     'reservation_id':reservation_id, 
-                 }, $scope.roomAssignCallback, $scope.roomAssignCallback); 
-        };
-        $scope.roomAssignCallback = function(response){
-            console.info('room assign callback: ',response);
-            $scope.$emit('hideLoader');
-            if (response.status && response.status === 'success'){
-                $scope.selectedReservation.room = response.data.room_number;
-                $scope.checkInGuest();
-            } else {
-                $state.go('zest_station.room_error');
-            }
-        };
-        
-        
         $scope.clearSignature = function(){
             $scope.signatureData = '';
             $("#signature").jSignature("clear");
@@ -184,11 +154,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 
                 var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
                 var successfulCheckIn = (response.status === "success")? true : false;
+                console.info('successfulCheckIn: ',successfulCheckIn);
                 //detect if coming from email input
                 if (haveValidGuestEmail && successfulCheckIn){
                         $state.go('zest_station.check_in_keys');
                     return;
                 } else if (!successfulCheckIn) {
+                    console.warn(response);
                     $scope.$emit('hideLoader');
                     $state.go('zest_station.error');
                     

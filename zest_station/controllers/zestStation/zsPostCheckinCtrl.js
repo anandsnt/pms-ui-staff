@@ -31,9 +31,11 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.selectedReservation = $state.selectedReservation;
                 
             } else if (current === 'zest_station.room_error'){
-                $scope.initRoomErrorScreen();
+                $state.go('zest_station.reservation_details');
+                
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
+                
             } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
                 $state.go('zest_station.input_reservation_email_after_swipe');
                 
