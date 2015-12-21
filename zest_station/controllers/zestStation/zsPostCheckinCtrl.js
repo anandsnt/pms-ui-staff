@@ -30,6 +30,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.at = 'deliver-registration';
                 $scope.selectedReservation = $state.selectedReservation;
                 
+            } else if (current === 'zest_station.room_error'){
+                $scope.initRoomErrorScreen();
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
             } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
@@ -144,6 +146,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                                             Our bad. Please reach out to a Sidekick.';
                 $scope.modalBtn1 = 'Done';
         };
+        $scope.initRoomErrorScreen = function(){
+                $scope.at = 'error';
+                $scope.headingText = 'Please speak to a sidekick.';
+                $scope.subHeadingText = 'We can take care of your luggage until a room becomes available.';
+                $scope.modalBtn1 = 'Done';
+        };
         $scope.initKeyErrorScreen = function(){
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                     $scope.pickupkeys = true;
@@ -171,7 +179,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.reEncodeKey = function(){
-            console.info('state mode....',$state.mode);
             if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                 $state.go('zest_station.pickup_keys');
             } else {
@@ -283,6 +290,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
                 
+            } else if (current === 'zest_station.room_error'){
+                $scope.initRoomErrorScreen();
             } else if (current === 'zest_station.last_confirm'){
                 
                 if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){

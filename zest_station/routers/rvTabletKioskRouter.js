@@ -172,6 +172,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/generic/modal.html'
          });
          
+         $stateProvider.state('zest_station.room_error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
+         
          
         //  //check-in [ find-reservation main ]
          $stateProvider.state('zest_station.find_reservation', {
