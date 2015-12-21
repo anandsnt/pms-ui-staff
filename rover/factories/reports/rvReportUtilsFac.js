@@ -1156,8 +1156,7 @@ sntRover.factory('RVReportUtilsFac', [
                         rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
                         if(rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
-                            rateTypeObject.id = rateTypeObject.rate_type_id;
-                            rateTypeObject = _.pick(rateTypeObject, "name", "id", "selected");
+                            rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
                         }
                         return rateTypeObject;
                     });
@@ -1190,7 +1189,7 @@ sntRover.factory('RVReportUtilsFac', [
                             filter       : foundFilter,
                             show         : false,
                             selectAll    : true,
-                            defaultTitle : 'Select Rate',
+                            defaultTitle : 'Select Rate Type',
                             title        : 'All Selected',
                             data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
                         });

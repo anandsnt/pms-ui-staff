@@ -463,10 +463,12 @@ sntRover.controller('RVReportsMainCtrl', [
         		rateType.selected = item.hasRateTypeFilter.selectAll;
         	});
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter, item.hasRateTypeFilter.selectAll);
+        	formTitleForRateDropDown(item);
         };
 
         $scope.rateTypeChanged = function(item) {
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
+        	formTitleForRateDropDown(item);
         };
 
         var formTitleForRateDropDown = function(item) {
@@ -475,17 +477,17 @@ sntRover.controller('RVReportsMainCtrl', [
 
         	if(showingRateList.length === selectedRates.length) {
         		item.hasRateFilter.title = 'All Selected';
+        		item.hasRateFilter.selectAll = true;
         	}
         	else if(selectedRates.length === 0 ){
-        		item.hasRateFilter.title = item.defaultTitle;
+        		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
         	}
         	else if(selectedRates.length === 1 ){
         		item.hasRateFilter.title = selectedRates[0].name;
         	}
         	else {
-        		item.hasRateFilter.title = selectedRates.length + ' Selected'
+        		item.hasRateFilter.title = selectedRates.length + ' Selected';
         	}
-
         };
 
         $scope.rateChanged = function(item) {
@@ -503,14 +505,14 @@ sntRover.controller('RVReportsMainCtrl', [
         };
 
         var getSelectedRateTypes = function(item) {
-        	return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), "id");
+        	return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), "rate_type_id");
         }
 
         var getRateListToShow = function(item) {
         	//if selected some room types
         	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
-        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "id");
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
         	return _.filter(item.hasRateFilter.data, function(rate) {
         		return ( selectedRateTypesIds.indexOf(rate.rate_type_id) > -1 );
         	});
