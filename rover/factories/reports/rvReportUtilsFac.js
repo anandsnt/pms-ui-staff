@@ -1148,6 +1148,28 @@ sntRover.factory('RVReportUtilsFac', [
                 
             };
 
+            var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+                var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
+                    rateTypeListIds      = _.unique(rateTypeListIds),
+                    rateTypeObject       = {},
+                    rateTypeListToReturn = rateTypeListIds.map(function(id){ 
+                        rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
+                        if(rateTypeObject) {
+                            rateTypeObject.name = rateTypeObject.rate_type_name;
+                            rateTypeObject.id = rateTypeObject.rate_type_id;
+                            rateTypeObject = _.pick(rateTypeObject, "name", "id");
+                        }
+                        return rateTypeObject;
+                    });
+                return rateTypeListToReturn;
+            };
+
+            var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+                return rateTypesAndRateList.map(function(rate){
+                    rate.name = rate.rate_name;
+                    return _.omit(rate, "rate_type_name");
+                });
+            };
 
             //
             function fillRateTypesAndRateList(data) {
@@ -1169,8 +1191,8 @@ sntRover.factory('RVReportUtilsFac', [
                             show         : false,
                             selectAll    : true,
                             defaultTitle : 'Select Rate',
-                            title        : 'Select Rate',
-                            data         : angular.copy( data )
+                            title        : 'All Selected',
+                            data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
                         });
 
                         __setData(report, 'hasRateFilter', {
@@ -1179,8 +1201,8 @@ sntRover.factory('RVReportUtilsFac', [
                             show         : false,
                             selectAll    : true,
                             defaultTitle : 'Select Rate',
-                            title        : 'Select Rate',
-                            data         : angular.copy( data )
+                            title        : 'All Selected',
+                            data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
                         });
                     };
                 });

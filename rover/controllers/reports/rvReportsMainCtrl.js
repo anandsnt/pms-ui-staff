@@ -136,7 +136,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_28: false,
 			item_29: false, // Exclude Options
 			item_30: false, // Show Options
-			item_31: false
+			item_31: false,
+			item_32: false,
+			item_33: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -457,9 +459,18 @@ sntRover.controller('RVReportsMainCtrl', [
 
         $scope.toggleRateTypeSelectAll = function(item) {
         	//whether rate type selected all or not selected all, applying to listing
-        	_.each($scope.getRateTypeList(item), function(rateType) {
+        	_.each(item.hasRateTypeFilter.data, function(rateType) {
         		rateType.selected = item.hasRateTypeFilter.selectAll;
         	});
+        	$scope.fauxSelectChange (item, item.hasRateTypeFilter, item.hasRateTypeFilter.selectAll);
+        };
+
+        $scope.rateTypeChanged = function(item) {
+        	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
+        };
+
+        $scope.rateChanged = function(item) {
+        	$scope.fauxSelectChange (item, {data: $scope.getRates(item)});
         };
 
         $scope.toggleRateSelectAll = function(item) {
@@ -469,28 +480,18 @@ sntRover.controller('RVReportsMainCtrl', [
         	_.each(showingRateList, function(rateType) {
         		rateType.selected = item.hasRateFilter.selectAll;
         	});
+        	$scope.fauxSelectChange (item, {data: showingRateList}, item.hasRateFilter.selectAll);
         };
 
         var getSelectedRateTypes = function(item) {
-        	return _.pluck(_.where($scope.getRateTypeList(item), {selected: true}), "rate_type_id");
+        	return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), "id");
         }
-        
-        $scope.getRateTypeList = function(item) {
-        	var rateTypesAndRateList = item.hasRateTypeFilter.data,
-        		rateTypeListIds 	 = _.pluck(rateTypesAndRateList, "rate_type_id"),
-        		rateTypeListIds 	 = _.unique(rateTypeListIds),
-        		rateListToReturn  	 = rateTypeListIds.map(function(id){ 
-        			return _.findWhere(rateTypesAndRateList, {rate_type_id: id})
-        		});
-        	return rateListToReturn;
-        };
 
         var getRateListToShow = function(item) {
         	//if selected some room types
-        	var listedRateTypes 		= $scope.getRateTypeList(item),
+        	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
-        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
-
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "id");
         	return _.filter(item.hasRateFilter.data, function(rate) {
         		return ( selectedRateTypesIds.indexOf(rate.rate_type_id) > -1 );
         	});
@@ -503,7 +504,7 @@ sntRover.controller('RVReportsMainCtrl', [
         	if( wantedToShowAllRates ) { 
         		return item.hasRateFilter.data; 
         	}
-        	
+
         	return getRateListToShow(item);
         };
 
@@ -538,7 +539,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.fauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
-
+	console.log(fauxDS.data);
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
                     fauxDS.title = 'All Selected';
@@ -553,13 +554,14 @@ sntRover.controller('RVReportsMainCtrl', [
                 selectedItems = _.where(fauxDS.data, { selected: true });
             } else {
                 selectedItems = _.where(fauxDS.data, { selected: true });
-
+	console.log(selectedItems.length, fauxDS.data.length);
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
                 	fauxDS.selectAll = false;
                     fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
+                	console.log('here?');
                     fauxDS.selectAll = true;
                     fauxDS.title = 'All Selected';
                 } else {
@@ -855,7 +857,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			// rate
 			if (!!report.hasRateFilter) {
 				key = reportParams['RATE_IDS'];
-				params[key] = _.pluck(_.where(getSelectedRates(report),{selected: true}), "id");
+				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
 			};
 
 			// rate
