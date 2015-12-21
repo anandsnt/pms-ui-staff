@@ -657,6 +657,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
+		// CICO-23196 : Enable MAKE PAYMENT button on success.
+		$scope.disableMakePaymentButton = false;
 		$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
 		// A temperory fix, This part (payment screens) of App seems broken in many ways 
@@ -767,8 +769,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					$scope.shouldShowWaiting = false;
 					successPayment(response);
 				},function(error){
-					// CICO-23196 : Enable MAKE PAYMENT button on error.
-					$scope.disableMakePaymentButton = false;
 					$scope.errorMessage = error;
 					$scope.shouldShowWaiting = false;
 					failedPayment(error);
