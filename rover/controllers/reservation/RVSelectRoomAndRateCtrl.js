@@ -260,6 +260,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD")) {
 					$scope.saveAndGotoStayCard();
 				} else {
+					$scope.computeTotalStayCost();
 					enhanceStay();
 				}
 			},
@@ -442,7 +443,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					} else {
 						$scope.reservationData.rooms[roomIndex].rateName = $scope.displayData.allRates[$scope.reservationData.rooms[firstIndexOfRoomType].stayDates[$scope.reservationData.arrivalDate].rate.id].name;
 					}
-					// $scope.reservationData.rateDetails[roomIndex] = $scope.roomAvailability[$scope.reservationData.tabs[$scope.activeRoom].roomTypeId].ratedetails;
+
+					$scope.reservationData.rateDetails[roomIndex] = $scope.roomAvailability[$scope.reservationData.tabs[$scope.activeRoom].roomTypeId].ratedetails;
 
 					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
 						_.each($scope.reservationData.rooms[roomIndex].stayDates, function(details, date) {
@@ -501,9 +503,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						currentRoom.rateId.push(rateId);
 						currentRoom.stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
 						currentRoom.roomTypeName = $scope.reservationData.roomsMeta[roomId].name;
-						// $scope.reservationData.rateDetails[roomIndex] = $scope.roomAvailability[roomId].ratedetails;
+						$scope.reservationData.rateDetails[i] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
 					}
-					// $scope.filterRooms();
 				}
 
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
@@ -549,6 +550,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						rateAvg: rateInfo.adr,
 						rateTotal: rateInfo.totalAmount
 					});
+
+					$scope.reservationData.rateDetails[i] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
 
 					populateStayDates(rateId, roomId, i);
 				}
