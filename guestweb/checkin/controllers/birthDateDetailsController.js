@@ -9,12 +9,12 @@
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
-		$state.go('checkinSuccess');
-	}
-	else if($rootScope.isCheckedout ){
-		$state.go('checkOutStatus');
-	}
-	else{
+	 	$state.go('checkinSuccess');
+	 }
+	 else if($rootScope.isCheckedout ){
+	 	$state.go('checkOutStatus');
+	 }
+	 else{
 		$scope.pageValid = true;
 	}		
 
@@ -101,8 +101,29 @@
 		};
 
 
+		var checkIfDateIsValid = function(){
+			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
+			var comp = birthday.split('/');
+			var m = parseInt(comp[0], 10);
+			var d = parseInt(comp[1], 10);
+			var y = parseInt(comp[2], 10);
+			var date = new Date(y,m-1,d);
+			if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
+			   return true
+			} else {
+			   return false;
+			}
+		};
+	
+
+
+
 		$scope.yearOrMonthChanged = function(){
-			$scope.guestDetails.day = "";
+			if(!checkIfDateIsValid()){
+				$scope.guestDetails.day = "";
+			}else{
+				return;
+			}
 		};
 
 		function getAge(birthDateString) {
