@@ -33,6 +33,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.defaultPaymentTypeOfBill = '';
 		$scope.shouldShowMakePaymentButton = true;
 		$scope.splitSelected = false;
+		$scope.disableMakePaymentButton = false;
 	};
 
 	var startingAmount = 0;
@@ -656,6 +657,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
+		// CICO-23196 : Enable MAKE PAYMENT button on success.
+		$scope.disableMakePaymentButton = false;
 		$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
 		// A temperory fix, This part (payment screens) of App seems broken in many ways 
@@ -674,6 +677,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Failure call back of submitpayment
 	*/
 	var failedPayment = function(data){
+		// CICO-23196 : Enable MAKE PAYMENT button on error.
+		$scope.disableMakePaymentButton = false;
 		$scope.$emit("hideLoader");
 		if($scope.splitBillEnabled){
 			$scope.paymentErrorMessage = "SPLIT # "+($scope.splitePaymentDetail["completedSplitPayments"]+1)+" PAYMENT OF "+$scope.renderData.defaultPaymentAmount+" FAILED !"+"<br/>";
@@ -704,6 +709,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.errorMessage = ["Please enter amount"];
 			}, 1000);
 		} else {
+
+			// CICO-23196 : Disable MAKE PAYMENT button inorder to prevent multiple click.
+			$scope.disableMakePaymentButton = true;
 
 			$scope.errorMessage = "";
 			var dataToSrv = {
