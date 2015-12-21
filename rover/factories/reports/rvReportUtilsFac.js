@@ -1157,7 +1157,7 @@ sntRover.factory('RVReportUtilsFac', [
                         if(rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
                             rateTypeObject.id = rateTypeObject.rate_type_id;
-                            rateTypeObject = _.pick(rateTypeObject, "name", "id");
+                            rateTypeObject = _.pick(rateTypeObject, "name", "id", "selected");
                         }
                         return rateTypeObject;
                     });

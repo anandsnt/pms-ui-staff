@@ -469,8 +469,27 @@ sntRover.controller('RVReportsMainCtrl', [
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
         };
 
+        var formTitleForRateDropDown = function(item) {
+        	var showingRateList = $scope.getRates(item),
+        		selectedRates 	= _.where(showingRateList, {selected: true});
+
+        	if(showingRateList.length === selectedRates.length) {
+        		item.hasRateFilter.title = 'All Selected';
+        	}
+        	else if(selectedRates.length === 0 ){
+        		item.hasRateFilter.title = item.defaultTitle;
+        	}
+        	else if(selectedRates.length === 1 ){
+        		item.hasRateFilter.title = selectedRates[0].name;
+        	}
+        	else {
+        		item.hasRateFilter.title = selectedRates.length + ' Selected'
+        	}
+
+        };
+
         $scope.rateChanged = function(item) {
-        	$scope.fauxSelectChange (item, {data: $scope.getRates(item)});
+        	formTitleForRateDropDown(item);
         };
 
         $scope.toggleRateSelectAll = function(item) {
@@ -480,7 +499,7 @@ sntRover.controller('RVReportsMainCtrl', [
         	_.each(showingRateList, function(rateType) {
         		rateType.selected = item.hasRateFilter.selectAll;
         	});
-        	$scope.fauxSelectChange (item, {data: showingRateList}, item.hasRateFilter.selectAll);
+        	formTitleForRateDropDown(item);
         };
 
         var getSelectedRateTypes = function(item) {
@@ -539,7 +558,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.fauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
-	console.log(fauxDS.data);
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
                     fauxDS.title = 'All Selected';
@@ -554,14 +572,12 @@ sntRover.controller('RVReportsMainCtrl', [
                 selectedItems = _.where(fauxDS.data, { selected: true });
             } else {
                 selectedItems = _.where(fauxDS.data, { selected: true });
-	console.log(selectedItems.length, fauxDS.data.length);
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
                 	fauxDS.selectAll = false;
                     fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
-                	console.log('here?');
                     fauxDS.selectAll = true;
                     fauxDS.title = 'All Selected';
                 } else {
