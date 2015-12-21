@@ -44,9 +44,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     
                 }
             }
-            
-            
-            
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 
@@ -206,7 +203,44 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 }
             };
         
+        
+            $scope.roomIsAssigned = function(){
+                console.info('$scope.selectedReservation: ',$scope.selectedReservation)
+              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
+                  return true;
+              }
+              return false;
+            };
             $scope.goToTerms = function(){
+                console.info('chk room assignment')
+                 if ($scope.roomIsAssigned()){
+                      $scope.initTermsPage();
+                 } else {
+                    $scope.assignRoomToReseravtion();
+                 }
+                
+               
+            };
+            
+            $scope.assignRoomToReseravtion = function(){
+                 var reservation_id = $scope.selectedReservation.id;
+                        $scope.invokeApi(zsTabletSrv.assignGuestRoom, {
+                         'reservation_id':reservation_id
+                     }, $scope.roomAssignCallback, $scope.roomAssignCallback); 
+            };
+            $scope.roomAssignCallback = function(response){
+                console.info('room assign callback: ',response);
+                $scope.$emit('hideLoader');
+                if (response.status && response.status === 'success'){
+                    $scope.selectedReservation.room = response.data.room_number;
+                    $scope.initTermsPage();
+                   
+                } else {
+                    $state.go('zest_station.room_error');
+                }
+            };
+            
+            $scope.initTermsPage = function(){
                 $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
                 $state.go('zest_station.terms_conditions');
             };

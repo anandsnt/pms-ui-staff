@@ -273,8 +273,9 @@ sntRover.controller('RVDailyProdReportCtrl', [
 					'colspan'        : $scope.colSpan,
 					'headerTop'      : $scope.headerTop,
 					'headerBot'      : $scope.headerBot,
-					'reportData'     : $scope.reportData
-				});
+					'reportData'     : $scope.reportData,
+					'isLastRowSum'   : true
+ 				});
 
 			React.renderComponent(
 				DPContent(props),
