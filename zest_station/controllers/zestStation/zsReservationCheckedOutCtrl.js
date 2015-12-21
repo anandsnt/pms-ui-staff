@@ -129,24 +129,48 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.emailError = false;
   };
 
+
+    var fetchBillSuccess = function(response){
+        $scope.$emit(zsEventConstants.HIDE_LOADER);
+        $scope.printData = response.data;
+        console.log($scope.printData);
+          // print section - if its from device call cordova.
+        try{
+          $window.print();
+          if ( sntapp.cordovaLoaded ) {
+              var printer = (sntZestStation.selectedPrinter);
+              cordova.exec(function(success) {
+                  checkOutGuest();
+              }, function(error) {
+                  $state.go('zest_station.error');
+              }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+          };
+          $scope.printOpted = true;
+          // provide a delay for preview to appear
+        }
+        catch(e){
+          
+        }
+    
+    };
+
+   var setupBillData = function(){
+     
+      var data = {
+              "reservation_id" : $scope.zestStationData.reservationData.reservation_id,
+              "bill_number" : 1
+      };
+      var options = {
+          params:            data,
+          successCallBack:    fetchBillSuccess,
+          failureCallBack:    $scope.failureCallBack
+      };
+      $scope.callAPI(zsCheckoutSrv.fetchBillPrintData, options);
+  };
+  
+
   $scope.printBill= function(){
-      // print section - if its from device call cordova.
-      try{
-        $window.print();
-        if ( sntapp.cordovaLoaded ) {
-            var printer = (sntZestStation.selectedPrinter);
-            cordova.exec(function(success) {
-                checkOutGuest();
-            }, function(error) {
-                $state.go('zest_station.error');
-            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-        };
-        $scope.printOpted = true;
-        // provide a delay for preview to appear
-      }
-      catch(e){
-        
-      }
+      setupBillData();
   };  
 
 }]);
