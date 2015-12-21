@@ -657,9 +657,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-		// CICO-23196 : Enable MAKE PAYMENT button on success.
-		$scope.disableMakePaymentButton = false;
-		$scope.$emit("hideLoader");
+		
+		//$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
 		// A temperory fix, This part (payment screens) of App seems broken in many ways 
 		// Will need to refractor as soon as possible
@@ -671,7 +670,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			mapCCPayMentToBillAndStaycard();
 		};
 		paymentFinalDetails =  data;
-	
+		
+		$timeout(function() {
+			// CICO-23196 : Enable MAKE PAYMENT button on success.
+			$scope.disableMakePaymentButton = false;
+		}, 1000);
 	};
 	/*
 	* Failure call back of submitpayment
