@@ -13,6 +13,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.fetchedData.charge_groups = [];
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
+			$scope.disablePostChargeButton = false;
 
 			var scrollerOptions = { preventDefault: false };
   			$scope.setScroller ('items_list', scrollerOptions);
@@ -446,6 +447,11 @@ sntRover.controller('RVPostChargeControllerV2',
 			};
 
 			$scope.postCharges = function() {
+
+				// CICO-23196 => to disable Multiple Postings/API requests from UI.
+				// We are disabling the POST CHARGE button on the click itself.
+				$scope.disablePostChargeButton = true;
+
 				var items = [],
 					each = {};
 
