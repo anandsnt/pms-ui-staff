@@ -134,6 +134,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsCheckInKeysCtrl',
              templateUrl: '/assets/partials/kiosk/specific/make-key.html',
          });
+         
+         $stateProvider.state('zest_station.pickup_keys', {
+             url: '/make_keys/:mode', 
+             controller: 'zsCheckInKeysCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/select-keys-after-checkin.html',
+         });
       
       
          $stateProvider.state('zest_station.last_confirm', {
@@ -161,6 +167,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
          
          $stateProvider.state('zest_station.error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
+         
+         $stateProvider.state('zest_station.room_error', {
              url: '/error/:mode', 
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/modal.html'

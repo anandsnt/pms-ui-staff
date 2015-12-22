@@ -53,10 +53,7 @@
                   		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==''">
 		                    <div class="guest-image icons icon-company" ></div>
 		                </figure>
-                  <!-- heading -->
                   <h2>{{attachedEntities.company_card.name}}</h2>
-                  <!-- icon -->
-                  <div class="status company" >{{attachedEntities.company_card.name}}</div>
                  </li>
 
                  <!-- Travel agent card -->
@@ -69,10 +66,7 @@
 		                    <div class="guest-image icons icon-travel-agent" ></div>
 		                </figure>
 
-                  <!-- heading -->
                   <h2>{{attachedEntities.travel_agent.name}}</h2>
-                  <!-- icon -->                  
-                  <div class="status travel-agent" >{{attachedEntities.travel_agent.name}}</div>
                  </li>
 
                 <!-- If group added -->
@@ -95,7 +89,7 @@
 
                   <h2>{{selectedEntity.name}}</h2>
                   <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
-                  <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
+                  <span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
 
                 </li>
             </ul>
@@ -126,7 +120,7 @@
           <!-- heading -->
           <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
           <!-- icon -->
-          <div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
+          <span class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></span>
         </div>
 
         <div class="entity" ng-repeat="row in results.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="results.posting_accounts.length == 0" ng-click="selectEntity($index, row.account_type )">

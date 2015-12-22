@@ -1180,6 +1180,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.applyRoutingToReservation = function() {
             var routingApplySuccess = function(data) {
                 $scope.$emit("hideLoader");
+                $scope.$broadcast('BILLINGINFOADDED');
                 ngDialog.close();
 
                 if ($scope.contractRoutingType === 'TRAVEL_AGENT' && that.hasCompanyCard() && $scope.routingInfo.company.routings_count > 0) {
