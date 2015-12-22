@@ -307,14 +307,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.initPrintRegistration = function(){
             $scope.printRegistrationCard();
-            
-            
-            
         };
         
-        
-
-
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
@@ -325,9 +319,16 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 		$( '#print-orientation' ).remove();
 	};
 
+        $scope.onPrintError = function(error){
+            $state.go('zest_station.error');
+        };
+        $scope.onPrintSuccess = function(success){
+            console.info('print success, continue');
+            $state.go('zest_station.last_confirm');
+            $scope.$emit('hideLoader');
+        };
 
 	$scope.printRegistrationCard = function() {
-
                 $scope.isPrintRegistrationCard = true;
 
                 $scope.$emit('hideLoader');
@@ -345,12 +346,13 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 */
                 // this will show the popup with full bill
                setTimeout(function() {
-                   
                     var printer = (sntZestStation.selectedPrinter);
                     $window.print();
                     if ( sntapp.cordovaLoaded ) {
-                            cordova.exec(function(success) {}, function(error) {
-                          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                            cordova.exec(
+                                $scope.onPrintSuccess, //print complete, should go to final screen
+                                $scope.onPrintError, //if print error, inform guest there was an error
+                            'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     };
                 }, 100);
 
@@ -367,7 +369,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                             // remove the orientation after similar delay
                     removePrintOrientation();
                 }, 100);
-
             };
 
         

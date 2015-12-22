@@ -190,6 +190,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         $scope.isSixPayPayment = function(){
            if ($scope.zestStationData){
                if ($scope.zestStationData.payment_gateway === "sixpayments"){
+                   console.info('making sixpay pmt');
                    return true;
                }
            }
@@ -290,7 +291,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             };
             $scope.headingText = 'To Complete Check-in...';
             $scope.signatureData = "";
-            $scope.refreshIframeWithGuestData($scope.selectedReservation);
+            $scope.initiateCardReader();
+         //   $scope.refreshIframeWithGuestData($scope.selectedReservation); //used only for manual entry
         };
         
 
@@ -379,6 +381,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         $scope.cardReader = new CardOperation();
 
         $scope.initiateCardReader = function() {
+            console.info('init card reader for sixpay');
             //if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
             if (true) {
               setTimeout(function() {
@@ -414,7 +417,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }, 2000);
             }
         }
-                  $scope.initiateCardReader();
 
 	/**
 	 * [initializeMe description]
@@ -476,6 +478,7 @@ var CardOperation = function(){
 			return false;
 		}
 		else{
+                    if (cordova){
 			//calling cordova service
 			cordova.exec(
                         // if success call back require any parameters
@@ -512,10 +515,9 @@ var CardOperation = function(){
                         action,
                         // arguments to native
                         arguments
-                );
-
-
-		}
+                    );
+                    }
+                }
 	};
 
 	this.callRecursively = function(options){
