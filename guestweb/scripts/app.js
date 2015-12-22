@@ -63,6 +63,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
  	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestEmailCheckinNoServiceMsg;
  	$rootScope.termsAndConditions = $attrs.termsAndConditions;
  	$rootScope.isBirthdayVerified =  false;
+ 	$rootScope.application        = $attrs.application;
 
 
     //Params for zest mobile and desktop screens

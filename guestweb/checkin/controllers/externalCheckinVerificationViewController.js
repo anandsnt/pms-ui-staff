@@ -144,8 +144,8 @@
 							$scope.isLoading = false;
 							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
 							$rootScope.reservationID 	= response.results[0].reservation_id;
-							$rootScope.isPrecheckinOnly = (response.is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
-							$rootScope.isAutoCheckinOn 	= response.is_auto_checkin && $rootScope.isPrecheckinOnly;
+							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status ==='RESERVED')?true:false;
+							$rootScope.isAutoCheckinOn 	= (response.is_auto_checkin === "true") && $rootScope.isPrecheckinOnly;
 							getToken(response);
 						};
 					};
