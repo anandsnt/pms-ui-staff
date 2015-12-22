@@ -8,11 +8,15 @@
             <ul role="menu">
                 <!-- card swipe -->
                 <li ng-show='show.swipecardScreen && at === "card-swipe"'>
-                    <button type="button" class="button option" touch-press='goToCardSign()'>
+                    <!--button type="button" class="button option" touch-press='goToCardSign()' -->
+                    <button type="button" class="button option">
                         <div ng-include="'assets/css/icons/creditcard.svg'"></div>
                     </button>
                     <span translate>Please Swipe Credit Card</span>
+                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
+                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
+                
                 <!-- deliver-registration -->
                 <li ng-show='at === "deliver-registration" && printEnabled'> 
                     <button type="button" class="button option" touch-press='clickedPrint()'>
