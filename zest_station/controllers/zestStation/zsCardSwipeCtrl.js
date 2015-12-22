@@ -375,8 +375,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         $scope.numberOfCordovaCalls = 0;
         
         var initiateDesktopCardReader = function(){
-            var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
-            zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
+            //var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
+            //zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
         };
         $scope.cardReader = new CardOperation();
 
