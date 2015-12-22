@@ -265,6 +265,36 @@
     </div>
 </div>
 
+<div class="options long-list" ng-if="item.hasRateTypeFilter" ng-click="catchFauxSelectClick($event, 'hasRateTypeFilter')">
+    <label for="report-options">Rate Type</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasRateTypeFilter)">{{ item.hasRateTypeFilter.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasRateTypeFilter.show }">
+        <label class="checkbox inline" ng-show="item.hasRateTypeFilter.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasRateTypeFilter.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(item)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="rateType in item.hasRateTypeFilter.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : rateType.selected}"></span>
+            <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(item)" name="room-filters"> {{ rateType.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasRateFilter" ng-click="catchFauxSelectClick($event, 'hasRateFilter')">
+    <label for="report-options">Rate(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasRateFilter)">{{ item.hasRateFilter.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasRateFilter.show }">
+        <label class="checkbox inline" ng-show="item.hasRateFilter.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasRateFilter.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasRateFilter.selectAll" ng-change="toggleRateSelectAll(item)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="rate in item.hasRateFilter.data" ng-if="shouldShowThisRate(rate, item)">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : rate.selected}"></span>
+            <input type="checkbox" ng-model="rate.selected" ng-change="rateChanged(item)" name="room-filters"> {{ rate.name }}
+        </label>
+    </div>
+</div>
+
 <div class="options long-list" ng-if="item.hasDisplay.data.length" ng-click="catchFauxSelectClick($event, 'hasDisplay')">
     <label for="report-options">Display(s)</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasDisplay)">{{ item.hasDisplay.title }}</div>

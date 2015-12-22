@@ -602,6 +602,14 @@ sntRover.factory('RVReportUtilsFac', [
                     };
                 };
 
+                if(filter.value === 'RATE_TYPE') {
+                    report['hasRateTypeFilter'] = filter;
+                }
+
+                if(filter.value === 'RATE') {
+                    report['hasRateFilter'] = filter;
+                }
+
                 // check for date filter and keep a ref to that item
                 if ( filter.value === 'DATE_RANGE' ) {
                     report['hasDateFilter'] = filter;
@@ -912,6 +920,12 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResAddons );
                 }
 
+                else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && !filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRateTypesAndRateList()
+                        .then( fillRateTypesAndRateList );
+                }
+
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
                     
                     // fetch charge groups
@@ -1132,6 +1146,68 @@ sntRover.factory('RVReportUtilsFac', [
                 completed++;
                 checkAllCompleted();
                 
+            };
+
+            var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+                var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
+                    rateTypeListIds      = _.unique(rateTypeListIds),
+                    rateTypeObject       = {},
+                    rateTypeListToReturn = rateTypeListIds.map(function(id){ 
+                        rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
+                        if(rateTypeObject) {
+                            rateTypeObject.name = rateTypeObject.rate_type_name;
+                            rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
+                        }
+                        return rateTypeObject;
+                    });
+                return rateTypeListToReturn;
+            };
+
+            var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+                return rateTypesAndRateList.map(function(rate){
+                    rate.name = rate.rate_name;
+                    return _.omit(rate, "rate_type_name");
+                });
+            };
+
+            //
+            function fillRateTypesAndRateList(data) {
+                var foundFilter;
+                
+                //default all are selected for rate & rate types
+                _.each(data, function(rate) {
+                    rate.selected = true;
+                });
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RATE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        __setData(report, 'hasRateTypeFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Rate Type',
+                            title        : 'All Selected',
+                            data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
+                        });
+
+                        __setData(report, 'hasRateFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Rate',
+                            title        : 'All Selected',
+                            data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();                
             };
 
             // fill charge group and charge codes

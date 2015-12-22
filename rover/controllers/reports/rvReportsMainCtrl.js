@@ -136,7 +136,9 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_28: false,
 			item_29: false, // Exclude Options
 			item_30: false, // Show Options
-			item_31: false
+			item_31: false,
+			item_32: false,
+			item_33: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -455,7 +457,85 @@ sntRover.controller('RVReportsMainCtrl', [
             };
         };
 
+        $scope.toggleRateTypeSelectAll = function(item) {
+        	//whether rate type selected all or not selected all, applying to listing
+        	_.each(item.hasRateTypeFilter.data, function(rateType) {
+        		rateType.selected = item.hasRateTypeFilter.selectAll;
+        	});
+        	$scope.fauxSelectChange (item, item.hasRateTypeFilter, item.hasRateTypeFilter.selectAll);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
+        };
 
+        $scope.rateTypeChanged = function(item) {
+        	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
+        };
+
+        var formTitleAndToggleSelectAllForRateDropDown = function(item) {
+        	var showingRateList = $scope.getRates(item),
+        		selectedRates 	= _.where(showingRateList, {selected: true});
+
+			item.hasRateFilter.selectAll = false;
+        	if(showingRateList.length === selectedRates.length) {
+        		item.hasRateFilter.title = 'All Selected';
+        		item.hasRateFilter.selectAll = true;
+        	}
+        	else if(selectedRates.length === 0 ){
+        		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
+        	}
+        	else if(selectedRates.length === 1 ){
+        		item.hasRateFilter.title = selectedRates[0].name;
+        	}
+        	else {
+        		item.hasRateFilter.title = selectedRates.length + ' Selected';
+        	}
+        };
+
+        $scope.rateChanged = function(item) {
+        	formTitleAndToggleSelectAllForRateDropDown(item);
+        };
+
+        $scope.toggleRateSelectAll = function(item) {
+        	var showingRateList = $scope.getRates(item);
+
+        	//whether rate type selected all or not selected all, applying to listing
+        	_.each(item.hasRateFilter.data, function(rateType) {
+        		rateType.selected = item.hasRateFilter.selectAll;
+        	});
+			formTitleAndToggleSelectAllForRateDropDown(item);       	
+        };
+
+        var getSelectedRateTypes = function(item) {
+        	return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), "rate_type_id");
+        }
+
+        var getRateListToShow = function(item) {
+        	//if selected some room types
+        	var listedRateTypes 		= item.hasRateTypeFilter.data,
+        		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
+        	return _.filter(item.hasRateFilter.data, function(rate) {
+        		return ( selectedRateTypesIds.indexOf(rate.rate_type_id) > -1 );
+        	});
+        };
+
+        $scope.shouldShowThisRate = function(rate, item) {
+        	var listedRateTypes 		= item.hasRateTypeFilter.data,
+        		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
+
+        	return (selectedRateTypesIds.indexOf(rate.rate_type_id) > -1);
+        }
+        $scope.getRates = function(item) {
+        	//if all selected from rate type drop down
+        	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;
+        	
+        	if( wantedToShowAllRates ) { 
+        		return item.hasRateFilter.data; 
+        	}
+
+        	return getRateListToShow(item);
+        };
 
 		$scope.catchFauxSelectClick = function(e, currentFaux) {
 			e && e.stopPropagation();
@@ -488,7 +568,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.fauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
-
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
                     fauxDS.title = 'All Selected';
@@ -503,7 +582,6 @@ sntRover.controller('RVReportsMainCtrl', [
                 selectedItems = _.where(fauxDS.data, { selected: true });
             } else {
                 selectedItems = _.where(fauxDS.data, { selected: true });
-
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
@@ -800,6 +878,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
 				};
+			};
+
+			// rate
+			if (!!report.hasRateFilter) {
+				key = reportParams['RATE_IDS'];
+				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
+			};
+
+			// rate
+			if (!!report.hasRateTypeFilter) {
+				key = reportParams['RATE_TYPE_IDS'];
+				params[key] = getSelectedRateTypes(report);
 			};
 
 			// include rate adjustment dates
