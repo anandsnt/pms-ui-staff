@@ -435,6 +435,13 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			});
 			return idAry;
 		};
+
+		var mapRoomShowflag = function(task) {
+			$scope.roomTypesList.forEach(function(item, index) {
+				item.show = task.room_type_ids[index];
+			});
+		};
+
 		var checkForFrequencyType = function(frequencyObj){
 			var isCustom = false, isWeekDay = false, isWeekEnd = false, isByWeekDay = false, isByStayDay = false;
 			if(frequencyObj.days !== null && frequencyObj.days!== 0){
@@ -485,6 +492,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					var frequencyType = checkForFrequencyType(this.item.frequency);
 					$scope.taskListClickedElement = typeIndex;
 					var time = this.item.completion_time;
+
 					$scope.eachTaskList = {
 						name                         : this.item.name,
 						work_type_id                 : this.item.work_type_id,
@@ -504,11 +512,12 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 						frequency 					 : this.item.frequency,
 						is_active					 : this.item.is_active	
 					};
+					mapRoomShowflag($scope.eachTaskList);
 					if(frequencyType.isCustom === true){
 					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
 					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
 						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
-					}
+					}				
 				}
 			}
 		};
@@ -674,6 +683,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.checkCopyBtnShow = function(id) {
 			var room = $scope.eachTaskList.rooms_task_completion[id];
 			return !!room.hours && !!room.mins ? true : false;
+		};
+
+		$scope.changedSelectedRooms = function (item, index) {
+			item.show = $scope.eachTaskList.room_type_ids[index];
+		};
+
+		$scope.selectedRoomsFilter = function(item) {
+        	return item.show;
 		};
 
 		$scope.copyNpaste = function(id) {
