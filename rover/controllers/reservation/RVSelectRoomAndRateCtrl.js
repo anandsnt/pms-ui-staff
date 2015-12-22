@@ -114,11 +114,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							roomTypes[currentRoomType] = {
 								id: currentRoomType,
 								name: $scope.reservationData.roomsMeta[currentRoomType].name,
-								rates: {}
+								rates: {},
+								availability: null
 							};
 						}
-
-
 
 						roomTypes[currentRoomType].rates[currentRate] = {
 							name: $scope.reservationData.ratesMeta[currentRate].name,
@@ -153,7 +152,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 									amount: date.amount
 								}
 							}
-
+							// Assign Least Availability on the room level
+							roomTypes[currentRoomType].availability = roomTypes[currentRoomType].availability === null ? date.availability : Math.min(roomTypes[currentRoomType].availability, date.availability);
 						});
 
 						if (minHouseAvailability < 1) {
@@ -281,12 +281,29 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			},
 			navigateOut = function() {
-				if ($scope.viewState.identifier !== "REINSTATE" &&
-					($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD")) {
-					$scope.saveAndGotoStayCard();
+				var navigate = function() {
+					if ($scope.viewState.identifier !== "REINSTATE" &&
+						($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD")) {
+						$scope.saveAndGotoStayCard();
+					} else {
+						$scope.computeTotalStayCost();
+						enhanceStay();
+					}
+				};
+				if ($scope.stateCheck.taxInfo === null) {
+					// Ensure that tax and rate addon meta data is available for further calculations
+					$scope.invokeApi(RVReservationBaseSearchSrv.fetchTaxRateAddonMeta, {
+						from_date: $scope.reservationData.arrivalDate,
+						to_date: $scope.reservationData.departureDate
+					}, function(response) {
+						$scope.stateCheck.taxInfo = true;
+						RVReservationStateService.metaData.taxDetails = angular.copy(response['tax-info']);
+						RVReservationStateService.metaData.rateAddons = angular.copy(response['rate-addons']);
+						$scope.$emit('hideLoader');
+						navigate();
+					});
 				} else {
-					$scope.computeTotalStayCost();
-					enhanceStay();
+					navigate();
 				}
 			},
 			initScrollers = function() {
@@ -469,7 +486,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						$scope.reservationData.rooms[roomIndex].rateName = $scope.displayData.allRates[$scope.reservationData.rooms[firstIndexOfRoomType].stayDates[$scope.reservationData.arrivalDate].rate.id].name;
 					}
 
-					$scope.reservationData.rateDetails[roomIndex] = $scope.roomAvailability[$scope.reservationData.tabs[$scope.activeRoom].roomTypeId].ratedetails;
+					$scope.reservationData.rateDetails[roomIndex] = angular.copy($scope.stateCheck.lookUp[$scope.reservationData.rooms[roomIndex].roomTypeId].rates[$scope.reservationData.rooms[firstIndexOfRoomType].stayDates[$scope.reservationData.arrivalDate].rate.id].dates);
 
 					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState === "STAY_CARD") {
 						_.each($scope.reservationData.rooms[roomIndex].stayDates, function(details, date) {
@@ -533,6 +550,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
+
+				$scope.stateCheck.selectedStayDate.roomType = {
+					id: roomId
+				}
 
 				// CICO-6079
 
