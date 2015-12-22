@@ -1090,20 +1090,6 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			};
 
-			// generate params for selected show options
-			if ( report['hasShowOptions']['data'].length ) {
-				_.each(report['hasShowOptions']['data'], function(each) {
-					if ( each.selected ) {
-						key         = each.paramKey;
-						params[key] = true;
-						
-						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.display.push( each.description );
-						};
-					};
-				});
-			};
-
 			// generate params for guest or account
 			if ( report['hasGuestOrAccountFilter']['data'].length ) {
 				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {

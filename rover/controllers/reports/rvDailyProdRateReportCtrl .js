@@ -250,43 +250,22 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				noOfDays += 1;
 			}
 
-			var results = $scope.results,
-				optionShowRate = _.findWhere($scope.chosenReport.hasShowOptions.data, {
-					paramKey: 'rate'
-				}),
-				optionShowRateTypes = _.findWhere($scope.chosenReport.hasShowOptions.data, {
-					paramKey: 'rate_type'
-				})
-				showRates = optionShowRate && optionShowRate.selected,
-				showRateTypes = optionShowRateTypes && optionShowRateTypes.selected;
+			var results = $scope.results;
 
 			//Parse Rates OR Rate Types based on the filter here
-			if (showRateTypes) {
-				_.each(results.rate_types, function(rateTypeData) {
-					$scope.yAxisLabels.push({
-						name: rateTypeData.rate_type_name,
-						rate_type_id: rateTypeData.rate_type_id,
-						is_rate_type: true
-					});
-
-					$scope.reportData.push(parseDailyData(rateTypeData.data, true));
-					//Put rates under the rate type
-					if (showRates) {
-						var rates = _.filter(results.rates, {
-							rate_type_id: rateTypeData.rate_type_id,
-						});
-						_.each(rates, function(rate) {
-							$scope.yAxisLabels.push({
-								name: rate.rate_name,
-								rate_type_id: rate.rate_type_id,
-								is_rate_type: false
-							});
-							$scope.reportData.push(parseDailyData(rate.data, false));
-						});
-					}
+			_.each(results.rate_types, function(rateTypeData) {
+				$scope.yAxisLabels.push({
+					name: rateTypeData.rate_type_name,
+					rate_type_id: rateTypeData.rate_type_id,
+					is_rate_type: true
 				});
-			} else if (showRates) {
-				_.each(results.rates, function(rate) {
+
+				$scope.reportData.push(parseDailyData(rateTypeData.data, true));
+				//Put rates under the rate type
+				var rates = _.filter(results.rates, {
+					rate_type_id: rateTypeData.rate_type_id,
+				});
+				_.each(rates, function(rate) {
 					$scope.yAxisLabels.push({
 						name: rate.rate_name,
 						rate_type_id: rate.rate_type_id,
@@ -294,7 +273,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					});
 					$scope.reportData.push(parseDailyData(rate.data, false));
 				});
-			}
+			});
 
 			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
 
