@@ -296,7 +296,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.initRoomErrorScreen();
             } else if (current === 'zest_station.last_confirm'){
                 
-                if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
+                if (($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled) && !$state.fromPrintSuccess){
                     $scope.headingText = "The e-mail is now living in your inbox.";
                     $scope.subHeadingText = $scope.getLastInputEmail();
                 } else {
@@ -356,7 +356,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $state.go('zest_station.error');
         };
         $scope.onPrintSuccess = function(success){
+            console.info('print success!');
             console.info('print success, continue');
+            $state.fromPrintSuccess = true;
             $state.go('zest_station.last_confirm');
             $scope.$emit('hideLoader');
         };
@@ -383,8 +385,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     $window.print();
                     if ( sntapp.cordovaLoaded ) {
                             cordova.exec(
-                                $scope.onPrintSuccess, //print complete, should go to final screen
-                                $scope.onPrintError, //if print error, inform guest there was an error
+                                $scope.onPrintSuccess(), //print complete, should go to final screen
+                                $scope.onPrintError(), //if print error, inform guest there was an error
                             'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     };
                 }, 100);
@@ -401,6 +403,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 
                             // remove the orientation after similar delay
                     removePrintOrientation();
+                    $scope.onPrintSuccess();
                 }, 100);
             };
 
