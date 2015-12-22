@@ -288,7 +288,7 @@
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasRateFilter.selectAll }"></span>
             <input type="checkbox" ng-model="item.hasRateFilter.selectAll" ng-change="toggleRateSelectAll(item)" name="room-filters"> Select All
         </label>
-        <label class="checkbox inline" ng-repeat="rate in getRates(item)">
+        <label class="checkbox inline" ng-repeat="rate in item.hasRateFilter.data" ng-if="shouldShowThisRate(rate, item)">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : rate.selected}"></span>
             <input type="checkbox" ng-model="rate.selected" ng-change="rateChanged(item)" name="room-filters"> {{ rate.name }}
         </label>

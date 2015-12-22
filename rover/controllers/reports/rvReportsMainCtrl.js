@@ -463,18 +463,19 @@ sntRover.controller('RVReportsMainCtrl', [
         		rateType.selected = item.hasRateTypeFilter.selectAll;
         	});
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter, item.hasRateTypeFilter.selectAll);
-        	formTitleForRateDropDown(item);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
         };
 
         $scope.rateTypeChanged = function(item) {
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
-        	formTitleForRateDropDown(item);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
         };
 
-        var formTitleForRateDropDown = function(item) {
+        var formTitleAndToggleSelectAllForRateDropDown = function(item) {
         	var showingRateList = $scope.getRates(item),
         		selectedRates 	= _.where(showingRateList, {selected: true});
 
+			item.hasRateFilter.selectAll = false;
         	if(showingRateList.length === selectedRates.length) {
         		item.hasRateFilter.title = 'All Selected';
         		item.hasRateFilter.selectAll = true;
@@ -491,17 +492,17 @@ sntRover.controller('RVReportsMainCtrl', [
         };
 
         $scope.rateChanged = function(item) {
-        	formTitleForRateDropDown(item);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
         };
 
         $scope.toggleRateSelectAll = function(item) {
         	var showingRateList = $scope.getRates(item);
 
         	//whether rate type selected all or not selected all, applying to listing
-        	_.each(showingRateList, function(rateType) {
+        	_.each(item.hasRateFilter.data, function(rateType) {
         		rateType.selected = item.hasRateFilter.selectAll;
         	});
-        	formTitleForRateDropDown(item);
+			formTitleAndToggleSelectAllForRateDropDown(item);       	
         };
 
         var getSelectedRateTypes = function(item) {
@@ -518,6 +519,13 @@ sntRover.controller('RVReportsMainCtrl', [
         	});
         };
 
+        $scope.shouldShowThisRate = function(rate, item) {
+        	var listedRateTypes 		= item.hasRateTypeFilter.data,
+        		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
+
+        	return (selectedRateTypesIds.indexOf(rate.rate_type_id) > -1);
+        }
         $scope.getRates = function(item) {
         	//if all selected from rate type drop down
         	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;
