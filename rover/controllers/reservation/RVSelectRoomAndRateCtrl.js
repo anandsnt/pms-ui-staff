@@ -1,9 +1,9 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'sortOrder', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService',
-	function($rootScope, $scope, sortOrder, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService) {
-
+	'$rootScope', '$scope', 'sortOrder', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv',
+	function($rootScope, $scope, sortOrder, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv) {
 
 		$scope.stateCheck = {
+			house: house,
 			baseInfo: rates,
 			activeMode: $stateParams.view && $stateParams.view === "CALENDAR" ? "CALENDAR" : "ROOM_RATE",
 			activeView: "", // RECOMMENDED, ROOM_TYPE and RATE
@@ -118,6 +118,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							};
 						}
 
+
+
 						roomTypes[currentRoomType].rates[currentRate] = {
 							name: $scope.reservationData.ratesMeta[currentRate].name,
 							id: currentRate,
@@ -126,13 +128,23 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isSuppressed: false,
 							isCorporate: false,
 							dates: {},
-							showDays: false
+							showDays: false,
+							numRestrictions: roomType.restriction_count || 0,
+							restriction: roomType.first_restriction,
+							forRoomType: currentRoomType
 						}
+
+						var minHouseAvailability;
 
 						//for every day
 						_.each(roomType.dates, function(date, index) {
 							if (index < roomType.dates.length - 1) {
 								var currentDay = date.date;
+								if (minHouseAvailability === undefined) {
+									minHouseAvailability = $scope.stateCheck.house[currentDay];
+								}
+								minHouseAvailability = Math.min(minHouseAvailability, $scope.stateCheck.house[currentDay]);
+
 								roomTypes[currentRoomType].rates[currentRate].totalAmount += date.amount;
 
 								roomTypes[currentRoomType].rates[currentRate].dates[currentDay] = {
@@ -143,7 +155,20 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							}
 
 						});
+
+						if (minHouseAvailability < 1) {
+							roomTypes[currentRoomType].rates[currentRate].numRestrictions += 1;
+							roomTypes[currentRoomType].rates[currentRate].restriction = roomTypes[currentRoomType].rates[currentRate].numRestrictions > 1 ? {
+								key: '',
+								value: 'MULTIPLE RESTRICTIONS APPLY'
+							} : {
+								key: '',
+								value: 'NO HOUSE AVAILABILITY'
+							};
+						}
+
 						roomTypes[currentRoomType].rates[currentRate].adr = roomTypes[currentRoomType].rates[currentRate].totalAmount / ($scope.reservationData.numNights || 0);
+
 					});
 				});
 
@@ -564,68 +589,81 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.viewRateBreakUp = function(rate, updateOnly) {
 
 			var computeDetails = function() {
-				var datesArray = rate.dates;
-				rate.total = 0.0;
-				if ($scope.stateCheck.activeView === "RATE") {
-					datesArray = rate.selectedRoom.dates;
-					rate.selectedRoom.total = 0.0;
-				}
 
-				var stayTax = {
-					excl: {}
-				};
+				$scope.invokeApi(RVSelectRoomRateSrv.getRestrictions, {
+					from_date: $scope.reservationData.arrivalDate,
+					to_date: $scope.reservationData.departureDate,
+					rate_id: rate.id,
+					room_type_id: $scope.stateCheck.activeView === "RATE" ? rate.selectedRoom.id : rate.forRoomType
+				}, function(restrictions) {
 
-				var updateStayTaxes = function(stayTaxDayInfo) {
-					_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
-						if (stayTax.excl[taxId] === undefined) {
-							stayTax.excl[taxId] = parseFloat(taxAmount);
+					$scope.$emit('hideLoader');
+
+					var datesArray = rate.dates;
+					rate.total = 0.0;
+					if ($scope.stateCheck.activeView === "RATE") {
+						datesArray = rate.selectedRoom.dates;
+						rate.selectedRoom.total = 0.0;
+					}
+
+					var stayTax = {
+						excl: {}
+					};
+
+					var updateStayTaxes = function(stayTaxDayInfo) {
+						_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
+							if (stayTax.excl[taxId] === undefined) {
+								stayTax.excl[taxId] = parseFloat(taxAmount);
+							} else {
+								stayTax.excl[taxId] = _.max([stayTax.excl[taxId], parseFloat(taxAmount)]);
+							}
+						});
+					};
+
+					_.each(datesArray, function(dayInfo, date) {
+						var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
+								date,
+								rate.id,
+								$scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.adults,
+								$scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.children,
+								$scope.reservationData.arrivalDate,
+								$scope.reservationData.departureDate,
+								$scope.activeRoom,
+								$scope.reservationData.ratesMeta[rate.id].taxes,
+								dayInfo.amount),
+							dayTotal = dayInfo.amount + taxAddonInfo.addon + parseFloat(taxAddonInfo.tax.excl);
+
+						_.extend(dayInfo, {
+							addon: taxAddonInfo.addon,
+							inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
+							tax: taxAddonInfo.tax,
+							total: dayTotal,
+							restrictions: restrictions.dates[currentDay]
+						});
+
+						updateStayTaxes(taxAddonInfo.stayTax);
+
+						if ($scope.stateCheck.activeView === "RATE") {
+							rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(dayTotal);
 						} else {
-							stayTax.excl[taxId] = _.max([stayTax.excl[taxId], parseFloat(taxAmount)]);
+							rate.total = parseFloat(rate.total) + parseFloat(dayTotal);
 						}
 					});
-				};
 
-				_.each(datesArray, function(dayInfo, date) {
-					var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
-							date,
-							rate.id,
-							$scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.adults,
-							$scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.children,
-							$scope.reservationData.arrivalDate,
-							$scope.reservationData.departureDate,
-							$scope.activeRoom,
-							$scope.reservationData.ratesMeta[rate.id].taxes,
-							dayInfo.amount),
-						dayTotal = dayInfo.amount + taxAddonInfo.addon + parseFloat(taxAddonInfo.tax.excl);
-
-					_.extend(dayInfo, {
-						addon: taxAddonInfo.addon,
-						inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
-						tax: taxAddonInfo.tax,
-						total: dayTotal
+					var totalStayTaxes = 0.0;
+					_.each(stayTax.excl, function(tax) {
+						totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
 					});
 
-					updateStayTaxes(taxAddonInfo.stayTax);
 
 					if ($scope.stateCheck.activeView === "RATE") {
-						rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(dayTotal);
+						rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(totalStayTaxes);
+						rate.selectedRoom.restrictions: restrictions.summary;
 					} else {
-						rate.total = parseFloat(rate.total) + parseFloat(dayTotal);
+						rate.total = parseFloat(rate.total) + parseFloat(totalStayTaxes);
+						rate.restrictions: restrictions.summary;
 					}
 				});
-
-				var totalStayTaxes = 0.0;
-				_.each(stayTax.excl, function(tax) {
-					totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
-				});
-
-
-				if ($scope.stateCheck.activeView === "RATE") {
-					rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(totalStayTaxes);
-				} else {
-					rate.total = parseFloat(rate.total) + parseFloat(totalStayTaxes);
-				}
-
 
 			};
 

@@ -84,11 +84,27 @@
                         </div>
                     </a>
                     <!-- Rates list -->
-                    <ul class="rates" ng-class="{active: isVisibleRoom}" ng-if="isVisibleRoom">
-                        <li ng-repeat="rate in room.rates">
+                    <ul class="rates" ng-class="{active: isVisibleRoom}" ng-if="isVisibleRoom" >
+                        <li ng-repeat="rate in room.rates" ng-class="{'closed': !stateCheck.stayDatesMode && rate.numRestrictions > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
                             <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(rate);">
                                 <h3>
                                     {{rate.name}}
+                                    <span class="restricted" 
+                                        ng-if="!stateCheck.stayDatesMode && rate.numRestrictions > 1">
+                                        MULTIPLE RESTRICTIONS APPLY
+                                    </span>
+                                    <span class="restricted {{restrictionColorClass[rate.restriction.key]}}" 
+                                        ng-if="!stateCheck.stayDatesMode && rate.numRestrictions == 1">
+                                        {{rate.restriction.value}}
+                                    </span>
+                                    <span class="restricted" 
+                                        ng-if="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 1">
+                                        MULTIPLE RESTRICTIONS APPLY
+                                    </span>
+                                    <span class="restricted {{restrictionColorClass[roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions[0].key]}}" 
+                                        ng-if="stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length == 1">
+                                        {{roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions[0].value}}
+                                    </span>
                                 </h3>
                                 <div class="price" ng-if="!rate.isSuppressed">
                                     {{currencySymbol}}{{rate.adr | number: 2}}
