@@ -638,7 +638,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
 							tax: taxAddonInfo.tax,
 							total: dayTotal,
-							restrictions: restrictions.dates[currentDay]
+							restrictions: restrictions.dates[date]
 						});
 
 						updateStayTaxes(taxAddonInfo.stayTax);
@@ -658,10 +658,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 					if ($scope.stateCheck.activeView === "RATE") {
 						rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(totalStayTaxes);
-						rate.selectedRoom.restrictions: restrictions.summary;
+						rate.selectedRoom.restrictions = restrictions.summary;
 					} else {
 						rate.total = parseFloat(rate.total) + parseFloat(totalStayTaxes);
-						rate.restrictions: restrictions.summary;
+						rate.restrictions = restrictions.summary;
 					}
 				});
 
