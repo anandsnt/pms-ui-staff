@@ -185,7 +185,20 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         };
         
-        
+        $scope.shouldShowWaiting = false;
+        $scope.pageloadingOver = false;
+        $scope.simulateSixPay = function(){
+            $scope.shouldShowWaiting = true;
+            $scope.pageloadingOver = true;
+                $scope.shouldShowWaiting = false;
+                $scope.pageloadingOver = false;
+                
+                setTimeout(function(){
+                    $scope.$emit('hideLoader');
+                    $scope.goToCardSign();
+                },2000);
+                
+        };
         
         $scope.isSixPayPayment = function(){
            if ($scope.zestStationData){
