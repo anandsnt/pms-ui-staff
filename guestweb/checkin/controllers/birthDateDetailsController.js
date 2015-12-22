@@ -147,7 +147,7 @@
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestBirthDate(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
-					$rootScope.isGuestAddressVerified =  true;
+					$rootScope.isBirthdayVerified =  true;
 					goToNextStep();
 				},function(){
 					$rootScope.netWorkError = true;
