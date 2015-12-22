@@ -63,7 +63,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
     $scope.editPaymentMethod = function () {
         $scope.oldPayment = $scope.renderAddedPayment;
-        $scope.renderAddedPayment = null; 
+        $scope.renderAddedPayment = null;
         isAddPayment = false;
     }
 
@@ -144,6 +144,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             $scope.renderAddedPayment.payment_type = "";
             $scope.isShownExistingCCPayment = false;
             $scope.$broadcast('showaddpayment');
+            $scope.refreshScroller('routeDetails');
 	};
 	$scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
 		$scope.isAddPayment = true;

@@ -1,4 +1,4 @@
-<div id="new-payment-method" class="form" ng-iscroll='newpaymentview' ng-iscroll-delay='100' ng-controller = "rvRoutesAddPaymentCtrl"  style="position: relative;height:250px;overflow: hidden;">
+<div id="new-payment-method" class="form"  ng-controller = "rvRoutesAddPaymentCtrl">
       <div style="margin-right:20" class="payment-form">
                      <div class="entry full-width" ng-hide = "showCCPage">
                         <label for="payment-type" translate>PAYMENT_TYPE</label>
@@ -6,7 +6,7 @@
                            <select name="payment-type" ng-model = "saveData.payment_type" id="payment-type" class="placeholder" ng-change="selectPaymentType()">
                               <option value="" translate>SELECT_PAYMENT_TYPE</option>
                               <option value="{{paymentType.name}}" ng-repeat = "paymentType in availablePaymentTypes">{{paymentType.description}}</option>
-                              
+
                            </select>
                         </div>
                      </div>
@@ -16,7 +16,7 @@
                            <select name="payment-type" ng-model = "saveData.credit_card" id="payment-type" class="placeholder" >
                               <option value="" translate>SELECT_CREDIT_CARD_LABEL</option>
                               <option value="{{creditcard.cardcode}}" ng-repeat = "creditcard in ccPaymentDetails.values">{{creditcard.cardname}}</option>
-                              
+
                            </select>
                         </div>
                      </div> -->
@@ -58,5 +58,5 @@
                         <button type="button" class="button blank" ng-click = "cancelClicked()" ng-show="isAddPayment" translate>CANCEl</button>
                         <!-- <button type="button" class="button" ng-hide="showCCPage" ng-class="{'green': saveData.payment_type != '', 'grey': saveData.payment_type == ''}"  ng-disabled = "saveData.payment_type == ''" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button> -->
                      </div>
-      </div>                  
-</div>                  
+      </div>
+</div>
