@@ -171,11 +171,6 @@ sntRover.factory('RVReportUtilsFac', [
             'EXCLUDE_TAX' : true
         };
 
-        var __showFilterNames = {
-            'RATE'  : true,
-            'RATE_TYPE'  : true
-        };
-
         var __displayFilterNames = {
             'INCLUDE_MARKET'  : true,
             'INCLUDE_SOURCE'  : true,
@@ -566,16 +561,6 @@ sntRover.factory('RVReportUtilsFac', [
                 data         : []
             });
 
-            // create DS for Show combo box
-            __setData(report, 'hasShowOptions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : true,
-                defaultTitle : 'Show',
-                title        : 'Show All',
-                data         : []
-            });
-
             // create DS for guest or account
             __setData(report, 'hasGuestOrAccountFilter', {
                 type         : 'FAUX_SELECT',
@@ -802,16 +787,6 @@ sntRover.factory('RVReportUtilsFac', [
                     };
 
                     report['hasExclusions']['data'].push({
-                        paramKey    : filter.value.toLowerCase(),
-                        description : filter.description,
-                        selected    : selected
-                    });
-                };
-
-                 // fill up DS for show combo box
-                if ( __showFilterNames[filter.value] ) {
-                    selected = true;
-                    report['hasShowOptions']['data'].push({
                         paramKey    : filter.value.toLowerCase(),
                         description : filter.description,
                         selected    : selected

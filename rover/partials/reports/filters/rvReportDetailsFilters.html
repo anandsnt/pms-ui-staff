@@ -402,27 +402,6 @@
             </div>
         </div>
 
-
-        
-        <!-- item_30: Show options -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasShowOptions.data.length" ng-class="{ 'active': filterItemsToggle.item_30 }" ng-click="toggleFilterItems('item_30')">
-            <span class="title">Show</span>
-        </a>
-        <div class="settings-content" ng-if="chosenReport.hasShowOptions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_30 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasShowOptions.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasShowOptions.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasShowOptions.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShowOptions, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasShowOptions.data.length > 1 && chosenReport.hasShowOptions.selectAll) }">
-                    <label class="checkbox" ng-repeat="choice in chosenReport.hasShowOptions.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : choice.selected }"></span>
-                        <input type="checkbox" ng-model="choice.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShowOptions)" name="room-filters"> {{ choice.description }}
-                    </label>
-                </div>
-            </div>
-        </div>
-
          <!-- item_31: Reservation Addons -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasReservationAddons.data.length" ng-class="{ 'active': filterItemsToggle.item_31 }" ng-click="toggleFilterItems('item_31')">
             <span class="title">Reservation Add-ons</span>
@@ -655,12 +634,12 @@
             <div class="faux-select-options">
                 <label class="checkbox" ng-show="chosenReport.hasRateTypeFilter.data.length > 1">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasRateTypeFilter.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(item)" name="room-filters"> Select All
+                    <input type="checkbox" ng-model="chosenReport.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(chosenReport)" name="room-filters"> Select All
                 </label>
                 <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasRateTypeFilter.data.length > 1 && chosenReport.hasRateTypeFilter.selectAll) }">
-                    <label class="checkbox inline" ng-repeat="rateType in getRateTypeList(chosenReport)">
+                    <label class="checkbox" ng-repeat="rateType in chosenReport.hasRateTypeFilter.data">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : rateType.selected}"></span>
-                        <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(chosenReport, chosenReport.hasRateTypeFilter)" name="room-filters"> {{ rateType.rate_type_name }}
+                        <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(chosenReport, chosenReport.hasRateTypeFilter)" name="room-filters"> {{ rateType.name }}
                     </label>
                 </div>
             </div>
