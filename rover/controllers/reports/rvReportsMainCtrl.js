@@ -275,6 +275,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
+			if (item.title === reportNames['DAILY_PRODUCTION_RATE']) {
+				if (item.fromDate > item.untilDate) {
+					item.untilDate = item.fromDate;
+				}
+			}
+
 			if (item.title === reportNames['DAILY_PRODUCTION_DEMO']) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
@@ -464,11 +470,13 @@ sntRover.controller('RVReportsMainCtrl', [
         	});
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter, item.hasRateTypeFilter.selectAll);
         	formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
         };
 
         $scope.rateTypeChanged = function(item) {
         	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
         	formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
         };
 
         var formTitleAndToggleSelectAllForRateDropDown = function(item) {
@@ -491,8 +499,16 @@ sntRover.controller('RVReportsMainCtrl', [
         	}
         };
 
+        var refreshScroller = function(){
+        	$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+				$scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll'] && $scope.myScroll['report-filter-sidebar-scroll'].refresh();
+			}, 200);
+        }; 
         $scope.rateChanged = function(item) {
         	formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
         };
 
         $scope.toggleRateSelectAll = function(item) {
@@ -502,7 +518,8 @@ sntRover.controller('RVReportsMainCtrl', [
         	_.each(item.hasRateFilter.data, function(rateType) {
         		rateType.selected = item.hasRateFilter.selectAll;
         	});
-			formTitleAndToggleSelectAllForRateDropDown(item);       	
+			formTitleAndToggleSelectAllForRateDropDown(item); 
+        	refreshScroller();      	
         };
 
         var getSelectedRateTypes = function(item) {

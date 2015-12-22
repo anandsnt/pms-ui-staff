@@ -655,12 +655,12 @@
             <div class="faux-select-options">
                 <label class="checkbox" ng-show="chosenReport.hasRateTypeFilter.data.length > 1">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasRateTypeFilter.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(item)" name="room-filters"> Select All
+                    <input type="checkbox" ng-model="chosenReport.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(chosenReport)" name="room-filters"> Select All
                 </label>
                 <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasRateTypeFilter.data.length > 1 && chosenReport.hasRateTypeFilter.selectAll) }">
-                    <label class="checkbox inline" ng-repeat="rateType in getRateTypeList(chosenReport)">
+                    <label class="checkbox" ng-repeat="rateType in chosenReport.hasRateTypeFilter.data">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : rateType.selected}"></span>
-                        <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(chosenReport, chosenReport.hasRateTypeFilter)" name="room-filters"> {{ rateType.rate_type_name }}
+                        <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(chosenReport, chosenReport.hasRateTypeFilter)" name="room-filters"> {{ rateType.name }}
                     </label>
                 </div>
             </div>
