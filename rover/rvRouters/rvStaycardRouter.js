@@ -76,9 +76,63 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCardCtrl'
         });
 
+        $stateProvider.state('rover.reservation.staycard.mainCard.room-rates', {
+            url: '/room-rates/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children',
+            templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
+            controller: 'RVSelectRoomAndRateCtrl',
+            onEnter: function($stateParams) {
+                if (!$stateParams.view) {
+                    $stateParams.view = "DEFAULT";
+                }
+                if (!$stateParams.company_id) {
+                    $stateParams.company_id = null;
+                }
+                if (!$stateParams.travel_agent_id) {
+                    $stateParams.travel_agent_id = null;
+                }
+                if (!$stateParams.group_id) {
+                    $stateParams.group_id = null;
+                }
+                if (!$stateParams.allotment_id) {
+                    $stateParams.allotment_id = null;
+                }
+                if (!$stateParams.promotion_code) {
+                    $stateParams.promotion_code = null;
+                }
+            },
+            resolve: {
+                sortOrder: function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchSortPreferences();
+                },
+                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams) { //CICO-16874
+                    return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
+                        from_date: $stateParams.from_date,
+                        to_date: $stateParams.to_date,
+                        is_active: true
+                    });
+                },
+                rates: function(RVReservationBaseSearchSrv, $stateParams) {
+                    return RVReservationBaseSearchSrv.fetchRates({
+                        from_date: $stateParams.from_date,
+                        to_date: $stateParams.to_date,
+                        company_id: $stateParams.company_id,
+                        travel_agent_id: $stateParams.travel_agent_id,
+                        group_id: $stateParams.group_id,
+                        allotment_id: $stateParams.allotment_id,
+                        promotion_code: $stateParams.promotion_code,
+                        adults: $stateParams.adults,
+                        children: $stateParams.children
+                    })
+                },
+                ratesMeta: function(RVReservationBaseSearchSrv){
+                    return RVReservationBaseSearchSrv.fetchRatesMeta();
+                }
+
+            }
+        });
+
         $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
             url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard',
-
             templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
             controller: 'RVReservationRoomTypeCtrl',
             onEnter: function($stateParams) {
@@ -97,10 +151,10 @@ angular.module('stayCardModule', [])
                 if (!$stateParams.allotment_id) {
                     $stateParams.allotment_id = null;
                 }
-                if(!$stateParams.promotion_code){
+                if (!$stateParams.promotion_code) {
                     $stateParams.promotion_code = null;
                 }
-                    
+
             },
             resolve: {
                 roomRates: function(RVReservationBaseSearchSrv, $stateParams) {
@@ -110,8 +164,8 @@ angular.module('stayCardModule', [])
                     params.company_id = $stateParams.company_id;
                     params.travel_agent_id = $stateParams.travel_agent_id;
                     params.group_id = $stateParams.group_id,
-                    params.allotment_id = $stateParams.allotment_id,
-                    params.promotion_code = $stateParams.promotion_code
+                        params.allotment_id = $stateParams.allotment_id,
+                        params.promotion_code = $stateParams.promotion_code
                     return RVReservationBaseSearchSrv.fetchAvailability(params);
                 },
                 sortOrder: function(RVReservationBaseSearchSrv) {
@@ -291,7 +345,7 @@ angular.module('stayCardModule', [])
                 }
             }
         });
-        
+
         $stateProvider.state('rover.actionsManager', {
             url: '/actions/:actions',
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",

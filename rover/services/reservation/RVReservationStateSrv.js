@@ -25,7 +25,7 @@ sntRover.service('RVReservationStateService', [
 		self.fetchAssociatedAddons = function(rateId) {
 			// In case of multiple rates, rateId might come in as an array
 			// In such a case, take the rate for the first night
-			if(_.isArray(rateId)){
+			if (_.isArray(rateId)) {
 				rateId = rateId[0]
 			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
@@ -43,7 +43,7 @@ sntRover.service('RVReservationStateService', [
 			var isAllotment = type && type === 'ALLOTMENT',
 				rateIdentifier = isAllotment ? 'ALLOTMENT_CUSTOM_' + id : 'GROUP_CUSTOM_' + id, //Default to the GROUP
 				rateName = isAllotment ? "Custom Rate for Allotment " + name : "Custom Rate for Group " + name,
-				rateDescription = isAllotment ? "Custom Allotment Rate": "Custom Group Rate";
+				rateDescription = isAllotment ? "Custom Allotment Rate" : "Custom Group Rate";
 			return {
 				id: rateIdentifier,
 				name: rateName,
@@ -131,7 +131,7 @@ sntRover.service('RVReservationStateService', [
 				if (postingRythm === 0) {
 					return baseCount;
 				} else {
-					return baseCount * parseInt((numNights / postingRythm),10);
+					return baseCount * parseInt((numNights / postingRythm), 10);
 				}
 			};
 
@@ -275,7 +275,7 @@ sntRover.service('RVReservationStateService', [
 			var msPerDay = 24 * 3600 * 1000,
 				dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / msPerDay, 10),
 				remainingDays = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / msPerDay, 0);
-				
+
 			return (dayIndex % frequency === 0) && (!chargeFullLengthOnly || (chargeFullLengthOnly && (remainingDays >= frequency)));
 		};
 
@@ -338,6 +338,70 @@ sntRover.service('RVReservationStateService', [
 			});
 		};
 
+		this.getAddonAndTaxDetails = function(date, rateId, numAdults, numChildren, arrival, departure, activeRoom) {
+			var associatedAddons = self.fetchAssociatedAddons(rateId),
+				addonRate = 0.0,
+				taxForAddons = {
+					incl: 0.0,
+					excl: 0.0
+				},
+				addonsApplied = [],
+				inclusiveAddonsAmount = 0.0,
+				stayTaxes = {
+					incl: {},
+					excl: {}
+				};
+
+
+			if (associatedAddons.length > 0) {
+				_.each(associatedAddons, function(addon) {
+					var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
+						taxOnCurrentAddon = 0.0,
+						shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, date, arrival, departure, addon.charge_full_weeks_only);
+			
+					if (shouldPostAddon) {
+						taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, numAdults, numChildren, true);
+						taxForAddons.incl = parseFloat(taxForAddons.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
+						taxForAddons.excl = parseFloat(taxForAddons.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
+						// updateStayTaxes(taxOnCurrentAddon.taxDescription);
+					}
+
+					var inventoryForDay = _.findWhere(addon.inventory, {
+						date: date
+					});
+
+					if (!inventoryForDay) {
+						console.warn('Inventory details not returned for:' + date + 'for add on ' + addon.id);
+					}
+
+					if (!addon.is_inclusive && shouldPostAddon) {
+						addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
+					}
+					if (!!addon.is_inclusive && shouldPostAddon) {
+						inclusiveAddonsAmount = parseFloat(inclusiveAddonsAmount) + parseFloat(currentAddonAmount);
+					}
+
+					addonsApplied.push({ // for Book keeping
+						name: addon.name,
+						addonAmount: currentAddonAmount,
+						isInclusive: addon.is_inclusive,
+						postType: addon.post_type.value,
+						amountType: addon.amount_type.value,
+						postFrequency: addon.post_type.frequency,
+						taxBreakUp: taxOnCurrentAddon,
+						id: addon.id,
+						inventory: inventoryForDay && _.isNumber(inventoryForDay.available_count) ? inventoryForDay.available_count : null
+					});
+				});
+			}
+
+			return {
+				addon : addonRate,
+				inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate
+			}
+
+		};
+
 		var processRatesForNormalRatesAgainstDate = function(rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity) {
 			var adultsOnTheDay = stayDates[for_date].guests.adults,
 				childrenOnTheDay = stayDates[for_date].guests.children,
@@ -380,15 +444,15 @@ sntRover.service('RVReservationStateService', [
 				isCustomRate = rate.isCustomRate;
 				_.each(rate.room_rates, function(room_rate) {
 					associatedAddons = isCustomRate ? [] : self.fetchAssociatedAddons(rate_id),
-					addonRate = 0.0,
-					taxForAddons = {
-						incl: 0.0,
-						excl: 0.0
-					},
-					addonsApplied = [],
-					inclusiveAddonsAmount = 0.0,
-					currentRoomId = room_rate.room_type_id,
-					currentRoom = rooms[room_rate.room_type_id];
+						addonRate = 0.0,
+						taxForAddons = {
+							incl: 0.0,
+							excl: 0.0
+						},
+						addonsApplied = [],
+						inclusiveAddonsAmount = 0.0,
+						currentRoomId = room_rate.room_type_id,
+						currentRoom = rooms[room_rate.room_type_id];
 
 					if (currentRoom.stayTaxes[rate_id] === undefined) {
 						currentRoom.stayTaxes[rate_id] = {
@@ -455,7 +519,7 @@ sntRover.service('RVReservationStateService', [
 								postFrequency: addon.post_type.frequency,
 								taxBreakUp: taxOnCurrentAddon,
 								id: addon.id,
-								inventory: inventoryForDay && _.isNumber(inventoryForDay.available_count) ?  inventoryForDay.available_count : null
+								inventory: inventoryForDay && _.isNumber(inventoryForDay.available_count) ? inventoryForDay.available_count : null
 							});
 						});
 					}
@@ -489,12 +553,12 @@ sntRover.service('RVReservationStateService', [
 						associatedAddons: addonsApplied,
 						rateBreakUp: room_rate,
 						day: new tzIndependentDate(for_date),
-						availabilityCount: (function(){
-							if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup){
-							 	return rooms[currentRoomId].availabilityNumbers[for_date].group;
-							} else if(!!selectedAllotment){
+						availabilityCount: (function() {
+							if (ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup) {
+								return rooms[currentRoomId].availabilityNumbers[for_date].group;
+							} else if (!!selectedAllotment) {
 								return room_rate.allotment_availability;
-							}else{
+							} else {
 								return rooms[currentRoomId].availabilityNumbers[for_date].room;
 							}
 						})(),

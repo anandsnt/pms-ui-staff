@@ -97,7 +97,7 @@
 					</td>
 
 					<td header-class="width-15 text-center-important" data-title="'Default Task'" class="activate" ng-hide="taskListClickedElement == $index">
-							<label class="checkbox inline" ng-show="item.is_show_on_stay_card">
+							<label class="checkbox inline position-absolute" ng-show="item.is_show_on_stay_card">
 					            <span class="icon-form icon-checkbox" ng-class="{'checked' : item.is_default}"></span>
 					            <input type="checkbox" ng-disabled="item.is_default"  ng-model="defaultData.defaultTask"  ng-click="clickedDefaultTaskChekbox(item)">
 					        </label>

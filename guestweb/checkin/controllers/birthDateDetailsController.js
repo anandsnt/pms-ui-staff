@@ -9,12 +9,12 @@
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
-		$state.go('checkinSuccess');
-	}
-	else if($rootScope.isCheckedout ){
-		$state.go('checkOutStatus');
-	}
-	else{
+	 	$state.go('checkinSuccess');
+	 }
+	 else if($rootScope.isCheckedout ){
+	 	$state.go('checkOutStatus');
+	 }
+	 else{
 		$scope.pageValid = true;
 	}		
 
@@ -27,10 +27,22 @@
 		for(year=1900;year<=new Date().getFullYear();year++){
 			$scope.years.push(year);
 		};
-		for(month=1;month<=12;month++){
-			$scope.months.push(month);
-		};
-		
+
+		$scope.months = [
+							{"id":1,"name":"JAN"},
+							{"id":2,"name":"FEB"},
+							{"id":3,"name":"MAR"},
+							{"id":4,"name":"APR"},
+							{"id":5,"name":"MAY"},
+							{"id":6,"name":"JUN"},
+							{"id":7,"name":"JUL"},
+							{"id":8,"name":"AUG"},
+							{"id":9,"name":"SEP"},
+							{"id":10,"name":"OCT"},
+							{"id":11,"name":"NOV"},
+							{"id":12,"name":"DEC"}
+						];
+			
 		for(day=1;day<=31;day++){
 			$scope.days.push(day);
 		};
@@ -86,6 +98,32 @@
 			else{
 					$state.go('guestDetails');	
 			}		
+		};
+
+
+		var checkIfDateIsValid = function(){
+			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
+			var comp = birthday.split('/');
+			var m = parseInt(comp[0], 10);
+			var d = parseInt(comp[1], 10);
+			var y = parseInt(comp[2], 10);
+			var date = new Date(y,m-1,d);
+			if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
+			   return true
+			} else {
+			   return false;
+			}
+		};
+	
+
+
+
+		$scope.yearOrMonthChanged = function(){
+			if(!checkIfDateIsValid()){
+				$scope.guestDetails.day = "";
+			}else{
+				return;
+			}
 		};
 
 		function getAge(birthDateString) {

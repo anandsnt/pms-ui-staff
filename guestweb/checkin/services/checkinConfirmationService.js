@@ -29,10 +29,10 @@
 			};
 
 
-			var getToken = function(){
+			var getToken = function(data){
 				var deferred = $q.defer();
-				var url = '/guest_web/checkin_reservation_search.json';
-				$http.get(url,{params: data}).success(function(response) {
+				var url = '/guest_web/authenticate_checkin_guest';
+				$http.post(url,data).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {

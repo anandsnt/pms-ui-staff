@@ -30,8 +30,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.at = 'deliver-registration';
                 $scope.selectedReservation = $state.selectedReservation;
                 
+            } else if (current === 'zest_station.room_error'){
+                $state.go('zest_station.reservation_details');
+                
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
+                
             } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
                 $state.go('zest_station.input_reservation_email_after_swipe');
                 
@@ -144,6 +148,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                                             Our bad. Please reach out to a Sidekick.';
                 $scope.modalBtn1 = 'Done';
         };
+        $scope.initRoomErrorScreen = function(){
+                $scope.at = 'error';
+                $scope.headingText = 'Please speak to a sidekick.';
+                $scope.subHeadingText = 'We can take care of your luggage until a room becomes available.';
+                $scope.modalBtn1 = 'Done';
+        };
         $scope.initKeyErrorScreen = function(){
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                     $scope.pickupkeys = true;
@@ -171,7 +181,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.reEncodeKey = function(){
-            console.info('state mode....',$state.mode);
             if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                 $state.go('zest_station.pickup_keys');
             } else {
@@ -283,6 +292,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
                 
+            } else if (current === 'zest_station.room_error'){
+                $scope.initRoomErrorScreen();
             } else if (current === 'zest_station.last_confirm'){
                 
                 if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
@@ -329,14 +340,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.initPrintRegistration = function(){
             $scope.printRegistrationCard();
-            
-            
-            
         };
         
-        
-
-
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
@@ -347,9 +352,16 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 		$( '#print-orientation' ).remove();
 	};
 
+        $scope.onPrintError = function(error){
+            $state.go('zest_station.error');
+        };
+        $scope.onPrintSuccess = function(success){
+            console.info('print success, continue');
+            $state.go('zest_station.last_confirm');
+            $scope.$emit('hideLoader');
+        };
 
 	$scope.printRegistrationCard = function() {
-
                 $scope.isPrintRegistrationCard = true;
 
                 $scope.$emit('hideLoader');
@@ -367,12 +379,13 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 */
                 // this will show the popup with full bill
                setTimeout(function() {
-                   
                     var printer = (sntZestStation.selectedPrinter);
                     $window.print();
                     if ( sntapp.cordovaLoaded ) {
-                            cordova.exec(function(success) {}, function(error) {
-                          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                            cordova.exec(
+                                $scope.onPrintSuccess, //print complete, should go to final screen
+                                $scope.onPrintError, //if print error, inform guest there was an error
+                            'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     };
                 }, 100);
 
@@ -389,7 +402,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                             // remove the orientation after similar delay
                     removePrintOrientation();
                 }, 100);
-
             };
 
         
