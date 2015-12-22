@@ -356,7 +356,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $state.go('zest_station.error');
         };
         $scope.onPrintSuccess = function(success){
-            console.info('print success!');
             console.info('print success, continue');
             $state.fromPrintSuccess = true;
             $state.go('zest_station.last_confirm');
