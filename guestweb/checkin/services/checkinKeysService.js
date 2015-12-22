@@ -6,6 +6,7 @@
 		var checkin = function(url,data) {
 
 				var deferred = $q.defer();
+				data.application = $rootScope.application;
 				$http.post(url,data).success(function(response) {
 					this.responseData = response;
 				     deferred.resolve(this.responseData);
