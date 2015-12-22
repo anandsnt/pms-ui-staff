@@ -102,6 +102,14 @@
 						$scope.noMatch    		= true;
 						$scope.multipleResults 	= false;
 					};
+					var reservations = [];
+					//filter out reservations with reserved status
+					angular.forEach(response.results, function(value, key) {
+					  if(value.reservation_status ==='RESERVED'){
+					  	reservations.push(value);
+					  };
+					});
+					response.results = reservations;
 
 					if(response.results.length ===0){ // No match
 						$scope.isLoading = false;
