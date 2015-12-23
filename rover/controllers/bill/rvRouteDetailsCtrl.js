@@ -51,6 +51,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
     $scope.chargeCodesListDivHgt = 250;
     $scope.chargeCodesListDivTop = 0;
+    $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
 
     setTimeout(function(){
         $scope.refreshScroller('paymentList');
@@ -464,7 +465,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.attachedEntities = [$scope.selectedEntity];
             }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
-            $scope.selectedEntity.credit_limit = data.credit_limit;
+            $scope.selectedEntity.credit_limit = parseFloat(data.credit_limit).toFixed(2);
             $scope.selectedEntity.reference_number = data.reference_number;
             //Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
