@@ -227,7 +227,7 @@ sntRover.service('RVreportsSubSrv', [
 			return callApi({
 				name   : 'rateTypeAndRateList',
 				method : 'getJSON',
-				url    : '/api/rates/list',
+				url    : '/api/rates/active',
 				resKey : 'rates',
 			});
 		};
