@@ -55,7 +55,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 
 	this.toggleActive = function(data){
 		var deferred = $q.defer();
-		var url = 'admin/ota/update_active/'+data.interface_id;
+		var url = 'admin/ota/update_active?interface='+data.interface_id;
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
