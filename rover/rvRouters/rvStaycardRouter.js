@@ -124,8 +124,14 @@ angular.module('stayCardModule', [])
                         children: $stateParams.children
                     })
                 },
-                ratesMeta: function(RVReservationBaseSearchSrv){
+                ratesMeta: function(RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchRatesMeta();
+                },
+                house: function(RVReservationBaseSearchSrv, $stateParams) {
+                    return RVReservationBaseSearchSrv.fetchHouseAvailability({
+                        from_date: $stateParams.from_date,
+                        to_date: $stateParams.to_date
+                    });
                 }
 
             }

@@ -114,11 +114,4 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
-
-  // to fix this bug CICO-11227
-  $('body').hide();
-  setTimeout(function() {
-    $('body').show();
-  }, 300);
-
 }]);

@@ -246,7 +246,10 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
             // Make this call IFF there is a group/ allotment attached
             if (params.group_id || params.allotment_id) {
                 promises.push(that.fetchGroupRates(params).then(function(response) {
-                    // TODO: Add is_contract_rate HERE to the values in the response
+                    // Add is_contract_rate HERE to the values in the response
+                    _.each(response.rates,function(rate){
+                        rate.isContract = true;
+                    });
                     that['rates'] = that['rates'].concat(response.rates);
                 }));
             }
@@ -276,7 +279,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
             return deferred.promise;
         };
 
-        this.fetchTaxInformation = function(){
+        this.fetchTaxInformation = function() {
             var deferred = $q.defer(),
                 url = 'api/rates/tax_information';
             RVBaseWebSrvV2.getJSON(url).then(function(response) {
@@ -287,16 +290,32 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
             return deferred.promise;
         };
 
-        this.fetchTaxRateAddonMeta = function(params){
+
+        this.fetchHouseAvailability = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/availability/house';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                var houseAvailbility = {};
+                _.each(response.results, function(availability) {
+                    houseAvailbility[availability.date] = availability.house.availability;
+                })
+                deferred.resolve(houseAvailbility);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchTaxRateAddonMeta = function(params) {
             var deferred = $q.defer(),
                 promises = [];
 
             that['meta'] = {};
 
-            promises.push(that.fetchTaxInformation().then(function(response){
+            promises.push(that.fetchTaxInformation().then(function(response) {
                 that['meta']['tax-info'] = response;
             }));
-            promises.push(that.fetchAddonsForRates(params).then(function(response){
+            promises.push(that.fetchAddonsForRates(params).then(function(response) {
                 that['meta']['rate-addons'] = response;
             }));
 

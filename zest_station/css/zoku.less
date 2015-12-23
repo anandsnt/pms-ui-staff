@@ -25,8 +25,6 @@
 /* 5. MEDIA
 ==========================================================*/
 
-
-	.printable-bill-view{
-		display:none !important;
-	}
-	@import "zoku_print.less" print;
+	@media only print {
+       @import "zoku_print.less" ; 
+   }
