@@ -223,6 +223,14 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchRateTypesAndRateList = function(params) {
+			return callApi({
+				name   : 'rateTypeAndRateList',
+				method : 'getJSON',
+				url    : '/api/rates/active',
+				resKey : 'rates',
+			});
+		};
 		return service;
 	}
 ]);

@@ -246,7 +246,10 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
             // Make this call IFF there is a group/ allotment attached
             if (params.group_id || params.allotment_id) {
                 promises.push(that.fetchGroupRates(params).then(function(response) {
-                    // TODO: Add is_contract_rate HERE to the values in the response
+                    // Add is_contract_rate HERE to the values in the response
+                    _.each(response.rates,function(rate){
+                        rate.isContract = true;
+                    });
                     that['rates'] = that['rates'].concat(response.rates);
                 }));
             }

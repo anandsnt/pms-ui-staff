@@ -185,7 +185,20 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         };
         
-        
+        $scope.shouldShowWaiting = false;
+        $scope.pageloadingOver = false;
+        $scope.simulateSixPay = function(){
+            $scope.shouldShowWaiting = true;
+            $scope.pageloadingOver = true;
+                $scope.shouldShowWaiting = false;
+                $scope.pageloadingOver = false;
+                
+                setTimeout(function(){
+                    $scope.$emit('hideLoader');
+                    $scope.goToCardSign();
+                },2000);
+                
+        };
         
         $scope.isSixPayPayment = function(){
            if ($scope.zestStationData){
@@ -375,8 +388,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         $scope.numberOfCordovaCalls = 0;
         
         var initiateDesktopCardReader = function(){
-            var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
-            zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
+            //var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
+            //zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
         };
         $scope.cardReader = new CardOperation();
 
