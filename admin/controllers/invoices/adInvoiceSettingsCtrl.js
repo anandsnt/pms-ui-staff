@@ -14,12 +14,12 @@ admin.controller('ADInvoiceSettingsCtrl',[
         */
         $scope.saveClick = function(){
 
-            var saveDetailsSuccessCallback = function(){
+            var saveInvoiceSettingsSuccessCallback = function(){
                  $scope.$emit('hideLoader');
                  $scope.goBackToPreviousState();                 
             };            
 
-            $scope.invokeApi(ADInvoiceSettingsSrv.fetchInvoiceSettings, $scope.invoiceSettings ,saveDetailsSuccessCallback);
+            $scope.invokeApi(ADInvoiceSettingsSrv.fetchInvoiceSettings, $scope.invoiceSettings ,saveInvoiceSettingsSuccessCallback);
         };
 
 
