@@ -174,5 +174,153 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			return deferred.promise;
 		};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		this.fetchAllTasks = function() {
+			var deferred = $q.defer(),
+				url = 'api/tasks';
+
+			RVBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchAllUnassigned = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/unassigned_rooms';
+
+			RVBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.processedUnassignedRooms = function() {
+			var deferred = $q.defer();
+
+			deferred.resolve( compileUnassignedRooms() );
+
+			return deferred.promise;
+		};
+
+		this.processedAssignedRooms = function() {
+			var deferred = $q.defer();
+
+			deferred.resolve( compileUnassignedRooms() );
+
+			return deferred.promise;
+		};
+
+
+		function compileUnassignedRooms () {
+			// DESIRED STRUCTURE
+			// =================
+			// 
+			// this.unassignedRooms = [{
+			// 	id: 34,
+			// 	room_no: 3442,
+			// 	current_status: 'CLEAN',
+			// 	reservation_status: 'Not Reserved',
+			// 	checkout_time: null,
+			// 	room_tasks: [{
+			// 		id: 11,
+			// 		completion_time: '02:15',
+			// 		is_completed: true
+			// 	}, {
+			// 		id: 13,
+			// 		completion_time: '02:15',
+			// 		is_completed: true
+			// 	}]
+			// }];
+		};
+
+		function compileAssignedRooms () {
+			// DESIRED STRUCTURE
+			// =================
+			// 
+			// this.assignedRooms = [{
+			// 	id: 34,
+			// 	name: 'Vijay Dev',
+			// 	room_no: 3442,
+			// 	current_status: 'CLEAN',
+			// 	reservation_status: 'Not Reserved',
+			// 	checkout_time: null,
+			// 	room_tasks: [{
+			// 		id: 11,
+			// 		completion_time: '02:15',
+			// 		is_completed: true
+			// 	}, {
+			// 		id: 13,
+			// 		completion_time: '02:15',
+			// 		is_completed: true
+			// 	}]
+			// }];
+		};
+
+
+		
+
+		// ALL APIS
+		// ========
+		// 
+		// api/tasks to get all tasks
+		// api/work_assignments/unassigned_rooms to get 'rooms' & 'room_tasks'
+		
+		// STEPS
+		// =====
+		// 
+		// 1. Loop through 'rooms' and grab { id, room_no, current_status, reservation_status, checkout_time } 
+		//    to create each entity in 'unassignedRooms'
+		// 2. Loop through 'room_tasks' and match { room_id } to unassignedRooms[n].id.
+		//    Then add { task_id } to matched unassignedRooms[n].room_tasks
+		// 3. Loop through unassignedRooms and match unassignedRooms[n].room_tasks[j].id to the particular task id.
+		//    Then in that task grab 'completion_time' by matching its room id to unassignedRooms[n].id
+
+		// Confused? Yeah me too.. :(
+
 	}
 ]);
