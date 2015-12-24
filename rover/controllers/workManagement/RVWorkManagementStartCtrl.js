@@ -3,6 +3,10 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         $scope.setHeading("Work Management");
         BaseCtrl.call(this, $scope);
 
+        var scrollerOptions = {click: true, scrollbars: true};
+        $scope.setScroller('work_management', scrollerOptions);
+
+
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementCreatePopup.html',
@@ -178,7 +182,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
          */
         $scope.resetView = function() {
             // reset to buisiness date
-            $scope.stateVariables.viewingDate = $rootScope.businessDate;
+            $scope.stateVariables.viewingDate.date = $rootScope.businessDate;
             setStats();
         };
 

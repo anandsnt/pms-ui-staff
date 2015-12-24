@@ -7,11 +7,15 @@
             <input id="rmDateRange" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
             <button ng-click="showCalendar('RVWorkManagementSearchDatePickerController')" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
         </div>
+        <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="resetView()">
+        <span class="icons icon-reset"></span>
+        <span translate>Refresh</span>
+    </button>
     </div>
 </form>
 
 <!-- Work Management -->
-<section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching && !stateVariables.noSearchResults">
+<section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching && !stateVariables.noSearchResults" ng-iscroll="work_management"  ng-iscroll-delay="500">
     <div class="wrapper">
         <div class="dashboard-block data">
             <ul>
