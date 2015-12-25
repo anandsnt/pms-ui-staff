@@ -12,7 +12,7 @@
            <!--  -->
             <p class="sub-text light-text">RESERVATION #{{confirmationNumber}}</p>
             <p class="main-text" ng-hide="ShowupgradedLabel">
-                Your stay Details
+                Your Stay Details
             </p>
             <p class="main-text" ng-show="ShowupgradedLabel">
                 Your New Stay Details
@@ -63,7 +63,7 @@
                         AVERAGE RATE PER NIGHT
                     </div>
                     <div class="res-date">
-                        {{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+                        {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
                     </div>
                 </div>
             </div>

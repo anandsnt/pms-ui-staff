@@ -186,6 +186,11 @@
                     <input type="text" name="screen-id" ng-model="data.screen_id" id="item-name" placeholder="Enter screen id" value="{Item Name}" required />
                 </div>
 
+                <div class="entry" ng-show="data.page_template=='SCREEN'">
+                    <label for="screen-id"><span translate>SCREEN_TITLE_LABEL</span> <strong>*</strong></label>
+                    <input type="text" name="screen-title" ng-model="data.screen_title" id="item-name" placeholder="Enter screen title" value="{Item Name}" required />
+                </div>
+
                 <div ng-show="data.page_template=='ADDON'">
 
 

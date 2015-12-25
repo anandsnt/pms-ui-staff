@@ -46,7 +46,6 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
         $scope.$broadcast("showSearchResultsArea", false);
         //also need to clear results present in that & type
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
-        $scope.$broadcast("updateDataFromOutside", []);
         $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
     };
 

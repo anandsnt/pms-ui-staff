@@ -218,7 +218,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
         };
 
         $scope.showCreateCalendar = function() {
-            ngDialog.open({
+            $scope.calendarDialog = ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementCreateDatePicker.html',
                 controller: 'RVWorkManagementCreateDatePickerController',
                 className: 'ngdialog-theme-default single-date-picker',

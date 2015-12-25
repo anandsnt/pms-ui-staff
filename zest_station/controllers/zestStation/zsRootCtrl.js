@@ -84,16 +84,17 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.hideCloseButton = false;
 	});
         
-        
-	$scope.$on (zsEventConstants.PUT_OOS, function(event) {
+        //OOS to be turned on in Sprint44+
+	/*$scope.$on (zsEventConstants.PUT_OOS, function(event) {//not used yet
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
             $scope.$emit(zsEventConstants.HIDE_LOADER);
 
             $scope.disableTimeout();
-            $scope.setOOSInBrowser(true);
+           // $scope.setOOSInBrowser(true);
             $state.go('zest_station.oos');
 	});
+            
         
 	$scope.$on (zsEventConstants.OOS_OFF, function(event) {
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -101,9 +102,13 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit(zsEventConstants.HIDE_LOADER);
 
             $scope.disableTimeout();
-            $scope.setOOSInBrowser(false);
+          //  $scope.setOOSInBrowser(false);
             $state.go('zest_station.oos');
 	});
+            
+            
+            
+            
         $scope.setOOSInBrowser = function(t){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
@@ -115,6 +120,11 @@ sntZestStation.controller('zsRootCtrl', [
             }
             console.info(storage.getItem(storageKey));
         };
+            */
+           
+           
+           
+           
 	/**
 	 * event for hiding the close button
 	 * @param  {[type]} event
@@ -161,11 +171,12 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
-                //$scope.fetchKeyEncoderList(); //using workstations instead
+                //set print and email options set from hotel settings > Zest > zest station
+                $scope.zestStationData.printEnabled = $scope.zestStationData.guest_bill.print;
+                $scope.zestStationData.emailEnabled = $scope.zestStationData.guest_bill.email;
 	};
         
     $scope.toggleOOS = function(){
-        console.info('toggleOOS')
         if ($state.isOOS){
             $rootScope.$emit(zsEventConstants.OOS_OFF);
         } else {
@@ -181,7 +192,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response){
                 console.warn('fetching workstation list failed:',response);
-                $scope.$emit(zsEventConstants.PUT_OOS);
+//                $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
                 
@@ -219,7 +230,11 @@ sntZestStation.controller('zsRootCtrl', [
                             station = $scope.zestStationData.workstations[i];
                         }
                     }
+                } else {
+                    $scope.zestStationData.workstations = 'Select';
                 }
+            } else {
+                $scope.zestStationData.workstations = 'Select';
             }
                 console.log('station', station)
             if (station !==  null){
@@ -255,6 +270,9 @@ sntZestStation.controller('zsRootCtrl', [
                     //fetch the idle timer settings
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
+                    $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    console.info('Payment Gateway: ',$scope.zestStationData.hotel_settings.payment_gateway);
+                    console.info('zestStationData,',$scope.zestStationData)
                     $scope.$emit('hideLoader');
             };
             
@@ -266,13 +284,156 @@ sntZestStation.controller('zsRootCtrl', [
                 };
 		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
         };
-        
+        /*
         $scope.disableTimeout = function(){
             zsTimeoutEnabled = false;
         };
         $scope.enableTimeout = function(){
             zsTimeoutEnabled = true;
         };
+        
+        
+        
+        
+            $scope.idlePopup = function() {
+                if ($scope.at === 'cc-sign'){
+                    //$scope.goToScreen({},'timeout',true, 'idle');
+                    $scope.goToScreen(null, 'cc-sign-time-out', true, 'cc-sign');
+                    $scope.$apply();
+                } else {
+                    if ($scope.at !== 'home' && $scope.at !== 'cc-sign' && $scope.at !== 'cc-sign-time-out'){
+                        ngDialog.open({
+                                template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
+                                className: 'ngdialog-theme-default',
+                                scope: $scope,
+                                closeByDocument: false,
+                                closeByEscape: false
+                        });
+                    }
+                }
+                    
+            };
+
+            $scope.settingsTimerToggle = function(){
+                if ($scope.settings){
+                    if ($scope.settings.idle_timer.enabled){
+                        $scope.settings.idle_timer.enabled = !$scope.settings.idle_timer.enabled;
+                    }
+                }
+            };
+            
+            
+            $scope.setupIdleTimer = function(){
+                if ($scope.settings){
+                    var settings = $scope.settings.idle_timer;
+                    if (settings){
+                        if (typeof settings.prompt !== typeof undefined && typeof settings.enabled !== typeof undefined) {
+                            if (settings.prompt !== null && settings.enabled !== null){
+                                $scope.idle_prompt = settings.prompt;
+                                $scope.idle_timer_enabled = settings.enabled;
+                                $scope.idle_max = settings.max;
+                                
+
+                                $scope.adminIdleTimeEnabled = settings.enabled;
+                                $scope.adminIdleTimePrompt = settings.prompt;
+                                $scope.adminIdleTimeMax = settings.max;
+
+                                $scope.settings.adminIdleTimeEnabled = settings.enabled;
+                                $scope.settings.adminIdleTimePrompt = settings.prompt;
+                                $scope.settings.adminIdleTimeMax = settings.max;
+                                
+                                
+                            } else {
+                                $scope.idle_timer_enabled = false;
+                            }
+                        } else {
+                            $scope.idle_timer_enabled = false;
+                        }
+                    }
+                }
+                    if ($scope.at !== 'home'){
+                        $scope.resetTime();
+                    }
+            };
+            
+            $scope.resetCounter = function(){
+               clearInterval($scope.idleTimer);
+            };
+            $scope.resetTime = function(){
+                $scope.closePopup();
+                if ($scope.at !== 'home'){ 
+                    clearInterval($scope.idleTimer);
+                    $scope.startCounter();
+                }   
+            };
+            
+            $scope.startCounter = function(){
+                var time = $scope.idle_max, promptTime = $scope.idle_prompt;
+                
+                    var timer = time, minutes, seconds;
+                    var timerInt = setInterval(function () {
+                        if ($scope.idle_timer_enabled && $scope.at !== 'home'){
+                                
+                                minutes = parseInt(timer / 60, 10);
+                                seconds = parseInt(timer % 60, 10);
+
+                                minutes = minutes < 10 ? "0" + minutes : minutes;
+                                seconds = seconds < 10 ? "0" + seconds : seconds;
+                                
+                                if (timer === promptTime){
+                                    $scope.idlePopup();
+                                }
+                                
+                                if (--timer < 0) {
+                                    setTimeout(function(){
+                                        //setup a timeout @ logic depending on which screen you are, you may get a "Are you still there" different look
+                                        //like re-swipe card, etc.;
+                                        $scope.handleIdleTimeout();
+                                    },1000);
+                                    
+                                    clearInterval(timerInt);
+                                    return;
+                                    //timer = duration;
+                                }
+                        }
+                    }, 1000);
+                    $scope.idleTimer = timerInt;
+            };
+            
+            $scope.handleIdleTimeout = function(){
+                $scope.navToHome();
+            };
+            
+        
+        
+        */
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -295,4 +456,18 @@ sntZestStation.controller('zsRootCtrl', [
                 };
 		$scope.callAPI(zsTabletSrv.fetchSettings, options);
 	}();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 }]);

@@ -147,10 +147,10 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		/**
 		 * service function used for retreive rates
 		 */
-		this.fetchRates = function() {
+		this.fetchRates = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/rates/contract_rates';
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);

@@ -20,10 +20,36 @@ sntZestStation.service('zsCheckoutSrv',
                     return deferred.promise;
                 };
 
+                this.fetchBillPrintData = function(params){
+                    var deferred = $q.defer();
+                    var url = 'staff/bills/print_guest_bill';
+                        zsBaseWebSrv.postJSON(url, params).then(function(prindata) {
+                            var response = prindata.data;
+                            // Manually creating charge details list & credit deatils list.
+                            response.charge_details_list = [];
+                            response.credit_details_list = [];
+                            angular.forEach(response.fee_details,function(fees, index1){
+                                angular.forEach(fees.charge_details,function(charge, index2){
+                                    charge.date=fees.date;
+                                    response.charge_details_list.push(charge);
+                                });
+                                angular.forEach(fees.credit_details,function(credit, index3){
+                                    credit.date=fees.date;
+                                    response.credit_details_list.push(credit);
+                                });
+                            });
+                            deferred.resolve(response);
+                        },function(data){
+                            deferred.reject(data);
+                        });
+
+                    return deferred.promise;
+                };
+
                  // fetch reservations
                 this.fetchBillDetails = function (params) {
                     var deferred = $q.defer(),
-                            url = 'guest_web/home/bill_details.json?reservation_id=' + params.reservation_id;
+                             url = 'guest_web/home/bill_details.json?reservation_id=' + params.reservation_id;
                     zsBaseWebSrv2.getJSON(url).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {

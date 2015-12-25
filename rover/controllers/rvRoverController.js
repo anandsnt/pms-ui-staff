@@ -16,6 +16,9 @@ sntRover.controller('roverController',
 
     rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
 
+    // TODO: remove this after CICO-19912 is done
+    SWITCH_ROOM_AND_RATES_ALT = false;
+
 
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {

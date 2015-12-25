@@ -28,7 +28,7 @@ angular.module('sntRover').controller('RVWorkManagementCreateDatePickerControlle
 				minDate: tzIndependentDate($rootScope.businessDate),
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
-					$("#" + ngDialog.latestID).remove();
+					ngDialog.close($scope.calendarDialog.id);
 				}
 			};
 		};

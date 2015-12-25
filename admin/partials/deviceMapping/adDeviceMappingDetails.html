@@ -23,6 +23,15 @@
                                            </select>
                                         </div>
                                     </div>
+                                    <div class='entry full-width'>    
+                                        <div class=''>
+                                            <label class='admin-item-label'>EMV Terminal</label>
+                                            <select id='selectEmv' class='placeholder'
+                                                 ng-options="emv.id as emv.name for emv in emv_terminals" ng-model="mapping.selectedEmvTerminal">
+                                                <option style="display:none" value="">Select a Terminal</option>
+                                           </select>
+                                        </div>
+                                    </div>
                                     <ad-textbox inputtype="text" value="mapping.printer" 
 						label = "{{'STATION_PRINTER' | translate}}" placeholder = "{{'STATION_PRINTER'| translate}}"  
 						styleclass="full-width overlay grey" required="no"></ad-textbox>
