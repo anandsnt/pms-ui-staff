@@ -8,7 +8,11 @@ module.exports = {
 			nonMinifiedFiles: [
 				'rover/filters/rangeFilter.js',
 				'rover/directives/delayTextbox/rvDelayTextBox.js',
-				controllerRoot + "rvGuestController.js",				
+				'rover/directives/Autogrowing text field/autoGrowFieldDirective.js',
+				controllerRoot + "rvGuestController.js",
+				controllerRoot + "rvGuestCardLoyaltyCtrl.js",
+				controllerRoot + "rvReservationRoomStatusCtrl.js",
+				controllerRoot + "rvContactInfoController.js",			
 				controllerRoot + "reservation/**/**.js",
 				controllerRoot + "cards/**/*.js",
 				controllerRoot + "cardsOutside/**/**.js",
@@ -25,10 +29,14 @@ module.exports = {
 				controllerRoot + "reservationCard/**/**.js",
 				controllerRoot + "roverPayment/**/**.js",
 				controllerRoot + "smartbands/**/**.js",
+				servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
+				servicesRoot + "actionTasks/rvActionTasksSrv.js",
+				servicesRoot + "depositBalance/rvDepositBalanceSrv.js",
 				servicesRoot + "reservation/**/**.js",
 				servicesRoot + "smartBands/**/**.js",
 				servicesRoot + "keys/**/**.js",
 				servicesRoot + "payment/**/**.js",
+				servicesRoot + "likes/rvLikesSrv.js",
 				servicesRoot + "allotments/**/**.js",
 				servicesRoot + "group/**/**.js",
 				servicesRoot + "accounts/**/**.js",
@@ -38,6 +46,9 @@ module.exports = {
 				servicesRoot + "rvReservationSrv.js",
 				servicesRoot + "rvContactInfoSrv.js",
 				servicesRoot + "rvGuestCardLoyaltySrv.js",
+				servicesRoot + "rvSaveWakeupTimeSrv.js",
+				servicesRoot + "rvNewspaperPreferenceSrv.js",
+				servicesRoot + "rvLoyaltyProgramSrv.js"
 			]
 		};
 		return allotmentJsAssets;
