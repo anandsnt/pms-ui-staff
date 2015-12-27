@@ -3,18 +3,18 @@ module.exports = function(gulp, $, options) {
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			=  __dirname + "/manifests/",
-	    ROVER_CSS_FILE  		= 'rover.css',
-	    ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
-	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
-	    ROVER_CSS_MANIFEST_FILE = "rover_css_manifest.json",
+	    ZEST_CSS_FILE  			= 'zest_station.css',
+	    ZEST_TEMPLATE_ROOT     	= '../views/zest_station/home/',
+	    ZEST_HTML_FILE     		= ZEST_TEMPLATE_ROOT + 'index.html',
+	    ZEST_CSS_MANIFEST_FILE 	= "zest_css_manifest.json",
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
-	    LESS_SOURCE_FILE 		= 'stylesheets/rover.css',
+	    LESS_SOURCE_FILE 		= 'stylesheets/zest_station.css',
     	cleancss 				= new LessPluginCleanCSS({ advanced: true }),
 		onError  				= options.onError;
 
 	//LESS - START
 	var cssInjector = function(fileName) {
-		return gulp.src(ROVER_HTML_FILE)
+		return gulp.src(ZEST_HTML_FILE)
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:less:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
@@ -22,16 +22,16 @@ module.exports = function(gulp, $, options) {
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
        		}))
-       		.pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }));
+       		.pipe(gulp.dest(ZEST_TEMPLATE_ROOT, { overwrite: true }));
 	};
 
-	gulp.task('build-rover-less-production', ['rover-less-production'], function(){
-		var template_manifest_json = require(MANIFEST_DIR + ROVER_CSS_MANIFEST_FILE),
-	        file_name = template_manifest_json[ROVER_CSS_FILE];
+	gulp.task('build-zest-less-production', ['zest-less-production'], function(){
+		var template_manifest_json = require(MANIFEST_DIR + ZEST_CSS_MANIFEST_FILE),
+	        file_name = template_manifest_json[ZEST_CSS_FILE];
 	    return cssInjector(file_name);
 	});
 
-	gulp.task('rover-less-production', ['rover-copy-less-files'], function () {
+	gulp.task('zest-less-production', ['zest-copy-less-files'], function () {
 	  return gulp.src(LESS_SOURCE_FILE)
 	        .pipe($.less({
 	        	compress: true,
@@ -40,11 +40,11 @@ module.exports = function(gulp, $, options) {
 	        .pipe($.minifyCSS())
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest(ROVER_CSS_MANIFEST_FILE))
+	        .pipe($.rev.manifest(ZEST_CSS_MANIFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
-	gulp.task('rover-less-dev', ['rover-copy-less-files'], function () {
+	gulp.task('zest-less-dev', ['zest-copy-less-files'], function () {
 	  return gulp.src(LESS_SOURCE_FILE)
 	        .pipe($.less({
 				plugins: [cleancss]
@@ -52,25 +52,25 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
 	});
 
-	gulp.task('build-rover-less-dev', ['rover-less-dev'], function(){
-	    return cssInjector(ROVER_CSS_FILE);
+	gulp.task('build-zest-less-dev', ['zest-less-dev'], function(){
+	    return cssInjector(ZEST_CSS_FILE);
 	});
 
 	//inorder to tackle the bug in injector, doing this way
 	//bug noticed: parallel injecting is not possible. When 400+ js injection is going on css injection is failing
-	gulp.task('build-rover-less-js-dev', ['rover-less-dev', 'build-rover-js-dev'], function(){
-	    return cssInjector(ROVER_CSS_FILE);
+	gulp.task('build-zest-less-js-dev', ['zest-less-dev', 'build-zest-js-dev'], function(){
+	    return cssInjector(ZEST_CSS_FILE);
 	});
 	//LESS END
 	//
 	
-	gulp.task('rover-watch-less-files', function(){
-		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'rover/css/**/*.*']);
-		gulp.watch(paths, ['build-rover-less-dev']);
+	gulp.task('zest-watch-less-files', function(){
+		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest/css/**/*.*']);
+		gulp.watch(paths, ['build-zest-less-dev']);
 	});
 
-	gulp.task('rover-copy-less-files', function(){
-		return gulp.src(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'rover/css/**/*.*'], {base: '.'})
+	gulp.task('zest-copy-less-files', function(){
+		return gulp.src(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest/css/**/*.*'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 }
