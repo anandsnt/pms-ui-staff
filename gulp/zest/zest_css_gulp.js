@@ -65,12 +65,12 @@ module.exports = function(gulp, $, options) {
 	//
 	
 	gulp.task('zest-watch-less-files', function(){
-		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest/css/**/*.*']);
+		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest_station/css/**/*.*']);
 		gulp.watch(paths, ['build-zest-less-dev']);
 	});
 
 	gulp.task('zest-copy-less-files', function(){
-		return gulp.src(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest/css/**/*.*'], {base: '.'})
+		return gulp.src(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest_station/css/**/*.*'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 }
