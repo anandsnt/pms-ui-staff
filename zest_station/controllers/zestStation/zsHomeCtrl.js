@@ -342,7 +342,7 @@ sntZestStation.controller('zsHomeCtrl', [
             }
         }
     });
-    
+    $scope.theme = '';
         $scope.fetchWorkStations = function(){
             var onSuccess = function(response){
                 if (response){
@@ -367,8 +367,14 @@ sntZestStation.controller('zsHomeCtrl', [
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
         };  
-    
+    $scope.$on ('THEME_UPDATE', function(event) {
+        console.info('theme update');
+        //set theme updates from state
+        $scope.theme = $state.theme;
+        console.warn('logo set to : '+$scope.theme);
+    });
     $scope.init = function(){
+        $scope.theme = $state.theme;
         $scope.fetchWorkStations();
         $scope.checkOOSInBrowser(); //this will check if the device was put into OOS, if the device has been reset this should place it back into OOS
         $state.input = {};  
