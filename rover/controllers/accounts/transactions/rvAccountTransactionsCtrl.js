@@ -502,6 +502,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.chargeCodeActive = bool;
 		};
 
+		$scope.HIDE_LOADER_FROM_POPUP =  function(){
+			$scope.$emit("hideLoader");
+		};
+
 		/*
 		 * open popup for selecting edit/split/remove transaction
 		 */

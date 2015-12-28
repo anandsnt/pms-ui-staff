@@ -1,18 +1,22 @@
 sntRover.controller('RVAccountTransactionsPopupCtrl',
-	['$scope','$rootScope','$filter','rvAccountTransactionsSrv', 'ngDialog',function($scope, $rootScope,$filter, rvAccountTransactionsSrv, ngDialog){
+	['$scope','$rootScope','$filter','rvAccountTransactionsSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, rvAccountTransactionsSrv, ngDialog, $timeout){
 
 
 	BaseCtrl.call(this, $scope);
 
 	var reloadBillScreen =  function(){
-		$scope.$emit('UPDATE_TRANSACTION_DATA');
+		$timeout(function(){
+			$scope.$emit('UPDATE_TRANSACTION_DATA');
+		}, 50);
 	};
 
 
 	var hideLoaderAndClosePopup = function(){
-		$scope.$emit("hideLoader");
-		reloadBillScreen();
 		ngDialog.close();
+		$timeout(function(){
+			$scope.HIDE_LOADER_FROM_POPUP && $scope.HIDE_LOADER_FROM_POPUP();
+			reloadBillScreen();
+		}, 1000);		
 	};
 
 
@@ -22,7 +26,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	$scope.removeCharge = function(reason){
 
-
+		$scope.$emit('showLoader');
 		var params ={
 			data:{
 				"reason":reason,
@@ -33,6 +37,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	 	var options = {
 			params: 			params,
+			loader: 			'NONE',
 			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionDelete, options);
@@ -45,6 +50,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	$scope.splitCharge = function(qty,isAmountType){
 
+		$scope.$emit('showLoader');
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
 		var splitData = {
 			"id" :$scope.selectedTransaction.id,
@@ -56,6 +62,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 		};
 		var options = {
 			params: 			splitData,
+			loader: 			'NONE',
 			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionSplit, options);
@@ -66,7 +73,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	 * API call edit transaction
 	 */
 	$scope.editCharge = function(newAmount,chargeCode){
-
+		$scope.$emit('showLoader');
 		var editData =
 		{
 			"updatedDate":
@@ -79,6 +86,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 		var options = {
 			params: 			editData,
+			loader: 			'NONE',
 			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
