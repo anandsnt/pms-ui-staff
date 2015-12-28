@@ -590,6 +590,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
       var unwantedKeys = ["available_trackers"];
       var testData = dclone($scope.data, unwantedKeys);
+      testData.interface = $scope.interfaceId;
       $scope.invokeApi($scope.serviceController.testSetup, testData, checkCallback);
     };
 

@@ -2,7 +2,7 @@ admin.service('adZDirectSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 
   this.testSetup = function (data) {
     var deferred = $q.defer();
-    var url = 'admin/test_ota_connection';
+    var url = 'admin/test_ota_connection/'+data.interface;
     ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
       deferred.resolve(data);
     }, function (data) {
