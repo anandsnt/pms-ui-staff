@@ -97,7 +97,7 @@
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage:function(){
-          return "All fields are required";
+          return "You must provide all the required information. Please update and try again.";
         }
       }
     };
