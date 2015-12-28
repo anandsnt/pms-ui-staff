@@ -153,7 +153,7 @@
 "TO_DATE": "To",
 "PAYMENT": "Payment",
 "NEW_PAYMENT": "+ New Payment Method",
-"POSTING_CAP": "Posting Cap",
+"CREDIT_LIMIT": "Credit Limit",
 "REFERENCE_NUMBER": "Reference Number",
 "ENTITY":"Entity",
 "NUMBER":"Number",

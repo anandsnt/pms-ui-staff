@@ -690,12 +690,14 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         scope: $scope
                     });
                 }
-	    	    $scope.$parent.$emit('hideLoader');
-                $scope.$parent.$emit('BILLINGINFOADDED');
-	    	    $scope.setReloadOption(true);
-	    	    $scope.headerButtonClicked();
-	    	    $scope.updateCardInfo();
-                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+                else {
+                    $scope.$parent.$emit('hideLoader');
+                    $scope.$parent.$emit('BILLINGINFOADDED');
+                    $scope.setReloadOption(true);
+                    $scope.headerButtonClicked();
+                    $scope.updateCardInfo();
+                    $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+                }
 	    	};
 
 	    	var defaultRoutingSaveSuccess = function () {
