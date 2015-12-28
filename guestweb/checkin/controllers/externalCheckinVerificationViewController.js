@@ -67,6 +67,8 @@
 				response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
 				checkinDetailsService.setResponseData(response.results[0]);
 				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
+				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;
+
 				//navigate to next page
 				$state.go('checkinReservationDetails');
 			},function(){
