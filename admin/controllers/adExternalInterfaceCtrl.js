@@ -201,7 +201,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       secondary_url: ''
     };
     $scope.fetchSetupSuccessCallback = function (data) {
-        console.info('data: ',data);
         if (data.data && data.data.product_cross_customer){
             $scope.interface = data.data.product_cross_customer.interface_id;
             $scope.fetchManagerDetails();
@@ -335,7 +334,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       };
       var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
       var saveData = dclone($scope.data, unwantedKeys);
-
+      saveData.interface = $scope.interfaceId;
       if ($scope.interfaceName === 'Givex') {
         $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
@@ -357,7 +356,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     $scope.toggleSMActiveSuccess = function () {
       $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {
-        'interface_id': $scope.data.data.product_cross_customer.interface_id,
+        'interface_id': $scope.interfaceId,
         'active': $scope.data.data.product_cross_customer.active
       }, $scope.fetchSetupSuccessCallback);
     };
@@ -518,7 +517,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       var data = {};
       data.start_date = $scope.refreshDatePickerData.start_date;
       data.end_date = $scope.refreshDatePickerData.end_date;
-      data.interface_id = $scope.data.data.product_cross_customer.interface_id;
+      data.interface_id = $scope.interfaceId;
       
       if (lastRefreshed !== null) {
         try {

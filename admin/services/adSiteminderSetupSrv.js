@@ -33,7 +33,7 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
             }
             
 		var deferred = $q.defer();
-		var url = 'admin/ota/full_refresh/'+data.interface_id+start_date+end_date;
+		var url = 'admin/ota_full_refresh/'+data.interface_id+start_date+end_date;
 		ADBaseWebSrvV2.postJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
@@ -44,8 +44,8 @@ admin.service('adSiteminderSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 
 	this.saveSetup = function(data){
 		var deferred = $q.defer();
-		var url = 'admin/save_ota_connection_config';
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		var url = 'admin/save_ota_connection_config.json?interface='+data.interface;//update for ZDirect-specific
+                ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
