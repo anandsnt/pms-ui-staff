@@ -3,8 +3,9 @@
 */
 (function() {
 	var preCheckinStatusController = function($scope, preCheckinSrv,$rootScope,$state) {
-
-	if($rootScope.collectCCOnCheckin && $rootScope.isMLI){
+	// if prompt for cc is turned on
+	// we will always ask for CC addition in case of MLI
+	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
 		$state.go('checkinCcVerification');
 	}
 	else{

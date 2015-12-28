@@ -8,7 +8,9 @@
 	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
 
 	$scope.pageValid = false;
-	if($rootScope.collectCCOnCheckin && $rootScope.isMLI){
+	// if prompt for cc is turned on
+	// we will always ask for CC addition in case of MLI
+	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ){
 		$state.go('checkinCcVerification');
 	}
 	else if($rootScope.isCheckedin){
@@ -39,7 +41,8 @@
 
 	},function(){
 		$scope.isPosting = false;
-		$rootScope.netWorkError  = true;     });
+		$rootScope.netWorkError  = true;     
+	});
 
 }
 

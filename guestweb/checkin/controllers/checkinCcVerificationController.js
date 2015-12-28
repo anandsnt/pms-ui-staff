@@ -7,6 +7,7 @@
   $scope.ccv = "";
   $scope.monthSelected = "";
   $scope.yearSelected ="";
+  $scope.ccSaved = false;
 
   if($rootScope.isCheckedin){
     $state.go('checkinSuccess');
@@ -80,7 +81,7 @@
     $scope.cardErrorOpts = {
       backdrop: true,
       backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage: function(){
@@ -92,7 +93,7 @@
     $scope.errorOpts = {
       backdrop: true,
       backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage:function(){
@@ -121,6 +122,14 @@
       $modal.open($scope.ccvOpts); // error modal popup
     };
 
+    $scope.nextButtonClicked = function(){
+      if($rootScope.isAutoCheckinOn){
+        $state.go('preCheckinStatus');
+      }else{
+        $state.go('checkinKeys');
+        };
+    };
+
     $scope.goToNextStep = function(){
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
         var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
@@ -129,16 +138,11 @@
         if(response.status ==="success"){
             $rootScope.isCCOnFile = true;
             $rootScope.isCcAttachedFromGuestWeb = true;
-            if($rootScope.isAutoCheckinOn){
-              $state.go('checkinArrival');
-            }else{
-              $state.go('checkinKeys');
-            };
+            $scope.ccSaved = true;     
         }
         else{
          $scope.netWorkError = true;
         };
-
       },function(){
         $scope.netWorkError = true;
         $scope.isFetching = false;
@@ -162,9 +166,7 @@
             $modal.open($scope.cardErrorOpts);
             $scope.isFetching = false;
           }
-
        };
-
       if( ($scope.cardNumber.length === 0) ||
           ($scope.ccv.length === 0) ||
           (!$scope.monthSelected) ||
@@ -191,18 +193,12 @@
              catch(err) {
                 $scope.netWorkError = true;
              };
-
          }
-
-
-
     };
     $scope.fetchMLISessionId();
-
     };
 
      /* MLI integration ends here */
-
 }
 };
 
