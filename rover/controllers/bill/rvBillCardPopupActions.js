@@ -1,5 +1,5 @@
 sntRover.controller('rvBillCardPopupCtrl',
-	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog',function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog){
+	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog, $timeout){
 
 	BaseCtrl.call(this, $scope);
 
@@ -11,8 +11,11 @@ sntRover.controller('rvBillCardPopupCtrl',
 	};
 
 	var hideLoaderAndClosePopup = function(){
-		$scope.$emit("hideLoader");
 		ngDialog.close();
+		$timeout(function(){
+			$scope.HIDE_LOADER_FROM_POPUP && $scope.HIDE_LOADER_FROM_POPUP();
+		}, 1000);
+		
 	};
 
 	var failureCallBack = function(data){
