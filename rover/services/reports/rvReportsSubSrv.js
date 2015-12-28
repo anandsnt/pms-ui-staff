@@ -208,7 +208,7 @@ sntRover.service('RVreportsSubSrv', [
 			return callApi({
 				name   : 'reservationAddons',
 				method : 'getJSON',
-				url    : 'api/addons/reservation_only',
+				url    : 'api/addons/not_rate_only',
 				resKey : 'results'
 			});
 		};
