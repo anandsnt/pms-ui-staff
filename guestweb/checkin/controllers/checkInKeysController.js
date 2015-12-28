@@ -8,8 +8,10 @@
 	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
 
 	$scope.pageValid = false;
-
-	if($rootScope.isCheckedin){
+	if($rootScope.collectCCOnCheckin && $rootScope.isMLI){
+		$state.go('checkinCcVerification');
+	}
+	else if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
 	else{

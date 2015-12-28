@@ -188,7 +188,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'minimum_age' : $scope.checkinData.minimum_age,
       'prompt_for_address_on':$scope.checkinData.prompt_for_address_on,
       'birthdate_mandatory':$scope.checkinData.birthdate_mandatory,
-      'collect_cc':$scope.checkinData.collect_cc
+      'checkin_collect_cc':$scope.checkinData.checkin_collect_cc
 
     };
 
