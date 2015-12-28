@@ -240,6 +240,11 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                 if (typeof $scope.mapping.selectedEmvTerminal !== typeof undefined){
                     data.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
                 }
+                //CICO-18808
+                if (typeof $scope.mapping.rover_device_id !== typeof undefined){
+                    data.rover_device_id = $scope.mapping.rover_device_id;
+                }
+
                 
                 
 		if($scope.isAddMode){
