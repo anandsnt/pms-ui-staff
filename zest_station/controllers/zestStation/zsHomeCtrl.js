@@ -12,7 +12,7 @@ sntZestStation.controller('zsHomeCtrl', [
             
             
             $scope.storageKey = 'snt_zs_workstation';
-         //   $scope.oosKey = 'snt_zs_workstation.in_oos';
+            $scope.oosKey = 'snt_zs_workstation.in_oos';
             $scope.storageKeyEncoder = 'snt_zs_encoder';
 	/**
 	 * when we clicked on pickup key from home screen
@@ -66,8 +66,7 @@ sntZestStation.controller('zsHomeCtrl', [
 
 
         
-        //$scope.oosStatus = 'disabled';
-        /*
+        $scope.oosStatus = 'disabled';
         $scope.getOOSCurrentSetting = function(){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
@@ -84,14 +83,13 @@ sntZestStation.controller('zsHomeCtrl', [
             }
             console.info(storage.getItem(storageKey));
         };
-        */
         
 	/**
 	 * admin popup actions starts here
 	 */
     var openAdminPopup = function() {
-       // $scope.oosStatus = 'test';
-       // $scope.getOOSCurrentSetting();
+        $scope.oosStatus = 'test';
+        $scope.getOOSCurrentSetting();
         $scope.idle_timer_enabled = false;
         ngDialog.open({
             template: '/assets/partials/rvAdminPopup.html',
@@ -253,7 +251,6 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.saveWorkStationPrinter();
             $scope.setStationEncoder();
     };
-    /*
         $scope.checkOOSInBrowser = function(){
              var storageKey = $scope.oosKey,
                     storage = localStorage,
@@ -273,7 +270,6 @@ sntZestStation.controller('zsHomeCtrl', [
                 $state.isOOS = false;
             }
         };
-        */
         
     $scope.setStationEncoder = function(){
          var storageKeyEncoder = $scope.storageKeyEncoder,
@@ -338,9 +334,11 @@ sntZestStation.controller('zsHomeCtrl', [
     */
     $scope.$watch('zestStationData.workstations',function(){
         $scope.workStationObj = {};
-        for (var i in $scope.zestStationData.workstations){
-            if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
-                $scope.workStationObj = $scope.zestStationData.workstations[i];
+        if ($scope.zestStationData){
+            for (var i in $scope.zestStationData.workstations){
+                if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
+                    $scope.workStationObj = $scope.zestStationData.workstations[i];
+                }
             }
         }
     });
@@ -372,7 +370,7 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.init = function(){
         $scope.fetchWorkStations();
-     //   $scope.checkOOSInBrowser(); //this will check if the device was put into OOS, if the device has been reset this should place it back into OOS
+        $scope.checkOOSInBrowser(); //this will check if the device was put into OOS, if the device has been reset this should place it back into OOS
         $state.input = {};  
             if (typeof cordova !== typeof undefined){
             setTimeout(function(){

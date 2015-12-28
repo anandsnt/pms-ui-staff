@@ -85,13 +85,13 @@ sntZestStation.controller('zsRootCtrl', [
 	});
         
         //OOS to be turned on in Sprint44+
-	/*$scope.$on (zsEventConstants.PUT_OOS, function(event) {//not used yet
+	$scope.$on (zsEventConstants.PUT_OOS, function(event) {//not used yet
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
             $scope.$emit(zsEventConstants.HIDE_LOADER);
 
             $scope.disableTimeout();
-           // $scope.setOOSInBrowser(true);
+            $scope.setOOSInBrowser(true);
             $state.go('zest_station.oos');
 	});
             
@@ -102,13 +102,14 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit(zsEventConstants.HIDE_LOADER);
 
             $scope.disableTimeout();
-          //  $scope.setOOSInBrowser(false);
+            $scope.setOOSInBrowser(false);
             $state.go('zest_station.oos');
 	});
             
+        
             
             
-            
+        $scope.isOOS = true;
         $scope.setOOSInBrowser = function(t){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
@@ -118,12 +119,63 @@ sntZestStation.controller('zsRootCtrl', [
             } catch(err){
                 console.warn(err);
             }
+            console.info('storage.getItem(storageKey): ',storage.getItem(storageKey))
+            if (storage.getItem(storageKey)){
+                $scope.isOOS = true;
+            } else {
+                $scope.isOOS = false;
+            }
+            
             console.info(storage.getItem(storageKey));
         };
-            */
            
-           
-           
+        $scope.hotelThemeCB = function(response){
+            console.info('response from hotel theme call',response);
+            var theme = null;
+            /*
+             * This will identify the theme attached to the hotel
+             * then set by name (will do this for now, since there are only 2 customers)
+             * but will need to move out to more automated method
+             */
+            if (response && response.existing_email_templates){
+                if (response.themes){
+                    for (var i in response.themes){
+                        if (response.themes[i].id === response.existing_email_template_theme){
+                            theme = response.themes[i].name;
+                        }
+                    }
+                }
+            }
+            if (theme !== null){
+                $scope.setThemeByName(theme);
+            }
+            
+            
+            $scope.$emit('hideLoader');
+        };
+        
+        $scope.setThemeByName = function(theme){
+            if (theme === 'Zoku'){
+
+            } else if (theme === 'Fontainebleau') {
+                $('#zestStationTheme').attr( "href",'../assets/css/'+theme.toLowerCase()+'.less'); 
+                console.info('yeahp')
+            }
+            console.warn('theme: '+theme+', set!');
+        };
+        
+        $scope.getHotelStationTheme = function(){
+            console.info('hotel id: ',$scope);
+            console.info('calling fetch hotel theme for this hotel!');
+            //api/email_templates/list.json?hotel_id=97
+            $scope.hotelid = 97;
+            //call Zest station settings API
+            var options = {
+                params: 			{"id":$scope.hotelid},
+                successCallBack: 	$scope.hotelThemeCB
+            };
+            $scope.callAPI(zsTabletSrv.fetchHotelTheme, options);
+        };
            
 	/**
 	 * event for hiding the close button
@@ -171,9 +223,11 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
+                $scope.getHotelStationTheme();
                 //set print and email options set from hotel settings > Zest > zest station
                 $scope.zestStationData.printEnabled = $scope.zestStationData.guest_bill.print;
                 $scope.zestStationData.emailEnabled = $scope.zestStationData.guest_bill.email;
+                console.info('settings fetched: ',data)
 	};
         
     $scope.toggleOOS = function(){
@@ -236,16 +290,21 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.workstations = 'Select';
             }
-                console.log('station', station)
             if (station !==  null){
-                    sntZestStation.selectedPrinter = station.printer;
-                    sntZestStation.encoder = station.key_encoder_id;
-                console.info('workstation found!: ',station.name);
-                }
+                sntZestStation.selectedPrinter = station.printer;
+                sntZestStation.encoder = station.key_encoder_id;
+            }
             return station;
         };
 	$scope.failureCallBack =  function(data){
-		$state.go('zest_station.error_page');
+            console.warn('failure cb from root ctrl');
+            if ($scope.isOOS){
+                $state.go('zest_station.oos');
+                console.info('to oos');
+            } else {
+                $state.go('zest_station.error_page');
+                console.info('to ERR page');
+            }
 	};
         /*
         $scope.fetchKeyEncoderList = function(){
@@ -284,17 +343,15 @@ sntZestStation.controller('zsRootCtrl', [
                 };
 		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
         };
-        /*
         $scope.disableTimeout = function(){
+            console.info('timeout Disabled');
             zsTimeoutEnabled = false;
         };
         $scope.enableTimeout = function(){
+            console.info('timeout Enabled');
             zsTimeoutEnabled = true;
         };
-        
-        
-        
-        
+        /*
             $scope.idlePopup = function() {
                 if ($scope.at === 'cc-sign'){
                     //$scope.goToScreen({},'timeout',true, 'idle');

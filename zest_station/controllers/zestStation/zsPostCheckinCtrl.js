@@ -292,6 +292,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
                 
+            } else if (current === 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                $scope.at = 'cc-sign-time-out';
+                
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();
             } else if (current === 'zest_station.last_confirm'){
