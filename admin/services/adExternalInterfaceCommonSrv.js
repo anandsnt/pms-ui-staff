@@ -84,7 +84,7 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 
 	this.toggleActive = function(data){
 		var deferred = $q.defer();
-		var url = 'admin/update_active.json?interface='+data.interface;
+		var url = 'ota/update_active/'+data.interface;
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
