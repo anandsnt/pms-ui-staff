@@ -6,7 +6,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	var reloadBillScreen =  function(){
 		$timeout(function(){
-			$scope.$emit('UPDATE_TRANSACTION_DATA');
+			//$scope.$emit('UPDATE_TRANSACTION_DATA'); is not working anmore, 
+			$scope.UPDATE_TRANSACTION_DATA && $scope.UPDATE_TRANSACTION_DATA();
 		}, 50);
 	};
 

@@ -229,6 +229,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
+		$scope.UPDATE_TRANSACTION_DATA = function(){
+			getTransactionDetails();
+		};
+		
 		/*
 		 *  Bill data need to be updated after success action of
 		 *  payment, post charges, split/edit etc...
