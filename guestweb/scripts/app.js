@@ -6,18 +6,19 @@ User can send mail from hotel admin or use direct URL for checkin and checkout.
 
 But the options available for different hotels are different. 
 So make sure the hotel admin settings for checkin and checkout are turned on or off w.r.t . 
-You can see all the available options for an hotel in the router file for the corresponding hotel. 
+You can see all the available options for a hotel in the router file for the corresponding hotel. 
 If because of some settings, if user tries to go to a state not listed in the app router (eg:app_router_yotel.js)
 for the hotel ,the user will be redirected to no options page.
 
 The initial condtions to determine the status of reseravations are extracted from the embedded data in the HTML.
 
 
-Initially we had a set of HTMLs for all hotels.
+Initially we had a set of HTMLs for every single hotel.
 
 Now we are trying to minimize the difference to use the same templates as much possible.
+
 The new set of HTMLs can be found under the folder common_templates. inside that we have generic templates
-and some folder dedicated to MGM, who has some text changes specifically asked for.
+and some folder dedicated to MGM, which has some text changes specifically asked by client.
 
 */
 
