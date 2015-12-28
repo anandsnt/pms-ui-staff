@@ -492,8 +492,17 @@ sntRover.controller('RVPostChargeControllerV2',
 				/****    CICO-6094    **/
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
+					// CICO-21768 - Alert to show Credit Limit has exceeded.
+					if( data.has_crossed_credit_limit ) {
+	                    ngDialog.open({
+	                        template: '/assets/partials/bill/rvBillingInfoCreditLimitAlert.html',
+	                        className: '',
+	                        closeByDocument: false,
+	                        scope: $scope
+	                    });
+	                }
 					// update the price in staycard
-					if(!$scope.isOutsidePostCharge){
+					else if(!$scope.isOutsidePostCharge){
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 						$scope.closeDialog();
 					}
@@ -501,6 +510,24 @@ sntRover.controller('RVPostChargeControllerV2',
 						$rootScope.$emit( 'CHARGEPOSTED' );
 					}
 				};
+
+				var callbackApplyToBillOne = function(){
+					$scope.$emit( 'hideLoader' );
+					// update the price in staycard
+					if(!$scope.isOutsidePostCharge){
+						$scope.$emit('postcharge.added', data.total_balance_amount);
+					}
+					else{
+						$rootScope.$emit( 'CHARGEPOSTED' );
+					}
+					$scope.closeDialog();
+				};
+				// CICO-21768 - Forcefully posting to Bill#1 while Credit Limit has exceeded.
+				$scope.applyToBillOne = function(){
+					data.bill_no = "1";
+					$scope.invokeApi(RVPostChargeSrvV2.postCharges, data, callbackApplyToBillOne, failureCallback);
+				};
+
 				var accountsPostcallback = function(){
 					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
