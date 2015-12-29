@@ -226,6 +226,11 @@ angular.module('stayCardModule', [])
                 if (typeof $stateParams.mode === "undefined" || $stateParams.mode === null) {
                     $stateParams.mode = "OTHER";
                 }
+            },
+            resolve: {
+                paymentMethods: function(RVReservationSummarySrv) {
+                    return RVReservationSummarySrv.fetchPaymentMethods();
+                }
             }
         });
 

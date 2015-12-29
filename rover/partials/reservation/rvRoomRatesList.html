@@ -96,18 +96,16 @@
                             <div class="price" ng-if="room.defaultRate.isSuppressed">
                                 SR<span translate>RESV_AVG_NIGHT</span>
                             </div>
-
                             <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == room.defaultRate.id && stateCheck.selectedStayDate.roomType.id == room.id" ng-click="">
                                 CURRENT RATE
                             </button>
-                           
                             <button class="button" ng-hide="stateCheck.selectedStayDate.rate.id == room.defaultRate.id && stateCheck.selectedStayDate.roomType.id == room.id" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" ng-class="getBookButtonStyle(room.id,room.defaultRate.id)" translate>
                                 RESV_BOOK
                             </button>
                         </div>
                     </a>
                     <!-- Rates list -->
-                    <ul class="rates" ng-class="{active: isVisibleRoom}" ng-if="isVisibleRoom" >
+                    <ul class="rates" ng-class="{active: isVisibleRoom}" ng-if="isVisibleRoom">
                         <li ng-repeat="rate in room.rates" ng-class="{'closed': !stateCheck.stayDatesMode && rate.numRestrictions > 0 || stateCheck.stayDatesMode && roomAvailability[room.id].ratedetails[stateCheck.dateModeActiveDate][rate].restrictions.length > 0}">
                             <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(rate);">
                                 <h3>
@@ -222,6 +220,26 @@
                                     <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.selectedRoomId">{{room.name}}</option>
                                 </select>
                             </div>
+                            <span class="count red" ng-show="stateCheck.stayDatesMode && rate.selectedRoom.dates[stateCheck.dateModeActiveDate].availability < 5">
+                                {{rate.selectedRoom.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
+                                  <label ng-if="rate.isGroupRate"> in Group Block</label>
+                                  <label ng-if="rate.isAllotmentRate"> in Allotment</label>
+                            </span>
+                            <span class="count red" ng-show="!stateCheck.stayDatesMode && rate.selectedRoom.availability < 5">
+                                {{rate.selectedRoom.availability}} room(s) left
+                                  <label ng-if="rate.isGroupRate"> in Group Block</label>
+                                  <label ng-if="rate.isAllotmentRate"> in Allotment</label>
+                            </span>
+                            <span class="count green" ng-show="stateCheck.stayDatesMode && rate.selectedRoom.dates[stateCheck.dateModeActiveDate].availability > 4">
+                                {{rate.selectedRoom.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
+                                  <label ng-if="rate.isGroupRate"> in Group Block</label>
+                                  <label ng-if="rate.isAllotmentRate"> in Allotment</label>
+                            </span>
+                            <span class="count green" ng-show="!stateCheck.stayDatesMode && rate.selectedRoom.availability > 4">
+                                {{rate.selectedRoom.availability}} room(s) left
+                                  <label ng-if="rate.isGroupRate"> in Group Block</label>
+                                  <label ng-if="rate.isAllotmentRate"> in Allotment</label>
+                            </span>
                             <div class="price" ng-if="!rate.isSuppressed">
                                 {{currencySymbol}}{{ rate.selectedRoom.adr | number:2}}
                                 <span translate>RESV_AVG_NIGHT</span>

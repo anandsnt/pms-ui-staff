@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q',
-    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods',
+    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods) {
 
 
         BaseCtrl.call(this, $scope);
@@ -725,32 +725,25 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         var paymentMethodsCopy = {};
         // CICO-14193
         var fetchPaymentMethods = function() {
-            var paymentFetchSuccess = function(data) {
-                $scope.reservationData.paymentMethods = angular.copy(data);
-                $scope.$emit('hideLoader');
+            var data = paymentMethods;
+            $scope.reservationData.paymentMethods = angular.copy(data);
 
-                // CICO-14193
-                paymentMethodsCopy = JSON.parse(JSON.stringify($scope.reservationData.paymentMethods));
+            // CICO-14193
+            paymentMethodsCopy = JSON.parse(JSON.stringify($scope.reservationData.paymentMethods));
 
-                var reservationDataPaymentTypeValue = $scope.reservationData.paymentType.type.value;
-                var payments = _.where(data, {
-                    value: reservationDataPaymentTypeValue
-                });
-                if (payments.length > 0) {
-                    $scope.reservationData.paymentType.type = payments[0];
-                }
+            var reservationDataPaymentTypeValue = $scope.reservationData.paymentType.type.value;
+            var payments = _.where(data, {
+                value: reservationDataPaymentTypeValue
+            });
+            if (payments.length > 0) {
+                $scope.reservationData.paymentType.type = payments[0];
+            }
 
-                data.forEach(function(item) {
-                    if (item.value === 'CC') {
-                        $scope.creditCardTypes = item.credit_card_list;
-                    };
-                });
-            };
-            var paymentFetchError = function(data) {
-                $scope.errorMessage = data;
-                $scope.$emit('hideLoader');
-            };
-            $scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess, paymentFetchError);
+            data.forEach(function(item) {
+                if (item.value === 'CC') {
+                    $scope.creditCardTypes = item.credit_card_list;
+                };
+            });
         };
 
         /**
@@ -887,7 +880,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
         $scope.proceedCreatingReservation = function() {
             var postData = $scope.computeReservationDataforUpdate(false, true);
             var saveSuccess = function(data) {
-                $scope.$emit('hideLoader');
+                
                 /*
                  * TO DO: to handle in future when more than one confirmations are returned.
                  * For now we will be using first item for navigating to staycard
@@ -927,6 +920,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
                 $scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
                 $scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+                $scope.$emit('hideLoader');
             };
 
 
