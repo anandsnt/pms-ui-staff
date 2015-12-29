@@ -127,8 +127,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $state.go('zest_station.last_confirm');
                 $scope.$emit('hideLoader');
             };
-            var id = $scope.selectedReservation.id;
-            $scope.invokeApi(zsTabletSrv.sendRegistrationByEmail, {'id':id}, fetchHotelCompleted, $scope.generalError);    
+            var data = { 'id' : $scope.selectedReservation.id , 'application':'ZEST_STATION'} ;
+
+            $scope.invokeApi(zsTabletSrv.sendRegistrationByEmail, data, fetchHotelCompleted, $scope.generalError);    
         };
         $scope.editEmailAddress = function(){
             $state.from = 'email-delivery';

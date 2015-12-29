@@ -100,8 +100,8 @@ sntZestStation.service('zsTabletSrv',
                     var deferred = $q.defer();
                     var id= data.id;
                     var url = '/api/reservations/'+id+'/email_registration_card';
-
-                    zsBaseWebSrv.getJSON(url).then(function (data) {
+                    var params = {"application": data.application};
+                    zsBaseWebSrv.getJSON(url,params).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
