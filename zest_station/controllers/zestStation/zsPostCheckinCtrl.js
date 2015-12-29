@@ -30,11 +30,22 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.at = 'deliver-registration';
                 $scope.selectedReservation = $state.selectedReservation;
                 
-            } else if (current === 'zest_station.room_error'){
+            } 
+            else if (current === 'zest_station.room_error'){
                 $state.go('zest_station.reservation_details');
                 
-            } else if (current === 'zest_station.error'){
-                $scope.initErrorScreen();
+            } 
+            else if (current === 'zest_station.swipe_pay_error'){
+                $state.go('zest_station.card_swipe');
+            } 
+            
+            else if (current === 'zest_station.error'){
+                console.info('from: ',$state.from);
+                if ($state.from === 'card-swipe'){
+                    $state.go('zest_station.card_swipe');
+                } else {
+                    $scope.initErrorScreen();
+                }
                 
             } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
                 $state.go('zest_station.input_reservation_email_after_swipe');
@@ -280,6 +291,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.headingText = "Your registration is ready for lift-off.";
             $scope.subHeadingText = "How would you like to receive it?";
         };
+        
+        $scope.reTryCardSwipe = function(){
+            $state.go('zest_station.card_swipe');
+        };
 
         $scope.init = function(){
             var current = $state.current.name;
@@ -290,8 +305,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.input = $state.input;
             }
             
+            
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
+                
+            } else if (current === 'zest_station.swipe_pay_error'){
+                $scope.at = 'swipe-pay-error';
+                $scope.headingText = 'An Error Occurred';
+                $scope.subHeadingText = $state.swipe_error_msg;
                 
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();

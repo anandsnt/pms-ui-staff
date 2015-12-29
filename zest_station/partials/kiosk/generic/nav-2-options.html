@@ -1,6 +1,6 @@
 
 <!-- Content -->
-<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText}}</h1>
         <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText}}</h2>
@@ -16,7 +16,15 @@
                     <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
-                
+                <li ng-show='show.swipecardScreen && at === "card-swipe" && debugSixpay' touch-press='debugSixpayInit()'>
+                    <!--button type="button" class="button option" touch-press='goToCardSign()' -->
+                    <button type="button" class="button option">
+                        <div ng-include="'assets/css/icons/creditcard.svg'"></div>
+                    </button>
+                    <span translate>Debug SixPay</span>
+                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
+                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
+                </li>
                 
                 <!-- deliver-registration -->
                 <li ng-show='at === "deliver-registration" && printEnabled'> 
@@ -42,6 +50,20 @@
                     <h1>Re-type</h1>
                     <h3>"{{input.lastEmailValue}}"</h3>
                 </li>
+                
+                
+                <li ng-show='at === "swipe-pay-error"'> 
+                    <button type="button" class="button option" touch-press='reTryCardSwipe()'>
+                        <div ng-include="'assets/css/icons/creditcard.svg'"></div>
+                    </button>
+                    <h1>Try Again</h1>
+                </li>
+                <li class="break" ng-show='at === "swipe-pay-error"'>
+                    <span>Or</span>
+                </li>
+                
+                
+                
                 <!-- retry-key -->
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
@@ -75,7 +97,7 @@
                     </button>
                     <span translate>Send E-Mail</span>
                 </li>
-                <li ng-show='at === "key-error"'> 
+                <li ng-show='at === "key-error" || at === "swipe-pay-error"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>

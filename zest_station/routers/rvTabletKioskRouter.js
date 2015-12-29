@@ -225,6 +225,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
          });
+         
+         $stateProvider.state('zest_station.swipe_pay_error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
+         });
 
         // //check-in [ find-by-confirmation ]
          $stateProvider.state('zest_station.find_by_confirmation', {
