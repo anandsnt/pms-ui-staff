@@ -467,6 +467,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     data.is_emv_request = true;
                     data.payment_type = "CC";
                 }   
+                data.emv_terminal_id = $state.emv_terminal_id;
                 
                 $scope.$emit('showLoader');
 		$scope.shouldShowWaiting = true;

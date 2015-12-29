@@ -228,6 +228,7 @@ sntZestStation.controller('zsRootCtrl', [
                     for (var i in $scope.zestStationData.workstations){
                         if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
                             station = $scope.zestStationData.workstations[i];
+                            $state.emv_terminal_id = station.emv_terminal_id;
                         }
                     }
                 } else {
