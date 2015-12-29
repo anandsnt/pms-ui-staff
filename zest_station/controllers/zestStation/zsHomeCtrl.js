@@ -189,6 +189,7 @@ sntZestStation.controller('zsHomeCtrl', [
         
         if ($scope.zestStationData.selectedWorkStation !== 'Select'){
             params.kiosk.work_station = $scope.zestStationData.selectedWorkStation;
+            $state.workstation_id = params.kiosk.work_station.id;
         }
         
         if (sntZestStation.selectedPrinter){

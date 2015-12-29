@@ -236,11 +236,10 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.workstations = 'Select';
             }
-                console.log('station', station)
             if (station !==  null){
                     sntZestStation.selectedPrinter = station.printer;
                     sntZestStation.encoder = station.key_encoder_id;
-                console.info('workstation found!: ',station.name);
+                    $state.workstation_id = station.id;
                 }
             return station;
         };

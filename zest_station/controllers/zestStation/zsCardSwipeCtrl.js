@@ -79,15 +79,17 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     signature = $scope.signatureData;
 
                 $scope.setCheckInMessage();
-                setTimeout(function(){
-                    $scope.invokeApi(zsTabletSrv.checkInGuest, {
+                var checkinParams = {
                      'reservation_id':reservation_id, 
+                     'workstation_id':$state.workstation_id, 
                      "authorize_credit_card": false,
                      "do_not_cc_auth": false,
                      "is_promotions_and_email_set": false,
                      "no_post": "",
                      'signature':signature
-                 }, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
+                 };
+                setTimeout(function(){
+                    $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
                 },500);
                 
         };
