@@ -282,6 +282,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 
         $scope.init = function(){
             var current = $state.current.name;
+            $scope.theme = $state.theme;
             $scope.emailEnabled = $scope.zestStationData.emailEnabled;
             $scope.printEnabled = $scope.zestStationData.printEnabled;
             
@@ -303,8 +304,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     $scope.headingText = "The e-mail is now living in your inbox.";
                     $scope.subHeadingText = $scope.getLastInputEmail();
                 } else {
-                    $scope.headingText = "Thanks for doing Zoku.";
-                    $scope.subHeadingText = '';
+                    if ($scope.theme === 'zoku'){
+                        $scope.headingText = "Thanks for doing Zoku.";
+                        $scope.subHeadingText = '';
+                    } else if ($scope.theme === 'fontainebleau'){
+                        $scope.headingText = "HOPE TO SEE YOU AGAIN SOON.";
+                        $scope.subHeadingText = '';
+                        
+                    }
                 }
                 $scope.at = 'last_confirm';   
                 $scope.modalBtn1 = '';
