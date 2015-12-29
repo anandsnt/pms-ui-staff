@@ -19,7 +19,7 @@ admin.controller('ADInvoiceSettingsCtrl',[
                  $scope.goBackToPreviousState();                 
             };            
 
-            $scope.invokeApi(ADInvoiceSettingsSrv.fetchInvoiceSettings, $scope.invoiceSettings ,saveInvoiceSettingsSuccessCallback);
+            $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings ,saveInvoiceSettingsSuccessCallback);
         };
 
 
