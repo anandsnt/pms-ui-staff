@@ -249,5 +249,17 @@ sntZestStation.service('zsTabletSrv',
 
                     return deferred.promise;
             };
+            
+                this.fetchHotelTheme = function(params){
+                    var deferred = $q.defer();
+                    var url = '/api/email_templates/list.json?hotel_id='+params.id;
+                            zsBaseWebSrv.getJSON(url).then(function(data) {
+                                    deferred.resolve(data);
+                            },function(data){
+                                deferred.reject(data);
+                            });
+
+                    return deferred.promise;
+            };
                 
             }]);

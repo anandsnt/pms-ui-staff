@@ -298,6 +298,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 
         $scope.init = function(){
             var current = $state.current.name;
+            $scope.theme = $state.theme;
             $scope.emailEnabled = $scope.zestStationData.emailEnabled;
             $scope.printEnabled = $scope.zestStationData.printEnabled;
             
@@ -308,11 +309,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
-                
             } else if (current === 'zest_station.swipe_pay_error'){
                 $scope.at = 'swipe-pay-error';
                 $scope.headingText = 'An Error Occurred';
                 $scope.subHeadingText = $state.swipe_error_msg;
+            } else if (current === 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                $scope.at = 'cc-sign-time-out';
                 
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();
@@ -322,8 +324,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     $scope.headingText = "The e-mail is now living in your inbox.";
                     $scope.subHeadingText = $scope.getLastInputEmail();
                 } else {
-                    $scope.headingText = "Thanks for doing Zoku.";
-                    $scope.subHeadingText = '';
+                    if ($scope.theme === 'zoku'){
+                        $scope.headingText = "Thanks for doing Zoku.";
+                        $scope.subHeadingText = '';
+                    } else if ($scope.theme === 'fontainebleau'){
+                        $scope.headingText = "HOPE TO SEE YOU AGAIN SOON.";
+                        $scope.subHeadingText = '';
+                        
+                    }
                 }
                 $scope.at = 'last_confirm';   
                 $scope.modalBtn1 = '';
