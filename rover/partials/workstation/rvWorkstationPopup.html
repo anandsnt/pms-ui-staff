@@ -1,0 +1,37 @@
+<div class="modal-content modal-show form admin-form" role="dialog" id="modal">
+
+    <strong class="h2 message">Add New Workstation</strong>
+
+    <div class="entry full-width">
+        <label for="name">Workstation Name <strong>*</strong></label>
+        <input id="name" placeholder="Set a name for your workstation" value="" type="text" />
+    </div>
+    <div class="entry full-width">
+        <label for="email">Workstation ID <strong>*</strong></label>
+        <!-- Set type to number if only numbers should be allowed here. Otherwise make sure type is set to "text"-->
+        <input id="id" placeholder="Usually numeric" value="" type="{number or text}" />
+    </div>
+    <div class="entry full-width">
+        <label for="emv">EMV Terminal</label>
+        <div class="select">
+            <select id="emv" class="placeholder">
+                <option value="" selected>Select a EMV Terminal</option>
+                <option value="{EMV Terminal Name}">{EMV Terminal Name}</option>
+                ... repeat for all EMV Terminals from Settings -> Interfaces -> EMV Terminals
+            </select>
+        </div>
+    </div>
+    <div class="entry full-width">
+        <label for="key">Key Encoder</label>
+        <div class="select">
+            <select id="emv" class="placeholder">
+                <option value="" selected>Select a Key Encoder</option>
+                <option value="{Key Encoder Name}">{Key Encoder Name}</option>
+                ... repeat for all Key Encoders from Settings -> Interfaces -> Key Encoders
+            </select>
+        </div>
+    </div>
+    <div class="actions float">
+        <button type="button" class="button green">Add terminal</a>
+    </div>
+</div>

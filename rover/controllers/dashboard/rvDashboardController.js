@@ -1,6 +1,6 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',
-                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state){
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv',
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv){
 
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
@@ -49,6 +49,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
            $scope.setTitle(title);
         }, 2000);
 
+        setWorkStation();
+
         //TODO: Add conditionally redirecting from API results
 
         reddirectToDefaultDashboard();
@@ -58,6 +60,27 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
         $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
    });
+
+   var setWorkStation = function(){    
+      var onSetWorkstationSuccess = function(data) {
+            
+          },
+          onSetWorkstationFailure = function(failure) {
+            ngDialog.close(); //close any existing popups
+              ngDialog.open({
+                template: '/assets/partials/workstation/rvWorkstationPopup.html',
+                className: '',
+                controller: 'RVWorkstationController',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+              });
+          };
+      var requestData = {};
+      requestData.rover_device_id = "test1";
+      $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
+
+   };
 
    var reddirectToDefaultDashboard = function(){
         var defaultDashboardMappedWithStates = {
@@ -114,4 +137,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
+
+
+
 }]);
