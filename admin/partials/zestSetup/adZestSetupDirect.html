@@ -1,12 +1,12 @@
-<fieldset class="holder left">
+<!-- <fieldset class="holder left">
     <div class="form-title">
         <h3><span class="ng-scope" translate="">ZEST_SETUP_EMAIL_HEADER</span> </h3>
     </div>
     <div class="entry full-width">
         <ad-toggle-button is-checked="data.zest_station_setup.is_zest_direct_checkin" label="{{'ZEST_SETUP_EMAIL_HEADER' | translate}}" is-disabled="data.zest_station_setup.guest_init_direct_flag_disabled"></ad-toggle-button>
     </div>
-</fieldset>
-<fieldset class="holder left">
+</fieldset> -->
+<!-- <fieldset class="holder left">
     <div class="form-title">
         <h3><span class="ng-scope" translate="">ZEST_SETUP_EMAIL_CHECK_IN_URL</span> </h3>
     </div>
@@ -14,7 +14,7 @@
         <span class="webcheckout-uri-label">{{data.zest_station_setup.base_uri}}</span>
         <input type="text"  ng-model="data.zest_station_setup.checkin_static_uri" placeholder="" class="webcheckout-uri-field">
     </div>
-</fieldset>
+</fieldset> -->
 
  <fieldset class="holder left">  
     <div class="form-title">
@@ -25,13 +25,69 @@
     </div>
 </fieldset>
 
-<fieldset class="holder left">  
+<fieldset class="holder right">  
     <div class="form-title">
         <h3><span class="ng-scope" translate="">ZEST_SETUP_MSG_TO_GUEST_LABEL</span> </h3>
     </div> 
     <div class="entry full-width">
         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.zest_direct_checkin_no_service_msg" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL' | translate}}" placeholder = ""></ad-textarea>
     </div>
+</fieldset>
+<fieldset class="holder full-width">
+<!-- Expanded View -->
+<div class="form_add_new_rate">
+    <div class="form-title cursor_pointer" ng-click="changeDetailsMenu('')">
+        <div class="rate_additional_details_heading">
+            DIRECT URLS
+            <a id="add-new-button" ng-hide="isConnectedToPMS" class="action add ng-binding" ng-click="addNew()" style="
+    padding: 10px 21px;
+    margin-left: 10px;
+">&nbsp;</a>
+        </div>
+    </div>
+    <div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
+    <table class="grid rate_addons">
+        <col width="20%">
+        <col width="30%">
+        <col width="10%">
+        <col width="8%">
+        <thead>
+            <th class="header">URL NAME</th>
+            <th class="header">PATH</th>
+            <th class="header">ACTIVE</th>
+            <th class="header center_align">DELETE{{currentClickedUrl}}</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="url in urls">
+                <td ng-hide="hideRow($index)" ng-click="editSingle($index)">{{url.name}}</td>
+                <td ng-hide="hideRow($index)" ng-click="editSingle($index)">
+                    <span>pms.stayntouch.com/checkin/{{url.path}} </span>
+                    </span>
+                </td>
+                <td ng-hide="hideRow($index)">
+                    <div class="entry">
+                        <div class="switch-button single"
+                                ng-class="{ on: url.is_active }">
+                            <input type = "checkbox"
+                                    id = "rates-addons"
+                                    name = "rates-addons"
+                                    ng-click = "switchActivation($index)">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+                    <!-- <div class="center_align" style="margin-top:-22px;">
+                        <ad-toggle-button is-checked="url.is_active" ></ad-toggle-button>
+                    </div> -->
+                </td>
+                <td ng-hide="hideRow($index)">
+                    <a class="icons icon-delete large-icon" ng-click="deleteUrl($index)">Delete</a>
+                </td>
+                <td ng-show="showEditRow($index)" colspan="4" ng-include="getTemplateUrl()">
+                </td>
+            </tr>
+        </tbody>        
+    </table>
+</div>
 </fieldset>
 
     <!-- muted for S43
