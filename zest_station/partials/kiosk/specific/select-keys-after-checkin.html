@@ -1,9 +1,11 @@
 <section id="main" class="centered" role="main" ng-hide='at !== "select-keys-after-checkin"' click-touch='resetTime()'>
         <div id="content">
-            <h2 class="no-margin">Congratulations {{selectedReservation.guest_details[0].first_name}}.</h2>
-            <h1>You are now officially checked-in.</h1>
+            <h2 ng-hide="isPickupKeys" class="no-margin">Congratulations {{selectedReservation.guest_details[0].first_name}}.</h2>
+            <h1 ng-hide="isPickupKeys">You are now officially checked-in.</h1>
+            <h1 ng-show="isPickupKeys" class="no-margin" >{{selectedReservation.first_name}}.</h2>
+            <h1 ng-show="isPickupKeys">You are checked-in.</h1>
             <div id="room">
-                <span class="number">{{selectedReservation.stay_dates[0].room_number}}</span>
+                <span class="number">{{selectedReservation.room}}</span>
             </div>
             <div id="keys">
                 <h2>How many keys do you need?</h2>

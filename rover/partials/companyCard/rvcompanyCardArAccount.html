@@ -34,7 +34,7 @@
       <div class="holder right">
          <!-- Main Address -->
          <strong class="h3" translate>ADDRESS</strong>
-         <div class="entry only-switch">
+         <div class="entry only-switch margin">
             <label for="company-main-address"translate>USE_MAIN_ADDRESS</label>
             <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_use_main_address}">
                <input name="company-main-address" id="company-main-address" type="checkbox" ng-model="arAccountDetails.is_use_main_address" ng-change="checkboxModelChanged()">
@@ -47,6 +47,10 @@
                <span class="value">Yes</span>
                </label>
             </div>
+         </div>
+         <div class="entry">
+           <label for="company-payment-terms" translate>PAYMENT_TERMS</label>
+           <input id="company-payment-terms" ng-model="arAccountDetails.payment_due_days" type="text" placeholder = "Enter Payment Due Days" />
          </div>
          <!-- Show when use main address set to "no" -->
          <div id="company-main-address-fields" class="entry full-width" ng-show="!arAccountDetails.is_use_main_address">

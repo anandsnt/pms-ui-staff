@@ -55,6 +55,17 @@
                         <ad-textbox value="zestSettings.colors.header_icons_pressed" label="{{'HEADER_ICONS_COLOR_PRESSED'| translate}}" styleclass="full-width"></ad-textbox>
                     </div>
            </fieldset>
+           <fieldset class="holder left max-width">
+                <div class="form-title">
+                    <h3><span translate>REG_CARD</span> </h3>
+                </div>
+                <div class="entry">
+                    <label translate>
+                    REG_CARD_TEXT
+                    </label>
+                    <textarea class="full-width terms_height" type="" ng-model="zestSettings.reg_card_text"></textarea>
+                </div>
+           </fieldset>
 
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>

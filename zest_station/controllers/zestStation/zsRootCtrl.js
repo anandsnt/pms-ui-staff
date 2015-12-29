@@ -171,7 +171,9 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
-                //$scope.fetchKeyEncoderList(); //using workstations instead
+                //set print and email options set from hotel settings > Zest > zest station
+                $scope.zestStationData.printEnabled = $scope.zestStationData.guest_bill.print;
+                $scope.zestStationData.emailEnabled = $scope.zestStationData.guest_bill.email;
 	};
         
     $scope.toggleOOS = function(){
@@ -268,6 +270,9 @@ sntZestStation.controller('zsRootCtrl', [
                     //fetch the idle timer settings
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
+                    $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    console.info('Payment Gateway: ',$scope.zestStationData.hotel_settings.payment_gateway);
+                    console.info('zestStationData,',$scope.zestStationData)
                     $scope.$emit('hideLoader');
             };
             

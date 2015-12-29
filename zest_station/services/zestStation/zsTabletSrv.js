@@ -186,6 +186,19 @@ sntZestStation.service('zsTabletSrv',
                     return deferred.promise;
                 };
                 
+                this.assignGuestRoom = function (params) {
+                    //params['reservation_id'] = some id...
+                    var deferred = $q.defer(),
+                            url = '/guest/reservations/assign_room';
+
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
                 
                 this.updateGuestEmail = function (params) {
                     var deferred = $q.defer(),
