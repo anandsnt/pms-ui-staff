@@ -15,7 +15,7 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.clickedOnBackButton = function() {
 		$scope.$broadcast (zsEventConstants.CLICKED_ON_BACK_BUTTON);
 	};
-
+        $state.debugSixpay = false;
 	/**
 	 * [clickedOnCloseButton description]
 	 * @return {[type]} [description]
