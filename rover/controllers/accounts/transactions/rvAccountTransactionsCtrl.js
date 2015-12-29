@@ -509,7 +509,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-
+			$scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
