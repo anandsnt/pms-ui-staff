@@ -63,10 +63,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
    var setWorkStation = function(){    
       var onSetWorkstationSuccess = function(data) {
-            
-          },
-          onSetWorkstationFailure = function(failure) {
-            ngDialog.close(); //close any existing popups
+            if(!data.is_workstation_present) {
+              ngDialog.close(); //close any existing popups
               ngDialog.open({
                 template: '/assets/partials/workstation/rvWorkstationPopup.html',
                 className: '',
@@ -75,6 +73,10 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
                 closeByDocument: false,
                 closeByEscape: false
               });
+            }
+          },
+          onSetWorkstationFailure = function(failure) {
+            
           };
       var requestData = {};
       requestData.rover_device_id = "test1";
