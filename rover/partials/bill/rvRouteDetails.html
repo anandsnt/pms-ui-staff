@@ -99,7 +99,7 @@
 	                    {{'REFERENCE_NUMBER' | translate}}
 	                </div>
 	                <div class="entry" >
-	                    <input type="text" ng-model="selectedEntity.reference_number"/>
+	                    <input type="text" ng-model="selectedEntity.reference_number" ng-disabled="hasPermissionToEditCreditLimit();"/>
 	                </div>
                 </div>
 			</div>
