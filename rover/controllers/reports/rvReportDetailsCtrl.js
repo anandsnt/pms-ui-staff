@@ -497,10 +497,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRoomTypeReport.html';
 					break;
 					
 				case reportNames['DAILY_PRODUCTION_DEMO']:
@@ -808,7 +808,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_PICKUP_REPORT']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					orientation = 'landscape';
 					break;
 				case reportNames['GUEST_BALANCE_REPORT']:
