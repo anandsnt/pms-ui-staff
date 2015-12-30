@@ -22,6 +22,10 @@
 			$scope.netWorkError = true;
 			$scope.isLoading = false;
 		});
+
+		$scope.changeEmail = function(){
+			$state.go('emailAddition');
+		};
 	}
 };
 
