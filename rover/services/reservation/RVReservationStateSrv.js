@@ -326,6 +326,33 @@ sntRover.service('RVReservationStateService', [
 			});
 		};
 
+		self.getAddonAmounts = function(rateAddons, arrival, departure, stayDates) {
+			var addonRates = {};
+			_.each(stayDates, function(dayInfo, date) {
+				var numAdults = dayInfo.guests.adults,
+					numChildren = dayInfo.guests.children,
+					currentDate = date;
+				_.each(rateAddons, function(rateInfo) {
+					var rateId = rateInfo.rate_id;
+					_.each(rateInfo.associated_addons, function(addon) {
+						var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
+							shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, currentDate, arrival, departure, addon.charge_full_weeks_only);
+						if (!addon.is_inclusive && shouldPostAddon) {
+							if (addonRates[currentDate] === undefined) {
+								addonRates[currentDate] = {};
+							}
+							if (addonRates[currentDate][rateId] === undefined) {
+								addonRates[currentDate][rateId] = currentAddonAmount;
+							} else {
+								addonRates[currentDate][rateId] = parseFloat(addonRates[currentDate][rateId]) + currentAddonAmount;
+							}
+						}
+					});
+				});
+			});
+			return addonRates;
+		};
+
 		this.getAddonAndTaxDetails = function(date, rateId, numAdults, numChildren, arrival, departure, activeRoom, taxes, amount) {
 			var associatedAddons = self.fetchAssociatedAddons(rateId),
 				addonRate = 0.0,

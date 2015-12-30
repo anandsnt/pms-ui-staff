@@ -430,9 +430,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'travel_agent_id': $scope.reservationData.travelAgent.id,
                         'group_id': $scope.reservationData.group.id,
                         'promotion_code': $scope.reservationData.searchPromoCode,
+                        'promotion_id': $scope.reservationData.promotionId,
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren']
-
                     });
                 }
             }
@@ -855,6 +855,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSelectHandler = function(event, code) {
             if (code.item) {
                 $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.reservationData.promotionId = code.item.id;
                 $scope.searchPromoCode = code.item.label;
             }
             if (code.item.type === "PROMO") {
