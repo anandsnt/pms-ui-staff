@@ -10,6 +10,7 @@
 
 //= require ../guestweb/scripts/app.js
 //= require ../guestweb/scripts/app_router_mgm_chain.js
+//= require ../guestweb/scripts/app_router_mandalay_bay.js
 //= require ../guestweb/scripts/app_config.js
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater
