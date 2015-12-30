@@ -25,13 +25,14 @@ sntRover.controller('RVWorkstationController',[
 
     };
 
-    $scope.saveWorkStation = function() {
-      $scope.mapping.rover_device_id = "test12";
+    $scope.saveWorkStation = function() { 
       var onSaveWorkstationSuccess = function(data) {
         $timeout(function(){
             ngDialog.close();
           }, 250);
       };
+      
+      $scope.mapping.rover_device_id = $scope.getDeviceId();
       $scope.invokeApi(RVWorkstationSrv.createWorkstation,$scope.mapping,onSaveWorkstationSuccess);
 
     };

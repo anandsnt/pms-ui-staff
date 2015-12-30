@@ -23,6 +23,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
         $rootScope.adminRole = $scope.userDetails.user_role;
+        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
 
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
@@ -64,24 +65,60 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    var setWorkStation = function(){    
       var onSetWorkstationSuccess = function(data) {
             if(!data.is_workstation_present) {
-              ngDialog.close(); //close any existing popups
-              ngDialog.open({
-                template: '/assets/partials/workstation/rvWorkstationPopup.html',
-                className: '',
-                controller: 'RVWorkstationController',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false
-              });
+              if ($scope.isHotelAdmin) {
+                showWorkstationPopup();
+              } else {
+                createWorkstationForNonAdminUsers();
+              }
+
+              
             }
           },
           onSetWorkstationFailure = function(failure) {
             
           };
       var requestData = {};
-      requestData.rover_device_id = "test1";
+      requestData.rover_device_id = $scope.getDeviceId();       
       $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
 
+   };
+
+   var showWorkstationPopup = function() {
+      ngDialog.close(); //close any existing popups
+      ngDialog.open({
+        template: '/assets/partials/workstation/rvWorkstationPopup.html',
+        className: '',
+        controller: 'RVWorkstationController',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false
+      });
+   };
+ 
+   var createWorkstationForNonAdminUsers = function() {
+
+     var onSaveWorkstationSuccess = function(data) {
+
+     };
+
+     var requestData = {};
+     requestData.rover_device_id =  $scope.getDeviceId();  
+     requestData.auto_generate_workstation = true;
+
+     $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess);
+
+   };
+
+   $scope.getDeviceId = function() {
+    var deviceId = "";
+    if($scope.isIpad) {
+      //TODO:- Set the device uid
+       deviceId = "12345678";
+     } else {      
+      deviceId = "DEFAULT";
+     } 
+
+     return deviceId;
    };
 
    var reddirectToDefaultDashboard = function(){
