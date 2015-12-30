@@ -37,6 +37,7 @@ module.exports = function(gulp, $, options) {
 	        	compress: true
 	        }))
 	        .on('error', onError)
+	        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: true}).on('error', onError))
 	        .pipe($.rev())
 	        .on('error', onError)
 	        .pipe(gulp.dest(DEST_ROOT_PATH))

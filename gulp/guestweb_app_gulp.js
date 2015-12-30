@@ -2,7 +2,7 @@ module.exports = function(gulp, $, options) {
 
 	// require('./guestweb/guestweb_js_gulp')(gulp, $, options);
 	require('./guestweb/guestweb_css_gulp')(gulp, $, options);
-	// require('./guestweb/guestweb_template_gulp')(gulp, $, options);
+	require('./guestweb/guestweb_template_gulp')(gulp, $, options);
 
 	// gulp.task('watch-guestweb-files', ['guestweb-watch-partials', 'guestweb-watch-less-files', 'guestweb-watch-js-files']);
 	// gulp.task('copy-guestweb-files', ['guestweb-copy-js-files', 'guestweb-copy-less-files']);

@@ -1,2 +1,2 @@
-@import (inline) 'guestweb_old_common.css';
+@import (inline) 'guestweb_old_common.less';
 @import 'guestweb/css/less/yotel.less';

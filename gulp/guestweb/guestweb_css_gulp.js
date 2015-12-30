@@ -6,10 +6,11 @@ module.exports = function (gulp, $, options) {
 		GUESTWEB_CSS_FILE  		= 'login.css',
 	    GUESTWEB_CSS_MANIFEST_FILE = "login_css_manifest.json",
 		GUESTWEB_TEMPLATE_ROOT     = '../views/layouts/',
-	    GUESTWEB_LESS_FILE 		= 'stylesheets/guestweb/**.css',
+	    GUESTWEB_LESS_FILE 		= 'stylesheets/guestweb/**/**.less',
 	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
-    	cleancss 				= new LessPluginCleanCSS({ advanced: true }),
+    	cleancss 				= new LessPluginCleanCSS({advanced: true }),
+    	nano 					= require('gulp-cssnano'),
 		onError  				= options.onError;
 	
 
@@ -43,7 +44,8 @@ module.exports = function (gulp, $, options) {
 			        	plugins: [cleancss]
 			        }))
 			        .on('error', onError)
-			        .pipe($.minifyCSS())
+			        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: true}).on('error', onError))
+			        //.pipe(nano({discardComments:  {removeAll: true}, safe: true, zindex: false}))
 			        .pipe(gulp.dest(DEST_ROOT_PATH));
 			});
 			console.log(lessFileList);
