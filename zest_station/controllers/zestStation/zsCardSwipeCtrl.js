@@ -291,10 +291,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             console.warn('now debugging sixpay');
             $scope.$emit('SWIPE_ACTION',{});
         };
-        
+        $scope.showDebugOptions = function(){
+            $scope.debugSixpay = true;
+            $scope.$digest();
+        };
         $scope.init = function(r){ 
            $scope.selectedReservation = $state.selectedReservation;
-           $scope.debugSixpay = $state.debugSixpay;
            
             var current=$state.current.name;
             if (current === 'zest_station.card_sign'){
