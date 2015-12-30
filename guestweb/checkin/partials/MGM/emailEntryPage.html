@@ -12,39 +12,42 @@
       </div>
       <div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
          <p class="msg-head">Our apologies, something went wrong, please complete your pre check in at our front desk.</p>
-      </p>
-      <p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
-   </div>
-   <!-- contentarea starts here-->
-   <div class="container" ng-hide="isLoading || netWorkError">
-      <!-- top section starts here-->
-      <div class="row checkin-wrapper-top arrival-details">
-         <!-- email updated -->
-         <div class="pre-checkin-container-padding" ng-hide="emailUpdated">
-            <div class="chekin-heading centeralign">
-               Enter Your E-mail Address
+         </p>
+         <p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+      </div>
+      <!-- contentarea starts here-->
+      <div class="container" ng-hide="isLoading || netWorkError">
+         <!-- top section starts here-->
+         <div class="row checkin-wrapper-top arrival-details">
+            <!-- email not updated -->
+            <div class="pre-checkin-container-padding" ng-hide="emailUpdated">
+               <div class="chekin-heading centeralign">
+                  Enter Your E-mail Address
+               </div>
+               <p class="subTitletext">
+                  We use your e-mail adress to send you your room number:
+               </p>
+               <div class="date-container ">
+                  <div class="row">
+                     <em class="labelText">E-MAIL ADDRESS</em>
+                     <input type="text" ng-model="guestDetails.email" class = "col-xs-12 textBox bottom-margin-10" /> 
+                  </div>
+               </div>
+               <div class="row cabin_number_field">        
+                  <button class="checkin-button continue-button"
+                     ng-click="emailSubmitted()">
+                  <span class="white-text">Continue</span>
+                  </button>
+               </div>
             </div>
-            <p class="subTitletext">
-               We use your e-mail adress to send you your room number:
-            </p>
-            <div class="date-container ">                
-               <div class="row">
-                  <em class="labelText">E-MAIL ADDRESS</em>
-                  <input type="text" ng-model="guestDetails.email" class = "col-xs-12 textBox bottom-margin-10" /> 
-               </div>               
+         </div>
+         <div class="row checkin-wrapper-top">
+            <!-- email updated -->
+            <div class="checkout-status centeralign checkout-now-status pre-checkin-complete" ng-show="emailUpdated">
+               <p class="msg-head blue-text preckin-status-header">E-mail Address Updated</p>
+               <p class="msg-body">We updated your Guest profile to include this e-mail address.</p>
             </div>
-            <div class="row cabin_number_field">        
-               <button class="checkin-button continue-button"
-               ng-click="emailSubmitted()">
-               <span class="white-text">Continue</span>
-            </button>
          </div>
       </div>
-       <!-- email updated -->
-      <div class="checkout-status centeralign checkout-now-status pre-checkin-complete" ng-show="emailUpdated">
-         <p class="msg-head blue-text preckin-status-header">E-mail Address Updated</p>
-         <p class="msg-body">We updated your Guest profile to include this e-mail address.</p>
-      </div> 
    </div>
-</div>
 </div>
