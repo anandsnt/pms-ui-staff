@@ -8,7 +8,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 		$timeout(function(){
 			//$scope.$emit('UPDATE_TRANSACTION_DATA'); is not working anmore, 
 			$scope.UPDATE_TRANSACTION_DATA && $scope.UPDATE_TRANSACTION_DATA();
-		}, 50);
+		}, 1);
 	};
 
 
