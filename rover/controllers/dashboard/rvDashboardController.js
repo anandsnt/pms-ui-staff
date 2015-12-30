@@ -99,6 +99,14 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
      var onSaveWorkstationSuccess = function(data) {
 
+        var onSetWorkstationSuccess = function(response) {
+          $scope.$emit('hideLoader');
+        };
+
+        var params = {};
+        params.rover_device_id = $scope.getDeviceId();       
+        $scope.invokeApi(RVWorkstationSrv.setWorkstation,params,onSetWorkstationSuccess);
+
      };
 
      var requestData = {};

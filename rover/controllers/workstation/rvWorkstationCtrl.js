@@ -27,10 +27,18 @@ sntRover.controller('RVWorkstationController',[
 
     $scope.saveWorkStation = function() { 
       var onSaveWorkstationSuccess = function(data) {
-        $scope.$emit('hideLoader');
-        $timeout(function(){
+
+        var onSetWorkstationSuccess = function(response) {
+          $scope.$emit('hideLoader');
+          $timeout(function(){
             ngDialog.close();
           }, 250);
+        };        
+
+        var params = {};
+        params.rover_device_id = $scope.getDeviceId();       
+        $scope.invokeApi(RVWorkstationSrv.setWorkstation,params,onSetWorkstationSuccess);
+        
       };
       
       var requestData = {};
