@@ -6,8 +6,8 @@ sntZestStation.controller('zsRootCtrl', [
 	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv) {
 
 	BaseCtrl.call(this, $scope);
-         $scope.storageKey = 'snt_zs_workstation';
-         $scope.oosKey = 'snt_zs_workstation.in_oos';
+        $scope.storageKey = 'snt_zs_workstation';
+        $scope.oosKey = 'snt_zs_workstation.in_oos';
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -15,7 +15,6 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.clickedOnBackButton = function() {
 		$scope.$broadcast (zsEventConstants.CLICKED_ON_BACK_BUTTON);
 	};
-        $state.debugSixpay = false;
 	/**
 	 * [clickedOnCloseButton description]
 	 * @return {[type]} [description]
@@ -237,12 +236,11 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.workstations = 'Select';
             }
-                console.log('station', station)
             if (station !==  null){
                     sntZestStation.selectedPrinter = station.printer;
                     sntZestStation.encoder = station.key_encoder_id;
-                console.info('workstation found!: ',station.name);
                 }
+                $state.station = station;
             return station;
         };
 	$scope.failureCallBack =  function(data){
