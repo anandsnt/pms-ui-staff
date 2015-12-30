@@ -27,13 +27,26 @@ sntRover.controller('RVWorkstationController',[
 
     $scope.saveWorkStation = function() { 
       var onSaveWorkstationSuccess = function(data) {
+        $scope.$emit('hideLoader');
         $timeout(function(){
             ngDialog.close();
           }, 250);
       };
       
-      $scope.mapping.rover_device_id = $scope.getDeviceId();
-      $scope.invokeApi(RVWorkstationSrv.createWorkstation,$scope.mapping,onSaveWorkstationSuccess);
+      var requestData = {};
+      requestData.name = $scope.mapping.name;
+      requestData.identifier = $scope.mapping.station_identifier;
+      requestData.rover_device_id = $scope.getDeviceId();
+
+      if($scope.mapping.selectedKeyEncoder) {
+        requestData.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
+      }
+
+      if($scope.mapping.selectedEmvTerminal) {
+        requestData.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
+      }
+
+      $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess);
 
     };
 
