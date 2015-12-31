@@ -6,7 +6,7 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.js',
 		GUESTWEB_TEMPLATE_ROOT  = '../views/layouts/',
 	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
-	    GUESTWEB_PARTIALS 		= ['**/partials/**/*.html'],
+	    GUESTWEB_PARTIALS 		= ['**/partials/**/*.html', 'landing/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    onError = options.onError;
 

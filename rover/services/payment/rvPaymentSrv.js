@@ -9,16 +9,19 @@ angular.module('sntRover').service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv'
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
 
-		if(!isEmpty(paymentsData) && !(data && data.direct_bill)){
-			deferred.resolve(paymentsData)
-		}else{
+		// removing the caching part, as the direct bill option is
+		// needed conditionaly only based on param -> direct_bill
+
+		// if(!isEmpty(paymentsData) && !(data && data.direct_bill)){
+		// 	deferred.resolve(paymentsData)
+		// }else{
 			RVBaseWebSrv.getJSON(url,data).then(function(data) {
 			    paymentsData = data;
 			    deferred.resolve(data);
 			},function(data){
 				deferred.reject(data);
 			});
-		};
+		// };
 
 		return deferred.promise;
 	};

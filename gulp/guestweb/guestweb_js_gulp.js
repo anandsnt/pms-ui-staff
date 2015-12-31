@@ -3,23 +3,23 @@ module.exports = function (gulp, $, options) {
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-		LOGIN_JS_COMBINED_FILE  = 'guest_web.js',
-		GUEST_TEMPLATE_ROOT     = '../views/layouts/',
-	    LOGIN_HTML_FILE     	= GUEST_TEMPLATE_ROOT + 'guestweb.html',
-	    LOGIN_JS_MANIFEST_FILE  = "login_js_manifest.json",
+		GUESTWEB_JS_COMBINED_FILE  = 'guest_web.js',
+		GUESTWEB_TEMPLATE_ROOT     = '../views/layouts/',
+	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
+	    GUESTWEB_JS_MANIFEST_FILE  = "guestweb_js_manifest.json",
 	    onError  				= options.onError,
-		LOGIN_JS_LIST 			= require("../../asset_list/js/loginJsAssetList").getList();
+		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestwebAssetList").getList();
 	
 	//JS - Start
-	gulp.task('compile-login-js-production', function(){
-		var nonMinifiedFiles 	= LOGIN_JS_LIST.nonMinifiedFiles,
-			minifiedFiles 		= LOGIN_JS_LIST.minifiedFiles,
+	gulp.task('compile-guestweb-js-production', function(){
+		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
+			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles,
 			stream 				= require('merge-stream');
 
 		var nonMinifiedStream = gulp.src(nonMinifiedFiles)
 				.pipe($.jsvalidate())
 				.on('error', onError)
-		        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
+		        .pipe($.concat(GUESTWEB_JS_COMBINED_FILE))
 		        .pipe($.ngAnnotate({single_quotes: true}))
 		        .pipe($.uglify({compress:true, output: {
 		        	space_colon: false
@@ -31,51 +31,51 @@ module.exports = function (gulp, $, options) {
 		    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
 
 	    return stream(minifiedStream, nonMinifiedStream)
-	        .pipe($.concat(LOGIN_JS_COMBINED_FILE))
+	        .pipe($.concat(GUESTWEB_JS_COMBINED_FILE))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest(LOGIN_JS_MANIFEST_FILE))
+	        .pipe($.rev.manifest(GUESTWEB_JS_MANIFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
 
 	//Be careful: PRODUCTION
-	gulp.task('build-login-js-production', ['compile-login-js-production'], function(){
-	    var js_manifest_json = require(MANIFEST_DIR + LOGIN_JS_MANIFEST_FILE),
-	        file_name = js_manifest_json[LOGIN_JS_COMBINED_FILE];
+	gulp.task('build-guestweb-js-production', ['compile-guestweb-js-production'], function(){
+	    var js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
+	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE];
 	    
-	    return gulp.src(LOGIN_HTML_FILE)
+	    return gulp.src(GUESTWEB_HTML_FILE)
 	        .pipe($.inject(gulp.src(DEST_ROOT_PATH + file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
 	        }))
-	        .pipe(gulp.dest(GUEST_TEMPLATE_ROOT, { overwrite: true }))
+	        .pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
 	gulp.task('build-login-js-dev', ['login-copy-js-files'], function(){
-		var nonMinifiedFiles 	= LOGIN_JS_LIST.nonMinifiedFiles,
-			minifiedFiles 		= LOGIN_JS_LIST.minifiedFiles;
+		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
+			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
 
-	    return gulp.src(LOGIN_HTML_FILE)
+	    return gulp.src(GUESTWEB_HTML_FILE)
 	        .pipe($.inject(gulp.src(minifiedFiles.concat(nonMinifiedFiles), {read:false}), {
 	            transform: function(filepath, file, i, length) {
 	                arguments[0] = URL_APPENDER + filepath;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
 	        }))
-	        .pipe(gulp.dest(GUEST_TEMPLATE_ROOT, { overwrite: true }));
+	        .pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }));
 	});
 
 	gulp.task('login-copy-js-files', function(){
-		return gulp.src(LOGIN_JS_LIST.nonMinifiedFiles.concat(LOGIN_JS_LIST.minifiedFiles), {base: '.'})
+		return gulp.src(GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles), {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
 	gulp.task('login-watch-js-files', function(){
-		var nonMinifiedFiles 	= LOGIN_JS_LIST.nonMinifiedFiles,
-			minifiedFiles 		= LOGIN_JS_LIST.minifiedFiles;
+		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
+			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
 		gulp.watch(nonMinifiedFiles.concat(minifiedFiles), ['build-rover-js-dev']);
 	});
 

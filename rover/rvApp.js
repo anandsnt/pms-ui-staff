@@ -36,6 +36,12 @@ sntRover.config(function ($httpProvider) {
   $httpProvider.interceptors.push('sharedHttpInterceptor');
 });
 
+sntRover.config(['ngDialogProvider', function (ngDialogProvider) {
+    ngDialogProvider.setDefaults({
+        appendTo: '.root-view'
+    });
+}]);
+
 sntRover.run([
 	'$rootScope',
 	'$state',

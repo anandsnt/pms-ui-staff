@@ -1,6 +1,6 @@
 module.exports = function(gulp, $, options) {
 
-	// require('./guestweb/guestweb_js_gulp')(gulp, $, options);
+	 require('./guestweb/guestweb_js_gulp')(gulp, $, options);
 	require('./guestweb/guestweb_css_gulp')(gulp, $, options);
 	require('./guestweb/guestweb_template_gulp')(gulp, $, options);
 
