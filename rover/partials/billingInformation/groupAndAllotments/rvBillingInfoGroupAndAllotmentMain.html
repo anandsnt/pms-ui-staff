@@ -15,12 +15,11 @@
       <div style="position: relative;overflow: hidden;height:510px;">
          <div class = "wrapper">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <!-- Billing Info Content -->
-            <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'" ></div>
 
-            <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-entity" ng-include="'/assets/partials/bill/rvSelectEntity.html'"></div>
+            <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/billingInformation/sharedPartials/rvSearchAndAttachEntity.html'"  > </div>
 
-            <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/bill/rvRouteDetails.html'"  > </div>
+            <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-entity" ng-include="'/assets/partials/billingInformation/reservation/rvBillingInfoGroupAndAllotmentRouteDetails.html'"></div>
+            
          </div>
       </div>
    </form>
