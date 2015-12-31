@@ -8,7 +8,7 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
-            if ( reportName === reportNames['DAILY_PRODUCTION'] ) {
+            if ( reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options, resultTotalRow );
             }
 
