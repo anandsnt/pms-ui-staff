@@ -1,5 +1,5 @@
 (function() {
-	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
+	var ccVerificationViewControllerForYotel = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
 
   $scope.pageValid = false;
   $scope.cardNumber = "";
@@ -211,10 +211,10 @@
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','$modal','ccVerificationService',
-ccVerificationViewController
+ccVerificationViewControllerForYotel
 ];
 
-sntGuestWeb.controller('ccVerificationViewController', dependencies);
+sntGuestWeb.controller('ccVerificationViewControllerForYotel', dependencies);
 })();
 
 // controller for the modal
