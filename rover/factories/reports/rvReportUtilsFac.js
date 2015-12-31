@@ -393,6 +393,10 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-balance';
                     break;
 
+                case reportNames['RATE_RESTRICTION_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
                 default:
                     report['reportIconCls'] = 'icon-report';
                     break;
@@ -490,6 +494,11 @@ sntRover.factory('RVReportUtilsFac', [
                 case reportNames['DAILY_PRODUCTION_RATE']:
                     report['hasOneYearLimit']   = true;
                     break;
+
+                case reportNames['RATE_RESTRICTION_REPORT']:
+                    report['hasOneYearLimit']   = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -646,6 +655,10 @@ sntRover.factory('RVReportUtilsFac', [
                         untilModel : 'untilArrivalDate'
                     });
                     report.allDates.push( 'hasArrivalDateFilter' );
+                };
+
+                if(filter.value === 'RATE_CODE') {
+                    report['hasRateCodeFilter'] = filter;
                 };
 
                 // check for group start date filter and keep a ref to that item
@@ -895,10 +908,16 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResAddons );
                 }
 
-                else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && !filter.filled ) {
+                else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchRateTypesAndRateList()
                         .then( fillRateTypesAndRateList );
+                }
+
+                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                    equested++;
+                    reportsSubSrv.rateCodeList()
+                        .then( fillRateCodeList );
                 }
 
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
@@ -1121,6 +1140,29 @@ sntRover.factory('RVReportUtilsFac', [
                 completed++;
                 checkAllCompleted();
                 
+            };
+
+            function fillRateCodeList (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        // This is used only in Production Data by Rate and for that it is default none selected
+                        __setData(report, 'hasRateCodeFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select Addon',
+                            title        : 'Select Addon',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
             };
 
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
@@ -1605,6 +1647,11 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['DAILY_PRODUCTION_RATE']:
+                    report['fromDate']  = _getDates.monthStart;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
+                case reportNames['RATE_RESTRICTION_REPORT']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
                     break;

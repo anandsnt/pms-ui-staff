@@ -231,6 +231,16 @@ sntRover.service('RVreportsSubSrv', [
 				resKey : 'rates',
 			});
 		};
+
+		service.fetchRateCode = function(params) {
+			return callApi({
+				name   : 'rateCodeList',
+				method : 'getJSON',
+				url    : '/api/rates/active',
+				resKey : 'rates',
+			});
+		};
+
 		return service;
 	}
 ]);
