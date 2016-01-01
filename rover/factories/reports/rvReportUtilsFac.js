@@ -661,6 +661,14 @@ sntRover.factory('RVReportUtilsFac', [
                     report['hasRateCodeFilter'] = filter;
                 };
 
+                if(filter.value === 'ROOM_TYPE') {
+                    report['hasRoomTypeFilter'] = filter;
+                };
+
+                if(filter.value === 'RESTRICTION') {
+                    report['hasRestrictionListFilter'] = filter;
+                };                
+                
                 // check for group start date filter and keep a ref to that item
                 if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
                     report['hasGroupStartDateRange'] = filter;
@@ -915,11 +923,23 @@ sntRover.factory('RVReportUtilsFac', [
                 }
 
                 else if ('RATE_CODE' === filter.value && ! filter.filled ) {
-                    equested++;
-                    reportsSubSrv.rateCodeList()
+                    requested++;
+                    reportsSubSrv.fetchRateCode()
                         .then( fillRateCodeList );
                 }
 
+                else if ('ROOM_TYPE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRoomTypeList()
+                        .then( fillRoomTypeList );
+                }
+
+                else if ('RESTRICTION' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRestrictionList()
+                        .then( fillRestrictionList );
+                }        
+                
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
                     
                     // fetch charge groups
@@ -1148,14 +1168,13 @@ sntRover.factory('RVReportUtilsFac', [
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
                         
-                        // This is used only in Production Data by Rate and for that it is default none selected
                         __setData(report, 'hasRateCodeFilter', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
                             show         : false,
                             selectAll    : false,
-                            defaultTitle : 'Select Addon',
-                            title        : 'Select Addon',
+                            defaultTitle : 'Select one Rate Code',
+                            title        : 'Select one Rate Code',
                             data         : angular.copy( data )
                         });
                     };
@@ -1164,6 +1183,50 @@ sntRover.factory('RVReportUtilsFac', [
                 completed++;
                 checkAllCompleted();
             };
+            
+            function fillRoomTypeList (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        __setData(report, 'hasRoomTypeFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Selected ALL',
+                            title        : 'All Selected',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }; 
+
+            function fillRestrictionList (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        __setData(report, 'hasRestrictionListFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Room type',
+                            title        : 'All Selected',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };        
 
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
