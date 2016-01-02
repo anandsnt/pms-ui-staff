@@ -18,6 +18,7 @@ module.exports = function(gulp, $, options) {
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:less:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Zest injecting css file (' + (fileName) + ") to "  + ZEST_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
@@ -25,7 +26,7 @@ module.exports = function(gulp, $, options) {
        		.pipe(gulp.dest(ZEST_TEMPLATE_ROOT, { overwrite: true }));
 	};
 
-	gulp.task('build-zest-less-production', ['zest-less-production'], function(){
+	gulp.task('inject-zest-less-production-to-template', function(){
 		var template_manifest_json = require(MANIFEST_DIR + ZEST_CSS_MANIFEST_FILE),
 	        file_name = template_manifest_json[ZEST_CSS_FILE];
 	    return cssInjector(file_name);

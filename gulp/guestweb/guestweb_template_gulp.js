@@ -3,10 +3,10 @@ module.exports = function(gulp, $, options){
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.js',
+	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.min.js',
 		GUESTWEB_TEMPLATE_ROOT  = '../views/layouts/',
 	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
-	    GUESTWEB_PARTIALS 		= ['**/partials/**/*.html', 'landing/**/*.html'],
+	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/**/*.html', 'guestweb/**/landing/**/*.html', 'guestweb/**/shared/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    onError = options.onError;
 
@@ -33,7 +33,7 @@ module.exports = function(gulp, $, options){
 
 	//Be careful: PRODUCTION
 	gulp.task('guestweb-template-cache-production', function () {
-	  return gulp.src(GUESTWEB_PARTIALS, {cwd:'guestweb/'})
+	  return gulp.src(GUESTWEB_PARTIALS)
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare:true,

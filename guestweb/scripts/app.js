@@ -23,34 +23,15 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 */
 
 
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate']);
-sntGuestWeb.controller('rootController', ['$state', function($state){
-	$state.go('guestwebRoot');
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate', 'oc.lazyLoad']);
+sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope){
+	$state.go('guestwebRoot', {mode: 'checkout'});
 	console.log('start');
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout',
- function($rootScope,$scope,$location,$state,$timeout) {
+sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
+ function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
  	console.log('home');
 	var that = this;
-	hotelData = {
-					  "is_external_verification": "true",
-					  "business_date": "2015-09-15",
-					  "currency_symbol": "€",
-					  "date_format": {
-					    "id": 1,
-					    "value": "DD-MM-YYYY"
-					  },
-					  "hotel_logo": "https://c9fb255204921bbf6f41-821329d308ba0768463def967ad6e6e5.ssl.cf2.rackcdn.com/THREE/GHLD/hotels/80/template_logos/original/template_logo20151124110214.png?1448384541",
-					  "mli_merchat_id": "TESTSTAYNTOUCH01",
-					  "room_verification_instruction": "If there are less than 4 digits, please add a 0 in front of the room number",
-					  "payment_gateway": "MLI",
-					  "hotel_identifier": "grand",
-					  "hotel_phone": "123-123-1234",
-					  "hotel_theme": "guestweb_row"
-					}
-	//load the style elements. Done to reduce the loading time of web page.
-
-	loadStyleSheets('/assets/stylesheets/guestweb/' + hotelData.hotel_theme +'.css');
 	loadAssets('/assets/favicon.png', 'icon', 'image/png');
 	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
 	loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
@@ -60,94 +41,94 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
 	//store basic details as rootscope variables
 
-	$rootScope.hotelName     = hotelData.hotelName;
- 	$rootScope.currencySymbol= hotelData.currencySymbol;
-	$rootScope.hotelPhone    = hotelData.hotelPhone;
-	$rootScope.businessDate  = hotelData.businessDate;
-	$rootScope.mliMerchatId = hotelData.mliMerchatId;
-	$rootScope.dateFormatPlaceholder = hotelData.dateFormatValue;
- 	$rootScope.dateFormat = getDateFormat(hotelData.dateFormatValue);
- 	$rootScope.roomVerificationInstruction = hotelData.roomVerificationInstruction;
- 	$rootScope.isSixpayments = (hotelData.paymentGateway  === "sixpayments") ? true:false;
+	$rootScope.hotelName     = reservationAndhotelData.hotelName;
+ 	$rootScope.currencySymbol= reservationAndhotelData.currencySymbol;
+	$rootScope.hotelPhone    = reservationAndhotelData.hotelPhone;
+	$rootScope.businessDate  = reservationAndhotelData.businessDate;
+	$rootScope.mliMerchatId = reservationAndhotelData.mliMerchatId;
+	$rootScope.dateFormatPlaceholder = reservationAndhotelData.dateFormatValue;
+ 	$rootScope.dateFormat = getDateFormat(reservationAndhotelData.dateFormatValue);
+ 	$rootScope.roomVerificationInstruction = reservationAndhotelData.roomVerificationInstruction;
+ 	$rootScope.isSixpayments = (reservationAndhotelData.paymentGateway  === "sixpayments") ? true:false;
 
- 	$rootScope.reservationID = hotelData.reservationId;
-	$rootScope.userName      = hotelData.userName;
-	$rootScope.checkoutDate  = hotelData.checkoutDate;
-	$rootScope.checkoutTime  = hotelData.checkoutTime;
-	$rootScope.userCity   	 = hotelData.city;
-	$rootScope.userState     = hotelData.state;
-	$rootScope.roomNo        = hotelData.roomNo;
-	$rootScope.isLateCheckoutAvailable  = (hotelData.isLateCheckoutAvailable  === 'true') ? true : false;
-	$rootScope.emailAddress  = hotelData.emailAddress;
-	$rootScope.isCheckedout  = (hotelData.isCheckedout === 'true') ? true : false;
-	$rootScope.isCheckin     =   (hotelData.isCheckin ==='true') ? true : false;
-	$rootScope.reservationStatusCheckedIn = (hotelData.reservationStatus ==='CHECKIN')? true :false;
-    $rootScope.isActiveToken = (hotelData.isActiveToken ==='true') ? true : false;
+ 	$rootScope.reservationID = reservationAndhotelData.reservationId;
+	$rootScope.userName      = reservationAndhotelData.userName;
+	$rootScope.checkoutDate  = reservationAndhotelData.checkoutDate;
+	$rootScope.checkoutTime  = reservationAndhotelData.checkoutTime;
+	$rootScope.userCity   	 = reservationAndhotelData.city;
+	$rootScope.userState     = reservationAndhotelData.state;
+	$rootScope.roomNo        = reservationAndhotelData.roomNo;
+	$rootScope.isLateCheckoutAvailable  = (reservationAndhotelData.isLateCheckoutAvailable  === 'true') ? true : false;
+	$rootScope.emailAddress  = reservationAndhotelData.emailAddress;
+	$rootScope.isCheckedout  = (reservationAndhotelData.isCheckedout === 'true') ? true : false;
+	$rootScope.isCheckin     =   (reservationAndhotelData.isCheckin ==='true') ? true : false;
+	$rootScope.reservationStatusCheckedIn = (reservationAndhotelData.reservationStatus ==='CHECKIN')? true :false;
+    $rootScope.isActiveToken = (reservationAndhotelData.isActiveToken ==='true') ? true : false;
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
- 	$rootScope.isCCOnFile = (hotelData.isCcAttached ==='true')? true:false;
- 	$rootScope.isPreCheckedIn   = (hotelData.isPreCheckedIn === 'true') ? true: false;
+ 	$rootScope.isCCOnFile = (reservationAndhotelData.isCcAttached ==='true')? true:false;
+ 	$rootScope.isPreCheckedIn   = (reservationAndhotelData.isPreCheckedIn === 'true') ? true: false;
  	$rootScope.isRoomVerified =  false;
- 	$rootScope.isPrecheckinOnly = (hotelData.isPrecheckinOnly ==='true' && hotelData.reservationStatus ==='RESERVED')?true:false;
+ 	$rootScope.isPrecheckinOnly = (reservationAndhotelData.isPrecheckinOnly ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED')?true:false;
  	$rootScope.isCcAttachedFromGuestWeb = false;
- 	$rootScope.isAutoCheckinOn = ((hotelData.isAutoCheckin === 'true') && (hotelData.isPrecheckinOnly === 'true')) ? true :false;;
- 	$rootScope.isExternalVerification = (hotelData.isExternalVerification === "true") ? true :false;
- 	$rootScope.hotelIdentifier = hotelData.hotelIdentifier;
- 	$rootScope.guestAddressOn = hotelData.guestAddressOn === 'true' ? true:false;
+ 	$rootScope.isAutoCheckinOn = ((reservationAndhotelData.isAutoCheckin === 'true') && (reservationAndhotelData.isPrecheckinOnly === 'true')) ? true :false;;
+ 	$rootScope.isExternalVerification = (reservationAndhotelData.isExternalVerification === "true") ? true :false;
+ 	$rootScope.hotelIdentifier = reservationAndhotelData.hotelIdentifier;
+ 	$rootScope.guestAddressOn = reservationAndhotelData.guestAddressOn === 'true' ? true:false;
  	$rootScope.isGuestAddressVerified =  false;
 
- 	$rootScope.guestBirthdateOn = (hotelData.birthdateOn === 'true') ? true :false;
- 	$rootScope.guestBirthdateMandatory = (hotelData.birthdateMandatory === 'true') ? true :false;
-	$rootScope.guestPromptAddressOn = (hotelData.promptForAddressOn === 'true') ? true :false;
-	$rootScope.minimumAge = parseInt(hotelData.minimumAge);
-	$rootScope.primaryGuestId = hotelData.primaryGuestId;
+ 	$rootScope.guestBirthdateOn = (reservationAndhotelData.birthdateOn === 'true') ? true :false;
+ 	$rootScope.guestBirthdateMandatory = (reservationAndhotelData.birthdateMandatory === 'true') ? true :false;
+	$rootScope.guestPromptAddressOn = (reservationAndhotelData.promptForAddressOn === 'true') ? true :false;
+	$rootScope.minimumAge = parseInt(reservationAndhotelData.minimumAge);
+	$rootScope.primaryGuestId = reservationAndhotelData.primaryGuestId;
 
 
- 	$rootScope.isGuestEmailURl =  (hotelData.checkinUrlVerification === "true" && hotelData.isZestEmailCheckin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = hotelData.zestEmailCheckinNoServiceMsg;
- 	$rootScope.termsAndConditions = hotelData.termsAndConditions;
+ 	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestEmailCheckin ==="true") ?true:false;
+ 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zestEmailCheckinNoServiceMsg;
+ 	$rootScope.termsAndConditions = reservationAndhotelData.termsAndConditions;
  	$rootScope.isBirthdayVerified =  false;
- 	$rootScope.application        = hotelData.application;
- 	$rootScope.collectCCOnCheckin = (hotelData.checkinCollectCc === "true") ? true:false;
- 	$rootScope.isMLI = (hotelData.paymentGateway  = "MLI") ? true : false;
+ 	$rootScope.application        = reservationAndhotelData.application;
+ 	$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkinCollectCc === "true") ? true:false;
+ 	$rootScope.isMLI = (reservationAndhotelData.paymentGateway  = "MLI") ? true : false;
 
 
     //Params for zest mobile and desktop screens
-    if(hotelData.hasOwnProperty('isPasswordReset')){
-    	$rootScope.isPasswordResetView = hotelData.isPasswordReset;
-    	$rootScope.isTokenExpired = hotelData.isTokenExpired === "true"? true: false;
-    	$rootScope.accessToken = hotelData.token;
-    	$rootScope.user_id = hotelData.id;
-    	$rootScope.user_name = hotelData.login;
+    if(reservationAndhotelData.hasOwnProperty('isPasswordReset')){
+    	$rootScope.isPasswordResetView = reservationAndhotelData.isPasswordReset;
+    	$rootScope.isTokenExpired = reservationAndhotelData.isTokenExpired === "true"? true: false;
+    	$rootScope.accessToken = reservationAndhotelData.token;
+    	$rootScope.user_id = reservationAndhotelData.id;
+    	$rootScope.user_name = reservationAndhotelData.login;
     }
 
     //work around to fix flashing of logo before app loads
     $timeout(function() {
-        $rootScope.hotelLogo     = hotelData.hotelLogo;
+        $rootScope.hotelLogo     = reservationAndhotelData.hotelLogo;
     }, 750);
 
- 	if(typeof hotelData.accessToken !== "undefined") {
-		$rootScope.accessToken = hotelData.accessToken	;
+ 	if(typeof reservationAndhotelData.accessToken !== "undefined") {
+		$rootScope.accessToken = reservationAndhotelData.accessToken	;
 	}
 	//navigate to different pages
-	if(hotelData.checkinUrlVerification === "true" && hotelData.isZestEmailCheckin ==="false"){
+	if(reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestEmailCheckin ==="false"){
 		$location.path('/guestCheckinTurnedOff'); // external checkin URL available, but its turned off
 	}
-	else if(hotelData.checkinUrlVerification === "true"){
+	else if(reservationAndhotelData.checkinUrlVerification === "true"){
 		$location.path('/externalCheckinVerification'); // external checkin URL available and is on
 	}
-	else if(hotelData.isExternalVerification ==="true"){
+	else if(reservationAndhotelData.isExternalVerification ==="true"){
 		$location.path('/externalVerification'); //external checkout URL
 	}
-	else if(hotelData.isPrecheckinOnly  ==='true' && hotelData.reservationStatus ==='RESERVED' && !(hotelData.isAutoCheckin === 'true')){
+	else if(reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && !(reservationAndhotelData.isAutoCheckin === 'true')){
  		$location.path('/tripDetails');// only available for Fontainbleau -> precheckin + sent to que
  	}
- 	else if	(hotelData.isPrecheckinOnly  ==='true' && hotelData.reservationStatus ==='RESERVED' && (hotelData.isAutoCheckin === 'true')){
+ 	else if	(reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && (reservationAndhotelData.isAutoCheckin === 'true')){
  		$location.path('/checkinConfirmation');//checkin starting -> page precheckin + auto checkin
  	}
  	else if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');//already checked in
  	}
-    else if(hotelData.isCheckin ==='true'){
+    else if(reservationAndhotelData.isCheckin ==='true'){
  		$location.path('/checkinConfirmation');//checkin starting page -> precheckin turned off
  	}
   	else if($rootScope.isCheckedout)	{
@@ -158,7 +139,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		$location.path(path);
 		$location.replace();
 	}else{
-         $location.path('/checkoutRoomVerification'); // checkout landing page
+         $state.go('checkoutRoomVerification'); // checkout landing page
 	};
 
 	$( ".loading-container" ).hide();
@@ -169,6 +150,12 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		event.preventDefault();
 		$state.go('noOptionAvailable'); 
 	})
+
+	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      // Hide loading message
+      console.error(error);
+      //TODO: Log the error in proper way
+    });
 }]);
 
 var loadStyleSheets = function(filename){

@@ -3,11 +3,15 @@ module.exports = function (gulp, $, options) {
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-		GUESTWEB_JS_COMBINED_FILE  = 'guest_web.js',
-		GUESTWEB_TEMPLATE_ROOT     = '../views/layouts/',
+		GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
+		GUESTWEB_TEMPLATE_ROOT  = '../views/layouts/',
 	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
 	    GUESTWEB_JS_MANIFEST_FILE  = "guestweb_js_manifest.json",
 	    onError  				= options.onError,
+	    extendedMappings 		= {},
+		generated 				= "____generated",
+	    GUESTWEB_THEME_JS_MAPPING_FILE 	= '../../asset_list/theming/guestweb/js/js_theme_mapping',
+	    GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList(),
 		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestwebAssetList").getList();
 	
 	//JS - Start
@@ -38,6 +42,60 @@ module.exports = function (gulp, $, options) {
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
+	gulp.task('guestweb-js-theme-generate-mapping-list-prod', function(){
+		var glob = require('glob-all'),
+			fileList = [],
+			fs = require('fs'),
+			es = require('event-stream'),
+			mkdirp = require('mkdirp'),
+			stream = require('merge-stream'),
+			edit = require('gulp-json-editor'),
+			guestwebGenDir = DEST_ROOT_PATH + 'asset_list/' 
+				+ generated + 'ThemeMappings/' 
+				+ generated + 'Guestweb/js/',
+			guestwebGenFile = guestwebGenDir + generated + 'GuestWebJsThemeMappings.json';
+
+		var createMappingFile = function(){
+			mkdirp(guestwebGenDir, function (err) {
+			    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
+		    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
+				    if(err) {
+				        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
+				    }
+				    console.log('guestweb theme js mapping file created (' + guestwebGenFile + ')');
+				}); 
+			});
+		};
+
+		var tasks = Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
+			console.log ('Guestweb Theme JS - mapping-generation-started: ' + theme);
+			var mappingList  = GUESTWEB_THEME_JS_LIST[theme],
+				fileName 	 = theme.replace(/\./g, "-")+".min.js";
+			
+			return gulp.src(mappingList)
+				.pipe($.jsvalidate())
+				.on('error', onError)
+		        .pipe($.concat(fileName))
+		        .on('error', onError)
+		        .pipe($.ngAnnotate({single_quotes: true, debug: true}))
+		        .on('error', onError)
+		        .pipe($.uglify({compress:true, output: {
+		        	space_colon: false
+		        }}))
+		        .on('error', onError)
+		        .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	Object.keys(manifest).forEach(function (path, orig) {
+				    	extendedMappings[theme] = [URL_APPENDER + "/" + manifest[path]];
+				    });
+				    console.log ('Guestweb Theme JS - mapping-generation-ended: ' + theme);
+		        	return {};
+		        }));
+		});
+		return es.merge(tasks).on('end', createMappingFile);
+	});
 
 	//Be careful: PRODUCTION
 	gulp.task('build-guestweb-js-production', ['compile-guestweb-js-production'], function(){
@@ -54,7 +112,7 @@ module.exports = function (gulp, $, options) {
 	        .pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('build-login-js-dev', ['login-copy-js-files'], function(){
+	gulp.task('build-guestweb-js-dev', ['guestweb-copy-js-files'], function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
 			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
 
@@ -68,15 +126,15 @@ module.exports = function (gulp, $, options) {
 	        .pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }));
 	});
 
-	gulp.task('login-copy-js-files', function(){
+	gulp.task('guestweb-copy-js-files', function(){
 		return gulp.src(GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles), {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
-	gulp.task('login-watch-js-files', function(){
+	gulp.task('guestweb-watch-js-files', function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
 			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
-		gulp.watch(nonMinifiedFiles.concat(minifiedFiles), ['build-rover-js-dev']);
+		gulp.watch(nonMinifiedFiles.concat(minifiedFiles), ['build-guestweb-js-dev']);
 	});
 
 	//JS - END

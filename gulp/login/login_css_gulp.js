@@ -17,6 +17,7 @@ module.exports = function (gulp, $, options) {
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:less:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Login injecting css file (' + (fileName) + ") to "  + LOGIN_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
@@ -24,12 +25,18 @@ module.exports = function (gulp, $, options) {
        		.pipe(gulp.dest(LOGIN_TEMPLATE_ROOT, { overwrite: true }));
 	};
 
-	gulp.task('build-login-less-production', ['login-less-production'], function(){
+	gulp.task('inject-login-less-production-to-template', function(){
 		var template_manifest_json = require(MANIFEST_DIR + LOGIN_CSS_MANIFEST_FILE),
 	        file_name = template_manifest_json[LOGIN_CSS_FILE];
 	    return cssInjector(file_name);
 	});
 
+	//inorder to tackle the bug in injector, doing this way
+	//bug noticed: parallel injecting is not possible. When 400+ js injection is going on css injection is failing
+	gulp.task('build-login-less-js-dev', ['login-less-dev', 'build-login-js-dev'], function(){
+	    return cssInjector(LOGIN_CSS_FILE);
+	});
+	
 	gulp.task('login-less-production', function () {
 	  return gulp.src(LOGIN_LESS_FILE)
 	        .pipe($.less({

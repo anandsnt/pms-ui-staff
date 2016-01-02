@@ -8,7 +8,12 @@ module.exports = function(gulp, $, options) {
 	gulp.task('copy-login-files', ['login-copy-js-files', 'login-copy-less-files']);
 
 	//TASKS
-	gulp.task('build-login-dev', ['build-login-js-dev', 'build-login-template-cache-dev', 'build-login-less-dev']);
-	gulp.task('login-asset-precompile', ['build-login-js-production', 'build-login-template-cache-production', 
-		'build-login-less-production']);
+	gulp.task('build-login-dev', ['build-login-template-cache-dev', 'build-login-less-js-dev']);
+	
+	gulp.task('login-inject-assets-to-templates', ['inject-login-js-production-to-template', 
+		'inject-login-template-cache-production-to-template', 
+		'inject-login-less-production-to-template']);
+
+	gulp.task('login-asset-prod-precompile', ['compile-login-js-production', 'login-template-cache-production',
+	 'login-less-production']); 	
 }

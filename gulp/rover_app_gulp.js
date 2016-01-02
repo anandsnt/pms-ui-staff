@@ -5,9 +5,7 @@ module.exports = function(gulp, $, options) {
 	require('./rover/rover_css_gulp')(gulp, $, options);
 	require('./rover/rover_translation_files_gulp')(gulp, $, options);
 	
-	var production_tasks = ['build-rover-js-production', 
-				'build-rover-template-cache-production', 'build-rover-less-production', 
-				'concat-translation-en-rover-files-dev'];
+	var runSequence = require('run-sequence');
 
 	gulp.task('watch-rover-files', ['rover-watch-js-files', 'rover-watch-templates-files', 
 		'rover-watch-translation-files', 'rover-watch-less-files']);
@@ -17,5 +15,13 @@ module.exports = function(gulp, $, options) {
 	gulp.task('build-rover-dev', ['build-rover-less-js-dev', 'build-rover-template-cache-dev', 
 		'concat-translation-en-rover-files-dev', 'rover-generate-mapping-list-dev']);
 	
-	gulp.task('rover-asset-precompile', production_tasks);
+
+	gulp.task('rover-inject-assets-to-templates', function(){
+		return runSequence('create-statemapping-and-inject-rover-js-production',
+			'inject-rover-less-production-to-template', 
+			'inject-rover-template-cache-production-to-template');
+	});
+
+	gulp.task('rover-asset-prod-precompile', ['rover-build-js-and-mapping-list-prod', 'rover-template-cache-production',
+	 	'rover-less-production', 'concat-translation-en-rover-files-dev']);
 }

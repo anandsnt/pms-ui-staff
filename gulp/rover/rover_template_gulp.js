@@ -15,6 +15,7 @@ module.exports = function(gulp, $, options) {
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:templates:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Rover injecting template cache file (' + (fileName) + ") to "  + ROVER_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
@@ -23,7 +24,7 @@ module.exports = function(gulp, $, options) {
 	};
 
 	//Be careful: PRODUCTION
-	gulp.task('build-rover-template-cache-production', ['rover-template-cache-production'], function(){
+	gulp.task('inject-rover-template-cache-production-to-template', function(){
 		var template_manifest_json = require(MANIFEST_DIR + ROVER_TEMPLTE_MANFEST_FILE),
 	        file_name = template_manifest_json[ROVER_TEMPLATES_FILE];
 	    return templateInjector(file_name);

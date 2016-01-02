@@ -40,13 +40,14 @@ module.exports = function(gulp, $, options){
 	});
 
 	//Be careful: PRODUCTION
-	gulp.task('build-zest-js-production', ['compile-zest-js-production'], function(){
+	gulp.task('inject-zest-js-production-to-template', function(){
 	    var js_manifest_json = require(MANIFEST_DIR + ZEST_JS_MANIFEST_FILE),
 	        file_name = js_manifest_json[ZEST_JS_COMBINED_FILE];
 	    
 	    return gulp.src(ZEST_HTML_FILE)
 	        .pipe($.inject(gulp.src(DEST_ROOT_PATH + file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Zest injecting js file (' + (file_name) + ") to "  + ZEST_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }

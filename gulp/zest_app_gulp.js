@@ -5,8 +5,12 @@ module.exports = function(gulp, $, options) {
 	require('./zest/zest_css_gulp')(gulp, $, options);
 	require('./zest/zest_translation_files_gulp')(gulp, $, options);
 	
-	var production_tasks = ['build-zest-js-production', 'build-zest-less-production','build-zest-template-cache-production',
-		'concat-translation-en-zest-files-dev'];
+	gulp.task('zest-inject-assets-to-templates', ['inject-zest-js-production-to-template', 
+		'inject-zest-template-cache-production-to-template', 
+		'inject-zest-less-production-to-template']);
+
+	gulp.task('zest-asset-prod-precompile', ['compile-zest-js-production', 'zest-template-cache-production',
+	 'zest-less-production', 'concat-translation-en-zest-files-dev']);
 
 	gulp.task('watch-zest-files', ['zest-watch-js-files', 'zest-watch-templates-files', 
 		'zest-watch-translation-files', 'zest-watch-less-files']);
@@ -15,6 +19,4 @@ module.exports = function(gulp, $, options) {
 	// //TASKS
 	 gulp.task('build-zest-dev', ['build-zest-less-js-dev', 'build-zest-template-cache-dev', 
 		'concat-translation-en-zest-files-dev', 'zest-generate-mapping-list-dev']);
-	
-	gulp.task('zest-asset-precompile', production_tasks);
 }

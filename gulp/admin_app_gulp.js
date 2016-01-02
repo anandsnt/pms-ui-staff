@@ -12,6 +12,10 @@ module.exports = function(gulp, $, options) {
 	gulp.task('build-admin-dev', ['build-admin-less-js-dev', 'build-admin-template-cache-dev', 
 		'concat-translation-en-admin-files-dev']);
 
-	gulp.task('admin-asset-precompile', ['build-admin-js-production', 'build-admin-template-cache-production',
-	 'build-admin-less-production', 'concat-translation-en-admin-files-dev']); //, 
+	gulp.task('admin-inject-assets-to-templates', ['inject-admin-js-production-to-template', 
+		'inject-admin-template-cache-production-to-template', 
+		'inject-admin-less-production-to-template']);
+
+	gulp.task('admin-asset-prod-precompile', ['compile-admin-js-production', 'admin-template-cache-production',
+	 'admin-less-production', 'concat-translation-en-admin-files-dev']); 
 }

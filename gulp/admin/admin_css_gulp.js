@@ -18,6 +18,7 @@ module.exports = function(gulp, $, options) {
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:less:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Admin injecting css file (' + (fileName) + ") to "  + ADMIN_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
@@ -25,7 +26,7 @@ module.exports = function(gulp, $, options) {
        		.pipe(gulp.dest(ADMIN_TEMPLATE_ROOT, { overwrite: true }));
 	};
 
-	gulp.task('build-admin-less-production', ['admin-less-production'], function(){
+	gulp.task('inject-admin-less-production-to-template', function(){
 		var template_manifest_json = require(MANIFEST_DIR + ADMIN_CSS_MANIFEST_FILE),
 	        file_name = template_manifest_json[ADMIN_CSS_FILE];
 	    return cssInjector(file_name);

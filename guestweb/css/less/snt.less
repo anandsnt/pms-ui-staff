@@ -5,48 +5,48 @@
 /* 300 ***/
 @font-face {
 	font-family: 'Source Sans Pro';
-	src: asset-url('sourcesanspro-light-webfont.eot');
-	src: asset-url('sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-light-webfont.woff') format('woff'), asset-url('sourcesanspro-light-webfont.ttf') format('truetype');
+	src: url('/assets/type/sourcesanspro-light-webfont.eot');
+	src: url('/assets/type/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-light-webfont.woff') format('woff'), asset-url('sourcesanspro-light-webfont.ttf') format('truetype');
 	font-weight: 300;
 	font-style: normal;
 }
 /*300 ***/
 @font-face {
 	font-family: 'Source Sans Pro Light Italic';
-	src: asset-url('source-sans-pro.light-italic.eot');
-	src: asset-url('source-sans-pro.light-italic.eot?#iefix') format('embedded-opentype'), asset-url('source-sans-pro.light-italic.woff') format('woff'), asset-url('ssource-sans-pro.light-italic.ttf') format('truetype');
+	src: url('/assets/type/source-sans-pro.light-italic.eot');
+	src: url('/assets/type/source-sans-pro.light-italic.eot?#iefix') format('embedded-opentype'), asset-url('source-sans-pro.light-italic.woff') format('woff'), asset-url('ssource-sans-pro.light-italic.ttf') format('truetype');
 	font-weight: 300;
 	font-style: italic;
 }
 /* 400 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-	src: asset-url('sourcesanspro-regular-webfont.eot');
-	src: asset-url('sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-regular-webfont.woff') format('woff'), asset-url('sourcesanspro-regular-webfont.ttf') format('truetype');
+	src: url('/assets/type/sourcesanspro-regular-webfont.eot');
+	src: url('/assets/type/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-regular-webfont.woff') format('woff'), asset-url('sourcesanspro-regular-webfont.ttf') format('truetype');
 	font-weight: 400;
 	font-style: normal;
 }
 /* 400 italic ***/
 @font-face {
 	font-family: 'Source Sans Pro';
-	src: asset-url('sourcesanspro-italic-webfont.eot');
-	src: asset-url('sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-italic-webfont.woff') format('woff'), asset-url('sourcesanspro-italic-webfont.ttf') format('truetype');
+	src: url('/assets/type/sourcesanspro-italic-webfont.eot');
+	src: url('/assets/type/sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-italic-webfont.woff') format('woff'), asset-url('sourcesanspro-italic-webfont.ttf') format('truetype');
 	font-weight: 400;
 	font-style: italic;
 }
 /* 600 ***/
 @font-face {
 	font-family: 'Source Sans Pro';
-	src: asset-url('sourcesanspro-semibold-webfont.eot');
-	src: asset-url('sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-semibold-webfont.woff') format('woff'), asset-url('sourcesanspro-semibold-webfont.ttf') format('truetype');
+	src: url('/assets/type/sourcesanspro-semibold-webfont.eot');
+	src: url('/assets/type/sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-semibold-webfont.woff') format('woff'), asset-url('sourcesanspro-semibold-webfont.ttf') format('truetype');
 	font-weight: 600;
 	font-style: normal;
 }
 /* 700 ***/
 @font-face {
 	font-family: 'Source Sans Pro';
-	src: asset-url('sourcesanspro-bold-webfont.eot');
-	src: asset-url('sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-bold-webfont.woff') format('woff'), asset-url('sourcesanspro-bold-webfont.ttf') format('truetype');
+	src: url('/assets/type/sourcesanspro-bold-webfont.eot');
+	src: url('/assets/type/sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-bold-webfont.woff') format('woff'), asset-url('sourcesanspro-bold-webfont.ttf') format('truetype');
 	font-weight: 700;
 	font-style: normal;
 }
@@ -1071,11 +1071,11 @@ margin-top: 35px !important;
 }
 
 .carousel-control .icon-next:before {
-  content:url(/assets/img/right.png) !important;
+  content:url(/assets/guestweb/img/right.png) !important;
 }
 
 .carousel-control .icon-prev:before {
-  content: url(/assets/img/left.png) !important;
+  content: url(/assets/guestweb/img/left.png) !important;
 }
 
 @media (max-width: 800px) {
@@ -1313,13 +1313,13 @@ input[type=checkbox]
   color: #ac9557;
 }
 
-// must not be changed
+/* must not be changed */
 .pickadate-cell .pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-outofrange-disabled a,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
-  // date must be hidden
-  // user must not see or select it
+  /* date must be hidden  */
+  /* user must not see or select it */
   color: #7d6742;
   color: transparent;
   cursor: default;
@@ -1375,17 +1375,16 @@ input[type=checkbox]
   font-size: 0.9em;
 }
 
-
-// must not be changed
-// must only be update for different hotel
+/* must not be changed  */
+/* must only be update for different hotel */
 .pickadate-cell .pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-outofrange-disabled a,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a,
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  // date must be hidden
-  // user must not see or select it
+  /* date must be hidden  */
+  /* user must not see or select it */
   color: #7d6742;
   color: transparent;
 
@@ -2157,7 +2156,7 @@ body > div[ng-view] {
 }
 
 .circle-bg {
-    background: url("/assets/img/circle-bg.png") no-repeat scroll center top transparent;
+    background: url("/assets/guestweb/img/circle-bg.png") no-repeat scroll center top transparent;
     display: block;
     height: 73px;
     text-align:center;

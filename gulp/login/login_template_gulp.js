@@ -16,6 +16,7 @@ module.exports = function(gulp, $, options){
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:templates:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Login injecting template file (' + (fileName) + ") to "  + LOGIN_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
@@ -24,7 +25,7 @@ module.exports = function(gulp, $, options){
 	};
 
 	//Be careful: PRODUCTION
-	gulp.task('build-login-template-cache-production', ['login-template-cache-production'], function(){
+	gulp.task('inject-login-template-cache-production-to-template',  function(){
 		var template_manifest_json = require(MANIFEST_DIR + LOGIN_TEMPLTE_MANFEST_FILE),
 	        file_name = template_manifest_json[LOGIN_TEMPLATES_FILE];
 	    return templateInjector(file_name);

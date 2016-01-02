@@ -11,14 +11,30 @@ module.exports = function(gulp, $, options) {
 	    ROVER_JS_MAPPING_FILE 	= '../../asset_list/stateJsMapping/rover/roverStateJsMappings',
 	    stateMappingList 		= require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
-	    onError  = options.onError;
+	    onError  				= options.onError,
+	    roverGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'StateJsMappings/' + generated + 'rover/',
+		roverGenFile 			= roverGenDir + generated + 'roverStateJsMappings.json';
 
 	//Be careful: PRODUCTION
-	gulp.task('build-rover-js-production', ['rover-generate-mapping-list-prod'], function(){
-	    var file_name = extendedMappings['rover.dashboard'][0];
+	gulp.task('create-statemapping-and-inject-rover-js-production', function(){
+	    var file_name = extendedMappings['rover.dashboard'][0],
+	    	mkdirp = require('mkdirp'),
+			fs = require('fs');
+		
+		mkdirp(roverGenDir, function (err) {
+		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('rover mapping file failed!! (' + err + ')');
+			    }
+			    console.log('rover mapping file created (' + roverGenFile + ')');
+			}); 
+		});
+
 	    return gulp.src(ROVER_HTML_FILE)
 	        .pipe($.inject(gulp.src('../../public' + file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Rover injecting dashboard js file (' + (file_name) + ") to "  + ROVER_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
@@ -26,37 +42,19 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('rover-generate-mapping-list-prod', function(){
+	gulp.task('rover-build-js-and-mapping-list-prod', function(){
 		var glob = require('glob-all'),
 			fileList = [],
-			fs = require('fs'),
 			es = require('event-stream'),
-			mkdirp = require('mkdirp'),
-			edit = require('gulp-json-editor'),
-			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
-				+ generated + 'StateJsMappings/' 
-				+ generated + 'rover/',
-			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json';
-
-		var createMappingFile = function(){
-			mkdirp(roverGenDir, function (err) {
-			    if (err) console.error('rover mapping directory failed!! (' + err + ')');
-		    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
-				    if(err) {
-				        return console.error('rover mapping file failed!! (' + err + ')');
-				    }
-				    console.log('rover mapping file created (' + roverGenFile + ')');
-				}); 
-			});
-		};
+			stream 	= require('merge-stream'),
+			edit = require('gulp-json-editor');
 
 		var tasks = Object.keys(stateMappingList).map(function(state, index){
 			console.log ('rover-mapping-generation-started: ' + state);
 			var mappingList  		= require(stateMappingList[state]).getList(),
 				nonMinifiedFiles 	= mappingList.nonMinifiedFiles,
 				minifiedFiles 		= mappingList.minifiedFiles,
-				fileName 			= state.replace(/\./g, "-")+".min.js",
-				stream 				= require('merge-stream');
+				fileName 			= state.replace(/\./g, "-")+".min.js";
 
 			var nonMinifiedStream = gulp.src(nonMinifiedFiles)
 					.pipe($.jsvalidate())
@@ -89,7 +87,7 @@ module.exports = function(gulp, $, options) {
 		        	return {};
 		        }));
 		});
-		return es.merge(tasks).on('end', createMappingFile);
+		return es.merge(tasks);
 	});
 
 
@@ -98,10 +96,6 @@ module.exports = function(gulp, $, options) {
 			fileList 	= [],
 			fs 			= require('fs'),
 			mkdirp 		= require('mkdirp'),
-			roverGenDir = DEST_ROOT_PATH + 'asset_list/' 
-				+ generated + 'StateJsMappings/' 
-				+ generated + 'rover/',
-			roverGenFile = roverGenDir + generated + 'roverStateJsMappings.json',
 			combinedList = [];
 		
 		for (state in stateMappingList){
