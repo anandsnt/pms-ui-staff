@@ -12,10 +12,12 @@ module.exports = function (gulp, $, options) {
 		generated 				= "____generated",
 	    GUESTWEB_THEME_JS_MAPPING_FILE 	= '../../asset_list/theming/guestweb/js/js_theme_mapping',
 	    GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList(),
-		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestwebAssetList").getList();
+		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestwebAssetList").getList(),
+		guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/js/',
+		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebJsThemeMappings.json';
 	
 	//JS - Start
-	gulp.task('compile-guestweb-js-production', function(){
+	gulp.task('compile-guestweb-dashboard-js-production', function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
 			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles,
 			stream 				= require('merge-stream');
@@ -45,27 +47,9 @@ module.exports = function (gulp, $, options) {
 	gulp.task('guestweb-js-theme-generate-mapping-list-prod', function(){
 		var glob = require('glob-all'),
 			fileList = [],
-			fs = require('fs'),
 			es = require('event-stream'),
-			mkdirp = require('mkdirp'),
 			stream = require('merge-stream'),
-			edit = require('gulp-json-editor'),
-			guestwebGenDir = DEST_ROOT_PATH + 'asset_list/' 
-				+ generated + 'ThemeMappings/' 
-				+ generated + 'Guestweb/js/',
-			guestwebGenFile = guestwebGenDir + generated + 'GuestWebJsThemeMappings.json';
-
-		var createMappingFile = function(){
-			mkdirp(guestwebGenDir, function (err) {
-			    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
-		    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-				    if(err) {
-				        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
-				    }
-				    console.log('guestweb theme js mapping file created (' + guestwebGenFile + ')');
-				}); 
-			});
-		};
+			edit = require('gulp-json-editor');
 
 		var tasks = Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme JS - mapping-generation-started: ' + theme);
@@ -94,17 +78,32 @@ module.exports = function (gulp, $, options) {
 		        	return {};
 		        }));
 		});
-		return es.merge(tasks).on('end', createMappingFile);
+		return es.merge(tasks);
 	});
+	
+	gulp.task('guestweb-js-production', ['compile-guestweb-dashboard-js-production', 'guestweb-js-theme-generate-mapping-list-prod']);
 
 	//Be careful: PRODUCTION
-	gulp.task('build-guestweb-js-production', ['compile-guestweb-js-production'], function(){
+	gulp.task('create-statemapping-and-inject-guestweb-js-production', function(){
 	    var js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
-	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE];
+	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE],
+	        fs = require('fs'),
+			mkdirp = require('mkdirp');
 	    
+		mkdirp(guestwebGenDir, function (err) {
+		    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
+			    }
+			    console.log('guestweb theme js mapping file created (' + guestwebGenFile + ')');
+			}); 
+		});
+
 	    return gulp.src(GUESTWEB_HTML_FILE)
 	        .pipe($.inject(gulp.src(DEST_ROOT_PATH + file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
+	            	console.log('Guestweb injecting js file (' + (file_name) + ") to "  + GUESTWEB_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }

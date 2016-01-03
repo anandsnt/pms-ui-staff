@@ -44,7 +44,6 @@ sntGuestWeb.run(function($rootScope, $location, $http){
 
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-			console.log('state Change TSrt: ' , toState, fromState);
 		$rootScope.title =toState.title;
 	});
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {

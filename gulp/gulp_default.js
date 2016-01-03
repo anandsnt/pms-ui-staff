@@ -18,10 +18,10 @@ module.exports = function(gulp, $, options) {
 	// 	'zest-asset-precompile']);
 	
 	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
-		 'zest-asset-prod-precompile', 'login-asset-prod-precompile'],
+		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
 
 		tasksAfterCompilation = ['rover-inject-assets-to-templates', 'admin-inject-assets-to-templates', 
-		'zest-inject-assets-to-templates', 'login-inject-assets-to-templates'];
+		'zest-inject-assets-to-templates', 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'];
 
 	gulp.task('asset-precompile', function(){
 		return runSequence(compilationTasks, tasksAfterCompilation);

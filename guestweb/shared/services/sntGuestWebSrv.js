@@ -2,7 +2,8 @@
 		sntGuestWeb.service('sntGuestWebSrv', ['$q','$http','$rootScope', '$ocLazyLoad', function($q,$http,$rootScope, $ocLazyLoad) {
 
 			var jsMappingList = {},
-				cssMappingList = {};
+				cssMappingList = {},
+				templateMappingList = {};
 
 			this.fetchHotelDetailsOnExtCheckoutUrl = function() {
 				var deferred = $q.defer();
@@ -54,6 +55,19 @@
 				return deferred.promise;				
 			};
 
+			this.fetchTemplateHotelThemeList = function() {
+				var deferred = $q.defer();
+				var url = "/assets/asset_list/____generatedThemeMappings/____generatedGuestweb/template/____generatedGuestWebTemplateThemeMappings.json";
+				$http.get(url).success(function(response) {
+					templateMappingList = response;
+					deferred.resolve(response);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;				
+			};
+
 			/**
 			 * [fetchJsAssets description]
 			 * @param  {[type]} key               [description]
@@ -63,6 +77,25 @@
 			this.fetchJsAssets = function(key, modules_to_inject) {
 				if (!!jsMappingList) {
 				  return $ocLazyLoad.load({ serie: true, files: jsMappingList[key] }).then(function() {
+				    if (typeof modules_to_inject !== "undefined") {
+				     $ocLazyLoad.inject(modules_to_inject);
+				    }
+				  });
+				} else {
+				  console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+				  return;
+				};
+			};
+
+			/**
+			 * [fetchTemplateAssets description]
+			 * @param  {[type]} key               [description]
+			 * @param  {[type]} modules_to_inject [description]
+			 * @return {[type]}                   [description]
+			 */
+			this.fetchTemplateAssets = function(key, modules_to_inject) {
+				if (!!templateMappingList) {
+				  return $ocLazyLoad.load({ reconfig: true, serie: true, files: templateMappingList[key] }).then(function() {
 				    if (typeof modules_to_inject !== "undefined") {
 				     $ocLazyLoad.inject(modules_to_inject);
 				    }

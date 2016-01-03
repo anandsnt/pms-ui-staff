@@ -21,16 +21,13 @@ The new set of HTMLs can be found under the folder common_templates. inside that
 and some folder dedicated to MGM, which has some text changes specifically asked by client.
 
 */
-
-
+var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate', 'oc.lazyLoad']);
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope){
 	$state.go('guestwebRoot', {mode: 'checkout'});
-	console.log('start');
 }]);
 sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
  function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
- 	console.log('home');
 	var that = this;
 	loadAssets('/assets/favicon.png', 'icon', 'image/png');
 	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');

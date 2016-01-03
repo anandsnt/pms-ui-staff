@@ -6,60 +6,77 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.min.js',
 		GUESTWEB_TEMPLATE_ROOT  = '../views/layouts/',
 	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
-	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/**/*.html', 'guestweb/**/landing/**/*.html', 'guestweb/**/shared/**/*.html'],
+	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping',
+	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
+	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/Row_nyc/*.html', 'guestweb/**/landing/Row_nyc/*.html', 'guestweb/**/shared/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
-	    onError = options.onError;
+	    extendedMappings 		= {},
+		generated 				= "____generated",
+	    onError = options.onError,
+	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
+		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
-	//Template - START
-	var templateInjector = function(fileName) {
-		return gulp.src(GUESTWEB_HTML_FILE)
-			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
-	            starttag: '<!-- inject:templates:{{ext}} -->',
-	            transform: function(filepath, file, i, length) {
-	            	console.log(filepath);
-	                arguments[0] = URL_APPENDER + "/" + file.relative;
-	                return $.inject.transform.apply($.inject.transform, arguments);
-	            }
-       		}))
-       		.pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }));
-	};
 
-	//Be careful: PRODUCTION
-	gulp.task('build-guestweb-template-cache-production', ['guestweb-template-cache-production'], function(){
-		var template_manifest_json = require(MANIFEST_DIR + GUESTWEB_TEMPLTE_MANFEST_FILE),
-	        file_name = template_manifest_json[GUESTWEB_TEMPLATES_FILE];
-	    return templateInjector(file_name);
+	gulp.task('create-theme-mapping-template-production', function(){
+	    var mkdirp = require('mkdirp'),
+			fs = require('fs');
+		
+		mkdirp(guestwebGenDir, function (err) {
+		    if (err) console.error('guestweb theme template mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('guestweb theme template mapping file failed!! (' + err + ')');
+			    }
+			    console.log('guestweb theme template mapping file created (' + guestwebGenFile + ')');
+			}); 
+		});
 	});
 
-	//Be careful: PRODUCTION
-	gulp.task('guestweb-template-cache-production', function () {
-	  return gulp.src(GUESTWEB_PARTIALS)
+	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
+		var glob = require('glob-all'),
+			fileList = [],
+			fs = require('fs'),
+			es = require('event-stream'),
+			mkdirp = require('mkdirp'),
+			stream = require('merge-stream'),
+			edit = require('gulp-json-editor');
+
+		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
+			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
+			var mappingList  = GUESTWEB_THEME_TEMPLATE_LIST[theme],
+				fileName 	 = theme.replace(/\./g, "-")+"-template.min.js";
+
+			return gulp.src(mappingList)
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare:true,
     			empty: true
 	  		}))
-	        .pipe($.templateCache(GUESTWEB_TEMPLATES_FILE, {
-	            module: 'sntGuestWeb',
+	        .pipe($.templateCache(fileName, {
+	            module: 'sntGuestWebTemplates',
 	            root: URL_APPENDER
 	        }).on('error', onError))
 	        .pipe($.uglify({compress:true, output: {
 	        	space_colon: false
 	        }}).on('error', onError))
 			.pipe($.rev().on('error', onError))
-	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest(GUESTWEB_TEMPLTE_MANFEST_FILE))
-	        .pipe(gulp.dest(MANIFEST_DIR));
-	});
-
-	gulp.task('build-guestweb-template-cache-dev', ['guestweb-template-cache-dev'], function(){
-	    return templateInjector(GUESTWEB_TEMPLATES_FILE);
+	        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+	        .pipe($.rev.manifest())
+	        .pipe(edit(function(manifest){
+	        	Object.keys(manifest).forEach(function (path, orig) {
+			    	extendedMappings[theme] = [URL_APPENDER + "/" + manifest[path]];
+			    });
+			    console.log ('Guestweb Theme template - mapping-generation-ended: ' + theme);
+	        	return {};
+	        }));
+		});
+		return es.merge(tasks);
 	});
 
 	gulp.task('guestweb-template-cache-dev', function () {
 	  return gulp.src(GUESTWEB_PARTIALS, {cwd:'guestweb/'})
 	        .pipe($.templateCache(GUESTWEB_TEMPLATES_FILE, {
-	            module: 'sntGuestWeb',
+	            module: 'sntGuestWebTemplates',
 	            root: URL_APPENDER + "/partials/"
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
