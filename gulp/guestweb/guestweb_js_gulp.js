@@ -12,7 +12,7 @@ module.exports = function (gulp, $, options) {
 		generated 				= "____generated",
 	    GUESTWEB_THEME_JS_MAPPING_FILE 	= '../../asset_list/theming/guestweb/js/js_theme_mapping',
 	    GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList(),
-		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestwebAssetList").getList(),
+		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestweb/guestwebAssetList").getList(),
 		guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/js/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebJsThemeMappings.json';
 	

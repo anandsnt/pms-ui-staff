@@ -2,7 +2,6 @@ module.exports = function(gulp, $, options) {
 
 	var URL_APPENDER            = options['URL_APPENDER'],
 		DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
-		ROVER_JS_ASSET_LIST     = require ("../../asset_list/js/dashboardJsAssetList").getList(),
 		ROVER_JS_MANIFEST_FILE  = "rover_js_manifest.json",
 		ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
 	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',

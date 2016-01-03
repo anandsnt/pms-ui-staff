@@ -8,7 +8,7 @@ module.exports = function (gulp, $, options) {
 	    LOGIN_HTML_FILE     	= LOGIN_TEMPLATE_ROOT + 'new.html',
 	    LOGIN_JS_MANIFEST_FILE  = "login_js_manifest.json",
 	    onError  				= options.onError,
-		LOGIN_JS_LIST 			= require("../../asset_list/js/loginJsAssetList").getList();
+		LOGIN_JS_LIST 			= require("../../asset_list/js/login/loginJsAssetList").getList();
 	
 	//JS - Start
 	gulp.task('compile-login-js-production', function(){

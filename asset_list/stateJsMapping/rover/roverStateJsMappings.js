@@ -1,19 +1,19 @@
 module.exports = {
 	getStateMappingList : function () {
-		var jsListRoot = '../../asset_list/js/';
+		var roverJsListRoot = '../../asset_list/js/rover/';
 		return {
-			'rover.diary': jsListRoot + 'diaryJsAssetList.js',
-			'rover.dashboard': jsListRoot + 'dashboardJsAssetList.js',
-			'rover.reservation': jsListRoot + 'stayCardJsAssetList.js',
-			'rover.availability': jsListRoot + 'availabilityJsAssetList.js',
-			'rover.reports': jsListRoot + 'reportsJsAssetList.js',
-			'rover.availability': jsListRoot + 'availabilityJsAssetList.js',
-			'rover.ratemanager': jsListRoot + 'rateManagerJsAssetList.js',
-			'rover.housekeeping': jsListRoot + 'houseKeepingJsAssetList.js',
-			'rover.companycardsearch': jsListRoot + 'companyCardSearchJsAssetList.js',
-			'rover.companycarddetails': jsListRoot + 'companyCardDetailsJsAssetList.js',
-			'rover.groups': jsListRoot + 'groupJsAssetList.js',
-			'rover.allotments': jsListRoot + 'allotmentJsAssetList.js'
+			'rover.diary': roverJsListRoot + 'diaryJsAssetList.js',
+			'rover.dashboard': roverJsListRoot + 'dashboardJsAssetList.js',
+			'rover.reservation': roverJsListRoot + 'stayCardJsAssetList.js',
+			'rover.availability': roverJsListRoot + 'availabilityJsAssetList.js',
+			'rover.reports': roverJsListRoot + 'reportsJsAssetList.js',
+			'rover.availability': roverJsListRoot + 'availabilityJsAssetList.js',
+			'rover.ratemanager': roverJsListRoot + 'rateManagerJsAssetList.js',
+			'rover.housekeeping': roverJsListRoot + 'houseKeepingJsAssetList.js',
+			'rover.companycardsearch': roverJsListRoot + 'companyCardSearchJsAssetList.js',
+			'rover.companycarddetails': roverJsListRoot + 'companyCardDetailsJsAssetList.js',
+			'rover.groups': roverJsListRoot + 'groupJsAssetList.js',
+			'rover.allotments': roverJsListRoot + 'allotmentJsAssetList.js'
 		}
 	}
 }
