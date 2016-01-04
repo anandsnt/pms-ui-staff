@@ -7,5 +7,6 @@
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
 	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
-        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
+    "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
+    "ROVER_DEVICE_ID" : "Rover Device ID"
 

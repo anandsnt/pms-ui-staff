@@ -18,8 +18,8 @@
 
 	$scope.pageValid = false;
 	var dateToSend = '';
-	if($rootScope.isCheckedin){
-		$state.go('checkinSuccess');
+	if($rootScope.isExternalVerification){
+		$state.go('externalVerification');
 	}
 	else{
 		$scope.pageValid = true;
@@ -28,9 +28,6 @@
 
 	$rootScope.checkedApplyCharges = false;
 	$scope.minDate  = $rootScope.businessDate;
-	$scope.cardDigits = '';
-
-	
 
 	if($scope.pageValid){
 
@@ -56,40 +53,37 @@
 	      }
 	    };
 
+	    //we need a guest token for authentication
+	    //so fetch it with reservation id
 	    var getToken = function(response){
+	    	var data = {"reservation_id":$rootScope.reservationID};
+		    checkinConfirmationService.getToken(data).then(function(tokenData) {
+	    		//set guestweb token
+	    		$rootScope.accessToken 				= tokenData.guest_web_token;
+				// display options for room upgrade screen
+				$rootScope.ShowupgradedLabel = false;
+				$rootScope.roomUpgradeheading = "Your trip details";
+				$scope.isResponseSuccess = true;
+				response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
+				checkinDetailsService.setResponseData(response.results[0]);
+				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
+				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;
 
-		    // checkinConfirmationService.getToken(data).then(function(tokenData) {
-		    	//set guestweb token
-		    	//$rootScope.accessToken 				= tokenData.guest_web_token;
-
-		    	if(response.is_too_early){
-					$state.go('guestCheckinEarly');
-				}
-				else if(response.is_too_late){
-					$state.go('guestCheckinLate');
-				}
-				else{
-					// display options for room upgrade screen
-					$rootScope.ShowupgradedLabel = false;
-					$rootScope.roomUpgradeheading = "Your trip details";
-					$scope.isResponseSuccess = true;
-					response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
-					checkinDetailsService.setResponseData(response.results[0]);
-					$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
-					//navigate to next page
-					$state.go('checkinReservationDetails');
-				}	
-			// },function(){
-			// 		$rootScope.netWorkError = true;
-			// 		$scope.isLoading = false;
-			// });
-	    }
+				//navigate to next page
+				$state.go('checkinReservationDetails');
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+	    };
 
 		//next button clicked actions
 		$scope.nextButtonClicked = function() {
 			if($scope.lastname.length > 0 && ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))){
 				
 				var data = {"hotel_identifier":$rootScope.hotelIdentifier}
+
+				//check if all fields are filled
 				if($scope.lastname.length >0){
 					data.last_name = $scope.lastname;
 				}
@@ -104,34 +98,66 @@
 				$scope.isLoading 		 = true;
 				//call service
 				checkinConfirmationService.searchReservation(data).then(function(response) {
-					$scope.isLoading = false;
-
-					if(response.results.length ===0){ // No match
+					
+					var noMatchAction = function(){
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= true;
 						$scope.multipleResults 	= false;
+					};
+					var reservations = [];
+					//filter out reservations with reserved status
+					angular.forEach(response.results, function(value, key) {
+					  if(value.reservation_status ==='RESERVED'){
+					  	reservations.push(value);
+					  };
+					});
+					response.results = reservations;
+
+					if(response.results.length ===0){ // No match
+						$scope.isLoading = false;
+						noMatchAction();
 					}else if(response.results.length >=2) //Multiple matches
 					{
 						$scope.searchMode 		= false;
 						$scope.noMatch    		= false;
 						$scope.multipleResults 	= true;
+						$scope.isLoading = false;
 					}
-					else{
-						$rootScope.reservationID = response.results[0].reservation_id;
-						$rootScope.isPrecheckinOnly = (response.results[0].is_precheckin_only && response.results[0].reservation_status ==='RESERVED')?true:false;
-						$rootScope.isAutoCheckinOn = response.results[0].is_auto_checkin && $rootScope.isPrecheckinOnly;						
-						//retrieve token for guest
-						getToken(response);
+					else{						
+						//if reservation status is CANCELED -> No matches
+						if(response.results[0].reservation_status ==='CANCELED'){
+							$scope.isLoading = false;
+							noMatchAction();
+						}
+						//if reservation status is NOSHOW or to too late -> No matches
+						else if(response.results[0].reservation_status ==='NOSHOW' || response.results[0].is_too_late){
+							$state.go('guestCheckinLate');
+						}
+						//if reservation is aleady checkin
+						else if(response.results[0].is_checked_in === "true"){
+							$state.go('checkinSuccess');
+						}
+						//if reservation is early checkin
+						else if(response.results[0].is_too_early){
+							$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
+						}
+						else{
+							//retrieve token for guest
+							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
+							$rootScope.reservationID 	= response.results[0].reservation_id;
+							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status ==='RESERVED')?true:false;
+							$rootScope.isAutoCheckinOn 	= (response.is_auto_checkin === "true") && $rootScope.isPrecheckinOnly;
+							getToken(response);
+						};
 					};
 				},function(){
 						$rootScope.netWorkError = true;
 						$scope.isLoading = false;
 					});
-				}
-				else{
-					$modal.open($scope.errorOpts);
-				}
-			
+			}
+			else{
+				$modal.open($scope.errorOpts);
+			};
 		};
 
 		$scope.tryAgain = function(){
@@ -171,3 +197,7 @@ sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies
 })();
 
 
+sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope','$stateParams',
+ function($scope,$stateParams) {
+ 	$scope.checkinAvailableDateAfter = $stateParams.date;
+ }]);

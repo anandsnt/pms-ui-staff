@@ -152,13 +152,21 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/guestCheckinTurnedOff.html',
 	    title: 'Check-in'
 	 }).state('guestCheckinEarly', {
-	 	url: '/guestCheckinEarly',
+	 	url: '/guestCheckinEarly/:date',
 	 	templateUrl: '/assets/checkin/partials/MGM/earlyToCheckin.html',
+	 	controller : 'earlyToCheckinCtrl',
 	    title: 'Check-in'
 	 }).state('guestCheckinLate', {
 	 	url: '/guestCheckinLate',
 	 	templateUrl: '/assets/checkin/partials/MGM/lateToCheckin.html',
 	    title: 'Check-in'
+	 });
+
+	 $stateProvider.state('checkinCcVerification', {
+	 	url: '/checkinCcVerification',
+	 	templateUrl: '/assets/checkin/partials/MGM/checkinCCAddition.html',
+	 	controller : 'checkinCcVerificationController',
+	 	title: 'CC verification'
 	 });
 	
 

@@ -44,9 +44,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     
                 }
             }
-            
-            
-            
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 
@@ -109,7 +106,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
         $scope.init = function(r){
             var current=$state.current.name;
-            console.info('current: ',current);
             $scope.selectedReservation = $state.selectedReservation;
             if (current === 'zest_station.add_remove_guests'){
                 $scope.setAddRemoveScreen();
@@ -122,7 +118,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 
             } else {
                 $scope.selectedReservation.reservation_details = {};
-                   console.info('$scope.zestStationData: ',$scope.zestStationData)
                 $scope.hotel_settings = $scope.zestStationData;
                 $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
                 //fetch the idle timer settings
@@ -184,7 +179,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             
             var first = $state.input.addguest_first,
             last = $state.input.addguest_last;
-            console.warn($state.selectedReservation)
             $state.selectedReservation.guest_details.push({
                 last_name: last,
                 first_name: first
@@ -206,7 +200,57 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 }
             };
         
+        
+            $scope.roomIsAssigned = function(){
+              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
+                  return true;
+              }
+              return false;
+            };
+            
+            $scope.roomIsReady = function(){
+                if ($scope.selectedReservation.reservation_details.data){
+                    if ($scope.selectedReservation.reservation_details.data.reservation_card.room_status === "READY"){
+                        return true;
+                    } else return false;
+                } else return false;
+            };
             $scope.goToTerms = function(){
+                
+                if (!$scope.roomIsAssigned()){
+                    $scope.assignRoomToReseravtion();
+                } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
+                      $scope.initTermsPage();
+                } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
+                    $scope.initRoomError();
+                }
+                
+                
+               
+            };
+            
+            $scope.initRoomError = function(){
+                $state.go('zest_station.room_error');  
+            };
+            
+            $scope.assignRoomToReseravtion = function(){
+                 var reservation_id = $scope.selectedReservation.id;
+                        $scope.invokeApi(zsTabletSrv.assignGuestRoom, {
+                         'reservation_id':reservation_id
+                     }, $scope.roomAssignCallback, $scope.roomAssignCallback); 
+            };
+            $scope.roomAssignCallback = function(response){
+                $scope.$emit('hideLoader');
+                if (response.status && response.status === 'success'){
+                    $scope.selectedReservation.room = response.data.room_number;
+                    $scope.initTermsPage();
+                   
+                } else {
+                    $scope.initRoomError();
+                }
+            };
+            
+            $scope.initTermsPage = function(){
                 $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
                 $state.go('zest_station.terms_conditions');
             };
@@ -310,7 +354,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
 
             $scope.addRemoveGuests = function(){
-              console.info('add remove guests')  ;
               $state.go('zest_station.add_remove_guests');
             };
 
