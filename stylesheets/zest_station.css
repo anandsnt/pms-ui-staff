@@ -14,4 +14,8 @@
  *= require '../shared/lib/css/ngDialog-theme-plain.css'
  *= require '../shared/lib/css/date-picker.css.less'
  *= require '../shared/lib/css/advanced_date_picker.css'
+
+ *= require '../zest_station/css/zoku.less'
+ *= require '../zest_station/css/fontainebleau.less'
+
  */
