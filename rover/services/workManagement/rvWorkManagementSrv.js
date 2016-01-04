@@ -5,7 +5,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		// 2. WorkTypes
 		// 3. Shifts
 
-
+		var srv = this;
 
 		this.fetchMaids = function() {
 			var deferred = $q.defer();
@@ -160,22 +160,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		// method to fetch all unassigned rooms for a given date
-		this.fetchAllUnassigned = function(params) {
-			var deferred = $q.defer(),
-				url = 'api/work_assignments/unassigned_rooms?date=' + params.date;
-
-			RVBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.results);
-				}, function(data) {
-					deferred.reject(data);
-				});
-
-			return deferred.promise;
-		};
-
-
 
 
 
@@ -231,7 +215,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
-					deferred.resolve(data.results);
+					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
 				});
@@ -245,7 +229,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
-					deferred.resolve(data.results);
+					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
 				});
@@ -255,11 +239,17 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.processedUnassignedRooms = function(params) {
 			var deferred = $q.defer(),
-				promises = [];
+				promises = [],
+				unassignedRoomsResponse,
+				tasksResponse;
 
 			// fetch tasks and unassigned rooms
-			promises.push( fetchAllTasks() );
-			promises.push( fetchAllUnassigned(params) );
+			promises.push( srv.fetchAllTasks().then(function(data) {
+				tasksResponse = data;
+			}) );
+			promises.push( srv.fetchAllUnassigned(params).then(function(data) {
+				unassignedRoomsResponse = data;
+			}) );
 
 			$q.all(promises).then(function() {
 				deferred.resolve( compileUnassignedRooms(unassignedRoomsResponse, tasksResponse) );
@@ -311,7 +301,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// }];
 
 			var rooms     = unassignedRooms.rooms,
-				roomTasks = unassignedRooms.room_tasks,
+				roomTasks = unassignedRooms.room_tasks;
 
 			var i, j, k, l;
 
@@ -345,7 +335,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						'name'           : thatTask.name,
 						'work_type_id'   : thatTask.work_type_id,
          				'work_type_name' : thatTask.work_type_name,
-						'time_allocated' : getTimeAllocated(thatTask, eachRoomId);
+						'time_allocated' : getTimeAllocated(thatTask, eachRoomId)
 					});
 
 					thatRoom['room_tasks'].push(eachTask);
