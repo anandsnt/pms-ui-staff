@@ -730,8 +730,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	    };
 
         $scope.hasPermissionToEditCreditLimit = function () {
-            //return rvPermissionSrv.getPermissionValue ('EDIT_CREDIT_LIMIT');
-            return true;
+            return rvPermissionSrv.getPermissionValue ('OVERWRITE_DIRECT_BILL_MAXIMUM_AMOUNT');
         };
 
         /**
