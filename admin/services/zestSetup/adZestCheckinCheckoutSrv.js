@@ -26,8 +26,8 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
     //Direct URL
     this.fetchDirectSetup = function(data){
         var deferred = $q.defer();
-        var url = '/admin/zest_station_setups';
-        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+        var url = '/admin/zest_direct_url_setups';
+        ADBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
         },function(data){
                 deferred.reject(data);
@@ -37,9 +37,9 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
 
     this.saveDirectSetup = function(data){
         var deferred = $q.defer();
-        var url = '/admin/zest_station_setups';
+        var url = '/admin/zest_direct_url_setups';
 
-        ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
+        ADBaseWebSrv.putJSON(url,data).then(function(data) {
                 deferred.resolve(data);
         },function(data){
                 deferred.reject(data);
