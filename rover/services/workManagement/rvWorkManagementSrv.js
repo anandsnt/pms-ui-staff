@@ -306,20 +306,25 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// 		name           : 'Clean Departures',
 			// 		work_type_id   : 67,
 			// 		work_type_name : 'Daily Cleaning',
-			// 		time_allocated : { hh: 2, mm: 15 
+			// 		time_allocated : { hh: 2, mm: 15 } 
 			// 	}]
 			// }];
+
+			var allTasks        = allTasks || {},
+				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
 
 			var rooms     = unassignedRooms.rooms,
 				roomTasks = unassignedRooms.room_tasks,
 
 			var i, j, k, l;
 
-			var eachRoom, eachRoomId, eachRoomTasks, eachTask;
-
-			var thatRoom, thatTask;
-
 			var compiled = [];
+
+			var eachRoom, eachRoomId, eachRoomTypeId;
+
+			var eachRoomTasks, eachTask;
+
+			var thatCompliedRoom, thatAllTask;
 
 			// 	creating a fresh array of room by copying rooms
 			// 	and augmenting it with empty 'room_tasks'
@@ -333,22 +338,23 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// loop through roomTasks, gather much info on each tasks
 			// and push it into appropriate room
 			for (i = 0, j = roomTasks.length; i < j; i++) {
-				eachRoomId    = roomTasks[i]['room_id'];
-				eachRoomTasks = roomTasks[i]['tasks'];
+				eachRoomId     = roomTasks[i]['room_id'];
+				eachRoomTypeId = roomTasks[i]['room_type_id'];
+				eachRoomTasks  = roomTasks[i]['tasks'];
 
-				thatRoom = _.find(compiled, { id: eachRoomId });
+				thatCompiledRoom = _.find(compiled, { id: eachRoomId });
 
 				for (k = 0, l = eachRoomTasks.length; k < l; k++) {
-					thatTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
+					thatAllTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
 
 					eachTask = $.extend({}, eachRoomTasks[k], {
-						'name'           : thatTask.name,
-						'work_type_id'   : thatTask.work_type_id,
-         				'work_type_name' : thatTask.work_type_name,
-						'time_allocated' : getTimeAllocated(thatTask, eachRoomId);
+						'name'           : thatAllTask.name,
+						'work_type_id'   : thatAllTask.work_type_id,
+         				'work_type_name' : thatAllTask.work_type_name,
+						'time_allocated' : getTimeAllocated(thatAllTask, eachRoomTypeId);
 					});
 
-					thatRoom['room_tasks'].push(eachTask);
+					thatCompiledRoom['room_tasks'].push(eachTask);
 				};
 			};
 
