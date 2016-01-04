@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCompanyAndTACardMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
+sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 
     $scope.isInAddRoutesMode = false;
