@@ -76,7 +76,7 @@
     <div class="faux-select-options" ng-class="{ 'hidden': !item.hasRateCodeFilter.show }">
         <label class="checkbox inline" ng-repeat="rateCode in item.hasRateCodeFilter.data">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : rateCode.selected}"></span>
-            <input type="checkbox" ng-model="rateCode.selected" ng-change="rateCodeChanged(item)" name="room-filters"> {{ rateCode.description }}
+            <input type="checkbox" ng-model="rateCode.selected" ng-change="rateCodeChanged(item, rateCode)" name="room-filters"> {{ rateCode.description }}
         </label>
     </div>
 </div>
@@ -103,7 +103,8 @@
         <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit  && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit && !item.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneMonthLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneYearLimit" ng-model="item.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
@@ -114,7 +115,8 @@
         <input ng-if="item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="!item.hasPrevDateLimit && item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
-        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="!item.hasPrevDateLimit && !item.hasDateLimit && !item.hasSysDateLimit && !item.hasOneYearLimit && !item.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        <input ng-if="item.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneMonthLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <input ng-if="item.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="item.untilDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
         <button ng-if="item.canRemoveDate" ng-class="{'visible': item.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search" ng-click="clearDateFromFilter(item, 'hasDateFilter')">Clear query</span>
@@ -531,9 +533,9 @@
     </div>
 </div>
 
-<a class="button green" ng-click="setnGenReport(item)">Show</a>
+<a class="button green" ng-click="setnGenReport(item)" ng-show="item.display_show_button">Show</a>
 
-<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.show_export && !hideExportOption">
+<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.display_export_button && !hideExportOption">
     <span class="icons icon-save">Export</span>
 </a>
 

@@ -496,7 +496,7 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['RATE_RESTRICTION_REPORT']:
-                    report['hasOneYearLimit']   = true;
+                    report['hasOneMonthLimit']   = true;
                     break;
 
                 default:
@@ -1185,6 +1185,9 @@ sntRover.factory('RVReportUtilsFac', [
             };
             
             function fillRoomTypeList (data) {
+                _.each(data, function(roomType){
+                    roomType.selected = true;
+                });                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
@@ -1195,7 +1198,7 @@ sntRover.factory('RVReportUtilsFac', [
                             filter       : foundFilter,
                             show         : false,
                             selectAll    : true,
-                            defaultTitle : 'Selected ALL',
+                            defaultTitle : 'Selecte Room Type(s)',
                             title        : 'All Selected',
                             data         : angular.copy( data )
                         });
@@ -1207,6 +1210,10 @@ sntRover.factory('RVReportUtilsFac', [
             }; 
 
             function fillRestrictionList (data) {
+                _.each(data, function(restriction){
+                    restriction.selected = true;
+                });
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
@@ -1217,7 +1224,7 @@ sntRover.factory('RVReportUtilsFac', [
                             filter       : foundFilter,
                             show         : false,
                             selectAll    : true,
-                            defaultTitle : 'Select Room type',
+                            defaultTitle : 'Select Restriction(s)',
                             title        : 'All Selected',
                             data         : angular.copy( data )
                         });
@@ -1715,8 +1722,8 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['RATE_RESTRICTION_REPORT']:
-                    report['fromDate']  = _getDates.monthStart;
-                    report['untilDate'] = _getDates.businessDate;
+                    report['fromDate']  = _getDates.businessDate;
+                    report['untilDate'] = _getDates.aMonthAfter;
                     break;
 
                 case reportNames['IN_HOUSE_GUEST']:
