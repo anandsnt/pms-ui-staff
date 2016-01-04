@@ -67,6 +67,8 @@
 				response.results[0].terms_and_conditions = (typeof $rootScope.termsAndConditions !=="undefined")? $rootScope.termsAndConditions:"" ;
 				checkinDetailsService.setResponseData(response.results[0]);
 				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
+				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;
+
 				//navigate to next page
 				$state.go('checkinReservationDetails');
 			},function(){
@@ -141,7 +143,6 @@
 						}
 						else{
 							//retrieve token for guest
-							$scope.isLoading = false;
 							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
 							$rootScope.reservationID 	= response.results[0].reservation_id;
 							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status ==='RESERVED')?true:false;

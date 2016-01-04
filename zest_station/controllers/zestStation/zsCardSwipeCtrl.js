@@ -35,6 +35,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             
 	});
 
+	$scope.clickedOnBackButton = function() {
+		$scope.$broadcast (zsEventConstants.CLICKED_ON_BACK_BUTTON);
+	};
 
 	/**
 	 * [isInCheckinMode description]
@@ -133,9 +136,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         };
         $scope.failSavePayment = function(response){
-          console.info('failed to save card details');
-          $scope.$emit('hideLoader');
-          console.warn(response);
+            console.info('failed to save card details');
+            $scope.$emit('hideLoader');
+            console.warn(response);
+            $state.go('zest_station.error');
         };
         /* what needs to be save to post to guest card
                     add_to_guest_card: true
@@ -283,8 +287,14 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 
             };
         
-        
-        
+        $scope.debugSixpayInit = function(){
+            console.warn('now debugging sixpay');
+            $scope.$emit('SWIPE_ACTION',{});
+        };
+        $scope.showDebugOptions = function(){
+            $scope.debugSixpay = true;
+            $scope.$digest();
+        };
         $scope.init = function(r){ 
            $scope.selectedReservation = $state.selectedReservation;
            
@@ -299,6 +309,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             } else {
                 $scope.at = 'card-swipe';
             }
+            $state.from = $scope.at;
             $scope.show = {
                 swipecardScreen: true
             };
@@ -328,6 +339,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 
 
         $scope.$on('SWIPE_ACTION',function(swipedCardData){
+            $scope.sixPaymentSwipe();
+            /*
                 var swipeOperationObj = new SwipeOperation();
                 var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
                     
@@ -346,6 +359,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     alert('failed to tokenize');
                 };
                 $scope.invokeApi(zsPaymentSrv.tokenize, getTokenFrom, tokenizeSuccessCallback, failcb);
+            */
         });
         
        $scope.saveCardDataFromSwipe = function(swipedCardData){
@@ -429,8 +443,80 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                   $scope.initiateCardReader();
                 }, 2000);
             }
+        } else {
+            $scope.refreshIframeWithGuestData($state.selectedReservation);
         }
+	 $scope.sixPaymentSwipe = function(){
+		var data = {};
+                if ($state.debugSixpay){
+                    if (zestSntApp.resdebug){
+                        data.reservation_id = zestSntApp.resdebug_id;
+                        console.info('debuggin reservation : ',zestSntApp.resdebug_id)
+                    } else {
+                        data.reservation_id = $state.selectedReservation.id;
+                    }
+                    //data.add_to_guest_card = true;
+                   // data.guest_id = 474341;
+                    
+                    //data.amount = "50.00";
+                    data.is_emv_request = true;
+                    data.payment_type = "CC";
+                } else {
+                    data.reservation_id = $state.selectedReservation.id;
+                    //data.add_to_guest_card = true;
+                    //data.guest_id = $state.selectedReservation.guest_details[0].id;
+                    
+                    data.is_emv_request = true;
+                    data.payment_type = "CC";
+                }   
+                data.emv_terminal_id = $state.emv_terminal_id;
+                
+                $scope.$emit('showLoader');
+		$scope.shouldShowWaiting = true;
+                
+		zsPaymentSrv.chipAndPinGetToken(data).then(function(response) {
+                        console.info('success: ',response);
+			$scope.shouldShowWaiting = false;
+			successSixSwipe(response);
+		},function(error){
+                        console.info('FAILED: ',error);
+                        $scope.$emit('hideLoader');
+			$scope.errorMessage = error;
+                        $state.swipe_error_msg = error;
+                        $state.go('zest_station.swipe_pay_error');
+			$scope.shouldShowWaiting = false;
+		});
+	};
+        
+	var successSixSwipe = function(response){
+		$scope.$emit("hideLoader");
+		var cardType = getSixCreditCardType(response.card_type).toLowerCase();
+		var endingWith = response.ending_with;
+		var expiryDate = response.expiry_date.slice(-2)+"/"+response.expiry_date.substring(0, 2);
+		console.info('successSixSwipe, card type: ',cardType);
+		if($scope.dataToSave.addToGuestCard || $scope.isFromGuestCard){
+				var dataToGuestList = {
+					"card_code": cardType,
+					"mli_token": endingWith,
+					"card_expiry": expiryDate,
+					"card_name": "",
+					"id": response.guest_payment_method_id,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":"CC",
+					"payment_type_id": 1,
+					"is_credit_card": true
 
+				};
+				$scope.cardsList.push(dataToGuestList);
+				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		};
+		$scope.closeDialog();
+
+	};
+        
+        
+        
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -503,7 +589,6 @@ var CardOperation = function(){
                                 }
                                 else{
                                         alert('card read success!');
-                                        console.info('reader data', data);
                                         successCallBack(data);
                                         that.callRecursively(options);
                                 }
