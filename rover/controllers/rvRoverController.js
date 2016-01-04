@@ -763,21 +763,4 @@ sntRover.controller('roverController',
           });
     };
 
-    $rootScope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
-
-    if($rootScope.isIpad) {
-       var onGetDeviceIdSuccess = function(data){
-            $rootScope.UUID = data.uuid;
-          },
-          onGetDeviceIdFailure = function(error) {
-
-          };
-        var options = {
-          "successCallBack": onGetDeviceIdSuccess,
-          "failureCallBack": onGetDeviceIdFailure,
-          "arguments": []
-        };
-
-      sntapp.uuidService.getDeviceId(options);
-    };
 }]);
