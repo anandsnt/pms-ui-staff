@@ -265,6 +265,16 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 			return 0;
 		};
 
+		self.sortRateAlphabet = function(a, b) {
+			if (a.name.toLowerCase() < b.name.toLowerCase()) {
+				return -1;
+			}
+			if (a.name.toLowerCase() > b.name.toLowerCase()) {
+				return 1;
+			}
+			return 0;
+		};
+
 		self.sortRatesAsc = function(a, b) {
 			var averageA = parseFloat(a.adr);
 			var averageB = parseFloat(b.adr);
@@ -318,10 +328,10 @@ sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVRes
 		};
 
 		self.raiseMemberRates = function(a, b) {
-			if ($scope.reservationData.ratesMeta[a.id].is_member) {
+			if (a.isMember) {
 				return -1;
 			}
-			if ($scope.reservationData.ratesMeta[b.id].is_member) {
+			if (b.isMember) {
 				return 1;
 			}
 			return 0;

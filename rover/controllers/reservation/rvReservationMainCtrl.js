@@ -1623,7 +1623,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
                 if (!$scope.reservationData.isHourly) {
                     $scope.validateOccupant($scope.reservationData.rooms[i], type);
-                    $scope.checkOccupancyLimit(null, true, i);
+                    if (!!$scope.reservationData.rooms[i].rateId) {
+                        $scope.checkOccupancyLimit(null, true, i);
+                    }
                 }
                 $scope.updateOccupancy(i);
             }

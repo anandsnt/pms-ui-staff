@@ -218,7 +218,7 @@
                 </li>
             </ul>
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'RATE'">
-                <li class="is-rate" ng-repeat="rate in display.rateFirstGrid">
+                <li class="is-rate" ng-repeat="rate in display.rateFirstGrid" ng-hide="rate.isHidden">
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="viewRateBreakUp(rate)">
                         <div class="data">
                             <h2>{{rate.name}}</h2>
