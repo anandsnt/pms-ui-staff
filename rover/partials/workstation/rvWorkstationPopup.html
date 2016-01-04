@@ -2,7 +2,7 @@
     <div class="modal-content form admin-form">
 
     <strong class="h2 message" translate>ADD_NEW_WORKSTATION</strong>
-
+    <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
     <div class="entry full-width">
         <label for="name">{{'WORKSTATION_NAME' | translate}}<strong>*</strong></label>
         <input id="name" placeholder="{{'WORKSTATION_NAME_PLACEHOLDER' | translate }}" ng-model="mapping.name" type="text" />
@@ -16,7 +16,7 @@
         <label for="emv" translate>EMV_TERMINAL</label>
         <div class="select">
             <select id="emv" class="placeholder" ng-options="emv.id as emv.name for emv in emv_terminals" ng-model="mapping.selectedEmvTerminal">
-               <option style="display:none" value="" translate>TERMINAL_DEFAULT_OPTION</option> 
+               <option style="display:none" value="" translate>TERMINAL_DEFAULT_OPTION</option>
             </select>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <label for="key" translate>KEY_ENCODER</label>
         <div class="select">
             <select id="emv" class="placeholder" ng-options="encoder.id as encoder.description for encoder in key_encoders | filter:{enabled: true}" ng-model="mapping.selectedKeyEncoder">
-            <option style="display:none" value="" translate>KEY_ENCODER_DEFAULT_OPTION</option>                
+            <option style="display:none" value="" translate>KEY_ENCODER_DEFAULT_OPTION</option>
             </select>
         </div>
     </div>

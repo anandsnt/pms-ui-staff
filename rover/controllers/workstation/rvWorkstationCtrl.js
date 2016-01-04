@@ -12,6 +12,7 @@ sntRover.controller('RVWorkstationController',[
 
     var fetchKeyEncoderList = function() {
       var onEncodersListFetchSuccess = function(data) {
+        $scope.$emit('hideLoader');
         $scope.key_encoders = data.results;
       };
       $scope.invokeApi(RVWorkstationSrv.fetchEncoders,{},onEncodersListFetchSuccess);
@@ -19,28 +20,33 @@ sntRover.controller('RVWorkstationController',[
     };
     var fetchEmvTerminalList = function() {
       var onEmvTerminalListFetchSuccess = function(data) {
+        $scope.$emit('hideLoader');
         $scope.emv_terminals = data.results;
       };
       $scope.invokeApi(RVWorkstationSrv.fetchEmvTerminals,{},onEmvTerminalListFetchSuccess);
 
     };
 
-    $scope.saveWorkStation = function() { 
+    $scope.saveWorkStation = function() {
       var onSaveWorkstationSuccess = function(data) {
-
+        $scope.errorMessage = "";
         var onSetWorkstationSuccess = function(response) {
           $scope.$emit('hideLoader');
           $timeout(function(){
             ngDialog.close();
           }, 250);
-        };        
+        };
 
         var params = {};
-        params.rover_device_id = $scope.getDeviceId();       
+        params.rover_device_id = $scope.getDeviceId();
         $scope.invokeApi(RVWorkstationSrv.setWorkstation,params,onSetWorkstationSuccess);
-        
+
       };
-      
+      var onSaveWorkstationFailure = function(error) {
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = error[0];
+      };
+
       var requestData = {};
       requestData.name = $scope.mapping.name;
       requestData.identifier = $scope.mapping.station_identifier;
@@ -54,7 +60,7 @@ sntRover.controller('RVWorkstationController',[
         requestData.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
       }
 
-      $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess);
+      $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess, onSaveWorkstationFailure);
 
     };
 
@@ -62,9 +68,10 @@ sntRover.controller('RVWorkstationController',[
       $scope.mapping = {};
       fetchKeyEncoderList();
       fetchEmvTerminalList();
+      $scope.errorMessage = "";
     };
 
     init();
 
-    
+
 }]);

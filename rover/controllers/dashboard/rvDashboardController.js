@@ -85,6 +85,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       var onSetWorkstationSuccess = function(data) {
             if(!data.is_workstation_present) {
               if ($scope.isHotelAdmin) {
+                $scope.$emit('hideLoader');
                 showWorkstationPopup();
               } else {
                 createWorkstationForNonAdminUsers();
