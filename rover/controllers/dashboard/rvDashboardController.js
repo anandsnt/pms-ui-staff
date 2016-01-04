@@ -62,7 +62,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
    });
 
-   var setWorkStation = function(){    
+   var setWorkStation = function(){
       var onSetWorkstationSuccess = function(data) {
             if(!data.is_workstation_present) {
               if ($scope.isHotelAdmin) {
@@ -71,14 +71,14 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
                 createWorkstationForNonAdminUsers();
               }
 
-              
+
             }
           },
           onSetWorkstationFailure = function(failure) {
-            
+
           };
       var requestData = {};
-      requestData.rover_device_id = $scope.getDeviceId();       
+      requestData.rover_device_id = $scope.getDeviceId();
       $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
 
    };
@@ -94,7 +94,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         closeByEscape: false
       });
    };
- 
+
    var createWorkstationForNonAdminUsers = function() {
 
      var onSaveWorkstationSuccess = function(data) {
@@ -104,13 +104,13 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         };
 
         var params = {};
-        params.rover_device_id = $scope.getDeviceId();       
+        params.rover_device_id = $scope.getDeviceId();
         $scope.invokeApi(RVWorkstationSrv.setWorkstation,params,onSetWorkstationSuccess);
 
      };
 
      var requestData = {};
-     requestData.rover_device_id =  $scope.getDeviceId();  
+     requestData.rover_device_id =  $scope.getDeviceId();
      requestData.auto_generate_workstation = true;
 
      $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess);
@@ -121,10 +121,10 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     var deviceId = "";
     if($scope.isIpad) {
       //TODO:- Set the device uid
-       deviceId = "12345678";
-     } else {      
+       deviceId = $rootScope.UUID;
+     } else {
       deviceId = "DEFAULT";
-     } 
+     }
 
      return deviceId;
    };

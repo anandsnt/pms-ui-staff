@@ -8,6 +8,7 @@ var GlobalApp = function(){
     try{
     	this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
+        this.uuidService = new UUIDService();
     }
         catch(er){
     };
