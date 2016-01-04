@@ -21,7 +21,7 @@
 <div class="form_add_new_rate">
     <div class="form-title cursor_pointer" ng-hide="isAddOrEditMode()">
         <div class="rate_additional_details_heading">
-            DIRECT URLS
+            DIRECT URLS ({{urls.length}})
             <a id="add-new-button" ng-hide="isConnectedToPMS" class="action add add-new-direct-url" ng-click="addNew()">ADD NEW</a>
         </div>
     </div>
@@ -38,16 +38,16 @@
             <th class="header center_align">DELETE</th>
         </thead>
         <tbody>
-            <tr ng-repeat="url in urls">
-                <td ng-hide="hideRow($index)" ng-click="editSingle($index)">{{url.name}}</td>
+            <tr ng-repeat="urlData in urls">
+                <td ng-hide="hideRow($index)" ng-click="editSingle($index)">{{urlData.name}}</td>
                 <td ng-hide="hideRow($index)" ng-click="editSingle($index)">
-                    <span>pms.stayntouch.com/checkin/{{url.path}} </span>
+                    <span>{{urlData.url}}</span>
                     </span>
                 </td>
                 <td ng-hide="hideRow($index)">
                     <div class="entry">
                         <div class="switch-button single"
-                                ng-class="{ on: url.is_active }">
+                                ng-class="{ on: urlData.active }">
                             <input type = "checkbox"
                                     id = "rates-addons"
                                     name = "rates-addons"
