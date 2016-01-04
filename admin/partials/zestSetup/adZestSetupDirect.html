@@ -3,8 +3,8 @@
         <h3><span class="ng-scope" translate="">ZEST_SETUP_AVAILABILITY_LABEL</span> </h3>
     </div>     
     <div class="entry full-width">
-        <ad-toggle-button is-checked="data.zest_station_setup.zest_direct_checkin_day_before_arrival" label="{{'ZEST_SETUP_DIRECT_URL_HEADER'| translate}}" div-class="full-width"></ad-toggle-button>
-        <ad-toggle-button is-checked="data.zest_station_setup.zest_direct_checkin_day_before_arrival" label="{{'ZEST_SETUP_AVAIL_DB_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
+        <ad-toggle-button is-checked="directUrlData.zest_direct_url_setup.is_zest_direct_url_checkin" label="{{'ZEST_SETUP_DIRECT_URL_HEADER'| translate}}" div-class="full-width"></ad-toggle-button>
+        <ad-toggle-button is-checked="directUrlData.zest_direct_url_setup.zest_direct_url_checkin_day_before_arrival" label="{{'ZEST_SETUP_AVAIL_DB_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
     </div>
 </fieldset>
 
@@ -13,7 +13,7 @@
         <h3><span class="ng-scope" translate="">ZEST_SETUP_MSG_TO_GUEST_LABEL</span> </h3>
     </div> 
     <div class="entry full-width">
-        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.zest_station_setup.zest_direct_checkin_no_service_msg" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL' | translate}}" placeholder = ""></ad-textarea>
+        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="directUrlData.zest_direct_url_setup.zest_direct_url_checkin_no_service_msg" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL' | translate}}" placeholder = ""></ad-textarea>
     </div>
 </fieldset>
 <fieldset class="holder full-width">
