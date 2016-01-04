@@ -5,10 +5,10 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.iBeaconLinker = null;
     this.enableURLChange = true;
+    this.uuidService = null;
     try{
     	this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
-        this.uuidService = new UUIDService();
     }
         catch(er){
     };
@@ -40,7 +40,7 @@ var GlobalApp = function(){
 
     		xhr.onreadystatechange=function() {
   				if (xhr.readyState===4 && xhr.status===200){
-  					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
+                      that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
   					that.fetchFailedOfCordovaPlugins();
   				}
@@ -59,14 +59,28 @@ var GlobalApp = function(){
     	$('body').append(data);
         that.cordovaLoaded = true;
         try{
+
     	   that.cardReader = new CardOperation();
+
         }
         catch(er){
         };
         try{
+
             that.iBeaconLinker = new iBeaconOperation();
+
         }
         catch(er){};
+
+        try {
+
+            that.uuidService = new UUIDService();
+
+        }
+        catch(er){
+
+        };
+
 
     };
 
