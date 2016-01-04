@@ -46,5 +46,53 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
         });
         return deferred.promise;
     };
+    // save new direct URL
+    this.saveNewDirectURL= function(data){
+        var deferred = $q.defer();
+        var url = '/admin/zest_direct_url_setups';
+
+        ADBaseWebSrv.putJSON(url,data).then(function(data) {
+                deferred.resolve(data);
+        },function(data){
+                deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    //edit a direct URL
+    this.editDirectURL = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/zest_direct_url_setups';
+
+        ADBaseWebSrv.putJSON(url,data).then(function(data) {
+                deferred.resolve(data);
+        },function(data){
+                deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    //delere a direct URL
+    this.deteDirectUrl = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/zest_direct_url_setups';
+
+        ADBaseWebSrv.putJSON(url,data).then(function(data) {
+                deferred.resolve(data);
+        },function(data){
+                deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    // activate/deactivate a direct URL
+    this.toggleDirectUrl = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/zest_direct_url_setups';
+
+        ADBaseWebSrv.putJSON(url,data).then(function(data) {
+                deferred.resolve(data);
+        },function(data){
+                deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
 }]);
