@@ -145,6 +145,15 @@ sntZestStation.controller('zsRootCtrl', [
                 }
             }
             if (theme !== null){
+            var loadStyleSheets = function(filename){
+                console.info(filename);
+                            var fileref = document.createElement("link");
+                            fileref.setAttribute("rel", "stylesheet");
+                            fileref.setAttribute("type", "text/css");
+                            fileref.setAttribute("href", filename);
+                            $('body').append(fileref);
+            };
+                loadStyleSheets('/assets/' + theme.toLowerCase() +'.css');
                 $scope.setThemeByName(theme);
             }
             

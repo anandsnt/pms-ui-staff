@@ -9,9 +9,5 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  
- *= require '../shared/lib/css/ngDialog.css'
- *= require '../shared/lib/css/ngDialog-theme-default.css'
- *= require '../shared/lib/css/ngDialog-theme-plain.css'
- *= require '../shared/lib/css/date-picker.css.less'
- *= require '../shared/lib/css/advanced_date_picker.css'
+ *= require '../zest_station/css/zoku.css.less'
  */
