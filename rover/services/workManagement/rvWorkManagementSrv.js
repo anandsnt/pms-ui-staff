@@ -229,7 +229,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/unassigned_rooms';
 
-			RVBaseWebSrvV2.getJSON(url, params)
+			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data.results);
 				}, function(data) {
@@ -239,10 +239,31 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.processedUnassignedRooms = function() {
-			var deferred = $q.defer();
+		this.fetchAllAssigned = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/assigned_rooms';
 
-			deferred.resolve( compileUnassignedRooms() );
+			RVBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data.results);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.processedUnassignedRooms = function(params) {
+			var deferred = $q.defer(),
+				promises = [];
+
+			// fetch tasks and unassigned rooms
+			promises.push( fetchAllTasks() );
+			promises.push( fetchAllUnassigned(params) );
+
+			$q.all(promises).then(function() {
+				deferred.resolve( compileUnassignedRooms(unassignedRoomsResponse, tasksResponse) );
+			});
 
 			return deferred.promise;
 		};
@@ -250,39 +271,121 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		this.processedAssignedRooms = function() {
 			var deferred = $q.defer();
 
-			deferred.resolve( compileUnassignedRooms() );
+			deferred.resolve( compileAssignedRooms(unassignedRoomsResponse, tasksResponse) );
+
+			return deferred.promise;
+
+			var deferred = $q.defer(),
+				promises = [];
+
+			// fetch tasks and unassigned rooms
+			promises.push( fetchAllTasks() );
+			promises.push( fetchAllUnassigned(params) );
+
+			$q.all(promises).then(function() {
+				deferred.resolve( compileAssignedRooms(unassignedRoomsResponse, tasksResponse) );
+			});
 
 			return deferred.promise;
 		};
 
 
-		function compileUnassignedRooms () {
+		function compileUnassignedRooms (unassignedRooms, allTasks) {
 			// DESIRED STRUCTURE
 			// =================
 			// 
-			// this.unassignedRooms = [{
-			// 	id: 34,
-			// 	room_no: 3442,
-			// 	current_status: 'CLEAN',
-			// 	reservation_status: 'Not Reserved',
-			// 	checkout_time: null,
+			// [{
+			// 	id                 : 34,
+			// 	room_no            : 3442,
+			// 	current_status     : 'CLEAN',
+			// 	reservation_status : 'Not Reserved',
+			// 	checkout_time      : null,
 			// 	room_tasks: [{
-			// 		id: 11,
-			// 		completion_time: '02:15',
-			// 		is_completed: true
-			// 	}, {
-			// 		id: 13,
-			// 		completion_time: '02:15',
-			// 		is_completed: true
+			// 		id             : 11,
+			// 		is_completed   : true,
+			// 		name           : 'Clean Departures',
+			// 		work_type_id   : 67,
+			// 		work_type_name : 'Daily Cleaning',
+			// 		time_allocated : { hh: 2, mm: 15 
 			// 	}]
 			// }];
+
+			var rooms     = unassignedRooms.rooms,
+				roomTasks = unassignedRooms.room_tasks,
+
+			var i, j, k, l;
+
+			var eachRoom, eachRoomId, eachRoomTasks, eachTask;
+
+			var thatRoom, thatTask;
+
+			var compiled = [];
+
+			// 	creating a fresh array of room by copying rooms
+			// 	and augmenting it with empty 'room_tasks'
+			for (i = 0, j = rooms.length; i < j; i++) {
+				eachRoom = $.extend({}, rooms[i], {
+					'room_tasks': []
+				});
+				compiled.push(eachRoom);
+			};
+
+			// loop through roomTasks, gather much info on each tasks
+			// and push it into appropriate room
+			for (i = 0, j = roomTasks.length; i < j; i++) {
+				eachRoomId    = roomTasks[i]['room_id'];
+				eachRoomTasks = roomTasks[i]['tasks'];
+
+				thatRoom = _.find(compiled, { id: eachRoomId });
+
+				for (k = 0, l = eachRoomTasks.length; k < l; k++) {
+					thatTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
+
+					eachTask = $.extend({}, eachRoomTasks[k], {
+						'name'           : thatTask.name,
+						'work_type_id'   : thatTask.work_type_id,
+         				'work_type_name' : thatTask.work_type_name,
+						'time_allocated' : getTimeAllocated(thatTask, eachRoomId);
+					});
+
+					thatRoom['room_tasks'].push(eachTask);
+				};
+			};
+
+			// find and convert the completion time
+			// and convert in into proper standards
+			function getTimeAllocated (task, roomId) {
+				var time = '',
+					hh = 0,
+					mm = 0;
+
+				if ( task['room_types_completion_time'].hasOwnProperty(roomId) && !! task['room_types_completion_time'][roomId] ) {
+					time = task['room_types_completion_time'][roomId];
+				} else if ( !! task['completion_time'] ) {
+					time = task['completion_time'];
+				};
+
+				if ( time.indexOf(':') > -1 ) {
+					hh = time.split(':')[0];
+					mm = time.split(':')[1];
+				};
+
+				return {
+					hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
+					mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
+				};
+			};
+
+			console.log(compiled);
+
+			return compiled;
 		};
 
 		function compileAssignedRooms () {
 			// DESIRED STRUCTURE
 			// =================
 			// 
-			// this.assignedRooms = [{
+			// assignedRooms = [{
 			// 	id: 34,
 			// 	name: 'Vijay Dev',
 			// 	room_no: 3442,
