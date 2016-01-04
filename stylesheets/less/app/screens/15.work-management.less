@@ -101,14 +101,20 @@
             .pull-left;
 
             &.date { width: 175px; }
+            &:not(:last-child) { margin-right: 20px; }
+        }
 
-            &.actions {
-                min-width: 60px;
-                max-width: 200px;
-                .pull-right;
-            }
+        .actions {
+            min-width: 60px;
+            max-width: 200px;
+            .pull-right;
+        }
 
-            &:not(:last-child) { margin-right: 0; }
+        .action {
+            width: 60px;
+            .pull-left;
+
+            &:not(:last-child) { margin-right: 20px; }
         }
 
         label:not(.checkbox) {
@@ -171,7 +177,7 @@
             &:hover { background-position: 92% -34px; }
         }
     }
-    
+
     #worksheet-content {
         .float;
 
