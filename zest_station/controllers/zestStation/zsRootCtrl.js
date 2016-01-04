@@ -153,7 +153,7 @@ sntZestStation.controller('zsRootCtrl', [
                             fileref.setAttribute("href", filename);
                             $('body').append(fileref);
             };
-                loadStyleSheets('/assets/' + theme.toLowerCase() +'.css');
+                loadStyleSheets('/assets/' + "zeststation_"+theme.toLowerCase() +'.css');
                 $scope.setThemeByName(theme);
             }
             
