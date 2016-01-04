@@ -1,54 +1,177 @@
 #work-management {
-    z-index: 99;
+    text-align: center;
 
-    .wrapper {
-        margin: 0 auto;
-        padding: 60px 0 20px; 
-        #pixel-to-percent > .width(1568, 2048); 
+    h3,
+    h4 {
+        font-weight: 300;
+        text-transform: uppercase;
+        text-align: right;
+        margin: 0;
+        width: 240px;
+        .pull-left;
+    }
 
-        .dashboard-block { 
-            border-bottom: 0; 
+    h3 { font-size: 24px; }
 
-            &.buttons {
-                .actions { 
-                    margin: 0 auto;
+    h4 { font-size: 18px; }
 
-                    li {
-                        margin-right: 40px;
+    ul {
+       padding-left: 40px;
+        .calc-width(100, 240);
+        .pull-left; 
+    }
 
-                        .button {
-                            padding: 0 40px;
-                            font-size: 20px;
-                            line-height: 60px;
-                        }
+    li {
+        text-transform: uppercase;
+        text-align: right;
+        margin-bottom: 0;
+        color: @grey3;
+        .pull-left;
+        .calc-width(20, 20);
 
-                        &:last-child { margin-right: 0; }
-                    }
-                }
-            }
+        span {
+            font-size: 36px;
+            line-height: 40px;
+            font-weight: 300;
+            color: @textColor;
+            .nowrap();
+            .show;
+        }
+
+        &:not(last-child) { margin-right: 20px; }
+    }
+
+    .toggle {
+        background-position: 100% 50%;
+        padding-right: 40px;
+        cursor: pointer;
+    }
+
+    .button {
+        padding: 0 40px;
+        font-size: 20px;
+        line-height: 60px;
+        margin-top: 40px;
+    }
+
+    .wrapper { padding: 60px 80px 20px; }
+
+    .work-type {
+        padding: 20px 0;
+        .flex(center);
+        .float;
+
+        &.first { 
+            padding-top: 0; 
+
+            h3 { padding-top: 24px; }
+
+            .toggle { background-position: 100% 30px; }
+        }
+
+        &:not(.last) { border-bottom: 2px solid rgba(0,0,0,.1); }
+    }
+
+    .task-details {
+        margin-top: -2px;
+        .background(@white);
+    }
+
+    .task {
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        .flex(center);
+        .float;
+
+        li {
+            span { font-size: 30px; }
         }
     }
 }
 
-#work-management-search {
-    z-index: 999;
-    .background(@white);
-
-    &.no-results {
-        .wrapper,
-        .search-results { height: 100%; }            
-    }
-
-    &.showing-search {
-        #move > #from > .bottom();
-    }
-
-    &.closing-search {
-        #move > #to > .bottom();
-    }
-}
-
 @media not print {
+    .worksheet-header {
+        position: relative;
+        padding: 10px 20px;
+        height: 90px;
+        background: rgba(0,0,0,.1);
+        .float;
+
+        .entry {
+            .pull-left;
+
+            &.date { width: 175px; }
+
+            &.actions {
+                min-width: 60px;
+                max-width: 200px;
+                .pull-right;
+            }
+
+            &:not(:last-child) { margin-right: 0; }
+        }
+
+        label:not(.checkbox) {
+            font-size: 14px;
+            line-height: 1em;
+            text-transform: uppercase;
+            .show;
+        }
+
+        .button {
+            .size(50px, 60px);
+
+            &:not(:last-child) { margin-right: 10px; }
+        }
+
+        /* Date ***/
+        .entry-data {
+            background: @white @calendar no-repeat 92% 16px;
+            background-size: 20px;
+            position: relative;
+            #border-radius > .rounded();
+            .box-shadow();
+            .size(50px, 100%);
+            .show;
+
+            input { 
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 99;
+                cursor: pointer;
+                .square(100%);
+                .opacity(0);
+            }
+
+            .day,
+            .month,
+            .year { position: absolute; }
+
+            .month,
+            .year {
+                left: 65px;
+                font-size: 16px;
+                line-height: 1em;
+            }
+
+            .day {
+                top: 15px;
+                left: 10px;
+                font-size: 40px;
+            }
+
+            .month { top: 10px; }
+            .year { top: 24px; }
+
+            @media @highdpi {
+                background-image: @calendar2x;
+            }
+
+            &:hover { background-position: 92% -34px; }
+        }
+    }
+    
     #worksheet-content {
         .float;
 
