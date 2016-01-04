@@ -27,6 +27,12 @@
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
             </fieldset>
+            <fieldset class="holder left">    
+                <div class="form-title full-width">
+                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
+                </div>
+                 <ad-toggle-button is-checked="zestSettings.show_room_number" label="{{'ON_SCREEN_ROOM_NUMBER'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
 
             <!-- color selection -->
             <fieldset class="holder left max-width">
