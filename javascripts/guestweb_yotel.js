@@ -15,7 +15,7 @@
 //= require_tree ../guestweb/checkoutlater
 //= require_tree ../guestweb/checkoutnow
 //= require_tree ../guestweb/checkin
-//= require_tree ../guestweb/ccAndRoom/Yotel
+//= require_tree ../guestweb/ccAndRoom
 //= require_tree ../guestweb/preCheckin/services
 //= require_tree ../guestweb/zest
 

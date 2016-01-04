@@ -287,7 +287,7 @@ sntRover.controller('RVReportsMainCtrl', [
 				}
 			}
 
-			if (item.title === reportNames['DAILY_PRODUCTION']) {
+			if (item.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE']) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
 				}
@@ -1443,7 +1443,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			param = jQuery.param(genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter));
 
 			switch ( chosenReport.title ) {
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					exportUrl = "/api/reports/" + chosenReport.id + "/submit.csv?" + param;
 					break;
 

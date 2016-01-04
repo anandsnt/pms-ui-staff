@@ -67,7 +67,7 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
              colorData.header_icons = hasTagsRemoved(data.header_icons);
              colorData.header_icons_pressed = hasTagsRemoved(data.header_icons_pressed);
             
-            $scope.invokeApi(ADZestStationSrv.save, {'kiosk':{'colors':colorData,'home_screen':$scope.zestSettings.home_screen,'guest_bill':$scope.zestSettings.guest_bill,'reg_card_text':$scope.zestSettings.reg_card_text}}, saveSuccess, saveFailed);
+            $scope.invokeApi(ADZestStationSrv.save, {'kiosk':{'colors':colorData,'home_screen':$scope.zestSettings.home_screen,'guest_bill':$scope.zestSettings.guest_bill,'reg_card_text':$scope.zestSettings.reg_card_text,"show_room_number":$scope.zestSettings.show_room_number}}, saveSuccess, saveFailed);
         };
         
         $scope.init = function(){

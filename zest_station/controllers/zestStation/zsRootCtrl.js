@@ -304,8 +304,8 @@ sntZestStation.controller('zsRootCtrl', [
             if (station !==  null){
                 sntZestStation.selectedPrinter = station.printer;
                 sntZestStation.encoder = station.key_encoder_id;
+                $state.workstation_id = station.id;
             }
-                $state.station = station;
             return station;
         };
 	$scope.failureCallBack =  function(data){
