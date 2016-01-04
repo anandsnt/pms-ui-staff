@@ -682,6 +682,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	    var saveRouteAPICall = function(){
 
 	    	$scope.saveSuccessCallback = function (data) {
+                $scope.$parent.$emit('hideLoader');
                 if (data.has_crossed_credit_limit) {
                     ngDialog.open({
                         template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
@@ -691,7 +692,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     });
                 }
                 else {
-                    $scope.$parent.$emit('hideLoader');
                     $scope.$parent.$emit('BILLINGINFOADDED');
                     $scope.setReloadOption(true);
                     $scope.headerButtonClicked();
