@@ -57,7 +57,8 @@ module.exports = {
 				roverRoot + 'services/housekeeping/rvHkRoomStatusSrv.js',
 				roverRoot + 'services/util/rvUtilSrv.js',
 				roverRoot + 'services/availability/rvAvailabilitySrv.js',
-				roverRoot + 'filters/roundFilter.js'
+				roverRoot + 'filters/roundFilter.js',
+				roverRoot + 'services/workstation/workstationSrv.js'
 			]
 		};		
 		
