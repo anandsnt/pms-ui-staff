@@ -6,6 +6,15 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         var scrollerOptions = {click: true, scrollbars: true};
         $scope.setScroller('work_management', scrollerOptions);
 
+        $scope.refreshScroller = function (key){
+            setTimeout(function() {
+                if ( !!$scope && $scope.myScroll ) {
+                    if( key in $scope.myScroll ){
+                        $scope.myScroll[key].refresh();
+                    }
+                };
+            }, 100);
+        };
 
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
@@ -186,18 +195,9 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             setStats();
         };
 
-        /**
-         * Utility function to get the sum of a statistics item for all tasks in a work type.
-         * @param {Object} the work type Object.
-         * @param {String} statistics item name in API param form.
-         * @return {Integer} sum for all tasks.
-         */
-        $scope.getTotalForAllTasks = function(workType, item) {
-            var values  = _.pluck(workType.tasks, item),
-                sum     = _.reduce(values, function(sum, el) {
-                                return sum + el;
-                            }, 0);
-            return sum;
+        $scope.toggleTasksList = function(workType) {
+            workType.showTasks = workType.showTasks ? false : true;
+            $scope.refreshScroller('work_management');
         };
 
         // Initialize statistics.

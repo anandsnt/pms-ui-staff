@@ -1,55 +1,70 @@
 
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<!-- Search form -->
-<form method="get" action="" name="work-management-search-form" id="work-management-search-form" class="search-form has-options" role="search">
-    <div class="entry options">
-        <div class="has-datepicker">
-            <input id="rmDateRange" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
-            <button ng-click="showCalendar('RVWorkManagementSearchDatePickerController')" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
+<!-- Worksheet header -->
+<section id="work-management-header" class="worksheet-header">
+    <div class="entry date">
+        <label for="worksheet-date">Date</label>
+        <div class="entry-data">
+            <!--<input id="worksheet-date" type="text" class="datepicker" value="{Date}" readonly />-->
+            <input id="worksheet-date" type="text" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly value="{{currentFilterData.selected_date_range}}" class="datepicker" ng-click="showCalendar('RVWorkManagementSearchDatePickerController')">
+            <strong class="day">{{currentFilterData.selected_date_range | date: 'dd'}}</strong>
+            <span class="month">January</span>
+            <span class="year">2016</span>
         </div>
-        <button type="button" id="refresh-data" class="filter button white with-icon only-icon refresh" ng-click="resetView()">
-        <span class="icons icon-reset"></span>
-        <span translate>Refresh</span>
-    </button>
     </div>
-</form>
+    <div class="entry actions">
+        <div class="action">
+            <label>Re-Set</label>
+            <button type="button" class="button white with-icon only-icon" ng-click="resetView()">
+                <span class="icons icon-reset"></span>
+            </button>
+        </div>
+    </div>
+</section>
 
 <!-- Work Management -->
 <section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching && !stateVariables.noSearchResults" ng-iscroll="work_management"  ng-iscroll-delay="500">
     <div class="wrapper">
-        <div class="dashboard-block data">
-            <ul>
-                <li>  &nbsp;  </li>
-                <li>Total Hours</li>
-                <li>Total Staff</li>
-                <li>Total Rooms</li>
-                <li>Assigned</li>
-                <li>Completed</li>
+        <div class="work-type" ng-repeat-start="workType in workStats.work_types" ng-init="showTasks = false"
+                ng-class="{ 'first': $first, 'last': $last }">
+                <!-- add class "first" for first work type shown and "last" for last work type shown on screen -->
+            <h3 class="has-arrow toggle" ng-click="toggleTasksList(workType)">{{workType.name}}</h3> <!-- Toggle L60-L72 visibility on click/tap -->
+            <!-- if first work type shown on screen -->
+            <ul ng-if="$first">
+                <li>Total Hours<span>{{workType.total_hours}}</span></li>
+                <li>Total Staff<span>{{workType.total_staff}}</span></li>
+                <li>Total Rooms<span>{{workType.total_rooms}}</span></li>
+                <li>Assigned<span>{{workType.total_rooms_assigned}}</span></li>
+                <li>Completed<span>{{workType.total_rooms_completed}}</span></li>
             </ul>
+            <!-- use this for all other work types shown on screen:-->
+            <ul ng-if="!$first">
+                <li><span>{{workType.total_hours}}</span></li>
+                <li><span>{{workType.total_staff}}</span></li>
+                <li><span>{{workType.total_rooms}}</span></li>
+                <li><span>{{workType.total_rooms_assigned}}</span></li>
+                <li><span>{{workType.total_rooms_completed}}</span></li>
+            </ul>
+
         </div>
-        <div class="dashboard-block data" ng-repeat="workType in workStats.work_types">
-            <ul>
-                <li>{{workType.name}}</li>
-                <li>{{ getTotalForAllTasks(workType, 'total_hours') }}</li>
-                <li>{{ getTotalForAllTasks(workType, 'total_maids_required') }}</li>
-                <li>{{ getTotalForAllTasks(workType, 'total_rooms') }}</li>
-                <li>{{ getTotalForAllTasks(workType, 'total_rooms_assigned') }}</li>
-                <li>{{ getTotalForAllTasks(workType, 'total_rooms_completed') }}</li>
-            </ul>
-            <ul ng-repeat="task in workType.tasks">
-                <li>{{ task.name}}</li>
-                <li>{{ task.total_hours }}</li>
-                <li>{{ task.total_maids_required }}</li>
-                <li>{{ task.total_rooms }}</li>
-                <li>{{ task.total_rooms_assigned }}</li>
-                <li>{{ task.total_rooms_completed }}</li>
-            </ul>
+        <div class="task-details" ng-repeat-end ng-class="{ 'hidden': !workType.showTasks }">
+            <!-- Toggle class "hidden" when L41 clicked/tapped -->
+            <div class="task" ng-repeat="task in workType.tasks">
+                <h4>{{task.name}}</h4>
+                <ul>
+                    <li><span>{{ task.total_hours }}</span></li>
+                    <li><span>{{ task.total_staff }}</span></li>
+                    <li><span>{{ task.total_rooms }}</span></li>
+                    <li><span>{{ task.total_rooms_assigned }}</span></li>
+                    <li><span>{{ task.total_rooms_completed }}</span></li>
+                </ul>
+            </div>
         </div>
-        <div class="dashboard-block buttons">
+        <button type="button" class="button blue">Manage Work Sheets</button>
+        <!--<div class="dashboard-block buttons">
             <ul class="actions">
                 <li><a ui-sref="rover.workManagement.multiSheet({ date : stateVariables.viewingDate.date })" class="button blue">Manage Work Sheets</a></li>
-                <!--<li><button ng-click="showCreateWorkSheetDialog()" class="button green open-modal">Create Work Sheet</button></li>-->
             </ul>
-        </div>
+        </div>-->
     </div>
 </section>
