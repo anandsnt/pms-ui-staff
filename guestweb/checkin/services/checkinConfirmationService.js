@@ -42,11 +42,25 @@
 				return deferred.promise;
 			};
 
+			var updateEmail = function(data) {
+
+				var deferred = $q.defer();
+				var url = "";
+				$http.post(url,data).success(function(response) {
+				     deferred.resolve(response);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;
+			};
+
 			return {
 				responseData: responseData,
 				login : login,
 				searchReservation:searchReservation,
-				getToken:getToken
+				getToken:getToken,
+				updateEmail:updateEmail
 			};
 		};
 

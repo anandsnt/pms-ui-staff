@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var emailEntryController = function($scope,$modal) {
+	var emailEntryController = function($scope,$modal,checkinConfirmationService) {
 			var errorOpts = {
       backdrop: true,
       backdropClick: true,
@@ -24,7 +24,7 @@
     function validateEmail(email) {
 	    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	    return re.test(email);
-	}
+	  };
 
     $scope.emailSubmitted = function(){
 
@@ -32,13 +32,20 @@
     		$modal.open(errorOpts);
     	}
     	else{
-    		$scope.emailUpdated = true;
+        checkinConfirmationService.updateEmail({"email":$scope.guestDetails.email}).then(function(response) {
+          $scope.isLoading = false;
+          $scope.emailUpdated = true;
+        },function(){
+          $scope.netWorkError = true;
+          $scope.isLoading = false;
+        });
+
     	}
-    }
+    };
 };
 
 var dependencies = [
-'$scope','$modal',
+'$scope','$modal','checkinConfirmationService',
 emailEntryController
 ];
 

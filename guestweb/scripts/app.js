@@ -90,6 +90,9 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
  	$rootScope.application        = $attrs.application;
  	$rootScope.collectCCOnCheckin = ($attrs.checkinCollectCc === "true") ? true:false;
  	$rootScope.isMLI = ($attrs.paymentGateway  = "MLI") ? true : false;
+ 	//room key delivery options
+ 	$rootScope.keyDeliveryByEmail = true;
+ 	//$rootscope.keyDeliveryByText  = true;
 
 
     //Params for zest mobile and desktop screens

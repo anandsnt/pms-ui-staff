@@ -38,7 +38,7 @@ $attrs.isCheckin = 'true'
 $attrs.reservationStatus ='RESERVED' ;
 $attrs.isAutoCheckin = 'true';//$attrs.isCheckin ='true';
 $attrs.isExternalVerification=  'false';
-
+$rootScope.keyDeliveryByEmail = true;
 // for checkin
 $attrs.isCheckin= 'true'; // set to true
 
@@ -1544,12 +1544,9 @@ birthDateDetailsController
 
 sntGuestWeb.controller('birthDateDetailsController', dependencies);
 })();
-/*
-  email entry Ctrl where the email is added
-*/
 
 (function() {
-  var emailEntryController = function($scope,$modal) {
+  var emailEntryController = function($scope,$modal,checkinConfirmationService) {
       var errorOpts = {
       backdrop: true,
       backdropClick: true,
@@ -1561,17 +1558,37 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
         }
       }
     };
+
+
     $scope.guestDetails = { "email":""};
     $scope.emailUpdated = false;
 
+   
+    function validateEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    };
+
     $scope.emailSubmitted = function(){
-      
-        $scope.emailUpdated = true;
-    }
+
+      if(!validateEmail($scope.guestDetails.email)){
+        $modal.open(errorOpts);
+      }
+      else{
+        checkinConfirmationService.updateEmail({"email":$scope.guestDetails.email}).then(function(response) {
+          $scope.isLoading = false;
+          $scope.emailUpdated = true;
+        },function(){
+          $scope.netWorkError = true;
+          $scope.isLoading = false;
+        });
+
+      }
+    };
 };
 
 var dependencies = [
-'$scope','$modal',
+'$scope','$modal','checkinConfirmationService',
 emailEntryController
 ];
 

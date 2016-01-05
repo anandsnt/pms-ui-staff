@@ -19,13 +19,13 @@
 	
 		<div class="container-fluid">
 			<div class="row checkin-wrapper-top">
-				<div class="checkout-status centeralign checkout-now-status pre-checkin-complete">
+				<div class="checkout-status centeralign padding-top-bottom-50">
 					<p class="msg-head blue-text preckin-status-header">You are checked in!</p>
 					<p class="msg-body">Reservation #:{{confirmationNumber}}</p>
 					<p class="msg-body">{{responseData.confirmation_message}}</p>
 					<p class="msg-body">resheil@stayntouch.com</p>
 				</div>
-				<div class="row cabin_number_field centeralign">			
+				<div class="row cabin_number_field centeralign" ng-show="keyDeliveryByEmail">			
 					<button class="checkin-button continue-button email-button"
 					ng-click="changeEmail()">
 						<span class="white-text email-button-text">Change Email address</span>
