@@ -78,7 +78,7 @@
 		}
 	};
 	$scope.showCalender = function(){
-		loseFocus();// unfocus the input fields , so as to fix cursor being shown above the calendar
+		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 		$scope.isCalender = true;
 	};
 	$scope.closeCalender = function(){

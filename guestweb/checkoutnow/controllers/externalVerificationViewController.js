@@ -25,7 +25,7 @@
 	};
 	// Calendar toggle actions and date select action
 	$scope.showCalender = function(){
-		loseFocus();// unfocus the input fields , so as to fix cursor being shown above the calendar
+		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 		$scope.calendarView = true;
 	};
 	$scope.closeCalender = function(){
