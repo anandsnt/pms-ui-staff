@@ -76,6 +76,7 @@ $rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ?
 $rootScope.hotelIdentifier = $attrs.hotelIdentifier;
 $rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
 $rootScope.isGuestAddressVerified =  false;
+$rootScope.userEmail = "resheil@gmail.com";
 
 
 //Params for zest mobile and desktop screens
