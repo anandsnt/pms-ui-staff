@@ -338,10 +338,10 @@ sntRover.service('RVReservationStateService', [
 			});
 		};
 
-		this.getAddonAndTaxDetails = function(date, rateId, numAdults, numChildren, arrival, departure, activeRoom) {
+		this.getAddonAndTaxDetails = function(date, rateId, numAdults, numChildren, arrival, departure, activeRoom, taxes, amount) {
 			var associatedAddons = self.fetchAssociatedAddons(rateId),
 				addonRate = 0.0,
-				taxForAddons = {
+				addonTax = {
 					incl: 0.0,
 					excl: 0.0
 				},
@@ -350,20 +350,48 @@ sntRover.service('RVReservationStateService', [
 				stayTaxes = {
 					incl: {},
 					excl: {}
+				},
+				rateTax = {
+					incl: 0.0,
+					excl: 0.0
+				},
+				totalTax = {
+					incl: 0.0,
+					excl: 0.0
+				},
+				stayTax = {
+					incl: {},
+					excl: {}
 				};
 
+			var updateStayTaxes = function(taxDetails) {
+				_.each(taxDetails, function(taxDetail) {
+					if (taxDetail.postType === 'STAY') {
+						var taxType = taxDetail.isInclusive ? "incl" : "excl",
+							currentTaxId = taxDetail.id;
+						if (stayTax[taxType][currentTaxId] === undefined) {
+							stayTax[taxType][currentTaxId] = parseFloat(taxDetail.amount);
+						} else {
+							stayTax[taxType][currentTaxId] = _.max([stayTax[taxType][currentTaxId], parseFloat(taxDetail.amount)]);
+						}
+					}
+				});
+			};
+
+
+			//ADDON 
 
 			if (associatedAddons.length > 0) {
 				_.each(associatedAddons, function(addon) {
 					var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
 						taxOnCurrentAddon = 0.0,
 						shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, date, arrival, departure, addon.charge_full_weeks_only);
-			
+
 					if (shouldPostAddon) {
 						taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, numAdults, numChildren, true);
-						taxForAddons.incl = parseFloat(taxForAddons.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
-						taxForAddons.excl = parseFloat(taxForAddons.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
-						// updateStayTaxes(taxOnCurrentAddon.taxDescription);
+						addonTax.incl = parseFloat(addonTax.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
+						addonTax.excl = parseFloat(addonTax.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
+						updateStayTaxes(taxOnCurrentAddon.taxDescription);
 					}
 
 					var inventoryForDay = _.findWhere(addon.inventory, {
@@ -395,9 +423,38 @@ sntRover.service('RVReservationStateService', [
 				});
 			}
 
+			// TAXES
+
+			var rateOnRoomAddonAdjusted = parseFloat(amount) - parseFloat(inclusiveAddonsAmount);
+
+			if (rateOnRoomAddonAdjusted < 0) {
+				rateOnRoomAddonAdjusted = 0.0;
+			}
+
+
+			//calculate tax for the current day
+			if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+				var taxApplied = self.calculateTax(rateOnRoomAddonAdjusted, taxes, activeRoom, numAdults, numChildren, false);
+				rateTax = {
+					incl: parseFloat(taxApplied.INCL.NIGHT),
+					excl: parseFloat(taxApplied.EXCL.NIGHT)
+				};
+				updateStayTaxes(taxApplied.taxDescription);
+			};
+
+			totalTax = {
+				incl: parseFloat(rateTax.incl) + parseFloat(addonTax.incl),
+				excl: parseFloat(rateTax.excl) + parseFloat(addonTax.excl)
+			};
+
 			return {
-				addon : addonRate,
-				inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate
+				addon: addonRate,
+				inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate,
+				tax: {
+					incl: totalTax.incl,
+					excl: totalTax.excl
+				},
+				stayTax: stayTax
 			}
 
 		};

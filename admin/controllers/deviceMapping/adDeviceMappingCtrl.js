@@ -120,6 +120,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.isEditMode = true;
+        $scope.isDeviceIdReadOnly = "yes";
 		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){
 	 		$scope.mapping = data;
@@ -138,6 +139,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		$scope.mapping={};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
+        $scope.isDeviceIdReadOnly = "no";
 		$scope.addEditTitle = "ADD";
 		$scope.mapping = {};
 		$timeout(function() {
@@ -240,6 +242,11 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                 if (typeof $scope.mapping.selectedEmvTerminal !== typeof undefined){
                     data.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
                 }
+                //CICO-18808
+                if (typeof $scope.mapping.rover_device_id !== typeof undefined){
+                    data.rover_device_id = $scope.mapping.rover_device_id;
+                }
+
                 
                 
 		if($scope.isAddMode){
@@ -250,5 +257,6 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                     $scope.invokeApi(ADDeviceSrv.updateMapping, data , $scope.successSaveMapping);
 		}
 	};
+    
 }]);
 

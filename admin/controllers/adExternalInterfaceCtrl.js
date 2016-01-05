@@ -201,6 +201,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       secondary_url: ''
     };
     $scope.fetchSetupSuccessCallback = function (data) {
+        if (data.data && data.data.product_cross_customer){
+            $scope.interface = data.data.product_cross_customer.interface_id;
+            $scope.fetchManagerDetails();
+        }
+        
       if ($scope.interfaceName === 'Givex') {
         $scope.givex = data;
         $scope.$emit('hideLoader');
@@ -240,7 +245,6 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
     };
     $scope.fetchSetup = function () {
-        $scope.fetchManagerDetails();
       if ($scope.interfaceName !== 'Givex') {
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {'interface_id': $scope.interfaceId}, $scope.fetchSetupSuccessCallback, $scope.fetchSetupFailCallback);
       } else {
@@ -309,7 +313,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             $scope.errorMessage = data;
             $scope.$emit('hideLoader');
         };
-        $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interfaceId}, fetchSuccess, fetchFailure);
+        $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interface}, fetchSuccess, fetchFailure);
     };
 
     $scope.init();
@@ -330,7 +334,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       };
       var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
       var saveData = dclone($scope.data, unwantedKeys);
-
+      saveData.interface = $scope.interfaceId;
       if ($scope.interfaceName === 'Givex') {
         $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
@@ -352,7 +356,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     $scope.toggleSMActiveSuccess = function () {
       $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {
-        'interface_id': $scope.data.data.product_cross_customer.interface_id,
+        'interface_id': $scope.interfaceId,
         'active': $scope.data.data.product_cross_customer.active
       }, $scope.fetchSetupSuccessCallback);
     };
@@ -365,7 +369,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         if ($scope.data.data) {
           if ($scope.data.data.product_cross_customer) {
             var active = $scope.data.data.product_cross_customer.active,
-              id = $scope.interfaceId;
+              id = $scope.interfaceId,
+              int_id = $scope.interface_id;
             if (active) {
               active = false;
             } else {
@@ -373,7 +378,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             }
 
             $scope.invokeApi(adExternalInterfaceCommonSrv.toggleActive, {
-              'interface_id': id,
+              'interface': id,
+              //'interface_id': int_id,
               'active': active
             }, $scope.toggleSMActiveSuccess);
           }
@@ -511,7 +517,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       var data = {};
       data.start_date = $scope.refreshDatePickerData.start_date;
       data.end_date = $scope.refreshDatePickerData.end_date;
-      data.interface_id = $scope.data.data.product_cross_customer.interface_id;
+      data.interface_id = $scope.interfaceId;
       
       if (lastRefreshed !== null) {
         try {
@@ -584,6 +590,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
       var unwantedKeys = ["available_trackers"];
       var testData = dclone($scope.data, unwantedKeys);
+      testData.interface = $scope.interfaceId;
       $scope.invokeApi($scope.serviceController.testSetup, testData, checkCallback);
     };
 

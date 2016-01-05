@@ -208,7 +208,7 @@ sntRover.service('RVreportsSubSrv', [
 			return callApi({
 				name   : 'reservationAddons',
 				method : 'getJSON',
-				url    : 'api/addons/reservation_only',
+				url    : 'api/addons/not_rate_only',
 				resKey : 'results'
 			});
 		};
@@ -223,6 +223,14 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchRateTypesAndRateList = function(params) {
+			return callApi({
+				name   : 'rateTypeAndRateList',
+				method : 'getJSON',
+				url    : '/api/rates/active',
+				resKey : 'rates',
+			});
+		};
 		return service;
 	}
 ]);

@@ -2,7 +2,7 @@
 
 /* 0. THEME
 ==========================================================*/
-	@import "themes/zoku/theme.less"; /* This sample contains Zoku styles */
+	@import "themes/fontainebleau/theme.less";
 
 /* 1. ROOT
 ==========================================================*/
@@ -20,13 +20,12 @@
 
 /* 4. LAYOUTS
 ==========================================================*/
-	@import "less/layout.less";	
+	@media not print {
+        @import "less/layout.less";
+    }
 
 /* 5. MEDIA
 ==========================================================*/
-
-
-	.printable-bill-view{
-		display:none !important;
-	}
-	@import "zoku_print.less" print;
+    @media only print {
+    @import "less/print.less"; 
+    }

@@ -142,12 +142,12 @@
 		var checkIfGuestIsEligible = function(){
 			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
 			$scope.isLoading 		= false;
-			if(getAge(birthday) >= $rootScope.minimumAge){
+			if(getAge(birthday) >= $rootScope.minimumAge || $rootScope.minimumAge === 0){
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestBirthDate(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
-					$rootScope.isGuestAddressVerified =  true;
+					$rootScope.isBirthdayVerified =  true;
 					goToNextStep();
 				},function(){
 					$rootScope.netWorkError = true;

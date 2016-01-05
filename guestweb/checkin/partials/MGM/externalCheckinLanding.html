@@ -100,12 +100,12 @@
 			<br/>
 			<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
 				<em class="labelText">CONFIRMATION NUMBER</em>
-				<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox"/>
+				<input type="text" ng-model="confirmationNumber" class = "col-xs-12 textBox"/>
 			</div>
 			<br/>
 			<div class="row cabin_number_field">			
 				<button class="checkin-button pre-checkin-btn mgm-bg pre-checkin-button continue-button"
-				ng-click="postStayDetails()">
+				ng-click="nextButtonClicked()">
 				<span class="white-text">Continue</span>
 			</button>
 		</div>

@@ -136,6 +136,17 @@ module.exports = function(grunt) {
                     footer: '}',
                     separator: ','
                 }
+            },
+            zestStationEnglishJson: {
+                src: ['zest_station/zsLocales/en/*.json'],
+                dest: 'zest_station/zsLocales/EN.json',
+                options: {
+                    // Added to the top of the file
+                    banner: '{',
+                    // Will be added at the end of the file
+                    footer: '}',
+                    separator: ','
+                }
             }
         },
         shell: {

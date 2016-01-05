@@ -107,8 +107,11 @@ var GlobalZestStationApp = function(){
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwipe opertations
         that.cardReader = new CardOperation();
     };
-    
-    
+    this.resdebug = false;//to debug a reservation payment request from zest station
+    this.resdebug_id = 0;
+    this.showDebugOptions = function(){
+        angular.element("#main").scope().showDebugOptions();
+    };
 };
 
 zestSntApp = new GlobalZestStationApp();
