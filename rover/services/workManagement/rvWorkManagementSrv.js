@@ -100,11 +100,12 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		this.fetchWorkSheetDetails = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments';
-			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
+			// RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+			// 	deferred.resolve(data);
+			// }, function(data) {
+			// 	deferred.reject(data);
+			// });
+			deferred.resolve([]);
 			return deferred.promise;
 		};
 
@@ -165,12 +166,14 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/unassigned_rooms?date=' + params.date;
 
-			RVBaseWebSrvV2.getJSON(url)
-				.then(function(data) {
-					deferred.resolve(data.results);
-				}, function(data) {
-					deferred.reject(data);
-				});
+			deferred.resolve([]);
+
+			// RVBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data.results);
+			// 	}, function(data) {
+			// 		deferred.reject(data);
+			// 	});
 
 			return deferred.promise;
 		};
@@ -225,13 +228,13 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.fetchAllUnassigned = function(params) {
+		this.fetchUnassignedRoomTasks = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/unassigned_rooms';
 
 			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
-					deferred.resolve(data.results);
+					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
 				});
@@ -239,7 +242,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.fetchAllAssigned = function(params) {
+		this.fetchAssignedRoomTasks = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/assigned_rooms';
 
@@ -253,42 +256,34 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.processedUnassignedRooms = function(params) {
+		this.processedPayload = function(unassignedRoomsParam, assignedRoomsParam) {
 			var deferred = $q.defer(),
 				promises = [];
 
-			// fetch tasks and unassigned rooms
-			promises.push( fetchAllTasks() );
-			promises.push( fetchAllUnassigned(params) );
+			var allTasksResponse, unassignedRoomsResponse, assignedRoomsResponse;
 
-			$q.all(promises).then(function() {
-				deferred.resolve( compileUnassignedRooms(unassignedRoomsResponse, tasksResponse) );
+			var payload;
+
+			// fetch tasks and unassigned rooms
+			promises.push( this.fetchAllTasks() );
+			promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
+			promises.push( this.fetchAssignedRoomTasks(assignedRoomsParam) );
+
+			$q.all(promises).then(function(data) {
+				tasksResponse           = data[0];
+				unassignedRoomsResponse = data[1];
+				assignedRoomsResponse   = data[2];
+
+				payload = {
+					'unassignedRoomTasks' : compileUnassignedRooms(unassignedRoomsResponse, tasksResponse),
+					'assignedRoomTasks'   : compileAssignedRooms(assignedRoomsResponse, tasksResponse)
+				};
+
+				deferred.resolve( payload );
 			});
 
 			return deferred.promise;
 		};
-
-		this.processedAssignedRooms = function() {
-			var deferred = $q.defer();
-
-			deferred.resolve( compileAssignedRooms(unassignedRoomsResponse, tasksResponse) );
-
-			return deferred.promise;
-
-			var deferred = $q.defer(),
-				promises = [];
-
-			// fetch tasks and unassigned rooms
-			promises.push( fetchAllTasks() );
-			promises.push( fetchAllUnassigned(params) );
-
-			$q.all(promises).then(function() {
-				deferred.resolve( compileAssignedRooms(unassignedRoomsResponse, tasksResponse) );
-			});
-
-			return deferred.promise;
-		};
-
 
 		function compileUnassignedRooms (unassignedRooms, allTasks) {
 			// DESIRED STRUCTURE
@@ -310,11 +305,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// 	}]
 			// }];
 
-			var allTasks        = allTasks || {},
+			var allTasks        = allTasks || [],
 				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
 
 			var rooms     = unassignedRooms.rooms,
-				roomTasks = unassignedRooms.room_tasks,
+				roomTasks = unassignedRooms.room_tasks;
 
 			var i, j, k, l;
 
@@ -329,10 +324,12 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// 	creating a fresh array of room by copying rooms
 			// 	and augmenting it with empty 'room_tasks'
 			for (i = 0, j = rooms.length; i < j; i++) {
-				eachRoom = $.extend({}, rooms[i], {
-					'room_tasks': []
-				});
-				compiled.push(eachRoom);
+				if ( roomTasks[i]['tasks'].length ) {
+					eachRoom = $.extend({}, rooms[i], {
+						'room_tasks': []
+					});
+					compiled.push(eachRoom);
+				};
 			};
 
 			// loop through roomTasks, gather much info on each tasks
@@ -351,10 +348,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						'name'           : thatAllTask.name,
 						'work_type_id'   : thatAllTask.work_type_id,
          				'work_type_name' : thatAllTask.work_type_name,
-						'time_allocated' : getTimeAllocated(thatAllTask, eachRoomTypeId);
+						'time_allocated' : getTimeAllocated( thatAllTask, eachRoomTypeId )
 					});
 
-					thatCompiledRoom['room_tasks'].push(eachTask);
+					thatCompiledRoom['room_tasks'].push( eachTask );
 				};
 			};
 
@@ -382,8 +379,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				};
 			};
 
-			console.log(compiled);
-
 			return compiled;
 		};
 
@@ -408,6 +403,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// 		is_completed: true
 			// 	}]
 			// }];
+
+			var compiled = [];
+
+			return compiled;
 		};
 
 

@@ -110,6 +110,18 @@ angular.module('housekeepingModule', [])
                 },
                 activeWorksheetEmp: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
+                },
+
+                payload: function(RVWorkManagementSrv, $stateParams) {
+                    var unassignedRoomsParam = {
+                        date: $stateParams.date,
+                    };
+
+                    var assignedRoomsParam = {
+                        date: $stateParams.date,
+                    };
+
+                    return RVWorkManagementSrv.processedPayload(unassignedRoomsParam, assignedRoomsParam);
                 }
             }
         });
