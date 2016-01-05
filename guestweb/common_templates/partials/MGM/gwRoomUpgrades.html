@@ -20,7 +20,7 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>                   
@@ -47,7 +47,7 @@
                                     </p>
                                     <div class="row">
                                         <span class="rate-info">
-                                           ${{slide.upsell_amount | number:2 }}
+                                           {{currencySymbol}}{{slide.upsell_amount | number:2 }}
                                        </span>
                                        <p class="rate-desc">
                                         EXTRA<br>PER NIGHT
@@ -68,7 +68,7 @@
                 <br/>
                 <div ng-click="noThanksClicked()" class="proceed-to-checkin">
                     <div class="white-arrow"></div>
-                    <span>PROCEED TO CHECK IN</strong></span>
+                    <span>NO, THANK YOU. PROCEED TO CHECK IN</strong></span>
                 </div>
             </div>
         </div>
