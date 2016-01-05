@@ -7,9 +7,9 @@
         <div class="entry-data">
             <!--<input id="worksheet-date" type="text" class="datepicker" value="{Date}" readonly />-->
             <input id="worksheet-date" type="text" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly value="{{currentFilterData.selected_date_range}}" class="datepicker" ng-click="showCalendar('RVWorkManagementSearchDatePickerController')">
-            <strong class="day">{{currentFilterData.selected_date_range | date: 'dd'}}</strong>
-            <span class="month">January</span>
-            <span class="year">2016</span>
+            <strong class="day">{{stateVariables.viewingDate.date | date: 'dd'}}</strong>
+            <span class="month">{{stateVariables.viewingDate.date | date: 'MMMM'}}</span>
+            <span class="year">{{stateVariables.viewingDate.date | date: 'yyyy'}}</span>
         </div>
     </div>
     <div class="entry actions">
@@ -28,7 +28,14 @@
         <div class="work-type" ng-repeat-start="workType in workStats.work_types" ng-init="showTasks = false"
                 ng-class="{ 'first': $first, 'last': $last }">
                 <!-- add class "first" for first work type shown and "last" for last work type shown on screen -->
-            <h3 class="has-arrow toggle" ng-click="toggleTasksList(workType)">{{workType.name}}</h3> <!-- Toggle L60-L72 visibility on click/tap -->
+            <!-- Toggle L60-L72 visibility on click/tap -->
+            <h3 class="toggle"
+                ng-click="toggleTasksList(workType)"
+                ng-class="{ 'active': workType.showTasks,
+                            'has-arrow': workType.tasks.length
+                          }">
+                    {{workType.name}}
+            </h3>
             <!-- if first work type shown on screen -->
             <ul ng-if="$first">
                 <li>Total Hours<span>{{workType.total_hours}}</span></li>
