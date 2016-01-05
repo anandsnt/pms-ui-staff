@@ -91,7 +91,7 @@
 					data.alt_confirmation_number = $scope.confirmationNumber;
 				}
 				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0){
-					data.departure_date  = $scope.departureDate;
+					data.departure_date  = dateToSend;
 				}
 
 				
@@ -182,7 +182,7 @@
 			$rootScope.departureDate = $scope.selectedDate;
 
 			dateToSend = dclone($scope.date,[]);
-			dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+			dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
 			$scope.closeCalender();
 		};
 	}
