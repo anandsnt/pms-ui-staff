@@ -48,7 +48,7 @@
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
 	        errorMessage:function(){
-	          return "Please fill all the required fields";
+	          return "Please provide all the required information";
 	        }
 	      }
 	    };
