@@ -525,6 +525,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				// CICO-21768 - Forcefully posting to Bill#1 while Credit Limit has exceeded.
 				$scope.applyToBillOne = function(){
 					data.bill_no = "1";
+					data.post_to_bill_one = true;
 					$scope.invokeApi(RVPostChargeSrvV2.postCharges, data, callbackApplyToBillOne, failureCallback);
 				};
 
