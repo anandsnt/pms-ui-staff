@@ -24,7 +24,8 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
     };
 
     var fetchDirectURLList = function(){
-       $scope.invokeApi(adZestCheckinCheckoutSrv.fetchDirectUrlList, {}, fetchDirectUrlSuccessCallback); 
+       var data = {"application":"URL","guest_web_url_type":"CHECKIN"};
+       $scope.invokeApi(adZestCheckinCheckoutSrv.fetchDirectUrlList, data, fetchDirectUrlSuccessCallback); 
     };
     // other settings
     var fetchCheckinDetailsSuccessCallback =  function(response){

@@ -51,7 +51,7 @@ admin.service('adZestCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBase
     this.fetchDirectUrlList= function(data){
         var deferred = $q.defer();
         var url = '/api/guest_web_urls/';
-        ADBaseWebSrv.getJSON(url).then(function(data) {
+        ADBaseWebSrv.getJSON(url,data).then(function(data) {
                 deferred.resolve(data);
         },function(data){
                 deferred.reject(data);
