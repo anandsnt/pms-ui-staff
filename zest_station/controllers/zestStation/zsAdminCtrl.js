@@ -11,17 +11,18 @@ sntZestStation.controller('zsAdminCtrl', [
 
 		//hide close button
 		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
-	}
+	};
 	var showNavButtons = function(){
 		//show back button
 		$scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
 
 		//show close button
 		$scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
-	}
+	};
 
-        
-        $scope.zestStationData.workstations = [];
+        if ($scope.zestStationData){
+            $scope.zestStationData.workstations = [];
+        }
 	$scope.getWorkStationList = function($defer, params){
 	/*	
             var getParams = $scope.calculateGetParams(params);
@@ -47,6 +48,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 };
                 var onFail = function(response){
                     console.warn('fetching workstation list failed:',response);
+                    $scope.zestStationData.workstations = [];
                 };
             //?page=1&per_page=10&query=&sort_dir=true&sort_field=name
             var options = {
@@ -104,6 +106,7 @@ sntZestStation.controller('zsAdminCtrl', [
     };
 
 	$scope.loginAdmin = function(){
+            console.info('this')
             $scope.mode   = "admin-name-mode";
             $scope.headingText = 'Admin Username';
             $scope.passwordField = false;

@@ -5,7 +5,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		// 2. WorkTypes
 		// 3. Shifts
 
-
+		var srv = this;
 
 		this.fetchMaids = function() {
 			var deferred = $q.defer();
@@ -213,7 +213,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 
 
-
 		this.fetchAllTasks = function() {
 			var deferred = $q.defer(),
 				url = 'api/tasks';
@@ -248,7 +247,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
-					deferred.resolve(data.results);
+					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
 				});
@@ -258,7 +257,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.processedPayload = function(unassignedRoomsParam, assignedRoomsParam) {
 			var deferred = $q.defer(),
-				promises = [];
+				promises = [],
+				unassignedRoomsResponse,
+				tasksResponse;
 
 			var allTasksResponse, unassignedRoomsResponse, assignedRoomsResponse;
 

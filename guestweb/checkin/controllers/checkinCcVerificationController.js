@@ -1,20 +1,16 @@
 (function() {
-	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
+	var checkinCcVerificationController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
+
 
   $scope.pageValid = false;
   $scope.cardNumber = "";
   $scope.ccv = "";
   $scope.monthSelected = "";
   $scope.yearSelected ="";
+  $scope.ccSaved = false;
 
   if($rootScope.isCheckedin){
     $state.go('checkinSuccess');
-  }
-  else if($rootScope.isCheckin){
-    $state.go('checkinConfirmation');
-  }
-  else if(!$rootScope.isRoomVerified){
-    $state.go('checkoutRoomVerification');
   }
   else{
     $scope.pageValid = true;
@@ -85,7 +81,7 @@
     $scope.cardErrorOpts = {
       backdrop: true,
       backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerificationErrorModal.html',
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage: function(){
@@ -97,11 +93,11 @@
     $scope.errorOpts = {
       backdrop: true,
       backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerificationErrorModal.html',
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage:function(){
-          return "All fields are required";
+          return "You must provide all the required information. Please update and try again.";
         }
       }
     };
@@ -111,7 +107,7 @@
     $scope.ccvOpts = {
       backdrop: true,
       backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerificationNumberModal.html',
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage:function(){
@@ -126,27 +122,27 @@
       $modal.open($scope.ccvOpts); // error modal popup
     };
 
-    $scope.goToNextStep = function(){
+    $scope.nextButtonClicked = function(){
+      if($rootScope.isAutoCheckinOn){
+        $state.go('preCheckinStatus');
+      }else{
+        $state.go('checkinKeys');
+        };
+    };
 
+    $scope.goToNextStep = function(){
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
         var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
-          $scope.isFetching = false;
-          if(response.status ==="success"){
-              $rootScope.isCCOnFile = true;
-              $rootScope.isCcAttachedFromGuestWeb = true;
-              if($stateParams.isFromCheckoutNow === "true"){
-                $rootScope.ccPaymentSuccessForCheckoutNow = true;
-                $state.go('checkOutStatus');
-              }else{
-                 $rootScope.ccPaymentSuccessForCheckoutLater = true;
-                 $state.go('checkOutLaterSuccess',{id:$scope.fee});
-              }
+        $scope.isFetching = false;
+        if(response.status ==="success"){
+            $rootScope.isCCOnFile = true;
+            $rootScope.isCcAttachedFromGuestWeb = true;
+            $scope.ccSaved = true;     
         }
         else{
          $scope.netWorkError = true;
         };
-
       },function(){
         $scope.netWorkError = true;
         $scope.isFetching = false;
@@ -170,18 +166,23 @@
             $modal.open($scope.cardErrorOpts);
             $scope.isFetching = false;
           }
-
        };
-
       if( ($scope.cardNumber.length === 0) ||
           ($scope.ccv.length === 0) ||
           (!$scope.monthSelected) ||
           (!$scope.yearSelected)){
               $modal.open($scope.errorOpts); // details modal popup
+              if($scope.ccv.length===0){
+                $scope.isCVVEmpty = true;
+              }
+              else{
+                $scope.isCVVEmpty = false;
+              }
          }
          else{
 
              $scope.isFetching = true;
+             $scope.isCVVEmpty = false;
              sessionDetails.cardNumber = $scope.cardNumber;
              sessionDetails.cardSecurityCode = $scope.ccv;
              sessionDetails.cardExpiryMonth = $scope.monthSelected;
@@ -192,18 +193,12 @@
              catch(err) {
                 $scope.netWorkError = true;
              };
-
          }
-
-
-
     };
     $scope.fetchMLISessionId();
-
     };
 
      /* MLI integration ends here */
-
 }
 };
 
@@ -211,10 +206,10 @@
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','$modal','ccVerificationService',
-ccVerificationViewController
+checkinCcVerificationController
 ];
 
-sntGuestWeb.controller('ccVerificationViewController', dependencies);
+sntGuestWeb.controller('checkinCcVerificationController', dependencies);
 })();
 
 // controller for the modal
