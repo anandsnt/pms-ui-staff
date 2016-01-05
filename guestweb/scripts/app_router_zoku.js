@@ -81,12 +81,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
+	 	controller : 'checkoutRoomVerificationViewControllerForYotel',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
+	 	controller : 'ccVerificationViewControllerForYotel',
 	 	title: 'CC verification'
 	 });
 

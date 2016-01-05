@@ -20,10 +20,13 @@ var sntZestStation = angular.module('sntZestStation',[
 
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
-sntZestStation.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('sharedHttpInterceptor');
-  
-  
+sntZestStation.config(function ($httpProvider, $translateProvider) {
+    $httpProvider.interceptors.push('sharedHttpInterceptor');
+		$translateProvider.useStaticFilesLoader({
+		  prefix: '/assets/zsLocales/en/',
+		  suffix: '.json'
+		});
+		$translateProvider.fallbackLanguage('EN');
 });
 
 var GlobalZestStationApp = function(){
@@ -107,8 +110,11 @@ var GlobalZestStationApp = function(){
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwipe opertations
         that.cardReader = new CardOperation();
     };
-    
-    
+    this.resdebug = false;//to debug a reservation payment request from zest station
+    this.resdebug_id = 0;
+    this.showDebugOptions = function(){
+        angular.element("#main").scope().showDebugOptions();
+    };
 };
 
 zestSntApp = new GlobalZestStationApp();
