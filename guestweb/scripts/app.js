@@ -84,7 +84,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 		$rootScope.accessToken = $attrs.accessToken	;
 	}
 	//navigate to different pages
-	if($attrs.checkinUrlVerification === "true" && $attrs.isZestEmailCheckin ==="false"){
+	if($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="false"){
 		$location.path('/guestCheckinTurnedOff');
 	}
 	else if($attrs.checkinUrlVerification === "true"){
