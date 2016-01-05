@@ -10,4 +10,5 @@
  *
  
  *= require '../zest_station/css/zoku.css.less'
+ *= require '../zest_station/css/fontainebleau.css.less'
  */
