@@ -5,7 +5,6 @@
     <div class="entry date">
         <label for="worksheet-date">Date</label>
         <div class="entry-data">
-            <!--<input id="worksheet-date" type="text" class="datepicker" value="{Date}" readonly />-->
             <input id="worksheet-date" type="text" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly value="{{currentFilterData.selected_date_range}}" class="datepicker" ng-click="showCalendar('RVWorkManagementSearchDatePickerController')">
             <strong class="day">{{stateVariables.viewingDate.date | date: 'dd'}}</strong>
             <span class="month">{{stateVariables.viewingDate.date | date: 'MMMM'}}</span>
@@ -67,11 +66,8 @@
                 </ul>
             </div>
         </div>
-        <button type="button" class="button blue">Manage Work Sheets</button>
-        <!--<div class="dashboard-block buttons">
-            <ul class="actions">
-                <li><a ui-sref="rover.workManagement.multiSheet({ date : stateVariables.viewingDate.date })" class="button blue">Manage Work Sheets</a></li>
-            </ul>
-        </div>-->
+        <button type="button" class="button blue" ng-click="navigateToMultiSheet()">
+            Manage Work Sheets
+        </button>
     </div>
 </section>

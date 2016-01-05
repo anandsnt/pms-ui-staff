@@ -200,6 +200,11 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             $scope.refreshScroller('work_management');
         };
 
+        $scope.navigateToMultiSheet = function() {
+            $state.go('rover.workManagement.multiSheet', {
+                date: $scope.stateVariables.viewingDate.date
+            });
+        };
         // Initialize statistics.
         setStats();
 
