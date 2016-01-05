@@ -20,7 +20,7 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>                   
@@ -30,14 +30,14 @@
         <div class="col-md-2"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-            <p class="main-text">Thank you.</p>
+            <p class="main-text">Thank You.</p>
             <p class="sub-main-text"><em>The following will appear on your bill.</em>
 	        </p>
-	       <p class="sub-main-text">Late check out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+	       <p class="sub-main-text">Late Check Out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
            </p>
-           <p class="sub-main-text">
+          <!--  <p class="sub-main-text">
             <em>{{keyExpiry}}</em>
-           </p>
+           </p> -->
         </div>
         <div class="col-md-1"></div>
         <!-- right side -->

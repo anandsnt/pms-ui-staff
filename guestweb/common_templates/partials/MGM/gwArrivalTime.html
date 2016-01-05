@@ -21,19 +21,20 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>                   
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing section-container">
-            <p class="main-text">Arrival Details</p>
-        </div>
-        <div class="col-md-2"><div class="vertical-line vertical-line-long">&nbsp;</div></div>
+        <div class="col-md-4"></div>
+        
+        <!-- <div class="col-md-2"><div class="vertical-line vertical-line-long">&nbsp;</div></div> -->
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
+            <div class="col-md-12 top-spacing section-container">
+            <p class="main-text">Arrival Details</p>
+            </div>
              <!--  -->
             <div class="section-container">
                 <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</span>
@@ -73,7 +74,7 @@
              <!--  submit button-->
             <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">Continue</a>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-4">
         </div>                   
     </div>
 </div>
