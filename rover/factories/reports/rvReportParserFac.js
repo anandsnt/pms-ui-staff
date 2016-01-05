@@ -8,8 +8,12 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
-            if ( reportName === reportNames['DAILY_PRODUCTION'] ) {
+            if ( reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options, resultTotalRow );
+            }
+
+            if ( reportName === reportNames['DAILY_PRODUCTION_DEMO'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : parseDailyProductionByDemographics(apiResponse);
             }
 
             // a very special parser for daily transaction report
@@ -140,8 +144,73 @@ sntRover.factory('RVReportParserFac', [
 
             return returnObj;
         };
+        
+        var initPrdDemoGrphcsRow = function(showInBold, displayLabel, keyInAPI) {
+            return {
+                'showInBold'    : showInBold,
+                'displayLabel'  : displayLabel,
+                'key-in-api'    : keyInAPI,
+                'valueList'     : []
+            };
+        };
 
+        function parseDailyProductionByDemographics (apiResponse) {
+            var dateList    = _.keys(apiResponse),
+                firstDate   = dateList[0],
+                markets     = _.pluck(apiResponse[firstDate].markets, "name" ),
+                sources     = _.pluck(apiResponse[firstDate].sources, "name" ),
+                origins     = _.pluck(apiResponse[firstDate].origins, "name" ),
+                segments    = _.pluck(apiResponse[firstDate].segments, "name" ),
+                parsedDataListing  = [],
+                e = null;
 
+            /* forming the left side */
+            //market
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Market', 'market_totals'));
+            markets.map(function(value){
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'markets'));
+            });
+
+            //sources
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Source', 'source_totals'));
+            sources.map(function(value){
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'sources'));   
+            });
+
+            //origins
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Origin', 'origin_totals'));
+            origins.map(function(value){
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'origins'));  
+            });
+
+            //segments
+            parsedDataListing.push (initPrdDemoGrphcsRow(true, 'Segment', 'segment_totals'));
+            segments.map(function(value){
+                parsedDataListing.push (initPrdDemoGrphcsRow(false, value, 'segments'));  
+            });
+
+            _.each(parsedDataListing, function(rowData){
+                _.each(apiResponse, function(dateData){
+                    e = dateData[rowData['key-in-api']];
+                    if (e instanceof Array) {
+                        //as per db model, a demogrphics' name is a unique for hotel
+                        e = _.findWhere(e, { 'name': rowData.displayLabel }); 
+                    }
+                    rowData.valueList = rowData.valueList.concat([
+                       { key: 'res_count' , value: e.total_reservations_count },
+                       { key: 'available' , value: e.available_rooms_count },
+                       { key: 'rate_revenue' , value: e.rate_revenue },
+                       { key: 'adr' , value: e.adr },
+                       { key: 'actual_revenue' , value: e.actual_revenue }
+                    ]);
+                });
+            });
+            
+            return {
+                listing: parsedDataListing,
+                dates: dateList
+            };
+        };
 
 
 

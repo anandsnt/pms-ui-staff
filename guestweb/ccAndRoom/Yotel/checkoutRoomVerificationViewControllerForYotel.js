@@ -1,5 +1,5 @@
 (function() {
-	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService,$timeout) {
+	var checkoutRoomVerificationViewControllerForYotel = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService,$timeout) {
 
 	$scope.pageValid = false;
 	$rootScope.isRoomVerified =  false;
@@ -63,10 +63,10 @@
 
 var dependencies = [
 '$scope','$rootScope','$state','$modal','checkoutRoomVerificationService','$timeout',
-checkoutRoomVerificationViewController
+checkoutRoomVerificationViewControllerForYotel
 ];
 
-sntGuestWeb.controller('checkoutRoomVerificationViewController', dependencies);
+sntGuestWeb.controller('checkoutRoomVerificationViewControllerForYotel', dependencies);
 })();
 
 

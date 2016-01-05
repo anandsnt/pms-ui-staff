@@ -95,8 +95,6 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
          
          
-         
-         
         // //check-in [ terms conditions left ]
          $stateProvider.state('zest_station.terms_conditions', {
             url       : '/reservation_terms/:mode',
@@ -134,6 +132,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsCheckInKeysCtrl',
              templateUrl: '/assets/partials/kiosk/specific/make-key.html',
          });
+         
+         $stateProvider.state('zest_station.pickup_keys', {
+             url: '/make_keys/:mode', 
+             controller: 'zsCheckInKeysCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/select-keys-after-checkin.html',
+         });
       
       
          $stateProvider.state('zest_station.last_confirm', {
@@ -161,6 +165,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          });
          
          $stateProvider.state('zest_station.error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/modal.html'
+         });
+         
+         $stateProvider.state('zest_station.room_error', {
              url: '/error/:mode', 
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/modal.html'
@@ -213,6 +223,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
          });
+         
+         $stateProvider.state('zest_station.swipe_pay_error', {
+             url: '/error/:mode', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
+         });
 
         // //check-in [ find-by-confirmation ]
          $stateProvider.state('zest_station.find_by_confirmation', {
@@ -258,14 +274,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/generic/input-text.html'
          });
-         
 
-
-        // //check-in [ reservation credit card sign Time Out]
-        // $stateProvider.state('station.tab-kiosk-reservation-signature-time-out', {
-        //     url: '/zest_station', controller: 'rvTabletCtrl',
-        //     templateUrl: '/assets/partials/kiosk/specific/signature-time-out.html',
-        // });
+         //check-in [ reservation credit card sign Time Out]
+         $stateProvider.state('zest_station.tab-kiosk-reservation-signature-time-out', {
+             url: '/zest_station', 
+             controller: 'zsPostCheckinCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/signature-time-out.html'
+         });
          
          
          

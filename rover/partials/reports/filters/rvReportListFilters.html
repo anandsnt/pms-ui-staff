@@ -265,6 +265,36 @@
     </div>
 </div>
 
+<div class="options long-list" ng-if="item.hasRateTypeFilter" ng-click="catchFauxSelectClick($event, 'hasRateTypeFilter')">
+    <label for="report-options">Rate Type</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasRateTypeFilter)">{{ item.hasRateTypeFilter.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasRateTypeFilter.show }">
+        <label class="checkbox inline" ng-show="item.hasRateTypeFilter.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasRateTypeFilter.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(item)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="rateType in item.hasRateTypeFilter.data">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : rateType.selected}"></span>
+            <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(item)" name="room-filters"> {{ rateType.name }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasRateFilter" ng-click="catchFauxSelectClick($event, 'hasRateFilter')">
+    <label for="report-options">Rate(s)</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasRateFilter)">{{ item.hasRateFilter.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasRateFilter.show }">
+        <label class="checkbox inline" ng-show="item.hasRateFilter.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasRateFilter.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasRateFilter.selectAll" ng-change="toggleRateSelectAll(item)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="rate in item.hasRateFilter.data" ng-if="shouldShowThisRate(rate, item)">
+            <span class="icon-form icon-checkbox" ng-class="{'checked' : rate.selected}"></span>
+            <input type="checkbox" ng-model="rate.selected" ng-change="rateChanged(item)" name="room-filters"> {{ rate.name }}
+        </label>
+    </div>
+</div>
+
 <div class="options long-list" ng-if="item.hasDisplay.data.length" ng-click="catchFauxSelectClick($event, 'hasDisplay')">
     <label for="report-options">Display(s)</label>
     <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasDisplay)">{{ item.hasDisplay.title }}</div>
@@ -276,6 +306,21 @@
         <label class="checkbox inline" ng-repeat="display in item.hasDisplay.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
             <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(item, item.hasDisplay)" name="room-filters"> {{ display.description }}
+        </label>
+    </div>
+</div>
+
+<div class="options long-list" ng-if="item.hasExclusions.data.length" ng-click="catchFauxSelectClick($event, 'hasExclusions')">
+    <label for="report-options">Exclude</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasExclusions)">{{ item.hasExclusions.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasExclusions.show }">
+        <label class="checkbox inline" ng-show="item.hasExclusions.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasExclusions.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasExclusions.selectAll" ng-change="fauxSelectChange(item, item.hasExclusions, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="exclusion in item.hasExclusions.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : exclusion.selected }"></span>
+            <input type="checkbox" ng-model="exclusion.selected" ng-change="fauxSelectChange(item, item.hasExclusions)" name="room-filters"> {{ exclusion.description }}
         </label>
     </div>
 </div>
@@ -348,6 +393,21 @@
         <label class="checkbox inline" ng-repeat="each in item.hasReservationStatus.data">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
             <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ each.status }}
+        </label>
+    </div>
+</div>
+
+<div class="options" ng-if="item.hasReservationAddons.data.length" ng-click="catchFauxSelectClick($event, 'hasReservationAddons')">
+    <label for="addon-status">Reservation Add-ons</label>
+    <div class="faux-select placeholder" ng-click="toggleFauxSelect($event, item.hasReservationAddons)">{{ item.hasReservationAddons.title }}</div>
+    <div class="faux-select-options" ng-class="{ 'hidden': !item.hasReservationAddons.show }">
+        <label class="checkbox inline" ng-show="item.hasReservationAddons.data.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasReservationAddons.selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasReservationAddons.selectAll" ng-change="fauxSelectChange(item, item.hasReservationAddons, true)" name="room-filters"> Select All
+        </label>
+        <label class="checkbox inline" ng-repeat="each in item.hasReservationAddons.data">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : each.selected }"></span>
+            <input type="checkbox" ng-model="each.selected" ng-change="fauxSelectChange(item.id, item.hasReservationAddons)" name="addon-status"> {{ each.name }}
         </label>
     </div>
 </div>
@@ -430,9 +490,9 @@
     </div>
 </div>
 
-<a ng-if="!item.is_export_only" class="button green" ng-click="setnGenReport(item)">Show</a>
+<a class="button green" ng-click="setnGenReport(item)">Show</a>
 
-<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.is_export_only || (shouldShowExportButton(item.title) && !hideExportOption)">
+<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.show_export && !hideExportOption">
     <span class="icons icon-save">Export</span>
 </a>
 

@@ -191,6 +191,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.rateData.end_date_for_display = "";
             }
             $scope.rateData.commission_details = data.commission_details;
+            $scope.rateData.task_id = data.task_id;
 
 
 

@@ -133,7 +133,12 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_25: false,
 			item_26: false,
 			item_27: false,
-			item_28: false
+			item_28: false,
+			item_29: false, // Exclude Options
+			item_30: false, // Show Options
+			item_31: false,
+			item_32: false,
+			item_33: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -270,13 +275,19 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.touchedReport = item;
 			$scope.touchedDate = dateName;
 
+			if (item.title === reportNames['DAILY_PRODUCTION_RATE']) {
+				if (item.fromDate > item.untilDate) {
+					item.untilDate = item.fromDate;
+				}
+			}
+
 			if (item.title === reportNames['DAILY_PRODUCTION_DEMO']) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
 				}
 			}
 
-			if (item.title === reportNames['DAILY_PRODUCTION']) {
+			if (item.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE']) {
 				if (item.fromDate > item.untilDate) {
 					item.untilDate = item.fromDate;
 				}
@@ -452,7 +463,96 @@ sntRover.controller('RVReportsMainCtrl', [
             };
         };
 
+        $scope.toggleRateTypeSelectAll = function(item) {
+        	//whether rate type selected all or not selected all, applying to listing
+        	_.each(item.hasRateTypeFilter.data, function(rateType) {
+        		rateType.selected = item.hasRateTypeFilter.selectAll;
+        	});
+        	$scope.fauxSelectChange (item, item.hasRateTypeFilter, item.hasRateTypeFilter.selectAll);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
+        };
 
+        $scope.rateTypeChanged = function(item) {
+        	$scope.fauxSelectChange (item, item.hasRateTypeFilter);
+        	formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
+        };
+
+        var formTitleAndToggleSelectAllForRateDropDown = function(item) {
+        	var showingRateList = $scope.getRates(item),
+        		selectedRates 	= _.where(showingRateList, {selected: true});
+
+			item.hasRateFilter.selectAll = false;
+        	if(showingRateList.length === selectedRates.length) {
+        		item.hasRateFilter.title = 'All Selected';
+        		item.hasRateFilter.selectAll = true;
+        	}
+        	else if(selectedRates.length === 0 ){
+        		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
+        	}
+        	else if(selectedRates.length === 1 ){
+        		item.hasRateFilter.title = selectedRates[0].name;
+        	}
+        	else {
+        		item.hasRateFilter.title = selectedRates.length + ' Selected';
+        	}
+        };
+
+        var refreshScroller = function(){
+        	$timeout(function(){
+				$scope.refreshScroller('report-list-scroll');
+				$scope.myScroll['report-list-scroll'].refresh();
+				$scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll'] && $scope.myScroll['report-filter-sidebar-scroll'].refresh();
+			}, 200);
+        }; 
+        $scope.rateChanged = function(item) {
+        	formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
+        };
+
+        $scope.toggleRateSelectAll = function(item) {
+        	var showingRateList = $scope.getRates(item);
+
+        	//whether rate type selected all or not selected all, applying to listing
+        	_.each(item.hasRateFilter.data, function(rateType) {
+        		rateType.selected = item.hasRateFilter.selectAll;
+        	});
+			formTitleAndToggleSelectAllForRateDropDown(item); 
+        	refreshScroller();      	
+        };
+
+        var getSelectedRateTypes = function(item) {
+        	return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), "rate_type_id");
+        }
+
+        var getRateListToShow = function(item) {
+        	//if selected some room types
+        	var listedRateTypes 		= item.hasRateTypeFilter.data,
+        		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
+        	return _.filter(item.hasRateFilter.data, function(rate) {
+        		return ( selectedRateTypesIds.indexOf(rate.rate_type_id) > -1 );
+        	});
+        };
+
+        $scope.shouldShowThisRate = function(rate, item) {
+        	var listedRateTypes 		= item.hasRateTypeFilter.data,
+        		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
+        		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
+
+        	return (selectedRateTypesIds.indexOf(rate.rate_type_id) > -1);
+        }
+        $scope.getRates = function(item) {
+        	//if all selected from rate type drop down
+        	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;
+        	
+        	if( wantedToShowAllRates ) { 
+        		return item.hasRateFilter.data; 
+        	}
+
+        	return getRateListToShow(item);
+        };
 
 		$scope.catchFauxSelectClick = function(e, currentFaux) {
 			e && e.stopPropagation();
@@ -485,7 +585,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.fauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
-
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
                     fauxDS.title = 'All Selected';
@@ -500,7 +599,6 @@ sntRover.controller('RVReportsMainCtrl', [
                 selectedItems = _.where(fauxDS.data, { selected: true });
             } else {
                 selectedItems = _.where(fauxDS.data, { selected: true });
-
                 if ( selectedItems.length === 0 ) {
                     fauxDS.title = fauxDS.defaultTitle;
                 } else if ( selectedItems.length === 1 ) {
@@ -685,7 +783,8 @@ sntRover.controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': []
+					'guestOrAccount': [],
+					'reservationAddons': []
 				};
 			};
 
@@ -796,6 +895,18 @@ sntRover.controller('RVReportsMainCtrl', [
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['singleValueDate'] = angular.copy( report.singleValueDate );
 				};
+			};
+
+			// rate
+			if (!!report.hasRateFilter) {
+				key = reportParams['RATE_IDS'];
+				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
+			};
+
+			// rate
+			if (!!report.hasRateTypeFilter) {
+				key = reportParams['RATE_TYPE_IDS'];
+				params[key] = getSelectedRateTypes(report);
 			};
 
 			// include rate adjustment dates
@@ -965,6 +1076,20 @@ sntRover.controller('RVReportsMainCtrl', [
 				});
 			};
 
+			// generate params for selected exclusions
+			if ( report['hasExclusions']['data'].length ) {
+				_.each(report['hasExclusions']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.display.push( each.description );
+						};
+					};
+				});
+			};
+
 			// generate params for guest or account
 			if ( report['hasGuestOrAccountFilter']['data'].length ) {
 				_.each(report['hasGuestOrAccountFilter']['data'], function(each) {
@@ -1100,6 +1225,29 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all charge groups is selected
 					if ( changeAppliedFilter && report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
+					};
+				};
+			};
+
+			// include charge groups
+			if (report.hasOwnProperty('hasReservationAddons')) {
+				selected = _.where( report['hasReservationAddons']['data'], { selected: true } );
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['RESERVATION_ADDONS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(cg) {
+						params[key].push( cg.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.reservationAddons.push( cg.description );
+						};
+					});
+
+					// in case if all charge groups is selected
+					if ( changeAppliedFilter && report['hasReservationAddons']['data'].length === selected.length ) {
+						$scope.appliedFilter.reservationAddons = ['All Reservation Addons'];
 					};
 				};
 			};
@@ -1270,9 +1418,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		 * Should we show export button
 		 * @return {Boolean}
 		 */
-		$scope.shouldShowExportButton = function(name) {
-			//As per CICO-21232 we should show this for DAILY PRODUCTION REPORT
-			return (name === reportNames['DAILY_PRODUCTION']);
+		$scope.shouldShowExportButton = function(report) {
+			var chosenReport = report || reportsSrv.getChoosenReport();
+			return !_.isUndefined(chosenReport) && !_.isEmpty(chosenReport) && chosenReport.show_export;
 		};
 
 		/**
@@ -1295,7 +1443,7 @@ sntRover.controller('RVReportsMainCtrl', [
 			param = jQuery.param(genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter));
 
 			switch ( chosenReport.title ) {
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					exportUrl = "/api/reports/" + chosenReport.id + "/submit.csv?" + param;
 					break;
 

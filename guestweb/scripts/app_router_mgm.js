@@ -78,7 +78,21 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/guestDetails.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
-	 })
+	 }).state('birthDateDetails', {
+	 	url: '/birthDateDetails',
+	 	templateUrl: '/assets/checkin/partials/MGM/birthDataDetails.html',
+	 	controller : 'birthDateDetailsController',
+	    title: 'Birthdate'
+	 }).state('promptGuestDetails', {
+	 	url: '/promptGuestDetails',
+	 	templateUrl: '/assets/checkin/partials/MGM/promptGuestDetails.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
+	 }).state('guestNotEligible', {
+	 	url: '/guestNotEligible',
+	 	templateUrl: '/assets/checkin/partials/MGM/guestNotEligible.html',
+	    title: 'Guest Details'
+	 });
 	 //room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
@@ -138,13 +152,21 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/guestCheckinTurnedOff.html',
 	    title: 'Check-in'
 	 }).state('guestCheckinEarly', {
-	 	url: '/guestCheckinEarly',
+	 	url: '/guestCheckinEarly/:date',
 	 	templateUrl: '/assets/checkin/partials/MGM/earlyToCheckin.html',
+	 	controller : 'earlyToCheckinCtrl',
 	    title: 'Check-in'
 	 }).state('guestCheckinLate', {
 	 	url: '/guestCheckinLate',
 	 	templateUrl: '/assets/checkin/partials/MGM/lateToCheckin.html',
 	    title: 'Check-in'
+	 });
+
+	 $stateProvider.state('checkinCcVerification', {
+	 	url: '/checkinCcVerification',
+	 	templateUrl: '/assets/checkin/partials/MGM/checkinCCAddition.html',
+	 	controller : 'checkinCcVerificationController',
+	 	title: 'CC verification'
 	 });
 	
 

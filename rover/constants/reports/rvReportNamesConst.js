@@ -27,7 +27,9 @@ sntRover.constant('RVReportNamesConst', {
 	'GROUP_PICKUP_REPORT'          : 'Group Pick Up Report',
 	'GUEST_BALANCE_REPORT'		   : 'Guest Balance Report',
 	'ADDON_FORECAST'               : 'Add-On Forecast',
-	'DAILY_PRODUCTION'             : 'Daily Production',
+	'DAILY_PRODUCTION_ROOM_TYPE'   : 'Daily Production',
 	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report',
-	'DAILY_PRODUCTION_DEMO'		   : 'Daily Production by Demographics'
+	'DAILY_PRODUCTION_DEMO'		   : 'Daily Production by Demographics',
+	'DAILY_PRODUCTION_RATE'		   : 'Daily Production by Rate',
+	'EMAIL_CHECKIN_SUMMARY'		   : "Email Check In Summary"
 });

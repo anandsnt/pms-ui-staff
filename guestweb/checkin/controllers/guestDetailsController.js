@@ -74,6 +74,11 @@
 			$rootScope.netWorkError = true;
 			$scope.isLoading = false;
 		});
+
+
+		$scope.yearOrMonthChanged = function(){
+			$scope.guestDetails.day = "";
+		};
 		
 	
 		var getDataToSave = function(){
