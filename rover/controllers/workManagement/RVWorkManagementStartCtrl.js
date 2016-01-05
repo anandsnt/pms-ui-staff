@@ -29,6 +29,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             var onFetchSuccess = function(wmStatistics) {
                     $scope.$emit('hideLoader');
                     $scope.workStats = wmStatistics;
+                    $scope.refreshScroller('work_management');
                 },
                 onFetchFailure = function(errorMessage) {
                     $scope.errorMessage = "";
