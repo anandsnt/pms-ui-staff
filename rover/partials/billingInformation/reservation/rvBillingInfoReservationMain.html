@@ -12,9 +12,9 @@
             <!-- Billing Info Content -->
             <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/billingInformation/reservation/rvBillingInfoRoutesList.html'"></div>
 
-            <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/billingInformation/sharedPartials/rvSearchAndAttachEntity.html'"  > </div>
+            <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-entity" ng-include="'/assets/partials/billingInformation/sharedPartials/rvSearchAndAttachEntity.html'"  > </div>
 
-            <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-info-entity" ng-include="'/assets/partials/billingInformation/reservation/rvBillingInfoReservationRouteDetails.html'"></div>
+            <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/billingInformation/reservation/rvBillingInfoReservationRouteDetails.html'"></div>
          </div>
       </div>
    </form>
