@@ -394,7 +394,7 @@ sntRover.factory('RVReportUtilsFac', [
                     break;
 
                 case reportNames['RATE_RESTRICTION_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-balance';
+                    report['reportIconCls'] = 'icon-report icon-rate';
                     break;
 
                 default:
