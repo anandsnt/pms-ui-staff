@@ -814,7 +814,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
-            var data = {};
+            var data = {},
+                isInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
+                shouldWeIncludeRoomTypeArray = !isInStayCard && !$scope.reservationData.isHourly;
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -959,7 +961,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
             data.room_id = [];
-            if (!$scope.reservationData.isHourly) {
+            if (shouldWeIncludeRoomTypeArray) {
                 data.room_types = [];
             }
             angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
@@ -984,7 +986,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         }
                     });
                 }
-                if (!$scope.reservationData.isHourly) {
+                if (shouldWeIncludeRoomTypeArray) {
                     data.room_types.push({
                         id: parseInt(tab.roomTypeId, 10),
                         num_rooms: parseInt(tab.roomCount, 10),

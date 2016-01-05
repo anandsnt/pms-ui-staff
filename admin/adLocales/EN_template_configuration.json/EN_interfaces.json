@@ -3,4 +3,5 @@
 	"STATION_NAME": "Work Station Name",
 	"STATION_ID": "Work Station Id",
 	"STATION_PRINTER": "Work Station Printer",
-	"WORKSTATIONS":"Work Stations"
+	"WORKSTATIONS":"Work Stations",
+	"ROVER_DEVICE_ID" : "Rover Device ID"

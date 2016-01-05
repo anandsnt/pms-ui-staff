@@ -234,7 +234,7 @@ sntRover.factory('RVReportUtilsFac', [
             }
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == reportNames['DAILY_PRODUCTION'] && filter.value == 'INCLUDE_ADDONS' ) {
+            if ( objRef['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -381,7 +381,7 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-group';
                     break;
 
-                case reportNames['DAILY_PRODUCTION']:
+                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
                     report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
@@ -480,7 +480,7 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
-                case reportNames['DAILY_PRODUCTION']:
+                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
                     report['canRemoveDate']     = true;
                     report['hasOneYearLimit']   = true;
                     break;
@@ -1206,7 +1206,7 @@ sntRover.factory('RVReportUtilsFac', [
                         processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'ONLY_PAYMENTS', selected );
                     }
                     /**/
-                    else if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
+                    else if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                         selected = false;
                         processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'NONE', selected );
                     }
@@ -1515,7 +1515,7 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sortByOptions'] = report['sort_fields'];
 
                 // making sort by room type default
-                if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
+                if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                     var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
@@ -1594,7 +1594,7 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.businessDate;
                     break;
 
-                case reportNames['DAILY_PRODUCTION']:
+                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
                     break;
