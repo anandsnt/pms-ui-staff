@@ -1,11 +1,13 @@
 admin.controller('ADInvoiceSettingsCtrl',[
     '$scope',
     'invoiceSettingsData',
-    'ADInvoiceSettingsSrv', 
+    'ADInvoiceSettingsSrv',
     function($scope,invoiceSettingsData,ADInvoiceSettingsSrv) {
 
     	BaseCtrl.call(this, $scope);
-    	
+
+        $scope.isFirstInvoiceNoReadOnly = invoiceSettingsData.first_invoice_no ? "yes" : "no";
+
         $scope.invoiceSettings = invoiceSettingsData;
 
         /**
@@ -16,8 +18,8 @@ admin.controller('ADInvoiceSettingsCtrl',[
 
             var saveInvoiceSettingsSuccessCallback = function(){
                  $scope.$emit('hideLoader');
-                 $scope.goBackToPreviousState();                 
-            };            
+                 $scope.goBackToPreviousState();
+            };
 
             $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings ,saveInvoiceSettingsSuccessCallback);
         };
