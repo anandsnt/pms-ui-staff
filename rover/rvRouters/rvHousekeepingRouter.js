@@ -119,6 +119,7 @@ angular.module('housekeepingModule', [])
 
                     var assignedRoomsParam = {
                         date: $stateParams.date,
+                        employee_ids: [645, 646, 650, 651, 652, 653, 686, 740, 1143]
                     };
 
                     return RVWorkManagementSrv.processedPayload(unassignedRoomsParam, assignedRoomsParam);

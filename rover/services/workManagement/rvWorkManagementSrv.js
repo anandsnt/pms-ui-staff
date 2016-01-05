@@ -270,18 +270,19 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
 			promises.push( this.fetchAssignedRoomTasks(assignedRoomsParam) );
 
-			$q.all(promises).then(function(data) {
-				tasksResponse           = data[0];
-				unassignedRoomsResponse = data[1];
-				assignedRoomsResponse   = data[2];
+			$q.all(promises)
+				.then(function(data) {
+					tasksResponse           = data[0];
+					unassignedRoomsResponse = data[1];
+					assignedRoomsResponse   = data[2];
 
-				payload = {
-					'unassignedRoomTasks' : compileUnassignedRooms(unassignedRoomsResponse, tasksResponse),
-					'assignedRoomTasks'   : compileAssignedRooms(assignedRoomsResponse, tasksResponse)
-				};
+					payload = {
+						'unassignedRoomTasks' : compileUnassignedRooms(unassignedRoomsResponse, tasksResponse),
+						'assignedRoomTasks'   : compileAssignedRooms(assignedRoomsResponse, tasksResponse)
+					};
 
-				deferred.resolve( payload );
-			});
+					deferred.resolve( payload );
+				});
 
 			return deferred.promise;
 		};
@@ -387,7 +388,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// DESIRED STRUCTURE
 			// =================
 			// 
-			// assignedRooms = [{
+			// [{
 			// 	id: 34,
 			// 	name: 'Vijay Dev',
 			// 	room_no: 3442,
