@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv) {
+	'zsUtilitySrv','$translate',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -156,7 +156,29 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.setThemeByName(theme);
             }
             
+            $scope.language = theme;
+            
+            $scope.loadTranslations(theme);
             $scope.$emit('hideLoader');
+        };
+        $scope.language = null;
+        $scope.loadTranslations = function(theme){
+            console.warn('setting translationsfile for: '+$scope.language);
+            if ($scope.language) {
+                
+              $translate.use('EN_'+theme.toLowerCase());
+            //  $translate.fallbackLanguage('EN');
+              /* For reason unclear, the fallback translation does not trigger
+               * unless a translation is requested explicitly, for second screen
+               * onwards.
+               * TODO: Fix this bug in ng-translate and implement in this here.
+               */
+              setTimeout(function() {
+                $translate('NA');
+              }, 1000); //Word around.
+            } else {
+              $translate.use('EN_zoku');
+            };
         };
         
         $scope.getLogoSvg = function(theme){
