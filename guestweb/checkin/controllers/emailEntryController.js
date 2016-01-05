@@ -4,7 +4,8 @@
 
 (function() {
 	var emailEntryController = function($scope,$modal,checkinConfirmationService) {
-			var errorOpts = {
+		
+    var errorOpts = {
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
@@ -12,6 +13,18 @@
       resolve: {
         errorMessage:function(){
           return "Please enter a valid email.";
+        }
+      }
+    };
+
+    var emailErrorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+          return "There is a problem saving your email address. Please retry.";
         }
       }
     };
@@ -36,8 +49,9 @@
           $scope.isLoading = false;
           $scope.emailUpdated = true;
         },function(){
-          $scope.netWorkError = true;
+          //$scope.netWorkError = true;
           $scope.isLoading = false;
+            $modal.open(emailErrorOpts);
         });
 
     	}

@@ -1546,9 +1546,14 @@ birthDateDetailsController
 sntGuestWeb.controller('birthDateDetailsController', dependencies);
 })();
 
+/*
+  email entry Ctrl where the email is added
+*/
+
 (function() {
   var emailEntryController = function($scope,$modal,checkinConfirmationService) {
-      var errorOpts = {
+    
+    var errorOpts = {
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
@@ -1556,6 +1561,18 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
       resolve: {
         errorMessage:function(){
           return "Please enter a valid email.";
+        }
+      }
+    };
+
+    var emailErrorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+           return "Problem saving email address. Please retry.";
         }
       }
     };
@@ -1580,8 +1597,9 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
           $scope.isLoading = false;
           $scope.emailUpdated = true;
         },function(){
-          $scope.netWorkError = true;
+          //$scope.netWorkError = true;
           $scope.isLoading = false;
+            $modal.open(emailErrorOpts);
         });
 
       }
