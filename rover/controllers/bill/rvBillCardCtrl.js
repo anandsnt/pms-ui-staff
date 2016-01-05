@@ -1811,6 +1811,9 @@ sntRover.controller('RVbillCardController',
 
 	 });
 
+	$scope.HIDE_LOADER_FROM_POPUP =  function(){
+		$scope.$emit("hideLoader");
+	};
 	//trigger the billing information popup
     $scope.openBillingInformation = function(){
 

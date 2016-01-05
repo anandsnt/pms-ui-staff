@@ -30,9 +30,8 @@
         <div class="col-md-1"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing section-container">
-            <p ng-if="!isPrecheckinOnly" class="main-text">Ready to check in ?</p>
-            <p ng-if="isPrecheckinOnly" class="main-text">Start Pre check in ?</p>
-			<p class="sub-main-text">
+            <p class="main-text">Ready to check in ?</p>
+            <p class="sub-main-text">
 				To provide you with a
 				<strong class="reservation-details">secure check in </strong>
 				process, please confirm the following
@@ -51,7 +50,7 @@
                     <!-- CC field will be shown for precheckin if CC is attached only -->
                     <p class="sub-text pull-left margin-top-10" ng-show="!isAutoCheckinOn || isCCOnFile">LAST 4 DIGITS OF CREDIT CARD USED</p>
                     <input type="password" ng-model="cardDigits" class="input-field padding-3" ng-show="!isAutoCheckinOn || isCCOnFile"></input>
-                    <a class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()"> Continue</a>    
+                    <a class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()">NEXT</a>    
                  </div>
              </center>
         </div>
