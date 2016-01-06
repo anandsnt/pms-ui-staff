@@ -27,32 +27,33 @@
                <p class="subTitletext">
                   We use your e-mail adress to send you your room number:
                </p>
-               <div class="date-container ">
-                  <div class="row">
-                     <em class="labelText">E-MAIL ADDRESS</em>
-                     <input type="text" ng-model="guestDetails.email" class = "col-xs-12 textBox bottom-margin-10" /> 
+               <form>
+                  <div class="date-container ">
+                     <div class="row">
+                        <em class="labelText">E-MAIL ADDRESS</em>
+                        <input type="text" ng-model="guestDetails.email" class = "col-xs-12 textBox bottom-margin-10" /> 
+                     </div>
+                     <input type="submit" class="col-xs-12  link-btn with-bg nextbtn no-transform" ng-click="emailSubmitted()" value="Continue"/> 
                   </div>
+               </form>
+            </div>
+         </div>
+         <div class="row checkin-wrapper-top arrival-details" ng-show="emailUpdated">
+               <div class="pre-checkin-container-padding">
+               <div class="chekin-heading centeralign">
+                  E-mail Address Updated
                </div>
+               <p class="subTitletext">
+                  We updated your Guest profile to include this e-mail address.
+               </p>
                <div class="row cabin_number_field">        
                   <button class="checkin-button continue-button"
-                     ng-click="emailSubmitted()">
+                     ng-click="changeEmail()">
                   <span class="white-text">Continue</span>
                   </button>
                </div>
             </div>
-         </div>
-         <div class="row checkin-wrapper-top" ng-show="emailUpdated">
-            <!-- email updated -->
-            <div class="checkout-status centeralign padding-top-bottom-50">
-               <p class="msg-head blue-text preckin-status-header">E-mail Address Updated</p>
-               <p class="msg-body">We updated your Guest profile to include this e-mail address.</p>
-            </div>
-            <div class="row cabin_number_field centeralign" ng-show="keyDeliveryByEmail">       
-               <button class="checkin-button continue-button email-button"
-               ng-click="changeEmail()">
-                  <span class="white-text email-button-text">Continue</span>
-               </button>
-            </div>
+            <!--  -->
          </div>
       </div>
    </div>
