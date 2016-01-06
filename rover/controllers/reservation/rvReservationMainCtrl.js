@@ -10,6 +10,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.setTitle(title);
         var that = this;
 
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+        if (SWITCH_ROOM_AND_RATES_ALT) {
+            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        }
+
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
@@ -635,7 +641,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
             };
 
-            $state.go('rover.reservation.staycard.mainCard.roomType', {
+            $state.go(roomAndRatesState, {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
                 fromState: 'rover.reservation.search',
@@ -683,7 +689,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //then we only need to switch the vuew type to calendar
 
 
-            $state.go('rover.reservation.staycard.mainCard.roomType', {
+            $state.go(roomAndRatesState, {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
                 view: "DEFAULT",
@@ -1625,7 +1631,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
                 if (!$scope.reservationData.isHourly) {
                     $scope.validateOccupant($scope.reservationData.rooms[i], type);
-                    $scope.checkOccupancyLimit(null, true, i);
+                    if (!!$scope.reservationData.rooms[i].rateId) {
+                        $scope.checkOccupancyLimit(null, true, i);
+                    }
                 }
                 $scope.updateOccupancy(i);
             }

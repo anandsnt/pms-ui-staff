@@ -195,8 +195,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                        $scope.fetchReservations(options);
 		};
                 
-	    		var params = {"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no};
-                        console.log(params);
 	};
         
         
