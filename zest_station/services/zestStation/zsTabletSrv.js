@@ -47,7 +47,18 @@ sntZestStation.service('zsTabletSrv',
                     });
                     return deferred.promise;
                 };
-
+                this.validate = function (params) {
+                    console.info('validate params: ',params)
+                    var deferred = $q.defer(),
+                            url = 'api/users/check_if_admin';
+                    
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
 
                 /**
                  * function to get business date

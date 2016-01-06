@@ -70,6 +70,7 @@ sntZestStation.controller('zsAdminCtrl', [
 	// initialize
 
 	var initialize = function(){	
+                $scope.adminLoginError = false;
 		$scope.input = {"inputTextValue" : ""};
 		$scope.userName = "";
 		$scope.passWord = "";
@@ -123,9 +124,10 @@ sntZestStation.controller('zsAdminCtrl', [
             $state.go('zest_station.home-admin',{'isadmin':true});
             
         };
-
+        $scope.adminLoginError = false;
 	$scope.goToNext  = function(){
 		if($scope.mode   === "admin-name-mode"){
+                        $scope.adminLoginError = false;
 			$scope.userName = angular.copy($scope.input.inputTextValue);
 			$scope.input.inputTextValue = "";
 			$scope.mode   = "admin-password-mode";
@@ -133,6 +135,7 @@ sntZestStation.controller('zsAdminCtrl', [
                         $scope.passwordField = true;
 		}
 		else{
+                        $scope.adminLoginError = false;
 			$scope.passWord = angular.copy($scope.input.inputTextValue);
                         $scope.submitLogin();
 		}
@@ -169,13 +172,34 @@ sntZestStation.controller('zsAdminCtrl', [
 	  */
 	 $scope.submitLogin = function() {
 	 	$scope.hasLoader = true;
-	 	$scope.successMessage = "";
-                var params = {
-                    "email": $scope.userName, 
-                    "password": $scope.passWord
+                var onSuccess = function(response){console.log(response);
+                    if (response.admin){
+                        $scope.goToAdminPrompt();
+                        $scope.adminLoginError = false;
+                        $scope.subHeadingText = '';
+                    } else {
+                        $scope.adminLoginError = true;
+                        $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
+                        console.warn('incorrect admin login');
+                    }
                 };
- 		//zsLoginSrv.login(params, $scope.successCallback, $scope.failureCallBack);
-                    $scope.goToAdminPrompt();
+                var onFail = function(response){
+                        console.log(response);
+                        $scope.adminLoginError = true;
+                        $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
+                        console.warn('failed admin login attempt');
+                };
+                
+                 var options = {
+                    params: {
+                        "apiUser": $scope.userName, 
+                        "apiPass": $scope.passWord
+                    },
+                    successCallBack: 	    onSuccess,
+                    failureCallBack:        onFail
+                };
+                $scope.callAPI(zsTabletSrv.validate, options);
+                    
 	};
 	
 }]);
