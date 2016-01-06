@@ -28,7 +28,8 @@
 				<div class="row cabin_number_field centeralign" ng-show="keyDeliveryByEmail">			
 					<button class="checkin-button continue-button email-button"
 					ng-click="changeEmail()">
-						<span class="white-text email-button-text">Change Email address</span>
+						<span class="white-text email-button-text" ng-show="isValidEmail()">Change Email address</span>
+						<span class="white-text email-button-text" ng-hide="isValidEmail()">Add Email address</span>
 					</button>
 				</div>
 			</div>
