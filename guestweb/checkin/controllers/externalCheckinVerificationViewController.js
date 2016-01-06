@@ -174,6 +174,7 @@
 
 		$scope.clearDate = function(){
 			$scope.date = "";
+			$rootScope.departureDate = "";
 		};
 
 		function loseFocus() {
