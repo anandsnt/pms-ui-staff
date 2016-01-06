@@ -594,6 +594,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 			},
 			initialize = function() {
+				$scope.heading = 'Rooms & Rates';
+				$scope.setHeadingTitle($scope.heading);
+
+				
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
 
@@ -1476,7 +1480,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		});
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- CALENDAR VIEW
-		
+
 		$scope.toggleCalendar = function() {
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";
