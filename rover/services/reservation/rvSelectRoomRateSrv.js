@@ -4,6 +4,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
         // HOUSE AVAILABILITY IS SET EVERY TIME CALL IS MADE FOR RESTRICTIONS FROM THE CALLING METHOD IN THE RVSELECTROOMANDRATECTRL
         self.houseAvailability;
+        self.promotionValidity;
 
 
         self.getRestrictions = function(params) {
@@ -35,7 +36,15 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                             }
                         }
 
-                        //--------------------------------------------- TODO: INVALID PROMO
+                        //--------------------------------------------- INVALID PROMO
+                        if (self.promotionValidity !== null) {
+                            if (!self.promotionValidity[result.date]) {
+                                result.restrictions.push({
+                                    type_id: 98,
+                                    days: null
+                                });
+                            }
+                        }
 
                         restrictions[result.date] = result.restrictions;
                         _.each(result.restrictions, function(restriction) {

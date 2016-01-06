@@ -127,21 +127,21 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			evaluatePromotion = function() {
 				var promoFrom = $scope.reservationData.code.from,
 					promoTo = $scope.reservationData.code.to,
-					validPromotion = true,
-					expired = {};
+					isValid = true,
+					validityTable = {};
 
 				_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(dateInfo, currDate) {
 					if (!!promoFrom && !!promoTo) { //in case promo has a date range
-						validPromotion = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate) &&
+						isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate) &&
 							new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
 					} else if (!!promoFrom) { // case where promo has only from_date
-						validPromotion = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
+						isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
 					} else if (!!promoTo) { //case where promo has only to_date
-						validPromotion = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+						isValid = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
 					}
-					expired[currDate] = validPromotion;
+					validityTable[currDate] = isValid;
 				});
-				return expired;
+				return validityTable;
 			},
 			getTabRoomDetails = function(roomIndex) {
 				var currentRoomTypeId = parseInt($scope.reservationData.tabs[roomIndex].roomTypeId, 10) || "",
@@ -229,7 +229,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// Populate a Room First Grid Here
 				var roomTypes = {},
 					isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1 : $scope.getLeastHouseAvailability() < 1,
-					isPromoInvalid = $scope.reservationData.code && $scope.reservationData.code.id && _.reduce($scope.stateCheck.promotionValidity, function(a, b) {
+					isPromoInvalid = $scope.reservationData.code && $scope.reservationData.code.id && !_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
 						return a && b
 					});
 
@@ -296,9 +296,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							numRestrictions: roomType.restriction_count || 0,
 							restriction: roomType.first_restriction,
 							forRoomType: currentRoomType,
-							isPromotion: $scope.reservationData.code &&
-								$scope.reservationData.code.id &&
-								_.indexOf(ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1
+							isPromotion: !isPromoInvalid && _.indexOf(ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1
 						}
 
 						//for every day
@@ -668,6 +666,28 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.preferredType = $scope.reservationData.tabs[$scope.activeRoom].roomTypeId;
 
+				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
+
+				//--
+				if (!$scope.stateCheck.dateModeActiveDate) {
+					var arrival = $scope.reservationData.arrivalDate,
+						stayDates = $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates;
+					if ($scope.reservationData.midStay) {
+						// checking if midstay and handling the expiry condition
+						if (new tzIndependentDate($scope.reservationData.departureDate) > new tzIndependentDate($rootScope.businessDate)) {
+							$scope.stateCheck.dateModeActiveDate = $rootScope.businessDate;
+							$scope.stateCheck.selectedStayDate = stayDates[$rootScope.businessDate];
+						} else {
+							$scope.stateCheck.dateModeActiveDate = arrival;
+							$scope.stateCheck.selectedStayDate = stayDates[arrival];
+						}
+					} else {
+						$scope.stateCheck.dateModeActiveDate = arrival;
+						$scope.stateCheck.selectedStayDate = stayDates[arrival];
+					}
+				}
+
+				//--
 				if (!!$scope.reservationData.group.id) {
 					var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
 					ratesMeta[customRate.id] = customRate;
@@ -680,7 +700,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				$scope.reservationData.ratesMeta = ratesMeta;
 
-				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
+
 				// activate room type default view based on reservation settings
 				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
 					$scope.stateCheck.activeView = "RECOMMENDED";
@@ -706,23 +726,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				groupByRoomTypes();
 				groupByRates();
 
-				//--
-				if (!$scope.stateCheck.dateModeActiveDate) {
-					var arrival = $scope.reservationData.arrivalDate;
-					if ($scope.reservationData.midStay) {
-						// checking if midstay and handling the expiry condition
-						if (new tzIndependentDate($scope.reservationData.departureDate) > new tzIndependentDate($rootScope.businessDate)) {
-							$scope.stateCheck.dateModeActiveDate = $rootScope.businessDate;
-							$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[$rootScope.businessDate];
-						} else {
-							$scope.stateCheck.dateModeActiveDate = arrival;
-							$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[arrival];
-						}
-					} else {
-						$scope.stateCheck.dateModeActiveDate = arrival;
-						$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.stateCheck.roomDetails.firstIndex].stayDates[arrival];
-					}
-				}
+
 
 				//--
 				initScrollers();
@@ -947,7 +951,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					details.rateDetails = {
 						actual_amount: calculatedAmount,
 						modified_amount: calculatedAmount,
-						is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed === null ? "false" : $scope.reservationData.ratesMeta[rateId].is_discount_allowed.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
+						is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? "false" : $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
 						is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? "false" : $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on.toString()
 					}
 				});
@@ -976,10 +980,23 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		$scope.getBookButtonStyle = function(roomId, rateId) {
+			
+			if (!!$scope.reservationData.ratesMeta[rateId].account_id && $scope.stateCheck.lookUp[roomId].rates[rateId].numRestrictions > 0) {
+				return 'red';
+			}
+
 			if (!$scope.stateCheck.stayDatesMode) {
-				return 'green'
+				if ($scope.stateCheck.lookUp[roomId].rates[rateId].numRestrictions > 0) {
+					return 'brand-colors'
+				} else {
+					return 'green'
+				}
 			} else { //Staydates mode
-				return 'white green-text'
+				if ($scope.stateCheck.lookUp[roomId].rates[rateId].numRestrictions > 0) {
+					return 'white brand-text'
+				} else {
+					return 'white green-text'
+				}
 			}
 		};
 
@@ -1098,6 +1115,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			var computeDetails = function() {
 				RVSelectRoomRateSrv.houseAvailability = $scope.stateCheck.house;
+
+				if ($scope.reservationData.code && //------------------------------------------------------------------ Place INVALID PROMO to be set IFF 
+					$scope.reservationData.code.id && //---------------------------------------------------------------- a) A promotion has been entered [AND]
+					!_.reduce($scope.stateCheck.promotionValidity, function(a, b) { //--------------------------------- b) The entered promotion has expired [AND]
+						return a && b
+					}) &&
+					_.indexOf(ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) { //------ c) The current rate is linked to the promotion
+					RVSelectRoomRateSrv.promotionValidity = $scope.stateCheck.promotionValidity;
+				} else {
+					RVSelectRoomRateSrv.promotionValidity = null; //--------------------------------------------------- ELSE set this as NULL
+				}
+
 				$scope.invokeApi(RVSelectRoomRateSrv.getRestrictions, {
 					from_date: $scope.reservationData.arrivalDate,
 					to_date: $scope.reservationData.departureDate,
