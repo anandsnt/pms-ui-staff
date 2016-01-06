@@ -1,5 +1,6 @@
 sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
-	BaseCtrl.call(this, $scope);
+	
+    BaseCtrl.call(this, $scope);
 	$scope.isInitialPage = true;
 
     var scrollerOptions = { preventDefault: false };
@@ -15,9 +16,11 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     $scope.getCharges = function (route) {
     	if (route.attached_charge_codes.length > 1 || route.attached_billing_groups.length > 1) {
     		return 'Multiple';
-    	} else if (route.attached_charge_codes.length > 0) {
+    	} 
+        else if (route.attached_charge_codes.length > 0) {
     		return route.attached_charge_codes[0].charge_code + ', ' + route.attached_charge_codes[0].description;
-    	} else if (route.attached_billing_groups.length > 0) {
+    	} 
+        else if (route.attached_billing_groups.length > 0) {
             return route.attached_billing_groups[0].name ;
         }
     };
@@ -26,9 +29,13 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     * function to get the charge type
     */
     $scope.getRouteType = function (route) {
-        if ((route.attached_charge_codes.length > 0 && route.attached_billing_groups.length > 0) || route.attached_charge_codes.length > 0) {
+        if ((route.attached_charge_codes.length > 0 && 
+            route.attached_billing_groups.length > 0) || 
+            route.attached_charge_codes.length > 0) {
+
             return 'CHARGE CODE(S)';
-        } else {
+        } 
+        else {
             return 'BILLING GROUP(S)';
         }
 
@@ -38,6 +45,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     * function to delete route
     */
     $scope.deleteRoute = function (index) {
+
         var successCallback = function (data) {
             $scope.routes.splice(index, 1);
             $scope.$parent.$emit('hideLoader');
