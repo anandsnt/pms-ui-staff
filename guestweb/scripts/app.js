@@ -83,8 +83,8 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 	$rootScope.primaryGuestId = $attrs.primaryGuestId;
 
 
- 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true" && $attrs.isZestEmailCheckin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestEmailCheckinNoServiceMsg;
+ 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="true") ?true:false;
+ 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestCheckinNoServiceMsg;
  	$rootScope.termsAndConditions = $attrs.termsAndConditions;
  	$rootScope.isBirthdayVerified =  false;
  	$rootScope.application        = $attrs.application;
@@ -115,8 +115,9 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 		$rootScope.accessToken = $attrs.accessToken	;
 	}
 	//navigate to different pages
-	if($attrs.checkinUrlVerification === "true" && $attrs.isZestEmailCheckin ==="false"){
-		$location.path('/guestCheckinTurnedOff'); // external checkin URL available, but its turned off
+
+	if($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="false"){
+		$location.path('/guestCheckinTurnedOff');
 	}
 	else if($attrs.checkinUrlVerification === "true"){
 		$location.path('/externalCheckinVerification'); // external checkin URL available and is on
