@@ -41,11 +41,17 @@
                </div>
             </div>
          </div>
-         <div class="row checkin-wrapper-top">
+         <div class="row checkin-wrapper-top" ng-show="emailUpdated">
             <!-- email updated -->
-            <div class="checkout-status centeralign checkout-now-status pre-checkin-complete" ng-show="emailUpdated">
+            <div class="checkout-status centeralign padding-top-bottom-50">
                <p class="msg-head blue-text preckin-status-header">E-mail Address Updated</p>
                <p class="msg-body">We updated your Guest profile to include this e-mail address.</p>
+            </div>
+            <div class="row cabin_number_field centeralign" ng-show="keyDeliveryByEmail">       
+               <button class="checkin-button continue-button email-button"
+               ng-click="changeEmail()">
+                  <span class="white-text email-button-text">Continue</span>
+               </button>
             </div>
          </div>
       </div>

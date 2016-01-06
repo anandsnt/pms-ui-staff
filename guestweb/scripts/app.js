@@ -91,6 +91,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
  	$rootScope.collectCCOnCheckin = ($attrs.checkinCollectCc === "true") ? true:false;
  	$rootScope.isMLI = ($attrs.paymentGateway  = "MLI") ? true : false;
  	//room key delivery options
+ 	$rootScope.preckinCompleted =  false;
  	$rootScope.userEmail = $attrs.primaryGuestEmail;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;

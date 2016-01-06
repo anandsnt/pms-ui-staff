@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var emailEntryController = function($scope,$modal,guestDetailsService) {
+	var emailEntryController = function($scope,$modal,guestDetailsService,$state,$rootScope) {
 		
     var errorOpts = {
       backdrop: true,
@@ -48,16 +48,21 @@
         guestDetailsService.postGuestBirthDate({"email":$scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;
+          $rootScope.userEmail = $scope.guestDetails.email;
         },function(){
           $scope.isLoading = false;
           $modal.open(emailErrorOpts);
         });
     	}
     };
+
+    $scope.changeEmail =  function(){
+      $state.go('preCheckinStatus');
+    };
 };
 
 var dependencies = [
-'$scope','$modal','guestDetailsService',
+'$scope','$modal','guestDetailsService','$state','$rootScope',
 emailEntryController
 ];
 
