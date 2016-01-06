@@ -9,19 +9,33 @@
 		$state.go('checkinCcVerification');
 	}
 	else{
-		$scope.isLoading = true;
-		preCheckinSrv.completePrecheckin().then(function(response) {
-			$scope.isLoading = false;
-			if(response.status === 'failure'){
+		//this page will be used again after email entry
+		// So once preckin is completed we store some details
+		if(!$rootScope.preckinCompleted){
+			$scope.isLoading = true;
+			preCheckinSrv.completePrecheckin().then(function(response) {
+				$scope.isLoading = false;
+				if(response.status === 'failure'){
+					$scope.netWorkError = true;
+				}
+				else{
+					$scope.responseData =response.data;
+					$rootScope.preckinCompleted =  true;
+					$rootScope.responseData = {"confirmation_message":$scope.responseData.confirmation_message};
+				};
+			},function(){
 				$scope.netWorkError = true;
-			}
-			else{
-				$scope.responseData =response.data;
-			};
-		},function(){
-			$scope.netWorkError = true;
-			$scope.isLoading = false;
-		});
+				$scope.isLoading = false;
+			});
+		}
+
+		$scope.changeEmail = function(){
+			$state.go('emailAddition');
+		};
+		$scope.isValidEmail = function() {
+	   		 var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    	return re.test($rootScope.userEmail);
+	 	 };
 	}
 };
 
