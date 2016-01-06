@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var emailEntryController = function($scope,$modal,checkinConfirmationService) {
+	var emailEntryController = function($scope,$modal,guestDetailsService) {
 		
     var errorOpts = {
       backdrop: true,
@@ -45,21 +45,19 @@
     		$modal.open(errorOpts);
     	}
     	else{
-        checkinConfirmationService.updateEmail({"email":$scope.guestDetails.email}).then(function(response) {
+        guestDetailsService.postGuestBirthDate({"email":$scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;
         },function(){
-          //$scope.netWorkError = true;
           $scope.isLoading = false;
-            $modal.open(emailErrorOpts);
+          $modal.open(emailErrorOpts);
         });
-
     	}
     };
 };
 
 var dependencies = [
-'$scope','$modal','checkinConfirmationService',
+'$scope','$modal','guestDetailsService',
 emailEntryController
 ];
 

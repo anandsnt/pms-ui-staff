@@ -68,6 +68,7 @@
 				checkinDetailsService.setResponseData(response.results[0]);
 				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
 				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;
+				$rootScope.userEmail = response.results[0].guest_email;
 
 				//navigate to next page
 				$state.go('checkinReservationDetails');
