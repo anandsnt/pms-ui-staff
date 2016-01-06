@@ -4,8 +4,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	'zsModeConstants',
 	'zsEventConstants',
 	'zsTabletSrv','zsCheckoutSrv',
-	'$stateParams',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams) {
+	'$stateParams', 'zsHotelDetailsSrv',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -15,7 +15,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		"room_no":""
 	};
 	$scope.input = {};
-	
+
 	/**
 	 * when the back button clicked
 	 * @param  {[type]} event
@@ -95,6 +95,18 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
 	};
 
+    var isItFontainebleauHotel = function(){
+        return hotelDetailsSrv.data.theme === "fontainebleau";
+    };
+
+    var isInFinalSearchingScreen = function() {
+        return $scope.mode === "search-final-mode";
+    };
+
+    $scope.shouldShowFloorChoosing = function(){
+        return ($scope.isInCheckoutMode() && isItFontainebleauHotel() && isInFinalSearchingScreen());
+    };
+
 	/**
 	 * [searchReservations description]
 	 * @return {undefined}
@@ -167,6 +179,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		$scope.showRoomEnter = true;
 	};
 
+    $scope.changedTheSelectedTower = function(){
+        $scope.input.inputTextValue = $scope.tower.selected;
+    };
+
 	/*
 	* 	There are two steps for checkout
 	*	1.enter last name
@@ -174,9 +190,20 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 	*/
 	var goToNextForCheckout = function(){
 		if($scope.mode === "search-mode" && !$scope.reEnteredNameInfo){
+            $scope.input.inputTextValue = "";
+            $scope.headingText = "Next, Type your room number";
+            if(isItFontainebleauHotel()) {
+                _.each(hotelDetailsSrv.data.towers, function(value, key){
+                    $scope.towerList.push({
+                        name: key,
+                        value: value
+                    });
+                });
+                $scope.headingText = "Next, Choose your tower and enter your room number";
+                $scope.input.inputTextValue = $scope.towerList[0].value;
+                $scope.selectedTower = $scope.towerList[0].value;
+            }
 			$scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
-			$scope.input.inputTextValue = "";
-			$scope.headingText = "Next, Type your room number";
 			$scope.mode = "search-final-mode";
 		}
 		else{
@@ -406,6 +433,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 		$scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
 
 		$scope.reservations = [];
+
+        $scope.towerList = [];
+        $scope.tower = { selected : ""};
 
 		//pagination
 		$scope.page 			= 1;

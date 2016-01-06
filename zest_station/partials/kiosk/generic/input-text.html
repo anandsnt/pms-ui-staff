@@ -3,6 +3,13 @@
     <div id="content" ng-hide='at === "registration_printed"'>
         <h1>{{headingText}}</h1>
         <h3>{{subHeadingText}}</h3>
+        <form class="form" ng-if='shouldShowFloorChoosing()'>
+            <div class="entry">
+                <select ng-model="tower.selected" ng-change="changedTheSelectedTower()">
+                    <option ng-repeat="tower in towerList" ng-selected="tower.value==tower.selected" value="{{tower.value}}">{{tower.name}}</option>
+                </select>
+            </div>
+        </form>
         <form method="post" class="form" ng-hide='at === "checking_in_guest"'>
             <div class="entry input">
                 <input ng-hide='passwordField || at === "find-by-confirmation" || mode === "search-final-mode"' class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
