@@ -72,11 +72,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					validityTable = {};
 
 				_.each(ROOMS[$scope.activeRoom].stayDates, function(dateInfo, currDate) {
-					if (!!promoFrom) {
-						isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
-					}
-					if (!!promoTo) {
-						isValid = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+					if (currDate !== DEPARTURE_DATE || currentRate === ARRIVAL_DATE) {
+						if (!!promoFrom) {
+							isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
+						}
+						if (!!promoTo) {
+							isValid = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+						}
 					}
 					validityTable[currDate] = isValid;
 				});
@@ -460,7 +462,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rate.selectedRoom = rate.rooms[0];
 						}
 					}
-						
+
 				});
 
 				// ********************************************************************************************************************************************* STEP 2a : Sort ASC rate names
