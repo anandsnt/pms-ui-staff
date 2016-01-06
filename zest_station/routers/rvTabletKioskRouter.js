@@ -110,6 +110,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
          });
          
+        // //check-in [ terms conditions left ]
+         $stateProvider.state('zest_station.deposit_agree', {
+            url       : '/card_swipe/:mode',
+            controller: 'zsCardSwipeCtrl',
+            templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
+         });
+         
          
          //check-in [ reservation credit card sign ]
          $stateProvider.state('zest_station.card_sign', {

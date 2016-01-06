@@ -137,6 +137,7 @@ module.exports = function(grunt) {
                     separator: ','
                 }
             },
+            /*
             zestStationEnglishJson: {
                 src: ['zest_station/zsLocales/en/*.json'],
                 dest: 'zest_station/zsLocales/EN.json',
@@ -147,7 +148,7 @@ module.exports = function(grunt) {
                     footer: '}',
                     separator: ','
                 }
-            }
+            }*/
         },
         shell: {
             startRailsServer: {
