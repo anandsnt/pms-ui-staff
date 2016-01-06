@@ -1,24 +1,25 @@
 <!-- print option -->
 <section id="main" role="main" class="centered" ng-show="mode === 'print-mode'">
     <div id="content">
-        <h1 translate>ZOKU_THANKS</h1>
-        <h3 ng-show="email.length>0">We’ve already e-mailed your bill. But perhaps you want it printed?</h3>
+        <h1>{{'END_THANKS' |translate}}</h1>
+        <h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
+            </h3>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='printBill()'>
                         <div ng-include="'assets/css/icons/print.svg'"></div>
                     </button>
-                    Print Bill
+                    {{'PRINT_BILL' |translate}}
                 </li>
                 <li class="break">
-                    <span>Or</span>
+                     <span translate>OR_TEXT</span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='clickedNoThanks()'>
                         <div ng-include="'assets/css/icons/no-print.svg'"></div>
                     </button>
-                    No, thanks
+                    {{'NO_THX' |translate}}
                 </li>
             </ul>
         </nav>
@@ -29,27 +30,27 @@
 <section id="main" role="main" class="centered" ng-show="mode === 'email-mode'">
     <!-- Type Email -->
      <div id="content" ng-show="!emailError">
-        <h1>Type your email address</h1>
+        <h1>{{'TYPE_EMAIL' |translate}}</h1>
         <form method="post" class="form">
             <div class="entry input">
                 <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">Next</button>
+                <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' |translate}}</button>
             </div>
         </form>
     </div>
     <!-- Email invalid -->
     <div id="content" ng-show="emailError">
-        <h1>Hmm..</h1>
-        <h2>This does not appear to be a valid e-mail address.</h2>
+        <h1>{{'EMAIL_ERR_HEADER' |translate}}</h1>
+        <h2>{{'EMAIL_ERR_HEADER_SUB' |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reTypeEmail()'>
                          <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
-                    Re-Type
+                    {{'RE_TYPE' |translate}}
                     <span>{{email}}</span>
                 </li>
             </ul>
@@ -63,9 +64,9 @@
 <!-- Final view-->
 <section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
     <div id="content">
-        <h1>Hope to see you again soon!</h1>
-        <h3 ng-show="printOpted">Your bill has been printed below.</h3>
-        <button  type="button" class="button" click-touch='clickedOnCloseButton()'>DONE</button>
+        <h1>{{'SEE_YOU' |translate}}</h1>
+        <h3 ng-show="printOpted">{{'BILL_PRINTED_BELOW' |translate}}</h3>
+        <button type="button" class="button" click-touch='clickedOnCloseButton()'>{{'DONE_BTN' |translate}}</button>
     </div>
 </section>
 <!-- hidden view for print action -->
@@ -114,7 +115,7 @@
 <section id="guest-bill" class="page-print">
 
     <div class="invoice-logo">
-        <h1>Invoice</h1>
+        <h1>{{'INVOICE_HEADER' |translate}}</h1>
          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="logo" id="zoku-print-logo" x="0px" y="0px" width="937.2px" height="146.3px" viewBox="0 0 937.2 146.3" enable-background="new 0 0 937.2 146.3" xml:space="preserve">
             <path fill="#42929b" d="M336.3 145.8c-39.5 0-71.7-32.2-71.7-71.7 0-39.5 32.2-71.7 71.7-71.7 39.5 0 71.7 32.2 71.7 71.7C407.9 113.6 375.8 145.8 336.3 145.8M336.3 13.4c-33.4 0-60.7 27.2-60.7 60.7 0 33.4 27.2 60.7 60.7 60.7 33.4 0 60.7-27.2 60.7-60.7C396.9 40.6 369.7 13.4 336.3 13.4"></path>
             <path fill="#42929b" d="M534.5 146.3c-3 0-5.5-2.5-5.5-5.5V8c0-3 2.5-5.5 5.5-5.5S540 5 540 8v132.8C540 143.9 537.5 146.3 534.5 146.3"></path>
@@ -130,55 +131,55 @@
     <div class="guest-info table">
         <div class="row">
             <div class="cell">
-                <strong>Guest Full Name</strong>
+                <strong>{{'INVOICE_FULLNAME' |translate}}</strong>
                 <span>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</span>
             </div>
             <div class="cell">
-                <strong>Arrival Date</strong>
+                <strong>{{'INVOICE_ARRIVAL' |translate}}</strong>
                 <span>{{printData.arrival_date | date:dateFormat}}</span>
             </div>
             <div class="cell">
-                <strong>Departure Date</strong>
+                <strong>{{'INVOICE_DEPARTURE' |translate}}</strong>
                 <span>{{printData.departure_date | date:dateFormat}}</span>
             </div>
             <div class="cell">
-                <strong>Invoice No.</strong>
+                <strong>{{'INVOICE_NO' |translate}}</strong>
                 <span>{{printData.invoice_number}}</span>
             </div>
         </div>
         <div class="row">
             <div class="cell">
-                <strong>City</strong>
+                <strong>{{'INVOICE_CITY' |translate}}</strong>
                 <span>{{printData.guest_details.city}}</span>
             </div>
             <div class="cell">
-                <strong>State</strong>
+                <strong>{{'INVOICE_STATE' |translate}}</strong>
                 <span>{{printData.guest_details.state}}</span>
             </div>
             <div class="cell">
-                <strong>Postal Code</strong>
+                <strong>{{'INVOICE_PC' |translate}}</strong>
                 <span>{{printData.guest_details.postal_code}}</span>
             </div>
             <div class="cell">
-                <strong>Country</strong>
+                <strong>{{'INVOICE_COUNTRY' |translate}}</strong>
                 <span>{{printData.guest_details.country}}</span>
             </div>
         </div>
         <div class="row">
             <div class="cell">
-                <strong>Confirmation No.</strong>
+                <strong>{{'INVOICE_COUNF' |translate}}</strong>
                 <span>{{printData.confirmation_number}}</span>
             </div>
             <div class="cell">
-                <strong>Room No.</strong>
+                <strong>{{'INVOICE_ROOM' |translate}}</strong>
                 <span>{{printData.room_number}}</span>
             </div>
             <div class="cell">
-                <strong>Tax No.</strong>
+                <strong>{{'INVOICE_TAX' |translate}}</strong>
                 <span>{{printData.tax_number}}</span>
             </div>
             <div class="cell">
-                <strong>Reference Number</strong>
+                <strong>{{'INVOICE_REF' |translate}}</strong>
                 <span>{{printData.reference_number}}</span>
             </div>
         </div>
@@ -190,7 +191,7 @@
 
     <div class="invoice-body">
         <p class="date">
-            <strong>Invoice date</strong>
+            <strong>{{'INVOICE_DATE' |translate}}</strong>
             {{printData.invoice_date | date:dateFormat}}
         </p>
         
@@ -205,19 +206,19 @@
             <!-- Headings -->
             <div class="row">
                 <div class="cell">
-                    <strong>Date of Charge</strong>
+                    <strong>{{'INVOICE_DATE_OF' |translate}}</strong>
                 </div>
                 <div class="cell">
-                    <strong>Charge Code</strong>
+                    <strong>{{'INVOICE_CHARGE_CODE' |translate}}</strong>
                 </div>
                 <div class="cell">
-                    <strong>Charge description</strong>
+                    <strong>{{'INVOICE_CHARGE_DESC' |translate}}</strong>
                 </div>
                 <div class="cell align-right">
-                    <strong>Charge amount</strong>
+                    <strong>{{'INVOICE_CHARGE_AMT' |translate}}</strong>
                 </div>
                 <div class="cell align-right">
-                    <stronG>Credit amount</strong>
+                    <strong>{{'INVOICE_CREDIT_AMT' |translate}}</strong>
                 </div>
             </div>
             <!-- Charges -->
@@ -246,24 +247,24 @@
         <!-- Totals -->
         <div class="invoice-totals table">
             <div class="row">
-                <div class="cell align-right"><strong>Total Charge</strong></div>
+                <div class="cell align-right"><strong>{{'INVOICE_TOTAL' |translate}}</strong></div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.total_fees}}</strong></div>
             </div>
             <div class="row">
-                <div class="cell align-right"><strong>Total Credits</strong></div>
+                <div class="cell align-right"><strong>{{'INVOICE_TOTAL_CR' |translate}}</strong></div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.credits | number: precisonTwo}}</strong></div>
             </div>
             <div class="row">
-                <div class="cell align-right"><strong>Balance</strong></div>
+                <div class="cell align-right"><strong>{{'INVOICE_TOTAL_BAL' |translate}}</strong></div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.balance}}</strong></div>
             </div>
             <div class="row">
-                <div class="cell align-right">Net Amount</div>
-                <div class="cell align-right">{{zestStationData.currency}}{{printData.net_amount}}</strong></div>
+                <div class="cell align-right">{{'INVOICE_NET' |translate}}</div>
+                <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.net_amount}}</strong></div>
             </div>
             <div class="row" ng-repeat="item in printData.tax_details">
                 <div class="cell align-right">{{item.description}}</div>
-                <div class="cell align-right">{{zestStationData.currency}}{{item.amount | number: 2}}</strong></div>
+                <div class="cell align-right"><strong>{{zestStationData.currency}}{{item.amount | number: 2}}</strong></div>
             </div>
         </div>
 
