@@ -72,7 +72,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					validityTable = {};
 
 				_.each(ROOMS[$scope.activeRoom].stayDates, function(dateInfo, currDate) {
-					if (currDate !== DEPARTURE_DATE || currentRate === ARRIVAL_DATE) {
+					if (currDate !== DEPARTURE_DATE || currDate === ARRIVAL_DATE) {
 						if (!!promoFrom) {
 							isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
 						}
