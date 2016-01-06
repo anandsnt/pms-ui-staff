@@ -48,7 +48,7 @@
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
 	        errorMessage:function(){
-	          return "Please fill all the required fields";
+	          return "Please provide all the required information";
 	        }
 	      }
 	    };
@@ -92,7 +92,7 @@
 					data.alt_confirmation_number = $scope.confirmationNumber;
 				}
 				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0){
-					data.departure_date  = $scope.departureDate;
+					data.departure_date  = dateToSend;
 				}
 
 				
@@ -172,7 +172,15 @@
 		$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 
+
+		function loseFocus() {
+			var inputs = document.getElementsByTagName('input');
+			for (var i = 0; i < inputs.length; ++i) {
+			  inputs[i].blur();
+			}
+		};
 		$scope.showCalender = function(){
+			loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 			$scope.isCalender = true;
 		};
 		$scope.closeCalender = function(){
@@ -183,7 +191,7 @@
 			$rootScope.departureDate = $scope.selectedDate;
 
 			dateToSend = dclone($scope.date,[]);
-			dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+			dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
 			$scope.closeCalender();
 		};
 	}

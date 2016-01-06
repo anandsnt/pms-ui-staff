@@ -1,9 +1,10 @@
 
 <!-- Content -->
-<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email" || at === "deposit-agree"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText}}</h1>
         <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText}}</h2>
+        <h2 ng-hide='at !== "deposit-agree"'>{{subsubheadingText}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
@@ -81,6 +82,12 @@
                     <h1>Continue</h1>
                 </li>
 
+                <li ng-show='at === "deposit-agree"'> 
+                    <button type="button" class="button option" touch-press='depositProceed()'>
+                        <div ng-include="'assets/css/icons/creditcard.svg'"></div>
+                    </button>
+                    <h1>Proceed</h1>
+                </li>
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
@@ -88,7 +95,7 @@
                     </button>
                     <span translate>Edit My E-mail Address</span>
                 </li>
-                <li class="break" ng-show='at === "email-delivery" || at === "key-error"'>
+                <li class="break" ng-show='at === "email-delivery" || at === "key-error"  || at === "deposit-agree"'>
                     <span>Or</span>
                 </li>
                 <li ng-show='at === "email-delivery"'> 
@@ -97,7 +104,7 @@
                     </button>
                     <span translate>Send E-Mail</span>
                 </li>
-                <li ng-show='at === "key-error" || at === "swipe-pay-error"'> 
+                <li ng-show='at === "key-error" || at === "swipe-pay-error"  || at === "deposit-agree"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>
