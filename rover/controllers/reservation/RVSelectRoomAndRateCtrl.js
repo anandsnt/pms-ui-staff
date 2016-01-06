@@ -668,9 +668,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			 * @return {[type]}        [description]
 			 */
 			findExhaustedRateAddons = function(roomId, rateId) {
-				var arrival = ARRIVAL_DATE,
-					departure = DEPARTURE_DATE,
-					exhaustedRateAddons = [],
+				var exhaustedRateAddons = [],
 					updateExhaustedAddonsList = function(addon) {
 						// Need to see the applicable count based on the amount_type
 						var applicableCount = RVReservationStateService.getApplicableAddonsCount(
@@ -697,7 +695,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						}
 					},
 					dayLoop = function(forDate) {
-						if (forDate === arrival || forDate !== departure) {
+						if (forDate === ARRIVAL_DATE || forDate !== DEPARTURE_DATE) {
 							var associatedAddons = RVReservationStateService.fetchAssociatedAddons(rateId);
 							_.each(associatedAddons, function(addon) {
 								var inventoryForDay = _.findWhere(addon.inventory, {
@@ -887,6 +885,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.refreshScroll = function() {
 			$timeout(function() {
 				$scope.refreshScroller('room_types');
+				$scope.$parent.myScroll['room_types'] && $scope.$parent.myScroll['room_types'].refresh();
 			}, 100);
 		};
 
@@ -1477,11 +1476,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		});
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- CALENDAR VIEW
-
-		/**
-		 * Toggle between ROOM_RATE & CALENDAR views
-		 * @return {[type]} [description]
-		 */
+		
 		$scope.toggleCalendar = function() {
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";
