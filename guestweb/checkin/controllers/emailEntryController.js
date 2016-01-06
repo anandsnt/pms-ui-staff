@@ -45,7 +45,7 @@
     		$modal.open(errorOpts);
     	}
     	else{
-        guestDetailsService.postGuestBirthDate({"email":$scope.guestDetails.email}).then(function(response) {
+        guestDetailsService.postGuestDetails({"email":$scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;
           $rootScope.userEmail = $scope.guestDetails.email;
