@@ -1,7 +1,12 @@
 sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
     function($q, RVBaseWebSrvV2, dateFilter) {
-        var that = this;
-        this.getRestrictions = function(params) {
+        var self = this;
+
+        // HOUSE AVAILABILITY IS SET EVERY TIME CALL IS MADE FOR RESTRICTIONS FROM THE CALLING METHOD IN THE RVSELECTROOMANDRATECTRL
+        self.houseAvailability;
+
+
+        self.getRestrictions = function(params) {
             var deferred = $q.defer();
             var url = '/api/availability/restrictions';
             // Generate a dummy response in case of custom rates
@@ -20,10 +25,27 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                         summary = [];
 
                     _.each(data.results, function(result) {
+                        //---------------------------------------------Add HOUSE_FULL to the restrictions array
+                        if (self.houseAvailability) {
+                            if (self.houseAvailability[result.date] < 1) {
+                                result.restrictions.push({
+                                    type_id: 99,
+                                    days: null
+                                });
+                            }
+                        }
+
+                        //--------------------------------------------- TODO: INVALID PROMO
+
                         restrictions[result.date] = result.restrictions;
                         _.each(result.restrictions, function(restriction) {
-                            summary.push(restriction);
-                        })
+                            if (!_.findWhere(summary, {
+                                    type_id: restriction.type_id,
+                                    days: restriction.days
+                                })) {
+                                summary.push(restriction);
+                            }
+                        });
                     });
 
                     deferred.resolve({
