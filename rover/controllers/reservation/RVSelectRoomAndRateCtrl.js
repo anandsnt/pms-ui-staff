@@ -437,6 +437,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					if (!$scope.stateCheck.preferredType) {
 						// ************************************************************************************************************************************* STEP 1a : Sort ASC room-rate ADR
 						rate.rooms.sort(RVReservationDataService.sortRatesAsc);
+						ratesArray.push(rate);
 						rate.selectedRoom = rate.rooms[0];
 						rate.selectedRoomId = rate.rooms[0].id;
 
@@ -450,14 +451,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if (prefRooms.length > 0) {
 							// ********************************************************************************************************************************* STEP 1a : Sort ASC room-rate ADR
 							rate.rooms.sort(RVReservationDataService.sortRatesAsc);
+							ratesArray.push(rate);
 							rate.selectedRoomId = parseInt($scope.stateCheck.preferredType);
 							rate.selectedRoom = prefRooms[0];
 						} else if (!!$scope.reservationData.ratesMeta[rate.id].account_id) {
+							ratesArray.push(rate);
 							rate.selectedRoomId = rate.rooms[0].id;
 							rate.selectedRoom = rate.rooms[0];
 						}
 					}
-					ratesArray.push(rate);
+						
 				});
 
 				// ********************************************************************************************************************************************* STEP 2a : Sort ASC rate names
@@ -597,7 +600,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.heading = 'Rooms & Rates';
 				$scope.setHeadingTitle($scope.heading);
 
-				
+
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
 
