@@ -201,7 +201,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                         value: value
                     });
                 });
-                $scope.headingText = "Next, Choose your tower and enter your room number";
+                $scope.headingText = "CHOOSE_TOWER_AND_ENTER_ROOM_NUMBER";
                 $scope.input.inputTextValue = $scope.towerList[0].value;
                 $scope.selectedTower = $scope.towerList[0].value;
             }
