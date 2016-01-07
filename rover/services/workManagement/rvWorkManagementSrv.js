@@ -64,6 +64,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
 		this.createWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets';
@@ -75,6 +80,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
 		this.fetchWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
@@ -86,6 +95,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
 		this.deleteWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
@@ -97,6 +110,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
 		this.fetchWorkSheetDetails = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments';
@@ -109,6 +127,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// param changed
 		this.saveWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments/assign';
@@ -120,6 +139,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
 		/**
 		 * Method to search Employees from the Work Management Landing page
 		 * @param  Object params
@@ -145,6 +169,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
 		/**
 		 * Method to search Employees from the Work Management Landing page
 		 * @param  Object params
@@ -161,6 +190,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
 		// method to fetch all unassigned rooms for a given date
 		this.fetchAllUnassigned = function(params) {
 			var deferred = $q.defer(),
@@ -316,6 +350,22 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 					};
 
 					deferred.resolve( payload );
+				});
+
+			return deferred.promise;
+		};
+
+		this.saveWorkSheets = function(assignedRoomTasks) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/assign';
+
+			var params = compileAssignedRoomsParams( assignedRoomTasks );
+
+			RVBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
 				});
 
 			return deferred.promise;
@@ -551,6 +601,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
 				mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
 			};
+		};
+
+		function compileAssignedRoomsParams () {
+
 		};
 
 		// ALL APIS
