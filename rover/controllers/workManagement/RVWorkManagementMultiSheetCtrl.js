@@ -34,6 +34,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		/**
+		 * Utility function to calculate the width of worksheet content
+		 * Method: (220 x number of employees show) + 20)px
+		 * @return {Integer}
+		 */
+		$scope.getWidthForWorkSheetContent = function() {
+			return ((220 * $scope.multiSheetState.selectedEmployees.length) + 20) + 'px';
+		};
+
+		/**
 		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
 		 */
 		$scope.selectEmployee = function(data) {
@@ -383,6 +392,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var fetchWorkSheetPayloadSuccess = function(data) {
 			payload = data;
 			initializeMultiSheetDataModel();
+			initializeEmployeesList();
+			$scope.filterUnassigned();
 			refreshView();
 		};
 
@@ -393,17 +404,22 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var updateView = function() {
 			// To Do: ask for save if dirty.
 
-			var params = {
-				date: $scope.multiSheetState.selectedDate,
-				work_type_id: multiSheetState.header.work_type_id
-			};
+            var unassignedRoomsParam = {
+                date: $scope.multiSheetState.selectedDate,
+            };
+            if ($scope.multiSheetState.header.work_type_id) {
+            	_.extend(unassignedRoomsParam, {
+            		work_type_id: $scope.multiSheetState.header.work_type_id
+            	});
+            }
 
-			var options = {
-				successCallBack: fetchWorkSheetPayloadSuccess,
-				failureCallback: fetchWorkSheetPayloadFailure
-			};
+            var assignedRoomsParam = {
+                date: $scope.multiSheetState.selectedDate,
+                employee_ids: fetchHKStaffs.emp_ids
+            };
 
-			$scope.callAPI(RVWorkManagementSrv.processedPayload, options);
+            RVWorkManagementSrv.processedPayload(unassignedRoomsParam, assignedRoomsParam)
+            	.then(fetchWorkSheetPayloadSuccess, fetchWorkSheetPayloadFailure);
 		};
 
 		var refreshView = function() {
