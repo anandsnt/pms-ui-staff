@@ -1147,8 +1147,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.handleNoEdit = function(event, roomId, rateId) {
 			event.stopPropagation();
-			ROOMS[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
-			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
+			ROOMS[$scope.activeRoom].rateName = $scope.reservationData.ratesMeta[rateId].name;
+			$scope.reservationData.rateDetails[$scope.activeRoom] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
 			if (!$scope.stateCheck.stayDatesMode) {
 				$scope.navigateOut();
 			}
@@ -1178,7 +1178,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								roomId = ROOMS[roomIndex].roomTypeId;
 
 							details.rate.id = rateId;
-							details.rate.name = $scope.displayData.allRates[rateId].name;
+							details.rate.name = $scope.reservationData.ratesMeta[rateId].name;
 
 							var rateAmount = Number(parseFloat($scope.stateCheck.lookUp[roomId].rates[rateId].dates[date].amount).toFixed(2));
 							details.rateDetails = {
