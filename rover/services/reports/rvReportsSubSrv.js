@@ -231,6 +231,33 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				resKey : 'rates',
 			});
 		};
+
+		service.fetchRateCode = function(params) {
+			return callApi({
+				name   : 'rateCodeList',
+				method : 'getJSON',
+				url    : '/api/rates/codes',
+				resKey : 'rate_codes',
+			});
+		};
+
+		service.fetchRoomTypeList = function(params) {
+			return callApi({
+				name   : 'roomTypeList',
+				method : 'getJSON',
+				url    : '/api/room_types.json?is_exclude_pseudo=true',
+				resKey : 'results'
+			});
+		};
+
+		service.fetchRestrictionList = function() {
+			return callApi({
+				name   : 'restrictionList',
+				method : 'getJSON',
+				url    : '/api/restriction_types?is_activated=true',
+				resKey : 'results'
+			});			
+		};
 		return service;
 	}
 ]);

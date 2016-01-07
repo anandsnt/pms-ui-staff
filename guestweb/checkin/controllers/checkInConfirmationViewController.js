@@ -71,7 +71,14 @@
 	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 	$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 
+	function loseFocus() {
+		var inputs = document.getElementsByTagName('input');
+		for (var i = 0; i < inputs.length; ++i) {
+		  inputs[i].blur();
+		}
+	};
 	$scope.showCalender = function(){
+		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 		$scope.isCalender = true;
 	};
 	$scope.closeCalender = function(){

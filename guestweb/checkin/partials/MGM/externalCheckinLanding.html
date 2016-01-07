@@ -50,14 +50,13 @@
 						<span class="white-text">Continue</span>
 					</button>
 				</div>
-			</div>
-		</div>	
-		<div class="row  no-top-margin">
-			<div class="col-md-6 error-callus">
-				&nbsp;
-			</div>
-		</div>						
-	</div>
+			</div>	
+			<div class="row  no-top-margin">
+				<div class="col-md-6 error-callus">
+					&nbsp;
+				</div>
+			</div>						
+		</div>
 	<!-- no matches-->
 	<div class="container" ng-hide="isLoading || netWorkError || !noMatch">
 		<!-- top section starts here-->
@@ -125,14 +124,12 @@
 	         <img src="/assets/guestweb/img/MGM/back_icon.png " width="25" height="20" alt=""/>
 	         <div style="color:#8e6a36;">BACK</div>
 	      </div>
-
 	      <div class="col-xs-8 centeralign departure-date">
 	         <p>DEPARTURE DATE</p>
-
 	         <p class="date-text">{{date | date:'MMM dd'}}</p>
-
-	      </div>
-
+	         <div ng-click="clearDate()" class="clear-date" ng-show="date.length>0">CLEAR DATE</div>
+	         <div>&nbsp;</div>
+	      </div>	 
 	      <div class="col-xs-2 date-picker-ok" ng-click = "dateChoosen()">
 	      	 <img src="/assets/guestweb/img/MGM/done_icon.png " width="25" height="20" alt=""/>
 	         <div>DONE</div>

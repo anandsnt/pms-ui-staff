@@ -80,13 +80,18 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	$rootScope.primaryGuestId = reservationAndhotelData.primaryGuestId;
 
 
- 	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestEmailCheckin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zestEmailCheckinNoServiceMsg;
+ 	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin ==="true") ?true:false;
+ 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zestCheckinNoServiceMsg;
  	$rootScope.termsAndConditions = reservationAndhotelData.termsAndConditions;
  	$rootScope.isBirthdayVerified =  false;
  	$rootScope.application        = reservationAndhotelData.application;
  	$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkinCollectCc === "true") ? true:false;
  	$rootScope.isMLI = (reservationAndhotelData.paymentGateway  = "MLI") ? true : false;
+ 	//room key delivery options
+ 	$rootScope.preckinCompleted =  false;
+ 	$rootScope.userEmail = reservationAndhotelData.primaryGuestEmail;
+ 	$rootScope.keyDeliveryByEmail = true;
+ 	//$rootscope.keyDeliveryByText  = true;
 
 
     //Params for zest mobile and desktop screens
@@ -107,8 +112,9 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		$rootScope.accessToken = reservationAndhotelData.accessToken	;
 	}
 	//navigate to different pages
-	if(reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestEmailCheckin ==="false"){
-		$location.path('/guestCheckinTurnedOff'); // external checkin URL available, but its turned off
+
+	if(reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin ==="false"){
+		$location.path('/guestCheckinTurnedOff');
 	}
 	else if(reservationAndhotelData.checkinUrlVerification === "true"){
 		$location.path('/externalCheckinVerification'); // external checkin URL available and is on

@@ -80,7 +80,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.room-rates', {
-            url: '/room-rates/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children',
+            url: '/room-rates/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id',
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
             onEnter: function($stateParams) {
@@ -124,7 +124,8 @@ angular.module('stayCardModule', [])
                         allotment_id: $stateParams.allotment_id,
                         promotion_code: $stateParams.promotion_code,
                         adults: $stateParams.adults,
-                        children: $stateParams.children
+                        children: $stateParams.children,
+                        promotion_id: $stateParams.promotion_id
                     })
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv) {
@@ -135,8 +136,13 @@ angular.module('stayCardModule', [])
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
                     });
+                },
+                rateAddons: function($stateParams, RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchAddonsForRates({
+                        from_date: $stateParams.from_date,
+                        to_date: $stateParams.to_date
+                    });
                 }
-
             }
         });
 
@@ -229,6 +235,11 @@ angular.module('stayCardModule', [])
                 }
                 if (typeof $stateParams.mode === "undefined" || $stateParams.mode === null) {
                     $stateParams.mode = "OTHER";
+                }
+            },
+            resolve: {
+                paymentMethods: function(RVReservationSummarySrv) {
+                    return RVReservationSummarySrv.fetchPaymentMethods();
                 }
             }
         });

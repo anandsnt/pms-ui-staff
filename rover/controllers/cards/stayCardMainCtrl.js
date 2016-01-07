@@ -12,6 +12,14 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			cardType: ""
 		};
 
+
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+		if (SWITCH_ROOM_AND_RATES_ALT) {
+			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		}
+
+
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
 			$scope.setTitle(heading);
@@ -377,7 +385,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			var resData = $scope.reservationData,
 				disableBackToStaycard = (options && options.disableBackToStaycard);
 
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
+			$state.go(roomAndRatesState, {
 				from_date: resData.arrivalDate,
 				to_date: resData.departureDate,
 				fromState: function() {
@@ -732,7 +740,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			 * CICO-20674: when there is more than one contracted rate we
 			 * should take the user to room and rates screen after applying the routing info
 			 */
-			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
+			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
 				$scope.navigateToRoomAndRates();
 			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined" && !$scope.viewState.lastCardSlot) {
 				if (RVReservationStateService.getReservationFlag('RATE_CHANGE_FAILED')) {
