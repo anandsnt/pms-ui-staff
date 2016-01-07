@@ -166,6 +166,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 				return hasRate;
 			},
+			updateMetaInfoWithCustomRates = function() {
+				var customRate;
+
+				if (!!$scope.reservationData.group.id) {
+					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
+					$scope.reservationData.ratesMeta[customRate.id] = customRate;
+				};
+
+				if (!!$scope.reservationData.allotment.id) {
+					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
+					$scope.reservationData.ratesMeta[customRate.id] = customRate;
+				};
+			},
 			groupByRoomTypes = function(args) {
 				// Populate a Room First Grid Here
 				var roomTypes = {},
@@ -221,6 +234,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							}
 						}
 
+						//---- MITIGATE -- CUSTOM RATES NOT IN META
+						if (!$scope.reservationData.ratesMeta[currentRate]) {
+							// -- Note: This should optimally come inside this condition only if a group/allotment is added in the Room & Rates screen. Else this would have been done in initialization itself.
+							updateMetaInfoWithCustomRates();
+						}
 
 						roomTypes[currentRoomType].rates[currentRate] = {
 							name: $scope.reservationData.ratesMeta[currentRate].name,
@@ -627,22 +645,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 
-				//--
-
-				var customRate;
-
-				if (!!$scope.reservationData.group.id) {
-					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
-					ratesMeta['rates'][customRate.id] = customRate;
-				};
-
-				if (!!$scope.reservationData.allotment.id) {
-					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
-					ratesMeta['rates'][customRate.id] = customRate;
-				};
-
 				$scope.reservationData.ratesMeta = ratesMeta['rates'];
 
+				updateMetaInfoWithCustomRates();
 
 				// activate room type default view based on reservation settings
 				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
