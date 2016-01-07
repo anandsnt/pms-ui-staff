@@ -53,30 +53,22 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 	};
 
         $scope.agreeTerms = function(){
-            console.info('agreed to terms, show deposit info?');
             var depositAmt, depositRemaining = 0, enforceDeposit = $scope.hotel_settings.enforce_deposit;
-            console.warn('enforce deposit: ',enforceDeposit);
-            console.info($state.selectedReservation.reservation_details.data.reservation_card.deposit_amount);
             if ($state.selectedReservation && $state.selectedReservation.reservation_details){
                     depositAmt = $state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
             }
-            console.info('typeof deposit amt: ', typeof depositAmt)
             depositRemaining = parseInt(depositAmt);
            
             var showDeposit = false;
-            console.warn('depositRemaining: ',depositRemaining)
-            console.warn('enforceDeposit: ',enforceDeposit)
             if (depositRemaining > 0 && enforceDeposit){
                 showDeposit = true;
             }
             $state.showDeposit = showDeposit;
-            console.warn('show deposit screen: ',showDeposit);
             if (!showDeposit){
                 $state.go('zest_station.card_swipe'); 
             } else {
                 $state.go('zest_station.deposit_agree'); 
             }
-            //console.info($state) 
         };
  		$scope.setScroller('terms');
 
