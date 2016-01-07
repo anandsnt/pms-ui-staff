@@ -195,8 +195,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                        $scope.fetchReservations(options);
 		};
                 
-	    		var params = {"last_name":$scope.reservationParams.last_name,"room_no":$scope.reservationParams.room_no};
-                        console.log(params);
 	};
         
         
@@ -353,7 +351,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.selectReservation = function(r){
             //pass reservation as a state param
             $state.selectedReservation = r;
-            console.log(r)
             if($scope.isInCheckoutMode()){
             	// $state.go('zest_station.review_bill',{"res_id":r.id});
             }
@@ -374,12 +371,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.headingText = "Type your Last Name";
             }
             if ($scope.isInPickupKeyMode()){
-                console.info('last at: '+$state.lastAt);
-                
                 $scope.at = 'input-last';
                 $scope.mode = "pickup-mode";
                 $scope.headingText = "Type your Last Name";
-                console.info('pick up key mode init');
                 if ($state.lastAt === 're-enter-last'){
                 $scope.headingText = "Type your Last Name";
                     

@@ -1,4 +1,4 @@
-sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -51,7 +51,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
     $scope.chargeCodesListDivHgt = 250;
     $scope.chargeCodesListDivTop = 0;
-    $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
+
+    if ($scope.selectedEntity.credit_limit) {
+        $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
+    }
 
     setTimeout(function(){
         $scope.refreshScroller('paymentList');
@@ -466,7 +469,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.attachedEntities = [$scope.selectedEntity];
             }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
-            $scope.selectedEntity.credit_limit = parseFloat(data.credit_limit).toFixed(2);
+
+            if (data.credit_limit) {
+                $scope.selectedEntity.credit_limit = parseFloat(data.credit_limit).toFixed(2);
+            }
+
             $scope.selectedEntity.reference_number = data.reference_number;
             //Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
@@ -640,7 +647,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * function to save the new route
     */
     $scope.saveRoute = function(){
-
             if($scope.selectedEntity.attached_charge_codes.length === 0 && $scope.selectedEntity.attached_billing_groups.length===0){
                 $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
                 return;
@@ -675,16 +681,26 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	    var saveRouteAPICall = function(){
 
-	    	$scope.saveSuccessCallback = function(data) {
-	    	    $scope.$parent.$emit('hideLoader');
-                $scope.$parent.$emit('BILLINGINFOADDED');
-	    	    $scope.setReloadOption(true);
-	    	    $scope.headerButtonClicked();
-	    	    $scope.updateCardInfo();
-                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+	    	$scope.saveSuccessCallback = function (data) {
+                $scope.$parent.$emit('hideLoader');
+                if (data.has_crossed_credit_limit) {
+                    ngDialog.open({
+                        template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
+                        className: '',
+                        closeByDocument: false,
+                        scope: $scope
+                    });
+                }
+                else {
+                    $scope.$parent.$emit('BILLINGINFOADDED');
+                    $scope.setReloadOption(true);
+                    $scope.headerButtonClicked();
+                    $scope.updateCardInfo();
+                    $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+                }
 	    	};
 
-	    	var defaultRoutingSaveSuccess = function(){
+	    	var defaultRoutingSaveSuccess = function () {
 	    	    $scope.$parent.$emit('hideLoader');
                 $scope.$parent.$emit('BILLINGINFOADDED');
 	    	    ngDialog.close();
@@ -712,6 +728,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
 	        }
 	    };
+
+        $scope.hasPermissionToEditCreditLimit = function () {
+            return rvPermissionSrv.getPermissionValue ('OVERWRITE_DIRECT_BILL_MAXIMUM_AMOUNT');
+        };
 
         /**
         * function to create new bill

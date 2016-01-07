@@ -27,6 +27,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             }
         };
 
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+        if (SWITCH_ROOM_AND_RATES_ALT) {
+            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        }
+
         /**
          * whether current screen is in Add Mode
          * @return {Boolean}
@@ -1260,7 +1266,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             /** @type {Object} states that are part of reservation flow */
             var reservationFlow = {
                 forRoutes: [
-                    'rover.reservation.staycard.mainCard.roomType',
+                    roomAndRatesState,
                     'rover.reservation.staycard.mainCard.addons',
                     'rover.reservation.staycard.mainCard.summaryAndConfirm',
                     'rover.reservation.staycard.mainCard.reservationConfirm'
