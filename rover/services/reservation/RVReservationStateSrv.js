@@ -332,15 +332,15 @@ sntRover.service('RVReservationStateService', [
 				var numAdults = dayInfo.guests.adults,
 					numChildren = dayInfo.guests.children,
 					currentDate = date;
+
+				addonRates[currentDate] = {};
+
 				_.each(rateAddons, function(rateInfo) {
 					var rateId = rateInfo.rate_id;
 					_.each(rateInfo.associated_addons, function(addon) {
 						var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
 							shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, currentDate, arrival, departure, addon.charge_full_weeks_only);
 						if (!addon.is_inclusive && shouldPostAddon) {
-							if (addonRates[currentDate] === undefined) {
-								addonRates[currentDate] = {};
-							}
 							if (addonRates[currentDate][rateId] === undefined) {
 								addonRates[currentDate][rateId] = currentAddonAmount;
 							} else {
