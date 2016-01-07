@@ -72,11 +72,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					validityTable = {};
 
 				_.each(ROOMS[$scope.activeRoom].stayDates, function(dateInfo, currDate) {
-					if (!!promoFrom) {
-						isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
-					}
-					if (!!promoTo) {
-						isValid = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+					if (currDate !== DEPARTURE_DATE || currDate === ARRIVAL_DATE) {
+						if (!!promoFrom) {
+							isValid = new tzIndependentDate(promoFrom) <= new tzIndependentDate(currDate);
+						}
+						if (!!promoTo) {
+							isValid = new tzIndependentDate(promoTo) >= new tzIndependentDate(currDate);
+						}
 					}
 					validityTable[currDate] = isValid;
 				});
@@ -437,6 +439,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					if (!$scope.stateCheck.preferredType) {
 						// ************************************************************************************************************************************* STEP 1a : Sort ASC room-rate ADR
 						rate.rooms.sort(RVReservationDataService.sortRatesAsc);
+						ratesArray.push(rate);
 						rate.selectedRoom = rate.rooms[0];
 						rate.selectedRoomId = rate.rooms[0].id;
 
@@ -450,14 +453,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if (prefRooms.length > 0) {
 							// ********************************************************************************************************************************* STEP 1a : Sort ASC room-rate ADR
 							rate.rooms.sort(RVReservationDataService.sortRatesAsc);
+							ratesArray.push(rate);
 							rate.selectedRoomId = parseInt($scope.stateCheck.preferredType);
 							rate.selectedRoom = prefRooms[0];
 						} else if (!!$scope.reservationData.ratesMeta[rate.id].account_id) {
+							ratesArray.push(rate);
 							rate.selectedRoomId = rate.rooms[0].id;
 							rate.selectedRoom = rate.rooms[0];
 						}
 					}
-					ratesArray.push(rate);
+
 				});
 
 				// ********************************************************************************************************************************************* STEP 2a : Sort ASC rate names
@@ -594,6 +599,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 			},
 			initialize = function() {
+				$scope.heading = 'Rooms & Rates';
+				$scope.setHeadingTitle($scope.heading);
+
+
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
 
@@ -668,9 +677,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			 * @return {[type]}        [description]
 			 */
 			findExhaustedRateAddons = function(roomId, rateId) {
-				var arrival = ARRIVAL_DATE,
-					departure = DEPARTURE_DATE,
-					exhaustedRateAddons = [],
+				var exhaustedRateAddons = [],
 					updateExhaustedAddonsList = function(addon) {
 						// Need to see the applicable count based on the amount_type
 						var applicableCount = RVReservationStateService.getApplicableAddonsCount(
@@ -697,7 +704,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						}
 					},
 					dayLoop = function(forDate) {
-						if (forDate === arrival || forDate !== departure) {
+						if (forDate === ARRIVAL_DATE || forDate !== DEPARTURE_DATE) {
 							var associatedAddons = RVReservationStateService.fetchAssociatedAddons(rateId);
 							_.each(associatedAddons, function(addon) {
 								var inventoryForDay = _.findWhere(addon.inventory, {
@@ -887,6 +894,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.refreshScroll = function() {
 			$timeout(function() {
 				$scope.refreshScroller('room_types');
+				$scope.$parent.myScroll['room_types'] && $scope.$parent.myScroll['room_types'].refresh();
 			}, 100);
 		};
 
@@ -1139,8 +1147,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.handleNoEdit = function(event, roomId, rateId) {
 			event.stopPropagation();
-			ROOMS[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
-			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
+			ROOMS[$scope.activeRoom].rateName = $scope.reservationData.ratesMeta[rateId].name;
+			$scope.reservationData.rateDetails[$scope.activeRoom] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
 			if (!$scope.stateCheck.stayDatesMode) {
 				$scope.navigateOut();
 			}
@@ -1170,7 +1178,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								roomId = ROOMS[roomIndex].roomTypeId;
 
 							details.rate.id = rateId;
-							details.rate.name = $scope.displayData.allRates[rateId].name;
+							details.rate.name = $scope.reservationData.ratesMeta[rateId].name;
 
 							var rateAmount = Number(parseFloat($scope.stateCheck.lookUp[roomId].rates[rateId].dates[date].amount).toFixed(2));
 							details.rateDetails = {
@@ -1478,10 +1486,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- CALENDAR VIEW
 
-		/**
-		 * Toggle between ROOM_RATE & CALENDAR views
-		 * @return {[type]} [description]
-		 */
 		$scope.toggleCalendar = function() {
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode === "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$scope.heading = $scope.stateCheck.activeMode === "ROOM_RATE" ? "Rooms & Rates" : " Rate Calendar";

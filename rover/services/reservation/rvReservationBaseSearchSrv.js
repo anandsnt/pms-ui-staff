@@ -254,7 +254,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
                 if (!!params.company_id || !!params.travel_agent_id) {
                     promises.push(that.fetchContractRates(params).then(function(response) {
                         _.each(response.rates, function(rate) {
-                            rate.isContract = true;
+                            rate.isCorporate = true;
                         });
                         that['rates'] = that['rates'].concat(response.rates);
                     }));

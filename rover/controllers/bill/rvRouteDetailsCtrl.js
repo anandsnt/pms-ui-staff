@@ -700,6 +700,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 }
 	    	};
 
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.$emit('displayErrorMessage',errorMessage);
+            };
+
 	    	var defaultRoutingSaveSuccess = function () {
 	    	    $scope.$parent.$emit('hideLoader');
                 $scope.$parent.$emit('BILLINGINFOADDED');
@@ -725,7 +730,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             else {
 	        	//CICO-12797 workaround to meet the API expected params
                 var params =  angular.copy($scope.selectedEntity);
-	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
+	            $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback, errorCallback);
 	        }
 	    };
 

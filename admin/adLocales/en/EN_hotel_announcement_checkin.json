@@ -38,4 +38,8 @@
     "PRE_CHECK_IN_EMAIL_TITLE":"PRE CHECK IN - EMAIL TITLE ",
     "PRE_CHECK_IN_TOP_BODY":"PRE CHECK IN - TOP BODY",
     "PRE_CHECK_IN_BOTTOM_BODY":"PRE CHECK IN - BOTTOM BODY",
-    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields"
+    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields",
+    "TEXT_MESSAGE":"Text Message",
+    "ROOM_KEY_COMMUNICATION_OPTIONS":"Room key communication options",
+    "EMAIL_AND_TEXT_MESSAGE":"Email and Text Message",
+    "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message"

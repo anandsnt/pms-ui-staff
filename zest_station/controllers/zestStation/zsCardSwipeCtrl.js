@@ -171,26 +171,26 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         }, false);
         
-        
-        
         $scope.iFrameUrl = '';
         var absoluteUrl = $location.$$absUrl;
         domainUrl = absoluteUrl.split("/zest_station#/")[0];
+        
         $scope.refreshIframeWithGuestData = function(guestData){
+            $scope.iFrameUrl = '';
+            var absoluteUrl = $location.$$absUrl;
+            domainUrl = absoluteUrl.split("/zest_station#/")[0];
             var time = new Date().getTime();
             var firstName = guestData.guest_details[0].first_name;
             var lastName = guestData.guest_details[0].last_name;
             $scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
-            var iFrame = document.getElementById('sixIframe');
-            try{
-                iFrame.src = iFrameUrl;
-            }catch(ex){
-                // CICO-21044
-                // Hiding ugly exception thrown in console
-                // happens when MLI is shown and no sixpayment iFrame is configured
-                // TODO: Investigate further and elimitate this function call
-                console.warn(ex.name, ex.message);
-            }
+            
+            setTimeout(function(){///on slow networks this iframe may be an issue, we can attempt to do some re-try actions looking for the .src of the iframe
+                                    //need more testing on this (simulated slow networks)
+                    var iFrame = {};
+                    iFrame.src = document.getElementById('sixIframe').src;
+                    iFrame.src = $scope.iFrameUrl;
+                    $scope.sixPaymentSwipe();
+            },800);
         };
         
         $scope.shouldShowWaiting = false;
@@ -318,12 +318,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     //payment_type = $scope.selectedReservation.payment_type,
                     depositAmount = $scope.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
                 var params = {
-                     'reservation_id':reservation_id, 
+                    'reservation_id':reservation_id, 
                     'add_to_guest_card': false,
                     'amount': depositAmount,
                     'bill_number': 1,
                     'payment_type': "CC",
-                    payment_type_id: $scope.selectedReservation.reservation_details.data.reservation_card.payment_type,
+                    'payment_type_id': $scope.selectedReservation.reservation_details.data.reservation_card.payment_type
                  };
                 setTimeout(function(){
                     $scope.invokeApi(zsPaymentSrv.submitDeposit, params, $scope.successDeposit,$scope.failDeposit); 
@@ -393,7 +393,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 
 
         $scope.$on('SWIPE_ACTION',function(swipedCardData){
-            $scope.sixPaymentSwipe();
+            
             /*
                 var swipeOperationObj = new SwipeOperation();
                 var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
@@ -466,6 +466,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             //if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
             if (true) {
               setTimeout(function() {
+                  console.warn('start card reader');
                   $scope.cardReader.startReader(options);
               }, 1500);
             } else {
@@ -483,25 +484,25 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         /*
          * Start Card reader now!.
          */
-        //alert('$scope.zestStationData.payment_gateway : '+$scope.zestStationData.payment_gateway)
         if ($scope.zestStationData.payment_gateway !== "sixpayments") {
         /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
          * desktopSwipeEnabled flag is true
          */
             if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
                 initiateDesktopCardReader();
-            }
-          else {
-            //Time out is to call set Browser
-                setTimeout(function() {
-                  $scope.initiateCardReader();
-                }, 2000);
-            }
+            } else {
+              //Time out is to call set Browser
+                  setTimeout(function() {
+                    $scope.initiateCardReader();
+                  }, 2000);
+              }
         } else {
+            console.warn('refresh iframe with: ',$state.selectedReservation);
             $scope.refreshIframeWithGuestData($state.selectedReservation);
         }
 	 $scope.sixPaymentSwipe = function(){
 		var data = {};
+                console.info('debugging sixpay: ',$state.debugSixpay)
                 if ($state.debugSixpay){
                     if (zestSntApp.resdebug){
                         data.reservation_id = zestSntApp.resdebug_id;
@@ -517,9 +518,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     data.payment_type = "CC";
                 } else {
                     data.reservation_id = $state.selectedReservation.id;
+                    data.guest_id = $state.selectedReservation.guest_details[0].id;
+                    console.info('data.guest_id: ',data.guest_id)
                     //data.add_to_guest_card = true;
                     //data.guest_id = $state.selectedReservation.guest_details[0].id;
-                    
                     data.is_emv_request = true;
                     data.payment_type = "CC";
                 }   
@@ -527,7 +529,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 
                 $scope.$emit('showLoader');
 		$scope.shouldShowWaiting = true;
-                
+                console.warn('getting chip and pin token, waiting for sixpay....')
 		zsPaymentSrv.chipAndPinGetToken(data).then(function(response) {
                         console.info('success: ',response);
 			$scope.shouldShowWaiting = false;
@@ -609,6 +611,7 @@ var CardOperation = function(){
 
 	this.startReader = function(options){
 		options['shouldCallRecursively'] = true;
+                console.log('listening for swipe--------------')
 		that.listenForSingleSwipe(options);
 	};
 
@@ -698,6 +701,7 @@ var CardOperation = function(){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
+                
 	};
 
 	// function for writing the key data
