@@ -2,7 +2,7 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" ng-hide='at !== "cc-sign"' click-touch='resetTime()'>
     <div id="content">
-        <h1>Sign The Screen</h1>
+        <h1>{{'SIGN_SCREEN' |translate}}</h1>
                 <form type="post" action="" id="signature">
         <form id="signature-pad" class="complete-registration form" style=' height: 295px; border-radius: 8px;'>
             <div>
@@ -17,8 +17,8 @@
                     
 
         <div id="actions" class="sign-screen-nav">
-            <button type="button" class="button transparent prev" touch-press='clearSignature()'>Clear</button>
-            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">Next</button>
+            <button type="button" class="button transparent prev" touch-press='clearSignature()'>{{'CLEAR_BTN' |translate}}</button>
+            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">{{'NEXT_BTN' |translate}}</button>
         </div>
     </div>
     <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>

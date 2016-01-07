@@ -44,7 +44,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.input.inputTextValue = $scope.pickupValues.last;
                 $scope.at = 'input-last';
                 $scope.mode = "pickup-mode";
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
             }
         };
 
@@ -193,7 +193,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             $scope.reservationParams.last_name = angular.copy($scope.input.inputTextValue);
             $scope.mode = "search-final-mode";
             $scope.input.inputTextValue = "";
-            $scope.headingText = "Next, Type your room number";
+            $scope.headingText = "NEXT_ROOM_NUMBER";
             if(isItFontainebleauHotel()) {
                 _.each(hotelDetailsSrv.data.towers, function(value, key){
                     $scope.towerList.push({
@@ -259,10 +259,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
           
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
-                $scope.headingText = 'So Sorry.';
-                $scope.subHeadingText = 'Something broke. \n\
-                                            Our bad. Please reach out to a Sidekick.';
-                $scope.modalBtn1 = 'Done';
+                $scope.headingText = 'BROKE_HEADER.';
+                $scope.subHeadingText = 'BROKE_HEADER_SUB';
+                $scope.modalBtn1 = 'DONE_BTN';
                 $scope.$emit('hideLoader');
                 $state.go('zest_station.error');
         };
@@ -304,7 +303,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             $state.input.last = $scope.input.inputTextValue;
             $scope.at = 'input-room';
             $scope.input.inputTextValue = "";
-            $scope.headingText = "Next, Type your room number";
+            $scope.headingText = "NEXT_ROOM_NUMBER";
         };
         
         $scope.reEnteredNameInfo = false;
@@ -395,21 +394,20 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             }
             if ($scope.isInCheckoutMode()){
                 $scope.mode = "search-mode";
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
             }
             if ($scope.isInPickupKeyMode()){
                 $scope.at = 'input-last';
                 $scope.mode = "pickup-mode";
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
                 if ($state.lastAt === 're-enter-last'){
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
                     
                     
                     $scope.input.inputTextValue = $state.input.last;
                     $scope.at = 're-input-last';
                 } else if ($state.lastAt === 're-enter-room'){
-                    $scope.headingText = "Next, Type your room number";
-                    
+                    $scope.headingText = "NEXT_ROOM_NUMBER";
                     $scope.input.inputTextValue = $state.input.room;
                     $scope.at = 're-input-room';
                 }
