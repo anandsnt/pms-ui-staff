@@ -46,8 +46,17 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
 		 */
 		$scope.selectEmployee = function(data) {
-			$scope.multiSheetState.selectedEmployees = _.where($scope.employeeList, {
-				ticked: true
+			var tickedEmployees = _.where($scope.employeeList, {
+										ticked: true
+									});
+			tickedEmployees = _.pluck(tickedEmployees, 'id');
+			$scope.multiSheetState.selectedEmployees = [];
+			_.each(tickedEmployees, function(empId) {
+				var emp = _.findWhere($scope.multiSheetState.assigned, {
+					id: empId
+				});
+				if (emp)
+					$scope.multiSheetState.selectedEmployees.push(emp);
 			});
 			$scope.multiSheetState.placeHolders = _.range($scope.multiSheetState.maxColumns - $scope.multiSheetState.selectedEmployees.length);
 
@@ -384,7 +393,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.multiSheetState.selectedEmployees = [];
 			_.each($scope.employeeList, function(employee) {
 				if (employee.ticked) {
-					$scope.multiSheetState.selectedEmployees.push(employee);
+					var emp = _.findWhere($scope.multiSheetState.assigned, {
+						id: employee.id
+					});
+					if (emp)
+						$scope.multiSheetState.selectedEmployees.push(emp);
 				}
 			});
 		};
