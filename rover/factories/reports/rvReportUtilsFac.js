@@ -1175,7 +1175,7 @@ sntRover.factory('RVReportUtilsFac', [
                             show         : false,
                             selectAll    : false,
                             defaultTitle : 'Select one Rate Code',
-                            title        : 'Select one Rate Code',
+                            title        : data[0].description,
                             data         : angular.copy( data )
                         });
                     };
