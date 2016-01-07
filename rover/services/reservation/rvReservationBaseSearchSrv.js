@@ -232,27 +232,35 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
 
             that['rates'] = [];
 
-            promises.push(that.fetchOrdinaryRates(params).then(function(response) {
-                that['rates'] = that['rates'].concat(response.rates);
-            }));
-
-            // Make this call IFF there is a company / TA card attached
-            if (!!params.company_id || !!params.travel_agent_id) {
-                promises.push(that.fetchContractRates(params).then(function(response) {
-                    // TODO: Add is_group_rate HERE
-                    that['rates'] = that['rates'].concat(response.rates);
-                }));
-            }
             // Make this call IFF there is a group/ allotment attached
             if (params.group_id || params.allotment_id) {
                 promises.push(that.fetchGroupRates(params).then(function(response) {
-                    // Add is_contract_rate HERE to the values in the response
-                    _.each(response.rates,function(rate){
-                        rate.isContract = true;
+                    _.each(response.rates, function(rate) {
+                        rate.isGroupRate = !!params.group_id;
+                        rate.isAllotmentRate = !!params.allotment_id;
+                        if (rate.id === null) {
+                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                        }
                     });
                     that['rates'] = that['rates'].concat(response.rates);
                 }));
+            } else {
+                promises.push(that.fetchOrdinaryRates(params).then(function(response) {
+
+                    that['rates'] = that['rates'].concat(response.rates);
+                }));
+
+                // Make this call IFF there is a company / TA card attached
+                if (!!params.company_id || !!params.travel_agent_id) {
+                    promises.push(that.fetchContractRates(params).then(function(response) {
+                        _.each(response.rates, function(rate) {
+                            rate.isCorporate = true;
+                        });
+                        that['rates'] = that['rates'].concat(response.rates);
+                    }));
+                }
             }
+
 
             $q.all(promises).then(function() {
                 deferred.resolve(that['rates']);

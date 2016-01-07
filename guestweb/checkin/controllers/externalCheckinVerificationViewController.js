@@ -172,6 +172,10 @@
 		$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 
+		$scope.clearDate = function(){
+			$scope.date = "";
+			$rootScope.departureDate = "";
+		};
 
 		function loseFocus() {
 			var inputs = document.getElementsByTagName('input');

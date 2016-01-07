@@ -1115,6 +1115,9 @@
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
-"CHECKIN":"Check In"
+"CHECKIN":"Check In",
+"REG_CARD_TEXT":"Registration Card Text",
+"REG_CARD":"Registration Card"
+
         
         }

@@ -153,7 +153,7 @@
 "TO_DATE": "To",
 "PAYMENT": "Payment",
 "NEW_PAYMENT": "+ New Payment Method",
-"POSTING_CAP": "Posting Cap",
+"CREDIT_LIMIT": "Credit Limit",
 "REFERENCE_NUMBER": "Reference Number",
 "ENTITY":"Entity",
 "NUMBER":"Number",
@@ -1251,7 +1251,9 @@
     "TOTAL_INCL_TAX":"Total Incl Tax",
     "UPDATE":"Update",
     "NOT_DEFINED": "Not Defined",
-    "DONT_PRINT_RATE" : "Don't Print Rate"
+    "DONT_PRINT_RATE" : "Don't Print Rate",
+
+    "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded"
 
 ,"ADD_NEW_WORKSTATION" : "Add New Workstation",
 "WORKSTATION_NAME" : "Workstation Name",
@@ -1264,7 +1266,6 @@
 "TERMINAL_DEFAULT_OPTION" : "Select a Terminal",
 "KEY_ENCODER_DEFAULT_OPTION" : "Select an Encoder"
 ,
-
 
     "TERMS_AGREE_TEXT": "Please agree to the Terms and Conditions below in order to check in.",
     "TERMS_SUBHEADING": "subheader",

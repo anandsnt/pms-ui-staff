@@ -31,5 +31,6 @@ sntRover.constant('RVReportNamesConst', {
 	'AR_SUMMARY_REPORT'			   : 'A/R Summary Report',
 	'DAILY_PRODUCTION_DEMO'		   : 'Daily Production by Demographics',
 	'DAILY_PRODUCTION_RATE'		   : 'Daily Production by Rate',
+	'RATE_RESTRICTION_REPORT' 	   : 'Rate & Restrictions',
 	'EMAIL_CHECKIN_SUMMARY'		   : "Email Check In Summary"
 });

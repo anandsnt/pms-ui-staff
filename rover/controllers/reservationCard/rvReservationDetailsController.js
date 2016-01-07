@@ -12,6 +12,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+		if (SWITCH_ROOM_AND_RATES_ALT) {
+			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		}
+
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
 			$rootScope.stayCardStateBookMark = {
@@ -590,7 +596,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
+			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
 				to_date: departure || reservationMainData.departureDate,
 				view: 'DEFAULT',
@@ -984,7 +990,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 				};
 				RVReservationStateService.setReservationFlag('outsideStaydatesForGroup', true);
-				$scope.saveReservation('rover.reservation.staycard.mainCard.roomType', stateParams);
+				$scope.saveReservation(roomAndRatesState, stateParams);
 			} else {
 				$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id,
