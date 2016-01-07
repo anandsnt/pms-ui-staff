@@ -339,7 +339,6 @@ sntZestStation.controller('zsRootCtrl', [
                     for (var i in $scope.zestStationData.workstations){
                         if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
                             station = $scope.zestStationData.workstations[i];
-                            $state.emv_terminal_id = station.emv_terminal_id;
                         }
                     }
                 } else {
@@ -349,9 +348,11 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.workstations = 'Select';
             }
             if (station !==  null){
+                console.info('station: ',station)
                 sntZestStation.selectedPrinter = station.printer;
                 sntZestStation.encoder = station.key_encoder_id;
                 $state.workstation_id = station.id;
+                $state.emv_terminal_id = station.emv_terminal_id;
             }
             return station;
         };
