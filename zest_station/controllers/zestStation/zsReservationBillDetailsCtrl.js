@@ -5,7 +5,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 	function($scope, $state, zsCheckoutSrv,zsEventConstants,$stateParams,zsModeConstants) {
 
 	BaseCtrl.call(this, $scope);
-    console.log(JSON.stringify($stateParams.checked_out));
     
 	/**
 	 * when the back button clicked

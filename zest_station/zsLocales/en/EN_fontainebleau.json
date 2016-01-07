@@ -1,3 +1,80 @@
-    {
-        "FONTAINEBLEAU_THANKS":"Thanks for doing Fontainebleau."
-    }
+ {
+   "END_THANKS":"Thanks for doing Fontainebleau.",
+    "PICKUP_KEY": "Pick up Key",
+    "CHECK_IN": "Check In",
+    "CHECK_OUT": "Check Out",
+    "THANKS_FOR_STAY": "Hope to see you again soon!",
+    "PRINTED_BELOW": "Your registration has been printed below.",
+    "BILL_PRINTED_BELOW": "Your bill has been printed below.",
+    "DONE_BTN": "DONE",
+    "INVOICE_HEADER": "Invoice",
+    "SKIP_BTN": "Skip",
+    "NEXT_BTN": "Next",
+    "EMAIL_ERR_HEADER": "Hmm..",
+    "EMAIL_ERR_HEADER_SUB": "This does not appear to be a valid e-mail address.",
+    "SWIPE_CARD_PLEASE": "Please Swipe Credit Card",
+    "PRINT_TEXT": "Print",
+    "NO_THX": "No, thanks",
+    "TYPE_EMAIL": "Type your email address",
+    
+    "EMAIL_TEXT": "E-Mail",
+    "EMAILED_BILL": "We’ve already e-mailed your bill. But perhaps you want it printed?",
+    "PRINT_BILL": "Print Bill",
+    "IN_ROOM": "You are in room",
+    "EDIT_EMAIL": "Edit My E-mail Address",
+    "OR_TEXT": "Or",
+    "CONTINUE_TEXT": "Continue",
+    "SEND_EMAIL": "Send E-Mail",
+    "RE_TYPE": "Re-Type",
+    "SEE_YOU": "Hope to see you again soon!",
+    "TRY_AGAIN": "Try Again",
+    "SPEAK": "Speak",
+    "SPEAK_SUB": "to a Sidekick",
+    
+    "INVOICE_FULLNAME":"Guest Full Name",
+    "INVOICE_ARRIVAL":"Arrival Date",
+    "INVOICE_DEPARTURE":"Departure Date",
+    "INVOICE_NO":"Invoice No.",
+    "INVOICE_CITY":"City",
+    "INVOICE_STATE":"State",
+    "INVOICE_PC":"Postal Code",
+    "INVOICE_COUNTRY":"Country",
+    "INVOICE_COUNF":"Confirmation No.",
+    "INVOICE_ROOM":"Room No.",
+    "INVOICE_TAX":"Tax No.",
+    "INVOICE_REF":"Reference Number",
+    "INVOICE_DATE":"Invoice date",
+    "INVOICE_DATE_OF":"Date of Charge",
+    "INVOICE_CHARGE_CODE":"Charge Code",
+    "INVOICE_CHARGE_DESC":"Charge description",
+    "INVOICE_CHARGE_AMT":"Charge amount",
+    "INVOICE_CREDIT_AMT":"Credit amount",
+    
+    "INVOICE_TOTAL":"Total Charge",
+    "INVOICE_TOTAL_CR":"Total Credits",
+    "INVOICE_TOTAL_BAL":"Balance",
+    "INVOICE_NET":"Net Amount",
+    "BILL_REVIEW":"Review your bill",
+    "BILL_DATE":"Date",
+    "BILL_DESC":"Description",
+    "BILL_AMT":"Amount",
+    "BILL_SUB":"Subtotal",
+    "BILL_DEP":"Deposits",
+    "BILL_BAL":"Balance due",
+    "BILL_QUEST":"Questions?",
+    "BILL_SUB_QUESTION":"Tap “Cancel” and see a sidekick.",
+    "BILL_NEXT":"Next",
+    "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
+    "USER_CHECKED_OUT_ALRDY_SUB":"You have been already checked out.",
+    "USER_CHECKED_OUT_ALRDY_RTN":"Return",
+    
+    
+    
+    "ADMIN_LOGIN_ERROR":"Invalid Login, Please Try Again",
+    "EXIT_BTN":"Exit",
+    
+    
+    
+    
+    "HOME_PUK_SUB": "If you have already checked in online."
+}
