@@ -113,7 +113,7 @@
             <div class="employee" ng-repeat="employee in multiSheetState.selectedEmployees">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
-                        {{employee.maid_name}}
+                        {{employee.name}}
                     </h2>
                     <ul>
                         <li>
@@ -149,9 +149,10 @@
                                 id="assigned-{{employee.id}}-{{$index}}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
+                                ng-class="{ 'completed-task': task.is_complete}"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
                                 jqyoui-draggable ="{index: {{$index}}, animate:false }"
-                                data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+                                data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', cancel: '.completed-task'}">
                                 <div class="info">
                                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
                                     <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
