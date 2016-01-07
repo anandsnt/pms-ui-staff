@@ -627,7 +627,6 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         * If user selects the new bill option,
         * we'll first create the bill and then save the route for that bill
         */
-
         if ($scope.selectedEntity.to_bill === 'new') {
             $scope.createNewBill();
         }
@@ -859,7 +858,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
                              $scope.cardData.tokenDetails.token_no;
                 data.card_name = retrieveCardName();
                 data.bill_number = $scope.getSelectedBillNumber();
-                data.card_expiry =  retrieveCardExpiryForApi();
+                data.card_expiry = retrieveCardExpiryForApi();
                 data.card_code   = (!$scope.cardData.tokenDetails.isSixPayment)?
                                    $scope.cardData.cardDetails.cardType:
                                    getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();

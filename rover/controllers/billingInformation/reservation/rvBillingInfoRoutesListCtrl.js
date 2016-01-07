@@ -1,7 +1,7 @@
 sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	
     BaseCtrl.call(this, $scope);
-	$scope.isInitialPage = true;
+	$scope.billingInfoFlags.isInitialPage = true;
 
     var scrollerOptions = { preventDefault: false };
     $scope.setScroller('routes', scrollerOptions);
