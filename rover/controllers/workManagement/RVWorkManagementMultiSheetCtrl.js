@@ -214,7 +214,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 		$scope.refreshSheet = function() {
 			$scope.saveMultiSheet({
-				callNextMethod: 'fetchWorkSheetData'
+				callNextMethod: 'updateView'
 			});
 		};
 
@@ -380,17 +380,46 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		};
 
-		var fetchWorkSheetData = function() {
+		var fetchWorkSheetPayloadSuccess = function(data) {
+			payload = data;
+			initializeMultiSheetDataModel();
+			refreshView();
+		};
 
+		var fetchWorkSheetPayloadFailure = function(error) {
+			$scope.errorMessage = error;
+		};
+
+		var updateView = function() {
+			// To Do: ask for save if dirty.
+
+			var params = {
+				date: $scope.multiSheetState.selectedDate,
+				work_type_id: multiSheetState.header.work_type_id
+			};
+
+			var options = {
+				successCallBack: fetchWorkSheetPayloadSuccess,
+				failureCallback: fetchWorkSheetPayloadFailure
+			};
+
+			$scope.callAPI(RVWorkManagementSrv.processedPayload, options);
 		};
 
 		var refreshView = function() {
-				fetchWorkSheetData();
-				setScroller();
-				refreshScrollers();
+			updateSummary();
+			setScroller();
+			refreshScrollers();
 		};
 
 		var	updateSummary = function(employeeId) {
+			// Avoid for now.
+			// To Do
+			return false;
+
+			/**
+			 * @deprecated
+			 */
 			var assignmentDetails = $scope.multiSheetState.assignments[employeeId];
 			assignmentDetails.summary.shift.completed = "00:00";
 			assignmentDetails.summary.stayovers = {
@@ -420,7 +449,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		// keeping a reference in $scope
-		$scope.updateView = fetchWorkSheetData;
+		$scope.updateView = updateView;
 
 		/**
 		 * initialize variables for the multi sheet state
@@ -433,9 +462,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				selectedDate: $stateParams.date || $rootScope.businessDate,
 				maxColumns: undefined, // Hardcoded to 6 for now ===> Max no of worksheets that are loaded at an instance
 				selectedEmployees: [],
-				unassigned: [],
+				unassigned: payload.unassignedRoomTasks,
 				unassignedFiltered: [],
-				assigned: [],
+				assigned: payload.assignedRoomTasks,
 				header: {
 					work_type_id: null
 				},
@@ -497,7 +526,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.filterUnassigned();
 
 			// Add scrollers and listners
-			setScroller();
+			//setScroller();
 
 			//updateSummary();
 
