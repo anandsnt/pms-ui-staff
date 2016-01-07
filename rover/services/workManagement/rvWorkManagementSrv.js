@@ -211,6 +211,40 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 
 
+		this.fetchHKStaffs = function() {
+			var deferred = $q.defer();
+			var url = 'api/work_statistics/employees_list';
+
+			var processData = function(data) {
+				var results = [],
+					emp_ids = [];
+
+				_.each(data.results, function(emp) {
+					emp_ids
+						.push( emp.id );
+
+					results =  $.extend(
+							{},
+							emp,
+							{ ticked: false },
+							{ checkboxDisabled: false }
+						);
+				});
+
+				return {
+					'results' : results,
+					'emp_ids' : emp_ids
+				};
+			};
+
+			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve( processData(data) );
+			}, function(data) {
+				deferred.reject(data);
+			});
+
+			return deferred.promise;
+		};
 
 
 		this.fetchAllTasks = function() {
@@ -309,10 +343,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			for (i = 0, j = rooms.length; i < j; i++) {
 				if ( roomTasks[i]['tasks'].length ) {
 					copyRoom = $.extend(
-											{}, 
-											rooms[i],
-											{ 'room_tasks': [] }
-										);
+							{}, 
+							rooms[i],
+							{ 'room_tasks': [] }
+						);
 					/**
 					 * copyRoom
 					 * ========
@@ -339,15 +373,15 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 					thatAllTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
 
 					copyTask = $.extend(
-											{},
-											eachRoomTasks[k],
-											{
-												'name'           : thatAllTask.name,
-												'work_type_id'   : thatAllTask.work_type_id,
-												'work_type_name' : thatAllTask.work_type_name,
-												'time_allocated' : getTimeAllocated( thatAllTask, eachRoomTypeId )
-											}
-										);
+							{},
+							eachRoomTasks[k],
+							{
+								'name'           : thatAllTask.name,
+								'work_type_id'   : thatAllTask.work_type_id,
+								'work_type_name' : thatAllTask.work_type_name,
+								'time_allocated' : getTimeAllocated( thatAllTask, eachRoomTypeId )
+							}
+						);
 					/**
 					 * copyTask
 					 * ========
@@ -362,7 +396,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						.room_tasks
 						.push( copyTask );
 				};
-			};			
+			};
 
 			return compiled;
 		};
@@ -382,11 +416,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			for (i = 0, j = employees.length; i < j; i++) {
 				copyEmployee = $.extend(
-											{},
-											{ 'id' : employees[i].id, 'name' : employees[i].name },
-											{ 'rooms' : [] },
-											{ 'touched_work_types': [] }
-										);
+						{},
+						{ 'id' : employees[i].id, 'name' : employees[i].name },
+						{ 'rooms' : [] },
+						{ 'touched_work_types': [] }
+					);
 				/**
 				 * copyEmployee
 				 * ============
@@ -402,10 +436,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 				for (k = 0, l = roomTasksInit.length; k < l; k++) {
 					copyRoom = $.extend(
-											{},
-											_.find(rooms, { id: roomTasksInit[k].room_id }),
-											{ 'room_tasks': [] }
-										);
+							{},
+							_.find(rooms, { id: roomTasksInit[k].room_id }),
+							{ 'room_tasks': [] }
+						);
 					/**
 					 * copyRoom
 					 * ========
@@ -438,15 +472,15 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						thatAllTask = _.find(allTasks, { id: tasksInIt[m]['id'] });
 
 						copyTask = $.extend(
-												{},
-												tasksInIt[m],
-												{
-													'name'           : thatAllTask.name,
-													'work_type_id'   : thatAllTask.work_type_id,
-													'work_type_name' : thatAllTask.work_type_name,
-													'time_allocated' : getTimeAllocated( thatAllTask, copyRoom.room_type )
-												}
-											);
+								{},
+								tasksInIt[m],
+								{
+									'name'           : thatAllTask.name,
+									'work_type_id'   : thatAllTask.work_type_id,
+									'work_type_name' : thatAllTask.work_type_name,
+									'time_allocated' : getTimeAllocated( thatAllTask, copyRoom.room_type )
+								}
+							);
 						/**
 						 * copyTask
 						 * ========
