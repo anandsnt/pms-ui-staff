@@ -257,13 +257,11 @@ sntZestStation.controller('zsHomeCtrl', [
                     storage = localStorage,
                     oos = {};
             
-                console.log('storageKey: ',storageKey);
             try {
                oos = storage.getItem(storageKey);
             } catch(err){
                 console.warn(err);
             }
-            console.info('oos; ',oos);
             if (oos){
                 $rootScope.$broadcast(zsEventConstants.PUT_OOS);
                 $state.isOOS = true;
@@ -369,10 +367,8 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
         };  
     $scope.$on ('THEME_UPDATE', function(event) {
-        console.info('theme update');
         //set theme updates from state
         $scope.theme = $state.theme;
-        console.warn('logo set to : '+$scope.theme);
     });
     $scope.init = function(){
         $scope.theme = $state.theme;

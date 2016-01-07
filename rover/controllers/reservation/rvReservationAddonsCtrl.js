@@ -1,6 +1,11 @@
 sntRover.controller('RVReservationAddonsCtrl', [
     '$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv', '$stateParams', '$vault', 'RVReservationPackageSrv', 'RVReservationStateService', 'rvGroupConfigurationSrv', 'rvPermissionSrv',
     function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault, RVReservationPackageSrv, RVReservationStateService, rvGroupConfigurationSrv, rvPermissionSrv) {
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+        if (SWITCH_ROOM_AND_RATES_ALT) {
+            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        }
 
         var setBackButton = function() {
                 if ($stateParams.from_screen === "staycard") {
@@ -33,7 +38,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     // set the previous state
                     $rootScope.setPrevState = {
                         title: $filter('translate')('ROOM_RATES'),
-                        name: 'rover.reservation.staycard.mainCard.roomType',
+                        name: roomAndRatesState,
                         param: {
                             from_date: $scope.reservationData.arrivalDate,
                             to_date: $scope.reservationData.departureDate,
@@ -322,7 +327,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 });
 
                 $scope.viewState.currentTab = tabIndexWithoutRate;
-                $state.go('rover.reservation.staycard.mainCard.roomType', {
+                $state.go(roomAndRatesState, {
                     from_date: $scope.reservationData.arrivalDate,
                     to_date: $scope.reservationData.departureDate,
                     view: "DEFAULT",
