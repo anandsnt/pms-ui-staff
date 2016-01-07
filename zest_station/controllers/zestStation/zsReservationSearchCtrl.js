@@ -44,7 +44,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.input.inputTextValue = $scope.pickupValues.last;
                 $scope.at = 'input-last';
                 $scope.mode = "pickup-mode";
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
             }
         };
 
@@ -369,17 +369,17 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             }
             if ($scope.isInCheckoutMode()){
                 $scope.mode = "search-mode";
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
             }
             if ($scope.isInPickupKeyMode()){
                 console.info('last at: '+$state.lastAt);
                 
                 $scope.at = 'input-last';
                 $scope.mode = "pickup-mode";
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
                 console.info('pick up key mode init');
                 if ($state.lastAt === 're-enter-last'){
-                $scope.headingText = "Type your Last Name";
+                $scope.headingText = "TYPE_LAST";
                     
                     
                     $scope.input.inputTextValue = $state.input.last;

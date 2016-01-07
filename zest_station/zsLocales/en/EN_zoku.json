@@ -16,8 +16,46 @@
     "PRINT_TEXT": "Print",
     "NO_THX": "No, thanks",
     "TYPE_EMAIL": "Type your email address",
+    "TYPE_CONF": "Type Your Confirmation Number",
+    "TYPE_LAST": "Type Your Last Name",
+    "TO_COMPLETE": "To Complete Check-in...",
+    "WAIT_MOMENT": "Just a moment as we check you in...",
+    "DEPOSIT_REMAIN": "Your remaining deposit is due",
+    "DEPOSIT_REMAIN_SUB": "On the next screen we will be collecting your outstanding balance of",
+    "DEPOSIT_REMAIN_SUB_SUB": "Would you like to:",
+    "GRAB_KEY_BELOW": "Please grab your key from the target below",
+    "TYPE_EMAIL_IN": "Type in your e-mail address",
+    "TYPE_EMAIL_IN_SUB": "You can receive your bill, check-out (or order a late check-out) and all sorts of other wonderful things…",
+    "SEND_REGISTRATION_TO": "We will send your registration to:",
+    "BROKE_HEADER_SUB": "Something broke. Our bad. Please reach out to a Sidekick.",
+    "BROKE_HEADER": "So Sorry.",
+    "TALK_TO_STAFF": "Please speak to a sidekick.",
+    "NO_KEYS_MADE": "We were not able to make keys.",
+    "NO_KEYS_MADE_SUB": "Oopsie. Unable to make key.",
+    "ROOM_NOT_AVAIL_MSG": "We can take care of your luggage until a room becomes available.",
+    "REGISTRATION_READY_HEADER": "Your registration is ready for lift-off.",
+    "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
+    "SWIPE_ERR_HEADER": "An Error Occurred",
+    "EMAIL_SENT_MSG": "The e-mail is now living in your inbox.",
+    "OOPS_TEXT": "Oopsie.",
+    "INVALID_EMAIL_ENTERED": "This does not appear to be a valid e-mail address.",
+    
+    
     
     "EMAIL_TEXT": "E-Mail",
+    "MADE_FIRST_KEY_MSG": "Success! Make your second key",
+    "MAKE_KEY": "Make your key.",
+    "MAKE_KEY_MSG": "Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made",
+    "MADE_FIRST_KEY_MSG_SUB": "Remove the first key, select a Blank Key from the Bowl and place it on the target below. When the green light appears, the key is made.",
+    
+    
+    "SUCCESS_HDR": "Success!",
+    "MAKE_FIRST_KEY": "Make your first key!",
+    "MAKE_FIRST_KEY_SUB": "Select a Blank Key from the Bowl and place it on the target below. When the green light appears, the key is made.",
+    "GRAB_KEYS": "Please grab your key(s) from the target below",
+    
+    
+    
     "EMAILED_BILL": "We’ve already e-mailed your bill. But perhaps you want it printed?",
     "PRINT_BILL": "Print Bill",
     "IN_ROOM": "You are in room",
@@ -68,6 +106,21 @@
     "USER_CHECKED_OUT_ALRDY_SUB":"You have been already checked out.",
     "USER_CHECKED_OUT_ALRDY_RTN":"Return",
     
+    "CHECK_OUT_WHEN":"When will you check out?",
+    "FIND_BY_DATE":"Find By Date",
+    "FIND_BY_DATE_NEXT":"Next",
+    "RES_SRCH_SEL":"Select a Reservation",
+    "RES_SRCH_NAME":"Name",
+    "RES_SRCH_SRY":"Sorry.",
+    
+    "RES_SRCH_RE_ENTER_LAST":"Re-Enter",
+    "RES_SRCH_RE_ENTER_ROOM":"Re-Enter",
+    "RES_SRCH_TALK":"Talk",
+    "RES_SRCH_TALK_SUB":"To a Sidekick ",
+    
+    
+    "RES_SRCH_SRY_SUB":"We can't seem to find you.",
+    "RES_SRCH_CHK_OUT_ROOM":"Check Out Date / Room Type",
     
     
     
