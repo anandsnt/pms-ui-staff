@@ -68,8 +68,9 @@
             data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}">
             <div class="wrapper">
                 <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered">
-                    <li class="worksheet-task multi-sheet unassigned" iscroll-stop-propagation
+                    <li class="worksheet-task multi-sheet unassigned"
                         id="unassigned-UA-{{$index}}"
+                        iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
                         data-drag = "{{multiSheetState.dndEnabled}}"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
@@ -145,7 +146,8 @@
                             ng-repeat="room in employee.rooms">
 
                             <li class="worksheet-task multi-sheet assigned"
-                                iscroll-stop-propagation id="assigned-{{employee.id}}-{{$index}}" class="worksheet-room multi-sheet assigned"
+                                id="assigned-{{employee.id}}-{{$index}}"
+                                iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
                                 jqyoui-draggable ="{index: {{$index}}, animate:false }"
@@ -162,9 +164,9 @@
                                     <span class="room {{room.current_status}}">{{room.current_status}}</span> <!-- Red for dirty, orange for pickup, green for clean or inspected -->
                                 </div>
                                 <h3>{{room.room_no}}</h3>
-                                <span class="task">{Task Name}</span>
-                                <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:
-                                <span class="icons icon-ok-10"></span> -->
+                                <span class="task">{{task.name}}</span>
+                                <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:-->
+                                <span class="icons icon-ok-10" ng-show="task.is_complete"></span>
                             </li>
                         </ul>
                     </div>
