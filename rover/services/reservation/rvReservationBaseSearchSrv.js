@@ -7,6 +7,13 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
             'businessDate': {}
         };
 
+        //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+
+        this.restrictionTypesCached = null;
+        this.rateDetailsCached = null;
+        this.sortOrderCached = null;
+
+        //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 
         this.fetchBaseSearchData = function() {
@@ -128,11 +135,16 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
         this.fetchSortPreferences = function() {
             var deferred = $q.defer(),
                 url = '/api/sort_preferences/list_selections';
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data.room_rates);
-            }, function(data) {
-                deferred.reject(data);
-            });
+            if (that.sortOrderCached === null) {
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    that.sortOrderCached = data.room_rates;
+                    deferred.resolve(data.room_rates);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.sortOrderCached);
+            }
             return deferred.promise;
         };
 
@@ -272,18 +284,85 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
 
         };
 
-        this.fetchRatesMeta = function() {
-            var deferred = $q.defer();
-            var url = '/api/rates/detailed';
-            RVBaseWebSrvV2.getJSON(url).then(function(response) {
-                var rates = [];
-                _.each(response.results, function(rate) {
-                    rates[rate.id] = rate;
+        this.fetchRestricitonTypes = function() {
+            var deferred = $q.defer(),
+                url = '/api/restriction_types';
+            if (that.restrictionTypesCached === null) {
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    data.results.push({
+                        id: 98,
+                        value: "INVALID_PROMO",
+                        description: "PROMOTION INVALID",
+                        activated: true
+                    });
+
+                    data.results.push({
+                        id: 99,
+                        activated: true,
+                        value: 'HOUSE_FULL',
+                        description: 'NO HOUSE AVAILABILITY'
+                    });
+
+                    var restriction_types = {};
+                    _.each(data.results, function(resType) {
+                        restriction_types[resType.id] = {
+                            key: resType.value,
+                            value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(resType.key) > -1 ? resType.description : resType.description + ':'
+                        }
+                    });
+                    that.restrictionTypesCached = restriction_types;
+                    deferred.resolve(restriction_types);
+                }, function(data) {
+                    deferred.reject(data);
                 });
-                deferred.resolve(rates);
-            }, function(data) {
-                deferred.reject(data);
+            } else {
+                deferred.resolve(that.restrictionTypesCached);
+            }
+            return deferred.promise;
+        };
+
+
+        this.fetchRatesDetailed = function() {
+            var deferred = $q.defer(),
+                url = '/api/rates/detailed';
+
+            if (that.rateDetailsCached === null) {
+                RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                    var rates = [];
+                    _.each(response.results, function(rate) {
+                        rates[rate.id] = rate;
+                    });
+                    that.rateDetailsCached = rates;
+                    deferred.resolve(rates);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.rateDetailsCached);
+            }
+            return deferred.promise;
+        };
+
+        this.fetchRatesMeta = function(params) {
+            var deferred = $q.defer(),
+                promises = [];
+
+            that['rates-restrictions'] = {};
+
+            promises.push(that.fetchRatesDetailed().then(function(response) {
+                that['rates-restrictions']['rates'] = response;
+            }));
+
+            promises.push(that.fetchRestricitonTypes(params).then(function(response) {
+                that['rates-restrictions']['restrictions'] = response;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve(that['rates-restrictions']);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
             });
+
             return deferred.promise;
         };
 
