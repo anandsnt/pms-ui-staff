@@ -429,39 +429,28 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		var	updateSummary = function(employeeId) {
-			// Avoid for now.
-			// To Do
-			return false;
+			var refData 	 = $scope.multiSheetState,
+				summaryModel = {
+									tasksAssigned: 0,
+									tasksCompleted: 0,
+									timeAllocated: "00:00",
+									shiftLength: "00:00"
+								};
 
-			/**
-			 * @deprecated
-			 */
-			var assignmentDetails = $scope.multiSheetState.assignments[employeeId];
-			assignmentDetails.summary.shift.completed = "00:00";
-			assignmentDetails.summary.stayovers = {
-				total: 0,
-				completed: 0
-			};
-			assignmentDetails.summary.departures = {
-				total: 0,
-				completed: 0
-			};
+			if (typeof employeeId === "number") {
+				var assignmentDetails = _.findWhere(refData.assigned, {id: employeeId});
 
-			_.each(assignmentDetails.rooms, function(room) {
-				if ($scope.departureClass[room.reservation_status] === "check-out") {
-					assignmentDetails.summary.departures.total++;
-					if (room.hk_complete) {
-						assignmentDetails.summary.departures.completed++;
-					}
-				} else if ($scope.departureClass[room.reservation_status] === "inhouse") {
-					assignmentDetails.summary.stayovers.total++;
-					if (room.hk_complete) {
-						assignmentDetails.summary.stayovers.completed++;
-					}
-				}
-				assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, room.time_allocated);
-			});
-			refreshView();
+				//summaryModel.xx = xx;
+				refData.summary[employeeId] = summaryModel;;
+
+			} else {
+				_.each(refData.assigned, function(employee) {
+					var summary = {};
+					angular.copy(summaryModel, summary);
+
+					refData.summary[employee.id] = summary;
+				});
+			}
 		};
 
 		// keeping a reference in $scope
@@ -484,7 +473,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				header: {
 					work_type_id: null
 				},
-				assignments: {}
+				summary: {}
 			};
 
 			$scope.filters = {
