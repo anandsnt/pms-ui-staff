@@ -288,25 +288,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		};
 
 		function compileUnassignedRooms (unassignedRooms, allTasks) {
-			// DESIRED STRUCTURE
-			// =================
-			// 
-			// [{
-			// 	id                 : 34,
-			// 	room_no            : 3442,
-			// 	current_status     : 'CLEAN',
-			// 	reservation_status : 'Not Reserved',
-			// 	checkout_time      : null,
-			// 	room_tasks: [{
-			// 		id             : 11,
-			// 		is_completed   : true,
-			// 		name           : 'Clean Departures',
-			// 		work_type_id   : 67,
-			// 		work_type_name : 'Daily Cleaning',
-			// 		time_allocated : { hh: 2, mm: 15 } 
-			// 	}]
-			// }];
-
 			var allTasks        = allTasks || [],
 				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
 
@@ -317,9 +298,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			var compiled = [];
 
-			var eachRoom, eachRoomId, eachRoomTypeId;
+			var copyRoom, eachRoomId, eachRoomTypeId;
 
-			var eachRoomTasks, eachTask;
+			var copyTask, eachRoomTasks;
 
 			var thatCompliedRoom, thatAllTask;
 
@@ -327,10 +308,21 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// 	and augmenting it with empty 'room_tasks'
 			for (i = 0, j = rooms.length; i < j; i++) {
 				if ( roomTasks[i]['tasks'].length ) {
-					eachRoom = $.extend({}, rooms[i], {
-						'room_tasks': []
-					});
-					compiled.push(eachRoom);
+					copyRoom = $.extend(
+											{}, 
+											rooms[i],
+											{ 'room_tasks': [] }
+										);
+					/**
+					 * copyRoom
+					 * ========
+					 * {
+					 *   ...room_details
+					 *   room_tasks: []
+					 * }
+					 */
+					
+					compiled.push(copyRoom);
 				};
 			};
 
@@ -346,73 +338,186 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				for (k = 0, l = eachRoomTasks.length; k < l; k++) {
 					thatAllTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
 
-					eachTask = $.extend({}, eachRoomTasks[k], {
-						'name'           : thatAllTask.name,
-						'work_type_id'   : thatAllTask.work_type_id,
-         				'work_type_name' : thatAllTask.work_type_name,
-						'time_allocated' : getTimeAllocated( thatAllTask, eachRoomTypeId )
-					});
+					copyTask = $.extend(
+											{},
+											eachRoomTasks[k],
+											{
+												'name'           : thatAllTask.name,
+												'work_type_id'   : thatAllTask.work_type_id,
+												'work_type_name' : thatAllTask.work_type_name,
+												'time_allocated' : getTimeAllocated( thatAllTask, eachRoomTypeId )
+											}
+										);
+					/**
+					 * copyTask
+					 * ========
+					 * {
+					 *   id: 1,
+				     *   completed: false,
+					 *   ...additional_tasks_details
+					 * }
+					 */
 
-					thatCompiledRoom['room_tasks'].push( eachTask );
+					thatCompiledRoom
+						.room_tasks
+						.push( copyTask );
 				};
-			};
-
-			// find and convert the completion time
-			// and convert in into proper standards
-			function getTimeAllocated (task, roomId) {
-				var time = '',
-					hh = 0,
-					mm = 0;
-
-				if ( task['room_types_completion_time'].hasOwnProperty(roomId) && !! task['room_types_completion_time'][roomId] ) {
-					time = task['room_types_completion_time'][roomId];
-				} else if ( !! task['completion_time'] ) {
-					time = task['completion_time'];
-				};
-
-				if ( time.indexOf(':') > -1 ) {
-					hh = time.split(':')[0];
-					mm = time.split(':')[1];
-				};
-
-				return {
-					hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
-					mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
-				};
-			};
+			};			
 
 			return compiled;
 		};
 
-		function compileAssignedRooms () {
-			// DESIRED STRUCTURE
-			// =================
-			// 
-			// [{
-			// 	id: 34,
-			// 	name: 'Vijay Dev',
-			// 	room_no: 3442,
-			// 	current_status: 'CLEAN',
-			// 	reservation_status: 'Not Reserved',
-			// 	checkout_time: null,
-			// 	room_tasks: [{
-			// 		id: 11,
-			// 		completion_time: '02:15',
-			// 		is_completed: true
-			// 	}, {
-			// 		id: 13,
-			// 		completion_time: '02:15',
-			// 		is_completed: true
-			// 	}]
-			// }];
+		function compileAssignedRooms (assignedRooms, allTasks) {
+			var allTasks      = allTasks || [],
+				assignedRooms = $.extend({}, { 'employees' : [], 'rooms' : [] }, assignedRooms);
+
+			var employees = assignedRooms.employees,
+				rooms     = assignedRooms.rooms;
+
+			var i, j, k, l, m, n;
 
 			var compiled = [];
 
+			var copyEmployee, roomTasksInit, copyRoom, tasksInIt, thatAllTask, copyTask;
+
+			for (i = 0, j = employees.length; i < j; i++) {
+				copyEmployee = $.extend(
+											{},
+											{ 'id' : employees[i].id, 'name' : employees[i].name },
+											{ 'rooms' : [] },
+											{ 'touched_work_types': [] }
+										);
+				/**
+				 * copyEmployee
+				 * ============
+				 * {
+				 *   id: 1,
+				 *   name: 'Vijay',
+				 *   rooms: [],
+				 *   touched_work_types: []
+				 * }
+				 */
+
+				roomTasksInit = employees[i]['room_tasks'];
+
+				for (k = 0, l = roomTasksInit.length; k < l; k++) {
+					copyRoom = $.extend(
+											{},
+											_.find(rooms, { id: roomTasksInit[k].room_id }),
+											{ 'room_tasks': [] }
+										);
+					/**
+					 * copyRoom
+					 * ========
+					 * {
+					 *   ...room details,
+					 *   room_tasks: []
+					 * }
+					 */
+
+					copyEmployee
+						.rooms
+						.push( copyRoom );
+					/**
+					 * copyEmployee
+					 * ============
+					 * {
+					 *   id: 1,
+					 *   name: 'Vijay',
+					 *   rooms: [{
+					 *   	...room details,
+					 *      room_tasks: []
+					 *   }],
+					 *   touched_work_types: []
+					 * }
+					 */
+
+					tasksInIt = roomTasksInit[k]['tasks'];
+
+					for (m = 0, n = tasksInIt.length; m < n; m++) {
+						thatAllTask = _.find(allTasks, { id: tasksInIt[m]['id'] });
+
+						copyTask = $.extend(
+												{},
+												tasksInIt[m],
+												{
+													'name'           : thatAllTask.name,
+													'work_type_id'   : thatAllTask.work_type_id,
+													'work_type_name' : thatAllTask.work_type_name,
+													'time_allocated' : getTimeAllocated( thatAllTask, copyRoom.room_type )
+												}
+											);
+						/**
+						 * copyTask
+						 * ========
+						 * {
+						 *   id: 1,
+						 *   completed: false,
+						 *   ...additional_tasks_details
+						 * }
+						 */
+						
+						// keeping a top ref of all work_types_touched
+						// pushing new arrays, will flatten & uniq it just before 
+						// pushing to complied
+						copyEmployee
+							.touched_work_types
+							.push( [copyTask.work_type_id] );
+						
+						copyEmployee
+							.rooms[k]			// wonder why its k?
+							.room_tasks
+							.push( copyTask );
+						/**
+						 * copyEmployee
+						 * ============
+						 * {
+						 *   id: 1,
+						 *   name: 'Vijay',
+						 *   rooms: [{
+						 *   	...room details,
+						 *      room_tasks: [{
+						 *         id: 1,
+						 *         completed: false,
+						 *         ...additional_tasks_details
+						 *      }]
+						 *   }],
+						 *   touched_work_types: [ [1], [2] ]
+						 * }
+						 */
+					};
+				};
+
+				// flatten and remove duplicates
+				copyEmployee.touched_work_types = _.uniq( _.flatten(copyEmployee.touched_work_types) );
+
+				compiled.push(copyEmployee);
+			};
+
 			return compiled;
 		};
 
+		function getTimeAllocated (task, roomId) {
+			var time = '',
+				hh = 0,
+				mm = 0;
 
-		
+			if ( task['room_types_completion_time'].hasOwnProperty(roomId) && !! task['room_types_completion_time'][roomId] ) {
+				time = task['room_types_completion_time'][roomId];
+			} else if ( !! task['completion_time'] ) {
+				time = task['completion_time'];
+			};
+
+			if ( time.indexOf(':') > -1 ) {
+				hh = time.split(':')[0];
+				mm = time.split(':')[1];
+			};
+
+			return {
+				hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
+				mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
+			};
+		};
 
 		// ALL APIS
 		// ========
