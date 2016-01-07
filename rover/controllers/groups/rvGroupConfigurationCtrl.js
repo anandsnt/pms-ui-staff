@@ -838,6 +838,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             if (!$scope.isInAddMode()) {
                 groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
                 groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
+            } 
+            //Fix for CICO-23701
+            else {
+                groupSummary.block_from = new tzIndependentDate($rootScope.businessDate);
             }
 
             // if we searched a group name that wasnt in the db
