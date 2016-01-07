@@ -75,16 +75,21 @@
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
                         <div class="info">
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Departed'">OUT</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Stayover'">STAYOVER</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time}}</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Arrived'">IN</span>
-                            <span class="guest {{reservationStatus[room.reservation_status]}}" ng-if="room.reservation_status == 'Not Reserved'">UNASSIGNED</span>
+                            <span class="guest red" ng-if="room.reservation_status === 'Due out' && !room.checkout_time">DUE OUT</span>
+                            <span class="guest red" ng-if="room.reservation_status === 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
+                            <span class="guest red" ng-if="room.reservation_status === 'Departed'">OUT</span>
+                            <span class="guest blue" ng-if="room.reservation_status === 'Stayover'">STAYOVER</span>
+                            <span class="guest green" ng-if="room.reservation_status === 'Arrival' && !room.checkin_time">ARRIVAL</span>
+                            <span class="guest green" ng-if="room.reservation_status === 'Arrival' && !!room.checkin_time">{{ room.checkin_time}}</span>
+                            <span class="guest green" ng-if="room.reservation_status == 'Arrived'">IN</span>
+                            <span class="guest gray" ng-if="room.reservation_status === 'Not Reserved'">UNASSIGNED</span>
                             <!-- Grey for unassigned or not reserved, red for out or checkout time, blue for stayover -->
-                            <span class="room {{room.current_status}}">{{room.current_status}}</span> <!-- Red for dirty, orange for pickup, green for clean or inspected -->
+                            <span class="room" ng-class="{
+                                                'red': room.current_status === 'dirty',
+                                                'orange': room.current_status === 'pickup',
+                                                'green' : room.current_status === 'clean'}">
+                            {{room.current_status}}</span> 
+                            <!-- Red for dirty, orange for pickup, green for clean or inspected -->
                         </div>
                         <h3>{{room.room_no}}</h3>
                         <span class="task">{{task.name}}</span>
