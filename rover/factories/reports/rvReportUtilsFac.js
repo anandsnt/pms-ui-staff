@@ -1163,6 +1163,7 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             function fillRateCodeList (data) {
+                data[0].selected = true;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
                     if ( !! foundFilter ) {
@@ -1723,7 +1724,7 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case reportNames['RATE_RESTRICTION_REPORT']:
                     report['fromDate']  = _getDates.businessDate;
-                    report['untilDate'] = _getDates.aMonthAfter;
+                    report['untilDate'] = _getDates.businessDate;
                     break;
 
                 case reportNames['IN_HOUSE_GUEST']:
