@@ -231,6 +231,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.onWorkTypeChanged = function() {
+			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
 			updateView(true);
 		};
 
@@ -463,6 +464,10 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// select all employeed by default
 			$scope.multiSheetState.selectedEmployees = [];
 			_.each($scope.employeeList, function(employee) {
+				if (selectionHistory.length) {
+					if (selectionHistory.indexOf(employee.id) < 0)
+						return false;
+				}
 				employee.ticked = true;
 				var emp = _.findWhere($scope.multiSheetState.assigned, {
 					id: employee.id
@@ -606,7 +611,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				allTasks: payload.allTasks,
 				allRooms: payload.allRooms,
 				header: {
-					work_type_id: null
+					work_type_id: $scope.workTypeSelected || null
 				},
 				summary: {}
 			};
@@ -651,6 +656,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var init = function() {
 
 			$scope.dateSelected = null;
+			$scope.workTypeSelected = null;
 
 			// state settings
 			setBackNavAndTitle();
@@ -675,6 +681,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			refreshView();
 
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
+			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
 		};
 
 		init();
