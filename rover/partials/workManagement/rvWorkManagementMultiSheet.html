@@ -65,11 +65,11 @@
             ng-iscroll="unAssignedRoomList"
             data-drop="true"
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
-            data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}">
+            data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}"
             <div class="wrapper">
-                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered">
+                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-init="ulIndex = $index">
                     <li class="worksheet-task multi-sheet unassigned"
-                        id="unassigned-UA-{{$index}}"
+                        id="unassigned-UA-{{ ulIndex }}-{{ $index }}"
                         iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
                         data-drag = "{{multiSheetState.dndEnabled}}"
@@ -141,17 +141,17 @@
                         </li>
                     </ul>
                 </div>
-                <div id="{{employee.id}}" class="worksheet-content scrollable"
+                <div id="{{ $index }}-{{ employee.id }}" class="worksheet-content scrollable"
                     data-drop="true"
                     jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                     data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.unassigned,.worksheet-task.multi-sheet.assigned'}"
                     ng-iscroll="assignedRoomList-{{$index}}"> <!-- Vertical scroll here -->
                     <div class="wrapper">
                         <ul class="worksheet-room sortable"
-                            ng-repeat="room in employee.rooms">
-
+                            ng-repeat="room in employee.rooms"
+                            ng-init="ulIndex = $index">
                             <li class="worksheet-task multi-sheet assigned"
-                                id="assigned-{{employee.id}}-{{$index}}"
+                                id="assigned-{{employee.id}}-{{ulIndex}}-{{$index}}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
                                 ng-class="{ 'completed-task': task.is_complete}"
