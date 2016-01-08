@@ -244,6 +244,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @return {Undefined}
 		 */
 		$scope.saveMultiSheet = function(options) {
+			$_afterSave();
 			// To Do: from scratch.
 		};
 
