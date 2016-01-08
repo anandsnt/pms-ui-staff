@@ -13,7 +13,13 @@ module.exports = {
 			'rover.companycardsearch': roverJsListRoot + 'companyCardSearchJsAssetList.js',
 			'rover.companycarddetails': roverJsListRoot + 'companyCardDetailsJsAssetList.js',
 			'rover.groups': roverJsListRoot + 'groupJsAssetList.js',
-			'rover.allotments': roverJsListRoot + 'allotmentJsAssetList.js'
+			'rover.allotments': roverJsListRoot + 'allotmentJsAssetList.js',
+			'rover.financials': roverJsListRoot + 'financialsJsAssetList.js',
+			'postcharge': roverJsListRoot + 'postChargeJsAssetList.js',
+			'endofday': roverJsListRoot + 'endOfDayJsAssetList.js',
+			'rover.workManagement': roverJsListRoot + 'workManagementJsAssetList.js',
+			'staffpasswordchange': roverJsListRoot + 'staffPasswordChangeJsAssetList.js',
+			'rover.reservation.staycard.billcard': roverJsListRoot + 'billScreenJsAssetList.js'
 		}
 	}
 }

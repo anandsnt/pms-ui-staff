@@ -85,13 +85,16 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
             controller: 'RVWorkManagementCtrl',
             resolve: {
-                employees: function(RVWorkManagementSrv, housekeepingAssets) {
+                workManagementAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('rover.workManagement');
+                },
+                employees: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchMaids();
                 },
-                workTypes: function(RVWorkManagementSrv, housekeepingAssets) {
+                workTypes: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchWorkTypes();
                 },
-                shifts: function(RVWorkManagementSrv, housekeepingAssets) {
+                shifts: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchShifts();
                 },
                 floors: function(RVHkRoomStatusSrv) {
@@ -111,12 +114,12 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagementMultiSheet.html',
             controller: 'RVWorkManagementMultiSheetCtrl',
             resolve: {
-                allUnassigned: function(RVWorkManagementSrv, $stateParams, housekeepingAssets) {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
                     });
                 },
-                activeWorksheetEmp: function(RVHkRoomStatusSrv, housekeepingAssets) {
+                activeWorksheetEmp: function(RVHkRoomStatusSrv, workManagementAssets) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 }
             }
@@ -127,12 +130,12 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagementSingleSheet.html',
             controller: 'RVWorkManagementSingleSheetCtrl',
             resolve: {
-                wmWorkSheet: function(RVWorkManagementSrv, $stateParams, housekeepingAssets) {
+                wmWorkSheet: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
                     return RVWorkManagementSrv.fetchWorkSheet({
                         id: $stateParams.id
                     });
                 },
-                allUnassigned: function(RVWorkManagementSrv, $stateParams, housekeepingAssets) {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
                     });

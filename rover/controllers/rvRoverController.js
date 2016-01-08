@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings) {
 
     // TODO: remove this after CICO-19912 is done
     SWITCH_ROOM_AND_RATES_ALT = true;
@@ -268,11 +268,18 @@ sntRover.controller('roverController',
     * @return - None
     */
     var openUpdatePasswordPopup = function(){
-        ngDialog.open({
-            template: '/assets/partials/settings/rvStaffSettingModal.html',
-            controller: 'RVStaffsettingsModalController',
-            className: 'calendar-modal'
-        });
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('staffpasswordchange')
+        .then(function(){
+            $scope.$emit('hideLoader');
+            ngDialog.open({
+                template: '/assets/partials/settings/rvStaffSettingModal.html',
+                controller: 'RVStaffsettingsModalController',
+                className: 'calendar-modal'
+            });
+        });    
     };
 
 
@@ -390,6 +397,38 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
+    var openEndOfDayPopup = function() {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('endofday')
+        .then(function(){
+            $scope.$emit('hideLoader');
+            ngDialog.open({
+              template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+              controller: 'RVEndOfDayModalController',
+              className: 'end-of-day-popup ngdialog-theme-plain'
+            });
+        });
+    };
+
+    var openPostChargePopup = function() {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('postcharge')
+        .then(function(){
+            $scope.isOutsidePostCharge = true;
+            $scope.$emit('hideLoader');
+            ngDialog.open(
+            {
+              template      : '/assets/partials/postCharge/rvPostChargeV2.html',
+              controller    : 'RVOutsidePostChargeController',
+              scope         : $scope
+            });
+        });
+    };
+
     //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
@@ -397,21 +436,10 @@ sntRover.controller('roverController',
       $scope.toggleDrawerMenu();
 
       if (subMenu === "postcharges") {
-
-        $scope.isOutsidePostCharge = true;
-
-        ngDialog.open({
-          template: '/assets/partials/postCharge/rvPostChargeV2.html',
-          controller: 'RVOutsidePostChargeController',
-          scope: $scope
-        });
+        openPostChargePopup();
       }
       else if (subMenu === "endOfDay") {
-        ngDialog.open({
-          template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-          controller: 'RVEndOfDayModalController',
-          className: 'end-of-day-popup ngdialog-theme-plain'
-        });
+        openEndOfDayPopup();
       }
       else if(subMenu === "adminSettings"){
             //CICO-9816 bug fix - Akhila

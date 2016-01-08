@@ -5,7 +5,12 @@ angular.module('FinancialsModule', [])
         abstract: true,
         url: '/financials',
         templateUrl: '/assets/partials/financials/rvFinancials.html',
-        controller: 'RVFinancialsController'
+        controller: 'RVFinancialsController',
+        resolve: {
+            jsAssets: function(jsMappings) {
+                return jsMappings.fetchAssets('rover.financials');
+            }
+        }
     });
 
     $stateProvider.state('rover.financials.journal', {
@@ -13,7 +18,7 @@ angular.module('FinancialsModule', [])
         templateUrl: '/assets/partials/financials/journal/rvJournal.html',
         controller: 'RVJournalController',
         resolve: {
-            journalResponse: function(RVJournalSrv) {
+            journalResponse: function(RVJournalSrv, jsAssets) {
                 if ( !!RVJournalSrv ) {
                     return RVJournalSrv.fetchGenericData();
                 } else {

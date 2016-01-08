@@ -48,7 +48,8 @@ module.exports = {
 				servicesRoot + "rvGuestCardLoyaltySrv.js",
 				servicesRoot + "rvSaveWakeupTimeSrv.js",
 				servicesRoot + "rvNewspaperPreferenceSrv.js",
-				servicesRoot + "rvLoyaltyProgramSrv.js"
+				servicesRoot + "rvLoyaltyProgramSrv.js",
+				servicesRoot + "bill/rvBillCardSrv.js"
 			]
 		};
 		return allotmentJsAssets;
