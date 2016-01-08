@@ -364,11 +364,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return this.payload.allRooms[index];
 		};
 
-		this.saveWorkSheets = function(assignedRoomTasks) {
+		this.saveWorkSheets = function(options) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/assign';
 
-			var params = compileAssignedRoomsParams( assignedRoomTasks );
+			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date );
 
 			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
