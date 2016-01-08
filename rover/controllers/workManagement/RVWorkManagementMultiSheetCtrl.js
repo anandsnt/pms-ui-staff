@@ -218,6 +218,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// "dropped" has info of what has been dragged
 			// yeah, the wording is totally confusing :S
 
+			var dragged = $(dropped.draggable).attr('id'),
+				draggedIndex = dragged.split('-')[1],
+				roomIndex = parseInt( dragged.split('-')[2] ),
+				taskIndex = parseInt( dragged.split('-')[3] );
+
+			var source, thatEmpl;
+
+			var draggedRoom, draggedTask;
+
 
 			
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
