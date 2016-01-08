@@ -66,7 +66,7 @@
             ng-iscroll="unAssignedRoomList"
             data-drop="true"
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
-            data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}"
+            data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}">
             <div class="wrapper">
                 <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-init="ulIndex = $index">
                     <li class="worksheet-task multi-sheet unassigned"
