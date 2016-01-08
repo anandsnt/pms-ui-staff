@@ -1,9 +1,10 @@
 
 <!-- Content -->
-<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email"' click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email" || at === "deposit-agree"' click-touch='resetTime()'>
     <div id="content">
-        <h1>{{headingText}}</h1>
-        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText}}</h2>
+        <h1>{{headingText |translate}}</h1>
+        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText |translate}}</h2>
+        <h2 ng-hide='at !== "deposit-agree"'>{{subsubheadingText |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
@@ -12,7 +13,7 @@
                     <button type="button" class="button option">
                         <div ng-include="'assets/css/icons/creditcard.svg'"></div>
                     </button>
-                    <span translate>Please Swipe Credit Card</span>
+                    <span translate>SWIPE_CARD_PLEASE</span>
                     <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
@@ -23,7 +24,7 @@
                     </button>
                     <span translate>Debug SixPay</span>
                     <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
-                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
+                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
                 </li>
                 
                 <!-- deliver-registration -->
@@ -31,23 +32,23 @@
                     <button type="button" class="button option" touch-press='clickedPrint()'>
                         <div ng-include="'assets/css/icons/print.svg'"></div>
                     </button>
-                    <span translate>Print</span>
+                    <span translate>PRINT_TEXT</span>
                 </li>
                 <li class="break" ng-show='at === "deliver-registration" && printEnabled && emailEnabled'>
-                    <span>Or</span>
+                    <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show='at === "deliver-registration" && emailEnabled'> 
                     <button type="button" class="button option" touch-press='selectEmailDelivery()'>
                         <div ng-include="'assets/css/icons/email.svg'"></div>
                     </button>
-                    <span translate>E-Mail</span>
+                    <span translate>EMAIL_TEXT</span>
                 </li>
                 <!-- invalid-email -->
                 <li ng-show='at === "invalid-email"'> 
                     <button type="button" class="button option" touch-press='navToPrev()'>
                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
-                    <h1>Re-type</h1>
+                    <h1>{{'RE_TYPE' |translate}}</h1>
                     <h3>"{{input.lastEmailValue}}"</h3>
                 </li>
                 
@@ -56,10 +57,10 @@
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="'assets/css/icons/creditcard.svg'"></div>
                     </button>
-                    <h1>Try Again</h1>
+                    <h1>{{'TRY_AGAIN' |translate}}</h1>
                 </li>
                 <li class="break" ng-show='at === "swipe-pay-error"'>
-                    <span>Or</span>
+                    <span translate>OR_TEXT</span>
                 </li>
                 
                 
@@ -69,40 +70,46 @@
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
                         <div ng-include="'assets/css/icons/key.svg'"></div>
                     </button>
-                    <h1>Try Again</h1>
+                    <h1>{{'TRY_AGAIN' |translate}}</h1>
                 </li>
                 <li class="break" ng-show='at === "key-error" && !pickupkeys'>
-                    <span>Or</span>
+                    <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show='at === "key-error" && !pickupkeys'> 
                     <button type="button" class="button option" touch-press='skipKeys()'>
                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
-                    <h1>Continue</h1>
+                    <h1>{{'CONTINUE_TEXT' |translate}}</h1>
                 </li>
 
+                <li ng-show='at === "deposit-agree"'> 
+                    <button type="button" class="button option" touch-press='depositProceed()'>
+                        <div ng-include="'assets/css/icons/creditcard.svg'"></div>
+                    </button>
+                    <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
+                </li>
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
                         <div ng-include="'assets/css/icons/pen.svg'"></div>
                     </button>
-                    <span translate>Edit My E-mail Address</span>
+                    <span translate>EDIT_EMAIL</span>
                 </li>
-                <li class="break" ng-show='at === "email-delivery" || at === "key-error"'>
-                    <span>Or</span>
+                <li class="break" ng-show='at === "email-delivery" || at === "key-error" || at === "deposit-agree"'>
+                    <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='sendRegistration()'>
                         <div ng-include="'assets/css/icons/email.svg'"></div>
                     </button>
-                    <span translate>Send E-Mail</span>
+                    <span translate>SEND_EMAIL</span>
                 </li>
-                <li ng-show='at === "key-error" || at === "swipe-pay-error"'> 
+                <li ng-show='at === "key-error" || at === "swipe-pay-error"  || at === "deposit-agree"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>
-                    <h1>Speak</h1>
-                    <h4>to a Sidekick</h4>
+                    <h1>{{'SPEAK' |translate}}</h1>
+                    <h4>{{'SPEAK_SUB' |translate}}</h4>
                 </li>
 
             </ul>
@@ -127,7 +134,7 @@
     </div>
 
     <div class="room">
-        <span>You are in room</span>
+        <span translate>IN_ROOM</span>
         <strong>{{printRegCardData.room_number}}</strong>
     </div>
 

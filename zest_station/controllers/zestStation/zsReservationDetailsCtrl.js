@@ -75,10 +75,10 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.setAddGuestLast = function(){
             $scope.at = 'add-guest-last';
             $state.lastAt = 'add-guests';
-            $scope.headingText = 'Enter the Guests Last Name';
+            $scope.headingText = 'ENTER_LAST';
             setTimeout(function(){
                 $scope.clearInputText();
-            },50)
+            },50);
             
             
             $scope.hideNavBtns = false;
@@ -86,17 +86,17 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.setAddGuestFirst = function(){
             $scope.at = 'add-guest-first';
             $state.lastAt = 'add-guests';
-            $scope.headingText = 'Enter the Residents First Name';
+            $scope.headingText = 'ENTER_FIRST';
             setTimeout(function(){
                 $scope.clearInputText();
-            },50)
+            },50);
             $scope.hideNavBtns = false;
         };
 
         $scope.setAddRemoveScreen = function(){
             $scope.at = 'add-guests';
             $state.lastAt = 'reservation-details';
-            $scope.addGuestsHeading = 'Additional Residents';
+            $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
             $scope.hideNavBtns = false;
         };
         $scope.formatCurrency = function(amt){
@@ -176,17 +176,12 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             }
         };
         $scope.addGuestToReservation = function(){
-            
             var first = $state.input.addguest_first,
             last = $state.input.addguest_last;
             $state.selectedReservation.guest_details.push({
                 last_name: last,
                 first_name: first
             });
-            console.info({
-                last_name: last,
-                first_name: first
-            }, 'added')
         };
         
             $scope.clearInputText = function(){

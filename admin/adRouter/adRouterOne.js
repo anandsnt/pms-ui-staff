@@ -177,8 +177,8 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/zestsetupemail'
 		});
 		$stateProvider.state('admin.zest_setup_direct', {
-			templateUrl: '/assets/partials/zestSetup/adCheckinEmailSetup.html',
-			controller: 'ADZestCheckinEmailCtrl',
+			templateUrl: '/assets/partials/zestSetup/adCheckinDirectUrlEmailSetup.html',
+			controller: 'ADZestCheckinDirectUrlEmailCtrl',
 			url : '/zestsetupdirect'
 		});
 

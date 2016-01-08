@@ -48,7 +48,7 @@
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
 	        errorMessage:function(){
-	          return "Please fill all the required fields";
+	          return "Please provide all the required information";
 	        }
 	      }
 	    };
@@ -68,6 +68,7 @@
 				checkinDetailsService.setResponseData(response.results[0]);
 				$rootScope.upgradesAvailable = (response.results[0].is_upgrades_available === "true") ? true :  false;
 				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;
+				$rootScope.userEmail = response.results[0].guest_email;
 
 				//navigate to next page
 				$state.go('checkinReservationDetails');
@@ -91,7 +92,7 @@
 					data.alt_confirmation_number = $scope.confirmationNumber;
 				}
 				if(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0){
-					data.departure_date  = $scope.departureDate;
+					data.departure_date  = dateToSend;
 				}
 
 				
@@ -171,7 +172,19 @@
 		$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 
+		$scope.clearDate = function(){
+			$scope.date = "";
+			$rootScope.departureDate = "";
+		};
+
+		function loseFocus() {
+			var inputs = document.getElementsByTagName('input');
+			for (var i = 0; i < inputs.length; ++i) {
+			  inputs[i].blur();
+			}
+		};
 		$scope.showCalender = function(){
+			loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 			$scope.isCalender = true;
 		};
 		$scope.closeCalender = function(){
@@ -182,7 +195,7 @@
 			$rootScope.departureDate = $scope.selectedDate;
 
 			dateToSend = dclone($scope.date,[]);
-			dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+			dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
 			$scope.closeCalender();
 		};
 	}
