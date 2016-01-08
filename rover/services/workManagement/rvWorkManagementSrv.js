@@ -371,6 +371,19 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.addAssignment = function(currAssignments, newAssignment) {
+
+		};
+
+		this.removeAssignment = function(currAssignments, newAssignment) {
+			
+		};
+
+
+		/**
+		 * PRIVATE METHODS
+		 */
+
 		function compileUnassignedRooms (unassignedRooms, allTasks) {
 			var allTasks        = allTasks || [],
 				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
@@ -382,11 +395,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			var compiled = [];
 
-			var copyRoom, eachRoomId, eachRoomTypeId;
+			var copyRoom, eachRoomId;
 
 			var copyTask, eachRoomTasks;
 
-			var thatCompliedRoom, thatAllTask;
+			var thatCompliedRoom, thatRoomTypeId, thatRoomNo, thatAllTask;
 
 			// 	creating a fresh array of room by copying rooms
 			// 	and augmenting it with empty 'room_tasks'
@@ -413,11 +426,17 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			// loop through roomTasks, gather much info on each tasks
 			// and push it into appropriate room
 			for (i = 0, j = roomTasks.length; i < j; i++) {
+				if ( ! roomTasks[i]['tasks'].length ) {
+					continue;
+				};
+
 				eachRoomId     = roomTasks[i]['room_id'];
-				eachRoomTypeId = roomTasks[i]['room_type_id'];
 				eachRoomTasks  = roomTasks[i]['tasks'];
 
 				thatCompiledRoom = _.find(compiled, { id: eachRoomId });
+
+				thatRoomTypeId = thatCompiledRoom['room_type'];
+				thatRoomNo     = thatCompiledRoom['room_no'];
 
 				for (k = 0, l = eachRoomTasks.length; k < l; k++) {
 					thatAllTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
@@ -426,10 +445,14 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 							{},
 							eachRoomTasks[k],
 							{
-								'name'           : thatAllTask.name,
+								'task_name'      : thatAllTask.name,
 								'work_type_id'   : thatAllTask.work_type_id,
 								'work_type_name' : thatAllTask.work_type_name,
-								'time_allocated' : getTimeAllocated( thatAllTask, eachRoomTypeId )
+								'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+							},
+							{
+								'room_id' : eachRoomId,
+								'room_no' : thatRoomNo
 							}
 						);
 					/**
@@ -439,6 +462,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 					 *   id: 1,
 				     *   completed: false,
 					 *   ...additional_tasks_details
+					 *   ...room_id & room_no
 					 * }
 					 */
 
@@ -469,6 +493,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						{},
 						{ 'id' : employees[i].id, 'name' : employees[i].name },
 						{ 'rooms' : [] },
+						{ 'only_tasks' : [] },
 						{ 'touched_work_types': [] }
 					);
 				/**
@@ -478,6 +503,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				 *   id: 1,
 				 *   name: 'Vijay',
 				 *   rooms: [],
+				 *   only_tasks: [],
 				 *   touched_work_types: []
 				 * }
 				 */
@@ -525,10 +551,14 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 								{},
 								tasksInIt[m],
 								{
-									'name'           : thatAllTask.name,
+									'task_name'      : thatAllTask.name,
 									'work_type_id'   : thatAllTask.work_type_id,
 									'work_type_name' : thatAllTask.work_type_name,
 									'time_allocated' : getTimeAllocated( thatAllTask, copyRoom.room_type )
+								},
+								{
+									'room_id' : copyRoom.id,
+									'room_no' : copyRoom.room_no
 								}
 							);
 						/**
@@ -538,9 +568,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						 *   id: 1,
 						 *   completed: false,
 						 *   ...additional_tasks_details
+						 *   ...room_id & room_no
 						 * }
 						 */
-						
+
 						// keeping a top ref of all work_types_touched
 						// pushing new arrays, will flatten & uniq it just before 
 						// pushing to complied
@@ -551,6 +582,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						copyEmployee
 							.rooms[k]			// wonder why its k?
 							.room_tasks
+							.push( copyTask );
+						copyEmployee
+							.only_tasks
 							.push( copyTask );
 						/**
 						 * copyEmployee
@@ -563,8 +597,15 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						 *      room_tasks: [{
 						 *         id: 1,
 						 *         completed: false,
-						 *         ...additional_tasks_details
+						 *         ...additional_tasks_details,
+						 *         ...additional_room_details
 						 *      }]
+						 *   }],
+						 *   only_tasks: [{
+						 *   	id: 1,
+						 *      completed: false,
+						 *      ...additional_tasks_details,
+						 *      ...additional_room_details
 						 *   }],
 						 *   touched_work_types: [ [1], [2] ]
 						 * }
@@ -603,8 +644,77 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			};
 		};
 
-		function compileAssignedRoomsParams () {
+		function compileAssignedRoomsParams (assignedRoomTasks, date) {
+			var complied = $.extend(
+					{},
+					{ 'date'       : date },
+					{ 'work_types' : [] }
+				);
 
+			// PASS 1
+			// creating just the work type id entries
+			_.each(assignedRoomTasks, function(art) {
+				var touched = art.touched_work_types;
+
+				_.each(touched, function(wtid) {
+					var hasWorkType = _.find(complied.work_types, { id: wtid });
+
+					if ( ! hasWorkType ) {
+						var newWorkType = $.extend(
+								{},
+								{ 'id': wtid },
+								{ 'assignments': [] }
+							);
+
+						complied
+							.work_types
+							.push( newWorkType );
+					};
+				});
+			});
+
+			var workTypeId, hasThisWorkType, newAssignment, allTaskInThisWorkType, newTask;
+
+			// PASS 2
+			// dwad
+			_.each(complied.work_types, function(cwt, index) {
+				workTypeId = cwt.id;
+
+				_.each(assignedRoomTasks, function(art) {
+					hasThisWorkType = _.find(art.touched_work_types, function(id) {
+						return workTypeId == id;
+					});
+
+					if ( !! hasThisWorkType ) {
+						newAssignment = $.extend(
+								{},
+								{ 'employee_id': art.id },
+								{ 'tasks': [] }
+							);
+
+						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
+
+						_.each(allTaskInThisWorkType, function(eachTask) {
+							newTask = $.extend(
+									{},
+									{ 'id': eachTask.id },
+									{ 'room_id': eachTask.room_id }
+								);
+
+							newAssignment
+								.tasks
+								.push( newTask );
+						});
+
+						complied
+							.work_types[index]
+							.assignments
+							.push( newAssignment );
+					};
+				});
+			});
+
+			return complied;
 		};
 
 		// ALL APIS
