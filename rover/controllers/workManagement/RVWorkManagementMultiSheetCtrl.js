@@ -591,6 +591,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				unassigned: payload.unassignedRoomTasks,
 				unassignedFiltered: [],
 				assigned: payload.assignedRoomTasks,
+				allTasks: payload.allTasks,
+				allRooms: payload.allRooms,
 				header: {
 					work_type_id: null
 				},
