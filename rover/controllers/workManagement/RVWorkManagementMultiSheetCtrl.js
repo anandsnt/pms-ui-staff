@@ -207,9 +207,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 			};
 
-			console.log( draggedRoom );
 			draggedRoom['room_tasks'].splice(taskIndex, 1);
-			console.log( draggedRoom );
 		};
 
 		/**

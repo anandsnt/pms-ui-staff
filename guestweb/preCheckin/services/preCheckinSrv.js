@@ -34,6 +34,7 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 		var url = '/api/reservations/'+reservationId+'/pre_checkin';
 		var data = {};
 		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
 		$http.post(url,data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
