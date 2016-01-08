@@ -51,7 +51,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				account_id: null,
 				is_rate_shown_on_guest_bill: false,
 				is_suppress_rate_on: false,
-				is_discount_allowed: true,
+				is_discount_allowed_on: true,
 				rate_type: {
 					id: null,
 					name: isAllotment ? "Allotment Rate" : "Group Rate"

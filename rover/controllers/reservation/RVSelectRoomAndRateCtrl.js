@@ -40,7 +40,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		//--
 		$scope.restrictionColorClass = RVSelectRoomRateSrv.restrictionColorClass;
-		$scope.restrictionsMapping = RVSelectRoomRateSrv.restrictionsMapping;
+		$scope.restrictionsMapping = ratesMeta['restrictions'];
 
 		//-- REFERENCES
 		var TABS = $scope.reservationData.tabs,
@@ -166,6 +166,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 				return hasRate;
 			},
+			updateMetaInfoWithCustomRates = function() {
+				var customRate;
+
+				if (!!$scope.reservationData.group.id) {
+					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
+					$scope.reservationData.ratesMeta[customRate.id] = customRate;
+				};
+
+				if (!!$scope.reservationData.allotment.id) {
+					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
+					$scope.reservationData.ratesMeta[customRate.id] = customRate;
+				};
+			},
 			groupByRoomTypes = function(args) {
 				// Populate a Room First Grid Here
 				var roomTypes = {},
@@ -209,7 +222,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						//---------------------------------------------------------------------------------------------- Add INVALID PROMO if applicable in restrictions
 
 						if (isPromoInvalid && (!roomType.first_restriction || roomType.first_restriction.type_id != 98)) {
-							if (_.indexOf(ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1) {
+							if (_.indexOf($scope.reservationData.ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1) {
 
 								roomType.restriction_count = roomType.restriction_count ? roomType.restriction_count + 1 : 1;
 								if (roomType.restriction_count === 1) {
@@ -221,6 +234,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							}
 						}
 
+						//---- MITIGATE -- CUSTOM RATES NOT IN META
+						if (!$scope.reservationData.ratesMeta[currentRate]) {
+							// -- Note: This should optimally come inside this condition only if a group/allotment is added in the Room & Rates screen. Else this would have been done in initialization itself.
+							updateMetaInfoWithCustomRates();
+						}
 
 						roomTypes[currentRoomType].rates[currentRate] = {
 							name: $scope.reservationData.ratesMeta[currentRate].name,
@@ -238,7 +256,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							restriction: roomType.first_restriction,
 							forRoomType: currentRoomType,
 							isPromotion: !isPromoInvalid &&
-								_.indexOf(ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1
+								_.indexOf($scope.reservationData.ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1
 						}
 
 						//for every day
@@ -627,18 +645,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 
-				//--
+				$scope.reservationData.ratesMeta = ratesMeta['rates'];
 
-				if (!!$scope.reservationData.group.id) {
-					ratesMeta[customRate.id] = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
-				};
-
-				if (!!$scope.reservationData.allotment.id) {
-					ratesMeta[customRate.id] = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
-				};
-
-				$scope.reservationData.ratesMeta = ratesMeta;
-
+				updateMetaInfoWithCustomRates();
 
 				// activate room type default view based on reservation settings
 				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
@@ -1035,7 +1044,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					!_.reduce($scope.stateCheck.promotionValidity, function(a, b) { //---------------------------------  b) The entered promo has expired [AND]
 						return a && b
 					}) &&
-					_.indexOf(ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) { //------  c) rate is linked to the promo
+					_.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) { //------  c) rate is linked to the promo
 					RVSelectRoomRateSrv.promotionValidity = $scope.stateCheck.promotionValidity;
 				} else {
 					RVSelectRoomRateSrv.promotionValidity = null; //---------------------------------------------------  ELSE set this as NULL

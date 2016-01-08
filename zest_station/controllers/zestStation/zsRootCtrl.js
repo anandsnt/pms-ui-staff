@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -215,6 +215,7 @@ sntZestStation.controller('zsRootCtrl', [
             link = $scope.getThemeLink(theme);
             logo = $scope.getLogoSvg(theme);
             if (link){
+                hotelDetailsSrv.data.theme = theme.toLowerCase();
                 $state.theme = theme.toLowerCase();
               //  $('head').append('<link rel="stylesheet" type="text/css" href="'+link+'">');
                 $('#logo').append(logo);
@@ -279,13 +280,14 @@ sntZestStation.controller('zsRootCtrl', [
 	var fetchCompleted =  function(data){
 		$scope.$emit('hideLoader');
 		$scope.zestStationData = data;
+        _.extend(hotelDetailsSrv.data, data);
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
                 $scope.getHotelStationTheme();
                 //set print and email options set from hotel settings > Zest > zest station
-                $scope.zestStationData.printEnabled = $scope.zestStationData.guest_bill.print;
-                $scope.zestStationData.emailEnabled = $scope.zestStationData.guest_bill.email;
+                $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
+                $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	};
         
     $scope.toggleOOS = function(){

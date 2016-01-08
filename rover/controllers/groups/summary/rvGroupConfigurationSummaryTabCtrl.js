@@ -562,8 +562,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			//date picker options - Common
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
-				numberOfMonths: 1,
-				yearRange: '-1:'
+				numberOfMonths: 1
 			};
 
 			var sumryData = $scope.groupConfigData.summary,

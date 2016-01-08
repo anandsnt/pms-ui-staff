@@ -84,9 +84,12 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zestCheckinNoServiceMsg;
  	$rootScope.termsAndConditions = reservationAndhotelData.termsAndConditions;
  	$rootScope.isBirthdayVerified =  false;
+
  	$rootScope.application        = reservationAndhotelData.application;
+ 	$rootScope.urlSuffix        = reservationAndhotelData.urlSuffix;
  	$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkinCollectCc === "true") ? true:false;
  	$rootScope.isMLI = (reservationAndhotelData.paymentGateway  = "MLI") ? true : false;
+
  	//room key delivery options
  	$rootScope.preckinCompleted =  false;
  	$rootScope.userEmail = reservationAndhotelData.primaryGuestEmail;

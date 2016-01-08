@@ -342,6 +342,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $scope.debugSixpay = true;
             $scope.$digest();
         };
+        
+        $scope.initStaff = function(){
+            $state.go('zest_station.speak_to_staff');
+        };
         $scope.init = function(r){ 
            $scope.selectedReservation = $state.selectedReservation;
            
@@ -355,9 +359,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.at = 'cc-sign';
             } else if (current === 'zest_station.deposit_agree'){
                 $scope.at = 'deposit-agree';
-                $scope.headingText = 'Your remaining deposit is due';
-                $scope.subHeadingText = 'On the next screen we will be collecting your outstanding balance of '+$scope.zestStationData.currencySymbol+$state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
-                $scope.subsubheadingText = 'Would you like to:';
+                $scope.headingText = 'DEPOSIT_REMAIN';
+                $scope.subHeadingText = 'DEPOSIT_REMAIN_SUB '+$scope.zestStationData.currencySymbol+$state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
+                $scope.subsubheadingText = 'DEPOSIT_REMAIN_SUB_SUB';
             } else {
                 $scope.at = 'card-swipe';
             }
@@ -366,7 +370,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 swipecardScreen: true
             };
             if (current !== 'zest_station.deposit_agree'){
-                $scope.headingText = 'To Complete Check-in...';
+                $scope.headingText = 'TO_COMPLETE';
             }
             $scope.signatureData = "";
             $scope.initiateCardReader();
