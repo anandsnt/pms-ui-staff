@@ -102,7 +102,9 @@
 
     <!-- Multiple worksheets - assigned rooms -->
     <!-- When 0 employees selected-->
-    <section id="assigned-rooms" class="multi-sheet no-content scrollable" ng-if="multiSheetState.selectedEmployees.length === 0">
+    <section id="assigned-rooms" class="multi-sheet no-content scrollable"
+        ng-if="multiSheetState.selectedEmployees.length === 0"
+        ng-iscroll="worksheetHorizontal">
         <div class="wrapper">
             <div class="info">
                 <span class="icon-no-content icon-housekeeping"></span>
