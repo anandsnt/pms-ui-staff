@@ -80,6 +80,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					d.checkboxDisabled = false;
 				});
 			}
+
+			refreshView();
 		};
 
 		$scope.filterUnassigned = function() {
@@ -243,6 +245,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.onDateChanged = function() {
+			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 			updateView(true);
 		};
 
@@ -261,7 +264,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				}
 			});
 			if ($(x).not(selectionHistory).length !== 0 || $(selectionHistory).not(x).length !== 0) {
-				updateView();
+				refreshView();
 			}
 			selectionHistory = [];
 			_.each($scope.employeeList, function(employee) {
@@ -278,16 +281,67 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		};
 
+		var lastSaveConfig = null;
+		/**
+		 * Function to delegate calling custom call back function,
+		 * after save api call is completed.
+		 * @return {Undefiend}
+		 */
+		var afterSaveAPIcall = function() {
+			// delay are for avoiding collisions
+			if (lastSaveConfig && $scope[lastSaveConfig.callNextMethod]) {
+				$timeout($scope[lastSaveConfig.callNextMethod].bind(null, lastSaveConfig.nexMethodArgs), 50);
+			};
+			if ($_shouldSaveFirst && !!$_afterSave) {
+				$timeout($_afterSave, 60);
+			};
+			lastSaveConfig = null;
+		};
 
+		/**
+		 * Success callback of save api.
+		 * @param {Object} API response
+		 * @return {Undefined}
+		 */
+		var saveMultiSheetSuccessCallBack = function(data) {
+			$scope.$emit("hideLoader");
+			$scope.clearErrorMessage();
+			afterSaveAPIcall();
+		};
+
+		/**
+		 * Failure callback of save api.
+		 * @param {Object} Error messages
+		 * @return {Undefined}
+		 */
+		var saveMultiSheetFailureCallBack = function(error) {
+			$scope.errorMessage = error;
+			$scope.$emit("hideLoader");
+			afterSaveAPIcall();
+		};
 
 		/**
 		 * Saves the current state of the Multi sheet view
 		 * @param {Object} options
 		 * @return {Undefined}
 		 */
-		$scope.saveMultiSheet = function(options) {
-			$_afterSave();
-			// To Do: from scratch.
+		$scope.saveMultiSheet = function(config) {
+			lastSaveConfig = config || null;
+			if ($scope.multiSheetState.selectedEmployees.length) {
+				var options = {
+					successCallBack: saveMultiSheetSuccessCallBack,
+					failureCallBack: saveMultiSheetFailureCallBack,
+					params: {
+						assignedRoomTasks: $scope.multiSheetState.assigned,
+						date: $scope.multiSheetState.selectedDate
+					}
+				}
+
+				$scope.callAPI(RVWorkManagementSrv.saveWorkSheets, options);
+
+			} else {
+				afterSaveAPIcall(config);
+			};
 		};
 
 
@@ -388,10 +442,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			};
 		};
 
-		/**
-		 */
 		var refreshScrollers = function() {
 			$scope.refreshScroller('unAssignedRoomList');
+			$scope.refreshScroller('worksheetHorizontal');
 			for (var list = 0; list < $scope.multiSheetState.selectedEmployees.length; list++) {
 				$scope.refreshScroller('assignedRoomList-' + list);
 			}
@@ -410,7 +463,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				};
 			});
 
-			$scope.$watch('multiSheetState.selectedDate', function(newVal, oldVal) {
+			/*$scope.$watch('multiSheetState.selectedDate', function(newVal, oldVal) {
 				if (newVal !== oldVal) {
 					$scope.saveMultiSheet({
 						callNextMethod: 'fetchAllUnassigned',
@@ -419,7 +472,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						}
 					});
 				};
-			});
+			});*/
 		};
 
 		/**
@@ -450,8 +503,13 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.errorMessage = error;
 		};
 
+		/**
+		 * Fetch payload once again and re init data models to refresh view completely.
+		 * To Do: ask for save if dirty.
+		 * @return {Undefined}
+		 */
 		var updateView = function() {
-			// To Do: ask for save if dirty.
+			$scope.$emit("showLoader");
 
             var unassignedRoomsParam = {
                 date: $scope.multiSheetState.selectedDate,
@@ -471,12 +529,22 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
             	.then(fetchWorkSheetPayloadSuccess, fetchWorkSheetPayloadFailure);
 		};
 
+		/**
+		 * Call to refresh view, scrollers and employee summary
+		 * @return {Undefined}
+		 */
 		var refreshView = function() {
 			updateSummary();
 			setScroller();
 			refreshScrollers();
 		};
 
+		/**
+		 * Utility function to calculate the work summary of and employee based on
+		 * assigned tasks
+		 * @param {Object} details of employee from payload
+		 * @return {Object} object containing summary data
+		 */
 		var calculateSummary = function(employee) {
 			summaryModel = {
 				tasksAssigned: 0,
@@ -511,6 +579,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			return summaryModel;
 		};
 
+		/**
+		 * Creates a data structure to show employee work assignments summary.
+		 * Updates all employee summary if param not given.
+		 * @param {Number} employee id (optional)
+		 * @return {Undefined}
+		 */
 		var	updateSummary = function(employeeId) {
 			var refData 	 = $scope.multiSheetState,
 				summaryModel = {
@@ -542,12 +616,14 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// Object for holding sheet data on scope.
 			$scope.multiSheetState = {
 				dndEnabled: true,
-				selectedDate: $stateParams.date || $rootScope.businessDate,
-				maxColumns: undefined, // Hardcoded to 6 for now ===> Max no of worksheets that are loaded at an instance
+				selectedDate: $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
+				maxColumns: undefined,
 				selectedEmployees: [],
 				unassigned: payload.unassignedRoomTasks,
 				unassignedFiltered: [],
 				assigned: payload.assignedRoomTasks,
+				allTasks: payload.allTasks,
+				allRooms: payload.allRooms,
 				header: {
 					work_type_id: null
 				},
@@ -593,6 +669,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		var init = function() {
 
+			$scope.dateSelected = null;
+
 			// state settings
 			setBackNavAndTitle();
 
@@ -614,6 +692,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			//updateSummary();
 
 			refreshView();
+
+			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 		};
 
 		init();
