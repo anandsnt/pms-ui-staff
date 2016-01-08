@@ -509,9 +509,12 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			var roomIndex, copyEmployee, roomTasksInit, copyRoom, tasksInIt, thatAllTask, copyTask, thatRoomTypeId, thatRoomNo;
 
 			for (i = 0, j = employees.length; i < j; i++) {
+				var displayName = employees[i].name.split(" "),
+					firstname   = displayName.shift();
+				displayName = firstname.charAt(0) + ". " + displayName.join(" ");
 				copyEmployee = $.extend(
 						{},
-						{ 'id' : employees[i].id, 'name' : employees[i].name },
+						{ 'id' : employees[i].id, 'name' : employees[i].name, 'display_name': displayName },
 						{ 'rooms' : [] },
 						{ 'only_tasks' : [] },
 						{ 'touched_work_types': [] }
