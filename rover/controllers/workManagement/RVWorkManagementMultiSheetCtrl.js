@@ -13,6 +13,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var selectionHistory = [];
 
 		console.log( payload );
+		// To Do: remove this line
+		payload.assignedRoomTasks[0].rooms[0].room_tasks[0].is_complete = true;
 
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
@@ -253,6 +255,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @return {Undefined}
 		 */
 		$scope.saveMultiSheet = function(options) {
+			$_afterSave();
 			// To Do: from scratch.
 		};
 
@@ -332,15 +335,26 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Utility function to set up scrollers
 		 */
 		var setScroller = function() {
-			// TO DO set scroller based on number of employees selected
-			$scope.setScroller('unAssignedRoomList');
-			$scope.setScroller("multiSelectEmployees");
-			$scope.setScroller('assignedRoomList-1');
-			$scope.setScroller('assignedRoomList-2');
-			$scope.setScroller('assignedRoomList-3');
-			$scope.setScroller('assignedRoomList-4');
-			$scope.setScroller('assignedRoomList-5');
-			$scope.setScroller('assignedRoomList-0');
+			var commonScrollerOptions = {
+				tap: true,
+				preventDefault: false,
+				probeType: 3
+			};
+			var horizontal = _.extend({
+				scrollX: true,
+				scrollY: false
+			}, commonScrollerOptions);
+			var vertical = _.extend({
+				scrollX: false,
+				scrollY: true
+			}, commonScrollerOptions);
+			$scope.setScroller('unAssignedRoomList', vertical);
+			$scope.setScroller("multiSelectEmployees", commonScrollerOptions);
+			$scope.setScroller("worksheetHorizontal", horizontal);
+
+			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+				$scope.setScroller('assignedRoomList-'+i, vertical);
+			};
 		};
 
 		/**
@@ -381,33 +395,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Auto select employees based on daily worksheet employee data
 		 */
 		var initializeEmployeesList = function() {
-			var dailyWTemp = (!!activeWorksheetEmp.data[0] && activeWorksheetEmp.data[0].employees) || [],
-				activeEmps = [],
-				foundMatch = undefined;
-
-			if (dailyWTemp.length) {
-				_.each($scope.employeeList, function(item) {
-					item.ticked = false;
-
-					foundMatch = _.find(dailyWTemp, function(emp) {
-						return emp.id === item.id;
-					});
-
-					if (foundMatch) {
-						item.ticked = true;
-					};
-				});
-			};
-
+			// select all employeed by default
 			$scope.multiSheetState.selectedEmployees = [];
 			_.each($scope.employeeList, function(employee) {
-				if (employee.ticked) {
-					var emp = _.findWhere($scope.multiSheetState.assigned, {
-						id: employee.id
-					});
-					if (emp)
-						$scope.multiSheetState.selectedEmployees.push(emp);
-				}
+				employee.ticked = true;
+				var emp = _.findWhere($scope.multiSheetState.assigned, {
+					id: employee.id
+				});
+				if (emp)
+					$scope.multiSheetState.selectedEmployees.push(emp);
 			});
 		};
 
@@ -450,6 +446,40 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			refreshScrollers();
 		};
 
+		var calculateSummary = function(employee) {
+			summaryModel = {
+				tasksAssigned: 0,
+				tasksCompleted: 0,
+				timeAllocated: "00:00",
+				shiftLength: "00:00"
+			};
+
+			for (var i = employee.rooms.length - 1; i >= 0; i--) {
+				var allTasks  = employee.rooms[i].room_tasks,
+					completed = _.where(allTasks, { is_complete: true }) || [],
+					totalTime = _.reduce(allTasks, function(s, task) {
+						var time = task.time_allocated;
+						return $scope.addDuration(s, time.hh + ":" + time.mm);
+					}, "0:0"),
+					doneTime = _.reduce(allTasks, function(s, task) {
+						if (!task.is_complete) {
+							return s;
+						}
+
+						var time = task.time_allocated;
+						return $scope.addDuration(s, time.hh + ":" + time.mm);
+					}, "0:0");
+
+
+				summaryModel.tasksAssigned  += allTasks.length;
+				summaryModel.tasksCompleted += completed.length;
+				summaryModel.timeAllocated  = $scope.addDuration(summaryModel.timeAllocated, totalTime);
+				summaryModel.shiftLength    = $scope.addDuration(summaryModel.shiftLength, doneTime);
+			}
+
+			return summaryModel;
+		};
+
 		var	updateSummary = function(employeeId) {
 			var refData 	 = $scope.multiSheetState,
 				summaryModel = {
@@ -460,17 +490,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								};
 
 			if (typeof employeeId === "number") {
-				var assignmentDetails = _.findWhere(refData.assigned, {id: employeeId});
-
-				//summaryModel.xx = xx;
-				refData.summary[employeeId] = summaryModel;;
+				var employee = _.findWhere(refData.assigned, {id: employeeId});
+				refData.summary[employeeId] = calculateSummary(employee);
 
 			} else {
 				_.each(refData.assigned, function(employee) {
-					var summary = {};
-					angular.copy(summaryModel, summary);
-
-					refData.summary[employee.id] = summary;
+					refData.summary[employee.id] = calculateSummary(employee);;
 				});
 			}
 		};
