@@ -136,10 +136,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($scope.allotmentConfigData.summary.block_from);
                 $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
             }
-            //Fix for CICO-23701
-            else {
-                $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($rootScope.businessDate);
-            }
+
 
             // If allotment name is passsed to create a new one
             if ( !!$stateParams.newAllotmentName ) {
