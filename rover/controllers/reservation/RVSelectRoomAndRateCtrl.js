@@ -381,7 +381,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							!$scope.reservationData.group.id && $scope.viewState.identifier === "CREATION" && hasContractedRate(roomType.ratesArray); // In case of group skip this check
 					});
 
-					if (TABS.length < 2 && // Not showing other room types in case of multiple reservations
+					if ($scope.display.roomFirstGrid.length > 0 &&
+						TABS.length < 2 && // Not showing other room types in case of multiple reservations
 						roomTypesArray.length > 0 &&
 						!$scope.stateCheck.rateSelected.oneDay &&
 						$scope.reservationData.status !== "CHECKEDIN" &&
