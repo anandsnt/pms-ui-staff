@@ -441,6 +441,40 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			refreshScrollers();
 		};
 
+		var calculateSummary = function(employee) {
+			summaryModel = {
+				tasksAssigned: 0,
+				tasksCompleted: 0,
+				timeAllocated: "00:00",
+				shiftLength: "00:00"
+			};
+
+			for (var i = employee.rooms.length - 1; i >= 0; i--) {
+				var allTasks  = employee.rooms[i].room_tasks,
+					completed = _.where(allTasks, { is_complete: true }) || [],
+					totalTime = _.reduce(allTasks, function(s, task) {
+						var time = task.time_allocated;
+						return $scope.addDuration(s, time.hh + ":" + time.mm);
+					}, "0:0"),
+					doneTime = _.reduce(allTasks, function(s, task) {
+						if (!task.is_complete) {
+							return s;
+						}
+
+						var time = task.time_allocated;
+						return $scope.addDuration(s, time.hh + ":" + time.mm);
+					}, "0:0");
+
+
+				summaryModel.tasksAssigned  += allTasks.length;
+				summaryModel.tasksCompleted += completed.length;
+				summaryModel.timeAllocated  = $scope.addDuration(summaryModel.timeAllocated, totalTime);
+				summaryModel.shiftLength    = $scope.addDuration(summaryModel.shiftLength, doneTime);
+			}
+
+			return summaryModel;
+		};
+
 		var	updateSummary = function(employeeId) {
 			var refData 	 = $scope.multiSheetState,
 				summaryModel = {
@@ -451,17 +485,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								};
 
 			if (typeof employeeId === "number") {
-				var assignmentDetails = _.findWhere(refData.assigned, {id: employeeId});
-
-				//summaryModel.xx = xx;
-				refData.summary[employeeId] = summaryModel;;
+				var employee = _.findWhere(refData.assigned, {id: employeeId});
+				refData.summary[employeeId] = calculateSummary(employee);
 
 			} else {
 				_.each(refData.assigned, function(employee) {
-					var summary = {};
-					angular.copy(summaryModel, summary);
-
-					refData.summary[employee.id] = summary;
+					refData.summary[employee.id] = calculateSummary(employee);;
 				});
 			}
 		};
