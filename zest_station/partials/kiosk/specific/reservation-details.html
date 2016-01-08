@@ -1,7 +1,7 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
-        <h1>Check your reservation details</h1>
+        <h1>{{'RES_DETAIL_HEADER' |translate}}</h1>
         <div id="flex-holder">
             <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
                 - if some <h> elements are missing just exclude them or use 0. 
@@ -12,35 +12,35 @@
                     <div id="guests">
                         <p class="px-space">
                             <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>                          
-                            <span>{{selectedReservation.guest_details.length}} residents</span>
+                            <span>{{selectedReservation.guest_details.length}} {{'RESIDENTS' |translate}} </span>
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
-                        <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">Additional Residents ({{selectedReservation.guest_details.length-1}})</p>
-                        <button type="button" class="button" touch-press="addRemoveGuests()" ng-hide="isInCheckoutMode()">Add / Remove Guests</button>
+                        <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
+                        <button type="button" class="button" touch-press="addRemoveGuests()" ng-hide="isInCheckoutMode()">{{'ADD_REMOVE_GUESTS' |translate}} </button>
                     </div>
                     <ul id="rate" class="reservation-details">
-                        <li>Nights<span>{{selectedReservation.total_nights}}</span></li>
-                        <li ng-hide="is_rates_suppressed" >Average Daily Rate<span>{{currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span></li>
+                        <li>{{'DAY_NIGHTS' |translate}}<span>{{selectedReservation.total_nights}}</span></li>
+                        <li ng-hide="is_rates_suppressed" >{{'AVG_DAILY' |translate}}<span>{{currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span></li>
                         
                         <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
                             <span ng-show='{{!addon.is_inclusive}}'>{{currencySymbol}}{{formatCurrency(addon.amount)}}</span>
-                            <span ng-show='{{addon.is_inclusive}}'>INCLUDED</span>
+                            <span ng-show='{{addon.is_inclusive}}'>{{'INCLUDED' |translate}}</span>
                         </li>
                         
                         <li class="break"></li>
                         
-                        <li ng-hide="is_rates_suppressed" class="sub">Taxes / Fees<span>{{currencySymbol}}{{selectedReservation.reservation_details.taxes}}</span></li>
-                        <li ng-hide="is_rates_suppressed" class="sub">Subtotal<span>{{currencySymbol}}{{selectedReservation.reservation_details.sub_total}}</span></li>
-                        <li ng-hide="is_rates_suppressed" class="sub">Deposits<span>- {{currencySymbol}}{{selectedReservation.reservation_details.deposits}}</span></li>
-                        <li class="total">Balance due<span>{{currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{currencySymbol}}{{selectedReservation.reservation_details.taxes}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">{{'RES_SUB' |translate}}<span>{{currencySymbol}}{{selectedReservation.reservation_details.sub_total}}</span></li>
+                        <li ng-hide="is_rates_suppressed" class="sub">{{'RES_DEPOSITS' |translate}}<span>- {{currencySymbol}}{{selectedReservation.reservation_details.deposits}}</span></li>
+                        <li class="total">{{'RES_BAL_DUE' |translate}}<span>{{currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
                     </ul>
                 </div>
             </div>
             <div id="actions" class="pull-right">
                 <!-- button type="button" class="button" touch-press="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button -->
-                <button type="button" class="button" touch-press="goToTerms()">Next</button>
-                <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
+                <button type="button" class="button" touch-press="goToTerms()">{{'RES_NEXT' |translate}}</button>
+                <p><strong>{{'RES_Q' |translate}}</strong>{{'RES_Q_SUB' |translate}}</p>
             </div>
         </div>
     </div>
