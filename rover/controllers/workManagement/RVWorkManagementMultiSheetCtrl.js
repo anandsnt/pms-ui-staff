@@ -177,8 +177,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				source = $scope.multiSheetState.unassignedFiltered;
 				draggedRoom = source[roomIndex];
 				draggedTask = draggedRoom['room_tasks'][taskIndex];
-				// need to add this task to "only_tasks"
+				// need to add this task to "only_tasks", if it already doent exisit
 				// need to: if this new task's work_typ_id is mot present in "touched", add that
+				console.log( $scope.multiSheetState );
 			} else {
 				source = $scope.multiSheetState.selectedEmployees;
 				thatEmpl = source[draggedIndex];
@@ -208,6 +209,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			};
 
 			draggedRoom['room_tasks'].splice(taskIndex, 1);
+			// need to remove this task to "only_tasks"
+			// need to: if the freshly removed task's work type isnt avail anywhere on the entrie emp assigned task list, remove it from "touched"
 		};
 
 		/**
