@@ -6,6 +6,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
   	$scope.results.accounts = [];
 	$scope.results.posting_accounts  = [];
 	$scope.results.reservations = [];
+	var selectedEntityDetails = {};
 
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -228,5 +229,195 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	$scope.toggleClicked = function(flag){
 		$scope.isReservationActive = flag;
 	};
+
+	/**
+    * Function to handle entity selection from the 'select entity' screen
+    * @param {Number} index of selected entity
+    * @param {String} type of selected entity
+    * @return {undefined}
+    */
+	$scope.selectEntityFromSearchResults = function(index, type) {
+
+        if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
+            $scope.routeDates.from = $scope.routes[index].from_date;
+            $scope.routeDates.to   = $scope.routes[index].to_date;
+        }
+        else {
+            $scope.setDefaultRoutingDates();
+        }
+        $scope.setRoutingDateOptions();
+
+        $scope.errorMessage = "";
+		$scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isInAddRoutesMode = false;
+        $scope.billingInfoFlags.isInitialPage = false;
+
+        if (type === 'ATTACHED_ENTITY') {
+        	selectedEntityDetails = $scope.routes[index];
+        	$scope.setSelectedEntity(selectedEntityDetails);
+            $scope.selectedEntity.is_new = true;
+
+            if ($scope.selectedEntity.entity_type !=='RESERVATION') {
+                $scope.selectedEntity.guest_id = null;
+            }
+
+            if ($scope.selectedEntity.entity_type === "GROUP" || 
+                $scope.selectedEntity.entity_type === "HOUSE" || 
+                $scope.selectedEntity.entity_type === "ALLOTMENT") {
+
+            }
+            else {
+                $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+            }
+        }
+        else if (type === 'RESERVATIONS') {
+        	var data = $scope.results.reservations[index];
+        	selectedEntityDetails = {
+			    "attached_charge_codes"   : [],
+			    "attached_billing_groups" : [],
+                "images"                  : data.images,
+                "reservation_status"      : data.reservation_status,
+                "is_opted_late_checkout"  : data.is_opted_late_checkout,
+                "name"                    : data.firstname + " " + data.lastname,
+                "entity_type"             : "RESERVATION",
+                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
+                "bill_no"                 : "",
+                "is_new"                  : true,
+                "credit_card_details"     : {},
+                "id"                      : data.id
+			};
+			$scope.setSelectedEntity(selectedEntityDetails);
+        }
+        else if (type === 'ACCOUNT') {
+        	var data = $scope.results.accounts[index];
+        	selectedEntityDetails = {
+			    "id"                      : data.id,
+			    "name"                    : data.account_name,
+			    "bill_no"                 : "",
+			    "images"                  : [{
+                                            "is_primary":true,
+		                                    "guest_image": data.company_logo
+		                                  }],
+			    "attached_charge_codes"   : [],
+			    "attached_billing_groups" : [],
+                "is_new"                  : true,
+                "selected_payment"        : "",
+                "credit_card_details"     : {}
+			};
+			$scope.setSelectedEntity(selectedEntityDetails);
+
+    		if (data.account_type === 'COMPANY') {
+    			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+    		}
+            else if (data.account_type === 'TRAVELAGENT') {
+                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+            }
+        }
+        else if (type === 'GROUP' || type === 'HOUSE') {
+            if (isRoutingForPostingAccountExist()) {
+                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.billingInfoFlags.isEntitySelected = false;
+                $scope.billingInfoFlags.isInitialPage = true;
+            }
+            else {
+                var data = $scope.results.posting_accounts[index];
+                selectedEntityDetails = {
+                    "id"                      : data.id,
+                    "name"                    : data.account_name,
+                    "bill_no"                 : "",
+                    "attached_charge_codes"   : [],
+                    "attached_billing_groups" : [],
+                    "is_new"                  : true,
+                    "selected_payment"        : "",
+                    "credit_card_details"     : {},
+                    "entity_type"             : data.account_type
+                };
+                $scope.setSelectedEntity(selectedEntityDetails);
+            }
+        }
+	};
+
+	/**
+    * Function to select entity from attached entities
+    * @param {Number} [index of entity]
+    * @param {Number} [type of entity]
+    * @return {undefined}
+    */
+    $scope.selectAttachedEntity = function(index,type) {
+        $scope.errorMessage = "";
+        $scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isInitialPage = false;
+
+        //TODO: Remove commented out code
+        selectedEntityDetails = {
+            "bill_no"                 : "",
+            "has_accompanying_guests" : false,
+            "attached_charge_codes"   : [],
+            "attached_billing_groups" : [],
+            "is_new"                  : true,
+            "credit_card_details"     : {}
+        };
+        $scope.setSelectedEntity(selectedEntityDetails);
+
+        $scope.selectedEntity.reservation_status     = $scope.reservationData.reservation_status;
+        $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
+
+        if (type === 'GUEST') {
+            $scope.selectedEntity.id       = $scope.reservationData.reservation_id;
+            $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
+            $scope.selectedEntity.name     = $scope.attachedEntities.primary_guest_details.name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary"  : true,
+                "guest_image" : $scope.attachedEntities.primary_guest_details.avatar
+            }];
+            $scope.selectedEntity.entity_type = "RESERVATION";
+        }
+        else if(type === 'ACCOMPANY_GUEST') {
+            $scope.selectedEntity.id       = $scope.reservationData.reservation_id;
+            $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
+            $scope.selectedEntity.name     = $scope.attachedEntities.accompanying_guest_details[index].name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary"   : false,
+                "guest_image"  : $scope.attachedEntities.accompanying_guest_details[index].avatar
+            }];
+
+            $scope.selectedEntity.has_accompanying_guests = true;
+            $scope.selectedEntity.entity_type = "RESERVATION";
+        }
+        else if (type === 'COMPANY_CARD') {
+            $scope.selectedEntity.id   = $scope.attachedEntities.company_card.id;
+            $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary"  : true,
+                "guest_image" : $scope.attachedEntities.company_card.logo
+            }];
+            $scope.selectedEntity.entity_type = "COMPANY_CARD";
+        }
+        else if (type === 'TRAVEL_AGENT') {
+            $scope.selectedEntity.id   = $scope.attachedEntities.travel_agent.id;
+            $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary":true,
+                "guest_image": $scope.attachedEntities.travel_agent.logo
+            }];
+            $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
+        }
+        else if (type ==='GROUP' || type === 'HOUSE') {
+            if (isRoutingForPostingAccountExist()) {
+                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.billingInfoFlags.isEntitySelected = false;
+                $scope.billingInfoFlags.isInitialPage = true;
+            }
+            else {
+                $scope.selectedEntity.id          = $scope.attachedEntities.posting_account.id;
+                $scope.selectedEntity.name        = $scope.attachedEntities.posting_account.name;
+                $scope.selectedEntity.entity_type = type;
+            }
+        }
+    };
 
 }]);

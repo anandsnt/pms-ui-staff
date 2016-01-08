@@ -422,7 +422,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
                     break;
                 }
             }
-       }
+        }
        return bills;
     };
 

@@ -6,23 +6,16 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 	$scope.results = {};
     $scope.bills = [];
     $scope.routes = [];
+    $scope.routeDates = {};
     $scope.errorMessage = '';
 
     $scope.billingInfoFlags = {
-        isInAddRoutesMode     : false,
-        isInitialPage         : true,
-        isEntitySelected      : false,
-        shouldShowWaiting     : false,
-        isReloadNeeded        : false,
-        selectedEntityChanged : false
+        isInAddRoutesMode   : false,
+        isInitialPage       : true,
+        isEntitySelected    : false,
+        shouldShowWaiting   : false,
+        isReloadNeeded      : false
     };
-
-    /*$scope.isInAddRoutesMode = false;
-    $scope.;
-    $scope.isEntitySelected = false;
-    $scope.shouldShowWaiting = false;
-    $scope.isReloadNeeded = false;
-    $scope.selectedEntityChanged = false;*/
 
     $scope.saveData = {
         payment_type             : "",
@@ -30,11 +23,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
         newPaymentFormVisible    : false
     };
 
-    /*$scope.saveData.payment_type =  "";
-    $scope.saveData.payment_type_description =  "";
-    $scope.saveData.newPaymentFormVisible = false;*/
-
-	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value) {
+	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function (event, value){
 		$scope.billingInfoFlags.shouldShowWaiting = value;
 	});
 
@@ -43,14 +32,14 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
         $scope.$emit('routingPopupDismissed');
 	};
 
-	$scope.dimissLoaderAndDialog = function () {
+	$scope.dimissLoaderAndDialog = function (){
 		$scope.$emit('hideLoader');
 		$scope.closeDialog();
 	};
 
     /**
     * Function to get label for all routes and add routes button
-    * @return {String}
+    * @return {String} the button label
     */
 	$scope.getHeaderButtonLabel = function () {
 		return $scope.billingInfoFlags.isInitialPage?
@@ -60,7 +49,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to set the reload option
-    * @param {Boolean}
+    * @param {Boolean} - true/false
     * @return {undefined}
     */
     $scope.setReloadOption = function (option) {
@@ -69,7 +58,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to check whether the routing for a group/house already exist
-    * @return {Boolean}
+    * @return {Boolean} []
     */
     var isRoutingForPostingAccountExist = function () {
         var routeToPostingAccountExist = false;
@@ -93,10 +82,10 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
     */
 	$scope.headerButtonClicked = function () {
         $scope.billingInfoFlags.isInAddRoutesMode = true;
-        $scope.billingInfoFlags.isEntitySelected = false;
-		$scope.billingInfoFlags.isInitialPage = !$scope.billingInfoFlags.isInitialPage;
-        setDefaultRoutingDates();
-        setRoutingDateOptions();
+        $scope.billingInfoFlags.isEntitySelected  = false;
+		$scope.billingInfoFlags.isInitialPage     = !$scope.billingInfoFlags.isInitialPage;
+        //setDefaultRoutingDates();
+        //setRoutingDateOptions();
 
         if ($scope.billingInfoFlags.isInitialPage  && $scope.billingInfoFlags.isReloadNeeded) {
             $scope.billingInfoFlags.isReloadNeeded = false;
@@ -113,196 +102,24 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
     * Function to handle the pencil button click in route detail screen
     * @return {undefined}
     */
-    $scope.deSelectEntity = function () {
+    $scope.deSelectEntity = function() {
         $scope.billingInfoFlags.isEntitySelected = false;
     };
 
     /**
-    * Function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
-    * @param {Number} index of selected entity
-    * @param {Number} type of selected entity
+    * Function to set selected entity
+    * @param {Object} [selected entity details]
     * @return {undefined}
     */
-	$scope.selectEntity = function (index,type) {
-
-        if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
-            $scope.arrivalDate = $scope.routes[index].from_date;
-            $scope.departureDate = $scope.routes[index].to_date;
-        }
-        setRoutingDateOptions();
-
-        $scope.errorMessage = "";
-		$scope.billingInfoFlags.isEntitySelected = true;
-        $scope.billingInfoFlags.isInAddRoutesMode = false;
-        $scope.billingInfoFlags.isInitialPage = false;
-        $scope.billingInfoFlags.selectedEntityChanged = true;
-
-        if (type === 'ATTACHED_ENTITY' || type === 'ROUTES') {
-        	$scope.selectedEntity = $scope.routes[index];
-            $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
-
-            if ($scope.selectedEntity.entity_type !=='RESERVATION') {
-                $scope.selectedEntity.guest_id = null;
-            }
-
-            if ($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE" || $scope.selectedEntity.entity_type === "ALLOTMENT") {
-
-            }
-            else {
-                $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
-            }
-        }
-        else if (type === 'RESERVATIONS') {
-        	var data = $scope.results.reservations[index];
-        	$scope.selectedEntity = {
-			    "attached_charge_codes": [],
-			    "attached_billing_groups": [],
-                "images": data.images,
-                "reservation_status" : data.reservation_status,
-                "is_opted_late_checkout" : data.is_opted_late_checkout,
-                "name": data.firstname + " " + data.lastname,
-                "entity_type": "RESERVATION",
-                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
-                "bill_no": "",
-                "is_new" : true,
-                "credit_card_details": {},
-                "id": data.id
-			};
-        }
-        else if (type === 'ACCOUNT') {
-        	var data = $scope.results.accounts[index];
-        	$scope.selectedEntity = {
-			    "id": data.id,
-			    "name": data.account_name,
-			    "bill_no": "",
-			    "images": [{
-                    "is_primary":true,
-		            "guest_image": data.company_logo
-		        }],
-			    "attached_charge_codes": [],
-			    "attached_billing_groups": [],
-                "is_new" : true,
-                "selected_payment" : "",
-                "credit_card_details": {}
-			};
-
-    		if (data.account_type === 'COMPANY') {
-    			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
-    		}
-            else if (data.account_type === 'TRAVELAGENT') {
-                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
-            }
-        }
-        else if (type === 'GROUP' || type === 'HOUSE') {
-            if (isRoutingForPostingAccountExist()) {
-                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
-                $scope.billingInfoFlags.isEntitySelected = false;
-                $scope.billingInfoFlags.isInitialPage = true;
-            }
-            else {
-                var data = $scope.results.posting_accounts[index];
-                $scope.selectedEntity = {
-                    "id": data.id,
-                    "name": data.account_name,
-                    "bill_no": "",
-                    "attached_charge_codes": [],
-                    "attached_billing_groups": [],
-                    "is_new" : true,
-                    "selected_payment" : "",
-                    "credit_card_details": {},
-                    "entity_type": data.account_type
-                };
-            }
-        }
-	};
-
-    /**
-    * Function to select the attached entity
-    * @param {Number} index of entity
-    * @param {Number} type of entity
-    * @return {undefined}
-    */
-    $scope.selectAttachedEntity = function (index,type) {
-        $scope.errorMessage = "";
-        $scope.billingInfoFlags.isEntitySelected = true;
-        $scope.billingInfoFlags.isInitialPage = false;
-
-        //TODO: Remove commented out code
-        $scope.selectedEntity = {
-            "bill_no": "",
-            "has_accompanying_guests" : false,
-            "attached_charge_codes": [],
-            "attached_billing_groups": [],
-            "is_new" : true,
-            "credit_card_details": {}
-        };
-
-        $scope.selectedEntity.reservation_status = $scope.reservationData.reservation_status;
-        $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
-
-        if (type === 'GUEST') {
-            $scope.selectedEntity.id = $scope.reservationData.reservation_id;
-            $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
-            $scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
-
-            $scope.selectedEntity.images = [{
-                "is_primary":true,
-                "guest_image": $scope.attachedEntities.primary_guest_details.avatar
-            }];
-            $scope.selectedEntity.entity_type = "RESERVATION";
-        } 
-        else if(type === 'ACCOMPANY_GUEST') {
-            $scope.selectedEntity.id = $scope.reservationData.reservation_id;
-            $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
-            $scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
-
-            $scope.selectedEntity.images = [{
-                "is_primary":false,
-                "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar
-            }];
-
-            $scope.selectedEntity.has_accompanying_guests = true;
-            $scope.selectedEntity.entity_type = "RESERVATION";
-        }
-        else if (type === 'COMPANY_CARD') {
-            $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
-            $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
-
-            $scope.selectedEntity.images = [{
-                "is_primary":true,
-                "guest_image": $scope.attachedEntities.company_card.logo
-            }];
-            $scope.selectedEntity.entity_type = "COMPANY_CARD";
-        }
-        else if (type === 'TRAVEL_AGENT') {
-            $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
-            $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
-
-            $scope.selectedEntity.images = [{
-                "is_primary":true,
-                "guest_image": $scope.attachedEntities.travel_agent.logo
-            }];
-            $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
-        }
-        else if (type ==='GROUP' || type === 'HOUSE') {
-            if (isRoutingForPostingAccountExist()) {
-                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
-                $scope.billingInfoFlags.isEntitySelected = false;
-                $scope.billingInfoFlags.isInitialPage = true;
-            }
-            else {
-                $scope.selectedEntity.id = $scope.attachedEntities.posting_account.id;
-                $scope.selectedEntity.name = $scope.attachedEntities.posting_account.name;
-                $scope.selectedEntity.entity_type = type;
-            }
-        }
-    };
+    $scope.setSelectedEntity = function(entityDetails) {
+        $scope.selectedEntity = entityDetails;
+    }
 
     /**
     * Function used in template to map the reservation status to the view expected format
-    * @param {String} reservation status
+    * @param {String} [reservation status]
     * @param {Boolean}
-    * @return {String}
+    * @return {String} [class according to reservation status]
     */
     $scope.getGuestStatusMapped = function (reservationStatus, isLateCheckoutOn) {
         var viewStatus = "";
@@ -400,35 +217,27 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
     * Function to set the default routing dates for a new route.
     * @return {undefined}
     */
-    var setDefaultRoutingDates = function () {
-        if (!!$scope.reservation) {
-            $scope.arrivalDate   = $scope.reservation.reservation_card.arrival_date,
-            $scope.departureDate = $scope.reservation.reservation_card.departure_date;
-            $scope.arrivalDate   = $rootScope.businessDate > $scope.arrivalDate? 
-                                   $rootScope.businessDate : $scope.arrivalDate;
-        }
+    $scope.setDefaultRoutingDates = function () {
+        $scope.routeDates.from = $rootScope.businessDate > $scope.reservation.reservation_card.arrival_date? 
+                                 $rootScope.businessDate : $scope.reservation.reservation_card.arrival_date;
+        $scope.routeDates.to   = $scope.reservation.reservation_card.departure_date;
     };
 
     /**
-    * Function to set the min date and max date for date range field
+    * Function to set the date range for from and to date fields
     * @return {undefined}
     */
-    var setRoutingDateOptions = function () {
-        $scope.routeDates = {
-            from : $scope.arrivalDate,
-            to : $scope.departureDate
-        };
-
+    $scope.setRoutingDateOptions = function () {
         $scope.routingDateFromOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            dateFormat : 'dd-mm-yy',
+            minDate    : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate    : tzIndependentDate($scope.reservation.reservation_card.departure_date)
         };
 
         $scope.routingDateToOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            dateFormat : 'dd-mm-yy',
+            minDate    : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+            maxDate    : tzIndependentDate($scope.reservation.reservation_card.departure_date)
         };
     };
 
@@ -489,7 +298,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
             $scope.attachedEntities = [];
         }*/
     };
-    
+
     init();
 
 }]);

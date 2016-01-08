@@ -1,7 +1,6 @@
 sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	
     BaseCtrl.call(this, $scope);
-	$scope.billingInfoFlags.isInitialPage = true;
 
     var scrollerOptions = { preventDefault: false };
     $scope.setScroller('routes', scrollerOptions);
@@ -62,6 +61,43 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
         data.from_bill = $scope.routes[index].from_bill;
         data.to_bill = $scope.routes[index].to_bill;
         $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
+    };
+
+    /**
+    * Function to handle entity selection from the 'All Routes' screen
+    * @param {Number} index of selected entity
+    * @param {String} type of selected entity
+    * @return {undefined}
+    */
+    $scope.selectEntityFromRoutesList = function(index, type) {
+
+        if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
+            $scope.routeDates.from = $scope.routes[index].from_date;
+            $scope.routeDates.to   = $scope.routes[index].to_date;
+        }
+        $scope.setRoutingDateOptions();
+
+        $scope.errorMessage = "";
+        $scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isInAddRoutesMode = false;
+        $scope.billingInfoFlags.isInitialPage = false;
+
+        var selectedEntityDetails = $scope.routes[index];
+        $scope.setSelectedEntity(selectedEntityDetails);
+        $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
+
+        if ($scope.selectedEntity.entity_type !== 'RESERVATION') {
+            $scope.selectedEntity.guest_id = null;
+        }
+
+        if ($scope.selectedEntity.entity_type === "GROUP" || 
+            $scope.selectedEntity.entity_type === "HOUSE" || 
+            $scope.selectedEntity.entity_type === "ALLOTMENT") {
+
+        }
+        else {
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+        }
     };
 
 }]);
