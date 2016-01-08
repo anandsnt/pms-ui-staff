@@ -1,6 +1,6 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',
-                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state){
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv',
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv){
 
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
@@ -23,6 +23,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
         $rootScope.adminRole = $scope.userDetails.user_role;
+        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
 
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
@@ -49,6 +50,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
            $scope.setTitle(title);
         }, 2000);
 
+
+        setWorkStation();
+
         //TODO: Add conditionally redirecting from API results
 
         reddirectToDefaultDashboard();
@@ -58,6 +62,100 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
         $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
    });
+
+   var setDeviceId = function() {
+      var onGetDeviceIdSuccess = function(data){
+            $rootScope.UUID = data;
+          },
+          onGetDeviceIdFailure = function(error) {
+
+          };
+        var options = {
+          "successCallBack": onGetDeviceIdSuccess,
+          "failureCallBack": onGetDeviceIdFailure,
+          "arguments": []
+        };
+      try {
+          sntapp.uuidService.getDeviceId(options);
+      } catch(err) {
+      }
+   };
+
+   var setWorkStation = function(){
+      var onSetWorkstationSuccess = function(data) {
+            if(!data.is_workstation_present) {
+              if ($scope.isHotelAdmin) {
+                $scope.$emit('hideLoader');
+                showWorkstationPopup();
+              } else {
+                createWorkstationForNonAdminUsers();
+              }
+            } else {
+              $scope.$emit('hideLoader');
+            }
+          },
+          onSetWorkstationFailure = function(failure) {
+            $scope.$emit('hideLoader');
+          };
+      var requestData = {};
+      if($scope.isIpad) {
+        document.addEventListener("deviceready", function() {
+                      setDeviceId();
+                      requestData.rover_device_id = $scope.getDeviceId();
+                      $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
+        }, false);
+      } else {
+        requestData.rover_device_id = $scope.getDeviceId();
+        $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
+      }
+
+   };
+
+   var showWorkstationPopup = function() {
+      ngDialog.close(); //close any existing popups
+      ngDialog.open({
+        template: '/assets/partials/workstation/rvWorkstationPopup.html',
+        className: '',
+        controller: 'RVWorkstationController',
+        scope: $scope,
+        closeByDocument: false,
+        closeByEscape: false
+      });
+   };
+
+   var createWorkstationForNonAdminUsers = function() {
+
+     var onSaveWorkstationSuccess = function(data) {
+
+        var onSetWorkstationSuccess = function(response) {
+              $scope.$emit('hideLoader');
+            }, onSetWorkstationFailure = function(error) {
+              $scope.$emit('hideLoader');
+            };
+
+        var params = {};
+        params.rover_device_id = $scope.getDeviceId();
+        $scope.invokeApi(RVWorkstationSrv.setWorkstation,params,onSetWorkstationSuccess, onSetWorkstationFailure);
+
+     };
+
+     var requestData = {};
+     requestData.rover_device_id =  $scope.getDeviceId();
+     requestData.auto_generate_workstation = true;
+
+     $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess);
+
+   };
+
+   $scope.getDeviceId = function() {
+    var deviceId = "";
+    if($scope.isIpad) {
+      deviceId = $rootScope.UUID;
+     } else {
+      deviceId = "DEFAULT";
+     }
+     return deviceId;
+   };
 
    var reddirectToDefaultDashboard = function(){
         var defaultDashboardMappedWithStates = {
@@ -114,4 +212,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
+
+
+
 }]);

@@ -66,8 +66,20 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
              colorData.input_field_background = hasTagsRemoved(data.input_field_background);
              colorData.header_icons = hasTagsRemoved(data.header_icons);
              colorData.header_icons_pressed = hasTagsRemoved(data.header_icons_pressed);
-            
-            $scope.invokeApi(ADZestStationSrv.save, {'kiosk':{'colors':colorData,'home_screen':$scope.zestSettings.home_screen,'guest_bill':$scope.zestSettings.guest_bill,'reg_card_text':$scope.zestSettings.reg_card_text}}, saveSuccess, saveFailed);
+            var dataToSend = {
+                                'kiosk':
+                                        {
+                                            "colors":colorData,
+                                            "home_screen":$scope.zestSettings.home_screen,
+                                            "guest_bill":$scope.zestSettings.guest_bill,
+                                            "registration_card":$scope.zestSettings.registration_card,
+                                            "reg_card_text":$scope.zestSettings.reg_card_text,
+                                            "show_room_number":$scope.zestSettings.show_room_number,
+                                            "enforce_deposit":$scope.zestSettings.enforce_deposit
+                                        }
+
+                             };
+            $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };
         
         $scope.init = function(){

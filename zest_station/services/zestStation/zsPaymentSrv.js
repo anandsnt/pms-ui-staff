@@ -46,6 +46,31 @@ sntZestStation.service('zsPaymentSrv',
                         return navigator.userAgent.match(/Android/i);
                     }
 		};
+                
+                
+                
+                this.submitDeposit = function(postData){
+                        var deferred = $q.defer();
+                        var url = '/api/reservations/'+postData.reservation_id+'/submit_payment';
+                        zsBaseWebSrv.postJSON(url, postData).then(function(data) {
+                                    deferred.resolve(data);
+                                },function(data){
+                                    deferred.reject(data);
+                                });
+                        return deferred.promise;
+                };
+                
+                this.chipAndPinGetToken = function(postData){
+                        var deferred = $q.defer();
+                        var url = '/api/cc/get_token.json';
+                        //var url = '/api/reservations/'+postData.reservation_id+'/submit_payment';
+                        zsBaseWebSrv.postJSON(url, postData).then(function(data) {
+                                    deferred.resolve(data);
+                                },function(data){
+                                    deferred.reject(data);
+                                });
+                        return deferred.promise;
+                };
                  
                 
             }]);

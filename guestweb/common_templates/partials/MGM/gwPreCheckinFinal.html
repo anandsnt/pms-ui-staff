@@ -27,20 +27,24 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-1"></div>
+        <div class="col-md-4"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing no-side-padding">
-            <p class="main-text final-text">Pre check in complete</p>
+            <p class="main-text final-text">You are checked in!</p>
             <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
-        </div>
-        <div class="horizontal-line-sep-mobile"></div>
-        <!-- right side -->
-        <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
-        <div class="col-md-3 top-spacing sm-no-top-spacing">
+            <div class="horizontal-line-sep-mobile"></div>
+            <div class="col-md-12 top-spacing sm-no-top-spacing">
              <p class="sub-main-text">{{responseData.confirmation_message}}
              </p>
+            </div>
         </div>
-        <div class="col-md-1">
+        <!-- right side -->
+        <!-- <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div> -->
+        <!-- <div class="col-md-3 top-spacing sm-no-top-spacing">
+             <p class="sub-main-text">{{responseData.confirmation_message}}
+             </p>
+        </div> -->
+        <div class="col-md-4">
         </div>                   
     </div>
 </div>

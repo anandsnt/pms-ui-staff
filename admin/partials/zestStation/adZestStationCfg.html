@@ -17,15 +17,35 @@
                 <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
             </fieldset>
+               <!-- Guest delivery options -->
+           <fieldset class="holder right">    
+                <div class="form-title full-width">
+                     <h3><span translate>REG_CARD_DELIVERY</span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.registration_card.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.registration_card.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+            </fieldset>
 
             <!-- Home screen options -->
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                  <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
                 </div>
                 <ad-checkbox is-checked="zestSettings.home_screen.pickup_keys" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
+            </fieldset>
+            <fieldset class="holder right">    
+                <div class="form-title full-width">
+                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
+                </div>
+                 <ad-toggle-button is-checked="zestSettings.show_room_number" label="{{'ON_SCREEN_ROOM_NUMBER'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+            <fieldset class="holder left">    
+                <div class="form-title full-width">
+                     <h3><span translate>ENFORCE_DEPOSIT </span> </h3>
+                </div>
+                 <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
             <!-- color selection -->

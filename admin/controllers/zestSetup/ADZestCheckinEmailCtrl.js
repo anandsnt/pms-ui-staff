@@ -62,10 +62,24 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope', '$state', 'adZestCheckinChe
             failureCallBack:        $scope.failureCallBack
         });
     };
+    var saveNewDirectURLSuccess = function(){
+        $scope.$emit('hideLoader');
+        $scope.successMessage = "Success";
+    };
+
+    var saveEmailUrl = function(){
+        var data = {
+             "active": true,
+             "application": "EMAIL",
+             "guest_web_url_type": "CHECKIN",
+             "name":"Email URL",
+             "url_suffix": $scope.data.zest_email_setup.checkin_static_uri
+        }
+        $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data,saveNewDirectURLSuccess);
+    };
     $scope.saveEmailSetup = function(){
             var onSuccess = function(data){
-                $scope.$emit('hideLoader');
-                $scope.successMessage = "Success";
+                saveEmailUrl();
             };
             $scope.callAPI(adZestCheckinCheckoutSrv.saveEmailSetup, {
                 params: {

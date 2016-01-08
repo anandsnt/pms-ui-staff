@@ -229,6 +229,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
+		$scope.UPDATE_TRANSACTION_DATA = function(){
+			getTransactionDetails();
+		};
+		
 		/*
 		 *  Bill data need to be updated after success action of
 		 *  payment, post charges, split/edit etc...
@@ -500,6 +504,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.setchargeCodeActive = function(bool) {
 			$scope.chargeCodeActive = bool;
+		};
+
+		$scope.HIDE_LOADER_FROM_POPUP =  function(){
+			$scope.$emit("hideLoader");
 		};
 
 		/*

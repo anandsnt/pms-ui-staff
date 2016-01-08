@@ -234,7 +234,7 @@ sntRover.factory('RVReportUtilsFac', [
             }
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == reportNames['DAILY_PRODUCTION'] && filter.value == 'INCLUDE_ADDONS' ) {
+            if ( objRef['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
                 selected = true;
                 objRef['hasGeneralOptions']['title'] = filter.description;
             };
@@ -381,7 +381,7 @@ sntRover.factory('RVReportUtilsFac', [
                     report['reportIconCls'] = 'icon-report icon-group';
                     break;
 
-                case reportNames['DAILY_PRODUCTION']:
+                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
                     report['reportIconCls'] = 'icon-report icon-forecast';
                     break;
 
@@ -391,6 +391,10 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case reportNames['GUEST_BALANCE_REPORT']:
                     report['reportIconCls'] = 'icon-report icon-balance';
+                    break;
+
+                case reportNames['RATE_RESTRICTION_REPORT']:
+                    report['reportIconCls'] = 'icon-report icon-rate';
                     break;
 
                 default:
@@ -480,7 +484,7 @@ sntRover.factory('RVReportUtilsFac', [
                     report['canRemoveDate'] = true;
                     break;
 
-                case reportNames['DAILY_PRODUCTION']:
+                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
                     report['canRemoveDate']     = true;
                     report['hasOneYearLimit']   = true;
                     break;
@@ -490,6 +494,11 @@ sntRover.factory('RVReportUtilsFac', [
                 case reportNames['DAILY_PRODUCTION_RATE']:
                     report['hasOneYearLimit']   = true;
                     break;
+
+                case reportNames['RATE_RESTRICTION_REPORT']:
+                    report['hasOneMonthLimit']   = true;
+                    break;
+
                 default:
                     report['hasDateLimit'] = false;     // CICO-16820: Changed to false
                     break;
@@ -648,6 +657,18 @@ sntRover.factory('RVReportUtilsFac', [
                     report.allDates.push( 'hasArrivalDateFilter' );
                 };
 
+                if(filter.value === 'RATE_CODE') {
+                    report['hasRateCodeFilter'] = filter;
+                };
+
+                if(filter.value === 'ROOM_TYPE') {
+                    report['hasRoomTypeFilter'] = filter;
+                };
+
+                if(filter.value === 'RESTRICTION') {
+                    report['hasRestrictionListFilter'] = filter;
+                };                
+                
                 // check for group start date filter and keep a ref to that item
                 if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
                     report['hasGroupStartDateRange'] = filter;
@@ -895,12 +916,30 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResAddons );
                 }
 
-                else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && !filter.filled ) {
+                else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchRateTypesAndRateList()
                         .then( fillRateTypesAndRateList );
                 }
 
+                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRateCode()
+                        .then( fillRateCodeList );
+                }
+
+                else if ('ROOM_TYPE' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRoomTypeList()
+                        .then( fillRoomTypeList );
+                }
+
+                else if ('RESTRICTION' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchRestrictionList()
+                        .then( fillRestrictionList );
+                }        
+                
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
                     
                     // fetch charge groups
@@ -1123,6 +1162,80 @@ sntRover.factory('RVReportUtilsFac', [
                 
             };
 
+            function fillRateCodeList (data) {
+                data[0].selected = true;
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        __setData(report, 'hasRateCodeFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : false,
+                            defaultTitle : 'Select one Rate Code',
+                            title        : data[0].description,
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+            
+            function fillRoomTypeList (data) {
+                _.each(data, function(roomType){
+                    roomType.selected = true;
+                });                
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        __setData(report, 'hasRoomTypeFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Selecte Room Type(s)',
+                            title        : 'All Selected',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }; 
+
+            function fillRestrictionList (data) {
+                _.each(data, function(restriction){
+                    restriction.selected = true;
+                });
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        
+                        __setData(report, 'hasRestrictionListFilter', {
+                            type         : 'FAUX_SELECT',
+                            filter       : foundFilter,
+                            show         : false,
+                            selectAll    : true,
+                            defaultTitle : 'Select Restriction(s)',
+                            title        : 'All Selected',
+                            data         : angular.copy( data )
+                        });
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };        
+
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
@@ -1206,7 +1319,7 @@ sntRover.factory('RVReportUtilsFac', [
                         processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'ONLY_PAYMENTS', selected );
                     }
                     /**/
-                    else if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
+                    else if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                         selected = false;
                         processedCGCC = __adjustChargeGroupsCodes( chargeNAddonGroups, chargeCodes, 'NONE', selected );
                     }
@@ -1515,7 +1628,7 @@ sntRover.factory('RVReportUtilsFac', [
                 report['sortByOptions'] = report['sort_fields'];
 
                 // making sort by room type default
-                if ( report['title'] === reportNames['DAILY_PRODUCTION'] ) {
+                if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                     var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
@@ -1594,7 +1707,7 @@ sntRover.factory('RVReportUtilsFac', [
                     report['untilDate'] = _getDates.businessDate;
                     break;
 
-                case reportNames['DAILY_PRODUCTION']:
+                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
                     report['fromDate']  = _getDates.monthStart;
                     report['untilDate'] = _getDates.businessDate;
                     break;
@@ -1606,6 +1719,11 @@ sntRover.factory('RVReportUtilsFac', [
 
                 case reportNames['DAILY_PRODUCTION_RATE']:
                     report['fromDate']  = _getDates.monthStart;
+                    report['untilDate'] = _getDates.businessDate;
+                    break;
+
+                case reportNames['RATE_RESTRICTION_REPORT']:
+                    report['fromDate']  = _getDates.businessDate;
                     report['untilDate'] = _getDates.businessDate;
                     break;
 

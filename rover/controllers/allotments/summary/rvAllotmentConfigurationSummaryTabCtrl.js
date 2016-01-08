@@ -205,7 +205,6 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
 				numberOfMonths: 1,
-				yearRange: '-1:',
 				disabled: $scope.allotmentConfigData.summary.is_cancelled,
 				minDate: tzIndependentDate($rootScope.businessDate),
 				beforeShow: function(input, inst) {

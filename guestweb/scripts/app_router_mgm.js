@@ -167,7 +167,13 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/checkinCCAddition.html',
 	 	controller : 'checkinCcVerificationController',
 	 	title: 'CC verification'
+	 }).state('emailAddition', {
+	 	url: '/emailAddition',
+	 	templateUrl: '/assets/checkin/partials/MGM/emailEntryPage.html',
+	 	controller : 'emailEntryController',
+	 	title: 'E-mail entry'
 	 });
+	
 	
 
 

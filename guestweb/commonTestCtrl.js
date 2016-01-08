@@ -1,7 +1,7 @@
 /*
 
 //= require ../guestweb/commonTestCtrl.js
-//= require ../guestweb/scripts/app_router_common.js
+//= require ../guestweb/scripts/app_router_mgm.js
 //= require ../guestweb/scripts/app_config.js
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater/services
@@ -33,11 +33,12 @@ loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-start
 
 // precheckin
 
-$attrs.isPrecheckinOnly  ='false'; //set to true
+$attrs.isPrecheckinOnly  ='true'; //set to true
+$attrs.isCheckin = 'true'
 $attrs.reservationStatus ='RESERVED' ;
 $attrs.isAutoCheckin = 'true';//$attrs.isCheckin ='true';
-$attrs.isExternalVerification=  'true';
-
+$attrs.isExternalVerification=  'false';
+$rootScope.keyDeliveryByEmail = true;
 // for checkin
 $attrs.isCheckin= 'true'; // set to true
 
@@ -75,6 +76,7 @@ $rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ?
 $rootScope.hotelIdentifier = $attrs.hotelIdentifier;
 $rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
 $rootScope.isGuestAddressVerified =  false;
+$rootScope.userEmail = "resheil@gmail.com";
 
 
 //Params for zest mobile and desktop screens
@@ -1369,16 +1371,245 @@ sntGuestWeb.controller('checkInKeysController', dependencies);
 Precheckin final Ctrl where the pre checkin API is called
 */
 (function() {
-  var preCheckinStatusController = function($scope, preCheckinSrv) {
+  var preCheckinStatusController = function($scope, preCheckinSrv,$state) {
     $scope.isLoading = false;
     $scope.responseData ={};
-    $scope.responseData.confirmation_message = "Please go to front desk";
+    $scope.responseData.confirmation_message = "Please go to front desk.hevhce vhe ce chj ec e cece cee ewewheew ee jk je ekjnnencne";
+    $scope.changeEmail = function(){
+      $state.go('emailAddition');
+    };
   };
 
   var dependencies = [
   '$scope',
-  'preCheckinSrv',
+  'preCheckinSrv','$state',
   preCheckinStatusController
   ];
   sntGuestWeb.controller('preCheckinStatusController', dependencies);
+})();
+
+
+
+
+/*
+  guest birthday details Ctrl 
+  If the admin settings for this is turned on , this screen will be shown and user can
+  update the guest birthday details here.
+*/
+(function() {
+  var birthDateDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
+
+
+    $scope.years      = [];
+    $scope.months     = [];
+    $scope.days       = [];
+    
+    for(year=1900;year<=new Date().getFullYear();year++){
+      $scope.years.push(year);
+    };
+
+    $scope.months = [
+              {"id":1,"name":"JAN"},
+              {"id":2,"name":"FEB"},
+              {"id":3,"name":"MAR"},
+              {"id":4,"name":"APR"},
+              {"id":5,"name":"MAY"},
+              {"id":6,"name":"JUN"},
+              {"id":7,"name":"JUL"},
+              {"id":8,"name":"AUG"},
+              {"id":9,"name":"SEP"},
+              {"id":10,"name":"OCT"},
+              {"id":11,"name":"NOV"},
+              {"id":12,"name":"DEC"}
+            ];
+      
+    for(day=1;day<=31;day++){
+      $scope.days.push(day);
+    };
+    $scope.guestDetails     = {};
+    $scope.guestDetails.day   =  "";
+    $scope.guestDetails.month =  "";
+    $scope.guestDetails.year  =  "";
+
+  
+    var getDataToSave = function(){
+      var data        = {};
+      var unwanted_keys     = ["month","year","day"];
+      var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
+            for(var i=0; i < unwanted_keys.length; i++){
+                delete newObject[unwanted_keys[i]];
+            };
+            data          = newObject;
+            if($scope.guestDetails.month && $scope.guestDetails.day && $scope.guestDetails.year){
+              data.birthday = $scope.guestDetails.month+"-"+$scope.guestDetails.day+"-"+$scope.guestDetails.year;
+            }
+            else{
+              delete data["birthday"];
+            };
+            
+      return data;
+    };
+    
+    $scope.opts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkin/partials/guestDetailsErrorModal.html',
+      controller: ModalInstanceCtrl
+    };
+
+    var goToNextStep = function(){
+      if($rootScope.guestPromptAddressOn){
+        $state.go('promptGuestDetails');
+      }
+      else if(!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified){
+        // if room upgrades are available
+        if($rootScope.upgradesAvailable){
+          $state.go('checkinUpgrade');
+        }
+        else{
+            if($rootScope.isAutoCheckinOn){
+              $state.go('checkinArrival');
+            }
+            else{
+              $state.go('checkinKeys');
+            }
+        };
+      }
+      else{
+          $state.go('guestDetails');  
+      }   
+    };
+
+
+    var checkIfDateIsValid = function(){
+      var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;  
+      var comp = birthday.split('/');
+      var m = parseInt(comp[0], 10);
+      var d = parseInt(comp[1], 10);
+      var y = parseInt(comp[2], 10);
+      var date = new Date(y,m-1,d);
+      if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
+         return true
+      } else {
+         return false;
+      }
+    };
+  
+
+
+
+    $scope.yearOrMonthChanged = function(){
+      if(!checkIfDateIsValid()){
+        $scope.guestDetails.day = "";
+      }else{
+        return;
+      }
+    };
+
+    function getAge(birthDateString) {
+        var today = new Date();
+        var birthDate = new Date(birthDateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
+    //check if guest is above age set in hotel admin
+    //else redirect to front desk
+    var checkIfGuestIsEligible = function(){
+          $scope.isLoading  = false;
+          $rootScope.isBirthdayVerified =  true;
+          goToNextStep();
+    };
+
+    //post guest details
+    $scope.postGuestDetails = function(){
+
+        checkIfGuestIsEligible();
+      
+    };
+
+    //skip the birthday
+    $scope.skip = function(){
+      goToNextStep();
+    };
+};
+
+var dependencies = [
+'$scope','$rootScope','$state','guestDetailsService','$modal',
+birthDateDetailsController
+];
+
+sntGuestWeb.controller('birthDateDetailsController', dependencies);
+})();
+
+/*
+  email entry Ctrl where the email is added
+*/
+
+(function() {
+  var emailEntryController = function($scope,$modal,checkinConfirmationService) {
+    
+    var errorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+          return "Please enter a valid email.";
+        }
+      }
+    };
+
+    var emailErrorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkin/partials/ccErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+           return "Problem saving email address. Please retry.";
+        }
+      }
+    };
+
+
+    $scope.guestDetails = { "email":""};
+    $scope.emailUpdated = false;
+
+   
+    function validateEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    };
+
+    $scope.emailSubmitted = function(){
+
+      if(!validateEmail($scope.guestDetails.email)){
+        $modal.open(errorOpts);
+      }
+      else{
+        checkinConfirmationService.updateEmail({"email":$scope.guestDetails.email}).then(function(response) {
+          $scope.isLoading = false;
+          $scope.emailUpdated = true;
+        },function(){
+          //$scope.netWorkError = true;
+          $scope.isLoading = false;
+            $modal.open(emailErrorOpts);
+        });
+
+      }
+    };
+};
+
+var dependencies = [
+'$scope','$modal','checkinConfirmationService',
+emailEntryController
+];
+
+sntGuestWeb.controller('emailEntryController', dependencies);
 })();

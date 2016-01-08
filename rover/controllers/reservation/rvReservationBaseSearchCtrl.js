@@ -339,6 +339,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (roomNumber === 0) {
                 $scope.reservationData.stayDays = [];
             }
+
+            $scope.reservationData.rooms[roomNumber].stayDates = {};
+
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                 if (roomNumber === 0) {
                     $scope.reservationData.stayDays.push({
@@ -430,9 +433,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'travel_agent_id': $scope.reservationData.travelAgent.id,
                         'group_id': $scope.reservationData.group.id,
                         'promotion_code': $scope.reservationData.searchPromoCode,
+                        'promotion_id': $scope.reservationData.promotionId,
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren']
-
                     });
                 }
             }
@@ -787,6 +790,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.codeSearchText = "";
                 }
                 if (!!$scope.reservationData.code) { // Reset in case of promotion code CICO-19484
+                    $scope.reservationData.promotionId = null;
+                    $scope.searchPromoCode = "";
                     $scope.reservationData.code = {
                         id: '',
                         type: '',
@@ -855,6 +860,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSelectHandler = function(event, code) {
             if (code.item) {
                 $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.reservationData.promotionId = code.item.id;
                 $scope.searchPromoCode = code.item.label;
             }
             if (code.item.type === "PROMO") {
