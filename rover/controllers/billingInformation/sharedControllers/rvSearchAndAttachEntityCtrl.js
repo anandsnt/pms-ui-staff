@@ -3,9 +3,6 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
-  	$scope.results.accounts = [];
-	$scope.results.posting_accounts  = [];
-	$scope.results.reservations = [];
 
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -39,9 +36,9 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
   	*/
 	$scope.queryEntered = function(){
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-			$scope.results.accounts = [];
-			$scope.results.posting_accounts  = [];
-			$scope.results.reservations = [];
+			$scope.searchResults.cards = [];
+			$scope.searchResults.posting_accounts  = [];
+			$scope.searchResults.reservations = [];
 		}
 		else{
 	    	displayFilteredResultsCards();
@@ -59,10 +56,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
   	var searchSuccessCards = function(data){
 		$scope.$emit("hideLoader");
-		$scope.results.accounts = [];
-		$scope.results.accounts = data.accounts;
-		$scope.results.posting_accounts = [];
-		$scope.results.posting_accounts = data.posting_accounts;
+		$scope.searchResults.cards = [];
+		$scope.searchResults.cards = data.accounts;
+		$scope.searchResults.posting_accounts = [];
+		$scope.searchResults.posting_accounts = data.posting_accounts;
 		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
@@ -73,11 +70,11 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	    //show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      //based on 'is_row_visible' parameter we are showing the data in the template
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	          $scope.results.accounts[i].is_row_visible = true;
+	      for(var i = 0; i < $scope.searchResults.cards.length; i++){
+	          $scope.searchResults.cards[i].is_row_visible = true;
 	      }
-	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
-	          $scope.results.posting_accounts[i].is_row_visible = true;
+	      for(var i = 0; i < $scope.searchResults.posting_accounts.length; i++){
+	          $scope.searchResults.posting_accounts[i].is_row_visible = true;
 	      }
 
 	      // we have changed data, so we are refreshing the scrollerbar
@@ -88,29 +85,29 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	      var visibleElementsCount = 0;
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	        value = $scope.results.accounts[i];
+	      for(var i = 0; i < $scope.searchResults.cards.length; i++){
+	        value = $scope.searchResults.cards[i];
 	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
 	            {
-	               $scope.results.accounts[i].is_row_visible = true;
+	               $scope.searchResults.cards[i].is_row_visible = true;
 	               visibleElementsCount++;
 	            }
 	        else {
-	          $scope.results.accounts[i].is_row_visible = false;
+	          $scope.searchResults.cards[i].is_row_visible = false;
 	        }
 
 	      }
 
-	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
-	        value = $scope.results.posting_accounts[i];
+	      for(var i = 0; i < $scope.searchResults.posting_accounts.length; i++){
+	        value = $scope.searchResults.posting_accounts[i];
 	        if (($scope.escapeNull(value.account_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
 	            {
-	               $scope.results.posting_accounts[i].is_row_visible = true;
+	               $scope.searchResults.posting_accounts[i].is_row_visible = true;
 	               visibleElementsCount++;
 	            }
 	        else {
-	          $scope.results.posting_accounts[i].is_row_visible = false;
+	          $scope.searchResults.posting_accounts[i].is_row_visible = false;
 	        }
 
 	      }
@@ -130,13 +127,13 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	*/
 	$scope.excludeActivereservationFromsSearch = function(){
 		var filteredResults = [];
-	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT')){
+	  	for(var i = 0; i < $scope.searchResults.reservations.length; i++){
+	  		if(($scope.searchResults.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.searchResults.reservations[i].reservation_status === 'CHECKING_IN' || $scope.searchResults.reservations[i].reservation_status === 'CHECKEDIN' || $scope.searchResults.reservations[i].reservation_status === 'CHECKING_OUT')){
 
-	  			filteredResults.push($scope.results.reservations[i]);
+	  			filteredResults.push($scope.searchResults.reservations[i]);
 	  		}
   		}
-  		$scope.results.reservations = filteredResults;
+  		$scope.searchResults.reservations = filteredResults;
 	};
 
 	/**
@@ -144,8 +141,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	*/
 	var searchSuccessReservations = function(data){
         $scope.$emit('hideLoader');
-        $scope.results.reservations = [];
-		$scope.results.reservations = data;
+        $scope.searchResults.reservations = [];
+		$scope.searchResults.reservations = data;
 		if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
@@ -171,8 +168,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	    //show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      	//based on 'is_row_visible' parameter we are showing the data in the template
-	      	for(var i = 0; i < $scope.results.length; i++){
-	          $scope.results.reservations[i].is_row_visible = true;
+	      	for(var i = 0; i < $scope.searchResults.length; i++){
+	          $scope.searchResults.reservations[i].is_row_visible = true;
 	      	}
 
 			$scope.refreshScroller('res_search_scroller');
@@ -184,24 +181,24 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 				return false;
 			}
 
-		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.results.reservations.length > 0){
+		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.searchResults.reservations.length > 0){
 		        var value = "";
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
 		        var totalCountOfFound = 0;
-		        for(var i = 0; i < $scope.results.reservations.length; i++){
-		          value = $scope.results.reservations[i];
+		        for(var i = 0; i < $scope.searchResults.reservations.length; i++){
+		          value = $scope.searchResults.reservations[i];
 		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
 		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
 		              	{
-		                 	$scope.results.reservations[i].is_row_visible = true;
+		                 	$scope.searchResults.reservations[i].is_row_visible = true;
 		                 	totalCountOfFound++;
 		              	}
 		          	else {
-		            	$scope.results.reservations[i].is_row_visible = false;
+		            	$scope.searchResults.reservations[i].is_row_visible = false;
 		          	}
 		        }
 		        if(totalCountOfFound === 0){
@@ -228,5 +225,185 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	$scope.toggleClicked = function(flag){
 		$scope.isReservationActive = flag;
 	};
+
+	/**
+    * Function to handle entity selection from the 'select entity' screen
+    * @param {Number} index of selected entity
+    * @param {String} type of selected entity
+    * @return {undefined}
+    */
+	$scope.selectEntityFromSearchResults = function(index, type) {
+        $scope.setDefaultRoutingDates();
+        $scope.setRoutingDateOptions();
+
+        $scope.errorMessage = "";
+		$scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isInAddRoutesMode = false;
+        $scope.billingInfoFlags.isInitialPage = false;
+
+        if (type === 'ATTACHED_ENTITY') {
+        	var selectedEntityDetails = $scope.routes[index];
+        	$scope.setSelectedEntity(selectedEntityDetails);
+            $scope.selectedEntity.is_new = true;
+
+            if ($scope.selectedEntity.entity_type !=='RESERVATION') {
+                $scope.selectedEntity.guest_id = null;
+            }
+
+            if ($scope.selectedEntity.entity_type === "RESERVATION") {
+                $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+            }
+        }
+        else if (type === 'RESERVATIONS') {
+        	var data = $scope.searchResults.reservations[index];
+        	var selectedEntityDetails = {
+			    "attached_charge_codes"   : [],
+			    "attached_billing_groups" : [],
+                "images"                  : data.images,
+                "reservation_status"      : data.reservation_status,
+                "is_opted_late_checkout"  : data.is_opted_late_checkout,
+                "name"                    : data.firstname + " " + data.lastname,
+                "entity_type"             : "RESERVATION",
+                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
+                "bill_no"                 : "",
+                "is_new"                  : true,
+                "credit_card_details"     : {},
+                "id"                      : data.id
+			};
+			$scope.setSelectedEntity(selectedEntityDetails);
+        }
+        else if (type === 'ACCOUNT') {
+        	var data = $scope.searchResults.cards[index];
+        	var selectedEntityDetails = {
+			    "id"                      : data.id,
+			    "name"                    : data.account_name,
+			    "bill_no"                 : "",
+			    "images"                  : [{
+                                            "is_primary":true,
+		                                    "guest_image": data.company_logo
+		                                  }],
+			    "attached_charge_codes"   : [],
+			    "attached_billing_groups" : [],
+                "is_new"                  : true,
+                "selected_payment"        : "",
+                "credit_card_details"     : {}
+			};
+			$scope.setSelectedEntity(selectedEntityDetails);
+
+    		if (data.account_type === 'COMPANY') {
+    			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+    		}
+            else if (data.account_type === 'TRAVELAGENT') {
+                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+            }
+        }
+        else if (type === 'GROUP' || type === 'HOUSE') {
+            if (isRoutingForPostingAccountExist()) {
+                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.billingInfoFlags.isEntitySelected = false;
+                $scope.billingInfoFlags.isInitialPage = true;
+            }
+            else {
+                var data = $scope.searchResults.posting_accounts[index];
+                var selectedEntityDetails = {
+                    "id"                      : data.id,
+                    "name"                    : data.account_name,
+                    "bill_no"                 : "",
+                    "attached_charge_codes"   : [],
+                    "attached_billing_groups" : [],
+                    "is_new"                  : true,
+                    "selected_payment"        : "",
+                    "credit_card_details"     : {},
+                    "entity_type"             : data.account_type
+                };
+                $scope.setSelectedEntity(selectedEntityDetails);
+            }
+        }
+	};
+
+	/**
+    * Function to select entity from attached entities
+    * @param {Number} [index of entity]
+    * @param {Number} [type of entity]
+    * @return {undefined}
+    */
+    $scope.selectAttachedEntity = function(index,type) {
+    	$scope.setDefaultRoutingDates();
+        $scope.setRoutingDateOptions();
+        $scope.errorMessage = "";
+        $scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isInitialPage = false;
+
+        //TODO: Remove commented out code
+        var selectedEntityDetails = {
+            "bill_no"                 : "",
+            "has_accompanying_guests" : false,
+            "attached_charge_codes"   : [],
+            "attached_billing_groups" : [],
+            "is_new"                  : true,
+            "credit_card_details"     : {}
+        };
+        $scope.setSelectedEntity(selectedEntityDetails);
+
+        $scope.selectedEntity.reservation_status     = $scope.reservationData.reservation_status;
+        $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
+
+        if (type === 'GUEST') {
+            $scope.selectedEntity.id       = $scope.reservationData.reservation_id;
+            $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
+            $scope.selectedEntity.name     = $scope.attachedEntities.primary_guest_details.name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary"  : true,
+                "guest_image" : $scope.attachedEntities.primary_guest_details.avatar
+            }];
+            $scope.selectedEntity.entity_type = "RESERVATION";
+        }
+        else if(type === 'ACCOMPANY_GUEST') {
+            $scope.selectedEntity.id       = $scope.reservationData.reservation_id;
+            $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
+            $scope.selectedEntity.name     = $scope.attachedEntities.accompanying_guest_details[index].name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary"   : false,
+                "guest_image"  : $scope.attachedEntities.accompanying_guest_details[index].avatar
+            }];
+
+            $scope.selectedEntity.has_accompanying_guests = true;
+            $scope.selectedEntity.entity_type = "RESERVATION";
+        }
+        else if (type === 'COMPANY_CARD') {
+            $scope.selectedEntity.id   = $scope.attachedEntities.company_card.id;
+            $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary"  : true,
+                "guest_image" : $scope.attachedEntities.company_card.logo
+            }];
+            $scope.selectedEntity.entity_type = "COMPANY_CARD";
+        }
+        else if (type === 'TRAVEL_AGENT') {
+            $scope.selectedEntity.id   = $scope.attachedEntities.travel_agent.id;
+            $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
+
+            $scope.selectedEntity.images = [{
+                "is_primary":true,
+                "guest_image": $scope.attachedEntities.travel_agent.logo
+            }];
+            $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
+        }
+        else if (type ==='GROUP' || type === 'HOUSE') {
+            if (isRoutingForPostingAccountExist()) {
+                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.billingInfoFlags.isEntitySelected = false;
+                $scope.billingInfoFlags.isInitialPage = true;
+            }
+            else {
+                $scope.selectedEntity.id          = $scope.attachedEntities.posting_account.id;
+                $scope.selectedEntity.name        = $scope.attachedEntities.posting_account.name;
+                $scope.selectedEntity.entity_type = type;
+            }
+        }
+    };
 
 }]);

@@ -1825,8 +1825,8 @@ sntRover.controller('RVbillCardController',
     	$scope.reservationData.is_opted_late_checkout = false;
     	$scope.billingInfoModalOpened = true;
 	    ngDialog.open({
-	        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-	        controller: 'rvBillingInformationPopupCtrl',
+	        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+	        controller: 'rvBillingInfoReservationMainCtrl',
 	        className: '',
 	        closeByDocument: true,
 	        scope: $scope
