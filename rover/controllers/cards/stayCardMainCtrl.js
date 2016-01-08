@@ -572,13 +572,17 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				that.reloadStaycard();
 				$scope.$broadcast('paymentTypeUpdated'); // to update bill screen data
 			};
+			var routingApplyFailed = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.$emit("hideLoader");
+			};
 
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
 			params.reservation_ids = [];
 			params.reservation_ids.push($scope.reservationData.reservationId);
 
-			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess, routingApplyFailed);
 		};
 
 		$scope.okClickedForConflictingRoutes = function() {
