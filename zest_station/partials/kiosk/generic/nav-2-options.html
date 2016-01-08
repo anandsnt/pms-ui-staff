@@ -2,9 +2,9 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email" || at === "deposit-agree"' click-touch='resetTime()'>
     <div id="content">
-        <h1>{{headingText}}</h1>
-        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText}}</h2>
-        <h2 ng-hide='at !== "deposit-agree"'>{{subsubheadingText}}</h2>
+        <h1>{{headingText |translate}}</h1>
+        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText |translate}}</h2>
+        <h2 ng-hide='at !== "deposit-agree"'>{{subsubheadingText |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
@@ -24,7 +24,7 @@
                     </button>
                     <span translate>Debug SixPay</span>
                     <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
-                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
+                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
                 </li>
                 
                 <!-- deliver-registration -->
@@ -86,7 +86,7 @@
                     <button type="button" class="button option" touch-press='depositProceed()'>
                         <div ng-include="'assets/css/icons/creditcard.svg'"></div>
                     </button>
-                    <h1>Proceed</h1>
+                    <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
                 </li>
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 
