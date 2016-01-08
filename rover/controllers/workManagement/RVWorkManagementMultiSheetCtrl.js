@@ -373,33 +373,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Auto select employees based on daily worksheet employee data
 		 */
 		var initializeEmployeesList = function() {
-			var dailyWTemp = (!!activeWorksheetEmp.data[0] && activeWorksheetEmp.data[0].employees) || [],
-				activeEmps = [],
-				foundMatch = undefined;
-
-			if (dailyWTemp.length) {
-				_.each($scope.employeeList, function(item) {
-					item.ticked = false;
-
-					foundMatch = _.find(dailyWTemp, function(emp) {
-						return emp.id === item.id;
-					});
-
-					if (foundMatch) {
-						item.ticked = true;
-					};
-				});
-			};
-
+			// select all employeed by default
 			$scope.multiSheetState.selectedEmployees = [];
 			_.each($scope.employeeList, function(employee) {
-				if (employee.ticked) {
-					var emp = _.findWhere($scope.multiSheetState.assigned, {
-						id: employee.id
-					});
-					if (emp)
-						$scope.multiSheetState.selectedEmployees.push(emp);
-				}
+				employee.ticked = true;
+				var emp = _.findWhere($scope.multiSheetState.assigned, {
+					id: employee.id
+				});
+				if (emp)
+					$scope.multiSheetState.selectedEmployees.push(emp);
 			});
 		};
 
