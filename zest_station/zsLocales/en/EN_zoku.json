@@ -130,6 +130,12 @@
     "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
     "USER_CHECKED_OUT_ALRDY_SUB":"You have been already checked out.",
     "USER_CHECKED_OUT_ALRDY_RTN":"Return",
+    
+    
+    "OOS_HEADER":"Out of service",
+    "DEPOSIT_NEXT_BUTTON":"Proceed",
+    "OOS_SUB":"Please try another kiosk or Talk to a Sidekick.",
+    
     "RES_TAX_FEES":"Taxes / Fees",
     "RES_SUB":"Subtotal",
     "RES_DEPOSITS":"Deposits",

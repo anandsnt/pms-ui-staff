@@ -342,6 +342,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $scope.debugSixpay = true;
             $scope.$digest();
         };
+        
+        $scope.initStaff = function(){
+            $state.go('zest_station.speak_to_staff');
+        };
         $scope.init = function(r){ 
            $scope.selectedReservation = $state.selectedReservation;
            
