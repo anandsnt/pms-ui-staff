@@ -3,10 +3,6 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
 	$scope.textInQueryBox = "";
   	$scope.isReservationActive = true;
-  	$scope.results.accounts = [];
-	$scope.results.posting_accounts  = [];
-	$scope.results.reservations = [];
-	var selectedEntityDetails = {};
 
   	var scrollerOptions = {click: true, preventDefault: false};
     $scope.setScroller('cards_search_scroller', scrollerOptions);
@@ -40,9 +36,9 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
   	*/
 	$scope.queryEntered = function(){
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-			$scope.results.accounts = [];
-			$scope.results.posting_accounts  = [];
-			$scope.results.reservations = [];
+			$scope.searchResults.cards = [];
+			$scope.searchResults.posting_accounts  = [];
+			$scope.searchResults.reservations = [];
 		}
 		else{
 	    	displayFilteredResultsCards();
@@ -60,10 +56,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
   	var searchSuccessCards = function(data){
 		$scope.$emit("hideLoader");
-		$scope.results.accounts = [];
-		$scope.results.accounts = data.accounts;
-		$scope.results.posting_accounts = [];
-		$scope.results.posting_accounts = data.posting_accounts;
+		$scope.searchResults.cards = [];
+		$scope.searchResults.cards = data.accounts;
+		$scope.searchResults.posting_accounts = [];
+		$scope.searchResults.posting_accounts = data.posting_accounts;
 		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
@@ -74,11 +70,11 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	    //show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      //based on 'is_row_visible' parameter we are showing the data in the template
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	          $scope.results.accounts[i].is_row_visible = true;
+	      for(var i = 0; i < $scope.searchResults.cards.length; i++){
+	          $scope.searchResults.cards[i].is_row_visible = true;
 	      }
-	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
-	          $scope.results.posting_accounts[i].is_row_visible = true;
+	      for(var i = 0; i < $scope.searchResults.posting_accounts.length; i++){
+	          $scope.searchResults.posting_accounts[i].is_row_visible = true;
 	      }
 
 	      // we have changed data, so we are refreshing the scrollerbar
@@ -89,29 +85,29 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	      var visibleElementsCount = 0;
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	        value = $scope.results.accounts[i];
+	      for(var i = 0; i < $scope.searchResults.cards.length; i++){
+	        value = $scope.searchResults.cards[i];
 	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
 	            {
-	               $scope.results.accounts[i].is_row_visible = true;
+	               $scope.searchResults.cards[i].is_row_visible = true;
 	               visibleElementsCount++;
 	            }
 	        else {
-	          $scope.results.accounts[i].is_row_visible = false;
+	          $scope.searchResults.cards[i].is_row_visible = false;
 	        }
 
 	      }
 
-	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
-	        value = $scope.results.posting_accounts[i];
+	      for(var i = 0; i < $scope.searchResults.posting_accounts.length; i++){
+	        value = $scope.searchResults.posting_accounts[i];
 	        if (($scope.escapeNull(value.account_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
 	            {
-	               $scope.results.posting_accounts[i].is_row_visible = true;
+	               $scope.searchResults.posting_accounts[i].is_row_visible = true;
 	               visibleElementsCount++;
 	            }
 	        else {
-	          $scope.results.posting_accounts[i].is_row_visible = false;
+	          $scope.searchResults.posting_accounts[i].is_row_visible = false;
 	        }
 
 	      }
@@ -131,13 +127,13 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	*/
 	$scope.excludeActivereservationFromsSearch = function(){
 		var filteredResults = [];
-	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT')){
+	  	for(var i = 0; i < $scope.searchResults.reservations.length; i++){
+	  		if(($scope.searchResults.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.searchResults.reservations[i].reservation_status === 'CHECKING_IN' || $scope.searchResults.reservations[i].reservation_status === 'CHECKEDIN' || $scope.searchResults.reservations[i].reservation_status === 'CHECKING_OUT')){
 
-	  			filteredResults.push($scope.results.reservations[i]);
+	  			filteredResults.push($scope.searchResults.reservations[i]);
 	  		}
   		}
-  		$scope.results.reservations = filteredResults;
+  		$scope.searchResults.reservations = filteredResults;
 	};
 
 	/**
@@ -145,8 +141,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	*/
 	var searchSuccessReservations = function(data){
         $scope.$emit('hideLoader');
-        $scope.results.reservations = [];
-		$scope.results.reservations = data;
+        $scope.searchResults.reservations = [];
+		$scope.searchResults.reservations = data;
 		if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
                 $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
@@ -172,8 +168,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	    //show everything, means no filtering
 	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 	      	//based on 'is_row_visible' parameter we are showing the data in the template
-	      	for(var i = 0; i < $scope.results.length; i++){
-	          $scope.results.reservations[i].is_row_visible = true;
+	      	for(var i = 0; i < $scope.searchResults.length; i++){
+	          $scope.searchResults.reservations[i].is_row_visible = true;
 	      	}
 
 			$scope.refreshScroller('res_search_scroller');
@@ -185,24 +181,24 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 				return false;
 			}
 
-		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.results.reservations.length > 0){
+		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.searchResults.reservations.length > 0){
 		        var value = "";
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
 		        var totalCountOfFound = 0;
-		        for(var i = 0; i < $scope.results.reservations.length; i++){
-		          value = $scope.results.reservations[i];
+		        for(var i = 0; i < $scope.searchResults.reservations.length; i++){
+		          value = $scope.searchResults.reservations[i];
 		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
 		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
 		              	{
-		                 	$scope.results.reservations[i].is_row_visible = true;
+		                 	$scope.searchResults.reservations[i].is_row_visible = true;
 		                 	totalCountOfFound++;
 		              	}
 		          	else {
-		            	$scope.results.reservations[i].is_row_visible = false;
+		            	$scope.searchResults.reservations[i].is_row_visible = false;
 		          	}
 		        }
 		        if(totalCountOfFound === 0){
@@ -237,14 +233,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     * @return {undefined}
     */
 	$scope.selectEntityFromSearchResults = function(index, type) {
-
-        if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
-            $scope.routeDates.from = $scope.routes[index].from_date;
-            $scope.routeDates.to   = $scope.routes[index].to_date;
-        }
-        else {
-            $scope.setDefaultRoutingDates();
-        }
+        $scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
 
         $scope.errorMessage = "";
@@ -253,7 +242,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         $scope.billingInfoFlags.isInitialPage = false;
 
         if (type === 'ATTACHED_ENTITY') {
-        	selectedEntityDetails = $scope.routes[index];
+        	var selectedEntityDetails = $scope.routes[index];
         	$scope.setSelectedEntity(selectedEntityDetails);
             $scope.selectedEntity.is_new = true;
 
@@ -261,18 +250,13 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                 $scope.selectedEntity.guest_id = null;
             }
 
-            if ($scope.selectedEntity.entity_type === "GROUP" || 
-                $scope.selectedEntity.entity_type === "HOUSE" || 
-                $scope.selectedEntity.entity_type === "ALLOTMENT") {
-
-            }
-            else {
+            if ($scope.selectedEntity.entity_type === "RESERVATION") {
                 $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
             }
         }
         else if (type === 'RESERVATIONS') {
-        	var data = $scope.results.reservations[index];
-        	selectedEntityDetails = {
+        	var data = $scope.searchResults.reservations[index];
+        	var selectedEntityDetails = {
 			    "attached_charge_codes"   : [],
 			    "attached_billing_groups" : [],
                 "images"                  : data.images,
@@ -289,8 +273,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 			$scope.setSelectedEntity(selectedEntityDetails);
         }
         else if (type === 'ACCOUNT') {
-        	var data = $scope.results.accounts[index];
-        	selectedEntityDetails = {
+        	var data = $scope.searchResults.cards[index];
+        	var selectedEntityDetails = {
 			    "id"                      : data.id,
 			    "name"                    : data.account_name,
 			    "bill_no"                 : "",
@@ -320,8 +304,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                 $scope.billingInfoFlags.isInitialPage = true;
             }
             else {
-                var data = $scope.results.posting_accounts[index];
-                selectedEntityDetails = {
+                var data = $scope.searchResults.posting_accounts[index];
+                var selectedEntityDetails = {
                     "id"                      : data.id,
                     "name"                    : data.account_name,
                     "bill_no"                 : "",
@@ -344,12 +328,14 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     * @return {undefined}
     */
     $scope.selectAttachedEntity = function(index,type) {
+    	$scope.setDefaultRoutingDates();
+        $scope.setRoutingDateOptions();
         $scope.errorMessage = "";
         $scope.billingInfoFlags.isEntitySelected = true;
         $scope.billingInfoFlags.isInitialPage = false;
 
         //TODO: Remove commented out code
-        selectedEntityDetails = {
+        var selectedEntityDetails = {
             "bill_no"                 : "",
             "has_accompanying_guests" : false,
             "attached_charge_codes"   : [],

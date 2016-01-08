@@ -1,5 +1,5 @@
 sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
-	
+
     BaseCtrl.call(this, $scope);
 
     var scrollerOptions = { preventDefault: false };
@@ -71,32 +71,25 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     */
     $scope.selectEntityFromRoutesList = function(index, type) {
 
-        if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
+        if ($scope.routes[index].from_date) {
             $scope.routeDates.from = $scope.routes[index].from_date;
             $scope.routeDates.to   = $scope.routes[index].to_date;
         }
         $scope.setRoutingDateOptions();
 
-        $scope.errorMessage = "";
         $scope.billingInfoFlags.isEntitySelected = true;
         $scope.billingInfoFlags.isInAddRoutesMode = false;
         $scope.billingInfoFlags.isInitialPage = false;
 
         var selectedEntityDetails = $scope.routes[index];
         $scope.setSelectedEntity(selectedEntityDetails);
-        $scope.selectedEntity.is_new = (type === 'ATTACHED_ENTITY')? true: false;
+        $scope.selectedEntity.is_new = false;
 
-        if ($scope.selectedEntity.entity_type !== 'RESERVATION') {
-            $scope.selectedEntity.guest_id = null;
-        }
-
-        if ($scope.selectedEntity.entity_type === "GROUP" || 
-            $scope.selectedEntity.entity_type === "HOUSE" || 
-            $scope.selectedEntity.entity_type === "ALLOTMENT") {
-
+        if ($scope.selectedEntity.entity_type === "RESERVATION") {
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
         }
         else {
-            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
+            $scope.selectedEntity.guest_id = null;
         }
     };
 

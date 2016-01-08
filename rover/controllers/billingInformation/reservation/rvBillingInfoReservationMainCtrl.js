@@ -1,9 +1,17 @@
 sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
-	
+
     BaseCtrl.call(this, $scope);
 
     $scope.selectedEntity = {};
-	$scope.results = {};
+
+    // Holds entity search results
+    // includes reservations, travel agent/company cards and accounts
+	$scope.searchResults = {
+        reservations     : [],
+        cards            : [],
+        posting_accounts : []
+    };
+
     $scope.bills = [];
     $scope.routes = [];
     $scope.routeDates = {};
@@ -39,7 +47,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to get label for all routes and add routes button
-    * @return {String} the button label
+    * @return {String} [the button label]
     */
 	$scope.getHeaderButtonLabel = function () {
 		return $scope.billingInfoFlags.isInitialPage?
@@ -49,7 +57,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to set the reload option
-    * @param {Boolean} - true/false
+    * @param {Boolean}
     * @return {undefined}
     */
     $scope.setReloadOption = function (option) {
@@ -58,7 +66,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to check whether the routing for a group/house already exist
-    * @return {Boolean} []
+    * @return {Boolean}
     */
     var isRoutingForPostingAccountExist = function () {
         var routeToPostingAccountExist = false;
