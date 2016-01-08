@@ -177,12 +177,14 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				source = $scope.multiSheetState.unassignedFiltered;
 				draggedRoom = source[roomIndex];
 				draggedTask = draggedRoom['room_tasks'][taskIndex];
+				// need to add this task to "only_tasks"
+				// need to: if this new task's work_typ_id is mot present in "touched", add that
 			} else {
 				source = $scope.multiSheetState.selectedEmployees;
 				thatEmpl = source[draggedIndex];
 				draggedRoom = thatEmpl['rooms'][roomIndex];
 				draggedTask = draggedRoom['room_tasks'][taskIndex];
-			};
+			};	
 
 			var dropped  = $(event.target).attr('id'),
 				empIndex = parseInt( dropped.split('-')[0] ),
@@ -205,7 +207,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 			};
 
-			draggedRoom['room_tasks'].splice(taskIndex, 0);
+			console.log( draggedRoom );
+			draggedRoom['room_tasks'].splice(taskIndex, 1);
+			console.log( draggedRoom );
 		};
 
 		/**
@@ -223,21 +227,28 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				roomIndex = parseInt( dragged.split('-')[2] ),
 				taskIndex = parseInt( dragged.split('-')[3] );
 
-			var source, thatEmpl;
+			var source      = $scope.multiSheetState.selectedEmployees,
+				destination = $scope.multiSheetState.unassignedFiltered;
 
-			var draggedRoom, draggedTask;
+			var thatEmpl = source[draggedIndex],
+				draggedRoom = thatEmpl['rooms'][roomIndex],
+				draggedTask = draggedRoom['room_tasks'][taskIndex];
 
+			var destinationHasRoom = _.find(destination, { 'room_id': draggedTask.room_id });
 
-			
-			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
-			var assignee = $(dropped.draggable).attr('id').split('-')[1];
-			//remove from "assignee" and add "unassigned"
-			var roomList = $scope.multiSheetState.assignments[assignee].rooms;
-			var droppedRoom = roomList[indexOfDropped];
-			$scope.multiSheetState.unassigned.push(droppedRoom);
-			roomList.splice(indexOfDropped, 1);
-			$scope.filterUnassigned();
-			updateSummary(assignee);
+			if ( !! destinationHasRoom ) {
+				destinationHasRoom
+					.room_tasks
+					.push( draggedTask );
+			} else {
+				destination.push({
+					'room_id': draggedRoom.room_id,
+					'room_index': draggedRoom.room_index,
+					'room_tasks': [draggedTask]
+				});
+			};
+
+			draggedRoom['room_tasks'].splice(taskIndex, 1);
 		};
 
 		$scope.onDateChanged = function() {
