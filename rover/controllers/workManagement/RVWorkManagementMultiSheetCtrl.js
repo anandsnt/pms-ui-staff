@@ -214,6 +214,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @param  {Draggable} dropped  Dropped room draggable
 		 */
 		$scope.dropToUnassign = function(event, dropped) {
+			// "event" has info of the column to which it is dropped to
+			// "dropped" has info of what has been dragged
+			// yeah, the wording is totally confusing :S
+
+
+			
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
 			var assignee = $(dropped.draggable).attr('id').split('-')[1];
 			//remove from "assignee" and add "unassigned"
