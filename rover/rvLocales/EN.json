@@ -148,6 +148,13 @@
 "REMOVE_CHARGE":"Remove charge",
 "SPLIT_CHARGE":"Split charge",
 "SPLITTING_FOR":"Splitting for",
+"DATE_RANGE": "Date Range",
+"FROM_DATE": "From",
+"TO_DATE": "To",
+"PAYMENT": "Payment",
+"NEW_PAYMENT": "+ New Payment Method",
+"CREDIT_LIMIT": "Credit Limit",
+"REFERENCE_NUMBER": "Reference Number",
 "ENTITY":"Entity",
 "NUMBER":"Number",
 "ROUTE_TO_BILL":"Route to Bill #",
@@ -235,7 +242,7 @@
 
 
 	
-,    
+,
     "COMMISSION" : "Commission",
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
@@ -249,8 +256,8 @@
     "COMMISSION_START_DATE" : "Start Date",
     "COMMISSION_CLEAR_QUERY" : "Clear query",
     "COMMISSION_END_DATE" : "End Date",
-    "COMMISSION_COMMISSIONABLE" : "Commisionable",
-    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commisionable",
+    "COMMISSION_COMMISSIONABLE" : "Commissionable",
+    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commissionable",
     "COMMISSION_PAID_STATUS" : "Paid Status",
     "COMMISSION_SET_STATUS" : "Set Status",
     "COMMISSION_UNPAID" : "Unpaid",
@@ -271,8 +278,8 @@
     "COMMISSION_ALL" : "All",
     "COMMISSION_Tax" : "Tax"
 
-    
-   
+
+
 
 ,    
     "ALL": "All",
@@ -440,7 +447,9 @@
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "COMPANY_CARD_DETACH_BILLING_INFO_WARNING": "Removing card may update Billing and Rate Information",
-    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity."
+    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity.",
+    "PAYMENT_TERMS" : "Payment Due (Days)",
+    "TAX_ID" : "Tax ID"
 ,    
     
     "GREETING_MORNING": "Good Morning",
@@ -669,7 +678,7 @@
 	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
 
 
-,	
+,
 
 	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Dept. / House",
 	"ALL_DEPARTMENTS":"All Departments",
@@ -720,7 +729,8 @@
 	"OPENING" : "Opening",
 	"DEBIT" : "Debit",
 	"CREDIT" : "Credit",
-	"CLOSING" : "Closing",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"CLOSING" : "Closing",
+	"CHARGE_DESCRIPTION" : "Charge Description",    "PRINT_ROOM_KEY" : "Print Room Key",
     "PRINT_NEW_ROOM_KEY" : "Print New Key(s)",
     "PRINT_DUPLICATE_ROOM_KEY" : "Duplicate Key(s)",
     "WILL_NOT_VALIDATE_PREVIOUS" : " Will Not ",
@@ -961,7 +971,8 @@
     "CONFIRM_RESERVATION"   : "Confirm Reservation",
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
     "RESERVATION_CANCELLED" : "Reservation cancelled",
-    "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
+    "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
+    "CORPORATE_LABEL" : "CONTRACT"
 
 
 ,    
@@ -1227,6 +1238,7 @@
     "ROOM_NO":"Room No.",
     "TAX_NO":"Tax No.",
     "INVOICE_NO":"Invoice No.",
+    "REFERENCE_NO": "Reference Number",
     "INVOICE_DATE":"Invoice date",
     "DATE_OF_CHARGE":"Date of Charge",
     "CHARGE_DESC":"Charge description",
@@ -1239,10 +1251,21 @@
     "TOTAL_INCL_TAX":"Total Incl Tax",
     "UPDATE":"Update",
     "NOT_DEFINED": "Not Defined",
-    "DONT_PRINT_RATE" : "Don't Print Rate"
+    "DONT_PRINT_RATE" : "Don't Print Rate",
 
+    "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded"
+
+,"ADD_NEW_WORKSTATION" : "Add New Workstation",
+"WORKSTATION_NAME" : "Workstation Name",
+"WORKSTATION_NAME_PLACEHOLDER" : "Enter Workstation Name",
+"WORKSTATION_ID" : "Workstation ID",
+"WORKSTATION_ID_PLACEHOLDER" : "Enter Workstation ID",
+"EMV_TERMINAL" : "EMV Terminal",
+"KEY_ENCODER" : "Key Encoder",
+"ADD_TERMINAL" : "Add terminal",
+"TERMINAL_DEFAULT_OPTION" : "Select a Terminal",
+"KEY_ENCODER_DEFAULT_OPTION" : "Select an Encoder"
 ,
-
 
     "TERMS_AGREE_TEXT": "Please agree to the Terms and Conditions below in order to check in.",
     "TERMS_SUBHEADING": "subheader",

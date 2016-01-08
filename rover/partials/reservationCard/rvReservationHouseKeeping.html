@@ -1,0 +1,51 @@
+<div class="block-wrapper">
+    <a class="block-title toggle has-arrow" ng-click="toggleHKDetails()">Room Attendance</a>
+
+    <div ng-class="{'hidden': houseKeeping.hideDetails}"> <!-- Toggle class hidden when L2 is clicked -->
+
+        <!-- Service status -->
+        <div class="block-item additional-detail">
+            <h3 class="block-title">Service</h3>
+            <div class="switch-button"
+                ng-class="{'on': houseKeeping.serviceEnabled}"> <!-- Remove class 'on' when L11 unchecked -->
+
+                <!-- iscroll stops all events eminating from the input below thus no ng-model change -->
+                <!-- No time to sit down and fix the issues. This is a temp fix, must be fixed properly -->
+                <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleService()"></div>
+
+                <input type="checkbox"
+                    ng-model="houseKeeping.serviceEnabled"
+                    ng-checked="houseKeeping.serviceEnabled" />
+                <label class="data-off">
+                    <span class="value">Off</span>
+                    <span class="switch-icon">On</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon grey">Off</span>
+                    <span class="value">On</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- {Work Type} -->
+        <div class="block-item additional-detail" ng-repeat="workType in houseKeeping.workTypes track by workType.id">
+            <h3 class="block-title">{{workType.name}}</h3>
+            <div class="select">
+                 <!-- Add attribute "disabled" when status set to No. Add class="placeholder" when no value option is selected -->
+                <select iscroll-stop-propagation
+                    ng-class="{ 'placeholder': workType.default_task == '' }"
+                    ng-model="workType.default_task"
+                    ng-change="selectDefaultTask(workType)"
+                    ng-disabled="!houseKeeping.serviceEnabled">
+                    <option value="">Select Task</option>
+                    <!-- .. list tasks -->
+                    <option ng-repeat="task in workType.tasks track by task.id" value="{{task.id}}"
+                        ng-selected="task.id == workType.default_task">{{task.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <!--... repeat L22-L31 for each work type-->
+
+    </div>
+</div>

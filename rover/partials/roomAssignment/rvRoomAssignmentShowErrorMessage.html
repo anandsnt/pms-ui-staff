@@ -1,14 +1,13 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-	<div class="modal-content form alert" >
-		<button type="button" id="modal-close" class="modal-close"  ng-click="clickedCloseButtonAlreadySelected()">
-			<span class="icons icon-close invert"></span>
-		</button>
-		<span class="h3 message red">{{errorMessagesToShow}}</span>
-		<div class="actions">
-			<button type="button" id="close" ng-click="clickedCloseButtonAlreadySelected()" class="button blank modal-close">
-				Close
-			</button>
-		</div>
-	</div>
-	
+    <div class="modal-content form alert">
+        <button type="button" id="modal-close" class="modal-close" ng-click="clickedCancelButton()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <span class="h3 message red"> {{ngDialogData.error}} </span>
+        <div class="actions">
+            <button type="button" id="close" ng-click="clickedCancelButton()" class="button blank modal-close">
+                Close
+            </button>
+        </div>
+    </div>
 </div>

@@ -57,6 +57,15 @@ sntRover.service('rvMenuSrv',
     	return RVHotelDetailsSrv.hotelDetails.is_auto_change_bussiness_date;
     };
 
+    /**
+     * Decide whether the task management submenu is to be shown in housekeeping menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowTaskManagementInHKMenu = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
+    };
+
 	/**
 	* utility the user role is 'Floor & Maintanance staff'
     * @param {string}, user role
@@ -242,7 +251,8 @@ sntRover.service('rvMenuSrv',
 		        }, {
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
-		            menuIndex: "workManagement"
+		            menuIndex: "workManagement",
+		            hidden: !shouldShowTaskManagementInHKMenu()
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",

@@ -104,6 +104,25 @@
 
                             img { .size(auto, 40px); }
                         }
+
+                        &.error {
+                            position: relative;
+                            padding-left: 20px;
+
+                            &:after {
+                                content: "!";
+                                position: absolute;
+                                top: 5px;
+                                left: 5px;
+                                font-size: 12px;
+                                line-height: 14px;
+                                text-align: center;
+                                color: @white;
+                                background: @red;
+                                .square(14px);
+                                #border-radius > .rounded(14px);
+                            }
+                        }
                     }
 
                     &.new-bill {

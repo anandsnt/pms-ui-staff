@@ -56,7 +56,7 @@
                             <a translate>CONTRACTS</a>
                         </li>
 
-                        <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="isCommissionTabAvailable && account_type == 'TRAVELAGENT' && !isEmptyObject(contactInformation.commission_details) && contactInformation.commission_details.is_on">
+                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="isCommissionTabAvailable && account_type == 'TRAVELAGENT' && !isEmptyObject(contactInformation.commission_details) && contactInformation.commission_details.is_on">
                             <a translate>COMMISSIONS</a>
                         </li>
 

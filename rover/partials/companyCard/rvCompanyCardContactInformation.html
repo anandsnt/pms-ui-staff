@@ -13,7 +13,7 @@
             <rv-textbox value="contactInformation.address_details.city" label="City" placeholder = "Enter City" styleclass="margin"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code" placeholder = "Enter Postal code" ></rv-textbox>
             <rv-textbox value="contactInformation.address_details.state" label="State" placeholder = "Enter State" styleclass="margin"></rv-textbox>
-            
+
             <!--<rv-dropdown label="Country" label-in-drop-down="Select country" list="contactInformation.countries" selected-Id='contactInformation.address_details.country' ></rv-dropdown> -->
             <!-- drop down directive is name & value, but in here it is different-->
             <div class="entry">
@@ -49,8 +49,12 @@
 
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
+            <div class="entry">
+                <label for="company-corporate-vat" translate>TAX_ID</label>
+                <input id="company-corporate-vat" ng-model="contactInformation.account_details.tax_number" placeholder = "Enter Tax ID" type="text" />
+            </div>
 
-            <div class="entry commission" ng-show ="!isEmpty(contactInformation.commission_details)&& account_type == 'TRAVELAGENT'">
+            <div class="entry commission margin" ng-show ="!isEmpty(contactInformation.commission_details)&& account_type == 'TRAVELAGENT'">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
                 <div class="switch-button off" ng-class="{'on': contactInformation.commission_details.is_on}">
                     <input id="travel-agent-commission" ng-click="contactInformation.commission_details.is_on = !contactInformation.commission_details.is_on" value="commission" type="checkbox" checked />
@@ -63,8 +67,8 @@
                         <span class="value" translate>ON</span>
                     </label>
                 </div>
-        
-                <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on"/>            
+
+                <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on"/>
                 <div class="select" ng-if="contactInformation.commission_details.is_on">
                     <select name="travel-agent-commission-type" value="contactInformation.commission_details.type" ng-model="contactInformation.commission_details.type">
                         <option value="percent">%</option>
@@ -73,7 +77,7 @@
                 </div>
             </div>
 
-            <div class="entry commission margin" ng-show="contactInformation.commission_details.is_on">
+            <div class="entry commission" ng-show="contactInformation.commission_details.is_on">
                 <label translate>PREPAID</label>
                 <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_prepaid}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_prepaid }"></span>
@@ -84,23 +88,23 @@
 
             <div class="entry" ng-show="contactInformation.commission_details.is_on">
                 <label ng-show="contactInformation.commission_details.type === 'amount'" translate>PER_STAY_OR_PER_NIGHT</label>
-                <div class="select" ng-show="contactInformation.commission_details.type === 'amount'">                        
+                <div class="select" ng-show="contactInformation.commission_details.type === 'amount'">
                     <select class="styled" value="contactInformation.commission_details.commission_type" ng-model="contactInformation.commission_details.commission_type">
                         <option value="perStay" translate>PER_STAY</option>
-                        <option value="perNight" translate>PER_NIGHT</option> 
+                        <option value="perNight" translate>PER_NIGHT</option>
                     </select>
                 </div>
-                
+
             </div>
 
             <div class="entry full-width">
                 <label><span translate>BILLING_INFORMATION</span>
-                    <span ng-show ="contactInformation.account_details !== undefined"> ({{contactInformation.account_details.routes_count}} 
-                        <span translate>ROUTES_DEFINED</span>) 
+                    <span ng-show ="contactInformation.account_details.routes_count !== undefined"> ({{contactInformation.account_details.routes_count}}
+                        <span translate>ROUTES_DEFINED</span>)
                     </span>
                 </label>
                 <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone && contactInformation.account_details.routes_count > 0" translate>BILLLING_INFORMATION</a>
-                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone && contactInformation.account_details.routes_count === 0" translate>ADD_BILLLING_INFORMATION</a>
+                <a class="button blue ng-scope ng-binding" ng-click="openBillingInformation(account_type)" ng-show="isStandAlone && contactInformation.account_details.routes_count === 0 || contactInformation.account_details.routes_count === undefined" translate>ADD_BILLLING_INFORMATION</a>
             </div>
 
             <!-- <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox> -->
@@ -112,7 +116,7 @@
             </div>
 
             <strong class="h3 margin" translate>PRIMARY_CONTACT_DETAILS</strong>
-            
+
             <rv-textbox value="contactInformation.primary_contact_details.contact_first_name" label="First name" placeholder = "Enter Contact First Name" styleclass="margin"></rv-textbox>
             <rv-textbox value="contactInformation.primary_contact_details.contact_last_name" label="Last Name" placeholder = "Enter Contact Last Name" ></rv-textbox>
             <rv-textbox value="contactInformation.primary_contact_details.contact_job_title" label="Job title" placeholder = "Enter Job Title" styleclass="margin"></rv-textbox>

@@ -1,25 +1,36 @@
 <!-- Content -->
-<section id="main" class="centered test" role="main" click-touch='resetTime()'>
+<section id="main" class="centered test" role="main">
     <div id="content" ng-hide='at === "registration_printed"'>
-        <h1>{{headingText}}</h1>
-        <h3>{{subHeadingText}}</h3>
+        <h1>{{headingText |translate}}</h1>
+        <h3>{{subHeadingText |translate}}</h3>
+        <form class="form" ng-if='shouldShowFloorChoosing()'>
+            <div class="entry">
+                <select ng-model="tower.selected" class="checkout-screen-select-box" ng-change="changedTheSelectedTower()">
+                    <option ng-repeat="tower in towerList" ng-selected="tower.value==tower.selected" value="{{tower.value}}">{{tower.name}}</option>
+                </select>
+            </div>
+        </form>
         <form method="post" class="form" ng-hide='at === "checking_in_guest"'>
             <div class="entry input">
                 <input ng-hide='passwordField || at === "find-by-confirmation" || mode === "search-final-mode"' class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
-                <input ng-show='mode === "search-final-mode" || at === "find-by-confirmation" ' class="start-focused" type="number" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
+                <input ng-show='mode === "search-final-mode" || at === "find-by-confirmation" ' class="start-focused" type="text" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
                 <input ng-show='passwordField' class="start-focused" type="password" ng-keydown="resetTime()" ng-model='input.inputTextValue' placeholder="{{inputTextPlaceholder}}" enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">Next</button>
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
             </div>
         </form>
-        <button id="skipEmailInputBtn" ng-show='at === "input-email" && from === "card-swipe" && emailOptional' type='button' class='button' touch-press='skipEmailEntryAfterSwipe()'>Skip</button>
+            <div class="entry action" ng-show='adminLoginError'>
+                <button type="button" class="button centered-exit" touch-press='clickedOnCloseButton()'>{{'EXIT_BTN' |translate}}</button>
+            </div>
+        <button id="skipEmailInputBtn" ng-show='(at === "input-email" || at === "invalid-email") && from === "card-swipe" && emailOptional' type='button' class='button' touch-press='skipEmailEntryAfterSwipe()'>{{'SKIP_BTN' |translate}}</button>
     </div>
     <section id="main" role="main" class="centered" ng-show="at === 'registration_printed'">
         <div id="content">
-            <h1>Thanks for staying at Zoku!</h1>
-            <h3 ng-show="printOpted">Your registration has been printed below.</h3>
-            <button  type="button" class="button" click-touch='navToHome()'>DONE</button>
+            
+            <h1>{{'THANKS_FOR_STAY' |translate}}</h1>
+            <h3 ng-show="printOpted">{{'PRINTED_BELOW' |translate}}</h3>
+            <button  type="button" class="button" click-touch='navToHome()'>{{'DONE_BTN' |translate}}</button>
         </div>
     </section>
 <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>

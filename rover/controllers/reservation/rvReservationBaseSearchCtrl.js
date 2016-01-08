@@ -202,6 +202,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.heading = 'Reservations';
             $scope.setHeadingTitle($scope.heading);
 
+            //Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
+            //in the confirmation screen
+            $scope.viewState.currentTab = 0;
+
             // Check flag to retain the card details
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
@@ -289,7 +293,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
-           
+
         };
 
         $scope.setNumberOfNights = function() {
@@ -335,6 +339,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (roomNumber === 0) {
                 $scope.reservationData.stayDays = [];
             }
+
+            $scope.reservationData.rooms[roomNumber].stayDates = {};
+
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                 if (roomNumber === 0) {
                     $scope.reservationData.stayDays.push({
@@ -368,7 +375,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     roomData = $scope.reservationData.rooms[0],
                     numberOfHours = $scope.reservationData.resHours;
 
-                if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours === ''|| !$scope.reservationData.resHours) {
+                if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours === '' || !$scope.reservationData.resHours) {
                     numberOfHours = $rootScope.minimumHourlyReservationPeriod;
                 }
                 _.extend(reservationDataToKeepinVault, {
@@ -399,15 +406,25 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
-                
+
                 $scope.setNumberOfNights();
+
+                // Fix for CICO-11333
+                $scope.clearArrivalAndDepartureTime();
 
                 for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
                 }
 
                 if ($scope.checkOccupancyLimit()) {
-                    $state.go('rover.reservation.staycard.mainCard.roomType', {
+
+                    var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+                    if (SWITCH_ROOM_AND_RATES_ALT) {
+                        roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+                    }
+
+                    $state.go(roomAndRatesState, {
                         'from_date': $scope.reservationData.arrivalDate,
                         'to_date': $scope.reservationData.departureDate,
                         'fromState': $state.current.name,
@@ -415,7 +432,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'allotment_id': $scope.reservationData.allotment.id,
                         'travel_agent_id': $scope.reservationData.travelAgent.id,
                         'group_id': $scope.reservationData.group.id,
-                        'promotion_code': $scope.reservationData.searchPromoCode
+                        'promotion_code': $scope.reservationData.searchPromoCode,
+                        'promotion_id': $scope.reservationData.promotionId,
+                        'adults': $scope.reservationData.tabs[0]['numAdults'],
+                        'children': $scope.reservationData.tabs[0]['numChildren']
                     });
                 }
             }
@@ -730,7 +750,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else {
                 $scope.shouldShowNights = true;
                 $scope.shouldShowHours = false;
-                $scope.clearArrivalAndDepartureTime();
             };
         };
 
@@ -771,6 +790,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.codeSearchText = "";
                 }
                 if (!!$scope.reservationData.code) { // Reset in case of promotion code CICO-19484
+                    $scope.reservationData.promotionId = null;
+                    $scope.searchPromoCode = "";
                     $scope.reservationData.code = {
                         id: '',
                         type: '',
@@ -839,6 +860,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSelectHandler = function(event, code) {
             if (code.item) {
                 $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.reservationData.promotionId = code.item.id;
                 $scope.searchPromoCode = code.item.label;
             }
             if (code.item.type === "PROMO") {
@@ -922,6 +944,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }))),
                 i;
             for (i = firstIndex; i <= lastIndex; i++) {
+                // Ensure that the adults and children dont go to zero at the same time
+                if (type == 'numChildren' && $scope.reservationData.tabs[tabIndex]['numChildren'] == 0 && $scope.reservationData.tabs[tabIndex]['numAdults'] == 0) {
+                    $scope.reservationData.tabs[tabIndex]['numAdults'] = 1;
+                    $scope.reservationData.rooms[i]['numAdults'] = 1;
+                } else if (type == 'numAdults' && $scope.reservationData.tabs[tabIndex]['numAdults'] == 0 && $scope.reservationData.tabs[tabIndex]['numChildren'] == 0) {
+                    $scope.reservationData.rooms[i]['numChildren'] = 1;
+                    $scope.reservationData.tabs[tabIndex]['numChildren'] = 1;
+                }
                 $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
             }
         };

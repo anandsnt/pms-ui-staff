@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 	'$scope',
-	'$rootScope','RVPaymentSrv','ngDialog','$filter','rvAccountTransactionsSrv','rvPermissionSrv', 'RVReservationCardSrv',
-	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter,rvAccountTransactionsSrv,rvPermissionSrv, RVReservationCardSrv) {
+	'$rootScope','RVPaymentSrv','ngDialog','$filter', '$timeout', 'rvAccountTransactionsSrv','rvPermissionSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope,RVPaymentSrv,ngDialog,$filter, $timeout, rvAccountTransactionsSrv,rvPermissionSrv, RVReservationCardSrv) {
 
 		BasePaymentCtrl.call(this, $scope);
 		$scope.renderData = {};
@@ -619,14 +619,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		};
 
 		$scope.showErrorPopup = function(errorMessage){
-			$scope.status = "error";
-			$scope.popupMessage = errorMessage;
-			ngDialog.open({
-	    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
-	    		controller: 'RVShowValidationErrorCtrl',
-	    		className: '',
-	    		scope: $scope
-	    	});
+			$scope.$emit("showValidationErrorPopup", errorMessage);
 		};
 
 		var checkIfARAccountisPresent = function(){
@@ -654,10 +647,12 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 
 				}
 				else{
-					//close payment popup
-					ngDialog.close();
 					//notify user that AR account is not attached
 					$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT'));
+					$timeout(function() {
+						//close payment popup
+						ngDialog.close();
+					}, 100);
 				};
 			};
             var params = {
@@ -669,7 +664,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					});
 		};
 
-
 		/*
 		* Action - On click submit payment button
 		*/
@@ -677,7 +671,13 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		    // if payment is from groups and payment type is direct bill
 		    // we check if AR account is present or not
 		    // if not present we inform the user with a popup
-			($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
+			if ($scope.renderData.defaultPaymentAmount > 0 || $scope.renderData.defaultPaymentAmount < 0) {
+				($scope.saveData.paymentType ==="DB") ? checkIfARAccountisPresent():proceedPayment();
+			} else {
+				$timeout(function () {
+		 			$scope.errorMessage = ["Please enter amount to pay"];
+		 		}, 200);
+		 	}
 		};
 
 }]);

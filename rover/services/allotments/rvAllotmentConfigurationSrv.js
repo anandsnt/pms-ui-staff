@@ -77,6 +77,23 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 			return deferred.promise;
 		};
 
+		this.saveMassUpdate = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/allotments/save_bulk_inventories';
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
 		/**
 		 * To save the selected Room types and its release days
 		 * @return {Promise}
@@ -485,5 +502,15 @@ sntRover.service('rvAllotmentConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAcco
 			return deferred.promise;
 		};
 
+		this.copyContactToHeld = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/allotments/copy_contract';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 	}
 ]);

@@ -1958,12 +1958,15 @@ function getTooltipPosition(segment) {
    if(segment.event.currentCalendar === "left" && (segment.leftCol === 0 || segment.leftCol === 1)){
         toolTipPosition.at = 'top center';
         toolTipPosition.my = 'bottom left';
+        toolTipPosition.position = 'left';
    }else if(segment.event.currentCalendar === "right" && (segment.leftCol === 5 || segment.leftCol === 6)){
     	    	toolTipPosition.at = 'top center';
-               toolTipPosition.my = 'bottom right';
+            	toolTipPosition.my = 'bottom right';
+            	toolTipPosition.position = 'right';
             } else {
             	toolTipPosition.at = 'top center';
                 toolTipPosition.my = 'bottom center';
+                toolTipPosition.position = 'center';
             }
     return toolTipPosition;
 }
@@ -5392,6 +5395,7 @@ function DayEventRenderer() {
 		// of the event object (`backgroundColor`, `borderColor` and such)
 		var skinCss = getSkinCss(event, opt);
 		var tooltipPosition = getTooltipPosition(segment);
+		segment.event.toolTipPos = tooltipPosition.position;
 
 		if (url) {
 			html += "<a href='" + htmlEscape(url) + "'";

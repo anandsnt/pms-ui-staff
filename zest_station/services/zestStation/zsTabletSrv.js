@@ -47,7 +47,18 @@ sntZestStation.service('zsTabletSrv',
                     });
                     return deferred.promise;
                 };
-
+                this.validate = function (params) {
+                    console.info('validate params: ',params)
+                    var deferred = $q.defer(),
+                            url = 'api/users/check_if_admin';
+                    
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
 
                 /**
                  * function to get business date
@@ -100,8 +111,8 @@ sntZestStation.service('zsTabletSrv',
                     var deferred = $q.defer();
                     var id= data.id;
                     var url = '/api/reservations/'+id+'/email_registration_card';
-
-                    zsBaseWebSrv.getJSON(url).then(function (data) {
+                    var params = {"application": data.application};
+                    zsBaseWebSrv.getJSON(url,params).then(function (data) {
                         deferred.resolve(data);
                     }, function (data) {
                         deferred.reject(data);
@@ -186,6 +197,34 @@ sntZestStation.service('zsTabletSrv',
                     return deferred.promise;
                 };
                 
+                this.assignGuestRoom = function (params) {
+                    //params['reservation_id'] = some id...
+                    var deferred = $q.defer(),
+                            url = '/guest/reservations/assign_room';
+
+                    zsBaseWebSrv.postJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                
+                this.updateGuestEmail = function (params) {
+                    var deferred = $q.defer(),
+                            url = '/staff/guest_cards/'+params.id;
+
+                    zsBaseWebSrv.putJSON(url, params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+                
+                
+                
                 this.saveSettings = function (params) {
                     var deferred = $q.defer(),
                             url = '/api/hotel_settings/change_settings';
@@ -213,6 +252,18 @@ sntZestStation.service('zsTabletSrv',
                 this.fetchRegistrationCardPrintData = function(params){
                     var deferred = $q.defer();
                     var url = '/api/reservations/' + params.id + '/print_registration_card';
+                            zsBaseWebSrv.getJSON(url).then(function(data) {
+                                    deferred.resolve(data);
+                            },function(data){
+                                deferred.reject(data);
+                            });
+
+                    return deferred.promise;
+            };
+            
+                this.fetchHotelTheme = function(params){
+                    var deferred = $q.defer();
+                    var url = '/api/email_templates/list.json?hotel_id='+params.id;
                             zsBaseWebSrv.getJSON(url).then(function(data) {
                                     deferred.resolve(data);
                             },function(data){

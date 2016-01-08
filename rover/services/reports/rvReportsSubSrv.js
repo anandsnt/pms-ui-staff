@@ -204,6 +204,15 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchReservationAddons = function() {
+			return callApi({
+				name   : 'reservationAddons',
+				method : 'getJSON',
+				url    : 'api/addons/not_rate_only',
+				resKey : 'results'
+			});
+		};
+
 		service.fetchAddonReservations = function(params) {
 			return callApi({
 				name   : 'addonReservations',
@@ -214,6 +223,41 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchRateTypesAndRateList = function(params) {
+			return callApi({
+				name   : 'rateTypeAndRateList',
+				method : 'getJSON',
+				url    : '/api/rates/active',
+				resKey : 'rates',
+			});
+		};
+
+		service.fetchRateCode = function(params) {
+			return callApi({
+				name   : 'rateCodeList',
+				method : 'getJSON',
+				url    : '/api/rates/codes',
+				resKey : 'rate_codes',
+			});
+		};
+
+		service.fetchRoomTypeList = function(params) {
+			return callApi({
+				name   : 'roomTypeList',
+				method : 'getJSON',
+				url    : '/api/room_types.json?is_exclude_pseudo=true',
+				resKey : 'results'
+			});
+		};
+
+		service.fetchRestrictionList = function() {
+			return callApi({
+				name   : 'restrictionList',
+				method : 'getJSON',
+				url    : '/api/restriction_types?is_activated=true',
+				resKey : 'results'
+			});			
+		};
 		return service;
 	}
 ]);

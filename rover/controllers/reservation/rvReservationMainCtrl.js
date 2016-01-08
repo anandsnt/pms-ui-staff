@@ -10,6 +10,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.setTitle(title);
         var that = this;
 
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+        if (SWITCH_ROOM_AND_RATES_ALT) {
+            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        }
+
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
@@ -91,6 +97,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.maxRoomCount = maxRoomCount;
 
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.reservationData.roomsMeta = {};
+            _.each(baseSearchData.roomTypes, function(room) {
+                $scope.reservationData.roomsMeta[room.id] = room;
+            });
+
             $scope.otherData.fromSearch = false;
             $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
             $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
@@ -380,18 +391,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                         postType = addon.post_type || addon.postType,
                                         amountType = addon.amount_type || addon.amountType,
                                         chargefullweeksonly = addon.chargefullweeksonly,
-                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure,chargefullweeksonly);
+                                        shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure, chargefullweeksonly);
                                     if (shouldPostAddon) {
                                         finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
                                         finalRateRounded = Number(finalRate.toFixed(2));
-                                        if (!!_.findWhere(todaysMetaData.associatedAddons, {
+                                        if (!!_.findWhere(RVReservationStateService.fetchAssociatedAddons(currentRoom.stayDates[date].rate.id), {
                                                 id: addon.id
                                             })) {
-                                            //check if the addon is associated
-                                            if (todaysMetaData.applyPromotion) {
-                                                finalRate = RVReservationStateService.applyDiscount(finalRate, todaysMetaData.appliedPromotion.discount, $scope.reservationData.numNights);
-                                                finalRateRounded = Number(finalRate.toFixed(2));
-                                            }
                                             if (!addon.is_inclusive) {
                                                 currentRoom.associatedAddonTotal += finalRateRounded;
                                             }
@@ -459,6 +465,162 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             });
         };
 
+        if (!!SWITCH_ROOM_AND_RATES_ALT) {
+            $scope.computeTotalStayCost = function(reset) {
+                $scope.reservationData.taxDetails = {
+                    incl: {},
+                    excl: {}
+                }; // -- RESET existing tax info
+                $scope.reservationData.totalStayCost = 0.0;
+                $scope.reservationData.totalTaxAmount = 0.0;
+                $scope.reservationData.totalTax = 0.0;
+
+                // For every Room
+                angular.forEach($scope.reservationData.rooms, function(currentRoom, roomIndex) {
+                    currentRoom.rateTotal = 0.0; // -- RESET
+                    currentRoom.associatedAddonTotal = 0.0;
+                    var roomMetaData = {
+                        arrival: $scope.reservationData.arrivalDate,
+                        departure: $scope.reservationData.departureDate,
+                        rateInfo: $scope.reservationData.rateDetails[roomIndex],
+                        roomTotal: 0.0,
+                        roomTax: 0.0,
+                        totalTaxes: 0.0, // only exclusive
+                        taxesInclusiveExclusive: 0.0, // CICO-10161 > holds both inclusive and exclusive
+                        addOnCumulative: 0.0
+                    };
+
+                    // For every Day
+                    angular.forEach(currentRoom.stayDates, function(stay, date) {
+                        // EXCLUDE departure date from cost computations - EXCEPT for SINGLE DAY(zero nights) reservations
+                        if ((date === roomMetaData.arrival || date !== roomMetaData.departure)) {
+                            var todaysRate = stay.rate.id,
+                                adultsOnTheDay = stay.guests.adults,
+                                childrenOnTheDay = stay.guests.children;
+
+                            if (!todaysRate || todaysRate === null || !$scope.reservationData.rateDetails.length) {
+                                // ERROR! - NO RATE SELECTED FOR THIS RESERVATION - THIS DAY
+                            } else {
+                                var todaysMetaData = $scope.reservationData.rateDetails[roomIndex] && $scope.reservationData.rateDetails[roomIndex][date] && $scope.reservationData.rateDetails[roomIndex][date];
+                                if (!todaysMetaData) {
+                                    return;
+                                }
+                                // --------------------------------------------------------------------------------//
+                                // -- Calculate the rate amount for the Room for that rate for that day --
+                                // --------------------------------------------------------------------------------//
+                                { // STEP ONE -- rate computation block
+                                    var roomAmount = todaysMetaData.amount,
+                                        roomAmountRounded = Number(roomAmount.toFixed(2));
+                                    if (reset) { // -- in case of rate changes reset the modified rate amount as well
+                                        stay.rateDetails.actual_amount = $filter('number')(roomAmount, 2);
+                                        stay.rateDetails.modified_amount = stay.rateDetails.actual_amount;
+                                    }
+                                    if (stay && stay.rateDetails) { //CICO-6079 -- In case of modified rates, set the roomAmount to that rate
+                                        if (stay.rateDetails.actual_amount !== stay.rateDetails.modified_amount) {
+                                            roomAmount = parseFloat(stay.rateDetails.modified_amount);
+                                            roomAmountRounded = Number(roomAmount.toFixed(2));
+                                        }
+                                    }
+                                    var taxableRateAmount = roomAmountRounded; // default taxableRoomAmount to the calculated room amount. This inclusive addons are to be adjusted wrt this value!
+                                    currentRoom.rateTotal = currentRoom.rateTotal + roomAmountRounded; // cumulative total of all days goes to roomTotal
+                                    currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
+                                }
+                                // --------------------------------------------------------------------------------//
+                                // -- Calculate the rate amount for the Room for that rate for that day --
+                                // --------------------------------------------------------------------------------//
+                                { // STEP TWO -- addon computation block
+                                    //for every addon
+                                    angular.forEach(currentRoom.addons, function(addon) {
+                                        if (date === roomMetaData.arrival) {
+                                            addon.effectivePrice = 0.0; // RESET addon rate
+                                        }
+                                        var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price), //calculate the base
+                                            finalRate = 0.0, //default calculated amount to the base rate,
+                                            finalRateRounded = 0.0,
+                                            postType = addon.post_type || addon.postType,
+                                            amountType = addon.amount_type || addon.amountType,
+                                            chargefullweeksonly = addon.chargefullweeksonly,
+                                            shouldPostAddon = RVReservationStateService.shouldPostAddon(postType.frequency, date, roomMetaData.arrival, roomMetaData.departure, chargefullweeksonly);
+                                        if (shouldPostAddon) {
+                                            finalRate = parseFloat(RVReservationStateService.getAddonAmount(amountType.value, baseRate, adultsOnTheDay, childrenOnTheDay));
+                                            finalRateRounded = Number(finalRate.toFixed(2));
+                                            if (!!_.findWhere(todaysMetaData.associatedAddons, {
+                                                    id: addon.id
+                                                })) {
+                                                //check if the addon is associated
+                                                if (todaysMetaData.applyPromotion) {
+                                                    finalRate = RVReservationStateService.applyDiscount(finalRate, todaysMetaData.appliedPromotion.discount, $scope.reservationData.numNights);
+                                                    finalRateRounded = Number(finalRate.toFixed(2));
+                                                }
+                                                if (!addon.is_inclusive) {
+                                                    currentRoom.associatedAddonTotal += finalRateRounded;
+                                                }
+                                                currentRoom.rateAvg = (currentRoom.rateTotal + currentRoom.associatedAddonTotal) / $scope.reservationData.numNights;
+                                            }
+
+                                        }
+                                        // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
+                                        if (postType.frequency > 0 && shouldPostAddon) {
+                                            addon.effectivePrice = parseFloat(addon.effectivePrice) + parseFloat(finalRateRounded);
+
+                                        } else if (postType.frequency === 0 && shouldPostAddon) {
+                                            addon.effectivePrice = finalRateRounded; //Posted only on the first Night
+                                        }
+                                        if (!addon.is_inclusive) {
+                                            roomMetaData.addOnCumulative += parseFloat(finalRateRounded);
+                                        } else {
+                                            taxableRateAmount -= parseFloat(finalRateRounded); //reduce the addon amount from this day's calculated rate
+                                        }
+                                        // --------------------------------------------------------------------------------//
+                                        // -- Calculate the tax for add-ons --
+                                        // --------------------------------------------------------------------------------//
+                                        { // STEP THREE -- compute tax for addons
+                                            processTaxInfo(RVReservationStateService.calculateTax(finalRate, addon.taxDetail || addon.taxes, roomIndex, adultsOnTheDay, childrenOnTheDay, true), roomIndex, date);
+                                        }
+                                    });
+
+                                }
+                                // --------------------------------------------------------------------------------//
+                                // -- Calculate the tax on adjusted rate amount for that day --
+                                // --------------------------------------------------------------------------------//
+                                { // STEP FOUR -- compute tax for rate
+                                    var daysTaxes = $scope.reservationData.ratesMeta[currentRoom.stayDates[date].rate.id].taxes;
+                                    if (daysTaxes && !!daysTaxes.length) {
+                                        if (parseFloat(taxableRateAmount) < 0.0) {
+                                            taxableRateAmount = 0.0;
+                                        }
+                                        processTaxInfo(RVReservationStateService.calculateTax(taxableRateAmount, daysTaxes, roomIndex, adultsOnTheDay, childrenOnTheDay), roomIndex, date);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    $scope.reservationData.taxInformation = {};
+
+                    angular.forEach($scope.reservationData.taxDetails.incl, function(tax) {
+                        $scope.reservationData.taxInformation = angular.copy($scope.reservationData.taxDetails.incl);
+                        roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + Number(parseFloat(tax.amount).toFixed(2));
+                    });
+
+                    angular.forEach($scope.reservationData.taxDetails.excl, function(tax, code) {
+                        roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + Number(parseFloat(tax.amount).toFixed(2)); // add only exclusive taxes here
+                        roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + Number(parseFloat(tax.amount).toFixed(2));
+                        if (typeof $scope.reservationData.taxInformation[code] === 'undefined') {
+                            $scope.reservationData.taxInformation[code] = tax;
+                        } else {
+                            $scope.reservationData.taxInformation[code].amount = parseFloat($scope.reservationData.taxInformation[code].amount) + Number(parseFloat(tax.amount).toFixed(2));
+                        }
+                    });
+
+                    //cumulative total of all stay costs
+                    $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
+                    $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes);
+                    $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive);
+                });
+            }
+        };
+
         $scope.editRoomRates = function(roomIdx) {
             //TODO: Navigate back to roomtype selection screen after resetting the current room options
             $scope.reservationData.rooms[roomIdx].roomTypeId = '';
@@ -479,7 +641,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 };
             };
 
-            $state.go('rover.reservation.staycard.mainCard.roomType', {
+            $state.go(roomAndRatesState, {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
                 fromState: 'rover.reservation.search',
@@ -527,7 +689,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             //then we only need to switch the vuew type to calendar
 
 
-            $state.go('rover.reservation.staycard.mainCard.roomType', {
+            $state.go(roomAndRatesState, {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
                 view: "DEFAULT",
@@ -658,7 +820,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         };
 
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
-            var data = {};
+            var data = {},
+                isInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
+                shouldWeIncludeRoomTypeArray = !isInStayCard && !$scope.reservationData.isHourly;
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -743,6 +907,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 var applicableRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
                 if ($scope.reservationData.rateDetails &&
                     $scope.reservationData.rateDetails[currentRoomIndex] &&
+                    $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate] &&
                     $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
                     data.promotion_id = $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
                     data.promotion_status = !!_.findWhere($scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].restrictions, {
@@ -802,7 +967,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
             data.room_id = [];
-            if (!$scope.reservationData.isHourly) {
+            if (shouldWeIncludeRoomTypeArray) {
                 data.room_types = [];
             }
             angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
@@ -819,15 +984,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
                     _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
                         //skip rate associated addons on create/update calls --> they will be taken care off by API 
-                        if(!addon.is_rate_addon){
+                        if (!addon.is_rate_addon) {
                             addonsForRoomType.push({
                                 id: addon.id,
                                 quantity: addon.quantity || 1
                             });
-                        }   
+                        }
                     });
                 }
-                if (!$scope.reservationData.isHourly) {
+                if (shouldWeIncludeRoomTypeArray) {
                     data.room_types.push({
                         id: parseInt(tab.roomTypeId, 10),
                         num_rooms: parseInt(tab.roomCount, 10),
@@ -1023,6 +1188,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
         $scope.applyRoutingToReservation = function() {
             var routingApplySuccess = function(data) {
                 $scope.$emit("hideLoader");
+                $scope.$broadcast('BILLINGINFOADDED');
                 ngDialog.close();
 
                 if ($scope.contractRoutingType === 'TRAVEL_AGENT' && that.hasCompanyCard() && $scope.routingInfo.company.routings_count > 0) {
@@ -1075,7 +1241,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
                 return false;
             }
-            
+
             var fetchSuccessofDefaultRouting = function(data) {
                 $scope.$emit("hideLoader");
                 $scope.routingInfo = data;
@@ -1465,7 +1631,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
                 if (!$scope.reservationData.isHourly) {
                     $scope.validateOccupant($scope.reservationData.rooms[i], type);
-                    $scope.checkOccupancyLimit(null, true, i);
+                    if (!!$scope.reservationData.rooms[i].rateId) {
+                        $scope.checkOccupancyLimit(null, true, i);
+                    }
                 }
                 $scope.updateOccupancy(i);
             }

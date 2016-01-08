@@ -11,7 +11,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'roomTypes',
 	'floors',
 	'hkStatusList',
-	'allRoomIDs',
 	'ngDialog',
 	'RVWorkManagementSrv',
 	function(
@@ -27,7 +26,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		roomTypes,
 		floors,
 		hkStatusList,
-		allRoomIDs,
 		ngDialog,
 		RVWorkManagementSrv
 	) {
@@ -59,19 +57,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			RVHkRoomStatusSrv.currentFilters.page = 1;
 		};
 		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
-
-		// The filters should be re initialized if we are navigating from dashborad to search
-		// In back navigation (From room details to search), we would retain the filters.
-		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus')
-				|| (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {
-
-				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				RVHkRoomStatusSrv.resetRoomTypes();
-
-				localStorage.removeItem( 'roomListScrollTopPos' );
-			};
-		});
 
 
 
@@ -137,7 +122,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			hkStatusId : ''
 		};
 		$scope.hkStatusList = hkStatusList;
-		$scope.allRoomIDs   = allRoomIDs;
+		$scope.allRoomIDs   = fetchPayload.roomList['all_room_ids'];
 
 
 		/* ***** ***** ***** ***** ***** */
@@ -306,6 +291,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		$scope.clearFilters = function() {
+			console.log('clearFilters autocalled')
 			$scope.roomTypes = RVHkRoomStatusSrv.resetRoomTypes();
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
@@ -613,8 +599,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			_payload = {
-				'room_ids'     : $scope.multiRoomAction.allChosen ? $scope.allRoomIDs : $scope.multiRoomAction.rooms,
-				'hk_status_id' : $scope.multiRoomAction.hkStatusId
+				'room_ids'     : [],
+		    	'hk_status_id' : $scope.multiRoomAction.hkStatusId
+			};
+
+			if ( (1 == $scope.multiRoomAction.rooms.length == $scope.uiTotalCount) &&  $scope.multiRoomAction.allChosen ) {
+				_payload['room_ids'].push( $scope.multiRoomAction.rooms[0] );
+			} else if ( $scope.multiRoomAction.allChosen ) {
+				_payload['room_ids'] = $scope.allRoomIDs;
+			} else {
+				_payload['room_ids'] = $scope.multiRoomAction.rooms;
 			};
 
 			_callback = function(data) {
@@ -723,6 +717,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.rooms              = [];
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
+			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
 
 			if ( $_page === 1 ) {
 				$scope.resultFrom = 1;

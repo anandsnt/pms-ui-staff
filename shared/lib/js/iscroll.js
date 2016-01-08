@@ -1080,7 +1080,7 @@ IScroll.prototype = {
 		wheelDeltaX *= this.options.invertWheelDirection;
 		wheelDeltaY *= this.options.invertWheelDirection;
 
-		if ( !this.hasVerticalScroll ) {
+		if ( !this.hasVerticalScroll && Math.abs(wheelDeltaY) > Math.abs(wheelDeltaX)) {
 			wheelDeltaX = wheelDeltaY;
 			wheelDeltaY = 0;
 		}

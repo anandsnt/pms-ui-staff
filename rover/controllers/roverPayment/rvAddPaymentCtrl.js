@@ -349,7 +349,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"mli_token": cardNumber,
 			"card_expiry":cardExpiry,
 			"card_name": retrieveCardName(),
-			"id": data.id,
+			"id": (typeof data.guest_payment_method_id !== "undefined") ? data.guest_payment_method_id : data.id,
 			"isSelected": true,
 			"is_primary":false,
 			"payment_type":"CC",
@@ -590,10 +590,17 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
-                
-                if ($scope.dataToSave.addToGuestCard){
-                    data.addToGuestCard = $scope.dataToSave.addToGuestCard;
-                }
+        
+        var unwantedKeys = ["addToGuestCard"];
+  		data = dclone(data, unwantedKeys); 
+        
+        if ($scope.dataToSave.addToGuestCard){
+            data.add_to_guest_card = $scope.dataToSave.addToGuestCard;
+        };
+
+        if(typeof $scope.passData.fromBill !== "undefined"){
+			data.bill_number = $scope.passData.fromBill;
+		};
 		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
 			successSwipePayment();
@@ -644,7 +651,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"mli_token": $scope.swipedCardDataToSave.cardNumber.slice(-4),
 			"card_expiry":$scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear,
 			"card_name": $scope.swipedCardDataToSave.nameOnCard,
-			"id": (data !== undefined) ? data.id : "",
+			"id": (typeof data.guest_payment_method_id !== "undefined") ? data.guest_payment_method_id : data.id,
 			"isSelected": true,
 			"is_primary":false,
 			"payment_type":"CC",
@@ -653,6 +660,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		};
 		$scope.cardsList.push(dataToGuestList);
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+		$scope.closeDialog();
 	};
 
 		/*

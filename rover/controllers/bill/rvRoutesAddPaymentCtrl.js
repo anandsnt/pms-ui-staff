@@ -23,6 +23,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 		$scope.swippedCard = false;
 		$scope.addmode = false;
 		$scope.saveData.newPaymentFormVisible = false;
+		$scope.$emit("CANCELLED_PAYMENT");
 	};
 
 		/**

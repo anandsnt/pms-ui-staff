@@ -1,4 +1,4 @@
-sntRover.controller('RVDailyProdReportCtrl', [
+sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 	'$rootScope',
 	'$scope',
 	'RVreportsSrv',
@@ -115,11 +115,11 @@ sntRover.controller('RVDailyProdReportCtrl', [
 		var processData = function() {
 			var SUB_HEADER_NAMES = [
 				'Rooms #',
-				'Avl. Rooms',
+				'Rooms Available',
 				/**/
-				'Rate Rev.',
+				'Forecasted Revenue',
 				'ADR',
-				'Actual Rev.'
+				'Actual Revenue'
 			];
 
 			var startIndex, endIndex, triggerIndex;
@@ -148,7 +148,7 @@ sntRover.controller('RVDailyProdReportCtrl', [
 
 
 			var noOfDays = 0,
-				cellWidth = 80;
+				cellWidth = 145;
 
 			$scope.rightPaneWidth = 0;
 
@@ -273,8 +273,9 @@ sntRover.controller('RVDailyProdReportCtrl', [
 					'colspan'        : $scope.colSpan,
 					'headerTop'      : $scope.headerTop,
 					'headerBot'      : $scope.headerBot,
-					'reportData'     : $scope.reportData
-				});
+					'reportData'     : $scope.reportData,
+					'isLastRowSum'   : true
+ 				});
 
 			React.renderComponent(
 				DPContent(props),

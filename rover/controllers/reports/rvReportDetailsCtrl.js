@@ -126,6 +126,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+						$scope.hasNoTotals = true;
+					break;
+
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
@@ -185,6 +189,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.leftColSpan = 4;
 						$scope.rightColSpan = 5;
 					}
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportNames['UPSELL']:
@@ -325,6 +334,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 							'outs_via_kiosk' : totals[4]['value']
 						};
 					};
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.$parent.summaryCounts = totals;
 					break;
 
 				case reportNames['UPSELL']:
@@ -497,10 +510,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRoomTypeReport.html';
+					break;
+					
+				case reportNames['DAILY_PRODUCTION_DEMO']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionDemographics.html';
+					break;
+
+				case reportNames['DAILY_PRODUCTION_RATE']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRateReport.html';
 					break;
 
 				default:
@@ -796,7 +821,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_PICKUP_REPORT']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					orientation = 'landscape';
 					break;
 				case reportNames['GUEST_BALANCE_REPORT']:
@@ -809,6 +834,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			}
 
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+
+			// hide #loader by adding '.ng-hide' class
+			$( '#loading' ).addClass( 'ng-hide' );
 		};
 
 		// add the print orientation after printing
@@ -837,7 +865,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		        if ( sntapp.cordovaLoaded ) {
 		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		        };
-		    }, 100);
+		    }, 1000);
 
 		    /*
 		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
@@ -846,6 +874,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
+		    	$rootScope.msgMe = 'Vijay';
+
 		    	// remove the orientation
 				removePrintOrientation();
 
@@ -858,7 +888,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		        // load the report with the original page
 		        $scope.fetchNextPage( $scope.returnToPage );
-		    }, 100);
+		    }, 2000);
 		};
 
 		$scope.emailReport = function() {

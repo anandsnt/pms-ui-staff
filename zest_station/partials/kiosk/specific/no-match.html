@@ -3,12 +3,12 @@
 <section id="main" class="centered" role="main" ng-hide='at !== "no-match"' click-touch='resetTime()'>
     <div id="content">
         <h1 style="padding-top: 23px;">Sorry.</h1>
-        <h2>We can't seem to find your reservation.</h2>
+        <h2>We can't seem to find you.</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reEnter("last")'>
-                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     Re-Enter
                     <span>"{{input.last}}"</span>
@@ -18,31 +18,39 @@
                 </li>
                 <li ng-show="lastAt === 'find-by-email'">
                     <button type="button" class="button option" touch-press='reEnter("email")'>
-                        <ng-include src="'assets/css/icons/keyboard.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
                     Re-Enter
                     <span>"{{input.email}}"</span>
                 </li>
                 <li ng-show="lastAt === 'find-by-confirmation'">
                     <button type="button" class="button option" touch-press='reEnter("confirmation")'>
-                        <ng-include src="'assets/css/icons/confirmation.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/confirmation.svg'"></div>
                     </button>
                     Re-Enter
                     <span>"{{input.confirmation}}"</span>
                 </li>
                 <li ng-show="lastAt === 'find-by-date'">
                     <button type="button" class="button option" touch-press='reEnter("date")'>
-                        <ng-include src="'assets/css/icons/moon.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/moon.svg'"></div>
                     </button>
                     Re-Enter
                     <span>"{{getDateRenderFormat(input.date)}}"</span>
+                </li>
+                
+                <li ng-show="lastAt === 'pick-up-room'">
+                    <button type="button" class="button option" touch-press='reEnter("room")'>
+                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
+                    </button>
+                    Re-Enter
+                    <span>"{{input.room}}"</span>
                 </li>
                 <li class="break">
                     <span>Or</span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
-                        <ng-include src="'assets/css/icons/staff.svg'"></ng-include>
+                        <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>
                     Talk
                     <span>To a Staff Member</span>

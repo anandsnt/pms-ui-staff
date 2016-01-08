@@ -7,7 +7,7 @@ DO NOT change the numeric values
 
 /* ui-view animation hook up class for root-view */
 .root-view {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
@@ -89,6 +89,15 @@ untill angular is ready to activate it */
 
 .return-back .main-view.ng-leave {
   #move > #ui-view > .leave-rev;
+}
+
+#reports .ng-leave {
+   opacity: .05;
+   transition: opacity 1s;
+}
+
+#reports .ng-leave.ng-leave-active {
+    opacity: 0;
 }
 
 /* 

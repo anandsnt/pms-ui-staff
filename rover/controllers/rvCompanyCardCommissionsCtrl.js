@@ -371,6 +371,7 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         $scope.status = {
            groupPaidStatus : ""
         };
+        $scope.businessDate = $rootScope.businessDate;
         fetchCommissionDetails(true);
     };
 

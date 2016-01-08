@@ -4,23 +4,8 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     BaseCtrl.call(this, $scope);
     $scope.upsellData = {};
 
-    var setUpList = function () {
-      //remove the selected item from drop down
-      var selectedIds = [];
-      angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.max_los !== '') {
-          selectedIds.push(item.id);
-        }
-      });
-      angular.forEach(selectedIds, function (id, index1) {
-        angular.forEach($scope.upsellData.room_types_list, function (room_types_list, index) {
-          if (room_types_list.value === id) {
-            $scope.upsellData.room_types_list.splice(index, 1);
-          }
-        });
-      });
-    };
-
+    $scope.errorMessage = '';
+    $scope.successMessage = '';
     /**
      * To fetch upsell details
      *
@@ -32,14 +17,43 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         $scope.levelOne = $scope.upsellData.upsell_room_levels[0].room_types;
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
-        setUpList();
+        
+        if (typeof $scope.upsellData.next_day_selected_charge_code_id === typeof 123){
+            $scope.upsellData.selected_next_day_charge_code_id = $scope.upsellData.next_day_selected_charge_code_id;
+        }
+        
+        if (typeof $scope.upsellData.next_day_room_types_list !== typeof []){
+            $scope.upsellData.next_day_room_types_list = angular.copy($scope.upsellData.room_types_list);
+        }
+        if (typeof $scope.upsellData.next_day_room_types !== typeof []){
+            $scope.upsellData.next_day_room_types = angular.copy($scope.upsellData.room_types);
+            for (var i in $scope.upsellData.next_day_room_types){
+                $scope.upsellData.next_day_room_types[i].max_los = '';
+            }
+            $scope.upsellData.isNextDayRoomTypesSelectedFlag = false;
+        }
         $scope.upsellData.deleted_room_types = [];
+        $scope.upsellData.next_day_deleted_room_types = [];
+        
         isRoomTypesSelected();
+        isNextDayRoomTypesSelected();
+        
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
-
-
+        if (!$scope.upsellData.next_day_upsell_amounts || $scope.upsellData.next_day_upsell_amounts.length === 0){
+            $scope.upsellData.next_day_upsell_amounts = angular.copy($scope.upsellData.upsell_amounts);
+            $scope.upsellData.next_day_upsell_amounts[0].amount = '';
+            $scope.upsellData.next_day_upsell_amounts[1].amount = '';
+            $scope.upsellData.next_day_upsell_amounts[2].amount = '';
+        }
+        if (typeof $scope.upsellData.next_day_room_types_list !== typeof []){
+            $scope.upsellData.next_day_room_types_list = [];
+        }
+        
+        if (!$scope.upsellData.upsell_setup.is_next_day_upsell_on){
+            $scope.upsellData.upsell_setup.is_next_day_upsell_on = 'false';
+        }
+        
       };
-
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
     };
 
@@ -68,6 +82,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     $scope.switchClicked = function () {
       $scope.upsellData.upsell_setup.is_upsell_on = ($scope.upsellData.upsell_setup.is_upsell_on === 'true') ? 'false' : 'true';
     };
+    $scope.nextDaySwitchClicked = function () {
+        $scope.upsellData.upsell_setup.is_next_day_upsell_on = ($scope.upsellData.upsell_setup.is_next_day_upsell_on === 'true') ? 'false' : 'true';
+    };
 
     /**
      * To handle checkbox action
@@ -89,21 +106,23 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
      * To handle addRoomType action
      *
      */
-    $scope.clickAddRoomType = function () {
-      //While addig a room type, making its max_los defaults to 0.
-      angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.id === parseInt($scope.upsellData.selected_room_type)) {
-          item.max_los = 0;
+    $scope.clickAddRoomType = function (nextday) {
+        var n = 'room_types', s = 'selected_room_type';
+        if (nextday){
+            n = 'next_day_room_types', s = 'next_day_selected_room_type';
         }
-      });
-      //Removing the selected room type from dropdown of room type list.
-      angular.forEach($scope.upsellData.room_types_list, function (item, index) {
-        if (item.value === $scope.upsellData.selected_room_type) {
-          $scope.upsellData.room_types_list.splice(index, 1);
+        //While addig a room type, making its max_los defaults to 0.
+        angular.forEach($scope.upsellData[n], function (item, index) {
+            if (item.id === parseInt($scope.upsellData[s])) {
+              item.max_los = 0;//this makes the added room type visible in the ui
+            }
+        });
+        if (nextday){
+            isNextDayRoomTypesSelected();
+        } else {
+            isRoomTypesSelected();
         }
-      });
-      isRoomTypesSelected();
-      $scope.upsellData.selected_room_type = "";
+        $scope.upsellData[s] = "";
     };
 
     /**
@@ -118,21 +137,43 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         }
       });
     };
+    var isNextDayRoomTypesSelected = function () {
+      $scope.upsellData.isNextDayRoomTypesSelectedFlag = false;
+      angular.forEach($scope.upsellData.next_day_room_types, function (item, index) {
+        if (item.max_los !== '') {
+          $scope.upsellData.isNextDayRoomTypesSelectedFlag = true;
+        }
+      });
+    };
 
     /*
      * Method to delete the room type.
      */
-    $scope.deleteRoomType = function (value, name) {
-      var data = {"value": value, "name": name};
-      $scope.upsellData.room_types_list.push(data);
-      angular.forEach($scope.upsellData.room_types, function (item, index) {
-        if (item.id === value) {
-          item.max_los = '';
+    
+    $scope.deleteRoomType = function (value, name, nextday) {
+        //var data = {"value": value, "name": name};
+        var losSet = function(n){
+            var t = 'room_types';
+            if (n){t = 'next_day_room_types';}
+            angular.forEach($scope.upsellData[t], function (item, index) {
+              if (item.id === value) {
+                item.max_los = '';
+              }
+            });
+        };
+        if (nextday){
+            //$scope.upsellData['next_day_room_types_list'].push(data);
+            losSet(true);
+            $scope.upsellData['next_day_deleted_room_types'].push(value);
+            isNextDayRoomTypesSelected();
+            $scope.upsellData['next_day_selected_room_type'] = "";
+        } else {
+           // $scope.upsellData['room_types_list'].push(data);
+            losSet(false);
+            $scope.upsellData['deleted_room_types'].push(value);
+            isRoomTypesSelected();
+            $scope.upsellData['selected_room_type'] = "";
         }
-      });
-      $scope.upsellData.deleted_room_types.push(value);
-      isRoomTypesSelected();
-      $scope.upsellData.selected_room_type = "";
     };
 
     /**
@@ -140,20 +181,33 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
      *
      */
     $scope.saveClick = function () {
-      var upsell_setup = {};
       var data = {};
+      
+      var upsell_setup = {};
       upsell_setup.is_force_upsell = $scope.upsellData.upsell_setup.is_force_upsell;
       upsell_setup.is_one_night_only = $scope.upsellData.upsell_setup.is_one_night_only;
       upsell_setup.is_upsell_on = $scope.upsellData.upsell_setup.is_upsell_on;
+      upsell_setup.is_next_day_upsell_on = $scope.upsellData.upsell_setup.is_next_day_upsell_on;
       upsell_setup.total_upsell_target_amount = $scope.upsellData.upsell_setup.total_upsell_target_amount;
       upsell_setup.total_upsell_target_rooms = $scope.upsellData.upsell_setup.total_upsell_target_rooms;
+      
       data.upsell_setup = upsell_setup;
+      
       data.upsell_amounts = $scope.upsellData.upsell_amounts;
-      data.charge_code = $scope.upsellData.selected_charge_code;
+      data.next_day_upsell_amounts = $scope.upsellData.next_day_upsell_amounts;
+      data.charge_code = $scope.upsellData.selected_charge_code_id;
+      data.next_day_charge_code = $scope.upsellData.selected_next_day_charge_code_id;
       data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
       data.room_types = [];
+      data.next_day_room_types = [];
       data.deleted_room_types = [];
       data.deleted_room_types = $scope.upsellData.deleted_room_types;
+      
+      data.next_day_deleted_room_types = [];
+      data.next_day_deleted_room_types = $scope.upsellData.next_day_deleted_room_types;
+      
+      
+      
       //Creating room type array with available max_late_checkouts data
       angular.forEach($scope.upsellData.room_types, function (item, index) {
         if (item.max_los !== '') {
@@ -161,11 +215,27 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
           data.room_types.push(obj);
         }
       });
+      angular.forEach($scope.upsellData.next_day_room_types, function (item, index) {
+        if (item.max_los !== '') {
+          var obj = {"id": item.id.toString(), "max_los": item.max_los.toString(), "allow_rover_overwrite": item.allow_rover_overwrite.toString()};
+          data.next_day_room_types.push(obj);
+        }
+      });
+      
+      
+      
+      
 
-      var updateRoomUpsellSuccessCallback = function (data) {
-        $scope.$emit('hideLoader');
-      };
-      $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback);
+        var updateRoomUpsellSuccessCallback = function (data) {
+              $scope.$emit('hideLoader');
+              $scope.successMessage = "Success";
+        };
+        var updateRoomUpsellFailCallback = function (data) {
+              $scope.$emit('hideLoader');
+              var err = ['Unable to Save'];
+              $scope.errorMessage = err;
+        };
+        $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback,updateRoomUpsellFailCallback);
     };
 
   }]);

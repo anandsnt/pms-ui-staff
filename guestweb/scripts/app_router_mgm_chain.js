@@ -34,12 +34,6 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
         controller: 'checkOutBalanceController',
        	templateUrl: '/assets/common_templates/partials/MGM/gwBill.html',
 	    title: 'Balance - Check-out Now'
-    })
-    .state('checkOutStatus', {
-        url: '/checkOutStatus',
-       	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/common_templates/partials/MGM/gwCheckoutfinal.html',
-		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
@@ -102,7 +96,22 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestDetail.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
-	 })
+	 });
+	 // state('birthDateDetails', {
+	 // 	url: '/birthDateDetails',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
+	 // 	controller : 'birthDateDetailsController',
+	 //    title: 'Birthdate'
+	 // }).state('promptGuestDetails', {
+	 // 	url: '/promptGuestDetails',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
+	 // 	controller : 'guestDetailsController',
+	 //    title: 'Guest Details'
+	 // }).state('guestNotEligible', {
+	 // 	url: '/guestNotEligible',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestNotEligible.html',
+	 //    title: 'Guest Details'
+	 // });
 	 
 
 	// pre checkin states
