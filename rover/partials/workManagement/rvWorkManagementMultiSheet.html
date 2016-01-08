@@ -104,8 +104,7 @@
     <!-- Multiple worksheets - assigned rooms -->
     <!-- When 0 employees selected-->
     <section id="assigned-rooms" class="multi-sheet no-content scrollable"
-        ng-if="multiSheetState.selectedEmployees.length === 0"
-        ng-iscroll="worksheetHorizontal">
+        ng-if="multiSheetState.selectedEmployees.length === 0">
         <div class="wrapper">
             <div class="info">
                 <span class="icon-no-content icon-housekeeping"></span>
@@ -116,7 +115,9 @@
     </section>
 
     <!-- When employees selected-->
-    <section id="assigned-rooms" class="scrollable"  ng-if="multiSheetState.selectedEmployees.length > 0"> <!-- Horizontal scroll here -->
+   <section id="assigned-rooms" class="scrollable"
+        ng-if="multiSheetState.selectedEmployees.length > 0"
+        ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
             <div class="employee" ng-repeat="employee in multiSheetState.selectedEmployees">
                 <div class="totals">

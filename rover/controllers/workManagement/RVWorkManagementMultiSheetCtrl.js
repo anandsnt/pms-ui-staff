@@ -13,6 +13,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var selectionHistory = [];
 
 		console.log( payload );
+		// To Do: remove this line
+		payload.assignedRoomTasks[0].rooms[0].room_tasks[0].is_complete = true;
 
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
@@ -324,15 +326,26 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Utility function to set up scrollers
 		 */
 		var setScroller = function() {
-			// TO DO set scroller based on number of employees selected
-			$scope.setScroller('unAssignedRoomList');
-			$scope.setScroller("multiSelectEmployees");
-			$scope.setScroller('assignedRoomList-1');
-			$scope.setScroller('assignedRoomList-2');
-			$scope.setScroller('assignedRoomList-3');
-			$scope.setScroller('assignedRoomList-4');
-			$scope.setScroller('assignedRoomList-5');
-			$scope.setScroller('assignedRoomList-0');
+			var commonScrollerOptions = {
+				tap: true,
+				preventDefault: false,
+				probeType: 3
+			};
+			var horizontal = _.extend({
+				scrollX: true,
+				scrollY: false
+			}, commonScrollerOptions);
+			var vertical = _.extend({
+				scrollX: false,
+				scrollY: true
+			}, commonScrollerOptions);
+			$scope.setScroller('unAssignedRoomList', vertical);
+			$scope.setScroller("multiSelectEmployees", commonScrollerOptions);
+			$scope.setScroller("worksheetHorizontal", horizontal);
+
+			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+				$scope.setScroller('assignedRoomList-'+i, vertical);
+			};
 		};
 
 		/**
