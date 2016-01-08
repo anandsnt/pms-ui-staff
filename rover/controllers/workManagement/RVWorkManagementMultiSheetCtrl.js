@@ -158,17 +158,48 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @param  {Draggable} dropped  Dropped room draggable
 		 */
 		$scope.dropToAssign = function(event, dropped) {
-			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
-			var assignee = $(dropped.draggable).attr('id').split('-')[1];
-			var assignTo = parseInt($(event.target).attr('id'));
-
 			// "event" has info of the column to which it is dropped to
 			// "dropped" has info of what has been dragged
+			// yeah, the wording is totally confusing :S
 
-			console.log( $(event.target).attr('id') );
-			console.log( $(dropped.draggable).attr('id') );
+			var dragged = $(dropped.draggable).attr('id');
+			var roomIndex = parseInt( dragged.split('-')[2] );
+			var taskIndex = parseInt( dragged.split('-')[3] );
+			/**/
+			var thatRoom;
+			var thatTask;
 
-			var indexOfRoomInUnassigned = parseInt($(dropped.draggable).attr('id').split('-')[2]);
+			var draggedFromIndex = dragged.split('-')[1];
+			var source;
+			/**/
+			if ( 'UA' === draggedFromIndex ) {
+				source = $scope.multiSheetState.unassignedFiltered;
+				thatRoom = source[roomIndex];
+				thatTask = thatRoom['room_tasks'][taskIndex];
+			} else {
+				source = $scope.multiSheetState.selectedEmployees[roomIndex];
+				thatRoom = source['rooms'][roomIndex];
+				thatTask = thatRoom['room_tasks'][taskIndex];
+			};
+
+			/**/
+			console.log( thatRoom );
+			console.log( thatTask );
+
+			var dropped = $(event.target).attr('id');
+			var empIndex = parseInt( dropped.split('-')[0] );
+			/**/
+			var employee = $scope.multiSheetState.selectedEmployees[empIndex];
+			/**/
+			console.log( employee );
+
+			// if DRAGGED_TO already has the room
+			// find add the task inside the avail room
+			// else if DRAGGED_TO doesnt have the room
+			// create a new room and then add the task inside it
+
+
+
 
 			// if (parseInt(assignee) !== assignTo) {
 			// 	if (assignee === "UA") {
