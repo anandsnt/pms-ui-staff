@@ -770,5 +770,37 @@
                 .calc-height(100, 110);
             }
         }
+
+        .worksheet-task.ui-draggable-dragging {
+            position: relative;
+            padding: 10px;
+            margin: 0;
+            background-color: @white;
+            list-style: none;
+            cursor: @draggable, pointer;
+            cursor: @draggable 16 16, pointer;
+            .box-shadow(1px 1px 2px 1px rgba(0,0,0,.15));
+            #border-radius > .top();
+            #border-radius > .bottom();
+
+            .info {
+                display: none;
+            }
+
+            h3 {
+                font-size: 40px;
+                font-weight: 700;
+                text-align: center;
+            }
+
+            .task {
+                font-size: 12px;
+                line-height: 14px;
+                text-transform: uppercase;
+                color: @grey3;
+                padding: 0 20px;
+                .show;
+            }
+        }
     }
 }

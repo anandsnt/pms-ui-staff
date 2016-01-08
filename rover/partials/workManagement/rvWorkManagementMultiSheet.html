@@ -68,11 +68,11 @@
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
             data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}">
             <div class="wrapper">
-                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-init="ulIndex = $index">
+                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-init="roomIndex = $index">
                     <li class="worksheet-task multi-sheet unassigned"
-                        id="unassigned-UA-{{ ulIndex }}-{{ $index }}"
                         iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
+                        id="unassigned-UA-{{ roomIndex }}-{{ $index }}"
                         data-drag = "{{multiSheetState.dndEnabled}}"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
@@ -120,7 +120,7 @@
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
-            <div class="employee" ng-repeat="employee in multiSheetState.selectedEmployees">
+            <div class="employee" ng-repeat="employee in multiSheetState.selectedEmployees" ng-init="empIndex = $index">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
                         {{employee.name}}
@@ -145,7 +145,7 @@
                         </li>
                     </ul>
                 </div>
-                <div id="{{ $index }}-{{ employee.id }}" class="worksheet-content scrollable"
+                <div id="{{ empIndex }}-{{ employee.id }}" class="worksheet-content scrollable"
                     data-drop="true"
                     jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                     data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.unassigned,.worksheet-task.multi-sheet.assigned'}"
@@ -153,9 +153,9 @@
                     <div class="wrapper">
                         <ul class="worksheet-room sortable"
                             ng-repeat="room in employee.rooms"
-                            ng-init="ulIndex = $index">
+                            ng-init="roomIndex = $index">
                             <li class="worksheet-task multi-sheet assigned"
-                                id="assigned-{{employee.id}}-{{ulIndex}}-{{$index}}"
+                                id="assigned-{{ empIndex }}-{{roomIndex}}-{{$index}}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
                                 ng-class="{ 'completed-task': task.is_complete}"

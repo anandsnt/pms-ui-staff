@@ -160,40 +160,52 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @param  {Draggable} dropped  Dropped room draggable
 		 */
 		$scope.dropToAssign = function(event, dropped) {
-			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
-			var assignee = $(dropped.draggable).attr('id').split('-')[1];
-			var assignTo = parseInt($(event.target).attr('id'));
-
 			// "event" has info of the column to which it is dropped to
 			// "dropped" has info of what has been dragged
+			// yeah, the wording is totally confusing :S
 
-			console.log( $(event.target).attr('id') );
-			console.log( $(dropped.draggable).attr('id') );
+			var dragged = $(dropped.draggable).attr('id'),
+				draggedIndex = dragged.split('-')[1],
+				roomIndex = parseInt( dragged.split('-')[2] ),
+				taskIndex = parseInt( dragged.split('-')[3] );
 
-			var indexOfRoomInUnassigned = parseInt($(dropped.draggable).attr('id').split('-')[2]);
+			var source, thatEmpl;
 
-			// if (parseInt(assignee) !== assignTo) {
-			// 	if (assignee === "UA") {
-			// 		//remove from 'unassigned','unassignedFiltered' and push to 'assignTo'
-			// 		var droppedRoom = $scope.multiSheetState.unassignedFiltered[indexOfDropped];
-			// 		$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
-			// 		$scope.multiSheetState.unassigned.splice(_.indexOf($scope.multiSheetState.unassigned, _.find($scope.multiSheetState.unassigned, function(item) {
-			// 			return item === droppedRoom;
-			// 		})), 1);
-			// 		$scope.filterUnassigned();
-			// 		updateSummary(assignTo);
-			// 	} else { //===Shuffling Assigned
-			// 		//remove from 'assignee' and push to 'assignTo'
-			// 		var roomList = $scope.multiSheetState.assignments[assignee].rooms;
-			// 		var droppedRoom = roomList[indexOfDropped];
-			// 		$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
-			// 		roomList.splice(_.indexOf(roomList, _.find(roomList, function(item) {
-			// 			return item === droppedRoom;
-			// 		})), 1);
-			// 		updateSummary(assignTo);
-			// 		updateSummary(assignee);
-			// 	}
-			// }
+			var draggedRoom, draggedTask;
+
+			if ( 'UA' === draggedIndex ) {
+				source = $scope.multiSheetState.unassignedFiltered;
+				draggedRoom = source[roomIndex];
+				draggedTask = draggedRoom['room_tasks'][taskIndex];
+			} else {
+				source = $scope.multiSheetState.selectedEmployees;
+				thatEmpl = source[draggedIndex];
+				draggedRoom = thatEmpl['rooms'][roomIndex];
+				draggedTask = draggedRoom['room_tasks'][taskIndex];
+			};
+
+			var dropped  = $(event.target).attr('id'),
+				empIndex = parseInt( dropped.split('-')[0] ),
+				employee = $scope.multiSheetState.selectedEmployees[empIndex];
+
+			// if DRAGGED_TO already has the room
+			// find add the task inside the avail room
+			// else if DRAGGED_TO doesnt have the room
+			// create a new room and then add the task inside it
+
+			var hasRoom = _.find(employee.rooms, { 'room_id': draggedRoom.room_id });
+
+			if ( !! hasRoom ) {
+				hasRoom.room_tasks.push(draggedTask);
+			} else {
+				employee.rooms.push({
+					'room_id': draggedRoom.room_id,
+					'room_index': draggedRoom.room_index,
+					'room_tasks': [draggedTask]
+				});
+			};
+
+			draggedRoom['room_tasks'].splice(taskIndex);
 		};
 
 		/**
