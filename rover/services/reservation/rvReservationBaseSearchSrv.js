@@ -10,9 +10,16 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
         //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
-        this.restrictionTypesCached = null;
-        this.rateDetailsCached = null;
-        this.sortOrderCached = null;
+        this.cache = {
+            config: {
+                lifeSpan: 300 //in seconds
+            },
+            responses: {
+                restrictionTypes: null,
+                rateDetails: null,
+                sortOrder: null
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
@@ -136,15 +143,18 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         this.fetchSortPreferences = function() {
             var deferred = $q.defer(),
                 url = '/api/sort_preferences/list_selections';
-            if (that.sortOrderCached === null) {
+            if (that.cache.responses['sortOrder'] === null || that.cache.responses['sortOrder']['expiryDate'] >= Math.floor(Date.now() / 1000)) {
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
-                    that.sortOrderCached = data.room_rates;
+                    that.cache.responses['sortOrder'] = {
+                        data: data.room_rates,
+                        expiryDate: Math.floor(Date.now() / 1000) + that.cache['config'].lifeSpan
+                    };
                     deferred.resolve(data.room_rates);
                 }, function(data) {
                     deferred.reject(data);
                 });
             } else {
-                deferred.resolve(that.sortOrderCached);
+                deferred.resolve(that.cache.responses['sortOrder']['data']);
             }
             return deferred.promise;
         };
@@ -288,7 +298,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         this.fetchRestricitonTypes = function() {
             var deferred = $q.defer(),
                 url = '/api/restriction_types';
-            if (that.restrictionTypesCached === null) {
+            if (that.cache.responses['restrictionTypes'] === null || that.cache.responses['restrictionTypes'].expiryDate >= Math.floor(Date.now() / 1000)) {
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     data.results.push({
                         id: 98,
@@ -308,16 +318,21 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                     _.each(data.results, function(resType) {
                         restriction_types[resType.id] = {
                             key: resType.value,
-                            value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(resType.key) > -1 ? resType.description : resType.description + ':'
+                            value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(resType.value) > -1 ? resType.description : resType.description + ':'
                         }
                     });
-                    that.restrictionTypesCached = restriction_types;
+
+                    that.cache.responses['restrictionTypes'] = {
+                        data: restriction_types,
+                        expiryDate: Math.floor(Date.now() / 1000) + that.cache['config'].lifeSpan
+                    };
+
                     deferred.resolve(restriction_types);
                 }, function(data) {
                     deferred.reject(data);
                 });
             } else {
-                deferred.resolve(that.restrictionTypesCached);
+                deferred.resolve(that.cache.responses['restrictionTypes']['data']);
             }
             return deferred.promise;
         };
@@ -327,19 +342,24 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             var deferred = $q.defer(),
                 url = '/api/rates/detailed';
 
-            if (that.rateDetailsCached === null) {
+            if (that.cache.responses['rateDetails'] === null || that.cache.responses['rateDetails']['expiryDate'] >= Math.floor(Date.now() / 1000)) {
                 RVBaseWebSrvV2.getJSON(url).then(function(response) {
                     var rates = [];
                     _.each(response.results, function(rate) {
                         rates[rate.id] = rate;
                     });
-                    that.rateDetailsCached = rates;
+
+                    that.cache.responses['rateDetails'] = {
+                        data: rates,
+                        expiryDate: Math.floor(Date.now() / 1000) + that.cache['config'].lifeSpan
+                    };
+
                     deferred.resolve(rates);
                 }, function(data) {
                     deferred.reject(data);
                 });
             } else {
-                deferred.resolve(that.rateDetailsCached);
+                deferred.resolve(that.cache.responses['rateDetails']['data']);
             }
             return deferred.promise;
         };
