@@ -336,7 +336,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			// fetch tasks and unassigned rooms
 			promises.push( this.fetchAllTasks() );
-			promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
+			// promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
 			promises.push( this.fetchAssignedRoomTasks(assignedRoomsParam) );
 
 			$q.all(promises)
@@ -368,6 +368,8 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/assign';
 
+			console.log( options );
+
 			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date );
 
 			RVBaseWebSrvV2.postJSON(url, params)
@@ -380,13 +382,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-		this.addAssignment = function(currAssignments, newAssignment) {
 
-		};
-
-		this.removeAssignment = function(currAssignments, newAssignment) {
-			
-		};
 
 
 		/**

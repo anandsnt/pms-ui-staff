@@ -177,24 +177,16 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				source = $scope.multiSheetState.unassignedFiltered;
 				draggedRoom = source[roomIndex];
 				draggedTask = draggedRoom['room_tasks'][taskIndex];
-				// need to add this task to "only_tasks", if it already doent exisit
-				// need to: if this new task's work_typ_id is mot present in "touched", add that
-				console.log( $scope.multiSheetState );
 			} else {
 				source = $scope.multiSheetState.selectedEmployees;
 				thatEmpl = source[draggedIndex];
 				draggedRoom = thatEmpl['rooms'][roomIndex];
 				draggedTask = draggedRoom['room_tasks'][taskIndex];
-			};	
+			};
 
 			var dropped  = $(event.target).attr('id'),
 				empIndex = parseInt( dropped.split('-')[0] ),
 				employee = $scope.multiSheetState.selectedEmployees[empIndex];
-
-			// if DRAGGED_TO already has the room
-			// find add the task inside the avail room
-			// else if DRAGGED_TO doesnt have the room
-			// create a new room and then add the task inside it
 
 			var hasRoom = _.find(employee.rooms, { 'room_id': draggedRoom.room_id });
 
@@ -208,9 +200,45 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 			};
 
+			// add the task to "only_tasks" and work_type_id to "touched_work_types"
+			employee.only_tasks.push(draggedTask);
+			employee.touched_work_types.push( draggedTask.work_type_id );
+			employee.touched_work_types = _.uniq( _.flatten(employee.touched_work_types) );
+
+			// if task removed from an employee =>
+			// remove the task from "only_tasks"
+			// and if the "work_type_id" in the removed task is not avail
+			// on employee's "room_tasks" anymore then remove it from "touched_work_types"
+			var inOnlyTask, hasOtherTaskWithSameWtid;
+			if ( 'UA' !== draggedIndex ) {
+				// that task with matches the id and room id of dragged task
+				inOnlyTask = _.findIndex(thatEmpl.only_tasks, function(task) {
+					return task.id === draggedTask.id && task.room_id === draggedTask.room_id
+				});
+
+				if ( inOnlyTask > -1 ) {
+					thatEmpl.only_tasks.splice(inOnlyTask, 1);
+				};
+
+				hasOtherTaskWithSameWtid = _.find(thatEmpl.only_tasks, { work_type_id: draggedTask.work_type_id });
+				if ( ! hasOtherTaskWithSameWtid ) {
+					thatEmpl.touched_work_types = _.without(thatEmpl.touched_work_types, draggedTask.work_type_id);
+				};
+			};
+
+
+			// remove task from draggedRoom
 			draggedRoom['room_tasks'].splice(taskIndex, 1);
-			// need to remove this task to "only_tasks"
-			// need to: if the freshly removed task's work type isnt avail anywhere on the entrie emp assigned task list, remove it from "touched"
+
+			// if the room was dragged off an employee and
+			// if there are no more tasks in the room's room_tasks
+			// remove the room iself!
+			if ( 'UA' !== draggedIndex && ! draggedRoom['room_tasks'].length ) {
+				thatEmpl['rooms'].splice(roomIndex, 1);
+			};
+
+
+			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 		};
 
 		/**
@@ -249,7 +277,38 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 			};
 
+
+
+			// if task removed from an employee =>
+			// remove the task from "only_tasks"
+			// and if the "work_type_id" in the removed task is not avail
+			// on employee's "room_tasks" anymore then remove it from "touched_work_types"
+			var inOnlyTask, hasOtherTaskWithSameWtid;
+			// that task with matches the id and room id of dragged task
+			inOnlyTask = _.findIndex(thatEmpl.only_tasks, function(task) {
+				return task.id === draggedTask.id && task.room_id === draggedTask.room_id
+			});
+			if ( inOnlyTask > -1 ) {
+				thatEmpl.only_tasks.splice(inOnlyTask, 1);
+			};
+
+			hasOtherTaskWithSameWtid = _.find(thatEmpl.only_tasks, { work_type_id: draggedTask.work_type_id });
+			if ( ! hasOtherTaskWithSameWtid ) {
+				thatEmpl.touched_work_types = _.without(thatEmpl.touched_work_types, draggedTask.work_type_id);
+			};
+
+
+			// remove task from draggedRoom
 			draggedRoom['room_tasks'].splice(taskIndex, 1);
+
+			// if the room was dragged off an employee and
+			// if there are no more tasks in the room's room_tasks
+			// remove the room iself!
+			if ( ! draggedRoom['room_tasks'].length ) {
+				thatEmpl['rooms'].splice(roomIndex, 1);
+			};
+
+			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 		};
 
 		$scope.onDateChanged = function() {
@@ -335,13 +394,30 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @return {Undefined}
 		 */
 		$scope.saveMultiSheet = function(config) {
+
+			// TEMP CODE NEED BEAUTIFICATION;
+			var temp = [];
+
+			_.each($scope.multiSheetState.selectedEmployees, function(emp) {
+				var found = _.find($scope.multiSheetState.assigned, { id: emp.id });
+
+				if ( ! found ) {
+					temp.push( emp );
+				};
+			});
+
+			temp = temp.concat( $scope.multiSheetState.selectedEmployees );
+			// TEMP CODE NEED BEAUTIFICATION;
+
+
+
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
 				var options = {
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
 					params: {
-						assignedRoomTasks: $scope.multiSheetState.assigned,
+						assignedRoomTasks: temp,
 						date: $scope.multiSheetState.selectedDate
 					}
 				}
