@@ -172,9 +172,6 @@ module.exports = function(gulp, $, options) {
 			delete require.cache[require.resolve(stateMappingList[state])];
 			combinedList 	= require(stateMappingList[state]).getList();
 			fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
-			if(state === "changestaydates") {
-				console.log(fileList);
-			}
 		}
 		fileList = fileList.concat('shared/cordova.js');
 		return gulp.src(fileList, {base: '.'})
