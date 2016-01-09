@@ -1,0 +1,36 @@
+<!-- contentarea starts here-->
+<div class="background-bg">
+	<div class="row headerrow white-bg">
+		<logo-image></logo-image>
+	</div>
+</div>
+<div class="jumbotron">
+	<div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head black-text">Your request is being processed.</p>
+			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+		</div>
+
+	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+		<p class="msg-head black-text">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
+		<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+	</div>
+		<!-- contentarea starts here-->
+	<div class="container line-top  line-bottom" ng-hide="isLoading || netWorkError">
+		<div class="row checkin-wrapper max-width-1000">
+			<div class="col-md-6 centeralign pad-rt-60">
+				<div class="checkout-status centeralign  no-top-padding pre-checkin-complete">
+					<p class="msg-head black-text preckin-status-header">Pre check-in Complete</p>
+					<p class="msg-body black-text no-border">Reservation #:{{confirmationNumber}}</p>
+		    	</div>
+			</div>
+
+			<div class="verti-ruler margin-bottom-20"></div>
+
+			<!-- top section ends here-->
+			<div class="col-md-6 pad-lf-60">
+				<p class="msg-body black-text centeralign">{{responseData.confirmation_message}}</p>
+			</div>
+		</div>
+			<!-- checkinbtn section ends here-->
+	</div>
+</div>
