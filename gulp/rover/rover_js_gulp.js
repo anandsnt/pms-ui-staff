@@ -21,12 +21,12 @@ module.exports = function(gulp, $, options) {
 			fs = require('fs');
 		
 		mkdirp(roverGenDir, function (err) {
-		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
+		    if (err) console.error('rover JS mapping directory failed!! (' + err + ')');
 	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
 			    if(err) {
-			        return console.error('rover mapping file failed!! (' + err + ')');
+			        return console.error('rover JS  mapping file failed!! (' + err + ')');
 			    }
-			    console.log('rover mapping file created (' + roverGenFile + ')');
+			    console.log('rover JS mapping file created (' + roverGenFile + ')');
 			}); 
 		});
 
@@ -49,7 +49,7 @@ module.exports = function(gulp, $, options) {
 			edit = require('gulp-json-editor');
 
 		var tasks = Object.keys(stateMappingList).map(function(state, index){
-			console.log ('rover-mapping-generation-started: ' + state);
+			console.log ('rover JS mapping-generation-started: ' + state);
 			var mappingList  		= require(stateMappingList[state]).getList(),
 				nonMinifiedFiles 	= mappingList.nonMinifiedFiles,
 				minifiedFiles 		= mappingList.minifiedFiles,
@@ -82,7 +82,7 @@ module.exports = function(gulp, $, options) {
 		        	Object.keys(manifest).forEach(function (path, orig) {
 				    	extendedMappings[state] = [URL_APPENDER + "/" + manifest[path]];
 				    });
-				    console.log ('rover-mapping-generation-end: ' + state);
+				    console.log ('rover JS mapping-generation-end: ' + state);
 		        	return {};
 		        }));
 		});
@@ -109,13 +109,13 @@ module.exports = function(gulp, $, options) {
 			});
 		}
 		mkdirp(roverGenDir, function (err) {
-		    if (err) console.error('rover mapping directory failed!! (' + err + ')');
-		    else console.log('rover mapping directory created (' + roverGenDir + ')');
+		    if (err) console.error('rover JS mapping directory failed!! (' + err + ')');
+		    else console.log('rover JS mapping directory created (' + roverGenDir + ')');
 	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
 			    if(err) {
-			        return console.error('rover mapping file failed!! (' + err + ')');
+			        return console.error('rover JS mapping file failed!! (' + err + ')');
 			    }
-			    console.log('rover mapping file created (' + roverGenFile + ')');
+			    console.log('rover JS mapping file created (' + roverGenFile + ')');
 			}); 
 		});
 	});
