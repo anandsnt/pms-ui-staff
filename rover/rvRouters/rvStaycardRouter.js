@@ -309,19 +309,22 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
-                roomsList: function(RVRoomAssignmentSrv, $stateParams, staycardJsAssets) {
+                roomAssignmentJsAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
+                },
+                roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
 
                     var params = {};
                     params.reservation_id = $stateParams.reservation_id;
                     params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
-                roomPreferences: function(RVRoomAssignmentSrv, $stateParams, staycardJsAssets) {
+                roomPreferences: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
                     var params = {};
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getPreferences(params);
                 },
-                roomUpgrades: function(RVUpgradesSrv, $stateParams, staycardJsAssets) {
+                roomUpgrades: function(RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
                     var params = {};
                     params.reservation_id = $stateParams.reservation_id;
                     return RVUpgradesSrv.getAllUpgrades(params);
@@ -340,7 +343,10 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
             resolve: {
-                stayDateDetails: function(RVChangeStayDatesSrv, $stateParams, staycardJsAssets) {
+                changeStayDatesJsAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('changestaydates', ['ui.calendar']);
+                },
+                stayDateDetails: function(RVChangeStayDatesSrv, $stateParams, changeStayDatesJsAssets) {
                     return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
                 }
             }

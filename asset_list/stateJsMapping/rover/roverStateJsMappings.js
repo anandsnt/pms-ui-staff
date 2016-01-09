@@ -19,7 +19,9 @@ module.exports = {
 			'endofday': roverJsListRoot + 'endOfDayJsAssetList.js',
 			'rover.workManagement': roverJsListRoot + 'workManagementJsAssetList.js',
 			'staffpasswordchange': roverJsListRoot + 'staffPasswordChangeJsAssetList.js',
-			'rover.reservation.staycard.billcard': roverJsListRoot + 'billScreenJsAssetList.js'
+			'rover.reservation.staycard.billcard': roverJsListRoot + 'billScreenJsAssetList.js',
+			'rover.reservation.staycard.roomassignment': roverJsListRoot + 'roomAssignmentJsAssetList.js',
+			'changestaydates': roverJsListRoot + 'changeDatesJsAssetList.js'
 		}
 	}
 }
