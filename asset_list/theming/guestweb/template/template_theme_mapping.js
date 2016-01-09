@@ -6,7 +6,7 @@ module.exports = {
 			landingPartials  		= 'guestweb/**/landing/',
 			sharedHtml  			= 'guestweb/**/shared/**/*.html';
 		return {
-			'row_nyc' 	:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
+			'row_nyc' 	:['guestweb/partials/**/**.html', sharedHtml],
 			'atura' 	:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
 			'bellagio' 	:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
 			'camby' 	:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
