@@ -1,9 +1,14 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout', 'adminDashboardConfigData',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout,  adminDashboardConfigData) {
 
 		//hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
-
+	
+		//store basic details as rootscope variables
+		$rootScope.adminRole = adminDashboardConfigData.admin_role;
+		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
+		$rootScope.isPmsConfigured = (adminDashboardConfigData.is_pms_configured === 'true') ? true : false;
+		
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
 
