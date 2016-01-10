@@ -54,7 +54,7 @@ module.exports = function(gulp, $, options){
 	  		}))
 	        .pipe($.templateCache(fileName, {
 	            module: 'sntGuestWebTemplates',
-	            root: URL_APPENDER
+	            root: URL_APPENDER + '/partials/'
 	        }).on('error', onError))
 	        .pipe($.uglify({compress:true, output: {
 	        	space_colon: false
