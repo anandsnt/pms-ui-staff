@@ -5,7 +5,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		// 2. WorkTypes
 		// 3. Shifts
 
-
+		var srv = this;
 
 		this.fetchMaids = function() {
 			var deferred = $q.defer();
@@ -64,6 +64,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
 		this.createWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets';
@@ -75,6 +80,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
 		this.fetchWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
@@ -86,6 +95,10 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
+		// WILL BE DEPRICATED
 		this.deleteWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
@@ -97,17 +110,24 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
+		// DEPRICATED!!!
 		this.fetchWorkSheetDetails = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments';
-			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
+			// RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+			// 	deferred.resolve(data);
+			// }, function(data) {
+			// 	deferred.reject(data);
+			// });
+			deferred.resolve([]);
 			return deferred.promise;
 		};
 
+		// param changed
 		this.saveWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments/assign';
@@ -119,6 +139,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
 		/**
 		 * Method to search Employees from the Work Management Landing page
 		 * @param  Object params
@@ -144,6 +169,11 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
+		// DEPRICATED FROM UI!!!
 		/**
 		 * Method to search Employees from the Work Management Landing page
 		 * @param  Object params
@@ -160,10 +190,100 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
+		// MODIFIED BELOW!!!
 		// method to fetch all unassigned rooms for a given date
 		this.fetchAllUnassigned = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/unassigned_rooms?date=' + params.date;
+
+			deferred.resolve([]);
+
+			// RVBaseWebSrvV2.getJSON(url)
+			// 	.then(function(data) {
+			// 		deferred.resolve(data.results);
+			// 	}, function(data) {
+			// 		deferred.reject(data);
+			// 	});
+
+			return deferred.promise;
+		};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		this.fetchHKStaffs = function() {
+			var deferred = $q.defer();
+			var url = 'api/work_statistics/employees_list';
+
+			var processData = function(data) {
+				var results = [],
+					emp_ids = [];
+
+				_.each(data.results, function(emp) {
+					emp_ids
+						.push( emp.id );
+
+					results =  $.extend(
+							{},
+							emp,
+							{ ticked: false },
+							{ checkboxDisabled: false }
+						);
+				});
+
+				return {
+					'results' : results,
+					'emp_ids' : emp_ids
+				};
+			};
+
+			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve( processData(data) );
+			}, function(data) {
+				deferred.reject(data);
+			});
+
+			return deferred.promise;
+		};
+
+
+		this.fetchAllTasks = function() {
+			var deferred = $q.defer(),
+				url = 'api/tasks';
 
 			RVBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
@@ -174,5 +294,473 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			return deferred.promise;
 		};
+
+		this.fetchUnassignedRoomTasks = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/unassigned_rooms';
+
+			RVBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchAssignedRoomTasks = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/assigned_rooms';
+
+			RVBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.payload = {};
+		this.processedPayload = function(unassignedRoomsParam, assignedRoomsParam) {
+			var deferred = $q.defer(),
+				promises = [],
+				unassignedRoomsResponse,
+				tasksResponse;
+
+			var allTasksResponse, unassignedRoomsResponse, assignedRoomsResponse;
+
+			var payload, allRooms;
+
+			// fetch tasks and unassigned rooms
+			promises.push( this.fetchAllTasks() );
+			promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
+			promises.push( this.fetchAssignedRoomTasks(assignedRoomsParam) );
+
+			$q.all(promises)
+				.then(function(data) {
+					tasksResponse           = data[0];
+					unassignedRoomsResponse = data[1];
+					assignedRoomsResponse   = data[2];
+
+					allRooms = compileAllRooms(unassignedRoomsResponse, assignedRoomsResponse);
+
+					this.payload = {
+						'allTasks'            : tasksResponse,
+						'allRooms'            : allRooms,
+						'unassignedRoomTasks' : compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
+						'assignedRoomTasks'   : compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
+					};
+
+					deferred.resolve( this.payload );
+				}.bind(this));
+
+			return deferred.promise;
+		};
+
+		this.getRoomDetails = function(index) {
+			return this.payload.allRooms[index];
+		};
+
+		this.saveWorkSheets = function(options) {
+			var deferred = $q.defer(),
+				url = 'api/work_assignments/assign';
+
+			console.log( options );
+
+			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date );
+
+			RVBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+
+
+		/**
+		 * PRIVATE METHODS
+		 */
+		
+		function compileAllRooms (unassignedRoomsResponse, assignedRoomsResponse) {
+			var allRooms = [];
+
+			return allRooms.concat( unassignedRoomsResponse.rooms, assignedRoomsResponse.rooms );
+		};
+
+		function compileUnassignedRooms (unassignedRooms, allTasks, allRooms) {
+			var allTasks        = allTasks || [],
+				unassignedRooms = $.extend({}, { 'rooms' : [], 'room_tasks' : [] }, unassignedRooms);
+
+			var rooms     = unassignedRooms.rooms,
+				roomTasks = unassignedRooms.room_tasks;
+
+			var i, j, k, l;
+
+			var compiled = [];
+
+			var roomIndex, copyRoom, eachRoomId;
+
+			var copyTask, eachRoomTasks;
+
+			var thatCompliedRoom, thatRoomTypeId, thatRoomNo, thatAllTask;
+
+			// 	creating a fresh array of room by copying rooms
+			// 	and augmenting it with empty 'room_tasks'
+			for (i = 0, j = rooms.length; i < j; i++) {
+				if ( roomTasks[i]['tasks'].length ) {
+					roomIndex = _.findIndex(allRooms, function(r) {
+						return r.id == rooms[i].id;
+					});
+
+					copyRoom = $.extend(
+							{}, 
+							{ 'room_id': rooms[i].id },
+							{ 'room_index': roomIndex },
+							{ 'room_tasks': [] }
+						);
+					/**
+					 * copyRoom
+					 * ========
+					 * {
+					 *   ...room_details
+					 *   room_tasks: []
+					 * }
+					 */
+					
+					compiled.push(copyRoom);
+				};
+			};
+
+			// loop through roomTasks, gather much info on each tasks
+			// and push it into appropriate room
+			for (i = 0, j = roomTasks.length; i < j; i++) {
+				if ( ! roomTasks[i]['tasks'].length ) {
+					continue;
+				};
+
+				eachRoomId     = roomTasks[i]['room_id'];
+				eachRoomTasks  = roomTasks[i]['tasks'];
+
+				thatCompiledRoom = _.find(compiled, { room_id: eachRoomId });
+
+				thatRoomTypeId = allRooms[ thatCompiledRoom.room_index ].room_type;
+				thatRoomNo     = allRooms[ thatCompiledRoom.room_index ].room_no;
+
+				for (k = 0, l = eachRoomTasks.length; k < l; k++) {
+					thatAllTask = _.find(allTasks, { id: eachRoomTasks[k]['id'] });
+
+					copyTask = $.extend(
+							{},
+							eachRoomTasks[k],
+							{
+								'task_name'      : thatAllTask.name,
+								'work_type_id'   : thatAllTask.work_type_id,
+								'work_type_name' : thatAllTask.work_type_name,
+								'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+							},
+							{
+								'room_id' : eachRoomId,
+								'room_no' : thatRoomNo
+							}
+						);
+					/**
+					 * copyTask
+					 * ========
+					 * {
+					 *   id: 1,
+				     *   completed: false,
+					 *   ...additional_tasks_details
+					 *   ...room_id & room_no
+					 * }
+					 */
+
+					thatCompiledRoom
+						.room_tasks
+						.push( copyTask );
+				};
+			};
+
+			return compiled;
+		};
+
+		function compileAssignedRooms (assignedRooms, allTasks, allRooms) {
+			var allTasks      = allTasks || [],
+				assignedRooms = $.extend({}, { 'employees' : [], 'rooms' : [] }, assignedRooms);
+
+			var employees = assignedRooms.employees,
+				rooms     = assignedRooms.rooms;
+
+			var i, j, k, l, m, n;
+
+			var compiled = [];
+
+			var roomIndex, copyEmployee, roomTasksInit, copyRoom, tasksInIt, thatAllTask, copyTask, thatRoomTypeId, thatRoomNo;
+
+			for (i = 0, j = employees.length; i < j; i++) {
+				var displayName = employees[i].name.split(" "),
+					firstname   = displayName.shift();
+				displayName = firstname.charAt(0) + ". " + displayName.join(" ");
+				copyEmployee = $.extend(
+						{},
+						{ 'id' : employees[i].id, 'name' : employees[i].name, 'display_name': displayName },
+						{ 'rooms' : [] },
+						{ 'only_tasks' : [] },
+						{ 'touched_work_types': [] }
+					);
+				/**
+				 * copyEmployee
+				 * ============
+				 * {
+				 *   id: 1,
+				 *   name: 'Vijay',
+				 *   rooms: [],
+				 *   only_tasks: [],
+				 *   touched_work_types: []
+				 * }
+				 */
+
+				roomTasksInit = employees[i]['room_tasks'];
+
+				for (k = 0, l = roomTasksInit.length; k < l; k++) {
+					roomIndex = _.findIndex(allRooms, function(r) {
+						return r.id == roomTasksInit[k].room_id;
+					});
+
+					copyRoom = $.extend(
+							{},
+							{ 'room_id': roomTasksInit[k].room_id },
+							{ 'room_index': roomIndex },
+							{ 'room_tasks': [] }
+						);
+					/**
+					 * copyRoom
+					 * ========
+					 * {
+					 *   ...room details,
+					 *   room_tasks: []
+					 * }
+					 */
+
+					copyEmployee
+						.rooms
+						.push( copyRoom );
+					/**
+					 * copyEmployee
+					 * ============
+					 * {
+					 *   id: 1,
+					 *   name: 'Vijay',
+					 *   rooms: [{
+					 *   	...room details,
+					 *      room_tasks: []
+					 *   }],
+					 *   touched_work_types: []
+					 * }
+					 */
+
+					tasksInIt = roomTasksInit[k]['tasks'];
+
+					thatRoomTypeId = allRooms[ roomIndex ].room_type;
+					thatRoomNo     = allRooms[ roomIndex ].room_no;
+
+					for (m = 0, n = tasksInIt.length; m < n; m++) {
+						thatAllTask = _.find(allTasks, { id: tasksInIt[m]['id'] });
+
+						copyTask = $.extend(
+								{},
+								tasksInIt[m],
+								{
+									'task_name'      : thatAllTask.name,
+									'work_type_id'   : thatAllTask.work_type_id,
+									'work_type_name' : thatAllTask.work_type_name,
+									'time_allocated' : getTimeAllocated( thatAllTask, thatRoomTypeId )
+								},
+								{
+									'room_id' : roomTasksInit[k].room_id,
+									'room_no' : thatRoomNo
+								}
+							);
+						/**
+						 * copyTask
+						 * ========
+						 * {
+						 *   id: 1,
+						 *   completed: false,
+						 *   ...additional_tasks_details
+						 *   ...room_id & room_no
+						 * }
+						 */
+
+						// keeping a top ref of all work_types_touched
+						// pushing new arrays, will flatten & uniq it just before 
+						// pushing to complied
+						copyEmployee
+							.touched_work_types
+							.push( [copyTask.work_type_id] );
+						
+						copyEmployee
+							.rooms[k]			// wonder why its k?
+							.room_tasks
+							.push( copyTask );
+						copyEmployee
+							.only_tasks
+							.push( copyTask );
+						/**
+						 * copyEmployee
+						 * ============
+						 * {
+						 *   id: 1,
+						 *   name: 'Vijay',
+						 *   rooms: [{
+						 *   	...room details,
+						 *      room_tasks: [{
+						 *         id: 1,
+						 *         completed: false,
+						 *         ...additional_tasks_details,
+						 *         ...additional_room_details
+						 *      }]
+						 *   }],
+						 *   only_tasks: [{
+						 *   	id: 1,
+						 *      completed: false,
+						 *      ...additional_tasks_details,
+						 *      ...additional_room_details
+						 *   }],
+						 *   touched_work_types: [ [1], [2] ]
+						 * }
+						 */
+					};
+				};
+
+				// flatten and remove duplicates
+				copyEmployee.touched_work_types = _.uniq( _.flatten(copyEmployee.touched_work_types) );
+
+				compiled.push(copyEmployee);
+			};
+
+			return compiled;
+		};
+
+		function getTimeAllocated (task, roomId) {
+			var time = '',
+				hh = 0,
+				mm = 0;
+
+			if ( task['room_types_completion_time'].hasOwnProperty(roomId) && !! task['room_types_completion_time'][roomId] ) {
+				time = task['room_types_completion_time'][roomId];
+			} else if ( !! task['completion_time'] ) {
+				time = task['completion_time'];
+			};
+
+			if ( time.indexOf(':') > -1 ) {
+				hh = time.split(':')[0];
+				mm = time.split(':')[1];
+			};
+
+			return {
+				hh: isNaN(parseInt(hh)) ? 0 : parseInt(hh),
+				mm: isNaN(parseInt(mm)) ? 0 : parseInt(mm)
+			};
+		};
+
+		function compileAssignedRoomsParams (assignedRoomTasks, date) {
+			var complied = $.extend(
+					{},
+					{ 'date'       : date },
+					{ 'work_types' : [] }
+				);
+
+			// PASS 1
+			// creating just the work type id entries
+			_.each(assignedRoomTasks, function(art) {
+				var touched = art.touched_work_types;
+
+				_.each(touched, function(wtid) {
+					var hasWorkType = _.find(complied.work_types, { id: wtid });
+
+					if ( ! hasWorkType ) {
+						var newWorkType = $.extend(
+								{},
+								{ 'id': wtid },
+								{ 'assignments': [] }
+							);
+
+						complied
+							.work_types
+							.push( newWorkType );
+					};
+				});
+			});
+
+			var workTypeId, hasThisWorkType, newAssignment, allTaskInThisWorkType, newTask;
+
+			// PASS 2
+			// dwad
+			_.each(complied.work_types, function(cwt, index) {
+				workTypeId = cwt.id;
+
+				_.each(assignedRoomTasks, function(art) {
+					hasThisWorkType = _.find(art.touched_work_types, function(id) {
+						return workTypeId == id;
+					});
+
+					if ( !! hasThisWorkType ) {
+						newAssignment = $.extend(
+								{},
+								{ 'employee_id': art.id },
+								{ 'tasks': [] }
+							);
+
+						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
+
+						_.each(allTaskInThisWorkType, function(eachTask) {
+							newTask = $.extend(
+									{},
+									{ 'id': eachTask.id },
+									{ 'room_id': eachTask.room_id }
+								);
+
+							newAssignment
+								.tasks
+								.push( newTask );
+						});
+
+						complied
+							.work_types[index]
+							.assignments
+							.push( newAssignment );
+					};
+				});
+			});
+
+			return complied;
+		};
+
+		// ALL APIS
+		// ========
+		// 
+		// api/tasks to get all tasks
+		// api/work_assignments/unassigned_rooms to get 'rooms' & 'room_tasks'
+		
+		// STEPS
+		// =====
+		// 
+		// 1. Loop through 'rooms' and grab { id, room_no, current_status, reservation_status, checkout_time } 
+		//    to create each entity in 'unassignedRooms'
+		// 2. Loop through 'room_tasks' and match { room_id } to unassignedRooms[n].id.
+		//    Then add { task_id } to matched unassignedRooms[n].room_tasks
+		// 3. Loop through unassignedRooms and match unassignedRooms[n].room_tasks[j].id to the particular task id.
+		//    Then in that task grab 'completion_time' by matching its room id to unassignedRooms[n].id
+
+		// Confused? Yeah me too.. :(
+
 	}
 ]);

@@ -36,6 +36,14 @@
 						<td data-title="'EMV Terminal'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.emv_name}}
 						</td>
+                                                
+						<td data-title="'Out of Service'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.is_out_of_order}}
+						</td>
+						<td data-title="'OOS Message'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.out_of_order_msg}}
+						</td>
+                                                
 						<td data-title="'Selected Printer'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.printer}}
 						</td>
