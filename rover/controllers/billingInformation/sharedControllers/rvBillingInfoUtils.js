@@ -20,7 +20,7 @@ function getGuestStatusMapped(reservationStatus, isLateCheckoutOn) {
 	if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
         return guestStatusMappings[reservationStatus][1];
 	}
-	else if (reservationStatus !== "") {
+	else if (reservationStatus !== "" && reservationStatus !== undefined) {
 		return guestStatusMappings[reservationStatus][0];
 	}
 }

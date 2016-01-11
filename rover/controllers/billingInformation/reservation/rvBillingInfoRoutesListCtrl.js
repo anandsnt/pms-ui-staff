@@ -5,12 +5,14 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     var scrollerOptions = { preventDefault: false };
     $scope.setScroller('routes', scrollerOptions);
 
-    setTimeout(function(){
+    setTimeout(function() {
         $scope.refreshScroller('routes');
     },500);
 
     /**
-    * function to get the charge code or billing group description, to reflect in UI
+    * Function to get the charge code or billing group description, to reflect in UI
+    * @param {Object} [route from routes list]
+    * @return {String} [charge code or billing group description]
     */
     $scope.getCharges = function(route) {
     	if (route.attached_charge_codes.length > 1 || route.attached_billing_groups.length > 1) {
@@ -25,7 +27,9 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     };
 
     /**
-    * function to get the charge type
+    * Function to get the charge type
+    * @param {Object} [route from routes list]
+    * @return {String} [charge type]
     */
     $scope.getRouteType = function(route) {
         if ((route.attached_charge_codes.length > 0 && 
@@ -40,7 +44,9 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     };
 
     /**
-    * function to delete route
+    * Function to delete route
+    * @param {Number} [index of route to delete]
+    * @return {undefined}
     */
     $scope.deleteRoute = function(index) {
 
