@@ -10,7 +10,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$_afterSave = null;
 
 		// Updated when employee selections change
-		var selectionHistory = [];
+		var selectionHistory = [],
+			workSheetChanged = false;
 
 		console.log( payload );
 
@@ -238,6 +239,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
 			// Refresh the scrollers and summary
+			workSheetChanged = true;
 			refreshView();
 		};
 
@@ -311,12 +313,20 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
 			// Refresh the scrollers and summary
+			workSheetChanged = true;
 			refreshView();
 		};
 
 		$scope.onDateChanged = function() {
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
-			updateView(true);
+
+			// Ask for save confirmation if unchanged changes are there.
+			if (workSheetChanged) {
+				openSaveConfirmationPopup();
+			} else {
+				updateView(true);
+			}
+
 		};
 
 		$scope.onWorkTypeChanged = function() {
@@ -352,6 +362,16 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		};
 
+		var openSaveConfirmationPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/workManagement/popups/rvWorkManagementSaveConfirmationPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
 		var lastSaveConfig = null;
 		/**
 		 * Function to delegate calling custom call back function,
@@ -377,6 +397,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var saveMultiSheetSuccessCallBack = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.clearErrorMessage();
+			workSheetChanged = false;
 			afterSaveAPIcall();
 		};
 
@@ -585,6 +606,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 		var fetchWorkSheetPayloadSuccess = function(data) {
 			payload = data;
+			workSheetChanged = false;
 			initializeMultiSheetDataModel();
 			initializeEmployeesList();
 			$scope.filterUnassigned();
