@@ -57,7 +57,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				name: '',
 				is_active: true,
 				hotel_id: $rootScope.hotelId,
-				is_show_on_stay_card: true
+				is_show_on_stay_card: false
 			};
 		};
 		resetEachWorkType();
