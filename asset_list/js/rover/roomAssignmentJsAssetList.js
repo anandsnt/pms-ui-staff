@@ -8,6 +8,7 @@ module.exports = {
 				],
 				nonMinifiedFiles: [						
 					controllerRoot + "roomAssignment/**/*.js",
+					controllerRoot + "upgrades/**/*.js",
 					servicesRoot + "roomAssignment/**/*.js"
 				]
 		};

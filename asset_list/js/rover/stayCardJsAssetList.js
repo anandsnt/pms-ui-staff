@@ -27,6 +27,7 @@ module.exports = {
 				controllerRoot + "allotments/**/**.js",
 				controllerRoot + "groups/**/**.js",
 				controllerRoot + "reservationCard/**/**.js",
+				controllerRoot + "packages/rvReservationPackageController.js",
 				controllerRoot + "roverPayment/**/**.js",
 				controllerRoot + "smartbands/**/**.js",
 				servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",

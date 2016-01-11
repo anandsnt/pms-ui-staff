@@ -1,4 +1,4 @@
-sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', '$timeout',
+angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', '$timeout',
 	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog, $timeout) {
 
 		BaseCtrl.call(this, $scope);

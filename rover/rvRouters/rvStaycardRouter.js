@@ -334,7 +334,12 @@ angular.module('stayCardModule', [])
         $stateProvider.state('rover.reservation.staycard.upgrades', {
             url: '/upgrades/:reservation_id/:clickedButton',
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
-            controller: 'RVUpgradesController'
+            controller: 'RVUpgradesController',
+            resolve: {
+                roomAssignmentJsAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
+                }
+            }
         });
 
         //Change stay dates
