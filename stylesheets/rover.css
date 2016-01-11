@@ -9,6 +9,6 @@
  @import (inline) 'shared/lib/css/ngDialog-theme-default.css';
  @import (inline) 'shared/lib/css/ngDialog-theme-plain.css';
  @import (inline) 'shared/lib/css/ng-table.css';
- @import (inline) 'shared/lib/css/date-picker.css.less';
+ @import 'shared/lib/css/date-picker.css.less';
  @import (inline) 'shared/lib/css/advanced_date_picker.css';
  @import (inline) 'shared/lib/css/angular-multi-select.css';
