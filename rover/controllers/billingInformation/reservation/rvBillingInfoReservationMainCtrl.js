@@ -135,8 +135,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to get the class for the 'li' according to the entity role
-    * @param {Ohject} selected route
-    * @return {String} class of 'li'
+    * @param {Ohject} [selected route]
+    * @return {String} [class of 'li']
     */
 	$scope.getEntityRole = function(route) {
     	if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
@@ -155,8 +155,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to get the class for the 'icon' according to the entity role
-    * @param {Ohject} selected route
-    * @return {String} class of 'icon'
+    * @param {Ohject} [selected route]
+    * @return {String} [class of 'icon']
     */
     $scope.getEntityIconClass = function(route) {
         if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests) {
@@ -260,8 +260,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
         $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? 
-                                      $filter('translate')('BILLING_INFO_TITLE'):
-                                      $filter('translate')('ADD_BILLING_INFO_TITLE');
+                                              $filter('translate')('BILLING_INFO_TITLE'):
+                                              $filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
     init();
