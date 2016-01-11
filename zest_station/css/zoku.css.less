@@ -2,7 +2,7 @@
 
 /* 0. THEME
 ==========================================================*/
-	@import "themes/fontainebleau/theme.less";
+	@import "themes/zoku/theme.less"; /* This sample contains Zoku styles */
 
 /* 1. ROOT
 ==========================================================*/
@@ -20,12 +20,11 @@
 
 /* 4. LAYOUTS
 ==========================================================*/
-	@media not print {
-        @import "less/layout.less";
-    }
+	@import "less/layout.less";	
 
 /* 5. MEDIA
 ==========================================================*/
+
     @media only print {
-    @import "less/print.less"; 
-    }
+       @import "zoku_print.less" ; 
+   }

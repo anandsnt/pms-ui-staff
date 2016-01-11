@@ -126,6 +126,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+						$scope.hasNoTotals = true;
+					break;
+
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
 				case reportNames['WEB_CHECK_OUT_CONVERSION']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
@@ -185,6 +189,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.leftColSpan = 4;
 						$scope.rightColSpan = 5;
 					}
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportNames['UPSELL']:
@@ -325,6 +334,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 							'outs_via_kiosk' : totals[4]['value']
 						};
 					};
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.$parent.summaryCounts = totals;
 					break;
 
 				case reportNames['UPSELL']:

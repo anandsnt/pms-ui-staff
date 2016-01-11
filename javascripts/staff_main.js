@@ -61,6 +61,7 @@
 //=require_tree ../rover/react/reports/dailyProductionDemographics/
 
 //=require ../rover/rvRouter.js
+//=require ../rover/rvUUIDService.js
 //=require ../rover/rvCardOperations.js
 //=require ../rover/rvMLIOperations.js
 //=require ../rover/rvSwipeOperations.js

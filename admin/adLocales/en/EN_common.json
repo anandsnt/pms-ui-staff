@@ -128,7 +128,11 @@
 "GUEST_DETAIL_COLLECTION":"Guest Detail Collection",
 "BIRTHDATE_COLLECTION":"Birthdate Collection",
 "ADDRESS_COLLECTION":"Address Collection",
-"GUEST_CC_COLLECTION":"Guest CC Collection"
+"GUEST_CC_COLLECTION":"Guest CC Collection",
+"COLLECT_ADDRESS_IN_ONE_SCREEN":"Control Zest Web templates that collect address and birth date on a single screen",
+"COLLECT_BIRTHDAY_SEPERATELY":"Control Zest Web templates that collect birth date separately from address",
+"COLLECT_BIRTHDAY_INSTRUCTION":"Set to zero if there is no minimum age required",
+"COLLECT_ADDRESS_SEPERATELY":"Control Zest Web templates that collect birth date separately from address"
 
 
 
