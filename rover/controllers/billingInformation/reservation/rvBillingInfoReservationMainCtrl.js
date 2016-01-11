@@ -2,7 +2,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     BaseCtrl.call(this, $scope);
 
-    var initializeMe = function() {
+    var init = function() {
         $scope.attachedEntities = [];
 
         //Contains selected entity details. Entity is selected 
@@ -103,7 +103,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
             $scope.billingInfoFlags.isReloadNeeded = false;
             $scope.fetchRoutes();
         }
-        initializeMe();
+        init();
     };
 
     /**
@@ -130,34 +130,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
     * @return {String} [class according to reservation status]
     */
     $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
-        var viewStatus = "";
-        if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
-            viewStatus = "late-check-out";
-            return viewStatus;
-        }
-
-        if ("RESERVED" === reservationStatus) {
-            viewStatus = "arrival";
-        } 
-        else if ("CHECKING_IN" === reservationStatus) {
-            viewStatus = "check-in";
-        } 
-        else if ("CHECKEDIN" === reservationStatus) {
-            viewStatus = "inhouse";
-        } 
-        else if ("CHECKEDOUT" === reservationStatus) {
-            viewStatus = "departed";
-        } 
-        else if ("CHECKING_OUT" === reservationStatus) {
-            viewStatus = "check-out";
-        } 
-        else if ("CANCELED" === reservationStatus) {
-            viewStatus = "cancel";
-        } 
-        else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
-            viewStatus = "no-show";
-        }
-        return viewStatus;
+        return getGuestStatusMapped(reservationStatus, isLateCheckoutOn);
     };
 
     /**
@@ -286,14 +259,11 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 	$scope.handleCloseDialog = function() {
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
-
-        //if (!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
-            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? 
-                                                  $filter('translate')('BILLING_INFO_TITLE'):
-                                                  $filter('translate')('ADD_BILLING_INFO_TITLE');
-        }
+        $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? 
+                                      $filter('translate')('BILLING_INFO_TITLE'):
+                                      $filter('translate')('ADD_BILLING_INFO_TITLE');
 	};
 
-    initializeMe();
+    init();
 
 }]);
