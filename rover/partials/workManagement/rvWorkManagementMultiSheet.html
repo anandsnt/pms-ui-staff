@@ -43,11 +43,11 @@
             <div class="action">
                 <label>Re-Set</label>
                 <button type="button" class="button white with-icon only-icon"
-                    ng-click="refreshSheet()">
+                    ng-click="updateView()">
                     <span class="icons icon-reset"></span>
                 </button>
             </div>
-            <div class="action"> <!-- Keep hidden until changes are mand -->
+            <div class="action" ng-show="workSheetChanged"> <!-- Keep hidden until changes are mand -->
                 <label translate>SAVE</label>
                 <button type="button" class="button green with-icon only-icon"
                     ng-click="saveMultiSheet()">
