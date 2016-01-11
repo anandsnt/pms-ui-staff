@@ -18,6 +18,7 @@
 
 			var searchReservation =  function(data){
 				var deferred = $q.defer();
+				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 				var url = '/guest_web/checkin_reservation_search.json';
 				$http.get(url,{params: data}).success(function(response) {
 					deferred.resolve(response);

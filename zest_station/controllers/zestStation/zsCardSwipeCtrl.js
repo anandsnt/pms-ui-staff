@@ -346,6 +346,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         $scope.initStaff = function(){
             $state.go('zest_station.speak_to_staff');
         };
+        $scope.depositAmountValue = '';
         $scope.init = function(r){ 
            $scope.selectedReservation = $state.selectedReservation;
            
@@ -360,7 +361,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             } else if (current === 'zest_station.deposit_agree'){
                 $scope.at = 'deposit-agree';
                 $scope.headingText = 'DEPOSIT_REMAIN';
-                $scope.subHeadingText = 'DEPOSIT_REMAIN_SUB '+$scope.zestStationData.currencySymbol+$state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
+                $scope.subHeadingText = 'DEPOSIT_REMAIN_SUB ';
+                $scope.depositAmountValue = $scope.zestStationData.currencySymbol+$state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
                 $scope.subsubheadingText = 'DEPOSIT_REMAIN_SUB_SUB';
             } else {
                 $scope.at = 'card-swipe';
