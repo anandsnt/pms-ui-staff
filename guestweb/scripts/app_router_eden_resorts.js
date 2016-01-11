@@ -9,18 +9,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/checkoutBalance.html',
+       	templateUrl: '/assets/partials/eden/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/checkOutStatus.html',
+       	templateUrl: '/assets/partials/eden/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/checkoutConfirmation.html',
+       	templateUrl: '/assets/partials/eden/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -33,12 +33,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Eden_resorts/checkOutLater.html',
+		templateUrl: '/assets/partials/eden/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Eden_resorts/checkOutLaterSuccess.html',
+		templateUrl: '/assets/partials/eden/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -47,32 +47,32 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInConfirmation.html',
+	 	templateUrl: '/assets/partials/eden/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInReservationDetails.html',
+	 	templateUrl: '/assets/partials/eden/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/partials/eden/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkInKeys.html',
+	 	templateUrl: '/assets/partials/eden/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/checkinSuccess.html',
+	 	templateUrl: '/assets/partials/eden/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/arrivalDetails.html',
+	 	templateUrl: '/assets/partials/eden/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
@@ -81,12 +81,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/partials/eden/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/ccVerification.html',
+	 	templateUrl: '/assets/partials/eden/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -103,29 +103,29 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/earlyCheckinOptions.html',
+	 	templateUrl: '/assets/partials/eden/earlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/earlyCheckinFinal.html',
+	 	templateUrl: '/assets/partials/eden/earlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/checkin/partials/Eden_resorts/lateArrivalDetails.html',
+	 	templateUrl: '/assets/partials/eden/lateArrivalDetails.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
 
 	 $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/externalVerification.html',
+	 	templateUrl: '/assets/partials/eden/externalVerification.html',
 	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
-	 	templateUrl: '/assets/checkoutnow/partials/Eden_resorts/externalVerificationError.html',
+	 	templateUrl: '/assets/partials/eden/externalVerificationError.html',
 	 	controller:'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
@@ -135,7 +135,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/Eden/noOption.html',
+	 	templateUrl: '/assets/partials/eden/noOption.html',
 	 	title: 'Feature not available'
 	});
 
