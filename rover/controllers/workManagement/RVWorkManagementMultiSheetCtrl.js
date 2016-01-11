@@ -235,8 +235,10 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				thatEmpl['rooms'].splice(roomIndex, 1);
 			};
 
-
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
+
+			// Refresh the scrollers and summary
+			refreshView();
 		};
 
 		/**
@@ -307,6 +309,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			};
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
+
+			// Refresh the scrollers and summary
+			refreshView();
 		};
 
 		$scope.onDateChanged = function() {
