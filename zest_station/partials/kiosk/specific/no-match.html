@@ -2,39 +2,39 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" ng-hide='at !== "no-match"' click-touch='resetTime()'>
     <div id="content">
-        <h1 style="padding-top: 23px;">Sorry.</h1>
-        <h2>We can't seem to find you.</h2>
+        <h1 style="padding-top: 23px;">{{'NO_MATCH_HEADER' |translate}}</h1>
+        <h2>{{'NO_MATCH_HEADER_SUB' |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reEnter("last")'>
                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
-                    Re-Enter
+                    {{'NO_MATCH_RE_LAST' |translate}}
                     <span>"{{input.last}}"</span>
                 </li>
                 <li class="break">
-                    <span>Or</span>
+                    <span>{{'NO_MATCH_RE_LAST' |translate}}</span>
                 </li>
                 <li ng-show="lastAt === 'find-by-email'">
                     <button type="button" class="button option" touch-press='reEnter("email")'>
                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
-                    Re-Enter
+                    {{'NO_MATCH_RE_LAST' |translate}}
                     <span>"{{input.email}}"</span>
                 </li>
                 <li ng-show="lastAt === 'find-by-confirmation'">
                     <button type="button" class="button option" touch-press='reEnter("confirmation")'>
                         <div ng-include="'assets/css/icons/confirmation.svg'"></div>
                     </button>
-                    Re-Enter
+                    {{'NO_MATCH_RE_LAST' |translate}}
                     <span>"{{input.confirmation}}"</span>
                 </li>
                 <li ng-show="lastAt === 'find-by-date'">
                     <button type="button" class="button option" touch-press='reEnter("date")'>
                         <div ng-include="'assets/css/icons/moon.svg'"></div>
                     </button>
-                    Re-Enter
+                    {{'NO_MATCH_RE_LAST' |translate}}
                     <span>"{{getDateRenderFormat(input.date)}}"</span>
                 </li>
                 
@@ -42,18 +42,18 @@
                     <button type="button" class="button option" touch-press='reEnter("room")'>
                         <div ng-include="'assets/css/icons/keyboard.svg'"></div>
                     </button>
-                    Re-Enter
+                    {{'NO_MATCH_RE_LAST' |translate}}
                     <span>"{{input.room}}"</span>
                 </li>
                 <li class="break">
-                    <span>Or</span>
+                    <span>{{'NO_MATCH_OR' |translate}}</span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="'assets/css/icons/staff.svg'"></div>
                     </button>
-                    Talk
-                    <span>To a Staff Member</span>
+                    {{'NO_MATCH_TALK' |translate}}
+                    <span>{{'NO_MATCH_TALK_SUB' |translate}}</span>
                 </li>
             </ul>
         </nav>
