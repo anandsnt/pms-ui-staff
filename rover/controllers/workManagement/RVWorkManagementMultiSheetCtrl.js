@@ -13,8 +13,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var selectionHistory = [];
 
 		console.log( payload );
-		// To Do: remove this line
-		payload.assignedRoomTasks[0].rooms[0].room_tasks[0].is_complete = true;
 
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
