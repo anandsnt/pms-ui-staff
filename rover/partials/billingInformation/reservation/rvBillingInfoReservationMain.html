@@ -4,7 +4,8 @@
       <div class="modal-header">
          <h1 translate>BILLING_INFO_TITLE</h1>
          <em><span translate>CONFIRMATION_LABEL</span> #{{reservationData.confirm_no}}</em>
-         <button type="button" id="new-route" class="button" ng-class = "{'green': billingInfoFlags.isInitialPage, 'white':!billingInfoFlags.isInitialPage}" ng-click="headerButtonClicked()">{{getHeaderButtonLabel()}}</button>
+         <button type="button" id="new-route" class="button green" ng-show="billingInfoFlags.isInitialPage" ng-click="addNewRoute()" translate>ADD_ROUTES_LABEL</button>
+         <button type="button" id="new-route" class="button white" ng-show="!billingInfoFlags.isInitialPage" ng-click="navigateToInitialPage()" translate>ALL_ROUTES_LABEL</button>
       </div>
       <div style="position: relative;overflow: hidden;height:510px;">
          <div class = "wrapper">

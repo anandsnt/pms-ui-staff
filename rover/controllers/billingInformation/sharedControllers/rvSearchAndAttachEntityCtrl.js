@@ -2,6 +2,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	BaseCtrl.call(this, $scope);
 
 	$scope.textInQueryBox = "";
+	$scope.errorMessage = "";
   	$scope.isReservationActive = true;
 
   	var scrollerOptions = {click: true, preventDefault: false};
@@ -13,10 +14,9 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     var scrollerOptions = { preventDefault: false};
     $scope.setScroller('entities', scrollerOptions);
 
-    setTimeout(function(){
+    setTimeout(function() {
         $scope.refreshScroller('entities');
-        },
-    500);
+    },500);
 
     /**
     * Single digit search done based on the settings in admin
@@ -236,7 +236,6 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         $scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
 
-        $scope.errorMessage = "";
 		$scope.billingInfoFlags.isEntitySelected = true;
         $scope.billingInfoFlags.isInAddRoutesMode = false;
         $scope.billingInfoFlags.isInitialPage = false;

@@ -646,7 +646,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             $scope.$parent.$emit('hideLoader');
             $scope.$parent.$emit('BILLINGINFOADDED');
             $scope.setReloadOption(true);
-            $scope.headerButtonClicked();
+            $scope.navigateToInitialPage();
             $scope.updateCardInfo();
             $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
         };
@@ -742,7 +742,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.saveSuccessCallback = function (data) {
             $scope.$parent.$emit('hideLoader');
             $scope.setReloadOption(true);
-            $scope.headerButtonClicked();
+            $scope.navigateToInitialPage();
             $scope.$parent.$emit('BILLINGINFOADDED');
             //Added for CICO-23210
             $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
