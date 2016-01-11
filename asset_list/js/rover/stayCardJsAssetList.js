@@ -10,6 +10,7 @@ module.exports = {
 				'rover/directives/delayTextbox/rvDelayTextBox.js',
 				'rover/directives/Autogrowing text field/autoGrowFieldDirective.js',
 				controllerRoot + "rvGuestController.js",
+				controllerRoot + "rvContactInfoDatePickerCtrl.js",
 				controllerRoot + "rvGuestCardLoyaltyCtrl.js",
 				controllerRoot + "rvReservationRoomStatusCtrl.js",
 				controllerRoot + "rvContactInfoController.js",			
