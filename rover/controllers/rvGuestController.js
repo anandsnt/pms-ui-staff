@@ -1460,7 +1460,7 @@ sntRover.controller('guestCardController', [
 					showAllotmentRoomTypeIsNotConfiguredPopup();
 				}
 			} else {
-				$scope.errrorMessage = error;
+				$scope.errrorMessage = error.errorMessage;
 			}
 		};
 
