@@ -1096,6 +1096,19 @@ sntRover.controller('guestCardController', [
 		};
 
 		/**
+		 * [showCreditLimitExceedPopup description]
+		 * @return {undefined}
+		 */
+		var showCreditLimitExceedPopup = function(){
+			ngDialog.open({
+                template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+		};
+
+		/**
 		 * navigate to group details
 		 * @return {[type]} [description]
 		 */
@@ -1142,6 +1155,7 @@ sntRover.controller('guestCardController', [
 				else if (error.httpStatus === 472) {
 					showGroupRoomTypeIsNotConfiguredPopup();
 				}
+				
 			} else {
 				$scope.errrorMessage = error;
 			}
@@ -1458,6 +1472,11 @@ sntRover.controller('guestCardController', [
 				//472 - Room type is not configured in Group
 				else if (error.httpStatus === 472) {
 					showAllotmentRoomTypeIsNotConfiguredPopup();
+				}
+
+				//473 - Show Credit Limit exceed popup.
+				else if (error.httpStatus === 473) {
+					showCreditLimitExceedPopup();
 				}
 			} else {
 				$scope.errrorMessage = error.errorMessage;
