@@ -11,6 +11,7 @@ module.exports = {
 				'rover/directives/Autogrowing text field/autoGrowFieldDirective.js',
 				controllerRoot + "rvGuestController.js",
 				controllerRoot + "rvContactInfoDatePickerCtrl.js",
+				controllerRoot + "rvAddLoyaltyProgramController.js",
 				controllerRoot + "rvGuestCardLoyaltyCtrl.js",
 				controllerRoot + "rvReservationRoomStatusCtrl.js",
 				controllerRoot + "rvContactInfoController.js",			
