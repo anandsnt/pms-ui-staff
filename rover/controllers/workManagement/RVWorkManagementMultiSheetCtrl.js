@@ -601,17 +601,20 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
             var unassignedRoomsParam = {
                 date: $scope.multiSheetState.selectedDate,
             };
-            if ($scope.multiSheetState.header.work_type_id) {
-            	_.extend(unassignedRoomsParam, {
-            		work_type_id: $scope.multiSheetState.header.work_type_id
-            	});
-            }
 
             var assignedRoomsParam = {
                 date: $scope.multiSheetState.selectedDate,
                 employee_ids: fetchHKStaffs.emp_ids
             };
 
+            if ($scope.multiSheetState.header.work_type_id) {
+            	_.extend(unassignedRoomsParam, {
+            		work_type_id: $scope.multiSheetState.header.work_type_id
+            	});
+            	_.extend(assignedRoomsParam, {
+            		work_type_id: $scope.multiSheetState.header.work_type_id
+            	});
+            }
             RVWorkManagementSrv.processedPayload(unassignedRoomsParam, assignedRoomsParam)
             	.then(fetchWorkSheetPayloadSuccess, fetchWorkSheetPayloadFailure);
 		};
