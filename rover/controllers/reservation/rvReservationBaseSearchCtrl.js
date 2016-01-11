@@ -294,6 +294,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
             if(dateOffset > RESV_LIMIT){
                 dateOffset = RESV_LIMIT;
+                $scope.reservationData.numNights = '';
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
