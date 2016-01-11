@@ -336,7 +336,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 			// fetch tasks and unassigned rooms
 			promises.push( this.fetchAllTasks() );
-			// promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
+			promises.push( this.fetchUnassignedRoomTasks(unassignedRoomsParam) );
 			promises.push( this.fetchAssignedRoomTasks(assignedRoomsParam) );
 
 			$q.all(promises)
