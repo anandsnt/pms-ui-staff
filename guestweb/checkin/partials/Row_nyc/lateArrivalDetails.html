@@ -1,0 +1,84 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+	<div class="container backgroundbg width-100" >
+		<div class="black-bg">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head black-text">Your request is being processed.</p>
+			<p class="msg-body black-text">This may take a few seconds..... please wait!</p>
+		</div>
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head black-text">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
+			<p class="msg-body black-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="black-text">{{hotelPhone}}.</a></p>
+		</div>
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isLoading || netWorkError">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper-top arrival-details row checkin-wrapper container-top-padding late-arrival-details">
+
+				<div class="col-md-6 pad-rt-60">
+					<div class="chekin-heading centeralign black-text">
+						 Early Check-in Alert
+						<p class="subTitletext">
+							You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). Please request a Check-in time after {{earlyCheckinRestrictLimit}} to proceed with your check in without a fee.
+						</p>
+					</div>
+				</div>
+
+				<div class="verti-ruler margin-top-20"></div>
+
+				<div class="col-md-6 pad-lf-60">
+					
+					<div class="date-container ">
+						<div class="row cabin_number_field ">
+							<p class="lightcontent grey-text">ESTIMATED ARRIVAL TIME</p>
+							<div class="expiry-year-container eta-container margin-left-0">
+								<div class="select-style">
+									<select ng-model="stayDetails.hour"
+									ng-options="hour as hour  for hour in hours">
+									<option value="">HH</option>
+								</select>
+							</div>
+						</div>
+						<div class="expiry-year-container eta-container">
+							<div class="select-style">
+								<select ng-model="stayDetails.minute"
+								ng-options="minute as minute  for minute in minutes">
+								<option value="">MM</option>
+							</select>
+						</div>
+					</div>
+					<div class="expiry-year-container eta-container">
+						<div class="select-style arrival-time">
+							<select ng-model="stayDetails.primeTime">
+								<option value="AM" selected="" >AM</option>
+								<option value="PM" >PM</option>
+								<option value="">AM/PM</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>			
+			<div class="row cabin_number_field">			
+				<button class="checkin-button pre-checkin-btn pink-bg pre-checkin-button continue-button"
+				ng-click="postStayDetails()">
+					<span class="white-text">Continue</span>
+				</button>
+			</div>
+			<div class="row"><p class="lightcontent grey-text">(We'll email you as soon as your room is available.)</p></div>
+	</div>
+</div>	
+<div class="row  no-top-margin">
+	<div class="col-md-6 error-callus">
+		&nbsp;
+	</div>
+</div>						
+</div>
+<!-- pre-checkinbtn section ends here-->
+</div>
+
