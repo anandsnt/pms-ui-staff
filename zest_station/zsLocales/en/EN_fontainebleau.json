@@ -187,6 +187,17 @@
     
     "ADMIN_LOGIN_ERROR":"Invalid Login, Please Try Again",
     "EXIT_BTN":"Exit",
+    "ADMIN_HEADER":"Administrator",
+    "ADMIN_LOGIN":"Login",
+    "ADMIN_EXIT":"Exit",
+    
+    
+    "SEL_RES_HEADER":"Select a Reservation",
+    "SEL_RES_NAME":"Name",
+    "SEL_RES_CO_DATE_ROOM_TYPE":"Check Out Date / Room Type",
+    "SEL_RES_LAST":"Previous",
+    "SEL_RES_NEXT":"Next",
+    
     
     
     
