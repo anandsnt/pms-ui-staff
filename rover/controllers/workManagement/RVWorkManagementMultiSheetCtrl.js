@@ -10,7 +10,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$_afterSave = null;
 
 		// Updated when employee selections change
-		var selectionHistory = [];
+		var selectionHistory = [],
+			employeeIndexHash = {};
 
 		console.log( payload );
 
@@ -46,39 +47,32 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
 		 */
 		$scope.selectEmployee = function(data) {
-			var tickedEmployees = _.where($scope.employeeList, {
-										ticked: true
-									});
-			tickedEmployees = _.pluck(tickedEmployees, 'id');
+			var tickedEmployees = _.where($scope.employeeList, { ticked: true });
+				tickedEmpID		= _.pluck(tickedEmployees, 'id'),
+				assigned 		= $scope.multiSheetState.assigned;
+
+			// Since we are changing selectedEmployees while doing drag drop,
+			// we need to put back the changed object to assigned list.
+			_.each($scope.multiSheetState.selectedEmployees, function(employee, index) {
+				var assignedIndex = employeeIndexHash[index];
+				assigned[assignedIndex] = employee;
+			});
+
+			// reset list
 			$scope.multiSheetState.selectedEmployees = [];
-			_.each(tickedEmployees, function(empId) {
-				var emp = _.findWhere($scope.multiSheetState.assigned, {
+			employeeIndexHash = {};
+
+			_.each(tickedEmpID, function(empId) {
+				var found = _.findWhere(assigned, {
 					id: empId
 				});
-				if (emp)
-					$scope.multiSheetState.selectedEmployees.push(emp);
+				if ( !!found ) {
+					$scope.multiSheetState.selectedEmployees.push(found);
+					employeeIndexHash[$scope.multiSheetState.selectedEmployees.length-1] = assigned.indexOf(found);
+				}
 			});
-			$scope.multiSheetState.placeHolders = _.range($scope.multiSheetState.maxColumns - $scope.multiSheetState.selectedEmployees.length);
 
-			/**
-			 * Need to disable selection of more than "$scope.multiSheetState.maxColumns" employees
-			 */
-			if ($scope.multiSheetState.selectedEmployees.length >= $scope.multiSheetState.maxColumns) {
-				var notTicked = _.where($scope.employeeList, {
-					ticked: false
-				});
-				_.each(notTicked, function(d) {
-					d.checkboxDisabled = true;
-				});
-			} else {
-				var disabledEntries = _.where($scope.employeeList, {
-					checkboxDisabled: true
-				});
-				_.each(disabledEntries, function(d) {
-					d.checkboxDisabled = false;
-				});
-			}
-
+			// refresh scrollers and update summary
 			refreshView();
 		};
 
@@ -478,6 +472,17 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
+
+		/**
 		 * Set previous state and heading.
 		 */
 		var setBackNavAndTitle = function() {
@@ -542,19 +547,26 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Auto select employees based on daily worksheet employee data
 		 */
 		var initializeEmployeesList = function() {
-			// select all employeed by default
 			$scope.multiSheetState.selectedEmployees = [];
+			var selected = $scope.multiSheetState.selectedEmployees,
+				assigned = $scope.multiSheetState.assigned,
+				found 	 = null;
+
+			employeeIndexHash = {};
+			// select all employeed by default if no selection history is present
 			_.each($scope.employeeList, function(employee) {
 				if (selectionHistory.length) {
 					if (selectionHistory.indexOf(employee.id) < 0)
 						return false;
 				}
 				employee.ticked = true;
-				var emp = _.findWhere($scope.multiSheetState.assigned, {
+				var found = _.findWhere(assigned, {
 					id: employee.id
 				});
-				if (emp)
-					$scope.multiSheetState.selectedEmployees.push(emp);
+				if ( !!found ) {
+					selected.push(found);
+					employeeIndexHash[selected.length-1] = assigned.indexOf(found);
+				}
 			});
 		};
 
@@ -606,6 +618,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		var refreshView = function() {
 			updateSummary();
+			runDigestCycle();
 			setScroller();
 			refreshScrollers();
 		};
