@@ -355,7 +355,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 					};
 
 					deferred.resolve( this.payload );
-				}.bind(this));
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
 
 			return deferred.promise;
 		};

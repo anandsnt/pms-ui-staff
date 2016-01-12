@@ -583,6 +583,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		var fetchWorkSheetPayloadSuccess = function(data) {
+			$scope.$emit('hideLoader');
 			payload = data;
 			$scope.workSheetChanged = false;
 			initializeMultiSheetDataModel();
@@ -592,6 +593,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		var fetchWorkSheetPayloadFailure = function(error) {
+			$scope.$emit('hideLoader');
 			$scope.errorMessage = error;
 		};
 
@@ -604,7 +606,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.$emit("showLoader");
 
             var unassignedRoomsParam = {
-                date: $scope.multiSheetState.selectedDate,
+                date: $scope.multiSheetState.selectedDate
             };
 
             var assignedRoomsParam = {
