@@ -1180,7 +1180,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			ROOMS[$scope.activeRoom].rateName = $scope.reservationData.ratesMeta[rateId].name;
 			$scope.reservationData.rateDetails[$scope.activeRoom] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
 			if (!$scope.stateCheck.stayDatesMode) {
-				$scope.navigateOut();
+				navigateOut();
 			}
 		};
 
