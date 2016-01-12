@@ -31,6 +31,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl : '/assets/partials/kiosk/home.html',
             controller  : 'zsHomeCtrl'
         });
+        $stateProvider.state('zest_station.admin-screen', {
+            url         : '/home/:isadmin',
+            templateUrl : '/assets/partials/rvAdminPopup.html',
+            controller  : 'zsHomeCtrl'
+        });
 
         $stateProvider.state('zest_station.oos', {
             url         : '/oos',
