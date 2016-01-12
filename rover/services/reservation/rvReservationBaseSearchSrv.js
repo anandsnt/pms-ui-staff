@@ -142,11 +142,11 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
         this.fetchSortPreferences = function() {
             var deferred = $q.defer(),
                 url = '/api/sort_preferences/list_selections';
-            if (that.cache.responses['sortOrder'] === null || that.cache.responses['sortOrder']['expiryDate'] >= Math.floor(Date.now() / 1000)) {
+            if (that.cache.responses['sortOrder'] === null || Date.now() > that.cache.responses['sortOrder']['expiryDate']) {
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.cache.responses['sortOrder'] = {
                         data: data.room_rates,
-                        expiryDate: Math.floor(Date.now() / 1000) + that.cache['config'].lifeSpan
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
                     };
                     deferred.resolve(data.room_rates);
                 }, function(data) {
@@ -297,7 +297,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
         this.fetchRestricitonTypes = function() {
             var deferred = $q.defer(),
                 url = '/api/restriction_types';
-            if (that.cache.responses['restrictionTypes'] === null || that.cache.responses['restrictionTypes'].expiryDate >= Math.floor(Date.now() / 1000)) {
+            if (that.cache.responses['restrictionTypes'] === null || Date.now() > that.cache.responses['restrictionTypes'].expiryDate) {
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     data.results.push({
                         id: 98,
@@ -323,7 +323,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
 
                     that.cache.responses['restrictionTypes'] = {
                         data: restriction_types,
-                        expiryDate: Math.floor(Date.now() / 1000) + that.cache['config'].lifeSpan
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
                     };
 
                     deferred.resolve(restriction_types);
@@ -341,7 +341,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
             var deferred = $q.defer(),
                 url = '/api/rates/detailed';
 
-            if (that.cache.responses['rateDetails'] === null || that.cache.responses['rateDetails']['expiryDate'] >= Math.floor(Date.now() / 1000)) {
+            if (that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
                 RVBaseWebSrvV2.getJSON(url).then(function(response) {
                     var rates = [];
                     _.each(response.results, function(rate) {
@@ -350,7 +350,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
 
                     that.cache.responses['rateDetails'] = {
                         data: rates,
-                        expiryDate: Math.floor(Date.now() / 1000) + that.cache['config'].lifeSpan
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
                     };
 
                     deferred.resolve(rates);
