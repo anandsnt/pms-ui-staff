@@ -76,13 +76,13 @@
     "EMAIL_TEXT": "E-Mail",
     "MADE_FIRST_KEY_MSG": "Success! Make your second key",
     "MAKE_KEY": "Make your key.",
-    "MAKE_KEY_MSG": "Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made",
-    "MADE_FIRST_KEY_MSG_SUB": "Remove the first key, select a Blank Key from the Bowl and place it on the target below. When the green light appears, the key is made.",
+    "MAKE_KEY_MSG": "Select a blank key and place it on the target below. When the green light appears, the key is made",
+    "MADE_FIRST_KEY_MSG_SUB": "Remove the first key, select a Blank Key and place it on the target below. When the green light appears, the key is made.",
     
     
     "SUCCESS_HDR": "Bull’s eye!",
     "MAKE_FIRST_KEY": "Make your first key!",
-    "MAKE_FIRST_KEY_SUB": "Select a Blank Key from the Bowl and place it on the target below. When the green light appears, the key is made.",
+    "MAKE_FIRST_KEY_SUB": "Select a Blank Key and place it on the target below. When the green light appears, the key is made.",
     "GRAB_KEYS": "Please grab your key(s) from the target below",
     "SIGN_SCREEN": "Sign The Screen",
     
