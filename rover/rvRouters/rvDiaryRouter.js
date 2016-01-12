@@ -6,7 +6,7 @@ angular
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            diaryAssets: function(jsMappings) {
+            diaryAssets: function(jsMappings, mappingList) {
                 return jsMappings.fetchAssets('rover.diary', ['ngReact']);
             },
             propertyTime: function(RVReservationBaseSearchSrv, diaryAssets) {

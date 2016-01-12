@@ -7,7 +7,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHousekeeping.html',
             controller: 'RVHkAppCtrl',
             resolve: {
-                housekeepingAssets: function(jsMappings) {
+                housekeepingAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.housekeeping');
                 }
             } 
@@ -85,7 +85,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
             controller: 'RVWorkManagementCtrl',
             resolve: {
-                workManagementAssets: function(jsMappings) {
+                workManagementAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.workManagement');
                 },
                 employees: function(RVWorkManagementSrv, workManagementAssets) {

@@ -6,7 +6,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
             controller: 'searchCompanyCardController',
             resolve: {
-                comapanycardSearchAssets: function(jsMappings) {
+                comapanycardSearchAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.companycardsearch');
                 }
             }
@@ -29,7 +29,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/rateManager/dashboard.html',
             controller  : 'RMDashboradCtrl',
             resolve: {
-                rateMangerAssets: function(jsMappings) {
+                rateMangerAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.ratemanager', ['highcharts-ng']);
                 },
                 sortOrder: function(RateMngrCalendarSrv, rateMangerAssets) {

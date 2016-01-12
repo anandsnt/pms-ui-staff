@@ -12,7 +12,7 @@ angular.module('groupModule', [])
             templateUrl: '/assets/partials/groups/rvGroupRoot.html',
             controller: 'rvGroupRootCtrl',
             resolve: {
-                groupAssets: function(jsMappings) {
+                groupAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.groups');
                 }
             }

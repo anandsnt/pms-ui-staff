@@ -94,7 +94,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [
 					{
 						title: "MENU_SEARCH_RESERVATIONS",
-						action: "staff#/staff/search/"
+						action: "staff#/staff/search///"
 					},
 					{
 						title: "MENU_CREATE_RESERVATION",

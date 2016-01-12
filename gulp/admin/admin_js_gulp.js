@@ -53,6 +53,7 @@ module.exports = function(gulp, $, options){
 	            }
 	        }))
 	        .pipe(gulp.dest(ADMIN_TEMPLATE_ROOT, { overwrite: true }))
+	        .on("error", onError);
 	});
 
 	gulp.task('admin-generate-mapping-list-dev', ['admin-copy-js-files'], function(){

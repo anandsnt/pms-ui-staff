@@ -20,7 +20,7 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/staycard/rvStaycard.html',
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
-                staycardJsAssets: function(jsMappings) {
+                staycardJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.reservation');
                 },
                 /**

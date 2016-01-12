@@ -7,7 +7,7 @@ angular.module('FinancialsModule', [])
         templateUrl: '/assets/partials/financials/rvFinancials.html',
         controller: 'RVFinancialsController',
         resolve: {
-            jsAssets: function(jsMappings) {
+            jsAssets: function(jsMappings, mappingList) {
                 return jsMappings.fetchAssets('rover.financials');
             }
         }

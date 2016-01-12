@@ -8,7 +8,8 @@ module.exports = function (gulp, $, options) {
 	    ADMIN_TEMPLATE_ROOT     = '../views/admin/settings/',
 	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html',
 	    PARTIALS_PATH_LIST 		= ['**/*.html'],
-	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json";
+	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json",
+		onError  				= options.onError;
 
 	//Template - START
 	var templateInjector = function(fileName) {
@@ -21,7 +22,8 @@ module.exports = function (gulp, $, options) {
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
        		}))
-       		.pipe(gulp.dest(ADMIN_TEMPLATE_ROOT, { overwrite: true }));
+       		.pipe(gulp.dest(ADMIN_TEMPLATE_ROOT, { overwrite: true }))
+       		.on("error", onError);
 	};
 
 	//Be careful: PRODUCTION
