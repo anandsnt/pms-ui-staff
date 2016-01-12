@@ -74,7 +74,13 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
           
             $scope.headingText = 'SUCCESS_HDR';
             $scope.subHeadingText = 'GRAB_KEYS';
-            $scope.modalBtn1 = 'NEXT_BTN';
+            
+            if ($scope.isInPickupKeyMode()){
+                $scope.modalBtn1 = 'DONE_BTN';//if you were just picking up keys, you are done!
+            } else {
+                $scope.modalBtn1 = 'NEXT_BTN';//otherwise keep goin!
+            }
+            
             $scope.input.madeKey = 1;
             $scope.input.makeKeys = 1;
         };
@@ -199,15 +205,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
-            console.log($scope.zestStationData)
-            console.log('$scope.zestStationData',$scope.selectedReservation)
             var options = {
                 card_info: "",
                 key: $scope.makingKey,
                 key_encoder_id: sntZestStation.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
-            console.warn('$scope.isInPickupKeyMode(): ',$scope.isInPickupKeyMode())
             if ($scope.isInPickupKeyMode()){
                 options.reservation_id = $scope.selectedReservation.reservation_id;
             }
