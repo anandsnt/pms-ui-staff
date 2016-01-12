@@ -1,6 +1,6 @@
 <div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog">
     <div class="modal-content form new-worksheet">
-        <button id="modal-close" type="button" ng-click="closeDialog()" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <button id="modal-close" type="button" ng-click="closeSaveConfirmationDialog()" class="modal-close"><span class="icons icon-close invert"></span></button>
         <span class="message h2" translate>Save Work Sheet First?</span>
 
         <div class="actions">
@@ -11,7 +11,7 @@
                 translate>SAVE
             </button>
             <button type="button" class="button blank"
-                ng-click="updateView()"
+                ng-click="closeSaveConfirmationDialog()"
                 translate>CANCEL
             </button>
         </div>

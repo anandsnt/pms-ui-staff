@@ -6,7 +6,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var $_allUnassigned = allUnassigned;
 
 		// flag to know if we interrupted the state change
-		var $_shouldSaveFirst = true,
+		var $_stateChangeInterrupted = true,
 			$_afterSave = null;
 
 		// Updated when employee selections change
@@ -17,17 +17,29 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-			if ('rover.workManagement.multiSheet' === fromState.name && $_shouldSaveFirst) {
+			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
 				e.preventDefault();
+				$scope.$emit("hideLoader");
+				$_stateChangeInterrupted = true;
 
 				$_afterSave = function() {
-					$_shouldSaveFirst = false;
+					$scope.closeDialog();
+					$scope.workSheetChanged = false;
+					$_stateChangeInterrupted = false;
 					$state.go(toState, toParams);
 				};
 
-				$scope.saveMultiSheet();
+				openSaveConfirmationPopup();
 			};
 		});
+
+		$scope.closeSaveConfirmationDialog = function() {
+			if ($_stateChangeInterrupted) {
+				$_stateChangeInterrupted = false;
+				$_afterSave && $_afterSave();
+			}
+			$scope.closeDialog();
+		};
 
 		$scope.closeDialog = function() {
 			$scope.errorMessage = "";
@@ -339,10 +351,10 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		var afterSaveAPIcall = function() {
 			// delay are for avoiding collisions
-			if (lastSaveConfig && $scope[lastSaveConfig.callNextMethod]) {
+			if (!$_stateChangeInterrupted && lastSaveConfig && $scope[lastSaveConfig.callNextMethod]) {
 				$timeout($scope[lastSaveConfig.callNextMethod].bind(null, lastSaveConfig.nexMethodArgs), 50);
 			};
-			if ($_shouldSaveFirst && !!$_afterSave) {
+			if ($_stateChangeInterrupted && !!$_afterSave) {
 				$timeout($_afterSave, 60);
 			};
 			lastSaveConfig = null;
