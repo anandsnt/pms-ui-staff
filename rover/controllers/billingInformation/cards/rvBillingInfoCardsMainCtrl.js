@@ -1,21 +1,36 @@
 sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 
-    $scope.isEntitySelected = false;
-    $scope.selectedEntity = {};
-	$scope.results = {};
-    $scope.bills = [];
-    $scope.isReloadNeeded = false;
-    $scope.routes = [];
-    $scope.errorMessage = '';
-    $scope.saveData = {};
-    $scope.saveData.payment_type =  "";
-    $scope.saveData.payment_type_description =  "";
-    $scope.saveData.newPaymentFormVisible = false;
-	$scope.shouldShowWaiting = false;
+    var init = function() {
+
+        $scope.selectedEntity = {};
+        $scope.bills = [];
+        $scope.routes = [];
+        $scope.errorMessage = '';
+
+        $scope.billingInfoFlags = {
+            isInitialPage       : true,
+            isEntitySelected    : false,
+            shouldShowWaiting   : false,
+            isReloadNeeded      : false
+        }; 
+
+        $scope.saveData = {
+            payment_type =  "",
+            payment_type_description =  "",
+            newPaymentFormVisible = false
+        };
+
+        if ($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING") {
+            $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
+        }
+        else {
+            $scope.selectAttachedEntity('', 'COMPANY_CARD');
+        }        
+    };
 
 	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value){
-		$scope.shouldShowWaiting = value;
+		$scope.billingInfoFlags.shouldShowWaiting = value;
 	});
 
 	$scope.closeDialog = function(){
@@ -29,21 +44,24 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 	};
 
     /**
-    * function to set the reload option
-    param option is boolean
+    * Function to set the reload option
+    * @param {Boolean}
+    * @return {undefined}
     */
     $scope.setReloadOption = function(option){
-        $scope.isReloadNeeded = option;
+        $scope.billingInfoFlags.isReloadNeeded = option;
     };
     
-    /*function to select the attached entity
+    /*
+    * function to select the attached entity
+    * @param {selected index, Entity type}
+    * @return {undefined}
     */
     $scope.selectAttachedEntity = function(index,type){
 
         $scope.errorMessage = "";
-        $scope.isEntitySelected = true;
-        $scope.isInitialPage = false;
-        //TODO: Remove commented out code
+        $scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isInitialPage = false;
         $scope.selectedEntity = {
 
             "bill_no": "",
@@ -75,6 +93,8 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 
     /**
     * function to get the class for the 'li' according to the entity role
+    * @param {selected route}
+    * @return {class name}
     */
     $scope.getEntityRole = function(route){
         
@@ -88,6 +108,8 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 
     /**
     * function to get the class for the 'icon' according to the entity role
+    * @param {selected route}
+    * @return {class name}
     */
     $scope.getEntityIconClass = function(route){
         if(route.entity_type === 'COMPANY_CARD') {
@@ -104,6 +126,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 
     /**
     * function to save the new route
+    * @return {undefined}
     */
     $scope.saveRoute = function(){
         $rootScope.$broadcast('routeSaveClicked');
@@ -121,12 +144,19 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
         if(!!$scope.billingData) {// NOTE: CICO-17123 When the billing information popup is called from the Group Summary Tab, there wont be a billingData object in $scope. This was throwing "TypeError: Cannot set property 'billingInfoTitle' of undefined"
-            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? $filter('translate')('BILLING_INFO_TITLE'):$filter('translate')('ADD_BILLING_INFO_TITLE');
+            $scope.billingData.billingInfoTitle = ($scope.routes.length > 0 )? 
+                                                $filter('translate')('BILLING_INFO_TITLE')
+                                                :$filter('translate')('ADD_BILLING_INFO_TITLE');
         }
 	};
 
     /**
     * CICO-14951 :function to delete routing info from default billing info
+    */
+
+    /**
+    * Function to delete the default routing
+    * @return {undefined}
     */
     $scope.deleteDefaultRouting = function(){
         var successCallback = function(data) {
@@ -144,15 +174,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
         data.id = $scope.contactInformation.id;
         $scope.invokeApi(RVBillinginfoSrv.deleteDefaultRouting, data, successCallback, errorCallback);
     };
-
-    var init = function() {    
-        if ($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING") {
-            $scope.selectAttachedEntity('', 'TRAVEL_AGENT');
-        }
-        else {
-            $scope.selectAttachedEntity('', 'COMPANY_CARD');
-        }        
-    };
     
     init();
+
 }]);
