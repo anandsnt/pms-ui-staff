@@ -384,7 +384,7 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.oos_message = true;
             $scope.oos_message_value = $scope.zestStationData.oos_message_value;
         } else {
-            $scope.oos_message = false;
+            $scope.oos_message_value = '';
         }
     });
     
