@@ -18,6 +18,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
+        // Limit Max number of days to 92
+        RESV_LIMIT = 92;
+
         $scope.setScroller('search_reservation', {
             preventDefault: false
         });
@@ -289,6 +292,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
             }
+            if(dateOffset > RESV_LIMIT){
+                dateOffset = RESV_LIMIT;
+                $scope.reservationData.numNights = '';
+            }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
@@ -321,6 +328,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
+            $scope.departureDateOptions.maxDate = getMaxDepartureDate($scope.reservationData.arrivalDate);
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
         };
@@ -695,12 +703,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // init call to set data for view
         init();
 
+        var getMaxDepartureDate = function(fromDate) {
+            var dateObj = tzIndependentDate(fromDate),
+                dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
+                dateParts = dateString.match(/(\d+)/g);
+            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + RESV_LIMIT);
+        };
+
 
         $scope.arrivalDateOptions = {
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '0:+10',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
@@ -718,8 +733,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '0:+10',
             minDate: tzIndependentDate($scope.otherData.businessDate),
+            maxDate: getMaxDepartureDate(tzIndependentDate($scope.otherData.businessDate)),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
             },

@@ -14,7 +14,7 @@
     "REMOVE_BTN": "Remove",
     "ADD_BTN": "+ Add A Guest",
     "EMAIL_ERR_HEADER": "Hmm..",
-    "EMAIL_ERR_HEADER_SUB": "This does not appear to be a valid e-mail address.",
+    "EMAIL_ERR_HEADER_SUB": "This doesn’t seem to be a valid e-mail address. Please try again. Practice makes perfect.",
     "SWIPE_CARD_PLEASE": "Please Swipe Credit Card",
     "PRINT_TEXT": "Print",
     "NO_THX": "No, thanks",
@@ -34,6 +34,13 @@
     "UNO_KEY": "1",
     "DOS_KEY": "2",
     "ERR_PAGE_SUB": "Our bad. Please reach out to a Sidekick.",
+    
+    
+    
+    "NO_MATCH_HEADER": "Our bad. Please reach out to a Sidekick.",
+    
+    
+    
     
     
     "NEXT_ROOM_NUMBER": "Next, Type your room number",
@@ -93,6 +100,10 @@
     "TRY_AGAIN": "Try Again",
     "SPEAK": "Speak",
     "SPEAK_SUB": "to a Sidekick",
+    "SPEAK_TO_STAFF": "Talk to a Sidekick",
+    "SPEAK_TO_STAFF_SUB": "Check the Living Room for Sidekicks. They’ll be happy to help you out!",
+    "SPEAK_TO_STAFF_RETURN": "Return",
+    
     
     "INVOICE_FULLNAME":"Guest Full Name",
     "INVOICE_ARRIVAL":"Arrival Date",
@@ -151,6 +162,16 @@
     "RES_SRCH_NAME":"Name",
     "RES_SRCH_SRY":"Sorry.",
     
+    
+    "NO_MATCH_TALK":"Talk",
+    "NO_MATCH_TALK_SUB":"Talk to a Sidekick",
+    "NO_MATCH_OR":"Or",
+    "NO_MATCH_RE_LAST":"Re-Enter",
+    "NO_MATCH_HEADER":"Sorry.",
+    "NO_MATCH_HEADER_SUB":"We can't seem to find you.",
+    
+    
+    
     "RES_SRCH_RE_ENTER_LAST":"Re-Enter",
     "RES_SRCH_RE_ENTER_ROOM":"Re-Enter",
     "RES_SRCH_TALK":"Talk",
@@ -166,6 +187,17 @@
     
     "ADMIN_LOGIN_ERROR":"Invalid Login, Please Try Again",
     "EXIT_BTN":"Exit",
+    "ADMIN_HEADER":"Administrator",
+    "ADMIN_LOGIN":"Login",
+    "ADMIN_EXIT":"Exit",
+    
+    
+    "SEL_RES_HEADER":"Select a Reservation",
+    "SEL_RES_NAME":"Name",
+    "SEL_RES_CO_DATE_ROOM_TYPE":"Check Out Date / Room Type",
+    "SEL_RES_LAST":"Previous",
+    "SEL_RES_NEXT":"Next",
+    
     
     
     
