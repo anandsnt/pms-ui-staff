@@ -368,6 +368,8 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/assign';
 
+			console.log( options );
+
 			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date );
 
 			RVBaseWebSrvV2.postJSON(url, params)
@@ -640,6 +642,8 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 
 				// flatten and remove duplicates
 				copyEmployee.touched_work_types = _.uniq( _.flatten(copyEmployee.touched_work_types) );
+
+				compiled.push(copyEmployee);
 			};
 
 			return compiled;
@@ -708,13 +712,13 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						return workTypeId == id;
 					});
 
-					newAssignment = $.extend(
-							{},
-							{ 'employee_id': art.id },
-							{ 'tasks': [] }
-						);
-
 					if ( !! hasThisWorkType ) {
+						newAssignment = $.extend(
+								{},
+								{ 'employee_id': art.id },
+								{ 'tasks': [] }
+							);
+
 						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
 
 						_.each(allTaskInThisWorkType, function(eachTask) {
@@ -728,16 +732,14 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 								.tasks
 								.push( newTask );
 						});
-					};
 
-					complied
-						.work_types[index]
-						.assignments
-						.push( newAssignment );
+						complied
+							.work_types[index]
+							.assignments
+							.push( newAssignment );
+					};
 				});
 			});
-
-			console.log( complied );
 
 			return complied;
 		};
