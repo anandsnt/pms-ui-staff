@@ -306,7 +306,6 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     * @return {undefined}
     */
     var addChargeCode = function() {
-
         for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
             if ($scope.availableChargeCodes[i].id === $scope.chargeCodeToAdd) {
                 for (var j = 0; j < $scope.selectedEntity.attached_charge_codes.length; j++) {

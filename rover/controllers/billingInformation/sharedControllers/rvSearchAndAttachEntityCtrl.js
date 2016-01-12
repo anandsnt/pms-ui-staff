@@ -4,7 +4,6 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
 	var init = function() {
 		$scope.textInQueryBox      = "";
-		$scope.errorMessage        = "";
 	  	$scope.isReservationActive = true;
 
 	  	//Setting scroller
@@ -79,7 +78,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
   	/**
     * Function to perform filering on results.
-    * if not fouund in the data, it will request for webservice.
+    * if not found in the data, it will request for webservice.
     * @return {undefined}
     */
   	var displayFilteredResultsCards = function() {
@@ -184,7 +183,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	*/
 	var failureCallBackofDataFetch= function(errorMessage) {
 		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage;
+		$scope.$emit('displayErrorMessage', errorMessage);
 	};
 
   	/**
@@ -341,7 +340,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         }
         else if (type === 'GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
-                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.$emit('displayErrorMessage', errorMessage);
                 $scope.billingInfoFlags.isEntitySelected = false;
                 $scope.billingInfoFlags.isInitialPage    = true;
             }
@@ -372,7 +372,6 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     $scope.selectAttachedEntity = function(index,type) {
     	$scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
-        $scope.errorMessage = "";
         $scope.billingInfoFlags.isEntitySelected = true;
         $scope.billingInfoFlags.isInitialPage = false;
 
@@ -435,7 +434,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         }
         else if (type ==='GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
-                $scope.errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+                $scope.$emit('displayErrorMessage', errorMessage);
                 $scope.billingInfoFlags.isEntitySelected = false;
                 $scope.billingInfoFlags.isInitialPage    = true;
             }
