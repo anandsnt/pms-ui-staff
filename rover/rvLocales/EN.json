@@ -1255,8 +1255,17 @@
 
     "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded"
 
+,"ADD_NEW_WORKSTATION" : "Add New Workstation",
+"WORKSTATION_NAME" : "Workstation Name",
+"WORKSTATION_NAME_PLACEHOLDER" : "Enter Workstation Name",
+"WORKSTATION_ID" : "Workstation ID",
+"WORKSTATION_ID_PLACEHOLDER" : "Enter Workstation ID",
+"EMV_TERMINAL" : "EMV Terminal",
+"KEY_ENCODER" : "Key Encoder",
+"ADD_TERMINAL" : "Add terminal",
+"TERMINAL_DEFAULT_OPTION" : "Select a Terminal",
+"KEY_ENCODER_DEFAULT_OPTION" : "Select an Encoder"
 ,
-
 
     "TERMS_AGREE_TEXT": "Please agree to the Terms and Conditions below in order to check in.",
     "TERMS_SUBHEADING": "subheader",

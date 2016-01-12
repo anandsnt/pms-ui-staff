@@ -253,6 +253,7 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.setStationEncoder();
     };
         $scope.checkOOSInBrowser = function(){
+            return;
              var storageKey = $scope.oosKey,
                     storage = localStorage,
                     oos = {};
@@ -262,9 +263,13 @@ sntZestStation.controller('zsHomeCtrl', [
             } catch(err){
                 console.warn(err);
             }
+            console.info('oos: ',oos)
             if (oos){
-                $rootScope.$broadcast(zsEventConstants.PUT_OOS);
-                $state.isOOS = true;
+                $scope.oos_message = true;
+                $scope.oos_message_value = $scope.zestStationData.oos_message_value;
+               //storage.setItem(storageKey, false);
+                //$rootScope.$broadcast(zsEventConstants.PUT_OOS);
+                //$state.isOOS = true;
             } else {
                 $state.isOOS = false;
             }
@@ -346,7 +351,6 @@ sntZestStation.controller('zsHomeCtrl', [
             var onSuccess = function(response){
                 if (response){
                     $scope.workstations = response.work_stations;
-                  //  $scope.setWorkStation();
                 }
             };
             var onFail = function(response){
@@ -370,6 +374,17 @@ sntZestStation.controller('zsHomeCtrl', [
         //set theme updates from state
         $scope.theme = $state.theme;
     });
+    $scope.oos_message = false;
+    $scope.oos_message_value = '';
+    $scope.$on ('ZS_SETTINGS_UPDATE', function(event) {
+        if ($scope.zestStationData.oos_message_value !== '' && $scope.zestStationData.is_oos){
+            $scope.oos_message = true;
+            $scope.oos_message_value = $scope.zestStationData.oos_message_value;
+        } else {
+            $scope.oos_message = false;
+        }
+    });
+    
     $scope.init = function(){
         $scope.theme = $state.theme;
         $scope.fetchWorkStations();
@@ -387,6 +402,7 @@ sntZestStation.controller('zsHomeCtrl', [
                         $scope.$apply();
                 },50);
             }
+            $scope.$emit('REFRESH_SETTINGS');
     };
     
     

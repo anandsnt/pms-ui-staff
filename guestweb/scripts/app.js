@@ -88,6 +88,7 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
  	$rootScope.termsAndConditions = $attrs.termsAndConditions;
  	$rootScope.isBirthdayVerified =  false;
  	$rootScope.application        = $attrs.application;
+ 	$rootScope.urlSuffix        = $attrs.urlSuffix;
  	$rootScope.collectCCOnCheckin = ($attrs.checkinCollectCc === "true") ? true:false;
  	$rootScope.isMLI = ($attrs.paymentGateway  = "MLI") ? true : false;
  	//room key delivery options

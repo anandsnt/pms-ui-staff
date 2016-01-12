@@ -25,6 +25,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $rootScope.adminRole = $scope.userDetails.user_role;
         $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
 
+
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
         $scope.$emit("closeDrawer");
@@ -50,8 +51,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
            $scope.setTitle(title);
         }, 2000);
 
-
-        setWorkStation();
+        if(!$rootScope.isWorkstationSet) {
+          setWorkStation();
+        }
 
         //TODO: Add conditionally redirecting from API results
 
@@ -81,6 +83,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       }
    };
 
+
    var setWorkStation = function(){
       var onSetWorkstationSuccess = function(data) {
             if(!data.is_workstation_present) {
@@ -98,6 +101,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
             $scope.$emit('hideLoader');
           };
       var requestData = {};
+      //Variable to avoid calling the set work station api, when
+      //its already invoked when navigating to the dashboard for the first time
+      $rootScope.isWorkstationSet = true;
       if($scope.isIpad) {
         document.addEventListener("deviceready", function() {
                       setDeviceId();

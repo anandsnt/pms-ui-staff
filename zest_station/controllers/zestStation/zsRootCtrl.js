@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -85,24 +85,30 @@ sntZestStation.controller('zsRootCtrl', [
         
         //OOS to be turned on in Sprint44+
 	$scope.$on (zsEventConstants.PUT_OOS, function(event) {//not used yet
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-            $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
-            $scope.$emit(zsEventConstants.HIDE_LOADER);
+            if ($state.current.name !== 'zest_station.admin'){
+                $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+                $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+                $scope.$emit(zsEventConstants.HIDE_LOADER);
 
-            $scope.disableTimeout();
-            $scope.setOOSInBrowser(true);
-           // $state.go('zest_station.oos');
+                $scope.disableTimeout();
+                $scope.setOOSInBrowser(true);
+                $scope.zestStationData.is_oos = true;
+                $state.go('zest_station.oos');
+            }
 	});
             
         
 	$scope.$on (zsEventConstants.OOS_OFF, function(event) {
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-            $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
-            $scope.$emit(zsEventConstants.HIDE_LOADER);
+           if ($scope.zestStationData.is_oos){
+                $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+                $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+                $scope.$emit(zsEventConstants.HIDE_LOADER);
 
-            $scope.disableTimeout();
-            $scope.setOOSInBrowser(false);
-            $state.go('zest_station.oos');
+                $scope.disableTimeout();
+                $scope.setOOSInBrowser(false);
+                //only if coming out of OOS, take to home page, otherwise on-refresh, this will interrupt workflow
+                $state.go('zest_station.home');
+            }
 	});
             
         
@@ -215,6 +221,7 @@ sntZestStation.controller('zsRootCtrl', [
             link = $scope.getThemeLink(theme);
             logo = $scope.getLogoSvg(theme);
             if (link){
+                hotelDetailsSrv.data.theme = theme.toLowerCase();
                 $state.theme = theme.toLowerCase();
               //  $('head').append('<link rel="stylesheet" type="text/css" href="'+link+'">');
                 $('#logo').append(logo);
@@ -279,13 +286,14 @@ sntZestStation.controller('zsRootCtrl', [
 	var fetchCompleted =  function(data){
 		$scope.$emit('hideLoader');
 		$scope.zestStationData = data;
+        _.extend(hotelDetailsSrv.data, data);
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
                 $scope.getHotelStationTheme();
                 //set print and email options set from hotel settings > Zest > zest station
-                $scope.zestStationData.printEnabled = $scope.zestStationData.guest_bill.print;
-                $scope.zestStationData.emailEnabled = $scope.zestStationData.guest_bill.email;
+                $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
+                $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	};
         
     $scope.toggleOOS = function(){
@@ -300,6 +308,7 @@ sntZestStation.controller('zsRootCtrl', [
                 if (response){
                     $scope.zestStationData.workstations = response.work_stations;
                     $scope.setWorkStation();
+                    $scope.refreshSettings();
                 }
             };
             var onFail = function(response){
@@ -320,6 +329,79 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
         };  
+        
+        $scope.getWorkStationStatus = function(hard_reset){
+            var onSuccess = function(response){
+                if (response){
+                    $scope.zestStationData.oos_message_value = response.out_of_order_msg;
+                    if (response.is_out_of_order){
+                        $scope.$emit(zsEventConstants.PUT_OOS);
+                    } else {
+                        $scope.$emit(zsEventConstants.OOS_OFF);
+                    }
+                    
+                    $scope.zestStationData.is_oos = response.is_out_of_order;
+                    $scope.startCounter(hard_reset);
+                    setTimeout(function(){
+                        $rootScope.$broadcast('ZS_SETTINGS_UPDATE');//this will tell the homeCtrl to update oos text
+                    },50);
+                }
+                $('#loading').show();//dont show the loader during refreshes
+            };
+            var onFail = function(response){
+                console.warn('fetching workstation status response:',response);
+                $scope.$emit(zsEventConstants.PUT_OOS);
+                $('#loading').show();
+            };
+            var options = {
+                params:                 {
+                    id: $state.workstation_id
+                },
+                successCallBack: 	    onSuccess,
+                failureCallBack:        onFail
+            };
+            $('#loading').hide();
+            $scope.callAPI(zsTabletSrv.fetchWorkStationStatus, options);
+        };  
+        $scope.$on('REFRESH_SETTINGS',function(){
+            $scope.refreshSettings(true);
+        });
+        $scope.refreshSettings = function(hard_reset){
+          $scope.getWorkStationStatus(hard_reset);
+        };
+        
+        
+        $scope.startCounter = function(hard_reset){
+            var time = 4;
+
+                var timer = time, minutes, seconds, timeInMilliSec = 1000;
+                var timerInt = setInterval(function () {
+                    //if ($scope.idle_timer_enabled){
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                            if (--timer < 0) {
+                                setTimeout(function(){
+                                    //fetch latest settings
+                                    if (!hard_reset){
+                                        $scope.handleSettingsTimeout();
+                                    }
+                                },timeInMilliSec);
+
+                                clearInterval(timerInt);
+                                return;
+                            }
+                 //   }
+                }, timeInMilliSec);
+        };
+            
+            $scope.handleSettingsTimeout = function(){
+                $scope.refreshSettings();
+            };
+        
         $scope.setWorkStation = function(){
             /*
              * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -339,7 +421,6 @@ sntZestStation.controller('zsRootCtrl', [
                     for (var i in $scope.zestStationData.workstations){
                         if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
                             station = $scope.zestStationData.workstations[i];
-                            $state.emv_terminal_id = station.emv_terminal_id;
                         }
                     }
                 } else {
@@ -352,6 +433,10 @@ sntZestStation.controller('zsRootCtrl', [
                 sntZestStation.selectedPrinter = station.printer;
                 sntZestStation.encoder = station.key_encoder_id;
                 $state.workstation_id = station.id;
+                $state.emv_terminal_id = station.emv_terminal_id;
+                
+                $scope.zestStationData.oos_message_value = station.out_of_order_msg;
+                $scope.zestStationData.is_oos = station.is_out_of_order;
             }
             return station;
         };
