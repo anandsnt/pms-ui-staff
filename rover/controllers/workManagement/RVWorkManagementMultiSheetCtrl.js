@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'activeWorksheetEmp', 'fetchHKStaffs', 'payload', '$window',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, activeWorksheetEmp, fetchHKStaffs, payload, $window) {
+sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'payload', '$window',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, payload, $window) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -87,14 +87,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.filterUnassigned = function() {
-			$scope.$emit('showLoader');
 
-			$timeout(function() {
-				$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned, $_allUnassigned, $scope.multiSheetState.assignments);
-				refreshView();
-				$scope.closeDialog();
-				$scope.$emit('hideLoader');
-			}, 10);
+			// DO NOTHING FOR NOW!
+			// $scope.$emit('showLoader');
+			// $timeout(function() {
+			// 	$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned, $_allUnassigned, $scope.multiSheetState.assignments);
+			// 	refreshView();
+			// 	$scope.closeDialog();
+			// 	$scope.$emit('hideLoader');
+			// }, 10);
 		};
 
 		$scope.showCalendar = function(controller) {
