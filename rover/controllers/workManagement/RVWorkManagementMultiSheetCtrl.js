@@ -87,6 +87,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.filterUnassigned = function() {
+			$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned
 
 			// DO NOTHING FOR NOW!
 			// $scope.$emit('showLoader');
