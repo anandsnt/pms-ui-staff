@@ -21,10 +21,13 @@ module.exports = function(gulp, $, options) {
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
 
 		tasksAfterCompilation = ['rover-inject-assets-to-templates', 'admin-inject-assets-to-templates', 
-		'zest-inject-assets-to-templates', 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'];
+		'zest-inject-assets-to-templates', 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'],
 
-	gulp.task('asset-precompile', function(){
-		return runSequence(compilationTasks, tasksAfterCompilation);
+		copyBaseHtmlToPublicAssets = ['copy-login-base-html', 'copy-admin-base-html', 'copy-zest-base-html',
+			'copy-rover-base-html'];
+
+	gulp.task('asset-precompile', function(callback){
+		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
 	});
 
 	gulp.task('watch', ['watch-rover-files', 'watch-login-files', 'watch-admin-files']);
