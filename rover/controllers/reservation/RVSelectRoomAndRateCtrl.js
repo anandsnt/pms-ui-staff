@@ -248,7 +248,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								id: currentRate,
 								adr: 0.0,
 								totalAmount: 0.0,
-								isSuppressed: false,
+								isSuppressed: !!$scope.reservationData.ratesMeta[currentRate].is_suppress_rate_on,
 								isCorporate: !!rate.isCorporate,
 								isGroupRate: !!rate.isGroupRate,
 								isAllotmentRate: !!rate.isAllotmentRate,
@@ -437,6 +437,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								name: rate.name,
 								rooms: [],
 								showDays: false,
+								isSuppressed: !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
 								isCorporate: rate.isCorporate,
 								isGroupRate: rate.isGroupRate,
 								isAllotmentRate: rate.isAllotmentRate,
@@ -619,6 +620,21 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						callback: 'setSameCardNgo',
 						scope: $scope
 					}
+				}
+			},
+			updateSupressedRatesFlag = function() {
+				var roomIndex = $scope.stateCheck.roomDetails.firstIndex;
+				for (; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
+					$scope.reservationData.rooms[roomIndex].isSuppressed = false;
+					_.each($scope.reservationData.rooms[roomIndex].stayDates, function(d, i) {
+						// Find if any of the selected rates is suppressed
+						var currentRateSuppressed = !!$scope.reservationData.ratesMeta[d.rate.id].is_suppress_rate_on;
+						if (typeof $scope.reservationData.rooms[roomIndex].isSuppressed === 'undefined') {
+							$scope.reservationData.rooms[roomIndex].isSuppressed = currentRateSuppressed;
+						} else {
+							$scope.reservationData.rooms[roomIndex].isSuppressed = $scope.reservationData.rooms[roomIndex].isSuppressed || currentRateSuppressed;
+						}
+					});
 				}
 			},
 			initialize = function() {
@@ -821,6 +837,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 			},
 			transferState = function() {
+				updateSupressedRatesFlag();
+				// Set flag for suppressed rates
+				$scope.reservationData.isRoomRateSuppressed = _.reduce(_.pluck(ROOMS, 'isSuppressed'), function(a, b) {
+					return a || b
+				});
 				// Check if there has been a rateChange
 				if (!!RVReservationStateService.bookMark.lastPostedRate) {
 					// Identify if there are extra addons added other than those of the associated rate's
@@ -1199,7 +1220,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						});
 					}
 				}
-				navigateOut();
+				transferState();
 			}
 		};
 
@@ -1297,6 +1318,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					// see if the done button has to be enabled
 					$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 					$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
+
 				} else {
 					var i,
 						roomInfo = $scope.stateCheck.lookUp[roomId],
