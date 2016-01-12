@@ -27,8 +27,8 @@
     </div>
     <div id="new-form-holder" ng-show="isAddOrEditMode()" ng-include="getTemplateUrl()"></div>
     <table class="grid rate_addons" ng-hide="isAddOrEditMode()">
-        <col width="20%">
-        <col width="30%">
+        <col width="15%">
+        <col width="35%">
         <col width="10%">
         <col width="8%">
         <thead>
@@ -39,8 +39,8 @@
         </thead>
         <tbody>
             <tr ng-repeat="urlData in urls">
-                <td ng-hide="hideRow($index)" ng-click="editSingle($index)">{{urlData.name}}</td>
-                <td ng-hide="hideRow($index)" ng-click="editSingle($index)">
+                <td ng-hide="hideRow($index)" ng-click="editSingle($index)" class="cursor_pointer">{{urlData.name}}</td>
+                <td ng-hide="hideRow($index)">
                     <span>{{urlData.url}}</span>
                     </span>
                 </td>
