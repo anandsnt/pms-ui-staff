@@ -67,7 +67,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
     * if already exists, we cannot add new one.
     * @return {Boolean}
     */
-    var isRoutingForPostingAccountExist = function() {
+    $scope.isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
         var routesList = dclone($scope.routes,[]);
 
