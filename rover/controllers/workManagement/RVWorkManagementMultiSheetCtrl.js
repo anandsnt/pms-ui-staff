@@ -13,8 +13,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var selectionHistory = [],
 			employeeIndexHash = {};
 
-		console.log( payload );
-
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
 			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
