@@ -10,8 +10,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$_afterSave = null;
 
 		// Updated when employee selections change
-		var selectionHistory = [],
-			workSheetChanged = false;
+		var selectionHistory = [];
 
 		console.log( payload );
 
@@ -119,40 +118,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$state.go('rover.workManagement.start');
 		};
 
-		$scope.navigateToIndvl = function(id) {
-			if (id) {
-				$state.go('rover.workManagement.singleSheet', {
-					date: $scope.multiSheetState.selectedDate,
-					id: id,
-					from: 'multiple'
-				});
-			}
-		};
-
-
-		// Super awesome method to remove/add rooms from unassigned pool
-		// nothing fancy it just shows/hides them
-		var $_updatePool = function(room, status) {
-			var thatWT = {};
-			var match = {};
-			if ($scope.filters.showAllRooms) {
-				thatWT = _.find($_allUnassigned, function(item) {
-					return item.id === room.work_type_id;
-				});
-
-				match = _.find(thatWT.unassigned, function(item) {
-					return item === room;
-				});
-			} else {
-				match = _.find($scope.multiSheetState.unassigned, function(item) {
-					return item === room;
-				});
-			};
-			if (match) {
-				match.isAssigned = status;
-			};
-		};
-
 		/**
 		 * Assign room to the respective maid on drop
 		 * @param  {Event} event
@@ -239,7 +204,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
 			// Refresh the scrollers and summary
-			workSheetChanged = true;
+			$scope.workSheetChanged = true;
 			refreshView();
 		};
 
@@ -313,7 +278,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
 			// Refresh the scrollers and summary
-			workSheetChanged = true;
+			$scope.workSheetChanged = true;
 			refreshView();
 		};
 
@@ -321,7 +286,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 
 			// Ask for save confirmation if unchanged changes are there.
-			if (workSheetChanged) {
+			if ($scope.workSheetChanged) {
 				openSaveConfirmationPopup();
 			} else {
 				updateView(true);
@@ -397,7 +362,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var saveMultiSheetSuccessCallBack = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.clearErrorMessage();
-			workSheetChanged = false;
+			$scope.workSheetChanged = false;
 			afterSaveAPIcall();
 		};
 
@@ -571,17 +536,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					});
 				};
 			});
-
-			/*$scope.$watch('multiSheetState.selectedDate', function(newVal, oldVal) {
-				if (newVal !== oldVal) {
-					$scope.saveMultiSheet({
-						callNextMethod: 'fetchAllUnassigned',
-						nexMethodArgs: {
-							date: newVal
-						}
-					});
-				};
-			});*/
 		};
 
 		/**
@@ -606,7 +560,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 		var fetchWorkSheetPayloadSuccess = function(data) {
 			payload = data;
-			workSheetChanged = false;
+			$scope.workSheetChanged = false;
 			initializeMultiSheetDataModel();
 			initializeEmployeesList();
 			$scope.filterUnassigned();
@@ -714,13 +668,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @return {Undefined}
 		 */
 		var	updateSummary = function(employeeId) {
-			var refData 	 = $scope.multiSheetState,
-				summaryModel = {
-									tasksAssigned: 0,
-									tasksCompleted: 0,
-									timeAllocated: "00:00",
-									shiftLength: "00:00"
-								};
+			var refData 	 = $scope.multiSheetState;
 
 			if (typeof employeeId === "number") {
 				var employee = _.findWhere(refData.assigned, {id: employeeId});
@@ -824,6 +772,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
+			$scope.workSheetChanged = false;
 		};
 
 		init();
