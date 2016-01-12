@@ -55,7 +55,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.fetchStatistics = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/work_statistics?date=' + params.date + '&work_type_id=' + params.work_type_id;
+				url = '/api/work_statistics?date=' + params.date;
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
