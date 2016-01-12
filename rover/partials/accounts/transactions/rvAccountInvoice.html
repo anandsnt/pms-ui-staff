@@ -32,7 +32,7 @@
             <td ng-if="!!groupConfigData">{{groupConfigData.summary.travel_agent.name}}</td>
             <td ng-if="!groupConfigData">{{accountConfigData.summary.company.name}}</td>
             <td ng-if="!groupConfigData">{{accountConfigData.summary.travel_agent.name}}</td>
-            <td>{{billData.bill_number}}</td>
+            <td>{{billData.invoice_number}}</td>
         </tr>
     </tbody>
 </table>
@@ -76,7 +76,7 @@
             <tr ng-repeat="tax in billData.tax_info">
                 <td colspan="4">{{tax.location}}</td>
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
-            </tr>            
+            </tr>
             <tr>
                 <td colspan="4">Total Incl Tax</td>
                 <td>{{currencySymbol}}{{billData.total_incl_tax | number:2}}</td>
