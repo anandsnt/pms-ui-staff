@@ -663,28 +663,39 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * @return {Object} object containing summary data
 		 */
 		var calculateSummary = function(employee) {
-			summaryModel = {
+			var summaryModel = {
 				tasksAssigned: 0,
 				tasksCompleted: 0,
 				timeAllocated: "00:00",
 				shiftLength: "00:00"
 			};
 
-			for (var i = employee.rooms.length - 1; i >= 0; i--) {
-				var allTasks  = employee.rooms[i].room_tasks,
-					completed = _.where(allTasks, { is_complete: true }) || [],
-					totalTime = _.reduce(allTasks, function(s, task) {
-						var time = task.time_allocated;
-						return $scope.addDuration(s, time.hh + ":" + time.mm);
-					}, "0:0"),
-					doneTime = _.reduce(allTasks, function(s, task) {
-						if (!task.is_complete) {
-							return s;
-						}
+			var allTasks,
+				completed,
+				totalTime,
+				doneTime,
+				time;
 
-						var time = task.time_allocated;
-						return $scope.addDuration(s, time.hh + ":" + time.mm);
-					}, "0:0");
+			var i;
+
+			for ( i = employee.rooms.length - 1; i >= 0; i-- ) {
+				allTasks  = employee.rooms[i].room_tasks;
+
+				completed = _.where(allTasks, { is_complete: true }) || [];
+
+				totalTime = _.reduce(allTasks, function(s, task) {
+					time = task.time_allocated;
+					return $scope.addDuration(s, time.hh + ":" + time.mm);
+				}, "0:0");
+
+				doneTime = _.reduce(allTasks, function(s, task) {
+					if (!task.is_complete) {
+						return s;
+					}
+
+					time = task.time_allocated;
+					return $scope.addDuration(s, time.hh + ":" + time.mm);
+				}, "0:0");
 
 
 				summaryModel.tasksAssigned  += allTasks.length;
