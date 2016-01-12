@@ -74,6 +74,35 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
     };
 
     /**
+    * function to get the class for the 'li' according to the entity role
+    */
+    $scope.getEntityRole = function(route){
+        
+        if(route.entity_type === 'TRAVEL_AGENT') {
+            return 'travel-agent'; 
+        }
+        else {
+            return 'company';
+        }
+    };
+
+    /**
+    * function to get the class for the 'icon' according to the entity role
+    */
+    $scope.getEntityIconClass = function(route){
+        if(route.entity_type === 'COMPANY_CARD') {
+            return '';
+        }
+        else {
+            return 'icons icon-travel-agent';
+        } 
+    };
+
+    $scope.escapeNull = function(value, replaceWith){
+        return escapeNull(value, replaceWith);
+    };
+
+    /**
     * function to save the new route
     */
     $scope.saveRoute = function(){
