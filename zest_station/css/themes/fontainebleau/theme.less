@@ -96,7 +96,10 @@
 /* 3. LAYOUT
 ==========================================================*/
 
-	#fontainebleau {
+        #logo {
+            .logo { .size(100%, auto) !important;}
+        }
+	#content {
 		
 		#textual,
 		#signature { background-color: #ebebeb; }
@@ -112,3 +115,20 @@
 	        }
 	    }
 	}
+
+.entry {
+    
+    width: 100%;
+
+	& .checkout-screen-select-box {
+        #calc > #width > .remove(85%, 10px);
+    }
+
+    & select {
+        position: relative;
+        margin: 5px 10px 10px 0px;
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
+        appearance: menulist;
+    }
+}

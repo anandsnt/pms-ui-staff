@@ -126,6 +126,8 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 	 		$scope.mapping = data;
                         $scope.mapping.selectedKeyEncoder = data.key_encoder_id;
                         $scope.mapping.selectedEmvTerminal = data.emv_terminal_id;
+                        $scope.mapping.is_out_of_order = data.is_out_of_order;
+                        $scope.mapping.out_of_order_msg = data.out_of_order_msg;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	$scope.mapping.id = id;
@@ -247,6 +249,16 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                     data.rover_device_id = $scope.mapping.rover_device_id;
                 }
 
+                //CICO-10506 //zest station
+                console.info('$scope.mapping.is_out_of_order: ',$scope.mapping.is_out_of_order)
+                if (!$scope.mapping.is_out_of_order){
+                    $scope.mapping.is_out_of_order = false;
+                }
+                data.is_out_of_order = $scope.mapping.is_out_of_order;
+                
+                if (typeof $scope.mapping.out_of_order_msg !== typeof true){
+                    data.out_of_order_msg = $scope.mapping.out_of_order_msg;
+                }
                 
                 
 		if($scope.isAddMode){

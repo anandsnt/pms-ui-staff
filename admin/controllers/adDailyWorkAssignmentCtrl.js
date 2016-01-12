@@ -57,7 +57,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				name: '',
 				is_active: true,
 				hotel_id: $rootScope.hotelId,
-				is_show_on_stay_card: true
+				is_show_on_stay_card: false
 			};
 		};
 		resetEachWorkType();
@@ -617,8 +617,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				room_type_ids                : traceBackIds( $scope.roomTypesList, $scope.eachTaskList.room_type_ids ),
 				front_office_status_ids      : traceBackIds( $scope.foStatusList, $scope.eachTaskList.front_office_status_ids ),
 				reservation_statuses_ids     : traceBackIds( $scope.resHkStatusList, $scope.eachTaskList.reservation_statuses_ids ),
-				is_occupied                  : $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
-				is_vacant                    : $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
+				is_occupied                  : $scope.eachTaskList.front_office_status_ids[1],
+				is_vacant                    : $scope.eachTaskList.front_office_status_ids[0],
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				id                           : $scope.eachTaskList.id,

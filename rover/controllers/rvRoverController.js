@@ -17,7 +17,7 @@ sntRover.controller('roverController',
     rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
 
     // TODO: remove this after CICO-19912 is done
-    SWITCH_ROOM_AND_RATES_ALT = false;
+    SWITCH_ROOM_AND_RATES_ALT = true;
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -121,7 +121,7 @@ sntRover.controller('roverController',
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
-      
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -156,9 +156,9 @@ sntRover.controller('roverController',
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    
-    
-    
+
+
+
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
@@ -348,7 +348,7 @@ sntRover.controller('roverController',
         // if menu is open, close it
         $scope.isMenuOpen();
         $scope.menuOpen = false;
-        
+
     };
 
     $scope.init();
@@ -580,7 +580,7 @@ sntRover.controller('roverController',
     $scope.closeDialog = function() {
       document.activeElement.blur();
       $scope.$emit('hideLoader');
-      
+
       $rootScope.modalClosing = true;
       setTimeout(function() {
         ngDialog.close();
@@ -762,4 +762,5 @@ sntRover.controller('roverController',
           }, function() {
           });
     };
+
 }]);

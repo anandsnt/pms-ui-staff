@@ -32,6 +32,22 @@
                                            </select>
                                         </div>
                                     </div>
+                                    
+                                    
+                                    <td data-title="'Status'" sortable="'status'" ng-class = "{'green': mapping.is_out_of_order}" header-class="width-15" ng-hide="currentClickedElement == $index">
+                                        <label class='admin-item-label'>{{'WORKSTATION_IS_OOS' | translate}}</label>    
+                                        <div class="entry full-width" ng-click="mapping.is_out_of_order = !mapping.is_out_of_order">
+                                                    <div class="switch-button single" ng-class="{'on': mapping.is_out_of_order}">
+                                                            <input type="checkbox"  ng-checked="mapping.is_out_of_order">
+                                                            <span class="switch-icon"></span>
+                                                    </div>
+                                            </div>
+                                    </td>
+                                    <ad-textbox inputtype="text" value="mapping.out_of_order_msg" 
+						label = "{{'WORKSTATION_OOS_MSG' | translate}}" placeholder = "{{'WORKSTATION_OOS_MSG'| translate}}"  
+                                        styleclass="full-width" required="yes">
+                                    </ad-textbox>
+                                    
                                     <ad-textbox inputtype="text" value="mapping.printer" 
 						label = "{{'STATION_PRINTER' | translate}}" placeholder = "{{'STATION_PRINTER'| translate}}"  
 						styleclass="full-width overlay grey" required="no"></ad-textbox>

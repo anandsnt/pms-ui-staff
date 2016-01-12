@@ -20,7 +20,7 @@
 
 				<div class="title">
 					{{'ENTITY' | translate}}
-					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit" ng-if="isInAddRoutesMode || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'  || billingEntity === 'GROUP_DEFAULT_BILLING'">
+					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit" ng-if="isInAddRoutesMode">
 						<span class="icons icon-pencil"></span>
 					</button>
 				</div>
@@ -85,13 +85,13 @@
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 
-				<div ng-show="selectedEntity.entity_type === 'RESERVATION' || selectedEntity.entity_type === 'TRAVEL_AGENT' || selectedEntity.entity_type === 'COMPANY_CARD' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
+				<div ng-hide="isHourlyRateOn" ng-show="selectedEntity.entity_type === 'RESERVATION' || selectedEntity.entity_type === 'TRAVEL_AGENT' || selectedEntity.entity_type === 'COMPANY_CARD' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
 					<!-- Posting Amount -->
 	                <div class="title">
-	                    {{'POSTING_CAP' | translate}}<span>({{currencySymbol}})</span>
+	                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
 	                </div>
 	                <div class="entry">
-	                    <input type="text" ng-model="selectedEntity.credit_limit"/>
+	                    <input type="text" ng-model="selectedEntity.credit_limit" ng-disabled="!hasPermissionToEditCreditLimit();"/>
 	                </div>
 
 	                <!-- Reference No. -->

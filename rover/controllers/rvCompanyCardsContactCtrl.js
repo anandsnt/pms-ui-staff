@@ -42,8 +42,8 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 	    		return false;
 	    	}
 		    ngDialog.open({
-		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-		        controller: 'rvBillingInformationPopupCtrl',
+		        template: '/assets/partials/billingInformation/cards/rvBillingInfoCardsMain.html',
+		        controller: 'rvBillingInfoCardsMainCtrl',
 		        className: '',
 		        scope: $scope
 		    });
