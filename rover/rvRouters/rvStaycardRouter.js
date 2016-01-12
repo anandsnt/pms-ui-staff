@@ -336,7 +336,7 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
             resolve: {
-                roomAssignmentJsAssets: function(jsMappings) {
+                roomAssignmentJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
                 }
             }
@@ -348,7 +348,7 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
             resolve: {
-                changeStayDatesJsAssets: function(jsMappings) {
+                changeStayDatesJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets('changestaydates', ['ui.calendar']);
                 },
                 stayDateDetails: function(RVChangeStayDatesSrv, $stateParams, changeStayDatesJsAssets) {
@@ -368,14 +368,17 @@ angular.module('stayCardModule', [])
             templateUrl: "/assets/partials/activityLog/rvActivityLog.html",
             controller: 'RVActivityLogCtrl',
             resolve: {
-                activityLogResponse: function(RVActivityLogSrv, $stateParams, staycardJsAssets) {
+                activityLogAssets: function(jsMappings, staycardJsAssets, mappingList) {
+                    return jsMappings.fetchAssets('rover.reservation.staycard.activitylog');
+                },
+                activityLogResponse: function(RVActivityLogSrv, $stateParams, activityLogAssets) {
                     if (!!RVActivityLogSrv) {
                         return RVActivityLogSrv.fetchActivityLog($stateParams.id);
                     } else {
                         return {};
                     }
                 },
-                activeUserList: function(RVActivityLogSrv, staycardJsAssets) {
+                activeUserList: function(RVActivityLogSrv, activityLogAssets) {
                     return RVActivityLogSrv.fetchActiveUsers();
                 }
             }
