@@ -319,7 +319,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						roomType.ratesArray.sort(RVReservationDataService.raiseMemberRates);
 					}
 					// ************************************************************************************************* STEP 1d : Bring Promotion rates to the top
-					if (!!$scope.reservationData.code) {
+					if (!!$scope.reservationData.code.id) {
 						roomType.ratesArray.sort(RVReservationDataService.raisePromoRates);
 					}
 
