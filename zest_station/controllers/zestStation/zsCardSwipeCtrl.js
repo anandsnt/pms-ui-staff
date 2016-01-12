@@ -94,6 +94,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      "do_not_cc_auth": false,
                      "is_promotions_and_email_set": false,
                      "no_post": "",
+                     "is_kiosk":true,
                      'signature':signature
                  };
                 setTimeout(function(){
