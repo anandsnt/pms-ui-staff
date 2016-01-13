@@ -1,12 +1,12 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<section id="enhance-stay" class="content reservations-inner">    
+<section id="enhance-stay" class="content reservations-inner" ng-click="clearErrorMessage(); errorMessage = '';">    
     <div id="enhance-stay-content" class="reservations-content-wrapper">
 
         <!-- Inline modal goes here: check 04.A.enhance-stay-popup.html
         <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
             ....
         </div> -->
-        
+
         <div id="addons-content" class="reservation-content addons-content scrollable" ng-iscroll="enhanceStays" ng-iscroll-delay="1000">
             <div class="wrapper">
                 <div id="addon-items" class="addons">                    
