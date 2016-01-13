@@ -1567,6 +1567,25 @@ span.keys-msg-bold{
   height: 25px !important;
 }
 
-.on-hold h2, .on-hold span{
+.on-hold h2, .on-hold span {
   text-decoration: line-through;
+}
+
+/*CICO-23273 : Scrolling issue for cc manual selection */
+#modal .modal-content.deposit-balance .content-right .payment-form {
+  max-height: 380px;
+}
+
+.payment-form.scrollable {
+  position: relative;
+}
+
+.payment-form.scrollable .iScrollVerticalScrollbar {
+  top: 0;
+  right: 10px;
+  bottom: 0;
+}
+
+.payment-form.scrollable .wrapper {
+  padding: 0 20px;
 }

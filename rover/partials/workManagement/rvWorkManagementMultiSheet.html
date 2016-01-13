@@ -43,11 +43,11 @@
             <div class="action">
                 <label>Re-Set</label>
                 <button type="button" class="button white with-icon only-icon"
-                    ng-click="refreshSheet()">
+                    ng-click="updateView()">
                     <span class="icons icon-reset"></span>
                 </button>
             </div>
-            <div class="action"> <!-- Keep hidden until changes are mand -->
+            <div class="action" ng-show="workSheetChanged"> <!-- Keep hidden until changes are mand -->
                 <label translate>SAVE</label>
                 <button type="button" class="button green with-icon only-icon"
                     ng-click="saveMultiSheet()">
@@ -72,11 +72,11 @@
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
             data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.assigned'}">
             <div class="wrapper">
-                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-init="roomIndex = $index">
+                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered">
                     <li class="worksheet-task multi-sheet unassigned"
                         iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
-                        id="unassigned-UA-{{ roomIndex }}-{{ $index }}"
+                        id="unassigned-UA-{{ $parent.$index }}-{{ $index }}"
                         data-drag = "{{multiSheetState.dndEnabled}}"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
@@ -106,21 +106,17 @@
         </div>
     </section>
 
-    <!-- Multiple worksheets - assigned rooms -->
-    <!-- When 0 employees selected-->
-    <section id="assigned-rooms" class="multi-sheet no-content scrollable"
-        ng-if="multiSheetState.selectedEmployees.length === 0">
-        <div class="wrapper">
-            <div class="info">
-                <span class="icon-no-content icon-housekeeping"></span>
-                <strong class="h1" translate>NO_EMPLOYEES_SELECTED</strong>
-                <span class="h2" translate>SELECT_EMPLOYEES_TO_ASSIGN</span>
-            </div>
+    <!-- Assigned rooms - 0 employees selected-->
+    <section id="assigned-rooms" class="no-content" ng-if="multiSheetState.selectedEmployees.length === 0">
+        <div class="info">
+            <span class="icon-no-content icon-housekeeping"></span>
+            <strong class="h1" translate>NO_EMPLOYEES_SELECTED</strong>
+            <span class="h2" translate>SELECT_EMPLOYEES_TO_ASSIGN</span>
         </div>
     </section>
 
-    <!-- When employees selected-->
-   <section id="assigned-rooms" class="scrollable"
+    <!-- Assigned rooms - Employees selected-->
+    <section id="assigned-rooms" class="scrollable"
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
@@ -155,11 +151,10 @@
                     data-jqyoui-options="{accept: '.worksheet-task.multi-sheet.unassigned,.worksheet-task.multi-sheet.assigned'}"
                     ng-iscroll="assignedRoomList-{{$index}}"> <!-- Vertical scroll here -->
                     <div class="wrapper">
-                        <ul class="worksheet-room sortable"
-                            ng-repeat="room in employee.rooms"
-                            ng-init="roomIndex = $index">
-                            <li class="worksheet-task multi-sheet assigned"
-                                id="assigned-{{ empIndex }}-{{roomIndex}}-{{$index}}"
+                        <ul class="worksheet-room"
+                            ng-repeat="room in employee.rooms">
+                            <li class="worksheet-task"
+                                id="assigned-{{ empIndex }}-{{ $parent.$index }}-{{ $index }}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
                                 ng-class="{ 'completed-task': task.is_complete}"

@@ -96,6 +96,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
 
+ 	$rootScope.offerRoomDeliveryOptions = ($attrs.offerRoomDeliveryOptions  ==="true") ? true:false;
+
 
     //Params for zest mobile and desktop screens
     if(reservationAndhotelData.hasOwnProperty('isPasswordReset')){

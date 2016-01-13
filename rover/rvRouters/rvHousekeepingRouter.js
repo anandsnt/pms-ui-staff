@@ -122,7 +122,6 @@ angular.module('housekeepingModule', [])
                 activeWorksheetEmp: function(RVHkRoomStatusSrv, workManagementAssets) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 },
-
                 fetchHKStaffs: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchHKStaffs();
                 },

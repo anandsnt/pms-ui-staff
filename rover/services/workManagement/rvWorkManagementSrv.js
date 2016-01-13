@@ -55,7 +55,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		 */
 		this.fetchStatistics = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/work_statistics?date=' + params.date + '&work_type_id=' + params.work_type_id;
+				url = '/api/work_statistics?date=' + params.date;
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -355,7 +355,9 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					};
 
 					deferred.resolve( this.payload );
-				}.bind(this));
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
 
 			return deferred.promise;
 		};
@@ -367,8 +369,6 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.saveWorkSheets = function(options) {
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/assign';
-
-			console.log( options );
 
 			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date );
 
@@ -712,13 +712,13 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						return workTypeId == id;
 					});
 
-					if ( !! hasThisWorkType ) {
-						newAssignment = $.extend(
-								{},
-								{ 'employee_id': art.id },
-								{ 'tasks': [] }
-							);
+					newAssignment = $.extend(
+							{},
+							{ 'employee_id': art.id },
+							{ 'tasks': [] }
+						);
 
+					if ( !! hasThisWorkType ) {
 						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
 
 						_.each(allTaskInThisWorkType, function(eachTask) {
@@ -732,14 +732,16 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 								.tasks
 								.push( newTask );
 						});
-
-						complied
-							.work_types[index]
-							.assignments
-							.push( newAssignment );
 					};
+
+					complied
+						.work_types[index]
+						.assignments
+						.push( newAssignment );
 				});
 			});
+
+			console.log( complied );
 
 			return complied;
 		};

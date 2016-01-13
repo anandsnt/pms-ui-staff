@@ -1,5 +1,6 @@
 <div class="reservations-content-wrapper">
-    <div class="reservation-filters" ng-class="{'with-guests': stateCheck.stayDatesMode}">
+    <div class="reservation-filters" ng-class="{'with-guests': stateCheck.stayDatesMode}" ng-click="errorMessage = '';">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="edit-guests" ng-show="stateCheck.stayDatesMode">
             <a ng-click="toggleEditGuestOptions()" class="button has-arrow toggle">
                 <span class="label">
