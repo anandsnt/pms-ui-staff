@@ -108,9 +108,6 @@ angular.module('housekeepingModule', [])
                         date: $stateParams.date
                     });
                 },
-                activeWorksheetEmp: function(RVHkRoomStatusSrv) {
-                    return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
-                },
 
                 fetchHKStaffs: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchHKStaffs();
