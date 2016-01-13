@@ -1,5 +1,6 @@
 sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
-	BaseCtrl.call(this, $scope);
+	
+    BaseCtrl.call(this, $scope);
 
     var init = function() {
 

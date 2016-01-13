@@ -79,8 +79,11 @@
 			</div>
 		</div>
 	</fieldset>
-	<div ng-include="'/assets/partials/billingInformation/sharedPartials/rvChargeCodesAndBillingGroup.html'">		
-	</div>
+	<fieldset class="content-right">
+		<span class="h2 message" translate> DETAILS</span>
+		<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvChargeCodesAndBillingGroup.html'">		
+		</span>
+	</fieldset>
 </div>
 <div class="actions">
 	<button type="button" id="close-information" class="button blank modal-close" ng-click = "closeThisDialog()">CANCEL</button>
