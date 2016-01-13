@@ -6,7 +6,7 @@
         <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
             ....
         </div> -->
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        
         <div id="addons-content" class="reservation-content addons-content scrollable" ng-iscroll="enhanceStays" ng-iscroll-delay="1000">
             <div class="wrapper">
                 <div id="addon-items" class="addons">                    
@@ -22,7 +22,7 @@
                     
                     <!-- Items -->
                     <div class="addon-items">
-
+                        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                         <div class="options">
                             <button type="button" ng-click="showEnhancementsPopup()" class="button white"><span class="label" translate>ENHANCEMENTS</span>
                             <span class="count">{{ existingAddonsLength }}</span></button>
