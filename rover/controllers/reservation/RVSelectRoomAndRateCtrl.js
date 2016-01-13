@@ -1614,6 +1614,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- END
+		$scope.errorMessage = "";
+		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {
+            $scope.errorMessage = data;
+        });
 
 		initialize();
 
