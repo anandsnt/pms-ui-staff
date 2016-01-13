@@ -17,7 +17,9 @@ module.exports = function(gulp, $, options) {
 	gulp.task('copy-login-files', ['login-copy-js-files', 'login-copy-less-files']);
 
 	//TASKS
-	gulp.task('build-login-dev', ['build-login-template-cache-dev', 'build-login-less-js-dev']);
+	gulp.task('build-login-dev', function(callback){
+		return runSequence(['build-login-template-cache-dev', 'build-login-less-js-dev'], 'copy-login-base-html', callback);
+	});
 	
 
 	gulp.task('copy-login-base-html', function(){

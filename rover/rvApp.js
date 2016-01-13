@@ -30,7 +30,6 @@ var sntRover = angular.module('sntRover',[
 		'clickTouch',
 		'oc.lazyLoad']);
 
-
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 sntRover.config(function ($httpProvider) {
   $httpProvider.interceptors.push('sharedHttpInterceptor');

@@ -11,6 +11,7 @@ module.exports = function(gulp, $, options) {
 	    stateMappingList 		= require(ROVER_JS_MAPPING_FILE).getStateMappingList(),
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    onError  				= options.onError,
+	    runSequence 			= require('run-sequence'),
 	    roverGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'StateJsMappings/' + generated + 'rover/',
 		roverGenFile 			= roverGenDir + generated + 'roverStateJsMappings.json';
 
@@ -154,7 +155,9 @@ module.exports = function(gulp, $, options) {
 			paths 			= paths.concat(glob.sync(fileList));
 		}
 		paths = paths.concat('asset_list/js/rover/**/*.js', 'asset_list/stateJsMapping/rover/**/*.js');
-		gulp.watch(paths, ['build-rover-js-dev'])
+		gulp.watch(paths, function(callback){
+			return runSequence('build-rover-js-dev', 'copy-rover-base-html')
+		});
 	});
 	
 	gulp.task('copy-cordova-assets', function(){
