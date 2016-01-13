@@ -27,49 +27,49 @@
 
 				<!-- Selected entity -->
 				<div class="entity guest">
-					<figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
+					<figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!==''">
 						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
 					</figure>
 
-					<figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
-	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
-	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
-	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
-	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+					<figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)===''">
+	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)==='COMPANY_CARD'" ></div>
+	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)==='TRAVEL_AGENT'" ></div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)==='GROUP' || escapeNull(selectedEntity.entity_type)==='HOUSE'">A</div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)==='ALLOTMENT' || escapeNull(selectedEntity.entity_type)==='HOUSE'">A</div>
 	                </figure>
 
 					<h2>{{selectedEntity.name}}</h2>
-					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
-                  	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
+					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !=='RESERVATION'" >{{selectedEntity.status}}</span>
+                  	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !=='RESERVATION'">{{selectedEntity.status}}</span>
 				</div>
 
-				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE')">{{'PAYMENT' | translate}}
-					<button type="button" id="edit-entity" ng-click="editPaymentMethod();" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null">
+				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id !== selectedEntity.id && selectedEntity.entity_type === 'RESERVATION') || (selectedEntity.entity_type === 'GROUP' || selectedEntity.entity_type === 'HOUSE')">{{'PAYMENT' | translate}}
+					<button type="button" id="edit-entity" ng-click="editPaymentMethod();" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment !== null">
 						<span class="icons icon-pencil" ></span>
 					</button>
 				</div>
 
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment === null" ng-hide="(((selectedEntity.entity_type === 'GROUP' || selectedEntity.entity_type === 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment !== null))">
 					<div class="wrapper">
-						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
+						<div class="payment" ng-class="{'active': selectedEntity.selected_payment === paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
-							<span ng-show = "paymentType.payment_type_id == 1">
+							<span ng-show = "paymentType.payment_type_id === 1">
 								<figure class="card-logo">
 									<img src="/assets/{{paymentType.card_code}}.png" alt="" />
 								</figure>
 								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
 								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
 							</span>
-							<span class="value code" ng-show = "paymentType.payment_type_id != 1">{{ paymentType.payment_type }}</span>
-							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.id"></span>
+							<span class="value code" ng-show = "paymentType.payment_type_id !== 1">{{ paymentType.payment_type }}</span>
+							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment === paymentType.id"></span>
 						</div>
 					</div>
 				</div>
 
-				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE')">
+				<div class="payment active"  ng-show = "renderAddedPayment !== null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE')">
 					<!-- add class active when selected -->
-					<span ng-show = "renderAddedPayment.payment_type == 'CC'">
+					<span ng-show = "renderAddedPayment.payment_type === 'CC'">
 						<figure class="card-logo">
 							<img src="/assets/{{renderAddedPayment.creditCardType}}.png" alt="" />
 						</figure>
@@ -81,7 +81,7 @@
 				</div>
 
 				<!-- Add new credit card button - remove it when new card is added -->				
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || renderAddedPayment != null">{{'NEW_PAYMENT' | translate}}</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && renderAddedPayment === null" ng-hide="(reservationData.reservation_id !== selectedEntity.id && selectedEntity.entity_type === 'RESERVATION') || (selectedEntity.entity_type === 'GROUP' || selectedEntity.entity_type === 'HOUSE') || renderAddedPayment !== null">{{'NEW_PAYMENT' | translate}}</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
