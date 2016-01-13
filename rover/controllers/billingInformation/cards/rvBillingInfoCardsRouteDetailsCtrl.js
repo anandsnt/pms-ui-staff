@@ -98,7 +98,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     };
 
     //retrieve card number based on paymnet gateway
-    var retrieveCardNumber = function(){
+    var retrieveCardNumber = function() {
         var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
                 $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
                 $scope.cardData.cardDetails.cardNumber.slice(-4);
@@ -108,7 +108,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     * function to show the newly added payment
     * @return {undefined}
     */
-    $scope.paymentAdded = function(data){
+    $scope.paymentAdded = function(data) {
 
         $scope.selectedEntity.selected_payment = "";
         $scope.cardData = data;
@@ -129,7 +129,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     * @param {swiped card data}
     * @return {undefined}
     */
-    $scope.paymentAddedThroughMLISwipe = function(swipedCardDataToSave){
+    $scope.paymentAddedThroughMLISwipe = function(swipedCardDataToSave) {
         $scope.renderAddedPayment = {};
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.swipedCardDataToSave = swipedCardDataToSave;
@@ -142,7 +142,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     * function to show the add payment view
     * @return {undefined}
     */
-    $scope.showAddPayment = function(){
+    $scope.showAddPayment = function() {
             if(!$rootScope.isManualCCEntryEnabled){
                 $scope.isManualCCEntryEnabled = false;
                 var dialog = ngDialog.open({
@@ -177,23 +177,23 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
             $scope.$digest();
         }, 2000);
     });
+
     /**
     * Listener to track the ngDialog open event.
     * We save the id for the ngDialog to close nested dialog for disabling manual payment addition.
     */
     $scope.$on("ngDialog.opened", function(event, data){
-
            $scope.ngDialogID =  data[0].id;
     });
-    $scope.closeDialog = function(){
-        ngDialog.close($scope.ngDialogID);
 
+    $scope.closeDialog = function() {
+        ngDialog.close($scope.ngDialogID);
     };
 
     /**
-    * function to fetch default Routing Account
+    * function to fetch default Routing Account from server
     */
-    $scope.fetchDefaultAccountRouting = function(){
+    $scope.fetchDefaultAccountRouting = function() {
 
         var successCallback = function(data) {
 
@@ -241,9 +241,9 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     };
 
     /**
-    * function to fetch available billing groups for Default BI 
+    * function to fetch available billing groups for Default BI from server 
     */
-    $scope.fetchAllBillingGroups = function(){
+    $scope.fetchAllBillingGroups = function() {
 
         var successCallback = function(data) {
             $scope.availableBillingGroups = data;
@@ -263,9 +263,9 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     };
 
     /**
-    * function to fetch all charge codes for Default BI
+    * function to fetch all charge codes for Default BI from server
     */
-    $scope.fetchAllChargeCodes = function(){
+    $scope.fetchAllChargeCodes = function() {
 
         var successCallback = function(data) {
             $scope.availableChargeCodes = data;
@@ -282,12 +282,14 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
     $scope.fetchAllChargeCodes();
     $scope.showPayment = true;
 
-    $scope.escapeNull = function(value, replaceWith){
+    $scope.escapeNull = function(value, replaceWith) {
         return escapeNull(value, replaceWith);
     };
 
     /**
     * function to know if the charge code is selected, to adjust in UI
+    * @param {chargecode}
+    * @return {true or false}
     */
     $scope.isChargeCodeSelected = function(chargeCode){
         for(var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++){
@@ -300,6 +302,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
 
     /**
     * Listener for the save button click
+    * @return {undefined}
     */
     $scope.$on('routeSaveClicked', function(event){
         $scope.saveRoute();
@@ -307,6 +310,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
 
     /**
     * function to update the company and travel agent in stay card header
+    * @return {undefined}
     */
     $scope.updateCardInfo = function(){
 
@@ -318,7 +322,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
 
     /**
     * function to save the new route
-    * calls save API
+    * call functions to save route
     */
     $scope.saveRoute = function(){
 
@@ -334,6 +338,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         }
     };
 
+    /**
+    * function to save the new route
+    * calls save API
+    */
     var saveRouteAPICall = function(){
 
 
@@ -347,6 +355,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
     };
 
+    /**
+    * function to retrieve Card Name
+    * @return {card name}
+    */
     var retrieveCardName = function(){
         var cardName = (!$scope.cardData.tokenDetails.isSixPayment)?
                             $scope.cardData.cardDetails.userName:
@@ -354,6 +366,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         return cardName;
     };
 
+    /**
+    * function to retrieve Card Expiry date
+    * @return {Expiry date}
+    */
     var retrieveCardExpiryForApi =  function(){
         var expiryMonth = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(2, 4) :$scope.cardData.cardDetails.expiryMonth;
         var expiryYear  = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(0, 2) :$scope.cardData.cardDetails.expiryYear;
