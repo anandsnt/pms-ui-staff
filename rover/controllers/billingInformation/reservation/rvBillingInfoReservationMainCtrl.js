@@ -67,7 +67,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
     * if already exists, we cannot add new one.
     * @return {Boolean}
     */
-    var isRoutingForPostingAccountExist = function() {
+    $scope.isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
         var routesList = dclone($scope.routes,[]);
 
@@ -135,7 +135,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl',['$scope','$rootScope','$
 
     /**
     * Function to get the class for the 'li' according to the entity role
-    * @param {Ohject} [selected route]
+    * @param {Object} [selected route]
     * @return {String} [class of 'li']
     */
 	$scope.getEntityRole = function(route) {
