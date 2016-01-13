@@ -614,7 +614,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.$emit('showLoader');
                 $scope.reservationData.isHourly = true;
                 $scope.reservationData.paymentType.type.value = "";
-                if (!$rootScope.isAddonOn || $stateParams.mode === "EDIT_HOURLY") {
+                /**
+                 * IF ( addons are enabled AND addons are configured AND user is taken to the addons screen from diary) THEN
+                 *  - The data from vault would be processed in the addons controller
+                 *  - the below block need not be entered
+                 *  - IFF the reservation has not be edited 
+                 *  -- NOTE: if EDIT_HOURLY is set as mode in stateparams, then the reservation has been edited & the vault data has to be parsed
+                 * 
+                 */
+                if ($rootScope.previousState.name !== 'rover.reservation.staycard.mainCard.addons' || $stateParams.mode === "EDIT_HOURLY") {
                     var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
                     temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
                     if (temporaryReservationDataFromDiaryScreen) {
