@@ -17,9 +17,9 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
         }; 
 
         $scope.saveData = {
-            payment_type =  "",
-            payment_type_description =  "",
-            newPaymentFormVisible = false
+            payment_type :  "",
+            payment_type_description :  "",
+            newPaymentFormVisible : false
         };
 
         if ($scope.billingEntity === "TRAVEL_AGENT_DEFAULT_BILLING") {
