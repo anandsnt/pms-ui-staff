@@ -1928,16 +1928,20 @@
                                     }
                                 }
 
-                                &.showing { .calc-width(22, 10); }
+                                &.showing { .calc-width(40, 190); }
 
                                 &.search {
-                                    .calc-width(38, 10);
+                                    .calc-width(60, 190);
 
                                     .clear-query { right: 10px; }
                                     .query { width: 100%; }
                                 }
 
-                                &.dates { .calc-width(40, 70); }
+                                &.dates {
+                                    width: 300px;
+
+                                    .entry-data { width: 140px; }
+                                }
                             }
                         }
 
