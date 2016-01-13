@@ -86,22 +86,20 @@
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 
-				<div ng-show="selectedEntity.entity_type === 'RESERVATION' || selectedEntity.entity_type === 'TRAVEL_AGENT' || selectedEntity.entity_type === 'COMPANY_CARD'">
-					<!-- Posting Amount -->
-	                <div class="title">
-	                    {{'POSTING_CAP' | translate}}<span>({{currencySymbol}})</span>
-	                </div>
-	                <div class="entry">
-	                    <input type="text" ng-model="selectedEntity.credit_limit"/>
-	                </div>
+				<!-- Credit Limit -->
+                <div class="title">
+                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
+                </div>
+                <div class="entry">
+                    <input type="text" ng-model="selectedEntity.credit_limit"/>
+                </div>
 
-	                <!-- Reference No. -->
-	                <div class="title">
-	                    {{'REFERENCE_NUMBER' | translate}}
-	                </div>
-	                <div class="entry" >
-	                    <input type="text" ng-model="selectedEntity.reference_number"/>
-	                </div>
+                <!-- Reference No. -->
+                <div class="title">
+                    {{'REFERENCE_NUMBER' | translate}}
+                </div>
+                <div class="entry" >
+                    <input type="text" ng-model="selectedEntity.reference_number"/>
                 </div>
 			</div>
 		</div>

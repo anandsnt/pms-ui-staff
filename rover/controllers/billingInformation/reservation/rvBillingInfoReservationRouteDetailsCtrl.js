@@ -265,7 +265,6 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     * @return {undefined}
     */
     $scope.toggleSelectionForBillingGroup = function(billingGroup) {
-
         for (var i = 0; i < $scope.selectedEntity.attached_billing_groups.length; i++) {
             if ($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id) {
                 $scope.selectedEntity.attached_billing_groups.splice(i, 1);
@@ -757,13 +756,8 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             $scope.$emit('displayErrorMessage',errorMessage);
         };
 
-        if ($scope.reservationData !== undefined) {
-            if ($scope.reservationData.reservation_id !== null) {
-                $scope.savePaymentToReservation();
-            }
-            else {
-                saveRouteAPICall();
-            }
+        if ($scope.reservationData.reservation_id !== null) {
+            $scope.savePaymentToReservation();
         }
         else {
             saveRouteAPICall();
