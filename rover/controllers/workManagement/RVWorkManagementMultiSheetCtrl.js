@@ -6,7 +6,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var $_allUnassigned = allUnassigned;
 
 		// flag to know if we interrupted the state change
-		var $_stateChangeInterrupted = true,
+		var $_stateChangeInterrupted = false,
 			$_afterSave = null;
 
 		// Updated when employee selections change
@@ -31,12 +31,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			};
 		});
 
-		$scope.closeSaveConfirmationDialog = function() {
+		$scope.closeSaveConfirmationDialog = function(options) {
 			if ($_stateChangeInterrupted) {
 				$_stateChangeInterrupted = false;
 				$_afterSave && $_afterSave();
+			} else {
+				options && options.callNextMethod && $scope[options.callNextMethod] && $scope[options.callNextMethod]();
+				$scope.closeDialog();
 			}
-			$scope.closeDialog();
+
 		};
 
 		$scope.closeDialog = function() {
@@ -289,14 +292,18 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.onDateChanged = function() {
-			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 
 			// Ask for save confirmation if unchanged changes are there.
 			if ($scope.workSheetChanged) {
-				openSaveConfirmationPopup();
+				openSaveConfirmationPopup({
+					date: $scope.dateSelected,
+					callNextMethod: 'updateView'
+				});
 			} else {
 				updateView(true);
 			}
+
+			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 
 		};
 
@@ -333,13 +340,14 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		};
 
-		var openSaveConfirmationPopup = function() {
+		var openSaveConfirmationPopup = function(options) {
 			ngDialog.open({
 				template: '/assets/partials/workManagement/popups/rvWorkManagementSaveConfirmationPopup.html',
 				className: '',
 				scope: $scope,
 				closeByDocument: false,
-				closeByEscape: false
+				closeByEscape: false,
+				data: JSON.stringify(options)
 			});
 		};
 
@@ -413,7 +421,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					failureCallBack: saveMultiSheetFailureCallBack,
 					params: {
 						assignedRoomTasks: temp,
-						date: $scope.multiSheetState.selectedDate
+						date: (config && config.date) || $scope.multiSheetState.selectedDate
 					}
 				}
 
@@ -547,10 +555,13 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var setupWatchers = function() {
 			$scope.$watch('multiSheetState.header.work_type_id', function(newVal, oldVal) {
 				if (newVal !== oldVal) {
-					$scope.saveMultiSheet({
-						work_type_id: oldVal,
-						callNextMethod: 'onWorkTypeChanged'
-					});
+					if ($scope.workSheetChanged) {
+						openSaveConfirmationPopup({
+							callNextMethod: 'onWorkTypeChanged'
+						});
+					} else {
+						$scope.onWorkTypeChanged();
+					}
 				};
 			});
 		};
