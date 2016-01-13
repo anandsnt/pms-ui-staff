@@ -4,15 +4,16 @@ module.exports = function(gulp, $, options){
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.min.js',
-		GUESTWEB_TEMPLATE_ROOT  = '../views/layouts/',
-	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
+		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
+	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
 	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping',
 	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/Row_nyc/*.html', 'guestweb/**/landing/Row_nyc/*.html', 'guestweb/**/shared/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    extendedMappings 		= {},
 		generated 				= "____generated",
-	    onError = options.onError,
+	    onError 				= options.onError,
+	    runSequence 			= require('run-sequence'),
 	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
@@ -86,7 +87,9 @@ module.exports = function(gulp, $, options){
 
 	//LESS END
 	gulp.task('guestweb-watch-partials', function(){
-		gulp.watch(GUESTWEB_PARTIALS, ['build-guestweb-template-cache-dev']);
+		return gulp.watch(GUESTWEB_PARTIALS, function(callback){
+			return runSequence('build-guestweb-template-cache-dev', 'copy-guestweb-base-html', callback);
+		});
 	});
 
 }

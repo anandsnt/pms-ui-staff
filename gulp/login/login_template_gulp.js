@@ -4,9 +4,10 @@ module.exports = function(gulp, $, options){
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    LOGIN_TEMPLATES_FILE    = 'login_templates.js',
-	    LOGIN_TEMPLATE_ROOT     = '../views/login/',
-	    LOGIN_HTML_FILE     	= LOGIN_TEMPLATE_ROOT + 'new.html',
+	    LOGIN_TEMPLATE_ROOT     = options['LOGIN_TEMPLATE_ROOT'],
+	    LOGIN_HTML_FILE     	= options['LOGIN_HTML_FILE'],
 	    LOGIN_PARTIALS 			= ['partials/**/*.html'],
+	    runSequence 			= require('run-sequence'),
 	    LOGIN_TEMPLTE_MANFEST_FILE 	= "login_template_manifest.json",
 	    onError = options.onError;
 
@@ -69,7 +70,9 @@ module.exports = function(gulp, $, options){
 
 	//LESS END
 	gulp.task('login-watch-partials', function(){
-		gulp.watch(LOGIN_PARTIALS, ['build-login-template-cache-dev']);
+		return gulp.watch(LOGIN_PARTIALS, function(callback){
+			return runSequence('build-login-template-cache-dev', 'copy-login-base-html')
+		});
 	});
 
 }

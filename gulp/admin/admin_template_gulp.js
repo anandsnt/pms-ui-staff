@@ -5,9 +5,10 @@ module.exports = function (gulp, $, options) {
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 	    ADMIN_ASSET_LIST_ROOT   = '../admin/',
 	    ADMIN_TEMPLATES_FILE    = 'admin_templates.js',
-	    ADMIN_TEMPLATE_ROOT     = '../views/admin/settings/',
-	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html',
+		ADMIN_TEMPLATE_ROOT     = options['ADMIN_TEMPLATE_ROOT'],
+	    ADMIN_HTML_FILE     	= options['ADMIN_HTML_FILE'],
 	    PARTIALS_PATH_LIST 		= ['**/*.html'],
+	    runSequence 			= require('run-sequence'),
 	    ADMIN_TEMPLTE_MANFEST_FILE 	= "admin_template_manifest.json",
 		onError  				= options.onError;
 
@@ -66,6 +67,8 @@ module.exports = function (gulp, $, options) {
 	});
 
 	gulp.task('admin-watch-templates-files', function(){
-		gulp.watch(PARTIALS_PATH_LIST, ['build-admin-template-cache-dev'])
+		return gulp.watch(PARTIALS_PATH_LIST, function(callback){
+			return runSequence('build-admin-template-cache-dev', 'copy-admin-base-html');
+		});
 	});
 }

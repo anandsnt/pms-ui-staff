@@ -1,12 +1,13 @@
 module.exports = function(gulp, $, options) {
 	
-	var ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
-	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
+	var ROVER_TEMPLATE_ROOT     = options['ROVER_TEMPLATE_ROOT'],
+	    ROVER_HTML_FILE     	= options['ROVER_HTML_FILE'],
 	    PARTIALS_PATH_LIST 		= ['**/*.html'],
 	    ROVER_TEMPLATES_FILE    = 'rover_templates.js',
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    ROVER_TEMPLTE_MANFEST_FILE = "rover_template_manifest.json",
 	    URL_APPENDER            = options['URL_APPENDER'],
+	    runSequence 			= require('run-sequence'),
 		DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'];
 
 	//Template - START
@@ -66,6 +67,8 @@ module.exports = function(gulp, $, options) {
 	//Template - END
 
 	gulp.task('rover-watch-templates-files', function(){
-		gulp.watch(PARTIALS_PATH_LIST, ['build-rover-template-cache-dev'])
+		gulp.watch(PARTIALS_PATH_LIST, function(callback){
+			return runSequence('build-rover-template-cache-dev', 'copy-rover-base-html');
+		});
 	});
 }

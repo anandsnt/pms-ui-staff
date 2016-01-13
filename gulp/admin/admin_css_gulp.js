@@ -3,11 +3,12 @@ module.exports = function(gulp, $, options) {
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-	    ADMIN_TEMPLATE_ROOT     = '../views/admin/settings/',
+		ADMIN_TEMPLATE_ROOT     = options['ADMIN_TEMPLATE_ROOT'],
+	    ADMIN_HTML_FILE     	= options['ADMIN_HTML_FILE'],
 	    ADMIN_CSS_MANIFEST_FILE = "admin_css_manifest.json",
-	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html',
 	    ADMIN_CSS_FILE  		= 'admin.css',
 	    LESS_SOURCE_FILE 		= 'stylesheets/admin.css',
+	    runSequence 			= require('run-sequence'),
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
 		cleancss 				= new LessPluginCleanCSS({ advanced: true }),
 		onError  				= options.onError;
@@ -67,7 +68,9 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('admin-watch-less-files', function(){
 		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'admin/css/**/*.*']);
-		gulp.watch(paths, ['build-admin-less-dev']);
+		return gulp.watch(paths, function(callback){
+			return runSequence('build-admin-less-dev', 'copy-admin-base-html');
+		});			
 	});
 
 	gulp.task('admin-copy-less-files', function(){

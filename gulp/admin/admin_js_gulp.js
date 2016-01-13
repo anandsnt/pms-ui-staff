@@ -6,9 +6,10 @@ module.exports = function(gulp, $, options){
 	    adminJSMappingList 		= require("../../asset_list/js/admin/adminJsAssetList").getList(),
 	    ADMIN_JS_COMBINED_FILE  = 'admin.js',
 	    ADMIN_JS_MANIFEST_FILE  = "admin_js_manifest.json",
-	    ADMIN_TEMPLATE_ROOT     = '../views/admin/settings/',
-	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html',
+		ADMIN_TEMPLATE_ROOT     = options['ADMIN_TEMPLATE_ROOT'],
+	    ADMIN_HTML_FILE     	= options['ADMIN_HTML_FILE'],
 	    extendedMappings 		= [],
+	    runSequence 			= require('run-sequence'),
 		onError  				= options.onError;
 
 	//JS - Start
@@ -85,7 +86,9 @@ module.exports = function(gulp, $, options){
 		var glob 	= require('glob-all'),
 			fileList = adminJSMappingList.minifiedFiles.concat(adminJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
-		gulp.watch(fileList, ['build-admin-js-dev'])
+		return gulp.watch(fileList, function(callback){
+			return runSequence('build-admin-js-dev', 'copy-admin-base-html');
+		});
 	});
 	
 	gulp.task('admin-copy-js-files', function(){

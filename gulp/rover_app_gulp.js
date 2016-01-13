@@ -1,14 +1,20 @@
 module.exports = function(gulp, $, options) {
+
+	var runSequence = require('run-sequence'),
+		ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
+	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html',
+	    extend 					= require('util')._extend,
+	    options 				= extend({
+	    	'ROVER_TEMPLATE_ROOT'	: ROVER_TEMPLATE_ROOT,
+	    	'ROVER_HTML_FILE' 		: ROVER_HTML_FILE
+	    }, options);
+
 	
 	require('./rover/rover_js_gulp')(gulp, $, options);
 	require('./rover/rover_template_gulp')(gulp, $, options);
 	require('./rover/rover_css_gulp')(gulp, $, options);
 	require('./rover/rover_translation_files_gulp')(gulp, $, options);
 	
-	var runSequence = require('run-sequence'),
-		ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
-	    ROVER_HTML_FILE     	= ROVER_TEMPLATE_ROOT + 'rover.html';
-
 	gulp.task('watch-rover-files', ['rover-watch-js-files', 'rover-watch-templates-files', 
 		'rover-watch-translation-files', 'rover-watch-less-files']);
 

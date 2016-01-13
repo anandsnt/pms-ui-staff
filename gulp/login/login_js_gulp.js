@@ -8,6 +8,7 @@ module.exports = function (gulp, $, options) {
 	    LOGIN_HTML_FILE     	= options['LOGIN_HTML_FILE'],
 	    LOGIN_JS_MANIFEST_FILE  = "login_js_manifest.json",
 	    onError  				= options.onError,
+	    runSequence 			= require('run-sequence'),
 		LOGIN_JS_LIST 			= require("../../asset_list/js/login/loginJsAssetList").getList();
 	
 	//JS - Start
@@ -77,7 +78,9 @@ module.exports = function (gulp, $, options) {
 	gulp.task('login-watch-js-files', function(){
 		var nonMinifiedFiles 	= LOGIN_JS_LIST.nonMinifiedFiles,
 			minifiedFiles 		= LOGIN_JS_LIST.minifiedFiles;
-		gulp.watch(nonMinifiedFiles.concat(minifiedFiles), ['build-rover-js-dev']);
+		gulp.watch(nonMinifiedFiles.concat(minifiedFiles), function(callback){
+			return runSequence('build-login-js-dev', 'copy-login-base-html')
+		});
 	});
 
 	//JS - END

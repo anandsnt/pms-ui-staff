@@ -4,10 +4,11 @@ module.exports = function (gulp, $, options) {
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 		GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
-		GUESTWEB_TEMPLATE_ROOT  = '../views/layouts/',
-	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
+		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
+	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
 	    GUESTWEB_JS_MANIFEST_FILE  = "guestweb_js_manifest.json",
 	    onError  				= options.onError,
+	    runSequence 			= require('run-sequence'),
 	    extendedMappings 		= {},
 		generated 				= "____generated",
 	    GUESTWEB_THEME_JS_MAPPING_FILE 	= '../../asset_list/theming/guestweb/js/js_theme_mapping',
@@ -133,7 +134,9 @@ module.exports = function (gulp, $, options) {
 	gulp.task('guestweb-watch-js-files', function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
 			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
-		gulp.watch(nonMinifiedFiles.concat(minifiedFiles), ['build-guestweb-js-dev']);
+		return gulp.watch(nonMinifiedFiles.concat(minifiedFiles), function(callback){
+			return runSequence('build-guestweb-js-dev', 'copy-guestweb-base-html');
+		});
 	});
 
 	//JS - END

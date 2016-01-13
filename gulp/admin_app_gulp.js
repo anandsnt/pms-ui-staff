@@ -1,8 +1,13 @@
 module.exports = function(gulp, $, options) {
 
-	var runSequence = require('run-sequence');
+	var runSequence 			= require('run-sequence');
 	var ADMIN_TEMPLATE_ROOT     = '../views/admin/settings/',
-	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html';
+	    ADMIN_HTML_FILE     	= ADMIN_TEMPLATE_ROOT + 'settings.html',
+	    extend 					= require('util')._extend,
+	    options 				= extend({
+	    	'ADMIN_TEMPLATE_ROOT'	: ADMIN_TEMPLATE_ROOT,
+	    	'ADMIN_HTML_FILE' 		: ADMIN_HTML_FILE
+	    }, options);
 
 	require('./admin/admin_js_gulp')(gulp, $, options);
 	require('./admin/admin_css_gulp')(gulp, $, options);
@@ -18,8 +23,10 @@ module.exports = function(gulp, $, options) {
 	});
 
 	//TASKS
-	gulp.task('build-admin-dev', ['build-admin-less-js-dev', 'build-admin-template-cache-dev', 
-		'concat-translation-en-admin-files-dev']);
+	gulp.task('build-admin-dev', function(callback){
+		return runSequence(['build-admin-less-js-dev', 'build-admin-template-cache-dev', 
+		'concat-translation-en-admin-files-dev'], 'copy-admin-base-html', callback);
+	});
 
 	gulp.task('admin-inject-assets-to-templates', function(callback) { 
 		return runSequence( 'inject-admin-js-production-to-template', 

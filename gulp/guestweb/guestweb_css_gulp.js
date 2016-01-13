@@ -5,11 +5,12 @@ module.exports = function (gulp, $, options) {
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 		GUESTWEB_CSS_FILE  		= 'login.css',
 	    GUESTWEB_CSS_MANIFEST_FILE = "login_css_manifest.json",
-		GUESTWEB_TEMPLATE_ROOT     = '../views/layouts/',
-	    GUESTWEB_HTML_FILE     	= GUESTWEB_TEMPLATE_ROOT + 'guestweb.html',
+		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
+	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
     	cleancss 				= new LessPluginCleanCSS({advanced: true }),
     	nano 					= require('gulp-cssnano'),
+    	runSequence 			= require('run-sequence'),
 		onError  				= options.onError,
 		extendedMappings 		= {},
 		generated 				= "____generated",
@@ -85,7 +86,9 @@ module.exports = function (gulp, $, options) {
 	});
 
 	gulp.task('guestweb-watch-less-files', function(){
-		gulp.watch(CSS_FILES, ['guestweb-less-dev']);
+		return gulp.watch(CSS_FILES, function(callback){
+			return runSequence('guestweb-less-dev', 'copy-guestweb-base-html');
+		});
 	});
 
 }

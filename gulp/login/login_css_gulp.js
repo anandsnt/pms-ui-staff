@@ -5,9 +5,10 @@ module.exports = function (gulp, $, options) {
 		MANIFEST_DIR 			= __dirname + "/manifests/",
 		LOGIN_CSS_FILE  		= 'login.css',
 	    LOGIN_CSS_MANIFEST_FILE = "login_css_manifest.json",
-		LOGIN_TEMPLATE_ROOT     = '../views/login/',
 	    LOGIN_LESS_FILE 		= 'stylesheets/login.css',
-	    LOGIN_HTML_FILE     	= LOGIN_TEMPLATE_ROOT + 'new.html',
+	    runSequence 			= require('run-sequence'),
+	    LOGIN_TEMPLATE_ROOT     = options['LOGIN_TEMPLATE_ROOT'],
+	    LOGIN_HTML_FILE     	= options['LOGIN_HTML_FILE'],
 	    onError  				= options.onError;
 	
 
@@ -64,7 +65,9 @@ module.exports = function (gulp, $, options) {
 	});
 
 	gulp.task('login-watch-less-files', function(){
-		gulp.watch([LOGIN_LESS_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*']), ['build-login-less-dev']);
+		return gulp.watch([LOGIN_LESS_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*']), function(callback){
+			return runSequence('build-login-less-dev', 'copy-login-base-html')
+		});
 	});
 
 }
