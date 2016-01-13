@@ -1,6 +1,6 @@
 sntRover.controller('RVActivityLogCtrl',[
 	'$scope',
-	'$rootScope',#&*
+	'$rootScope',
 	'$filter',
     'activityLogResponse',
     'activeUserList',
