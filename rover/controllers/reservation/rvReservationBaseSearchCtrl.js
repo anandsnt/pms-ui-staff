@@ -286,15 +286,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.setDepartureDate = function() {
-
+            $scope.errorMessage = [];
             var dateOffset = $scope.reservationData.numNights;
             if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
             }
-            if(dateOffset > RESV_LIMIT){
+            if (dateOffset > RESV_LIMIT) {
                 dateOffset = RESV_LIMIT;
                 $scope.reservationData.numNights = '';
+                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"]
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
@@ -331,12 +332,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.departureDateOptions.maxDate = getMaxDepartureDate($scope.reservationData.arrivalDate);
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
+            $scope.errorMessage = [];
         };
 
 
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
+            $scope.errorMessage = [];
         };
         /*  The following method helps to initiate the staydates object across the period of
          *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
