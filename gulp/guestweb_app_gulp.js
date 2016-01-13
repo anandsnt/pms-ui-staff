@@ -11,7 +11,7 @@ module.exports = function(gulp, $, options) {
 	// gulp.task('watch-guestweb-files', ['guestweb-watch-partials', 'guestweb-watch-less-files', 'guestweb-watch-js-files']);
 	gulp.task('copy-guestweb-files', ['guestweb-copy-js-files', 'guestweb-copy-less-files']);
 
-	gulp.task('copy-guestwe-base-html', function(){
+	gulp.task('copy-guestweb-base-html', function(){
 		return gulp.src(GUESTWEB_HTML_FILE)
 			.pipe(gulp.dest(options['DEST_ROOT_PATH']+'guestweb'));
 	});

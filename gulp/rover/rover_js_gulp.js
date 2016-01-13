@@ -158,7 +158,7 @@ module.exports = function(gulp, $, options) {
 	});
 	
 	gulp.task('copy-cordova-assets', function(){
-		return gulp.src(['shared/cordova.js', 'shared/cordova_plugins.js'])
+		return gulp.src(['shared/cordova.js', 'shared/cordova_plugins.js'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 

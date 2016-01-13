@@ -24,7 +24,7 @@ module.exports = function(gulp, $, options) {
 		'zest-inject-assets-to-templates', 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'],
 
 		copyBaseHtmlToPublicAssets = ['copy-login-base-html', 'copy-admin-base-html', 'copy-zest-base-html',
-			'copy-rover-base-html'];
+			'copy-rover-base-html', 'copy-guestweb-base-html'];
 
 	gulp.task('asset-precompile', function(callback){
 		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
