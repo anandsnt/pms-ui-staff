@@ -166,29 +166,7 @@
 						</div>
 					</div>
 				</fieldset>
-				<!-- room key communication options -->
-				<fieldset class="holder right">
-					<div id="options" class="entry" ng-hide="hideAddOption">
-						<label>
-							{{ 'ROOM_KEY_COMMUNICATION_OPTIONS' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication== 'email'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication=='email'}"></span>
-							<input type="radio" value="email" ng-model="checkinData.guest_delivery_communication"  >
-							{{ 'EMAIL' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_or_text'}"></span>
-							<input type="radio" value="email_or_text" ng-model="checkinData.guest_delivery_communication" >
-							{{ 'EMAIL_OR_TEXT_MESSAGE' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_and_text'}"></span>
-							<input type="radio" value="email_and_text" ng-model="checkinData.guest_delivery_communication" >
-							{{ 'EMAIL_AND_TEXT_MESSAGE' | translate}}
-						</label>
-					</div>
-				</fieldset>
+		
 				
 				<fieldset class="holder left holder_margin"  ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">	
 					<div class="entry full-width" >
@@ -467,6 +445,33 @@
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = "" ng-show="hideAddOption"></ad-textarea>
 					
 
+				</fieldset>
+						<!-- room key communication options -->
+				<fieldset class="holder left">
+					<div class="form-title half-width-title">
+						<h3><span translate="">ROOM_KEY_COMMUNICATIONS</span> </h3>
+					</div>
+					<ad-toggle-button is-checked="checkinData.offer_room_delivery_options" label="{{ 'OFFER_ROOM_DELIVERY_OPTIONS' | translate}}" div-class="full-width"></ad-toggle-button>
+					<div id="options" class="entry" ng-hide="!checkinData.offer_room_delivery_options">
+						<label>
+							{{ 'ROOM_KEY_COMMUNICATION_OPTIONS' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication== 'email'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication=='email'}"></span>
+							<input type="radio" value="email" ng-model="checkinData.guest_delivery_communication"  >
+							{{ 'EMAIL' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_or_text'}"></span>
+							<input type="radio" value="email_or_text" ng-model="checkinData.guest_delivery_communication" >
+							{{ 'EMAIL_OR_TEXT_MESSAGE' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_and_text'}"></span>
+							<input type="radio" value="email_and_text" ng-model="checkinData.guest_delivery_communication" >
+							{{ 'EMAIL_AND_TEXT_MESSAGE' | translate}}
+						</label>
+					</div>
 				</fieldset>
 
 				<div class="actions float">
