@@ -38,7 +38,10 @@
 						</td>
                                                 
 						<td data-title="'Out of Service'" header-class="width-40" ng-hide="currentClickedElement == $index">
-							{{workStations.is_out_of_order}}
+                                                         <div class="switch-button single" ng-click="workStations.is_out_of_order = !workStations.is_out_of_order; saveWorkstation(workStations)" ng-class="{'on': workStations.is_out_of_order}">
+                                                            <input type="checkbox"  ng-checked="workStations.is_out_of_order">
+                                                            <span class="switch-icon"></span>
+                                                        </div>
 						</td>
 						<td data-title="'OOS Message'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.out_of_order_msg}}
