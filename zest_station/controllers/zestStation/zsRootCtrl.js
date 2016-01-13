@@ -305,6 +305,9 @@ sntZestStation.controller('zsRootCtrl', [
     };
         $scope.getWorkStation = function(){
             var onSuccess = function(response){
+                if ($scope.timeStopped){
+                    return;
+                }
                 if (response){
                     $scope.zestStationData.workstations = response.work_stations;
                     $scope.setWorkStation();
@@ -312,6 +315,9 @@ sntZestStation.controller('zsRootCtrl', [
                 }
             };
             var onFail = function(response){
+                if ($scope.timeStopped){
+                    return;
+                }
                 console.warn('fetching workstation list failed:',response);
 //                $scope.$emit(zsEventConstants.PUT_OOS);
             };
@@ -327,11 +333,26 @@ sntZestStation.controller('zsRootCtrl', [
                 successCallBack: 	    onSuccess,
                 failureCallBack:        onFail
             };
-            $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+            if (!$scope.timeStopped){
+                $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+            }
         };  
-        
+        $scope.$on('STOP_TIMERS',function(){
+            $scope.timeStopped = true;
+            $scope.timerRunning = false;
+        });
+        $scope.timerRunning = false;
+        $scope.$on('START_TIMERS',function(){
+            $scope.timeStopped = false;
+            if (!$scope.timerRunning){
+                $scope.refreshSettings();
+            }
+        });
         $scope.getWorkStationStatus = function(hard_reset){
             var onSuccess = function(response){
+                if ($scope.timeStopped){
+                    return;
+                }
                 if (response){
                     $scope.zestStationData.oos_message_value = response.out_of_order_msg;
                     if (response.is_out_of_order){
@@ -349,7 +370,9 @@ sntZestStation.controller('zsRootCtrl', [
                 $('#loading').show();//dont show the loader during refreshes
             };
             var onFail = function(response){
-                console.warn('fetching workstation status response:',response);
+                if ($scope.timeStopped){
+                    return;
+                }
                 $scope.$emit(zsEventConstants.PUT_OOS);
                 $('#loading').show();
             };
@@ -361,7 +384,9 @@ sntZestStation.controller('zsRootCtrl', [
                 failureCallBack:        onFail
             };
             $('#loading').hide();
-            $scope.callAPI(zsTabletSrv.fetchWorkStationStatus, options);
+            if (!$scope.timeStopped){
+                $scope.callAPI(zsTabletSrv.fetchWorkStationStatus, options);
+            }
         };  
         $scope.$on('REFRESH_SETTINGS',function(){
             $scope.refreshSettings(true);
@@ -370,7 +395,7 @@ sntZestStation.controller('zsRootCtrl', [
           $scope.getWorkStationStatus(hard_reset);
         };
         
-        
+        $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
             var time = 4;
 
@@ -387,7 +412,11 @@ sntZestStation.controller('zsRootCtrl', [
                                 setTimeout(function(){
                                     //fetch latest settings
                                     if (!hard_reset){
-                                        $scope.handleSettingsTimeout();
+                                        if (!$scope.timeStopped){
+                                            $scope.handleSettingsTimeout();
+                                        }
+                                        
+                                        
                                     }
                                 },timeInMilliSec);
 
@@ -401,6 +430,15 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.handleSettingsTimeout = function(){
                 $scope.refreshSettings();
             };
+        
+        $scope.$on('UPDATE_WORKSTATION',function(evt, params){
+            console.info(arguments);
+            var id = params.id;
+             var storageKey = $scope.storageKey,
+                    storage = localStorage;
+               storage.setItem(storageKey, id);
+               $scope.setWorkStation();
+        });
         
         $scope.setWorkStation = function(){
             /*
@@ -421,6 +459,7 @@ sntZestStation.controller('zsRootCtrl', [
                     for (var i in $scope.zestStationData.workstations){
                         if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
                             station = $scope.zestStationData.workstations[i];
+                            console.info('station found: ',station);
                         }
                     }
                 } else {
@@ -486,11 +525,11 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
         };
         $scope.disableTimeout = function(){
-            console.info('timeout Disabled');
+          //  console.info('timeout Disabled');
             zsTimeoutEnabled = false;
         };
         $scope.enableTimeout = function(){
-            console.info('timeout Enabled');
+            //console.info('timeout Enabled');
             zsTimeoutEnabled = true;
         };
         /*

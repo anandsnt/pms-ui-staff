@@ -1,6 +1,6 @@
 admin.controller('ADZestCheckinDirectUrlEmailCtrl',
-    ['$scope', '$state', 'adZestCheckinCheckoutSrv','$filter',
-    function($scope, $state, adZestCheckinCheckoutSrv,$filter){
+    ['$scope', '$state', 'adZestCheckinCheckoutSrv','$filter','directUrlData','diretUrls',
+    function($scope, $state, adZestCheckinCheckoutSrv,$filter,directUrlData,diretUrls){
 
 
     $scope.errorMessage     = '';
@@ -17,32 +17,12 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.editMode           = false;
         $scope.isAddMode          = false;
     };
-    // the list of direct URLS
-    var fetchDirectUrlSuccessCallback = function(response){
-        $scope.$emit('hideLoader');
-        $scope.urls  = response;
-    };
-
-    var fetchDirectURLList = function(){
-       var data = {"application":"URL","guest_web_url_type":"CHECKIN"};
-       $scope.invokeApi(adZestCheckinCheckoutSrv.fetchDirectUrlList, data, fetchDirectUrlSuccessCallback); 
-    };
-    // other settings
-    var fetchCheckinDetailsSuccessCallback =  function(response){
-        $scope.directUrlData = response;
-        fetchDirectURLList();
-    };
-
-    var fetchDirectURLSetup = function(){
-        $scope.invokeApi(adZestCheckinCheckoutSrv.fetchDirectSetup, {}, fetchCheckinDetailsSuccessCallback);
-    };
 
     var init = function(){
       $scope.currentClickedUrl  = -1;
-      $scope.directUrlData      = {};
+      $scope.directUrlData = directUrlData;//resolved from router
+      $scope.urls  = diretUrls;//resolved from router
       resetEditScreen();
-      fetchDirectURLSetup();
-      $scope.urls               = [];
     };
 
     //hide if is addmode or editmode
