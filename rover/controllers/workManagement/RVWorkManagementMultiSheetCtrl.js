@@ -59,21 +59,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		/**
 		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
 		 */
-		$scope.selectEmployee = function(data) {
-			// do nothing..
+		$scope.selectEmployee = function() {
+			// no op
 			return;
-
-			// Since we are changing selectedEmployees while doing drag drop,
-			// we need to put back the changed object to assigned list.
-			_.each($scope.multiSheetState._selectedIndexMap, function(valueAsAsssignIndex, keyAsSelectedIndex) {
-				$scope.multiSheetState.assigned[valueAsAsssignIndex] = $scope.multiSheetState.selectedEmployees[keyAsSelectedIndex];
-			});
-
-			// reinit Employee list
-			reInitEmployeesList();
-
-			// refresh scrollers and update summary
-			refreshView();
 		};
 
 		$scope.onEmployeeListOpen = function() {
@@ -84,17 +72,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * UPDATE the view IFF the list has been changed
 		 */
 		$scope.onEmployeeListClosed = function() {
-			// selectionHistory = [];
-			// _.each($scope.employeeList, function(employee) {
-			// 	if (employee.ticked) {
-			// 		selectionHistory.push(employee.id);
-			// 	}
-			// });
 			$scope.multiSheetState.dndEnabled = true;
 
 			var currIds = _.where($scope.employeeList, { ticked: true });
 			currIds     = _.pluck(currIds, 'id');
 
+			// if there is any changes made by user
 			if ( _.difference(currIds, $scope.multiSheetState._lastSelectedIds) ) {
 				// Since we are changing selectedEmployees while doing drag drop,
 				// we need to put back the changed object to assigned list.
@@ -567,7 +550,26 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 
+		// common computation part of below 2 functions
+		var initingEmpList = function(emp) {
+			var foundIndex, key;
 
+			foundIndex = _.findIndex($scope.multiSheetState.assigned, function(assign) {
+				return assign.id == emp.id;
+			});
+
+			if ( foundIndex > -1 ) {
+				// push employee from assigned to selected
+				$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
+
+				// add the index mapping to '_selectedIndexMap'
+				key = $scope.multiSheetState.selectedEmployees.length - 1;
+				$scope.multiSheetState._selectedIndexMap[key] = foundIndex;
+
+				// push employee id into '_lastSelectedIds'
+				$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
+			};
+		};
 
 		/**
 		 * Auto select employees based on daily worksheet employee data
@@ -581,22 +583,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 			_.each($scope.employeeList, function(emp) {
 				emp.ticked = true;
-
-				foundIndex = _.findIndex($scope.multiSheetState.assigned, function(assign) {
-					return assign.id == emp.id;
-				});
-
-				if ( foundIndex > -1 ) {
-					// push employee from assigned to selected
-					$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
-
-					// add the index mapping to '_selectedIndexMap'
-					key = $scope.multiSheetState.selectedEmployees.length - 1;
-					$scope.multiSheetState._selectedIndexMap[key] = foundIndex;
-
-					// push employee id into '_lastSelectedIds'
-					$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
-				};
+				initingEmpList(emp);
 			});
 		};
 
@@ -609,21 +596,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 			_.each($scope.employeeList, function(emp) {
 				if ( emp.ticked ) {
-					foundIndex = _.findIndex($scope.multiSheetState.assigned, function(assign) {
-						return assign.id == emp.id;
-					});
-
-					if ( foundIndex > -1 ) {
-						// push employee from assigned to selected
-						$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
-
-						// add the index mapping to '_selectedIndexMap'
-						key = $scope.multiSheetState.selectedEmployees.length - 1;
-						$scope.multiSheetState._selectedIndexMap[key] = foundIndex;
-
-						// push employee id into '_lastSelectedIds'
-						$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
-					};
+					initingEmpList(emp);
 				};
 			});
 		};
