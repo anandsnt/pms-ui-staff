@@ -264,7 +264,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                 }
                 if (inline){
                     data.emv_terminal_id = $scope.mapping.emv_terminal_id;
-                    data.default_key_encoder_id = $scope.mapping.encoder_id;
+                    data.default_key_encoder_id = $scope.mapping.key_encoder_id;
                 }
                 //CICO-18808
                 if (typeof $scope.mapping.rover_device_id !== typeof undefined){
