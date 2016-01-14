@@ -316,15 +316,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * UPDATE the view IFF the list has been changed
 		 */
 		$scope.onEmployeeListClosed = function() {
-			var x = [];
-			_.each($scope.employeeList, function(employee) {
-				if (employee.ticked) {
-					x.push(employee.id);
-				}
-			});
-			if ($(x).not(selectionHistory).length !== 0 || $(selectionHistory).not(x).length !== 0) {
-				refreshView();
-			}
 			selectionHistory = [];
 			_.each($scope.employeeList, function(employee) {
 				if (employee.ticked) {
@@ -802,10 +793,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.filterUnassigned();
 
 			// Add scrollers and listners
-			//setScroller();
-
-			//updateSummary();
-
 			refreshView();
 
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
