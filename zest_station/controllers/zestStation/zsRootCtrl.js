@@ -37,6 +37,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.closeDialog = function() {
+		ngDialog.hide();
 		ngDialog.close();
 	};
 
@@ -286,7 +287,12 @@ sntZestStation.controller('zsRootCtrl', [
 	var fetchCompleted =  function(data){
 		$scope.$emit('hideLoader');
 		$scope.zestStationData = data;
+                
+                
+                
         _.extend(hotelDetailsSrv.data, data);
+                $scope.settings = data;
+                $scope.setupIdleTimer();
 		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
                 $scope.fetchHotelSettings();
                 $scope.getWorkStation();
@@ -295,6 +301,8 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
                 $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	};
+        
+        
         
     $scope.toggleOOS = function(){
         if ($state.isOOS){
@@ -361,9 +369,9 @@ sntZestStation.controller('zsRootCtrl', [
                     } else {
                         $scope.$emit(zsEventConstants.OOS_OFF);
                     }
-                    
                     $scope.zestStationData.is_oos = response.is_out_of_order;
                     $scope.startCounter(hard_reset);
+                    $state.is_oos = $scope.zestStationData.is_oos;
                     setTimeout(function(){
                         $rootScope.$broadcast('ZS_SETTINGS_UPDATE');//this will tell the homeCtrl to update oos text
                     },50);
@@ -397,17 +405,22 @@ sntZestStation.controller('zsRootCtrl', [
         };  
         $scope.failedDetected = false;
         $scope.$on('REFRESH_SETTINGS',function(evt, params){
-            $scope.refreshSettings(true);
-            if (params.restart){
-                //flag to force restart timer, this is needed if canceling out of admin settings without making a change, ie- going home
-                //because the refresh-settings timer is force-stopped when in the admin screen, only the idle-timer continues;                
-                $scope.startCounter();
+            if (params){
+                if (params.restart){
+                    //flag to force restart timer, this is needed if canceling out of admin settings without making a change, ie- going home
+                    //because the refresh-settings timer is force-stopped when in the admin screen, only the idle-timer continues;                
+                    $scope.startCounter();
+                }
+            } else {
+                $scope.refreshSettings(true);
             }
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
         };
-        
+        $scope.$on('RESET_TIMEOUT',function(evt, params){
+            $scope.resetCounter()
+        });
         $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
             var time = 4;
@@ -513,10 +526,8 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.failureCallBack =  function(data){
             if ($scope.isOOS){
                 $state.go('zest_station.oos');
-                console.info('to oos');
             } else {
                 $state.go('zest_station.error_page');
-                console.info('to ERR page');
             }
 	};
         /*
@@ -562,43 +573,33 @@ sntZestStation.controller('zsRootCtrl', [
             //console.info('timeout Enabled');
             zsTimeoutEnabled = true;
         };
-            $scope.idlePopup = function() {
-                
-                
-                
-                
-                if ($scope.at === 'cc-sign'){
-                    //$scope.goToScreen({},'timeout',true, 'idle');
-                    $scope.goToScreen(null, 'cc-sign-time-out', true, 'cc-sign');
-                    
-                    
-                    
-                    $scope.$apply();
-                } else {
-                    if ($scope.at !== 'home' && $scope.at !== 'cc-sign' && $scope.at !== 'cc-sign-time-out'){
-                        
-                        
-                        ngDialog.open({
-                                template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
-                                className: 'ngdialog-theme-default',
-                                scope: $scope,
-                                closeByDocument: false,
-                                closeByEscape: false
-                        });
-                        
-                        
-                        
-                    }
+        $scope.idlePopup = function() {
+            var current = $state.current.name;
+            if (current === 'zest_station.admin-screen'){
+                $scope.resetTime();
+                return;
+            }
+
+            if (current === 'zest_station.card_sign'){
+                $state.go('zest_station.tab-kiosk-reservation-signature-time-out');
+            } else {
+                if (current !== 'zest_station.home' && current !== 'zest_station.admin' && current !== 'zest_station.card_sign' && current !== 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                    ngDialog.open({
+                            template: '/assets/partials/rvTabletIdlePopup.html',
+                            scope: $scope,
+                            closeByDocument: true,
+                            closeByEscape: false
+                    });
                 }
-                    
-            };
+            }
+
+        };
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
                 //updates the idle timer settings here from what was successfully saved in zest station admin
-                $scope.idleTimerSettings = params.kiosk.idle_timer;
-                console.info('update idle timer settings, SET: ',$scope.idleTimerSettings);
+                $scope.settings.idle_timer = params.kiosk.idle_timer;
+                $scope.setupIdleTimer();
             });
-            
             
             $scope.setupIdleTimer = function(){
                 if ($scope.settings){
@@ -618,8 +619,6 @@ sntZestStation.controller('zsRootCtrl', [
                                 $scope.settings.adminIdleTimeEnabled = settings.enabled;
                                 $scope.settings.adminIdleTimePrompt = settings.prompt;
                                 $scope.settings.adminIdleTimeMax = settings.max;
-                                
-                                
                             } else {
                                 $scope.idle_timer_enabled = false;
                             }
@@ -628,25 +627,21 @@ sntZestStation.controller('zsRootCtrl', [
                         }
                     }
                 }
-                    if ($scope.at !== 'home'){
-                        $scope.resetTime();
-                    }
             };
             
             $scope.resetCounter = function(){
                clearInterval($scope.idleTimer);
             };
             $scope.resetTime = function(){
-                console.info('called reset idle timer');
-                
                 $scope.closePopup();
-                
                 if ($scope.at !== 'home'){ 
                     clearInterval($scope.idleTimer);
                     $scope.startIdleCounter();
                 }   
             };
-            
+            $scope.closePopup = function(){
+		ngDialog.closeAll();
+            };
             $scope.startIdleCounter = function(){
                 var time = $scope.idle_max, promptTime = $scope.idle_prompt;
                 
@@ -659,11 +654,9 @@ sntZestStation.controller('zsRootCtrl', [
 
                                 minutes = minutes < 10 ? "0" + minutes : minutes;
                                 seconds = seconds < 10 ? "0" + seconds : seconds;
-                                
                                 if (timer === promptTime){
                                     $scope.idlePopup();
                                 }
-                                
                                 if (--timer < 0) {
                                     setTimeout(function(){
                                         //setup a timeout @ logic depending on which screen you are, you may get a "Are you still there" different look
@@ -681,11 +674,25 @@ sntZestStation.controller('zsRootCtrl', [
             };
             
             $scope.handleIdleTimeout = function(){
-                $scope.navToHome();
+               $state.go('zest_station.home');
+               $scope.closePopup();
             };
-
-        
-        
+            
+            $scope.$watchCollection(function(){
+                return $state.current.name;
+            }, function(){
+                var current = $state.current.name;
+                if (current === 'zest_station.home'){
+                    $scope.resetCounter();
+                    $scope.idle_timer_enabled = false;
+                } else {
+                    if ($scope.adminIdleTimeEnabled){
+                        $scope.resetCounter();
+                        $scope.idle_timer_enabled = true;
+                        $scope.startIdleCounter();
+                    }
+                }
+            });
         
         
         

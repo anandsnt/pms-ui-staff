@@ -878,7 +878,10 @@
     #popup {
         position: fixed;
         top: 15%;
-        left: 30%;
+        
+        &.admin-popup{
+            left: 30%;
+        }
         z-index: 9000;
         visibility: hidden;
         &.workstations{
@@ -897,7 +900,6 @@
             #flexbox > .parent(column wrap, center, center, '');
             #rounded > .round(5px);
             
-            
           //  .scale3d(0.5, 0.5, 1);
           //  .transition();
         }
@@ -908,7 +910,7 @@
             #popup-content {
                 opacity: 1;
                 overflow: hidden;
-                display: block;
+               // display: block;
           //      .scale3d(1, 1, 1);
             }
         }
@@ -941,4 +943,8 @@
             position:fixed;
             left: 45%;
             margin-top:15px;
+        }
+        
+        .ngdialog-content{//fixes an issue with the default angular theme overwriting the popup layout
+            padding: 0em !important;
         }

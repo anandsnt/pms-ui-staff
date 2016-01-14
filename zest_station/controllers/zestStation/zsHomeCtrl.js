@@ -373,24 +373,21 @@ sntZestStation.controller('zsHomeCtrl', [
           return hasWorkstation;
         };
         $scope.checkWorkstation = function(){
-            if (!$scope.workstations || $scope.workstations.length === 0){
-                $scope.$emit(zsEventConstants.PUT_OOS);
-            } else {
-                if (!$scope.hasWorkstation()){
+            setTimeout(function(){
+                if (!$scope.workstations || $scope.workstations.length === 0){
                     $scope.$emit(zsEventConstants.PUT_OOS);
+                } else {
+                    if (!$scope.hasWorkstation()){
+                        $scope.$emit(zsEventConstants.PUT_OOS);
+                    }
                 }
-            }
+            },500);
         };
         $scope.fetchWorkStations = function(){
             var onSuccess = function(response){
                 if (response){
                     $scope.workstations = response.work_stations;
-                    console.log($scope.zestStationData);
-                    
                     $scope.checkWorkstation();
-                   
-                    
-                    
                 }
             };
             var onFail = function(response){
@@ -422,6 +419,13 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.oos_message_value = $scope.zestStationData.oos_message_value;
         } else {
             $scope.oos_message_value = '';
+        }
+        //if was oos and now back in service, put it back in servce..
+        var shouldBeInOOS = $state.is_oos, isCurrentlyInOOS  = function(){
+            return $state.current.name === "zest_station.oos";
+        };
+        if (!shouldBeInOOS && isCurrentlyInOOS()){
+            $state.go ('zest_station.home');
         }
     });
     

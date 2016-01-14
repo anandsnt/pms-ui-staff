@@ -94,11 +94,11 @@ sntZestStation.controller('zsAdminCtrl', [
 	 * when we clicked on exit button
 	 */
 	$scope.navToPrev = function(){
-		$state.go ('zest_station.home');
+            $state.go ('zest_station.home');
+                
 	};
 
     $scope.toggleOOS = function(){
-        console.info('toggleOOS')
         if ($state.isOOS){
             $rootScope.$emit(zsEventConstants.OOS_OFF);
         } else {
