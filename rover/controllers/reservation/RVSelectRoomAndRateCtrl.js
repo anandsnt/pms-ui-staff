@@ -1415,7 +1415,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		}
 
 		$scope.getLeastHouseAvailability = function() {
-			return _.min(_.toArray($scope.stateCheck.house));
+			var nights = $scope.reservationData.numNights || 1;
+			return _.min(_.first(_.toArray($scope.stateCheck.house), nights));
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ROOMTYPE TAB
@@ -1614,6 +1615,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- END
+		$scope.errorMessage = "";
+		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {
+            $scope.errorMessage = data;
+        });
 
 		initialize();
 
