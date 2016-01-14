@@ -68,11 +68,11 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                                 '</form>' +
                             '</div>' +
                         '</span>',
-                workmanagement:  '<div class="select multi-select">' +        
-                '<button type="button" class="multi-select-button" ng-click="toggleCheckboxes( $event ); refreshSelectedItems(); refreshButton();" ng-bind-html="varButtonLabel">' +
-                '</button>' +                              
-                '<div class="multi-select-options">' +                        
-                    '<form>' + 
+                workmanagement:  '<div class="select">' +
+                '<div class="multi-select" ng-click="showOptions=true;toggleCheckboxes( $event ); refreshSelectedItems(); refreshButton();" ng-bind-html="varButtonLabel"></div>'+
+                '</button>' +
+                ' <div class="multi-select-options" ng-class="{\'hidden\': !showOptions }">' +
+                    '<form>' +
                         '<div class="helperContainer" ng-if="displayHelper( \'filter\' ) || displayHelper( \'all\' ) || displayHelper( \'none\' ) || displayHelper( \'reset\' )">' +
                             '<div ng-hide="true" class="line" ng-if="displayHelper( \'all\' ) || displayHelper( \'none\' ) || displayHelper( \'reset\' )">' +
                                 '<button type="button" ng-click="select( \'all\',   $event );"    class="helperButton" ng-if="!isDisabled && displayHelper( \'all\' )">   &#10003;&nbsp; Select All</button> ' +
@@ -84,12 +84,12 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                                 '<button type="button" class="clearButton" ng-click="inputLabel.labelFilter=\'\';updateFilter();prepareGrouping();prepareIndex();select( \'clear\', $event )">&times;</button> ' +
                             '</div>' +
                         '</div>' +
-                        '<div class="entry search" ng-if="displayHelper( \'filter\' ) || displayHelper( \'all\' ) || displayHelper( \'none\' ) || displayHelper( \'reset\' )">' +
+                        '<div class="entry search" ng-class="{\'visible\': inputLabel.labelFilter.length }" ng-if="displayHelper( \'filter\' ) || displayHelper( \'all\' ) || displayHelper( \'none\' ) || displayHelper( \'reset\' )">' +
                             // '<button type="button" ng-click="select( \'reset\', $event );"  cid="multi-select-clear-query" class="clear-query" ng-if="!isDisabled && displayHelper( \'reset\' )" style="float:right">&#8630;&nbsp; Reset</button>' +
                             // '<span class="icons icon-clear-search">Clear query</span>'+
                             // <button type="submit" name="submit" class="icons icon-search">Search</button>
                             '<button type="submit" name="submit" class="icons icon-search" ng-click="inputLabel.labelFilter=\'\';updateFilter();prepareGrouping();prepareIndex();select( \'clear\', $event )">&times;</button> ' +
-                            '<input placeholder="Search by Employee Name" type="search" autocomplete="off" ng-click="select( \'filter\', $event )" ng-model="inputLabel.labelFilter" ng-change="updateFilter();$scope.getFormElements();" class="query" />' +
+                            '<input id="multi-select-query" class="query" placeholder="Search by Employee Name" type="search" autocomplete="off" ng-click="select( \'filter\', $event )" ng-model="inputLabel.labelFilter" ng-change="updateFilter();$scope.getFormElements();" class="query" />' +
                         '</div>' +
                         '<div  id="multi-select-options" class="entry scrollable" ng-iscroll-delay=3000 ng-iscroll="multiSelectEmployees">' +
                             '<div class="wrapper">' +               
@@ -99,7 +99,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                                 //     'ng-mouseleave="removeFocusStyle( tabIndex );">' + 
                                 //     '<div class="acol" ng-if="item[ spacingProperty ] > 0" ng-repeat="i in numberToArray( item[ spacingProperty ] ) track by $index">&nbsp;</div>' +              
                                 //     '<div class="acol">' +
-                                        '<label ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="checkbox inline" ng-class="{checked: item[ tickProperty ], disabled:itemIsDisabled( item )}">' +
+                                        '<label ng-repeat="item in filteredModel | filter:removeGroupEndMarker track by $index" class="checkbox inline" ng-class="{checked: item[ tickProperty ], disabled:itemIsDisabled( item )}">' +
                                             '<span class="icon-form icon-checkbox" ng-class="{checked: item[ tickProperty ]}"></span>' +
                                             '<input type="checkbox" ng-class="{checked: item[ tickProperty ]}" ng-disabled="itemIsDisabled( item )" ng-checked="item[ tickProperty ]" ng-click="syncItems( item, $event, $index )" />' +
                                             '<span ng-class="{disabled:itemIsDisabled( item )}" ng-bind-html="writeLabel( item, \'itemLabel\' )"></span>' +
@@ -174,6 +174,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             prevTabIndex            = 0;
             helperItems             = [];
             helperItemsLength       = 0;
+            $scope.showOptions      = false;
 
             //CICO-9120 Need to get the scroller working!
             // This works but is a shoddy code... Revisit later 
@@ -618,7 +619,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
                     // clear the focused element;
                     $scope.removeFocusStyle( $scope.tabIndex );
-
+                    $scope.showOptions = false;
                     // close callback
                     $scope.onClose( { data: element } );
                     return true;
@@ -636,7 +637,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
                     // clear the focused element;
                     $scope.removeFocusStyle( $scope.tabIndex );
-
+                    $scope.showOptions = false;
                     // close callback
                     $scope.onClose( { data: element } );
                 } 
@@ -695,7 +696,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 angular.element( $scope.checkBoxLayer ).removeClass( 'show' );
                 angular.element( document ).unbind( 'click', $scope.externalClickListener ); 
                 angular.element( document ).unbind( 'keydown', $scope.keyboardListener );                
-                
+                $scope.showOptions = false;
                 // close callback                
                 $timeout( function() {
                     $scope.onClose( { data: element } );
