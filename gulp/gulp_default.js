@@ -17,14 +17,14 @@ module.exports = function(gulp, $, options) {
 	// gulp.task('asset-precompile', ['rover-asset-precompile', 'admin-asset-precompile', 'login-asset-precompile',
 	// 	'zest-asset-precompile']);
 	
-	var compilationTasks = ['compress-images-loselessly', 'rover-asset-prod-precompile',  'admin-asset-prod-precompile',
+	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
 
 		tasksAfterCompilation = ['rover-inject-assets-to-templates', 'admin-inject-assets-to-templates', 
 		'zest-inject-assets-to-templates', 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'],
 
 		copyBaseHtmlToPublicAssets = ['copy-login-base-html', 'copy-admin-base-html', 'copy-zest-base-html',
-			'copy-rover-base-html', 'copy-guestweb-base-html'];
+			'copy-rover-base-html', 'copy-guestweb-base-html', 'compress-images-loselessly'];
 
 	gulp.task('asset-precompile', function(callback){
 		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
