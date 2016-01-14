@@ -507,7 +507,9 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.hasWorkstation = false;
             }
             if (station !==  null){
-                sntZestStation.selectedPrinter = station.printer;
+                if (station.printer){
+                    sntZestStation.selectedPrinter = station.printer;//only set this if not null
+                }
                 sntZestStation.encoder = station.key_encoder_id;
                 $state.workstation_id = station.id;
                 $state.emv_terminal_id = station.emv_terminal_id;
