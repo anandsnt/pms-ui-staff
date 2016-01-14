@@ -586,6 +586,15 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.tab-kiosk-reservation-signature-time-out');
             } else {
                 if (current !== 'zest_station.home' && current !== 'zest_station.oos' && current !== 'zest_station.admin' && current !== 'zest_station.card_sign' && current !== 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                    /*
+                     * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
+                     */
+                        $scope.screenwidth = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                        if (typeof cordova !== typeof undefined){
+                            $scope.scrnPos = 5;
+                        } else {
+                            $scope.scrnPos = 3.2;
+                        }
                     ngDialog.open({
                             template: '/assets/partials/rvTabletIdlePopup.html',
                             scope: $scope,
