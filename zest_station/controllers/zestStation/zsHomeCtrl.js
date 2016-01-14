@@ -172,7 +172,6 @@ sntZestStation.controller('zsHomeCtrl', [
             $state.workstation_id = params.kiosk.work_station.id;
             $scope.selectedWorkstation = params.kiosk.work_station.id;//for the workstation list view to show what is currently selected
         }
-        
         if (sntZestStation.selectedPrinter){
             params.printer = sntZestStation.selectedPrinter;
         }
@@ -212,15 +211,13 @@ sntZestStation.controller('zsHomeCtrl', [
                 'emv_terminal_id': station.emv_terminal_id,
                 'id':station.id
             };
-        $scope.zestStationData.selectedWorkStation = station.id;
-            console.info('saved workstation: ',station.id);
+            $scope.zestStationData.selectedWorkStation = station.id;
             $rootScope.$broadcast('UPDATE_WORKSTATION',{id: station.station_identifier});
         };
         if (typeof params.default_key_encoder_id !== typeof undefined){
         //first set as a convenient global, then save to localstorage
             sntZestStation.encoder = params.default_key_encoder_id;
         }
-       
         if (sntZestStation.selectedPrinter){
             params.printer = sntZestStation.selectedPrinter;
         }
@@ -271,10 +268,10 @@ sntZestStation.controller('zsHomeCtrl', [
     $scope.setStationEncoder = function(){
          var storageKeyEncoder = $scope.storageKeyEncoder,
                 storage = localStorage;
-        var encoder = $scope.getWorkStation();
+        var station = $scope.getWorkStation();
         
             try {
-                storage.setItem(storageKeyEncoder, encoder.station_identifier);
+                storage.setItem(storageKeyEncoder, station.station_identifier);
             } catch(err){
                 console.warn(err);
             }
@@ -315,9 +312,6 @@ sntZestStation.controller('zsHomeCtrl', [
                 }
             } 
         } 
-        
-        
-        
         return station;
     };  
     $scope.selectedWorkstationName = '';
