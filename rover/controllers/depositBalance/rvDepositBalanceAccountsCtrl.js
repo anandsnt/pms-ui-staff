@@ -77,7 +77,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.disableMakePayment = function () {
         if (!$scope.validPayment){
             return false;
-        } 
+        }
         else {
 			if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
 				return ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? false :true;
@@ -117,7 +117,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
             if (len >= 8 && len <= 22){
                 //then go check the balance of the card
                 $('[name=card-number]').keydown(function(){
-                    clearTimeout($scope.timer); 
+                    clearTimeout($scope.timer);
                     $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
                 });
             } else {
@@ -219,7 +219,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		});
 	};
 
-        
+
         $scope.setupGiftCardParams = function(){
              if(!$rootScope.isStandAlone){
                         $scope.initFromCashDeposit = true;
@@ -237,8 +237,8 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
 	$scope.changePaymentType = function () {
             var depositType = $scope.depositBalanceMakePaymentData.payment_type;
-            
-            if(depositType === "CC" || depositType === "GIFT_CARD"){          
+
+            if(depositType === "CC" || depositType === "GIFT_CARD"){
                     if (depositType === "CC"){
                         $scope.shouldShowIframe = true;
                         $rootScope.$broadcast('creditCardSelected');
@@ -269,7 +269,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
                 $scope.hideCreditCardFields();
                 checkReferencetextAvailableFornonCC();
                 $scope.hideGiftCardFields();
-            };      
+            };
             $rootScope.$emit('depositUsingGiftCardChange');
 	};
 
@@ -311,7 +311,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		          	"card_expiry": cardExpiry,
 		          	"payment_type": "CC"
 		   };
-		} 
+		}
 		else {
 			cardExpiry = ($scope.cardValues.tokenDetails.expiry!=='') ? "20"+$scope.cardValues.tokenDetails.expiry.substring(0, 2)+"-"+$scope.cardValues.tokenDetails.expiry.substring(2, 4)+"-01" : "";
 			$scope.shouldShowIframe 	   			 = false;
@@ -440,7 +440,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
 		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 	};
-        
+
     $scope.emitCancelCardSelection = function () {
         if(!$rootScope.isStandAlone){
                 ngDialog.close();
@@ -492,7 +492,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         $scope.giftCardAvailableBalance = giftCardData.amount;
         $scope.giftCardAmountAvailable = true;
     });
-    
+
     $rootScope.$on('validatedGiftCardPmt',function (n, valid) {
         if (valid){
            $scope.validPayment = true;
@@ -519,10 +519,10 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         } else {
             $scope.validPayment = true;
         }
-        $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment); 
+        $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
     };
-    
-	$scope.successSavePayment = function (data) {   
+
+	$scope.successSavePayment = function (data) {
 	    $scope.$emit("hideLoader");
 		$scope.shouldShowIframe 	   			 = false;
 		$scope.shouldShowMakePaymentScreen       = true;
@@ -552,10 +552,12 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		}
 
 		$scope.depositPaidSuccesFully = true;
+
+        //To update the balance in accounts
+        $scope.$emit("BALANCE_AFTER_PAYMENT", data.current_balance);
+
 		ngDialog.close();
 
-		//To update the balance in accounts
-		$scope.$emit("BALANCE_AFTER_PAYMENT", data.current_balance);
 	};
 
 	/*
