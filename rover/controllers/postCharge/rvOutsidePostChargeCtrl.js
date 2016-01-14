@@ -29,6 +29,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = false;
 				$scope.cardAttached = {};
+				$scope.disableOutsidePostChargeButton = false;
 			};
 
 			$scope.init();
@@ -327,6 +328,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
 				$rootScope.$broadcast('POSTCHARGE');
+				$scope.disableOutsidePostChargeButton = true;
 			};
 			$scope.clickedPostChargeCancel = function(){
 				$scope.guestHasNotCheckedin = false;
@@ -351,6 +353,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$rootScope.$on('CHARGEPOSTED', function(event, data) {
 			    $scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = true;
+				$scope.disableOutsidePostChargeButton = false;
 			});
 			$scope.keyDownRoom = function(){
 				$scope.roomSearchStatus = true;

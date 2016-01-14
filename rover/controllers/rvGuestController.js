@@ -342,7 +342,7 @@ sntRover.controller('guestCardController', [
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
 				if (typeof data.userId !== 'undefined') {
-					$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
+					$scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
 				}
 			}
 		};

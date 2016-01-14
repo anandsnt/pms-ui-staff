@@ -317,7 +317,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFil
                     _.each(data.results, function(resType) {
                         restriction_types[resType.id] = {
                             key: resType.value,
-                            value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(resType.value) > -1 ? resType.description : resType.description + ':'
+                            value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE', 'HOUSE_FULL', 'INVALID_PROMO'].indexOf(resType.value) > -1 ? resType.description : resType.description + ':'
                         }
                     });
 
