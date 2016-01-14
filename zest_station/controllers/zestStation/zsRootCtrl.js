@@ -575,7 +575,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.idlePopup = function() {
             var current = $state.current.name;
-            if (current === 'zest_station.admin-screen'){
+            if (current === 'zest_station.admin-screen' || current === 'zest_station.oos'){
                 $scope.resetTime();
                 return;
             }
@@ -583,7 +583,7 @@ sntZestStation.controller('zsRootCtrl', [
             if (current === 'zest_station.card_sign'){
                 $state.go('zest_station.tab-kiosk-reservation-signature-time-out');
             } else {
-                if (current !== 'zest_station.home' && current !== 'zest_station.admin' && current !== 'zest_station.card_sign' && current !== 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                if (current !== 'zest_station.home' && current !== 'zest_station.oos' && current !== 'zest_station.admin' && current !== 'zest_station.card_sign' && current !== 'zest_station.tab-kiosk-reservation-signature-time-out'){
                     ngDialog.open({
                             template: '/assets/partials/rvTabletIdlePopup.html',
                             scope: $scope,

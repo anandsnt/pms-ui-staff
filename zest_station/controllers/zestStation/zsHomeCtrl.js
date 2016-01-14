@@ -432,7 +432,12 @@ sntZestStation.controller('zsHomeCtrl', [
     $scope.init = function(){
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
-            
+              $scope.screenwidth = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            if (typeof cordova !== typeof undefined){
+                $scope.scrnPos = 4.3;
+            } else {
+                $scope.scrnPos = 3.2;
+            }
         } else {
 
             $scope.theme = $state.theme;
