@@ -8,7 +8,7 @@
     <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable bill-routing-list">
 	   	<ul class="wrapper">
 		    <li ng-repeat = "route in routes" >
-		        <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntityFromRoutesList($index,'ROUTES')">
+		        <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntityFromRoutesList($index)">
 		            <figure class="guest-image" ng-class = "getEntityIconClass(route)" ng-if="escapeNull(route.images[0].image)!=''">
 						<img src="{{route.images[0].image}}" alt="" />
 					</figure>
@@ -20,26 +20,27 @@
 						<div class="guest-image icons icon-allotment" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'"></div>
 					</figure>
 
-	            <h2>{{route.name}}</h2>
-	            <div class="type">
-	               <span class="label">{{getRouteType(route)}}</span>
-	               {{getCharges(route)}}
-	            </div>
-	            <div class="bill" ng-hide="route.is_routed_to_different_reservation">
-	               <span class="label">Bill #</span>
-	               {{route.bill_no}}
-	            </div>
-	            <div class="bill" ng-show="route.is_routed_to_different_reservation">
-	               <span class="label" ng-show="route.room_no == ''">ROOM</span>
-	               <span class="label" ng-show="route.room_no != ''"></span>
-	               {{route.room_no}}
-	            </div>
-	         </a>
-	         <div id="remove-route-1" class="icons icon-remove-40" ng-click = "deleteRoute($index)">-</div> 
-	      </li>    
+		            <h2>{{route.name}}</h2>
+		            <div class="type">
+		               <span class="label">{{getRouteType(route)}}</span>
+		               {{getCharges(route)}}
+		            </div>
+		            <div class="bill" ng-hide="route.is_routed_to_different_reservation">
+		               <span class="label">Bill #</span>
+		               {{route.bill_no}}
+		            </div>
+		            <div class="bill" ng-show="route.is_routed_to_different_reservation">
+		               <span class="label" ng-show="route.room_no == ''">ROOM</span>
+		               <span class="label" ng-show="route.room_no != ''"></span>
+		               {{route.room_no}}
+		            </div>
+	         	</a>
+	         	<div id="remove-route-1" class="icons icon-remove-40" ng-click = "deleteRoute($index)">-</div> 
+	      	</li>
 		</ul>
 	</div>
 </div>
+
 <div class="actions">
     <button type="button" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>
 </div>

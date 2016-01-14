@@ -74,7 +74,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     * @param {String} type of selected entity
     * @return {undefined}
     */
-    $scope.selectEntityFromRoutesList = function(index, type) {
+    $scope.selectEntityFromRoutesList = function(index) {
 
         if ($scope.routes[index].from_date) {
             $scope.routeDates.from = $scope.routes[index].from_date;
