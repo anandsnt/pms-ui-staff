@@ -23,6 +23,16 @@ sntZestStation.controller('zsFindReservationCtrl', [
                 }
             });
 
+            $scope.resetTime = function(){
+                console.info('called reset idle timer');
+                
+                $scope.closePopup();
+                
+                if ($scope.at !== 'home'){ 
+                    clearInterval($scope.idleTimer);
+                    $scope.startIdleCounter();
+                }   
+            };
             $scope.datePickerMin;
             $scope.business_date;
              var fetchBizDateComplete = function(data){

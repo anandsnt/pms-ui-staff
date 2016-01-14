@@ -319,7 +319,7 @@ sntZestStation.controller('zsRootCtrl', [
                     return;
                 }
                 console.warn('fetching workstation list failed:',response);
-//                $scope.$emit(zsEventConstants.PUT_OOS);
+                $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
                 
@@ -350,6 +350,7 @@ sntZestStation.controller('zsRootCtrl', [
         });
         $scope.getWorkStationStatus = function(hard_reset){
             var onSuccess = function(response){
+                $scope.failedDetected = false;
                 if ($scope.timeStopped){
                     return;
                 }
@@ -370,6 +371,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $('#loading').show();//dont show the loader during refreshes
             };
             var onFail = function(response){
+                if ($scope.failedDetected){
+                    $scope.startCounter();//the timer should continue to try and re-connect, upon reconnection, it will go back to in-service depending on workstation setting
+                }
+                
+                $scope.failedDetected = true;
+                
                 if ($scope.timeStopped){
                     return;
                 }
@@ -384,12 +391,18 @@ sntZestStation.controller('zsRootCtrl', [
                 failureCallBack:        onFail
             };
             $('#loading').hide();
-            if (!$scope.timeStopped){
+            if (!$scope.timeStopped && typeof $state.workstation_id === typeof 123){
                 $scope.callAPI(zsTabletSrv.fetchWorkStationStatus, options);
             }
         };  
-        $scope.$on('REFRESH_SETTINGS',function(){
+        $scope.failedDetected = false;
+        $scope.$on('REFRESH_SETTINGS',function(evt, params){
             $scope.refreshSettings(true);
+            if (params.restart){
+                //flag to force restart timer, this is needed if canceling out of admin settings without making a change, ie- going home
+                //because the refresh-settings timer is force-stopped when in the admin screen, only the idle-timer continues;                
+                $scope.startCounter();
+            }
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
@@ -415,8 +428,6 @@ sntZestStation.controller('zsRootCtrl', [
                                         if (!$scope.timeStopped){
                                             $scope.handleSettingsTimeout();
                                         }
-                                        
-                                        
                                     }
                                 },timeInMilliSec);
 
@@ -432,14 +443,24 @@ sntZestStation.controller('zsRootCtrl', [
             };
         
         $scope.$on('UPDATE_WORKSTATION',function(evt, params){
-            console.info(arguments);
             var id = params.id;
-             var storageKey = $scope.storageKey,
-                    storage = localStorage;
-               storage.setItem(storageKey, id);
-               $scope.setWorkStation();
+            var storageKey = $scope.storageKey,
+                storage = localStorage;
+                storage.setItem(storageKey, id);
+                $scope.setWorkStation();
         });
-        
+        $scope.hasWorkstationAssigned = false;
+        $scope.hasWorkstation = function(){
+          //returns true/false if a workstation is currently assigned;
+          // if no workstation assigned or if workstation status fetch fails, device should go OOS;
+          if (!$scope.zestStationData || $scope.zestStationData.workstations === 'Select'){
+              if ($scope.zestStationData.workstations === 'Select'){
+                  console.info('at least 1 workstation must be configured');
+              }
+              return false;//there are no workstations assigned, at least 1 workstation must be available
+          }
+          return $scope.hasWorkstationAssigned;
+        };
         $scope.setWorkStation = function(){
             /*
              * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -448,6 +469,7 @@ sntZestStation.controller('zsRootCtrl', [
              var storageKey = $scope.storageKey,
                     storage = localStorage,
                     storedWorkStation = '',
+                    hasWorkstation = false,
                     station = null;
             try {
                storedWorkStation = storage.getItem(storageKey);
@@ -459,14 +481,17 @@ sntZestStation.controller('zsRootCtrl', [
                     for (var i in $scope.zestStationData.workstations){
                         if ($scope.zestStationData.workstations[i].station_identifier === storedWorkStation){
                             station = $scope.zestStationData.workstations[i];
-                            console.info('station found: ',station);
+                             hasWorkstation = true;
+                             $state.hasWorkstation = true;
                         }
                     }
                 } else {
                     $scope.zestStationData.workstations = 'Select';
+                    $state.hasWorkstation = false;
                 }
             } else {
                 $scope.zestStationData.workstations = 'Select';
+                $state.hasWorkstation = false;
             }
             if (station !==  null){
                 sntZestStation.selectedPrinter = station.printer;
@@ -477,10 +502,15 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.oos_message_value = station.out_of_order_msg;
                 $scope.zestStationData.is_oos = station.is_out_of_order;
             }
+            
+            $scope.hasWorkstationAssigned = hasWorkstation;
+            if (!$scope.hasWorkstation()){
+                $state.go('zest_station.oos');
+            }
             return station;
         };
+        
 	$scope.failureCallBack =  function(data){
-            console.warn('failure cb from root ctrl');
             if ($scope.isOOS){
                 $state.go('zest_station.oos');
                 console.info('to oos');
@@ -532,14 +562,22 @@ sntZestStation.controller('zsRootCtrl', [
             //console.info('timeout Enabled');
             zsTimeoutEnabled = true;
         };
-        /*
             $scope.idlePopup = function() {
+                
+                
+                
+                
                 if ($scope.at === 'cc-sign'){
                     //$scope.goToScreen({},'timeout',true, 'idle');
                     $scope.goToScreen(null, 'cc-sign-time-out', true, 'cc-sign');
+                    
+                    
+                    
                     $scope.$apply();
                 } else {
                     if ($scope.at !== 'home' && $scope.at !== 'cc-sign' && $scope.at !== 'cc-sign-time-out'){
+                        
+                        
                         ngDialog.open({
                                 template: '/assets/partials/zestStation/rvTabletIdlePopup.html',
                                 className: 'ngdialog-theme-default',
@@ -547,18 +585,19 @@ sntZestStation.controller('zsRootCtrl', [
                                 closeByDocument: false,
                                 closeByEscape: false
                         });
+                        
+                        
+                        
                     }
                 }
                     
             };
-
-            $scope.settingsTimerToggle = function(){
-                if ($scope.settings){
-                    if ($scope.settings.idle_timer.enabled){
-                        $scope.settings.idle_timer.enabled = !$scope.settings.idle_timer.enabled;
-                    }
-                }
-            };
+            $scope.idleTimerSettings = {};
+            $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
+                //updates the idle timer settings here from what was successfully saved in zest station admin
+                $scope.idleTimerSettings = params.kiosk.idle_timer;
+                console.info('update idle timer settings, SET: ',$scope.idleTimerSettings);
+            });
             
             
             $scope.setupIdleTimer = function(){
@@ -598,14 +637,17 @@ sntZestStation.controller('zsRootCtrl', [
                clearInterval($scope.idleTimer);
             };
             $scope.resetTime = function(){
+                console.info('called reset idle timer');
+                
                 $scope.closePopup();
+                
                 if ($scope.at !== 'home'){ 
                     clearInterval($scope.idleTimer);
-                    $scope.startCounter();
+                    $scope.startIdleCounter();
                 }   
             };
             
-            $scope.startCounter = function(){
+            $scope.startIdleCounter = function(){
                 var time = $scope.idle_max, promptTime = $scope.idle_prompt;
                 
                     var timer = time, minutes, seconds;
@@ -641,30 +683,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.handleIdleTimeout = function(){
                 $scope.navToHome();
             };
-            
-        
-        
-        */
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         
         
         
