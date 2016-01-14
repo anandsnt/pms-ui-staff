@@ -95,7 +95,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			var currIds = _.where($scope.employeeList, { ticked: true });
 			currIds     = _.pluck(currIds, 'id');
 
-			if ( _.differnce(currIds, $scope.multiSheetState._lastSelectedIds) ) {
+			if ( _.difference(currIds, $scope.multiSheetState._lastSelectedIds) ) {
 				// Since we are changing selectedEmployees while doing drag drop,
 				// we need to put back the changed object to assigned list.
 				_.each($scope.multiSheetState._selectedIndexMap, function(valueAsAsssignIndex, keyAsSelectedIndex) {
@@ -566,6 +566,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		};
 
+
+
+
 		/**
 		 * Auto select employees based on daily worksheet employee data
 		 */
@@ -619,7 +622,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						$scope.multiSheetState._selectedIndexMap[key] = foundIndex;
 
 						// push employee id into '_lastSelectedIds'
-						$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex][id] );
+						$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
 					};
 				};
 			});
