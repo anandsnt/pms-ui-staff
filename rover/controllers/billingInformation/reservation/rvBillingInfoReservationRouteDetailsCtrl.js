@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'rvPermissionSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, rvPermissionSrv){
 
     BaseCtrl.call(this, $scope);
 
@@ -513,16 +513,30 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
 
         $scope.saveSuccessCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$parent.$emit('BILLINGINFOADDED');
-            $scope.setReloadOption(true);
-            $scope.navigateToInitialPage();
-            updateCardInfo();
-            $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+            if (data.has_crossed_credit_limit) {
+                ngDialog.open({
+                    template        : '/assets/partials/billingInformation/sharedPartials//rvBillingInfoCreditLimitExceededPopup.html',
+                    className       : '',
+                    closeByDocument : false,
+                    scope           : $scope
+                });
+            }
+            else {
+                $scope.$parent.$emit('BILLINGINFOADDED');
+                $scope.setReloadOption(true);
+                $scope.navigateToInitialPage();
+                updateCardInfo();
+                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+            }
         };
 
         //CICO-12797 workaround to meet the API expected params
         var params =  angular.copy($scope.selectedEntity);
         $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
+    };
+
+    $scope.hasPermissionToEditCreditLimit = function() {
+        return rvPermissionSrv.getPermissionValue('OVERWRITE_DIRECT_BILL_MAXIMUM_AMOUNT');
     };
 
     $scope.createNewBill = function() {
