@@ -17,7 +17,7 @@ module.exports = function(gulp, $, options) {
 	// gulp.task('asset-precompile', ['rover-asset-precompile', 'admin-asset-precompile', 'login-asset-precompile',
 	// 	'zest-asset-precompile']);
 	
-	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
+	var compilationTasks = ['compress-images-loselessly', 'rover-asset-prod-precompile',  'admin-asset-prod-precompile',
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
 
 		tasksAfterCompilation = ['rover-inject-assets-to-templates', 'admin-inject-assets-to-templates', 
