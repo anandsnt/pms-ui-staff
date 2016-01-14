@@ -282,7 +282,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         $scope.billingInfoFlags.isInAddRoutesMode = false;
         $scope.billingInfoFlags.isInitialPage     = false;
 
-        if (type === 'ATTACHED_ENTITY') {
+        /*if (type === 'ATTACHED_ENTITY') {
         	var selectedEntityDetails = $scope.routes[index];
         	$scope.setSelectedEntity(selectedEntityDetails);
             $scope.selectedEntity.is_new = true;
@@ -294,8 +294,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
             if ($scope.selectedEntity.entity_type === "RESERVATION") {
                 $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
             }
-        }
-        else if (type === 'RESERVATIONS') {
+        }else*/ 
+        if (type === 'RESERVATIONS') {
         	var data = $scope.searchResults.reservations[index];
         	var selectedEntityDetails = {
 			    "attached_charge_codes"   : [],
