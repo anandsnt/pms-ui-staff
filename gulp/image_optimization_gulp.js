@@ -7,7 +7,7 @@ module.exports = function(gulp, $, options) {
 	gulp.task('compress-images-loselessly', function(){
 		return gulp.src(['images/*', 'cssimg/*'], {base: '.'})
 			.pipe(imagemin({
-				optimizationLevel: 2,
+				optimizationLevel: 7,
 				progressive: true,
 				svgoPlugins: [{removeViewBox: false}],
 				use: [pngquant()]
