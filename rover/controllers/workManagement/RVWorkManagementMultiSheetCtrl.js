@@ -561,26 +561,30 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Auto select employees based on daily worksheet employee data
 		 */
 		var initializeEmployeesList = function() {
-			$scope.multiSheetState.selectedEmployees = [];
-			var selected = $scope.multiSheetState.selectedEmployees,
-				assigned = $scope.multiSheetState.assigned,
-				found 	 = null;
+			var foundIndex, key;
 
-			employeeIndexHash = {};
-			// select all employeed by default if no selection history is present
-			_.each($scope.employeeList, function(employee) {
-				if (selectionHistory.length) {
-					if (selectionHistory.indexOf(employee.id) < 0)
-						return false;
-				}
-				employee.ticked = true;
-				var found = _.findWhere(assigned, {
-					id: employee.id
+			$scope.multiSheetState.selectedEmployees = [];
+			$scope.multiSheetState._selectedIndexMap = {};
+			$scope.multiSheetState._lastSelectedIds  = [];
+
+			_.each($scope.employeeList, function(emp) {
+				emp.ticked = true;
+
+				foundIndex = _.findIndex($scope.multiSheetState.assigned, function(assign) {
+					return assign.id == emp.id;
 				});
-				if ( !!found ) {
-					selected.push(found);
-					employeeIndexHash[selected.length-1] = assigned.indexOf(found);
-				}
+
+				if ( foundIndex > -1 ) {
+					// push employee from assigned to selected
+					$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
+
+					// add the index mapping to '_selectedIndexMap'
+					key = $scope.multiSheetState.selectedEmployees.length - 1;
+					$scope.multiSheetState._selectedIndexMap[key] = foundIndex;
+
+					// push employee id into '_lastSelectedIds'
+					$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex][id] );
+				};
 			});
 		};
 
@@ -719,21 +723,30 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		var initializeMultiSheetDataModel = function() {
 			// Object for holding sheet data on scope.
-			$scope.multiSheetState = {
-				dndEnabled: true,
-				selectedDate: $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
-				maxColumns: undefined,
-				selectedEmployees: [],
-				unassigned: payload.unassignedRoomTasks,
-				unassignedFiltered: [],
-				assigned: payload.assignedRoomTasks,
-				allTasks: payload.allTasks,
-				allRooms: payload.allRooms,
-				header: {
-					work_type_id: $scope.workTypeSelected || null
-				},
-				summary: {}
-			};
+
+			$scope.multiSheetState = $.extend(
+					{}, {
+						'unassigned' : payload.unassignedRoomTasks,
+						'assigned'   : payload.assignedRoomTasks,
+						'allTasks'   : payload.allTasks,
+						'allRooms'   : payload.allRooms,
+					}, {
+						'unassignedFiltered' : [],
+						'_unassignIndexMap'  : {}
+					}, {
+						'selectedEmployees' : [],
+						'_selectedIndexMap' : {},
+						'_lastSelectedIds'  : []
+					}, {
+						'dndEnabled': true,
+						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
+						'summary': {},
+						'header': {
+							work_type_id: $scope.workTypeSelected || null
+						},
+					}
+				);
+
 
 			$scope.filters = {
 				selectedFloor: "",
