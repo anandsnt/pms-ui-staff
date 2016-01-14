@@ -679,17 +679,21 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
     	};
 
+        var showLimitExceedPopup = function(){
+            ngDialog.open({
+                template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+
 	    var saveRouteAPICall = function(){
 
 	    	$scope.saveSuccessCallback = function (data) {
                 $scope.$parent.$emit('hideLoader');
                 if (data.has_crossed_credit_limit) {
-                    ngDialog.open({
-                        template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
-                        className: '',
-                        closeByDocument: false,
-                        scope: $scope
-                    });
+                    showLimitExceedPopup();
                 }
                 else {
                     $scope.$parent.$emit('BILLINGINFOADDED');
@@ -833,11 +837,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
             $scope.saveSuccessCallback = function(data) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.setReloadOption(true);
-                $scope.headerButtonClicked();
-                $scope.$parent.$emit('BILLINGINFOADDED');
-                //Added for CICO-23210
-                $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+                if (data.has_crossed_credit_limit) {
+                    showLimitExceedPopup();
+                }
+                else{
+                    $scope.setReloadOption(true);
+                    $scope.headerButtonClicked();
+                    $scope.$parent.$emit('BILLINGINFOADDED');
+                    //Added for CICO-23210
+                    $scope.$parent.$emit('REFRESH_BILLCARD_VIEW');
+                }
             };
             $scope.errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
