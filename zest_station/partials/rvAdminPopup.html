@@ -1,5 +1,5 @@
 <!-- Popup -->
-<div id="popup" ng-class="{'workstations': showWorkStationList}" class="open" click-touch='resetCounter();'> <!-- Remove class "open" to hide popup content -->
+<div id="popup" ng-class="{'workstations': showWorkStationList}" class="open admin-popup" click-touch='resetCounter();'> <!-- Remove class "open" to hide popup content -->
     <div id="popup-content" ng-hide="showWorkStationList">
         <table class='admin-table' id="popup-content" >
                 <tr>
@@ -52,8 +52,12 @@
                         <label class='admin-item-label'>Work Station</label>
                     </td>
                     <td>
-                         <button class="button admin-input" type='button' touch-press='openWorkStationList()'>
+                         <button ng-if="selectedWorkstationName === ''" class="button admin-input" type='button' touch-press='openWorkStationList()'>
                             Select
+                        </button>
+                        
+                        <button title="{{selectedWorkstationName}}" ng-if="selectedWorkstationName !== ''" class="button admin-input" type='button' touch-press='openWorkStationList()' >
+                            {{selectedWorkstationName}}
                         </button>
                     </td>
                 </tr>

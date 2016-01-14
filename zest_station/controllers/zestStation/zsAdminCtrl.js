@@ -94,11 +94,11 @@ sntZestStation.controller('zsAdminCtrl', [
 	 * when we clicked on exit button
 	 */
 	$scope.navToPrev = function(){
-		$state.go ('zest_station.home');
+            $state.go ('zest_station.home');
+                
 	};
 
     $scope.toggleOOS = function(){
-        console.info('toggleOOS')
         if ($state.isOOS){
             $rootScope.$emit(zsEventConstants.OOS_OFF);
         } else {
@@ -107,7 +107,6 @@ sntZestStation.controller('zsAdminCtrl', [
     };
 
 	$scope.loginAdmin = function(){
-            console.info('this')
             $scope.mode   = "admin-name-mode";
             $scope.headingText = 'Admin Username';
             $scope.passwordField = false;
@@ -172,7 +171,7 @@ sntZestStation.controller('zsAdminCtrl', [
 	  */
 	 $scope.submitLogin = function() {
 	 	$scope.hasLoader = true;
-                var onSuccess = function(response){console.log(response);
+                var onSuccess = function(response){
                     if (response.admin){
                         $scope.goToAdminPrompt();
                         $scope.adminLoginError = false;
@@ -180,11 +179,11 @@ sntZestStation.controller('zsAdminCtrl', [
                     } else {
                         $scope.adminLoginError = true;
                         $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
-                        console.warn('incorrect admin login');
+                        console.warn('invalid admin login');
                     }
                 };
                 var onFail = function(response){
-                        console.log(response);
+                        console.warn(response);
                         $scope.adminLoginError = true;
                         $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
                         console.warn('failed admin login attempt');

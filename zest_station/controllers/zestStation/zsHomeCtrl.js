@@ -70,18 +70,15 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.getOOSCurrentSetting = function(){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
-                console.log('storageKey: ',storageKey);
             try {
                if (storage.getItem(storageKey)){
                    $scope.oosStatus = 'enabled';
                } else {
                    $scope.oosStatus = 'disabled';
                }
-               console.log('oos is currently '+$scope.oosStatus);
             } catch(err){
                 console.warn(err);
             }
-            console.info(storage.getItem(storageKey));
         };
         
 	/**
@@ -138,8 +135,7 @@ sntZestStation.controller('zsHomeCtrl', [
         } 
     };
     
-    
-    
+    $scope.selectedWorkstation;
     $scope.selectWorkStation = function(selected){
         if (selected === null){
             $scope.closeWorkStationList();
@@ -150,6 +146,7 @@ sntZestStation.controller('zsHomeCtrl', [
                     if ($scope.zestStationData.workstations[i].id === selected.id){
                         $scope.zestStationData.workstations[i].selected = true;
                         $scope.zestStationData.selectedWorkStation = selected.station_identifier;
+                        $scope.selectedWorkstationName = selected.name;
                     } else {
                         $scope.zestStationData.workstations[i].selected = false;
                     }
@@ -157,22 +154,12 @@ sntZestStation.controller('zsHomeCtrl', [
             }
         }
     };
-    /*
-    $scope.toggleOOS = function(){
-        console.info('toggleOOS');
-        if ($state.isOOS){
-            $rootScope.$emit(zsEventConstants.OOS_OFF);
-        } else {
-            $rootScope.$emit(zsEventConstants.OOS_OFF);
-        }
-    };
-            */
-        
     $scope.saveAdminSettings = function(){
     	var saveCompleted = function(){
     		$scope.$emit('hideLoader');
                 $scope.saveWorkStation();
     		$state.go('zest_station.home');
+                $rootScope.$broadcast('UPDATE_IDLE_TIMER',$scope.savedSettings);
     	};
     	var params = {
             'kiosk': {
@@ -183,6 +170,7 @@ sntZestStation.controller('zsHomeCtrl', [
         if ($scope.zestStationData.selectedWorkStation !== 'Select'){
             params.kiosk.work_station = $scope.zestStationData.selectedWorkStation;
             $state.workstation_id = params.kiosk.work_station.id;
+            $scope.selectedWorkstation = params.kiosk.work_station.id;//for the workstation list view to show what is currently selected
         }
         
         if (sntZestStation.selectedPrinter){
@@ -193,8 +181,10 @@ sntZestStation.controller('zsHomeCtrl', [
     		params: 			params,
     		successCallBack: 	saveCompleted
         };
+        $scope.savedSettings = params;
         $scope.callAPI(zsTabletSrv.saveSettings, options);
     };
+    $scope.savedSettings = {};
     $scope.browserStorageSupported = false;
     $scope.checkBrowserStorageSupport = function(){
         if(typeof(Storage) !== "undefined") {
@@ -312,15 +302,31 @@ sntZestStation.controller('zsHomeCtrl', [
                         station = $scope.zestStationData.workstations[i];
                     }
                 }
+                if (station){
+                    for (var i in $scope.zestStationData.workstations){
+                        if ($scope.zestStationData.workstations[i].id === station.id){
+                            $scope.zestStationData.workstations[i].selected = true;
+                            $scope.zestStationData.selectedWorkStation = station.station_identifier;
+                            $scope.selectedWorkstationName = $scope.zestStationData.workstations[i].name;
+                        } else {
+                            $scope.zestStationData.workstations[i].selected = false;
+                        }
+                    }
+                }
             } 
         } 
+        
+        
+        
         return station;
     };  
+    $scope.selectedWorkstationName = '';
     $scope.getWorkStation();
     $scope.showWorkStationList = false;
     
     $scope.openWorkStationList = function(){
         $scope.showWorkStationList = true;
+        $scope.selectedWorkstation = $state.workstation_id;
        // $('.ngdialog-content').addClass('zoku-style');
         
     };
@@ -350,15 +356,43 @@ sntZestStation.controller('zsHomeCtrl', [
         }
     });
     $scope.theme = '';
+    $scope.hasWorkstation = function(){
+          //returns true/false if a workstation is currently assigned;
+          // if no workstation assigned or if workstation status fetch fails, device should go OOS;
+          var hasWorkstation = false;
+          if (!$scope.zestStationData || $scope.zestStationData.workstations === 'Select'){
+              if ($scope.zestStationData.workstations === 'Select'){
+                  console.info('at least 1 workstation must be configured');
+              }
+              return false;//there are no workstations assigned, at least 1 workstation must be available
+          } else {
+              if ($state.hasWorkstation){
+                  return true;
+              }
+          }
+          return hasWorkstation;
+        };
+        $scope.checkWorkstation = function(){
+            setTimeout(function(){
+                if (!$scope.workstations || $scope.workstations.length === 0){
+                    $scope.$emit(zsEventConstants.PUT_OOS);
+                } else {
+                    if (!$scope.hasWorkstation()){
+                        $scope.$emit(zsEventConstants.PUT_OOS);
+                    }
+                }
+            },500);
+        };
         $scope.fetchWorkStations = function(){
             var onSuccess = function(response){
                 if (response){
                     $scope.workstations = response.work_stations;
+                    $scope.checkWorkstation();
                 }
             };
             var onFail = function(response){
                 console.warn('fetching workstation list failed:',response);
-                //$scope.$emit(zsEventConstants.PUT_OOS);
+                $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
                 params:                 {
@@ -386,11 +420,17 @@ sntZestStation.controller('zsHomeCtrl', [
         } else {
             $scope.oos_message_value = '';
         }
+        //if was oos and now back in service, put it back in servce..
+        var shouldBeInOOS = $state.is_oos, isCurrentlyInOOS  = function(){
+            return $state.current.name === "zest_station.oos";
+        };
+        if (!shouldBeInOOS && isCurrentlyInOOS()){
+            $state.go ('zest_station.home');
+        }
     });
     
     $scope.init = function(){
         var current = $state.current.name;
-        console.info('current: ',current)
         if (current === 'zest_station.admin-screen'){
             
         } else {
