@@ -91,17 +91,12 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.oosStatus = 'test';
         $scope.getOOSCurrentSetting();
         $scope.idle_timer_enabled = false;
-        ngDialog.open({
-            template: '/assets/partials/rvAdminPopup.html',
-          //  className: 'ngdialog-theme-default',
-            closeByDocument: false,
-            scope: $scope,
-            closeByEscape: false
-        });
+        $rootScope.$broadcast('STOP_TIMERS');
+        $state.go('zest_station.admin-screen');
 
         setTimeout(function(){
-            $('.ngdialog-close').hide();
-            $('.ngdialog-content').css("padding", "0");
+      //      $('.ngdialog-close').hide();
+       //     $('.ngdialog-content').css("padding", "0");
         },50);
     };
 
@@ -113,7 +108,7 @@ sntZestStation.controller('zsHomeCtrl', [
         }
 
     $scope.cancelAdminSettings = function(){
-    	$scope.closeDialog();
+        $state.go('zest_station.home');
     };
 
     $scope.updateSettings = function(value){
@@ -177,7 +172,7 @@ sntZestStation.controller('zsHomeCtrl', [
     	var saveCompleted = function(){
     		$scope.$emit('hideLoader');
                 $scope.saveWorkStation();
-    		$scope.closeDialog();
+    		$state.go('zest_station.home');
     	};
     	var params = {
             'kiosk': {
@@ -211,6 +206,8 @@ sntZestStation.controller('zsHomeCtrl', [
     $scope.saveWorkStationPrinter = function(){
         var saveCompleted = function(){
     		$scope.$emit('hideLoader');
+                $rootScope.$broadcast('START_TIMERS');
+                $rootScope.$broadcast('REFRESH_SETTINGS');
     	};
         var station = $scope.getWorkStation();
         var params = {};
@@ -219,10 +216,16 @@ sntZestStation.controller('zsHomeCtrl', [
                 'default_key_encoder_id': station.key_encoder_id,
                 'identifier': station.station_identifier,
                 'name': station.name,
+                'rover_device_id': station.rover_device_id,
+                'is_out_of_order': station.is_out_of_order,
+                'out_of_order_msg': station.out_of_order_msg,
+                'emv_terminal_id': station.emv_terminal_id,
                 'id':station.id
             };
+        $scope.zestStationData.selectedWorkStation = station.id;
+            console.info('saved workstation: ',station.id);
+            $rootScope.$broadcast('UPDATE_WORKSTATION',{id: station.station_identifier});
         };
-       
         if (typeof params.default_key_encoder_id !== typeof undefined){
         //first set as a convenient global, then save to localstorage
             sntZestStation.encoder = params.default_key_encoder_id;
@@ -231,7 +234,7 @@ sntZestStation.controller('zsHomeCtrl', [
         if (sntZestStation.selectedPrinter){
             params.printer = sntZestStation.selectedPrinter;
         }
-
+        console.info('saving params: ',params);
         var options = {
     		params: 			params,
     		successCallBack: 	saveCompleted
@@ -253,6 +256,7 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.setStationEncoder();
     };
         $scope.checkOOSInBrowser = function(){
+            return;
              var storageKey = $scope.oosKey,
                     storage = localStorage,
                     oos = {};
@@ -262,9 +266,13 @@ sntZestStation.controller('zsHomeCtrl', [
             } catch(err){
                 console.warn(err);
             }
+            console.info('oos: ',oos)
             if (oos){
-                $rootScope.$broadcast(zsEventConstants.PUT_OOS);
-                $state.isOOS = true;
+                $scope.oos_message = true;
+                $scope.oos_message_value = $scope.zestStationData.oos_message_value;
+               //storage.setItem(storageKey, false);
+                //$rootScope.$broadcast(zsEventConstants.PUT_OOS);
+                //$state.isOOS = true;
             } else {
                 $state.isOOS = false;
             }
@@ -346,7 +354,6 @@ sntZestStation.controller('zsHomeCtrl', [
             var onSuccess = function(response){
                 if (response){
                     $scope.workstations = response.work_stations;
-                  //  $scope.setWorkStation();
                 }
             };
             var onFail = function(response){
@@ -370,23 +377,42 @@ sntZestStation.controller('zsHomeCtrl', [
         //set theme updates from state
         $scope.theme = $state.theme;
     });
+    $scope.oos_message = false;
+    $scope.oos_message_value = '';
+    $scope.$on ('ZS_SETTINGS_UPDATE', function(event) {
+        if ($scope.zestStationData.oos_message_value !== '' && $scope.zestStationData.is_oos){
+            $scope.oos_message = true;
+            $scope.oos_message_value = $scope.zestStationData.oos_message_value;
+        } else {
+            $scope.oos_message_value = '';
+        }
+    });
+    
     $scope.init = function(){
-        $scope.theme = $state.theme;
-        $scope.fetchWorkStations();
-        $scope.checkOOSInBrowser(); //this will check if the device was put into OOS, if the device has been reset this should place it back into OOS
-        $state.input = {};  
-            if (typeof cordova !== typeof undefined){
-            setTimeout(function(){
-                    $('.modal-content').addClass('ng-hide');
-                    $('.tablet-popup').addClass('size-up');
+        var current = $state.current.name;
+        console.info('current: ',current)
+        if (current === 'zest_station.admin-screen'){
+            
+        } else {
 
-                    setTimeout(function(){
-                        $('.modal-content').removeClass('ng-hide');
-                        $scope.$apply();
-                    },100);
-                        $scope.$apply();
-                },50);
-            }
+            $scope.theme = $state.theme;
+            $scope.fetchWorkStations();
+            $scope.checkOOSInBrowser(); //this will check if the device was put into OOS, if the device has been reset this should place it back into OOS
+            $state.input = {};  
+                if (typeof cordova !== typeof undefined){
+                setTimeout(function(){
+                        $('.modal-content').addClass('ng-hide');
+                        $('.tablet-popup').addClass('size-up');
+
+                        setTimeout(function(){
+                            $('.modal-content').removeClass('ng-hide');
+                            $scope.$apply();
+                        },100);
+                            $scope.$apply();
+                    },50);
+                }
+                $scope.$emit('REFRESH_SETTINGS');
+        }
     };
     
     
