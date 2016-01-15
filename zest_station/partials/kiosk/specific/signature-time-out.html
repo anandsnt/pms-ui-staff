@@ -6,7 +6,7 @@
     <nav id="options" role="nav">
         <ul role="menu">
             <li>
-                <button type="button" class="button option" touch-press='goToScreen($event,"cc-sign", true, "reservation-details")'>
+                <button type="button" class="button option" touch-press='reSignCC()'>
                     <div ng-include="'assets/css/icons/pen.svg'"></div>
                 </button>
                 {{'CC_SIGN_TIMEOUT_SIGN' |translate}}
@@ -15,7 +15,7 @@
                 <span>{{'OR_TEXT' |translate}}</span>
             </li>
             <li>
-                <button type="button" class="button option" touch-press='goToScreen($event,"talk-to-staff", true, "cc-sign")'>
+                <button type="button" class="button option" touch-press='speakToStaff()'>
                     <div ng-include="'assets/css/icons/staff.svg'"></div>
                 </button>
                 {{'SPEAK' |translate}}

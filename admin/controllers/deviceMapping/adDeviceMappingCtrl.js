@@ -246,11 +246,11 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
             $scope.mapping = workstation;
             $scope.updateInline = true;//currently only for OOS toggle
             setTimeout(function(){
-                $scope.saveMapping();
+                $scope.saveMapping(true);
             },250);
         };
         
-	$scope.saveMapping = function(){
+	$scope.saveMapping = function(inline){
 		var data = {//not getting list of printers from the api at this point, 
                             //so we will have to rely on zest station or another UI to update the workstation with a default printer
 			"name": $scope.mapping.name,
@@ -261,6 +261,10 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                 }
                 if (typeof $scope.mapping.selectedEmvTerminal !== typeof undefined){
                     data.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
+                }
+                if (inline){
+                    data.emv_terminal_id = $scope.mapping.emv_terminal_id;
+                    data.default_key_encoder_id = $scope.mapping.key_encoder_id;
                 }
                 //CICO-18808
                 if (typeof $scope.mapping.rover_device_id !== typeof undefined){
