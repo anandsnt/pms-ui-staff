@@ -1341,6 +1341,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						$scope.reservationData.rateDetails[i] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
 
 						populateStayDates(rateId, roomId, i);
+
+						ROOMS[i].demographics.market = $scope.reservationData.ratesMeta[rateId].market_segment_id === null ? "" : $scope.reervationData.ratesMeta[rateId].market_segment_id;
+						ROOMS[i].demographics.source = $scope.reservationData.ratesMeta[rateId].source_id === null ? "" : $scope.reervationData.ratesMeta[rateId].source_id;
+
+						if (i === 0) {
+							$scope.reservationData.demographics.source = ROOMS[i].demographics.source;
+							$scope.reservationData.demographics.market = ROOMS[i].demographics.market;
+						}
 					}
 
 					// IFF Overbooking Alert is configured to be shown
