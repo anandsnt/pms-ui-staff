@@ -508,6 +508,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					}
 					else{
 						$rootScope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
 					}
 				};
 
@@ -519,6 +520,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					}
 					else{
 						$rootScope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
 					}
 					$scope.closeDialog();
 				};
