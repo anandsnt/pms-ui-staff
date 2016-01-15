@@ -90,7 +90,7 @@ sntRover.service('RVreportsSubSrv', [
 		service.fetchReportDetails = function(params) {
 			return callApi({
 				// no name here since we dont want to cache it in the store ever
-				method : 'getJSON',
+				method : 'postJSON',
 				url    : '/api/reports/' + params.id + '/submit',
 				params : _.omit(params, 'id')
 			});
