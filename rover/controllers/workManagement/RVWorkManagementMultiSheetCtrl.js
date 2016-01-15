@@ -381,21 +381,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		$scope.saveMultiSheet = function(config) {
 
-			// TEMP CODE NEED BEAUTIFICATION;
-			var temp = [];
-
-			_.each($scope.multiSheetState.selectedEmployees, function(emp) {
-				var found = _.find($scope.multiSheetState.assigned, { id: emp.id });
-
-				if ( ! found ) {
-					temp.push( emp );
-				};
+			// Since we are changing selectedEmployees while doing drag drop,
+			// we need to put back the changed object to assigned list.
+			_.each($scope.multiSheetState._selectedIndexMap, function(valueAsAsssignIndex, keyAsSelectedIndex) {
+				$scope.multiSheetState.assigned[valueAsAsssignIndex] = $scope.multiSheetState.selectedEmployees[keyAsSelectedIndex];
 			});
-
-			temp = temp.concat( $scope.multiSheetState.selectedEmployees );
-			// TEMP CODE NEED BEAUTIFICATION;
-
-
 
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
@@ -403,7 +393,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
 					params: {
-						assignedRoomTasks: temp,
+						assignedRoomTasks: $scope.multiSheetState.assigned,
 						date: (config && config.date) || $scope.multiSheetState.selectedDate
 					}
 				}
@@ -674,7 +664,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				completed,
 				totalTime,
 				doneTime,
-				time;
+				time,
+				shift;
+
+				/* Shift length to be calculated from api/shifts. need shift_id for that.
+				   Displaying full shift length for now.*/
+				//shift = _.findWhere($scope.shifts, { id: employee.shift_id });
+				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
+				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
+				// Shift length must be corrected in future
 
 			var i;
 
@@ -688,20 +686,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					return $scope.addDuration(s, time.hh + ":" + time.mm);
 				}, "0:0");
 
-				doneTime = _.reduce(allTasks, function(s, task) {
-					if (!task.is_complete) {
-						return s;
-					}
-
-					time = task.time_allocated;
-					return $scope.addDuration(s, time.hh + ":" + time.mm);
-				}, "0:0");
-
-
 				summaryModel.tasksAssigned  += allTasks.length;
 				summaryModel.tasksCompleted += completed.length;
 				summaryModel.timeAllocated  = $scope.addDuration(summaryModel.timeAllocated, totalTime);
-				summaryModel.shiftLength    = $scope.addDuration(summaryModel.shiftLength, doneTime);
 			}
 
 			return summaryModel;
@@ -745,7 +732,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						'allRooms'   : payload.allRooms,
 					}, {
 						'unassignedFiltered' : [],
-						'_unassignIndexMap'  : {}
+						'_unassignIndexMap'  : {},
 					}, {
 						'selectedEmployees' : [],
 						'_selectedIndexMap' : {},
