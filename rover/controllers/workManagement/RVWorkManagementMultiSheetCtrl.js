@@ -381,21 +381,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		$scope.saveMultiSheet = function(config) {
 
-			// TEMP CODE NEED BEAUTIFICATION;
-			var temp = [];
-
-			_.each($scope.multiSheetState.selectedEmployees, function(emp) {
-				var found = _.find($scope.multiSheetState.assigned, { id: emp.id });
-
-				if ( ! found ) {
-					temp.push( emp );
-				};
+			// Since we are changing selectedEmployees while doing drag drop,
+			// we need to put back the changed object to assigned list.
+			_.each($scope.multiSheetState._selectedIndexMap, function(valueAsAsssignIndex, keyAsSelectedIndex) {
+				$scope.multiSheetState.assigned[valueAsAsssignIndex] = $scope.multiSheetState.selectedEmployees[keyAsSelectedIndex];
 			});
-
-			temp = temp.concat( $scope.multiSheetState.selectedEmployees );
-			// TEMP CODE NEED BEAUTIFICATION;
-
-
 
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
@@ -403,7 +393,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
 					params: {
-						assignedRoomTasks: temp,
+						assignedRoomTasks: $scope.multiSheetState.assigned,
 						date: (config && config.date) || $scope.multiSheetState.selectedDate
 					}
 				}
@@ -745,7 +735,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						'allRooms'   : payload.allRooms,
 					}, {
 						'unassignedFiltered' : [],
-						'_unassignIndexMap'  : {}
+						'_unassignIndexMap'  : {},
 					}, {
 						'selectedEmployees' : [],
 						'_selectedIndexMap' : {},
