@@ -349,8 +349,12 @@
 
 		.container {
 			position: relative;
+			display: -webkit-box;
+	        display: -webkit-flex;
 			display: flex;
+			-webkit-justify-content: center;
 			justify-content: center;
+			-align-items: center;
 			align-items: center;
 			overflow: hidden;
 			background: transparent;
@@ -368,11 +372,16 @@
 		}
 
 		.action {
+			display: -webkit-box;
+	        display: -webkit-flex;
 			display: flex;
+			-webkit-justify-content: flex-end;
 			justify-content: flex-end;
+			-align-items: center;
 			align-items: center;
 
 			.button {
+				-webkit-order: 2;
 				order: 2;
 				padding: 0 40px;
 				margin: 0;
@@ -380,6 +389,7 @@
 			}
 
 			a {
+				-webkit-order: 1;
 				order: 1;
 				margin-right: auto;
 			}
