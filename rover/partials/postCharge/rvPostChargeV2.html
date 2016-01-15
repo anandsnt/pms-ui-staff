@@ -330,7 +330,7 @@
 
 						<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="disablePostChargeButton || shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': disablePostChargeButton || shouldDisablePostCharge()}" translate>POST_CHARGE</button>
 
-						<button ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges()" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
+						<button ng-disabled="disableOutsidePostChargeButton" ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges()" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
 
 						<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
 					</div>
