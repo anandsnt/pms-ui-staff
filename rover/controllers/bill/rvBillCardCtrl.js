@@ -2151,13 +2151,22 @@ sntRover.controller('RVbillCardController',
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
+		var fetchBillDataSuccessCallback = function(billData){
+		 	$scope.$emit('hideLoader');
+		 	reservationBillData = billData;
+		 	$scope.init(billData);
+		 	$scope.calculateBillDaysWidth();
+		 	//CICO-10906 review process continues after payment.
+			if( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ){
+				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
+						$scope.clickedReviewButton(data.billNumber-1);
+			}
+		};
 
-		//CICO-10906 review process continues after payment.
-		if( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ){
-			(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
-			$scope.clickedReviewButton(data.billNumber-1);
-		}
-		
+		//update the bill screen and handle futher payments
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
+
+
 	});
 
 	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
