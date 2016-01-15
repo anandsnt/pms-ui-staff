@@ -163,10 +163,10 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var reservationAddFromDateChoosed = function(date, datePickerObj) {
       $scope.reservationAddFromDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
-
+      $scope.reservationAddToDateOptions.minDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
       // we will clear end date if chosen start date is greater than end date
       if ($scope.reservationAddToDate && ($scope.reservationAddFromDate > $scope.reservationAddToDate)) {
-        $scope.reservationAddToDate = $scope.reservationAddFromDate;
+        $scope.reservationAddToDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
       }
 
       runDigestCycle();
@@ -184,8 +184,8 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.reservationAddToDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
       // we will clear end date if chosen start date is greater than end date
-      if ($scope.reservationAddFromDate > $scope.reservationAddToDate) {
-        $scope.reservationAddFromDate = $scope.reservationAddToDate;
+      if ($scope.reservationAddFromDate >= $scope.reservationAddToDate) {
+        $scope.reservationAddFromDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
       }
 
       runDigestCycle();
