@@ -13,6 +13,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		var selectionHistory = [],
 			employeeIndexHash = {};
 
+		console.log( payload );
+
 		// auto save the sheet when moving away
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
 			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
@@ -95,7 +97,10 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 
 		$scope.filterUnassigned = function() {
-			$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned
+			$scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned, $scope.multiSheetState.allRooms);
+			$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned;
+			refreshView();
+			$scope.closeDialog();
 
 			// DO NOTHING FOR NOW!
 			// $scope.$emit('showLoader');
