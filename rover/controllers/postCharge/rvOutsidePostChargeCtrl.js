@@ -307,6 +307,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				else {
 					$scope.reservation_id = $scope.cardAttached.id;
 					$rootScope.$broadcast('POSTCHARGE');
+					$scope.disableOutsidePostChargeButton = true;
 				}
 			};
 			/*
