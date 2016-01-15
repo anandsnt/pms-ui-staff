@@ -128,7 +128,9 @@
                     <ul>
                         <li>
                             <!-- Add class 'red' if longer then shift length -->
-                            <span class="value">
+                            <span class="value"
+                                    ng-class="{ 'red': multiSheetState.summary[employee.id].timeAllocated > multiSheetState.summary[employee.id].shiftLength
+                                    }">
                                 {{ multiSheetState.summary[employee.id].timeAllocated }}
                             </span>
                             <span class="total">
