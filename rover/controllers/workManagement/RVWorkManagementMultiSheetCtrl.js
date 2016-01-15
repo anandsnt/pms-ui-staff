@@ -664,7 +664,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				completed,
 				totalTime,
 				doneTime,
-				time;
+				time,
+				shift;
+
+				/* Shift length to be calculated from api/shifts. need shift_id for that.
+				   Displaying full shift length for now.*/
+				//shift = _.findWhere($scope.shifts, { id: employee.shift_id });
+				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
+				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
+				// Shift length must be corrected in future
 
 			var i;
 
@@ -678,20 +686,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					return $scope.addDuration(s, time.hh + ":" + time.mm);
 				}, "0:0");
 
-				doneTime = _.reduce(allTasks, function(s, task) {
-					if (!task.is_complete) {
-						return s;
-					}
-
-					time = task.time_allocated;
-					return $scope.addDuration(s, time.hh + ":" + time.mm);
-				}, "0:0");
-
-
 				summaryModel.tasksAssigned  += allTasks.length;
 				summaryModel.tasksCompleted += completed.length;
 				summaryModel.timeAllocated  = $scope.addDuration(summaryModel.timeAllocated, totalTime);
-				summaryModel.shiftLength    = $scope.addDuration(summaryModel.shiftLength, doneTime);
 			}
 
 			return summaryModel;
