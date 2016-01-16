@@ -18,7 +18,7 @@
       <!-- contentarea starts here-->
       <div class="container" ng-hide="isLoading || netWorkError">
          <!-- top section starts here-->
-         <div class="row checkin-wrapper-top arrival-details">
+         <div class="row checkin-wrapper-top" ng-class="{'arrival-details':!emailUpdated}">
             <!-- email not updated -->
             <div class="pre-checkin-container-padding" ng-hide="emailUpdated">
                <div class="chekin-heading centeralign">
