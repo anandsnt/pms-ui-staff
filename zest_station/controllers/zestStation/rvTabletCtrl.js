@@ -1,4 +1,4 @@
-sntZestStation.controller('rvTabletCtrl', [
+ sntZestStation.controller('rvTabletCtrl', [
         '$scope',
         '$rootScope',
         'rvTabletSrv',
