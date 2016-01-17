@@ -15,12 +15,12 @@ module.exports = function (gulp, $, options) {
 	//LESS - START
 	var cssInjector = function(fileName) {
 		return gulp.src(LOGIN_HTML_FILE)
-			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
+			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:true}), {
 	            starttag: '<!-- inject:less:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
 	            	console.log('Login injecting css file (' + (fileName) + ") to "  + LOGIN_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
-	                return $.inject.transform.apply($.inject.transform, arguments);
+	                return "<style type='text/css'>" + file.contents.toString('utf8') + "</style>";
 	            }
        		}))
        		.pipe(gulp.dest(LOGIN_TEMPLATE_ROOT, { overwrite: true }));
