@@ -59,35 +59,40 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		/**
 		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
 		 */
-		$scope.selectEmployee = function(data) {
-			var tickedEmployees = _.where($scope.employeeList, { ticked: true });
-				tickedEmpID		= _.pluck(tickedEmployees, 'id'),
-				assigned 		= $scope.multiSheetState.assigned;
-
-			// Since we are changing selectedEmployees while doing drag drop,
-			// we need to put back the changed object to assigned list.
-			_.each($scope.multiSheetState.selectedEmployees, function(employee, index) {
-				var assignedIndex = employeeIndexHash[index];
-				assigned[assignedIndex] = employee;
-			});
-
-			// reset list
-			$scope.multiSheetState.selectedEmployees = [];
-			employeeIndexHash = {};
-
-			_.each(tickedEmpID, function(empId) {
-				var found = _.findWhere(assigned, {
-					id: empId
-				});
-				if ( !!found ) {
-					$scope.multiSheetState.selectedEmployees.push(found);
-					employeeIndexHash[$scope.multiSheetState.selectedEmployees.length-1] = assigned.indexOf(found);
-				}
-			});
-
-			// refresh scrollers and update summary
-			refreshView();
+		$scope.selectEmployee = function() {
+			// no op
+			return;
 		};
+
+		$scope.onEmployeeListOpen = function() {
+			$scope.multiSheetState.dndEnabled = false;
+		};
+
+		/**
+		 * UPDATE the view IFF the list has been changed
+		 */
+		$scope.onEmployeeListClosed = function() {
+			$scope.multiSheetState.dndEnabled = true;
+
+			var currIds = _.where($scope.employeeList, { ticked: true });
+			currIds     = _.pluck(currIds, 'id');
+
+			// if there is any changes made by user
+			if ( _.difference(currIds, $scope.multiSheetState._lastSelectedIds) ) {
+				// Since we are changing selectedEmployees while doing drag drop,
+				// we need to put back the changed object to assigned list.
+				_.each($scope.multiSheetState._selectedIndexMap, function(valueAsAsssignIndex, keyAsSelectedIndex) {
+					$scope.multiSheetState.assigned[valueAsAsssignIndex] = $scope.multiSheetState.selectedEmployees[keyAsSelectedIndex];
+				});
+
+				// reinit Employee list
+				reInitEmployeesList();
+
+				// refresh scrollers and update summary
+				refreshView();
+			};
+		};
+
 
 		$scope.filterUnassigned = function() {
 			$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned
@@ -312,19 +317,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			updateView(true);
 		};
 
-		/**
-		 * UPDATE the view IFF the list has been changed
-		 */
-		$scope.onEmployeeListClosed = function() {
-			selectionHistory = [];
-			_.each($scope.employeeList, function(employee) {
-				if (employee.ticked) {
-					selectionHistory.push(employee.id);
-				}
-			});
-			$scope.multiSheetState.dndEnabled = true;
-		};
-
 		$scope.refreshSheet = function() {
 			$scope.saveMultiSheet({
 				callNextMethod: 'updateView'
@@ -389,21 +381,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		$scope.saveMultiSheet = function(config) {
 
-			// TEMP CODE NEED BEAUTIFICATION;
-			var temp = [];
-
-			_.each($scope.multiSheetState.selectedEmployees, function(emp) {
-				var found = _.find($scope.multiSheetState.assigned, { id: emp.id });
-
-				if ( ! found ) {
-					temp.push( emp );
-				};
+			// Since we are changing selectedEmployees while doing drag drop,
+			// we need to put back the changed object to assigned list.
+			_.each($scope.multiSheetState._selectedIndexMap, function(valueAsAsssignIndex, keyAsSelectedIndex) {
+				$scope.multiSheetState.assigned[valueAsAsssignIndex] = $scope.multiSheetState.selectedEmployees[keyAsSelectedIndex];
 			});
-
-			temp = temp.concat( $scope.multiSheetState.selectedEmployees );
-			// TEMP CODE NEED BEAUTIFICATION;
-
-
 
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
@@ -411,7 +393,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
 					params: {
-						assignedRoomTasks: temp,
+						assignedRoomTasks: $scope.multiSheetState.assigned,
 						date: (config && config.date) || $scope.multiSheetState.selectedDate
 					}
 				}
@@ -557,30 +539,55 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			});
 		};
 
+
+		// common computation part of below 2 functions
+		var initingEmpList = function(emp) {
+			var foundIndex, key;
+
+			foundIndex = _.findIndex($scope.multiSheetState.assigned, function(assign) {
+				return assign.id == emp.id;
+			});
+
+			if ( foundIndex > -1 ) {
+				// push employee from assigned to selected
+				$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
+
+				// add the index mapping to '_selectedIndexMap'
+				key = $scope.multiSheetState.selectedEmployees.length - 1;
+				$scope.multiSheetState._selectedIndexMap[key] = foundIndex;
+
+				// push employee id into '_lastSelectedIds'
+				$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
+			};
+		};
+
 		/**
 		 * Auto select employees based on daily worksheet employee data
 		 */
 		var initializeEmployeesList = function() {
-			$scope.multiSheetState.selectedEmployees = [];
-			var selected = $scope.multiSheetState.selectedEmployees,
-				assigned = $scope.multiSheetState.assigned,
-				found 	 = null;
+			var foundIndex, key;
 
-			employeeIndexHash = {};
-			// select all employeed by default if no selection history is present
-			_.each($scope.employeeList, function(employee) {
-				if (selectionHistory.length) {
-					if (selectionHistory.indexOf(employee.id) < 0)
-						return false;
-				}
-				employee.ticked = true;
-				var found = _.findWhere(assigned, {
-					id: employee.id
-				});
-				if ( !!found ) {
-					selected.push(found);
-					employeeIndexHash[selected.length-1] = assigned.indexOf(found);
-				}
+			$scope.multiSheetState.selectedEmployees = [];
+			$scope.multiSheetState._selectedIndexMap = {};
+			$scope.multiSheetState._lastSelectedIds  = [];
+
+			_.each($scope.employeeList, function(emp) {
+				emp.ticked = true;
+				initingEmpList(emp);
+			});
+		};
+
+		var reInitEmployeesList = function() {
+			var foundIndex, key;
+
+			$scope.multiSheetState.selectedEmployees = [];
+			$scope.multiSheetState._selectedIndexMap = {};
+			$scope.multiSheetState._lastSelectedIds  = [];
+
+			_.each($scope.employeeList, function(emp) {
+				if ( emp.ticked ) {
+					initingEmpList(emp);
+				};
 			});
 		};
 
@@ -657,7 +664,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				completed,
 				totalTime,
 				doneTime,
-				time;
+				time,
+				shift;
+
+				/* Shift length to be calculated from api/shifts. need shift_id for that.
+				   Displaying full shift length for now.*/
+				//shift = _.findWhere($scope.shifts, { id: employee.shift_id });
+				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
+				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
+				// Shift length must be corrected in future
 
 			var i;
 
@@ -671,20 +686,9 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					return $scope.addDuration(s, time.hh + ":" + time.mm);
 				}, "0:0");
 
-				doneTime = _.reduce(allTasks, function(s, task) {
-					if (!task.is_complete) {
-						return s;
-					}
-
-					time = task.time_allocated;
-					return $scope.addDuration(s, time.hh + ":" + time.mm);
-				}, "0:0");
-
-
 				summaryModel.tasksAssigned  += allTasks.length;
 				summaryModel.tasksCompleted += completed.length;
 				summaryModel.timeAllocated  = $scope.addDuration(summaryModel.timeAllocated, totalTime);
-				summaryModel.shiftLength    = $scope.addDuration(summaryModel.shiftLength, doneTime);
 			}
 
 			return summaryModel;
@@ -719,21 +723,30 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 */
 		var initializeMultiSheetDataModel = function() {
 			// Object for holding sheet data on scope.
-			$scope.multiSheetState = {
-				dndEnabled: true,
-				selectedDate: $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
-				maxColumns: undefined,
-				selectedEmployees: [],
-				unassigned: payload.unassignedRoomTasks,
-				unassignedFiltered: [],
-				assigned: payload.assignedRoomTasks,
-				allTasks: payload.allTasks,
-				allRooms: payload.allRooms,
-				header: {
-					work_type_id: $scope.workTypeSelected || null
-				},
-				summary: {}
-			};
+
+			$scope.multiSheetState = $.extend(
+					{}, {
+						'unassigned' : payload.unassignedRoomTasks,
+						'assigned'   : payload.assignedRoomTasks,
+						'allTasks'   : payload.allTasks,
+						'allRooms'   : payload.allRooms,
+					}, {
+						'unassignedFiltered' : [],
+						'_unassignIndexMap'  : {},
+					}, {
+						'selectedEmployees' : [],
+						'_selectedIndexMap' : {},
+						'_lastSelectedIds'  : []
+					}, {
+						'dndEnabled': true,
+						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
+						'summary': {},
+						'header': {
+							work_type_id: $scope.workTypeSelected || null
+						},
+					}
+				);
+
 
 			$scope.filters = {
 				selectedFloor: "",

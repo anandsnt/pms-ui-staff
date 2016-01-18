@@ -19,7 +19,7 @@
         <div class="entry employees">
             <label for="worksheet-employees" translate>EMPLOYEES</label>
             <!-- MOdified angular multi select template based on https://raw.githubusercontent.com/isteven/angular-multi-select/master/angular-multi-select.js, lines 71-106 -->
-            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" on-open="multiSheetState.dndEnabled = false" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
+            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee()" on-open="onEmployeeListOpen()" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
         </div>
         <div class="entry task">
             <label for="work-type" translate>WORK TYPE</label>
@@ -32,7 +32,7 @@
                 </select>
             </div>
         </div>
-        <div class="entry">
+        <div class="entry actions">
             <div class="action">
                 <label translate>PRINT</label>
                 <button type="button" class="button blue with-icon only-icon"
@@ -120,7 +120,7 @@
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
-            <div class="employee" ng-repeat="employee in multiSheetState.selectedEmployees" ng-init="empIndex = $index">
+            <div class="employee" ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
                         {{employee.display_name}}
@@ -128,7 +128,9 @@
                     <ul>
                         <li>
                             <!-- Add class 'red' if longer then shift length -->
-                            <span class="value">
+                            <span class="value"
+                                    ng-class="{ 'red': multiSheetState.summary[employee.id].timeAllocated > multiSheetState.summary[employee.id].shiftLength
+                                    }">
                                 {{ multiSheetState.summary[employee.id].timeAllocated }}
                             </span>
                             <span class="total">
@@ -152,9 +154,9 @@
                     ng-iscroll="assignedRoomList-{{$index}}"> <!-- Vertical scroll here -->
                     <div class="wrapper">
                         <ul class="worksheet-room"
-                            ng-repeat="room in employee.rooms">
+                            ng-repeat="(roomIndex, room) in employee.rooms">
                             <li class="worksheet-task"
-                                id="assigned-{{ empIndex }}-{{ $parent.$index }}-{{ $index }}"
+                                id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
                                 ng-class="{ 'completed-task': task.is_complete}"

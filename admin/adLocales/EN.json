@@ -44,7 +44,9 @@
 ,"BRITE_PABX_SETUP_HEADER": "Brite PabX Setup",
 "BRITE_PABX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
 "BRITE_PABX_SUB_TITLE": "API Access Configuration",
-"BRITE_PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number","CAMPAIGNS_LIST_TITLE": "Campaigns",
+"BRITE_PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number",
+"BRITE_PABX_URL": "URL",
+"BRITE_PABX_API_KEY": "API KEY","CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
@@ -628,8 +630,10 @@
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
 	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
-    "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
-    "ROVER_DEVICE_ID" : "Rover Device ID"
+        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
+	"WORKSTATION_IS_OOS":"Out of Service",
+	"WORKSTATION_OOS_MSG":"OOS Message",
+        "ROVER_DEVICE_ID" : "Rover Device ID"
 
 ,"LETSHARE_SETUP_HEADER": "LetShare Setup",
 "LETSHARE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
@@ -921,7 +925,9 @@
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
     "CC_BATCH_PROCESSING" : "CC Batch Processing",
     "AUTO_SETTLEMENT_BY_EOD" : "Auto-Settlement by EOD",
-    "EMAIL_RECIPIENT_FOR_EOD_REPORTS" : "Email Recipient for EOD Reports"
+    "EMAIL_RECIPIENT_FOR_EOD_REPORTS" : "Email Recipient for EOD Reports",
+    "OFFER_ROOM_DELIVERY_OPTIONS":"Offer room delivery options",
+    "ROOM_KEY_COMMUNICATIONS":"Room key communications"
 
 
 ,"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
