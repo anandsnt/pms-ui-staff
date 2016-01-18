@@ -577,7 +577,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.idlePopup = function() {
             var current = $state.current.name;
-            if (current === 'zest_station.admin-screen' || current === 'zest_station.oos'){
+            if (current === 'zest_station.admin-screen' || current === 'zest_station.oos' || current === 'zest_station.card_swipe'){//card swipe will go to separate re-try
                 $scope.resetTime();
                 return;
             }

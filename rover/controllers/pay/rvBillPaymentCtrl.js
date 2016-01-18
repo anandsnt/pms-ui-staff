@@ -959,7 +959,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
     */
 
     var paymentMapSuccess = function(response){
-    	 $scope.$emit('REFRESH_BILLCARD_VIEW');
     	 processeRestOfPaymentOperations();
     	 $scope.$emit('hideLoader');
     };

@@ -1549,7 +1549,34 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.shouldShowExportButton = function(report) {
 			var chosenReport = report || reportsSrv.getChoosenReport();
 			return !_.isUndefined(chosenReport) && !_.isEmpty(chosenReport) && chosenReport.display_export_button;
+		}; 
+		
+		$scope.exportCSV = function(report) {
+			var chosenReport = report || reportsSrv.getChoosenReport(),
+				loadPage = 1,
+				resultPerPageOverride = true,
+				changeAppliedFilter = false;
+
+			$scope.invokeApi(reportsSrv.exportCSV, {
+				url: $scope.getExportPOSTUrl(report),
+				payload: genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter)
+			}, function(response) {
+				$scope.$emit('hideLoader');
+			}, function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			});
 		};
+
+		$scope.getExportPOSTUrl = function(report) {
+			var chosenReport = report || reportsSrv.getChoosenReport();
+			var exportUrl = "";
+			if ( _.isEmpty(chosenReport) ) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
+				return exportUrl;
+			};
+			return "/api/reports/" + chosenReport.id + "/submit.csv?";;
+		};
+
 
 		/**
 		 * function to get the export url for a report
