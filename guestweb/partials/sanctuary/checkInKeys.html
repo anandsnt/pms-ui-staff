@@ -1,0 +1,38 @@
+<!-- contentarea starts here-->
+<div class="jumbotron">
+	<div class="container" >
+		<div class="container-fluid">
+			<div class="row headerrow template-bg">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<!--	 show posting message -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
+		</div>
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
+			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+		</div>
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isPosting || netWorkError">
+			<!-- top section starts here-->
+			<div class="row checkin-wrapper pre-checkin-final">
+				<div class="col-md-6 headtext centeralign pad-rt-60">
+					You're Checked in!
+					<p class="template-text margin-10">
+						Reservation #:{{confirmationNumber}}
+					</p>
+				</div>
+				<div class="verti-ruler"></div>
+				<!-- top section ends here-->
+				<div class="col-md-6 pad-lf-60 key-delivery-message">
+					{{responseData.delivery_message}}
+				</div>
+			</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>
