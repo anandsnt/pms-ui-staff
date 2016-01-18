@@ -257,11 +257,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				destination.push({
 					'room_id': draggedRoom.room_id,
 					'room_index': draggedRoom.room_index,
-					'room_tasks': [draggedTask]
+					'room_tasks': [draggedTask],
+					'show': true
 				});
 			};
 
-
+			$scope.filterUnassigned();
 
 			// if task removed from an employee =>
 			// remove the task from "only_tasks"
