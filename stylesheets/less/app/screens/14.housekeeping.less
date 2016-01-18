@@ -355,31 +355,49 @@
 
             .room-actions {
                 padding: 10px;
-                height: 60px;
+                height: 70px;
                 text-align: center;
                 background: rgba(0,0,0,.1);
 
-                .select {
-                    width: 50%;
-                    margin: 0 auto;
-                    .show;
+                input,
+                select { 
+                    font-size: 16px;
+                    font-weight: 700;
+                    .size(50px, 100%);
                 }
 
-                .has-datepicker {
-                    position: relative;
+                input { padding: 15px 10px 0; }
 
-                    input { width: 100%; }
+                select { padding: 15px 10px 0 5px; }
+
+                option {
+                    font-size: 16px;
+                    font-weight: 400;
                 }
 
-                &.dual-select,
+                label {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    font-size: 12px;
+                    line-height: 1;
+                    text-transform: uppercase;
+                    color: @grey3;
+                    margin: 0;
+                }
+
+                .datepicker { background-position: 90% 17px;}
+
                 &.has-date {
+                    .float();
+
                     .select,
                     .has-datepicker {
-                        display: inline-block;
-                        .calc-width(50, 10);
-
-                        &:first-child { margin-right: 10px; }
+                        .pull-left;
+                        .calc-width(50, 5);
                     }
+
+                    .has-datepicker { margin-right: 10px; }
                 }
             }
 
@@ -398,6 +416,34 @@
                     .orange { color: @orange; }
                 }
 
+                .button {
+                    margin: 20px auto;
+                    .show;
+
+                    &:not(.action) {
+                        line-height: 50px;
+                        width: 100%;
+
+                        span { 
+                            font-weight: 400;
+                            color: @grey3; 
+                        }
+                    }
+                }
+
+                &.scrollable {
+                    padding: 0;
+                    .calc-height(100, 70);
+
+                    .wrapper { padding: 0 20px 20px 20px; }
+
+                    .iScrollVerticalScrollbar { 
+                        top: 20px;
+                        bottom: 20px;
+                    }
+                }
+
+                /* Guest Tab ***/
                 .guest-image {
                     margin: 20px auto;
                     float: none;
@@ -435,51 +481,64 @@
                     }
                 }
 
-                .progress {
-                    position: relative;
-                    overflow: hidden;
-                    margin: 20px auto;
-                    .gradient(@blueStart, @blueEnd);
-                    #border-radius > .rounded(25px);
-                    .box-shadow(inset 1px 1px 0 rgba(0,0,0,.1));
-                    .size(20px, 75%);
-                    .show;
+                /* Work Tab ***/
+                #room-tasks {
+                    margin-bottom: 20px;
+                    text-align: center;
+                    .box-shadow(1px 1px 2px rgba(0,0,0,.15));
 
-                    &:after {
-                        content: "";
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background-size: 40px 40px;
-                        .candystripe(rgba(0,0,0,.1), -45deg);
-                        #move > .candystripe();
+                    .room-actions {
+                        #border-radius > .top();
                     }
-                }
 
-                .button {
-                    margin: 0 auto;
-                    .show;
+                    .room-task {
+                        padding: 20px;
+                        background: @white;
+                        #border-radius > .bottom();
+                    }
 
-                    &:not(.action) {
-                        line-height: 50px;
-                        margin-top: 20px;
-                        width: 100%;
+                    .label {
+                        float: none;
+                        margin: 0;
+                    }
 
-                        span { 
-                            font-weight: 400;
-                            color: @grey3; 
+                    .h3 { font-weight: 400; }
+                    em.h3 { color: @grey3; }
+
+                    .progress {
+                        position: relative;
+                        overflow: hidden;
+                        margin: 20px auto;
+                        .gradient(@blueStart, @blueEnd);
+                        #border-radius > .rounded(25px);
+                        .box-shadow(inset 1px 1px 0 rgba(0,0,0,.1));
+                        .size(20px, 75%);
+                        .show;
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background-size: 40px 40px;
+                            .candystripe(rgba(0,0,0,.1), -45deg);
+                            #move > .candystripe();
                         }
                     }
 
-                    &.action {
+                    .action {
                         font-size: 18px;
+                        padding: 0;
                         .square(80px);
-                        #border-radius > .rounded(80px);
+                        #border-radius > .rounded(50%);
                     }
+
+                    .icon-ok { margin-top: 20px; }
                 }
 
+                /* Room Tab ***/
                 .row {
                     text-align: left;
                     margin-bottom: 20px;
@@ -573,18 +632,6 @@
                         }
                     }
                 }
-
-                &.scrollable {
-                    padding: 0;
-                    .calc-height(100, 60);
-
-                    .wrapper { padding: 0 20px 20px 20px; }
-
-                    .iScrollVerticalScrollbar { 
-                        top: 10px;
-                        bottom: 0;
-                    }
-                }
             }
         }
     }
@@ -670,11 +717,19 @@
             .calc-height(100, 80);
 
             .room-actions { 
-                padding: 20px 10px;
-                height: 80px; 
+                padding: 20px 80px;
+                height: 90px;
 
-                &.dual-select,
-                &.has-date { padding: 20px 80px; }
+                &.has-date { 
+                    padding: 20px; 
+
+                    .select,
+                    .has-datepicker {
+                        .calc-width(50, 10);
+                    }
+
+                    .has-datepicker { margin-right: 20px; }
+                }
             }
 
             .room-content {
@@ -685,6 +740,13 @@
                     margin-top: 40px;
                 }
 
+                &.scrollable {
+                    padding: 0;
+
+                    .wrapper {  padding: 0 80px 20px 80px; }
+                }
+
+                /* Guest Tab ***/
                 .guest-image {
                     .square(80px);
 
@@ -698,19 +760,22 @@
                 h2 { font-size: 36px; }
 
                 .button {
-
                     &:not(.action) { width: 80%; }
+                }
 
-                    &.action {
+                /* Work Tab ***/
+                #room-tasks {
+                    margin: 0 auto 20px auto;
+                    width: 320px;
+
+                    .room-actions { padding: 20px; }
+
+                    .h3 { font-size: 24px; }
+
+                    .action {
                         font-size: 21px;
                         .square(120px);
                     }
-                }
-
-                &.scrollable {
-                    padding: 0;
-
-                    .wrapper {  padding: 0 80px 20px 80px; }
                 }
             }
         }
@@ -784,15 +849,29 @@
             .calc-height(100, 90);
 
             .room-actions {
-                .select { width: 200px; }
+                padding: 20px 25%;
 
-                &.dual-select,
-                &.has-date { padding: 20px 25%; }
+                .select { 
+                    width: 280px;
+                    margin: 0 auto;
+                }
+
+                &.has-date { 
+                   padding: 20px 25%;
+                }
             }
 
             .room-content {
                 padding: 0 25%;
 
+                &.scrollable {
+                    padding: 0;
+                    .calc-height(100, 80);
+
+                    .wrapper {  padding: 0 25% 20px 25%; }
+                }
+
+                /* Room Tab ***/
                 .row {
                     margin-bottom: 0;
 
@@ -869,13 +948,6 @@
                     &#actions {
                         .button { width: 50%; }
                     }
-                }
-
-                &.scrollable {
-                    padding: 0;
-                    .calc-height(100, 80);
-
-                    .wrapper {  padding: 0 25% 20px 25%; }
                 }
             }
         }
