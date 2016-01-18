@@ -297,7 +297,11 @@ sntRover.controller('RVOutsidePostChargeController',
 			/*
 			 * Method to handle POST CHARGE button click.
 			 */
-			$scope.clickedPostCharges = function(){
+			$scope.clickedPostCharges = function( event ){
+
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+
 				if(!$scope.isCardAttched){
 					$scope.noGuestOrRoomSelected = true;
 				}
