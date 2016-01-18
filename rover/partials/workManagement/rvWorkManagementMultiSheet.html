@@ -25,14 +25,15 @@
             <label for="work-type" translate>WORK TYPE</label>
             <div class="select">
                 <select id="work-type"
-                    ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
+                    ng-model="multiSheetState.header.work_type_id">
                     <!-- removed ng-change since we are $watch.ing it in ctrl
                     if the value chanages save the multisheet then change view -->
-                    <option value="" selected>Show All Work Types</option>
+                    <option value="" selected >Show All Work Types</option>
+                    <option ng-repeat="workType in workTypes" value="{{workType.id}}" ng-if="workType.is_active">{{workType.name}}</option>
                 </select>
             </div>
         </div>
-        <div class="entry">
+        <div class="entry actions">
             <div class="action">
                 <label translate>PRINT</label>
                 <button type="button" class="button blue with-icon only-icon"
@@ -72,7 +73,7 @@
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
             data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task'}">
             <div class="wrapper">
-                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered">
+                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-hide="!room.show">
                     <li class="worksheet-task multi-sheet unassigned"
                         iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
@@ -120,7 +121,7 @@
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
-            <div class="employee" ng-repeat="employee in multiSheetState.selectedEmployees" ng-init="empIndex = $index">
+            <div class="employee" ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
                         {{employee.display_name}}
@@ -128,7 +129,9 @@
                     <ul>
                         <li>
                             <!-- Add class 'red' if longer then shift length -->
-                            <span class="value">
+                            <span class="value"
+                                    ng-class="{ 'red': multiSheetState.summary[employee.id].timeAllocated > multiSheetState.summary[employee.id].shiftLength
+                                    }">
                                 {{ multiSheetState.summary[employee.id].timeAllocated }}
                             </span>
                             <span class="total">
@@ -152,9 +155,9 @@
                     ng-iscroll="assignedRoomList-{{$index}}"> <!-- Vertical scroll here -->
                     <div class="wrapper">
                         <ul class="worksheet-room"
-                            ng-repeat="room in employee.rooms">
+                            ng-repeat="(roomIndex, room) in employee.rooms">
                             <li class="worksheet-task"
-                                id="assigned-{{ empIndex }}-{{ $parent.$index }}-{{ $index }}"
+                                id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
                                 ng-class="{ 'completed-task': task.is_complete}"

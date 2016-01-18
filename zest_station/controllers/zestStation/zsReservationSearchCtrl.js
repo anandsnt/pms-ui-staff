@@ -52,8 +52,21 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * success Call Back Of Search Reservations
      * @return {[type]}
      */
+    $scope.retry = false;
     var successCallBackOfSearchReservations = function(data) {
         $scope.reservations = data.results;
+        if (typeof $scope.reservations === typeof undefined){
+            if (data.errors && !$scope.retry){
+                if (data.errors[0] === 'The Business Date has changed'){
+                    //try a second attempt, for some reason the first one of new business date always fails, need to have it fixed in api
+                        $scope.searchReservations(true);
+                    return;
+                }
+                console.warn(data.errors);
+            }
+            $scope.initErrorScreen();
+            return;
+        }
         $scope.totalPages   = Math.ceil (data.total_count/$scope.PER_PAGE_RESULTS);
                 
             if ($scope.reservations.length === 0){
@@ -140,7 +153,12 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         };
         
         
-    $scope.searchReservations = function() {
+    $scope.searchReservations = function(retry) {
+            if (retry){//workaround to fix 23288, until time for API to research further
+                $scope.retry = true;
+            } else {
+                $scope.retry = false;
+            }
             var params;
             if ($scope.isInCheckoutMode()){
                 params = $scope.getCheckOutParams();
@@ -153,7 +171,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 
             var options = {
                     params            : params,
-                    successCallBack   : successCallBackOfSearchReservations
+                    successCallBack   : successCallBackOfSearchReservations,
+                    failureCallBack:    successCallBackOfSearchReservations
             };
             $scope.callAPI(zsTabletSrv.fetchReservations, options);
     };

@@ -63,30 +63,10 @@ sntZestStation.controller('zsHomeCtrl', [
 		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
 	}();
 
-
-
-        
-        $scope.oosStatus = 'disabled';
-        $scope.getOOSCurrentSetting = function(){
-             var storageKey = $scope.oosKey,
-                    storage = localStorage;
-            try {
-               if (storage.getItem(storageKey)){
-                   $scope.oosStatus = 'enabled';
-               } else {
-                   $scope.oosStatus = 'disabled';
-               }
-            } catch(err){
-                console.warn(err);
-            }
-        };
-        
 	/**
 	 * admin popup actions starts here
 	 */
     var openAdminPopup = function() {
-        $scope.oosStatus = 'test';
-        $scope.getOOSCurrentSetting();
         $scope.idle_timer_enabled = false;
         $rootScope.$broadcast('STOP_TIMERS');
         $state.go('zest_station.admin-screen');
@@ -142,11 +122,11 @@ sntZestStation.controller('zsHomeCtrl', [
         } else {
             $scope.closeWorkStationList();
             if (selected){
+                $scope.selectedWorkstationName = selected.name;
                 for (var i in $scope.zestStationData.workstations){
                     if ($scope.zestStationData.workstations[i].id === selected.id){
                         $scope.zestStationData.workstations[i].selected = true;
                         $scope.zestStationData.selectedWorkStation = selected.station_identifier;
-                        $scope.selectedWorkstationName = selected.name;
                     } else {
                         $scope.zestStationData.workstations[i].selected = false;
                     }
