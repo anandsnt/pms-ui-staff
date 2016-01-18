@@ -25,10 +25,11 @@
             <label for="work-type" translate>WORK TYPE</label>
             <div class="select">
                 <select id="work-type"
-                    ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
+                    ng-model="multiSheetState.header.work_type_id">
                     <!-- removed ng-change since we are $watch.ing it in ctrl
                     if the value chanages save the multisheet then change view -->
-                    <option value="" selected>Show All Work Types</option>
+                    <option value="" selected >Show All Work Types</option>
+                    <option ng-repeat="workType in workTypes" value="{{workType.id}}" ng-if="workType.is_active">{{workType.name}}</option>
                 </select>
             </div>
         </div>
