@@ -94,7 +94,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/preCheckinStatus.html',
+		templateUrl: '/assets/partials/yotel/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
