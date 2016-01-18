@@ -1,0 +1,139 @@
+<div class="jumbotron">
+	<div class="container">
+	<!-- contentarea starts here-->
+		<div class="container">
+			<div class="container-fluid">
+				<div class="row headerrow template-header-bg">
+					<logo-image></logo-image>
+				</div>
+			</div>
+			<!-- show posting message -->
+			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+				<p class="msg-head template-text">Your request is being processed.</p>
+				<p class="msg-body template-text">This may take a few seconds..... please wait!</p>
+			</div>
+			<!-- show error message -->
+			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+				<p class="msg-head template-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+				<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+			</div>
+			<!-- top section starts here-->
+			<div class="row check-inout-wrapper" ng-show="optionsAvailable && !isFetching && !netWorkError">
+				<div class="col-md-6 centeralign headtext toggle-pos-rel">
+					<span class="template-heading-text">Check-Out</span>
+					<p class="leadtext balance-container">
+						<span class="lightcontent chekout-time">
+							<span class="template-text">Your balance is:</span>
+						</span>
+						<span class="balancevalue template-text">{{currencySymbol}}{{billData.balance}}</span>
+					</p>
+
+					<div class="viewbill-toggle template-text">
+						<a ng-hide="showBill"  ng-click="showBill = true">
+							<img src="/assets/img/atura/right_arrow.png" alt="" class="right-arrow"/><span style="padding-left: 20px;">VIEW BILL</span>
+						</a>
+						<a ng-show="showBill" ng-click="showBill = false">
+							<img src="/assets/img/atura/down_arrow.png" alt="" class="down-arrow" /><span style="padding-left: 20px;">VIEW BILL</span>
+						</a>
+					</div>
+					<div class="showbill-wrap" ng-show="showBill" >
+						<div class="trans-rel-wrap">
+							<div class="showbill">
+								
+								<div class="bill-contain-wrap">
+									<span class="close-bill" ng-click="showBill = false"><img src="/assets/img/viewbill-close.png"></span>
+									
+									<div class="bill-contain">
+										<div class="bill-hotel-logo">
+											<img class="img-responsive img-center" src="{{hotelLogo}}" alt="Responsive image">
+										</div>
+
+										<div class="guest-details leftalign">
+											<span class="center-block normal-weight">Room {{ roomNo }}</span>
+											<span class="center-block">{{ userName }}<span ng-show="userCity.length > 0 || userState.length > 0"> | </span> {{ userCity }}<span ng-show="userCity.length > 0 && userState.length > 0">,</span> {{ userState }}</span>
+										</div>
+										<table class="table leftalign">
+											<thead>
+												<tr>
+													<th>Description</th>
+													<th class="right-text">Fees</th>
+												</tr>
+											</thead>
+											<tbody ng-repeat= "bill in billData.fee_details" >
+
+													
+														<tr>
+															<td>
+																<span class="center-block">{{ bill.date }}</span>
+															</td>
+															<td>
+															</td>
+														</tr>
+														<tr ng-show="{{bill.guest_room_text.length > 0}}">
+															<td >
+																	<span class="center-block">{{ bill.guest_room_text}}:<span class="guest-room-description">{{bill.guest_room_description}}</span></span>
+															</td>
+															<td class="right-text">
+																	<span class="center-block">{{ bill.guest_room_fees}}</span>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}
+															</td>
+															<td class="right-text">
+																<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
+															</td>
+														</tr>
+												
+												
+											</tbody>
+											<tfoot>
+												<tr class="total">
+													<td align="center">TOTAL</td>
+													<td class="right-text" >{{billData.total_fees}}</td>
+												</tr>
+												<tr class="total">
+													<td align="center">CREDIT</td>
+													<td class="right-text" >{{billData.credits}}</td>
+												</tr>
+												<tr class="total">
+													<td align="center">BALANCE</td>
+													<td class="balance right-text">{{billData.balance}}</td>
+												</tr>
+											</tfoot>	
+										</table>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>			
+				</div>
+				<div class="col-md-6 no-padding now-later-options">
+					<div class="row">
+						<div class="col-xs-12 accept-charges-button template-button">
+							<div class="rel-wrapper">
+								<a ng-click="gotToNextStep()"></a>
+								<div class="row checkout-later-text">
+									Accept charges<br/> and check-out
+								</div>
+								<div class="row  icontop">
+									<img src="/assets/img/Sanctuary/creditcard_icon.png" width="48" height="48" alt=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row clearboth">
+				<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
+						<em class = "base-text template-text"> The credit card on record will be charged.</em>
+					</p>
+					
+				</div>
+			</div>
+			<!-- top section ends here-->
+		</div>
+	</div>
+</div>
+

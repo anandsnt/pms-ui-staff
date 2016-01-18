@@ -1,0 +1,44 @@
+<!-- contentarea starts here-->
+<div class="jumbotron">
+	<div class="container" >
+		<div class="container-fluid">
+			<div class="row headerrow template-header-bg">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head template-heading-text">Your request is being processed.</p>
+			<p class="msg-body template-heading-text">This may take a few seconds..... please wait!</p>
+		</div>
+		
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head template-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+			<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container margin-10 container-top-padding" ng-hide="isFetching || netWorkError ">
+			<!-- top section starts here-->
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign">
+					<div class=" template-heading-text">Ready to check-out?</div>
+					<div class="chekout-time template-text margin-10">To start,&nbsp;please enter your room number:</div>
+					<div class="chekout-time  room-text template-text margin-10" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
+				</div>
+				<!-- top section ends here-->
+				<div class="col-md-6 no-padding now-later-options cabin-number">
+					<form class="centeralign">
+						<div class="row cabin-number-field">
+							<p class="lightcontent chekout-time room-number-text template-text">ROOM NUMBER</p>
+							<input type="password" ng-model="roomNumber" class = "col-xs-12  shadow room-input" placeholder="Enter Room number"/> 
+						</div>								
+						<button class="checkin-button continue-button template-button" ng-click="continueButtonClicked()">
+							<span class="continue-text">Continue</span>
+						</button>				
+					</form>
+				</div>
+			</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>

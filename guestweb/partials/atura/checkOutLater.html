@@ -1,0 +1,83 @@
+<div class="jumbotron">
+	<div class="container">
+		<div class="container-fluid">
+			<div class="row headerrow template-header-bg">
+				<div class="header">
+					<div class="container">
+						<div class="row pos-relative">
+							<div class="backbtn" ng-show="showBackButtonImage">
+								<a ui-sref="checkOutOptions" class="with-back-btn">
+									<img src="/assets/img/back-btn-black.png">
+									<span class="checkout-later-back-button">back</span>
+								</a>
+							</div>
+							<div class="logo-bg">
+								<img alt="" class="img-responsive img-center logoImage" src="{{hotelLogo}}" style="margin-top: 20px;">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- show posting message -->
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head template-text">Your request is being processed.</p>
+			<p class="msg-body template-text">This may take a few seconds..... please wait!</p>
+		</div>
+
+		<!-- show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head template-text">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+			<p class="msg-body template-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError">
+			<!-- top section starts here-->
+			<div class="row check-inout-wrapper late-options">
+				<div class="col-md-6 headtext centeralign margin-10 padding-bottom-10" ng-show="optionsAvailable">
+					<span class="template-heading-text">Select your new<br/>check-out time:</span>
+				</div>
+
+				<!-- checkoubtn section starts here-->
+				<div class="col-md-6 no-padding now-later-options" ng-show="optionsAvailable">
+					<div class="row">
+						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
+						
+							<div class="rel-wrapper">
+
+								 <a ng-click="gotToNextStep(charge.amount,charge.id)"></a> 
+								<div class="circle-wrapper">
+									<div class="row pad-hz-24 ">
+										<div class="circle-bg">
+											<text x="40%" y="65%" fill="white">
+												<tspan class="time">
+													{{ charge.time | number }}
+												</tspan>
+												<tspan class="ap">
+													{{ charge.ap }}
+												</tspan>
+											</text>
+										</div>
+
+									</div>
+								</div>
+								<div class="row late-charge">
+									<span class="for">for</span><br/>
+									<span class="amount" ng-hide="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
+									<span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row no-thanks-wrap">
+					<p class="centeralign no-thanks template-text" ng-show="optionsAvailable">
+						<a ui-sref="checkOutOptions" class="no-thanks-text">no, thanks</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
