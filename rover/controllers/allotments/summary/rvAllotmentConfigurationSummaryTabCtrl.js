@@ -346,8 +346,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				logo: "ALLOTMENT_DEFAULT"
 			});
 			ngDialog.open({
-				template: '/assets/partials/bill/rvBillingInformationPopup.html',
-				controller: 'rvBillingInformationPopupCtrl',
+				template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
+				controller: 'rvBillingInfoAllotmentMainCtrl',
 				className: '',
 				closeByDocument: true,
 				scope: $scope
