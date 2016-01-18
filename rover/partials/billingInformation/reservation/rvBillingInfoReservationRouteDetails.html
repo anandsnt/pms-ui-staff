@@ -50,7 +50,7 @@
 				</div>
 
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null">
 					<div class="wrapper">
 						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 
-				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE')">
+				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && (selectedEntity.entity_type != 'GROUP' && selectedEntity.entity_type != 'HOUSE')">
 					<!-- add class active when selected -->
 					<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 						<figure class="card-logo">
@@ -86,31 +86,33 @@
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 
-				<!-- Credit Limit -->
-                <div class="title">
-                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
-                </div>
-                <div class="entry">
-                    <input type="text" ng-model="selectedEntity.credit_limit"/>
-                </div>
+				<div ng-hide="isHourlyRateOn">
+					<!-- Credit Limit -->
+	                <div class="title">
+	                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
+	                </div>
+	                <div class="entry">
+	                    <input type="text" ng-model="selectedEntity.credit_limit" ng-disabled="!hasPermissionToEditCreditLimit();"/>
+	                </div>
 
-                <!-- Reference No. -->
-                <div class="title">
-                    {{'REFERENCE_NUMBER' | translate}}
-                </div>
-                <div class="entry" >
-                    <input type="text" ng-model="selectedEntity.reference_number"/>
+	                <!-- Reference No. -->
+	                <div class="title">
+	                    {{'REFERENCE_NUMBER' | translate}}
+	                </div>
+	                <div class="entry" >
+	                    <input type="text" ng-model="selectedEntity.reference_number"/>
+	                </div>
                 </div>
 			</div>
 		</div>
 	</fieldset>
 
 	<fieldset class="content-right">
-		<span class="h2 message" ng-hide="(reservationData.reservation_id !== selectedEntity.id && selectedEntity.entity_type === 'RESERVATION') || (selectedEntity.entity_type === 'GROUP' || selectedEntity.entity_type === 'ALLOTMENT' || selectedEntity.entity_type === 'HOUSE')">
+		<span class="h2 message" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'ALLOTMENT' || selectedEntity.entity_type == 'HOUSE')">
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select"> <!-- 'select-stand-alone' this class was removed as part of a fix. Need to verify-->
 				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
-					<option value="{{bill.id}}" ng-selected = "bill.id === selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
+					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>
