@@ -565,7 +565,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				rooms_task_completion        : getRoomTaskTimes(),
 				is_active   			     : true
 			};
-			params.frequency.days = 0;
+
 			var frequencyParams = {};
 			frequencyParams.monday = false;
 			frequencyParams.tuesday = false;
@@ -574,6 +574,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			frequencyParams.friday = false;
 			frequencyParams.saturday = false;
 			frequencyParams.sunday = false;
+			params.frequency = frequencyParams;
+			params.frequency.days = 0;
 			if($scope.eachTaskList.isCustom === false){
 
 				if($scope.eachTaskList.isWeekDay === true){
