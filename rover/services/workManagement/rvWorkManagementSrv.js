@@ -743,8 +743,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				});
 			});
 
-			console.log( complied );
-
 			return complied;
 		};
 
