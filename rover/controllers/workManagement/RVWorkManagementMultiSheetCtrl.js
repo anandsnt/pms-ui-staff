@@ -262,7 +262,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				});
 			};
 
-
+			$scope.filterUnassigned();
 
 			// if task removed from an employee =>
 			// remove the task from "only_tasks"
