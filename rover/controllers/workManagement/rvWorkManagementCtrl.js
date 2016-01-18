@@ -144,14 +144,15 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 				var cib, cia, cob, coa, roomTime, filterBeforeTime, filterAfterTime;
 				if ( filterHasTime() ) {
 					_.each(allUnassigned, function(room) {
-						if ( roomHasTime(room) ) {
+						var refData = allRooms[room.room_index];
+						if ( roomHasTime(refData) ) {
 							cib = filter.checkin.before;
 							cia = filter.checkin.after;
 							cob = filter.checkout.before;
 							coa = filter.checkout.after;
 
 							if ( !! cia.hh && !! cib.hh ) { // CASE 1 & 2
-								roomTime = room.checkin_time;
+								roomTime = refData.checkin_time;
 								filterAfterTime = cia.hh + ':' + (cia.mm || '00') + ' ' + cia.am;
 								filterBeforeTime = cib.hh + ':' + (cib.mm || '00') + ' ' + cib.am;
 
@@ -162,7 +163,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 								};
 							}
 							else if ( !! cia.hh ) { // CASE 1 : Arrival After
-								roomTime = room.checkin_time;
+								roomTime = refData.checkin_time;
 								filterAfterTime = cia.hh + ':' + (cia.mm || '00') + ' ' + cia.am;
 
 								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
@@ -172,7 +173,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 								};
 							}
 							else if ( !!cib.hh ) { // CASE 2 : Arrival Before
-								roomTime = room.checkin_time;
+								roomTime = refData.checkin_time;
 								filterBeforeTime = cib.hh + ':' + (cib.mm || '00') + " " + cib.am;
 
 								if( get24hourTime(roomTime) >= get24hourTime(filterBeforeTime) ) {
@@ -182,7 +183,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 								};
 							}
 							else if ( !! coa.hh && !! cob.hh ) { // CASE 3 & 4
-								roomTime = room.checkout_time;
+								roomTime = refData.checkout_time;
 								filterAfterTime = coa.hh + ':' + (coa.mm || '00') + " " + coa.am;
 								filterBeforeTime = cob.hh + ':' + (cob.mm || '00') + " " + cob.am;
 
@@ -193,7 +194,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 								};
 							}
 							else if ( !! coa.hh ) { // CASE 3 : Departure After
-								roomTime = room.checkout_time;
+								roomTime = refData.checkout_time;
 								filterAfterTime = coa.hh + ':' + (coa.mm || '00') + " " + coa.am;
 
 								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
@@ -203,7 +204,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 								};
 							}
 							else if ( !! cob.hh ) { // CASE 4 : Departure Before
-								roomTime = room.checkin_time;
+								roomTime = refData.checkin_time;
 								filterBeforeTime = cob.hh + ':' + (cob.mm || '00') + " " + cob.am;
 
 								if( get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
