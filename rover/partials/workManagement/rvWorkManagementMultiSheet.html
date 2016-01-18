@@ -72,7 +72,7 @@
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
             data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task'}">
             <div class="wrapper">
-                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered">
+                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-hide="!room.show">
                     <li class="worksheet-task multi-sheet unassigned"
                         iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
