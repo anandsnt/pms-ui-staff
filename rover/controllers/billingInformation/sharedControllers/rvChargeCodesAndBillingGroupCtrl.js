@@ -3,9 +3,9 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     BaseCtrl.call(this, $scope);
 
     /**
-    * Function to switch between the charge code and billing groups views
-    * @return {undefined}
-    */
+     * Function to switch between the charge code and billing groups views
+     * @return {undefined}
+     */
     $scope.toggleChargeType = function() {
         $scope.isBillingGroup = !$scope.isBillingGroup;
 
@@ -19,10 +19,10 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to know if the billing group is selected or not, to adjust the UI
-    * @param {Object}
-    * @return {Boolean}
-    */
+     * Function to know if the billing group is selected or not, to adjust the UI
+     * @param {Object}
+     * @return {Boolean}
+     */
     $scope.isBillingGroupSelected = function(billingGroup) {
         for (var i = 0; i < $scope.selectedEntity.attached_billing_groups.length; i++) {
             if ($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id) {
@@ -33,10 +33,10 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to switch the billing group selection
-    * @param {Object}
-    * @return {undefined}
-    */
+     * Function to switch the billing group selection
+     * @param {Object}
+     * @return {undefined}
+     */
     $scope.toggleSelectionForBillingGroup = function(billingGroup) {
         for (var i = 0; i < $scope.selectedEntity.attached_billing_groups.length; i++) {
             if ($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id) {
@@ -50,10 +50,10 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to remove the charge code
-    * @param {Object} [charge code to be removed]
-    * @return {undefined}
-    */
+     * Function to remove the charge code
+     * @param {Object} [charge code to be removed]
+     * @return {undefined}
+     */
     $scope.removeChargeCode = function(chargeCode) {
         for (var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
             if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id) {
@@ -64,9 +64,9 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to show available charge code list on clicking the dropdown
-    * @return {undefined}
-    */
+     * Function to show available charge code list on clicking the dropdown
+     * @return {undefined}
+     */
     $scope.showAvailableChargeCodes = function() {
         $scope.clearResults();
         displayFilteredResultsChargeCodes();
@@ -74,9 +74,9 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to select charge code
-    * @return {undefined}
-    */
+     * Function to select charge code
+     * @return {undefined}
+     */
     var addChargeCode = function() {
         for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
             if ($scope.availableChargeCodes[i].id === $scope.chargeCodeToAdd) {
@@ -93,10 +93,10 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to select the charge code to be used in UI
-    * @param {Number} [id of selected charge code]
-    * @return {undefined}
-    */
+     * Function to select the charge code to be used in UI
+     * @param {Number} [id of selected charge code]
+     * @return {undefined}
+     */
     $scope.selectChargeCode = function(selectedChargecodeId) {
         $scope.chargeCodeToAdd = selectedChargecodeId;
         addChargeCode();
@@ -105,9 +105,9 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to trigger the filtering when the search text is entered
-    * @return {undefined}
-    */
+     * Function to trigger the filtering when the search text is entered
+     * @return {undefined}
+     */
     $scope.chargeCodeEntered = function() {
         $scope.showChargeCodes = false;
         displayFilteredResultsChargeCodes();
@@ -116,18 +116,18 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     };
 
     /**
-    * Function to clear the charge code search text
-    * @return {undefined}
-    */
+     * Function to clear the charge code search text
+     * @return {undefined}
+     */
     $scope.clearResults = function() {
         $scope.chargeCodeSearchText = "";
     };
 
     /**
-    * Function to perform filering on results.
-    * if not found in the data, it will request for webservice
-    * @return {undefined}
-    */
+     * Function to perform filering on results.
+     * if not found in the data, it will request for webservice
+     * @return {undefined}
+     */
     var displayFilteredResultsChargeCodes = function() {
 
         //if the entered text's length < 3, we will show everything, means no filtering
@@ -167,15 +167,20 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
         }
     };
 
+    /**
+     * Function that converts a null value to a desired string.
+     * if no replace value is passed, it returns an empty string.
+     * @return {String}
+     */
     $scope.escapeNull = function(value, replaceWith) {
         return escapeNull(value, replaceWith);
     };
 
     /**
-    * Function to know if the charge code is selected, to adjust in UI
-    * @param {Object}
-    * @return {Boolean}
-    */
+     * Function to know if the charge code is selected, to adjust in UI
+     * @param {Object}
+     * @return {Boolean}
+     */
     $scope.isChargeCodeSelected = function(chargeCode) {
         for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
             if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id ) {
