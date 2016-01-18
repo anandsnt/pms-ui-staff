@@ -746,7 +746,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
 						'summary': {},
 						'header': {
-							work_type_id: $scope.workTypeSelected || null
+							work_type_id: $scope.workTypeSelected || ""
 						},
 					}
 				);
