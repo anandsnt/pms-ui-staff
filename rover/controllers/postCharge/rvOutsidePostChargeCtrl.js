@@ -329,7 +329,11 @@ sntRover.controller('RVOutsidePostChargeController',
 			 * Method to handle POST CHARGE button click,
 			 * On 'Guest has not yet checked in!' popup.
 			 */
-			$scope.clickedPostCharge = function(){
+			$scope.clickedPostCharge = function( event ){
+
+				event.stopImmediatePropagation();
+                event.stopPropagation();
+
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
 				$rootScope.$broadcast('POSTCHARGE');
