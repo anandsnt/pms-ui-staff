@@ -130,14 +130,14 @@
 				</ul>
 
 				<!-- No results / no content when searched query not found-->
-	            <div class="no-content" ng-show="searchResults.posting_accounts.length == 0 && searchResults.cards.length == 0 && textInQueryBox!='' && !isReservationActive">
+	            <div class="no-content" ng-show="noSearchResultsFoundInAccountsAndCards();">
 					<div class="info">
 						<span class="icon-no-content icon-cards"></span>
 						<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
 					</div>
 				</div>
 			</div>
-		
+
 			<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 				<ul class="wrapper">
 					<div class="entity" ng-repeat="row in searchResults.reservations" ng-show="row.is_row_visible==true" ng-hide="searchResults.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntityFromSearchResults($index,'RESERVATIONS')">
@@ -160,7 +160,7 @@
 				</ul>
 
 				<!-- No results / no content when searched query not found-->
-	        	<div class="no-content" ng-show="searchResults.reservations.length==0 && textInQueryBox!='' && isReservationActive">
+	        	<div class="no-content" ng-show="noSearchResultsFoundInReservations();">
 					<div class="info">
 						<span class="icon-no-content"></span>
 						<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>

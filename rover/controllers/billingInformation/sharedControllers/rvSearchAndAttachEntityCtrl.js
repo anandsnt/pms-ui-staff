@@ -447,6 +447,17 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         }
     };
 
+    $scope.noSearchResultsFoundInAccountsAndCards = function() {
+    	return ($scope.searchResults.posting_accounts.length === 0 &&
+    	 	   $scope.searchResults.cards.length === 0 && $scope.textInQueryBox !== '' &&
+    	  	   !$scope.isReservationActive);
+    };
+
+    $scope.noSearchResultsFoundInReservations = function() {
+    	return ($scope.searchResults.reservations.length === 0 && 
+    		   $scope.textInQueryBox !== '' && $scope.isReservationActive);
+    };
+
     init();
 
 }]);
