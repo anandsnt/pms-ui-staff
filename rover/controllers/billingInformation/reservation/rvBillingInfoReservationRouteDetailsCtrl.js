@@ -20,15 +20,11 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             isShownExistingCCPayment : false,
             sixIsManual              : false
         };
-
-        //Set credit limit to two digits.
-        if ($scope.selectedEntity.credit_limit) {
-            $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
-        }
-
+        
         setCreditCardDetails();
         setCommonPaymentModelItems();
         checkEntityIsOtherReservationOrAccount();
+        setCreditLimitToTwoDigits();
         initializeScrollers();
         refreshScrollers();
         fetchBillsForReservation();
@@ -80,11 +76,26 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.setScroller('cardsList');
     };
 
+    /*
+     * Check whether the selected entity is other reservation, 
+     * house or group for future use.
+     * @return {undefined}
+     */
     var checkEntityIsOtherReservationOrAccount = function() {
         $scope.isOtherReservation = $scope.reservationData.reservation_id !== $scope.selectedEntity.id &&
                                     $scope.selectedEntity.entity_type === 'RESERVATION';
         $scope.isGroupOrHouse     = $scope.selectedEntity.entity_type === 'GROUP' ||
                                     $scope.selectedEntity.entity_type === 'HOUSE';
+    };
+
+    /*
+     * Set credit limit to to digits.
+     * @return {undefined}
+     */
+    var setCreditLimitToTwoDigits = function() {
+        if ($scope.selectedEntity.credit_limit) {
+            $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
+        }
     };
 
     /*
@@ -794,28 +805,50 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         fetchAvailableChargeCodes();
     };
 
-    $scope.shouldShowCreditCardButton = function() {
+    /**
+     * Function to show/hide credit card attached to a reservation or new payment button.
+     * @return {Boolean} true when payment is available for the entity
+     * and not in add payment mode and no payment method added already.
+     */
+    $scope.showCreditCardOrNewPayment = function() {
         return (!$scope.paymentFlags.isAddPayment && $scope.paymentFlags.showPayment &&
                typeof $scope.renderAddedPayment === "undefined");
     };
 
+    /**
+     * Function to show/hide credit card attached to a reservation
+     * @return {Boolean}
+     */
     $scope.hideAvailableCreditCard = function() {
         return ($scope.isGroupOrHouse || $scope.selectedEntity.has_accompanying_guests ||
                typeof $scope.renderAddedPayment !== "undefined");
     };
 
-    $scope.showAttachedCreditCard = function() {
+    /**
+     * Function to show/hide credit card added while creating a new route.
+     * @return {Boolean}
+     */
+    $scope.showCreditCardAddedDuringRouteCreation = function() {
         return (typeof $scope.renderAddedPayment !== "undefined" && !$scope.paymentFlags.isAddPayment && 
                $scope.paymentFlags.showPayment && !$scope.isGroupOrHouse &&
                !$scope.saveData.newPaymentFormVisible);
     };
 
-    $scope.showAddPaymentDropDown = function() {
+    /**
+     * Function to show/hide payment types drop down that comes 
+     * when clicking new payment button. 
+     * @return {Boolean}
+     */
+    $scope.showSelectPaymentTypeDropDown = function() {
         return ($scope.paymentFlags.isAddPayment && $scope.paymentFlags.showCreditCardDropDown &&
                 $scope.paymentFlags.showPayment);
     };
 
-    $scope.showAddNewCreditCardButton = function() {
+    /**
+     * Function to show/hide new payment button
+     * @return {Boolean}
+     */
+    $scope.hideNewPaymentButton = function() {
         return ($scope.isOtherReservation || $scope.isGroupOrHouse ||
                typeof $scope.renderAddedPayment !== "undefined");
     };

@@ -50,7 +50,7 @@
 				</div>
 
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "shouldShowCreditCardButton();" ng-hide="hideAvailableCreditCard();">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "showCreditCardOrNewPayment();" ng-hide="hideAvailableCreditCard();">
 					<div class="wrapper">
 						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!paymentFlags.isAddPayment && paymentFlags.showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 
-				<div class="payment active"  ng-show = "showAttachedCreditCard();">
+				<div class="payment active"  ng-show = "showCreditCardAddedDuringRouteCreation();">
 					<!-- add class active when selected -->
 					<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 						<figure class="card-logo">
@@ -81,7 +81,7 @@
 				</div>
 
 				<!-- Add new credit card button - remove it when new card is added -->				
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "shouldShowCreditCardButton();" ng-hide="showAddNewCreditCardButton();">{{'NEW_PAYMENT' | translate}}</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "showCreditCardOrNewPayment();" ng-hide="hideNewPaymentButton();">{{'NEW_PAYMENT' | translate}}</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
 				<div id = "newpaymentview"  ng-show = "showAddPaymentDropDown();" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
