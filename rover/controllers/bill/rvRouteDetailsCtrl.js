@@ -866,9 +866,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             		var params = angular.copy( $scope.selectedEntity);
                         if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING" ) {
                             params.entity_type  = "ALLOTMENT";
-                            $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess);
+                            $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
                         } else {
-                            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
+                            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
                         }
                     }
                 else {
