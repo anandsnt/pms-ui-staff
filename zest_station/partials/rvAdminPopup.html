@@ -116,7 +116,7 @@
             <tbody>
                 <tr>
                     <div ng-repeat="workstation in zestStationData.workstations" >
-                    <button style='width:100%; margin-top:5px;' ng-class='{"overlay grey":workstation.selected}' type="button" class="button" touch-press='selectWorkStation(workstation); {{selectedWorkstationName = workstation.name}}'>{{workstation.name}}</button>
+                    <button style='width:100%; margin-top:5px;' ng-class='{"overlay grey":workstation.selected}' type="button" class="button" touch-press='selectWorkStation(workstation)'>{{workstation.name}}</button>
                  </div>
                 </tr>
                 <tr>
