@@ -6,6 +6,7 @@ angular.module('sntRover').controller('RVWorkManagementSearchDatePickerControlle
 				changeYear: true,
 				changeMonth: true,
 				yearRange: "-100:+0",
+				minDate: tzIndependentDate($rootScope.businessDate),
 				onSelect: function(dateText, inst) {
 					$scope.onViewDateChanged();
 					ngDialog.close();

@@ -1,5 +1,6 @@
-angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv) {
+
+angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv','RVReservationPackageSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, RVReservationPackageSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
@@ -203,6 +204,32 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		var failedToFetchOfAllReqdForGroupDetailsShowing = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
 			$scope.$emit("hideLoader");
+		};
+
+		var fetchExistingAddonsAndGotoRoomRates = function(options){
+			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, function(response) {
+				$scope.$emit('hideLoader');
+				var roomData = $scope.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
+				// Reset addons package
+				roomData.addons = [];
+				angular.forEach(response.existing_packages, function(addon) {
+					roomData.addons.push({
+						quantity: addon.addon_count,
+						id: addon.id,
+						price: parseFloat(addon.amount),
+						amountType: addon.amount_type,
+						postType: addon.post_type,
+						title: addon.name,
+						totalAmount: addon.addon_count * parseFloat(addon.amount),
+						is_inclusive: addon.is_inclusive,
+						taxes: addon.taxes,
+						is_rate_addon: addon.is_rate_addon,
+						allow_rate_exclusion: addon.allow_rate_exclusion,
+						excluded_rate_ids: addon.excluded_rate_ids
+					});
+				});
+				$scope.navigateToRoomAndRates(options);
+			});
 		};
 
 		$scope.initGroupCard = function(groupId) {
@@ -441,7 +468,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
 				 * else reload staycard after detaching card */
 				if (response.contracted_rate_was_present) {
-					$scope.navigateToRoomAndRates({
+					fetchExistingAddonsAndGotoRoomRates({
 						disableBackToStaycard: true
 					});
 				} else {
@@ -745,7 +772,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			 * should take the user to room and rates screen after applying the routing info
 			 */
 			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
-				$scope.navigateToRoomAndRates();
+				fetchExistingAddonsAndGotoRoomRates();
 			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined" && !$scope.viewState.lastCardSlot) {
 				if (RVReservationStateService.getReservationFlag('RATE_CHANGE_FAILED')) {
 					RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', false);

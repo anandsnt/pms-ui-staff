@@ -18,14 +18,14 @@
       <!-- contentarea starts here-->
       <div class="container" ng-hide="isLoading || netWorkError">
          <!-- top section starts here-->
-         <div class="row checkin-wrapper-top arrival-details">
+         <div class="row checkin-wrapper-top" ng-class="{'arrival-details':!emailUpdated}">
             <!-- email not updated -->
             <div class="pre-checkin-container-padding" ng-hide="emailUpdated">
                <div class="chekin-heading centeralign">
                   Enter Your E-mail Address
                </div>
                <p class="subTitletext">
-                  We use your e-mail adress to send you your room number:
+                  We use your e-mail address to send you your room number:
                </p>
                <form>
                   <div class="date-container ">
