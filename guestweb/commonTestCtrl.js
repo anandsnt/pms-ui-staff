@@ -164,14 +164,6 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
     });
 }]);
 
-var loadStyleSheets = function(filename){
-    var fileref = document.createElement("link");
-    fileref.setAttribute("rel", "stylesheet");
-    fileref.setAttribute("type", "text/css");
-    fileref.setAttribute("href", filename);
-    $('body').append(fileref);
-};
-
 
 var loadAssets = function(filename, rel, type, media){
     var fileref = document.createElement("link");

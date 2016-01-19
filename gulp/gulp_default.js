@@ -11,11 +11,7 @@ module.exports = function(gulp, $, options) {
 	gulp.task('copy-all-dev', ['copy-rover-files', 'copy-login-files', 'copy-zest-files']);
 
 	//development
-	gulp.task('build', ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev']);
-
-	//produciton
-	// gulp.task('asset-precompile', ['rover-asset-precompile', 'admin-asset-precompile', 'login-asset-precompile',
-	// 	'zest-asset-precompile']);
+	gulp.task('build', ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev']);
 	
 	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
@@ -35,5 +31,5 @@ module.exports = function(gulp, $, options) {
 	gulp.task('default', ['build', 'watch']);
 
 	//starting sever & perform the default tasks
-	gulp.task('s', ['build', 'watch', 'start-server']);
+	gulp.task('s', ['default', 'start-server']);
 }

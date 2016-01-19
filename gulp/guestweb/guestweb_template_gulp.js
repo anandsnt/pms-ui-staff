@@ -75,12 +75,45 @@ module.exports = function(gulp, $, options){
 	});
 
 	gulp.task('guestweb-template-cache-dev', function () {
-	  return gulp.src(GUESTWEB_PARTIALS, {cwd:'guestweb/'})
-	        .pipe($.templateCache(GUESTWEB_TEMPLATES_FILE, {
+		var glob = require('glob-all'),
+			fileList = [],
+			fs = require('fs'),
+			es = require('event-stream'),
+			mkdirp = require('mkdirp'),
+			stream = require('merge-stream'),
+			edit = require('gulp-json-editor');
+
+		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
+			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
+			var mappingList  = GUESTWEB_THEME_TEMPLATE_LIST[theme],
+				fileName 	 = theme.replace(/\./g, "-")+"-template.js";
+
+			return gulp.src(mappingList)
+	  		.pipe($.minifyHTML({
+	  			conditionals: true,
+    			spare:true,
+    			empty: true
+	  		}))
+	        .pipe($.templateCache(fileName, {
 	            module: 'sntGuestWebTemplates',
-	            root: URL_APPENDER + "/partials/"
-	        }))
-	        .pipe(gulp.dest(DEST_ROOT_PATH));
+	            root: URL_APPENDER + '/partials/'
+	        }).on('error', onError))
+	        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true }).on('end', function(){
+	        	extendedMappings[theme] = [URL_APPENDER + "/" + fileName];
+	        	console.log ('Guestweb Theme template - mapping-generation-end: ' + theme);
+	        });
+		});
+		return es.merge(tasks).on('end', function(){
+			return mkdirp(guestwebGenDir, function (err) {
+		    if (err) console.error('guestweb theme template mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('guestweb theme template mapping file failed!! (' + err + ')');
+			    }
+			    console.log('guestweb theme template mapping file created (' + guestwebGenFile + ')');
+			}); 
+		});
+		});
 	});
 
 	//Template - END

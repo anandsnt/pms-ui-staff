@@ -112,7 +112,35 @@ module.exports = function (gulp, $, options) {
 	        .pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('build-guestweb-js-dev', ['guestweb-copy-js-files'], function(){
+	gulp.task('guestweb-js-theme-generate-mapping-list-dev', function(){
+		var glob = require('glob-all'),
+			fs 	= require('fs'),
+			mkdirp = require('mkdirp');
+
+		delete require.cache[require.resolve(GUESTWEB_THEME_JS_MAPPING_FILE)];
+		GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList();
+		
+
+		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
+			console.log ('Guestweb Theme JS - mapping-generation-started: ' + theme);		
+			extendedMappings[theme] = glob.sync(GUESTWEB_THEME_JS_LIST[theme]).map(function(e){
+				return "/assets/" + e;
+			});
+			console.log ('Guestweb Theme JS - mapping-generation-ended: ' + theme);
+		});	
+
+		return mkdirp(guestwebGenDir, function (err) {
+		    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
+			    }
+			    console.log('guestweb theme js mapping file created (' + guestwebGenFile + ')');
+			}); 
+		});
+	});
+
+	gulp.task('build-guestweb-js-dev', ['guestweb-copy-js-files-dev', 'guestweb-js-theme-generate-mapping-list-dev'], function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
 			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
 
@@ -126,15 +154,28 @@ module.exports = function (gulp, $, options) {
 	        .pipe(gulp.dest(GUESTWEB_TEMPLATE_ROOT, { overwrite: true }));
 	});
 
-	gulp.task('guestweb-copy-js-files', function(){
-		return gulp.src(GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles), {base: '.'})
+	gulp.task('guestweb-copy-js-files-dev', function(){
+		delete require.cache[require.resolve(GUESTWEB_THEME_JS_MAPPING_FILE)];
+		GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList();
+
+		var guestwebSourceList = GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles);
+		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
+			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_JS_LIST[theme]);			
+		});
+		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
 	gulp.task('guestweb-watch-js-files', function(){
-		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
-			minifiedFiles 		= GUESTWEB_JS_LIST.minifiedFiles;
-		return gulp.watch(nonMinifiedFiles.concat(minifiedFiles), function(callback){
+		delete require.cache[require.resolve(GUESTWEB_THEME_JS_MAPPING_FILE)];
+		GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList();
+
+		var guestwebSourceList = GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles);
+		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
+			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_JS_LIST[theme]);			
+		});
+		guestwebSourceList = guestwebSourceList.concat('asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/**/*.js');
+		return gulp.watch(guestwebSourceList, function(callback){
 			return runSequence('build-guestweb-js-dev', 'copy-guestweb-base-html');
 		});
 	});
