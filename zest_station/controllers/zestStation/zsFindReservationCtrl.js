@@ -24,8 +24,6 @@ sntZestStation.controller('zsFindReservationCtrl', [
             });
 
             $scope.resetTime = function(){
-                console.info('called reset idle timer');
-                
                 $scope.closePopup();
                 
                 if ($scope.at !== 'home'){ 

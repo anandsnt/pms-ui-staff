@@ -301,6 +301,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.reTryCardSwipe = function(){
             $state.go('zest_station.card_swipe');
         };
+        
+        $scope.$on('SIXPAY_DEBUG',function(){
+            $state.go('zest_station.card_sign');
+        });
 
         $scope.init = function(){
             var current = $state.current.name;
