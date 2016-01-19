@@ -128,7 +128,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 
     /**
      * Function to set selected entity
-     * @param {Object} [selected entity details]
+     * @param {Object} selected entity details
      * @return {undefined}
      */
     $scope.setSelectedEntity = function(entityDetails) {
@@ -137,9 +137,9 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 
     /**
      * Function used in template to map the reservation status to the view expected format
-     * @param {String} [reservation status]
+     * @param {String} reservation status
      * @param {Boolean}
-     * @return {String} [class according to reservation status]
+     * @return {String} class according to reservation status
      */
     $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
         return getGuestStatusMapped(reservationStatus, isLateCheckoutOn);
@@ -147,8 +147,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 
     /**
      * Function to get the class for the 'li' according to the entity role
-     * @param {Object} [selected route]
-     * @return {String} [class of 'li']
+     * @param {Object} selected route
+     * @return {String} class of 'li'
      */
 	$scope.getEntityRole = function(route) {
     	if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
@@ -167,8 +167,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 
     /**
      * Function to get the class for the 'icon' according to the entity role
-     * @param {Ohject} [selected route]
-     * @return {String} [class of 'icon']
+     * @param {Ohject} selected route
+     * @return {String} class of 'icon'
      */
     $scope.getEntityIconClass = function(route) {
         if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests) {
@@ -274,7 +274,8 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
     });
 
     /**
-     * On clicking close button, change the billing info button name.
+     * New routes may be added or existing routes may be deleted before
+     * closing the popup, so change billing info button name accordingly.
      * @return {undefined}
      */
 	$scope.handleCloseDialog = function() {

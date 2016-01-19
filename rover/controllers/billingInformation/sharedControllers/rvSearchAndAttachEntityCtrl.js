@@ -2,6 +2,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	
 	BaseCtrl.call(this, $scope);
 
+	/**
+	 * Initialize the controller
+	 * @return {undefined}
+	 */
 	var init = function() {
 		$scope.textInQueryBox      = "";
 	  	$scope.isReservationActive = true;
@@ -22,12 +26,12 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
 
     /**
-    * Single digit search done based on the settings in admin
-    * The single digit search is done only for numeric characters.
-    * CICO-10323
-    * @param {String} or {Number} [the text in the search box]
-    * @return {Boolean}
-    */
+     * Single digit search done based on the settings in admin
+     * The single digit search is done only for numeric characters.
+     * CICO-10323
+     * @param {String} or {Number} the text in the search box
+     * @return {Boolean}
+     */
     var isSearchOnSingleDigit = function(searchTerm) {
     	if ($rootScope.isSingleDigitSearch) {
     		return isNaN(searchTerm);
@@ -37,10 +41,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     };
 
   	/**
-    * Function to perform filtering/request data from service 
-    * in change event of query box.
-    * @return {undefined}
-    */
+     * Function to perform filtering/request data from service
+     * in change event of query box.
+     * @return {undefined}
+     */
 	$scope.queryEntered = function() {
 		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 			$scope.searchResults.cards            = [];
@@ -56,14 +60,18 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
   	};
 
   	/**
-    * Function to clear the entity search text.
-    * @return {undefined}
-    */
+     * Function to clear the entity search text.
+     * @return {undefined}
+     */
 	$scope.clearResults = function() {
 	  	$scope.textInQueryBox = "";
 	  	$scope.refreshScroller('entities');
 	};
 
+	/*
+	 * Success call back of filtered results fetch.
+	 * @return {undefined}
+	 */
   	var searchSuccessCards = function(data) {
 		$scope.$emit("hideLoader");
 		$scope.searchResults.cards            = [];
@@ -77,10 +85,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
 
   	/**
-    * Function to perform filering on results.
-    * if not found in the data, it will request for webservice.
-    * @return {undefined}
-    */
+     * Function to perform filering on results.
+     * if not found in the data, it will request for webservice.
+     * @return {undefined}
+     */
   	var displayFilteredResultsCards = function() {
 
 	    //show everything, means no filtering
@@ -142,10 +150,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
   	};
 
 	/**
-    * Function to remove the parent reservation from the search results.
-    * @return {undefined}
-    */
-	$scope.excludeActivereservationFromsSearch = function() {
+     * Function to remove the parent reservation from the search results.
+     * @return {undefined}
+     */
+	var excludeActiveReservationFromsSearch = function() {
 		var filteredResults = [];
 
 	  	for (var i = 0; i < $scope.searchResults.reservations.length; i++) {
@@ -161,8 +169,8 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
 
 	/**
-	* Success call back of data fetch from webservice
-	*/
+	 * Success call back of data fetch from webservice
+	 */
 	var searchSuccessReservations = function(data) {
         $scope.$emit('hideLoader');
         $scope.searchResults.reservations = [];
@@ -173,24 +181,24 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
             $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
             $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
 
-				$scope.excludeActivereservationFromsSearch();
+				excludeActiveReservationFromsSearch();
 		}
 		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
 	};
 
 	/**
-	* failure call back of search result fetch
-	*/
+	 * failure call back of search result fetch
+	 */
 	var failureCallBackofDataFetch= function(errorMessage) {
 		$scope.$emit('hideLoader');
 		$scope.$emit('displayErrorMessage', errorMessage);
 	};
 
   	/**
-    * Function to perform filering on results for reservations.
-    * if not found in the data, it will request for webservice.
-    * @return {undefined}
-    */
+     * Function to perform filering on results for reservations.
+     * if not found in the data, it will request for webservice.
+     * @return {undefined}
+     */
 	var displayFilteredResultsReservations = function() {
 
 	    //show everything, means no filtering
@@ -249,6 +257,10 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	    }
 	};
 
+	/**
+     * Function to fetch search results.
+     * @return {undefined}
+     */
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
 		if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && 
@@ -260,20 +272,20 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
 
 	/**
-    * Function to toggle between Reservations, Cards
-    * @param {Boolean}
-    * @return {undefined}
-    */
+     * Function to toggle between Reservations, Cards
+     * @param {Boolean}
+     * @return {undefined}
+     */
 	$scope.toggleClicked = function(flag) {
 		$scope.isReservationActive = flag;
 	};
 
 	/**
-    * Function to handle entity selection from the 'select entity' screen
-    * @param {Number} index of selected entity
-    * @param {String} type of selected entity
-    * @return {undefined}
-    */
+     * Function to handle entity selection from the 'select entity' screen
+     * @param {Number} index of selected entity
+     * @param {String} type of selected entity
+     * @return {undefined}
+     */
 	$scope.selectEntityFromSearchResults = function(index, type) {
         $scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
@@ -364,11 +376,11 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	};
 
 	/**
-    * Function to select entity from attached entities
-    * @param {Number} [index of entity]
-    * @param {Number} [type of entity]
-    * @return {undefined}
-    */
+     * Function to select entity from attached entities
+     * @param {Number} index of entity
+     * @param {Number} type of entity
+     * @return {undefined}
+     */
     $scope.selectAttachedEntity = function(index,type) {
     	$scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
@@ -447,12 +459,22 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         }
     };
 
+    /**
+     * Function shows 'no results found' if no search results found
+     * in case of accounts and cards.
+     * @return {Boolean} true if no serach results found
+     */
     $scope.noSearchResultsFoundInAccountsAndCards = function() {
     	return ($scope.searchResults.posting_accounts.length === 0 &&
     	 	   $scope.searchResults.cards.length === 0 && $scope.textInQueryBox !== '' &&
     	  	   !$scope.isReservationActive);
     };
 
+    /**
+     * Function shows 'no results found' if no search results found
+     * in case reservation.
+     * @return {Boolean} true if no serach results found
+     */
     $scope.noSearchResultsFoundInReservations = function() {
     	return ($scope.searchResults.reservations.length === 0 && 
     		   $scope.textInQueryBox !== '' && $scope.isReservationActive);

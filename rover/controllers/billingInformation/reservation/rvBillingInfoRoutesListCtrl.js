@@ -2,24 +2,29 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
 
     BaseCtrl.call(this, $scope);
 
-    var scrollerOptions = { preventDefault: false };
-    $scope.setScroller('routes', scrollerOptions);
+    // Initialize controller
+    var init = function() {
+        // set scrollers
+        var scrollerOptions = { preventDefault: false };
+        $scope.setScroller('routes', scrollerOptions);
 
-    setTimeout(function() {
-        $scope.refreshScroller('routes');
-    },500);
+        setTimeout(function() {
+            $scope.refreshScroller('routes');
+        },500);
+    };
 
     /**
-    * Function to get the charge code or billing group description, to reflect in UI
-    * @param {Object} [route from routes list]
-    * @return {String} [charge code or billing group description]
-    */
+     * Function to get the charge code or billing group description, to reflect in UI
+     * @param {Object} route from routes list
+     * @return {String} charge code or billing group description
+     */
     $scope.getCharges = function(route) {
     	if (route.attached_charge_codes.length > 1 || route.attached_billing_groups.length > 1) {
     		return 'Multiple';
     	} 
         else if (route.attached_charge_codes.length > 0) {
-    		return route.attached_charge_codes[0].charge_code + ', ' + route.attached_charge_codes[0].description;
+    		return route.attached_charge_codes[0].charge_code + ', ' +
+                   route.attached_charge_codes[0].description;
     	} 
         else if (route.attached_billing_groups.length > 0) {
             return route.attached_billing_groups[0].name ;
@@ -27,10 +32,10 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     };
 
     /**
-    * Function to get the charge type
-    * @param {Object} [route from routes list]
-    * @return {String} [charge type]
-    */
+     * Function to get the charge type
+     * @param {Object} route from routes list
+     * @return {String} charge type
+     */
     $scope.getRouteType = function(route) {
         if ((route.attached_charge_codes.length > 0 && 
             route.attached_billing_groups.length > 0) || 
@@ -44,10 +49,10 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
     };
 
     /**
-    * Function to delete route
-    * @param {Number} [index of route to delete]
-    * @return {undefined}
-    */
+     * Function to delete route
+     * @param {Number} index of route to delete
+     * @return {undefined}
+     */
     $scope.deleteRoute = function(index) {
 
         var successCallback = function (data) {
@@ -62,18 +67,18 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
         };
 
         var data = {};
-        data.id = $scope.reservationData.reservation_id;
+        data.id  = $scope.reservationData.reservation_id;
         data.from_bill = $scope.routes[index].from_bill;
-        data.to_bill = $scope.routes[index].to_bill;
+        data.to_bill   = $scope.routes[index].to_bill;
+
         $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
     };
 
     /**
-    * Function to handle entity selection from the 'All Routes' screen
-    * @param {Number} index of selected entity
-    * @param {String} type of selected entity
-    * @return {undefined}
-    */
+     * Function to handle entity selection from the 'All Routes' screen
+     * @param {Number} index of selected entity
+     * @return {undefined}
+     */
     $scope.selectEntityFromRoutesList = function(index) {
 
         if ($scope.routes[index].from_date) {
@@ -82,9 +87,9 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
         }
         $scope.setRoutingDateOptions();
 
-        $scope.billingInfoFlags.isEntitySelected = true;
+        $scope.billingInfoFlags.isEntitySelected  = true;
         $scope.billingInfoFlags.isInAddRoutesMode = false;
-        $scope.billingInfoFlags.isInitialPage = false;
+        $scope.billingInfoFlags.isInitialPage     = false;
 
         var selectedEntityDetails = $scope.routes[index];
         $scope.setSelectedEntity(selectedEntityDetails);
@@ -97,5 +102,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl',['$scope','$rootScope','$filte
             $scope.selectedEntity.guest_id = null;
         }
     };
+
+    init();
 
 }]);

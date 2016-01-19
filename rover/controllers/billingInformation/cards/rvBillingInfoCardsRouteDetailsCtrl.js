@@ -572,11 +572,6 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         $scope.isShownExistingCCPayment = false;
         $scope.swipedCardDataToSave     = {};
 
-        //Set credit limit to two digits.
-        if ($scope.selectedEntity.credit_limit) {
-            $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
-        }
-
         setCreditCardDetails();
         setCommonPaymentModelItems();
         fetchInitialData();
