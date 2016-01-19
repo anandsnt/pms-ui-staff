@@ -1,10 +1,9 @@
 <div id="popup" class="open" click-touch='resetCounter();'> <!-- Remove class "open" to hide popup content -->
     <div id="popup-content" >
-        <h3 class="nocaps header">Are you still here?</h3><br>    
+        <h2 class="nocaps">{{'IDLE_TIMEOUT_MSG'|translate}}</h2><br>    
         <div id="popup-content">
-            <button type="button" class="button" click-touch='resetTime(); closePopup();'>Yes</button>
+            <button type="button" class="button" click-touch='resetTime(); closePopup();'>{{'IDLE_TIMEOUT_YES'|translate}}</button>
         </div>
-        
     </div>
 </div>
 <div id="popup-overlay" class="open"></div> <!-- Remove class "open" to hide popup overlay -->

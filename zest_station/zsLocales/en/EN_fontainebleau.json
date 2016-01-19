@@ -198,9 +198,10 @@
     "SEL_RES_LAST":"Previous",
     "SEL_RES_NEXT":"Next",
     
+    "IDLE_TIMEOUT_MSG":"Are you still here?",
+    "IDLE_TIMEOUT_YES":"Yes",
     
-    
-    
+     
     "CHOOSE_TOWER_AND_ENTER_ROOM_NUMBER": "Next, Choose your tower and enter your room number",   
     "HOME_PUK_SUB": "If you have already checked in online."
 }

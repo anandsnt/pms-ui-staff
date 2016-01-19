@@ -26,7 +26,7 @@ sntZestStation.config(function ($httpProvider, $translateProvider) {
 		  prefix: '/assets/zsLocales/en/',
 		  suffix: '.json'
 		});
-		$translateProvider.fallbackLanguage('EN');
+		$translateProvider.fallbackLanguage('EN_zoku');
 });
 
 var GlobalZestStationApp = function(){
