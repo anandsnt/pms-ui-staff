@@ -1,0 +1,41 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+	<div class="container ">
+		<div class="container-fluid">
+			<div class="container-fluid">
+				<div class="row headerrow template-header-bg">
+					<logo-image></logo-image>
+				</div>
+			</div>
+			<div class="row">
+				<div ng-hide="posted || isCheckoutCompleted || netWorkError || isCheckedout" class="checkout-status centeralign checkout-now-status" >
+					<p class="msg-head">Your request is being processed.</p>
+					<p class="msg-body">This may take a few seconds..... please wait!</p>
+				</div>
+			
+				<div ng-show="posted && !success && !isCheckoutCompleted && !netWorkError" class="checkout-status centeralign checkout-now-status">
+					<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+				</div>
+
+				<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+
+					<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
+
+					<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+				</div>
+			
+				<div ng-show="posted && success && isCheckoutCompleted && !netWorkError" class="checkout-status centeralign checkout-now-status">
+					<p class="msg-head template-heading-text thanks-msg">Thank you for staying with us!</p>
+				</div>
+
+				<div ng-show="isCheckedout && !success" class="checkout-status centeralign checkout-now-status">
+					<p class="msg-head">It appears you have already completed your check-out.</p>
+					<p class="msg-body">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"class="template-text">{{hotelPhone}}.</a></p>
+					<p class="msg-foot template-text">Thank you!</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

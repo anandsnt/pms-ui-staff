@@ -9,18 +9,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Envoy/checkoutBalance.html',
+       	templateUrl: '/assets/partials/envoy/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Envoy/checkOutStatus.html',
+       	templateUrl: '/assets/partials/envoy/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Envoy/checkoutConfirmation.html',
+       	templateUrl: '/assets/partials/envoy/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -28,17 +28,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/Envoy/landing.html',
+	 	templateUrl: '/assets/partials/envoy/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Envoy/checkOutLater.html',
+		templateUrl: '/assets/partials/envoy/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Envoy/checkOutLaterSuccess.html',
+		templateUrl: '/assets/partials/envoy/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -47,12 +47,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Envoy/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/partials/envoy/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Envoy/ccVerification.html',
+	 	templateUrl: '/assets/partials/envoy/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -61,7 +61,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/partials/envoy/noOption.html',
 	 	title: 'Feature not available'
 	});
 

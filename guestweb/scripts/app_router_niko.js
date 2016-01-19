@@ -9,18 +9,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Nikko/checkoutBalance.html',
+       	templateUrl: '/assets/partials/nikko/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Nikko/checkOutStatus.html',
+       	templateUrl: '/assets/partials/nikko/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Nikko/checkoutConfirmation.html',
+       	templateUrl: '/assets/partials/nikko/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -28,17 +28,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/Nikko/landing.html',
+	 	templateUrl: '/assets/partials/nikko/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Nikko/checkOutLater.html',
+		templateUrl: '/assets/partials/nikko/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Nikko/checkOutLaterSuccess.html',
+		templateUrl: '/assets/partials/nikko/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -47,32 +47,32 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkInConfirmation.html',
+	 	templateUrl: '/assets/partials/nikko/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkInReservationDetails.html',
+	 	templateUrl: '/assets/partials/nikko/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/partials/nikko/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkInKeys.html',
+	 	templateUrl: '/assets/partials/nikko/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Nikko/checkinSuccess.html',
+	 	templateUrl: '/assets/partials/nikko/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/Nikko/arrivalDetails.html',
+	 	templateUrl: '/assets/partials/nikko/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
@@ -81,12 +81,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Nikko/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/partials/nikko/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Nikko/ccVerification.html',
+	 	templateUrl: '/assets/partials/nikko/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -95,7 +95,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/NIKKO/preCheckinStatus.html',
+		templateUrl: '/assets/partials/nikko/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
@@ -103,7 +103,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/partials/nikko/noOption.html',
 	 	title: 'Feature not available'
 	});
 
