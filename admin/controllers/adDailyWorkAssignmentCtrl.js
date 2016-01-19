@@ -597,7 +597,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					params.frequency.days = 0;
 				} else {
 					params.frequency = frequencyParams;
-					params.frequency.days = $scope.eachTaskList.days;
+					params.frequency.days = $scope.eachTaskList.frequency.days;
 				}
 
 			}
