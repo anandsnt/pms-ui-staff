@@ -3,6 +3,8 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		roverRoot 		= 'rover/',
+		controllerRoot 	= roverRoot + 'controllers/',
+		serviceRoot 	= roverRoot + 'services/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -38,27 +40,29 @@ module.exports = {
 				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js',
 				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js', 
 				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
-
-				roverRoot + 'controllers/rvTopCtrl.js',
-				roverRoot + 'controllers/rvRoverController.js',
-				roverRoot + 'controllers/dashboard/**/*.js',
-				roverRoot + 'controllers/availability/rvAvailabilityButtonCtrl.js',
-				roverRoot + 'controllers/search/**/*.js',
-
-				roverRoot + 'services/baseWebSrvV2.js',
-				roverRoot + 'services/rvBaseWebSrv.js',
-				roverRoot + 'services/rvBaseWebSrvV2.js',
-				roverRoot + 'services/rvDashboardSrv.js',
-				roverRoot + 'services/menu/rvMenuSrv.js',
-				roverRoot + 'services/jsMappings/jsMappingsSrv.js',
-				roverRoot + 'services/permissions/rvPermissionSrv.js',
-				roverRoot + 'services/rvSearchSrv.js',
-				roverRoot + 'services/rvHotelDetailsSrv.js',
-				roverRoot + 'services/housekeeping/rvHkRoomStatusSrv.js',
-				roverRoot + 'services/util/rvUtilSrv.js',
-				roverRoot + 'services/availability/rvAvailabilitySrv.js',
+				
 				roverRoot + 'filters/roundFilter.js',
-				roverRoot + 'services/workstation/workstationSrv.js'
+
+				controllerRoot + 'rvTopCtrl.js',
+				controllerRoot + 'rvRoverController.js',
+				controllerRoot + 'dashboard/**/*.js',
+				controllerRoot + 'availability/rvAvailabilityButtonCtrl.js',
+				controllerRoot + 'search/**/*.js',
+				controllerRoot + 'workstation/rvWorkstationCtrl.js',
+
+				serviceRoot + 'baseWebSrvV2.js',
+				serviceRoot + 'rvBaseWebSrv.js',
+				serviceRoot + 'rvBaseWebSrvV2.js',
+				serviceRoot + 'rvDashboardSrv.js',
+				serviceRoot + 'menu/rvMenuSrv.js',
+				serviceRoot + 'jsMappings/jsMappingsSrv.js',
+				serviceRoot + 'permissions/rvPermissionSrv.js',
+				serviceRoot + 'rvSearchSrv.js',
+				serviceRoot + 'rvHotelDetailsSrv.js',
+				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
+				serviceRoot + 'util/rvUtilSrv.js',
+				serviceRoot + 'availability/rvAvailabilitySrv.js',
+				serviceRoot + 'workstation/workstationSrv.js'
 			]
 		};		
 		
