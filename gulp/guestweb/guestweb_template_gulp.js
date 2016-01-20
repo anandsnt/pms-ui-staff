@@ -11,6 +11,7 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/Row_nyc/*.html', 'guestweb/**/landing/Row_nyc/*.html', 'guestweb/**/shared/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    extendedMappings 		= {},
+	    runSequence 			= require('run-sequence'),
 		generated 				= "____generated",
 	    onError 				= options.onError,
 	    runSequence 			= require('run-sequence'),

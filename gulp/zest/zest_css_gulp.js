@@ -10,68 +10,116 @@ module.exports = function(gulp, $, options) {
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
 	    LESS_SOURCE_FILE 		= 'stylesheets/zest_station.css',
     	cleancss 				= new LessPluginCleanCSS({ advanced: true }),
-		onError  				= options.onError;
+		onError  				= options.onError,
+		runSequence 			= require('run-sequence'),
+		extendedMappings 		= {},
+		generated 				= "____generated",
+		ZESTSTAION_THEME_CSS_MAPPING_FILE 	= '../../asset_list/theming/zeststation/css/css_theme_mapping',
+	    ZESTSTAION_THEME_CSS_LIST 			= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList(),
+	    zestStationGenDir 		= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'ZestStation/css/',
+		zeststationGenFile 		= zestStationGenDir + generated + 'ZestStationCSSThemeMappings.json';
 
-	//LESS - START
-	var cssInjector = function(fileName) {
-		return gulp.src(ZEST_HTML_FILE)
-			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
-	            starttag: '<!-- inject:less:{{ext}} -->',
-	            transform: function(filepath, file, i, length) {
-	            	console.log('Zest injecting css file (' + (fileName) + ") to "  + ZEST_HTML_FILE);
-	                arguments[0] = URL_APPENDER + "/" + file.relative;
-	                return $.inject.transform.apply($.inject.transform, arguments);
-	            }
-       		}))
-       		.pipe(gulp.dest(ZEST_TEMPLATE_ROOT, { overwrite: true }));
-	};
-
-	gulp.task('inject-zest-less-production-to-template', function(){
-		var template_manifest_json = require(MANIFEST_DIR + ZEST_CSS_MANIFEST_FILE),
-	        file_name = template_manifest_json[ZEST_CSS_FILE];
-	    return cssInjector(file_name);
+	gulp.task('create-zest-theme-mapping-css-production', function(){
+	    var mkdirp = require('mkdirp'),
+			fs = require('fs');
+		
+		mkdirp(zestStationGenDir, function (err) {
+		    if (err) console.error('zeststation theme css mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(zeststationGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('zeststation theme css mapping file failed!! (' + err + ')');
+			    }
+			    console.log('zeststation theme css mapping file created (' + zeststationGenFile + ')');
+			}); 
+		});
 	});
 
-	gulp.task('zest-less-production', ['zest-copy-less-files'], function () {
-	  return gulp.src(LESS_SOURCE_FILE)
-	        .pipe($.less({
-	        	compress: true,
-	        	plugins: [cleancss]
-	        }))
-	        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: true}).on('error', onError))
-	        .pipe($.rev())
-	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest(ZEST_CSS_MANIFEST_FILE))
-	        .pipe(gulp.dest(MANIFEST_DIR));
+	gulp.task('zeststation-css-theme-generate-mapping-list-prod', function(){
+		var glob = require('glob-all'),
+			fileList = [],
+			fs = require('fs'),
+			es = require('event-stream'),
+			mkdirp = require('mkdirp'),
+			stream = require('merge-stream'),
+			edit = require('gulp-json-editor');
+
+		var tasks = Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
+			console.log ('Zest Station Theme CSS - mapping-generation-started: ' + theme);
+			var mappingList  = ZESTSTAION_THEME_CSS_LIST[theme],
+				fileName 	 = theme.replace(/\./g, "-")+".min.css";
+			
+			return gulp.src(mappingList, {base: '.'})
+				.pipe($.less({
+		        	compress: true,
+		        	plugins: [cleancss]
+		        }))
+		        .on('error', onError)
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: true}).on('error', onError))
+		        .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	Object.keys(manifest).forEach(function (path, orig) {
+				    	extendedMappings[theme] = [URL_APPENDER + "/" + manifest[path]];
+				    	console.log ('Zest Station Theme CSS - mapping-generation-ended: ' + theme + " => " + manifest[path]);
+				    });
+		        	return {};
+		        }));
+		});
+		return es.merge(tasks);
 	});
 
-	gulp.task('zest-less-dev', ['zest-copy-less-files'], function () {
-	  return gulp.src(LESS_SOURCE_FILE)
-	        .pipe($.less({
-				plugins: [cleancss]
-			}))
-	        .pipe(gulp.dest(DEST_ROOT_PATH));
+	gulp.task('zeststation-css-theme-generate-mapping-list-dev', function(){
+		var glob = require('glob-all'),
+			fileList = [],
+			fs = require('fs'),
+			es = require('event-stream'),
+			mkdirp = require('mkdirp'),
+			stream = require('merge-stream'),
+			edit = require('gulp-json-editor');
+
+		var tasks = Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
+			console.log ('Zest Station Theme CSS - mapping-generation-started: ' + theme);
+			var mappingList  = ZESTSTAION_THEME_CSS_LIST[theme];
+			
+			return gulp.src(mappingList, {base: '.'})
+				.pipe($.less({
+		        	plugins: [cleancss]
+		        }))
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}).on('error', onError))
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		});
+		return es.merge(tasks).on('end', function(){
+			runSequence('create-zest-theme-mapping-css-production');
+		});
 	});
 
-	gulp.task('build-zest-less-dev', ['zest-less-dev'], function(){
-	    return cssInjector(ZEST_CSS_FILE);
-	});
+	gulp.task('build-zeststation-css-dev', ['zeststation-copy-css-files-dev', 'zeststation-css-theme-generate-mapping-list-dev']);
 
-	//inorder to tackle the bug in injector, doing this way
-	//bug noticed: parallel injecting is not possible. When 400+ js injection is going on css injection is failing
-	gulp.task('build-zest-less-js-dev', ['zest-less-dev', 'build-zest-js-dev'], function(){
-	    return cssInjector(ZEST_CSS_FILE);
-	});
-	//LESS END
-	//
-	
-	gulp.task('zest-watch-less-files', function(){
-		var paths = [LESS_SOURCE_FILE].concat(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest_station/css/**/*.*']);
-		gulp.watch(paths, ['build-zest-less-dev']);
-	});
+	gulp.task('zeststation-copy-css-files-dev', function(){
+		delete require.cache[require.resolve(ZESTSTAION_THEME_CSS_MAPPING_FILE)];
+		ZESTSTAION_THEME_CSS_LIST 	= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList();
 
-	gulp.task('zest-copy-less-files', function(){
-		return gulp.src(['stylesheets/**/*.*', 'images/**/*.*', 'cssimg/**/**.*', 'type/**/**.*', 'zest_station/css/**/*.*'], {base: '.'})
+		var guestwebSourceList = '';
+		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
+			guestwebSourceList 	= guestwebSourceList.concat(ZESTSTAION_THEME_CSS_LIST[theme]);			
+		});
+		guestwebSourceList = guestwebSourceList.concat(['zeststation/css/**/*.svg', 'zeststation/css/**/*.cur'])
+		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+	});
+
+	gulp.task('zeststation-watch-css-files', function(){
+		delete require.cache[require.resolve(ZESTSTAION_THEME_CSS_MAPPING_FILE)];
+		ZESTSTAION_THEME_CSS_LIST 	= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList();
+
+		var guestwebSourceList = '';
+		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
+			guestwebSourceList 	= guestwebSourceList.concat(ZESTSTAION_THEME_CSS_LIST[theme]);			
+		});
+		guestwebSourceList = guestwebSourceList.concat('asset_list/js/zeststation/**/*.js', 'asset_list/theming/zeststation/**/*.js');
+		return gulp.watch(guestwebSourceList, function(callback){
+			return runSequence('build-zeststation-css-dev', 'copy-zeststation-base-html');
+		});
 	});
 }

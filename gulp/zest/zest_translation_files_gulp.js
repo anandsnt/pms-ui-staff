@@ -15,6 +15,6 @@ module.exports = function(gulp, $, options) {
 	});
 
 	gulp.task('zest-watch-translation-files', function(){
-		gulp.watch(TRNSLTN_FILES, ['concat-translation-en-zest-files-dev']);
+		return gulp.watch(TRNSLTN_FILES, ['concat-translation-en-zest-files-dev']);
 	});
 }

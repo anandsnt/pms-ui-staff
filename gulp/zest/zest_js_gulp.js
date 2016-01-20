@@ -9,6 +9,7 @@ module.exports = function(gulp, $, options){
 	    ZEST_TEMPLATE_ROOT     	= '../views/zest_station/home/',
 	    ZEST_HTML_FILE     		= ZEST_TEMPLATE_ROOT + 'index.html',
 	    extendedMappings 		= [],
+		generated 				= "____generated",
 		onError  				= options.onError;
 
 	//JS - Start
@@ -63,7 +64,7 @@ module.exports = function(gulp, $, options){
 		});
 	});
 
-	gulp.task('build-zest-js-dev', ['zest-generate-mapping-list-dev'], function(){
+	gulp.task('build-zeststation-js-dev', ['zest-generate-mapping-list-dev'], function(){
 		//since extendedMappings contains /assets/ and that is not a valid before gulp.src
 		var adminFiles = extendedMappings.map(function(e){  
 			e = e.replace("/assets/", "");
@@ -84,7 +85,7 @@ module.exports = function(gulp, $, options){
 		var glob 	= require('glob-all'),
 			fileList = zestJSMappingList.minifiedFiles.concat(zestJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
-		gulp.watch(fileList, ['build-zest-js-dev'])
+		return gulp.watch(fileList, ['build-zest-js-dev'])
 	});
 	
 	gulp.task('zest-copy-js-files', function(){

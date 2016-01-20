@@ -8,7 +8,7 @@ module.exports = function(gulp, $, options) {
 	    return del([DEST_ROOT_PATH], {force: true });
 	});
 
-	gulp.task('copy-all-dev', ['copy-rover-files', 'copy-login-files', 'copy-zest-files']);
+	gulp.task('copy-all-dev', ['copy-rover-files', 'copy-login-files', 'copy-zest-files', 'copy-zeststation-files']);
 
 	//development
 	gulp.task('build', ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev']);

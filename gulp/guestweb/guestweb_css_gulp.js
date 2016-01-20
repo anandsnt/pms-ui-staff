@@ -13,6 +13,7 @@ module.exports = function (gulp, $, options) {
     	runSequence 			= require('run-sequence'),
 		onError  				= options.onError,
 		extendedMappings 		= {},
+		runSequence 			= require('run-sequence'),
 		generated 				= "____generated",
 	    GUESTWEB_THEME_CSS_MAPPING_FILE = '../../asset_list/theming/guestweb/css/css_theme_mapping',
 	    GUESTWEB_THEME_CSS_LIST 	= require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList(),
