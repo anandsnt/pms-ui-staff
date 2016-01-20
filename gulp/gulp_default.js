@@ -17,7 +17,7 @@ module.exports = function(gulp, $, options) {
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
 
 		tasksAfterCompilation = ['rover-inject-assets-to-templates', 'admin-inject-assets-to-templates', 
-		'zest-inject-assets-to-templates', 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'],
+		 'guestweb-inject-assets-to-templates', 'login-inject-assets-to-templates'],
 
 		copyBaseHtmlToPublicAssets = ['copy-login-base-html', 'copy-admin-base-html', 'copy-zest-base-html',
 			'copy-rover-base-html', 'copy-guestweb-base-html', 'compress-images-loselessly'];

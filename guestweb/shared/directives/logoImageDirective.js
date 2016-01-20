@@ -4,7 +4,7 @@
 	var logoImage = function() {
 		return {
 		restrict : 'E',
-		templateUrl : "/assets/partials/shared/directives/logoImagePartial.html"
+		templateUrl : "/assets/shared/directives/logoImagePartial.html"
 	};
 	};
 
@@ -13,7 +13,7 @@
 	var logoImageBack = function() {
 		return {
 		restrict : 'E',
-		templateUrl : "/assets/partials/shared/directives/logoImageBackPartial.html"
+		templateUrl : "/assets/shared/directives/logoImageBackPartial.html"
 	};
 	};
 
