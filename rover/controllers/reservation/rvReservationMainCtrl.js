@@ -27,9 +27,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 cardType: ""
             },
             identifier: "CREATION",
-            lastCardSlot: {
-                cardType: ""
-            },
+            lastCardSlot: "",
             reservationStatus: {
                 confirm: false,
                 number: null
@@ -147,9 +145,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     cardType: ""
                 },
                 identifier: "CREATION",
-                lastCardSlot: {
-                    cardType: ""
-                },
+                lastCardSlot: "",
                 reservationStatus: {
                     confirm: false,
                     number: null

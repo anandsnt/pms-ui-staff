@@ -5,8 +5,14 @@
 	var preCheckinStatusController = function($scope, preCheckinSrv,$rootScope,$state) {
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
+
+	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
+
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
 		$state.go('checkinCcVerification');
+	}
+	else if($rootScope.offerRoomDeliveryOptions &&  $rootScope.userEmail.length ===0){
+		$state.go('emailAddition');// if user has not attached an email
 	}
 	else{
 		//this page will be used again after email entry
