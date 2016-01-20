@@ -469,6 +469,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
 				to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
 			};
+			$scope.refreshScroller('room-tab-scroll');	
 		};
 
 		$scope.showCalendar = function(controller) {

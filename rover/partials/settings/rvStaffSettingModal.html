@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
 	<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
 		<span class="icons icon-close invert"></span>
 	</button>

@@ -14,7 +14,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
     function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
 
         BaseCtrl.call(this, $scope);
-
+        $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT")? true :  false;
         /**
          * to run angular digest loop,
          * will check if it is not running
@@ -137,6 +137,11 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
             }
 
+
+            // If allotment name is passsed to create a new one
+            if ( !!$stateParams.newAllotmentName ) {
+                $scope.allotmentConfigData.summary.allotment_name = $stateParams.newAllotmentName;
+            };
         };
 
         /**

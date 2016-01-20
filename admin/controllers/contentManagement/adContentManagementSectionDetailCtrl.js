@@ -5,6 +5,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	BaseCtrl.call(this, $scope);
 	$scope.fileName = "Choose file...";
 	$scope.initialIcon = '';
+
 	$scope.alignments = [{"name":"Left", "value": "Left"}, {"name":"Center", "value": "Center"}, {"name":"Right", "value": "Right"}];
 	/*Initializing data, for adding a new section.
     */
@@ -15,9 +16,34 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	            "icon": '',
 	            "is_description_visible":false,
 	            "description_alignment": "",
-	            "description": ""
+	            "description": "",
+	            "is_search_enabled": false,
+	            "application_id": ""
             };
 
+
+    /*Function to fetch the snt products
+    */
+	$scope.fetchSntProducts = function(){
+		var fetchSntProductsSuccessCallback = function(data){
+
+		/*Checkin if the screen is loaded for a new section or,
+	    * for existing section.
+        */
+	    if($stateParams.id !== 'new'){
+		    $scope.isAddMode = false;
+		    $scope.fetchSection();
+	    }
+	    else{
+	    	$scope.$emit('hideLoader');
+		    $scope.isAddMode = true;
+	    }
+			
+			$scope.sntProducts = data;
+			
+		};
+		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {} , fetchSntProductsSuccessCallback);
+	};
 
     /*Function to fetch the section details
     */
@@ -29,16 +55,9 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 		};
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchSectionSuccessCallback);
 	};
-	/*Checkin if the screen is loaded for a new section or,
-	 * for existing section.
-    */
-	if($stateParams.id !== 'new'){
-		$scope.isAddMode = false;
-		$scope.fetchSection();
-	}
-	else{
-		$scope.isAddMode = true;
-	}
+
+	$scope.fetchSntProducts();
+	
 	/*Function to return to preveous state
     */
 	$scope.goBack = function(){

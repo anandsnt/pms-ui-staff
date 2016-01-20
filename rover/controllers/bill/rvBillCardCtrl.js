@@ -375,6 +375,7 @@ sntRover.controller('RVbillCardController',
 
         $scope.putInQueue = false;
 	$scope.init = function(reservationBillData){
+                $scope.lastResBillData = reservationBillData;//used if refreshing screen manually
                 $scope.isStandAlone = $rootScope.isStandAlone;
                 var viaQueue = false;
                     if ($scope.$parent){
@@ -471,6 +472,25 @@ sntRover.controller('RVbillCardController',
 		$scope.reservationBillData.roomChargeEnabled = !$scope.reservationBillData.roomChargeEnabled;
 	};
 
+    $scope.$on('REFRESH_BILLCARD_VIEW',function(){
+        $scope.refreshBillView();
+        setTimeout(function(){
+			$scope.isRefreshOnBackToStaycard = true;
+            var fetchBillDataSuccessCallback = function(billData){
+			 	$scope.$emit('hideLoader');
+			 	reservationBillData = billData;
+			 	$scope.init(billData);
+			 	$scope.calculateBillDaysWidth();
+			};
+	                
+			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
+            $scope.$apply();
+        },1000);
+    });
+
+        $scope.refreshBillView = function(){
+            $scope.init($scope.lastResBillData);
+        };
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
 		ngDialog.open({
@@ -1161,7 +1181,8 @@ sntRover.controller('RVbillCardController',
 		}
 
 		//Display the key encoder popup
-		else if(keySettings === "encode"){
+		//https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
+		else if(keySettings === "encode"  || keySettings === "mobile_key_encode"){
 			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
@@ -1756,7 +1777,7 @@ sntRover.controller('RVbillCardController',
 				var stateParams = {'type': 'DUEOUT', 'from_page': 'DASHBOARD'};
 			}
 			if(RVSearchSrv.searchTypeStatus === undefined){
-				var stateParams = {'type': 'NORMAL_SEARCH', 'useCache': true};
+				var stateParams = {'useCache': true};
 				$scope.reservationBillData.reservation_status = "CHECKEDOUT";
 				RVSearchSrv.updateRoomDetails($scope.reservationBillData.confirm_no, $scope.reservationBillData);
 			}
@@ -1790,6 +1811,9 @@ sntRover.controller('RVbillCardController',
 
 	 });
 
+	$scope.HIDE_LOADER_FROM_POPUP =  function(){
+		$scope.$emit("hideLoader");
+	};
 	//trigger the billing information popup
     $scope.openBillingInformation = function(){
 
@@ -1814,7 +1838,7 @@ sntRover.controller('RVbillCardController',
 	 *
 	 */
 	$scope.showAdvancedBillDialog = function(){
-		if($scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && (!$scope.reservationBillData.is_hourly ||$scope.reservationBillData.is_hourly === null)){
+		if($rootScope.isStandAlone && $scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && !$scope.reservationBillData.is_hourly){
 		 		ngDialog.open({
 	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
 	    		className: '',
@@ -2328,5 +2352,10 @@ sntRover.controller('RVbillCardController',
 		};
 		$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 	};
+
+
+	$scope.$on('PAYMENT_MAP_ERROR',function(event,data){
+        $scope.errorMessage = data;
+    });
 
 }]);

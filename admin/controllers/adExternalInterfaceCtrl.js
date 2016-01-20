@@ -1,5 +1,5 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
+  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
     $scope.$emit("changedSelectedMenu", 8);
     $scope.errorMessage = '';
     $scope.successMessage = '';
@@ -201,6 +201,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       secondary_url: ''
     };
     $scope.fetchSetupSuccessCallback = function (data) {
+        if (data.data && data.data.product_cross_customer){
+            $scope.interface = data.data.product_cross_customer.interface_id;
+            $scope.fetchManagerDetails();
+        }
+        
       if ($scope.interfaceName === 'Givex') {
         $scope.givex = data;
         $scope.$emit('hideLoader');
@@ -209,7 +214,12 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.$emit('hideLoader');
       } else {
         $scope.data = data;
-
+        if (data.data.product_cross_customer){
+            if (typeof data.data.product_cross_customer.default_rate === typeof 123){
+                data.data.product_cross_customer.default_rate = data.data.product_cross_customer.default_rate+"";
+                $scope.setDefaultRate();
+            }
+        }
         //load up origins and payment methods
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
@@ -217,6 +227,18 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.setRefreshTime();
       }
     };
+    
+    
+    $scope.setDefaultRate = function(){
+        var value = $scope.data.data.product_cross_customer.default_rate;
+        if (typeof value !== typeof undefined) {
+            setTimeout(function(){
+                var el = $('[name=default-rate]');
+                $(el).val(value);
+            },50);
+        };
+    };
+    
     $scope.fetchFailSuccessCallback = function (data) {
       //load up origins and payment methods
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
@@ -268,6 +290,31 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             };
         };
     }
+    $scope.populateRateSelection = function(){
+        $scope.rateSelection = [];
+        var rates = $scope.channel_manager_rates;
+        var rate;
+        for (var i in rates){
+            rate = rates[i].rate;
+            if (rate){
+                $scope.rateSelection.push(rate);
+            }
+        }
+    };
+    $scope.rateSelection = [];
+    
+    $scope.fetchManagerDetails = function(){
+        var fetchSuccess = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.channel_manager_rates = data.data.channel_manager_rates;
+            $scope.populateRateSelection();
+        };
+        var fetchFailure = function(data){
+            $scope.errorMessage = data;
+            $scope.$emit('hideLoader');
+        };
+        $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interface}, fetchSuccess, fetchFailure);
+    };
 
     $scope.init();
     //////////////////////
@@ -287,7 +334,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       };
       var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
       var saveData = dclone($scope.data, unwantedKeys);
-
+      saveData.interface = $scope.interfaceId;
       if ($scope.interfaceName === 'Givex') {
         $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
@@ -309,7 +356,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     $scope.toggleSMActiveSuccess = function () {
       $scope.data.data.product_cross_customer.active = !$scope.data.data.product_cross_customer.active;
       $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSetup, {
-        'interface_id': $scope.data.data.product_cross_customer.interface_id,
+        'interface_id': $scope.interfaceId,
         'active': $scope.data.data.product_cross_customer.active
       }, $scope.fetchSetupSuccessCallback);
     };
@@ -322,7 +369,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         if ($scope.data.data) {
           if ($scope.data.data.product_cross_customer) {
             var active = $scope.data.data.product_cross_customer.active,
-              id = $scope.interfaceId;
+              id = $scope.interfaceId,
+              int_id = $scope.interface_id;
             if (active) {
               active = false;
             } else {
@@ -330,7 +378,8 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             }
 
             $scope.invokeApi(adExternalInterfaceCommonSrv.toggleActive, {
-              'interface_id': id,
+              'interface': id,
+              //'interface_id': int_id,
               'active': active
             }, $scope.toggleSMActiveSuccess);
           }
@@ -468,7 +517,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       var data = {};
       data.start_date = $scope.refreshDatePickerData.start_date;
       data.end_date = $scope.refreshDatePickerData.end_date;
-      data.interface_id = $scope.data.data.product_cross_customer.interface_id;
+      data.interface_id = $scope.interfaceId;
       
       if (lastRefreshed !== null) {
         try {
@@ -541,6 +590,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
       var unwantedKeys = ["available_trackers"];
       var testData = dclone($scope.data, unwantedKeys);
+      testData.interface = $scope.interfaceId;
       $scope.invokeApi($scope.serviceController.testSetup, testData, checkCallback);
     };
 

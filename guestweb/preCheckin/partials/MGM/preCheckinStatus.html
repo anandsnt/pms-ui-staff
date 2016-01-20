@@ -19,10 +19,18 @@
 	
 		<div class="container-fluid">
 			<div class="row checkin-wrapper-top">
-				<div class="checkout-status centeralign checkout-now-status pre-checkin-complete">
+				<div class="checkout-status centeralign padding-top-bottom-50">
 					<p class="msg-head blue-text preckin-status-header">You are checked in!</p>
 					<p class="msg-body">Reservation #:{{confirmationNumber}}</p>
 					<p class="msg-body">{{responseData.confirmation_message}}</p>
+					<p class="msg-body">{{userEmail}}</p>
+				</div>
+				<div class="row cabin_number_field centeralign" ng-show="keyDeliveryByEmail && offerRoomDeliveryOptions">			
+					<button class="checkin-button continue-button email-button"
+					ng-click="changeEmail()">
+						<span class="white-text email-button-text" ng-show="isValidEmail()">Change Email address</span>
+						<span class="white-text email-button-text" ng-hide="isValidEmail()">Add Email address</span>
+					</button>
 				</div>
 			</div>
 		</div>

@@ -29,7 +29,29 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 				}]
 			}
 		});
-		
+
+		$stateProvider.state('admin.lightspeedPosSetup', {
+			templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
+			controller: 'adLightSpeedPOSSetupCtrl',
+			url : '/lightspeedpos/setup',
+			resolve: {
+				lightSpeedSetupValues: ['adLightSpeedPOSSetupSrv', function(adLightSpeedPOSSetupSrv) {
+					return adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration();
+				}]
+			}
+		});
+
+		$stateProvider.state('admin.britePabXSetup', {
+			templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
+			controller: 'adBritePabXSetupCtrl',
+			url : '/britePabX/setup',
+			resolve: {
+				britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
+					return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+				}]
+			}
+		});
+
 		$stateProvider.state('admin.afasSetup', {
 			templateUrl: '/assets/partials/afas/afasSetup.html',
 			controller: 'adAfasSetupCtrl',
@@ -147,6 +169,26 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/doorLockInterface/adDoorLockInterface.html',
 			controller: 'ADDoorLockInterfaceCtrl',
 			url : '/doorlockinterface'
+		});
+                
+		$stateProvider.state('admin.zest_setup_email', {
+			templateUrl: '/assets/partials/zestSetup/adCheckinEmailSetup.html',
+			controller: 'ADZestCheckinEmailCtrl',
+			url : '/zestsetupemail'
+		});
+		$stateProvider.state('admin.zest_setup_direct', {
+			templateUrl: '/assets/partials/zestSetup/adCheckinDirectUrlEmailSetup.html',
+			controller: 'ADZestCheckinDirectUrlEmailCtrl',
+			url : '/zestsetupdirect',
+			resolve: {
+				directUrlData: function(adZestCheckinCheckoutSrv) {
+					return adZestCheckinCheckoutSrv.fetchDirectSetup();
+				},
+				diretUrls : function(adZestCheckinCheckoutSrv){
+					var data = {"application":"URL","guest_web_url_type":"CHECKIN"};
+					return adZestCheckinCheckoutSrv.fetchDirectUrlList(data);
+				}
+			}
 		});
 
 

@@ -130,9 +130,6 @@ $scope.fetchUpsellDetails = function(){
        $scope.setUpUpsellWindowData();
        $scope.setEarlyCheckinTimeForRates();
        $scope.startWatching();
-
-       // CICO-19130
-       $scope.chargecodeData.chargeCodeSearchText = data.early_checkin_charge_code_name;
    };
    $scope.invokeApi(adUpsellEarlyCheckinService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };

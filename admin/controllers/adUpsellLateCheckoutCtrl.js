@@ -35,8 +35,6 @@ $scope.fetchUpsellDetails = function(){
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);
        $scope.startWatching();
 
-       // CICO-19130
-       $scope.chargecodeData.chargeCodeSearchText = data.selected_charge_code_name;
    };
    $scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 };

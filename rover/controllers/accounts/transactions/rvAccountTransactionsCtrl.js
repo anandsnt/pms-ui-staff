@@ -58,7 +58,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				isAllChargeCodesSelected = false;
 			}
 			else{
-				console.log(billTabsData[$scope.currentActiveBill]);
 				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
 		        if (chargeCodes){
 		            if(chargeCodes.length > 0){
@@ -230,6 +229,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
+		$scope.UPDATE_TRANSACTION_DATA = function(){
+			getTransactionDetails();
+		};
+		
 		/*
 		 *  Bill data need to be updated after success action of
 		 *  payment, post charges, split/edit etc...
@@ -412,6 +415,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 
+		$scope.$on("showValidationErrorPopup", function(event, errorMessage) {
+			$scope.status = "error";
+			$scope.popupMessage = errorMessage;
+			$timeout(function() {
+				ngDialog.open({
+		    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+		    		controller: 'RVShowValidationErrorCtrl',
+		    		scope: $scope
+		    	});
+			}, 100);
+		});
+
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
@@ -491,6 +506,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.chargeCodeActive = bool;
 		};
 
+		$scope.HIDE_LOADER_FROM_POPUP =  function(){
+			$scope.$emit("hideLoader");
+		};
+
 		/*
 		 * open popup for selecting edit/split/remove transaction
 		 */
@@ -498,7 +517,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-
+			$scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;

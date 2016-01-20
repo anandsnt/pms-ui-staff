@@ -6,6 +6,8 @@
 		var checkin = function(url,data) {
 
 				var deferred = $q.defer();
+				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+				data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
 				$http.post(url,data).success(function(response) {
 					this.responseData = response;
 				     deferred.resolve(this.responseData);
@@ -29,5 +31,5 @@
 	checkinKeysService
 	];
 
-	snt.factory('checkinKeysService', dependencies);
+	sntGuestWeb.factory('checkinKeysService', dependencies);
 })();

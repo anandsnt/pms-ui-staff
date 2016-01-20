@@ -19,14 +19,19 @@ sntRover.service('RVReservationStateService', [
 
 		/**
 		 * Method to get the addons associated with a Rate
-		 * @param  {[type]} rateId [description]
+		 * @param  {Array or a String} rateId [description]
 		 * @return {[type]}        [description]
 		 */
 		self.fetchAssociatedAddons = function(rateId) {
+			// In case of multiple rates, rateId might come in as an array
+			// In such a case, take the rate for the first night
+			if (_.isArray(rateId)) {
+				rateId = rateId[0]
+			}
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});
-			if (rateAddons.associated_addons) {
+			if (rateAddons && rateAddons.associated_addons) {
 				return rateAddons.associated_addons;
 			} else {
 				return null;
@@ -38,7 +43,7 @@ sntRover.service('RVReservationStateService', [
 			var isAllotment = type && type === 'ALLOTMENT',
 				rateIdentifier = isAllotment ? 'ALLOTMENT_CUSTOM_' + id : 'GROUP_CUSTOM_' + id, //Default to the GROUP
 				rateName = isAllotment ? "Custom Rate for Allotment " + name : "Custom Rate for Group " + name,
-				rateDescription = isAllotment ? "Custom Allotment Rate": "Custom Group Rate";
+				rateDescription = isAllotment ? "Custom Allotment Rate" : "Custom Group Rate";
 			return {
 				id: rateIdentifier,
 				name: rateName,
@@ -46,7 +51,7 @@ sntRover.service('RVReservationStateService', [
 				account_id: null,
 				is_rate_shown_on_guest_bill: false,
 				is_suppress_rate_on: false,
-				is_discount_allowed: true,
+				is_discount_allowed_on: true,
 				rate_type: {
 					id: null,
 					name: isAllotment ? "Allotment Rate" : "Group Rate"
@@ -120,6 +125,26 @@ sntRover.service('RVReservationStateService', [
 			}
 			return multiplier;
 		};
+
+		self.getApplicableAddonsCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights) {
+			var getTotalPostedAddons = function(postType, baseCount) {
+				if (postingRythm === 0) {
+					return baseCount;
+				} else {
+					return baseCount * parseInt((numNights / postingRythm), 10);
+				}
+			};
+
+			if (amountType === 'PERSON') {
+				return getTotalPostedAddons(postType, numAdults + numChildren);
+			} else if (amountType === 'ADULT') {
+				return getTotalPostedAddons(postType, numAdults);
+			} else if (amountType === 'CHILD') {
+				return getTotalPostedAddons(postType, numChildren);
+			} else if (amountType === 'FLAT') {
+				return getTotalPostedAddons(postType, 1);
+			};
+		}
 
 		self.computeBaseAmount = function(taxableAmount, taxes, numAdults, numChildren) {
 			var totalInclTaxPercent = 0.0,
@@ -250,7 +275,7 @@ sntRover.service('RVReservationStateService', [
 			var msPerDay = 24 * 3600 * 1000,
 				dayIndex = parseInt((new tzIndependentDate(present) - new tzIndependentDate(arrival)) / msPerDay, 10),
 				remainingDays = parseInt((new tzIndependentDate(departure) - new tzIndependentDate(present)) / msPerDay, 0);
-				
+
 			return (dayIndex % frequency === 0) && (!chargeFullLengthOnly || (chargeFullLengthOnly && (remainingDays >= frequency)));
 		};
 
@@ -265,18 +290,6 @@ sntRover.service('RVReservationStateService', [
 				return amount - discount.value / numNights; //perNight's discount to be deducted
 			} // discount.type === 'percent'
 			return amount - (amount * (discount.value / 100.0));
-		};
-
-
-		var processAssociatedAddonsForEachRoomRate = function(associatedAddons, stayDates, for_date, activeRoom, numNights, arrival, departure) {
-			var addonsApplied = [],
-				addonRate = 0.0,
-				inclusiveAddonsAmount = 0.0,
-				adultsOnTheDay = stayDates[for_date].guests.adults,
-				childrenOnTheDay = stayDates[for_date].guests.children;
-
-
-			return addonsApplied;
 		};
 
 		/**
@@ -311,6 +324,141 @@ sntRover.service('RVReservationStateService', [
 					group: roomType.group_availability
 				}
 			});
+		};
+
+		self.getAddonAmounts = function(rateAddons, arrival, departure, stayDates) {
+			var addonRates = {};
+			_.each(stayDates, function(dayInfo, date) {
+				var numAdults = dayInfo.guests.adults,
+					numChildren = dayInfo.guests.children,
+					currentDate = date;
+
+				addonRates[currentDate] = {};
+
+				_.each(rateAddons, function(rateInfo) {
+					var rateId = rateInfo.rate_id;
+					_.each(rateInfo.associated_addons, function(addon) {
+						var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
+							shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, currentDate, arrival, departure, addon.charge_full_weeks_only);
+						if (!addon.is_inclusive && shouldPostAddon) {
+							if (addonRates[currentDate][rateId] === undefined) {
+								addonRates[currentDate][rateId] = currentAddonAmount;
+							} else {
+								addonRates[currentDate][rateId] = parseFloat(addonRates[currentDate][rateId]) + currentAddonAmount;
+							}
+						}
+					});
+				});
+			});
+			return addonRates;
+		};
+
+		this.getAddonAndTaxDetails = function(date, rateId, numAdults, numChildren, arrival, departure, activeRoom, taxes, amount) {
+			var associatedAddons = self.fetchAssociatedAddons(rateId),
+				addonRate = 0.0,
+				addonTax = {
+					incl: 0.0,
+					excl: 0.0
+				},
+				inclusiveAddonsAmount = 0.0,
+				stayTaxes = {
+					incl: {},
+					excl: {}
+				},
+				rateTax = {
+					incl: 0.0,
+					excl: 0.0
+				},
+				totalTax = {
+					incl: 0.0,
+					excl: 0.0
+				},
+				stayTax = {
+					incl: {},
+					excl: {}
+				};
+
+			var updateStayTaxes = function(taxDetails) {
+				_.each(taxDetails, function(taxDetail) {
+					if (taxDetail.postType === 'STAY') {
+						var taxType = taxDetail.isInclusive ? "incl" : "excl",
+							currentTaxId = taxDetail.id;
+						if (stayTax[taxType][currentTaxId] === undefined) {
+							stayTax[taxType][currentTaxId] = parseFloat(taxDetail.amount);
+						} else {
+							stayTax[taxType][currentTaxId] = _.max([stayTax[taxType][currentTaxId], parseFloat(taxDetail.amount)]);
+						}
+					}
+				});
+			};
+
+
+			//ADDON 
+
+			if (associatedAddons && associatedAddons.length > 0) {
+				_.each(associatedAddons, function(addon) {
+					var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
+						taxOnCurrentAddon = 0.0,
+						shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, date, arrival, departure, addon.charge_full_weeks_only);
+
+					if (shouldPostAddon) {
+						taxOnCurrentAddon = self.calculateTax(currentAddonAmount, addon.taxes, activeRoom, numAdults, numChildren, true);
+						addonTax.incl = parseFloat(addonTax.incl) + parseFloat(taxOnCurrentAddon.INCL.NIGHT);
+						addonTax.excl = parseFloat(addonTax.excl) + parseFloat(taxOnCurrentAddon.EXCL.NIGHT);
+						updateStayTaxes(taxOnCurrentAddon.taxDescription);
+					}
+
+					var inventoryForDay = _.findWhere(addon.inventory, {
+						date: date
+					});
+
+					if (!inventoryForDay) {
+						console.warn('Inventory details not returned for:' + date + 'for add on ' + addon.id);
+					}
+
+					if (!addon.is_inclusive && shouldPostAddon) {
+						addonRate = parseFloat(addonRate) + parseFloat(currentAddonAmount);
+					}
+					if (!!addon.is_inclusive && shouldPostAddon) {
+						inclusiveAddonsAmount = parseFloat(inclusiveAddonsAmount) + parseFloat(currentAddonAmount);
+					}
+				});
+			}
+
+			// TAXES
+
+			var rateOnRoomAddonAdjusted = parseFloat(amount) - parseFloat(inclusiveAddonsAmount);
+
+			if (rateOnRoomAddonAdjusted < 0) {
+				rateOnRoomAddonAdjusted = 0.0;
+			}
+
+
+			//calculate tax for the current day
+			if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+				var taxApplied = self.calculateTax(rateOnRoomAddonAdjusted, taxes, activeRoom, numAdults, numChildren, false);
+				rateTax = {
+					incl: parseFloat(taxApplied.INCL.NIGHT),
+					excl: parseFloat(taxApplied.EXCL.NIGHT)
+				};
+				updateStayTaxes(taxApplied.taxDescription);
+			};
+
+			totalTax = {
+				incl: parseFloat(rateTax.incl) + parseFloat(addonTax.incl),
+				excl: parseFloat(rateTax.excl) + parseFloat(addonTax.excl)
+			};
+
+			return {
+				addon: addonRate,
+				inclusiveAddonsExist: !!inclusiveAddonsAmount && !addonRate,
+				tax: {
+					incl: totalTax.incl,
+					excl: totalTax.excl
+				},
+				stayTax: stayTax
+			}
+
 		};
 
 		var processRatesForNormalRatesAgainstDate = function(rooms, stayDates, roomRate, for_date, ratesMeta, additionalData, arrival, departure, activeRoom, numNights, membershipValidity) {
@@ -427,9 +575,10 @@ sntRover.service('RVReservationStateService', [
 								isInclusive: addon.is_inclusive,
 								postType: addon.post_type.value,
 								amountType: addon.amount_type.value,
+								postFrequency: addon.post_type.frequency,
 								taxBreakUp: taxOnCurrentAddon,
 								id: addon.id,
-								inventory: inventoryForDay && inventoryForDay.available_count || null
+								inventory: inventoryForDay && _.isNumber(inventoryForDay.available_count) ? inventoryForDay.available_count : null
 							});
 						});
 					}
@@ -463,12 +612,12 @@ sntRover.service('RVReservationStateService', [
 						associatedAddons: addonsApplied,
 						rateBreakUp: room_rate,
 						day: new tzIndependentDate(for_date),
-						availabilityCount: (function(){
-							if(ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup){
-							 	return rooms[currentRoomId].availabilityNumbers[for_date].group;
-							} else if(!!selectedAllotment){
+						availabilityCount: (function() {
+							if (ratesMeta[rate_id].rate_type.name === "Group Rates" || !!selectedGroup) {
+								return rooms[currentRoomId].availabilityNumbers[for_date].group;
+							} else if (!!selectedAllotment) {
 								return room_rate.allotment_availability;
-							}else{
+							} else {
 								return rooms[currentRoomId].availabilityNumbers[for_date].room;
 							}
 						})(),

@@ -1,4 +1,4 @@
-snt.controller('resetPasswordController', ['$rootScope','$location','$state','$scope', 'resetPasswordService', '$modal', function($rootScope,$location,$state,$scope, resetPasswordService, $modal) {
+sntGuestWeb.controller('resetPasswordController', ['$rootScope','$location','$state','$scope', 'resetPasswordService', '$modal', function($rootScope,$location,$state,$scope, resetPasswordService, $modal) {
 
 
 	$scope.pageValid = true;

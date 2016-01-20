@@ -1,7 +1,32 @@
+/*
 
-var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
+There are different ways to invoke guest web. 
 
-snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
+User can send mail from hotel admin or use direct URL for checkin and checkout. 
+
+But the options available for different hotels are different. 
+So make sure the hotel admin settings for checkin and checkout are turned on or off w.r.t . 
+You can see all the available options for a hotel in the router file for the corresponding hotel. 
+If because of some settings, if user tries to go to a state not listed in the app router (eg:app_router_yotel.js)
+for the hotel ,the user will be redirected to no options page.
+
+The initial condtions to determine the status of reseravations are extracted from the embedded data in the HTML.
+
+
+Initially we had a set of HTMLs for every single hotel.
+
+Now we are trying to minimize the difference to use the same templates as much possible.
+
+The new set of HTMLs can be found under the folder common_templates. inside that we have generic templates
+and some folder dedicated to MGM, which has some text changes specifically asked by client.
+
+*/
+
+
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate']);
+
+sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state','$timeout',
+ function($rootScope,$scope,$attrs,$location,$state,$timeout) {
 
 	var that = this;
 	//load the style elements. Done to reduce the loading time of web page.
@@ -17,7 +42,6 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	//store basic details as rootscope variables
 
 	$rootScope.hotelName     = $attrs.hotelName;
- 	$rootScope.hotelLogo     = $attrs.hotelLogo;
  	$rootScope.currencySymbol= $attrs.currencySymbol;
 	$rootScope.hotelPhone    = $attrs.hotelPhone;
 	$rootScope.businessDate  = $attrs.businessDate;
@@ -52,6 +76,29 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
  	$rootScope.isGuestAddressVerified =  false;
 
+ 	$rootScope.guestBirthdateOn = ($attrs.birthdateOn === 'true') ? true :false;
+ 	$rootScope.guestBirthdateMandatory = ($attrs.birthdateMandatory === 'true') ? true :false;
+	$rootScope.guestPromptAddressOn = ($attrs.promptForAddressOn === 'true') ? true :false;
+	$rootScope.minimumAge = parseInt($attrs.minimumAge);
+	$rootScope.primaryGuestId = $attrs.primaryGuestId;
+
+
+ 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="true") ?true:false;
+ 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestCheckinNoServiceMsg;
+ 	$rootScope.termsAndConditions = $attrs.termsAndConditions;
+ 	$rootScope.isBirthdayVerified =  false;
+ 	$rootScope.application        = $attrs.application;
+ 	$rootScope.urlSuffix        = $attrs.urlSuffix;
+ 	$rootScope.collectCCOnCheckin = ($attrs.checkinCollectCc === "true") ? true:false;
+ 	$rootScope.isMLI = ($attrs.paymentGateway  = "MLI") ? true : false;
+ 	//room key delivery options
+ 	$rootScope.preckinCompleted =  false;
+ 	$rootScope.userEmail = $attrs.primaryGuestEmail;
+ 	$rootScope.keyDeliveryByEmail = true;
+ 	//$rootscope.keyDeliveryByText  = true;
+
+ 	$rootScope.offerRoomDeliveryOptions = ($attrs.offerRoomDeliveryOptions  ==="true") ? true:false;
+
 
     //Params for zest mobile and desktop screens
     if($attrs.hasOwnProperty('isPasswordReset')){
@@ -62,35 +109,46 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
     	$rootScope.user_name = $attrs.login;
     }
 
+    //work around to fix flashing of logo before app loads
+    $timeout(function() {
+        $rootScope.hotelLogo     = $attrs.hotelLogo;
+    }, 750);
 
  	if(typeof $attrs.accessToken !== "undefined") {
 		$rootScope.accessToken = $attrs.accessToken	;
 	}
 	//navigate to different pages
-	if($attrs.isExternalVerification ==="true"){
-		$location.path('/externalVerification');
+
+	if($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="false"){
+		$location.path('/guestCheckinTurnedOff');
+	}
+	else if($attrs.checkinUrlVerification === "true"){
+		$location.path('/externalCheckinVerification'); // external checkin URL available and is on
+	}
+	else if($attrs.isExternalVerification ==="true"){
+		$location.path('/externalVerification'); //external checkout URL
 	}
 	else if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
- 		$location.path('/tripDetails');
+ 		$location.path('/tripDetails');// only available for Fontainbleau -> precheckin + sent to que
  	}
  	else if	($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && ($attrs.isAutoCheckin === 'true')){
- 		$location.path('/checkinConfirmation');
+ 		$location.path('/checkinConfirmation');//checkin starting -> page precheckin + auto checkin
  	}
  	else if($rootScope.isCheckedin){
- 		$location.path('/checkinSuccess');
+ 		$location.path('/checkinSuccess');//already checked in
  	}
     else if($attrs.isCheckin ==='true'){
- 		$location.path('/checkinConfirmation');
+ 		$location.path('/checkinConfirmation');//checkin starting page -> precheckin turned off
  	}
   	else if($rootScope.isCheckedout)	{
-		$location.path('/checkOutStatus');
+		$location.path('/checkOutStatus');//already checked out
 	}
 	else if($rootScope.hasOwnProperty('isPasswordResetView')){
 		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
 		$location.path(path);
 		$location.replace();
 	}else{
-         $location.path('/checkoutRoomVerification');
+         $location.path('/checkoutRoomVerification'); // checkout landing page
 	};
 
 	$( ".loading-container" ).hide();
@@ -99,7 +157,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	 */
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 		event.preventDefault();
-		$state.go('noOptionAvailable');
+		$state.go('noOptionAvailable'); 
 	})
 }]);
 

@@ -27,5 +27,5 @@ var dependencies = [
 ccVerificationService
 ];
 
-snt.factory('ccVerificationService', dependencies);
+sntGuestWeb.factory('ccVerificationService', dependencies);
 })();

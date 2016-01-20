@@ -32,5 +32,5 @@ var dependencies = [
 checkOutConfirmationController
 ];
 
-snt.controller('checkOutConfirmationController', dependencies);
+sntGuestWeb.controller('checkOutConfirmationController', dependencies);
 })();

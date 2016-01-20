@@ -21,11 +21,13 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            console.info('called go back')	
+            $state.go('zest_station.reservation_details');
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 
-
+        $scope.navToPrev = function(){
+            $scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
+        };
 	/**
 	 * [isInCheckinMode description]
 	 * @return {Boolean} [description]
@@ -50,13 +52,24 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 		return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
 	};
 
-
         $scope.agreeTerms = function(){
-            //$scope.goToScreen(null, 'select-keys-after-checkin', true);
-            console.info('goto card swipe');
-            $state.go('zest_station.card_swipe');
+            var depositAmt, depositRemaining = 0, enforceDeposit = $scope.hotel_settings.enforce_deposit;
+            if ($state.selectedReservation && $state.selectedReservation.reservation_details){
+                    depositAmt = $state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
+            }
+            depositRemaining = parseInt(depositAmt);
+           
+            var showDeposit = false;
+            if (depositRemaining > 0 && enforceDeposit){
+                showDeposit = true;
+            }
+            $state.showDeposit = showDeposit;
+            if (!showDeposit){
+                $state.go('zest_station.card_swipe'); 
+            } else {
+                $state.go('zest_station.deposit_agree'); 
+            }
         };
-
  		$scope.setScroller('terms');
 
  		var setTermsConditionsHeight = function(){

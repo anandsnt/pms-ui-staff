@@ -1,9 +1,9 @@
 <!-- The bill display section -->
 <section id="main" role="main" class="centered" ng-hide="alreadyCheckedOut">
     <div id="content">
-        <h1>Review your bill</h1>
+        <h1>{{'BILL_REVIEW' |translate}}</h1>
         <div id="flex-holder">
-            <div id="textual" class="review-bill pull-left" ng-iscroll="bill-list" class="scrollable">
+            <div id="textual" class="review-bill pull-left scrollable" ng-iscroll="bill-list">
                 <div class="wrapper">
                     <div id="bill">
                         <p>
@@ -14,13 +14,13 @@
                         <div id="bill-grid">
                             <div id="grid-head">
                                 <div class="row">
-                                    <span class="cell date">Date</span>
-                                    <span class="cell desc">Description</span>
-                                    <span class="cell amount">Amount</span>
+                                    <span class="cell date" translate>BILL_DATE</span>
+                                    <span class="cell desc" translate>BILL_DESC</span>
+                                    <span class="cell amount" translate>BILL_AMT</span>
                                 </div>
                             </div>
                             <div id="grid-body">
-                                <div class="row" ng-repeat="bill in billData">
+                                <div class="row" ng-repeat="bill in zestStationData.billData">
                                     <span class="cell date">{{ bill.date}}</span>
                                     <span class="cell desc">{{bill.description}}</span>
                                     <span class="cell amount">{{currency}}{{bill.amount}}</span>
@@ -29,15 +29,15 @@
                         </div>
                     </div>
                     <ul id="rate">
-                        <li class="sub">Subtotal<span>{{currency}}{{net_amount}}</span></li>
-                        <li class="sub">Deposits<span>{{currency}}{{deposit}}</span></li>
-                        <li class="total">Balance due<span>{{currency}}{{balance}}</span></li>
+                        <li class="sub">{{'BILL_SUB' |translate}}<span>{{zestStationData.currency}}{{zestStationData.net_amount}}</span></li>
+                        <li class="sub">{{'BILL_DEP' |translate}}<span>{{zestStationData.currency}}{{zestStationData.deposit}}</span></li>
+                        <li class="total">{{'BILL_BAL' |translate}}<span>{{zestStationData.currency}}{{zestStationData.balance}}</span></li>
                     </ul>
                 </div>
             </div>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" touch-press='nextClicked()'>Next</button>
-                <p><strong>Questions?</strong>Tap “Cancel” and see a sidekick.</p>
+                <button type="button" class="button" touch-press='nextClicked()'>{{'BILL_NEXT' |translate}}</button>
+                <p><strong>{{'BILL_QUEST' |translate}}</strong>{{'BILL_SUB_QUESTION' |translate}}</p>
             </div>
         </div>
     </div>
@@ -46,9 +46,9 @@
 <!-- user has already checkout -->
 <section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
     <div id="content">
-        <h1>Sorry</h1>
-        <h2 class="nocaps">You have been already checked out.</h2>
-        <button type="button" class="button" ui-sref="zest_station.home">Return</button>
+        <h1>{{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</h1>
+        <h2 class="nocaps">{{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</h2>
+        <button type="button" class="button" ui-sref="zest_station.home">{{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</button>
     </div>
     <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
 </section>

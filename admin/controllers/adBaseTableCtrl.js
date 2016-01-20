@@ -13,24 +13,35 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.currentPage = 0;
     $scope.data = [];
 
-    $scope.$watch("displyCount", function () {
-        $scope.tableParams.count($scope.displyCount);
-        $scope.reloadTable();
+    // After a watcher is registered with the scope, 
+    // the listener fn is called asynchronously (via $evalAsync) to initialize the watcher. 
+    // In rare cases, this is undesirable because the listener is called when the result of watchExpression didn't change. 
+    // To detect this scenario within the listener fn, you can compare the newVal and oldVal. 
+    // If these two values are identical (===) then the listener was called due to initialization.
+    // 
+    // -- https://docs.angularjs.org/api/ng/type/$rootScope.Scope
+
+    $scope.$watch("displyCount", function (newValue, oldValue) {
+        if(newValue !== oldValue){
+            $scope.tableParams.count($scope.displyCount);
+        }
     });
 
-    $scope.$watch("data", function () {
-        $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
-        $scope.endCount = $scope.startCount + $scope.data.length - 1;
+    $scope.$watch("data", function (newValue, oldValue) {
+        if(newValue !== oldValue){
+            $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
+            $scope.endCount = $scope.startCount + $scope.data.length - 1;
+        }
     },true);
 
-    $scope.$watch("filterType", function () {
-        $scope.reloadTable();
-
+    $scope.$watch("filterType", function (newValue, oldValue) {
+        if(newValue !== oldValue){
+            $scope.reloadTable();
+        }
     });
 
     $scope.searchEntered = function() {
         $scope.reloadTable();
-
     };
 
     $scope.reloadTable = function(){
@@ -39,28 +50,29 @@ function ADBaseTableCtrl($scope, ngTableParams){
     };
 
     $scope.filterFetchSuccess = function(data){
-    	$scope.filterList = data;
-    	$scope.$emit('hideLoader');
+        $scope.filterList = data;
+        $scope.$emit('hideLoader');
     };
 
-   	$scope.calculateGetParams = function(tableParams){
+    $scope.calculateGetParams = function(tableParams){
 
-    	var getParams = {};
-		getParams.per_page = $scope.displyCount;
-		getParams.page = tableParams.page();
-		if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
-			getParams.rate_type_id = $scope.filterType.id;
+        var getParams = {};
+        getParams.per_page = $scope.displyCount;
+        getParams.page = tableParams.page();
+        if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
+            getParams.rate_type_id = $scope.filterType.id;
         }
-		getParams.query = $scope.searchTerm;
-		var sortData = tableParams.sorting();
+        getParams.query = $scope.searchTerm;
+        var sortData = tableParams.sorting();
 
-		var sortField = Object.keys(sortData)[0];
-		getParams.sort_field = sortField;
-		getParams.sort_dir = sortData[sortField] === "desc"? false :true;
+        var sortField = Object.keys(sortData)[0];
+        getParams.sort_field = sortField;
+        getParams.sort_dir = sortData[sortField] === "desc"? false :true;
 
-		return getParams;
+        return getParams;
 
     };
+
     $scope.fetchTableData = function(){
 
     };

@@ -1,4 +1,4 @@
-<div id ="modal" class="modal-show">
+<div id ="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content confirmation">
 	    <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 	    <span class="h2 message" translate>BILLING_INFORMATION_FOUND</span>

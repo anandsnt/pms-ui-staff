@@ -6,6 +6,7 @@ sntRover.controller('RVWorkManagementSearchDatePickerController', ['$scope', '$r
 				changeYear: true,
 				changeMonth: true,
 				yearRange: "-100:+0",
+				minDate: tzIndependentDate($rootScope.businessDate),
 				onSelect: function(dateText, inst) {
 					$scope.onViewDateChanged();
 					ngDialog.close();
@@ -28,7 +29,7 @@ sntRover.controller('RVWorkManagementCreateDatePickerController', ['$scope', '$r
 				minDate: tzIndependentDate($rootScope.businessDate),
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
-					$("#" + ngDialog.latestID).remove();
+					ngDialog.close($scope.calendarDialog.id);
 				}
 			};
 		};

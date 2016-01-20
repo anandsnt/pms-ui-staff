@@ -57,6 +57,15 @@ sntRover.service('rvMenuSrv',
     	return RVHotelDetailsSrv.hotelDetails.is_auto_change_bussiness_date;
     };
 
+    /**
+     * Decide whether the task management submenu is to be shown in housekeeping menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowTaskManagementInHKMenu = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
+    };
+
 	/**
 	* utility the user role is 'Floor & Maintanance staff'
     * @param {string}, user role
@@ -153,7 +162,7 @@ sntRover.service('rvMenuSrv',
 		            action: 'rover.diary',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
-		        }, {
+		        },  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
 		            actionPopup: true,
@@ -242,7 +251,8 @@ sntRover.service('rvMenuSrv',
 		        }, {
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
-		            menuIndex: "workManagement"
+		            menuIndex: "workManagement",
+		            hidden: !shouldShowTaskManagementInHKMenu()
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",
@@ -280,6 +290,35 @@ sntRover.service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
+                
+                try {//wrapping in try catch to ensure nothing is affected should this fail
+                    var item,  isPmsDev = false;
+                    if (window && window.location && window.location.href){
+                        if (window.location.href.indexOf('pms-dev.stay') !== -1){
+                            isPmsDev = true;
+                        }
+                    }
+                    if (isPmsDev){
+                        if (typeof menuList === typeof []){
+                            for (var x in menuList){
+                                item = menuList[x];
+                                if (item.menuIndex === 'front_desk'){
+                                    console.info('showing actions mgr in dev only at this time, release in sprint 42');
+                                    if (typeof menuList[x].submenu === typeof []){
+                                        menuList[x].submenu.push({
+                                            title: "MENU_ACTIONS_MANAGER",
+                                            action: "rover.actionsManager",
+                                            menuIndex: "actionManager"
+                                        });
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (err){
+                    console.warn(err);
+                }
 
 		return processMenuList (menuList);
 	};

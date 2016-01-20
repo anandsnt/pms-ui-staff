@@ -260,6 +260,9 @@
             <!-- Loyalty -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
 
+            <!-- Housekeeping Tasks - only for in house quests -->
+            <div ng-include="'/assets/partials/reservationCard/rvReservationHouseKeeping.html'" ng-controller="rvReservationCardHKController"></div>
+
             <!-- Additional Details -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>            
 

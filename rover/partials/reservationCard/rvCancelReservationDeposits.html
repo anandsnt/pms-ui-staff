@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
 <form  id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-click="clearErrorMessage()"ng-class="{'pay-bill':ngDialogData.state == 'REFUND', 'select-card': (ngDialogData.state == 'REFUND' && cancellationData.viewCardsList), 'new-card' :  (ngDialogData.state == 'REFUND' && !cancellationData.viewCardsList)}" class="modal-content form cancel-reservation" ng-cloak>
     <button class="modal-close" id="modal-close" type="button" ng-click="completeCancellationProcess()"><span class="icons icon-close invert"></span></button>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>

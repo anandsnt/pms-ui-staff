@@ -41,10 +41,10 @@ sntZestStation.controller('zsCommonCtrl', [
 
         $scope.setTalkToStaff = function(){
             $scope.at = 'talk-to-staff';
-            $scope.headingText = 'Speak to a staff member.';
-            $scope.subHeadingText = 'A staff member at the front desk will assist you';
+            $scope.headingText = 'SPEAK_TO_STAFF';
+            $scope.subHeadingText = 'SPEAK_TO_STAFF_SUB';
 
-            $scope.modalBtn1 = 'Return';
+            $scope.modalBtn1 = 'SPEAK_TO_STAFF_RETURN';
             $scope.modalBtn2 = '';
         };
 

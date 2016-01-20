@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
     <form method="post" id="change-stay-dates" name="change-stay-dates" class="modal-content change-stay-dates" ng-cloak>
         <!-- Add class "success" for Scenario 1 -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog();"><span class="icons icon-close invert"></span>

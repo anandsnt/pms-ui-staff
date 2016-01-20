@@ -60,7 +60,6 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
         $scope.$broadcast("showSearchResultsArea", false);
         //also need to clear results present in that & type
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
-        $scope.$broadcast("updateDataFromOutside", []);
 
 
         //changing the header's heading

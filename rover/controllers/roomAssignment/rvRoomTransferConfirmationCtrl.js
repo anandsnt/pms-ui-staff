@@ -24,14 +24,6 @@ sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$fi
 		}
 	};
 
-	$scope.closeDialog = function() {
-            //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false;
-            $timeout(function(){
-                ngDialog.close();
-            }, 300);
-		};
-
 	$scope.moveWithoutRateChange = function() {
 		$scope.roomTransfer.withoutRateChange = true;
 		$scope.assignRoom();

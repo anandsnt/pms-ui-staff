@@ -82,12 +82,12 @@ var dependencies = [
 checkinUpgradeRoomController
 ];
 
-snt.controller('checkinUpgradeRoomController', dependencies);
+sntGuestWeb.controller('checkinUpgradeRoomController', dependencies);
 })();
 
   // Setup directive to compile html
 
-  snt.directive("description", function ($compile) {
+  sntGuestWeb.directive("description", function ($compile) {
     function createList(template) {
       templ = template;
       return templ;
@@ -106,7 +106,7 @@ snt.controller('checkinUpgradeRoomController', dependencies);
 
   // Setup directive to handle image not found case
 
-  snt.directive('errSrc', function() {
+  sntGuestWeb.directive('errSrc', function() {
     return {
       link: function(scope, element, attrs) {
         element.bind('error', function() {

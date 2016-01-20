@@ -282,7 +282,10 @@
                     .box-shadow(0 1px 0 rgba(0,0,0,.15));
                     .flex(center);
 
-                    .icon-form { left: 10px; }
+                    .icon-form { 
+                        left: 10px; 
+                        background-color: @grey1;
+                    }
 
                     &:last-child { .box-shadow(none); }
                 }
@@ -291,6 +294,8 @@
 
                 &.cols-2 {
                     width: 200%;
+                    position: relative;
+                    z-index: 999;
                     .float;
 
                     strong {

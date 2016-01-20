@@ -5,22 +5,27 @@
 			<ul role="menu">
 				<li ng-if="zestStationData.home_screen.pickup_keys">
 					<button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
-						<ng-include src="'assets/css/icons/key.svg'"></ng-include>
+						<div ng-include="'assets/css/icons/key.svg'"></div>
 					</button>
-					Pick up Key
-					<span>If you have already checked in online.</span>
+                                    {{'PICKUP_KEY' |translate}}
+                                <span>
+                                    {{'HOME_PUK_SUB' |translate}}
+                                </span>
 				</li>
 				<li ng-if="zestStationData.home_screen.check_in">
 					<button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
-						<ng-include src="'assets/css/icons/checkin.svg'"></ng-include>
+						<div ng-include="'assets/css/icons/checkin.svg'"></div>
 					</button>
-					Check In
+                                    
+                                {{'CHECK_IN' |translate}}
+					
 				</li>
 				<li ng-if="zestStationData.home_screen.check_out">
 					<button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
-						<ng-include src="'assets/css/icons/checkout.svg'"></ng-include>
+						<div ng-include="'assets/css/icons/checkout.svg'"></div>
 					</button>
-					Check Out
+                                {{'CHECK_OUT' |translate}}
+					
 				</li>
 			</ul>
 		</nav>

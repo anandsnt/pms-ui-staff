@@ -33,24 +33,34 @@
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="deleteEndDate()">&nbsp;</span>
                     </div>
                 </div>
-	 		   <div class="entry full-width">
-	 		   	<div class="entry" ng-hide="!rateTypesDetails.is_use_markets">
-                <label>Market</label>
-                <div class="select">
-                    <select class="placeholder" ng-model="rateData.market_segment_id" ng-options="market.value as market.name for market in rateTypesDetails.markets">
-                        <option value="" disabled>Select Market</option>
-                    </select>
+	 		    <div class="entry full-width">
+    	 		   	<div class="entry" ng-hide="!rateTypesDetails.is_use_markets">
+                    <label>Market</label>
+                    <div class="select">
+                        <select class="placeholder" ng-model="rateData.market_segment_id" ng-options="market.value as market.name for market in rateTypesDetails.markets">
+                            <option value="">Select Market</option>
+                        </select>
+                    </div>
+                    </div>
+                    <div class="entry"  ng-hide="!rateTypesDetails.is_use_sources">
+                    <label>Source</label>
+                    <div class="select">
+                        <select class="placeholder" ng-model="rateData.source_id" ng-options="source.value as source.name for source in rateTypesDetails.sources">
+                            <option value="">Select Source</option>
+                        </select>
+                    </div>
+              		</div>
                 </div>
+                <div class="entry full-width">
+                    <div class="entry">
+                        <label>Cleaning Cycle</label>
+                        <div class="select">
+                            <select class="placeholder" ng-model="rateData.task_id" ng-options="task.id as task.name for task in defaultWorkTypeTasks">
+                                <option value="" disabled>Select Task</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="entry"  ng-hide="!rateTypesDetails.is_use_sources">
-                <label>Source</label>
-                <div class="select">
-                    <select class="placeholder" ng-model="rateData.source_id" ng-options="source.value as source.name for source in rateTypesDetails.sources">
-                        <option value="" disabled>Select Source</option>
-                    </select>
-                </div>
-          		</div>
-            </div>
            
 	 	</fieldset>
 	 	<fieldset class="holder right">	 		

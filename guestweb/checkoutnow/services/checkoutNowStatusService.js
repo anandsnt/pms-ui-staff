@@ -26,5 +26,5 @@ var dependencies = [
 checkoutNowService
 ];
 
-snt.factory('checkoutNowService', dependencies);
+sntGuestWeb.factory('checkoutNowService', dependencies);
 })();

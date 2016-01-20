@@ -16,6 +16,9 @@ sntRover.controller('roverController',
 
     rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
 
+    // TODO: remove this after CICO-19912 is done
+    SWITCH_ROOM_AND_RATES_ALT = true;
+
 
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
@@ -118,7 +121,7 @@ sntRover.controller('roverController',
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
-      
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -153,9 +156,9 @@ sntRover.controller('roverController',
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    
-    
-    
+
+
+
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
@@ -345,7 +348,7 @@ sntRover.controller('roverController',
         // if menu is open, close it
         $scope.isMenuOpen();
         $scope.menuOpen = false;
-        
+
     };
 
     $scope.init();
@@ -568,6 +571,9 @@ sntRover.controller('roverController',
     $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
       $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
+
+    $rootScope.modalClosing = false;
+
     /*
      * Tp close dialog box
      */
@@ -575,11 +581,10 @@ sntRover.controller('roverController',
       document.activeElement.blur();
       $scope.$emit('hideLoader');
 
-      //to add stjepan's popup showing animation
-      $rootScope.modalOpened = false;
-
+      $rootScope.modalClosing = true;
       setTimeout(function() {
         ngDialog.close();
+        $rootScope.modalClosing = false;
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);
@@ -655,11 +660,6 @@ sntRover.controller('roverController',
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
         LastngDialogId = $dialog.attr('id');
-        //to add stjepan's popup showing animation
-        $rootScope.modalOpened = false;
-        $timeout(function() {
-            $rootScope.modalOpened = true;
-        }, 300);
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {
@@ -762,4 +762,5 @@ sntRover.controller('roverController',
           }, function() {
           });
     };
+
 }]);

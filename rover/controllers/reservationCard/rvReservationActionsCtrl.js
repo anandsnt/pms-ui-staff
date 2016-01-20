@@ -34,6 +34,12 @@ sntRover.controller('reservationActionsController', [
 		var TZIDate = tzIndependentDate,
 			reservationMainData = $scope.reservationParentData;
 
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+        if (SWITCH_ROOM_AND_RATES_ALT) {
+            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        }
+
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied
 		 * -departure date <= busssiness date
@@ -540,9 +546,6 @@ sntRover.controller('reservationActionsController', [
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
 						}
-						if (isPercent) {
-							return $rootScope.currencySymbol + penalty; //as calculated amount based on percentage is provided from API
-						}
 						return $rootScope.currencySymbol + $filter('number')(penalty, 2);
 					}())
 				})
@@ -874,7 +877,7 @@ sntRover.controller('reservationActionsController', [
 			if (new TZIDate(reservationMainData.arrivalDate) < new TZIDate($rootScope.businessDate)) {
 				reservationMainData.arrivalDate = $rootScope.businessDate; // Note: that if arrival date is in the past, only select from business date onwards for booking and availability request.
 			}
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
+			$state.go(roomAndRatesState, {
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
 				fromState: $state.current.name,
