@@ -118,8 +118,8 @@
                 <div class="reservation-completed">
                     <h2 ng-hide="viewState.identifier == 'UPDATED'" translate>RESERVATION_CREATED</h2>
                     <h2 ng-show="viewState.identifier == 'UPDATED'" translate>RESERVATION_CHANGED</h2>
-                    <label translate ng-show="!reservationStatus.confirmed">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
-                    <div class="entry full-width" ng-show="!reservationStatus.confirmed">
+                    <label translate ng-show="!reservationStatus.confirmed && sendConfirmationLetter">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
+                    <div class="entry full-width" ng-show="!reservationStatus.confirmed && sendConfirmationLetter">
                         
                         <div class="entry radio-check">
                             <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationData.hide_rates }">
@@ -147,8 +147,14 @@
 
                     </div>
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
-                        <button type="button" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>CONFIRM_RESERVATION</button>
-                        <button ng-show="printConfirmationLetter" type="button" class="button blue with-icon" ng-click="printConfirmationReservation()">
+                        <button type="button" class="button blue"
+                            ng-click="sendConfirmationClicked(payment_info.email.$valid)"
+                            translate>CONFIRM_RESERVATION
+                        </button>
+                        <button ng-show="printConfirmationLetter" type="button"
+                            class="button blue with-icon"
+                            ng-show="printConfirmationLetter"
+                            ng-click="printConfirmationReservation()">
                             <span class="icons icon-print"></span>
                             {{'PRINT_CONFIRMATION' | translate}}
                         </button>
