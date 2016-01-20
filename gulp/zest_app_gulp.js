@@ -10,7 +10,7 @@ module.exports = function(gulp, $, options) {
 	require('./zest/zest_translation_files_gulp')(gulp, $, options);
 	
 	gulp.task('zest-inject-assets-to-templates', function(callback){
-		return runSequence('create-statemapping-and-inject-zeststation-js-production', 'create-theme-mapping-template-production', 
+		return runSequence('inject-zest-js-production-to-template', 'create-theme-mapping-template-production', 
 		'create-theme-mapping-css-production', callback);
 	});
 
@@ -19,7 +19,7 @@ module.exports = function(gulp, $, options) {
 			.pipe(gulp.dest(options['DEST_ROOT_PATH']+'zest'));
 	});
 
-	gulp.task('zest-asset-prod-precompile', ['zest-watch-js-files', 'zest-template-cache-production',
+	gulp.task('zest-asset-prod-precompile', ['compile-zest-js-production', 'zest-template-cache-production',
 	 'build-zeststation-css-dev']);
 
 	gulp.task('watch-zest-files', ['zest-watch-js-files', 'zest-watch-templates-files', 
