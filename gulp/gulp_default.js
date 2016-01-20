@@ -26,7 +26,7 @@ module.exports = function(gulp, $, options) {
 		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
 	});
 
-	gulp.task('watch', ['watch-rover-files', 'watch-login-files', 'watch-admin-files', 'watch-zest-files']);
+	gulp.task('watch', ['watch-rover-files', 'watch-login-files', 'watch-admin-files', 'watch-zest-files', 'watch-guestweb-files']);
 
 	gulp.task('default', ['build', 'watch']);
 

@@ -23,7 +23,7 @@ module.exports = function(gulp, $, options) {
 	 'build-zeststation-css-dev']);
 
 	gulp.task('watch-zest-files', ['zest-watch-js-files', 'zest-watch-templates-files', 
-		'zest-watch-translation-files', 'zest-watch-less-files']);
+		'zest-watch-translation-files', 'zeststation-watch-css-files']);
 
 	 gulp.task('copy-zest-files', ['zest-copy-js-files', 'zest-copy-less-files'])
 
