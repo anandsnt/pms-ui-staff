@@ -462,7 +462,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     /**
      * Function shows 'no results found' if no search results found
      * in case of accounts and cards.
-     * @return {Boolean} true if no serach results found
+     * @return {Boolean} true if no search results found
      */
     $scope.noSearchResultsFoundInAccountsAndCards = function() {
     	return ($scope.searchResults.posting_accounts.length === 0 &&
@@ -473,7 +473,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
     /**
      * Function shows 'no results found' if no search results found
      * in case reservation.
-     * @return {Boolean} true if no serach results found
+     * @return {Boolean} true if no search results found
      */
     $scope.noSearchResultsFoundInReservations = function() {
     	return ($scope.searchResults.reservations.length === 0 && 

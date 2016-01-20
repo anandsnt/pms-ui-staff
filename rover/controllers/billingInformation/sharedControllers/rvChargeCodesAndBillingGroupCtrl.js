@@ -7,15 +7,15 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
      * @return {undefined}
      */
     $scope.toggleChargeType = function() {
-        $scope.isBillingGroup = !$scope.isBillingGroup;
+        $scope.billingInfoFlags.isBillingGroup = !$scope.billingInfoFlags.isBillingGroup;
 
-        if ($scope.isBillingGroup) {
+        if ($scope.billingInfoFlags.isBillingGroup) {
             $scope.refreshScroller('billingGroups');
         }
         else {
             $scope.refreshScroller('chargeCodes');
         }
-        $scope.showChargeCodes = false;
+        $scope.billingInfoFlags.showChargeCodes = false;
     };
 
     /**
@@ -70,7 +70,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
     $scope.showAvailableChargeCodes = function() {
         $scope.clearResults();
         displayFilteredResultsChargeCodes();
-        $scope.showChargeCodes = !$scope.showChargeCodes;
+        $scope.billingInfoFlags.showChargeCodes = !$scope.billingInfoFlags.showChargeCodes;
     };
 
     /**
@@ -101,7 +101,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
         $scope.chargeCodeToAdd = selectedChargecodeId;
         addChargeCode();
         $scope.chargeCodeSearchText = '';
-        $scope.showChargeCodes = false;
+        $scope.billingInfoFlags.showChargeCodes = false;
     };
 
     /**
@@ -109,7 +109,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
      * @return {undefined}
      */
     $scope.chargeCodeEntered = function() {
-        $scope.showChargeCodes = false;
+        $scope.billingInfoFlags.showChargeCodes = false;
         displayFilteredResultsChargeCodes();
         var queryText = $scope.chargeCodeSearchText;
         $scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);

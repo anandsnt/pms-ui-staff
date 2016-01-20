@@ -31,7 +31,9 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
             isInitialPage       : true,
             isEntitySelected    : false,
             shouldShowWaiting   : false,
-            isReloadNeeded      : false
+            isReloadNeeded      : false,
+            showChargeCodes     : false,
+            isBillingGroup      : true
         };
 
         //Payment details
@@ -167,7 +169,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 
     /**
      * Function to get the class for the 'icon' according to the entity role
-     * @param {Ohject} selected route
+     * @param {Object} selected route
      * @return {String} class of 'icon'
      */
     $scope.getEntityIconClass = function(route) {

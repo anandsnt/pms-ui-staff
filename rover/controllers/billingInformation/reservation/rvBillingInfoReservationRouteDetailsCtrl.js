@@ -9,8 +9,6 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     var init = function() {
         $scope.first_bill_id        = "";
         $scope.chargeCodeToAdd      = "";
-        $scope.showChargeCodes      = false;
-        $scope.isBillingGroup       = true;
         $scope.swipedCardDataToSave = {};
 
         $scope.paymentFlags         = {
@@ -155,6 +153,14 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
      */
     $scope.$on("CANCELLED_PAYMENT", function() {
         $scope.renderAddedPayment = $scope.oldPayment;
+        $scope.refreshScroller('routeDetails');
+    });
+
+    /*
+     * On adding a credit card, refresh the route details scroller
+     */
+    $scope.$on('REFRESH_ROUTE_DETAILS_SCROLLER', function() {
+        $scope.refreshScroller('routeDetails');
     });
 
     /**
@@ -344,7 +350,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         var successCallback = function(data) {
             $scope.availableBillingGroups = data;
             if (data.length === 0) {
-                $scope.isBillingGroup = false;
+                $scope.billingInfoFlags.isBillingGroup = false;
             }
             if ($scope.isGroupOrHouse) {
                 $scope.paymentFlags.showPayment = false;
@@ -812,7 +818,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
      */
     $scope.showCreditCardOrNewPayment = function() {
         return (!$scope.paymentFlags.isAddPayment && $scope.paymentFlags.showPayment &&
-               typeof $scope.renderAddedPayment === "undefined");
+               isEmptyObject($scope.renderAddedPayment));
     };
 
     /**
@@ -821,7 +827,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
      */
     $scope.hideAvailableCreditCard = function() {
         return ($scope.isGroupOrHouse || $scope.selectedEntity.has_accompanying_guests ||
-               typeof $scope.renderAddedPayment !== "undefined");
+               !isEmptyObject($scope.renderAddedPayment));
     };
 
     /**
@@ -829,7 +835,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
      * @return {Boolean}
      */
     $scope.showCreditCardAddedDuringRouteCreation = function() {
-        return (typeof $scope.renderAddedPayment !== "undefined" && !$scope.paymentFlags.isAddPayment && 
+        return (!isEmptyObject($scope.renderAddedPayment) && !$scope.paymentFlags.isAddPayment && 
                $scope.paymentFlags.showPayment && !$scope.isGroupOrHouse &&
                !$scope.saveData.newPaymentFormVisible);
     };
@@ -850,7 +856,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
      */
     $scope.hideNewPaymentButton = function() {
         return ($scope.isOtherReservation || $scope.isGroupOrHouse ||
-               typeof $scope.renderAddedPayment !== "undefined");
+               !isEmptyObject($scope.renderAddedPayment));
     };
 
     init();
