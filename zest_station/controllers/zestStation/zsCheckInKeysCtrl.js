@@ -72,9 +72,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.initKeySuccess = function(){
             $state.passParams = $scope.input;
           
-            $scope.headingText = 'Success!';
-            $scope.subHeadingText = 'Please grab your key(s) from the target below';
-            $scope.modalBtn1 = 'Next';
+            $scope.headingText = 'SUCCESS_HDR';
+            $scope.subHeadingText = 'GRAB_KEYS';
+            
+            if ($scope.isInPickupKeyMode()){
+                $scope.modalBtn1 = 'DONE_BTN';//if you were just picking up keys, you are done!
+            } else {
+                $scope.modalBtn1 = 'NEXT_BTN';//otherwise keep goin!
+            }
+            
             $scope.input.madeKey = 1;
             $scope.input.makeKeys = 1;
         };
@@ -123,9 +129,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.keyTwoOfTwoSetup = function(){
                 $scope.at = 'make-keys';
                 
-                $scope.headingText = 'Success! Make your second key';
-                $scope.subHeadingText = 'Remove the first key, select a Blank Key from the Bowl and place it on the target below.\n\
-                                            When the green light appears, the key is made.';
+                $scope.headingText = 'MADE_FIRST_KEY_MSG';
+                $scope.subHeadingText = 'MADE_FIRST_KEY_MSG_SUB';
             
                 setTimeout(function(){
                     $scope.initMakeKey(2);
@@ -134,8 +139,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.oneKeySetup = function(){
                 $scope.at = 'make-keys';
 
-                $scope.headingText = 'Make your key.';
-                $scope.subHeadingText = 'Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made';
+                $scope.headingText = 'MAKE_KEY';
+                $scope.subHeadingText = 'MAKE_KEY_MSG';
                 $scope.modalBtn1 = 'Next';
                 $scope.input.madeKey = 0;
             };
@@ -149,9 +154,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.at = 'make-keys';
 
                 $scope.from = 'select-keys-after-checkin';
-                $scope.headingText = 'Make your first key!';
-                $scope.subHeadingText = 'Select a Blank Key from the Bowl and place it on the target below. \n\
-                                                When the green light appears, the key is made.';
+                $scope.headingText = 'MAKE_FIRST_KEY';
+                $scope.subHeadingText = 'MAKE_FIRST_KEY_SUB';
                 $scope.initMakeKey(1);
             };
         
@@ -159,9 +163,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
            
             $scope.goToKeySuccess();
 
-            $scope.headingText = 'Success!';
-            $scope.subHeadingText = 'Please grab your key from the target below';
-            $scope.modalBtn1 = 'Next';
+            $scope.headingText = 'SUCCESS_HDR';
+            $scope.subHeadingText = 'GRAB_KEY_BELOW';
+            $scope.modalBtn1 = 'NEXT_BTN';
             $scope.input.madeKey = 1;
             console.info('success, made key: [ 1 ] of [ 1 ]');
         };
@@ -201,15 +205,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
-            console.log($scope.zestStationData)
-            console.log('$scope.zestStationData',$scope.selectedReservation)
             var options = {
                 card_info: "",
                 key: $scope.makingKey,
                 key_encoder_id: sntZestStation.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
-            console.warn('$scope.isInPickupKeyMode(): ',$scope.isInPickupKeyMode())
             if ($scope.isInPickupKeyMode()){
                 options.reservation_id = $scope.selectedReservation.reservation_id;
             }

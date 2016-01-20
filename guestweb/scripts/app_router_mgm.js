@@ -2,6 +2,14 @@
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
+    // External verification
+
+    $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/MGM/externalVerification.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 });
 
     // checkout now states
 
@@ -167,7 +175,13 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/checkinCCAddition.html',
 	 	controller : 'checkinCcVerificationController',
 	 	title: 'CC verification'
+	 }).state('emailAddition', {
+	 	url: '/emailAddition',
+	 	templateUrl: '/assets/checkin/partials/MGM/emailEntryPage.html',
+	 	controller : 'emailEntryController',
+	 	title: 'E-mail entry'
 	 });
+	
 	
 
 

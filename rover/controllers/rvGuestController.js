@@ -342,7 +342,7 @@ sntRover.controller('guestCardController', [
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
 				if (typeof data.userId !== 'undefined') {
-					$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback);
+					$scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
 				}
 			}
 		};
@@ -600,7 +600,7 @@ sntRover.controller('guestCardController', [
 				resetCompanyTACards();
 
 				if ($scope.viewState.identifier === "CREATION") {
-					// reservationCreation				
+					// reservationCreation
 					$scope.reservationData.group = {
 						id: "",
 						name: "",
@@ -625,7 +625,7 @@ sntRover.controller('guestCardController', [
 				resetCompanyTACards();
 
 				if ($scope.viewState.identifier === "CREATION") {
-					// If reservation NOT created			
+					// If reservation NOT created
 					$scope.reservationData.allotment = {
 						id: "",
 						name: "",
@@ -1096,6 +1096,19 @@ sntRover.controller('guestCardController', [
 		};
 
 		/**
+		 * [showCreditLimitExceedPopup description]
+		 * @return {undefined}
+		 */
+		var showCreditLimitExceedPopup = function(){
+			ngDialog.open({
+                template: '/assets/partials/bill/rvBillingInfoCreditLimitExceededPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+		};
+
+		/**
 		 * navigate to group details
 		 * @return {[type]} [description]
 		 */
@@ -1142,6 +1155,7 @@ sntRover.controller('guestCardController', [
 				else if (error.httpStatus === 472) {
 					showGroupRoomTypeIsNotConfiguredPopup();
 				}
+
 			} else {
 				$scope.errrorMessage = error;
 			}
@@ -1302,7 +1316,7 @@ sntRover.controller('guestCardController', [
 		 */
 		$scope.detachFromGroupORAllotment = function() {
 			// Common method used across Group and Allotment cards in the reservation card headers
-			// NOTE: The group and allotment cards are mutually exclusive! 
+			// NOTE: The group and allotment cards are mutually exclusive!
 			if (!!$scope.reservationData.group.id) { // In case the attached card is a group
 				removeGroupCard();
 			} else if (!!$scope.reservationData.allotment.id) {
@@ -1418,7 +1432,7 @@ sntRover.controller('guestCardController', [
 		 * @return {[type]} [description]
 		 */
 		$scope.gotoAllotmentDetails = function() {
-			$state.go('rover.allotment.config', {
+			$state.go('rover.allotments.config', {
 				id: $scope.reservationData.allotment.id,
 				activeTab: 'SUMMARY'
 			});
@@ -1459,8 +1473,13 @@ sntRover.controller('guestCardController', [
 				else if (error.httpStatus === 472) {
 					showAllotmentRoomTypeIsNotConfiguredPopup();
 				}
+
+				//473 - Show Credit Limit exceed popup.
+				else if (error.httpStatus === 473) {
+					showCreditLimitExceedPopup();
+				}
 			} else {
-				$scope.errrorMessage = error;
+				$scope.errrorMessage = error.errorMessage;
 			}
 		};
 
@@ -1590,7 +1609,7 @@ sntRover.controller('guestCardController', [
 			$scope.closeGuestCard();
 
 			/**
-			 * CICO-20674: when there is more than one contracted rate we 
+			 * CICO-20674: when there is more than one contracted rate we
 			 * should take the user to room and rates screen after applying the routing info
 			 */
 			// $timeout(function() {
@@ -1809,7 +1828,7 @@ sntRover.controller('guestCardController', [
 		};
 
 		/**
-		 * Hide detach card in case of group reservations		 
+		 * Hide detach card in case of group reservations
 		 */
 		$scope.allowDetachAgent = function() {
 			return !$scope.reservationData.group.id;

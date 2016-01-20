@@ -10,7 +10,7 @@
     </div>
 
     <!-- Newspaper -->
-    <form method="post" class="block-item item-newspaper">
+    <form method="post" class="block-item item-newspaper" ng-if="reservationData.reservation_card.news_paper_pref.news_papers.length > 0">
         <h3 class="block-title" translate>NEWSPAPER_LABEL</h3>
         <div class="select">
             <!-- The newspaper selection option is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->

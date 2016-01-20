@@ -192,7 +192,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.errorCallbackCheckUpdateAvaibale = function(errorMessage) {
 			$scope.$emit("hideLoader");
-
+			$scope.errorMessage = errorMessage;
 		};
 
 		$scope.successCallbackCheckUpdateAvaibale = function(data) {

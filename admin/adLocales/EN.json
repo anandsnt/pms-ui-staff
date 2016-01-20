@@ -44,7 +44,9 @@
 ,"BRITE_PABX_SETUP_HEADER": "Brite PabX Setup",
 "BRITE_PABX_ACTIVATE_INACTIVATE": "Activate / Inactivate",
 "BRITE_PABX_SUB_TITLE": "API Access Configuration",
-"BRITE_PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number","CAMPAIGNS_LIST_TITLE": "Campaigns",
+"BRITE_PABX_DEFAULT_ACCOUNT_NUMBER": "Default Account Number",
+"BRITE_PABX_URL": "URL",
+"BRITE_PABX_API_KEY": "API KEY","CAMPAIGNS_LIST_TITLE": "Campaigns",
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
@@ -275,8 +277,21 @@
 "MENU_MANAGE_ALLOTMENT": "Manage Allotment",
 "BIRTHDATE_IS_MANDATORY": "Birthdate is mandatory",
 "MINIMUM_AGE_REQUIRED_TO_CHECKIN":"Minimum age required to check in",
-"PROMPT_FOR_GUEST_ADDRESS":"Prompt for guest address",
-"PROMPT_FOR_BIRTHDATE" : "Prompt for guest's Birthdate"
+"PROMPT_FOR_GUEST_ADDRESS":"Prompt for guest's address",
+"PROMPT_FOR_BIRTHDATE" : "Prompt for guest's Birthdate",
+"PROMPT_FOR_CC" : "Prompt for guest's CC",
+"GUEST_DETAIL_COLLECTION":"Guest Detail Collection",
+"BIRTHDATE_COLLECTION":"Birthdate Collection",
+"ADDRESS_COLLECTION":"Address Collection",
+"GUEST_CC_COLLECTION":"Guest CC Collection",
+"COLLECT_ADDRESS_IN_ONE_SCREEN":"Control Zest Web templates that collect address and birth date on a single screen",
+"COLLECT_BIRTHDAY_SEPERATELY":"Control Zest Web templates that collect birth date separately from address",
+"COLLECT_BIRTHDAY_INSTRUCTION":"Set to zero if there is no minimum age required",
+"COLLECT_ADDRESS_SEPERATELY":"Control Zest Web templates that collect birth date separately from address"
+
+
+
+
 ,
 
 
@@ -408,7 +423,7 @@
 "CHARGE_CODE_TYPE":"Charge Code Type",
 "PAYMENT_TYPE":"Payment Type",
 "AMOUNT":"Amount",
-"AMOUNT_TYPE":"Amount Type", 
+"AMOUNT_TYPE":"Amount Type",
 "SELECT_AMOUNT_TYPE":"Select Amount Type",
 "POST_TYPE":"Post Type",
 "SELECT_POST_TYPE":"Select Post Type",
@@ -427,7 +442,13 @@
 "SELECT_CALCULATION_RULE":"Select Calculation Rule",
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
-"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"
+"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee",
+"INVOICES" : "Invoices",
+"FIRST_INVOICE_NO" : "First Invoice Number",
+"INVOICE_NO_PREFIX" : "Invoice Number Prefix",
+"PLACEHOLDER_FIRST_INVOICE_NO" : "Enter First Invoice Number",
+"PLACEHOLDER_INVOICE_NO_PREFIX" : "Enter Invoice Number Prefix",
+"EMPTY_INVOICE_NO_PREFIX" : "Invoice Number Prefix cannot be empty"
 ,"FLOOR": "Floor",
 "ASSIGN_ROOMS_TO_THIS_FLOOR": "Assign rooms to this floor",
 "UNASSIGNED_ROOMS": "Unassigned Rooms",
@@ -576,7 +597,11 @@
     "PRE_CHECK_IN_EMAIL_TITLE":"PRE CHECK IN - EMAIL TITLE ",
     "PRE_CHECK_IN_TOP_BODY":"PRE CHECK IN - TOP BODY",
     "PRE_CHECK_IN_BOTTOM_BODY":"PRE CHECK IN - BOTTOM BODY",
-    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields"
+    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields",
+    "TEXT_MESSAGE":"Text Message",
+    "ROOM_KEY_COMMUNICATION_OPTIONS":"Room key communication options",
+    "EMAIL_AND_TEXT_MESSAGE":"Email and Text Message",
+    "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message"
 ,"PROPERTY_INTERFACE_SETUP": "Property Interface Setup"
 ,"iCARE_ON_OFF": "iCare ON/OFF",
 "SAVE_GUEST_NAME_TO_ICARE": "Save Guest Name To iCare",
@@ -605,7 +630,10 @@
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
 	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
-        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages"
+        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
+	"WORKSTATION_IS_OOS":"Out of Service",
+	"WORKSTATION_OOS_MSG":"OOS Message",
+        "ROVER_DEVICE_ID" : "Rover Device ID"
 
 ,"LETSHARE_SETUP_HEADER": "LetShare Setup",
 "LETSHARE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
@@ -897,7 +925,9 @@
     "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
     "CC_BATCH_PROCESSING" : "CC Batch Processing",
     "AUTO_SETTLEMENT_BY_EOD" : "Auto-Settlement by EOD",
-    "EMAIL_RECIPIENT_FOR_EOD_REPORTS" : "Email Recipient for EOD Reports"
+    "EMAIL_RECIPIENT_FOR_EOD_REPORTS" : "Email Recipient for EOD Reports",
+    "OFFER_ROOM_DELIVERY_OPTIONS":"Offer room delivery options",
+    "ROOM_KEY_COMMUNICATIONS":"Room key communications"
 
 
 ,"SITEMINDER_SETUP_HEADER": "SiteMinder Setup",
@@ -1081,7 +1111,8 @@
 "ZEST_SETUP_SEND": "Send Message",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_EMAIL_LABEL": "Service is OFF - Email",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEON_EMAIL_LABEL": "Service is ON - Start Email",
-"ZEST_SETUP_MSG_TO_GUEST_SERVICEON_NO_RECOG": "Service is ON - Did not recognize keyword"
+"ZEST_SETUP_MSG_TO_GUEST_SERVICEON_NO_RECOG": "Service is ON - Did not recognize keyword",
+"ZEST_SETUP_DIRECT_URL_HEADER":"Check-In By Direct URL From Guest Setup"
 
 
 
@@ -1117,7 +1148,10 @@
 "CHECKOUT":"Check Out",
 "CHECKIN":"Check In",
 "REG_CARD_TEXT":"Registration Card Text",
-"REG_CARD":"Registration Card"
+"REG_CARD":"Registration Card",
+"ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
+"ENFORCE_DEPOSIT":"Enforce Deposit",
+"REG_CARD_DELIVERY":"Registration card delivery options"
 
         
         }

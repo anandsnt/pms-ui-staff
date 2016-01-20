@@ -128,8 +128,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                     $scope.saveData.paymentType = 'GIFT_CARD';
                 }
             }
-            
-            
+
+
 		// CICO-9457 : Setup fees details initilaly - for standalone only
 		if($scope.isStandAlone){
 
@@ -211,17 +211,17 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 
 	};
 
-        
+
             $scope.giftCardAmountAvailable = false;
             $scope.giftCardAvailableBalance = 0;
             $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
                $scope.giftCardAvailableBalance = giftCardData.amount;
             });
-            
-            
-            
-            
-            
+
+
+
+
+
             $scope.timer = null;
             $scope.cardNumberInput = function(n, e){
                 if ($scope.saveData.paymentType === "GIFT_CARD" || $scope.useDepositGiftCard){
@@ -230,7 +230,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                     if (len >= 8 && len <= 22){
                         //then go check the balance of the card
                         $('#card-number').keydown(function(){
-                            clearTimeout($scope.timer); 
+                            clearTimeout($scope.timer);
                             $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
                         });
                     } else {
@@ -255,12 +255,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                    $scope.giftCardAmountAvailable = false;
                }
             };
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         $rootScope.$on('validatedGiftCardPmt',function(n, valid){
             if (valid){
                $scope.validPayment = true;
@@ -269,7 +269,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
            }
         });
         $scope.validPayment = true;
-            
+
         $scope.updatedAmountToPay = function(amt){
             //used if checking against gift card balance
             if ($scope.saveData.paymentType === 'GIFT_CARD'){
@@ -292,11 +292,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         };
 
         $scope.showAddToGuestCard = function(){
-          if ($scope.showCreditCardInfo && 
-                  !$scope.showCCPage && 
-                  $scope.newCardAdded && 
+          if ($scope.showCreditCardInfo &&
+                  !$scope.showCCPage &&
+                  $scope.newCardAdded &&
                     (
-                        $scope.paymentGateway !== 'sixpayments' || 
+                        $scope.paymentGateway !== 'sixpayments' ||
                         $scope.isManual
                     ) &&
                     !$scope.depositPaidSuccesFully
@@ -311,7 +311,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                     $scope.resetSplitPaymentDetailForGiftCard();
                     $scope.shouldShowMakePaymentButton = true;
                     $scope.splitBillEnabled = false;
-                    
+
                     $scope.isGiftCardPmt = true;
                 } else {
                     $scope.isGiftCardPmt = false;
@@ -346,8 +346,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 		$scope.creditCardTypes = [];
-                
-                
+
+
             if ($rootScope.allowPmtWithGiftCard && !$scope.isStandAlone){
                 //then restrict options to pay to only gift card;
                 if ($scope.renderData){
@@ -363,7 +363,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                     $scope.saveData.paymentType = 'GIFT_CARD';
                 }
             }
-                
+
 		angular.forEach($scope.renderData.paymentTypes, function(item, key) {
 			if(item.name === 'CC'){
 				$scope.creditCardTypes = item.values;
@@ -410,8 +410,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				value.isSelected = false;
 				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type && $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() === "CC"){
-						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number === value.mli_token) && 
-                                                        ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() === 
+						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number === value.mli_token) &&
+                                                        ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() ===
                                                         value.card_code.toLowerCase() )) {
 							value.isSelected = true;
 							checkReferencetextAvailableForCC();
@@ -579,7 +579,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.splitePaymentDetail["splitAmount"] = parseFloat($filter("number")((startingAmount/$scope.splitePaymentDetail["totalNoOfsplits"]),2).replace(/,/g, ''));
 		$scope.splitePaymentDetail["carryAmount"] = parseFloat($filter("number")((startingAmount - ($scope.splitePaymentDetail["splitAmount"] *$scope.splitePaymentDetail["totalNoOfsplits"])),2));
 		//For first payment , carry amount is added with split amount.
-		$scope.renderData.defaultPaymentAmount = parseFloat($filter("number")(($scope.splitePaymentDetail["splitAmount"] + $scope.splitePaymentDetail["carryAmount"]),2));
+        //Fixed the defect - CICO-23642
+		$scope.renderData.defaultPaymentAmount = (parseFloat($scope.splitePaymentDetail["splitAmount"]) + parseFloat($scope.splitePaymentDetail["carryAmount"])).toFixed(2);
 	};
 	/*
 	* Updates SplitPaymentDetail.
@@ -657,20 +658,20 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-		
+
 		//$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
-		// A temperory fix, This part (payment screens) of App seems broken in many ways 
+		// A temperory fix, This part (payment screens) of App seems broken in many ways
 		// Will need to refractor as soon as possible
 		if($scope.saveData.paymentType !== "CC"){
 			// attach non CC payment type to bill and to staycard if bill is bill-1 (done in backend)
-			mapNonCCToBillAndStaycard(); 
+			mapNonCCToBillAndStaycard();
 		}else{
 			// attach CC payment type to bill and to staycard if bill is bill-1 (done in backend)
 			mapCCPayMentToBillAndStaycard();
 		};
 		paymentFinalDetails =  data;
-		
+
 		$timeout(function() {
 			// CICO-23196 : Enable MAKE PAYMENT button on success.
 			$scope.disableMakePaymentButton = false;
@@ -726,13 +727,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				},
 				"reservation_id": $scope.reservationData.reservationId
 			};
-                        
+
                             if ($scope.saveData.paymentType !== 'GIFT_CARD'){
                                 dataToSrv.postData.payment_type_id = ($scope.saveData.paymentType === 'CC') ? $scope.saveData.payment_type_id : null;
                             } else {
                                 dataToSrv.postData.card_number = $scope.cardData.cardNumber;
                             }
-                        
+
 
 			// add to guest card only if new card is added and checkbox is selected
 			if($scope.newCardAdded){
@@ -764,7 +765,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 					dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
 				}
 			}
-                
+
 			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC"){
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
@@ -921,7 +922,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
                return true;
             } else return false;
         }
-        
+
 
 	$scope.$on("TOKEN_CREATED", function(e,data){
             $scope.showGuestAddCard = true;
@@ -952,13 +953,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.addmode                 			 = true;
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
-        
+
     /*
     * Refresh the bill card
-    */    
+    */
 
     var paymentMapSuccess = function(response){
-    	 $scope.$emit('REFRESH_BILLCARD_VIEW');
     	 processeRestOfPaymentOperations();
     	 $scope.$emit('hideLoader');
     };
@@ -994,8 +994,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				var expiryMonth 	= $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
 				var expiryYear  	= $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
 				var expiryDate  	= (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
-		    	
-			    // set up data for new card 
+
+			    // set up data for new card
 				data.token  		= !$scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.session : $scope.newPaymentInfo.tokenDetails.token_no;
 				data.card_name		= $scope.newPaymentInfo.cardDetails.userName;
 				data.card_expiry	= expiryDate;

@@ -38,7 +38,7 @@
 							  };
 
 		
-		for(year=1900;year<=new Date().getFullYear();year++){
+		for(year=new Date().getFullYear();year>=1900;year--){
 			$scope.years.push(year);
 		};
 		for(month=1;month<=12;month++){
@@ -99,12 +99,18 @@
 			return data;
 		};
 		
-		$scope.opts = {
-			backdrop: true,
-			backdropClick: true,
-			templateUrl: '/assets/checkin/partials/guestDetailsErrorModal.html',
-			controller: ModalInstanceCtrl
-		};
+		
+		$scope.errorOpts = {
+	      backdrop: true,
+	      backdropClick: true,
+	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
+	      controller: ccVerificationModalCtrl,
+	      resolve: {
+	        errorMessage:function(){
+	          return "Please provide all the required information";
+	        }
+	      }
+	    };
 
 		//post guest details
 		$scope.postGuestDetails = function(){
@@ -132,7 +138,7 @@
 				});
 			}
 			else{
-				$modal.open($scope.opts);
+				$modal.open($scope.errorOpts);
 			};
 		};		
 	}

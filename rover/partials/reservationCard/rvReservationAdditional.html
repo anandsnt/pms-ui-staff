@@ -1,8 +1,8 @@
 <div class="block-wrapper">
     <a class="block-title toggle has-arrow" ng-click="clickedAdditionalDetails($event)">Additional details</a>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-class="{'hidden': additionalDetails.hideDetails }">
         <!-- Reservation Type -->
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="block-item item-type additional-detail">
             <h3 class="block-title">Reservation Type</h3>
             <div class="select">

@@ -177,9 +177,18 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/zestsetupemail'
 		});
 		$stateProvider.state('admin.zest_setup_direct', {
-			templateUrl: '/assets/partials/zestSetup/adCheckinEmailSetup.html',
-			controller: 'ADZestCheckinEmailCtrl',
-			url : '/zestsetupdirect'
+			templateUrl: '/assets/partials/zestSetup/adCheckinDirectUrlEmailSetup.html',
+			controller: 'ADZestCheckinDirectUrlEmailCtrl',
+			url : '/zestsetupdirect',
+			resolve: {
+				directUrlData: function(adZestCheckinCheckoutSrv) {
+					return adZestCheckinCheckoutSrv.fetchDirectSetup();
+				},
+				diretUrls : function(adZestCheckinCheckoutSrv){
+					var data = {"application":"URL","guest_web_url_type":"CHECKIN"};
+					return adZestCheckinCheckoutSrv.fetchDirectUrlList(data);
+				}
+			}
 		});
 
 
