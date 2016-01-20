@@ -780,8 +780,9 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.showConfirmation = function(reservationStatus) {
-			var showResendConfirmationFlag = false;
-			if ($rootScope.isStandAlone) {
+			var showResendConfirmationFlag = false,
+				sendOrPrintConfirmation = $rootScope.sendConfirmationLetter || $rootScope.printConfirmationLetter;
+			if ($rootScope.isStandAlone && sendOrPrintConfirmation) {
 				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN') {
 					showResendConfirmationFlag = true;
 				}
