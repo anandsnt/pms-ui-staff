@@ -26,10 +26,11 @@ module.exports = function(gulp, $, options) {
 		'zest-watch-translation-files', 'zest-watch-less-files']);
 
 	 gulp.task('copy-zest-files', ['zest-copy-js-files', 'zest-copy-less-files'])
-	// //TASKS
-	 gulp.task('build-zest-dev', ['build-zeststation-js-dev', 'build-zest-template-cache-dev', 'build-zeststation-css-dev']);
+
+	 gulp.task('build-zest-dev', ['build-zeststation-js-dev', 'build-zest-template-cache-dev', 'build-zeststation-css-dev', 'copy-transaltion-files-for-zeststation']);
 
 	
 	// gulp.task('watch-zeststation-files', ['zeststation-watch-partials', 'zeststation-watch-less-files', 'zeststation-watch-js-files']);
 	gulp.task('copy-zeststation-files', ['zeststation-copy-js-files', 'zeststation-copy-css-files-dev']); 
+
 }

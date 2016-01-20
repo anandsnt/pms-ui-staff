@@ -23,11 +23,21 @@ var sntZestStation = angular.module('sntZestStation',[
 sntZestStation.config(function ($httpProvider, $translateProvider) {
     $httpProvider.interceptors.push('sharedHttpInterceptor');
 		$translateProvider.useStaticFilesLoader({
-		  prefix: '/assets/zsLocales/en/',
+		  prefix: '/assets/zest_station/zsLocales/en/',
 		  suffix: '.json'
 		});
 		$translateProvider.fallbackLanguage('EN_zoku');
 });
+
+sntZestStation.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
+	$rootScope.$state = $state;
+	$rootScope.$stateParams = $stateParams;
+
+	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+        $rootScope.previousState = from.name;
+        $rootScope.previousStateParam = fromParams.menu;
+    });
+}]);
 
 var GlobalZestStationApp = function(){
 
@@ -117,4 +127,9 @@ var GlobalZestStationApp = function(){
     };
 };
 
-zestSntApp = new GlobalZestStationApp();
+///zestSntApp = new GlobalZestStationApp();
+
+sntZestStation.controller('rootController', ['$scope',
+function($scope) {
+
+}]);
