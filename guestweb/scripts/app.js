@@ -96,7 +96,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
 
- 	$rootScope.offerRoomDeliveryOptions = ($attrs.offerRoomDeliveryOptions  ==="true") ? true:false;
+ 	$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offerRoomDeliveryOptions  ==="true") ? true:false;
 
 
     //Params for zest mobile and desktop screens
