@@ -910,12 +910,6 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResStatus );
                 }
 
-                else if ('RESERVATION_ONLY_ADDONS' == filter.value && ! filter.filled) {
-                    requested++;
-                    reportsSubSrv.fetchReservationAddons()
-                        .then( fillResAddons );
-                }
-
                 else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchRateTypesAndRateList()
@@ -1132,34 +1126,6 @@ sntRover.factory('RVReportUtilsFac', [
 
                 completed++;
                 checkAllCompleted();
-            };
-
-            // fill Reservation-Only Addons
-            function fillResAddons (data) {
-                
-                var foundFilter;
-
-                _.each(reportList, function(report) {
-                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_ONLY_ADDONS' });
-                    if ( !! foundFilter ) {
-                        foundFilter['filled'] = true;
-                        
-                        // This is used only in Production Data by Rate and for that it is default none selected
-                        __setData(report, 'hasReservationAddons', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Addon',
-                            title        : 'Select Addon',
-                            data         : angular.copy( data )
-                        });
-                    };
-                });
-
-                completed++;
-                checkAllCompleted();
-                
             };
 
             function fillRateCodeList (data) {

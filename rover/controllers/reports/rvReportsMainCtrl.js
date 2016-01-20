@@ -136,7 +136,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_28: false,
 			item_29: false, // Exclude Options
 			item_30: false, // Show Options
-			item_31: false,
 			item_32: false,
 			item_33: false
 		};
@@ -893,8 +892,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': [],
-					'reservationAddons': []
+					'guestOrAccount': []
 				};
 			};
 
@@ -1353,29 +1351,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all charge groups is selected
 					if ( changeAppliedFilter && report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
-					};
-				};
-			};
-
-			// include charge groups
-			if (report.hasOwnProperty('hasReservationAddons')) {
-				selected = _.where( report['hasReservationAddons']['data'], { selected: true } );
-
-				if ( selected.length > 0 ) {
-					key         = reportParams['RESERVATION_ADDONS'];
-					params[key] = [];
-					/**/
-					_.each(selected, function(cg) {
-						params[key].push( cg.id );
-						/**/
-						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.reservationAddons.push( cg.description );
-						};
-					});
-
-					// in case if all charge groups is selected
-					if ( changeAppliedFilter && report['hasReservationAddons']['data'].length === selected.length ) {
-						$scope.appliedFilter.reservationAddons = ['All Reservation Addons'];
 					};
 				};
 			};
