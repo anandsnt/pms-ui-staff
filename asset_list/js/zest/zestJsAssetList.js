@@ -8,7 +8,7 @@ module.exports = {
 				jsLibRoot + 'jquery.min.js',
 				jsLibRoot + 'jquery-ui.min.js',
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
-				jsLibRoot + 'angular.min.js',
+				'lib/angular/angular.js',
 				jsLibRoot + 'angular-route.min.js', 
 				jsLibRoot + 'angular-ui-router.min.js', 
 				jsLibRoot + 'angular-animate.min.js',
@@ -19,7 +19,8 @@ module.exports = {
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
-				jsLibRoot + 'signature/**/*.js'			
+				jsLibRoot + 'signature/**/*.js',
+                                jsLibRoot + 'fullcalender/**/*.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',

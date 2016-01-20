@@ -2,7 +2,7 @@ module.exports = function(gulp, $, options) {
 	
 	var ZEST_TEMPLATE_ROOT     	= '../views/zest_station/home/',
 	    ZEST_HTML_FILE     		= ZEST_TEMPLATE_ROOT + 'index.html',
-	    PARTIALS_PATH_LIST 		= ['**/*.html'],
+	    PARTIALS_PATH_LIST 		= ['**/**/*.html'],
 	    ZEST_TEMPLATES_FILE    	= 'zest_templates.js',
 	    MANIFEST_DIR 			=  __dirname + "/manifests/",
 	    ZEST_TEMPLTE_MANFEST_FILE = "zest_template_manifest.json",
@@ -66,6 +66,6 @@ module.exports = function(gulp, $, options) {
 	//Template - END
 
 	gulp.task('zest-watch-templates-files', function(){
-		gulp.watch(PARTIALS_PATH_LIST, ['build-zest-template-cache-dev'])
+		gulp.watch(PARTIALS_PATH_LIST, ['build-zest-template-cache-dev']);
 	});
 }

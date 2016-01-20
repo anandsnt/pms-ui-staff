@@ -29,5 +29,5 @@ module.exports = function(gulp, $, options) {
 	 gulp.task('copy-zest-files', ['zest-copy-js-files', 'zest-copy-less-files'])
 	// //TASKS
 	 gulp.task('build-zest-dev', ['build-zest-less-js-dev', 'build-zest-template-cache-dev', 
-		'concat-translation-en-zest-files-dev', 'zest-generate-mapping-list-dev']);
+		'copy-transaltion-files-for-zeststation', 'zest-generate-mapping-list-dev']);
 }
