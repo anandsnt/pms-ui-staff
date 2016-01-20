@@ -9,7 +9,8 @@ module.exports = {
 			'guestweb_delano' 	: [ themeCSSRoot + 'guestweb_delano.css'],
 			'guestweb_vdara' 	: [ themeCSSRoot + 'guestweb_vdara.css'],
 			'guestweb_mandalay_bay' : [ themeCSSRoot + 'guestweb_mandalay_bay.css'],
-			// 'camby' 	: [ themeCSSRoot + 'guestweb_camby.css'],
+			'guestweb_camby' 	: [ themeCSSRoot + 'guestweb_camby.css'],
+			'guestweb_great_wolf' 		: [ themeCSSRoot + 'guestweb_great_wolf.css'],
 			// 'carillon' 	: [ themeCSSRoot + 'guestweb_carillon.css'],
 			// 'eden' 	 	: [ themeCSSRoot + 'guestweb_eden.css'],
 			// 'envoy' 	: [ themeCSSRoot + 'guestweb_envoy.css'],
@@ -24,7 +25,7 @@ module.exports = {
 			// 'yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
 			// 'zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
 			// 'fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
-			// 'great_wolf' 		: [ themeCSSRoot + 'guestweb_great_wolf.css'],
+			
 			// 'knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
 			// 'margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css']
 		}

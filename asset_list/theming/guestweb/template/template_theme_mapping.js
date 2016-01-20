@@ -8,7 +8,7 @@ module.exports = {
 		return {
 			'guestweb_row' 	:['guestweb/**/row/**.html', sharedHtml],
 			'guestweb_atura' 	:['guestweb/**/atura/**.html', sharedHtml],
-			'guestweb_camby' 	:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
+			'guestweb_camby' 	:[ 'guestweb/**/common_hotel_templates/**.html'],
 			'guestweb_carillon' 	:[ sharedPartials + 'Carillon/*.html', landingPartials + 'Carillon/*.html', sharedHtml, sharedCommonPartials],
 			'guestweb_bellagio' 	:[ 'guestweb/**/mgm_chain/**.html','guestweb/**/mgm_chain/Bellagio/**.html'],
 			'guestweb_delano' 	:['guestweb/**/mgm_chain/**.html','guestweb/**/mgm_chain/Delano/**.html'],
@@ -27,7 +27,7 @@ module.exports = {
 			'guestweb_yotel' 	:[ sharedPartials + 'Yotel/*.html', landingPartials + 'Yotel/*.html', sharedHtml, sharedCommonPartials],
 			'guestweb_zoku' 		:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
 			'guestweb_fontainebleau' 	:[ sharedPartials + 'Fontainebleau/*.html', landingPartials + 'Fontainebleau/*.html', sharedHtml, sharedCommonPartials],
-			'guestweb_great_wolf' 		:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials],
+			'guestweb_great_wolf' 		:[ 'guestweb/**/common_hotel_templates/**.html'],
 			'guestweb_knickerbocker' 	:[ sharedPartials + 'Knickerbocker/*.html', landingPartials + 'Knickerbocker/*.html', sharedHtml, sharedCommonPartials],
 			'guestweb_margaritaville' 	:[ sharedPartials + 'Row_nyc/*.html', landingPartials + 'Row_nyc/*.html', sharedHtml, sharedCommonPartials]
 		}
