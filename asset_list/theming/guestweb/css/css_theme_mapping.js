@@ -4,11 +4,13 @@ module.exports = {
 		var themeCSSRoot = 'stylesheets/guestweb/';
 		return {
 			'guestweb_row' 	: [ themeCSSRoot + 'guestweb_row.less'],
-			'guestweb_atura' 	: [ themeCSSRoot + 'guestweb_atura.css']
-			// 'bellagio' 	: [ themeCSSRoot + 'guestweb_bellagio.css'],
+			'guestweb_atura' 	: [ themeCSSRoot + 'guestweb_atura.css'],
+			'guestweb_bellagio' 	: [ themeCSSRoot + 'guestweb_bellagio.css'],
+			'guestweb_delano' 	: [ themeCSSRoot + 'guestweb_delano.css'],
+			'guestweb_vdara' 	: [ themeCSSRoot + 'guestweb_vdara.css'],
+			'guestweb_mandalay_bay' : [ themeCSSRoot + 'guestweb_mandalay_bay.css'],
 			// 'camby' 	: [ themeCSSRoot + 'guestweb_camby.css'],
 			// 'carillon' 	: [ themeCSSRoot + 'guestweb_carillon.css'],
-			// 'delano' 	: [ themeCSSRoot + 'guestweb_delano.css'],
 			// 'eden' 	 	: [ themeCSSRoot + 'guestweb_eden.css'],
 			// 'envoy' 	: [ themeCSSRoot + 'guestweb_envoy.css'],
 			// 'fulton' 	: [ themeCSSRoot + 'guestweb_fulton.css'],
@@ -18,14 +20,12 @@ module.exports = {
 			// 'montauk' 	: [ themeCSSRoot + 'guestweb_montauk.css'],
 			// 'nikko' 	: [ themeCSSRoot + 'guestweb_nikko.css'],
 			// 'palms' 	: [ themeCSSRoot + 'guestweb_palms.css'],
-			// 'sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],
-			// 'vdara' 	: [ themeCSSRoot + 'guestweb_vdara.css'],
+			// 'sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],	
 			// 'yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
 			// 'zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
 			// 'fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
 			// 'great_wolf' 		: [ themeCSSRoot + 'guestweb_great_wolf.css'],
-			// 'knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],
-			// 'mandalay_bay' 		: [ themeCSSRoot + 'guestweb_mandalay_bay.css'],
+			// 'knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
 			// 'margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css']
 		}
 	}
