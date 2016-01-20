@@ -12,7 +12,7 @@
                 <li ng-show='show.swipecardScreen && at === "card-swipe"' touch-press='simulateSixPay()'>
                     <!--button type="button" class="button option" touch-press='goToCardSign()' -->
                     <button type="button" class="button option">
-                        <div ng-include="'/assets/css/icons/creditcard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div>
                     </button>
                     <span translate>SWIPE_CARD_PLEASE</span>
                     <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
@@ -21,7 +21,7 @@
                 <li ng-show='show.swipecardScreen && at === "card-swipe" && debugSixpay' touch-press='debugSixpayInit()'>
                     <!--button type="button" class="button option" touch-press='goToCardSign()' -->
                     <button type="button" class="button option">
-                        <div ng-include="'/assets/css/icons/creditcard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div>
                     </button>
                     <span translate>Debug SixPay</span>
                     <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
@@ -31,7 +31,7 @@
                 <!-- deliver-registration -->
                 <li ng-show='at === "deliver-registration" && printEnabled'> 
                     <button type="button" class="button option" touch-press='clickedPrint()'>
-                        <div ng-include="'/assets/css/icons/print.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/print.svg'"></div>
                     </button>
                     <span translate>PRINT_TEXT</span>
                 </li>
@@ -40,14 +40,14 @@
                 </li>
                 <li ng-show='at === "deliver-registration" && emailEnabled'> 
                     <button type="button" class="button option" touch-press='selectEmailDelivery()'>
-                        <div ng-include="'/assets/css/icons/email.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/email.svg'"></div>
                     </button>
                     <span translate>EMAIL_TEXT</span>
                 </li>
                 <!-- invalid-email -->
                 <li ng-show='at === "invalid-email"'> 
                     <button type="button" class="button option" touch-press='navToPrev()'>
-                        <div ng-include="'/assets/css/icons/keyboard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
                     </button>
                     <h1>{{'RE_TYPE' |translate}}</h1>
                     <h3>"{{input.lastEmailValue}}"</h3>
@@ -56,7 +56,7 @@
                 
                 <li ng-show='at === "swipe-pay-error"'> 
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
-                        <div ng-include="'/assets/css/icons/creditcard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div>
                     </button>
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
                 </li>
@@ -69,7 +69,7 @@
                 <!-- retry-key -->
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
-                        <div ng-include="'/assets/css/icons/key.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/key.svg'"></div>
                     </button>
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
                 </li>
@@ -78,21 +78,21 @@
                 </li>
                 <li ng-show='at === "key-error" && !pickupkeys'> 
                     <button type="button" class="button option" touch-press='skipKeys()'>
-                        <div ng-include="'/assets/css/icons/keyboard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
                     </button>
                     <h1>{{'CONTINUE_TEXT' |translate}}</h1>
                 </li>
 
                 <li ng-show='at === "deposit-agree"'> 
                     <button type="button" class="button option" touch-press='depositProceed()'>
-                        <div ng-include="'/assets/css/icons/creditcard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div>
                     </button>
                     <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
                 </li>
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
-                        <div ng-include="'/assets/css/icons/pen.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/pen.svg'"></div>
                     </button>
                     <span translate>EDIT_EMAIL</span>
                 </li>
@@ -101,13 +101,13 @@
                 </li>
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='sendRegistration()'>
-                        <div ng-include="'/assets/css/icons/email.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/email.svg'"></div>
                     </button>
                     <span translate>SEND_EMAIL</span>
                 </li>
                 <li ng-show='at === "key-error" || at === "swipe-pay-error"  || at === "deposit-agree"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
-                        <div ng-include="'/assets/css/icons/staff.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div>
                     </button>
                     <h1>{{'SPEAK' |translate}}</h1>
                     <h4>{{'SPEAK_SUB' |translate}}</h4>
