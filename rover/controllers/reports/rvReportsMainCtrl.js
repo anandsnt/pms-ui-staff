@@ -1009,6 +1009,13 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (!!report.hasRateFilter) {
 				key = reportParams['RATE_IDS'];
 				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
+                // For the daily production rates; we are to send an array with group or allotment ids
+                if(reportNames['DAILY_PRODUCTION_RATE'] === report.title){
+                    var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id:null}), "group_id");
+                    if ( selectedCustomRates.length > 0 ){
+                        params['custom_rate_group_ids'] = selectedCustomRates; 
+                    }  
+                }
 			};
 
 			// for restriction list
