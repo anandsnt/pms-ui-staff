@@ -165,7 +165,7 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'RESERVATION_ONLY_ADDONS' :true // TODO: Replace this with the INCLUDE_ADDON_REV filter value once API is implemented 
+            'INCLUDE_ADDON_REVENUE' :true
         };
 
         var __excludeFilterNames = {

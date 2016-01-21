@@ -182,7 +182,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				};
 
 				//TODO: If user has opted to show addon revenue, add that as a column
-				if (isPastDay && $scope.chosenReport.chosenOptions['reservation_only_addons'] && $scope.uiFilter.showRevenue) {
+				if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['addon_revenue'], $rootScope.currencySymbol, 2),
 						isRev: true,
@@ -245,7 +245,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				if (isPastDay && $scope.uiFilter.showRevenue) {
 					// Remove FORECAST header and push ACTUAL
 					currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
-					if ($scope.chosenReport.chosenOptions['reservation_only_addons']) {
+					if ($scope.chosenReport.chosenOptions['include_addon_revenue']) {
 						currentHeaders.push('ADDON');
 					}
 				}
