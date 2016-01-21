@@ -3,7 +3,7 @@ module.exports = {
 	getThemeMappingList : function () {
 		var themeCSSRoot = 'stylesheets/guestweb/';
 		return {
-			'guestweb_row' 	: [ themeCSSRoot + 'guestweb_row.less'],
+			'guestweb_row' 	: [ themeCSSRoot + 'guestweb_row.css'],
 			'guestweb_atura' 	: [ themeCSSRoot + 'guestweb_atura.css'],
 			'guestweb_bellagio' 	: [ themeCSSRoot + 'guestweb_bellagio.css'],
 			'guestweb_delano' 	: [ themeCSSRoot + 'guestweb_delano.css'],

@@ -25,6 +25,13 @@ var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate', 'oc.lazyLoad']);
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope){
 	$state.go('guestwebRoot');
+	/*
+	 * function to handle exception when state is not found
+	 */
+	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+		event.preventDefault();
+		$state.go('noOptionAvailable'); 
+	})
 }]);
 sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
  function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
@@ -120,29 +127,29 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	}
 	//navigate to different pages
 
-	if(reservationAndhotelData.checkinUrlVerification === "true" && reservationAndhotelData.isZestCheckin ==="false"){
-		$location.path('/guestCheckinTurnedOff');
+	if(reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="false"){
+		$state.go('guestCheckinTurnedOff');
 	}
-	else if(reservationAndhotelData.checkinUrlVerification === "true"){
-		$location.path('/externalCheckinVerification'); // external checkin URL available and is on
+	else if(reservationAndhotelData.checkin_url_verification === "true"){
+		$state.go('externalCheckinVerification'); // external checkin URL available and is on
 	}
-	else if(reservationAndhotelData.isExternalVerification ==="true"){
-		$location.path('/externalVerification'); //external checkout URL
+	else if(reservationAndhotelData.is_external_verification ==="true"){
+		$state.go('externalVerification'); //external checkout URL
 	}
-	else if(reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && !(reservationAndhotelData.isAutoCheckin === 'true')){
- 		$location.path('/tripDetails');// only available for Fontainbleau -> precheckin + sent to que
+	else if(reservationAndhotelData.is_precheckin_only  ==='true' && reservationAndhotelData.reservation_status ==='RESERVED' && !(reservationAndhotelData.isAutoCheckin === 'true')){
+ 		$state.go('tripDetails');// only available for Fontainbleau -> precheckin + sent to que
  	}
- 	else if	(reservationAndhotelData.isPrecheckinOnly  ==='true' && reservationAndhotelData.reservationStatus ==='RESERVED' && (reservationAndhotelData.isAutoCheckin === 'true')){
- 		$location.path('/checkinConfirmation');//checkin starting -> page precheckin + auto checkin
+ 	else if	(reservationAndhotelData.is_precheckin_only  ==='true' && reservationAndhotelData.reservation_status ==='RESERVED' && (reservationAndhotelData.isAutoCheckin === 'true')){
+ 		$state.go('checkinConfirmation');//checkin starting -> page precheckin + auto checkin
  	}
  	else if($rootScope.isCheckedin){
- 		$location.path('/checkinSuccess');//already checked in
+ 		$state.go('checkinSuccess');//already checked in
  	}
-    else if(reservationAndhotelData.isCheckin ==='true'){
- 		$location.path('/checkinConfirmation');//checkin starting page -> precheckin turned off
+    else if(reservationAndhotelData.is_checkin ==='true'){
+ 		$state.go('checkinConfirmation');//checkin starting page -> precheckin turned off
  	}
   	else if($rootScope.isCheckedout)	{
-		$location.path('/checkOutStatus');//already checked out
+		$state.go('checkOutStatus');//already checked out
 	}
 	else if($rootScope.hasOwnProperty('isPasswordResetView')){
 		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
@@ -153,18 +160,12 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	};
 
 	$( ".loading-container" ).hide();
-	/*
-	 * function to handle exception when state is not found
-	 */
-	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-		event.preventDefault();
-		$state.go('noOptionAvailable'); 
-	})
 
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
-     	console.log(toState, toParams, fromState, fromParams, error)
+     	// console.log(toState, toParams, fromState, fromParams, error)
       console.error(error);
+      $state.go('noOptionAvailable'); 
       //TODO: Log the error in proper way
     });
 }]);
