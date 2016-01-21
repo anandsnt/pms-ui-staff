@@ -71,7 +71,7 @@ var GlobalZestStationApp = function(){
     	}
     	if(browser === 'rv_native' && !that.cordovaLoaded){
     	   //TODO: check URL
-    		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
+                var url = "/assets/shared/cordova.js";
 
     		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
     		 * webview of iOS / Android.
