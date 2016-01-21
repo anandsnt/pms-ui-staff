@@ -26,7 +26,10 @@ module.exports = {
 			'guestweb_fontainebleau' 	: [ themeJsRoot + 'app_router_fontainebleau.js'],
 			'guestweb_great_wolf' 		: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_knickerbocker.js'],		
-			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js']
+			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js'],
+			'guestweb' 	: [ themeJsRoot + 'app_router.js'],
+			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js']
+
 		}
 	}
 }

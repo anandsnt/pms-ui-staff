@@ -14,20 +14,21 @@ module.exports = {
 			'guestweb_carillon' 	: [ themeCSSRoot + 'guestweb_carillon.css'],
 			'guestweb_eden' 	 	: [ themeCSSRoot + 'guestweb_eden.css'],
 			'guestweb_envoy' 	: [ themeCSSRoot + 'guestweb_envoy.css'],
-			// 'fulton' 	: [ themeCSSRoot + 'guestweb_fulton.css'],
+			'guestweb_fulton' 	: [ themeCSSRoot + 'guestweb_fulton.css'],
 			// 'galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css'],
-			// 'huntley' 	: [ themeCSSRoot + 'guestweb_huntley.css'],
-			// 'mgm' 		: [ themeCSSRoot + 'guestweb_mgm.css'],
-			// 'montauk' 	: [ themeCSSRoot + 'guestweb_montauk.css'],
-			// 'nikko' 	: [ themeCSSRoot + 'guestweb_nikko.css'],
-			// 'palms' 	: [ themeCSSRoot + 'guestweb_palms.css'],
-			// 'sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],	
-			// 'yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
-			// 'zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
-			// 'fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
-			
-			// 'knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
-			// 'margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css']
+			'guestweb_huntley' 	: [ themeCSSRoot + 'guestweb_huntley.css'],
+			'guestweb_mgm' 		: [ themeCSSRoot + 'guestweb_mgm.css'],
+			'guestweb_montauk' 	: [ themeCSSRoot + 'guestweb_montauk.css'],
+			'guestweb_nikko' 	: [ themeCSSRoot + 'guestweb_nikko.css'],
+			'guestweb_palms' 	: [ themeCSSRoot + 'guestweb_palms.css'],
+			'guestweb_sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],	
+			'guestweb_yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
+			'guestweb_zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
+			'guestweb_fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
+			'guestweb_knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
+			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
+			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
+			'guestweb_galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css']
 		}
 	}
 }
