@@ -27,7 +27,8 @@ module.exports = {
 			'guestweb_knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
 			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
 			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
-			'guestweb_galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css']
+			'guestweb_galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css'],
+			'guestweb_claridge':[ themeCSSRoot + 'guestweb_claridge.css']
 		}
 	}
 }
