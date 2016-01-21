@@ -154,12 +154,13 @@ sntZestStation.controller('zsRootCtrl', [
             if (theme !== null){
                 var loadStyleSheets = function(filename){
                     var fileref = document.createElement("link");
-                    fileref.setAttribute("rel", "stylesheet/less");
+                    fileref.setAttribute("rel", "stylesheet");
                     fileref.setAttribute("type", "text/css");
                     fileref.setAttribute("href", filename);
                     $('body').append(fileref);
                 };
-                loadStyleSheets('/assets/' + "zest_station/css/"+theme.toLowerCase() +'.css.less');
+                loadStyleSheets('/assets/' + "zest_station/css/"+theme.toLowerCase() +'.css');
+                
                 $scope.setThemeByName(theme);
             }
             
