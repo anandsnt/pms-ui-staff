@@ -3,7 +3,7 @@ module.exports = {
 	getThemeMappingList : function () {
 		var sharedPartials  		 = 'guestweb/**/partials/',
 			sharedCommonPartials 	 = 'guestweb/**/partials/**.html',
-			landingPartials  		 = 'guestweb/**/landing/partials/',
+			landingPartials  		 = 'guestweb/**/landing/',
 			checkinPartials      	 = 'guestweb/**/checkin/partials/',
 			checkoutNowPartials      = 'guestweb/**/checkoutnow/partials/',
 			checkoutNowlaterPartials = 'guestweb/**/checkoutlater/partials/',
