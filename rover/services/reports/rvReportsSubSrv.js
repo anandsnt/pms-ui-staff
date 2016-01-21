@@ -220,6 +220,9 @@ sntRover.service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : '/api/rates/active',
 				resKey : 'rates',
+                params : {
+                    include_custom_rates: true //This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
+                }
 			});
 		};
 
