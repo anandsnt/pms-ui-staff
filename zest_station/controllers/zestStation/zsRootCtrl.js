@@ -8,6 +8,7 @@ sntZestStation.controller('zsRootCtrl', [
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
         $scope.oosKey = 'snt_zs_workstation.in_oos';
+        $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -376,7 +377,6 @@ sntZestStation.controller('zsRootCtrl', [
                         $rootScope.$broadcast('ZS_SETTINGS_UPDATE');//this will tell the homeCtrl to update oos text
                     },50);
                 }
-                $('#loading').show();//dont show the loader during refreshes
             };
             var onFail = function(response){
                 if ($scope.failedDetected){
@@ -389,7 +389,6 @@ sntZestStation.controller('zsRootCtrl', [
                     return;
                 }
                 $scope.$emit(zsEventConstants.PUT_OOS);
-                $('#loading').show();
             };
             var options = {
                 params:                 {
@@ -398,7 +397,7 @@ sntZestStation.controller('zsRootCtrl', [
                 successCallBack: 	    onSuccess,
                 failureCallBack:        onFail
             };
-            $('#loading').hide();
+            options["loader"] = 'false';//disable the loader for this service call
             if (!$scope.timeStopped && typeof $state.workstation_id === typeof 123){
                 $scope.callAPI(zsTabletSrv.fetchWorkStationStatus, options);
             }
@@ -409,21 +408,25 @@ sntZestStation.controller('zsRootCtrl', [
                 if (params.restart){
                     //flag to force restart timer, this is needed if canceling out of admin settings without making a change, ie- going home
                     //because the refresh-settings timer is force-stopped when in the admin screen, only the idle-timer continues;                
+                    if (params.from_cancel){
+                        $scope.timeStopped = false;
+                    }
                     $scope.startCounter();
                 }
             } else {
                 $scope.refreshSettings(true);
+                
             }
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
         };
         $scope.$on('RESET_TIMEOUT',function(evt, params){
-            $scope.resetCounter()
+            $scope.resetCounter();
         });
         $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
-            var time = 4;
+            var time = $scope.syncOOSInterval;
 
                 var timer = time, minutes, seconds, timeInMilliSec = 1000;
                 var timerInt = setInterval(function () {

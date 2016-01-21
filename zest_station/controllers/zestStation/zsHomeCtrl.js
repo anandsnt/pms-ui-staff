@@ -86,6 +86,9 @@ sntZestStation.controller('zsHomeCtrl', [
 
     $scope.cancelAdminSettings = function(){
         $state.go('zest_station.home');
+        setTimeout(function(){
+            $rootScope.$broadcast('REFRESH_SETTINGS',{'restart': true,'from_cancel': true});
+        },500);
     };
 
     $scope.updateSettings = function(value){
@@ -412,6 +415,8 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
                 $scope.scrnPos = 3.2;
             }
+        } else if (current === 'zest_station.oos'){
+            $scope.$emit('REFRESH_SETTINGS');
         } else {
 
             $scope.theme = $state.theme;
