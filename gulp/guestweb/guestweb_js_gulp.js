@@ -175,7 +175,7 @@ module.exports = function (gulp, $, options) {
 		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_JS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat(['asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/**/*.js']);
+		guestwebSourceList = guestwebSourceList.concat(['asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/js/*.js']);
 		return gulp.watch(guestwebSourceList, function(callback){
 			return runSequence('build-guestweb-js-dev', 'copy-guestweb-base-html');
 		});
