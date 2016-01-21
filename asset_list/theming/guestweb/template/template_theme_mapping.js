@@ -1,12 +1,21 @@
 //Guest web template theme file
 module.exports = {
 	getThemeMappingList : function () {
-		var sharedPartials  		= 'guestweb/**/partials/',
-			sharedCommonPartials 	= 'guestweb/**/partials/**.html',
-			landingPartials  		= 'guestweb/**/landing/',
-			sharedHtml  			= 'guestweb/**/shared/**/*.html';
+		var sharedPartials  		 = 'guestweb/**/partials/',
+			sharedCommonPartials 	 = 'guestweb/**/partials/**.html',
+			landingPartials  		 = 'guestweb/**/landing/partials/',
+			checkinPartials      	 = 'guestweb/**/checkin/partials/',
+			checkoutNowPartials      = 'guestweb/**/checkoutnow/partials/',
+			checkoutNowlaterPartials = 'guestweb/**/checkoutlater/partials/',
+			precheckinPartials  	 = 'guestweb/**/preChekin/partials/',
+			sharedHtml  			 = 'guestweb/**/shared/**/*.html';
 		return {
-			'guestweb_row' 	:['guestweb/**/row/**.html', sharedHtml],
+			'guestweb_row' 	:[landingPartials + 'Row_nyc/*.html',
+							  checkoutNowPartials+'Row_nyc/*.html',checkoutNowPartials+'*.html',
+							  checkoutNowlaterPartials+'*.html',
+							  checkinPartials+'Row_nyc/*.html',checkinPartials+"*.html",
+							  precheckinPartials+'Row_nyc/*.html', precheckinPartials+'*.html',
+							  sharedHtml],
 			'guestweb_atura' 	:['guestweb/**/atura/**.html', sharedHtml],
 			'guestweb_camby' 	:[ 'guestweb/**/common_hotel_templates/**.html'],
 			'guestweb_carillon' 	:[ 'guestweb/**/carillon/**.html', sharedHtml],
@@ -18,7 +27,12 @@ module.exports = {
 			'guestweb_envoy' 	:[ 'guestweb/**/envoy/**.html', sharedHtml],
 			'guestweb_fulton' 	:[ 'guestweb/**/fulton/**.html', sharedHtml],
 			'guestweb_huntley' 	:[ 'guestweb/**/huntley/**.html', sharedHtml],
-			'guestweb_mgm' 		:[ 'guestweb/**/mgm_aria/**.html', sharedHtml],
+			'guestweb_mgm' 		:[landingPartials + 'MGM/*.html',
+								  checkoutNowPartials+'MGM/*.html',checkoutNowPartials+'*.html',
+								  checkoutNowlaterPartials+'MGM/*.html',
+								  checkinPartials+'MGM/*.html',checkinPartials+"*.html",
+								  precheckinPartials+'MGM/*.html', precheckinPartials+'*.html',
+								  sharedHtml],
 			'guestweb_montauk' 	:[ 'guestweb/**/montauk/**.html', sharedHtml],
 			'guestweb_nikko' 	:[ 'guestweb/**/nikko/**.html', sharedHtml],
 			'guestweb_palms' 	:[ 'guestweb/**/palms/**.html', sharedHtml],

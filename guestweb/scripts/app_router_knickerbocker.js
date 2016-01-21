@@ -17,18 +17,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/knickerbocker/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/knickerbocker/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/partials/knickerbocker/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -36,17 +36,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/knickerbocker/landing.html',
+	 	templateUrl: '/assets/landing/Knickerbocker/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/knickerbocker/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Knickerbocker/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/knickerbocker/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Knickerbocker/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -55,44 +55,44 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/partials/knickerbocker/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/partials/knickerbocker/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/partials/knickerbocker/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/partials/knickerbocker/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/partials/knickerbocker/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/partials/knickerbocker/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Knickerbocker/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 	 //room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/knickerbocker/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/knickerbocker/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -101,14 +101,14 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/knickerbocker/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/Knickerbocker/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/knickerbocker/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
 

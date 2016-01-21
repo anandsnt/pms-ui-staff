@@ -7,7 +7,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
-	 	templateUrl: '/assets/partials/mgm_chain/gwExternal.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternal.html',
 	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
 	 });
@@ -17,12 +17,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/mgm_chain/gwRoomVerification.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/mgm_chain/gwCcEntry.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwCcEntry.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -32,12 +32,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/mgm_chain/gwBill.html',
+       	templateUrl: '/assets/common_templates/partials/MGM/gwBill.html',
 	    title: 'Balance - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl:  '/assets/partials/mgm_chain/gwCheckout.html',
+       	templateUrl:  '/assets/common_templates/partials/MGM/gwCheckout.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -45,17 +45,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/mgm_chain/gwCheckoutoptions.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckoutoptions.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/mgm_chain/gwLatecheckoutoptions.html',
+		templateUrl: '/assets/common_templates/partials/MGM/gwLatecheckoutoptions.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/mgm_chain/gwLateCheckoutfinal.html',
+		templateUrl: '/assets/common_templates/partials/MGM/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -64,52 +64,52 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/partials/mgm_chain/gwCheckin.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckin.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/partials/mgm_chain/gwCheckinDetails.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckinDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/partials/mgm_chain/gwRoomUpgrades.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwRoomUpgrades.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/partials/mgm_chain/gwCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwCheckinFinal.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/partials/mgm_chain/gwAlreadyCheckedIn.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwAlreadyCheckedIn.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/partials/mgm_chain/gwArrivalTime.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwArrivalTime.html',
 	 	title: 'Arrival Details - Check-in'
 	 }).state('guestDetails', {
 	 	url: '/guestDetails',
-	 	templateUrl: '/assets/partials/mgm_chain/gwGuestDetail.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestDetail.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 });
 	 // state('birthDateDetails', {
 	 // 	url: '/birthDateDetails',
-	 // 	templateUrl: '/assets/partials/mgm_chain/gwBirthDataDetails.html',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
 	 // 	controller : 'birthDateDetailsController',
 	 //    title: 'Birthdate'
 	 // }).state('promptGuestDetails', {
 	 // 	url: '/promptGuestDetails',
-	 // 	templateUrl: '/assets/partials/mgm_chain/gwPromptGuestDetails.html',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
 	 // 	controller : 'guestDetailsController',
 	 //    title: 'Guest Details'
 	 // }).state('guestNotEligible', {
 	 // 	url: '/guestNotEligible',
-	 // 	templateUrl: '/assets/partials/mgm_chain/gwGuestNotEligible.html',
+	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwGuestNotEligible.html',
 	 //    title: 'Guest Details'
 	 // });
 	 
@@ -118,31 +118,31 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/mgm_chain/gwPreCheckinFinal.html',
+		templateUrl: '/assets/common_templates/partials/MGM/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/partials/mgm_chain/gwEarlyCheckinOptions.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/partials/mgm_chain/gwEarlyCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/partials/mgm_chain/gwLateArrivalTime.html',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwLateArrivalTime.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
 
 	 $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/common_templates/gwNoOption.html',
+	 	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
 	 	title: 'Feature not available'
 	});
 

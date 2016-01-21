@@ -9,18 +9,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/fontainebleau/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/fontainebleau/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/partials/fontainebleau/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -28,17 +28,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/fontainebleau/landing.html',
+	 	templateUrl: '/assets/landing/Fontainebleau/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/fontainebleau/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Fontainebleau/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/fontainebleau/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Fontainebleau/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -48,12 +48,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/fontainebleau/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/fontainebleau/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -63,41 +63,41 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
-	 	templateUrl: '/assets/partials/fontainebleau/preCheckinTripDetails.html',
+	 	templateUrl: '/assets/preCheckin/partials/preCheckinTripDetails.html',
 	 	controller : 'preCheckinTripDetailsController',
 	 	title: 'Trip Details'
 	 }).state('preCheckinStayDetails', {
 	 	url: '/stayDetails',
-		templateUrl: '/assets/partials/fontainebleau/preCheckinStayDetails.html',
+		templateUrl: '/assets/preCheckin/partials/preCheckinStayDetails.html',
 		controller : 'preCheckinStayDetailsController',
 		title: 'Stay Details'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/fontainebleau/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 }).state('preCheckinComleted', {
 		url: '/preCheckinComleted',
-		templateUrl: '/assets/partials/fontainebleau/preCheckinCompleted.html',
+		templateUrl: '/assets/preCheckin/partials/preCheckinCompleted.html',
 		title: 'Status - Pre Check-In'
 	 });
 
 
 	 $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
-	 	templateUrl: '/assets/partials/fontainebleau/externalVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerification.html',
 	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
-	 	templateUrl: '/assets/partials/fontainebleau/externalVerificationError.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
 	 	controller:'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
 
 	 $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/fontainebleau/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
 
