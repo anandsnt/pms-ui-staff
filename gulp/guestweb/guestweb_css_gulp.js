@@ -95,7 +95,6 @@ module.exports = function (gulp, $, options) {
 		        .pipe($.concat(fileName))
 		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}).on('error', onError))
 		        .on('end', function(){
-		        	console.log('hello');
 		        	extendedMappings[theme] = [URL_APPENDER + "/" + fileName ];
 		        })
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });

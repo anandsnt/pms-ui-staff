@@ -80,13 +80,14 @@ module.exports = function(gulp, $, options) {
 
 		var tasks = Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
 			console.log ('Zest Station Theme CSS - mapping-generation-started: ' + theme);
-			var mappingList  = ZESTSTAION_THEME_CSS_LIST[theme];
+			var mappingList = ZESTSTAION_THEME_CSS_LIST[theme],
+				fileName 	= theme + ".css";
 			
 			return gulp.src(mappingList, {base: '.'})
 				.pipe($.less({
 		        	plugins: [cleancss]
 		        }))
-		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}).on('error', onError))
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging: false, mediaMerging: false}).on('error', onError))
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});
 		return es.merge(tasks).on('end', function(){
