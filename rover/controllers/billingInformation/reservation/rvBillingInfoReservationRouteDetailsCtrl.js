@@ -2,7 +2,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
 
     BaseCtrl.call(this, $scope);
 
-    /*
+    /**
      * Function to initialize the controller
      * @return {undefined}
      */
@@ -18,7 +18,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             isShownExistingCCPayment : false,
             sixIsManual              : false
         };
-        
+
         setCreditCardDetails();
         setCommonPaymentModelItems();
         checkEntityIsOtherReservationOrAccount();
@@ -28,7 +28,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         fetchBillsForReservation();
     };
 
-    /*
+    /**
      * Function to set credit card details if the selected entity has a CC attached previously
      * @return {undefined}
      */
@@ -53,7 +53,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         }
     };
 
-    /*
+    /**
      * Set common payment model items
      * @return {undefined}
      */
@@ -74,7 +74,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.setScroller('cardsList');
     };
 
-    /*
+    /**
      * Check whether the selected entity is other reservation, 
      * house or group for future use.
      * @return {undefined}
@@ -86,7 +86,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
                                     $scope.selectedEntity.entity_type === 'HOUSE';
     };
 
-    /*
+    /**
      * Set credit limit to to digits.
      * @return {undefined}
      */
@@ -96,7 +96,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         }
     };
 
-    /*
+    /**
      * Initialize scrollers for details the screen
      * @return {undefined}
      */
@@ -114,7 +114,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.chargeCodesListDivTop = 0;
     };
 
-    /*
+    /**
      * Refresh scrollers in details the screen
      * @return {undefined}
      */
@@ -128,7 +128,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         },500);
     };
 
-    /*
+    /**
      * Save the old payment details and move to add new payment screen
      * on clicking the edit payment button.
      * @return {undefined}
@@ -156,7 +156,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.refreshScroller('routeDetails');
     });
 
-    /*
+    /**
      * On adding a credit card, refresh the route details scroller
      */
     $scope.$on('REFRESH_ROUTE_DETAILS_SCROLLER', function() {
@@ -568,6 +568,10 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
                 $scope.saveData.payment_type !== "" &&
                 !$scope.paymentFlags.isShownExistingCCPayment) {
 
+            /**
+             * If new payment type is added, save the payment first,
+             * then save the route.
+             */
             $scope.savePayment();
         }
         else {
@@ -643,6 +647,10 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             $scope.bills[$scope.bills.length - 1].id = data.id;
 
             if ($scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "") {
+                /**
+                 * If new payment type is added, save the payment first,
+                 * then save the route.
+                 */
                 $scope.savePayment();
             }
             else {
@@ -669,12 +677,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             $scope.$emit('displayErrorMessage',errorMessage);
         };
 
-        if ($scope.reservationData.reservation_id !== null) {
-            $scope.savePaymentToReservation();
-        }
-        else {
-            saveRouteAPICall();
-        }
+        $scope.savePaymentToReservation();
     };
 
     /**

@@ -68,7 +68,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 	  	$scope.refreshScroller('entities');
 	};
 
-	/*
+	/**
 	 * Success call back of filtered results fetch.
 	 * @return {undefined}
 	 */

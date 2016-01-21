@@ -2,7 +2,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
 
     BaseCtrl.call(this, $scope);
 
-    /*
+    /**
      * Function to initialize the controller
      * @return {undefined}
      */
