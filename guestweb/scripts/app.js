@@ -113,7 +113,6 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
     	$rootScope.user_name = reservationAndhotelData.login;
     }
     else{
-
 		$rootScope.dateFormatPlaceholder = reservationAndhotelData.date_format.value;
  		$rootScope.dateFormat = getDateFormat(reservationAndhotelData.date_format.value);
     }

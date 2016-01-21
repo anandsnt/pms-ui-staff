@@ -8,21 +8,24 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
                  var absUrl = window.location.href;
                  var apiUrl = "";
-                 // if the guestweb is accessed normaly
-                 if(absUrl.indexOf("reservation_id=") !== -1){
+                 // if the guestweb is accessed normaly, ie invoked using
+                 // the mail sent from the hotel admin
+                 if(absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1){
                       var offset= absUrl.indexOf("?");
                       var remainingURl  = absUrl.substring(offset,absUrl.length);
                       var startingUrl  = absUrl.substring(0,offset);
                       apiUrl = startingUrl+"_data"+remainingURl;
 
                  }
+                 //invoked when forgot password or email verification is
+                 //requested from the zest apps
                  else if(absUrl.indexOf("/guest_web/home/user_activation")!==-1){
                     var offset= absUrl.indexOf("?");
                     var remainingURl  = absUrl.substring(offset,absUrl.length);
                     var startingUrl  = absUrl.substring(0,offset);
                     apiUrl = startingUrl+".json"+remainingURl;
                  }
-                 // direct URL checkin
+                 // direct URL checkin - accessing URLS set in hotel admin for checkin
                  else if(absUrl.indexOf("checkin") !== -1){
                     //to strip away state URLS
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0,absUrl.indexOf("#")) : absUrl;
@@ -32,7 +35,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
                     var hotel_identifier  = urlComponents[urlComponents.length-2];
                         apiUrl            = urlComponents[0]+"/guest_web/home/checkin_verification_data?hotel_identifier="+hotel_identifier+"&application="+application+"&url_suffix="+url_suffix;
                  }
-                 // direct URL checkout
+                // direct URL checkout - accessing URLS set in hotel admin for checkin
                  else{
                     //to strip away state URLS
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0,absUrl.indexOf("#")) : absUrl;
