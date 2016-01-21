@@ -16,6 +16,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
                       apiUrl = startingUrl+"_data"+remainingURl;
 
                  }
+                 else if(absUrl.indexOf("/guest_web/home/user_activation")!==-1){
+                    var offset= absUrl.indexOf("?");
+                    var remainingURl  = absUrl.substring(offset,absUrl.length);
+                    var startingUrl  = absUrl.substring(0,offset);
+                    apiUrl = startingUrl+".json"+remainingURl;
+                 }
                  // direct URL checkin
                  else if(absUrl.indexOf("checkin") !== -1){
                     //to strip away state URLS

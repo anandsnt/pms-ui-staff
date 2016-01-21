@@ -118,7 +118,7 @@ module.exports = {
 										  checkoutNowPartials+'Yotel/*.html',checkoutNowPartials+'*.html',
 										  checkoutNowlaterPartials+'Yotel/*.html',
 										  checkinPartials+"*.html",precheckinPartials+'*.html',
-										  zestHtml+"/Yotel/*html",
+										  zestHtml+"/yotel/*html",
 										  sharedHtml],
 			'guestweb_zoku' 		:[landingPartials + 'Yotel/*.html',
 										 checkoutNowPartials+'Yotel/*.html',checkoutNowPartials+'*.html',

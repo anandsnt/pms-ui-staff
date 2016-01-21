@@ -2,6 +2,7 @@
 module.exports = {
 	getThemeMappingList : function () {
 		var themeJsRoot = 'guestweb/scripts/';
+		var zestRootJS    = 'guestweb/zest/**/*.js'
 		return {
 			'guestweb_row' 	: [ themeJsRoot + 'app_router_row_nyc.js'],
 			'guestweb_atura' 	: [ themeJsRoot + 'app_router_atura.js'],
@@ -21,8 +22,8 @@ module.exports = {
 			'guestweb_nikko' 	: [ themeJsRoot + 'app_router_niko.js'],
 			'guestweb_palms' 	: [ themeJsRoot + 'app_router_palm_spa.js'],
 			'guestweb_sanctuary' : [ themeJsRoot + 'guestweb_router_santuary.js'],		
-			'guestweb_yotel' 	: [ themeJsRoot + 'app_router_yotel.js'],
-			'guestweb_zoku' 		: [ themeJsRoot + 'app_router_zoku.js'],
+			'guestweb_yotel' 	: [ themeJsRoot + 'app_router_yotel.js',zestRootJS],
+			'guestweb_zoku' 		: [ themeJsRoot + 'app_router_zoku.js',zestRootJS],
 			'guestweb_fontainebleau' 	: [ themeJsRoot + 'app_router_fontainebleau.js'],
 			'guestweb_great_wolf' 		: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_knickerbocker.js'],		

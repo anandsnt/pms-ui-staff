@@ -52,11 +52,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	$rootScope.hotelPhone    = reservationAndhotelData.hotel_phone;
 	$rootScope.businessDate  = reservationAndhotelData.business_date;
 	$rootScope.mliMerchatId = reservationAndhotelData.mli_merchat_id;
-	$rootScope.dateFormatPlaceholder = reservationAndhotelData.date_format.value;
- 	$rootScope.dateFormat = getDateFormat(reservationAndhotelData.date_format.value);
  	$rootScope.roomVerificationInstruction = reservationAndhotelData.room_verification_instruction;
  	$rootScope.isSixpayments = (reservationAndhotelData.payment_gateway  === "sixpayments") ? true:false;
-
  	$rootScope.reservationID = reservationAndhotelData.reservation_id;
 	$rootScope.userName      = reservationAndhotelData.user_name;
 	$rootScope.checkoutDate  = reservationAndhotelData.checkout_date;
@@ -107,14 +104,18 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
  	$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options  ==="true") ? true:false;
 
-// important TODO
     //Params for zest mobile and desktop screens
-    if(reservationAndhotelData.hasOwnProperty('isPasswordReset')){
-    	$rootScope.isPasswordResetView = reservationAndhotelData.isPasswordReset;
-    	$rootScope.isTokenExpired = reservationAndhotelData.isTokenExpired === "true"? true: false;
+    if(reservationAndhotelData.hasOwnProperty('is_password_reset')){
+    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset ="true";
+    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true"? true: false;
     	$rootScope.accessToken = reservationAndhotelData.token;
     	$rootScope.user_id = reservationAndhotelData.id;
     	$rootScope.user_name = reservationAndhotelData.login;
+    }
+    else{
+
+		$rootScope.dateFormatPlaceholder = reservationAndhotelData.date_format.value;
+ 		$rootScope.dateFormat = getDateFormat(reservationAndhotelData.date_format.value);
     }
 
     //work around to fix flashing of logo before app loads
@@ -152,9 +153,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		$state.go('checkOutStatus');//already checked out
 	}
 	else if($rootScope.hasOwnProperty('isPasswordResetView')){
-		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
-		$location.path(path);
-		$location.replace();
+		var path = $rootScope.isPasswordResetView === 'true'? 'resetPassword' : 'emailVerification';
+		$state.go(path);
 	}else{
          $state.go('checkoutRoomVerification'); // checkout landing page
 	};
