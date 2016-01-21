@@ -8,18 +8,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/sanctuary/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/sanctuary/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/partials/sanctuary/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -27,17 +27,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/sanctuary/landing.html',
+	 	templateUrl: '/assets/landing/Sanctuary/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/sanctuary/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Sanctuary/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/sanctuary/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Sanctuary/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -46,36 +46,36 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/partials/sanctuary/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/partials/sanctuary/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/partials/sanctuary/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/partials/sanctuary/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/partials/sanctuary/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/partials/sanctuary/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 }).state('guestDetails', {
 	 	url: '/guestDetails',
-	 	templateUrl: '/assets/partials/sanctuary/guestDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/guestDetails.html',
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 });
@@ -83,12 +83,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/sanctuary/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Sanctuary/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/sanctuary/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Sanctuary/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -97,30 +97,30 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/sanctuary/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/Sanctuary/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/sanctuary/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/partials/sanctuary/earlyCheckinOptions.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/earlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/partials/sanctuary/earlyCheckinFinal.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/earlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/partials/sanctuary/lateArrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Sanctuary/lateArrivalDetails.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 });
@@ -128,7 +128,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
-	 	templateUrl: '/assets/partials/sanctuary/externalVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Sanctuary/externalVerification.html',
 	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {

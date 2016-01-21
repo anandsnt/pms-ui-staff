@@ -9,18 +9,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/huntley/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/huntley/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/partials/huntley/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -28,17 +28,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/huntley/landing.html',
+	 	templateUrl: '/assets/landing/Huntley/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/huntley/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Huntley/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/huntley/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Huntley/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -47,32 +47,32 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/partials/huntley/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/partials/huntley/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/partials/huntley/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/partials/huntley/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/partials/huntley/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/partials/huntley/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Huntley/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
@@ -81,12 +81,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/huntley/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/huntley/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
@@ -95,7 +95,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/huntley/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/Huntley/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
@@ -103,12 +103,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
-	 	templateUrl: '/assets/partials/huntley/externalVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/externalVerification.html',
 	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
-	 	templateUrl: '/assets/partials/huntley/externalVerificationError.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Huntley/externalVerificationError.html',
 	 	controller:'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
@@ -117,7 +117,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/huntley/noOption.html',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
 

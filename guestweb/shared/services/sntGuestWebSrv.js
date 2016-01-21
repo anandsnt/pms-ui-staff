@@ -5,6 +5,19 @@
 				cssMappingList = {},
 				templateMappingList = {};
 
+
+
+			this.fetchHotelDetailsFromUrl = function(url) {
+				var deferred = $q.defer();
+				$http.get(url).success(function(response) {
+					deferred.resolve(response.data);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;
+			};
+
 			this.fetchHotelDetailsOnExtCheckoutUrl = function() {
 				var deferred = $q.defer();
 				var url = "/ui/show?json_input=opt_dashboard/checkout_row_nyc.json&format=json";
