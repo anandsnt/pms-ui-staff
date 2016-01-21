@@ -112,7 +112,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
     //work around to fix flashing of logo before app loads
     $timeout(function() {
-        $rootScope.hotelLogo     = reservationAndhotelData.hotelLogo;
+        $rootScope.hotelLogo     = reservationAndhotelData.hotel_logo;
     }, 750);
 
  	if(typeof reservationAndhotelData.accessToken !== "undefined") {
