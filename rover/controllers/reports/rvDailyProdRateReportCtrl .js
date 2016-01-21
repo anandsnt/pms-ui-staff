@@ -287,7 +287,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				});
 			});
 
-			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
+			$scope.rightPaneWidth = noOfDays * cellWidth * _.max($scope.colspanArray);
 
 			$timeout(function() {
 				refreshScrollers();
