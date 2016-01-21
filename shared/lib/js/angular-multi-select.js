@@ -99,11 +99,13 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                                 //     'ng-mouseleave="removeFocusStyle( tabIndex );">' + 
                                 //     '<div class="acol" ng-if="item[ spacingProperty ] > 0" ng-repeat="i in numberToArray( item[ spacingProperty ] ) track by $index">&nbsp;</div>' +              
                                 //     '<div class="acol">' +
-                                        '<label ng-repeat="item in filteredModel | filter:removeGroupEndMarker track by $index" class="checkbox inline" ng-class="{checked: item[ tickProperty ], disabled:itemIsDisabled( item )}">' +
-                                            '<span class="icon-form icon-checkbox" ng-class="{checked: item[ tickProperty ]}"></span>' +
-                                            '<input type="checkbox" ng-class="{checked: item[ tickProperty ]}" ng-disabled="itemIsDisabled( item )" ng-checked="item[ tickProperty ]" ng-click="syncItems( item, $event, $index )" />' +
-                                            '<span ng-class="{disabled:itemIsDisabled( item )}" ng-bind-html="writeLabel( item, \'itemLabel\' )"></span>' +
-                                        '</label>' +                                
+                                        '<label ng-repeat="item in inputModel" class="inline"ng-class="{checkbox: item.show, checked: item[ tickProperty ], disabled:itemIsDisabled( item )}">' +
+                                            '<div ng-if="item.show">'+
+                                                '<span class="icon-form icon-checkbox" ng-class="{checked: item[ tickProperty ]}"></span>' +
+                                                '<input type="checkbox" ng-class="{checked: item[ tickProperty ]}" ng-disabled="itemIsDisabled( item )" ng-checked="item[ tickProperty ]" ng-click="syncItems( item, $event, $index )" />' +
+                                                '<span ng-class="{disabled:itemIsDisabled( item )}" ng-bind-html="writeLabel( item, \'itemLabel\' )"></span>' +
+                                            '</div>'+
+                                        '</label>' +
                                     // '</div>' +
                                     // '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 
                                     // '<span class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true">&#10004;</span>' +
@@ -193,6 +195,10 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 return new Array( num );   
             }
 
+            _.each($scope.inputModel, function(each) {
+                each.show = true;
+            });
+
             $scope.updateFilter = function()
             {
                 // we check by looping from end of array
@@ -223,7 +229,11 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         }                        
                         if ( gotData === true ) {    
                             // push
+                            $scope.inputModel[i].show = true;
                             $scope.filteredModel.push( $scope.inputModel[ i ] );
+                        }
+                        else {
+                            $scope.inputModel[i].show = false;
                         }
                     }
 
