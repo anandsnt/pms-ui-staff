@@ -32,7 +32,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'pageNo':1,
 			'perPage':50,
 			'textInQueryBox': '',
-			'viewFromOutside': false
+			'viewFromOutside': false,
+			'transactionType' : 'ALL'
 		};
 
 		$scope.arTransactionDetails = {
@@ -57,7 +58,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				"to_date": $scope.filterData.toDate,
 				"query": $scope.filterData.textInQueryBox,
 				"page_no" : $scope.filterData.pageNo,
-				"per_page": $scope.filterData.perPage
+				"per_page": $scope.filterData.perPage,
+				"transaction_type" : $scope.filterData.transactionType
 			};
 			//CICO-10323. for hotels with single digit search,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
@@ -91,6 +93,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
+
+			    //CICO-11669 -Added new summary fields
+			    $scope.arTransactionDetails.total_payments = parseFloat(data.total_payments).toFixed(2);
+			    $scope.arTransactionDetails.total_charges = parseFloat(data.total_charges).toFixed(2);
+			    $scope.arTransactionDetails.current_balance = parseFloat(data.current_balance).toFixed(2);
+			    $scope.arTransactionDetails.unallocated_credit = parseFloat(data.unallocated_credit).toFixed(2);
 
 				$timeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
@@ -140,6 +148,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			else {
 				$scope.filterData.isShowPaid = false;
 			}
+			initPaginationParams();
+			fetchData();
+		};
+
+		//Handle the change in transaction type filter
+		$scope.onTransactionTypeChange = function() {
 			initPaginationParams();
 			fetchData();
 		};
