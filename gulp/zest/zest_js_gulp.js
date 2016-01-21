@@ -85,7 +85,7 @@ module.exports = function(gulp, $, options){
 		var glob 	= require('glob-all'),
 			fileList = zestJSMappingList.minifiedFiles.concat(zestJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
-		return gulp.watch(fileList, ['build-zest-js-dev'])
+		return gulp.watch(fileList, ['build-zeststation-js-dev'])
 	});
 	
 	gulp.task('zest-copy-js-files', function(){
