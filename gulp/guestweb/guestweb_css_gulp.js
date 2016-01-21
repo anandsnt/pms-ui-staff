@@ -93,7 +93,7 @@ module.exports = function (gulp, $, options) {
 		        	plugins: [cleancss]
 		        }))
 		        .pipe($.concat(fileName))
-		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}).on('error', onError))
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}))
 		        .on('end', function(){
 		        	extendedMappings[theme] = [URL_APPENDER + "/" + fileName ];
 		        })

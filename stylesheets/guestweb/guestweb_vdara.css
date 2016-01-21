@@ -1,2 +1,2 @@
-@import 'guestweb_common.css';
+@import (inline) 'shared/lib/css/bootstrap.min.css';
 @import 'guestweb/common_css/vdara/theme.less';
