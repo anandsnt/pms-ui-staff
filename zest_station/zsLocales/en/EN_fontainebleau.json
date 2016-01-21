@@ -13,20 +13,20 @@
     "CLEAR_BTN": "Clear",
     "REMOVE_BTN": "Remove",
     "ADD_BTN": "+ Add A Guest",
-    "EMAIL_ERR_HEADER": "Hmm..",
-    "EMAIL_ERR_HEADER_SUB": "This does not appear to be a valid e-mail address.",
-    "SWIPE_CARD_PLEASE": "Please Swipe Credit Card",
+    "EMAIL_ERR_HEADER": "Oopsie.",
+    "EMAIL_ERR_HEADER_SUB": "This doesn’t seem to be a valid e-mail address. Please try again. Practice makes perfect.",
+    "SWIPE_CARD_PLEASE": "Please Insert Credit Card",
     "PRINT_TEXT": "Print",
     "NO_THX": "No, thanks",
     "RES_DETAIL_HEADER": "Check your reservation details",
-    "RESIDENTS": "residents",
+    "RESIDENTS": "resident(s)",
     "ADD_REMOVE_GUESTS": "Add / Remove Guests",
     "AVG_DAILY": "Average Daily Rate",
     "INCLUDED": "INCLUDED",
     "ADDTL_GUESTS_HEADING": "Additional Guests",
     "ENTER_LAST": "Enter the Residents Last Name",
     "ENTER_FIRST": "Enter the Residents First Name",
-    "ERR_PAGE": "So Sorry.",
+    "ERR_PAGE": "Oopsie.",
     "CONGRATS": "Congratulations",
     "CHKED_IN_MSG": "You are now officially checked-in.",
     "CHKED_IN_MSG_SUB": "You are checked-in.",
@@ -34,6 +34,13 @@
     "UNO_KEY": "1",
     "DOS_KEY": "2",
     "ERR_PAGE_SUB": "Our bad. Please reach out to a Sidekick.",
+    
+    
+    
+    "NO_MATCH_HEADER": "Our bad. Please reach out to a Sidekick.",
+    
+    
+    
     
     
     "NEXT_ROOM_NUMBER": "Next, Type your room number",
@@ -69,13 +76,13 @@
     "EMAIL_TEXT": "E-Mail",
     "MADE_FIRST_KEY_MSG": "Success! Make your second key",
     "MAKE_KEY": "Make your key.",
-    "MAKE_KEY_MSG": "Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made",
-    "MADE_FIRST_KEY_MSG_SUB": "Remove the first key, select a Blank Key from the Bowl and place it on the target below. When the green light appears, the key is made.",
+    "MAKE_KEY_MSG": "Select a blank key and place it on the target below. When the green light appears, the key is made",
+    "MADE_FIRST_KEY_MSG_SUB": "Remove the first key, select a Blank Key and place it on the target below. When the green light appears, the key is made.",
     
     
-    "SUCCESS_HDR": "Success!",
+    "SUCCESS_HDR": "Bull’s eye!",
     "MAKE_FIRST_KEY": "Make your first key!",
-    "MAKE_FIRST_KEY_SUB": "Select a Blank Key from the Bowl and place it on the target below. When the green light appears, the key is made.",
+    "MAKE_FIRST_KEY_SUB": "Select a Blank Key and place it on the target below. When the green light appears, the key is made.",
     "GRAB_KEYS": "Please grab your key(s) from the target below",
     "SIGN_SCREEN": "Sign The Screen",
     
@@ -91,8 +98,12 @@
     "RE_TYPE": "Re-Type",
     "SEE_YOU": "Hope to see you again soon!",
     "TRY_AGAIN": "Try Again",
-    "SPEAK": "Speak",
+    "SPEAK": "Talk",
     "SPEAK_SUB": "to a Sidekick",
+    "SPEAK_TO_STAFF": "Speak to a Sidekick",
+    "SPEAK_TO_STAFF_SUB": "Check the Living Room for Sidekicks. They’ll be happy to help you out!",
+    "SPEAK_TO_STAFF_RETURN": "Return",
+    
     
     "INVOICE_FULLNAME":"Guest Full Name",
     "INVOICE_ARRIVAL":"Arrival Date",
@@ -128,20 +139,20 @@
     "BILL_SUB_QUESTION":"Tap “Cancel” and see a sidekick.",
     "BILL_NEXT":"Next",
     "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
-    "USER_CHECKED_OUT_ALRDY_SUB":"You have been already checked out.",
+    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
     "USER_CHECKED_OUT_ALRDY_RTN":"Return",
     
     
     "OOS_HEADER":"Out of service",
     "DEPOSIT_NEXT_BUTTON":"Proceed",
-    "OOS_SUB":"Please try another kiosk or Talk to a Sidekick.",
+    "OOS_SUB":"Please try another kiosk or Speak to a Sidekick.",
     
     "RES_TAX_FEES":"Taxes / Fees",
     "RES_SUB":"Subtotal",
     "RES_DEPOSITS":"Deposits",
     "RES_BAL_DUE":"Balance due",
     "CC_SIGN_TIMEOUT":"Hello? 你好? Здравствуйте? Are you still there?",
-    "CC_SIGN_TIMEOUT_SUB":"We haven't deteceted your signature. Please select one of the following:",
+    "CC_SIGN_TIMEOUT_SUB":"We haven't detected your signature. Please select one of the following:",
     "CC_SIGN_TIMEOUT_SIGN":"Re-Sign",
     
     "CHECK_OUT_WHEN":"When will you check out?",
@@ -150,6 +161,16 @@
     "RES_SRCH_SEL":"Select a Reservation",
     "RES_SRCH_NAME":"Name",
     "RES_SRCH_SRY":"Sorry.",
+    
+    
+    "NO_MATCH_TALK":"Talk",
+    "NO_MATCH_TALK_SUB":"Speak to a Sidekick",
+    "NO_MATCH_OR":"Or",
+    "NO_MATCH_RE_LAST":"Re-Enter",
+    "NO_MATCH_HEADER":"Sorry.",
+    "NO_MATCH_HEADER_SUB":"We can't seem to find you.",
+    
+    
     
     "RES_SRCH_RE_ENTER_LAST":"Re-Enter",
     "RES_SRCH_RE_ENTER_ROOM":"Re-Enter",
@@ -166,9 +187,21 @@
     
     "ADMIN_LOGIN_ERROR":"Invalid Login, Please Try Again",
     "EXIT_BTN":"Exit",
+    "ADMIN_HEADER":"Administrator",
+    "ADMIN_LOGIN":"Login",
+    "ADMIN_EXIT":"Exit",
     
     
+    "SEL_RES_HEADER":"Select a Reservation",
+    "SEL_RES_NAME":"Name",
+    "SEL_RES_CO_DATE_ROOM_TYPE":"Check Out Date / Room Type",
+    "SEL_RES_LAST":"Previous",
+    "SEL_RES_NEXT":"Next",
     
+    "IDLE_TIMEOUT_MSG":"Are you still here?",
+    "IDLE_TIMEOUT_YES":"Yes",
+    
+     
     "CHOOSE_TOWER_AND_ENTER_ROOM_NUMBER": "Next, Choose your tower and enter your room number",   
     "HOME_PUK_SUB": "If you have already checked in online."
 }

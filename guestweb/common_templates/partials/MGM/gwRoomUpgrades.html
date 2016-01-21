@@ -1,6 +1,6 @@
 <!-- navbar -->
 <div class="container-fluid padding-0">
-    <div class="row header-bar">
+    <div class="row header-bar mob-margin-bottom-3">
         <img alt="" class="logo-image" src="{{hotelLogo}}"/>
     </div>
 </div>
@@ -27,12 +27,12 @@
     </div>
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing">
-            <p class="main-text">Upgrade your room?</p>
-            <p class="sub-main-text">Browse upgrades or continue below:</p>
+        <div class="col-md-4 top-spacing mob-margin-top--1">
+            <p class="main-text mob-margin-bottom-3">Upgrade your room?</p>
+            <p class="sub-main-text mob-margin-bottom-3">Browse upgrades or continue below:</p>
         </div>
         <div class="col-md-2"><div class="vertical-line vertical-line-long">&nbsp;</div></div>
-        <div class="col-md-4 top-spacing carousal-container">
+        <div class="col-md-4 top-spacing carousal-container mob-margin-top--1">
             <div class="section-container">
                 <div class="carousel-view">
                     <carousel>
@@ -41,8 +41,8 @@
                                 <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/img/image_not_available.png" style="height:200px;width:100%;"/>
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
-                                <div class="col-xs-9 room-info">
-                                    <p class="room-name">
+                                <div class="col-xs-9 room-info mob-paddding-top-5">
+                                    <p class="room-name mob-margin-bottom-3">
                                         {{slide.upgrade_room_type_name}}
                                     </p>
                                     <div class="row">
@@ -54,9 +54,9 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-xs-3 upgrades-btn" ng-click="upgradeClicked(slide.upsell_amount_id,slide.upgrade_room_number)">
+                            <div class="col-xs-3 upgrades-btn mob-paddding-top-5" ng-click="upgradeClicked(slide.upsell_amount_id,slide.upgrade_room_number)">
                                 <div class="upgrade-icon"></div>
-                                <p class="center-align">SELECT THIS <br /> UPGRADE</p>
+                                <p class="center-align mob-margin-top-3">SELECT THIS <br /> UPGRADE</p>
                             </div>
                             <div class="col-xs-12 room-info">
                                 <description template="{{slide.upgrade_room_description}}" class="description-details left-align">

@@ -18,6 +18,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
+        // Limit Max number of days to 92
+        RESV_LIMIT = 92;
+
         $scope.setScroller('search_reservation', {
             preventDefault: false
         });
@@ -283,11 +286,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.setDepartureDate = function() {
-
+            $scope.errorMessage = [];
             var dateOffset = $scope.reservationData.numNights;
             if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
+            }
+            if (dateOffset > RESV_LIMIT) {
+                dateOffset = RESV_LIMIT;
+                $scope.reservationData.numNights = '';
+                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"]
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
@@ -321,14 +329,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
+            $scope.departureDateOptions.maxDate = getMaxDepartureDate($scope.reservationData.arrivalDate);
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
+            $scope.errorMessage = [];
         };
 
 
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
+            $scope.errorMessage = [];
         };
         /*  The following method helps to initiate the staydates object across the period of
          *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
@@ -695,12 +706,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // init call to set data for view
         init();
 
+        var getMaxDepartureDate = function(fromDate) {
+            var dateObj = tzIndependentDate(fromDate),
+                dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
+                dateParts = dateString.match(/(\d+)/g);
+            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + RESV_LIMIT);
+        };
+
 
         $scope.arrivalDateOptions = {
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '0:+10',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
@@ -718,8 +736,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '0:+10',
             minDate: tzIndependentDate($scope.otherData.businessDate),
+            maxDate: getMaxDepartureDate(tzIndependentDate($scope.otherData.businessDate)),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
             },

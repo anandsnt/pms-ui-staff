@@ -5,19 +5,19 @@
 @import "less/common/01-A_reset.less";
 
 @import "less/common/01-B_variables.less";
-@import "less/app/01-B_variables.less"; 
+@import "less/app/01-B_variables.less";
 
-@import "less/common/01-C_mixins.less"; 
-@import "less/common/01-D_mixins-animations.less"; 
+@import "less/common/01-C_mixins.less";
+@import "less/common/01-D_mixins-animations.less";
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-@import "less/common/02_typography.less"; 
+@import "less/common/02_typography.less";
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
-@import "less/common/03_graphics.less"; 
-@import "less/app/03_graphics.less"; 
+@import "less/common/03_graphics.less";
+@import "less/app/03_graphics.less";
 
 /* 4. LAYOUT
 ==========================================================*/
@@ -33,19 +33,19 @@
 @import "less/app/05-B_forms.less";
 
 @import "less/common/05-C_plugins.less";
-@import "less/app/05-C_plugins.less"; 
+@import "less/app/05-C_plugins.less";
 
 /* 6. IE
 ==========================================================*/
-@import "less/app/06_ie.less"; 
+@import "less/app/06_ie.less";
 
-/* 7. MEDIA QUERIES    
-==========================================================*/   
-@media only print {    
-    @import "less/app/07_print.less";    
+/* 7. MEDIA QUERIES
+==========================================================*/
+@media only print {
+    @import "less/app/07_print.less";
 }
 
-@import "less/app/08_smartband.less"; 
+@import "less/app/08_smartband.less";
 
 
 /* x. Rover Angular Animations
@@ -112,9 +112,9 @@
 .slide-right.ng-enter {
   -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
-} 
+}
 
-.slide-right.ng-enter.ng-enter-active, 
+.slide-right.ng-enter.ng-enter-active,
 .slide-right.ng-leave {
   position: absolute;
   -webkit-transform: translateX(0);
@@ -202,7 +202,7 @@
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
 
-  
+
   color: transparent;
   cursor: default;
   -webkit-user-select: none;
@@ -281,7 +281,7 @@
   user-select: none;
 }
 .date-picker-bg{
-  
+
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
   padding:10px;
   margin:5px;
@@ -315,7 +315,7 @@
   height:46px;
 }
 .pickadate-prev,.pickadate-next{
-  
+
   width:30px;
   padding:15px 5px !important;
 }
@@ -347,16 +347,16 @@ height: 410px;
 }
 
 #modal .ngmodal-uidate-wrap {
-  width: 480px;  
+  width: 480px;
 }
 
 .service-status-date #modal .ngmodal-uidate-wrap {
   width: 100%;
-  max-width: 480px;  
+  max-width: 480px;
 }
 
 /*------------------date -picker ends here-------------------------- */
-.ui-match { 
+.ui-match {
   color: #F6991B !important; margin-right: 0px !important;
 }
 .post-button {
@@ -368,7 +368,7 @@ height: 410px;
 }
 
 //Commenting this as this overrides icon class used by Stjpan.
-//TODO: Review places where this class were used, and apply the styles locally. 
+//TODO: Review places where this class were used, and apply the styles locally.
  // .icons {
      // background-image: url("/assets/admin/admin-icons.png");
      // background-repeat: no-repeat;
@@ -480,8 +480,8 @@ button.icons.icon-search{
     .show;
 
     &.icon-mover-right {
-      background-position: 13px -788px; 
-      
+      background-position: 13px -788px;
+
       &:hover,
       &:active { background-position: 13px -888px; }
     }
@@ -501,13 +501,13 @@ button.icons.icon-search{
   margin-left: 200px !important;
 }
 
-#room-assignment .room-assignment-content.only-upgrades .upgrades .wrapper > li .room-details {    
+#room-assignment .room-assignment-content.only-upgrades .upgrades .wrapper > li .room-details {
     height: 50px !important;
 }
 
 #room-assignment .room-assignment-content .rooms-listing .results .rooms li .button {
     height: 50px !important;
-    vertical-align: middle;     
+    vertical-align: middle;
 }
 #room-assignment .room-assignment-content .rooms-listing .results .rooms li .room-number {
     line-height: normal;
@@ -531,7 +531,7 @@ button.icons.icon-search{
   padding-bottom: 10px !important;
 }
 
-/*  
+/*
 Padding for the ows error popup
 */
 #modal .modal-content.new-content.warning {
@@ -618,11 +618,11 @@ Padding for the ows error popup
   &::-webkit-scrollbar {
     width: 4px;
   }
-   
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-   
+
   &::-webkit-scrollbar-thumb {
     width: 4px;
     border-radius: 3px;
@@ -836,7 +836,7 @@ Padding for the ows error popup
      .button{
         display: block;
         margin: 0 0 5px !important;
-        width: 100% !important;   
+        width: 100% !important;
         border-bottom-left-radius: 3px !important;
         border-bottom-right-radius: 3px !important;
     }
@@ -853,7 +853,7 @@ Padding for the ows error popup
   width: 100%;
   overflow:hidden;
 }
-.billing-info-body{  
+.billing-info-body{
     height: 510px;
     padding: 0;
     width: 800px;
@@ -869,10 +869,10 @@ Padding for the ows error popup
 }
 
 .ar-popup-content {
-    
+
     text-align: center;
   }
-   
+
 
 .ngdialog.end-of-day-popup .ngdialog-content{
   padding:0 !important;
@@ -932,16 +932,16 @@ Padding for the ows error popup
      list-style: none outside none;
      white-space: nowrap;
      height: 50px;
-         
+
   }
   #nav-listing ul li:first-child{
     border-left: none;
   }
   #nav-listing ul li:last-child{
     border-right: none;
-  }  
+  }
   #nav-listing ul li{
-    background-color: #373837;    
+    background-color: #373837;
     display: inline-block;
     border-right: 1px solid white;
     border-left: 1px solid white;
@@ -957,7 +957,7 @@ Padding for the ows error popup
       display: block;
   }
   #availabilityGraphShowingArea {
-      display: block;    
+      display: block;
       overflow: hidden;
       width: 100%;
   }
@@ -972,7 +972,7 @@ Padding for the ows error popup
   }
   .iScrollHorizontalScrollbar {
     position: relative !important;
-    top:0px !important;    
+    top:0px !important;
   }
 }
 #modal .modal-content.key-delivery #key-status.print-key .status.error{
@@ -999,9 +999,9 @@ Padding for the ows error popup
 .billing-info-charge-codes{
   margin: 20 0 0 0 !important;
 }
- 
+
  // For CICO-6080 Charge code search results.
- 
+
  .charge-code-list{
     height: 200px;
     z-index: 999;
@@ -1106,17 +1106,17 @@ Padding for the ows error popup
 }
 
 
-.no-animation   * { 
-  -webkit-transition: none !important; 
-  -moz-transition: none !important; 
-  -o-transition: none !important; 
-  -ms-transition: none !important; 
-  transition: none !important; 
-  -webkit-transform: none !important; 
-  -moz-transform: none !important; 
-  -ms-transform: none !important; 
-  -o-transform: none !important; 
-  transform: none !important; 
+.no-animation   * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+  transform: none !important;
 }
 
 // CICO-9956 -scroll for credit card list.
@@ -1172,7 +1172,7 @@ Padding for the ows error popup
 }
 .authorised-code-text, .amount-paid{
 	text-align: center;
-	margin-right: 70px; 
+	margin-right: 70px;
 	margin-left: 70px;
 	span:first-child{
 		float:left !important;
@@ -1186,8 +1186,8 @@ Padding for the ows error popup
 	padding-top: 15px;
 }
 .amount-paid{
-	padding-top: 10px; 
-	margin-top: 35px; 
+	padding-top: 10px;
+	margin-top: 35px;
 
 }
 
@@ -1320,7 +1320,7 @@ span.keys-msg-bold{
 }
 
 // Styles for PRINT confirmation and Cancellation Emails
-@media only print{ 
+@media only print{
   #confirmation-print-template{
     .show
   }
@@ -1332,16 +1332,16 @@ span.keys-msg-bold{
   }
   #modal{
     .hide
-  }   
-  #details-and-payment { 
-    .hide; 
+  }
+  #details-and-payment {
+    .hide;
   }
   #margin-control invisible margin-control-top{
   .hide;
   }
-  
+
   /**** Styles for confirmation Email PRINT Starts Here ***/
- #confirmation-print-template{ 
+ #confirmation-print-template{
 
   table tr td{
     border-bottom: 0;
@@ -1528,7 +1528,7 @@ span.keys-msg-bold{
 }
 .third-table-data-second {
   padding-left: 10px;
-  font-family: Arial; 
+  font-family: Arial;
   color:  #4d4d4d;
    font-size: 12px;
 }
@@ -1566,4 +1566,27 @@ span.keys-msg-bold{
   font-size: 12px !important;
   line-height: 25px !important;
   height: 25px !important;
+}
+
+.on-hold h2, .on-hold span {
+  text-decoration: line-through;
+}
+
+/*CICO-23273 : Scrolling issue for cc manual selection */
+#modal .modal-content.deposit-balance .content-right .payment-form {
+  max-height: 380px;
+}
+
+.payment-form.scrollable {
+  position: relative;
+}
+
+.payment-form.scrollable .iScrollVerticalScrollbar {
+  top: 0;
+  right: 10px;
+  bottom: 0;
+}
+
+.payment-form.scrollable .wrapper {
+  padding: 0 20px;
 }

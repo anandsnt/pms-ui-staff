@@ -535,8 +535,8 @@
 
 <a class="button green" ng-click="setnGenReport(item)" ng-show="item.display_show_button">Show</a>
 
-<a href="{{getExportUrl(item)}}" class="button with-icon only-icon purple" button="button" ng-if="item.display_export_button && !hideExportOption">
+<button ng-click="exportCSV(item)" class="button with-icon only-icon purple" button="button" ng-if="item.display_export_button && !hideExportOption">
     <span class="icons icon-save">Export</span>
-</a>
+</button>
 
 
