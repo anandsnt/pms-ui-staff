@@ -17,7 +17,6 @@ module.exports = {
 			'guestweb_eden' 	 	:[ 'guestweb/**/eden/**.html', sharedHtml],
 			'guestweb_envoy' 	:[ 'guestweb/**/envoy/**.html', sharedHtml],
 			'guestweb_fulton' 	:[ 'guestweb/**/fulton/**.html', sharedHtml],
-			'guestweb_galleria' 	:[ sharedPartials + 'Galleria/*.html', landingPartials + 'Galleria/*.html', sharedHtml, sharedCommonPartials],
 			'guestweb_huntley' 	:[ 'guestweb/**/huntley/**.html', sharedHtml],
 			'guestweb_mgm' 		:[ 'guestweb/**/mgm_aria/**.html', sharedHtml],
 			'guestweb_montauk' 	:[ 'guestweb/**/montauk/**.html', sharedHtml],

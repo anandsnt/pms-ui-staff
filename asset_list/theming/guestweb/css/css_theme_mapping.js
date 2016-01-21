@@ -15,7 +15,6 @@ module.exports = {
 			'guestweb_eden' 	 	: [ themeCSSRoot + 'guestweb_eden.css'],
 			'guestweb_envoy' 	: [ themeCSSRoot + 'guestweb_envoy.css'],
 			'guestweb_fulton' 	: [ themeCSSRoot + 'guestweb_fulton.css'],
-			// 'galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css'],
 			'guestweb_huntley' 	: [ themeCSSRoot + 'guestweb_huntley.css'],
 			'guestweb_mgm' 		: [ themeCSSRoot + 'guestweb_mgm.css'],
 			'guestweb_montauk' 	: [ themeCSSRoot + 'guestweb_montauk.css'],
