@@ -16,9 +16,9 @@
 	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
 	                </figure>
 					<h2>{{selectedEntity.name}}</h2>
-                  	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
+                  	<span class="status" ng-class="getEntityRole(selectedEntity)">{{selectedEntity.status}}</span>
 				</div>
-				<div class="title" ng-show= "showPayment">{{'PAYMENT' | translate}}
+				<div class="title" ng-show= "paymentFlags.showPayment">{{'PAYMENT' | translate}}
 					<button type="button" id="edit-entity" ng-click="editPaymentMethod();" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null">
 						<span class="icons icon-pencil" ></span>
 					</button>
@@ -26,9 +26,9 @@
 
 				<!-- Available credit card -->
 
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!paymentFlags.isAddPayment && paymentFlags.showPayment && renderAddedPayment == null">
 					<div class="wrapper">
-						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
+						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!paymentFlags.isAddPayment && paymentFlags.showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
 							<span ng-show = "paymentType.payment_type_id == 1">
 								<figure class="card-logo">
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 
-				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible">
+				<div class="payment active"  ng-show = "renderAddedPayment != null && !paymentFlags.isAddPayment  && paymentFlags.showPayment && !saveData.newPaymentFormVisible">
 						<!-- add class active when selected -->
 						<span ng-show = "renderAddedPayment.payment_type == 'CC'">
 							<figure class="card-logo">
@@ -55,34 +55,33 @@
 						<span class="value code" ng-show = "renderAddedPayment.payment_type != 'CC'">{{ renderAddedPayment.payment_type_description }}</span>
 						<span class="icons icon-ok-10" ></span>
 				</div>
-				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null">{{'NEW_PAYMENT' | translate}}</button>
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!paymentFlags.isAddPayment && paymentFlags.showPayment && renderAddedPayment == null">{{'NEW_PAYMENT' | translate}}</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
-				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
-				<div>
-					<!-- Posting Amount -->
-	                <div class="title">
-	                    {{'POSTING_CAP' | translate}}<span>({{currencySymbol}})</span>
-	                </div>
-	                <div class="entry">
-	                    <input type="text" ng-model="selectedEntity.credit_limit"/>
-	                </div>
+				<div id = "newpaymentview"  ng-show = "paymentFlags.isAddPayment && paymentFlags.showCreditCardDropDown && paymentFlags.showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 
-	                <!-- Reference No. -->
-	                <div class="title">
-	                    {{'REFERENCE_NUMBER' | translate}}
-	                </div>
-	                <div class="entry" >
-	                    <input type="text" ng-model="selectedEntity.reference_number"/>
-	                </div>
+				<!-- Posting Amount -->
+                <div class="title">
+                    {{'POSTING_CAP' | translate}}<span>({{currencySymbol}})</span>
+                </div>
+                <div class="entry">
+                    <input type="text" ng-model="selectedEntity.credit_limit"/>
+                </div>
+
+                <!-- Reference No. -->
+                <div class="title">
+                    {{'REFERENCE_NUMBER' | translate}}
+                </div>
+                <div class="entry" >
+                    <input type="text" ng-model="selectedEntity.reference_number"/>
                 </div>
 			</div>
 		</div>
 	</fieldset>
+
 	<fieldset class="content-right">
 		<span class="h2 message" translate> DETAILS</span>
-		<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvChargeCodesAndBillingGroup.html'">		
-		</span>
+		<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvChargeCodesAndBillingGroup.html'"></span>
 	</fieldset>
 </div>
 <div class="actions">

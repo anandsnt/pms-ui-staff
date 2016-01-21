@@ -97,7 +97,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     };
 
     /**
-     * Initialize scrollers for details the screen
+     * Initialize scrollers for the screen
      * @return {undefined}
      */
     var initializeScrollers = function() {
@@ -115,7 +115,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     };
 
     /**
-     * Refresh scrollers in details the screen
+     * Refresh scrollers in the screen
      * @return {undefined}
      */
     var refreshScrollers = function() {
@@ -164,7 +164,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     });
 
     /**
-     * Retrieve credit card expiry based on paymnet gateway
+     * Retrieve credit card expiry based on payment gateway
      * @return {DateObject}
      */
     var retrieveExpiryDate = function() {
@@ -175,7 +175,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     };
 
     /**
-     * Retrieve credit card number based on paymnet gateway
+     * Retrieve credit card number based on payment gateway
      * @return {Number} credit card number
      */
     var retrieveCardNumber = function() {
