@@ -2,43 +2,43 @@
 
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
-    $urlRouterProvider.otherwise("/noOptionAvailable");
+    $urlRouterProvider.otherwise("/checkoutRoomVerification");
 
     // checkout now states
 
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/yotel/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/yotel/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Yotel/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/partials/yotel/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
-    //late checkout states
+    // late checkout states
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/yotel/anding.html',
+	 	templateUrl: '/assets/landing/Yotel/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/yotel/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Yotel/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/yotel/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Yotel/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -47,31 +47,31 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/partials/yotel/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/partials/yotel/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/partials/yotel/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/partials/yotel/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/partials/yotel/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
-	 	templateUrl: '/assets/partials/yotel/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
@@ -80,21 +80,25 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/yotel/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewControllerForYotel',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/yotel/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerification.html',
 	 	controller : 'ccVerificationViewControllerForYotel',
 	 	title: 'CC verification'
 	 });
 
-	//pre checkin states
+	// pre checkin states
 
-    $stateProvider.state('preCheckinStatus', {
+    $stateProvider.state('preCheckinTripDetails', {
+    	url: '/tripDetails',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Pre Check-in'
+	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/yotel/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });

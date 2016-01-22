@@ -14,7 +14,7 @@ module.exports = function(gulp, $, options) {
 	require('./guestweb/guestweb_css_gulp')(gulp, $, options);
 	require('./guestweb/guestweb_template_gulp')(gulp, $, options);
 
-	// gulp.task('watch-guestweb-files', ['guestweb-watch-partials', 'guestweb-watch-less-files', 'guestweb-watch-js-files']);
+	gulp.task('watch-guestweb-files', ['guestweb-watch-partials', 'guestweb-watch-css-files', 'guestweb-watch-js-files']);
 	gulp.task('copy-guestweb-files', ['guestweb-copy-js-files', 'guestweb-copy-css-files-dev']);
 
 	gulp.task('copy-guestweb-base-html', function(){

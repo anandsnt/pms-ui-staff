@@ -4,7 +4,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/mgm_chain/Bellagio/gwCheckoutfinal.html',
+       	templateUrl: '/assets/common_templates/partials/MGM/Bellagio/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
    	 })
 }]);

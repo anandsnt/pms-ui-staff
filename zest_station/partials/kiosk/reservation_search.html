@@ -28,7 +28,7 @@
             <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":page == totalPages}'>Next</button>
         </div> 
     </div>
-    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>
 
 <!-- no match -->
@@ -40,7 +40,7 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reEnterLastName()'>
-                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_LAST' |translate}}
                     <span>"{{reservationParams.last_name}}"</span>
@@ -50,7 +50,7 @@
                 </li>
                 <li ng-show="showRoomEnter">
                     <button type="button" class="button option" touch-press='reEnterRoomNumber()'>
-                        <div ng-include="'assets/css/icons/keyboard.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
                     <span>"{{reservationParams.room_no}}"</span>
@@ -60,7 +60,7 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
-                        <div ng-include="'assets/css/icons/staff.svg'"></div>
+                        <div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div>
                     </button>
                     {{'RES_SRCH_TALK' |translate}}
                     <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
@@ -68,5 +68,5 @@
             </ul>
         </nav>
     </div>
-    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>

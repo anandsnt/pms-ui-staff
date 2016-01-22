@@ -13,6 +13,7 @@ module.exports = function (gulp, $, options) {
     	runSequence 			= require('run-sequence'),
 		onError  				= options.onError,
 		extendedMappings 		= {},
+		runSequence 			= require('run-sequence'),
 		generated 				= "____generated",
 	    GUESTWEB_THEME_CSS_MAPPING_FILE = '../../asset_list/theming/guestweb/css/css_theme_mapping',
 	    GUESTWEB_THEME_CSS_LIST 	= require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList(),
@@ -78,21 +79,29 @@ module.exports = function (gulp, $, options) {
 			mkdirp = require('mkdirp'),
 			stream = require('merge-stream'),
 			edit = require('gulp-json-editor');
+		
+		delete require.cache[require.resolve(GUESTWEB_THEME_CSS_MAPPING_FILE)];
+		GUESTWEB_THEME_CSS_LIST = require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList();
 
 		var tasks = Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme CSS - mapping-generation-started: ' + theme);
-			var mappingList  = GUESTWEB_THEME_CSS_LIST[theme];
+			var mappingList  	= GUESTWEB_THEME_CSS_LIST[theme],
+				fileName 		= theme + ".css";
 			
 			return gulp.src(mappingList, {base: '.'})
 				.pipe($.less({
 		        	plugins: [cleancss]
 		        }))
-		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}).on('error', onError))
+		        .pipe($.concat(fileName))
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}))
+		        .on('end', function(){
+		        	extendedMappings[theme] = [URL_APPENDER + "/" + fileName ];
+		        })
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});
 		return es.merge(tasks).on('end', function(){
-			runSequence('create-theme-mapping-css-production');
-		});
+			return runSequence('create-theme-mapping-css-production')
+		 });
 	});
 
 	gulp.task('build-guestweb-css-dev', ['guestweb-copy-css-files-dev', 'guestweb-css-theme-generate-mapping-list-dev']);
@@ -101,10 +110,11 @@ module.exports = function (gulp, $, options) {
 		delete require.cache[require.resolve(GUESTWEB_THEME_CSS_MAPPING_FILE)];
 		GUESTWEB_THEME_CSS_LIST 	= require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList();
 
-		var guestwebSourceList = '';
+		var guestwebSourceList = [];
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_CSS_LIST[theme]);			
 		});
+		guestwebSourceList = guestwebSourceList.concat(['guestweb/img/**/*.*', 'guestweb/common_images/**/*.*']);
 		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
@@ -113,11 +123,11 @@ module.exports = function (gulp, $, options) {
 		delete require.cache[require.resolve(GUESTWEB_THEME_CSS_MAPPING_FILE)];
 		GUESTWEB_THEME_CSS_LIST 	= require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList();
 
-		var guestwebSourceList = '';
+		var guestwebSourceList = [];
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat('asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/**/*.js');
+		guestwebSourceList = guestwebSourceList.concat(['asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/css/*.js']);
 		return gulp.watch(guestwebSourceList, function(callback){
 			return runSequence('build-guestweb-css-dev', 'copy-guestweb-base-html');
 		});

@@ -11,6 +11,7 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/Row_nyc/*.html', 'guestweb/**/landing/Row_nyc/*.html', 'guestweb/**/shared/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    extendedMappings 		= {},
+	    runSequence 			= require('run-sequence'),
 		generated 				= "____generated",
 	    onError 				= options.onError,
 	    runSequence 			= require('run-sequence'),
@@ -55,7 +56,7 @@ module.exports = function(gulp, $, options){
 	  		}))
 	        .pipe($.templateCache(fileName, {
 	            module: 'sntGuestWebTemplates',
-	            root: URL_APPENDER + '/partials/'
+	            root: URL_APPENDER
 	        }).on('error', onError))
 	        .pipe($.uglify({compress:true, output: {
 	        	space_colon: false
@@ -83,6 +84,10 @@ module.exports = function(gulp, $, options){
 			stream = require('merge-stream'),
 			edit = require('gulp-json-editor');
 
+		
+		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE)];
+		GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList();
+
 		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
 			var mappingList  = GUESTWEB_THEME_TEMPLATE_LIST[theme],
@@ -96,7 +101,7 @@ module.exports = function(gulp, $, options){
 	  		}))
 	        .pipe($.templateCache(fileName, {
 	            module: 'sntGuestWebTemplates',
-	            root: URL_APPENDER + '/partials/'
+	            root: URL_APPENDER
 	        }).on('error', onError))
 	        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true }).on('end', function(){
 	        	extendedMappings[theme] = [URL_APPENDER + "/" + fileName];
@@ -106,6 +111,8 @@ module.exports = function(gulp, $, options){
 		return es.merge(tasks).on('end', function(){
 			return mkdirp(guestwebGenDir, function (err) {
 		    if (err) console.error('guestweb theme template mapping directory failed!! (' + err + ')');
+		    console.log('template cache');
+		    console.log (extendedMappings);
 	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
 			    if(err) {
 			        return console.error('guestweb theme template mapping file failed!! (' + err + ')');
@@ -120,8 +127,9 @@ module.exports = function(gulp, $, options){
 
 	//LESS END
 	gulp.task('guestweb-watch-partials', function(){
-		return gulp.watch(GUESTWEB_PARTIALS, function(callback){
-			return runSequence('build-guestweb-template-cache-dev', 'copy-guestweb-base-html', callback);
+		GUESTWEB_PARTIALS = GUESTWEB_PARTIALS.concat(['asset_list/theming/guestweb/template/*.js']);
+		return gulp.watch(GUESTWEB_PARTIALS, function(){
+			return runSequence('guestweb-template-cache-dev', 'copy-guestweb-base-html');
 		});
 	});
 

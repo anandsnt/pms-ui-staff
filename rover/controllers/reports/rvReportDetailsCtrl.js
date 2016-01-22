@@ -75,13 +75,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isGuestReport = false;
 			$scope.isLargeReport = false;
 			$scope.isLogReport   = false;
+			$scope.isTransactionReport = false;
 			$scope.isDepositReport = false;
+			$scope.isCondensedPrint = false;
+			$scope.isBalanceReport = false;
+
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
-			$scope.isTransactionReport = false;
-			$scope.isCondensedPrint = false;
+			
 
 			switch ( $scope.chosenReport.title ) {
 				case reportNames['IN_HOUSE_GUEST']:

@@ -1,5 +1,4 @@
 
-
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
@@ -9,18 +8,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/partials/carlyle/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
 	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/partials/carlyle/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/partials/carlyle/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/checkoutConfirmation.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -28,17 +27,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/partials/carlyle/landing.html',
+	 	templateUrl: '/assets/landing/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/partials/carlyle/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/partials/carlyle/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -47,32 +46,32 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/partials/carlyle/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/partials/carlyle/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/partials/carlyle/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/partials/carlyle/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/partials/carlyle/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/partials/carlyle/arrivalDetails.html',
+	 	templateUrl: '/assets/checkin/partials/arrivalDetails.html',
 	 	title: 'Arrival Details - Check-in'
 	 });
 
@@ -81,29 +80,46 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/partials/carlyle/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/partials/carlyle/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
-	  // pre checkin states
+
+	// pre checkin states
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/partials/carlyle/preCheckinStatus.html',
+		templateUrl: '/assets/preCheckin/partials/CARLYLE/preCheckinStatus.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
-	$stateProvider.state('noOptionAvailable', {
-    	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/carlyle/noOption.html',
-	 	title: 'Feature not available'
+	// zest web states
+
+    $stateProvider.state('resetPassword', {
+    	url: '/resetPassword',
+	 	templateUrl: '/assets/zest/partials/resetPassword.html',
+	 	controller : 'resetPasswordController',
+	 	title: 'Reset Password'
 	});
 
+	$stateProvider.state('emailVerification', {
+    	url: '/emailVerification',
+	 	templateUrl: '/assets/zest/partials/emailVerificationStatus.html',
+	 	controller : 'emailVerificationStatusController',
+	 	title: 'Email Verification'
+	});
+
+
+	$stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Feature not available'
+	});
 
 }]);

@@ -131,6 +131,7 @@ module.exports = function (gulp, $, options) {
 
 		return mkdirp(guestwebGenDir, function (err) {
 		    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
+		    console.log(extendedMappings);
 	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
 			    if(err) {
 			        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
@@ -174,7 +175,7 @@ module.exports = function (gulp, $, options) {
 		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_JS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat('asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/**/*.js');
+		guestwebSourceList = guestwebSourceList.concat(['asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/js/*.js']);
 		return gulp.watch(guestwebSourceList, function(callback){
 			return runSequence('build-guestweb-js-dev', 'copy-guestweb-base-html');
 		});

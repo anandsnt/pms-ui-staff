@@ -13,6 +13,7 @@ a,a:hover{
 }
 .template-text,.footer-text{
      color: @dark-grey;
+     font-size: 22px;
 }
 .sub-text{
     color: @black;
@@ -46,6 +47,7 @@ a,a:hover{
 .no-thanks,.no-thanks:hover{
     color:black !important;
     text-decoration: underline;
+    text-transform: none;
 }
 .upgrade-details .upgrades-btn {
     background: #d5b06c;
@@ -63,10 +65,10 @@ a,a:hover{
 }
 
 .calendar-back {
-    background-image: url('/assets/common_images/back_icon.png');
+    background-image: url('/assets/guestweb/common_images/back_icon.png');
 }
 .calendar-done{
-    background-image: url('/assets/common_images/done_white.png');
+    background-image: url('/assets/guestweb/common_images/done_white.png');
 }
 .date-picker-header {
   background-color: #d5b06c !important;
@@ -92,4 +94,13 @@ a,a:hover{
 }
 .right-arrow-button {
     background-position: 0 4px;
+}
+@media (max-width: 990px) {
+    .logo-image {
+        margin: 9% auto 7%;
+        max-width: 150px;
+    }
+    .back-to-checkout{
+        display:none;
+    }
 }
