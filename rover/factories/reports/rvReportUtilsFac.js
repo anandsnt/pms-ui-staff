@@ -911,7 +911,7 @@ sntRover.factory('RVReportUtilsFac', [
                         .then( fillResStatus );
                 }
 
-                else if (('RATE' === filter.value || 'RATE_TYPE' === filter.value) && ! filter.filled ) {
+                else if ('RATE' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchRateTypesAndRateList() //This would include custom rates
                         .then( fillRateTypesAndRateList );

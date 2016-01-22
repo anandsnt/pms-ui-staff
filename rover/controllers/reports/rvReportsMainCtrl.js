@@ -1011,8 +1011,9 @@ sntRover.controller('RVReportsMainCtrl', [
 				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
                 // For the daily production rates; we are to send an array with group or allotment ids
                 if(reportNames['DAILY_PRODUCTION_RATE'] === report.title){
-                    var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id:null}), "group_id");
+                    var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id: null}), "group_id");
                     if ( selectedCustomRates.length > 0 ){
+                        params[key] = _.without(params[key],null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                         params['custom_rate_group_ids'] = selectedCustomRates; 
                     }  
                 }
