@@ -221,7 +221,7 @@
                 <strong class="title" translate>WORK_TYPE</strong>
                 <div class="entry">
                     <div class="select">
-                        <select id="work-type" ng-model="currentFilters.workType">
+                        <select id="work-type" ng-model="currentFilters.filterByWorkType">
                             <option value="" selected>All Work Types</option>
                             <option ng-repeat="item in workTypes" value="{{item.id}}">
                                 {{item.name}}
@@ -231,7 +231,7 @@
                 </div>
                 <div class="entry" ng-if="!hasActiveWorkSheetng">
                     <div class="select">
-                        <select id="employees" ng-model="currentFilters.employeeID" ng-options="emp.id as emp.maid_name for emp in employees">
+                        <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="" selected>All Employees</option>
                         </select>
                     </div>
