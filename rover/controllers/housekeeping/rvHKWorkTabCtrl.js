@@ -6,16 +6,25 @@ sntRover.controller('RVHKWorkTabCtrl', [
 	'RVHkRoomDetailsSrv',
 	'RVHkRoomStatusSrv',
 	'$filter',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter) {
+	'$timeout',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
 		// must create a copy since this scope is an inner scope
 		$scope.isStandAlone = $rootScope.isStandAlone;
 
+		// set the scroller
+		$scope.setScroller('room-status-content');
+
+		$timeout(function() {$scope.refreshScroller('room-status-content');}, 1500);
+
 		// keep ref to room details in local scope
 		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
+		$scope.taskDetails = $scope.roomDetails.task_details;
+		$scope.currentTask = $scope.taskDetails[0];
+		$scope.currentTaskName = $scope.currentTask.name;
 
 		// default cleaning status
 		// [ OPEN, IN_PROGRESS, COMPLETED ]
@@ -32,9 +41,9 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		$scope.isOpen      = null;
 
 		var $_updateWorkStatusFlags = function() {
-			$scope.isStarted   = $scope.roomDetails.work_status === $_workStatusList['inProgress'] ? true : false;
-			$scope.isCompleted = $scope.roomDetails.work_status === $_workStatusList['completed']  ? true : false;
-			$scope.isOpen      = $scope.roomDetails.work_status === $_workStatusList['open']       ? true : false;
+			$scope.isStarted   = $scope.currentTask.work_status === $_workStatusList['inProgress'] ? true : false;
+			$scope.isCompleted = $scope.currentTask.work_status === $_workStatusList['completed']  ? true : false;
+			$scope.isOpen      = $scope.currentTask.work_status === $_workStatusList['open']       ? true : false;
 		};
 
 		// only for standalone will these get typecasted to booleans
@@ -100,6 +109,17 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
+		// action for task cahnge 
+
+		$scope.changedTask = function() {
+
+			$scope.currentTask = _.find($scope.taskDetails, function(item) {
+				return item.name === $scope.currentTaskName;
+			});
+			$scope.currentTaskName = $scope.currentTask.name;
+			console.log($scope.currentTask);
+		};
+
 
 		// start working
 		$scope.startWorking = function() {
@@ -107,13 +127,14 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				$scope.$emit('hideLoader');
 
 				// update local data
-				$scope.roomDetails.work_status = $_workStatusList['inProgress'];
+				$scope.currentTask.work_status = $_workStatusList['inProgress'];
 				$_updateWorkStatusFlags();
 			};
 
 			var params = {
 				room_id: $scope.roomDetails.id,
-				work_sheet_id: $scope.roomDetails.work_sheet_id
+				work_sheet_id: $scope.currentTask.work_sheet_id,
+				task_id : $scope.currentTask.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
@@ -125,20 +146,21 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				$scope.$emit('hideLoader');
 
 				// update local data
-				$scope.roomDetails.work_status = $_workStatusList['completed'];
+				$scope.currentTask.work_status = $_workStatusList['completed'];
 				$_updateWorkStatusFlags();
 
 				// since this value could be empty
-				if ( !!$scope.roomDetails.task_completion_status ) {
+				if ( !!$scope.currentTask.task_completion_status ) {
 					// update 'current_hk_status' to 'task_completion_status', this should call '$scope.manualRoomStatusChanged'
-					$scope.roomDetails.current_hk_status = $scope.roomDetails.task_completion_status;
+					$scope.roomDetails.current_hk_status = $scope.currentTask.task_completion_status;
 				};
 			};
 
 			var params = {
 				room_id: $scope.roomDetails.id,
-				work_sheet_id: $scope.roomDetails.work_sheet_id,
-				task_completion_status : $scope.roomDetails.task_completion_status_id
+				work_sheet_id: $scope.currentTask.work_sheet_id,
+				task_completion_status : $scope.currentTask.task_completion_status_id,
+				task_id : $scope.currentTask.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);

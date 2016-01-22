@@ -84,8 +84,11 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		 * Added condition for the comment in ticket
 		 * When opening the room details screen, default to WORK view for logged in employee $rootScope.isStandAlone && !!roomDetailsData.work_sheet_id
 		 */
+		 var isTaskPresent = function () {
+		 	return roomDetailsData.task_details.length != 0;
+		 } ;
 
-		if (!$rootScope.isStandAlone || ($rootScope.isStandAlone && ($rootScope.isMaintenanceStaff || $rootScope.isMaintenanceManager)) || ($rootScope.isStandAlone && !!roomDetailsData.work_sheet_id)) {
+		if (!$rootScope.isStandAlone || ($rootScope.isStandAlone && ($rootScope.isMaintenanceStaff || $rootScope.isMaintenanceManager)) || ($rootScope.isStandAlone && isTaskPresent())) {
 			$scope.openTab = 'Work';
 		} else {
 			$scope.openTab = 'Guest';
