@@ -1,5 +1,5 @@
 sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
-	
+
     BaseCtrl.call(this, $scope);
 
     /**
@@ -7,11 +7,9 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
      * @return {undefined}
      */
     var init = function() {
-
+        //Contains selected entity details
         $scope.selectedEntity = {};
-        $scope.bills = [];
-        $scope.routes = [];
-        $scope.errorMessage = '';
+        $scope.errorMessage   = '';
 
         $scope.billingInfoFlags = {
             shouldShowWaiting : false,
@@ -93,14 +91,14 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 
     /**
      * Function that converts a null value to a desired string.
-     * if no replace value is passed, it returns an empty string.
+     * If no replace value is passed, it returns an empty string.
      * @return {String}
      */
     $scope.escapeNull = function(value, replaceWith) {
         return escapeNull(value, replaceWith);
     };
 
-    /*
+    /**
      * Function to set the selected entity details
      * @param {String} entity type
      * @return {undefined}
@@ -144,29 +142,24 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
     };
 
     /**
-    * Listener to show error messages for child views
-    */
+     * Listener to show error messages for child views
+     */
     $scope.$on("displayErrorMessage", function(event, error){
         $scope.errorMessage = error;
-
     });
 
     /**
-    * CICO-14951 :function to delete routing info from default billing info
-    */
-
-    /**
-    * Function to delete the routing
-    * @return {undefined}
-    */
+     * CICO-14951: Function to delete the routing
+     * @return {undefined}
+     */
     $scope.deleteDefaultRouting = function() {
 
         var successCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.$emit('BILLINGINFODELETED');
             $scope.closeDialog();
-            
         };
+
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');
             $scope.$emit('displayErrorMessage',errorMessage);

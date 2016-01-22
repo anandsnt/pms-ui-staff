@@ -23,9 +23,10 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         setCommonPaymentModelItems();
         checkEntityIsOtherReservationOrAccount();
         setCreditLimitToTwoDigits();
+        fetchBillsForReservation();
+
         initializeScrollers();
         refreshScrollers();
-        fetchBillsForReservation();
     };
 
     /**
@@ -557,7 +558,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.selectedEntity.from_date      = $filter('date')(tzIndependentDate($scope.routeDates.from), "yyyy-MM-dd");
         $scope.selectedEntity.to_date        = $filter('date')(tzIndependentDate($scope.routeDates.to), "yyyy-MM-dd");
 
-        /*
+        /**
          * If user selects the new bill option,
          * we'll first create the bill and then save the route for that bill
          */
