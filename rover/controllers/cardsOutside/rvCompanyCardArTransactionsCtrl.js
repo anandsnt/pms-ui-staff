@@ -459,6 +459,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    };
 
+	    //Reloads the AR Transaction Listing
+	    $scope.reloadARTransactionListing = function() {
+	    	fetchData();
+	    };
+
 
 
 }]);
