@@ -967,7 +967,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi() {
 			$scope.hasActiveWorkSheet = false;
-			$scope.currentView        = 'rooms';
 			$scope.rooms              = [];
 
 			// reset any multi room action related data

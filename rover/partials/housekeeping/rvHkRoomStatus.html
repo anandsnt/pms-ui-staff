@@ -14,17 +14,19 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form room-search" role="search">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form"
+    class="search-form room-search" role="search"
+    ng-class="{'has-options': isStandAlone, 'showing-filters': filterOpen }">
 
     <!-- Refresh list -->
-    <button type="button" class="button white with-icon only-icon refresh"
+    <button type="button" class="entry button white with-icon only-icon refresh"
         ng-click="refreshData()">
         <span class="icons icon-reset"></span>
         {{ 'Refresh' | translate}}
     </button>
 
     <!-- Filter list -->
-    <button type="button" class="button white with-icon only-icon filter"
+    <button type="button" class="entry button white with-icon only-icon filter"
         ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         {{ 'FILTER_ROOMS' | translate}}
@@ -229,7 +231,7 @@
                 </div>
                 <div class="entry" ng-if="!hasActiveWorkSheetng">
                     <div class="select">
-                        <select id="employees" class="placeholder" ng-model="currentFilters.employeeID" ng-options="emp.id as emp.maid_name for emp in employees">
+                        <select id="employees" ng-model="currentFilters.employeeID" ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="" selected>All Employees</option>
                         </select>
                     </div>
