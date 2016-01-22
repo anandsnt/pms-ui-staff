@@ -38,9 +38,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			name: 'rover.dashboard'
 		};
 
+		var _title = $rootScope.isMaintenanceStaff ? 'My WorkSheet' : 'ROOM_STATUS';
 		// set title in header
-		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
-		$scope.heading = $filter( 'translate')('ROOM_STATUS');
+		$scope.setTitle($filter( 'translate')(_title));
+		$scope.heading = $filter( 'translate')(_title);
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
 
 		// set the scroller

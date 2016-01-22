@@ -96,7 +96,7 @@
 </form>
 
 <!-- My Worksheet Summary -->
-<div class="worksheet-summary scrollable" ng-if="!!hasActiveWorkSheet" ng-class="{'hidden': currentView == 'ROOMS'}">
+<div class="worksheet-summary scrollable" ng-if="isMaintenanceStaff" ng-class="{'hidden': currentView == 'ROOMS'}">
     <ul class="wrapper" style="width: {{getWidthForSummary()}}"> <!-- width:{160*no.of list items + 40px}; -->
         <li>
             <strong class="title">Time Allocated</strong>
@@ -111,13 +111,8 @@
     </ul>
 </div>
 
-<ul id="my-worksheet-options" class="worksheet-options" ng-show="!!hasActiveWorkSheet">
-    <li click-touch="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
-    <li click-touch="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
-</ul>
-
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': !!hasActiveWorkSheet, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn)}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
+<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': isMaintenanceStaff, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn)}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
     <ul class="search-results" ng-hide="uiTotalCount == 0">
         <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
             <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ netTotalCount }}</strong> items</p>
@@ -158,7 +153,7 @@
 
                 <div class="additional-info">
                     <!-- Show only if room is assigned -->
-                    <span class="{{room.assigned_staff.class}}" ng-if="!hasActiveWorkSheet && room.assigned_staff.name">{{room.assigned_staff.name}}</span>
+                    <span class="{{room.assigned_staff.class}}" ng-if="!isMaintenanceStaff && room.assigned_staff.name">{{room.assigned_staff.name}}</span>
                     <!-- Show only if room is not in service -->
                     <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
                 </div>
@@ -229,7 +224,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry" ng-if="!hasActiveWorkSheetng">
+                <div class="entry" ng-if="!isMaintenanceStaff">
                     <div class="select">
                         <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="" selected>All Employees</option>
