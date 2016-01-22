@@ -91,11 +91,12 @@ module.exports = function (gulp, $, options) {
 			return gulp.src(mappingList, {base: '.'})
 				.pipe($.less({
 		        	plugins: [cleancss]
-		        }))
+		        })).on('error', options.silentErrorShowing)
 		        .pipe($.concat(fileName))
-		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}))
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging:false, mediaMerging:false}).on('error', options.silentErrorShowing))
 		        .on('end', function(){
 		        	extendedMappings[theme] = [URL_APPENDER + "/" + fileName ];
+		        	console.log ('Guestweb Theme CSS - mapping-generation-ended: ' + fileName);
 		        })
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});

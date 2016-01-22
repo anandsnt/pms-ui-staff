@@ -111,8 +111,6 @@ module.exports = function(gulp, $, options){
 		return es.merge(tasks).on('end', function(){
 			return mkdirp(guestwebGenDir, function (err) {
 		    if (err) console.error('guestweb theme template mapping directory failed!! (' + err + ')');
-		    console.log('template cache');
-		    console.log (extendedMappings);
 	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
 			    if(err) {
 			        return console.error('guestweb theme template mapping file failed!! (' + err + ')');

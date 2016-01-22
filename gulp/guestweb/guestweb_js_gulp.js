@@ -131,7 +131,6 @@ module.exports = function (gulp, $, options) {
 
 		return mkdirp(guestwebGenDir, function (err) {
 		    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
-		    console.log(extendedMappings);
 	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
 			    if(err) {
 			        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
