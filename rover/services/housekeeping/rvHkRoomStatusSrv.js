@@ -654,19 +654,23 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return false;
 			};
 
-			if ( !!room.assignee_maid.name ) {
+			var assignedStaff = {
+				name: 'Unassigned',
+				class: 'unassigned'
+			};
+			room.canAssign = true;
+
+			if ( !!room.room_tasks && room.room_tasks.length ) {
 				room.canAssign = false;
-				return {
-					'name': angular.copy(room.assignee_maid.name),
-					'class': 'assigned'
-				};
-			} else {
-				room.canAssign = true;
-				return {
-					'name': 'Unassigned',
-					'class': 'unassigned'
-				};
+				assignedStaff.class = 'assigned';
+				if (_.chain(a).pluck('name').unique().value().length > 1) {
+					assignedStaff.name = 'Multiple Assignees';
+				} else {
+					assignedStaff.name = room.room_tasks[0].assignee_maid.name
+				}
 			}
+
+			return assignedStaff;
 		};
 		// exposing the method to service
 		this.calculateAssignedStaff = calculateAssignedStaff;
