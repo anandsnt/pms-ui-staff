@@ -8,7 +8,7 @@ sntGuestWeb.controller('resetPasswordController', ['$rootScope','$location','$st
     $scope.data.confirm_password = "";
     $scope.isPasswordReset = false;
 
-    // $scope.hotelLogo = "/assets/img/Yotel/yotel-logo.png"
+    // $scope.hotelLogo = "/assets/guestweb/img/Yotel/yotel-logo.png"
 
     //setup options for modal
 	$scope.opts = {

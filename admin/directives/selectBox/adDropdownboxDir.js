@@ -31,7 +31,7 @@ admin.directive('adDropdown', function($timeout) {
                 };
             }
         },
-    	templateUrl: '../../assets/directives/selectBox/adDropdownbox.html'
+    	templateUrl: '/assets/directives/selectBox/adDropdownbox.html'
     };
 
 });

@@ -1,5 +1,6 @@
-sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
+angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
     function($q, RVBaseWebSrvV2, dateFilter) {
+
         var that = this;
         this.reservation = {
             'settings': {},

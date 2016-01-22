@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupReservationCheckoutCtrl', [
+angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
     '$rootScope',
     '$scope',
     '$timeout',

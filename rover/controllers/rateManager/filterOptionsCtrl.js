@@ -1,4 +1,4 @@
-sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilterOptionsSrv', 'ngDialog',
+angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilterOptionsSrv', 'ngDialog',
     function(filterDefaults, $scope, RMFilterOptionsSrv, ngDialog) {
         'use strict';
 

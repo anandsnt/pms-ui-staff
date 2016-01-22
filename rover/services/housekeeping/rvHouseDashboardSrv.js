@@ -1,4 +1,4 @@
-sntRover.service('RVHkDashboardSrv', [
+angular.module('sntRover').service('RVHkDashboardSrv', [
 	'RVBaseWebSrv',
 	'$q',
 	'$window',

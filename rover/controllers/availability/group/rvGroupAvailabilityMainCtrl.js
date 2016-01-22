@@ -1,4 +1,4 @@
-sntRover.controller('groupAvailabilityMainController', [
+angular.module('sntRover').controller('groupAvailabilityMainController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'$rootScope',

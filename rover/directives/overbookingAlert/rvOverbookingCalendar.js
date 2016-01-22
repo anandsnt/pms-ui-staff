@@ -20,6 +20,6 @@ sntRover.directive('overbookingAlert', function() {
 
             };
         },
-        templateUrl: '../../assets/directives/overbookingAlert/rvOverbookingCalendar.html'
+        templateUrl: '/assets/directives/overbookingAlert/rvOverbookingCalendar.html'
     };
 });

@@ -225,6 +225,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				updateBackButton();
 			} else {
 
+				// skip sending messages if hotel settings doesn't allow.
+				if (!$scope.hotelDetails.send_confirmation_letter) {
+					$scope.reservationStatus.confirmed = true;
+					updateBackButton();
+					return false;
+				}
+
 				// skip sending messages if no mail id is provided or none of the emails are checked, go to the next screen
 				if ((!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) || (!$scope.otherData.isGuestPrimaryEmailChecked && !$scope.otherData.isGuestAdditionalEmailChecked)) {
 					$scope.reservationStatus.confirmed = true;

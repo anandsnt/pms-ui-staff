@@ -1,4 +1,4 @@
-sntRover.service('RVNewsPaperPreferenceSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+angular.module('sntRover').service('RVNewsPaperPreferenceSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 
 	this.saveNewspaperPreference = function(params){
 		var deferred = $q.defer();

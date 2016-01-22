@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupReservationEditCtrl', [
+angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     '$rootScope',
     '$scope',
     'rvGroupRoomingListSrv',
