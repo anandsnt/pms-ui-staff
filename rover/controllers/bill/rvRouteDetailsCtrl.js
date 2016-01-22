@@ -475,6 +475,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
 
             $scope.selectedEntity.reference_number = data.reference_number;
+            $scope.selectedEntity.is_allow_direct_debit = data.is_allow_direct_debit;
             //Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
             if(!isEmptyObject(data.credit_card_details)){
