@@ -20,6 +20,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		});
 
 		// Initializing filter data
+
 		$scope.filterData = {
 			'id': $scope.contactInformation === undefined? "" :$scope.contactInformation.id,
 			'filterActive': false,
@@ -72,6 +73,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			return paramsToSend;
 		};
 
+		//CICO-11669 -Added new summary fields
+		var setSummaryValues = function(data) {
+			$scope.arTransactionDetails.total_payments = data.total_payments;
+		    $scope.arTransactionDetails.total_charges = data.total_charges;
+		    $scope.arTransactionDetails.current_balance = data.current_balance;
+		    $scope.arTransactionDetails.unallocated_credit = data.unallocated_credit;
+	    };
+
 		// To fetch data for ar transactions
 		var fetchData = function(clearErrorMsg){
 			$scope.arDetailsFetched = false;
@@ -94,11 +103,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
 
-			    //CICO-11669 -Added new summary fields
-			    $scope.arTransactionDetails.total_payments = parseFloat(data.total_payments).toFixed(2);
-			    $scope.arTransactionDetails.total_charges = parseFloat(data.total_charges).toFixed(2);
-			    $scope.arTransactionDetails.current_balance = parseFloat(data.current_balance).toFixed(2);
-			    $scope.arTransactionDetails.unallocated_credit = parseFloat(data.unallocated_credit).toFixed(2);
+			    
 
 				$timeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
@@ -303,6 +308,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            if($scope.filterData.showFilterFlag === 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid){
 	            	$scope.arTransactionDetails.total_count++;
 	            }
+
+	            setSummaryValues(data);
 	        };
 
 	        var failure = function(errorMessage){
@@ -451,5 +458,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		     */
 
 	    };
+
+
 
 }]);

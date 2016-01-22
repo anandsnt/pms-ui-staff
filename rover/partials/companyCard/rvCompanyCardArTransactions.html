@@ -62,25 +62,25 @@
             <li>
                 <div class="data">
                     <span class="label">Total Payments</span>
-                    <span class="value">{{currencySymbol}}{{arTransactionDetails.total_payments}}</span>
+                    <span class="value">{{currencySymbol}}{{arTransactionDetails.total_payments | number: precisonTwo}}</span>
                 </div>
             </li>
             <li>
                 <div class="data">
                     <span class="label">Total Charges</span>
-                    <span class="value grey">{{currencySymbol}}{{arTransactionDetails.total_charges}}</span>
+                    <span class="value grey">{{currencySymbol}}{{arTransactionDetails.total_charges | number: precisonTwo }}</span>
                 </div>
             </li>
             <li>
                 <div class="data">
                     <span class="label">Current Balance</span>
-                    <span class="value red">{{currencySymbol}}{{arTransactionDetails.current_balance}}</span>
+                    <span class="value red">{{currencySymbol}}{{arTransactionDetails.current_balance | number: precisonTwo}}</span>
                 </div>
             </li>
             <li>
                 <div class="data">
                     <span class="label">Unallocated Credit</span>
-                    <span class="value green">{{currencySymbol}}{{arTransactionDetails.unallocated_credit}}</span>
+                    <span class="value green">{{currencySymbol}}{{arTransactionDetails.unallocated_credit | number: precisonTwo}}</span>
                 </div>
                 <button type="button" class="button green with-icon only-icon" ng-click="payAmount()">
                     <span class="icons icon-wallet"></span>
@@ -143,7 +143,7 @@
                                 </time>
                             </div>
                         </div>
-                        <div class="amount">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
+                        <div class="amount">{{currencySymbol}}{{transaction.amount | number:precisonTwo }}</div>
 
                         <div class="switch-button" ng-class="{'on': transaction.paid}">
                             <input value="" type="checkbox" />
