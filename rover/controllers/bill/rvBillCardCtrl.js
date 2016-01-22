@@ -1712,8 +1712,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.hasPermissionToProceedCheckout = function() {
-		//return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
-		return true;
+		return rvPermissionSrv.getPermissionValue ('OVERWRITE_DEBIT_RESTRICTION');
 	};
 
 	// CICO-12983 Restrict Debits for Company / TA cards.

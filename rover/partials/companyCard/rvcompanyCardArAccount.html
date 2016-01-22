@@ -9,7 +9,7 @@
             <label for="company-arn" translate>AR_NUMBER</label>
             <input name="company-arn" id="company-arn" value="" type="text" placeholder = "Enter AR Number" ng-model="arAccountDetails.ar_number" ng-disabled="arAccountDetails.is_auto_assign_ar_numbers"/>
          </div>
-         <div class="entry only-switch">
+         <div class="entry only-switch" ng-class="{'overlay' : !hasPermissionToEditDirectBillRestriction()}">
             <label for="company-direct-debit">Allow Direct Debit</label>
             <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_allow_direct_debit}">
                <input id="company-direct-debit" type="checkbox" ng-model="arAccountDetails.is_allow_direct_debit" ng-change="checkboxModelChanged();"/>
