@@ -48,9 +48,10 @@
 
     <!-- Room or Task View, default to Room -->
     <div class="entry switch">
-        <div class="switch-button on">
+        <div class="switch-button"
+            ng-class="{ 'on': currentView === 'ROOMS', 'off': currentView==='TASKS' }">
             <input id="room-task-toggle" value="" type="checkbox"
-                ng-change="switchView" ng-model="currentView" checked />
+                ng-click="toggleView()" checked />
             <label class="data-off">
                 <span class="value">Room</span>
                 <span class="switch-icon">Task</span>
@@ -170,10 +171,10 @@
                 <div bo-if="!room.is_queued && !room.is_occupied" class="show-vacant">VACANT</div>
 
                 <!-- Show only if room is queued -->
-                <span bo-if="room.is_queued" class="icons icon-queued">VACANT</div>
+                <span bo-if="room.is_queued" class="icons icon-queued">VACANT</span>
 
                 <!-- IF VIEW BY TASK, ADD THIS: -->
-                <ul class="tasks" ng-if="currentView=='TASKS'">
+                <ul class="tasks" ng-if="currentView === 'TASKS'">
                     <!-- Add class "completed" if task is completed -->
                     <li ng-repeat="task in room.room_tasks" ng-class="{ 'completed': task.is_completed }">
                         {{task.name}}

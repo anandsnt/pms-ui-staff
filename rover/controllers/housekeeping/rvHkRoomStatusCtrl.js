@@ -108,9 +108,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
-		$scope.currentView = 'rooms';
+		$scope.currentView = 'ROOMS';
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
+		};
+		$scope.toggleView = function() {
+			if ($scope.currentView === 'ROOMS') {
+				$scope.currentView = 'TASKS';
+			} else {
+				$scope.currentView = 'ROOMS';
+			}
 		};
 
 		// multiple room status change DS
