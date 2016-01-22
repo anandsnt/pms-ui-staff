@@ -845,7 +845,17 @@
 "ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
 "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
 "ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In",
-"OFFER_MOBILEKEY_LABEL" : "Offer Option to use Mobile Phone Key"
+"OFFER_MOBILEKEY_LABEL" : "Offer Option to use Mobile Phone Key",
+"MOBILE_KEY_SETTINGS_TITLE" : "Mobile app key availability and minimum requirements",
+"IOS_LABEL" : "IOS",
+"ANDROID_LABEL" : "ANDROID",
+"ENABLE_MOBILE_KEY_LABEL" : "ENABLE MOBILE KEY",
+"MIN_IOS_VERSION_LABEL" : "MINIMUM IOS VERSION",
+"MIN_ANDROID_VERSION_LABEL" : "MINIMUM ANDROID VERSION",
+"MIN_VERSION_LABEL" : "minimum version",
+"EXCLUDED_VERSION_LABEL" : "EXCLUDED OS VERSIONS"
+
+
 
 
 
