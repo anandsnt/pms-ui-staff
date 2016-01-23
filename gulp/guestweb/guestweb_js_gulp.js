@@ -28,7 +28,7 @@ module.exports = function (gulp, $, options) {
 				.on('error', onError)
 		        .pipe($.concat(GUESTWEB_JS_COMBINED_FILE))
 		        .pipe($.ngAnnotate({single_quotes: true}))
-		        .pipe($.uglify({compress:true, output: {
+		        .pipe($.uglify({compress:true,mangle:false, output: {
 		        	space_colon: false
 		        }})),
 

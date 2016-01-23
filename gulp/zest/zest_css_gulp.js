@@ -66,7 +66,9 @@ module.exports = function(gulp, $, options) {
 		        	return {};
 		        }));
 		});
-		return es.merge(tasks);
+		return es.merge(tasks).on('end', function(){
+			runSequence('create-zest-theme-mapping-css-production');
+		});
 	});
 
 	gulp.task('zeststation-css-theme-generate-mapping-list-dev', function(){
