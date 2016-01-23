@@ -9,6 +9,18 @@ module.exports = {
 				'rover/filters/rangeFilter.js',
 				'rover/directives/delayTextbox/rvDelayTextBox.js',
 				'rover/directives/Autogrowing text field/autoGrowFieldDirective.js',
+				'rover/directives/checkBox/**/*.js',
+				'rover/directives/clearTextbox/**/*.js',
+
+				'rover/directives/fileRead/**/*.js',
+				'rover/directives/Outside Click handler/**/*.js',
+				'rover/directives/rateAutoComplete/*.js',
+				'rover/directives/selectBox/*.js',
+				'rover/directives/setTextboxValue/*.js',
+				'rover/directives/textArea/*.js',
+				'rover/directives/textBox/*.js',
+				'rover/directives/toggle/*.js',
+								
 				controllerRoot + "rvGuestController.js",
 				controllerRoot + "rvContactInfoDatePickerCtrl.js",
 				controllerRoot + "rvAddLoyaltyProgramController.js",
