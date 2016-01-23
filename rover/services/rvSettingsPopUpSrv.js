@@ -1,4 +1,4 @@
-sntRover.service('RVSettingsSrv',['$q', 'RVBaseWebSrv', function( $q, RVBaseWebSrv){
+angular.module('sntRover').service('RVSettingsSrv',['$q', 'RVBaseWebSrv', function( $q, RVBaseWebSrv){
 
  /*
     * To fetch user details

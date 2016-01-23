@@ -1,4 +1,4 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv','rvPermissionSrv',
+angular.module('sntRover').controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv','rvPermissionSrv',
 	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];

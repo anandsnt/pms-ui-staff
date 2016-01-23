@@ -1918,7 +1918,7 @@
                             padding: 20px;
 
                             .entry {
-                                height: 40px;
+                                height: 42px;
 
                                 &.filter {
                                     width: 50px;
@@ -1928,26 +1928,52 @@
                                     }
                                 }
 
-                                &.showing { .calc-width(40, 190); }
+                                &.showing { width: 160px; }
 
                                 &.search {
-                                    .calc-width(60, 190);
+                                    .calc-width(100, 670);
 
                                     .clear-query { right: 10px; }
                                     .query { width: 100%; }
                                 }
 
                                 &.dates {
-                                    width: 300px;
+                                    width: 260px;
 
-                                    .entry-data { width: 140px; }
+                                    .entry-data { width: 125px; }
                                 }
                             }
                         }
 
                         .totals {
                             li {
+                                padding-bottom: 10px;
+
+                                .data {
+                                    .label { line-height: 20px; }
+                                    .value { line-height: 30px; }
+                                }
+
                                 .button { .pull-right; }
+
+                                .with-button {
+                                    position: relative;
+
+                                    .button {
+                                        position: absolute;
+                                        bottom: 0;
+                                        right: 0;
+                                        line-height: 30px;
+                                        height: 30px;
+                                        padding: 0 10px;
+                                    }
+                                }
+
+                                &:last-child {
+                                    top: 0;
+                                    padding: 20px 0 20px 10px;
+                                    border-left: 1px solid rgba(0,0,0,.1);
+                                }
                             }                                    
                         }
                     }

@@ -1,4 +1,4 @@
-sntRover.service('rvUtilSrv', [function(){
+angular.module('sntRover').service('rvUtilSrv', [function(){
 
 		var self = this;
 		/**

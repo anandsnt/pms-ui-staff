@@ -159,7 +159,8 @@ sntZestStation.controller('zsRootCtrl', [
                     fileref.setAttribute("href", filename);
                     $('body').append(fileref);
                 };
-                loadStyleSheets('/assets/' + "zeststation_"+theme.toLowerCase() +'.css');
+                loadStyleSheets('/assets/' + "zest_station/css/"+theme.toLowerCase() +'.css');
+                
                 $scope.setThemeByName(theme);
             }
             
@@ -211,7 +212,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
         $scope.getThemeLink = function(theme){
-            var link, assetPath = '../assets/css/', ext = '.css.less';
+            var link, assetPath = '../assets/zest_station/css/', ext = '.css.less';
             theme = $scope.getThemeName(theme);
             link = assetPath+theme.toLowerCase()+ext;//default to zoku for now until other stylesheets are generated
             return link;

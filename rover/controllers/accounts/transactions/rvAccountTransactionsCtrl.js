@@ -14,6 +14,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	'$timeout',
 	'$window',
 	'$q',
+	'jsMappings',
 	function($scope,
 		$rootScope,
 		$filter,
@@ -28,7 +29,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		rvPermissionSrv,
 		$timeout,
 		$window,
-		$q) {
+		$q,
+		jsMappings) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -343,6 +345,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.openPostCharge = function( activeBillNo ) {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('postcharge')
+        .then(function(){
+        	$scope.$emit('hideLoader');
 
 			// pass on the reservation id
 			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
@@ -362,6 +370,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		className: '',
 	    		scope: $scope
 	    	});
+		})
 		};
 
 		var fetchPaymentMethods = function(directBillNeeded) {

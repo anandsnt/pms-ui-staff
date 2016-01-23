@@ -1,125 +1,74 @@
-
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
-
-    $urlRouterProvider.otherwise("/noOptionAvailable");
-
     // checkout now states
+    $stateProvider.state('guestwebRoot', {
+        url: '/guestwebRoot/:mode/:reservationId',
+        controller: 'homeController',
+        resolve: {
+            reservationAndhotelData: ['sntGuestWebSrv', '$stateParams', function(sntGuestWebSrv, $stateParams) {
 
-	$stateProvider.state('checkoutBalance', {
-        url: '/checkoutBalance',
-        controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
-	    title: 'Balance - Check-out Now'
-    })
-    .state('checkOutStatus', {
-        url: '/checkOutStatus',
-       	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
-		title: 'Status - Check-out Now'
-    }).state('checkOutConfirmation', {
-        url: '/checkOutConfirmation',
-       	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/checkoutConfirmation.html',
-		title: 'Confirm - Check-out Now'
-    });
+                 var absUrl = window.location.href;
+                 var apiUrl = "";
+                 // if the guestweb is accessed normaly, ie invoked using
+                 // the mail sent from the hotel admin
+                 if(absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1){
+                      var offset= absUrl.indexOf("?");
+                      var remainingURl  = absUrl.substring(offset,absUrl.length);
+                      var startingUrl  = absUrl.substring(0,offset);
+                      apiUrl = startingUrl+"_data"+remainingURl;
 
-    // late checkout states
+                 }
+                 //invoked when forgot password or email verification is
+                 //requested from the zest apps
+                 else if(absUrl.indexOf("/guest_web/home/user_activation")!==-1){
+                    var offset= absUrl.indexOf("?");
+                    var remainingURl  = absUrl.substring(offset,absUrl.length);
+                    var startingUrl  = absUrl.substring(0,offset);
+                    apiUrl = startingUrl+".json"+remainingURl;
+                 }
+                 // direct URL checkin - accessing URLS set in hotel admin for checkin
+                 else if(absUrl.indexOf("checkin") !== -1){
+                    //to strip away state URLS
+                    absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0,absUrl.indexOf("#")) : absUrl;
+                    var urlComponents     = absUrl.split('/');;
+                    var application       = urlComponents[urlComponents.length-3];
+                    var url_suffix        = urlComponents[urlComponents.length-1];
+                    var hotel_identifier  = urlComponents[urlComponents.length-2];
+                        apiUrl            = urlComponents[0]+"/guest_web/home/checkin_verification_data?hotel_identifier="+hotel_identifier+"&application="+application+"&url_suffix="+url_suffix;
+                 }
+                // direct URL checkout - accessing URLS set in hotel admin for checkin
+                 else{
+                    //to strip away state URLS
+                    absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0,absUrl.indexOf("#")) : absUrl;
+                    var urlComponents     = absUrl.split('/');;
+                    var url_suffix        = urlComponents[urlComponents.length-1];
+                    apiUrl                = urlComponents[0]+"/guest_web/home/checkout_verification_data?hotel_identifier="+url_suffix;
+                 }
 
-    $stateProvider.state('checkOutOptions', {
-    	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/landing.html',
-	 	controller: 'checkOutLandingController',
-	 	title: 'Check-out'
-	 }).state('checkOutLaterOptions', {
-	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
-	 	controller: 'checkOutLaterController',
-		title: 'Check-out Later'
-	}).state('checkOutLaterSuccess', {
-		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
-		controller: 'checkOutLaterSuccessController',
-		title: 'Status - Check-out Later'
-	 });
-
-	// checkin states
-
-	$stateProvider.state('checkinConfirmation', {
-	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
-	 	controller : 'checkInConfirmationViewController',
-	 	title: 'Check-in'
-	 }).state('checkinReservationDetails', {
-	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
-	 	controller : 'checkInReservationDetails',
-	 	title: 'Details - Check-in'
-	 }).state('checkinUpgrade', {
-	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
-	 	controller : 'checkinUpgradeRoomController',
-	    title: 'Upgrade - Check-in'
-	 }).state('checkinKeys', {
-	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
-	 	controller : 'checkInKeysController',
-	 	title: 'Keys - Check-in'
-	 }).state('checkinSuccess', {
-	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
-	 	title: 'Status - Check-in'
-	 }).state('checkinArrival', {
-	 	url: '/checkinArrival',
-	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/arrivalDetails.html',
-	 	title: 'Arrival Details - Check-in'
-	 });
-
-
-	 //room verification
-
-	 $stateProvider.state('checkoutRoomVerification', {
-	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
-	 	title: 'Room verification'
-	 }).state('ccVerification', {
-	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
-	 	title: 'CC verification'
-	 });
-
-	// pre checkin states
-
-    $stateProvider.state('preCheckinStatus', {
-		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/CARLYLE/preCheckinStatus.html',
-		controller : 'preCheckinStatusController',
-		title: 'Status - Pre Check-In'
-	 });
-
-	// zest web states
-
-    $stateProvider.state('resetPassword', {
-    	url: '/resetPassword',
-	 	templateUrl: '/assets/zest/partials/resetPassword.html',
-	 	controller : 'resetPasswordController',
-	 	title: 'Reset Password'
-	});
-
-	$stateProvider.state('emailVerification', {
-    	url: '/emailVerification',
-	 	templateUrl: '/assets/zest/partials/emailVerificationStatus.html',
-	 	controller : 'emailVerificationStatusController',
-	 	title: 'Email Verification'
-	});
-
-
-	$stateProvider.state('noOptionAvailable', {
-    	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'Feature not available'
-	});
-
+            	
+            	return sntGuestWebSrv.fetchHotelDetailsFromUrl(apiUrl);
+            
+            }],
+            jsThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {
+            	return sntGuestWebSrv.fetchJsHotelThemeList();
+            }],           
+            fetchJsThemeFiles: ['reservationAndhotelData', 'jsThemeList', 'sntGuestWebSrv', function(reservationAndhotelData, jsThemeList, sntGuestWebSrv){
+            	var theme = reservationAndhotelData.hotel_theme;
+            	return sntGuestWebSrv.fetchJsAssets(theme, ['sntGuestWeb']);
+            }],
+            cssThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {
+                return sntGuestWebSrv.fetchCSSHotelThemeList();
+            }],            
+            fetchCSSThemeFiles: ['reservationAndhotelData', 'cssThemeList', 'sntGuestWebSrv', function(reservationAndhotelData, jsThemeList, sntGuestWebSrv){
+            	var theme = reservationAndhotelData.hotel_theme;
+            	return sntGuestWebSrv.fetchCSSAssets(theme);
+            }],
+            templateThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {
+                return sntGuestWebSrv.fetchTemplateHotelThemeList();
+            }],             
+            fetchTemplateThemeFiles: ['reservationAndhotelData', 'templateThemeList', 'sntGuestWebSrv', function(reservationAndhotelData, jsThemeList, sntGuestWebSrv){
+                var theme = reservationAndhotelData.hotel_theme;
+                return sntGuestWebSrv.fetchTemplateAssets(theme);
+            }]
+       }	
+    });	
 }]);

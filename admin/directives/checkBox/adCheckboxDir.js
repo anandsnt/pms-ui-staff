@@ -17,7 +17,7 @@ admin.directive('adCheckbox', function($timeout) {
             ngHide: '@hide'
 	    },
 
-    	templateUrl: '../../assets/directives/checkBox/adCheckbox.html'
+    	templateUrl: '/assets/directives/checkBox/adCheckbox.html'
     };
 
 });

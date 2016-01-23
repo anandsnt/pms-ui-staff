@@ -1,4 +1,4 @@
-sntRover.service('RVGuestCardSrv',['$http', '$q', 'RVBaseWebSrv', function($http, $q, RVBaseWebSrv){
+angular.module('sntRover').service('RVGuestCardSrv',['$http', '$q', 'RVBaseWebSrv', function($http, $q, RVBaseWebSrv){
 
 	this.fetchGuestPaymentData = function(userId){
 		var deferred = $q.defer();

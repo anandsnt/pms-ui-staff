@@ -1,4 +1,4 @@
-sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
+angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
     function ($q, $scope, ngDialog) {
 
         $scope.init = function(){
