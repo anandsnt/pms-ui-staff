@@ -23,7 +23,7 @@
 					<p class="msg-head blue-text preckin-status-header">You are checked in!</p>
 					<p class="msg-body">Reservation #:{{confirmationNumber}}</p>
 					<p class="msg-body">{{responseData.confirmation_message}}</p>
-					<p class="msg-body">{{userEmail}}</p>
+					<p class="msg-body" ng-show="keyDeliveryByEmail && offerRoomDeliveryOptions">{{userEmail}}</p>
 				</div>
 				<div class="row cabin_number_field centeralign" ng-show="keyDeliveryByEmail && offerRoomDeliveryOptions">			
 					<button class="checkin-button continue-button email-button"
