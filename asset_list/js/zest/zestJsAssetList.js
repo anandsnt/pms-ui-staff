@@ -20,7 +20,7 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
 				jsLibRoot + 'signature/**/*.js',
-                                jsLibRoot + 'fullcalender/**/*.js'
+                jsLibRoot + 'fullcalender/**/*.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',

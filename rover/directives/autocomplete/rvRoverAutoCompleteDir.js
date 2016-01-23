@@ -49,7 +49,9 @@
     /**
      * auto complete directive function
      */
-    var autoCompleteDirective = function(highlightFilter) {
+
+
+    angular.module('sntRover').directive('roverAutoComplete', ['highlightFilter', function(highlightFilter) {
         highlightFilter_ = highlightFilter;
         return {
             restrict: 'A',
@@ -61,7 +63,5 @@
             },
             link: autoCompleteLinkFn
         };
-    };
-
-    angular.module('sntRover').directive('roverAutoComplete', ['highlightFilter', autoCompleteDirective]);
+    }]);
 }());

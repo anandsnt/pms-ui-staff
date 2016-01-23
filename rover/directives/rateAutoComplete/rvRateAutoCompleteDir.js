@@ -140,10 +140,9 @@
     var linkFn = function(scope, el){
     	autocompleteEl = el;
     };
-    /**
-     * auto complete directive function
-     */
-    var autoCompleteDirective = function(RVCompanyCardSrv, highlightFilter) {
+  
+    
+	angular.module('sntRover').directive('rateAutoComplete', ['RVCompanyCardSrv', 'highlightFilter', function(RVCompanyCardSrv, highlightFilter) {
         rvCompanyCardSrv = RVCompanyCardSrv,
         highlightFilter_ = highlightFilter;
         return {
@@ -159,8 +158,7 @@
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,
-            templateUrl: '../../assets/directives/rateAutoComplete/rateautocompletedir.html'
+            templateUrl: '/assets/directives/rateAutoComplete/rateautocompletedir.html'
         };
-    };
-	angular.module('sntRover').directive('rateAutoComplete', ['RVCompanyCardSrv', 'highlightFilter', autoCompleteDirective]);
+    }]);
 }());
