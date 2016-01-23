@@ -8,6 +8,8 @@ module.exports = {
 				nonMinifiedFiles: [						
 					controllerRoot + 'groups/activity/**/*.js',
 					controllerRoot + 'accounts/**/*.js',
+					controllerRoot + 'depositBalance/rvDepositBalanceAccountsCtrl.js',
+					controllerRoot + 'roverPayment/rvCardOptionsCtrl.js',
 					servicesRoot + 'accounts/**/*.js',
 					servicesRoot + 'group/**/*.js',
 					servicesRoot + "reservation/rvReservationSummarySrv.js",
@@ -15,6 +17,7 @@ module.exports = {
 					servicesRoot + "rvReservationSrv.js",
 					servicesRoot + "depositBalance/rvDepositBalanceSrv.js",
 					servicesRoot + "bill/rvBillCardSrv.js",
+
 				]
 			};
 		return assetsForScreen;

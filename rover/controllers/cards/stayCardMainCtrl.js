@@ -6,7 +6,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		$scope.addNewCards = true;
 		var that = this;
 		if ($scope.guestCardData.cardHeaderImage === undefined || $scope.guestCardData.cardHeaderImage === "") {
-			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
+			$scope.guestCardData.cardHeaderImage = '/assets/images/avatar-trans.png';
 		}
 		$scope.pendingRemoval = {
 			status: false,
