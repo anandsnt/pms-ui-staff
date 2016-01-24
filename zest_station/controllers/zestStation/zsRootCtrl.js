@@ -140,14 +140,10 @@ sntZestStation.controller('zsRootCtrl', [
              * then set by name (will do this for now, since there are only 2 customers)
              * but will need to move out to more automated method
              */
-            if (response && response.existing_email_templates){
-                if (response.themes){
-                    for (var i in response.themes){
-                        if (response.themes[i].id === response.existing_email_template_theme){
-                            theme = response.themes[i].name;
-                        }
-                    }
-                }
+            if (response && response.existing_email_templates && response.themes){
+                var hotelDetails = _.findWhere(response.themes, {id: response.existing_email_template_theme});
+                theme = hotelDetails && hotelDetails.name;
+  
             }
             theme = $scope.getThemeName(theme);//from here we can change the default theme(to stayntouch, or other hotel)
             $state.theme = theme;
