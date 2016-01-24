@@ -34,7 +34,7 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
-	gulp.task('zeststation-css-theme-generate-mapping-list-prod', function(){
+	gulp.task('zeststation-css-theme-generate-mapping-list-prod', ['zeststation-copy-css-files-prod'], function(){
 		var glob = require('glob-all'),
 			fileList = [],
 			fs = require('fs'),
@@ -71,6 +71,14 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
+	gulp.task('zeststation-copy-css-files-prod', function(){
+		var guestwebSourceList = [];
+
+		guestwebSourceList = guestwebSourceList.concat(['zest_station/css/**/*.svg', 'zest_station/css/**/*.cur', 'zest_station/css/**/*.png'])
+		return gulp.src(guestwebSourceList, {base: '.'})
+			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+	});
+
 	gulp.task('zeststation-css-theme-generate-mapping-list-dev', function(){
 		var glob = require('glob-all'),
 			fileList = [],
@@ -89,7 +97,11 @@ module.exports = function(gulp, $, options) {
 				.pipe($.less({
 		        	plugins: [cleancss]
 		        }))
-		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging: false, mediaMerging: false}).on('error', onError))
+		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging: false, mediaMerging: false}).on('error', options.silentErrorShowing))
+		        .on('end', function(){
+		        	extendedMappings[theme] = [URL_APPENDER + "/zest_station/css/" + fileName ];
+		        	console.log ('Guestweb Theme CSS - mapping-generation-ended: ' + fileName);
+		        })
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});
 		return es.merge(tasks).on('end', function(){
@@ -103,11 +115,11 @@ module.exports = function(gulp, $, options) {
 		delete require.cache[require.resolve(ZESTSTAION_THEME_CSS_MAPPING_FILE)];
 		ZESTSTAION_THEME_CSS_LIST 	= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList();
 
-		var guestwebSourceList = '';
+		var guestwebSourceList = [];
 		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(ZESTSTAION_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat(['zeststation/css/**/*.svg', 'zeststation/css/**/*.cur'])
+		guestwebSourceList = guestwebSourceList.concat(['zest_station/css/**/*.svg', 'zest_station/css/**/*.cur', 'zest_station/css/**/*.png']);
 		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
@@ -116,13 +128,13 @@ module.exports = function(gulp, $, options) {
 		delete require.cache[require.resolve(ZESTSTAION_THEME_CSS_MAPPING_FILE)];
 		ZESTSTAION_THEME_CSS_LIST 	= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList();
 
-		var guestwebSourceList = '';
+		var guestwebSourceList = [];
 		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(ZESTSTAION_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat('asset_list/js/zeststation/**/*.js', 'asset_list/theming/zeststation/**/*.js');
+		guestwebSourceList = guestwebSourceList.concat(['asset_list/js/zeststation/**/*.js', 'asset_list/theming/zeststation/**/*.js', 'zest_station/**/*.less']);
 		return gulp.watch(guestwebSourceList, function(callback){
-			return runSequence('build-zeststation-css-dev', 'copy-zeststation-base-html');
+			return runSequence('build-zeststation-css-dev', 'copy-zest-base-html');
 		});
 	});
 }

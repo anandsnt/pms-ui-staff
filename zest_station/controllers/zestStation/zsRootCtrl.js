@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv, cssMappings, zestStationSettings) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -159,7 +159,8 @@ sntZestStation.controller('zsRootCtrl', [
                     fileref.setAttribute("href", filename);
                     $('body').append(fileref);
                 };
-                loadStyleSheets('/assets/' + "zest_station/css/"+theme.toLowerCase() +'.css');
+                var url = cssMappings[theme];
+                loadStyleSheets(url);
                 
                 $scope.setThemeByName(theme);
             }
@@ -276,36 +277,13 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 	var routeChange = function(event, newURL) {
-            event.preventDefault();
-            return;
-          };
+        event.preventDefault();
+        return;
+    };
 
-        $rootScope.$on('$locationChangeStart', routeChange);
-        window.history.pushState("initial", "Showing Dashboard", "#/zest_station/home");
+    $rootScope.$on('$locationChangeStart', routeChange);
+    window.history.pushState("initial", "Showing Dashboard", "#/zest_station/home");
 
-	/**
-	 * Set zest admin settings data.
-	 */
-	var fetchCompleted =  function(data){
-		$scope.$emit('hideLoader');
-		$scope.zestStationData = data;
-                
-                
-                
-        _.extend(hotelDetailsSrv.data, data);
-                $scope.settings = data;
-                $scope.setupIdleTimer();
-		$scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
-                $scope.fetchHotelSettings();
-                $scope.getWorkStation();
-                $scope.getHotelStationTheme();
-                //set print and email options set from hotel settings > Zest > zest station
-                $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
-                $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
-	};
-        
-        
-        
     $scope.toggleOOS = function(){
         if ($state.isOOS){
             $rootScope.$emit(zsEventConstants.OOS_OFF);
@@ -729,12 +707,18 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.hasLoader = false;
 
 		//call Zest station settings API
-		var options = {
-                    params: 			{},
-                    successCallBack: 	fetchCompleted,
-                    failureCallBack:    $scope.failureCallBack
-                };
-		$scope.callAPI(zsTabletSrv.fetchSettings, options);
+        $scope.zestStationData = zestStationSettings;
+             
+        _.extend(hotelDetailsSrv.data, zestStationSettings);
+        $scope.settings = zestStationSettings;
+        $scope.setupIdleTimer();
+        $scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
+        $scope.fetchHotelSettings();
+        $scope.getWorkStation();
+        $scope.getHotelStationTheme();
+        //set print and email options set from hotel settings > Zest > zest station
+        $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
+        $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	}();
         
         
