@@ -16,7 +16,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('copy-zest-base-html', function(){
 		return gulp.src(ZEST_HTML_FILE)
-			.pipe(gulp.dest(options['DEST_ROOT_PATH']+'zest'));
+			.pipe(gulp.dest(options['DEST_ROOT_PATH']+'zest_station'));
 	});
 
 	gulp.task('zest-asset-prod-precompile', ['compile-zest-js-production', 'zest-template-cache-production',
