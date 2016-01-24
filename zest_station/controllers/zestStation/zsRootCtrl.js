@@ -159,7 +159,7 @@ sntZestStation.controller('zsRootCtrl', [
                     fileref.setAttribute("href", filename);
                     $('body').append(fileref);
                 };
-                var url = cssMappings[theme];
+                var url = cssMappings[theme.toLowerCase()];
                 loadStyleSheets(url);
                 
                 $scope.setThemeByName(theme);
