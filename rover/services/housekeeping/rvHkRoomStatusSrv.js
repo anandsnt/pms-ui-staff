@@ -69,26 +69,22 @@ sntRover.service('RVHkRoomStatusSrv', [
 						if ( passedParams.work_type_id ) {
 							params['work_type_id']  = passedParams.work_type_id;
 							filter.filterByWorkType = passedParams.work_type_id;
-
-							if ( passedParams.assignee_id ) {
-								params['assignee_id']       = passedParams.assignee_id;
-								filter.filterByEmployeeName = passedParams.assignee_id;
-							};
+						}
+						if ( passedParams.assignee_id ) {
+							params['assignee_id']       = passedParams.assignee_id;
+							filter.filterByEmployeeName = passedParams.assignee_id;
 						} else {
 							params['all_employees_selected'] = true;
 						};
 					} else {
 						if ( filter.filterByWorkType ) {
 							params['work_type_id'] = filter.filterByWorkType;
-
-							if ( filter.filterByEmployeeName ) {
-								params['assignee_id'] = filter.filterByEmployeeName;
-							} else {
-								params['all_employees_selected'] = true;
-							};
+						}
+						if ( filter.filterByEmployeeName ) {
+							params['assignee_id'] = filter.filterByEmployeeName;
 						} else {
 							params['all_employees_selected'] = true;
-						};
+						}
 					};
 				};
 
