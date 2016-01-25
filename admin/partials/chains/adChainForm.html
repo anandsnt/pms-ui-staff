@@ -182,6 +182,62 @@
 				<ad-textbox value="editData.terms_cond_email"   label = "CONTACT EMAIL FOR T&amp;C" placeholder = "Enter e-mail"  styleclass="full-width"></ad-textbox>
 
 			</fieldset>
+                    
+                    
+                    
+                    
+                    <!--  SMS / Shortcode title-->
+                    
+			<div class="form-title">
+				<h3>
+					<span></span>
+					SMS / Short Code
+				</h3>
+			</div>
+                    <!-- / title -->
+			<fieldset class="holder left float">
+                            <!-- SMS Active Switch -->
+                            <div class="entry inline-flex" >
+                                    <label class="switch-label">Active</label>
+                                    <div class="switch-button single" ng-class="{ on: editData.sms_active }" ng-click="editData.sms_active = !editData.sms_active">
+                                        <input type="checkbox">
+                                        <span class="switch-icon"></span>
+                                    </div>
+                                </div>
+                            
+                            <!-- Short code ownership -->
+                                <label class="radio overlay" ng-class="{'checked':editData.shortcode_owner === 'customer'}">
+                                        <span class="icon-form icon-radio checked" ></span>
+                                        <!-- span class="icon-form icon-radio " ng-class="{'checked':editData.shortcode_owner == 'customer'}"></span -->
+                                        <input type="radio" ng-model="editData.shortcode_owner" value="radio" class="change-data" ng-disabled="isEditmode">
+                                        Customer
+                                        <!--span>(note)</span-->
+                                </label>
+                                <label class="radio overlay" ng-class="{'checked':editData.shortcode_owner === 'snt'}">
+                                        <span class="icon-form icon-radio " ng-class="{'checked':editData.shortcode_owner == 'snt'}"></span>
+                                        <input type="radio" ng-model="editData.shortcode_owner" value="radio" class="change-data overlay" ng-disabled="isEditmode">
+                                        StayNTouch
+                                </label>
+                            
+                            
+			</fieldset>
+			<fieldset class="holder right float">
+				<!-- Help Keywords + response-->
+                                
+                                <ad-textbox value="editData.sms_help_keywords"   label = "Help Keywords" placeholder = "Enter Help Keywords" required = "yes" styleclass="full-width"></ad-textbox>
+                                <div class="entry full-width">
+					<label for="sms_help_response">
+						Help Response 
+					</label>
+					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width"></textarea>
+				</div>
+                                 <span class='overlay'>* Separate help keywords with (;) for multiple keywords </span>
+			</fieldset>
+                    
+                    
+                    
+                    
+                    
 
 			<div class="actions float">
 				<button type="button" ng-click="cancelClicked()" class="button blank edit-data-inline">Cancel</button>
