@@ -15,6 +15,7 @@ module.exports = {
 			'rover.financials' 	: roverJsListRoot + 'financialsJsAssetList.js',
 			'postcharge'		: roverJsListRoot + 'postChargeJsAssetList.js',
 			'endofday'			: roverJsListRoot + 'endOfDayJsAssetList.js',
+			'addBillingInfo'	: roverJsListRoot + 'addBillingInfoPopupJsAssetList.js',
 			'changestaydates'	: roverJsListRoot + 'changeDatesJsAssetList.js',
 			'rover.accounts'	: roverJsListRoot + 'accountsJsAssetList.js',
 			'rover.workManagement'	: roverJsListRoot + 'workManagementJsAssetList.js',
