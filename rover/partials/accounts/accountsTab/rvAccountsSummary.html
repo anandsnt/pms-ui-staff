@@ -8,7 +8,7 @@
             </div>
             <div class="entry margin">
                 <label for="account-number" translate>ACCOUNT_NUMBER</label>
-                <input id="account-number" ng-model="accountConfigData.summary.posting_account_number" type="text" />
+                <input id="account-number" ng-disabled="accountConfigData.summary.is_lightspeed_account" ng-model="accountConfigData.summary.posting_account_number" type="text" />
             </div>
             <div class="entry">
                 <label for="account-type" translate>ACCOUNT_TYPE</label>
