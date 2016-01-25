@@ -89,7 +89,7 @@
 			 */
 			this.fetchJsAssets = function(key, modules_to_inject) {
 				if (!!jsMappingList) {
-				  return $ocLazyLoad.load({ serie: true, files: jsMappingList[key] }).then(function() {
+				  return $ocLazyLoad.load({ insertBefore: '.main-container', serie: true, files: jsMappingList[key] }).then(function() {
 				    if (typeof modules_to_inject !== "undefined") {
 				     $ocLazyLoad.inject(modules_to_inject);
 				    }
@@ -108,7 +108,7 @@
 			 */
 			this.fetchTemplateAssets = function(key, modules_to_inject) {
 				if (!!templateMappingList) {
-				  return $ocLazyLoad.load({ reconfig: true, serie: true, files: templateMappingList[key] }).then(function() {
+				  return $ocLazyLoad.load({ insertBefore: '.main-container', reconfig: true, serie: true, files: templateMappingList[key] }).then(function() {
 				    if (typeof modules_to_inject !== "undefined") {
 				     $ocLazyLoad.inject(modules_to_inject);
 				    }
@@ -127,7 +127,7 @@
 			 */
 			this.fetchCSSAssets = function(key, modules_to_inject) {
 				if (!!cssMappingList) {
-				  return $ocLazyLoad.load({ serie: true, files: cssMappingList[key] }).then(function() {
+				  return $ocLazyLoad.load({ insertBefore: '.main-container', serie: true, files: cssMappingList[key] }).then(function() {
 				    if (typeof modules_to_inject !== "undefined") {
 				     $ocLazyLoad.inject(modules_to_inject);
 				    }
