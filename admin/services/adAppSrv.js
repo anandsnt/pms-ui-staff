@@ -16,6 +16,22 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 		return deferred.promise;
 	};
 
+	this.fetchDashboardConfig = function(){
+		var deferred = $q.defer();
+		var url = '/admin/dashboard.json';
+
+
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+
+		ADBaseWebSrvV2.getJSON(url).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
+
 	this.redirectToHotel = function(hotel_id){
 		var deferred = $q.defer();
 		var url = '/admin/hotel_admin/update_current_hotel';

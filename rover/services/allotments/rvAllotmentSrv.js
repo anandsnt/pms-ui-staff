@@ -1,4 +1,4 @@
-sntRover.service('rvAllotmentSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('rvAllotmentSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
 		//some default values

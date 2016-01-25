@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
+angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
 
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');

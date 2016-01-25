@@ -1,4 +1,4 @@
-sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
+angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
 
 	var self = this;
 	self.searchPerPage = 50;

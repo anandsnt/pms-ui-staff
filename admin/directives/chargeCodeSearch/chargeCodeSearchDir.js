@@ -8,7 +8,7 @@ admin.directive("chargeCodeSearch", function() {
             chargeCodeName : '=chargeCodeName',
             isBillingGroup : '@isBillingGroup'
         },
-        templateUrl : '../../assets/directives/chargeCodeSearch/chargeCodeSearch.html',
+        templateUrl : '/assets/directives/chargeCodeSearch/chargeCodeSearch.html',
         controller : function($scope, ADChargeCodesSrv) {
             $scope.chargeCodeSearchResults = [];
             $scope.showChargeCodes = false;

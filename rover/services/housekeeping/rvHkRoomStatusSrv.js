@@ -1,4 +1,4 @@
-sntRover.service('RVHkRoomStatusSrv', [
+angular.module('sntRover').service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
 	'rvBaseWebSrvV2',

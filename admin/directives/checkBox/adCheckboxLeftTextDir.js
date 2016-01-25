@@ -16,7 +16,7 @@ admin.directive('adCheckboxtextLeft', function($timeout) {
             width: '@'
 	    },
 
-    	templateUrl: '../../assets/directives/checkBox/adCheckboxLeftText.html'
+    	templateUrl: '/assets/directives/checkBox/adCheckboxLeftText.html'
     };
 
 });

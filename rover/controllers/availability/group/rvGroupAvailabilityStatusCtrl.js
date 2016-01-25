@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupAvailabilityStatusController', [
+angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'$state',

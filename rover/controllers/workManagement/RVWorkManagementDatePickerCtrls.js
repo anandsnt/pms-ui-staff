@@ -1,4 +1,4 @@
-sntRover.controller('RVWorkManagementSearchDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
+angular.module('sntRover').controller('RVWorkManagementSearchDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
 	function($scope, $rootScope, ngDialog, dateFilter) {
 
 		$scope.setUpData = function() {
@@ -19,7 +19,7 @@ sntRover.controller('RVWorkManagementSearchDatePickerController', ['$scope', '$r
 	}
 ]);
 
-sntRover.controller('RVWorkManagementCreateDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
+angular.module('sntRover').controller('RVWorkManagementCreateDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
 	function($scope, $rootScope, ngDialog, dateFilter) {
 
 		$scope.setUpData = function() {
@@ -39,7 +39,7 @@ sntRover.controller('RVWorkManagementCreateDatePickerController', ['$scope', '$r
 ]);
 
 
-sntRover.controller('RVWorkManagementMultiDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
+angular.module('sntRover').controller('RVWorkManagementMultiDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
 	function($scope, $rootScope, ngDialog, dateFilter) {
 		$scope.setUpData = function() {
 			$scope.dateOptions = {

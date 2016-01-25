@@ -10,7 +10,7 @@ sntRover.directive('rvToggleButton', function($timeout) {
             label: '@label'
 	    },
 
-    	templateUrl: '../../assets/directives/toggle/rvToggleButton.html'
+    	templateUrl: '/assets/directives/toggle/rvToggleButton.html'
     };
 
 });

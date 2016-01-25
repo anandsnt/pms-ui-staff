@@ -1,4 +1,4 @@
-sntRover.service('RVSaveWakeupTimeSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+angular.module('sntRover').service('RVSaveWakeupTimeSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 
 	this.saveWakeupTime = function(param){
 		var deferred = $q.defer();

@@ -2,7 +2,7 @@
 * Service used to deal with various permissions in rover app
 */
 
-sntRover.service('rvPermissionSrv',
+angular.module('sntRover').service('rvPermissionSrv',
 	['$http', '$q', 'rvBaseWebSrvV2',
 		function($http, $q, rvBaseWebSrvV2) {
 
