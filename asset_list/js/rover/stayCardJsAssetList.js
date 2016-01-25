@@ -2,10 +2,11 @@ module.exports = {
 	getList : function() {
 		var controllerRoot 	= 'rover/controllers/',
             sharedJs 		= 'shared/lib/js/',
-			servicesRoot 	= 'rover/services/',
-            allotmentJsAssets = {
+			servicesRoot 	= 'rover/services/';
+            
+            return {
                 minifiedFiles: [
-                      sharedJs + 'fullcalender/**/*.js' // FOR ROOM & RATES CALENDAR
+                    sharedJs + 'jquery.qtip.min.js' // FOR ROOM & RATES CALENDAR  
                 ],
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
@@ -26,7 +27,7 @@ module.exports = {
                     'rover/directives/fullCalendar/twoMonthCalendar.js', // FOR ROOM & RATES CALENDAR
                     'shared/directives/tooltip/qtipfc.js', // FOR ROOM & RATES CALENDAR
                     
-                    sharedJs + 'jquery.qtip.min.js', // FOR ROOM & RATES CALENDAR
+                    sharedJs + 'fullcalender/**/*.js', // FOR ROOM & RATES CALENDAR
                     
                     controllerRoot + "rvGuestController.js",
                     controllerRoot + "rvContactInfoDatePickerCtrl.js",
@@ -74,9 +75,10 @@ module.exports = {
                     servicesRoot + "rvSaveWakeupTimeSrv.js",
                     servicesRoot + "rvNewspaperPreferenceSrv.js",
                     servicesRoot + "rvLoyaltyProgramSrv.js",
-                    servicesRoot + "bill/rvBillCardSrv.js"
+                    servicesRoot + "bill/rvBillCardSrv.js",
+                    
+                   'rover/directives/autocomplete/rvAutoCompleteDirective.js'
                 ]
             };
-            return allotmentJsAssets;
 	}
 };
