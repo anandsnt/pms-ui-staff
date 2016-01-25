@@ -4,7 +4,7 @@ module.exports = {
 		var themeCSSRoot = 'zest_station/css/';
 		return {
 			'zoku' 			: [ themeCSSRoot + 'zoku.less'],
-			'fontainbleau' 	: [ themeCSSRoot + 'fontainebleau.less']
+			'fontainebleau' : [ themeCSSRoot + 'fontainebleau.less']
 		}
 	}
 }

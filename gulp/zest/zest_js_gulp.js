@@ -7,6 +7,7 @@ module.exports = function(gulp, $, options){
 	    ZEST_JS_COMBINED_FILE  	= 'zest.js',
 	    ZEST_JS_MANIFEST_FILE  	= "zest_js_manifest.json",
 	    ZEST_TEMPLATE_ROOT     	= '../views/zest_station/home/',
+	    runSequence 			= require('run-sequence'),
 	    ZEST_HTML_FILE     		= ZEST_TEMPLATE_ROOT + 'index.html',
 	    extendedMappings 		= [],
 		generated 				= "____generated",
@@ -85,7 +86,9 @@ module.exports = function(gulp, $, options){
 		var glob 	= require('glob-all'),
 			fileList = zestJSMappingList.minifiedFiles.concat(zestJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
-		return gulp.watch(fileList, ['build-zeststation-js-dev'])
+		return gulp.watch(fileList, function(){
+			return runSequence('build-zeststation-js-dev', 'copy-zest-base-html');
+		});
 	});
 	
 	gulp.task('zest-copy-js-files', function(){

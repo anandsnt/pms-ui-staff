@@ -11,7 +11,9 @@ module.exports = function(gulp, $, options) {
 	gulp.task('copy-all-dev', ['copy-rover-files', 'copy-login-files', 'copy-zest-files', 'copy-zeststation-files']);
 
 	//development
-	gulp.task('build', ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev']);
+	gulp.task('build', ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev'], function(callback){
+		return runSequence(copyBaseHtmlToPublicAssets, callback)
+	});
 	
 	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile'],
