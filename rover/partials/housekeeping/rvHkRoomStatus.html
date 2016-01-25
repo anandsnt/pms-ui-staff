@@ -103,6 +103,7 @@
             <span class="value">{{summary.time_allocated}}</span>
             <span class="total">{{summary.shift_length}}</span>
         </li>
+
         <li ng-repeat="item in summary.work_types">
             <strong class="title">{{item.name}}</strong>
             <span class="value">{{item.tasks_completed_count}}</span>
@@ -153,7 +154,7 @@
 
                 <div class="additional-info">
                     <!-- Show only if room is assigned -->
-                    <span class="{{room.assigned_staff.class}}" ng-if="!isMaintenanceStaff && room.assigned_staff.name">{{room.assigned_staff.name}}</span>
+                    <span class="{{room.assigned_staff.class}}" >{{room.assigned_staff.name}}</span>
                     <!-- Show only if room is not in service -->
                     <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
                 </div>
@@ -172,7 +173,7 @@
                 <!-- IF VIEW BY TASK, ADD THIS: -->
                 <ul class="tasks" ng-if="currentView === 'TASKS'">
                     <!-- Add class "completed" if task is completed -->
-                    <li ng-repeat="task in room.room_tasks" ng-class="{ 'completed': task.is_completed }">
+                    <li ng-repeat="task in summary.work_types" ng-class="{ 'completed': task.is_completed }">
                         {{task.name}}
                     </li>
                 </ul>

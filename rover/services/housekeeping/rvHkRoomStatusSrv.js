@@ -140,6 +140,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		}.bind(this);
 
 		var roomList = {};
+
 		this.fetchRoomListPost = function(passedParams) {
 			var deferred     = $q.defer(),
 				url          = '/house/search.json',
@@ -148,6 +149,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 			BaseWebSrvV2.postJSON(url, params)
 				.then(function(response) {
 					roomList = response.data;
+					roomList.summary = response.data.summary;
+
 
 					for (var i = 0, j = roomList.rooms.length; i < j; i++) {
 						var room = roomList.rooms[i];

@@ -723,6 +723,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// clear old results and update total counts
 			$scope.rooms              = [];
+			$scope.summary			  = $_roomList.summary;
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
