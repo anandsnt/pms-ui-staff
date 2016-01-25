@@ -119,6 +119,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			} else {
 				$scope.currentView = 'ROOMS';
 			}
+			$timeout(function(){
+				$scope.refreshScroller('tasks-summary-scroller');
+			}, 2000);
+
 		};
 
 		// multiple room status change DS
@@ -1310,13 +1314,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			angular.element( $_roomsEl ).off('ontouchmove');
 			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
+		$scope.getWidthForSummary = function(){
+			var summaryWidth = 0,
+				tasksLength = $scope.summary.work_types.length;
+			summaryWidth = parseInt(parseInt(tasksLength)*160 + 40);
+			return summaryWidth;
+		};
+
+		var scrollerOptionsForSummary = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
+    	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
+
 	}
-	$scope.getWidthForSummary = function(){
-		var summaryWidth = 0,
-			tasksLength = $scope.summary.work_types.length;
-		summaryWidth = parseInt(parseInt(tasksLength)*160 + 40);
-		return summaryWidth;
-	};
-	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
-  	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForGraph);
-]);
+	]);
