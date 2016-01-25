@@ -111,40 +111,13 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 			var parsedData = [];
 
-			_.each(dateObj, function(dateObj) {
+			_.each(dateObj, function(dateObj, currDate) {
 
-				var eachDateVal = [];
+				var eachDateVal = [],
+					isPastDay = new tzIndependentDate(currDate) < new tzIndependentDate($rootScope.businessDate);
 
-				if (2 == $scope.colSpan) {
-					eachDateVal.push({
-						value: dateObj['total_reservations_count'],
-						isAvail: true,
-						isRateType: isRateType
-					});
-					eachDateVal.push({
-						value: dateObj['available_rooms_count'],
-						isAvail: true,
-						cls: 'last-day',
-						isRateType: isRateType
-					});
-				} else if (3 == $scope.colSpan) {
-					eachDateVal.push({
-						value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-						isRev: true,
-						isRateType: isRateType
-					});
-					eachDateVal.push({
-						value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
-						isRev: true,
-						isRateType: isRateType
-					});
-					eachDateVal.push({
-						value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-						isRev: true,
-						cls: 'last-day',
-						isRateType: isRateType
-					});
-				} else if (5 == $scope.colSpan) {
+
+				if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
 					eachDateVal.push({
 						value: dateObj['total_reservations_count'],
 						isAvail: true,
@@ -155,23 +128,70 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 						isAvail: true,
 						isRateType: isRateType
 					});
-					eachDateVal.push({
-						value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
-						isRev: true,
-						isRateType: isRateType
-					});
+				} else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+					if (!isPastDay) {
+						eachDateVal.push({
+							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							isRateType: isRateType
+						});
+					}
 					eachDateVal.push({
 						value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
 						isRev: true,
 						isRateType: isRateType
 					});
+					if (isPastDay) {
+						eachDateVal.push({
+							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							isRateType: isRateType
+						});
+					}
+				} else if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
 					eachDateVal.push({
-						value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
-						isRev: true,
-						cls: 'last-day',
+						value: dateObj['total_reservations_count'],
+						isAvail: true,
 						isRateType: isRateType
 					});
+					eachDateVal.push({
+						value: dateObj['available_rooms_count'],
+						isAvail: true,
+						isRateType: isRateType
+					});
+					if (!isPastDay) {
+						eachDateVal.push({
+							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							isRateType: isRateType
+						});
+					}
+					eachDateVal.push({
+						value: $filter('currency')(dateObj['adr'], $rootScope.currencySymbol, 2),
+						isRev: true,
+						isRateType: isRateType
+					});
+
+					if (isPastDay) {
+						eachDateVal.push({
+							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							isRev: true,
+							isRateType: isRateType
+						});
+					}
 				};
+
+				//TODO: If user has opted to show addon revenue, add that as a column
+				if (isPastDay && $scope.chosenReport.chosenOptions['include_addon_revenue'] && $scope.uiFilter.showRevenue) {
+					eachDateVal.push({
+						value: $filter('currency')(dateObj['addon_revenue'], $rootScope.currencySymbol, 2),
+						isRev: true,
+						cls: 'last-day',
+						isRateType: isRateType
+					});
+				} else {
+					eachDateVal[eachDateVal.length - 1]['cls'] = 'last-day';
+				}
 
 				parsedData = parsedData.concat(eachDateVal);
 
@@ -182,70 +202,62 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 
 		var processData = function() {
-			var SUB_HEADER_NAMES = [
-				'Rooms #',
-				'Avl. Rooms',
-				/**/
-				'Rate Rev.',
-				'ADR',
-				'Actual Rev.'
-			];
-
-			var startIndex, endIndex, triggerIndex;
-
-			if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
-				$scope.colSpan = 5;
-			} else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
-				$scope.colSpan = 3;
-			} else if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
-				$scope.colSpan = 2;
-			};
+			var SUB_HEADER_NAMES = {
+					'ROOMS': 'Rooms #',
+					'AVAILABLE_ROOMS': 'Avl. Rooms',
+					/**/
+					'FORECAST': 'Forecast.',
+					'ADR': 'ADR',
+					'ACTUAL': 'Actual Rev.',
+					/**/
+					'ADDON': 'Add-on' //>> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
+				},
+				headers,
+				allDatesValInRoom = [],
+				eachDateVal = [],
+				noOfDays = 0,
+				cellWidth = 80;
 
 			$scope.headerTop = [];
 			$scope.headerBot = [];
-
-
-			var allDatesValInRoom = [],
-				eachDateVal = [];
+			$scope.colspanArray = [];
 			$scope.reportData = []; // this will be an array of arrays
 			$scope.yAxisLabels = []; // keeping seperate array so that we can avoid object being itrated aphabetically
-
-
-			var roomObj, dateObj;
-
-			var loopCount = 0;
-
-
-			var noOfDays = 0,
-				cellWidth = 80;
-
 			$scope.rightPaneWidth = 0;
 
+			if ($scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+				headers = ['ROOMS', 'AVAILABLE_ROOMS', 'FORECAST', 'ADR']; // Header is initialized to FORECAST, If past date is selected it will be replaced with ACTUAL column
+			} else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
+				headers = ['FORECAST', 'ADR'];
+			} else if ($scope.uiFilter.showAvailability && !$scope.uiFilter.showRevenue) {
+				headers = ['ROOMS', 'AVAILABLE_ROOMS'];
+			};
+
+			$scope.colSpan = headers.length;
+
 			// compute Number of Days here!
-			// 
 			for (ms = new tzIndependentDate($scope.chosenReport.fromDate) * 1, last = new tzIndependentDate($scope.chosenReport.untilDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
 
-				$scope.headerTop.push($filter('date')(ms, $rootScope.shortMonthAndDate));
+				var isPastDay = new tzIndependentDate(ms) < new tzIndependentDate($rootScope.businessDate);
 
-				if (5 == $scope.colSpan) {
-					startIndex = 0;
-					endIndex = SUB_HEADER_NAMES.length;
-					triggerIndex = SUB_HEADER_NAMES.length - 1;
-				} else if (3 == $scope.colSpan) {
-					startIndex = 2;
-					endIndex = SUB_HEADER_NAMES.length;
-					triggerIndex = SUB_HEADER_NAMES.length - 1;
-				} else if (2 == $scope.colSpan) {
-					startIndex = 0;
-					endIndex = 1 + 1;
-					triggerIndex = 1;
-				};
-				for (; startIndex < endIndex; startIndex++) {
+				$scope.headerTop.push($filter('date')(ms, $rootScope.shortMonthAndDate));
+				var currentHeaders = headers;
+				if (isPastDay && $scope.uiFilter.showRevenue) {
+					// Remove FORECAST header and push ACTUAL
+					currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
+					if ($scope.chosenReport.chosenOptions['include_addon_revenue']) {
+						currentHeaders.push('ADDON');
+					}
+				}
+
+				$scope.colspanArray.push(currentHeaders.length);
+
+				_.each(currentHeaders, function(idx) {
 					$scope.headerBot.push({
-						'name': SUB_HEADER_NAMES[startIndex],
-						'cls': startIndex == triggerIndex ? 'day-end' : ''
+						'name': SUB_HEADER_NAMES[idx],
+						'cls': idx == headers.length - 1 ? 'day-end' : ''
 					});
-				};
+				});
 
 				noOfDays += 1;
 			}
@@ -275,7 +287,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				});
 			});
 
-			$scope.rightPaneWidth = noOfDays * cellWidth * $scope.colSpan;
+			$scope.rightPaneWidth = noOfDays * cellWidth * _.max($scope.colspanArray);
 
 			$timeout(function() {
 				refreshScrollers();
@@ -292,7 +304,8 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					'headerTop': $scope.headerTop,
 					'headerBot': $scope.headerBot,
 					'reportData': $scope.reportData,
-					'isLastRowSum' : false
+					'colspanArray': $scope.colspanArray,
+					'isLastRowSum': false
 				});
 
 			React.renderComponent(
