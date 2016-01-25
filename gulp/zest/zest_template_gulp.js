@@ -8,6 +8,7 @@ module.exports = function(gulp, $, options) {
 	    ZEST_TEMPLTE_MANFEST_FILE = "zest_template_manifest.json",
 	    URL_APPENDER            = options['URL_APPENDER'],
 	    extendedMappings 		= {},
+	    runSequence 			= require('run-sequence'),
 		generated 				= "____generated",
 		DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'];
 
@@ -68,6 +69,8 @@ module.exports = function(gulp, $, options) {
 	//Template - END
 
 	gulp.task('zest-watch-templates-files', function(){
-		return gulp.watch(PARTIALS_PATH_LIST, ['build-zest-template-cache-dev'])
+		return gulp.watch(PARTIALS_PATH_LIST, function(){
+			return runSequence('build-zest-template-cache-dev', 'copy-zest-base-html');
+		});
 	});
 }

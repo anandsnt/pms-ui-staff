@@ -7,6 +7,9 @@ module.exports = {
 				roverRoot + "controllers/companycard/details/**/*.js",
 				roverRoot + "controllers/cardsOutside/rvCompanyCardArTransactionsCtrl.js",
 				roverRoot + "services/rvCompanyCardSrv.js",
+				'rover/controllers/contractStartCalendarCtrl.js',
+				'rover/controllers/contractEndCalendarCtrl.js',
+
  				'rover/directives/delayTextbox/rvDelayTextBox.js',
 				'rover/directives/Autogrowing text field/autoGrowFieldDirective.js',
 

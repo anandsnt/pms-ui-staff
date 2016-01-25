@@ -8,6 +8,8 @@ module.exports = {
 			nonMinifiedFiles: [						
 				roverRoot + "controllers/groups/**/*.js",
 				roverRoot + "controllers/accounts/**/*.js",
+				'rover/directives/setTextboxValue/**/*.js',
+				'rover/directives/delayTextbox/**/*.js',
 				servicesRoot + "group/**/*.js",
 				servicesRoot + "reservation/rvReservationSummarySrv.js",
 				servicesRoot + "reservation/RVReservationAddonsSrv.js",
