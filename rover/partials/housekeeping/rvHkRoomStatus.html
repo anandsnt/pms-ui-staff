@@ -96,7 +96,7 @@
 </form>
 
 <!-- My Worksheet Summary -->
-<div class="worksheet-summary scrollable" ng-if="isMaintenanceStaff" ng-class="{'hidden': currentView == 'ROOMS'}">
+<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="isMaintenanceStaff" ng-class="{'hidden': currentView == 'ROOMS'}">
     <ul class="wrapper" style="width: {{getWidthForSummary()}}"> <!-- width:{160*no.of list items + 40px}; -->
         <li>
             <strong class="title">Time Allocated</strong>

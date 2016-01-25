@@ -723,7 +723,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// clear old results and update total counts
 			$scope.rooms              = [];
-			$scope.summary			  = $_roomList.summary;
+			$scope.summary			  = $_roomList.summary;//CICO-23419
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
@@ -1311,4 +1311,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
 	}
+	$scope.getWidthForSummary = function(){
+		var summaryWidth = 0,
+			tasksLength = $scope.summary.work_types.length;
+		summaryWidth = parseInt(parseInt(tasksLength)*160 + 40);
+		return summaryWidth;
+	};
+	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
+  	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForGraph);
 ]);
