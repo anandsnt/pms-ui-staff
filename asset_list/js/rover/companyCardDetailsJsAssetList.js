@@ -10,6 +10,8 @@ module.exports = {
 				roverRoot + "controllers/cardsOutside/rvCompanyCardArTransactionsCtrl.js",
 				roverRoot + "services/rvCompanyCardSrv.js",
 				roverRoot + "services/bill/rvBillingInfoSrv.js",
+				'rover/controllers/contractStartCalendarCtrl.js',
+				'rover/controllers/contractEndCalendarCtrl.js',
 				'rover/services/bill/rvBillCardSrv.js',
 				'rover/controllers/bill/rvRoutesAddPaymentCtrl.js',
 				'rover/controllers/roverPayment/rvCardOptionsCtrl.js',
