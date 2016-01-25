@@ -13,6 +13,7 @@ module.exports = {
 				'rover/services/bill/rvBillCardSrv.js',
 				'rover/controllers/bill/rvRoutesAddPaymentCtrl.js',
 				'rover/controllers/roverPayment/rvCardOptionsCtrl.js',
+				'rover/controllers/rvSaveNewCardPromptCtrl.js',
 				'rover/services/rvReservationSrv.js',
 				'rover/services/payment/rvPaymentSrv.js',
 				'rover/services/payment/rvGuestPaymentSrv.js',
