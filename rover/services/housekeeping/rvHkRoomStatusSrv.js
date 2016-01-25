@@ -653,7 +653,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if (!$rootScope.isStandAlone) {
 				return false;
 			};
-
+			console.log("-----------")
+console.log(room)
 			var assignedStaff = {
 				name: 'Unassigned',
 				class: 'unassigned'
@@ -663,7 +664,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if ( !!room.room_tasks && room.room_tasks.length ) {
 				room.canAssign = false;
 				assignedStaff.class = 'assigned';
-				if (_.chain(a).pluck('name').unique().value().length > 1) {
+				console.log(room.room_tasks);
+//_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id')
+				if (_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id').unique().value().length > 1) {
 					assignedStaff.name = 'Multiple Assignees';
 				} else {
 					assignedStaff.name = room.room_tasks[0].assignee_maid.name
