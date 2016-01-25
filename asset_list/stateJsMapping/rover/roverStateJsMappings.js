@@ -20,6 +20,7 @@ module.exports = {
 			'rover.accounts'	: roverJsListRoot + 'accountsJsAssetList.js',
 			'rover.workManagement'	: roverJsListRoot + 'workManagementJsAssetList.js',
 			'staffpasswordchange'	: roverJsListRoot + 'staffPasswordChangeJsAssetList.js',
+			'rover.actionsManager'	: roverJsListRoot + 'actionJsAssetList.js',
 			'rover.companycardsearch'	: roverJsListRoot + 'companyCardSearchJsAssetList.js',
 			'rover.companycarddetails'	: roverJsListRoot + 'companyCardDetailsJsAssetList.js',
 			'rover.reservation.staycard.activitylog' 	: roverJsListRoot + 'activityLogJsAssetList.js',
