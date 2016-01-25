@@ -218,19 +218,23 @@
                                         <input type="radio" ng-model="editData.shortcode_owner" value="radio" class="change-data overlay" ng-disabled="isEditmode">
                                         StayNTouch
                                 </label>
-                            
-                            
-			</fieldset>
-			<fieldset class="holder right float">
-				<!-- Help Keywords + response-->
-                                
+                                <span style='margin-bottom:15px;'>&nbsp</span>
                                 <ad-textbox value="editData.sms_auth_token"   label = "SMS Auth Token" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
                                 <ad-textbox value="editData.sms_account_sid"   label = "SMS Account SID" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
                                 <ad-textbox value="editData.sms_code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
-                                <ad-textbox value="editData.sms_help_keywords"   label = "Help Keywords" placeholder = "Enter Help Keywords" required = "yes" styleclass="full-width"></ad-textbox>
+                               
+			</fieldset>
+			<fieldset class="holder right float">
+				<!-- Help Keywords + response-->
+                                 <ad-textbox value="editData.sms_help_keywords"  label = "Help Keywords" placeholder = "Enter Help Keywords" required = "yes" styleclass="full-width"></ad-textbox>
                                 <div class="entry full-width">
 					<label for="sms_help_response">
-						Help Response 
+                                            Help Response 
+                                            (<span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}'>
+                                                {{charLimitPerText-editData.sms_help_response.length}}
+                                            </span>)
+                                            <span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
+                                                *May split into ({{getPages(editData.sms_help_response.length)}}) messages</span>
 					</label>
 					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width"></textarea>
 				</div>

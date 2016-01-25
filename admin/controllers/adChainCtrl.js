@@ -6,6 +6,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
+        $scope.charLimitPerText = 160;
    /*
     * To fetch hotel chains list
     */
@@ -139,6 +140,15 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		};
  		$scope.invokeApi(adChainsSrv.update, updateData, updateChainSuccessCallback, updateChainFailureCallback);
  	};
+        
+        $scope.getPages = function(r){//response text length
+            if (r > 0){
+                return (Math.ceil(r/$scope.charLimitPerText));
+            } else {
+                return 1;
+            }
+        };
+        
    /*
     * To handle cancel click event
     */
