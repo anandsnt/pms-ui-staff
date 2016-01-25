@@ -108,6 +108,14 @@
                         }
                     }
 
+                    /* Notes / Loyalty Status / VIP ***/                   
+                    .icon-notes {
+                        margin-top: 10px;
+                        .show;
+                        .square(20px);
+                        .pull-left;
+                    }
+
                     .switch-button,
                     .status { 
                         line-height: 30px;
@@ -250,6 +258,8 @@
                 left: 0;
                 z-index: 10;
                 .calc-width(100, 150);
+
+                .guest-image { margin-right: 20px; }
             }
 
             &.second,
@@ -848,7 +858,13 @@
                         #pixel-to-percent > .right-margin(80, 1888);
                         .pull-left;
 
-                        .button { margin-top: 20px; }
+                        textarea {
+                            clear: both;
+                            margin-bottom: 10px;
+                        }
+
+                        .checkbox { .pull-left; }
+                        .button { .pull-right; }
                     }
 
                     .holder {
@@ -2453,6 +2469,9 @@
         &.open,
         &.fullscreen {
             .card-header {
+
+                .guest-image { margin-right: 20px; }
+
                 form { 
                     .calc-width(100, 250);
 
