@@ -597,6 +597,58 @@
                     padding: 0 5px;
                     height: 18px;
                 }
+
+                .move-room {
+                    position: relative;
+                    overflow: visible;
+                    .pull-right;
+                    .show;
+
+                    .label {
+                        line-height: 18px;
+                        margin-bottom: 0;
+                        .pull-left;
+                    }
+
+                    .switch-button {
+                        .show;
+                        .size(18px, 28px);
+                        .pull-left;
+
+                        &.on {
+                            .gradient(@redEnd, @redStart);
+                            .switch-icon { left: 12px; }
+                        }
+                    }
+
+                    .switch-icon {
+                        position: absolute;
+                        top: 2px;
+                        left: 2px;
+                        z-index: 9;
+                        .gradient-with-image(@onOffLines, @grey1, @white);
+                        background-position: 50% 50%, 0 0;
+                        background-repeat: no-repeat, repeat;
+                        background-size: 6px 7px, auto;
+                        .hide-text;
+                        .show;
+                        .square(14px);
+                        .transition;
+                        #border-radius > .rounded(22px);
+
+                        @media @highdpi {
+                            .gradient-with-image(@onOffLines2x, @grey1, @white);
+                            background-position: 50% 50%, 0 0;
+                            background-repeat: no-repeat, repeat;
+                            background-size: 6px 7px, auto;
+                        }
+                    }
+
+                    input[type="checkbox"] {
+                        line-height: 18px;
+                        min-height: 18px;
+                    }
+                }
             }
 
             /* Content ***/
@@ -663,6 +715,18 @@
                     line-height: 50px;
                     width: 100px;
                     .pull-left;
+                }
+
+                /* Room is locked ***/
+                .has-lock { 
+                    position: relative;
+
+                    .icon-room-lock {
+                        position: absolute;
+                        top: 15px;
+                        right: 15px;
+                        .square(20px);
+                    }
                 }
             }
 
