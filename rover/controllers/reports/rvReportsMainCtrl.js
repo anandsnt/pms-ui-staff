@@ -592,7 +592,8 @@ sntRover.controller('RVReportsMainCtrl', [
         		selectedRates 	= _.where(showingRateList, {selected: true});
 
 			item.hasRateFilter.selectAll = false;
-        	if(showingRateList.length === selectedRates.length) {
+            
+        	if(showingRateList.length === selectedRates.length && showingRateList.length !== 0) {
         		item.hasRateFilter.title = 'All Selected';
         		item.hasRateFilter.selectAll = true;
         	}
@@ -600,7 +601,7 @@ sntRover.controller('RVReportsMainCtrl', [
         		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
         	}
         	else if(selectedRates.length === 1 ){
-        		item.hasRateFilter.title = selectedRates[0].description;
+        		item.hasRateFilter.title = selectedRates[0].rate_name;
         	}
         	else {
         		item.hasRateFilter.title = selectedRates.length + ' Selected';
