@@ -33,8 +33,8 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		$state.go('noOptionAvailable'); 
 	})
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
- function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
+sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData','$window',
+ function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData,$window) {
 	var that = this;
 	loadAssets('/assets/favicon.png', 'icon', 'image/png');
 	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
@@ -43,6 +43,9 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
 	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
+	$rootScope.trackinID = 'UA-72819887-1';
+	// initialise google analytics
+    $window.ga('create', $rootScope.trackinID, 'auto');
 	//store basic details as rootscope variables
 	if(typeof reservationAndhotelData.access_token !== "undefined") {
 		$rootScope.accessToken = reservationAndhotelData.access_token	;
