@@ -1832,13 +1832,18 @@ sntRover.controller('RVbillCardController',
     	$scope.reservationData.user_id = $stateParams.userId;
     	$scope.reservationData.is_opted_late_checkout = false;
     	$scope.billingInfoModalOpened = true;
-	    ngDialog.open({
-	        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-	        controller: 'rvBillingInformationPopupCtrl',
-	        className: '',
-	        closeByDocument: true,
-	        scope: $scope
-	    });
+    	
+    	$scope.$emit('showLoader'); 
+       	jsMappings.fetchAssets('addBillingInfo')
+        .then(function(){
+        	$scope.$emit('hideLoader'); 
+		    ngDialog.open({
+		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+		        controller: 'rvBillingInformationPopupCtrl',
+		        className: '',
+		        scope: $scope
+		    });
+		});
     };
 
 	/*

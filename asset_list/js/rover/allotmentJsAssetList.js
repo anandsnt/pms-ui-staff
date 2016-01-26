@@ -13,7 +13,7 @@ module.exports = {
 				roverRoot + "services/accounts/rvAccountsTransactionSrv.js",
 				roverRoot + "services/reservation/rvReservationSummarySrv.js",
 				roverRoot + "services/group/rvGroupRoomingListSrv.js",
-				roverRoot + "services/reservation/rvReservationAddonsSrv.js",
+				roverRoot + "services/reservation/RVReservationAddonsSrv.js",
 				roverRoot + "services/allotments/**/*.js",
 				roverRoot + "services/rvReservationSrv.js"
 			]
