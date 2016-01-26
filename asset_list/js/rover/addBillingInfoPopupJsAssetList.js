@@ -1,21 +1,19 @@
 module.exports = {	
 	getList : function() {
-		var roverRoot 		= 'rover/',
-		comapnycardDetailsJsAssets = {
-			minifiedFiles: [],
-			nonMinifiedFiles: [			
-				roverRoot + "controllers/bill/rvBillingInformationPopupCtrl.js",
-				roverRoot + "controllers/bill/rvRouteDetailsCtrl.js",
-				'rover/controllers/bill/rvRoutesAddPaymentCtrl.js',
-				'rover/controllers/roverPayment/rvCardOptionsCtrl.js',
-				'rover/controllers/rvSaveNewCardPromptCtrl.js',
-
-				roverRoot + "services/bill/rvBillingInfoSrv.js",
-				'rover/services/bill/rvBillCardSrv.js',
-				'rover/services/rvReservationSrv.js',
-				'rover/services/payment/rvPaymentSrv.js',
-				'rover/services/payment/rvGuestPaymentSrv.js'
-			]
+		var controllerRoot 	= 'rover/controllers/',
+			servicesRoot 	= 'rover/services/',
+		    comapnycardDetailsJsAssets = {
+                minifiedFiles: [],
+                nonMinifiedFiles: [			
+                    controllerRoot + "bill/**/*.js",
+                    controllerRoot + 'roverPayment/rvCardOptionsCtrl.js',
+                    controllerRoot + 'rvSaveNewCardPromptCtrl.js',
+                    
+                    servicesRoot + "bill/**/*.js",
+                    servicesRoot + 'rvReservationSrv.js',
+                    servicesRoot + 'payment/rvPaymentSrv.js',
+                    servicesRoot + 'payment/rvGuestPaymentSrv.js'
+                ]
 		};
 		return comapnycardDetailsJsAssets;
 	}
