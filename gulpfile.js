@@ -18,7 +18,7 @@ var gulp 	  = require('gulp'),
 				    	
 				    	console.trace(error);
 				    	console.log('\n\n---END OF GULP ERROR MESSAGE--')
-				    	require('exit')(0);
+				    	require('exit')(1);
 				    },
 				    silentErrorShowing: function(error){
 				    	// If you want details of the error in the console
