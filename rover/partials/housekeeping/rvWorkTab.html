@@ -3,50 +3,55 @@
     <!-- Hide the first select everywhere -->
     <!-- ng-class="{ 'dual-select': isStandAlone }" -->
     <div class="room-actions">
-        <!-- <div class="select">
-            <select id="work-type" name="work-type" ng-if="isStandAlone" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList" disabled>
-            <option value="">All Work Types</option>
-            </select>
-        </div> -->
+
         <div class="select">
             <!-- standalone PMS -->
             <!-- Disable when cleaning in progrees. -->
-            <label for="room-status">Room Status</label>
-            <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="isStarted">
-            </select>
+            <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="isStarted"></select>
 
             <!-- connected PMS -->
             <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
         </div>
     </div>
 
-
-    <div class="room-content scrollable" ng-iscroll="room-status-content" ><!-- Scroller here -->
-        <div class="wrapper">
-
+    <div class="room-content scrollable" ng-iscroll="room-status-content" >
+        <!-- this is a connected hotel -->
+        <div ng-if="!isStandAlone">
             <!-- 2.A Work Tab - Room is clean -->
-            <!-- <div ng-if="!!ooOsTitle">
+            <div ng-if="!!ooOsTitle">
                 <strong class="h2">Room is {{ ooOsTitle }}.</strong>
                 <span class="icon-no-content icon-ok"></span> 
-            </div> -->
+            </div>
 
             <!-- 2.A Work Tab - Room is clean -->
-           <!--  <div ng-if="!ooOsTitle && checkShow('clean')">
+            <div ng-if="!ooOsTitle && checkShow('clean')">
                 <strong class="h2">Room is clean.</strong>
                 <span class="icon-no-content icon-ok"></span> 
-            </div> -->
-            <strong ng-if="!ooOsTitle && checkShow('clean')" class="h2">Room is <span class="green">clean.</span></strong> 
+            </div>
 
             <!-- 2.B Work Tab - Room is dirty -->
-            <!-- <div ng-if="!ooOsTitle && checkShow('dirty') && !isStarted">
+            <div ng-if="!ooOsTitle && checkShow('dirty') && !isStarted">
                 <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
-            </div> -->
-            <strong ng-if="!ooOsTitle && checkShow('dirty')" class="h2"> Room is <span class="red">Dirty</span>.</strong>
+            </div>
 
             <!-- 2.C Work Tab - Room is pickup -->
-            <!-- <div ng-if="!ooOsTitle && checkShow('pickup') && !isStarted">
+            <div ng-if="!ooOsTitle && checkShow('pickup') && !isStarted">
                 <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
-            </div> -->
+            </div>
+
+            <!-- 2.D Work Tab - Room cleaning in progress -->
+            <div ng-if="!ooOsTitle && isStarted">
+                <strong class="h2">Work is in Progress.</strong>
+            </div>
+        </div>
+    
+    <!-- this is a standalone hotel -->
+        <div class="wrapper" ng-if="isStandAlone">
+
+            <strong ng-if="!ooOsTitle && checkShow('clean')" class="h2">Room is <span class="green">clean.</span></strong>
+   
+            <strong ng-if="!ooOsTitle && checkShow('dirty')" class="h2"> Room is <span class="red">Dirty</span>.</strong>
+  
             <strong ng-if="!ooOsTitle && checkShow('pickup')" class="h2"> <span class="orange">Pickup</span> room.</strong> 
 
             <!-- Tasks & Assignment -->
@@ -80,5 +85,3 @@
         </div>
     </div>
 </div>
-
-  
