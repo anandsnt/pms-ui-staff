@@ -805,22 +805,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		function $_checkHasActiveWorkSheet(alreadyFetched) {
 			var _params = {
 					'date': $rootScope.businessDate,
-					'employee_ids': [$_defaultEmp || $rootScope.userId], // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
-					'work_type_id': $_defaultWorkType
+					'employee_ids': [$_defaultEmp || $rootScope.userId] // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
 				},
 				_callback = function(data) {
-					$scope.hasActiveWorkSheet = !!data.work_sheets && !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
+					var employee = data.employees.length && data.employees[0] || null;
+					$scope.hasActiveWorkSheet = employee && employee.room_tasks && employee.room_tasks.length || false;
 
 					$scope.topFilter.byWorkType = $_defaultWorkType;
 					$scope.topFilter.byEmployee = $_defaultEmp;
-
-					// set an active user in filterByEmployee, set the mobile tab to to summary
-					if ( !!$scope.hasActiveWorkSheet ) {
-						$scope.currentView = 'summary';
-						$_caluculateCounts(data.work_sheets[0].work_assignments);
-					} else {
-						$scope.currentView = 'rooms';
-					};
 
 					// need delay, just need it
 					$timeout(function() {
@@ -854,45 +846,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
 			};
 		};
-
-
-
-		/* ***** ***** ***** ***** ***** */
-
-
-		function $_caluculateCounts(assignments) {
-			$scope.counts = {
-				allocated: 0,
-				departures: 0,
-				stayover: 0,
-				completed: 0,
-				total: 0
-			};
-
-			var totalHH = totalMM = hh = mm = i = 0;
-			for ($scope.counts.total = assignments.length; i < $scope.counts.total; i++) {
-				var room = assignments[i].room;
-
-				totalHH += parseInt(room.time_allocated.split(':')[0]);
-				totalMM += parseInt(room.time_allocated.split(':')[1]);
-
-				if (room.reservation_status.indexOf("Arrived") >= 0) {
-					$scope.counts.departures++;
-				};
-				if (room.reservation_status.indexOf("Stayover") >= 0) {
-					$scope.counts.stayover++;
-				};
-				if (room.hk_complete) {
-					$scope.counts.completed++;
-				};
-			};
-
-			hh = totalHH + Math.floor(totalMM / 60);
-			mm = (totalMM % 60) < 10 ? '0' + (totalMM % 60) : (totalMM % 60);
-			$scope.counts.allocated = hh + ':' + mm;
-		};
-
-
 
 		/* ***** ***** ***** ***** ***** */
 

@@ -201,17 +201,17 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 				var params = {
 					'date'         : $rootScope.businessDate,
-					'employee_ids' : [$rootScope.userId],
-					'work_type_id' : workTypes[0]['id']
+					'employee_ids' : [$rootScope.userId]
 				};
 
 				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
 			};
 
 			function _checkHasActiveWorkSheet (assignments) {
-				var _hasActiveWorkSheet = !!assignments.work_sheets.length && !!assignments.work_sheets[0].work_assignments && !!assignments.work_sheets[0].work_assignments.length;
+				var employee = assignments.employees.length && assignments.employees[0] || null,
+					hasTasks = employee && employee.room_tasks && employee.room_tasks.length || false;
 
-				if ( _hasActiveWorkSheet ) {
+				if ( hasTasks ) {
 					paramEmployeeId = $rootScope.userId;
 				} else {
 					paramEmployeeId = false;
@@ -382,7 +382,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// get the Work Assignments for a particular emp
 		this.fetchWorkAssignments = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/work_assignments';
+				url = 'api/work_assignments/assigned_rooms';
 
 			BaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {

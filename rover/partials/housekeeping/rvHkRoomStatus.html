@@ -96,7 +96,7 @@
 </form>
 
 <!-- My Worksheet Summary -->
-<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="isMaintenanceStaff">
+<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="hasActiveWorkSheet">
     <ul class="wrapper" style="width: {{getWidthForSummary()}}px"> <!-- width:{160*no.of list items + 40px}; -->
         <li>
             <strong class="title">Time Allocated</strong>
@@ -113,7 +113,7 @@
 </div>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': isMaintenanceStaff, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn)}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
+<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn)}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
     <ul class="search-results" ng-hide="uiTotalCount == 0">
         <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
             <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ netTotalCount }}</strong> items</p>
@@ -224,7 +224,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry" ng-if="!isMaintenanceStaff">
+                <div class="entry" ng-if="!hasActiveWorkSheet">
                     <div class="select">
                         <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="" selected>All Employees</option>
