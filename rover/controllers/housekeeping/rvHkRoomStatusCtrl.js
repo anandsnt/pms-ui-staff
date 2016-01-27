@@ -1317,11 +1317,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.getWidthForSummary = function(){
 			var summaryWidth = 0,
 				tasksLength = $scope.summary.work_types.length;
-			summaryWidth = parseInt(parseInt(tasksLength)*160 + 40);
+			summaryWidth = parseInt(parseInt(tasksLength + 1)*160 + 40);
 			return summaryWidth;
 		};
 
-		var scrollerOptionsForSummary = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
+		var scrollerOptionsForSummary = {scrollX: true, scrollY: false, click: true, preventDefault: true, mouseWheel: false};
     	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
 
 	}
