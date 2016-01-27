@@ -3,12 +3,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		//hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
-	
+
 		//store basic details as rootscope variables
 		$rootScope.adminRole = adminDashboardConfigData.admin_role;
 		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
 		$rootScope.isPmsConfigured = (adminDashboardConfigData.is_pms_configured === 'true') ? true : false;
-		
+
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
 
@@ -114,8 +114,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}, {
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
-		            	menuIndex: "accounts",
-		            	hidden: $rootScope.isHourlyRatesEnabled
+		            	menuIndex: "accounts"
+		            	//hidden: $rootScope.isHourlyRatesEnabled
 		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
