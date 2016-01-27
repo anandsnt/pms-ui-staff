@@ -412,15 +412,20 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 		$scope.showPayemntModal = function() {
-			$scope.passData = getPassData();
-			ngDialog.open({
-				template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
-				className: '',
-				controller: 'RVAccountsTransactionsPaymentCtrl',
-				closeByDocument: false,
-				scope: $scope
+            $scope.$emit('showLoader'); 
+            jsMappings.fetchAssets('addBillingInfo')
+            .then(function(){
+                $scope.$emit('hideLoader'); 			
+				$scope.passData = getPassData();
+				ngDialog.open({
+					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+					className: '',
+					controller: 'RVAccountsTransactionsPaymentCtrl',
+					closeByDocument: false,
+					scope: $scope
+				});
+				$scope.paymentModalOpened = true;
 			});
-			$scope.paymentModalOpened = true;
 		};
 
 
