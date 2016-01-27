@@ -764,14 +764,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// time to decide if this is an employee
 					// who has an active work sheets
-					if ( !!$scope.currentFilters.filterByWorkType && !!$scope.currentFilters.filterByEmployeeName ) {
-						$_checkHasActiveWorkSheet(alreadyFetched);
-					} else {
-						// need delay, just need it
-						$timeout(function() {
-							$_postProcessRooms();
-						}, 10);
-					};
+					$_checkHasActiveWorkSheet(alreadyFetched);
 				};
 
 				if ( (!!$scope.workTypes && $scope.workTypes.length) && (!!$scope.employees && $scope.employees.length) ) {
