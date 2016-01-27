@@ -22,7 +22,7 @@ var DPHeadPanel = React.createClass({
 		for(i = 0, j = this.props.headerTop.length; i < j; i++) {
 			topRowCells.push(
 				DPthCell({
-					'colspan' : this.props.colspan,
+					'colspan' : this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
 					'data'    : this.props.headerTop[i]
 				})
 			);
@@ -116,9 +116,10 @@ var DPContent = React.createClass({
 				'className' : 'statistics-reports',
 			},
 			DPHeadPanel({
-				'colspan'    : this.props.colspan,
-				'headerTop'  : this.props.headerTop,
-				'headerBot'  : this.props.headerBot
+				'colspan'    	: this.props.colspan,
+				'headerTop'  	: this.props.headerTop,
+				'headerBot'  	: this.props.headerBot,
+				'colspanArray'  : this.props.colspanArray
 			}),
 			DPBodyPanel({
 				'reportData' : this.props.reportData,

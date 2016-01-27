@@ -33,7 +33,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
                     var application       = urlComponents[urlComponents.length-3];
                     var url_suffix        = urlComponents[urlComponents.length-1];
                     var hotel_identifier  = urlComponents[urlComponents.length-2];
-                        apiUrl            = urlComponents[0]+"/guest_web/home/checkin_verification_data?hotel_identifier="+hotel_identifier+"&application="+application+"&url_suffix="+url_suffix;
+                        apiUrl            = "/guest_web/home/checkin_verification_data?hotel_identifier="+hotel_identifier+"&application="+application+"&url_suffix="+url_suffix;
                  }
                 // direct URL checkout - accessing URLS set in hotel admin for checkin
                  else{
@@ -41,7 +41,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0,absUrl.indexOf("#")) : absUrl;
                     var urlComponents     = absUrl.split('/');;
                     var url_suffix        = urlComponents[urlComponents.length-1];
-                    apiUrl                = urlComponents[0]+"/guest_web/home/checkout_verification_data?hotel_identifier="+url_suffix;
+                    apiUrl                = "/guest_web/home/checkout_verification_data?hotel_identifier="+url_suffix;
                  }
 
             	

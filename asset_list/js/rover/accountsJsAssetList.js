@@ -10,6 +10,8 @@ module.exports = {
 					controllerRoot + 'accounts/**/*.js',
 					controllerRoot + 'depositBalance/rvDepositBalanceAccountsCtrl.js',
 					controllerRoot + 'roverPayment/rvCardOptionsCtrl.js',
+					'rover/directives/delayTextbox/**/*.js',
+					'rover/directives/Outside Click handler/**/*.js',
 					servicesRoot + 'accounts/**/*.js',
 					servicesRoot + 'group/**/*.js',
 					servicesRoot + "reservation/rvReservationSummarySrv.js",
