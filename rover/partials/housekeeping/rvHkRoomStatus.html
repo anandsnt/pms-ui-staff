@@ -173,7 +173,7 @@
                 <!-- IF VIEW BY TASK, ADD THIS: -->
                 <ul class="tasks" ng-if="currentView === 'TASKS'">
                     <!-- Add class "completed" if task is completed -->
-                    <li ng-repeat="task in summary.work_types" ng-class="{ 'completed': task.is_completed }">
+                    <li ng-repeat="task in room.room_tasks" ng-class="{ 'completed': task.is_completed }">
                         {{task.name}}
                     </li>
                 </ul>
