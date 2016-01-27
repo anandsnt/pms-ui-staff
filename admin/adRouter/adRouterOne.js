@@ -177,6 +177,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/doorlockinterface'
 		});
                 
+		$stateProvider.state('admin.zest_shortcode', {
+			templateUrl: '/assets/partials/zestSetup/adSmsSetup.html',
+			controller: 'ADZestSmsShortcodeCtrl',
+			url : '/zestshortcode'
+		});
 		$stateProvider.state('admin.zest_setup_email', {
 			templateUrl: '/assets/partials/zestSetup/adCheckinEmailSetup.html',
 			controller: 'ADZestCheckinEmailCtrl',
