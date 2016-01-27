@@ -12,7 +12,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
 
         $scope.paymentFlags         = {
             isAddPayment             : false,
-            showCreditCardDropDown   : false,
+            showPaymentDropDown      : false,
             isShownExistingCCPayment : false,
             sixIsManual              : false
         };
@@ -50,7 +50,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
             $scope.renderAddedPayment.endingWith     = entity.credit_card_details.card_number;
             $scope.renderAddedPayment.creditCardType = entity.credit_card_details.card_code;
 
-            $scope.paymentFlags.showCreditCardDropDown   = false;
+            $scope.paymentFlags.showPaymentDropDown   = false;
             $scope.paymentFlags.isShownExistingCCPayment = true;
 
             setTimeout(function(){
@@ -244,7 +244,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         };
 
         $scope.paymentFlags.isAddPayment = true;
-        $scope.paymentFlags.showCreditCardDropDown   = true;
+        $scope.paymentFlags.showPaymentDropDown   = true;
         $scope.paymentFlags.isShownExistingCCPayment = false;
 
         $scope.$broadcast('showaddpayment');
@@ -257,7 +257,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
 
         setTimeout(function(){
             $scope.saveData.payment_type = "CC";
-            $scope.paymentFlags.showCreditCardDropDown = true;
+            $scope.paymentFlags.showPaymentDropDown = true;
             $scope.swippedCard = true;
             $scope.$broadcast('RENDER_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
             $scope.$digest();
@@ -306,10 +306,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
                 $scope.paymentFlags.isAddPayment = false;
 
                 if (data.credit_card_details.payment_type !== 'CC') {
-                    $scope.paymentFlags.showCreditCardDropDown = true;
+                    $scope.paymentFlags.showPaymentDropDown = true;
                 }
                 else {
-                    $scope.paymentFlags.showCreditCardDropDown   = false;
+                    $scope.paymentFlags.showPaymentDropDown   = false;
                     $scope.paymentFlags.isShownExistingCCPayment = true;
                 }
             }

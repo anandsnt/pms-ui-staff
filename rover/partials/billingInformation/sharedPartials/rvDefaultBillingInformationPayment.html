@@ -19,5 +19,5 @@
 
 <button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!paymentFlags.isAddPayment && renderAddedPayment == null">{{'NEW_PAYMENT' | translate}}</button>
 
-<!-- For to add the new credit card, should be shown when button above is tapped -->
-<div id = "newpaymentview"  ng-show = "paymentFlags.isAddPayment && paymentFlags.showCreditCardDropDown"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"></div>
+<!-- Payment drop down -->
+<div id = "newpaymentview"  ng-show = "paymentFlags.isAddPayment && paymentFlags.showPaymentDropDown"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"></div>
