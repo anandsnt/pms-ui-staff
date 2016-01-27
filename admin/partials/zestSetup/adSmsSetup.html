@@ -40,10 +40,10 @@
                                             (<span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}'>
                                                 {{charLimitPerText-editData.sms_optin_response.length}}
                                             </span>)
-                                            <span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
+                                            <span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}' ng-show='editData.sms_optin_response.length>charLimitPerText'>
                                                 *May split into ({{getPages(editData.sms_optin_response.length)}}) messages</span>
 					</label>
-					<textarea value="" type="" required="" placeholder="Enter Opt-In Response" name="sms_optin_response" ng-model="editData.sms_optin_response" class="full-width"></textarea>
+					<textarea value="" type="" required="" placeholder="Enter Opt-In Response" name="sms_optin_response" ng-model="editData.sms_optin_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
 				</div>
 			</fieldset>
                     
@@ -61,10 +61,10 @@
                                             (<span ng-class='{"green-color-force":editData.sms_stop_response.length <= charLimitPerText, "snt-color-force":editData.sms_stop_response.length > charLimitPerText}'>
                                                 {{charLimitPerText-editData.sms_stop_response.length}}
                                             </span>)
-                                            <span ng-class='{"green-color-force":editData.sms_stop_response.length <= charLimitPerText, "snt-color-force":editData.sms_stop_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
+                                            <span ng-class='{"green-color-force":editData.sms_stop_response.length <= charLimitPerText, "snt-color-force":editData.sms_stop_response.length > charLimitPerText}' ng-show='editData.sms_stop_response.length>charLimitPerText'>
                                                 *May split into ({{getPages(editData.sms_stop_response.length)}}) messages</span>
 					</label>
-					<textarea value="" type="" required="" placeholder="" name="sms_stop_response" ng-model="editData.sms_stop_response" class="full-width"></textarea>
+                                    <textarea value="" type="" required="" placeholder="" name="sms_stop_response" ng-model="editData.sms_stop_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
 				</div>
 			</fieldset>
                     
@@ -85,7 +85,7 @@
                                             <span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
                                                 *May split into ({{getPages(editData.sms_help_response.length)}}) messages</span>
 					</label>
-					<textarea value="" type="" required="" placeholder="" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width"></textarea>
+					<textarea value="" type="" required="" placeholder="" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
 				</div>
 			</fieldset>
                     

@@ -3,7 +3,7 @@ admin.service('ADZestShortCodeSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV
 	
         this.fetch = function () {
             var deferred = $q.defer();
-            var url = '/api/hotel_settings/kiosk';//placeholder
+            var url = '/admin/sms_campaigns';
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             },function(data){
@@ -15,9 +15,9 @@ admin.service('ADZestShortCodeSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV
         
         this.save = function(data){
             var deferred = $q.defer();
-            var url = '/api/hotel_settings/change_settings';//placeholder
+            var url = '/admin/sms_campaigns';
 
-            ADBaseWebSrvV2.postJSON(url,data).then(function (data) {
+            ADBaseWebSrvV2.putJSON(url,data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

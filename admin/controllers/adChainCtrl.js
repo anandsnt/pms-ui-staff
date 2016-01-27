@@ -7,6 +7,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
         $scope.charLimitPerText = 160;
+        $scope.charMaxLimit = 500;
    /*
     * To fetch hotel chains list
     */
