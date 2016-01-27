@@ -163,8 +163,8 @@
     "RES_SRCH_SRY":"Sorry.",
     
     
-    "NO_MATCH_TALK":"Talk",
-    "NO_MATCH_TALK_SUB":"Speak to a Sidekick",
+    "NO_MATCH_TALK":"Speak",
+    "NO_MATCH_TALK_SUB":"to a Sidekick",
     "NO_MATCH_OR":"Or",
     "NO_MATCH_RE_LAST":"Re-Enter",
     "NO_MATCH_HEADER":"Sorry.",
