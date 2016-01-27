@@ -49,7 +49,7 @@
     </div>
 
     <!-- Room or Task View, default to Room -->
-    <div class="entry switch">
+    <div class="entry switch" ng-if="isStandAlone">
         <div class="switch-button"
             ng-class="{ 'on': currentView === 'ROOMS', 'off': currentView==='TASKS' }">
             <input id="room-task-toggle" value="" type="checkbox"
@@ -96,7 +96,7 @@
 </form>
 
 <!-- My Worksheet Summary -->
-<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="isMaintenanceStaff">
+<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="hasActiveWorkSheet">
     <ul class="wrapper" style="width: {{getWidthForSummary()}}px"> <!-- width:{160*no.of list items + 40px}; -->
         <li>
             <strong class="title">Time Allocated</strong>
@@ -113,7 +113,7 @@
 </div>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': isMaintenanceStaff, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn)}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
+<section id="rooms" class="content scrollable" bindonce bo-class="{'no-options': !isStandAlone}" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn)}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
     <ul class="search-results" ng-hide="uiTotalCount == 0">
         <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
             <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ netTotalCount }}</strong> items</p>
@@ -173,7 +173,7 @@
                 <!-- IF VIEW BY TASK, ADD THIS: -->
                 <ul class="tasks" ng-if="currentView === 'TASKS'">
                     <!-- Add class "completed" if task is completed -->
-                    <li ng-repeat="task in summary.work_types" ng-class="{ 'completed': task.is_completed }">
+                    <li ng-repeat="task in room.room_tasks" ng-class="{ 'completed': task.is_completed }">
                         {{task.name}}
                     </li>
                 </ul>
@@ -212,7 +212,7 @@
     <div id="filter-options" class="content scrollable" ng-iscroll="room-status-filter">
         <div class="wrapper">
             <!-- Work Type / Employee filter -->
-            <div class="holder">
+            <div class="holder" ng-if="isStandAlone">
                 <strong class="title" translate>WORK_TYPE</strong>
                 <div class="entry">
                     <div class="select">
@@ -224,7 +224,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry" ng-if="!isMaintenanceStaff">
+                <div class="entry" ng-if="!hasActiveWorkSheet">
                     <div class="select">
                         <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="" selected>All Employees</option>

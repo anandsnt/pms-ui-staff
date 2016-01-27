@@ -80,6 +80,36 @@
 		                    <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 						</div>
 					</fieldset>
+
+                    <fieldset class="full-width">
+                    
+						<div class="form-title key-server-details-title">
+							<h3><span translate>MOBILE_KEY_SETTINGS_TITLE</span></h3>
+							<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+						</div>
+						<div class = "holder left">
+						     <div class="form-title">
+							<h3><span translate>IOS_LABEL</span></h3>
+							
+						    </div>
+
+						    <ad-toggle-button is-checked="data.is_mobile_key_supporting_ios" label="{{ 'ENABLE_MOBILE_KEY_LABEL' | translate}}" ></ad-toggle-button>
+
+						    <ad-dropdown label="{{'MIN_IOS_VERSION_LABEL' | translate }}" list="data.ios_versions" selected-Id='data.min_ios_version_supported' label-in-drop-down="{{'MIN_VERSION_LABEL' | translate }}" required = "yes"></ad-dropdown>
+						     <ad-multiselectbox label="{{'EXCLUDED_VERSION_LABEL' | translate }}" list="data.ios_versions" selected-Ids='data.excluded_ios_versions' required = "yes" div-class = "full-width"></ad-multiselectbox>
+						
+						</div>
+						<div class = "holder right">
+                            <div class="form-title">
+							<h3><span translate>ANDROID_LABEL</span></h3>
+							
+						    </div>
+						    <ad-toggle-button is-checked="data.is_mobile_key_supporting_android" label="{{ 'ENABLE_MOBILE_KEY_LABEL' | translate}}" ></ad-toggle-button>
+						    <ad-dropdown label="{{'MIN_ANDROID_VERSION_LABEL' | translate }}" list="data.android_versions" selected-Id='data.min_android_version_supported'  label-in-drop-down="{{'MIN_VERSION_LABEL' | translate }}" required = "yes"></ad-dropdown>
+						     <ad-multiselectbox div-class = "full-width" label="{{'EXCLUDED_VERSION_LABEL' | translate }}"  list="data.android_versions" selected-Ids='data.excluded_android_versions' required = "yes"></ad-multiselectbox>
+						</div>
+					</fieldset>
+
 					<fieldset>
 		                <div class="form-title key-server-details-title" >
 							<h3><span translate>OTHER_SETTINGS</span></h3>
