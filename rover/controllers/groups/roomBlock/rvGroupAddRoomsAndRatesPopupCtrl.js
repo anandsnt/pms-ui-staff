@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupAddRoomsAndRatesPopupCtrl', [
+angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 	'$scope',
 	'$rootScope',
 	'$filter',

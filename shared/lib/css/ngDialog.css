@@ -112,7 +112,7 @@ body.ngdialog-open {
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content,.grey-texture-bg-color{
-    background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+    background: url("cssimg/texture.png") repeat scroll 0 0 #FCFCFC;
 }
 
 .calendar-single .ngdialog-content{

@@ -1,4 +1,4 @@
-sntRover.service('RVLikesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+angular.module('sntRover').service('RVLikesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 
 	this.fetchLikes = function(param){
 		var deferred = $q.defer();

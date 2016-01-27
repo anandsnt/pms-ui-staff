@@ -1,4 +1,4 @@
-sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv', '$filter',
+angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv', '$filter',
     function($q, RVBaseWebSrvV2, RVBaseWebSrv, $filter) {
 
         var that = this;

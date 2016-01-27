@@ -142,9 +142,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-		$scope.$emit("hideLoader");
+		$scope.$emit("hideLoader");		
 		$scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
-        $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);;
+        $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
+        //Reload the ar transaction listing after payment
+        $scope.reloadARTransactionListing();
 		$scope.handleCloseDialog();
 	};
 	/*

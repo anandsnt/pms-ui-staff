@@ -20,6 +20,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		});
 
 		// Initializing filter data
+
 		$scope.filterData = {
 			'id': $scope.contactInformation === undefined? "" :$scope.contactInformation.id,
 			'filterActive': false,
@@ -32,7 +33,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'pageNo':1,
 			'perPage':50,
 			'textInQueryBox': '',
-			'viewFromOutside': false
+			'viewFromOutside': false,
+			'transactionType' : 'ALL'
 		};
 
 		$scope.arTransactionDetails = {
@@ -57,7 +59,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				"to_date": $scope.filterData.toDate,
 				"query": $scope.filterData.textInQueryBox,
 				"page_no" : $scope.filterData.pageNo,
-				"per_page": $scope.filterData.perPage
+				"per_page": $scope.filterData.perPage,
+				"transaction_type" : $scope.filterData.transactionType
 			};
 			//CICO-10323. for hotels with single digit search,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
@@ -69,6 +72,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			}
 			return paramsToSend;
 		};
+
+		//CICO-11669 -Added new summary fields
+		var setSummaryValues = function(data) {
+			$scope.arTransactionDetails.total_payments = data.total_payments;
+		    $scope.arTransactionDetails.total_charges = data.total_charges;
+		    $scope.arTransactionDetails.current_balance = data.current_balance;
+		    $scope.arTransactionDetails.unallocated_credit = data.unallocated_credit;
+	    };
 
 		// To fetch data for ar transactions
 		var fetchData = function(clearErrorMsg){
@@ -91,6 +102,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
+
+			    
 
 				$timeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
@@ -140,6 +153,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			else {
 				$scope.filterData.isShowPaid = false;
 			}
+			initPaginationParams();
+			fetchData();
+		};
+
+		//Handle the change in transaction type filter
+		$scope.onTransactionTypeChange = function() {
 			initPaginationParams();
 			fetchData();
 		};
@@ -289,6 +308,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	            if($scope.filterData.showFilterFlag === 'OPEN' && !$scope.arTransactionDetails.ar_transactions[index].paid){
 	            	$scope.arTransactionDetails.total_count++;
 	            }
+
+	            setSummaryValues(data);
 	        };
 
 	        var failure = function(errorMessage){
@@ -437,5 +458,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		     */
 
 	    };
+
+	    //Reloads the AR Transaction Listing
+	    $scope.reloadARTransactionListing = function() {
+	    	fetchData();
+	    };
+
+
 
 }]);

@@ -4,6 +4,6 @@ sntGuestWeb.controller('emailVerificationStatusController', ['$rootScope','$loca
 	$scope.pageValid = true;
 	$scope.showBackButtonImage = false;
 	$scope.isVerified = true;
-	// $scope.hotelLogo = "/assets/img/Yotel/yotel-logo.png"
+	// $scope.hotelLogo = "/assets/guestweb/img/Yotel/yotel-logo.png"
 
 }]);

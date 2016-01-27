@@ -17,6 +17,7 @@ sntRover.controller('RVbillCardController',
 	'RVPaymentSrv',
 	'RVSearchSrv',
 	'rvPermissionSrv',
+	'jsMappings',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -28,7 +29,7 @@ sntRover.controller('RVbillCardController',
 			chargeCodeData, $sce,
 
 			RVKeyPopupSrv,RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv){
+			RVSearchSrv, rvPermissionSrv, jsMappings){
 
 
 	BaseCtrl.call(this, $scope);
@@ -895,6 +896,13 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.openPostCharge = function(activeBillNo) {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('postcharge')
+        .then(function(){
+
+        $scope.$emit('hideLoader');
 
 		// pass on the reservation id
 		$scope.reservation_id = $scope.reservationBillData.reservation_id;
@@ -922,7 +930,7 @@ sntRover.controller('RVbillCardController',
     		className: '',
     		scope: $scope
     	});
-
+	    })
 	};
 
 	$scope.$on('paymentTypeUpdated', function() {
@@ -1824,13 +1832,18 @@ sntRover.controller('RVbillCardController',
     	$scope.reservationData.user_id = $stateParams.userId;
     	$scope.reservationData.is_opted_late_checkout = false;
     	$scope.billingInfoModalOpened = true;
-	    ngDialog.open({
-	        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-	        controller: 'rvBillingInformationPopupCtrl',
-	        className: '',
-	        closeByDocument: true,
-	        scope: $scope
-	    });
+    	
+    	$scope.$emit('showLoader'); 
+       	jsMappings.fetchAssets('addBillingInfo')
+        .then(function(){
+        	$scope.$emit('hideLoader'); 
+		    ngDialog.open({
+		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+		        controller: 'rvBillingInformationPopupCtrl',
+		        className: '',
+		        scope: $scope
+		    });
+		});
     };
 
 	/*
