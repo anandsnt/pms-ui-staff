@@ -24,7 +24,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		$scope.roomDetails = $scope.$parent.roomDetails;
 		$scope.taskDetails = $scope.roomDetails.task_details;
 		$scope.currentTask = $scope.taskDetails[0];
-		$scope.currentTaskName = $scope.currentTask.name;
+		$scope.currentTaskID = $scope.currentTask.id;
 
 		// default cleaning status
 		// [ OPEN, IN_PROGRESS, COMPLETED ]
@@ -111,15 +111,26 @@ sntRover.controller('RVHKWorkTabCtrl', [
 
 		// action for task cahnge 
 
-		$scope.changedTask = function() {
+		$scope.changedTask = function(currentTaskID) {
 
 			$scope.currentTask = _.find($scope.taskDetails, function(item) {
-				return item.name === $scope.currentTaskName;
+				return item.id === currentTaskID;
 			});
-			$scope.currentTaskName = $scope.currentTask.name;
+			$_updateWorkStatusFlags();
+			runDigestCycle();
 			console.log($scope.currentTask);
 		};
 
+		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
 
 		// start working
 		$scope.startWorking = function() {

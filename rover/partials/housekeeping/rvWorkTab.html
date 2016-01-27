@@ -12,7 +12,7 @@
             <!-- standalone PMS -->
             <!-- Disable when cleaning in progrees. -->
             <label for="room-status">Room Status</label>
-            <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disable="isStarted">
+            <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="isStarted">
             </select>
 
             <!-- connected PMS -->
@@ -54,7 +54,7 @@
                 <div class="room-actions">
                     <div class="select">
                         <label for="select-task">Task</label>
-                         <select id="select-task" name="room-status" ng-if="isStandAlone" ng-model="currentTaskName" ng-options="item.id as item.name for item in taskDetails" ng-change="changedTask()">
+                         <select id="select-task" name="room-status" ng-if="isStandAlone" ng-model="currentTaskID" ng-options="item.id as item.name for item in taskDetails" ng-change="changedTask(currentTaskID)" ng-disabled="isStarted">
                         </select>
                     </div>
                 </div>
