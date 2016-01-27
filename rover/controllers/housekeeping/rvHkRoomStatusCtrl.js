@@ -1,4 +1,4 @@
-sntRover.controller('RVHkRoomStatusCtrl', [
+angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 	'$scope',
 	'$rootScope',
 	'$timeout',

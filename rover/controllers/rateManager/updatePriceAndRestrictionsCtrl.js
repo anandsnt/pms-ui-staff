@@ -1,4 +1,4 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootScope', 'ngDialog', 'dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv', 'rvPermissionSrv', '$stateParams',
+angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', '$rootScope', 'ngDialog', 'dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv', 'rvPermissionSrv', '$stateParams',
     function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv, rvPermissionSrv, $stateParams) {
         $scope.data = {};
         $scope.data.roomRateOverrides = [];

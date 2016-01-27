@@ -1,4 +1,4 @@
-sntRover.controller('rvItemInventoryGridStatusController', [
+angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	function($scope, rvAvailabilitySrv){

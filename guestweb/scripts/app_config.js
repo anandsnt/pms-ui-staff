@@ -46,4 +46,10 @@ sntGuestWeb.run(function($rootScope, $location, $http){
 		function(event, toState, toParams, fromState, fromParams){
 		$rootScope.title =toState.title;
 	});
+	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      // Hide loading message
+      
+      console.error(error);
+      //TODO: Log the error in proper way
+    });
 });

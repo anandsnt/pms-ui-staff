@@ -1,4 +1,4 @@
-sntRover.controller('itemInventoryMainController', [
+angular.module('sntRover').controller('itemInventoryMainController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'$rootScope',
