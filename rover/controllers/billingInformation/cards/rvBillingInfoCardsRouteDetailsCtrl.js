@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', 'rvPermissionSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, rvPermissionSrv){
 
     BaseCtrl.call(this, $scope);
 
@@ -54,7 +54,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
             $scope.paymentFlags.isShownExistingCCPayment = true;
 
             setTimeout(function(){
-                 $scope.$broadcast('UPDATE_FLAG');
+                $scope.$broadcast('UPDATE_FLAG');
             }, 1000);
         }
     };
@@ -290,10 +290,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         var successCallback = function(data) {
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
             $scope.selectedEntity.attached_charge_codes   = data.attached_charge_codes;
+            $scope.selectedEntity.reference_number        = data.reference_number;
 
             if (data.credit_limit) {
                 $scope.selectedEntity.credit_limit     = parseFloat(data.credit_limit).toFixed(2);
-                $scope.selectedEntity.reference_number = data.reference_number;
             }
 
             if (!isEmptyObject(data.credit_card_details)) {
@@ -535,6 +535,14 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
             data.account_id = $scope.selectedEntity.id;
             $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
         }
+    };
+
+    /**
+     * Function to get permission to edit credit limit
+     * @return {undefined}
+     */
+    $scope.hasPermissionToEditCreditLimit = function() {
+        return rvPermissionSrv.getPermissionValue('OVERWRITE_DIRECT_BILL_MAXIMUM_AMOUNT');
     };
 
     $scope.$on('CHANGE_IS_MANUAL', function(e, value){

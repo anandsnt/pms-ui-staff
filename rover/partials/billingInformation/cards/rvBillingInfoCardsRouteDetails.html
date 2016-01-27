@@ -22,21 +22,7 @@
 
 				<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvDefaultBillingInformationPayment.html'"></span>
 
-				<!-- Posting Amount -->
-                <div class="title">
-                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
-                </div>
-                <div class="entry">
-                    <input type="text" ng-model="selectedEntity.credit_limit"/>
-                </div>
-
-                <!-- Reference No. -->
-                <div class="title">
-                    {{'REFERENCE_NUMBER' | translate}}
-                </div>
-                <div class="entry" >
-                    <input type="text" ng-model="selectedEntity.reference_number"/>
-                </div>
+				<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitAndReferenceNo.html'"></span>
 			</div>
 		</div>
 	</fieldset>
