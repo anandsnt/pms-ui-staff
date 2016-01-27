@@ -109,7 +109,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.moveChargesClicked = function(){
             $scope.$emit('showLoader'); 
-           $%###'[' js#Mappings.fetchAssets('addBillingInfo')#$
+            jsMappings.fetchAssets('addBillingInfo')
             .then(function(){
                 $scope.$emit('hideLoader');
 
