@@ -197,7 +197,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 			function _fetchWorkAssignments (workTypes) {
 				fetchedWorkTypes = workTypes;
-				paramWorkTypeId  = workTypes[0]['id'];
 
 				var params = {
 					'date'         : $rootScope.businessDate,
