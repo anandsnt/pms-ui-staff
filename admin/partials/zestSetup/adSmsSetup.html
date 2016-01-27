@@ -10,14 +10,21 @@
         <!-- Add chain -->
 		<form class="form inline-form float">
                     <div class="entry inline-flex" >
-                        <div><label class="switch-label">SMS Check-In Service - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span></label>
+                        <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
                         </div><div class="switch-button single" ng-class="{ on: editData.sms_active }" ng-click="editData.sms_active = !editData.sms_active">
                                 <input type="checkbox">
                                 <span class="switch-icon"></span>
                             </div>
                         </div>
                     
-                    
+                    <div class="entry full-width actions_margin_top">
+                        <div><label class="label">Service Available for guests on:</label>
+                        </div>
+                            <div>
+                                <ad-checkbox  is-checked="editData.isDOA" label="Day of Arrival" parent-label-class="room-likes" span-class="checkbox-background" ng-click="checkDOA()"></ad-checkbox>
+                                <ad-checkbox  is-checked="editData.isDBA" label="Day Before Arrival" parent-label-class="room-likes" span-class="checkbox-background" ng-click="checkDBA()"></ad-checkbox>
+                            </div>
+                    </div>
                     
                     <!--  OPT-IN  -->
 			<div class="form-title"><h3><span></span>
@@ -36,7 +43,7 @@
                                             <span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
                                                 *May split into ({{getPages(editData.sms_optin_response.length)}}) messages</span>
 					</label>
-					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_optin_response" class="full-width"></textarea>
+					<textarea value="" type="" required="" placeholder="Enter Opt-In Response" name="sms_optin_response" ng-model="editData.sms_optin_response" class="full-width"></textarea>
 				</div>
 			</fieldset>
                     
@@ -57,7 +64,7 @@
                                             <span ng-class='{"green-color-force":editData.sms_stop_response.length <= charLimitPerText, "snt-color-force":editData.sms_stop_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
                                                 *May split into ({{getPages(editData.sms_stop_response.length)}}) messages</span>
 					</label>
-					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_stop_response" class="full-width"></textarea>
+					<textarea value="" type="" required="" placeholder="" name="sms_stop_response" ng-model="editData.sms_stop_response" class="full-width"></textarea>
 				</div>
 			</fieldset>
                     
@@ -78,7 +85,7 @@
                                             <span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
                                                 *May split into ({{getPages(editData.sms_help_response.length)}}) messages</span>
 					</label>
-					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width"></textarea>
+					<textarea value="" type="" required="" placeholder="" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width"></textarea>
 				</div>
 			</fieldset>
                     
