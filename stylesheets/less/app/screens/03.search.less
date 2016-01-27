@@ -292,17 +292,20 @@
                     .data {
                         .calc-width(70, 150);
 
-                        h2 { margin-bottom: 6px; }
+                        h2 { 
+                            margin-bottom: 6px; 
+
+                            em { font-weight: 700; }
+                        }
 
                         .confirmation,
                         .arrival,
-                        .departure {
+                        .departure,
+                        .icon-time {
                             line-height: 20px;
                             .show;
                             .pull-left;
                         }
-
-                        .confirmation { margin: 0; }
 
                         .arrival,
                         .departure {
@@ -319,6 +322,15 @@
                             .date { margin-right: 5px; }
                             .time { color: @grey3; }
                         }
+
+                        .icon-time {
+                            color: @textColor;
+                            padding-left: 24px;
+
+                            span { margin-left: 10px; }
+                        }
+
+                        &.no-image { .calc-width(70, 80); }
                     }
 
                     .amount {
@@ -331,6 +343,8 @@
                         .calc-width(30, 150);
 
                         &.paid { color: @grey3; }
+                        &.credit { color: @green; }
+                        &.debit { color: @red; }
                     }
 
                     .switch-button {
@@ -369,6 +383,17 @@
                             .data-off { right: 0; }
                             .data-on { right: 100%; }
                         }
+                    }
+
+                    .employee {
+                        font-size: 14px;
+                        line-height: 40px;
+                        text-align: center;
+                        text-transform: uppercase;
+                        margin-top: 5px;
+                        .nowrap();
+                        .pull-left;
+                        .size(40px, 150px);
                     }
                 }
 
@@ -469,7 +494,7 @@
                         position: relative;
                         .size(50px, 27%);
 
-                        .guest-status { margin-top: 10px; }
+                        .guest-status { margin-top: 10px; }
 
                         .room-number { 
                             margin-right: 10px;

@@ -21,137 +21,10 @@ The new set of HTMLs can be found under the folder common_templates. inside that
 and some folder dedicated to MGM, which has some text changes specifically asked by client.
 
 */
-
-
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate']);
-
-sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state','$timeout',
- function($rootScope,$scope,$attrs,$location,$state,$timeout) {
-
-	var that = this;
-	//load the style elements. Done to reduce the loading time of web page.
-
-	loadStyleSheets('/assets/' + $('body').attr('data-theme') +'.css');
-	loadAssets('/assets/favicon.png', 'icon', 'image/png');
-	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
-	loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
-	loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape)');
-	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
-	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
-
-	//store basic details as rootscope variables
-
-	$rootScope.hotelName     = $attrs.hotelName;
- 	$rootScope.currencySymbol= $attrs.currencySymbol;
-	$rootScope.hotelPhone    = $attrs.hotelPhone;
-	$rootScope.businessDate  = $attrs.businessDate;
-	$rootScope.mliMerchatId = $attrs.mliMerchatId;
-	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
- 	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
- 	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
- 	$rootScope.isSixpayments = ($attrs.paymentGateway  === "sixpayments") ? true:false;
-
- 	$rootScope.reservationID = $attrs.reservationId;
-	$rootScope.userName      = $attrs.userName;
-	$rootScope.checkoutDate  = $attrs.checkoutDate;
-	$rootScope.checkoutTime  = $attrs.checkoutTime;
-	$rootScope.userCity   	 = $attrs.city;
-	$rootScope.userState     = $attrs.state;
-	$rootScope.roomNo        = $attrs.roomNo;
-	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
-	$rootScope.emailAddress  = $attrs.emailAddress;
-	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
-	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
-	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
-    $rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
- 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
- 	$rootScope.isCCOnFile = ($attrs.isCcAttached ==='true')? true:false;
- 	$rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
- 	$rootScope.isRoomVerified =  false;
- 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
- 	$rootScope.isCcAttachedFromGuestWeb = false;
- 	$rootScope.isAutoCheckinOn = (($attrs.isAutoCheckin === 'true') && ($attrs.isPrecheckinOnly === 'true')) ? true :false;;
- 	$rootScope.isExternalVerification = ($attrs.isExternalVerification === "true") ? true :false;
- 	$rootScope.hotelIdentifier = $attrs.hotelIdentifier;
- 	$rootScope.guestAddressOn = $attrs.guestAddressOn === 'true' ? true:false;
- 	$rootScope.isGuestAddressVerified =  false;
-
- 	$rootScope.guestBirthdateOn = ($attrs.birthdateOn === 'true') ? true :false;
- 	$rootScope.guestBirthdateMandatory = ($attrs.birthdateMandatory === 'true') ? true :false;
-	$rootScope.guestPromptAddressOn = ($attrs.promptForAddressOn === 'true') ? true :false;
-	$rootScope.minimumAge = parseInt($attrs.minimumAge);
-	$rootScope.primaryGuestId = $attrs.primaryGuestId;
-
-
- 	$rootScope.isGuestEmailURl =  ($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = $attrs.zestCheckinNoServiceMsg;
- 	$rootScope.termsAndConditions = $attrs.termsAndConditions;
- 	$rootScope.isBirthdayVerified =  false;
- 	$rootScope.application        = $attrs.application;
- 	$rootScope.urlSuffix        = $attrs.urlSuffix;
- 	$rootScope.collectCCOnCheckin = ($attrs.checkinCollectCc === "true") ? true:false;
- 	$rootScope.isMLI = ($attrs.paymentGateway  = "MLI") ? true : false;
- 	//room key delivery options
- 	$rootScope.preckinCompleted =  false;
- 	$rootScope.userEmail = $attrs.primaryGuestEmail;
- 	$rootScope.keyDeliveryByEmail = true;
- 	//$rootscope.keyDeliveryByText  = true;
-
- 	$rootScope.offerRoomDeliveryOptions = ($attrs.offerRoomDeliveryOptions  ==="true") ? true:false;
-
-
-    //Params for zest mobile and desktop screens
-    if($attrs.hasOwnProperty('isPasswordReset')){
-    	$rootScope.isPasswordResetView = $attrs.isPasswordReset;
-    	$rootScope.isTokenExpired = $attrs.isTokenExpired === "true"? true: false;
-    	$rootScope.accessToken = $attrs.token;
-    	$rootScope.user_id = $attrs.id;
-    	$rootScope.user_name = $attrs.login;
-    }
-
-    //work around to fix flashing of logo before app loads
-    $timeout(function() {
-        $rootScope.hotelLogo     = $attrs.hotelLogo;
-    }, 750);
-
- 	if(typeof $attrs.accessToken !== "undefined") {
-		$rootScope.accessToken = $attrs.accessToken	;
-	}
-	//navigate to different pages
-
-	if($attrs.checkinUrlVerification === "true" && $attrs.isZestCheckin ==="false"){
-		$location.path('/guestCheckinTurnedOff');
-	}
-	else if($attrs.checkinUrlVerification === "true"){
-		$location.path('/externalCheckinVerification'); // external checkin URL available and is on
-	}
-	else if($attrs.isExternalVerification ==="true"){
-		$location.path('/externalVerification'); //external checkout URL
-	}
-	else if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && !($attrs.isAutoCheckin === 'true')){
- 		$location.path('/tripDetails');// only available for Fontainbleau -> precheckin + sent to que
- 	}
- 	else if	($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED' && ($attrs.isAutoCheckin === 'true')){
- 		$location.path('/checkinConfirmation');//checkin starting -> page precheckin + auto checkin
- 	}
- 	else if($rootScope.isCheckedin){
- 		$location.path('/checkinSuccess');//already checked in
- 	}
-    else if($attrs.isCheckin ==='true'){
- 		$location.path('/checkinConfirmation');//checkin starting page -> precheckin turned off
- 	}
-  	else if($rootScope.isCheckedout)	{
-		$location.path('/checkOutStatus');//already checked out
-	}
-	else if($rootScope.hasOwnProperty('isPasswordResetView')){
-		var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
-		$location.path(path);
-		$location.replace();
-	}else{
-         $location.path('/checkoutRoomVerification'); // checkout landing page
-	};
-
-	$( ".loading-container" ).hide();
+var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate', 'oc.lazyLoad']);
+sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope){
+	$state.go('guestwebRoot');
 	/*
 	 * function to handle exception when state is not found
 	 */
@@ -160,14 +33,141 @@ sntGuestWeb.controller('rootController', ['$rootScope','$scope','$attrs', '$loca
 		$state.go('noOptionAvailable'); 
 	})
 }]);
+sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
+ function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
+	var that = this;
+	loadAssets('/assets/favicon.png', 'icon', 'image/png');
+	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
+	loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
+	loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape)');
+	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
+	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
-var loadStyleSheets = function(filename){
-		var fileref = document.createElement("link");
-		fileref.setAttribute("rel", "stylesheet");
-		fileref.setAttribute("type", "text/css");
-		fileref.setAttribute("href", filename);
-		$('body').append(fileref);
-};
+	//store basic details as rootscope variables
+	if(typeof reservationAndhotelData.access_token !== "undefined") {
+		$rootScope.accessToken = reservationAndhotelData.access_token	;
+	}
+	$rootScope.hotelName     = reservationAndhotelData.hotel_name;
+ 	$rootScope.currencySymbol= reservationAndhotelData.currency_symbol;
+	$rootScope.hotelPhone    = reservationAndhotelData.hotel_phone;
+	$rootScope.businessDate  = reservationAndhotelData.business_date;
+	$rootScope.mliMerchatId = reservationAndhotelData.mli_merchat_id;
+ 	$rootScope.roomVerificationInstruction = reservationAndhotelData.room_verification_instruction;
+ 	$rootScope.isSixpayments = (reservationAndhotelData.payment_gateway  === "sixpayments") ? true:false;
+ 	$rootScope.reservationID = reservationAndhotelData.reservation_id;
+	$rootScope.userName      = reservationAndhotelData.user_name;
+	$rootScope.checkoutDate  = reservationAndhotelData.checkout_date;
+	$rootScope.checkoutTime  = reservationAndhotelData.checkout_time;
+	$rootScope.userCity   	 = reservationAndhotelData.city;
+	$rootScope.userState     = reservationAndhotelData.state;
+	$rootScope.roomNo        = reservationAndhotelData.room_no;
+	$rootScope.isLateCheckoutAvailable  = (reservationAndhotelData.is_late_checkout_available  === "true") ? true : false;
+	$rootScope.emailAddress  = reservationAndhotelData.primary_guest_email;
+	$rootScope.isCheckedout  = (reservationAndhotelData.is_checkedout === 'true') ? true : false;
+	$rootScope.isCheckin     =   (reservationAndhotelData.is_checkin ==='true') ? true : false;
+	$rootScope.reservationStatusCheckedIn = (reservationAndhotelData.reservation_status ==='CHECKIN')? true :false;
+    $rootScope.isActiveToken = (reservationAndhotelData.is_active_token ==="true") ? true : false;
+ 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
+ 	$rootScope.isCCOnFile = (reservationAndhotelData.is_cc_attached ==="true")? true:false;
+ 	$rootScope.isPreCheckedIn   = (reservationAndhotelData.is_pre_checked_in === 'true') ? true: false;
+ 	$rootScope.isRoomVerified =  false;
+ 	$rootScope.isPrecheckinOnly = (reservationAndhotelData.is_precheckin_only ==='true' && reservationAndhotelData.reservation_status ==='RESERVED')?true:false;
+ 	$rootScope.isCcAttachedFromGuestWeb = false;
+ 	$rootScope.isAutoCheckinOn = ((reservationAndhotelData.is_auto_checkin === 'true') && (reservationAndhotelData.is_precheckin_only === 'true')) ? true :false;;
+ 	$rootScope.isExternalVerification = (reservationAndhotelData.is_external_verification === "true") ? true :false;
+ 	$rootScope.hotelIdentifier = reservationAndhotelData.hotel_identifier;
+ 	$rootScope.guestAddressOn = reservationAndhotelData.guest_address_on === 'true' ? true:false;
+ 	$rootScope.isGuestAddressVerified =  false;
+
+ 	$rootScope.guestBirthdateOn = (reservationAndhotelData.birthdate_on === 'true') ? true :false;
+ 	$rootScope.guestBirthdateMandatory = (reservationAndhotelData.birthdate_mandatory === 'true') ? true :false;
+	$rootScope.guestPromptAddressOn = (reservationAndhotelData.prompt_for_address_on === 'true') ? true :false;
+	$rootScope.minimumAge = parseInt(reservationAndhotelData.minimum_age);
+	$rootScope.primaryGuestId = reservationAndhotelData.primary_guest_id;
+
+
+ 	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="true") ?true:false;
+ 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_serviceMsg;
+ 	$rootScope.termsAndConditions = reservationAndhotelData.terms_and_conditions;
+ 	$rootScope.isBirthdayVerified =  false;
+
+ 	$rootScope.application        = reservationAndhotelData.application;
+ 	$rootScope.urlSuffix        = reservationAndhotelData.url_suffix;
+ 	$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkin_collect_cc === "true") ? true:false;
+ 	$rootScope.isMLI = (reservationAndhotelData.payment_gateway  = "MLI") ? true : false;
+
+ 	//room key delivery options
+ 	$rootScope.preckinCompleted =  false;
+ 	$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
+ 	$rootScope.keyDeliveryByEmail = true;
+ 	//$rootscope.keyDeliveryByText  = true;
+
+ 	$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options  ==="true") ? true:false;
+
+    //Params for zest mobile and desktop screens
+    if(reservationAndhotelData.hasOwnProperty('is_password_reset')){
+    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset ="true";
+    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true"? true: false;
+    	$rootScope.accessToken = reservationAndhotelData.token;
+    	$rootScope.user_id = reservationAndhotelData.id;
+    	$rootScope.user_name = reservationAndhotelData.login;
+    }
+    else{
+		$rootScope.dateFormatPlaceholder = reservationAndhotelData.date_format.value;
+ 		$rootScope.dateFormat = getDateFormat(reservationAndhotelData.date_format.value);
+    }
+
+    //work around to fix flashing of logo before app loads
+    $timeout(function() {
+        $rootScope.hotelLogo     = reservationAndhotelData.hotel_logo;
+    }, 750);
+
+ 	if(typeof reservationAndhotelData.accessToken !== "undefined") {
+		$rootScope.accessToken = reservationAndhotelData.accessToken	;
+	}
+	//navigate to different pages
+
+	if(reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="false"){
+		$state.go('guestCheckinTurnedOff');
+	}
+	else if(reservationAndhotelData.checkin_url_verification === "true"){
+		$state.go('externalCheckinVerification'); // external checkin URL available and is on
+	}
+	else if(reservationAndhotelData.is_external_verification ==="true"){
+		$state.go('externalVerification'); //external checkout URL
+	}
+	else if(reservationAndhotelData.is_precheckin_only  ==='true' && reservationAndhotelData.reservation_status ==='RESERVED' && !(reservationAndhotelData.is_auto_checkin === 'true')){
+ 		$state.go('tripDetails');// only available for Fontainbleau -> precheckin + sent to que
+ 	}
+ 	else if	(reservationAndhotelData.is_precheckin_only  ==='true' && reservationAndhotelData.reservation_status ==='RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true')){
+ 		$state.go('checkinConfirmation');//checkin starting -> page precheckin + auto checkin
+ 	}
+ 	else if($rootScope.isCheckedin){
+ 		$state.go('checkinSuccess');//already checked in
+ 	}
+    else if(reservationAndhotelData.is_checkin ==='true'){
+ 		$state.go('checkinConfirmation');//checkin starting page -> precheckin turned off
+ 	}
+  	else if($rootScope.isCheckedout)	{
+		$state.go('checkOutStatus');//already checked out
+	}
+	else if($rootScope.hasOwnProperty('isPasswordResetView')){
+		var path = $rootScope.isPasswordResetView === 'true'? 'resetPassword' : 'emailVerification';
+		$state.go(path);
+	}else{
+         $state.go('checkoutRoomVerification'); // checkout landing page
+	};
+
+	$( ".loading-container" ).hide();
+
+	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      // Hide loading message
+     	// console.log(toState, toParams, fromState, fromParams, error)
+      console.error(error);
+      $state.go('noOptionAvailable'); 
+      //TODO: Log the error in proper way
+    });
+}]);
 
 
 var loadAssets = function(filename, rel, type, media){

@@ -1,4 +1,4 @@
-sntRover.service('RVLoyaltyProgramSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+angular.module('sntRover').service('RVLoyaltyProgramSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 
 	this.addLoyaltyProgram = function(param){
 		var deferred = $q.defer();

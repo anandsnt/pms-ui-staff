@@ -1,4 +1,4 @@
-sntRover.service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVReservationStateService',
+angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'dateFilter', 'RVReservationStateService',
 	function($rootScope, dateFilter, RVReservationStateService) {
 		var self = this;
 

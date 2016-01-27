@@ -1,4 +1,4 @@
-sntRover.controller('RVHKRoomTabCtrl', [
+angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',

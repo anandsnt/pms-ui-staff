@@ -1,5 +1,6 @@
 sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	'$scope',
+	'jsMappings',
 	'$rootScope',
 	'rvAllotmentSrv',
 	'$filter',
@@ -13,7 +14,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	'rvUtilSrv',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
+	function($scope, jsMappings, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -345,13 +346,18 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				name: summaryData.posting_account_name,
 				logo: "ALLOTMENT_DEFAULT"
 			});
-			ngDialog.open({
-				template: '/assets/partials/bill/rvBillingInformationPopup.html',
-				controller: 'rvBillingInformationPopupCtrl',
-				className: '',
-				closeByDocument: true,
-				scope: $scope
-			});
+
+            $scope.$emit('showLoader'); 
+            jsMappings.fetchAssets('addBillingInfo')
+            .then(function(){
+                $scope.$emit('hideLoader'); 
+                ngDialog.open({
+                    template: '/assets/partials/bill/rvBillingInformationPopup.html',
+                    controller: 'rvBillingInformationPopupCtrl',
+                    className: '',
+                    scope: $scope
+                });
+            });
 		};
 
 		$scope.openBillingInformation = function() {

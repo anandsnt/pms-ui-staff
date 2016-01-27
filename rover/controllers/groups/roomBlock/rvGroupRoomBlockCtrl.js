@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupRoomBlockCtrl', [
+angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 	'$scope',
 	'$rootScope',
 	'$filter',

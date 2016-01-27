@@ -1,4 +1,4 @@
-sntRover.controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', function($scope, util){
+angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', 'rvUtilSrv', function($scope, util){
 	BaseCtrl.call(this, $scope);
 
     /**

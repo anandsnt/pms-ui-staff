@@ -71,7 +71,7 @@
 	   $scope.errorOpts = {
 	      backdrop: true,
 	      backdropClick: true,
-	      templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationErrorModal.html',
+	      templateUrl: '/assets/checkoutnow/partials/externalVerificationErrorModal.html',
 	      controller: verificationModalCtrl
         };
 
