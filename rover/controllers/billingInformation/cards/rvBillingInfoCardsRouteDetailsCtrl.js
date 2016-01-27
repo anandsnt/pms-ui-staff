@@ -11,7 +11,6 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         $scope.swipedCardDataToSave = {};
 
         $scope.paymentFlags         = {
-            showPayment              : true,
             isAddPayment             : false,
             showCreditCardDropDown   : false,
             isShownExistingCCPayment : false,
@@ -51,7 +50,6 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
             $scope.renderAddedPayment.endingWith     = entity.credit_card_details.card_number;
             $scope.renderAddedPayment.creditCardType = entity.credit_card_details.card_code;
 
-            $scope.paymentFlags.showPayment              = true;
             $scope.paymentFlags.showCreditCardDropDown   = false;
             $scope.paymentFlags.isShownExistingCCPayment = true;
 
@@ -201,7 +199,6 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         $scope.renderAddedPayment = {};
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.paymentFlags.isAddPayment = false;
-        $scope.paymentFlags.showPayment  = true;
 
         $scope.renderAddedPayment.creditCardType = (!$scope.cardData.tokenDetails.isSixPayment)?
                                                    getCreditCardType($scope.cardData.cardDetails.cardType).toLowerCase() :
@@ -544,5 +541,12 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl',['$scope','$rootScope',
         $scope.paymentFlags.sixIsManual = value;
     });
 
+    $scope.showAvailableCreditCard = function() {
+        return (!isEmptyObject($scope.renderAddedPayment) &&
+               !$scope.paymentFlags.isAddPayment &&
+               !$scope.saveData.newPaymentFormVisible);
+    };
+
     init();
+
 }]);
