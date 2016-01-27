@@ -49,7 +49,7 @@
     </div>
 
     <!-- Room or Task View, default to Room -->
-    <div class="entry switch">
+    <div class="entry switch" ng-if="isStandAlone">
         <div class="switch-button"
             ng-class="{ 'on': currentView === 'ROOMS', 'off': currentView==='TASKS' }">
             <input id="room-task-toggle" value="" type="checkbox"
@@ -212,7 +212,7 @@
     <div id="filter-options" class="content scrollable" ng-iscroll="room-status-filter">
         <div class="wrapper">
             <!-- Work Type / Employee filter -->
-            <div class="holder">
+            <div class="holder" ng-if="isStandAlone">
                 <strong class="title" translate>WORK_TYPE</strong>
                 <div class="entry">
                     <div class="select">
