@@ -19,10 +19,31 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     $state.go ('zest_station.home');
                 }
                 else{
-                    $state.go ('zest_station.find_reservation');
+                    if ($scope.isInPickupKeyMode()){
+                        if ($state.last === 'input-last'){
+                            $scope.reEnter('last');
+                        } else if ($state.last === 'input-room'){
+                            $scope.reEnter('room');
+                        } else {
+                            $scope.reEnter('room');
+                        }
+                    } else {
+                        $state.go ('zest_station.find_reservation');
+                    }
                 }
             });
-
+            $scope.goToPickupKey = function(){
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                $state.lastAt = 'home';
+                $state.isPickupKeys = true;
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                $state.go('zest_station.reservation_search', {
+                    mode: zsModeConstants.PICKUP_KEY_MODE
+                });
+            };
+            $scope.isInPickupKeyMode = function() {
+                    return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
+                };
             $scope.resetTime = function(){
                 $scope.closePopup();
                 

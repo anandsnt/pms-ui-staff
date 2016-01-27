@@ -1,4 +1,6 @@
 //Guest web template theme file
+// as the old guestweb used popups triggered from controllers used the partials in 
+// old folders, we are forced to import some old folders 
 module.exports = {
 	getThemeMappingList : function () {
 		var sharedPartials  		 = 'guestweb/**/partials/',
@@ -126,11 +128,9 @@ module.exports = {
 										  checkinPartials+"*.html",precheckinPartials+'*.html',
 										  zestHtml+"/zoku/*html",
 										  sharedHtml], 
-			'guestweb_fontainebleau':[landingPartials + 'Montauk/*.html',
-										  checkoutNowPartials+'Montauk/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'Montauk/*.html',
-										  checkinPartials+'Montauk/*.html',checkinPartials+"*.html",
-										  precheckinPartials+'Montauk/*.html', precheckinPartials+'*.html',
+			'guestweb_fontainebleau':[landingPartials + 'Fontainebleau/*.html',
+										  checkoutNowPartials+'Fontainebleau/*.html',checkoutNowPartials+'*.html',
+										  checkoutNowlaterPartials+'Fontainebleau/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
 			'guestweb_great_wolf' 	:[ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/partials/common_templates/partials/checkout/**.html',

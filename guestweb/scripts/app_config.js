@@ -40,7 +40,7 @@ sntGuestWeb.config(function ($httpProvider) {
 
 
 
-sntGuestWeb.run(function($rootScope, $location, $http){
+sntGuestWeb.run(function($rootScope, $location, $http, $window){
 
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
@@ -52,4 +52,8 @@ sntGuestWeb.run(function($rootScope, $location, $http){
       console.error(error);
       //TODO: Log the error in proper way
     });
+        // track pageview on state change
+        $rootScope.$on('$stateChangeSuccess', function (event) {
+            $window.ga('send', 'pageview', $location.path());
+        });
 });

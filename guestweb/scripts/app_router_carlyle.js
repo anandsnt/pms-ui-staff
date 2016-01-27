@@ -122,4 +122,10 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Feature not available'
 	});
 
+	$stateProvider.state('errorOccured', {
+    	url: '/errorOccured',
+	 	templateUrl: '/assets/preCheckin/partials/noTheme.html',
+	 	title: 'Something is broken'
+	});
+
 }]);
