@@ -6,7 +6,6 @@
         <div class="select">
             <!-- standalone PMS -->
             <!-- Disable when cleaning in progrees. -->
-            <label for="room-status">Room Status</label>
             <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="isStarted">
             </select>
 
@@ -26,7 +25,7 @@
             <strong ng-if="!ooOsTitle && checkShow('pickup')" class="h2"> <span class="orange">Pickup</span> room.</strong> 
 
             <!-- Tasks & Assignment -->
-            <div id="room-tasks">
+            <div id="room-tasks" ng-if="isStandAlone">
                 <div class="room-actions">
                     <div class="select">
                         <label for="select-task">Task</label>
