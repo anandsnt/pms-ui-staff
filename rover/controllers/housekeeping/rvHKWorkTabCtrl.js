@@ -23,8 +23,12 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 		$scope.taskDetails = $scope.roomDetails.task_details;
+		
+		$scope.taskDetails = $scope.roomDetails.task_details;
 		$scope.currentTask = $scope.taskDetails[0];
 		$scope.currentTaskID = $scope.currentTask.id;
+
+
 
 		// default cleaning status
 		// [ OPEN, IN_PROGRESS, COMPLETED ]
@@ -34,20 +38,30 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			completed: 'COMPLETED'
 		};
 
-		// by default they are null
-		// with the type object (typeof null === 'object')
-		$scope.isStarted   = null;
-		$scope.isCompleted = null;
-		$scope.isOpen      = null;
+		// by default they are false
+		$scope.isStarted   = false;
+		$scope.isCompleted = false;
+		$scope.isOpen      = false;
+
+		$scope.disableDone  = false;
+		$scope.disableStart = false;
 
 		var $_updateWorkStatusFlags = function() {
 			$scope.isStarted   = $scope.currentTask.work_status === $_workStatusList['inProgress'] ? true : false;
 			$scope.isCompleted = $scope.currentTask.work_status === $_workStatusList['completed']  ? true : false;
 			$scope.isOpen      = $scope.currentTask.work_status === $_workStatusList['open']       ? true : false;
+
+			if ( $rootScope.isMaintenanceStaff && $scope.currentTask.assigned_maid_id !== $rootScope.userId ) {
+				$scope.disableDone  = true;
+				$scope.disableStart = true;
+			} else {
+				$scope.disableDone  = false;
+				$scope.disableStart = false;
+			}
 		};
 
 		// only for standalone will these get typecasted to booleans
-		$scope.isStandAlone && $_updateWorkStatusFlags();
+		$scope.taskDetails.length && $scope.isStandAlone && $_updateWorkStatusFlags();
 
 
 
@@ -63,16 +77,6 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			}
 		} else {
 			$scope.ooOsTitle = false;
-		}
-
-		// fetch maintenance reasons list
-		if ( $scope.isStandAlone ) {
-			$scope.workTypesList = [];
-			var wtlCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.workTypesList = data;
-			};
-			$scope.invokeApi(RVHkRoomDetailsSrv.getWorkTypes, {}, wtlCallback);
 		}
 
 		$scope.checkShow = function(from) {
@@ -118,7 +122,6 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			});
 			$_updateWorkStatusFlags();
 			runDigestCycle();
-			console.log($scope.currentTask);
 		};
 
 		/**
