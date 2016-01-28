@@ -37,7 +37,7 @@ module.exports = {
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
-				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvDesktopUUIDService.js',
+				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvUUIDService.js', roverRoot + 'rvDesktopUUIDService.js',
 				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js',
 				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
 
