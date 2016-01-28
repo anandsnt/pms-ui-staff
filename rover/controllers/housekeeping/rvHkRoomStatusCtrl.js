@@ -109,11 +109,15 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
-
-		$scope.currentView = $scope.isMaintenanceStaff ? 'TASKS' : 'ROOMS';
+		if (!!RVHkRoomStatusSrv.defaultViewState) {
+			$scope.currentView = RVHkRoomStatusSrv.defaultViewState;
+		} else {
+			$scope.currentView = $scope.isMaintenanceStaff ? 'TASKS' : 'ROOMS';
+		}
 
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
+			RVHkRoomStatusSrv.defaultViewState = view;
 		};
 
 		$scope.toggleView = function() {
@@ -122,6 +126,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			} else {
 				$scope.currentView = 'ROOMS';
 			}
+
+			RVHkRoomStatusSrv.defaultViewState = $scope.currentView;
 			$timeout(function(){
 				$scope.refreshScroller('tasks-summary-scroller');
 			}, 2000);

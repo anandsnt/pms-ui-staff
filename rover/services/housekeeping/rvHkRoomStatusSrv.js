@@ -42,6 +42,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		this.currentFilters = this.initFilters();
 		this.isInitialLoad = true;
+		this.defaultViewState = null;
 
 		var that = this;
 
