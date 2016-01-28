@@ -3,12 +3,17 @@ var DesktopCardOperations = function(){
 	var ws = {};
 	//Set to true if the desktop swipe is enabled and a WebSocket connection is established.
     that.isActive = false;
+    that.isDesktopUUIDServiceInvoked = false;
 
 	this.swipeCallbacks;
 	this.startDesktopReader = function(portNumber, swipeCallbacks){
 		that.portNumber = portNumber;
 		that.swipeCallbacks = swipeCallbacks;
 		createConnection();
+	};
+
+	this.setDesktopUUIDServiceStatus = function(status) {
+		that.isDesktopUUIDServiceInvoked = true;
 	};
 
 	var createConnection = function(){
@@ -24,12 +29,23 @@ var DesktopCardOperations = function(){
 	    	that.isActive = true;
 			ws.send("observeForSwipe");
 
+			if (that.isDesktopUUIDServiceInvoked) {
+				ws.send("UUIDforDevice");
+			}
+
 	    };
 
 	    // Triggers when there is a message from websocket server.
 		ws.onmessage = function (event) {
 			var cardData = event.data;
-			that.swipeCallbacks.successCallBack(JSON.parse(cardData));
+			var cardDataJSON = JSON.parse(cardData);
+			if(cardDataJSON.ResponseType) {
+				that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
+			}
+			else {
+				that.swipeCallbacks.successCallBack(cardDataJSON);
+			}
+
 		};
 
 		ws.onclose = function () {
