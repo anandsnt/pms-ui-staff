@@ -1,5 +1,5 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adTravelTripperSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
+  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adTravelTripperSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
     $scope.$emit("changedSelectedMenu", 8);
     $scope.errorMessage = '';
     $scope.successMessage = '';
@@ -52,6 +52,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         'controller': adZDirectSetupSrv,
         'name': $scope.simpleName,
         'service_name': 'adZDirectSetupSrv'
+      },
+      'admin.travelTripperSetup': {
+        'controller': adTravelTripperSetupSrv,
+        'name': $scope.simpleName,
+        'service_name': 'adTravelTripperSetupSrv'
       },
       'admin.givexSetup': {'controller': adGivexSetupSrv, 'name': $scope.simpleName, 'service_name': 'adGivexSetupSrv'}
     };
