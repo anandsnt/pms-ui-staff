@@ -181,7 +181,8 @@
 "DETAILS": "Details",
 "SAVE_ROUTE": "Save Route",
 "SAVE": "Save",
-"CANCEL": "Cancel"
+"CANCEL": "Cancel",
+"NO_DEBIT_ALLOWED" : "NO DEBIT ALLOWED"
 ,"APPROVED": "Approved",
 "DATE": "Date",
 "TIME": "Time",

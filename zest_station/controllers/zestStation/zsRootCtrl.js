@@ -576,7 +576,7 @@ sntZestStation.controller('zsRootCtrl', [
                     ngDialog.open({
                             template: '/assets/partials/rvTabletIdlePopup.html',
                             scope: $scope,
-                            closeByDocument: true,
+                            closeByDocument: false,
                             closeByEscape: false
                     });
                 }

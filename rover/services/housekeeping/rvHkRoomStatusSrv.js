@@ -60,6 +60,12 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			// if there is a search query, ignore all other filters. Reset page to 1
 			if ( filter.query ) {
 				params['query'] = filter.query;
+				if (passedParams.assignee_id) {
+					params['assignee_id'] = passedParams.assignee_id;
+				}
+				else {
+					params['all_employees_selected'] = true;
+				}
 			} else {
 
 				if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
