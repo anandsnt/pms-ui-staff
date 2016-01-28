@@ -291,6 +291,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
             $scope.selectedEntity.attached_charge_codes   = data.attached_charge_codes;
             $scope.selectedEntity.reference_number        = data.reference_number;
+            $scope.selectedEntity.is_allow_direct_debit   = data.is_allow_direct_debit;
 
             if (data.credit_limit) {
                 $scope.selectedEntity.credit_limit     = parseFloat(data.credit_limit).toFixed(2);

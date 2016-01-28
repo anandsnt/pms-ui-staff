@@ -121,6 +121,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
                 "guest_image" : $scope.attachedEntities.company_card.logo
             }];
             $scope.selectedEntity.entity_type = "COMPANY_CARD";
+            $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
         }
         else {
             $scope.selectedEntity.id     = $scope.attachedEntities.travel_agent.id;
@@ -130,6 +131,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
                 "guest_image" : $scope.attachedEntities.travel_agent.logo
             }];
             $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
+            $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;
         } 
     };
 
