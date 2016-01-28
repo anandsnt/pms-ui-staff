@@ -265,6 +265,7 @@ sntRover.run([
 	        // Deciding when to clear HK filters
 	        var resetHkFilter = function() {
 	        	RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+	        	RVHkRoomStatusSrv.isInitialLoad = true;
 	        	RVHkRoomStatusSrv.resetRoomTypes();
 	        	localStorage.removeItem( 'roomListScrollTopPos' );
 

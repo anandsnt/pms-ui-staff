@@ -58,7 +58,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			RVHkRoomStatusSrv.currentFilters.page = 1;
 		};
 		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
-		$scope.currentFilters.filterByWorkType = "";
 
 
 
@@ -145,8 +144,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		// true represent that this is a fetchPayload call
 		// and the worktypes and assignments has already be fetched
 		$_fetchRoomListCallback(fetchPayload.roomList, true);
-
-
 
 		/* ***** ***** ***** ***** ***** */
 
