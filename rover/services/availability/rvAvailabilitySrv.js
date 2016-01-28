@@ -524,7 +524,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		//Webservice calling section
 		var deferred = $q.defer();
-		var url = '/api/availability/house';
+		var url = '/api/availability/house_statistics';
 		var businessDate = tzIndependentDate(params['business_date']).clone();
 
 		delete params['business_date'];
@@ -584,45 +584,45 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			// value - Actual value - will be displayed in the colum near to graph
 			// percent - Used for graph plotting
 			houseDetails.total_rooms_occupied[dayInfo.date] = {};
-			houseDetails.total_rooms_occupied[dayInfo.date].value = dayInfo.house.sold;
-			houseDetails.total_rooms_occupied[dayInfo.date].percent = dayInfo.house.sold / houseTotal * 100;
+			houseDetails.total_rooms_occupied[dayInfo.date].value = dayInfo.sold;
+			houseDetails.total_rooms_occupied[dayInfo.date].percent = dayInfo.sold / houseTotal * 100;
 			/*total guests inhouse - not used now. May be added in future
 			houseDetails.total_guests_inhouse[dayInfo.date] = {};
 			houseDetails.total_guests_inhouse[dayInfo.date].value = dayInfo.house.in_house;*/
 
-			totalDepartures = dayInfo.house.departing + dayInfo.house.departed;
+			totalDepartures = dayInfo.departing + dayInfo.departed;
 			//Departures Expected
 			houseDetails.departues_expected[dayInfo.date] = {};
-			houseDetails.departues_expected[dayInfo.date].value = dayInfo.house.departing;
-			houseDetails.departues_expected[dayInfo.date].percent = dayInfo.house.departing / totalDepartures * 100;
+			houseDetails.departues_expected[dayInfo.date].value = dayInfo.departing;
+			houseDetails.departues_expected[dayInfo.date].percent = dayInfo.departing / totalDepartures * 100;
 			//Departures Actual
 			houseDetails.departures_actual[dayInfo.date] = {};
-			houseDetails.departures_actual[dayInfo.date].value = dayInfo.house.departed;
-			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.house.departed / totalDepartures * 100;
+			houseDetails.departures_actual[dayInfo.date].value = dayInfo.departed;
+			houseDetails.departures_actual[dayInfo.date].percent = dayInfo.departed / totalDepartures * 100;
 
-			totalArrivals = dayInfo.house.arriving + dayInfo.house.arrived;
+			totalArrivals = dayInfo.arriving + dayInfo.arrived;
 			//Arrivals Expected
 			houseDetails.arrivals_expected[dayInfo.date] = {};
-			houseDetails.arrivals_expected[dayInfo.date].value = dayInfo.house.arriving;
-			houseDetails.arrivals_expected[dayInfo.date].percent = dayInfo.house.arriving / totalArrivals * 100;
+			houseDetails.arrivals_expected[dayInfo.date].value = dayInfo.arriving;
+			houseDetails.arrivals_expected[dayInfo.date].percent = dayInfo.arriving / totalArrivals * 100;
 			//Arrivals Actual
 			houseDetails.arrivals_actual[dayInfo.date] = {};
-			houseDetails.arrivals_actual[dayInfo.date].value = dayInfo.house.arrived;
-			houseDetails.arrivals_actual[dayInfo.date].percent = dayInfo.house.arrived / totalArrivals * 100;
+			houseDetails.arrivals_actual[dayInfo.date].value = dayInfo.arrived;
+			houseDetails.arrivals_actual[dayInfo.date].percent = dayInfo.arrived / totalArrivals * 100;
 
 			//Available tonight
 			houseDetails.available_tonight[dayInfo.date] = {};
-			houseDetails.available_tonight[dayInfo.date].value = Math.round(dayInfo.house.availability /houseTotal * 100);
-			houseDetails.available_tonight[dayInfo.date].percent = Math.round(dayInfo.house.availability /houseTotal * 100);
+			houseDetails.available_tonight[dayInfo.date].value = Math.round(dayInfo.availability /houseTotal * 100);
+			houseDetails.available_tonight[dayInfo.date].percent = Math.round(dayInfo.availability /houseTotal * 100);
 
 			//Occupied tonight
 			houseDetails.occupied_tonight[dayInfo.date] = {};
-			houseDetails.occupied_tonight[dayInfo.date].value = Math.round(dayInfo.house.sold /houseTotal * 100);
-			houseDetails.occupied_tonight[dayInfo.date].percent = Math.round(dayInfo.house.sold /houseTotal * 100);
+			houseDetails.occupied_tonight[dayInfo.date].value = Math.round(dayInfo.sold /houseTotal * 100);
+			houseDetails.occupied_tonight[dayInfo.date].percent = Math.round(dayInfo.sold /houseTotal * 100);
 			//Total room revenue
-			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.house.total_room_revenue;
+			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.total_room_revenue;
 			//Average daily rate
-			houseDetails.avg_daily_rate[dayInfo.date] = dayInfo.house.average_daily_rate;
+			houseDetails.avg_daily_rate[dayInfo.date] = dayInfo.average_daily_rate;
 
 
 		});
