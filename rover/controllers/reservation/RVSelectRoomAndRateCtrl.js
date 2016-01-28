@@ -29,6 +29,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			guestOptionsIsEditable: false,
 			exhaustedAddons: [],
 			showLessRooms: true,
+            maxRoomsToShow: 0,
 			selectedRoomType: -1,
 			addonLookUp: {}
 		};
@@ -133,7 +134,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					group_id: $scope.reservationData.group.id,
 					allotment_id: $scope.reservationData.allotment.id,
 					promotion_code: $scope.reservationData.searchPromoCode,
-					include_expired_promotions: $scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					promotion_id: $scope.reservationData.promotionId,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					'adults[]': _.pluck(occupancies, "adults"),
@@ -289,6 +289,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				// BookKeeping for lookup	
 				$scope.stateCheck.lookUp = roomTypes;
+                
+                $scope.stateCheck.maxRoomsToShow = _.keys(roomTypes).length;
 
 				// Sorting
 				var roomTypesArray = [];

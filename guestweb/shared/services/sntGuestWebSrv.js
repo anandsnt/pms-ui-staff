@@ -10,7 +10,16 @@
 			this.fetchHotelDetailsFromUrl = function(url) {
 				var deferred = $q.defer();
 				$http.get(url).success(function(response) {
-					deferred.resolve(response.data);
+					if(response.status === "success"){
+						deferred.resolve(response.data);
+					}
+					else{
+						// when some thing is broken , need to redirect to error page with default theme
+						response.data.hotel_theme = "guestweb";
+						response.data.error_occured  = true;
+						deferred.resolve(response.data);
+					}
+					
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
