@@ -1,7 +1,7 @@
 var DesktopUUIDService = function() {
     var that = this;
     this.isActive = false;
-
+    var ws = {};
     this.startDesktopUUIDService = function(portNumber, callbacks){
         this.portNumber = portNumber;
         this.callbacks = callbacks;
