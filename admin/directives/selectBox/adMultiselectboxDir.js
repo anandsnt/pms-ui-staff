@@ -31,7 +31,7 @@ admin.directive('adMultiselectbox', function($timeout) {
                 };
             }
         },
-    	templateUrl: '../../assets/directives/selectBox/adMultiselectbox.html'
+    	templateUrl: '/assets/directives/selectBox/adMultiselectbox.html'
     };
 
 });
