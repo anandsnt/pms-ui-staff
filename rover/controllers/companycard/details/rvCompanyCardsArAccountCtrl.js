@@ -1,5 +1,5 @@
-sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout',
-	function($scope, RVCompanyCardSrv, $timeout) {
+sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'rvPermissionSrv',
+	function($scope, RVCompanyCardSrv, $timeout, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -129,6 +129,15 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.clearErrorMessage = function() {
 			$scope.errorMessage = "";
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to edit the direct bill restriction
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToEditDirectBillRestriction = function() {
+			return rvPermissionSrv.getPermissionValue ('EDIT_DIRECT_BILL_RESTRICTION');
 		};
 
 	}
