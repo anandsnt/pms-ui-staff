@@ -1,4 +1,4 @@
-<form ng-controller="rvAccountTransactionsCtrl" id="group-transactions" name="group-transactions" class="form card-tab inner-header bills">
+<form ng-controller="rvAccountTransactionsCtrl" id="group-transactions" name="group-transactions" class="form card-tab inner-header bills" ng-click="clearErrorMessage();">
     <div id="account-transactions-header" class="tab-header no-print">
     <ul class="totals">
         <li>
@@ -95,7 +95,7 @@
                         </div>
                     </div>
 
-
+                    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                     <!-- Invoice -->
                     <div class="invoice">
                         <ng-include src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
