@@ -11,6 +11,7 @@ module.exports = {
                     
                     servicesRoot + "bill/**/*.js",
                     servicesRoot + 'rvReservationSrv.js',
+                    servicesRoot + 'rvCompanyCardSearchSrv.js',
                     servicesRoot + 'payment/rvPaymentSrv.js',
                     servicesRoot + 'payment/rvGuestPaymentSrv.js'
                 ]
