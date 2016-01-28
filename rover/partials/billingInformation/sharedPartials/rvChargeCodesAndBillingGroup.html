@@ -1,4 +1,8 @@
 <div ng-controller="rvChargeCodesAndBillingGroupCtrl">
+	<div class='notice' ng-show="selectedEntity.is_allow_direct_debit != undefined && !selectedEntity.is_allow_direct_debit">
+    	<span translate>NO_DEBIT_ALLOWED</span>
+    </div>
+
 	<ul id="transaction-type" class="modal-options">
 		<li ng-class="{'active' : billingInfoFlags.isBillingGroup}" ng-click = "toggleChargeType()" translate>BILLING_GROUP</li>
 		<li ng-class="{'active' : !billingInfoFlags.isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
