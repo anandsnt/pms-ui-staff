@@ -38,7 +38,7 @@
 							  };
 
 		
-		for(year=1900;year<=new Date().getFullYear();year++){
+		for(year=new Date().getFullYear();year>=1900;year--){
 			$scope.years.push(year);
 		};
 		for(month=1;month<=12;month++){

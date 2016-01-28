@@ -603,7 +603,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
                         $scope.submitSixPayOnBill(dataToSrv);
 
 		} else {
-			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment, $scope.successMakePayment);
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successMakePayment, $scope.onPaymentFailure);
 		}
 	};
 
@@ -693,7 +693,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.successMakePayment = function (data) {
 		$scope.$emit("hideLoader");
-
+        $scope.errorMessage = [];
 		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.depositBalanceMakePaymentData.amount);
 
@@ -736,6 +736,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
 		$rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);
 	};
+
+    $scope.onPaymentFailure = function(data) {
+        $scope.$emit("hideLoader");
+        $scope.errorMessage = data;
+    };
 
 	/*
 	 * Show the selected cards list in make payment screen

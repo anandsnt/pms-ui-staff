@@ -510,10 +510,12 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				displayName = firstname.charAt(0) + ". " + displayName.join(" ");
 				copyEmployee = $.extend(
 						{},
-						{ 'id' : employees[i].id, 'name' : employees[i].name, 'display_name': displayName },
+						{ 'id' : employees[i].id, 'name' : employees[i].name },
+						{ 'display_name': displayName },
 						{ 'rooms' : [] },
 						{ 'only_tasks' : [] },
-						{ 'touched_work_types': [] }
+						{ 'touched_work_types': [] },
+						{ 'shift_id': employees[i].shift_id }
 					);
 				/**
 				 * copyEmployee
@@ -740,8 +742,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 						.push( newAssignment );
 				});
 			});
-
-			console.log( complied );
 
 			return complied;
 		};

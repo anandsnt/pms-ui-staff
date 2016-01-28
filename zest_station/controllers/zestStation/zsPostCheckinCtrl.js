@@ -284,6 +284,13 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
                 
         };
+        
+        $scope.speakToStaff = function(){
+            $state.go('zest_station.talk_to_staff');
+        };
+        $scope.reSignCC = function(){
+            $state.go('zest_station.card_sign');
+        };
         $scope.setDeliveryParams = function(){
             $scope.at = 'deliver-registration';
             $scope.selectedReservation = $state.selectedReservation;
@@ -294,6 +301,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.reTryCardSwipe = function(){
             $state.go('zest_station.card_swipe');
         };
+        
+        $scope.$on('SIXPAY_DEBUG',function(){
+            $state.go('zest_station.card_sign');
+        });
 
         $scope.init = function(){
             var current = $state.current.name;

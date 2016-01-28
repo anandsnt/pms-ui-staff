@@ -412,6 +412,7 @@ sntRover.controller('RVCardOptionsCtrl',
 				var sessionDetails = setUpSessionDetails();
 				var successCallBack = function(response){
 					response.isSixPayment = false;
+          $scope.$parent.$emit('REFRESH_ROUTE_DETAILS_SCROLLER');
 					notifyParent(response);
 				};
 				var failureCallback = function(errorMessage){

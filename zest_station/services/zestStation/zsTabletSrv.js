@@ -48,7 +48,6 @@ sntZestStation.service('zsTabletSrv',
                     return deferred.promise;
                 };
                 this.validate = function (params) {
-                    console.info('validate params: ',params)
                     var deferred = $q.defer(),
                             url = 'api/users/check_if_admin';
                     
