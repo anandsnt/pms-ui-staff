@@ -109,10 +109,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
-		$scope.currentView = 'ROOMS';
+
+		$scope.currentView = $scope.isMaintenanceStaff ? 'TASKS' : 'ROOMS';
+
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
 		};
+
 		$scope.toggleView = function() {
 			if ($scope.currentView === 'ROOMS') {
 				$scope.currentView = 'TASKS';
