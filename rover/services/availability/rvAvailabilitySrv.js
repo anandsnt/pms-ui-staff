@@ -520,9 +520,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		return deferred.promise;
 	};
 
-	this.fetchHouseStatusDetails = function(params){
-
-		//Webservice calling section
+	var getHouseStatistics = function(params){
 		var deferred = $q.defer();
 		var url = '/api/availability/house_statistics';
 		var businessDate = tzIndependentDate(params['business_date']).clone();
@@ -530,13 +528,56 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		delete params['business_date'];
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
-			var houseDetails = that.restructureHouseDataForUI(data.results, data.physical_count, businessDate);
-			deferred.resolve(houseDetails);
+			deferred.resolve(data.results);
 		},function(data){
 			deferred.reject(data);
 		});
 		return deferred.promise;
+	}
 
+	var getHouseAvailability = function(params){
+		var deferred = $q.defer();
+		var url = '/api/availability/house';
+		var businessDate = tzIndependentDate(params['business_date']).clone();
+
+		delete params['business_date'];
+
+		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data.results);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
+
+	this.fetchHouseStatusDetails = function(params){
+		var deferred = $q.defer(),
+			promises = [],
+			businessDate = tzIndependentDate(params['business_date']).clone(),
+			houseAvailability, houseStatistics, roomCount;
+
+		// This call gets the sold and availability data
+		promises.push(getHouseAvailability(params).then(function(response) {
+            houseAvailability = response;
+        }));
+
+		// This call gets the adr, arrived, arriving, departed, departing and total_rev 
+        promises.push(getHouseStatistics(params).then(function(response) {
+            houseStatistics = response;
+        	// TODO : Resolve the room count correctly 
+            roomCount = 8686; // This should be substitued with the actual physical count once API is providing the same
+        }));
+
+        $q.all(promises).then(function() {
+        	// Merge sold and availability count with the houseStatistics object
+        	_.each(houseAvailability,function(availability,idx){_.extend(houseStatistics[idx],availability.house)});
+        	// Resolve after parsing to a bindable object
+            deferred.resolve(that.restructureHouseDataForUI(houseStatistics, roomCount, businessDate));
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+		
+		return deferred.promise;
 	};
 
 	/**
