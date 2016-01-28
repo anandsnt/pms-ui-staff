@@ -109,6 +109,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/Huntley/lateArrivalTime.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
+	 }).state('guestDetails', {
+	 	url: '/guestDetails',
+	 	templateUrl: '/assets/checkin/partials/Huntley/guestDetails.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
 	 });
 
 	 	  // pre checkin states
