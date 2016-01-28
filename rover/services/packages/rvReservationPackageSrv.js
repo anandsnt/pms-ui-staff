@@ -1,4 +1,4 @@
-sntRover.service('RVReservationPackageSrv', ['$http', '$q', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrvV2) {
+angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrvV2) {
 
 
 	var that = this;

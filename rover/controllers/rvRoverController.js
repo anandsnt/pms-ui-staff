@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings) {
 
     // TODO: remove this after CICO-19912 is done
     SWITCH_ROOM_AND_RATES_ALT = true;
@@ -115,6 +115,7 @@ sntRover.controller('roverController',
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+    $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
       // CICO-18040
@@ -194,7 +195,6 @@ sntRover.controller('roverController',
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
-    RVDashboardSrv.getUserRole($rootScope.userId, $scope);
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
@@ -269,10 +269,17 @@ sntRover.controller('roverController',
     * @return - None
     */
     var openUpdatePasswordPopup = function(){
-        ngDialog.open({
-            template: '/assets/partials/settings/rvStaffSettingModal.html',
-            controller: 'RVStaffsettingsModalController',
-            className: 'calendar-modal'
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('staffpasswordchange')
+        .then(function(){
+            $scope.$emit('hideLoader');
+            ngDialog.open({
+                template: '/assets/partials/settings/rvStaffSettingModal.html',
+                controller: 'RVStaffsettingsModalController',
+                className: 'calendar-modal'
+            });
         });
     };
 
@@ -391,6 +398,38 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
+    var openEndOfDayPopup = function() {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('endofday')
+        .then(function(){
+            $scope.$emit('hideLoader');
+            ngDialog.open({
+              template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+              controller: 'RVEndOfDayModalController',
+              className: 'end-of-day-popup ngdialog-theme-plain'
+            });
+        });
+    };
+
+    var openPostChargePopup = function() {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets('postcharge')
+        .then(function(){
+            $scope.isOutsidePostCharge = true;
+            $scope.$emit('hideLoader');
+            ngDialog.open(
+            {
+              template      : '/assets/partials/postCharge/rvPostChargeV2.html',
+              controller    : 'RVOutsidePostChargeController',
+              scope         : $scope
+            });
+        });
+    };
+
     //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
@@ -398,21 +437,10 @@ sntRover.controller('roverController',
       $scope.toggleDrawerMenu();
 
       if (subMenu === "postcharges") {
-
-        $scope.isOutsidePostCharge = true;
-
-        ngDialog.open({
-          template: '/assets/partials/postCharge/rvPostChargeV2.html',
-          controller: 'RVOutsidePostChargeController',
-          scope: $scope
-        });
+        openPostChargePopup();
       }
       else if (subMenu === "endOfDay") {
-        ngDialog.open({
-          template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-          controller: 'RVEndOfDayModalController',
-          className: 'end-of-day-popup ngdialog-theme-plain'
-        });
+        openEndOfDayPopup();
       }
       else if(subMenu === "adminSettings"){
             //CICO-9816 bug fix - Akhila
@@ -495,14 +523,29 @@ sntRover.controller('roverController',
     	}
     };
 
+    $scope.uuidServiceSuccessCallBack = function(response) {
+      $rootScope.UUID = response.Data;
+    };
+
+    $scope.uuidServiceFailureCallBack = function(error) {
+      $scope.errorMessage = error;
+      $rootScope.UUID = "DEFAULT";
+    };
+
+
+
+
+
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
+    options["uuidServiceSuccessCallBack"] = $scope.uuidServiceSuccessCallBack;
+    options["uuidServiceFailureCallBack"] = $scope.uuidServiceFailureCallBack;
 
     $scope.numberOfCordovaCalls = 0;
 
     var initiateDesktopCardReader = function(){
-
+      sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
 
@@ -528,6 +571,8 @@ sntRover.controller('roverController',
       }
     };
 
+
+
     /*
      * Start Card reader now!.
      */
@@ -536,6 +581,7 @@ sntRover.controller('roverController',
        * desktopSwipeEnabled flag is true
       */
       if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
+        $rootScope.isDesktopUUIDServiceInvoked = true;
   			initiateDesktopCardReader();
   		}
       else {
@@ -544,6 +590,11 @@ sntRover.controller('roverController',
   			  $scope.initiateCardReader();
   			}, 2000);
   		}
+    }
+
+    //If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
+    if(!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {
+      sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
     }
 
     /*

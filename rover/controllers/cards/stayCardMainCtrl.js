@@ -1,11 +1,12 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv','RVReservationPackageSrv',
+
+angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv','RVReservationPackageSrv',
 	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, RVReservationPackageSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		var that = this;
 		if ($scope.guestCardData.cardHeaderImage === undefined || $scope.guestCardData.cardHeaderImage === "") {
-			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
+			$scope.guestCardData.cardHeaderImage = '/assets/images/avatar-trans.png';
 		}
 		$scope.pendingRemoval = {
 			status: false,

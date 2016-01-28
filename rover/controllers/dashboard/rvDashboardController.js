@@ -83,9 +83,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       }
    };
 
-
-   var setWorkStation = function(){
-      var onSetWorkstationSuccess = function(data) {
+   var onSetWorkstationSuccess = function(data) {
             if(!data.is_workstation_present) {
               if ($scope.isHotelAdmin) {
                 $scope.$emit('hideLoader');
@@ -96,24 +94,52 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
             } else {
               $scope.$emit('hideLoader');
             }
-          },
-          onSetWorkstationFailure = function(failure) {
+        },
+        onSetWorkstationFailure = function(failure) {
             $scope.$emit('hideLoader');
-          };
-      var requestData = {};
+        };
+
+   var setWorkStation = function(){
+
+
       //Variable to avoid calling the set work station api, when
       //its already invoked when navigating to the dashboard for the first time
       $rootScope.isWorkstationSet = true;
       if($scope.isIpad) {
         document.addEventListener("deviceready", function() {
                       setDeviceId();
-                      requestData.rover_device_id = $scope.getDeviceId();
-                      $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
+                      invokeSetWorkstationApi();
+
         }, false);
       } else {
-        requestData.rover_device_id = $scope.getDeviceId();
-        $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
+
+        //Check whether UUID is set from the WS response. We will check it 3 times
+        //in an interval of 500ms. If the UUID is not set by that time, we will use the default
+        // value 'DEFAULT'
+        if(!$scope.getDeviceId()) {
+          var count = 3;
+          var deviceIdCheckTimer = setInterval(function() {
+            if($scope.getDeviceId()) {
+              clearInterval(deviceIdCheckTimer);
+              invokeSetWorkstationApi();
+            } else if(!$scope.getDeviceId() && count == 0) {
+              $rootScope.UUID = "DEFAULT";
+              clearInterval(deviceIdCheckTimer);
+              invokeSetWorkstationApi();
+            }
+            count-- ;
+          }, 500);
+        } else {
+          invokeSetWorkstationApi();
+        }
       }
+
+   };
+
+   var invokeSetWorkstationApi = function() {
+    var requestData = {};
+    requestData.rover_device_id = $scope.getDeviceId();
+    $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
 
    };
 
@@ -154,12 +180,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    };
 
    $scope.getDeviceId = function() {
-    var deviceId = "";
-    if($scope.isIpad) {
-      deviceId = $rootScope.UUID;
-     } else {
-      deviceId = "DEFAULT";
-     }
+     var deviceId = $rootScope.UUID;
      return deviceId;
    };
 

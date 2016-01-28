@@ -1,4 +1,4 @@
-sntRover.filter('makeRange', function() {
+angular.module('sntRover').filter('makeRange', function() {
 	return function(input) {
 		var lowBound, highBound;
 		var step = 1;

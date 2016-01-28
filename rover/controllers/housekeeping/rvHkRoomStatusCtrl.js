@@ -1,4 +1,4 @@
-sntRover.controller('RVHkRoomStatusCtrl', [
+angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 	'$scope',
 	'$rootScope',
 	'$timeout',
@@ -38,9 +38,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			name: 'rover.dashboard'
 		};
 
+		var _title = $rootScope.isMaintenanceStaff ? 'My WorkSheet' : 'ROOM_STATUS';
 		// set title in header
-		$scope.setTitle($filter( 'translate')('ROOM_STATUS'));
-		$scope.heading = $filter( 'translate')('ROOM_STATUS');
+		$scope.setTitle($filter( 'translate')(_title));
+		$scope.heading = $filter( 'translate')(_title);
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
 
 		// set the scroller
@@ -108,9 +109,20 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
-		$scope.currentView = 'rooms';
+		$scope.currentView = 'ROOMS';
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
+		};
+		$scope.toggleView = function() {
+			if ($scope.currentView === 'ROOMS') {
+				$scope.currentView = 'TASKS';
+			} else {
+				$scope.currentView = 'ROOMS';
+			}
+			$timeout(function(){
+				$scope.refreshScroller('tasks-summary-scroller');
+			}, 2000);
+
 		};
 
 		// multiple room status change DS
@@ -715,6 +727,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// clear old results and update total counts
 			$scope.rooms              = [];
+			$scope.summary			  = $_roomList.summary;//CICO-23419
 			$scope.netTotalCount = $_roomList.total_count;
 			$scope.uiTotalCount  = !!$_roomList && !!$_roomList.rooms ? $_roomList.rooms.length : 0;
 			$scope.allRoomIDs    = $_roomList.hasOwnProperty('all_room_ids') ? $_roomList['all_room_ids'] : [];
@@ -751,14 +764,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// time to decide if this is an employee
 					// who has an active work sheets
-					if ( !!$scope.currentFilters.filterByWorkType && !!$scope.currentFilters.filterByEmployeeName ) {
-						$_checkHasActiveWorkSheet(alreadyFetched);
-					} else {
-						// need delay, just need it
-						$timeout(function() {
-							$_postProcessRooms();
-						}, 10);
-					};
+					$_checkHasActiveWorkSheet(alreadyFetched);
 				};
 
 				if ( (!!$scope.workTypes && $scope.workTypes.length) && (!!$scope.employees && $scope.employees.length) ) {
@@ -792,22 +798,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		function $_checkHasActiveWorkSheet(alreadyFetched) {
 			var _params = {
 					'date': $rootScope.businessDate,
-					'employee_ids': [$_defaultEmp || $rootScope.userId], // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
-					'work_type_id': $_defaultWorkType
+					'employee_ids': [$_defaultEmp || $rootScope.userId] // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
 				},
 				_callback = function(data) {
-					$scope.hasActiveWorkSheet = !!data.work_sheets && !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
+					var employee = data.employees.length && data.employees[0] || null;
+					$scope.hasActiveWorkSheet = employee && employee.room_tasks && employee.room_tasks.length || false;
 
 					$scope.topFilter.byWorkType = $_defaultWorkType;
 					$scope.topFilter.byEmployee = $_defaultEmp;
-
-					// set an active user in filterByEmployee, set the mobile tab to to summary
-					if ( !!$scope.hasActiveWorkSheet ) {
-						$scope.currentView = 'summary';
-						$_caluculateCounts(data.work_sheets[0].work_assignments);
-					} else {
-						$scope.currentView = 'rooms';
-					};
 
 					// need delay, just need it
 					$timeout(function() {
@@ -841,45 +839,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
 			};
 		};
-
-
-
-		/* ***** ***** ***** ***** ***** */
-
-
-		function $_caluculateCounts(assignments) {
-			$scope.counts = {
-				allocated: 0,
-				departures: 0,
-				stayover: 0,
-				completed: 0,
-				total: 0
-			};
-
-			var totalHH = totalMM = hh = mm = i = 0;
-			for ($scope.counts.total = assignments.length; i < $scope.counts.total; i++) {
-				var room = assignments[i].room;
-
-				totalHH += parseInt(room.time_allocated.split(':')[0]);
-				totalMM += parseInt(room.time_allocated.split(':')[1]);
-
-				if (room.reservation_status.indexOf("Arrived") >= 0) {
-					$scope.counts.departures++;
-				};
-				if (room.reservation_status.indexOf("Stayover") >= 0) {
-					$scope.counts.stayover++;
-				};
-				if (room.hk_complete) {
-					$scope.counts.completed++;
-				};
-			};
-
-			hh = totalHH + Math.floor(totalMM / 60);
-			mm = (totalMM % 60) < 10 ? '0' + (totalMM % 60) : (totalMM % 60);
-			$scope.counts.allocated = hh + ':' + mm;
-		};
-
-
 
 		/* ***** ***** ***** ***** ***** */
 
@@ -960,7 +919,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi() {
 			$scope.hasActiveWorkSheet = false;
-			$scope.currentView        = 'rooms';
 			$scope.rooms              = [];
 
 			// reset any multi room action related data
@@ -1302,5 +1260,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			angular.element( $_roomsEl ).off('ontouchmove');
 			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
+		$scope.getWidthForSummary = function(){
+			var summaryWidth = 0,
+				tasksLength = $scope.summary.work_types.length;
+			summaryWidth = parseInt(parseInt(tasksLength + 1)*160 + 40);
+			return summaryWidth;
+		};
+
+		var scrollerOptionsForSummary = {scrollX: true, scrollY: false, click: true, preventDefault: true, mouseWheel: false};
+    	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
+
 	}
-]);
+	]);

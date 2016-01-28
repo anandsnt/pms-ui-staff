@@ -1,4 +1,4 @@
-sntRover.controller('RVHouseAvailabilityStatusCtrl', [
+angular.module('sntRover').controller('RVHouseAvailabilityStatusCtrl', [
 	'$scope',
 	'$timeout',
 	'ngDialog',

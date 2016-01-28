@@ -7,21 +7,29 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             abstract    : true,
             url         : '/zest_station',
             templateUrl : '/assets/partials/kiosk/zestRoot.html',
-            controller  : 'zsRootCtrl'
-        });
+            controller  : 'zsRootCtrl',
+            resolve     : {
+                cssMappings: function(zsCSSMappings) {
+                    return zsCSSMappings.fetchCSSMappingList();
+                },
+                zestStationSettings: function(zsTabletSrv){
+                    return zsTabletSrv.fetchSettings();
+                }
+            }
+        });           
 
         $stateProvider.state('zest_station.home', {
             url         : '/home',
             templateUrl : '/assets/partials/kiosk/home.html',
             controller  : 'zsHomeCtrl',
             resolve: {
-                beforeRender: function() {
-                    //console.info('doing render apply to see if svg rendering bug is resolved -after render- safari issue');
+                waitforParentDependencies: function(cssMappings, zestStationSettings, $q){
+                    var deferred = $q.defer();
+
                     setTimeout(function(){
-                        var scope = angular.element($('.root-view')[0]).scope();
-                        scope.$apply();
-                    });
-                    return null;
+                        deferred.resolve();
+                    }, 10);
+                    return deferred.promise;
                 }
             }
         });
@@ -30,11 +38,13 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             url         : '/home/:isadmin',
             templateUrl : '/assets/partials/kiosk/home.html',
             controller  : 'zsHomeCtrl'
+            
         });
         $stateProvider.state('zest_station.admin-screen', {
             url         : '/home/:isadmin',
             templateUrl : '/assets/partials/rvAdminPopup.html',
             controller  : 'zsHomeCtrl'
+            
         });
 
         $stateProvider.state('zest_station.oos', {

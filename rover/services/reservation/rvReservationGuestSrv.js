@@ -1,4 +1,4 @@
-sntRover.service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('RVReservationGuestSrv', ['$q', 'rvBaseWebSrvV2',
     function($q, RVBaseWebSrvV2) {
 
     	this.fetchGuestTabDetails = function(data) {

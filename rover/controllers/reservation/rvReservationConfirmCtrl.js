@@ -1,5 +1,6 @@
 sntRover.controller('RVReservationConfirmCtrl', [
 	'$scope',
+	'jsMappings',
 	'$state',
 	'RVReservationSummarySrv',
 	'ngDialog',
@@ -14,7 +15,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'rvPermissionSrv',
 	'$timeout',
 	'$window',
-	function($scope, $state,
+	function($scope, jsMappings, $state,
 		RVReservationSummarySrv, ngDialog,
 		RVContactInfoSrv, $filter,
 		RVBillCardSrv, $q,
@@ -224,6 +225,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			if ($scope.confirmationMailsSent) {
 				updateBackButton();
 			} else {
+
+				// skip sending messages if hotel settings doesn't allow.
+				if (!$scope.hotelDetails.send_confirmation_letter) {
+					$scope.reservationStatus.confirmed = true;
+					updateBackButton();
+					return false;
+				}
 
 				// skip sending messages if no mail id is provided or none of the emails are checked, go to the next screen
 				if ((!$scope.otherData.additionalEmail && !$scope.reservationData.guest.email) || (!$scope.otherData.isGuestPrimaryEmailChecked && !$scope.otherData.isGuestAdditionalEmailChecked)) {
@@ -506,11 +514,16 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.user_id = $scope.reservationData.company.id;
 			}
 
-			ngDialog.open({
-				template: '/assets/partials/bill/rvBillingInformationPopup.html',
-				controller: 'rvBillingInformationPopupCtrl',
-				className: 'ngdialog-theme-default',
-				scope: $scope
+	    	$scope.$emit('showLoader'); 
+           	jsMappings.fetchAssets('addBillingInfo')
+            .then(function(){
+            	$scope.$emit('hideLoader'); 
+			    ngDialog.open({
+			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			        controller: 'rvBillingInformationPopupCtrl',
+			        className: 'ngdialog-theme-default',
+			        scope: $scope
+			    });
 			});
 		};
 

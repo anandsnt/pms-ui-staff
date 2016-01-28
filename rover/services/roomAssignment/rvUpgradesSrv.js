@@ -1,4 +1,4 @@
-sntRover.service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+angular.module('sntRover').service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 
 
 	this.getAllUpgrades = function(param){
