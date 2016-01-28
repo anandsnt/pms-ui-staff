@@ -59,6 +59,8 @@
 	"ROOM_TYPE_FILTER_TITLE": "Room Type",
 
 	"SELECT_WORK_TYPE" : "Select a Work Type",
+	"WORK_TYPE": "Work Type",
+	"ALL_WORK_TYPES": "All Work Types",
 	"OO" : "Out of Order",
 	"OS" : "Out of Service",
 	"FIND_ROOM_MAID" : "Find Room or Employee",
