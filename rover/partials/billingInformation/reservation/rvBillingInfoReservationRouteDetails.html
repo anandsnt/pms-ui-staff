@@ -80,29 +80,12 @@
 					<span class="icons icon-ok-10" ></span>
 				</div>
 
-				<!-- Add new credit card button - remove it when new card is added -->				
 				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "showCreditCardOrNewPayment();" ng-hide="hideNewPaymentButton();">{{'NEW_PAYMENT' | translate}}</button>
 
-				<!-- For to add the new credit card, should be shown when button above is tapped -->
+				<!-- Payment type drop down -->
 				<div id = "newpaymentview"  ng-show = "showSelectPaymentTypeDropDown();" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
 
-				<div ng-hide="isHourlyRateOn">
-					<!-- Credit Limit -->
-	                <div class="title">
-	                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
-	                </div>
-	                <div class="entry">
-	                    <input type="text" ng-model="selectedEntity.credit_limit" ng-disabled="!hasPermissionToEditCreditLimit();"/>
-	                </div>
-
-	                <!-- Reference No. -->
-	                <div class="title">
-	                    {{'REFERENCE_NUMBER' | translate}}
-	                </div>
-	                <div class="entry" >
-	                    <input type="text" ng-model="selectedEntity.reference_number"/>
-	                </div>
-                </div>
+				<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitAndReferenceNo.html'"></span>
 			</div>
 		</div>
 	</fieldset>
