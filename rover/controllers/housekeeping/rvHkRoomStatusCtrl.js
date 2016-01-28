@@ -58,6 +58,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			RVHkRoomStatusSrv.currentFilters.page = 1;
 		};
 		$scope.currentFilters = angular.copy( RVHkRoomStatusSrv.currentFilters );
+		$scope.currentFilters.filterByWorkType = "";
 
 
 
