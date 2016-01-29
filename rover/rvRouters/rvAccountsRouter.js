@@ -11,12 +11,9 @@ angular.module('accountsModule', [])
             abstract: true,
             templateUrl: '/assets/partials/accounts/rvAccountsRoot.html',
             controller: 'rvAccountsRootCtrl',
-            resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },                
-                accountsAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.accounts');
+            resolve: {               
+                accountsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.accounts', 'directives']);
                 }
             }
         });
