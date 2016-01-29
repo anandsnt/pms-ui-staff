@@ -5,12 +5,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     // External verification
 
-    $stateProvider.state('externalVerification', {
-	 	url: '/externalVerification',
-	 	templateUrl: '/assets/common_templates/partials/checkout/gwExternal.html',
-	 	controller : 'externalVerificationViewController',
-	 	title: 'External verification'
-	 });
+  //   $stateProvider.state('externalVerification', {
+	 // 	url: '/externalVerification',
+	 // 	templateUrl: '/assets/common_templates/partials/checkout/gwExternal.html',
+	 // 	controller : 'externalVerificationViewController',
+	 // 	title: 'External verification'
+	 // });
 
 
  //    //room and cc verification 
@@ -131,10 +131,10 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	//     title: 'Early Check-in'
 	//  });
 
-	//  $stateProvider.state('noOptionAvailable', {
- //    	url: '/noOptionAvailable',
-	//  	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
-	//  	title: 'Feature not available'
-	// });
+	 $stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
+	 	templateUrl: '/assets/partials/gwNoOption.html',
+	 	title: 'Feature not available'
+	});
 
 }]);

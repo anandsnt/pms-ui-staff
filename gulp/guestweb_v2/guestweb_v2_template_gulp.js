@@ -3,45 +3,45 @@ module.exports = function(gulp, $, options){
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-	    LOGIN_TEMPLATES_FILE    = 'login_templates.js',
-	    LOGIN_TEMPLATE_ROOT     = options['LOGIN_TEMPLATE_ROOT'],
-	    LOGIN_HTML_FILE     	= options['LOGIN_HTML_FILE'],
-	    LOGIN_PARTIALS 			= ['partials/**/*.html'],
+	    GUESTWEB_V2_TEMPLATES_FILE    = 'guestweb_v2_templates.js',
+	    GUESTWEB_V2_TEMPLATE_ROOT     = options['GUESTWEB_V2_TEMPLATE_ROOT'],
+	    GUESTWEB_V2_HTML_FILE     	= options['GUESTWEB_V2_HTML_FILE'],
+	    GUESTWEB_V2_PARTIALS 			= ['partials/**/*.html'],
 	    runSequence 			= require('run-sequence'),
-	    LOGIN_TEMPLTE_MANFEST_FILE 	= "login_template_manifest.json",
+	    GUESTWEB_V2_TEMPLTE_MANFEST_FILE 	= "guestweb_v2_template_manifest.json",
 	    onError = options.onError;
 
 	//Template - START
 	var templateInjector = function(fileName) {
-		return gulp.src(LOGIN_HTML_FILE)
+		return gulp.src(GUESTWEB_V2_HTML_FILE)
 			.pipe($.inject(gulp.src([DEST_ROOT_PATH + fileName], {read:false}), {
 	            starttag: '<!-- inject:templates:{{ext}} -->',
 	            transform: function(filepath, file, i, length) {
-	            	console.log('Login injecting template file (' + (fileName) + ") to "  + LOGIN_HTML_FILE);
+	            	console.log('Guestweb2 injecting template file (' + (fileName) + ") to "  + GUESTWEB_V2_HTML_FILE);
 	                arguments[0] = URL_APPENDER + "/" + file.relative;
 	                return $.inject.transform.apply($.inject.transform, arguments);
 	            }
        		}))
-       		.pipe(gulp.dest(LOGIN_TEMPLATE_ROOT, { overwrite: true }));
+       		.pipe(gulp.dest(GUESTWEB_V2_TEMPLATE_ROOT, { overwrite: true }));
 	};
 
 	//Be careful: PRODUCTION
-	gulp.task('inject-login-template-cache-production-to-template',  function(){
-		var template_manifest_json = require(MANIFEST_DIR + LOGIN_TEMPLTE_MANFEST_FILE),
-	        file_name = template_manifest_json[LOGIN_TEMPLATES_FILE];
+	gulp.task('inject-guestweb-v2-template-cache-production-to-template',  function(){
+		var template_manifest_json = require(MANIFEST_DIR + GUESTWEB_V2_TEMPLTE_MANFEST_FILE),
+	        file_name = template_manifest_json[GUESTWEB_V2_TEMPLATES_FILE];
 	    return templateInjector(file_name);
 	});
 
 	//Be careful: PRODUCTION
-	gulp.task('login-template-cache-production', function () {
-	  return gulp.src(LOGIN_PARTIALS, {cwd:'login/'})
+	gulp.task('guestweb-v2-template-cache-production', function () {
+	  return gulp.src(GUESTWEB_V2_PARTIALS, {cwd:'guestweb-v2/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare:true,
     			empty: true
 	  		}))
-	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
-	            module: 'login',
+	        .pipe($.templateCache(GUESTWEB_V2_TEMPLATES_FILE, {
+	            module: 'guestweb-v2',
 	            root: URL_APPENDER + "/partials/"
 	        }))
 	        .pipe($.uglify({compress:true, output: {
@@ -49,18 +49,18 @@ module.exports = function(gulp, $, options){
 	        }}))
 			.pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
-	        .pipe($.rev.manifest(LOGIN_TEMPLTE_MANFEST_FILE))
+	        .pipe($.rev.manifest(GUESTWEB_V2_TEMPLTE_MANFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
-	gulp.task('build-login-template-cache-dev', ['login-template-cache-dev'], function(){
-	    return templateInjector(LOGIN_TEMPLATES_FILE);
+	gulp.task('build-guestweb-v2-template-cache-dev', ['guestweb-v2-template-cache-dev'], function(){
+	    return templateInjector(GUESTWEB_V2_TEMPLATES_FILE);
 	});
 
-	gulp.task('login-template-cache-dev', function () {
-	  return gulp.src(LOGIN_PARTIALS, {cwd:'login/'})
-	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
-	            module: 'login',
+	gulp.task('guestweb-v2-template-cache-dev', function () {
+	  return gulp.src(GUESTWEB_V2_PARTIALS, {cwd:'guestweb-v2/'})
+	        .pipe($.templateCache(GUESTWEB_V2_TEMPLATES_FILE, {
+	            module: 'guestweb-v2',
 	            root: URL_APPENDER + "/partials/"
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
@@ -69,9 +69,9 @@ module.exports = function(gulp, $, options){
 	//Template - END
 
 	//LESS END
-	gulp.task('login-watch-partials', function(){
-		return gulp.watch(LOGIN_PARTIALS, function(callback){
-			return runSequence('build-login-template-cache-dev', 'copy-login-base-html')
+	gulp.task('guestweb-v2-watch-partials', function(){
+		return gulp.watch(GUESTWEB_V2_PARTIALS, function(callback){
+			return runSequence('build-guestweb-v2-template-cache-dev', 'copy-guestweb-v2-base-html')
 		});
 	});
 

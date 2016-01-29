@@ -3,7 +3,7 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		guestwebroot 	= 'guestweb_v2/',
-		loginJsAssets 	= {
+		guestwebJSassets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
 				jsLibRoot + 'underscore.min.js',
@@ -21,6 +21,6 @@ module.exports = {
 				guestwebroot + 'scripts/app_router.js'
 			]	
 		};
-		return loginJsAssets;
+		return guestwebJSassets;
 	}
 };
