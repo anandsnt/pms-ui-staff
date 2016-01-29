@@ -7,11 +7,8 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHousekeeping.html',
             controller: 'RVHkAppCtrl',
             resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },   
-                housekeepingAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.housekeeping');
+                housekeepingAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.housekeeping', 'directives']);
                 }
             } 
         });
@@ -88,11 +85,8 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
             controller: 'RVWorkManagementCtrl',
             resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                }, 
-                workManagementAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.workManagement');
+                workManagementAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.workManagement', 'directives']);
                 },
                 employees: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchMaids();
