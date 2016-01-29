@@ -298,8 +298,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
 			if ( $scope.isStandAlone ) {
-				$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
-				$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
+				$scope.currentFilters.filterByWorkType = "";
+				$scope.currentFilters.filterByEmployeeName = "";
 			};
 			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
 
