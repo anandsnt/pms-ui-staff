@@ -320,10 +320,12 @@
             </div>
             <div class="holder" ng-if="!isStandAlone">
                 <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-                <div class="select">
-                    <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
-                        <option value="" selected>All Room Types</option>
-                    </select>
+                <div class="entry rooms">
+                    <div class="select">
+                        <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
+                            <option value="" selected>All Room Types</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="holder">
@@ -418,14 +420,14 @@
             </div>
 
             <div class="holder" ng-if="isStandAlone">
-              <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-              <div class="entry radio-check" ng-repeat="type in roomTypes track by $index">
-                <label class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
-                  <input type="checkbox" ng-model="type.isSelected" name="room-filters">
-                  <label>{{ type.name }}</label>
-                </label>
-              </div>
+                <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
+                <div class="entry radio-check" ng-repeat="type in roomTypes track by $index">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
+                        <input type="checkbox" ng-model="type.isSelected" name="room-filters">
+                        <label>{{ type.name }}</label>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
