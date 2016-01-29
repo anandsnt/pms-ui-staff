@@ -136,7 +136,6 @@ sntRover.controller('RVReportsMainCtrl', [
 			item_28: false,
 			item_29: false, // Exclude Options
 			item_30: false, // Show Options
-			item_31: false,
 			item_32: false,
 			item_33: false
 		};
@@ -593,7 +592,8 @@ sntRover.controller('RVReportsMainCtrl', [
         		selectedRates 	= _.where(showingRateList, {selected: true});
 
 			item.hasRateFilter.selectAll = false;
-        	if(showingRateList.length === selectedRates.length) {
+            
+        	if(showingRateList.length === selectedRates.length && showingRateList.length !== 0) {
         		item.hasRateFilter.title = 'All Selected';
         		item.hasRateFilter.selectAll = true;
         	}
@@ -601,7 +601,7 @@ sntRover.controller('RVReportsMainCtrl', [
         		item.hasRateFilter.title = item.hasRateFilter.defaultTitle;
         	}
         	else if(selectedRates.length === 1 ){
-        		item.hasRateFilter.title = selectedRates[0].description;
+        		item.hasRateFilter.title = selectedRates[0].rate_name;
         	}
         	else {
         		item.hasRateFilter.title = selectedRates.length + ' Selected';
@@ -893,8 +893,7 @@ sntRover.controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': [],
-					'reservationAddons': []
+					'guestOrAccount': []
 				};
 			};
 
@@ -1011,6 +1010,14 @@ sntRover.controller('RVReportsMainCtrl', [
 			if (!!report.hasRateFilter) {
 				key = reportParams['RATE_IDS'];
 				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
+                // For the daily production rates; we are to send an array with group or allotment ids
+                if(reportNames['DAILY_PRODUCTION_RATE'] === report.title){
+                    var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id: null}), "group_id");
+                    if ( selectedCustomRates.length > 0 ){
+                        params[key] = _.without(params[key],null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
+                        params['custom_rate_group_ids'] = selectedCustomRates; 
+                    }  
+                }
 			};
 
 			// for restriction list
@@ -1353,29 +1360,6 @@ sntRover.controller('RVReportsMainCtrl', [
 					// in case if all charge groups is selected
 					if ( changeAppliedFilter && report['hasByChargeGroup']['data'].length === selected.length ) {
 						$scope.appliedFilter.chargeGroups = ['All Groups'];
-					};
-				};
-			};
-
-			// include charge groups
-			if (report.hasOwnProperty('hasReservationAddons')) {
-				selected = _.where( report['hasReservationAddons']['data'], { selected: true } );
-
-				if ( selected.length > 0 ) {
-					key         = reportParams['RESERVATION_ADDONS'];
-					params[key] = [];
-					/**/
-					_.each(selected, function(cg) {
-						params[key].push( cg.id );
-						/**/
-						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.reservationAddons.push( cg.description );
-						};
-					});
-
-					// in case if all charge groups is selected
-					if ( changeAppliedFilter && report['hasReservationAddons']['data'].length === selected.length ) {
-						$scope.appliedFilter.reservationAddons = ['All Reservation Addons'];
 					};
 				};
 			};

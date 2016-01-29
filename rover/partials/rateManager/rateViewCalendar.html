@@ -34,7 +34,7 @@
                         <div ng-click="goToRoomTypeCalendarView(rate)">
                             <span ng-class="{'gray': rateIsChild(rate) == true && ratesRoomsToggle !== 'ROOMS'}" title="{{rate.name}}">{{rate.name}}</span>
                             <span> 
-                                <img src="/assets/arrow-down.png" ng-hide="hideRoomsDownArrow"/>
+                                <img src="/assets/cssimg/arrow-down.png" ng-hide="hideRoomsDownArrow"/>
                             </span>
                         </div>
                     </td>
@@ -45,10 +45,10 @@
     
     
     <div ng-if='!uiOptions.isIpad' scroll-position="initScrollBind()" class="scrollTable" id="rateViewCalendar" style="height:{{uiOptions.tableHeight}}px;">
-        <div ng-include="'assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
+        <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
     </div>
     <div ng-if='uiOptions.isIpad' scroll-position="initScrollBind()" class="scrollTable" id="rateViewCalendar" style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
-        <div ng-include="'assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
+        <div ng-include="'/assets/partials/rateManager/restrictionsTemplate/rateCalendarTable.html'"></div>
     </div>
 </div>
 <div class='pinned-bottom'>

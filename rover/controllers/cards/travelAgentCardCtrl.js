@@ -1,4 +1,4 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
+angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
 	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams) {
 
 		$scope.searchMode = true;
@@ -291,7 +291,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 	}
 ]);
 
-sntRover.controller('travelAgentResults', ['$scope', '$timeout',
+angular.module('sntRover').controller('travelAgentResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
 		BaseCtrl.call(this, $scope);
 		var scrollerOptionsForGraph = {

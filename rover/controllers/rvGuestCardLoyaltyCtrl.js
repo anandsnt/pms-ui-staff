@@ -1,4 +1,4 @@
-sntRover.controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGuestCardLoyaltySrv','ngDialog',function($scope,$rootScope,RVGuestCardLoyaltySrv,ngDialog){
+angular.module('sntRover').controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGuestCardLoyaltySrv','ngDialog',function($scope,$rootScope,RVGuestCardLoyaltySrv,ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.init = function(){
 		var loyaltyFetchsuccessCallback = function(data){

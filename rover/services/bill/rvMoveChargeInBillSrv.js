@@ -1,4 +1,4 @@
-sntRover.service('RVMoveChargeSrv',['$http', '$q', 'BaseWebSrvV2',function($http,$q,BaseWebSrvV2){
+angular.module('sntRover').service('RVMoveChargeSrv',['$http', '$q', 'BaseWebSrvV2',function($http,$q,BaseWebSrvV2){
 
 	this.fetchSearchedItems = function(data){
 		var deferred = $q.defer();

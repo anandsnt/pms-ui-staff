@@ -1,4 +1,4 @@
-sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault', '$rootScope',
+angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtil', 'rvDiaryMetadata', '$vault', '$rootScope',
         function($q, RVBaseWebSrv, rvBaseWebSrvV2, util, meta, $vault, $rootScope) {
                 /* DATA STORE w/ set functions */
                 function STORE() {

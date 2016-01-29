@@ -1,4 +1,4 @@
-sntRover.controller('rvAllotmentRootCtrl',	[
+angular.module('sntRover').controller('rvAllotmentRootCtrl',	[
 	'$scope',
 	'$rootScope',
 	'$filter',

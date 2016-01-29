@@ -1,4 +1,4 @@
-sntRover.service('RVValidateCheckinSrv',['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2){
+angular.module('sntRover').service('RVValidateCheckinSrv',['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2){
 
 	this.saveGuestEmailPhone = function(data){
 		var deferred = $q.defer();

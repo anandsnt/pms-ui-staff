@@ -1,4 +1,4 @@
-sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv','RVGuestCardLoyaltySrv',
+angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv','RVGuestCardLoyaltySrv',
 	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
 		$scope.searchMode = true;
 		$scope.guestCardData.selectedLoyaltyLevel = "";
@@ -73,7 +73,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 	}
 ]);
 
-sntRover.controller('guestResults', ['$scope', '$timeout',
+angular.module('sntRover').controller('guestResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
 
 		BaseCtrl.call(this, $scope);

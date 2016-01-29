@@ -1,4 +1,4 @@
-sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2){
+angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2){
 	/*
 	 * Service function to get data for Email popup
 	 */

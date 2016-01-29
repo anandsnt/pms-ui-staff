@@ -3,11 +3,27 @@
    <div class="wrapper" ng-click="clearMessage()">
       <div ng-include="'/assets/partials/common/notification_message.html'"></div>
       <div class="holder left">
-         <!-- Number -->
-         <strong class="h3" translate>AR_NUMBER</strong>
-         <div class="entry full-width no-label">
+         <!-- Number and Direct Bill-->
+         <strong class="h3">Basic Information</strong>
+         <div class="entry margin">
+            <label for="company-arn" translate>AR_NUMBER</label>
             <input name="company-arn" id="company-arn" value="" type="text" placeholder = "Enter AR Number" ng-model="arAccountDetails.ar_number" ng-disabled="arAccountDetails.is_auto_assign_ar_numbers"/>
          </div>
+         <div class="entry only-switch" ng-class="{'overlay' : !hasPermissionToEditDirectBillRestriction()}">
+            <label for="company-direct-debit">Allow Direct Debit</label>
+            <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_allow_direct_debit}">
+               <input id="company-direct-debit" type="checkbox" ng-model="arAccountDetails.is_allow_direct_debit" ng-change="checkboxModelChanged();"/>
+               <label class="data-off">
+                  <span class="value">No</span>
+                  <span class="switch-icon" >Yes</span>
+               </label>
+               <label class="data-on">
+                  <span class="switch-icon">No</span>
+                  <span class="value">Yes</span>
+               </label>
+            </div>
+         </div>
+
          <!-- Notes -->
          <strong class="h3 margin" translate>AR_NOTES</strong>
          <div class="entry full-width no-label with-notes">
