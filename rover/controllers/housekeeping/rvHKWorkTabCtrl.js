@@ -56,7 +56,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			$scope.isCompleted = $scope.currentTask.work_status === $_workStatusList['completed']  ? true : false;
 			$scope.isOpen      = $scope.currentTask.work_status === $_workStatusList['open']       ? true : false;
 
-			if ( $rootScope.isMaintenanceStaff && $scope.currentTask.assigned_maid_id !== $rootScope.userId ) {
+			if ( $scope.currentTask.assigned_maid_id !== $rootScope.userId ) {
 				$scope.disableDone  = true;
 				$scope.disableStart = true;
 			} else {
