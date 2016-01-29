@@ -218,6 +218,7 @@
                     <div class="select">
                         <select id="work-type"
                             ng-model="currentFilters.filterByWorkType"
+                             ng-class=" { 'placeholder': !currentFilters.filterByWorkType }"
                             ng-options="item.id as item.name for item in workTypes">
                             <option value="" translate>ALL_WORK_TYPES</option>
                         </select>
@@ -226,7 +227,10 @@
                 <strong class="title" ng-hide="isMaintenanceStaff && hasActiveWorkSheet" translate>EMPLOYEE</strong>
                 <div class="entry" ng-hide="isMaintenanceStaff && hasActiveWorkSheet">
                     <div class="select">
-                        <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
+                        <select id="employees"
+                        ng-model="currentFilters.filterByEmployeeName"
+                        ng-class=" { 'placeholder': !currentFilters.filterByEmployeeName }"
+                        ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="">All Employees</option>
                         </select>
                     </div>
