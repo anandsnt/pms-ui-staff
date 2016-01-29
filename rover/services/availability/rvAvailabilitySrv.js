@@ -523,12 +523,11 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	var getHouseStatistics = function(params){
 		var deferred = $q.defer();
 		var url = '/api/availability/house_statistics';
-		var businessDate = tzIndependentDate(params['business_date']).clone();
 
 		delete params['business_date'];
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
-			deferred.resolve(data.results);
+			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
@@ -538,7 +537,6 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	var getHouseAvailability = function(params){
 		var deferred = $q.defer();
 		var url = '/api/availability/house';
-		var businessDate = tzIndependentDate(params['business_date']).clone();
 
 		delete params['business_date'];
 
@@ -563,9 +561,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		// This call gets the adr, arrived, arriving, departed, departing and total_rev 
         promises.push(getHouseStatistics(params).then(function(response) {
-            houseStatistics = response;
-        	// TODO : Resolve the room count correctly 
-            roomCount = 8686; // This should be substitued with the actual physical count once API is providing the same
+            houseStatistics = response.results;
+        	roomCount = response.physical_count; 
         }));
 
         $q.all(promises).then(function() {
