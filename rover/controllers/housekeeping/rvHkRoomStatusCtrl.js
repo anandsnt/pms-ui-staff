@@ -109,16 +109,25 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
-		$scope.currentView = 'ROOMS';
+		if (!!RVHkRoomStatusSrv.defaultViewState) {
+			$scope.currentView = RVHkRoomStatusSrv.defaultViewState;
+		} else {
+			$scope.currentView = $scope.isMaintenanceStaff ? 'TASKS' : 'ROOMS';
+		}
+
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
+			RVHkRoomStatusSrv.defaultViewState = view;
 		};
+
 		$scope.toggleView = function() {
 			if ($scope.currentView === 'ROOMS') {
 				$scope.currentView = 'TASKS';
 			} else {
 				$scope.currentView = 'ROOMS';
 			}
+
+			RVHkRoomStatusSrv.defaultViewState = $scope.currentView;
 			$timeout(function(){
 				$scope.refreshScroller('tasks-summary-scroller');
 			}, 2000);
@@ -144,8 +153,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		// true represent that this is a fetchPayload call
 		// and the worktypes and assignments has already be fetched
 		$_fetchRoomListCallback(fetchPayload.roomList, true);
-
-
 
 		/* ***** ***** ***** ***** ***** */
 

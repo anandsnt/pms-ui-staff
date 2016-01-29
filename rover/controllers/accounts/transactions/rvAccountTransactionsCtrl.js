@@ -108,38 +108,44 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.moveChargesClicked = function(){
-			var billTabsData = $scope.transactionsDetails.bills;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
-			//Data to pass to the popup
-			//1. Selected transaction ids
-			//2. Confirmation number
-			//3. AccountName
-			//4. CurrentBillNumber
-			//5. Current Bill id
-			$scope.moveChargeData = {};
-			$scope.moveChargeData.selectedTransactionIds = [];
-			var accountName = (typeof $scope.accountConfigData.summary.posting_account_name !== "undefined") ?$scope.accountConfigData.summary.posting_account_name :"";
-			$scope.moveChargeData.displayName = accountName;
-			$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
-			$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
+            $scope.$emit('showLoader');
+            $q.all([jsMappings.fetchAssets('addBillingInfo'), jsMappings.fetchAssets('directives')])
+            .then(function(){
+                $scope.$emit('hideLoader');
+
+				var billTabsData = $scope.transactionsDetails.bills;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				//Data to pass to the popup
+				//1. Selected transaction ids
+				//2. Confirmation number
+				//3. AccountName
+				//4. CurrentBillNumber
+				//5. Current Bill id
+				$scope.moveChargeData = {};
+				$scope.moveChargeData.selectedTransactionIds = [];
+				var accountName = (typeof $scope.accountConfigData.summary.posting_account_name !== "undefined") ?$scope.accountConfigData.summary.posting_account_name :"";
+				$scope.moveChargeData.displayName = accountName;
+				$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 
 
-			if(chargeCodes.length>0){
-				_.each(chargeCodes, function(chargeCode,index) {
-					if(chargeCode.isSelected){
-						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
-					}
-			    });
-			    ngDialog.open({
-		    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
-		    		controller: 'RVMoveChargeCtrl',
-		    		className: '',
-		    		scope: $scope
-	    		});
-			}
-			else{
-				return;
-			};
+				if(chargeCodes.length>0){
+					_.each(chargeCodes, function(chargeCode,index) {
+						if(chargeCode.isSelected){
+							$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+						}
+				    });
+				    ngDialog.open({
+			    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
+			    		controller: 'RVMoveChargeCtrl',
+			    		className: '',
+			    		scope: $scope
+		    		});
+				}
+				else{
+					return;
+				};
+			});
 		};
 	
 		/**
@@ -348,7 +354,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('postcharge')
+        $q.all([jsMappings.fetchAssets('postcharge'), jsMappings.fetchAssets('directives')])
         .then(function(){
         	$scope.$emit('hideLoader');
 
@@ -412,15 +418,20 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 		$scope.showPayemntModal = function() {
-			$scope.passData = getPassData();
-			ngDialog.open({
-				template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
-				className: '',
-				controller: 'RVAccountsTransactionsPaymentCtrl',
-				closeByDocument: false,
-				scope: $scope
+            $scope.$emit('showLoader'); 
+            $q.all([jsMappings.fetchAssets('addBillingInfo'), jsMappings.fetchAssets('directives')])
+            .then(function(){
+                $scope.$emit('hideLoader'); 			
+				$scope.passData = getPassData();
+				ngDialog.open({
+					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+					className: '',
+					controller: 'RVAccountsTransactionsPaymentCtrl',
+					closeByDocument: false,
+					scope: $scope
+				});
+				$scope.paymentModalOpened = true;
 			});
-			$scope.paymentModalOpened = true;
 		};
 
 

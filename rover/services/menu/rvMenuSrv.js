@@ -290,7 +290,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
-                
+
                 try {//wrapping in try catch to ensure nothing is affected should this fail
                     var item,  isPmsDev = false;
                     if (window && window.location && window.location.href){
@@ -525,11 +525,6 @@ angular.module('sntRover').service('rvMenuSrv',
 
 			//dont wanted to show on hourly enabled hotels
 			case 'menuGroups':
-				returnValue = !isHourlyRateOn();
-				break;
-
-			//we will show accounts on non hourly mode
-			case 'accounts':
 				returnValue = !isHourlyRateOn();
 				break;
 

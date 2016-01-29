@@ -41,6 +41,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		};
 
 		this.currentFilters = this.initFilters();
+		this.isInitialLoad = true;
+		this.defaultViewState = null;
 
 		var that = this;
 
@@ -60,12 +62,19 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			// if there is a search query, ignore all other filters. Reset page to 1
 			if ( filter.query ) {
 				params['query'] = filter.query;
+				if (passedParams.assignee_id) {
+					params['assignee_id'] = passedParams.assignee_id;
+				}
+				else {
+					params['all_employees_selected'] = true;
+				}
 			} else {
 
 				if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
 					// if: for initial load cases
 					// else: for normal case
-					if ( passedParams.initialLoad ) {
+					if ( this.isInitialLoad ) {
+						this.isInitialLoad = false;
 						if ( passedParams.work_type_id ) {
 							params['work_type_id']  = passedParams.work_type_id;
 							filter.filterByWorkType = passedParams.work_type_id;

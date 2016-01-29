@@ -15,10 +15,34 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 
 	};
 
+	var setInitialExcludedList = function(){
+		angular.forEach($scope.data.ios_versions, function(version){
+			version.isExcluded = $scope.data.excluded_ios_versions.indexOf(version.value) !== -1
+		})
+
+		angular.forEach($scope.data.android_versions, function(version){
+			version.isExcluded = $scope.data.excluded_android_versions.indexOf(version.value) !== -1
+		})
+	}
+
+	var setFinalExcludedList = function(){
+		$scope.data.excluded_ios_versions = [], $scope.data.excluded_android_versions = [];
+		angular.forEach($scope.data.ios_versions, function(version){
+			if(version.isExcluded)
+               $scope.data.excluded_ios_versions.push(version.value);
+		})
+
+		angular.forEach($scope.data.android_versions, function(version){
+			if(version.isExcluded)
+               $scope.data.excluded_android_versions.push(version.value);
+		})
+	}
+
 	var fetchInterfaceDetails = function(){
 		var fetchSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data = data;
+			setInitialExcludedList();
 		};
 		$scope.invokeApi(ADDoorlockInterfaceSrv.fetch, {},fetchSuccessCallback);
 	};
@@ -31,6 +55,7 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 				hotelSupportedCardTypes.push($scope.data.available_card_types[i].value);
 			}
 		}
+		setFinalExcludedList();
 		var unwantedKeys = ["key_systems", "available_card_types"];
 		var saveData = dclone($scope.data, unwantedKeys);
 		saveData.hotel_supported_card_types = hotelSupportedCardTypes;

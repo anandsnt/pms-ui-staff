@@ -91,6 +91,31 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'CC verification'
 	 });
 
+
+	 //Early checkin options
+
+	 $stateProvider.state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/Huntley/earlyCheckinOptions.html',
+	 	controller : 'earlyCheckinOptionsController',
+	 	title: 'Early Check-in'
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/Huntley/earlyCheckinFinal.html',
+	 	controller : 'earlyCheckinFinalController',
+	 	title: 'Early Check-in'
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/checkin/partials/Huntley/lateArrivalTime.html',
+	 	controller : 'checkinArrivalDetailsController',
+	    title: 'Early Check-in'
+	 }).state('guestDetails', {
+	 	url: '/guestDetails',
+	 	templateUrl: '/assets/checkin/partials/Huntley/guestDetails.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
+	 });
+
 	 	  // pre checkin states
 
     $stateProvider.state('preCheckinStatus', {

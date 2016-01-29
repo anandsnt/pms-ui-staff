@@ -7,7 +7,10 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHousekeeping.html',
             controller: 'RVHkAppCtrl',
             resolve: {
-                housekeepingAssets: function(jsMappings, mappingList) {
+                directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+                },   
+                housekeepingAssets: function(jsMappings, mappingList, directivesJsAssets) {
                     return jsMappings.fetchAssets('rover.housekeeping');
                 }
             } 
@@ -85,7 +88,10 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
             controller: 'RVWorkManagementCtrl',
             resolve: {
-                workManagementAssets: function(jsMappings, mappingList) {
+                directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+                }, 
+                workManagementAssets: function(jsMappings, mappingList, directivesJsAssets) {
                     return jsMappings.fetchAssets('rover.workManagement');
                 },
                 employees: function(RVWorkManagementSrv, workManagementAssets) {
@@ -97,7 +103,7 @@ angular.module('housekeepingModule', [])
                 shifts: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchShifts();
                 },
-                floors: function(RVHkRoomStatusSrv) {
+                floors: function(RVHkRoomStatusSrv, workManagementAssets) {
                     return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
@@ -122,11 +128,11 @@ angular.module('housekeepingModule', [])
                 activeWorksheetEmp: function(RVHkRoomStatusSrv, workManagementAssets) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 },
-                fetchHKStaffs: function(RVWorkManagementSrv) {
+                fetchHKStaffs: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchHKStaffs();
                 },
 
-                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams) {
+                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams, workManagementAssets) {
                     var unassignedRoomsParam = {
                         date: $stateParams.date,
                     };

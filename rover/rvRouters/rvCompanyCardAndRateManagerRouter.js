@@ -6,7 +6,10 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
             controller: 'searchCompanyCardController',
             resolve: {
-                comapanycardSearchAssets: function(jsMappings, mappingList) {
+                directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+                },
+                comapanycardSearchAssets: function(jsMappings, mappingList, directivesJsAssets) {
                     return jsMappings.fetchAssets('rover.companycardsearch');
                 }
             }
@@ -18,7 +21,10 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',
             resolve: {
-                comapanycardDetailsAssets: function(jsMappings) {
+                directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+                },
+                comapanycardDetailsAssets: function(jsMappings, directivesJsAssets) {
                     return jsMappings.fetchAssets('rover.companycarddetails');
                 }
             }
@@ -29,7 +35,10 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/rateManager/dashboard.html',
             controller  : 'RMDashboradCtrl',
             resolve: {
-                rateMangerAssets: function(jsMappings, mappingList) {
+                directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+                },                
+                rateMangerAssets: function(jsMappings, mappingList, directivesJsAssets) {
                     return jsMappings.fetchAssets('rover.ratemanager', ['highcharts-ng']);
                 },
                 sortOrder: function(RateMngrCalendarSrv, rateMangerAssets) {

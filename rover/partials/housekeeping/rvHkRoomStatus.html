@@ -49,7 +49,7 @@
     </div>
 
     <!-- Room or Task View, default to Room -->
-    <div class="entry switch">
+    <div class="entry switch" ng-if="isStandAlone && !isHourlyRateOn">
         <div class="switch-button"
             ng-class="{ 'on': currentView === 'ROOMS', 'off': currentView==='TASKS' }">
             <input id="room-task-toggle" value="" type="checkbox"
@@ -96,7 +96,7 @@
 </form>
 
 <!-- My Worksheet Summary -->
-<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="hasActiveWorkSheet">
+<div class="worksheet-summary scrollable" ng-iscroll="tasks-summary-scroller" ng-iscroll-delay="100" ng-if="!isHourlyRateOn && isStandAlone && hasActiveWorkSheet">
     <ul class="wrapper" style="width: {{getWidthForSummary()}}px"> <!-- width:{160*no.of list items + 40px}; -->
         <li>
             <strong class="title">Time Allocated</strong>
@@ -212,22 +212,22 @@
     <div id="filter-options" class="content scrollable" ng-iscroll="room-status-filter">
         <div class="wrapper">
             <!-- Work Type / Employee filter -->
-            <div class="holder">
+            <div class="holder" ng-if="isStandAlone">
                 <strong class="title" translate>WORK_TYPE</strong>
                 <div class="entry">
                     <div class="select">
-                        <select id="work-type" ng-model="currentFilters.filterByWorkType">
-                            <option value="" selected>All Work Types</option>
-                            <option ng-repeat="item in workTypes" value="{{item.id}}">
-                                {{item.name}}
-                            </option>
+                        <select id="work-type"
+                            ng-model="currentFilters.filterByWorkType"
+                            ng-options="item.id as item.name for item in workTypes">
+                            <option value="" translate>ALL_WORK_TYPES</option>
                         </select>
                     </div>
                 </div>
-                <div class="entry" ng-if="!hasActiveWorkSheet">
+                <strong class="title" ng-hide="isMaintenanceStaff && hasActiveWorkSheet" translate>EMPLOYEE</strong>
+                <div class="entry" ng-hide="isMaintenanceStaff && hasActiveWorkSheet">
                     <div class="select">
                         <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
-                            <option value="" selected>All Employees</option>
+                            <option value="">All Employees</option>
                         </select>
                     </div>
                 </div>

@@ -6,7 +6,10 @@ angular.module('reportsModule', [])
         templateUrl: '/assets/partials/reports/rvReports.html',
         controller: 'RVReportsMainCtrl',
         resolve: {
-            reportsAssets: function(jsMappings, mappingList) {
+            directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+            },             
+            reportsAssets: function(jsMappings, mappingList, directivesJsAssets) {
                 return jsMappings.fetchAssets('rover.reports', ['ngReact']);
             },
             payload: function(RVreportsSrv, reportsAssets) {
