@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
-	function($scope, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');
@@ -43,7 +43,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 	    	}
 
 	    	$scope.$emit('showLoader'); 
-           	jsMappings.fetchAssets('addBillingInfo')
+           	$q.all([jsMappings.fetchAssets('addBillingInfo'), jsMappings.fetchAssets('directives')])
             .then(function(){
             	$scope.$emit('hideLoader'); 
 			    ngDialog.open({

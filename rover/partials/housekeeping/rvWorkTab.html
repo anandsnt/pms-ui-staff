@@ -4,6 +4,7 @@
     <!-- ng-class="{ 'dual-select': isStandAlone }" -->
     <div class="room-actions">
         <div class="select">
+            <label for="room-status">Room Status</label>
             <!-- standalone PMS -->
             <!-- Disable when cleaning in progrees. -->
             <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="isStarted">
@@ -14,9 +15,38 @@
         </div>
     </div>
 
-
     <div class="room-content scrollable" ng-iscroll="room-status-content" ><!-- Scroller here -->
-        <div class="wrapper">
+        <!-- this is a connected hotel -->
+        <div ng-if="!isStandAlone">
+            <!-- 2.A Work Tab - Room is clean -->
+            <div ng-if="!!ooOsTitle">
+                <strong class="h2">Room is {{ ooOsTitle }}.</strong>
+                <span class="icon-no-content icon-ok"></span> 
+            </div>
+
+            <!-- 2.A Work Tab - Room is clean -->
+            <div ng-if="!ooOsTitle && checkShow('clean')">
+                <strong class="h2">Room is clean.</strong>
+                <span class="icon-no-content icon-ok"></span> 
+            </div>
+
+            <!-- 2.B Work Tab - Room is dirty -->
+            <div ng-if="!ooOsTitle && checkShow('dirty') && !isStarted">
+                <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
+            </div>
+
+            <!-- 2.C Work Tab - Room is pickup -->
+            <div ng-if="!ooOsTitle && checkShow('pickup') && !isStarted">
+                <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
+            </div>
+
+            <!-- 2.D Work Tab - Room cleaning in progress -->
+            <div ng-if="!ooOsTitle && isStarted">
+                <strong class="h2">Work is in Progress.</strong>
+            </div>
+        </div>
+
+        <div class="wrapper" ng-if="isStandAlone">
 
             <strong ng-if="!ooOsTitle && checkShow('clean')" class="h2">Room is <span class="green">clean.</span></strong> 
 
@@ -25,7 +55,7 @@
             <strong ng-if="!ooOsTitle && checkShow('pickup')" class="h2"> <span class="orange">Pickup</span> room.</strong> 
 
             <!-- Tasks & Assignment -->
-            <div id="room-tasks" ng-if="isStandAlone">
+            <div id="room-tasks" ng-if="isStandAlone && isTaskPresent()">
                 <div class="room-actions">
                     <div class="select">
                         <label for="select-task">Task</label>
@@ -38,10 +68,8 @@
                     <span ng-show="isCompleted" class="label">Completed by</span>
                     <strong class="h3">{{ currentTask.assigned_maid }}</strong>
 
-                    <!-- When cleaning is done, replace L132-133 with this (and update label on L124 as well!):-->
                     <span ng-show="isCompleted" class="icon-no-content icon-ok"></span>
 
-                    <!-- When pressed, replace L129 with the following:-->
                     <div ng-show="isStarted && !disableDone">
                         <span class="progress"></span>
                         <button type="button" class="button green action" ng-click="doneWorking()">Done!</button>

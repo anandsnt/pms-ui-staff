@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
-	function($scope, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
+	function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -679,7 +679,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				logo: "GROUP_DEFAULT"
 			});
 	    	$scope.$emit('showLoader'); 
-           	jsMappings.fetchAssets('addBillingInfo')
+           	$q.all([jsMappings.fetchAssets('addBillingInfo'), jsMappings.fetchAssets('directives')])
             .then(function(){
             	$scope.$emit('hideLoader'); 
 			    ngDialog.open({
