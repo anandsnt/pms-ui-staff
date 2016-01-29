@@ -68,9 +68,11 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    var setDeviceId = function() {
       var onGetDeviceIdSuccess = function(data){
             $rootScope.UUID = data;
+            invokeSetWorkstationApi();
           },
           onGetDeviceIdFailure = function(error) {
-
+            $rootScope.UUID = "DEFAULT";
+            invokeSetWorkstationApi();
           };
         var options = {
           "successCallBack": onGetDeviceIdSuccess,
@@ -80,6 +82,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       try {
           sntapp.uuidService.getDeviceId(options);
       } catch(err) {
+
       }
    };
 
@@ -108,7 +111,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       if($scope.isIpad) {
         document.addEventListener("deviceready", function() {
                       setDeviceId();
-                      invokeSetWorkstationApi();
 
         }, false);
       } else {

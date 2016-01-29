@@ -12,9 +12,16 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
         $scope.goBackToPreviousState();
     };
     $scope.onCallback = function(response){
-      console.info('callback from shortcode stuff save')  
+        if (response.status === 'success'){
+            $scope.successMessage = response.status;
+        } else {
+            $scope.errorMessage = ["Error"];
+        }
     };
     $scope.saveClicked = function(){
+        console.info('saving',$scope.editData);
+        var params = $scope.editData;
+        //params.id = $scope.editData.hotel_id;
         var options = {
             params 			: params,
             successCallBack             : $scope.onCallback,
@@ -34,11 +41,11 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     };
     
     $scope.fetch = function(){
-        console.log('fetching settings;')
         var callback = function(response){
-            console.info('fetch success;',response);
+            console.info('fetch: ',response)
             if (response.status === 'success'){
                 $scope.editData = response.data;
+                console.info('$scope.editData: ',$scope.editData)
             }
         };
         var options = {
