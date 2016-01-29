@@ -12,7 +12,10 @@ angular.module('allotmentModule', [])
             templateUrl: '/assets/partials/allotments/rvAllotmentRoot.html',
             controller: 'rvAllotmentRootCtrl',
             resolve: {
-                allotmentAssets: function(jsMappings, mappingList) {
+                directivesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets('directives');
+                },
+                allotmentAssets: function(jsMappings, mappingList, directivesJsAssets) {
                     return jsMappings.fetchAssets('rover.allotments');
                 }
             }

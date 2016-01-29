@@ -19,14 +19,19 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 
 		$timeout(function() {$scope.refreshScroller('room-status-content');}, 1500);
 
+		$scope.isTaskPresent = function () {
+			return $scope.roomDetails.task_details.length != 0;
+		};
+
 		// keep ref to room details in local scope
 		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
+
 		$scope.taskDetails = $scope.roomDetails.task_details;
-		
-		$scope.taskDetails = $scope.roomDetails.task_details;
-		$scope.currentTask = $scope.taskDetails[0];
-		$scope.currentTaskID = $scope.currentTask.id;
+		if($scope.isTaskPresent()) { 
+			$scope.currentTask = $scope.taskDetails[0];
+			$scope.currentTaskID = $scope.currentTask.id;
+		}
 
 
 

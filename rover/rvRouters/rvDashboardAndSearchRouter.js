@@ -81,7 +81,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
             } ,
-             onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings) {
+             onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings, $q) {
 
                if($stateParams.type === 'changeBussinessDate'){
                     jsMappings.fetchAssets('endofday').then(function(){
@@ -92,7 +92,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     });
                }
                else if($stateParams.type === 'postCharge'){
-                    jsMappings.fetchAssets('postcharge').then(function(){
+                    $q.all([jsMappings.fetchAssets('postcharge'), jsMappings.fetchAssets('directives')]).then(function(){
                         ngDialog.open({
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController'
