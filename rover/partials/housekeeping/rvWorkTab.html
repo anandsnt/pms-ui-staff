@@ -4,6 +4,7 @@
     <!-- ng-class="{ 'dual-select': isStandAlone }" -->
     <div class="room-actions">
         <div class="select">
+            <label for="room-status">Room Status</label>
             <!-- standalone PMS -->
             <!-- Disable when cleaning in progrees. -->
             <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="isStarted">
@@ -25,7 +26,7 @@
             <strong ng-if="!ooOsTitle && checkShow('pickup')" class="h2"> <span class="orange">Pickup</span> room.</strong> 
 
             <!-- Tasks & Assignment -->
-            <div id="room-tasks" ng-if="isStandAlone">
+            <div id="room-tasks" ng-if="isStandAlone && isTaskPresent()">
                 <div class="room-actions">
                     <div class="select">
                         <label for="select-task">Task</label>
