@@ -15,7 +15,7 @@
 	<h5 ng-hide="shouldShowMultiPropertySwitch()">Menu</h5>
 
 	<ul id="large-menu" class="main">
-		<li ng-repeat="menuItem in menu" ng-click="updateSubMenu($index,menuItem)">
+		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="updateSubMenu($index,menuItem)">
 			<!--ng-repeat="menuItem in menu | filter:{hidden:'!'+true}"  -->
 			<!--ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" -->
 			<a class="icon-menu {{menuItem.iconClass}}" 

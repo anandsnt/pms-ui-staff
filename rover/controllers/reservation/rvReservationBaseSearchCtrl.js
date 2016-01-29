@@ -18,6 +18,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
+        // Limit Max number of days to 92
+        RESV_LIMIT = 92;
+
         $scope.setScroller('search_reservation', {
             preventDefault: false
         });
@@ -283,17 +286,22 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.setDepartureDate = function() {
-
+            $scope.errorMessage = [];
             var dateOffset = $scope.reservationData.numNights;
             if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
             }
+            if (dateOffset > RESV_LIMIT) {
+                dateOffset = RESV_LIMIT;
+                $scope.reservationData.numNights = '';
+                $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"]
+            }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
-           
+
         };
 
         $scope.setNumberOfNights = function() {
@@ -321,14 +329,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
+            $scope.departureDateOptions.maxDate = getMaxDepartureDate($scope.reservationData.arrivalDate);
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
+            $scope.errorMessage = [];
         };
 
 
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
+            $scope.errorMessage = [];
         };
         /*  The following method helps to initiate the staydates object across the period of
          *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
@@ -339,6 +350,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (roomNumber === 0) {
                 $scope.reservationData.stayDays = [];
             }
+
+            $scope.reservationData.rooms[roomNumber].stayDates = {};
+
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                 if (roomNumber === 0) {
                     $scope.reservationData.stayDays.push({
@@ -372,7 +386,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     roomData = $scope.reservationData.rooms[0],
                     numberOfHours = $scope.reservationData.resHours;
 
-                if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours === ''|| !$scope.reservationData.resHours) {
+                if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours === '' || !$scope.reservationData.resHours) {
                     numberOfHours = $rootScope.minimumHourlyReservationPeriod;
                 }
                 _.extend(reservationDataToKeepinVault, {
@@ -403,7 +417,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
-                
+
                 $scope.setNumberOfNights();
 
                 // Fix for CICO-11333
@@ -414,7 +428,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }
 
                 if ($scope.checkOccupancyLimit()) {
-                    $state.go('rover.reservation.staycard.mainCard.roomType', {
+
+                    var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+                    if (SWITCH_ROOM_AND_RATES_ALT) {
+                        roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+                    }
+
+                    $state.go(roomAndRatesState, {
                         'from_date': $scope.reservationData.arrivalDate,
                         'to_date': $scope.reservationData.departureDate,
                         'fromState': $state.current.name,
@@ -422,7 +443,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'allotment_id': $scope.reservationData.allotment.id,
                         'travel_agent_id': $scope.reservationData.travelAgent.id,
                         'group_id': $scope.reservationData.group.id,
-                        'promotion_code': $scope.reservationData.searchPromoCode
+                        'promotion_code': $scope.reservationData.searchPromoCode,
+                        'promotion_id': $scope.reservationData.promotionId,
+                        'adults': $scope.reservationData.tabs[0]['numAdults'],
+                        'children': $scope.reservationData.tabs[0]['numChildren']
                     });
                 }
             }
@@ -682,12 +706,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // init call to set data for view
         init();
 
+        var getMaxDepartureDate = function(fromDate) {
+            var dateObj = tzIndependentDate(fromDate),
+                dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
+                dateParts = dateString.match(/(\d+)/g);
+            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + RESV_LIMIT);
+        };
+
 
         $scope.arrivalDateOptions = {
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '0:+10',
             minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
@@ -705,8 +736,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             showOn: 'button',
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
-            yearRange: '-0:',
+            yearRange: '0:+10',
             minDate: tzIndependentDate($scope.otherData.businessDate),
+            maxDate: getMaxDepartureDate(tzIndependentDate($scope.otherData.businessDate)),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
             },
@@ -777,6 +809,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.codeSearchText = "";
                 }
                 if (!!$scope.reservationData.code) { // Reset in case of promotion code CICO-19484
+                    $scope.reservationData.promotionId = null;
+                    $scope.searchPromoCode = "";
                     $scope.reservationData.code = {
                         id: '',
                         type: '',
@@ -845,6 +879,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSelectHandler = function(event, code) {
             if (code.item) {
                 $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.reservationData.promotionId = code.item.id;
                 $scope.searchPromoCode = code.item.label;
             }
             if (code.item.type === "PROMO") {
@@ -928,6 +963,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }))),
                 i;
             for (i = firstIndex; i <= lastIndex; i++) {
+                // Ensure that the adults and children dont go to zero at the same time
+                if (type == 'numChildren' && $scope.reservationData.tabs[tabIndex]['numChildren'] == 0 && $scope.reservationData.tabs[tabIndex]['numAdults'] == 0) {
+                    $scope.reservationData.tabs[tabIndex]['numAdults'] = 1;
+                    $scope.reservationData.rooms[i]['numAdults'] = 1;
+                } else if (type == 'numAdults' && $scope.reservationData.tabs[tabIndex]['numAdults'] == 0 && $scope.reservationData.tabs[tabIndex]['numChildren'] == 0) {
+                    $scope.reservationData.rooms[i]['numChildren'] = 1;
+                    $scope.reservationData.tabs[tabIndex]['numChildren'] = 1;
+                }
                 $scope.reservationData.rooms[i][type] = parseInt($scope.reservationData.tabs[tabIndex][type], 10);
             }
         };

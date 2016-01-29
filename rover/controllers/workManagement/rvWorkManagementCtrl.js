@@ -101,118 +101,157 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		// if the user choose the option to view all rooms - showAllRooms
 		// we will be using this new argument to create the filterRooms
 		// the else case is just as before, no change
-		$scope.filterUnassignedRooms = function(filter, rooms, allUnassigned, alreadyAssigned) {
-			var filteredRooms = [];
-			var filterObject = {};
+		// $scope.filterUnassignedRooms = function(filter, rooms, allUnassigned, alreadyAssigned) {
+		$scope.filterUnassignedRooms = function(filter, allUnassigned, allRooms) {
+			var filterObj = {},
+				roomDetails,
+				noMatched;
 
 			if ( filter.showAllRooms ) {
-				// create an array of room ids that have been assigned
-				var _rooms           = {},
-					_assignedRoomIds = [],
-					_unassigned      = [],
-					_foundMatch;
+				_.each(allUnassigned, function(room) {
+					room.show = true;
+				});
+			} else {
 
-				var i = j = k = l = 0;
+				if (filter.selectedFloor) {
+					filterObj.floor_number = filter.selectedFloor;
+				}
+				if (filter.selectedReservationStatus) {
+					filterObj.reservation_status = filter.selectedReservationStatus;
+				}
+				if (filter.vipsOnly) {
+					filterObj.is_vip = true;
+				}
+				if (filter.selectedFOStatus) {
+					filterObj.fo_status = filter.selectedFOStatus;
+				}
 
-				// loop through 'alreadyAssigned' list and push the room
-				// ids to '_assignedRoomIds' array
-				_.each(alreadyAssigned, function(each) {
-					for (k = 0, l = each.rooms.length; k < l; k++) {
-						_assignedRoomIds.push( each.rooms[k].id );
+				_.each(allUnassigned, function(room) {
+					roomDetails = allRooms[room.room_index];
+
+					noMatched = _.find(filterObj, function(value, key) {
+						return roomDetails[key] !== value;
+					});
+
+					if ( ! noMatched ) {
+						room.show = true;
+					} else {
+						room.show = false;
 					};
 				});
 
-				// loop through 'allUnassigned', within that
-				// loop through '_unassigned', within that
-				// if the that ith room hasnt been assigned already
-				// push that ith room into 'filteredRooms'
-				for (i = 0, j = allUnassigned.length; i < j; i++) {
-					_unassigned = allUnassigned[i]['unassigned'];
-					for (k = 0, l = _unassigned.length; k < l; k++) {
 
-						_foundMatch = _.find(_assignedRoomIds, function(id) {
-							return id === _unassigned[k].id;
-						});
+				var cib, cia, cob, coa, roomTime, filterBeforeTime, filterAfterTime;
+				if ( filterHasTime() ) {
+					_.each(allUnassigned, function(room) {
+						var refData = allRooms[room.room_index];
+						if ( roomHasTime(refData) ) {
+							cib = filter.checkin.before;
+							cia = filter.checkin.after;
+							cob = filter.checkout.before;
+							coa = filter.checkout.after;
 
-						// only push this room in
-						// if it has not been assigned already
-						if ( !_foundMatch ) {
-							filteredRooms.push( angular.copy(_unassigned[k]) );
-						};
-					};
-				};
-			} else {
+							if ( !! cia.hh && !! cib.hh ) { // CASE 1 & 2
+								roomTime = refData.checkin_time;
+								filterAfterTime = cia.hh + ':' + (cia.mm || '00') + ' ' + cia.am;
+								filterBeforeTime = cib.hh + ':' + (cib.mm || '00') + ' ' + cib.am;
 
-				//build the approp. filterObject
-				if (filter.selectedFloor) {
-					filterObject.floor_number = filter.selectedFloor;
-				}
-				if (filter.selectedReservationStatus) {
-					filterObject.reservation_status = filter.selectedReservationStatus;
-				}
-				if (filter.vipsOnly) {
-					filterObject.is_vip = true;
-				}
-				if (filter.selectedFOStatus) {
-					filterObject.fo_status = filter.selectedFOStatus;
-				}
-				if (!$.isEmptyObject(filterObject)) {
-					filteredRooms = _.where(rooms, filterObject);
-				} else {
-					filteredRooms = rooms;
-				}
-
-				// time filtering on $scope.multiSheetState.unassignedFiltered
-				if (!!filter.checkin.before.hh || !!filter.checkin.after.hh || !!filter.checkout.after.hh || !!filter.checkout.after.hh) {
-					filteredRooms = _.filter(filteredRooms, function(room) {
-						if ((!!room.checkin_time && (!!filter.checkin.before.hh || !!filter.checkin.after.hh)) ||
-							(!!room.checkout_time && (!!filter.checkout.before.hh || !!filter.checkout.after.hh))) {
-							var cib = filter.checkin.before,
-								cia = filter.checkin.after,
-								cob = filter.checkout.before,
-								coa = filter.checkout.after,
-								get24hourTime = function(time) { //time is in "12:34 pm" format
-									if (time) {
-										var firstSplit = time.toString().split(':');
-										var secondSplit = firstSplit[1].split(' ');
-										var returnString = firstSplit[0];
-										if (secondSplit[1].toString() && secondSplit[1].toString().toUpperCase() === "PM") {
-											returnString = parseInt(returnString) + 12;
-										} else {
-											returnString = (parseInt(returnString) + 12) % 12;
-										}
-										if (returnString.toString().length < 2) {
-											returnString = "0" + returnString.toString();
-										}
-										return returnString + ":" + secondSplit[0];
-									} else {
-										return "00:00";
-									}
+								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) && get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
+									room.show = true;
+								} else {
+									room.show = false;
 								};
-
-							if (!!cia.hh && !!cib.hh) { // CASE 1 & 2
-								return ((get24hourTime(room.checkin_time) >= get24hourTime(cia.hh + ':' + (cia.mm || '00') + " " + cia.am)) &&
-									(get24hourTime(room.checkin_time) <= get24hourTime(cib.hh + ':' + (cib.mm || '00') + " " + cib.am)));
-							} else if (!!cia.hh) { // CASE 1 : Arrival After
-								return get24hourTime(room.checkin_time) >= get24hourTime(cia.hh + ':' + (cia.mm || '00') + " " + cia.am);
-							} else if (!!cib.hh) { // CASE 2 : Arrival Before
-								return get24hourTime(room.checkin_time) <= get24hourTime(cib.hh + ':' + (cib.mm || '00') + " " + cib.am);
 							}
+							else if ( !! cia.hh ) { // CASE 1 : Arrival After
+								roomTime = refData.checkin_time;
+								filterAfterTime = cia.hh + ':' + (cia.mm || '00') + ' ' + cia.am;
 
-							if (!!coa.hh && !!cob.hh) { // CASE 3 & 4
-								return ((get24hourTime(room.checkout_time) >= get24hourTime(coa.hh + ':' + (coa.mm || '00') + " " + coa.am)) &&
-									(get24hourTime(room.checkout_time) <= get24hourTime(cob.hh + ':' + (cob.mm || '00') + " " + cob.am)));
-							} else if (!!coa.hh) { // CASE 3 : Departure After
-								return get24hourTime(room.checkout_time) >= get24hourTime(coa.hh + ':' + (coa.mm || '00') + " " + coa.am);
-							} else if (!!cob.hh) { // CASE 4 : Departure Before
-								return get24hourTime(room.checkout_time) <= get24hourTime(cob.hh + ':' + (cob.mm || '00') + " " + cob.am);
+								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
+									room.show = true;
+								} else {
+									room.show = false;
+								};
 							}
+							else if ( !!cib.hh ) { // CASE 2 : Arrival Before
+								roomTime = refData.checkin_time;
+								filterBeforeTime = cib.hh + ':' + (cib.mm || '00') + " " + cib.am;
+
+								if( get24hourTime(roomTime) >= get24hourTime(filterBeforeTime) ) {
+									room.show = true;
+								} else {
+									room.show = false;
+								};
+							}
+							else if ( !! coa.hh && !! cob.hh ) { // CASE 3 & 4
+								roomTime = refData.checkout_time;
+								filterAfterTime = coa.hh + ':' + (coa.mm || '00') + " " + coa.am;
+								filterBeforeTime = cob.hh + ':' + (cob.mm || '00') + " " + cob.am;
+
+								if ( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) && get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
+									room.show = true;
+								} else {
+									room.show = false;
+								};
+							}
+							else if ( !! coa.hh ) { // CASE 3 : Departure After
+								roomTime = refData.checkout_time;
+								filterAfterTime = coa.hh + ':' + (coa.mm || '00') + " " + coa.am;
+
+								if( get24hourTime(roomTime) >= get24hourTime(filterAfterTime) ) {
+									room.show = true;
+								} else {
+									room.show = false;
+								};
+							}
+							else if ( !! cob.hh ) { // CASE 4 : Departure Before
+								roomTime = refData.checkin_time;
+								filterBeforeTime = cob.hh + ':' + (cob.mm || '00') + " " + cob.am;
+
+								if( get24hourTime(roomTime) <= get24hourTime(filterBeforeTime) ) {
+									room.show = true;
+								} else {
+									room.show = false;
+								};
+							};
 						}
 					});
-				}
-			};
+				};
 
-			return filteredRooms;
+
+				function filterHasTime () {
+					return !! filter.checkin.before.hh || !! filter.checkin.after.hh || !! filter.checkout.after.hh || !! filter.checkout.after.hh;
+				};
+
+				function roomHasTime (room) {
+					return ( !! room.checkin_time && (!! filter.checkin.before.hh || !! filter.checkin.after.hh) ) || ( !! room.checkout_time && (!! filter.checkout.before.hh || !! filter.checkout.after.hh) );
+				};
+
+				function get24hourTime (time) {
+					var firstSplit, secondSplit, ret;
+
+					if ( !! time ) {
+						firstSplit  = time.toString().split(':');
+						secondSplit = firstSplit[1].split(' ');
+						ret         = firstSplit[0];
+
+						if ( secondSplit[1].toString() && secondSplit[1].toString().toUpperCase() === 'PM' ) {
+							ret = parseInt( ret ) + 12;
+						} else {
+							ret = ( parseInt(ret) + 12 ) % 12;
+						}
+
+						if ( ret.toString().length < 2 ) {
+							ret = '0' + ret.toString();
+						}
+
+						ret += ':' + secondSplit[0];
+					} else {
+						ret = '00:00';
+					};
+
+					return ret;
+				};
+			};
 		};
 	}
 ]);

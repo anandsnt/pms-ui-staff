@@ -51,27 +51,36 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	 * @return {Boolean} [description]
 	 */
 	$scope.isInPickupKeyMode = function() {
-		return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
+		if ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE){
+                    return true;
+                } else if ($scope.isPickupKeys || $state.isPickupKeys){
+                    return true;
+                } else return false;
 	};
 
         $scope.goToKeySuccess = function(){
-            setTimeout(function(){
+          //  setTimeout(function(){
                 $state.go('zest_station.key_success');
-            },500);
+           // },500);
             
         };
         
         $scope.makeKeys = function(){
             $state.passParams = $scope.input;
             $state.go('zest_station.make_keys');
-          
         };
         $scope.initKeySuccess = function(){
             $state.passParams = $scope.input;
           
-            $scope.headingText = 'Success!';
-            $scope.subHeadingText = 'Please grab your key(s) from the target below';
-            $scope.modalBtn1 = 'Next';
+            $scope.headingText = 'SUCCESS_HDR';
+            $scope.subHeadingText = 'GRAB_KEYS';
+            
+            if ($scope.isInPickupKeyMode()){
+                $scope.modalBtn1 = 'DONE_BTN';//if you were just picking up keys, you are done!
+            } else {
+                $scope.modalBtn1 = 'NEXT_BTN';//otherwise keep goin!
+            }
+            
             $scope.input.madeKey = 1;
             $scope.input.makeKeys = 1;
         };
@@ -120,19 +129,18 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.keyTwoOfTwoSetup = function(){
                 $scope.at = 'make-keys';
                 
-                $scope.headingText = 'Success! Make your second key';
-                $scope.subHeadingText = 'Remove the first key, select a Blank Key from the Bowl and place it on the target below.\n\
-                                            When the green light appears, the key is made.';
+                $scope.headingText = 'MADE_FIRST_KEY_MSG';
+                $scope.subHeadingText = 'MADE_FIRST_KEY_MSG_SUB';
             
                 setTimeout(function(){
                     $scope.initMakeKey(2);
-                },2500)
+                },2500);
             };
         $scope.oneKeySetup = function(){
                 $scope.at = 'make-keys';
 
-                $scope.headingText = 'Make your key.';
-                $scope.subHeadingText = 'Select a blank key from the bowl and place it on the target below. When the green light appears, the key is made';
+                $scope.headingText = 'MAKE_KEY';
+                $scope.subHeadingText = 'MAKE_KEY_MSG';
                 $scope.modalBtn1 = 'Next';
                 $scope.input.madeKey = 0;
             };
@@ -146,18 +154,18 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.at = 'make-keys';
 
                 $scope.from = 'select-keys-after-checkin';
-                $scope.headingText = 'Make your first key!';
-                $scope.subHeadingText = 'Select a Blank Key from the Bowl and place it on the target below. \n\
-                                                When the green light appears, the key is made.';
+                $scope.headingText = 'MAKE_FIRST_KEY';
+                $scope.subHeadingText = 'MAKE_FIRST_KEY_SUB';
                 $scope.initMakeKey(1);
             };
         
        $scope.oneKeySuccess = function(){
+           
             $scope.goToKeySuccess();
 
-            $scope.headingText = 'Success!';
-            $scope.subHeadingText = 'Please grab your key from the target below';
-            $scope.modalBtn1 = 'Next';
+            $scope.headingText = 'SUCCESS_HDR';
+            $scope.subHeadingText = 'GRAB_KEY_BELOW';
+            $scope.modalBtn1 = 'NEXT_BTN';
             $scope.input.madeKey = 1;
             console.info('success, made key: [ 1 ] of [ 1 ]');
         };
@@ -197,18 +205,23 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
-            console.log($scope.zestStationData)
             var options = {
                 card_info: "",
                 key: $scope.makingKey,
                 key_encoder_id: sntZestStation.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
+            if ($scope.isInPickupKeyMode()){
+                options.reservation_id = $scope.selectedReservation.reservation_id;
+            }
+            
+            
             if ($scope.makingKey === 1){
                 options.is_additional = false;
             } else {
                 options.is_additional = true;
             }
+            
             $scope.callAPI(zsTabletSrv.encodeKey, {
                 params: options,
                 'successCallBack':$scope.successMakeKey,
@@ -218,20 +231,37 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
 
         $scope.deliverRegistration = function(){
-            $state.go('zest_station.delivery_options');
+            if ($scope.isInPickupKeyMode()){
+                $state.go ('zest_station.home');
+            } else {
+                if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
+                    $state.go('zest_station.delivery_options');
+                } else {
+                    $state.go('zest_station.last_confirm');
+                }
+            }
+            
         };
 
 
 
         $scope.init = function(){
             $scope.selectedReservation = $state.selectedReservation;
-            
+            console.info('init: with reservation: ',$scope.selectedReservation);
+            console.info('$state.current.name: ',$state.current.name)
             if ($state.current.name === 'zest_station.make_keys'){
                 $scope.at = 'make-keys';
                 $scope.initKeyCreate();
             } else if($state.current.name === 'zest_station.key_success'){
                 $scope.at = 'key-success';
                 $scope.initKeySuccess();
+            } else if ($state.current.name === 'zest_station.pickup_keys'){
+                $stateParams.mode = zsModeConstants.PICKUP_KEY_MODE;
+                console.info('$stateParams.mode: ',$stateParams.mode)
+                $scope.at = 'select-keys-after-checkin';
+                $scope.isPickupKeys = true;
+                $state.isPickupKeys = true;
+              //  $scope.initKeyCreate();
             } else {
                 $scope.at = 'select-keys-after-checkin';
             }

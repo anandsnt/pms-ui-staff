@@ -492,15 +492,45 @@ sntRover.controller('RVPostChargeControllerV2',
 				/****    CICO-6094    **/
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
+					// CICO-21768 - Alert to show Credit Limit has exceeded.
+					if( data.has_crossed_credit_limit ) {
+	                    ngDialog.open({
+	                        template: '/assets/partials/bill/rvBillingInfoCreditLimitAlert.html',
+	                        className: '',
+	                        closeByDocument: false,
+	                        scope: $scope
+	                    });
+	                }
 					// update the price in staycard
-					if(!$scope.isOutsidePostCharge){
+					else if(!$scope.isOutsidePostCharge){
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 						$scope.closeDialog();
 					}
 					else{
 						$rootScope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
 					}
 				};
+
+				var callbackApplyToBillOne = function(){
+					$scope.$emit( 'hideLoader' );
+					// update the price in staycard
+					if(!$scope.isOutsidePostCharge){
+						$scope.$emit('postcharge.added', data.total_balance_amount);
+					}
+					else{
+						$rootScope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
+					}
+					$scope.closeDialog();
+				};
+				// CICO-21768 - Forcefully posting to Bill#1 while Credit Limit has exceeded.
+				$scope.applyToBillOne = function(){
+					data.bill_no = "1";
+					data.post_to_bill_one = true;
+					$scope.invokeApi(RVPostChargeSrvV2.postCharges, data, callbackApplyToBillOne, failureCallback);
+				};
+
 				var accountsPostcallback = function(){
 					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
@@ -573,7 +603,8 @@ sntRover.controller('RVPostChargeControllerV2',
 				return JSON.stringify (string);
 			};
 
-			$rootScope.$on('POSTCHARGE', function( event, data ) {
+			$scope.$on('POSTCHARGE', function( event, data ) {
+				console.log("@@@POSTCHARGE");
 			   	$scope.postCharges();
 			});
 

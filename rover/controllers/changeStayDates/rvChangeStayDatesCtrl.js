@@ -10,6 +10,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			scope: $scope
 		};
 
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+
+		if (SWITCH_ROOM_AND_RATES_ALT) {
+			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		}
+
 		// pass in something to the next state which ever it may be
 		$rootScope.setNextState = {
 			data: {
@@ -186,7 +192,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.errorCallbackCheckUpdateAvaibale = function(errorMessage) {
 			$scope.$emit("hideLoader");
-
+			$scope.errorMessage = errorMessage;
 		};
 
 		$scope.successCallbackCheckUpdateAvaibale = function(data) {
@@ -722,7 +728,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 
 		var navigateToRateAndRates = function() {
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
+			$state.go(roomAndRatesState, {
 				from_date: $scope.confirmedCheckinDate,
 				to_date: $scope.confirmedCheckoutDate,
 				fromState: 'STAY_CARD',

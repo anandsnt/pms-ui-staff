@@ -1777,7 +1777,7 @@ sntRover.controller('RVbillCardController',
 				var stateParams = {'type': 'DUEOUT', 'from_page': 'DASHBOARD'};
 			}
 			if(RVSearchSrv.searchTypeStatus === undefined){
-				var stateParams = {'type': 'NORMAL_SEARCH', 'useCache': true};
+				var stateParams = {'useCache': true};
 				$scope.reservationBillData.reservation_status = "CHECKEDOUT";
 				RVSearchSrv.updateRoomDetails($scope.reservationBillData.confirm_no, $scope.reservationBillData);
 			}

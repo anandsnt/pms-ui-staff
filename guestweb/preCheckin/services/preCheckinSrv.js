@@ -29,10 +29,13 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 		return deferred.promise;
 	};
 
-	var completePrecheckin = function(data) {
+	var completePrecheckin = function() {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/pre_checkin';
-		$http.post(url).success(function(response) {
+		var data = {};
+		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
+		$http.post(url,data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
 		.error(function() {

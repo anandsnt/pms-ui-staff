@@ -1929,230 +1929,156 @@ table {
     #worksheet-content {
 
         .worksheet-header,
-        .unassigned-rooms,
-        .assigned-rooms h2,
-        .sheet-placeholder { .hide; }
+        #unassigned-rooms,
+        .worksheet-room.placeholder { .hide; }
 
-        /* Worksheet room ***/
+        h2 {
+            font-size: 18pt;
+            line-height: 1.2;
+            font-weight: 600;
+            margin: 1.414em 0 0.5em;
+            .show;
+        }
+
+        .wrapper { width: 100% !important; }
+
+        .employee {
+            page-break-after: always;
+            page-break-inside: auto;
+
+            .totals {
+                text-align: center;
+
+                ul {
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    width: 4cm;
+                    margin: 0 auto;
+                }
+
+                li { 
+                    font-size: 14pt;
+                    line-height: 1.2;
+                    width: 2cm;
+
+                    &:first-child { padding-right: 4pt; }
+                    &:last-child { padding-left: 4pt;}
+                }
+
+                span {
+                    font-weight: 600;
+                    .show;
+
+                    &.value { border-bottom: 1px solid @grey2; }
+                    
+                    &.total { color: @grey3; }
+                }
+            }
+        }
+
         .worksheet-room {
+            .worksheet-task {
+                h3,
+                .info { visibility: hidden; }
+
+                &:first-child {
+                    h3,
+                    .info { visibility: visible; }
+                }
+            }
+        }
+
+        .worksheet-task {
+            position: relative;
             font-size: 8pt;
             line-height: 1;
-            padding: 4pt;
+            padding: 4pt 0;
             margin: 0;
-            border-bottom: 1px solid @grey2;
             page-break-after: auto;
             page-break-inside: avoid;
-            .float;
+            .size(24pt, 100%);
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: flex-start;
+            align-items: center;
 
             h3 {
-                font-size: 14pt;
+                order: 1;
+                color: @textColor; 
+                font-size: 16pt;
                 line-height: 1;
                 font-weight: 600;
-                width: 4cm;
-                .pull-left;
-                
-                &.out { color: @grey2; }
+                width: 3cm;
             }
 
-            &.single-sheet {
-                padding-right: 20px;
-                position: relative;
+            .info {
+                order: 2;
+                .show;
 
-                .reservation-status {
-                    .size(20px, 6.5cm);
-                    .pull-left;
+                span {
+                    display: inline-block;
+                    text-transform: uppercase;
+                    line-height: 16pt;
+                    width: 4cm;
 
-                    .guest-status { margin-right: 4pt; }
+                    &.red,
+                    &.green { font-weight: 600; }
 
-                    .current,
-                    .next { 
-                        line-height: 20px;
-                        text-transform: uppercase;
-                        width: 50%;
-                        .pull-left;
-                    }
+                    &.grey { color: @grey3; }
                 }
+            }
 
-                .icon-queued { 
-                    margin-right: 16pt;
-                    .pull-right; 
-                }
+            .task {
+                order: 3;
+                font-size: 8pt;
+                font-weight: 600;
+                .show;
+            }
 
-                .vip {
-                    font-weight: 400;
-                    line-height: 20px;
-                    color: @grey3;
-                    background-color: transparent;
-                    margin-right: 16pt;
-                    .size(20px, auto);
-                    .pull-right;
-                }
+            .icon-ok-10 {
+                order: 4;
+                margin-left: auto;
+                background: #fff;
+                .square(18pt);
+                .show;
 
-                .button,
-                .no-action {
+                &:before {
+                    content: "✔";
                     position: absolute;
                     top: 4pt;
-                    right: 4pt;
-                    padding: 0;
-                    line-height: 20px;
-                    background: transparent !important;
-                    .hide-text();
-                    .no-transition();
-                    #border-radius > .rounded(0px);
-                    .box-shadow(none);
-                    .square(20px);
-                    .show;
-                }
-
-                .button {
-                    &.green { .hide; }
-                    &.red { border: 1px dashed @textColor; }
-                }
-
-                .no-action { 
+                    right: 0;
+                    font-size: 12pt;
+                    line-height: 16pt;
+                    color: @grey2;
+                    text-indent: 0;
+                    text-align: center;
+                    font-weight: 600;
                     border: 1px solid @grey2;
-
-                    &:after {
-                        content: "✔";
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        text-indent: 0;
-                        text-align: center;
-                        font-size: 8pt;
-                        line-height: 20px;
-                        color: @grey2;
-                        .square(20px);
-                        .show;
-                    }
+                    background: #fff;
+                    z-index: 9;
+                    .square(16pt);
+                    .show;
                 }
             }
 
-            &.multi-sheet {
-                color: #fff;
-
-                h3 { color: @textColor; }
-
-                .guest,
-                .room {
-                    position: relative;
-                    text-transform: uppercase;
-                    line-height: 20px;
-                }
-
-                .guest {
-                    padding-left: 25px;  
-                    width: 4cm; 
-                    color: @textColor;
-                    .pull-left;
-
-                    &:before {
-                        content: "";
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        background-image: @iconPrint;
-                        background-repeat: no-repeat;
-                        background-size: 20px;
-                        border: 1px solid @textColor;
-                        .square(20px);
-                        .show;
-                    }
-
-                    &.pre-check-in,
-                    &.check-in { 
-                        &:before { background-position: -1px -1px; } 
-                    }
-
-                    &.inhouse { 
-                        &:before { background-position:  -1px -40px; } 
-                    }
-
-                    &.check-out { 
-                        &:before { background-position: -1px -21px; } 
-                    }
-
-                    &.late-check-out { 
-                        &:before { background-position: 0 -60px; } 
-                    }
-
-                    &.cancel { 
-                        &:before { background-position:  -1px -81px; } 
-                    }
-
-                    &.arrival,
-                    &.departed { 
-                        &:before { background: @grey1; }
-                    }
-
-                    &.no-show { 
-                        &:before { .hide; }
-                    }
-                }
-
-                .room {
-                    text-align: left;
-                    color: @textColor;
-                    width: 5cm;
-                    .pull-right;
-
-                    &:before {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        .square(20px);
-                        .show;
-                    }
-
-                    &.clean,
-                    &.inspected { 
-                        &:before {
-                            content: "✔";
-                            text-align: center;
-                            font-size: 8pt;
-                            line-height: 20px;
-                            color: @grey2;
-                            border: 1px solid @grey1;
-                            .show;
-                        }
-                    }
-
-                    &.dirty,
-                    &.pickup {
-                        &:before { 
-                            content: "";
-                            border: 1px dashed @textColor; 
-                        }
-                    }
+            .room {
+                 &:before {
+                    content: "";
+                    position: absolute;
+                    top: 4pt;
+                    right: 0;
+                    border: 1px dashed @textColor;
+                    z-index: 3;
+                    visibility: visible !important;
+                    .square(16pt);
+                    .show;
                 }
             }
 
             &:last-child {
-                padding-bottom: 0;
-                border-bottom: 0;
-            }
-        }
-
-        /* Assigned rooms ***/
-        .assigned-rooms {
-
-            &.multi-sheet {
-                .sheet-content {
-                    page-break-after: always;
-                    page-break-inside: auto;
-
-                    .button { 
-                        font-size: 12pt;
-                        line-height: 1.2;
-                        text-transform: none;
-                        color: @textColor;
-                        padding: 0;
-                        background: transparent !important;
-                        .box-shadow(none);
-                        .no-transition;
-                        .show;
-                    }
-                }
+                border-bottom: 1px solid @grey3;
             }
         }
     }
@@ -2162,6 +2088,7 @@ table {
     .journal-print,
     .journal-groups { .hide; }
     .grid-footer { .hide; }
+    
     /* Header / Footer ***/
     .journal-header-print,
     .journal-footer-print {

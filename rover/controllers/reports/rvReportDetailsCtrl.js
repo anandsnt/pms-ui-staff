@@ -75,13 +75,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isGuestReport = false;
 			$scope.isLargeReport = false;
 			$scope.isLogReport   = false;
+			$scope.isTransactionReport = false;
 			$scope.isDepositReport = false;
+			$scope.isCondensedPrint = false;
+			$scope.isBalanceReport = false;
+
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
-			$scope.isTransactionReport = false;
-			$scope.isCondensedPrint = false;
+			
 
 			switch ( $scope.chosenReport.title ) {
 				case reportNames['IN_HOUSE_GUEST']:
@@ -124,6 +127,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					if ( $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'OUT' ) {
 						$scope.hasNoTotals = true;
 					};
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+						$scope.hasNoTotals = true;
 					break;
 
 				case reportNames['WEB_CHECK_IN_CONVERSION']:
@@ -185,6 +192,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.leftColSpan = 4;
 						$scope.rightColSpan = 5;
 					}
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 5;
 					break;
 
 				case reportNames['UPSELL']:
@@ -325,6 +337,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 							'outs_via_kiosk' : totals[4]['value']
 						};
 					};
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.$parent.summaryCounts = totals;
 					break;
 
 				case reportNames['UPSELL']:
@@ -497,10 +513,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 					};
 					break;
 
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
-					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionReport.html';
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRoomTypeReport.html';
+					break;
+					
+				case reportNames['DAILY_PRODUCTION_DEMO']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionDemographics.html';
+					break;
+
+				case reportNames['DAILY_PRODUCTION_RATE']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRateReport.html';
 					break;
 
 				default:
@@ -796,7 +824,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_PICKUP_REPORT']:
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
-				case reportNames['DAILY_PRODUCTION']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 					orientation = 'landscape';
 					break;
 				case reportNames['GUEST_BALANCE_REPORT']:

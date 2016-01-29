@@ -49,6 +49,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	    $rootScope.businessDate = businessDate;
 
+	    // flag to decide show task management under house keeping: true by default
+	    var showTaskManagementInHKMenu = true;
+
 	    var routeChange = function(event, newURL) {
 	      event.preventDefault();
 	      return;
@@ -56,7 +59,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	    $rootScope.$on('$locationChangeStart', routeChange);
 	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-
 
 		var setupLeftMenu = function(){
 			if($scope.isStandAlone){
@@ -178,7 +180,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_TASK_MANAGEMENT",
 						action: "staff#/staff/workmanagement/start",
 						menuIndex: "workManagement",
-			            hidden: $rootScope.isHourlyRatesEnabled
+			            hidden: ( $rootScope.isHourlyRatesEnabled || !showTaskManagementInHKMenu )
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -471,6 +473,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 * @param {object} response
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
+
+			// flag to decide show task management under house keeping: true by default
+			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
 
 			if (data.language) {
 		      $translate.use(data.language.value);

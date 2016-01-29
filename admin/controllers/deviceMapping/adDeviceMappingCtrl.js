@@ -1,5 +1,5 @@
-admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', '$timeout', '$location', '$anchorScroll',
-					function(ngTableParams, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, $timeout, $location, $anchorScroll){
+admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', 'ADEmvTerminalsSrv', '$timeout', '$location', '$anchorScroll',
+					function(ngTableParams, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, ADEmvTerminalsSrv, $timeout, $location, $anchorScroll){
 
 	$scope.errorMessage = '';
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -18,6 +18,14 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                 }
             }
         };
+        $scope.getEmvDescription = function(id){
+            var e = $scope.emv_terminals;
+            for (var i in e){
+                if (e[i].id === id){
+                    return e[i].name;
+                }
+            }
+        };
 	$scope.listDevices = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
@@ -29,6 +37,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                         
                         for (var i in data.work_stations){//pull in the description of the key encoder
                             data.work_stations[i].key_encoder_description = $scope.getKeyEncoderDescription(data.work_stations[i].key_encoder_id);
+                            data.work_stations[i].emv_name = $scope.getEmvDescription(data.work_stations[i].emv_terminal_id);
                         }
                         
 			$scope.data = data.work_stations;
@@ -55,18 +64,22 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		);
                 
 	};
-
-        
         
 	$scope.failureCallBack =  function(response){
             console.warn(response);
 	};
         $scope.key_encoders = [];
         $scope.selectedKeyEncoder;
+        $scope.isLoaded = false;
+        $scope.isEmvLoaded = false;
+        $scope.isKeysLoaded = false;
         $scope.fetchKeyEncoderList = function(){
             var onSuccess = function(data){
                     $scope.key_encoders = data.results;
-                    $scope.loadTable();//this loads up after key encoders so we can get the key encoder description first
+                    $scope.isKeysLoaded = true;
+                    if ($scope.isEmvLoaded){
+                        $scope.loadTable();//this loads up after key encoders so we can get the key encoder description first
+                    }
                     $scope.$emit('hideLoader');
             };
             var options = {
@@ -76,8 +89,25 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
             };
             $scope.callAPI(ADKeyEncoderSrv.fetchEncoders, options);
         };
+        $scope.fetchEmvList = function(){
+            var onSuccess = function(data){
+                    $scope.emv_terminals = data.results;
+                    $scope.isEmvLoaded = true;
+                    if ($scope.isKeysLoaded){
+                        $scope.loadTable();//this loads up after key encoders so we can get the key encoder description first
+                    }
+                    $scope.$emit('hideLoader');
+            };
+            var options = {
+                params:                 {},
+                successCallBack: 	    onSuccess,
+                failureCallBack:        $scope.failureCallBack
+            };
+            $scope.callAPI(ADEmvTerminalsSrv.fetchItemList, options);
+        };
         
             $scope.fetchKeyEncoderList();
+            $scope.fetchEmvList();
         
 	//To list device mappings
 	/*
@@ -90,10 +120,14 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 		$scope.isEditMode = true;
+        $scope.isDeviceIdReadOnly = "yes";
 		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){
 	 		$scope.mapping = data;
                         $scope.mapping.selectedKeyEncoder = data.key_encoder_id;
+                        $scope.mapping.selectedEmvTerminal = data.emv_terminal_id;
+                        $scope.mapping.is_out_of_order = data.is_out_of_order;
+                        $scope.mapping.out_of_order_msg = data.out_of_order_msg;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	$scope.mapping.id = id;
@@ -107,6 +141,7 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		$scope.mapping={};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
+        $scope.isDeviceIdReadOnly = "no";
 		$scope.addEditTitle = "ADD";
 		$scope.mapping = {};
 		$timeout(function() {
@@ -160,14 +195,22 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
             } else return true;
             
         };
+        $scope.updateInline = false;
         $scope.updateCurrentWorkstation = function(){
-            // To update data with new value
-             $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
-             $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
-             $scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.mapping.selectedKeyEncoder;
-             $scope.data[parseInt($scope.currentClickedElement)].key_encoder_id = $scope.mapping.selectedKeyEncoder;
-             $scope.data[parseInt($scope.currentClickedElement)].default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
-             $scope.data[parseInt($scope.currentClickedElement)].key_encoder_description = $scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder);
+            if (!$scope.updateInline){
+                // To update data with new value
+                $scope.data[parseInt($scope.currentClickedElement)].name = $scope.mapping.name;
+                $scope.data[parseInt($scope.currentClickedElement)].station_identifier = $scope.mapping.station_identifier;
+                $scope.data[parseInt($scope.currentClickedElement)].encoder_id = $scope.mapping.selectedKeyEncoder;
+                $scope.data[parseInt($scope.currentClickedElement)].key_encoder_id = $scope.mapping.selectedKeyEncoder;
+                $scope.data[parseInt($scope.currentClickedElement)].emv_terminal_id = $scope.mapping.selectedEmvTerminal;
+                $scope.data[parseInt($scope.currentClickedElement)].is_out_of_order = $scope.mapping.is_out_of_order;
+                $scope.data[parseInt($scope.currentClickedElement)].out_of_order_msg = $scope.mapping.out_of_order_msg;
+                $scope.data[parseInt($scope.currentClickedElement)].default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
+                $scope.data[parseInt($scope.currentClickedElement)].key_encoder_description = $scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder);
+                $scope.data[parseInt($scope.currentClickedElement)].emv_name = $scope.getEmvDescription($scope.mapping.selectedEmvTerminal);
+            }
+            $scope.updateInline = false;
         };
         $scope.addWorkstationRenderData = function(successData){
                 // // To add new data to scope
@@ -176,7 +219,10 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                         "encoder_id":$scope.mapping.selectedKeyEncoder,
                         "station_identifier": $scope.mapping.station_identifier,
                         "name": $scope.mapping.name,
+                        "out_of_order_msg": $scope.mapping.out_of_order_msg,
+                        "is_out_of_order": $scope.mapping.is_out_of_order,
                         "key_encoder_id":$scope.mapping.selectedKeyEncoder,
+                        "emv_terminal_id":$scope.mapping.selectedEmvTerminal,
                         "key_encoder_description":$scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder)
                 };
              $scope.data.push(pushData);
@@ -194,7 +240,17 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
             $scope.isEditMode = false;
             $scope.loadTable();
         };
-	$scope.saveMapping = function(){
+        
+        $scope.saveWorkstation = function(workstation){
+            //updates a workstation without opening details, used for quick toggle a workstation Out of Service, or back in service.
+            $scope.mapping = workstation;
+            $scope.updateInline = true;//currently only for OOS toggle
+            setTimeout(function(){
+                $scope.saveMapping(true);
+            },250);
+        };
+        
+	$scope.saveMapping = function(inline){
 		var data = {//not getting list of printers from the api at this point, 
                             //so we will have to rely on zest station or another UI to update the workstation with a default printer
 			"name": $scope.mapping.name,
@@ -202,6 +258,27 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
 		};
                 if (typeof $scope.mapping.selectedKeyEncoder !== typeof undefined){
                     data.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
+                }
+                if (typeof $scope.mapping.selectedEmvTerminal !== typeof undefined){
+                    data.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
+                }
+                if (inline){
+                    data.emv_terminal_id = $scope.mapping.emv_terminal_id;
+                    data.default_key_encoder_id = $scope.mapping.key_encoder_id;
+                }
+                //CICO-18808
+                if (typeof $scope.mapping.rover_device_id !== typeof undefined){
+                    data.rover_device_id = $scope.mapping.rover_device_id;
+                }
+
+                //CICO-10506 //zest station
+                if (!$scope.mapping.is_out_of_order){
+                    $scope.mapping.is_out_of_order = false;
+                }
+                data.is_out_of_order = $scope.mapping.is_out_of_order;
+                
+                if (typeof $scope.mapping.out_of_order_msg !== typeof true){
+                    data.out_of_order_msg = $scope.mapping.out_of_order_msg;
                 }
                 
                 
@@ -213,5 +290,6 @@ admin.controller('ADDeviceMappingsCtrl',['ngTableParams', '$scope', '$state', 'A
                     $scope.invokeApi(ADDeviceSrv.updateMapping, data , $scope.successSaveMapping);
 		}
 	};
+    
 }]);
 
