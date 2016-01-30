@@ -70,8 +70,9 @@ module.exports = function(gulp, $, options){
 
 	//LESS END
 	gulp.task('guestweb-v2-watch-partials', function(){
-		return gulp.watch(GUESTWEB_V2_PARTIALS, function(callback){
-			return runSequence('build-guestweb-v2-template-cache-dev', 'copy-guestweb-v2-base-html')
+		GUESTWEB_V2_PARTIALS = GUESTWEB_V2_PARTIALS.concat([GUESTWEB_V2_TEMPLATES_FILE]);
+		return gulp.watch(GUESTWEB_V2_PARTIALS, function(){
+			return runSequence('build-guestweb-v2-template-cache-dev', 'copy-guestweb-v2-base-html');
 		});
 	});
 
