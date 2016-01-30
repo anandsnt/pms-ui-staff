@@ -64,7 +64,7 @@ module.exports = function (gulp, $, options) {
 	});
 
 	gulp.task('guestweb-v2-watch-less-files', function(){
-		return gulp.watch([GUESTWEB_V2_LESS_FILE].concat(['stylesheets/**/*.*','guestweb_v2/css/*.less', 'type/**/**.*']), function(callback){
+		return gulp.watch([GUESTWEB_V2_LESS_FILE].concat(['stylesheets/**/*.*','guestweb_v2/css/**/*.less', 'type/**/**.*']), function(callback){
 			return runSequence('build-guestweb-v2-less-dev', 'copy-guestweb-v2-base-html')
 		});
 	});
