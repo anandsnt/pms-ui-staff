@@ -6,7 +6,7 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_V2_TEMPLATES_FILE    = 'guestweb_v2_templates.js',
 	    GUESTWEB_V2_TEMPLATE_ROOT     = options['GUESTWEB_V2_TEMPLATE_ROOT'],
 	    GUESTWEB_V2_HTML_FILE     	= options['GUESTWEB_V2_HTML_FILE'],
-	    GUESTWEB_V2_PARTIALS 			= ['guestweb_v2/**/partials/**/*.html'],
+	    GUESTWEB_V2_PARTIALS 			= ['partials/**/*.html'],
 	    runSequence 			= require('run-sequence'),
 	    GUESTWEB_V2_TEMPLTE_MANFEST_FILE 	= "guestweb_v2_template_manifest.json",
 	    onError = options.onError;
@@ -41,7 +41,7 @@ module.exports = function(gulp, $, options){
     			empty: true
 	  		}))
 	        .pipe($.templateCache(GUESTWEB_V2_TEMPLATES_FILE, {
-	            module: 'guestweb_v2',
+	            module: 'sntGuestWeb',
 	            root: URL_APPENDER + "/partials/"
 	        }))
 	        .pipe($.uglify({compress:true, output: {
@@ -58,10 +58,9 @@ module.exports = function(gulp, $, options){
 	});
 
 	gulp.task('guestweb-v2-template-cache-dev', function () {
-		console.log(DEST_ROOT_PATH + "0----"+GUESTWEB_V2_PARTIALS+"-----------"+GUESTWEB_V2_TEMPLATES_FILE)
 	  return gulp.src(GUESTWEB_V2_PARTIALS, {cwd:'guestweb_v2/'})
 	        .pipe($.templateCache(GUESTWEB_V2_TEMPLATES_FILE, {
-	            module: 'guestweb_v2',
+	            module: 'sntGuestWeb',
 	            root: URL_APPENDER + "/partials/"
 	        }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH));

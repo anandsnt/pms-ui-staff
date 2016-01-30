@@ -22,16 +22,17 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate', 'oc.lazyLoad']);
-sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope){
-	$state.go('guestwebRoot');
-	/*
-	 * function to handle exception when state is not found
-	 */
-	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-		event.preventDefault();
-		$state.go('noOptionAvailable'); 
-	});
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap', 'oc.lazyLoad']);
+sntGuestWeb.controller('rootController', ['$scope', function($scope){
+	$( ".loading-container" ).hide();
+	// $state.go('guestwebRoot');
+	// /*
+	//  * function to handle exception when state is not found
+	//  */
+	// $scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+	// 	event.preventDefault();
+	// 	$state.go('noOptionAvailable'); 
+	// });
 }]);
 sntGuestWeb.controller('homeController', ['$scope',
  function($scope) {
