@@ -83,36 +83,45 @@ module.exports = function (gulp, $, options) {
 	
 	gulp.task('guestweb-js-production', ['compile-guestweb-dashboard-js-production', 'guestweb-js-theme-generate-mapping-list-prod']);
 
-	//Be careful: PRODUCTION
-	gulp.task('create-statemapping-and-inject-guestweb-js-production', function(){
+	gulp.task('create-guestweb-theme-js-list', function(){
+		var fs = require('fs'), mkdirp = require('mkdirp'), edit = require('gulp-json-editor');
+		mkdirp(guestwebGenDir, function(err){
+			if(err) {return console.error('guestweb theme css mapping directory failed!! (' + err + ')');}
+			return fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
+		    	if(err) {
+		        	return console.error('guestweb theme js mapping file failed!! (' + err + ')');
+		    	}
+		   	});
+		});
+		// return gulp.src(guestwebGenDir)
+	 // 		  .pipe(edit(extendedMappings))
+		// 	  .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+	});
+
+	gulp.task('cache-invalidate-guestweb-js-production', ['create-guestweb-theme-js-list'], function(){
 	    var js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
 	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE],
-	        fs = require('fs'),
-			mkdirp = require('mkdirp'),
 			edit = require('gulp-json-editor');
-	    
-		mkdirp(guestwebGenDir, function (err) {
-		    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
-	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-			    if(err) {
-			        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
-			    }
-				//cache invalidating
-			    gulp.src(guestwebGenFile, {base: '.'})
-			    .pipe($.rev())
-		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
-		        .pipe($.rev.manifest())
-		        .pipe(edit(function(manifest){
-		        	gulp.src('../../public/assets/' + file_name)
-		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/js\/____generatedGuestWebJsThemeMappings.json/g , 
-		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
-		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
-		        	console.log('guestweb theme js mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
-		        	return {};
-		        }));
-			}); 
-		});
+		//cache invalidating
+	    return gulp.src(guestwebGenFile, {base: '.'})
+		    .pipe($.rev())
+	        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+	        .pipe($.rev.manifest())
+	        .pipe(edit(function(manifest){
+	        	gulp.src('../../public/assets/' + file_name)
+	        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/js\/____generatedGuestWebJsThemeMappings.json/g , 
+	        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+	        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+	        	console.log('guestweb theme js mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+	        	return {};
+	        }));
+	});
 
+	//Be careful: PRODUCTION
+	gulp.task('create-statemapping-and-inject-guestweb-js-production', ['cache-invalidate-guestweb-js-production'], function(){
+	    var js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
+	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE],
+			edit = require('gulp-json-editor');		
 	    return gulp.src(GUESTWEB_HTML_FILE)
 	        .pipe($.inject(gulp.src(DEST_ROOT_PATH + file_name, {read:false}), {
 	            transform: function(filepath, file, i, length) {
