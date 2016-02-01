@@ -1280,8 +1280,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             .then(function(){
                 $scope.$emit('hideLoader'); 
                 ngDialog.open({
-                    template: '/assets/partials/bill/rvBillingInformationPopup.html',
-                    controller: 'rvBillingInformationPopupCtrl',
+                    template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+                    controller: 'rvBillingInfoReservationMainCtrl',
                     className: '',
                     scope: $scope
                 });

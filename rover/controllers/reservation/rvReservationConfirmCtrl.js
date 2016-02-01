@@ -519,10 +519,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
             .then(function(){
             	$scope.$emit('hideLoader'); 
 			    ngDialog.open({
-			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-			        controller: 'rvBillingInformationPopupCtrl',
-			        className: 'ngdialog-theme-default',
-			        scope: $scope
+			        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+		        	controller: 'rvBillingInfoReservationMainCtrl',
+		        	className: '',
+		        	scope: $scope
 			    });
 			});
 		};
