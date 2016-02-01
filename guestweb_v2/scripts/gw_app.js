@@ -45,14 +45,15 @@ sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', functi
 sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','gwWebSrv',
  function($scope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,gwWebSrv) {
 
+ 	BaseCtrl.call(this, $scope);
  	//There will be a keyword for each screen which has to be mapped with screen id
  	// this is fetched and saved in service for future usage
  	gwWebSrv.setScreenList(screenMappings);
  	// This will save the available screen details set in hotel amdin
  	gwWebSrv.setCMSdata(screenDataFromCMS);
- 	
-	$scope.$emit('HIDE_LOADER');
 
+	$scope.$emit('HIDE_LOADER');
+	
 	//conditional page navigations
 	if(reservationAndhotelData.is_external_verification === "true"){
 		$state.go('externalCheckoutVerification'); //external checkout URL

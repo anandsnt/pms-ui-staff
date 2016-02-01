@@ -5,9 +5,17 @@
 */
 
 
-sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state',
- function($scope,$state) {
+sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state','gwWebSrv',
+ function($scope,$state,gwWebSrv) {
+ 
+ 	BaseCtrl.call(this, $scope);
+ 	
+ 	var init = function(){
+		var screenIdentifier = "EXTERNAL_CHECKOUT";
+		$scope.screenCMSDetails =  gwWebSrv.extractScreenDetails(screenIdentifier);
+	}();
 
+	
 	// Calendar toggle actions and date select action
 	$scope.showCalender = function(){
 		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
@@ -30,21 +38,3 @@ sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state',
 	};
 
 }]);
-
-// sntGuestWeb.controller('verificationErrorController', ['$scope', function($scope) {
-
-// 	$scope.doneClicked = function(){
-
-// 	};
-
-// }]);
-
-// // controller for the modal
-
-//   var verificationModalCtrl = function ($scope, $modalInstance,$state) {
-
-//     $scope.closeDialog = function () {
-//       $modalInstance.dismiss('cancel');
-//     };
-
-//   };

@@ -46,3 +46,22 @@ var loseFocus = function() {
       inputs[i].blur();
     }
 };
+
+
+var extractScreenDetails =  function(identifier,screen_mappings,cms_data){
+  var screen_id = "";
+  var screen_details = {};
+  for(i=0; i< screen_mappings.length; i++){
+    if(identifier === screen_mappings[i].value){
+      screen_id = screen_mappings[i].id
+    }
+  };
+  for(i=0; i< cms_data.length; i++){
+    if(screen_id === cms_data[i].screen_id){
+      screen_details = cms_data[i];
+    }
+  };
+
+  return screen_details;
+
+};

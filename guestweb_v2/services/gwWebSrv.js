@@ -69,5 +69,9 @@
 			that.cMSdata = data;
 		};
 
+		this.extractScreenDetails = function(screen_identifier){
+			return  extractScreenDetails(screen_identifier,that.screenList,that.cMSdata);	
+		};
+
 	}
 	]);
