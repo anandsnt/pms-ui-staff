@@ -103,7 +103,7 @@ module.exports = function (gulp, $, options) {
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
 		        .pipe($.rev.manifest())
 		        .pipe(edit(function(manifest){
-		        	gulp.src('../../public' + file_name)
+		        	gulp.src('../../public/assets/' + file_name)
 		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/js\/____generatedGuestWebJsThemeMappings.json/g , 
 		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
 		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });

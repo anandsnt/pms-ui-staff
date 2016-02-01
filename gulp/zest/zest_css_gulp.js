@@ -27,7 +27,6 @@ module.exports = function(gulp, $, options) {
 			edit = require('gulp-json-editor'),
 			js_manifest_json = require(MANIFEST_DIR + ZEST_JS_MANIFEST_FILE),
 	        file_name = js_manifest_json[ZEST_JS_COMBINED_FILE];
-		
 		mkdirp(zestStationGenDir, function (err) {
 		    if (err) console.error('zeststation theme css mapping directory failed!! (' + err + ')');
 	    	fs.writeFile(zeststationGenFile, JSON.stringify(extendedMappings), function(err) {
@@ -40,8 +39,8 @@ module.exports = function(gulp, $, options) {
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
 		        .pipe($.rev.manifest())
 		        .pipe(edit(function(manifest){
-		        	gulp.src('../../public' + file_name)
-		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedZestStation\/css\/____generatedZestStationCSSThemeMappings.json/g , 
+		        	gulp.src('../../public/assets/' + file_name)
+		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedZestStation\/css\/____generatedZestStationCSSThemeMappings.json/g, 
 		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
 		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		        	console.log('zeststation theme css mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
