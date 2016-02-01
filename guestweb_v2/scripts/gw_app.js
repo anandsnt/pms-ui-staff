@@ -41,8 +41,8 @@ sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', functi
 
 }]);
 
-sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','gwWebSrv',
- function($scope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,gwWebSrv) {
+sntGuestWeb.controller('homeController', ['$scope','$rootScope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','gwWebSrv',
+ function($scope,$rootScope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,gwWebSrv) {
 
  	BaseCtrl.call(this, $scope);
  	//There will be a keyword for each screen which has to be mapped with screen id
@@ -50,7 +50,10 @@ sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotel
  	gwWebSrv.setScreenList(screenMappings);
  	// This will save the available screen details set in hotel amdin
  	gwWebSrv.setCMSdata(screenDataFromCMS);
-
+    gwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+    //set static items
+    $rootScope.hotelLogo      = reservationAndhotelData.hotel_logo;
+    $rootScope.currencySymbol = reservationAndhotelData.currency_symbol;
 	$scope.$emit('hideLoader');
 
 	//conditional page navigations
