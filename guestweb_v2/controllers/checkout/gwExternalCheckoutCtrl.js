@@ -7,7 +7,7 @@
 
 sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state','gwCheckoutSrv','gwWebSrv','$timeout',
  function($scope,$state,gwCheckoutSrv,gwWebSrv,$timeout) {
-	 	 //TODO : remove unwanted injections like $timeout
+	 	  //TODO : remove unwanted injections like $timeout
 	 	BaseCtrl.call(this, $scope);
 	 	
 	 	var init = function(){
