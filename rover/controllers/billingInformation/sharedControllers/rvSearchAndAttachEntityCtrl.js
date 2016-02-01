@@ -338,6 +338,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 			    "attached_charge_codes"   : [],
 			    "attached_billing_groups" : [],
                 "is_new"                  : true,
+                "is_allow_direct_debit"   : data.is_allow_direct_debit,
                 "selected_payment"        : "",
                 "credit_card_details"     : {}
 			};
@@ -433,6 +434,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                 "guest_image" : $scope.attachedEntities.company_card.logo
             }];
             $scope.selectedEntity.entity_type = "COMPANY_CARD";
+            $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
         }
         else if (type === 'TRAVEL_AGENT') {
             $scope.selectedEntity.id   = $scope.attachedEntities.travel_agent.id;
@@ -443,6 +445,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                 "guest_image": $scope.attachedEntities.travel_agent.logo
             }];
             $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
+            $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;
         }
         else if (type ==='GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {

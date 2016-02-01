@@ -14,7 +14,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.paymentFlags         = {
             showPayment              : false,
             isAddPayment             : false,
-            showCreditCardDropDown   : false,
+            showPaymentDropDown      : false,
             isShownExistingCCPayment : false,
             sixIsManual              : false
         };
@@ -45,7 +45,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             $scope.renderAddedPayment.creditCardType = entity.credit_card_details.card_code;
 
             $scope.paymentFlags.showPayment              = true;
-            $scope.paymentFlags.showCreditCardDropDown   = false;
+            $scope.paymentFlags.showPaymentDropDown      = false;
             $scope.paymentFlags.isShownExistingCCPayment = true;
 
             setTimeout(function(){
@@ -270,7 +270,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         };
 
         $scope.paymentFlags.isAddPayment             = true;
-        $scope.paymentFlags.showCreditCardDropDown   = true;
+        $scope.paymentFlags.showPaymentDropDown      = true;
         $scope.paymentFlags.isShownExistingCCPayment = false;
 
         $scope.$broadcast('showaddpayment');
@@ -283,7 +283,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
 
         setTimeout(function() {
             $scope.saveData.payment_type  = "CC";
-            $scope.paymentFlags.showCreditCardDropDown = true;
+            $scope.paymentFlags.showPaymentDropDown = true;
             $scope.swippedCard            = true;
             $scope.$broadcast('RENDER_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
             $scope.$digest();
@@ -589,12 +589,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.saveSuccessCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
             if (data.has_crossed_credit_limit) {
-                ngDialog.open({
-                    template        : '/assets/partials/billingInformation/sharedPartials//rvBillingInfoCreditLimitExceededPopup.html',
-                    className       : '',
-                    closeByDocument : false,
-                    scope           : $scope
-                });
+                showCreditLimitExceededPopup();
             }
             else {
                 $scope.$parent.$emit('BILLINGINFOADDED');
@@ -605,9 +600,14 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
             }
         };
 
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage',errorMessage);
+        };
+
         //CICO-12797 workaround to meet the API expected params
-        var params =  angular.copy($scope.selectedEntity);
-        $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback);
+        var params = angular.copy($scope.selectedEntity);
+        $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback, errorCallback);
     };
 
     /**
@@ -690,12 +690,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
         $scope.saveSuccessCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
             if (data.has_crossed_credit_limit) {
-                ngDialog.open({
-                    template        : '/assets/partials/billingInformation/sharedPartials//rvBillingInfoCreditLimitExceededPopup.html',
-                    className       : '',
-                    closeByDocument : false,
-                    scope           : $scope
-                });
+                showCreditLimitExceededPopup();
             }
             else {
                 $scope.setReloadOption(true);
@@ -792,6 +787,19 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     };
 
     /**
+     * Function to open credit limit exceeded popup
+     * @return {undefined}
+     */
+    var showCreditLimitExceededPopup = function() {
+       ngDialog.open({
+            template: '/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitExceededPopup.html',
+            className: '',
+            closeByDocument: false,
+            scope: $scope
+        });
+    };
+
+    /**
      * Function to get selected bill number
      * @return {Number} selected bill no.
      */
@@ -850,7 +858,7 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
      * @return {Boolean}
      */
     $scope.showSelectPaymentTypeDropDown = function() {
-        return ($scope.paymentFlags.isAddPayment && $scope.paymentFlags.showCreditCardDropDown &&
+        return ($scope.paymentFlags.isAddPayment && $scope.paymentFlags.showPaymentDropDown &&
                 $scope.paymentFlags.showPayment);
     };
 
