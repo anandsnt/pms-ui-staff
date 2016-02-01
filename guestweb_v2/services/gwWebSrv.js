@@ -4,6 +4,7 @@
 
 		this.screenList = [];
 		this.cMSdata    = [];
+		this.reservationAndHotelData = {};
 		var that = this;
 
 		this.fetchHotelDetailsFromUrl = function(url) {
@@ -71,6 +72,9 @@
 
 		this.extractScreenDetails = function(screen_identifier){
 			return  extractScreenDetails(screen_identifier,that.screenList,that.cMSdata);	
+		};
+		this.setReservationAndHotelData = function(data){
+
 		};
 
 	}
