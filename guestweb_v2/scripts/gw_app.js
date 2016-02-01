@@ -10,18 +10,12 @@ You can see all the available options for a hotel in the router file for the cor
 If because of some settings, if user tries to go to a state not listed in the app router (eg:app_router_yotel.js)
 for the hotel ,the user will be redirected to no options page.
 
-The initial condtions to determine the status of reseravations are extracted from the embedded data in the HTML.
-
-
-Initially we had a set of HTMLs for every single hotel.
-
-Now we are trying to minimize the difference to use the same templates as much possible.
-
-The new set of HTMLs can be found under the folder common_templates. inside that we have generic templates
-and some folder dedicated to MGM, which has some text changes specifically asked by client.
+The initial condtions to determine the status of reseravations are extracted from the URL(calling API based on params in URL).
 
 */
+
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
+
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad']);
 sntGuestWeb.controller('rootController', ['$scope','$state', function($scope,$state){
 	
@@ -29,16 +23,15 @@ sntGuestWeb.controller('rootController', ['$scope','$state', function($scope,$st
     $state.go('guestwebRoot');
     $scope.$on('SHOW_LOADER',function(){$scope.loading = true;});
     $scope.$on('HIDE_LOADER',function(){$scope.loading = false;});
-	
-	
- /*
- * function to handle exception when state is not found
- */
+
+    //function to handle exception when state is not found
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 		event.preventDefault();
 		$state.go('noOptionAvailable'); 
 	});
+
 }]);
+
 sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotelData',
  function($scope,$state,reservationAndhotelData) {
 	$scope.$emit('HIDE_LOADER');
@@ -46,7 +39,7 @@ sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotel
 
 	//conditional page navigations
 	if(reservationAndhotelData.is_external_verification === "true"){
-		$state.go('externalVerification'); //external checkout URL
+		$state.go('externalCheckoutVerification'); //external checkout URL
 	}
 }]);
 

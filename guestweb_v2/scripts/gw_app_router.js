@@ -1,16 +1,21 @@
 
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
-    // $urlRouterProvider.otherwise("/externalVerification");
+    $urlRouterProvider.otherwise("/noOptionAvailable");
 
    
 
     // External checkout verification
-    $stateProvider.state('externalVerification', {
-	 	url: '/externalVerification',
+    $stateProvider.state('externalCheckoutVerification', {
+	 	url: '/externalCheckoutVerification',
 	 	templateUrl: '/assets/partials/checkout/gwExternal.html',
 	 	controller : 'gwExternalCheckoutVerificationCtrl',
 	 	title: 'External Checkout verification'
+	});
+    $stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
+	 	templateUrl: '/assets/partials/gwNoOption.html',
+	 	title: 'Feature not available'
 	});
 
 
