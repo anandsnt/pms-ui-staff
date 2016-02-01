@@ -19,7 +19,8 @@ module.exports = function(gulp, $, options) {
 	gulp.task('create-statemapping-and-inject-rover-js-production', function(){
 	    var file_name = extendedMappings['rover.dashboard'][0],
 	    	mkdirp = require('mkdirp'),
-			fs = require('fs');
+			fs = require('fs'),
+			edit = require('gulp-json-editor');
 		
 		mkdirp(roverGenDir, function (err) {
 		    if (err) console.error('rover JS mapping directory failed!! (' + err + ')');
@@ -27,7 +28,21 @@ module.exports = function(gulp, $, options) {
 			    if(err) {
 			        return console.error('rover JS  mapping file failed!! (' + err + ')');
 			    }
-			    console.log('rover JS mapping file created (' + roverGenFile + ')');
+			    //cache invalidating
+			    gulp.src(roverGenFile, {base: '.'})
+			    .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	gulp.src('../../public' + extendedMappings['rover.dashboard'][0])
+		        	.pipe($.replace(/\/assets\/asset_list\/____generatedStateJsMappings\/____generatedrover\/____generatedroverStateJsMappings.json/g , 
+		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+
+		        	console.log('rover JS  mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+		        	return {};
+		        }));
+			    
 			}); 
 		});
 

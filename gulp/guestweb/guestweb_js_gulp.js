@@ -16,7 +16,6 @@ module.exports = function (gulp, $, options) {
 		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestweb/guestwebAssetList").getList(),
 		guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/js/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebJsThemeMappings.json';
-	
 	//JS - Start
 	gulp.task('compile-guestweb-dashboard-js-production', function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
@@ -89,7 +88,8 @@ module.exports = function (gulp, $, options) {
 	    var js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
 	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE],
 	        fs = require('fs'),
-			mkdirp = require('mkdirp');
+			mkdirp = require('mkdirp'),
+			edit = require('gulp-json-editor');
 	    
 		mkdirp(guestwebGenDir, function (err) {
 		    if (err) console.error('guestweb theme js mapping directory failed!! (' + err + ')');
@@ -97,7 +97,19 @@ module.exports = function (gulp, $, options) {
 			    if(err) {
 			        return console.error('guestweb theme js mapping file failed!! (' + err + ')');
 			    }
-			    console.log('guestweb theme js mapping file created (' + guestwebGenFile + ')');
+				//cache invalidating
+			    gulp.src(guestwebGenFile, {base: '.'})
+			    .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	gulp.src('../../public' + file_name)
+		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/js\/____generatedGuestWebJsThemeMappings.json/g , 
+		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		        	console.log('guestweb theme js mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+		        	return {};
+		        }));
 			}); 
 		});
 

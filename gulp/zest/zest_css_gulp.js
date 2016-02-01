@@ -7,6 +7,8 @@ module.exports = function(gulp, $, options) {
 	    ZEST_TEMPLATE_ROOT     	= '../views/zest_station/home/',
 	    ZEST_HTML_FILE     		= ZEST_TEMPLATE_ROOT + 'index.html',
 	    ZEST_CSS_MANIFEST_FILE 	= "zest_css_manifest.json",
+	    ZEST_JS_COMBINED_FILE  	= 'zest.js',
+	    ZEST_JS_MANIFEST_FILE  	= "zest_js_manifest.json",
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
 	    LESS_SOURCE_FILE 		= 'stylesheets/zest_station.css',
     	cleancss 				= new LessPluginCleanCSS({ advanced: true }),
@@ -20,6 +22,36 @@ module.exports = function(gulp, $, options) {
 		zeststationGenFile 		= zestStationGenDir + generated + 'ZestStationCSSThemeMappings.json';
 
 	gulp.task('create-zest-theme-mapping-css-production', function(){
+	    var mkdirp = require('mkdirp'),
+			fs = require('fs'),
+			edit = require('gulp-json-editor'),
+			js_manifest_json = require(MANIFEST_DIR + ZEST_JS_MANIFEST_FILE),
+	        file_name = js_manifest_json[ZEST_JS_COMBINED_FILE];
+		
+		mkdirp(zestStationGenDir, function (err) {
+		    if (err) console.error('zeststation theme css mapping directory failed!! (' + err + ')');
+	    	fs.writeFile(zeststationGenFile, JSON.stringify(extendedMappings), function(err) {
+			    if(err) {
+			        return console.error('zeststation theme css mapping file failed!! (' + err + ')');
+			    }
+				//cache invalidating
+			    gulp.src(zeststationGenFile, {base: '.'})
+			    .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	gulp.src('../../public' + file_name)
+		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedZestStation\/css\/____generatedZestStationCSSThemeMappings.json/g , 
+		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		        	console.log('zeststation theme css mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+		        	return {};
+		        }));
+			}); 
+		});
+	});
+
+	gulp.task('create-zest-theme-mapping-css-develop', function(){
 	    var mkdirp = require('mkdirp'),
 			fs = require('fs');
 		
@@ -66,9 +98,7 @@ module.exports = function(gulp, $, options) {
 		        	return {};
 		        }));
 		});
-		return es.merge(tasks).on('end', function(){
-			runSequence('create-zest-theme-mapping-css-production');
-		});
+		return es.merge(tasks);
 	});
 
 	gulp.task('zeststation-copy-css-files-prod', function(){
@@ -105,7 +135,7 @@ module.exports = function(gulp, $, options) {
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});
 		return es.merge(tasks).on('end', function(){
-			runSequence('create-zest-theme-mapping-css-production');
+			runSequence('create-zest-theme-mapping-css-develop');
 		});
 	});
 

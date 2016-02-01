@@ -7,6 +7,8 @@ module.exports = function (gulp, $, options) {
 	    GUESTWEB_CSS_MANIFEST_FILE = "login_css_manifest.json",
 		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
 	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
+	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
+		GUESTWEB_JS_MANIFEST_FILE  = "guestweb_js_manifest.json",
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
     	cleancss 				= new LessPluginCleanCSS({advanced: true }),
     	nano 					= require('gulp-cssnano'),
@@ -23,7 +25,10 @@ module.exports = function (gulp, $, options) {
 
 	gulp.task('create-theme-mapping-css-production', function(){
 	    var mkdirp = require('mkdirp'),
-			fs = require('fs');
+			fs = require('fs'),
+			edit = require('gulp-json-editor'),
+			js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
+	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE];
 		
 		mkdirp(guestwebGenDir, function (err) {
 		    if (err) console.error('guestweb theme css mapping directory failed!! (' + err + ')');
@@ -31,7 +36,19 @@ module.exports = function (gulp, $, options) {
 			    if(err) {
 			        return console.error('guestweb theme css mapping file failed!! (' + err + ')');
 			    }
-			    console.log('guestweb theme css mapping file created (' + guestwebGenFile + ')');
+				//cache invalidating
+			    gulp.src(guestwebGenFile, {base: '.'})
+			    .pipe($.rev())
+		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+		        .pipe($.rev.manifest())
+		        .pipe(edit(function(manifest){
+		        	gulp.src('../../public' + file_name)
+		        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/css\/____generatedGuestWebCSSThemeMappings.json/g , 
+		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		        	console.log('guestweb theme css mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+		        	return {};
+		        }));
 			}); 
 		});
 	});
