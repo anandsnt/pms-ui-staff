@@ -24,7 +24,7 @@ sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', functi
     $scope.$on('SHOW_LOADER',function(){$scope.loading = true;});
     $scope.$on('HIDE_LOADER',function(){$scope.loading = false;});
 
-    //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+    //in order to prevent url change or fresh url entering with states
     var routeChange = function(event, newURL) {
       event.preventDefault();
       return;
