@@ -13,12 +13,14 @@ module.exports = {
 				jsLibRoot + 'bootstrap.min.js',
 				jsLibRoot + 'ui-bootstrap-tpls-0.10.0.js',
 				jsLibRoot + 'oclazyload/ocLazyLoad.min.js'
+				// guestwebroot + 'scripts/angular-pickdate.js'
 			],
 			nonMinifiedFiles: [
 				guestwebroot + 'scripts/util.js',
 				guestwebroot + 'scripts/app.js',
 				guestwebroot + 'scripts/app_config.js',
-				guestwebroot + 'scripts/app_router.js'
+				guestwebroot + 'scripts/app_router.js',
+				guestwebroot + 'scripts/angular-pickdate.js'
 			]	
 		};
 		return guestwebJSassets;

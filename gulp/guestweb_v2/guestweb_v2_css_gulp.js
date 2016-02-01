@@ -59,7 +59,7 @@ module.exports = function (gulp, $, options) {
 	});
 
 	gulp.task('guestweb-v2-copy-less-files', function(){
-		return gulp.src(['stylesheets/**/*.*', 'guestweb_v2/css/*.less', 'type/**/**.*'], {base: '.'})
+		return gulp.src(['stylesheets/**/*.*', 'guestweb_v2/css/*.less', 'type/**/**.*','guestweb_v2/images/**/*.*'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
