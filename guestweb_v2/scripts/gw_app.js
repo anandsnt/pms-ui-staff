@@ -17,12 +17,22 @@ The initial condtions to determine the status of reseravations are extracted fro
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad']);
-sntGuestWeb.controller('rootController', ['$scope','$state', function($scope,$state){
+sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', function($scope,$rootScope,$state){
 	
 	$scope.loading = true;
     $state.go('guestwebRoot');
     $scope.$on('SHOW_LOADER',function(){$scope.loading = true;});
     $scope.$on('HIDE_LOADER',function(){$scope.loading = false;});
+
+    //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+    var routeChange = function(event, newURL) {
+      event.preventDefault();
+      return;
+    };
+
+    $rootScope.$on('$locationChangeStart', routeChange);
+    //we are forcefully setting top url, please refer routerFile
+    window.history.pushState("initial", "Showing Landing Page", "#/guestwebRoot");
 
     //function to handle exception when state is not found
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
