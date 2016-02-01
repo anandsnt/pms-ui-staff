@@ -10,9 +10,6 @@ module.exports = {
                 ],
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
-                    
-                    sharedJs + 'fullcalender/**/*.js', // FOR ROOM & RATES CALENDAR
-                    
                     controllerRoot + "rvGuestController.js",
                     controllerRoot + "rvContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
@@ -59,9 +56,7 @@ module.exports = {
                     servicesRoot + "rvSaveWakeupTimeSrv.js",
                     servicesRoot + "rvNewspaperPreferenceSrv.js",
                     servicesRoot + "rvLoyaltyProgramSrv.js",
-                    servicesRoot + "bill/rvBillCardSrv.js",
-                    
-                   'rover/directives/autocomplete/rvAutoCompleteDirective.js'
+                    servicesRoot + "bill/rvBillCardSrv.js"
                 ]
             };
 	}

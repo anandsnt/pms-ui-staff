@@ -22,13 +22,17 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
   /**
   	 * [fetchAssetList description]
-  	 * @param  {[type]} key               [description]
+  	 * @param  {array} keys               [description]
   	 * @param  {[type]} modules_to_inject [description]
   	 * @return {[type]}                   [description]
   	 */
-  this.fetchAssets = function(key, modules_to_inject) {
+  this.fetchAssets = function(keys, modules_to_inject) {
+    var promises = [], length = keys.length, i = 0;
     if (!!mappingList) {
-      return $ocLazyLoad.load({ serie: true, files: mappingList[key] }).then(function() {
+      for(; i < length; i++) {
+        promises.push( $ocLazyLoad.load({ serie: true, files: mappingList[keys[i]] }) );
+      }      
+      return $q.all(promises).then(function() {
         if (typeof modules_to_inject !== "undefined") {
          $ocLazyLoad.inject(modules_to_inject);
         }

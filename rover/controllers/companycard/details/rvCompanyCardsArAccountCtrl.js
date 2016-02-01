@@ -62,7 +62,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			// if automatic mode is on,call save action to generate a random number
 			if ($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 				updateArAccount();
-			};
+			}
+			else if($scope.arAccountDetails.ar_number === ""){
+				$scope.errorMessage = ["Please Enter AR Number"];
+			}
 		});
 
 		// to set data to be compared from time to time

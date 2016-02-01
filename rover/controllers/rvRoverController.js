@@ -272,7 +272,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('staffpasswordchange')
+        jsMappings.fetchAssets(['staffpasswordchange'])
         .then(function(){
             $scope.$emit('hideLoader');
             ngDialog.open({
@@ -402,7 +402,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('endofday')
+        jsMappings.fetchAssets(['endofday'])
         .then(function(){
             $scope.$emit('hideLoader');
             ngDialog.open({
@@ -417,7 +417,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        $q.all([jsMappings.fetchAssets('postcharge'), jsMappings.fetchAssets('directives')])
+        jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function(){
             $scope.isOutsidePostCharge = true;
             $scope.$emit('hideLoader');
