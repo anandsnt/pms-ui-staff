@@ -16,10 +16,11 @@ module.exports = {
 				// guestwebroot + 'scripts/angular-pickdate.js'
 			],
 			nonMinifiedFiles: [
-				guestwebroot + 'scripts/util.js',
-				guestwebroot + 'scripts/app.js',
-				guestwebroot + 'scripts/app_config.js',
-				guestwebroot + 'scripts/app_router.js',
+				guestwebroot + 'scripts/gw_util.js',
+				guestwebroot + 'scripts/gw_app.js',
+				guestwebroot + 'scripts/gw_app_config.js',
+				guestwebroot + 'scripts/gw_main_app_router.js',
+				guestwebroot + 'scripts/gw_app_router.js',
 				guestwebroot + 'scripts/angular-pickdate.js',
 				guestwebroot + 'services/*.js',
 				guestwebroot + 'controllers/**/*.js'
