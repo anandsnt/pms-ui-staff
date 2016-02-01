@@ -42,10 +42,16 @@ sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', functi
 
 }]);
 
-sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotelData',
- function($scope,$state,reservationAndhotelData) {
+sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','gwWebSrv',
+ function($scope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,gwWebSrv) {
+
+ 	//There will be a keyword for each screen which has to be mapped with screen id
+ 	// this is fetched and saved in service for future usage
+ 	gwWebSrv.setScreenList(screenMappings);
+ 	// This will save the available screen details set in hotel amdin
+ 	gwWebSrv.setCMSdata(screenDataFromCMS);
+ 	
 	$scope.$emit('HIDE_LOADER');
-	//call Utils functions to save details in a service
 
 	//conditional page navigations
 	if(reservationAndhotelData.is_external_verification === "true"){
