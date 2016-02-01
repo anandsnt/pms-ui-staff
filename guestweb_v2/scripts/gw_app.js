@@ -19,10 +19,9 @@ var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad']);
 sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', function($scope,$rootScope,$state){
 	
-	$scope.loading = true;
+    BaseCtrl.call(this, $scope);
+	$scope.$emit('showLoader');
     $state.go('guestwebRoot');
-    $scope.$on('showLoader',function(){$scope.loading = true;});
-    $scope.$on('hideLoader',function(){$scope.loading = false;});
 
     //in order to prevent url change or fresh url entering with states
     var routeChange = function(event, newURL) {

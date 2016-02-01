@@ -17,6 +17,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/partials/gwNoOption.html',
 	 	title: 'Feature not available'
 	});
+	$stateProvider.state('checkOutOptions', {
+ 		url: '/checkOutOptions',
+		templateUrl: '/assets/partials/checkout/gwCheckoutoptions.html',
+		controller: 'checkOutOptionsController',
+		title: 'Check-out options'
+	})
 
 
  //    //room and cc verification 

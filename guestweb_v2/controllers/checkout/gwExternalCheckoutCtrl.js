@@ -5,36 +5,41 @@
 */
 
 
-sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state','gwWebSrv',
- function($scope,$state,gwWebSrv) {
- 
- 	BaseCtrl.call(this, $scope);
- 	
- 	var init = function(){
-		var screenIdentifier = "EXTERNAL_CHECKOUT";
-		$scope.screenCMSDetails =  gwWebSrv.extractScreenDetails(screenIdentifier);
-	}();
+sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state','gwCheckoutSrv','gwWebSrv','$timeout',
+ function($scope,$state,gwCheckoutSrv,gwWebSrv,$timeout) {
+	 	 //TODO : remove unwanted injections like $timeout
+	 	BaseCtrl.call(this, $scope);
+	 	
+	 	var init = function(){
+			var screenIdentifier = "EXTERNAL_CHECKOUT";
+			$scope.screenCMSDetails =  gwWebSrv.extractScreenDetails(screenIdentifier);
+		}();
 
-	
-	// Calendar toggle actions and date select action
-	$scope.showCalender = function(){
-		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
-		$scope.calendarView = true;
-	};
-	$scope.closeCalender = function(){
-		$scope.calendarView = false;
-	};
-	$scope.dateChoosen = function(){
-		$scope.stayDetails.arrival_date = ($filter('date')($scope.date, $rootScope.dateFormat));
-		dateToSend = dclone($scope.date,[]);
-		dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
-		$scope.closeCalender();
-	};
+		
+		// Calendar toggle actions and date select action
+		$scope.showCalender = function(){
+			loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
+			$scope.calendarView = true;
+		};
+		$scope.closeCalender = function(){
+			$scope.calendarView = false;
+		};
+		$scope.dateChoosen = function(){
+			$scope.stayDetails.arrival_date = ($filter('date')($scope.date, $rootScope.dateFormat));
+			dateToSend = dclone($scope.date,[]);
+			dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
+			$scope.closeCalender();
+		};
 
-	// On submitting we will be checking if the details eneterd matches any reservations
-	// If matches will return the reservation details and we save it for future usage
-	$scope.submit = function(){
-
-	};
+		// On submitting we will be checking if the details eneterd matches any reservations
+		// If matches will return the reservation details and we save it for future usage
+		$scope.submit = function(){
+			// $scope.invokeApi(gwCheckoutSrv.verifyCheckoutUser, params, setReservartionDetails);
+			$scope.$emit('showLoader');
+			$timeout(function() {
+       			 $scope.$emit('hideLoader');
+       			 $state.go('checkOutOptions');
+   			}, 1500);
+		};
 
 }]);

@@ -2,6 +2,10 @@
 
 function BaseCtrl ($scope) {
 
+
+    $scope.$on('showLoader',function(){$scope.loading = true;});
+    $scope.$on('hideLoader',function(){$scope.loading = false;});
+    
 	$scope.fetchedCompleted = function(data){
 		$scope.$emit('hideLoader');
 	};
@@ -12,7 +16,6 @@ function BaseCtrl ($scope) {
 
 	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType){
 		//loaderType options are "BLOCKER", "NONE"
-
 		if(typeof loaderType === 'undefined') {
 			loaderType = 'BLOCKER';
 		}
