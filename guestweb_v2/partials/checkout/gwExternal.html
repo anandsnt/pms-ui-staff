@@ -28,7 +28,10 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6 top-spacing sm-no-top-spacing">
-             <p class="main-text">Ready to Check-out?</p>
+             <p class="main-text" ng-if="!screenCMSDetails.title">Ready to Check-out?</p>
+             <p class="main-text" ng-if="screenCMSDetails.title" ng-bind="screenCMSDetails.title"></p>
+             <p class="sub-main-text" ng-if="!screenCMSDetails.description">checkout time is 10:00 PM.</p>
+             <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind="screenCMSDetails.description"></p>
              <!--  -->
             <div class="section-container">
                 <!-- room number -->
