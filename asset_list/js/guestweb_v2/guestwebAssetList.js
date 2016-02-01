@@ -20,7 +20,9 @@ module.exports = {
 				guestwebroot + 'scripts/app.js',
 				guestwebroot + 'scripts/app_config.js',
 				guestwebroot + 'scripts/app_router.js',
-				guestwebroot + 'scripts/angular-pickdate.js'
+				guestwebroot + 'scripts/angular-pickdate.js',
+				guestwebroot + 'services/*.js',
+				guestwebroot + 'controllers/**/*.js'
 			]	
 		};
 		return guestwebJSassets;

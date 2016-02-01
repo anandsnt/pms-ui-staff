@@ -23,20 +23,31 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad']);
-sntGuestWeb.controller('rootController', ['$scope', function($scope){
-	$( ".loading-container" ).hide();
-	// $state.go('guestwebRoot');
-	// /*
-	//  * function to handle exception when state is not found
-	//  */
-	// $scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-	// 	event.preventDefault();
-	// 	$state.go('noOptionAvailable'); 
-	// });
-}]);
-sntGuestWeb.controller('homeController', ['$scope',
- function($scope) {
+sntGuestWeb.controller('rootController', ['$scope','$state', function($scope,$state){
 	
+	$scope.loading = true;
+    $state.go('guestwebRoot');
+    $scope.$on('SHOW_LOADER',function(){$scope.loading = true;});
+    $scope.$on('HIDE_LOADER',function(){$scope.loading = false;});
+	
+	
+ /*
+ * function to handle exception when state is not found
+ */
+	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+		event.preventDefault();
+		$state.go('noOptionAvailable'); 
+	});
+}]);
+sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotelData',
+ function($scope,$state,reservationAndhotelData) {
+	$scope.$emit('HIDE_LOADER');
+	//call Utils functions to save details in a service
+
+	//conditional page navigations
+	if(reservationAndhotelData.is_external_verification === "true"){
+		$state.go('externalVerification'); //external checkout URL
+	}
 }]);
 
 

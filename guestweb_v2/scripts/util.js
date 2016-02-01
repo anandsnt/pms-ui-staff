@@ -40,3 +40,9 @@ var getJqDateFormat = function(dateFormat) {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };
+var loseFocus = function() {
+    var inputs = document.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; ++i) {
+      inputs[i].blur();
+    }
+};
