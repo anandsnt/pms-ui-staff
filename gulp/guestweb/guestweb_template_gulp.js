@@ -21,18 +21,8 @@ module.exports = function(gulp, $, options){
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
 	gulp.task('create-guestweb-theme-template-list', function(){
-		var fs = require('fs'), mkdirp = require('mkdirp'), edit = require('gulp-json-editor');
-		mkdirp(guestwebGenDir, function(err){
-			if(err) {return console.error('guestweb theme template mapping directory failed!! (' + err + ')');}
-			return fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-		    	if(err) {
-		        	return console.error('guestweb theme template mapping file failed!! (' + err + ')');
-		    	}
-		   	});
-	   	});
-	 	// return gulp.src(guestwebGenDir)
-	 	// 	  .pipe(edit(extendedMappings))
-			//   .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		var fs = require('fs-extra');
+		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
 	});
 
 	gulp.task('create-theme-mapping-template-production', ['create-guestweb-theme-template-list'], function(){

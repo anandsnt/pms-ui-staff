@@ -25,19 +25,8 @@ module.exports = function (gulp, $, options) {
 
 
 	gulp.task('create-guestweb-theme-css-list', function(){
-		var fs = require('fs'), mkdirp = require('mkdirp'), edit = require('gulp-json-editor');
-		mkdirp(guestwebGenDir, function(err){
-			if(err) {return console.error('guestweb theme css mapping directory failed!! (' + err + ')');}
-			return fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-		    	if(err) {
-		        	return console.error('guestweb theme css mapping file failed!! (' + err + ')');
-		    	}
-		    	console.log('Guestweb CSS theme list completed ' + guestwebGenFile);
-	   		});
-	   	});
-	 // return gulp.src(guestwebGenFile, {base: '.'})
-	 // 		  .pipe(edit(extendedMappings))
-		// 	  .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		var fs = require('fs-extra');
+		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
 	});
 
 	gulp.task('create-theme-mapping-css-production', ['create-guestweb-theme-css-list'], function(){

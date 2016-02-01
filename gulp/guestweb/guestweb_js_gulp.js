@@ -84,18 +84,8 @@ module.exports = function (gulp, $, options) {
 	gulp.task('guestweb-js-production', ['compile-guestweb-dashboard-js-production', 'guestweb-js-theme-generate-mapping-list-prod']);
 
 	gulp.task('create-guestweb-theme-js-list', function(){
-		var fs = require('fs'), mkdirp = require('mkdirp'), edit = require('gulp-json-editor');
-		mkdirp(guestwebGenDir, function(err){
-			if(err) {return console.error('guestweb theme css mapping directory failed!! (' + err + ')');}
-			return fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-		    	if(err) {
-		        	return console.error('guestweb theme js mapping file failed!! (' + err + ')');
-		    	}
-		   	});
-		});
-		// return gulp.src(guestwebGenDir)
-	 // 		  .pipe(edit(extendedMappings))
-		// 	  .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+		var fs = require('fs-extra');
+		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
 	});
 
 	gulp.task('cache-invalidate-guestweb-js-production', ['create-guestweb-theme-js-list'], function(){

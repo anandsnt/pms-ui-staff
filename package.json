@@ -43,6 +43,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "fs-extra": "^0.26.5",
     "imagemin-optipng": "^4.3.0",
     "streamqueue": "^1.1.1"
   },
