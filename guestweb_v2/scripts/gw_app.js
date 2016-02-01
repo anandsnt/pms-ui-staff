@@ -21,8 +21,8 @@ sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', functi
 	
 	$scope.loading = true;
     $state.go('guestwebRoot');
-    $scope.$on('SHOW_LOADER',function(){$scope.loading = true;});
-    $scope.$on('HIDE_LOADER',function(){$scope.loading = false;});
+    $scope.$on('showLoader',function(){$scope.loading = true;});
+    $scope.$on('hideLoader',function(){$scope.loading = false;});
 
     //in order to prevent url change or fresh url entering with states
     var routeChange = function(event, newURL) {
@@ -52,8 +52,8 @@ sntGuestWeb.controller('homeController', ['$scope','$state','reservationAndhotel
  	// This will save the available screen details set in hotel amdin
  	gwWebSrv.setCMSdata(screenDataFromCMS);
 
-	$scope.$emit('HIDE_LOADER');
-	
+	$scope.$emit('hideLoader');
+
 	//conditional page navigations
 	if(reservationAndhotelData.is_external_verification === "true"){
 		$state.go('externalCheckoutVerification'); //external checkout URL
