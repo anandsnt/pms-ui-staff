@@ -1,7 +1,9 @@
 [
-{
-	"EXTERNAL_CHECKOUT": "123"
+{   
+	"value":"EXTERNAL_CHECKOUT"
+	"id": "123"
 }, {
-	"CHECKOUT_LANDING": "121"
+	"value":"CHECKOUT_LANDING",
+	"id": "121"
 }
 ]
