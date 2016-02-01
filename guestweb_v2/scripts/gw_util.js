@@ -51,17 +51,8 @@ var loseFocus = function() {
 var extractScreenDetails =  function(identifier,screen_mappings,cms_data){
   var screen_id = "";
   var screen_details = {};
-  for(i=0; i< screen_mappings.length; i++){
-    if(identifier === screen_mappings[i].value){
-      screen_id = screen_mappings[i].id
-    }
-  };
-  for(i=0; i< cms_data.length; i++){
-    if(screen_id === cms_data[i].screen_id){
-      screen_details = cms_data[i];
-    }
-  };
-
+  screen_id =  _.find(screen_mappings,function(mapping){ return mapping.value === identifier}).id;
+  screen_details = _.find(cms_data,function(cms_item){ return cms_item.screen_id === screen_id});
   return screen_details;
 
 };
