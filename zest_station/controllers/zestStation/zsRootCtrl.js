@@ -29,8 +29,8 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.goToAdmin = function() {
-		//disabling for now
-		$state.go ('zest_station.admin');
+            $state.go ('zest_station.admin');
+           // $state.go('zest_station.home-admin',{'isadmin':true});//for debugging quickly
 	};
 
 	/**
@@ -567,12 +567,6 @@ sntZestStation.controller('zsRootCtrl', [
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */
-                        $scope.screenwidth = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-                        if (typeof cordova !== typeof undefined){
-                            $scope.scrnPos = 5;
-                        } else {
-                            $scope.scrnPos = 3.2;
-                        }
                     ngDialog.open({
                             template: '/assets/partials/rvTabletIdlePopup.html',
                             scope: $scope,
