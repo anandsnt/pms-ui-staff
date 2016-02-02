@@ -78,13 +78,16 @@
                 
                 
                 
-                <tr class='admin-item v-middle' ng-if='ipad'>
+                <tr class='admin-item v-middle'>
                     <td>
                         <label class='admin-item-label'>Select Printer</label>
                     </td>
                     <td>
-                        <button type='button' class='button green admin-input' style='float:right;' touch-press='openPrinterMenu()'>
+                        <button ng-show='printerName===""' type='button' class='button green admin-input' style='float:right;' touch-press='openPrinterMenu()'>
                             Select
+                        </button>
+                        <button ng-show='printerName!==""' type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
+                            {{printerName}}
                         </button>
                     </td>
                 </tr>
