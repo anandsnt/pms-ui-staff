@@ -50,6 +50,7 @@ sntGuestWeb.controller('homeController', ['$scope','$rootScope','$state','reserv
  	gwWebSrv.setScreenList(screenMappings);
  	// This will save the available screen details set in hotel amdin
  	gwWebSrv.setCMSdata(screenDataFromCMS.screen_list);
+    //save the data for future usage
     gwWebSrv.setReservationAndHotelData(reservationAndhotelData);
     //overiride styles if styles are set in hotel admin
     overrideStylesWithCMSdata(screenDataFromCMS.style_list);
