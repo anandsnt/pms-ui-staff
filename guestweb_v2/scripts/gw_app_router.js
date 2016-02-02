@@ -10,19 +10,24 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	url: '/externalCheckoutVerification',
 	 	templateUrl: '/assets/partials/checkout/gwExternal.html',
 	 	controller : 'gwExternalCheckoutVerificationCtrl',
-	 	title: 'External Checkout verification'
+	 	data : { pageTitle: 'External Checkout verification' }
+
 	});
     $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
 	 	templateUrl: '/assets/partials/gwNoOption.html',
-	 	title: 'Feature not available'
+	 	data : { pageTitle: 'Feature not available' }
 	});
 	$stateProvider.state('checkOutOptions', {
  		url: '/checkOutOptions',
 		templateUrl: '/assets/partials/checkout/gwCheckoutoptions.html',
 		controller: 'checkOutOptionsController',
-		title: 'Check-out options'
-	})
+		data : { pageTitle: 'Check-out options' }
+	}).state('seeFrontDesk', {
+ 		url: '/seeFrontDesk',
+		templateUrl: '/assets/partials/gwErrorPage.html',
+		data : { pageTitle: 'Error..' }
+	});
 
 
  //    //room and cc verification 

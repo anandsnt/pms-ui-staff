@@ -34,11 +34,11 @@ sntGuestWeb.config(function ($httpProvider) {
 });
 
 
-sntGuestWeb.run(function($rootScope, $location, $http, $window){
-	$rootScope.$on('$stateChangeStart',
-		function(event, toState, toParams, fromState, fromParams){
-			$rootScope.title =toState.title;
-		});
+sntGuestWeb.run(function($rootScope,$state,$stateParams, $window){
+
+  $rootScope.$state = $state;
+  $rootScope.$stateParams = $stateParams;
+
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       console.error(error);
