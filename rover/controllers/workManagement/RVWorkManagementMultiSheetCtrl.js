@@ -838,19 +838,15 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			isUserDragging = true;
 		};
 
-		$scope.onStop = function() {
+		$scope.dragStopped = function() {
 			isUserDragging = false;
 		};
 
-		function autoScrollGridOnDrag () {
-			var $assigned-rooms = document.getElementById('assigned-rooms');
-		}
-
 		$scope.userDragging = function() {
-			var hoz = getScrollerObject('worksheetHorizontal');
+			console.log(arguments);
+			// var hoz = getScrollerObject('worksheetHorizontal');
 
-			hoz.scrollTo(xPos, block.y);
+			// hoz.scrollTo(xPos, block.y);
 		};
-
 	}
 ]);
