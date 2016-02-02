@@ -58,6 +58,7 @@ sntGuestWeb.controller('homeController', ['$scope','$rootScope','$state','reserv
     $rootScope.hotelLogo      = reservationAndhotelData.hotel_logo;
     $rootScope.currencySymbol = reservationAndhotelData.currency_symbol;
     $rootScope.hotelPhone     = reservationAndhotelData.hotel_phone;
+    $rootScope.uiViewDOMloaded      = true;
 	$scope.$emit('hideLoader');
 
 	//conditional page navigations
