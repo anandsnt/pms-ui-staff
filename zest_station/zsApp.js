@@ -95,7 +95,6 @@ var GlobalZestStationApp = function(){
 
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
-    	//$('body').append(data); zest station wont need this yet..
         that.cordovaLoaded = true;
         try{
     	   that.cardReader = new CardOperation();
@@ -127,7 +126,7 @@ var GlobalZestStationApp = function(){
     };
 };
 
-///zestSntApp = new GlobalZestStationApp();
+zestSntApp = new GlobalZestStationApp();
 
 sntZestStation.controller('rootController', ['$scope',
 function($scope) {
