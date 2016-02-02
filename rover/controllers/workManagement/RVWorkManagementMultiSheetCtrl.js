@@ -815,8 +815,42 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
 			$scope.workSheetChanged = false;
+
+			autoScrollGridOnDrag();
 		};
 
 		init();
+
+
+
+
+		var getScrollerObject = function(key) {
+			var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
+			if (_.isUndefined (scrollerObject)) {
+				scrollerObject = $scope.myScroll[key];
+			}
+			return scrollerObject;
+		};
+
+		var isUserDragging = false;
+
+		$scope.dragStart = function() {
+			isUserDragging = true;
+		};
+
+		$scope.onStop = function() {
+			isUserDragging = false;
+		};
+
+		function autoScrollGridOnDrag () {
+			var $assigned-rooms = document.getElementById('assigned-rooms');
+		}
+
+		$scope.userDragging = function() {
+			var hoz = getScrollerObject('worksheetHorizontal');
+
+			hoz.scrollTo(xPos, block.y);
+		};
+
 	}
 ]);

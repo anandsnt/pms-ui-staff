@@ -79,7 +79,7 @@
                         ng-repeat="task in room.room_tasks"
                         id="unassigned-UA-{{ $parent.$index }}-{{ $index }}"
                         data-drag = "{{multiSheetState.dndEnabled}}"
-                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragStopped()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
                         <div class="info">
                             <!-- To Do: Improve this logic/move to controller -->
