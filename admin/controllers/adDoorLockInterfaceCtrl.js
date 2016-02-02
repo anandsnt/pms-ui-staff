@@ -17,11 +17,11 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 
 	var setInitialExcludedList = function(){
 		angular.forEach($scope.data.ios_versions, function(version){
-			version.isExcluded = $scope.data.excluded_ios_versions.indexOf(version.value) !== -1
+			version.isExcluded = $scope.data.excluded_ios_versions.indexOf(version.name) !== -1
 		})
 
 		angular.forEach($scope.data.android_versions, function(version){
-			version.isExcluded = $scope.data.excluded_android_versions.indexOf(version.value) !== -1
+			version.isExcluded = $scope.data.excluded_android_versions.indexOf(version.name) !== -1
 		})
 	}
 
@@ -29,12 +29,12 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 		$scope.data.excluded_ios_versions = [], $scope.data.excluded_android_versions = [];
 		angular.forEach($scope.data.ios_versions, function(version){
 			if(version.isExcluded)
-               $scope.data.excluded_ios_versions.push(version.value);
+               $scope.data.excluded_ios_versions.push(version.name);
 		})
 
 		angular.forEach($scope.data.android_versions, function(version){
 			if(version.isExcluded)
-               $scope.data.excluded_android_versions.push(version.value);
+               $scope.data.excluded_android_versions.push(version.name);
 		})
 	}
 

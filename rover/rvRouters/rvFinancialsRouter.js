@@ -8,7 +8,7 @@ angular.module('FinancialsModule', [])
         controller: 'RVFinancialsController',
         resolve: {
             jsAssets: function(jsMappings, mappingList) {
-                return jsMappings.fetchAssets('rover.financials');
+                return jsMappings.fetchAssets(['rover.financials']);
             }
         }
     });

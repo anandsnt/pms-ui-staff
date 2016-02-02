@@ -20,11 +20,8 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/staycard/rvStaycard.html',
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },
-                staycardJsAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.reservation');
+                staycardJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.reservation', 'directives']);
                 },
                 /**
                  *   We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -297,7 +294,7 @@ angular.module('stayCardModule', [])
             controller: 'RVbillCardController',
             resolve: {
                 billstaycardJsAssets: function(staycardJsAssets, jsMappings) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.billcard');
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.billcard']);
                 },
                 reservationBillData: function(RVBillCardSrv, $stateParams, billstaycardJsAssets) {
                     return RVBillCardSrv.fetch($stateParams.reservationId);
@@ -311,12 +308,9 @@ angular.module('stayCardModule', [])
             url: '/roomassignment/:reservation_id/:room_type/:clickedButton',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
-            resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },                
-                roomAssignmentJsAssets: function(jsMappings, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
+            resolve: {            
+                roomAssignmentJsAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
                 },
                 roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
 
@@ -342,11 +336,8 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
             resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                }, 
-                roomAssignmentJsAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
+                roomAssignmentJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
                 }
             }
         });
@@ -356,12 +347,9 @@ angular.module('stayCardModule', [])
             url: '/changestaydates/:reservationId/:confirmNumber',
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
-            resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },                 
-                changeStayDatesJsAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('changestaydates', ['ui.calendar']);
+            resolve: {            
+                changeStayDatesJsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['changestaydates', 'directives'], ['ui.calendar']);
                 },
                 stayDateDetails: function(RVChangeStayDatesSrv, $stateParams, changeStayDatesJsAssets) {
                     return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
@@ -379,12 +367,9 @@ angular.module('stayCardModule', [])
             url: '/activitylog/:id',
             templateUrl: "/assets/partials/activityLog/rvActivityLog.html",
             controller: 'RVActivityLogCtrl',
-            resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },                 
-                activityLogAssets: function(jsMappings, staycardJsAssets, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.activitylog');
+            resolve: {            
+                activityLogAssets: function(jsMappings, staycardJsAssets, mappingList) {
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.activitylog', 'directives']);
                 },
                 activityLogResponse: function(RVActivityLogSrv, $stateParams, activityLogAssets) {
                     if (!!RVActivityLogSrv) {
@@ -403,12 +388,9 @@ angular.module('stayCardModule', [])
             url: '/actions/:actions',
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",
             controller: 'RVActionsManagerController',
-            resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },                   
-                actionsManagerAssets: function(jsMappings, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.actionsManager');
+            resolve: {              
+                actionsManagerAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
                 }
             }
         });

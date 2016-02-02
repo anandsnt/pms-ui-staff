@@ -28,7 +28,8 @@ module.exports = {
 			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
 			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
 			'guestweb_galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css'],
-			'guestweb_claridge':[ themeCSSRoot + 'guestweb_claridge.css']
+			'guestweb_claridge':[ themeCSSRoot + 'guestweb_claridge.css'],
+			'guestweb_balboa':[ themeCSSRoot + 'guestweb_balboa.css']
 		}
 	}
 }
