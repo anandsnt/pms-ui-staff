@@ -52,13 +52,13 @@ sntGuestWeb.controller('homeController', ['$scope','$rootScope','$state','reserv
  	gwWebSrv.setCMSdata(screenDataFromCMS.screen_list);
     //save the data for future usage
     gwWebSrv.setReservationAndHotelData(reservationAndhotelData);
-    //overiride styles if styles are set in hotel admin
+    //override styles if styles are set in hotel admin
     overrideStylesWithCMSdata(screenDataFromCMS.style_list);
     //set static items
-    $rootScope.hotelLogo      = reservationAndhotelData.hotel_logo;
-    $rootScope.currencySymbol = reservationAndhotelData.currency_symbol;
-    $rootScope.hotelPhone     = reservationAndhotelData.hotel_phone;
-    $rootScope.uiViewDOMloaded      = true;
+    $rootScope.hotelLogo       = reservationAndhotelData.hotel_logo;
+    $rootScope.currencySymbol  = reservationAndhotelData.currency_symbol;
+    $rootScope.hotelPhone      = reservationAndhotelData.hotel_phone;
+    $rootScope.uiViewDOMloaded = true;
 	$scope.$emit('hideLoader');
 
 	//conditional page navigations
