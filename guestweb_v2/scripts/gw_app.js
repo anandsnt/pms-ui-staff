@@ -49,8 +49,10 @@ sntGuestWeb.controller('homeController', ['$scope','$rootScope','$state','reserv
  	// this is fetched and saved in service for future usage
  	gwWebSrv.setScreenList(screenMappings);
  	// This will save the available screen details set in hotel amdin
- 	gwWebSrv.setCMSdata(screenDataFromCMS);
+ 	gwWebSrv.setCMSdata(screenDataFromCMS.screen_list);
     gwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+    //overiride styles if styles are set in hotel admin
+    overrideStylesWithCMSdata(screenDataFromCMS.style_list);
     //set static items
     $rootScope.hotelLogo      = reservationAndhotelData.hotel_logo;
     $rootScope.currencySymbol = reservationAndhotelData.currency_symbol;

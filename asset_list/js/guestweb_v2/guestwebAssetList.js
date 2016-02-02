@@ -17,6 +17,7 @@ module.exports = {
 			],
 			nonMinifiedFiles: [
 				guestwebroot + 'scripts/gw_util.js',
+				guestwebroot + 'scripts/gw_theming_utility.js',
 				guestwebroot + 'scripts/gw_app.js',
 				guestwebroot + 'scripts/gw_app_config.js',
 				guestwebroot + 'scripts/gw_main_app_router.js',
