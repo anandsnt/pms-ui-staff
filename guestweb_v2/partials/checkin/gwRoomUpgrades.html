@@ -1,25 +1,6 @@
 <!-- main section starts here -->
 <div class="container-fluid">
-    <!-- request text -->
-    <div class="row" ng-show="isFetching">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 top-spacing">
-            <p class="request-text">Your request is being processed.
-            This may take a few seconds..... please wait!</p>
-        </div>
-        <div class="col-md-2">
-        </div>                   
-    </div>
-    <!-- error message -->
-    <div class="row" ng-show="netWorkError">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
-        </div>
-        <div class="col-md-2">
-        </div>                   
-    </div>
-    <div class="row" ng-hide="isFetching || netWorkError">
+    <div class="row" ng-hide="isFetching">
         <div class="col-md-1"></div>
         <div class="col-md-4 top-spacing mob-margin-top--1">
             <p class="main-text mob-margin-bottom-3">Upgrade your room?</p>
@@ -32,7 +13,7 @@
                     <carousel>
                         <slide ng-repeat="slide in slides" active="slide.active" >
                             <div class="centeralign">
-                                <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="height:200px;width:100%;"/>
+                                <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb_v2/img/image_not_available.png" style="height:200px;width:100%;"/>
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
                                 <div class="col-xs-9 room-info mob-paddding-top-5">
