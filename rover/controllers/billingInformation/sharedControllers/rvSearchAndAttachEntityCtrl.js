@@ -342,14 +342,15 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                 "selected_payment"        : "",
                 "credit_card_details"     : {}
 			};
-			$scope.setSelectedEntity(selectedEntityDetails);
 
     		if (data.account_type === 'COMPANY') {
-    			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+    			selectedEntityDetails.entity_type = 'COMPANY_CARD';
     		}
             else if (data.account_type === 'TRAVELAGENT') {
-                $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+                selectedEntityDetails.entity_type = 'TRAVEL_AGENT';
             }
+            $scope.setSelectedEntity(selectedEntityDetails, type);
+
         }
         else if (type === 'GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {

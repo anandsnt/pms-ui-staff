@@ -8,9 +8,9 @@
          <div class = "wrapper">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-            <div ng-if = "(!billingInfoFlagsisInitialPage && billingInfoFlagsisEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentRouteDetails.html'"  > </div>
+            <div ng-if = "billingInfoFlags.isEntitySelected" class="billing-info-body" ng-include="'/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentRouteDetails.html'"  > </div>
 
-            <div ng-if = "(!billingInfoFlagsisInitialPage && !billingInfoFlagsisEntitySelected)" class="billing-info-entity" ng-include="'/assets/partials/billingInformation/sharedPartials/rvSearchAndAttachEntity.html'"></div>
+            <div ng-if = "!billingInfoFlags.isEntitySelected" class="billing-info-entity" ng-include="'/assets/partials/billingInformation/sharedPartials/rvSearchAndAttachEntity.html'"></div>
 
          </div>
       </div>

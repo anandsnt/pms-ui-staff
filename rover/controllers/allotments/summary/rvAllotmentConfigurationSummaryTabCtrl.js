@@ -340,11 +340,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
 			$scope.billingInfoModalOpened = true;
 			$scope.attachedEntities = {};
-			$scope.attachedEntities.posting_account = _.extend({}, {
-				id: summaryData.allotment_id,
-				name: summaryData.posting_account_name,
-				logo: "ALLOTMENT_DEFAULT"
-			});
+			$scope.billingInformationPresent = summaryData.default_billing_info_present;
 			ngDialog.open({
 				template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
 				controller: 'rvBillingInfoAllotmentMainCtrl',
