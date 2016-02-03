@@ -1,22 +1,39 @@
 sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', '$q', function($scope, $rootScope,$filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, $q){
     BaseCtrl.call(this, $scope);
 
-    $scope.editPaymentMethod = function () {
+    /**
+     * Save the old payment details and move to add new payment screen
+     * on clicking the edit payment button.
+     * @return {undefined}
+     */
+    $scope.editPaymentMethod = function() {
         $scope.oldPayment = $scope.renderAddedPayment;
         $scope.renderAddedPayment = null;
-        isAddPayment = false;
+        $scope.paymentFlags.isAddPayment = false;
     }
 
     /**
-     * function to show the payment list on cancelling or adding new payment
+     * Function to show the payment list on cancelling or adding new payment
+     * @return {undefined}
      */
-    $scope.showPaymentList = function(){
-        $scope.isAddPayment = false;
+    $scope.showPaymentList = function() {
+        $scope.paymentFlags.isAddPayment = false;
         $scope.refreshScroller('paymentList');
     };
 
+    /**
+     * On cancelling new payment, set old payment as payment
+     */
     $scope.$on("CANCELLED_PAYMENT", function () {
         $scope.renderAddedPayment = $scope.oldPayment;
+        $scope.refreshScroller('routeDetails');
+    });
+
+    /**
+     * On adding a credit card, refresh the route details scroller
+     */
+    $scope.$on('REFRESH_ROUTE_DETAILS_SCROLLER', function() {
+        $scope.refreshScroller('routeDetails');
     });
 
     //retrieve card expiry based on paymnet gateway
@@ -55,7 +72,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         $scope.renderAddedPayment.endingWith = retrieveCardNumber();
     };
 
-    scope.paymentAddedThroughMLISwipe = function(swipedCardDataToSave){
+    $scope.paymentAddedThroughMLISwipe = function(swipedCardDataToSave){
         $scope.renderAddedPayment = {};
         $scope.renderAddedPayment.payment_type = "CC";
         $scope.swipedCardDataToSave = swipedCardDataToSave;
@@ -65,39 +82,43 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
     };
 
     /**
-     * function to show the add payment view
+     * Function to show the add payment view
+     * @return {undefined}
      */
-    $scope.showAddPayment = function(){
-        if(!$rootScope.isManualCCEntryEnabled){
+    $scope.showAddPayment = function() {
+        if (!$rootScope.isManualCCEntryEnabled) {
             $scope.isManualCCEntryEnabled = false;
             var dialog = ngDialog.open({
-                template: '/assets/partials/payment/rvPaymentModal.html',
-                controller: '',
-                scope: $scope
-              });
+                template   : '/assets/partials/payment/rvPaymentModal.html',
+                controller : '',
+                scope      : $scope
+            });
             return;
         }
 
-        $scope.isAddPayment = true;
-        $scope.showCreditCardDropDown = true;
-        $scope.renderAddedPayment = {};
-        $scope.renderAddedPayment.creditCardType  = "";
-        $scope.renderAddedPayment.cardExpiry = "";
-        $scope.renderAddedPayment.endingWith = "";
-        $scope.renderAddedPayment.payment_type = "";
-        $scope.isShownExistingCCPayment = false;
+        $scope.renderAddedPayment = {
+            creditCardType : "",
+            cardExpiry     : "",
+            endingWith     : "",
+            payment_type   : ""
+        };
+
+        $scope.paymentFlags.isAddPayment = true;
+        $scope.paymentFlags.showPaymentDropDown   = true;
+        $scope.paymentFlags.isShownExistingCCPayment = false;
+
         $scope.$broadcast('showaddpayment');
         $scope.refreshScroller('routeDetails');
     };
 
     $scope.$on("SHOW_SWIPED_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
-        $scope.isAddPayment = true;
+        $scope.paymentFlags.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
 
         setTimeout(function(){
             $scope.saveData.payment_type = "CC";
-            $scope.showCreditCardDropDown = true;
-                        $scope.swippedCard = true;
+            $scope.paymentFlags.showPaymentDropDown = true;
+            $scope.swippedCard = true;
             $scope.$broadcast('RENDER_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
             $scope.$digest();
         }, 2000);
@@ -236,22 +257,23 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         $scope.selectedEntity.reference_number = data.reference_number;
         //Added for CICO-22869
         $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
-        if(!isEmptyObject(data.credit_card_details)){
-            $scope.renderAddedPayment = data.credit_card_details;
-            $scope.saveData.payment_type = data.credit_card_details.payment_type;
-
-            $scope.renderAddedPayment.cardExpiry = data.credit_card_details.card_expiry;
-            $scope.renderAddedPayment.endingWith = data.credit_card_details.card_number;
+        if (!isEmptyObject(data.credit_card_details)) {
+            $scope.renderAddedPayment                = data.credit_card_details;
+            $scope.renderAddedPayment.cardExpiry     = data.credit_card_details.card_expiry;
+            $scope.renderAddedPayment.endingWith     = data.credit_card_details.card_number;
             $scope.renderAddedPayment.creditCardType = data.credit_card_details.card_code;
-            $scope.isAddPayment = false;
-            if(data.credit_card_details.payment_type !== 'CC'){
-                 $scope.showCreditCardDropDown = true;
-            } else {
-                 $scope.showCreditCardDropDown = false;
-                 $scope.isShownExistingCCPayment = true;
+
+            $scope.saveData.payment_type     = data.credit_card_details.payment_type;
+            $scope.paymentFlags.isAddPayment = false;
+
+            if (data.credit_card_details.payment_type !== 'CC') {
+                $scope.paymentFlags.showPaymentDropDown = true;
+            }
+            else {
+                $scope.paymentFlags.showPaymentDropDown   = false;
+                $scope.paymentFlags.isShownExistingCCPayment = true;
             }
         }
-        $scope.$parent.$emit('hideLoader');
     };
 
     /**
@@ -401,7 +423,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
             return;
         }
 
-        if( $scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "" && !$scope.isShownExistingCCPayment){
+        if( $scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "" && !$scope.paymentFlags.isShownExistingCCPayment){
             $scope.savePayment();
         }
         else{
@@ -443,6 +465,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
 
         var params =  angular.copy($scope.selectedEntity);
         params.entity_type  = "ALLOTMENT";
+        params.allotment_id = $scope.allotmentId;
         $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess);
     };
 
@@ -504,7 +527,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         };
 
         if($scope.saveData.payment_type === 'CC'){
-            if($rootScope.paymentGateway === "sixpayments" && !$scope.sixIsManual){
+            if($rootScope.paymentGateway === "sixpayments" && !$scope.paymentFlags.sixIsManual){
 
                 var data = {};
                 data.allotment_id = $scope.allotmentId;
@@ -571,10 +594,20 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
             }
         }
     };
-    $scope.sixIsManual = false;
+
     $scope.$on('CHANGE_IS_MANUAL', function(e, value){
-        $scope.sixIsManual = value;
+        $scope.paymentFlags.sixIsManual = value;
     });
+
+    /**
+     * Function to show/hide credit card
+     * @return {undefined}
+     */
+    $scope.showAvailableCreditCard = function() {
+        return (!isEmptyObject($scope.renderAddedPayment) &&
+               !$scope.paymentFlags.isAddPayment &&
+               !$scope.saveData.newPaymentFormVisible);
+    };
 
     /**
      * Function to set credit card details if the selected entity has a CC attached previously
