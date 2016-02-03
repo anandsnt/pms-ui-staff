@@ -10,7 +10,7 @@
 
 
 	$scope.pageValid = false;
-	$scope.departureDate = "";
+	$rootScope.departureDate = "";
 	var dateToSend = '';
 	if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
