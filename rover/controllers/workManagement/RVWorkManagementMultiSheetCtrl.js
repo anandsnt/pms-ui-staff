@@ -492,6 +492,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.setHeading(title);
 		};
 
+		var hoz;
+
 		/**
 		 * Utility function to set up scrollers
 		 */
@@ -785,6 +787,85 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 		};
 
+
+		var setUpAutoScroller = function() {
+			var LEFT  = 'LEFT',
+				RIGHT = 'RIGHT',
+				UNDEF = undefined;
+
+			var dragDir    = UNDEF,
+				scrollInst = UNDEF,
+				timer      = UNDEF,
+				dim        = UNDEF;
+
+			var getDimentions = function() {
+				var LEFT_OFFSET = 200;
+				var COL_WIDTH   = 220;
+
+				var winWidth = $(window).width();
+
+				var scrollX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+
+				dim = {
+					screenStart : LEFT_OFFSET,
+					screenEnd   : winWidth - LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET,
+					scrollEnd   : -scrollX
+				};
+			};
+
+			/** setup dim and update on screen change, also remove listener when required */
+			getDimentions();
+			window.addEventListener( 'resize', getDimentions, false );
+			$scope.$on('$destroy', function() {
+				window.removeEventListener('resize');
+			});
+
+			var scrollExec = function() {
+				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dim.scrollStart ) {
+					scrollInst.scrollBy(10, 0, 1);
+				};
+
+				if ( dragDir === RIGHT && scrollInst.x > dim.scrollEnd ) {
+					scrollInst.scrollBy(-10, 0, 1);
+				};
+			};
+
+			$scope.dragStart = function() {
+				if ( $scope.$parent.hasOwnProperty('myScroll') && $scope.$parent.myScroll.hasOwnProperty('worksheetHorizontal') ) {
+					scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+				} else {
+					return;
+				}
+
+				timer = setInterval( scrollExec, 1 );
+			};
+
+			$scope.dragDrop = function() {
+				if ( !! timer ) {
+					window.clearInterval(timer);
+					timer = UNDEF;
+				};
+			};
+
+			$scope.userDragging = function(e) {
+				if ( e.clientX > dim.screenEnd ) {
+				    if ( dragDir !== RIGHT ) {
+				        dragDir = RIGHT;
+				    };
+				} else if ( e.clientX < dim.screenStart ) {
+				    if ( dragDir !== LEFT ) {
+				        dragDir = LEFT;
+				    };
+				} else {
+				    if ( dragDir !== UNDEF ) {
+				        dragDir = UNDEF;
+				    };
+				};
+			};
+		};
+
+
 		/**
 		 * Function to bootstrap multisheet.
 		 * @return {Undefined}
@@ -816,37 +897,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
 			$scope.workSheetChanged = false;
 
-			autoScrollGridOnDrag();
+			setUpAutoScroller();
 		};
 
 		init();
-
-
-
-
-		var getScrollerObject = function(key) {
-			var scrollerObject = $scope.$parent.myScroll && $scope.$parent.myScroll[key];
-			if (_.isUndefined (scrollerObject)) {
-				scrollerObject = $scope.myScroll[key];
-			}
-			return scrollerObject;
-		};
-
-		var isUserDragging = false;
-
-		$scope.dragStart = function() {
-			isUserDragging = true;
-		};
-
-		$scope.dragStopped = function() {
-			isUserDragging = false;
-		};
-
-		$scope.userDragging = function() {
-			console.log(arguments);
-			// var hoz = getScrollerObject('worksheetHorizontal');
-
-			// hoz.scrollTo(xPos, block.y);
-		};
 	}
 ]);
