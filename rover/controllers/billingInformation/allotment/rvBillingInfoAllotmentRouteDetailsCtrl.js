@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', '$q', function($scope, $rootScope,$filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, $q){
     BaseCtrl.call(this, $scope);
     $scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -484,45 +484,60 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         $scope.$parent.$emit('hideLoader');
     };
 
+    /**
+     * Fetch the route details
+     * @return {undefined}
+     */
     $scope.fetchDefaultAccountRouting = function(){
         var params = {};
-        params.id = $scope.allotmentConfigData.summary.allotment_id;
+        params.id = $scope.allotmentId;
         params.entity_type = "ALLOTMENT";
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, fetchDefaultAccountRoutingsuccessCallback);
     };
-    /**
-    * function to fetch available billing groups from the server
-    */
-    $scope.fetchAllBillingGroups = function(){
 
-            var successCallback = function(data) {
-                $scope.availableBillingGroups = data;
-                if(data.length === 0) {
-                    $scope.isBillingGroup = false;
-                }
-                $scope.$parent.$emit('hideLoader');
-                $scope.fetchDefaultAccountRouting();
+    var fetchAllBillingGroupsSuccessCallback = function(data) {
+        $scope.availableBillingGroups = data;
+        if(data.length === 0) {
+            $scope.isBillingGroup = false;
+        }
+        $scope.$parent.$emit('hideLoader');
+        //$scope.fetchDefaultAccountRouting();
 
-            };
-            var errorCallback = function(errorMessage) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.$emit('displayErrorMessage',errorMessage);
-            };
-
-            $scope.invokeApi(RVBillinginfoSrv.fetchAllBillingGroups, '', successCallback, errorCallback);
     };
 
-    $scope.fetchAllChargeCodes = function(){
-        var successCallback = function(data) {
-            $scope.availableChargeCodes = data;
-            $scope.fetchAllBillingGroups();
-        };
-        var errorCallback = function(errorMessage) {
-            $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
-        };
+    var fetchAllBillingGroupsFailureCallback = function(errorMessage) {
+        $scope.$parent.$emit('hideLoader');
+        $scope.$emit('displayErrorMessage',errorMessage);
+    };
 
-        $scope.invokeApi(RVBillinginfoSrv.fetchAllChargeCodes, '', successCallback, errorCallback);
+    /**
+     * Function to fetch available billing groups from the server
+     * @return {undefined}
+     */
+    $scope.fetchAllBillingGroups = function(){
+        $scope.invokeApi(RVBillinginfoSrv.fetchAllBillingGroups, '',
+            fetchAllBillingGroupsSuccessCallback,
+            fetchAllBillingGroupsFailureCallback);
+    };
+
+    var fetchAllChargeCodesSuccessCallBack = function(data) {
+        $scope.availableChargeCodes = data;
+        //$scope.fetchAllBillingGroups();
+    };
+
+    var fetchAllChargeCodesFailureCallBack = function(errorMessage) {
+        $scope.$parent.$emit('hideLoader');
+        $scope.$emit('displayErrorMessage',errorMessage);
+    };
+
+    /**
+     * Fetch the available charge codes
+     * @return {undefined}
+     */
+    $scope.fetchAllChargeCodes = function(){
+        $scope.invokeApi(RVBillinginfoSrv.fetchAllChargeCodes, '',
+            fetchAllChargeCodesSuccessCallBack,
+            fetchAllChargeCodesFailureCallBack);
     };
 
     /**
@@ -1014,8 +1029,62 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         $scope.fetchAvailableChargeCodes();
     };
 
+    /**
+     * Fired when all promises are completed
+     * @return {undefined}
+     */
+    var fetchAllInitialDataSuccessCallBack = function(data) {
+        $scope.$emit('hideLoader');
+    };
+
+    var fetchAllInitialDataFailureCallBack = function(error) {
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = error;
+    };
+
+    /**
+     * Call all api needed for rendering route details.
+     * 1. Billing groups
+     * 2. Charge codes
+     * 3. Default routing
+     * @return {undefined}
+     */
+    var fetchInitialData = function() {
+        var promises = [];
+
+        //we are not using our normal API calling since we have multiple API calls needed
+        $scope.$emit('showLoader');
+
+        // fetch billing groups
+        promises.push(RVBillinginfoSrv
+            .fetchAllBillingGroups('')
+            .then(fetchAllBillingGroupsSuccessCallback, fetchAllBillingGroupsFailureCallback)
+        );
+
+        // fetch charge codes
+        promises.push(RVBillinginfoSrv
+            .fetchAllChargeCodes('')
+            .then(fetchAllChargeCodesSuccessCallBack, fetchAllChargeCodesFailureCallBack)
+        );
+
+        // fetch default routing if entity not set
+        if ($scope.billingInformationPresent) {
+            var params = {};
+            params.id = $scope.allotmentId;
+            params.entity_type = "ALLOTMENT";
+            promises.push(RVBillinginfoSrv
+                .fetchDefaultAccountRouting(params)
+                .then(fetchDefaultAccountRoutingsuccessCallback)
+            );
+        }
+
+        //Lets start the processing
+        $q.all(promises)
+            .then(fetchAllInitialDataSuccessCallBack, fetchAllInitialDataFailureCallBack);
+    };
+
     var init = function() {
-        $scope.fetchAllChargeCodes();
+        fetchInitialData();
         $scope.showPayment = true;
     };
 
