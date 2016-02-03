@@ -26,7 +26,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
      * function to handle the pencil button click in route detail screen
      */
     $scope.deSelectEntity = function(){
-        $scope.isEntitySelected = false;
+        $scope.billingInfoFlags.isEntitySelected = false;
     };
 
     /**
