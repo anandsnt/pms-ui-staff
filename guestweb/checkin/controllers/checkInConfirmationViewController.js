@@ -10,7 +10,6 @@
 
 
 	$scope.pageValid = false;
-	$rootScope.departureDate = "";
 	var dateToSend = '';
 	if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
@@ -80,7 +79,6 @@
 	};
 	$scope.showCalender = function(){
 		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
-		$rootScope.departureDate = "";
 		$scope.isCalender = true;
 	};
 	$scope.closeCalender = function(){
