@@ -1,4 +1,4 @@
-sntRover.controller('RVReportsMainCtrl', [
+angular.module('sntRover').controller('RVReportsMainCtrl', [
 	'$rootScope',
 	'$scope',
 	'payload',
