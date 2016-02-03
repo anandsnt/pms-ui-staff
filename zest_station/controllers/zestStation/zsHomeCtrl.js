@@ -150,11 +150,15 @@ sntZestStation.controller('zsHomeCtrl', [
             }
         };
         
-        if ($scope.zestStationData.selectedWorkStation !== 'Select'){
             params.kiosk.work_station = $scope.zestStationData.selectedWorkStation;
-            $state.workstation_id = params.kiosk.work_station.id;
-            $scope.selectedWorkstation = params.kiosk.work_station.id;//for the workstation list view to show what is currently selected
-        }
+            if (!params.kiosk.work_station){
+                $state.workstation_id = null;
+                $scope.selectedWorkstation = null;
+            } else {
+                $state.workstation_id = params.kiosk.work_station.id;
+                $scope.selectedWorkstation = params.kiosk.work_station.id;//for the workstation list view to show what is currently selected
+            }
+        //workstation.selected
         if (sntZestStation.selectedPrinter){
             params.printer = sntZestStation.selectedPrinter;
         }
@@ -204,7 +208,6 @@ sntZestStation.controller('zsHomeCtrl', [
         if (sntZestStation.selectedPrinter){
             params.printer = sntZestStation.selectedPrinter;
         }
-        console.info('saving params: ',params);
         var options = {
     		params: 			params,
     		successCallBack: 	saveCompleted
@@ -214,16 +217,30 @@ sntZestStation.controller('zsHomeCtrl', [
         }
     };
     $scope.saveWorkStation = function(){
-         var storageKey = $scope.storageKey,
+        if ($scope.workstation !== ''){
+            for (var i in $scope.zestStationData.workstations){
+                if ($scope.zestStationData.workstations[i].name === $scope.workstation.selected){
+                    $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
+                }
+            }
+        } else {
+            $scope.zestStationData.selectedWorkStation = '';
+        }
+             $scope.saveSelected();
+                //also update and save off the printer value to the workstation
+                $scope.saveWorkStationPrinter();
+                $scope.setStationEncoder();
+    };
+    
+    
+    $scope.saveSelected = function(){
+        var storageKey = $scope.storageKey,
                 storage = localStorage;
             try {
                 storage.setItem(storageKey, $scope.zestStationData.selectedWorkStation);
             } catch(err){
                 console.warn(err);
             }
-            //also update and save off the printer value to the workstation
-            $scope.saveWorkStationPrinter();
-            $scope.setStationEncoder();
     };
         $scope.checkOOSInBrowser = function(){
             return;
@@ -288,6 +305,7 @@ sntZestStation.controller('zsHomeCtrl', [
                             $scope.zestStationData.workstations[i].selected = true;
                             $scope.zestStationData.selectedWorkStation = station.station_identifier;
                             $scope.selectedWorkstationName = $scope.zestStationData.workstations[i].name;
+                            
                         } else {
                             $scope.zestStationData.workstations[i].selected = false;
                         }
@@ -299,16 +317,11 @@ sntZestStation.controller('zsHomeCtrl', [
     };  
     $scope.selectedWorkstationName = '';
     $scope.getWorkStation();
-    $scope.showWorkStationList = false;
     
     $scope.openWorkStationList = function(){
-        $scope.showWorkStationList = true;
         $scope.selectedWorkstation = $state.workstation_id;
        // $('.ngdialog-content').addClass('zoku-style');
         
-    };
-    $scope.closeWorkStationList = function(){
-        $scope.showWorkStationList = false;
     };
     
     $scope.workStationObj = {};
@@ -333,6 +346,7 @@ sntZestStation.controller('zsHomeCtrl', [
         }
     });
     $scope.theme = '';
+    $scope.workstation = '';
     $scope.hasWorkstation = function(){
           //returns true/false if a workstation is currently assigned;
           // if no workstation assigned or if workstation status fetch fails, device should go OOS;
@@ -409,12 +423,8 @@ sntZestStation.controller('zsHomeCtrl', [
     $scope.init = function(){
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
-              $scope.screenwidth = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-            if (typeof cordova !== typeof undefined){
-                $scope.scrnPos = 4.3;
-            } else {
-                $scope.scrnPos = 3.2;
-            }
+           
+           
         } else if (current === 'zest_station.oos'){
             $scope.$emit('REFRESH_SETTINGS');
         } else {

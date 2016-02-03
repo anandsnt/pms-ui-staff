@@ -26,8 +26,8 @@ module.exports = function(gulp, $, options) {
 		]);
 	
 	gulp.task('guestweb-inject-assets-to-templates', function(callback){
-		return runSequence(['create-statemapping-and-inject-guestweb-js-production', 'create-theme-mapping-template-production', 
-		'create-theme-mapping-css-production'], callback);
+		return runSequence('create-statemapping-and-inject-guestweb-js-production', 'create-theme-mapping-template-production', 
+		'create-theme-mapping-css-production', callback);
 	});
 
 	gulp.task('guestweb-asset-prod-precompile', ['guestweb-js-production', 'guestweb-template-theme-generate-mapping-list-prod',
