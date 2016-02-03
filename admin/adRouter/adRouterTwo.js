@@ -562,6 +562,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                     simple_name: 'ZDirect',
                     url : '/zDirectSetup'
                 });
+
+                $stateProvider.state('admin.travelTripperSetup', {
+                    templateUrl: '/assets/partials/travelTripperSetup/adtravelTripperSetup.html',
+                    controller: 'adExternalInterfaceCtrl',
+                    //interface_id: 4,
+                    interface_id: 'TRAVELTRIPPER',
+                    simple_name: 'TravelTripper',
+                    url : '/travelTripperSetup'
+                });
                 
 		$stateProvider.state('admin.zestStationConfig', {
 			templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',

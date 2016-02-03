@@ -12,11 +12,8 @@ angular.module('allotmentModule', [])
             templateUrl: '/assets/partials/allotments/rvAllotmentRoot.html',
             controller: 'rvAllotmentRootCtrl',
             resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },
-                allotmentAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.allotments');
+                allotmentAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.allotments', 'directives']);
                 }
             }
         });

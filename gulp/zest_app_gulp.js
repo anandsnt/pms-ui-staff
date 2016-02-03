@@ -11,7 +11,7 @@ module.exports = function(gulp, $, options) {
 	
 	gulp.task('zest-inject-assets-to-templates', function(callback){
 		return runSequence('inject-zest-js-production-to-template', 'inject-zest-template-cache-production-to-template', 
-		'create-theme-mapping-css-production', 'copy-transaltion-files-for-zeststation', callback);
+		 'copy-transaltion-files-for-zeststation', 'create-zest-theme-mapping-css-production', callback);
 	});
 
 	gulp.task('copy-zest-base-html', function(){
