@@ -79,7 +79,7 @@
                         ng-repeat="task in room.room_tasks"
                         id="unassigned-UA-{{ $parent.$index }}-{{ $index }}"
                         data-drag = "{{multiSheetState.dndEnabled}}"
-                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
                         <div class="info">
                             <!-- To Do: Improve this logic/move to controller -->
@@ -166,7 +166,7 @@
                                 ng-repeat="task in room.room_tasks"
                                 ng-class="{ 'completed-task': task.is_complete}"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
-                                jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                                jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()' }"
                                 data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}">
                                 <div class="info">
                                     <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out'">DUE OUT</span>
