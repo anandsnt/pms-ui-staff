@@ -16,7 +16,7 @@ The initial condtions to determine the status of reseravations are extracted fro
 
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad']);
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad','ngSanitize']);
 sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', function($scope,$rootScope,$state){
 	
     BaseCtrl.call(this, $scope);

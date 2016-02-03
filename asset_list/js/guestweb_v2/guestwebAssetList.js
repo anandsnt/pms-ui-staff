@@ -12,8 +12,8 @@ module.exports = {
 				jsLibRoot + 'angular-ui-router.min.js',
 				jsLibRoot + 'bootstrap.min.js',
 				jsLibRoot + 'ui-bootstrap-tpls-0.10.0.js',
-				jsLibRoot + 'oclazyload/ocLazyLoad.min.js'
-				// guestwebroot + 'scripts/angular-pickdate.js'
+				jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
+				jsLibRoot + 'angular-sanitize.min.js'
 			],
 			nonMinifiedFiles: [
 				guestwebroot + 'scripts/gw_util.js',
