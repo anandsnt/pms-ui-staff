@@ -317,7 +317,7 @@ admin.controller('ADHotelDetailsCtrl', [
     *   To handle show hide status for the logo delete button
     */
     $scope.isLogoAvailable = function(logo){
-    	if(logo !== '/assets/logo.png' && logo !== 'false') {
+    	if(logo !== '/assets/images/logo.png' && logo !== 'false') {
     		return true;
     	}
     	else {

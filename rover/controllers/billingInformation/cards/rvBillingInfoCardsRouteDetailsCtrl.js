@@ -414,14 +414,24 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
      */
     var saveRouteAPICall = function() {
 
-        var defaultRoutingSaveSuccess = function() {
+        var defaultRoutingSaveSuccess = function(data) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$parent.$emit('BILLINGINFOADDED');
-            ngDialog.close();
+            if (data.has_crossed_credit_limit) {
+                showCreditLimitExceededPopup();
+            }
+            else {
+                $scope.$parent.$emit('BILLINGINFOADDED');
+                ngDialog.close();
+            }
+        };
+
+        var errorCallback = function(errorMessage) {
+            $scope.$parent.$emit('hideLoader');
+            $scope.$emit('displayErrorMessage',errorMessage);
         };
 
         var params = angular.copy($scope.selectedEntity);            
-        $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
+        $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
     };
 
     /**
@@ -434,6 +444,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             $scope.$parent.$emit('hideLoader');
             $scope.$parent.$emit('BILLINGINFOADDED');
         };
+
         $scope.errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
             $scope.$emit('displayErrorMessage',errorMessage);
@@ -454,21 +465,21 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             $scope.$emit('displayErrorMessage',errorMessage);
         };
 
-        var defaultRoutingSaveSuccess = function() {
+        var defaultRoutingSaveSuccess = function(data) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$parent.$emit('BILLINGINFOADDED');
-            ngDialog.close();
+            if (data.has_crossed_credit_limit) {
+                showCreditLimitExceededPopup();
+            }
+            else {
+                $scope.$parent.$emit('BILLINGINFOADDED');
+                ngDialog.close();
+            }
         };
 
         var successCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
             var params = angular.copy( $scope.selectedEntity);
-            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess);
-        };
-
-        var errorCallback = function(errorMessage) {
-            $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
         };
 
         var successSixSwipe = function(response) {
@@ -478,7 +489,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             };
 
             data.account_id = $scope.selectedEntity.id;
-            $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+            $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
         };
 
         if ($scope.saveData.payment_type === 'CC') {
@@ -505,7 +516,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
                 data.credit_card = $scope.swipedCardDataToSave.cardType;
                 data.card_expiry = "20" + $scope.swipedCardDataToSave.cardExpiryYear + "-" + $scope.swipedCardDataToSave.cardExpiryMonth+"-01";
 
-                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
             }
             else {
                 var data = {
@@ -525,7 +536,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
                                     $scope.cardData.cardDetails.cardType:
                                     getSixCreditCardType($scope.cardData.tokenDetails.card_type).toLowerCase();
 
-                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
             }
         }
         else {
@@ -534,8 +545,21 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
             };
 
             data.account_id = $scope.selectedEntity.id;
-            $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+            $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, $scope.errorCallback);
         }
+    };
+
+    /**
+     * Function to open credit limit exceeded popup
+     * @return {undefined}
+     */
+    var showCreditLimitExceededPopup = function() {
+       ngDialog.open({
+            template: '/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitExceededPopup.html',
+            className: '',
+            closeByDocument: false,
+            scope: $scope
+        });
     };
 
     /**
@@ -550,6 +574,10 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope','$rootScope'
         $scope.paymentFlags.sixIsManual = value;
     });
 
+    /**
+     * Function to show/hide credit card
+     * @return {undefined}
+     */
     $scope.showAvailableCreditCard = function() {
         return (!isEmptyObject($scope.renderAddedPayment) &&
                !$scope.paymentFlags.isAddPayment &&

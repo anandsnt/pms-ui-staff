@@ -1,5 +1,6 @@
 sntRover.controller('RVReservationConfirmCtrl', [
 	'$scope',
+	'jsMappings',
 	'$state',
 	'RVReservationSummarySrv',
 	'ngDialog',
@@ -14,7 +15,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'rvPermissionSrv',
 	'$timeout',
 	'$window',
-	function($scope, $state,
+	function($scope, jsMappings, $state,
 		RVReservationSummarySrv, ngDialog,
 		RVContactInfoSrv, $filter,
 		RVBillCardSrv, $q,
@@ -513,11 +514,16 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.user_id = $scope.reservationData.company.id;
 			}
 
-			ngDialog.open({
-				template: '/assets/partials/bill/rvBillingInformationPopup.html',
-				controller: 'rvBillingInformationPopupCtrl',
-				className: 'ngdialog-theme-default',
-				scope: $scope
+	    	$scope.$emit('showLoader'); 
+           	jsMappings.fetchAssets('addBillingInfo')
+            .then(function(){
+            	$scope.$emit('hideLoader'); 
+			    ngDialog.open({
+			        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+		        	controller: 'rvBillingInfoReservationMainCtrl',
+		        	className: '',
+		        	scope: $scope
+			    });
 			});
 		};
 

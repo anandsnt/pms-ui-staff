@@ -1,0 +1,9 @@
+<div id="modal" class="modal-show" role="dialog" ng-cloak>
+	<div class="modal-content alert">
+		<button type="button" id="modal-close" class="modal-close"><span class="icons icon-close invert"></span></button>
+	    <span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">Company / Travel Agent is restricted for Direct Billing.</span>
+	    <button class="button red" type="button" ng-disabled="!hasPermissionToProceedCheckout()" ng-class="{'grey': !hasPermissionToProceedCheckout()}" ng-click="proceedWithCheckout()">Prooced with checkout</button>
+	    <button class="button blank" type="button" ng-click="closeDialog()">Close window</button>
+	</div>
+</div>

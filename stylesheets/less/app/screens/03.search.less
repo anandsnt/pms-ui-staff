@@ -494,7 +494,7 @@
                         position: relative;
                         .size(50px, 27%);
 
-                        .guest-status { margin-top: 10px; }
+                        .guest-status { margin-top: 10px; }
 
                         .room-number { 
                             margin-right: 10px;
@@ -648,29 +648,31 @@
                     line-height: 1.2;
                     margin-bottom: 0;
                 }
+
+                .pull-msg { color: @grey3; }
             }
 
             &.room {
                 position: relative;
+                z-index: 1010;
 
                 .check {
-                    top: 10px;
-                    right: 10px;
+                    top: 0;
+                    right: 0;
                 }
 
                 a,
-                .faux-anchor {
-                    min-height: 60px;
-                    position: relative;
-                }
+                .faux-anchor { position: relative; }
 
-                .data {
-                    margin-right: 10px;
-                    .calc-width(30, 10);
+                .room-info {
+                    width: 120px;
+                    .pull-left;
 
                     h2 {
                         font-size: 24px;
-                        line-height: 22px;
+                        line-height: 1;
+                        font-weight: 700;
+                        .nowrap();
 
                         &.clean,
                         &.inspected { color: @green; }
@@ -684,7 +686,8 @@
 
                     .room-status {
                         font-size: 14px;
-                        line-height: 20px;
+                        line-height: 21px;
+                        .show;
 
                         &.clean,
                         &.inspected { color: @green; }
@@ -693,12 +696,12 @@
                         &.clean-not-bookable  { color: @orange; }
 
                         &.dirty { color: @red; }
-                    }
+                    } 
                 }
 
                 .reservation-status {
-                    width: 80px;
                     .pull-left;
+                    .calc-width(100, 180);
 
                     .guest-status { 
                         margin-right: 5px;
@@ -719,11 +722,68 @@
                         .nowrap();
                         .size(20px, 100%);
 
-                        &.current { margin-bottom: 2px; }
                         &.check-in { color: @green; }
                         &.check-out,
                         &.late-check-out { color: @red; }
                         &.inhouse { color: @blue; }
+                    }
+
+                    .current { margin-bottom: 5px; }
+                }
+
+                .additional-info {
+                    clear: both;
+                    width: 100%;
+                    .nowrap();
+
+                    span {
+                        font-size: 14px;
+                        line-height: 20px;
+                        text-transform: uppercase;
+                        .show;
+                        .pull-left;
+
+                        &:not(:last-child) { margin-right: 10px; }
+                    }
+
+                    .assigned { font-weight: 600; }
+                    .unassigned { color: @grey2; }
+                    .service-status { color: @grey3; }
+                }
+
+                .tasks {
+                    clear: both;
+                    width: 100%;
+                    padding-top: 5px;
+
+                    li {
+                        position: relative;
+                        font-size: 14px;
+                        line-height: 30px;
+                        margin: 0;
+                        font-weight: 600;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                        .nowrap();
+                        .show;
+
+                        &:first-child {
+                            border-top: 2px solid rgba(0,0,0,.1);
+                        }
+
+                        &.completed {
+                            color: @grey3;
+                            text-decoration: line-through;
+                            font-weight: 400;
+                            text-indent: 20px;
+                            background-image: @icons;
+                            background-repeat: no-repeat;
+                            background-position: 0 -5851px;
+
+                            @media @highdpi {
+                                background-image: @icons2x;
+                                background-size: 120px;
+                            }
+                        }
                     }
                 }
 
@@ -731,27 +791,34 @@
                 .guest-image,
                 .icon-queued {
                     position: absolute;
+                    top: 35px;
+                    right: 10px;
                     margin: 0;
-                    right: 60px;             
-                }
-
-                .show-vacant,
-                .guest-image {
-                    top: 10px;
+                    height: 20px;
                 }
 
                 .icon-queued {
-                    top: 22px;
+                    width: 30px;
+                    background-position: 0px -4178px;
                 }
 
-                .show-vacant { 
-                    font-size: 14px;
+                .guest-image {
+                    width: 20px;
+
+                    .vip {
+                        font-size: 8px;
+                        line-height: 12px;
+                        .square(12px);
+                    }
+                }
+
+                .show-vacant {
                     color: @grey3;
-                    line-height: 40px;
+                    background: transparent;
+                    font-size: 14px;
+                    line-height: 20px;
                     text-transform: uppercase;
                 }
-
-                .additional-info { .hide; }
             }
 
             /* Cards ***/
@@ -1168,20 +1235,107 @@
             &:last-child { margin-bottom: 0; }
 
             &.room {
-                .data {
-                    .calc-width(35, 10);
+
+                .check { 
+                    top: 12.5px;
+                    right: 12.5px;
+                }
+
+                .room-info { 
+                    width: 160px;
+
+                    .room-status { font-size: 15px; }
+                }
+
+                .reservation-status {
+                    margin-right: 10px;
+                    .calc-width(35, 85);
+                }
+
+                .additional-info {
+                    clear: none;
+                    margin-top: 5px;
+                    .pull-left;
+                    .calc-width(65, 85);
+
+                    span {
+                        float: none;
+                        font-size: 15px;
+                        line-height: 16px;
+
+                        &:not(:last-child) { margin: 0 0 5px 0; }
+                    }
+                }
+
+                .icon-queued,
+                .guest-image {
+                    top: 17.5px;
+                    .square(30px);
+                }
+
+                .icon-queued {
+                    right: 60px;
+                    background-position: 0 -4174px;
+                }
+
+                .guest-image {
+                    right: 60px;
+
+                    .vip {
+                        font-size: 9px;
+                        line-height: 20px;
+                        .square(18px);
+                    }
+                }
+
+                .show-vacant {
+                    top: 24px;
+                    right: 50px;
+                    width: 60px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) { 
+    .search-results {
+        li:not(.no-content) {
+            a,
+            .faux-anchor { padding: 15px; }
+
+            &.room {
+
+                .check { 
+                    top: 10px;
+                    right: 15px;
+                }
+
+                .room-info {
+                    margin: 0;
+                    width: 240px;
+                    .float;
 
                     h2,
                     .room-status {
+                        line-height: 30px;
                         width: 50%;
-                        line-height: 40px;
                         .pull-left;
+                    } 
+
+                    h2 { 
+                        font-size: 30px; 
+                        width: 40%;
+                    }
+
+                    .room-status { 
+                        font-size: 16px; 
+                        width: 60%;
                     }
                 }
 
                 .reservation-status {
-                    margin-top: 5px;
-                    .calc-width(65, 70);
+                    width: 260px;
 
                     .guest-status { 
                         margin-right: 10px;
@@ -1204,68 +1358,33 @@
                         .pull-left;
                     }       
                 }
-            }
-        }
-    }
-}
 
-@media only screen and (min-width: 768px) { 
-    .search-results {
-        li:not(.no-content) {
-            a,
-            .faux-anchor { padding: 15px; }
+                .additional-info {
+                    margin: 0;
+                    .calc-width(100, 600);
 
-            &.room {
-
-                .check { 
-                    top: 15px;
-                    right: 15px;
-                }
-
-                .data { 
-                    margin-right: 20px;
-                    .calc-width(25, 10); 
-
-                    h2 { font-size: 30px; }
-                    .room-status { font-size: 16px; }
-                }
-                
-                .reservation-status { 
-                    margin-right: 20px;
-                    .calc-width(30, 10); 
-                }
-                
-                .additional-info { 
-                    font-size: 16px;
-                    line-height: 40px;
-                    text-transform: uppercase;
-                    clear: none;
-                    .calc-width(45, 90);
-                    .pull-left;
-                    .float;
-                    .show;
-
-                    .assigned,
-                    .unassigned,
-                    .service-status {
+                    span {
+                        font-size: 16px;
+                        line-height: 30px;
+                        padding-right: 20px;
+                        margin: 0;
                         width: 50%;
-                        text-transform: uppercase;
-                        font-weight: 600;
                         .nowrap();
                         .pull-left;
+
+                        &:not(:last-child) { margin: 0; }
+
+                        &:last-child:not(:first-child) { text-align: right; }
                     }
-
-                    .unassigned { color: @grey2; }
-                    .service-status { color: @grey3; }
                 }
 
-                .show-vacant { 
-                    top: 17px;
+                .icon-queued,
+                .guest-image {
+                    top: 15px;
+                    right: 65px;
                 }
 
-                .icon-queued {
-                    top: 25px;
-                }
+                .show-vacant { top: 20px; }
             }
         }
     }

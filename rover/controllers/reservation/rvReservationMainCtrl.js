@@ -122,7 +122,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.otherData.isAddonEnabled = baseSearchData.settings.is_addon_on;
 
             $scope.guestCardData = {};
-            $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
+            $scope.guestCardData.cardHeaderImage = "/assets/images/avatar-trans.png";
             $scope.guestCardData.contactInfo = {};
             $scope.guestCardData.userId = '';
 

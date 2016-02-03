@@ -22,7 +22,10 @@ admin.config([
                 },
                 businessDate: function(ADAppSrv) {
                 	return ADAppSrv.fetchHotelBusinessDate();
-                }
+                },
+                adminDashboardConfigData: function(ADAppSrv){
+					return ADAppSrv.fetchDashboardConfig();
+				}
             }
 		});
 	}

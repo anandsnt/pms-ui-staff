@@ -1,4 +1,4 @@
-sntRover.controller('rvRoomAvailabilityGridStatusController', [
+angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'$timeout',

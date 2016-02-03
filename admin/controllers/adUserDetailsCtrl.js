@@ -215,7 +215,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			if(data.user_photo === ""){
-				$scope.image = "/assets/preview_image.png";
+				$scope.image = "/assets/images/preview_image.png";
 			} else {
 				$scope.image = data.user_photo;
 			}
@@ -269,7 +269,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			$scope.assignedRoles = [];
-			$scope.image = "/assets/preview_image.png";
+			$scope.image = "/assets/images/preview_image.png";
 		};
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);
 	};
