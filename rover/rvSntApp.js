@@ -9,6 +9,7 @@ var GlobalApp = function(){
     try{
     	this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
+        this.desktopUUIDService = new DesktopUUIDService();
     }
         catch(er){
     };

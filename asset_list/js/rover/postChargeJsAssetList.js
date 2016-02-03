@@ -9,7 +9,6 @@ module.exports = {
 				controllerRoot + 'postCharge/**/*.js',
 				servicesRoot + "postCharge/**/*.js",
 				servicesRoot + "bill/rvBillCardSrv.js",
-				'rover/directives/delayTextbox/rvDelayTextBox.js',
 				servicesRoot + "accounts/rvAccountsTransactionSrv.js"
 			]
 		};

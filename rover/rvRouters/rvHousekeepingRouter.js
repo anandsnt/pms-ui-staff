@@ -8,7 +8,7 @@ angular.module('housekeepingModule', [])
             controller: 'RVHkAppCtrl',
             resolve: {
                 housekeepingAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.housekeeping');
+                    return jsMappings.fetchAssets(['rover.housekeeping', 'directives']);
                 }
             } 
         });
@@ -86,7 +86,7 @@ angular.module('housekeepingModule', [])
             controller: 'RVWorkManagementCtrl',
             resolve: {
                 workManagementAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.workManagement');
+                    return jsMappings.fetchAssets(['rover.workManagement', 'directives']);
                 },
                 employees: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchMaids();
@@ -97,7 +97,7 @@ angular.module('housekeepingModule', [])
                 shifts: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchShifts();
                 },
-                floors: function(RVHkRoomStatusSrv) {
+                floors: function(RVHkRoomStatusSrv, workManagementAssets) {
                     return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
@@ -122,11 +122,11 @@ angular.module('housekeepingModule', [])
                 activeWorksheetEmp: function(RVHkRoomStatusSrv, workManagementAssets) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 },
-                fetchHKStaffs: function(RVWorkManagementSrv) {
+                fetchHKStaffs: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchHKStaffs();
                 },
 
-                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams) {
+                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams, workManagementAssets) {
                     var unassignedRoomsParam = {
                         date: $stateParams.date,
                     };

@@ -84,7 +84,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
              onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings) {
 
                if($stateParams.type === 'changeBussinessDate'){
-                    jsMappings.fetchAssets('endofday').then(function(){
+                    jsMappings.fetchAssets(['endofday']).then(function(){
                         ngDialog.open({
                             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
                             controller: 'RVEndOfDayModalController'
@@ -92,7 +92,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     });
                }
                else if($stateParams.type === 'postCharge'){
-                    jsMappings.fetchAssets('postcharge').then(function(){
+                    jsMappings.fetchAssets(['postcharge', 'directives']).then(function(){
                         ngDialog.open({
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController'

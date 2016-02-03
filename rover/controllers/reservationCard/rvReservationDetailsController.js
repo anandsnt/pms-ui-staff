@@ -265,13 +265,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
-				$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+				if(_.isString($scope.selectedLoyalty.membership_card_number)){
+					$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+				}
 			}
 		});
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
-				$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+				if(_.isString($scope.selectedLoyalty.membership_card_number)){
+					$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+				}
 			}
 		});
 

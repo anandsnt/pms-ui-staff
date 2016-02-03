@@ -28,6 +28,9 @@
                     <ad-textbox value="lightspeed.username" name="username" id="username" label="{{'LIGHT_SPEED_POS_USERNAME'| translate}}" ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
                     <ad-textbox inputtype="password" value="lightspeed.password" name="password" id="password" label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                </fieldset>
+                <fieldset class="holder left">
+                    <ad-textbox inputtype="text" value="lightspeed.account_number" name="account-number" id="account-number" label="{{'LIGHT_SPEED_POS_ACCOUNT_NUMBER'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>                  
+                </fieldset>
             </fieldset>
 
             <div class="actions float">

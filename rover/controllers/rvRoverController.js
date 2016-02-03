@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q) {
 
     // TODO: remove this after CICO-19912 is done
     SWITCH_ROOM_AND_RATES_ALT = true;
@@ -272,7 +272,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('staffpasswordchange')
+        jsMappings.fetchAssets(['staffpasswordchange'])
         .then(function(){
             $scope.$emit('hideLoader');
             ngDialog.open({
@@ -280,7 +280,7 @@ sntRover.controller('roverController',
                 controller: 'RVStaffsettingsModalController',
                 className: 'calendar-modal'
             });
-        });    
+        });
     };
 
 
@@ -402,7 +402,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('endofday')
+        jsMappings.fetchAssets(['endofday'])
         .then(function(){
             $scope.$emit('hideLoader');
             ngDialog.open({
@@ -417,7 +417,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('postcharge')
+        jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function(){
             $scope.isOutsidePostCharge = true;
             $scope.$emit('hideLoader');
@@ -523,14 +523,29 @@ sntRover.controller('roverController',
     	}
     };
 
+    $scope.uuidServiceSuccessCallBack = function(response) {
+      $rootScope.UUID = response.Data;
+    };
+
+    $scope.uuidServiceFailureCallBack = function(error) {
+      $scope.errorMessage = error;
+      $rootScope.UUID = "DEFAULT";
+    };
+
+
+
+
+
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
+    options["uuidServiceSuccessCallBack"] = $scope.uuidServiceSuccessCallBack;
+    options["uuidServiceFailureCallBack"] = $scope.uuidServiceFailureCallBack;
 
     $scope.numberOfCordovaCalls = 0;
 
     var initiateDesktopCardReader = function(){
-
+      sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
 
@@ -556,6 +571,8 @@ sntRover.controller('roverController',
       }
     };
 
+
+
     /*
      * Start Card reader now!.
      */
@@ -564,6 +581,7 @@ sntRover.controller('roverController',
        * desktopSwipeEnabled flag is true
       */
       if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
+        $rootScope.isDesktopUUIDServiceInvoked = true;
   			initiateDesktopCardReader();
   		}
       else {
@@ -572,6 +590,11 @@ sntRover.controller('roverController',
   			  $scope.initiateCardReader();
   			}, 2000);
   		}
+    }
+
+    //If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
+    if(!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {
+      sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
     }
 
     /*

@@ -24,6 +24,6 @@ angular.module('twoMonthscalendar', []).directive('twoMonthCalendar', function()
         link: function(scope, elm, attrs, controller) {
 
         },
-        templateUrl: '../../assets/directives/fullCalendar/twoMonthCalendar.html'
+        templateUrl: '/assets/directives/fullCalendar/twoMonthCalendar.html'
     };
 });

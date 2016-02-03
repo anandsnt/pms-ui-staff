@@ -475,6 +475,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
 
             $scope.selectedEntity.reference_number = data.reference_number;
+
+            if (typeof $scope.selectedEntity.is_allow_direct_debit === 'undefined') {
+                $scope.selectedEntity.is_allow_direct_debit = data.is_allow_direct_debit;
+            }
             //Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
             if(!isEmptyObject(data.credit_card_details)){
@@ -514,7 +518,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 }
                 $scope.$parent.$emit('hideLoader');
                 $scope.fetchDefaultAccountRouting();
-
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
@@ -540,8 +543,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     if($scope.billingEntity !== "TRAVEL_AGENT_DEFAULT_BILLING" &&
         $scope.billingEntity !== "COMPANY_CARD_DEFAULT_BILLING" &&
         $scope.billingEntity !== "GROUP_DEFAULT_BILLING" &&
-        $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING"
-        ){
+        $scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
+
         $scope.fetchBillsForReservation();
     }
     else {

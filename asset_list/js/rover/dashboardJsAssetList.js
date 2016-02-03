@@ -1,4 +1,4 @@
-module.exports = {	
+module.exports = {
 	getList : function() {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
@@ -11,18 +11,18 @@ module.exports = {
 				jsLibRoot + 'jquery-ui.min.js',
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
 				jsLibRoot + 'angular.min.js',
-				jsLibRoot + 'angular-route.min.js', 
-				jsLibRoot + 'angular-ui-router.min.js', 
-				jsLibRoot + 'angular-animate.min.js', 
+				jsLibRoot + 'angular-route.min.js',
+				jsLibRoot + 'angular-ui-router.min.js',
+				jsLibRoot + 'angular-animate.min.js',
 				jsLibRoot + 'angular-dragdrop.min.js',
 				jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
 				jsLibRoot + 'angular-sanitize.min.js',
 				jsLibRoot + 'angular-translate.min.js',
-				jsLibRoot + 'angular-translate-loader-static-files.min.js', 
+				jsLibRoot + 'angular-translate-loader-static-files.min.js',
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
-				jsLibRoot + 'fastclick.min.js'				
+				jsLibRoot + 'fastclick.min.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',
@@ -37,10 +37,10 @@ module.exports = {
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
-				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js',
-				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js', 
+				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvUUIDService.js', roverRoot + 'rvDesktopUUIDService.js',
+				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js',
 				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
-				
+
 				roverRoot + 'filters/roundFilter.js',
 
 				controllerRoot + 'rvTopCtrl.js',
@@ -48,6 +48,7 @@ module.exports = {
 				controllerRoot + 'dashboard/**/*.js',
 				controllerRoot + 'availability/rvAvailabilityButtonCtrl.js',
 				controllerRoot + 'search/**/*.js',
+				controllerRoot + 'errorPopup/rvTimeoutErrorCtrl.js',
 				controllerRoot + 'workstation/rvWorkstationCtrl.js',
 
 				serviceRoot + 'baseWebSrvV2.js',
@@ -55,6 +56,7 @@ module.exports = {
 				serviceRoot + 'rvBaseWebSrvV2.js',
 				serviceRoot + 'rvDashboardSrv.js',
 				serviceRoot + 'menu/rvMenuSrv.js',
+				serviceRoot + 'rvHKOWSTestSrv.js',
 				serviceRoot + 'jsMappings/jsMappingsSrv.js',
 				serviceRoot + 'permissions/rvPermissionSrv.js',
 				serviceRoot + 'rvSearchSrv.js',
@@ -64,8 +66,8 @@ module.exports = {
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js'
 			]
-		};		
-		
+		};
+
 		return roverJsAssets;
 	}
 };

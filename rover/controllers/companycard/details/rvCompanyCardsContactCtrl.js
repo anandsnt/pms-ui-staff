@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');
@@ -41,12 +41,18 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 	    	} else {
 	    		return false;
 	    	}
-		    ngDialog.open({
-		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-		        controller: 'rvBillingInformationPopupCtrl',
-		        className: '',
-		        scope: $scope
-		    });
+
+	    	$scope.$emit('showLoader'); 
+           	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+            .then(function(){
+            	$scope.$emit('hideLoader'); 
+			    ngDialog.open({
+			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			        controller: 'rvBillingInformationPopupCtrl',
+			        className: '',
+			        scope: $scope
+			    });
+			});
 	    };
 
 		$scope.$on("setCardContactErrorMessage", function($event, errorMessage) {
