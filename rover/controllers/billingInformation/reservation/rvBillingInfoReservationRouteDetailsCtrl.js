@@ -158,13 +158,6 @@ sntRover.controller('rvBillingInfoReservationRouteDetailsCtrl',['$scope','$rootS
     });
 
     /**
-     * On adding a credit card, refresh the route details scroller
-     */
-    $scope.$on('REFRESH_ROUTE_DETAILS_SCROLLER', function() {
-        $scope.refreshScroller('routeDetails');
-    });
-
-    /**
      * Retrieve credit card expiry based on payment gateway
      * @return {DateObject}
      */
