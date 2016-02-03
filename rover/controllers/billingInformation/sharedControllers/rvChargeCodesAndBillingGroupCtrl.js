@@ -182,9 +182,11 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope','$rootScope','
      * @return {Boolean}
      */
     $scope.isChargeCodeSelected = function(chargeCode) {
-        for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
-            if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id ) {
-                return true;
+        if ($scope.selectedEntity.attached_charge_codes) {
+            for (var i = 0; i < $scope.selectedEntity.attached_charge_codes.length; i++) {
+                if ($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id ) {
+                    return true;
+                }
             }
         }
         return false;
