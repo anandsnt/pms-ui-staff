@@ -30,6 +30,7 @@ sntRover.controller('RVroomAssignmentController',[
 
 	var oldRoomType = '';
 	$scope.errorMessage = '';
+	$scope.searchText = '';
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 	$scope.setTitle(title);
 
@@ -89,6 +90,19 @@ sntRover.controller('RVroomAssignmentController',[
 				return $scope.roomTypes[i];
 			}
 		};
+	};
+
+	$scope.searchRoom = function(){
+		$scope.filteredRooms = [];;//Emptying rooms on search
+		angular.forEach($scope.allRooms, function(value, key) {
+			if(value.room_number.indexOf($scope.searchText) !== -1){
+				$scope.filteredRooms.push(value);
+			}
+		});
+		setTimeout(function(){
+			$scope.refreshScroller('roomlist');
+			},
+		1000);
 	};
 
 	$scope.moveInHouseRooms = function(){
@@ -307,7 +321,7 @@ sntRover.controller('RVroomAssignmentController',[
                         return;
                     }
                     */
-                    
+
 			if($scope.clickedButton === "checkinButton") {
 				$state.go('rover.reservation.staycard.billcard',
 					{
@@ -405,7 +419,7 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 
-        
+
         $scope.goToStayCardFromAddToQueue = false;
         if (!$rootScope.reservationRoomWatch){//alternative to $destroy, this is an init-once method
             $rootScope.reservationRoomWatch = 1;
@@ -423,7 +437,7 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
                 } else {
-                    
+
 			$scope.$emit('hideLoader');
 			$scope.backToStayCard();
 		}
@@ -738,7 +752,8 @@ sntRover.controller('RVroomAssignmentController',[
 
 		$scope.roomTypes = roomPreferences.room_types;
 		$scope.roomFeatures = roomPreferences.room_features;
-		$scope.rooms = roomsList.rooms;
+		$scope.allRooms = $scope.rooms = roomsList.rooms;//$scope.allRooms - CICO-23077
+
 		$scope.floors = roomPreferences.floors.floor_details;
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.addPredefinedFilters();
