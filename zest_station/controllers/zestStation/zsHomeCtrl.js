@@ -70,11 +70,6 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.idle_timer_enabled = false;
         $rootScope.$broadcast('STOP_TIMERS');
         $state.go('zest_station.admin-screen');
-
-        setTimeout(function(){
-      //      $('.ngdialog-close').hide();
-       //     $('.ngdialog-content').css("padding", "0");
-        },50);
     };
 
     ($stateParams.isadmin == "true") ? openAdminPopup() : "";
@@ -305,6 +300,7 @@ sntZestStation.controller('zsHomeCtrl', [
                             $scope.zestStationData.workstations[i].selected = true;
                             $scope.zestStationData.selectedWorkStation = station.station_identifier;
                             $scope.selectedWorkstationName = $scope.zestStationData.workstations[i].name;
+                            $scope.setPrinterLabel($scope.zestStationData.workstations[i].printer);
                             
                         } else {
                             $scope.zestStationData.workstations[i].selected = false;
@@ -315,26 +311,30 @@ sntZestStation.controller('zsHomeCtrl', [
         } 
         return station;
     };  
+    $scope.printerName = '';
+    $scope.setPrinterLabel = function(name){
+        if (name && typeof name === typeof 'str'){
+             if (name.length > 1){
+                 //printer name convention has something like IPP://somename..
+                 //so lets pull out that IPP:// from the display to user, so they will see its
+                 //HP or other printer identifiers
+                 var str = name.split('ipp://');
+                 if (str[1]){
+                     name = str[1];
+                 }
+             }
+        }
+        $scope.printerName = name;
+    };
     $scope.selectedWorkstationName = '';
     $scope.getWorkStation();
     
     $scope.openWorkStationList = function(){
         $scope.selectedWorkstation = $state.workstation_id;
-       // $('.ngdialog-content').addClass('zoku-style');
         
     };
     
     $scope.workStationObj = {};
-    /*
-    $scope.$watch('zestStationData.selectedWorkStation',function(){
-        $scope.workStationObj = {};
-        for (var i in $scope.zestStationData.workstations){
-            if ($scope.zestStationData.workstations[i].id === $scope.zestStationData.selectedWorkStation){
-                $scope.workStationObj = $scope.zestStationData.workstations[i];
-            }
-        }
-    });
-    */
     $scope.$watch('zestStationData.workstations',function(){
         $scope.workStationObj = {};
         if ($scope.zestStationData){
@@ -423,7 +423,6 @@ sntZestStation.controller('zsHomeCtrl', [
     $scope.init = function(){
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
-           
            
         } else if (current === 'zest_station.oos'){
             $scope.$emit('REFRESH_SETTINGS');
