@@ -423,6 +423,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$( '#print-orientation' ).remove();
 		};
 
+		/**
+		 * Opens a popup to select the configurations to print the worksheet.
+		 * @return {undefined}
+		 */
 		$scope.openPrintWorkSheetPopup = function() {
 			ngDialog.open({
 				template: '/assets/partials/workManagement/popups/rvWorkManagementPrintOptionsPopup.html',
@@ -433,27 +437,23 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 		};
 
+		/**
+		 * Prints the worksheet according to options configured in the $scope.printSettings.
+		 * @return {undefined}
+		 */
 		$scope.printWorkSheet = function() {
 			console.log($scope.printSettings);
 
-			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-0'].scrollTo(0, 0);
+			// reset scroll bars to top
+			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+				var scroller = 'assignedRoomList-'+i;
+				$scope.$parent.myScroll[scroller] && $scope.$parent.myScroll[scroller].scrollTo
+				$scope.$parent.myScroll[scroller].scrollTo(0, 0);			};
 			}
-			if ($scope.$parent.myScroll['assignedRoomList-1'] && $scope.$parent.myScroll['assignedRoomList-1'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-1'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-2'] && $scope.$parent.myScroll['assignedRoomList-2'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-2'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-3'] && $scope.$parent.myScroll['assignedRoomList-3'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-3'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-4'] && $scope.$parent.myScroll['assignedRoomList-4'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-4'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-5'] && $scope.$parent.myScroll['assignedRoomList-5'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-5'].scrollTo(0, 0);
-			}
+
+			// set the sheet according to print settings.
+			configureMultisheetForPrinting();
+
 			// add the orientation
 			addPrintOrientation();
 
