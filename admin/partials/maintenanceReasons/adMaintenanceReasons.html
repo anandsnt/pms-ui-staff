@@ -14,22 +14,30 @@
 			
 			<table class="grid">
 				<tbody>
-					<tr ng-repeat="item in data.maintenance_reasons" > 
+					<thead>
+                		<tr role="row">
+                    		<th width="40%" > NAME</th>
+		                    <th width="40%" > CODE</th>
+		                    <th width="20%" class="activate long"> Delete </th>
+		                </tr>
+            		</thead>
+            		<tbody>
+						<tr ng-repeat="item in data.maintenance_reasons" > 
 
-						<td ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
-							<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}} </a>
-						</td>
+							<td data-item="1" data-colspan="2" data-title="'Name'" class="edit-data-inline" ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
+								<a>{{item.name}} </a>
+							</td>
 
-						<td ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
-							<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.code}} </a>
-						</td>
+							<td  data-item="1" data-title="'Code'" data-colspan="2" class="edit-data-inline" ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
+								<a>{{item.code}} </a>
+							</td>
 
-						<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index">
-							<a class="icons icon-delete large-icon delete_item"></a>
-						</td>
-						<td colspan="2" ng-include="getTemplateUrl($index)"></td>
-					</tr>
-					
+							<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index">
+								<a class="icons icon-delete large-icon delete_item"></a>
+							</td>
+							<td colspan="2" ng-include="getTemplateUrl($index)"></td>
+						</tr>
+					</tbody>					
 				</tbody>
 			</table>
 		</section>
