@@ -55,7 +55,7 @@
                         <input name="name-on-card" ng-model = "saveData.name_on_card" id="name-on-card" value="" type="text" />
                      </div> -->
                      <div class="actions">
-                        <button type="button" class="button blank" ng-click = "cancelClicked()" ng-show="paymentFlags.isAddPayment" translate>CANCEl</button>
+                        <button type="button" class="button blank" ng-click = "cancelClicked()" ng-show="isAddPayment" translate>CANCEl</button>
                         <!-- <button type="button" class="button" ng-hide="showCCPage" ng-class="{'green': saveData.payment_type != '', 'grey': saveData.payment_type == ''}"  ng-disabled = "saveData.payment_type == ''" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button> -->
                      </div>
       </div>
