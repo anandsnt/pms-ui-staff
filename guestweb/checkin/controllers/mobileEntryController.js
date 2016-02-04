@@ -32,6 +32,22 @@
 
     $scope.guestDetails = { "mobile":""};
     $scope.mobileUpdated = false;
+    $scope.country_code  = "";
+
+    $scope.countryChanged = function(){
+      $scope.dial = _.find($scope.countryDetails,function(countryDetails){ return countryDetails.countrycode === $scope.country_code}).dial;
+    };
+
+
+    
+    guestDetailsService.fetchCountryCode().then(function(response) {
+      $scope.countryDetails = response;
+      $scope.isLoading = false;
+    },function(){
+      $scope.netWorkError = true;
+      $scope.isLoading = false;
+    });
+
 
    
     function validateMobile(mobile) {

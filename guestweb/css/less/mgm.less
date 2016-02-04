@@ -369,3 +369,51 @@ body {
 	padding-bottom:25px;
 	border-bottom:1px white solid;
 }
+
+/* mobile number section */
+
+.country-container{
+	width:18% !important;
+}
+.flag-container{
+	overflow: visible; 
+	height: 40px; 
+	width: 105%;
+}
+.flag-container::after{
+	left:80% !important;
+}
+.country-dropdown{
+	width: 200px;
+	position: absolute; 
+	opacity: 0; 
+	height: 40px;
+}
+.dial-div{
+	background: white none repeat scroll 0px 0px;
+	float: left;
+	height: 40px;
+	padding: 2%;
+	width: 18%;
+	margin-left:20px;
+}
+.mobile-field{
+	float:right;
+	width:55%;
+	margin-left:8px;
+}
+
+
+@media (max-width:480px) {
+	.flag-container{ 
+		width: 125%;
+	}
+	.mobile-field{
+		width:51%;
+	}
+}
+
+
+/* mobile number end section */
+
+

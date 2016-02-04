@@ -31,7 +31,19 @@
                   <div class="date-container ">
                      <div class="row">
                         <em class="labelText">MOBILE PHONE NUMBER</em>
-                        <input type="text" ng-model="guestDetails.mobile" class = "col-xs-12 textBox bottom-margin-10" /> 
+                        <!--  -->
+                        <div class="row cabin_number_field">
+                           <div class="expiry-year-container eta-container country-container">
+                              <div class="select-style flag-container"><div class="flag {{ country_code}}">
+                              </div>
+                                <select name="repeatSelect" id="repeatSelect" ng-model="country_code" ng-change="countryChanged()" class="country-dropdown">
+                                    <option ng-repeat="option in countryDetails" value="{{option.countrycode}}">{{option.name}}</option>
+                                 </select>
+                           </div>
+                        </div>
+                        <div class="dial-div">{{dial}}</div>
+                        <!--  -->
+                        <input type="text" ng-model="guestDetails.mobile" class = "col-xs-12 textBox bottom-margin-10 mobile-field"/> 
                      </div>
                      <input type="submit" class="col-xs-12  link-btn with-bg nextbtn no-transform" ng-click="mobileSubmitted()" value="Continue"/> 
                      <input class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="continueClicked()" value="Skip"/>
