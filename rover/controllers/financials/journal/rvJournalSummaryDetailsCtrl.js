@@ -61,9 +61,9 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
             $scope.details.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.details.summaryData.deposit_balance = { 'active' : true ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.details.summaryData.guest_balance   = { 'active' : true ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.details.summaryData.ar_balance      = { 'active' : true ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.details.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.details.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.details.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
 
             $scope.errorMessage = "";
 
@@ -100,6 +100,8 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
             summaryItem.end = summaryItem.start + summaryItem.transactions.length - 1;
 
             updateTotalForBalanceType( balance_type, responce.opening_balance, responce.debit_sum, responce.credit_sum, responce.closing_balance );
+
+            summaryItem.active = summaryItem.transactions.length > 0;
             callback();
         };
 
