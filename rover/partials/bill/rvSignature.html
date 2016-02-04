@@ -64,7 +64,7 @@
 			</div>
 		</div>
 
-		<div class="entry" ng-show=" $index === 0 ">
+		<div class="entry" ng-show=" $index === 0 && hasPermissionToShowCheckoutWithoutSettlement()">
             <label class="checkbox inline single">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked': isCheckoutWithoutSettlement }"></span>
                 <input type="checkbox" ng-click="toggleCheckoutWithoutSettlement()" ng-model="isCheckoutWithoutSettlement">

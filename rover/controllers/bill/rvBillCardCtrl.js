@@ -1590,6 +1590,15 @@ sntRover.controller('RVbillCardController',
                             }
 			}
         };
+    /**
+	* function to check whether the user has permission
+	* to Show 'Checkout Without Settlement' checkbox.
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToShowCheckoutWithoutSettlement = function() {
+		//return rvPermissionSrv.getPermissionValue ('CHECK_OUT_WITH_OUT_SETTLEMENT');
+		return true;
+	};
     // CICO-6089 : Handle toggle button.
     $scope.toggleCheckoutWithoutSettlement = function(){
     	$scope.isCheckoutWithoutSettlement = !$scope.isCheckoutWithoutSettlement;
