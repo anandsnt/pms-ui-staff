@@ -46,6 +46,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		// set the scroller
 		$scope.setScroller('room-status-filter');
+		$scope.setScroller('room-service-status-update');
+		setTimeout(function(){ $scope.refreshScroller('room-status-filter'); }, 1500);
 
 
 

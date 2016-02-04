@@ -1,23 +1,112 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
-	<div class="modal-content form update-room-status">
+	<div class="modal-content update-room-status extended">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 	    <button ng-click="closeHkStatusDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
 	    
-	    <strong class="h2 message">Update Status</strong>
+	    <!-- <strong class="h2 message">Update Status</strong>
 	    <span ng-hide="multiRoomAction.allChosen" class="text">{{ multiRoomAction.rooms.length }} rooms selected</span>
-	    <span ng-show="multiRoomAction.allChosen" class="text">{{ allRoomIDs.length }} rooms selected</span>
+	    <span ng-show="multiRoomAction.allChosen" class="text">{{ allRoomIDs.length }} rooms selected</span> -->
+	    <strong class="h2 message" ng-hide="multiRoomAction.allChosen">Update {{ multiRoomAction.rooms.length }} rooms</strong>
+	    <strong class="h2 message" ng-show="multiRoomAction.allChosen">Update {{ allRoomIDs.length }} rooms</strong>
 
-	    <div class="entry full-width">
-	       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">
-	       		<span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.hkStatusId == status.id }"></span>
-	       		<input name="room-status" id="{{ status.id }}" type="radio" value="{{ status.id }}" ng-model="multiRoomAction.hkStatusId" />
-	       		{{ status.description }}
-	       	</label>
+
+	    <ul class="options">
+        	<li data-show="#room-status" >Room Status</li>
+        	<li data-show="#service-status" class="active">Service Status</li>
+    	</ul>
+
+    	<!-- Room Status Form -->
+	    <div id="room-status" class="status-container hidden">
+        	<div class="entry radio-check">
+		       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">
+		       		<span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.hkStatusId == status.id }"></span>
+		       		<input name="room-status" type="radio" id="{{ status.id }}" value="{{ status.id }}" ng-model="multiRoomAction.hkStatusId" />
+		       		{{ status.description }}
+		       	</label>
+		    </div>
+
+		    <div class="actions">
+		        <button ng-click="submitHkStatusChange()" type="button" class="button green">Confirm</button>
+		        <button ng-click="closeHkStatusDialog()" type="button" class="button blank">Cancel</button> 
+	    	</div>
 	    </div>
-	    <div class="actions">
-	        <button ng-click="submitHkStatusChange()" type="button" class="button green">Confirm</button>
-	        <button ng-click="closeHkStatusDialog()" type="button" class="button blank">Cancel</button> 
+
+	    <!-- Service Status Form -->
+	    <div id="service-status" class="status-container">
+	        <div class="entry float-label">
+	            <div class="select">
+	                <label for="select-service-status" class="label">Service Status</label>
+	                <select id="select-service-status">
+	                    <option value="" selected>Out of Order</option>
+	                    <option value="">Out of Service</option>
+	                </select>
+	            </div>
+	        </div>
+
+	        <div id="status-details" class="scrollable" ng-iscroll="room-service-status-update">
+	            <div class="wrapper room-service-status">
+	                <div id="dates" class="row">
+                    <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
+	                    <div id="out-from" class="entry">
+	                        <label id="room-out-from-label" for="room-out-from">From <span>Sunday</span></label>
+	                        <div class="entry-data">
+	                            <input name="room-out-from" id="room-out-from" type="text" class="datepicker" value="{ooo/oos from date}" readonly />
+	                            <strong id="room-out-from-day" class="day">01</strong>
+	                            <span id="room-out-from-month" class="month">Feb</span>
+	                            <span id="room-out-from-year" class="year">2015</span>
+	                        </div>
+	                        <div class="select">
+	                            <select id="room-out-from-time" class="placeholder">
+	                                <option value="" selected>From Time</option>
+	                                <option value="00:00">00:00</option>
+	                                <option value="00:00">00:10</option>
+	                                <option value="00:00">00:20</option>
+	                            </select>
+	                        </div>
+	                    </div>
+	                    <div id="out-to" class="entry">
+	                        <label id="room-out-to-label" for="room-out-to">To <span>Monday</span></label>
+	                        <div class="entry-data">
+	                            <input name="room-out-to" id="room-out-to" type="text" class="datepicker" value="{ooo/oos to date}" readonly />
+	                            <strong id="room-out-to-day" class="day">05</strong>
+	                            <span id="room-out-to-month" class="month">Mar</span>
+	                            <span id="room-out-to-year" class="year">2016</span>
+	                        </div>
+	                        <div class="select">
+	                            <select id="room-out-to-time" class="placeholder">
+	                                <option value="" selected>To Time</option>
+	                                <option value="00:00">00:00</option>
+	                                <option value="00:00">00:10</option>
+	                                <option value="00:00">00:20</option>
+	                                <option value="00:00">00:30</option>    
+	                            </select>
+	                        </div>
+	                    </div>
+                	</div>
+	                <div id="reason" class="row">
+	                    <div class="entry">
+	                        <label for="reason">Reason</label>
+	                        <div class="select">
+	                            <select name="reason" id="reason">
+	                                <option value="" selected>Select</option>
+	                                <option value="1">Reason 1</option>
+	                                <option value="2">Reason 2</option>
+	                            </select>
+	                        </div>
+	                    </div>
+	                    <div class="entry">
+	                        <label for="reason-comments">Comments <span>(optional)</span></label>
+	                        <textarea name="reason-comments" id="reason-comments" rows="4"></textarea>
+	                    </div>
+	                </div>
+	        	</div>
+	        </div>
+
+	        <div class="actions">
+	            <button type="button" class="button blank" ng-click="closeHkStatusDialog()">Cancel</button> 
+	            <button type="button" class="button green">Update</button>
+       		</div>
 	    </div>
 	</div>
 </div>
