@@ -161,8 +161,10 @@
                 margin-top: 10px;
                 button {
                     margin: inherit;
+                    
                 }
             }
+            
             
             .admin-item-label{
                 margin-left: 5px;
@@ -596,7 +598,7 @@
 
             &.sub { color: lighten(@black, 60); }
 
-            &:last-child { margin-bottom: 0; }
+            &:last-child {margin-bottom: 0;}
         }
     }
 
@@ -877,25 +879,46 @@
     }
 /* Popup ***/
     #popup {
-        position: fixed;
-        top: 15%;
-        
-        &.admin-popup{
-            left: 30%;
-        }
+        position: fixed !important;
+        overflow: auto !important;
+        -webkit-overflow-scrolling: touch;
+        -webkit-overflow: hidden;
+        right: 0 !important;
+        //bottom: 0 !important;
+        left: 0 !important;
+        top: 20% !important;
         z-index: 9000;
         visibility: hidden;
+        
+        padding-right: 25%;
+        padding-left: 25%;
         &.workstations{
-            left: 36% !important;
+           // left: 36% !important;
+           height:50%;
+           overflow:scroll;
+        }
+        
+        &.idle-popup{
+            top: 40% !important;
         }
         
       //  .translate3d(-50%, -50%, 0);
         #popup-content {
             min-width: 320px;
-            padding: 40px;
+           // padding: 40px;
             z-index: 9000;
             color: @black;
-            background: @white;
+            
+            background: 
+                //url(sweettexture.jpg)    /* image */
+                top center / 50% /* position / size */
+                no-repeat                /* repeat */
+                fixed                    /* attachment */
+                padding-box              /* origin */
+                content-box              /* clip */
+                @white;                     /* color */
+            
+            
             opacity: 0;
             #flexbox > .flex();
             #flexbox > .parent(column wrap, center, center, '');
@@ -919,7 +942,38 @@
             }
         }
     }
-
+    .workstation_button{
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-bottom: 10px;
+            
+    }
+    .workstation_close{
+                position: fixed !important;
+                overflow: auto !important;
+                -webkit-overflow-scrolling: touch;
+                -webkit-overflow: hidden;
+                right: 0 !important;
+                bottom: 10% !important;
+                left: 0 !important;
+                /* top: 25% !important; */
+                z-index: 9000;
+                /* visibility: hidden; */
+                padding-right: 26%;
+                padding-left: 25%;
+                
+                
+            background: 
+                //url(sweettexture.jpg)    /* image */
+                top center / 45% /* position / size */
+                no-repeat                /* repeat */
+                fixed                    /* attachment */
+                padding-box              /* origin */
+                content-box              /* clip */
+                @white;                     /* color */
+            
+            
+    }
     #popup-overlay {
         position: fixed;
         top: 0;
@@ -931,6 +985,10 @@
         .transition();
 
         &.open { opacity: 1; }
+    }
+    
+    .workstation_dropdown{
+        padding: 0 25%;
     }
    
 /* Admin Button */

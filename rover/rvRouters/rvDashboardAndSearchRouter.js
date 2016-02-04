@@ -5,7 +5,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/search/rvSearchReservation.html',
             controller: 'rvReservationSearchController',
             resolve: {
-                searchResultdata: function(RVSearchSrv, $stateParams) {
+                searchResultdata: function(RVSearchSrv, $stateParams, mappingList) {
                     var oldType = "";
                     var dataDict = {};
                     oldType = $stateParams.type;
@@ -47,7 +47,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
-                dashBoarddata: function(RVDashboardSrv) {
+                dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 }
             }
@@ -76,22 +76,27 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
-                dashBoarddata: function(RVDashboardSrv) {
+
+                dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
-                }
+                },
             } ,
-             onEnter: function (ngDialog,$stateParams) {
+             onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings) {
 
                if($stateParams.type === 'changeBussinessDate'){
-                    ngDialog.open({
-                        template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-                        controller: 'RVEndOfDayModalController'
+                    jsMappings.fetchAssets(['endofday']).then(function(){
+                        ngDialog.open({
+                            template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+                            controller: 'RVEndOfDayModalController'
+                        });
                     });
                }
                else if($stateParams.type === 'postCharge'){
-                     ngDialog.open({
-                        template: '/assets/partials/postCharge/rvPostChargeV2.html',
-                        controller: 'RVOutsidePostChargeController'
+                    jsMappings.fetchAssets(['postcharge', 'directives']).then(function(){
+                        ngDialog.open({
+                            template: '/assets/partials/postCharge/rvPostChargeV2.html',
+                            controller: 'RVOutsidePostChargeController'
+                        });
                     });
                }
 

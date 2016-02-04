@@ -47,7 +47,6 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 
 
   var init = function(){
-
      $scope.email = "";
 
      // we check if the reservation has an email id and the admin settings for 
@@ -66,6 +65,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
      }
      
      $scope.printOpted = false;
+     $scope.emailOpted = $scope.zestStationData.emailEnabled;
   };
 
 
@@ -149,7 +149,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
           * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
           */
           $window.print();
-          if ( sntapp.cordovaLoaded ) {
+          if ( sntZestStation.cordovaLoaded ) {
               var printer = (sntZestStation.selectedPrinter);
               cordova.exec(function(success) {
                   checkOutGuest();

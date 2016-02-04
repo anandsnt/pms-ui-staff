@@ -1,4 +1,4 @@
-sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupancyGraphSrv', 'ngDialog', 'dateFilter',
+angular.module('sntRover').controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupancyGraphSrv', 'ngDialog', 'dateFilter',
     function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog, dateFilter) {
         $scope.$parent.myScrollOptions = {
             RateMgrOccupancyGraphCtrl: {

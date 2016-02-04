@@ -1,4 +1,4 @@
-sntRover.service('RMFilterOptionsSrv',['$q', 'BaseWebSrvV2', function( $q, RVBaseWebSrv){
+angular.module('sntRover').service('RMFilterOptionsSrv',['$q', 'BaseWebSrvV2', function( $q, RVBaseWebSrv){
 
     /*
     * To fetch filter options

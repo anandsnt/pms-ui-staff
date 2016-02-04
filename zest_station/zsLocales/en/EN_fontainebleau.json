@@ -66,6 +66,7 @@
     "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
     "SWIPE_ERR_HEADER": "An Error Occurred",
     "EMAIL_SENT_MSG": "The e-mail is now living in your inbox.",
+    "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
     "OOPS_TEXT": "Oopsie.",
     "DAY_NIGHTS": "Nights",
     "ADDTL_RESIDENTS": "Additional Residents",
@@ -88,7 +89,7 @@
     
     
     
-    "EMAILED_BILL": "We’ve already e-mailed your bill. But perhaps you want it printed?",
+    "EMAILED_BILL": "A copy of your bill has been delivered to your e-mail.",
     "PRINT_BILL": "Print Bill",
     "IN_ROOM": "You are in room",
     "EDIT_EMAIL": "Edit My E-mail Address",
@@ -136,7 +137,7 @@
     "BILL_DEP":"Deposits",
     "BILL_BAL":"Balance due",
     "BILL_QUEST":"Questions?",
-    "BILL_SUB_QUESTION":"Tap “Cancel” and see a sidekick.",
+    "BILL_SUB_QUESTION":"Tap cancel and speak to a staff member",
     "BILL_NEXT":"Next",
     "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
     "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
@@ -164,7 +165,7 @@
     
     
     "NO_MATCH_TALK":"Talk",
-    "NO_MATCH_TALK_SUB":"Speak to a Sidekick",
+    "NO_MATCH_TALK_SUB":"to a Sidekick",
     "NO_MATCH_OR":"Or",
     "NO_MATCH_RE_LAST":"Re-Enter",
     "NO_MATCH_HEADER":"Sorry.",

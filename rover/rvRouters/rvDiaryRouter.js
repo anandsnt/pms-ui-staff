@@ -6,13 +6,16 @@ angular
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            propertyTime: function(RVReservationBaseSearchSrv) {
+            diaryAssets: function(jsMappings, mappingList) {
+                return jsMappings.fetchAssets(['rover.diary'], ['ngReact']);
+            },
+            propertyTime: function(RVReservationBaseSearchSrv, diaryAssets) {
                 return RVReservationBaseSearchSrv.fetchCurrentTime();
             },
-            baseSearchData: function(RVReservationBaseSearchSrv) {
+            baseSearchData: function(RVReservationBaseSearchSrv, diaryAssets) {
                 return RVReservationBaseSearchSrv.fetchBaseSearchData();
             },
-            payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime) {
+            payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime, diaryAssets) {
                 var start_date = propertyTime.hotel_time.date;
                 if($stateParams.checkin_date){
                     start_date = $stateParams.checkin_date;

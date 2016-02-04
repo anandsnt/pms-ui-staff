@@ -321,6 +321,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             $scope.pickupValues.last = $scope.input.inputTextValue;
             $state.input.last = $scope.input.inputTextValue;
             $scope.at = 'input-room';
+            $state.at = 'input-room';
             $scope.input.inputTextValue = "";
             $scope.headingText = "NEXT_ROOM_NUMBER";
         };
@@ -329,12 +330,14 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.reEnteredRoomInfo = false;
     $scope.reEnterLastName = function(){
                 $scope.reEnteredNameInfo = true;
+                $state.last = 'input-last';
                 $scope.reEnteredRoomInfo = false;
         $scope.mode = "search-mode";
         $scope.input.inputTextValue = $scope.reservationParams.last_name;
     };
     $scope.reEnterRoomNumber = function(){
                 $scope.reEnteredRoomInfo = true;
+                $state.last = 'input-room';
                 $scope.reEnteredNameInfo = false;
         $scope.mode = "search-final-mode";
         $scope.input.inputTextValue = $scope.reservationParams.room_no;

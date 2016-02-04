@@ -212,114 +212,114 @@
         -webkit-overflow-scrolling: touch;
 
         li {
-			margin: 0;
-			.box-shadow(0 1px 2px rgba(0,0,0,.1));
+            margin: 0;
+            .box-shadow(0 1px 2px rgba(0,0,0,.1));
 
-			a {
-				padding: 10px;
-				font-size: 18px;
-				line-height: 30px;
-				font-weight: 600;
-				color: @textColor;
-				.show;
+            a {
+                padding: 10px;
+                font-size: 18px;
+                line-height: 30px;
+                font-weight: 600;
+                color: @textColor;
+                .show;
 
-				.highlight { color: @logoPrimary; }
-			}
-		}
+                .highlight { color: @logoPrimary; }
+            }
+        }
 
-		&.find-cards {
-			width: auto;
-			max-width: 420px !important;
+        &.find-cards {
+            width: auto;
+            max-width: 420px !important;
 
-			li {
-				a {
-					position: relative;
-					padding: 10px 20px 10px 50px;
-					.show;
+            li {
+                a {
+                    position: relative;
+                    padding: 10px 20px 10px 50px;
+                    .show;
 
-					.icons,
-					.group-info,
-					img {
-						position: absolute;
-						top: 10px;
-						left: 10px;
-						.square(30px);
-						#border-radius > .rounded();
-					}
+                    .icons,
+                    .group-info,
+                    img {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        .square(30px);
+                        #border-radius > .rounded();
+                    }
 
-					.icons {
-						.hide-text;
+                    .icons {
+                        .hide-text;
 
-						&.icon-company { 
-							background-position: 7px -3514px;
-							background-color: @ccard; 
-						}
+                        &.icon-company { 
+                            background-position: 7px -3514px;
+                            background-color: @ccard; 
+                        }
 
-						&.icon-travel-agent { 
-							background-position: 6px -3634px;
-							background-color: @tacard; 
-						}
+                        &.icon-travel-agent { 
+                            background-position: 6px -3634px;
+                            background-color: @tacard; 
+                        }
 
-						&.icon-group,
-						&.icon-group-large { 
-							background-position: 5px -7774px;
-							background-color: @groupcard; 
-						}
+                        &.icon-group,
+                        &.icon-group-large { 
+                            background-position: 5px -7774px;
+                            background-color: @groupcard; 
+                        }
 
-						&.icon-allotment { 
-							background-position: 5px -8433px;
-							background-color: @allotmentcard; 
-						}
-					}
+                        &.icon-allotment { 
+                            background-position: 5px -8433px;
+                            background-color: @allotmentcard; 
+                        }
+                    }
 
-					.group-info {
-						font-size: 18px;
-						line-height: 30px;
-						text-transform: uppercase;
-						font-weight: 600;
-						text-align: center;
-						color: @grey3;
-						width: 30px;
-						background-color: @grey1;
-					}
-				}
-			}
-		}
+                    .group-info {
+                        font-size: 18px;
+                        line-height: 30px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        text-align: center;
+                        color: @grey3;
+                        width: 30px;
+                        background-color: @grey1;
+                    }
+                }
+            }
+        }
 
-		&.find-rates {
-			width: 380px;
+        &.find-rates {
+            width: 380px;
 
-			li {
-				a {
-					position: relative;
-					padding-right: 100px;
-					font-size: 16px;
-					line-height: 20px;
-					.nowrap();
+            li {
+                a {
+                    position: relative;
+                    padding-right: 100px;
+                    font-size: 16px;
+                    line-height: 20px;
+                    .nowrap();
 
-					.label {
-						position: absolute;
-						top: 10px;
-						right: 0;
-						font-size: 10px;
-						line-height: 20px;
-						text-align: center;
-						color: @white;
-						text-transform: uppercase;
-						padding: 0 10px;
-						.size(20px, 80px);
-						#border-radius > .rounded(25px);
+                    .label {
+                        position: absolute;
+                        top: 10px;
+                        right: 0;
+                        font-size: 10px;
+                        line-height: 20px;
+                        text-align: center;
+                        color: @white;
+                        text-transform: uppercase;
+                        padding: 0 10px;
+                        .size(20px, 80px);
+                        #border-radius > .rounded(25px);
 
-						.highlight { color: @white; }
+                        .highlight { color: @white; }
 
-						&.public { background-color: @blue; }
-						&.corporate { background-color: mix(@ccard, @tacard); }
-					}
-				}
-			}
-		}
+                        &.public { background-color: @blue; }
+                        &.corporate { background-color: mix(@ccard, @tacard); }
+                    }
+                }
+            }
+        }
 
-		&.find-user { width: auto; }
+        &.find-user { width: auto; }
 
         &.find-cards {
             width: auto;
@@ -4176,7 +4176,7 @@
                         font-weight: 400;
                         margin-top: 20px;
 
-                        .label { color: @grey3; }
+                        .label { color: @grey3; }
 
                         p { text-decoration: line-through; }
 
@@ -4611,7 +4611,7 @@
                 .h2 {
                     margin-top: 40px;
 
-                    &.red { color: @red; }
+                    &.red { color: @red; }
                     &.green { color: @green; }
                 }
 
@@ -4724,8 +4724,27 @@
                         display: inline-block;
                         width: auto;
 
-                        &:first-child { margin-right: 10px; }
+                        &:first-child { margin-right: 10px; }
                     }
+                }
+            }
+
+            /* Workmanagement - Work Sheet Print*/
+            &.print-modal {
+                width:360px;
+
+                .radio-check {
+                    .radio {
+                        width:45%;
+                        margin-right:5%;
+                    }
+                }
+
+                .actions {
+                    margin-top:20px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(0, 0, 0, 0.1);
+                    
                 }
             }
         }

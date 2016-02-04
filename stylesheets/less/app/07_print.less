@@ -351,6 +351,19 @@ table {
 
                     .arrival { right: 280px; }
                     .departure { right: 40px; }
+
+                    &.no-image {
+                        h2 { float: none; }
+
+                        .confirmation,
+                        .icon-time {
+                            .show;
+                            .pull-left;
+
+                            &:not(:last-child) { margin-right: 8pt; }
+                        }
+
+                    }
                 }
 
                 .amount {

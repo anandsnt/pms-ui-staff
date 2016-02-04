@@ -23,11 +23,21 @@ var sntZestStation = angular.module('sntZestStation',[
 sntZestStation.config(function ($httpProvider, $translateProvider) {
     $httpProvider.interceptors.push('sharedHttpInterceptor');
 		$translateProvider.useStaticFilesLoader({
-		  prefix: '/assets/zsLocales/en/',
+		  prefix: '/assets/zest_station/zsLocales/en/',
 		  suffix: '.json'
 		});
 		$translateProvider.fallbackLanguage('EN_zoku');
 });
+
+sntZestStation.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
+	$rootScope.$state = $state;
+	$rootScope.$stateParams = $stateParams;
+
+	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+        $rootScope.previousState = from.name;
+        $rootScope.previousStateParam = fromParams.menu;
+    });
+}]);
 
 var GlobalZestStationApp = function(){
 
@@ -61,7 +71,7 @@ var GlobalZestStationApp = function(){
     	}
     	if(browser === 'rv_native' && !that.cordovaLoaded){
     	   //TODO: check URL
-    		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
+                var url = "/assets/shared/cordova.js";
 
     		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
     		 * webview of iOS / Android.
@@ -85,7 +95,6 @@ var GlobalZestStationApp = function(){
 
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
-    	//$('body').append(data); zest station wont need this yet..
         that.cordovaLoaded = true;
         try{
     	   that.cardReader = new CardOperation();
@@ -118,3 +127,8 @@ var GlobalZestStationApp = function(){
 };
 
 zestSntApp = new GlobalZestStationApp();
+
+sntZestStation.controller('rootController', ['$scope',
+function($scope) {
+
+}]);

@@ -1,4 +1,4 @@
-sntRover.service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
+angular.module('sntRover').service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 
 
 	this.getTasksCount = function(data){

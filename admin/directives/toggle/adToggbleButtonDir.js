@@ -12,7 +12,7 @@ admin.directive('adToggleButton', function($timeout) {
             isDisabled: '=isDisabled'
 	    },
 
-    	templateUrl: '../../assets/directives/toggle/adToggleButton.html'
+    	templateUrl: '/assets/directives/toggle/adToggleButton.html'
     };
 
 });

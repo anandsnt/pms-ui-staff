@@ -1,9 +1,10 @@
-sntRover.controller('rvAvailabilityButtonController', [
+angular.module('sntRover').controller('rvAvailabilityButtonController', [
 	'$scope',
 	'$timeout',
 	'$filter',
 	'rvAvailabilitySrv',
-	function($scope, $timeout, $filter, rvAvailabilitySrv){
+	'jsMappings',
+	function($scope, $timeout, $filter, rvAvailabilitySrv, jsMappings){
 
 		/**
 		* Controller class for availability  button in header section,
@@ -46,7 +47,15 @@ sntRover.controller('rvAvailabilityButtonController', [
 				rvAvailabilitySrv.updateData (emptyDict);
 			}
 			else{
-				$scope.showAvailability = true;
+				$scope.$emit("showLoader");
+				jsMappings.fetchAssets(['rover.availability'], ['highcharts-ng'])
+                .then(function(){
+                	$scope.$emit("hideLoader");
+                	$timeout(function(){
+                		$scope.showAvailability = true;
+                	}, 0);
+                });
+				
 			}
 
 		};

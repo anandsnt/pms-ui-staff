@@ -1,4 +1,4 @@
-sntRover.service('RateMgrOccupancyGraphSrv', ['$q', 'BaseWebSrvV2',
+angular.module('sntRover').service('RateMgrOccupancyGraphSrv', ['$q', 'BaseWebSrvV2',
     function ($q, BaseWebSrvV2) {
 
         this.fetch = function (params) {

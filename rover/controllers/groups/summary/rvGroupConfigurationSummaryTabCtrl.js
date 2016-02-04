@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
+	function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -678,15 +678,17 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				name: $scope.accountConfigData.summary.posting_account_name,
 				logo: "GROUP_DEFAULT"
 			});
-
-			ngDialog.open({
-				template: '/assets/partials/bill/rvBillingInformationPopup.html',
-				controller: 'rvBillingInformationPopupCtrl',
-				className: '',
-				closeByDocument: true,
-				scope: $scope
+	    	$scope.$emit('showLoader'); 
+           	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+            .then(function(){
+            	$scope.$emit('hideLoader'); 
+			    ngDialog.open({
+			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			        controller: 'rvBillingInformationPopupCtrl',
+			        className: '',
+			        scope: $scope
+			    });
 			});
-
 		};
 
 		$scope.$on("BILLINGINFOADDED", function() {

@@ -1,4 +1,4 @@
-sntRover.service('rvAccountsSrv',
+angular.module('sntRover').service('rvAccountsSrv',
 	['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 

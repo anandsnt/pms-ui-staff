@@ -1,4 +1,4 @@
-sntRover.service('RVHkRoomStatusSrv', [
+angular.module('sntRover').service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
 	'rvBaseWebSrvV2',
@@ -41,6 +41,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 		};
 
 		this.currentFilters = this.initFilters();
+		this.isInitialLoad = true;
+		this.defaultViewState = null;
 
 		var that = this;
 
@@ -60,35 +62,38 @@ sntRover.service('RVHkRoomStatusSrv', [
 			// if there is a search query, ignore all other filters. Reset page to 1
 			if ( filter.query ) {
 				params['query'] = filter.query;
+				if (passedParams.assignee_id) {
+					params['assignee_id'] = passedParams.assignee_id;
+				}
+				else {
+					params['all_employees_selected'] = true;
+				}
 			} else {
 
 				if ( passedParams.isStandAlone || $rootScope.isStandAlone ) {
 					// if: for initial load cases
 					// else: for normal case
-					if ( passedParams.initialLoad ) {
+					if ( this.isInitialLoad ) {
+						this.isInitialLoad = false;
 						if ( passedParams.work_type_id ) {
 							params['work_type_id']  = passedParams.work_type_id;
 							filter.filterByWorkType = passedParams.work_type_id;
-
-							if ( passedParams.assignee_id ) {
-								params['assignee_id']       = passedParams.assignee_id;
-								filter.filterByEmployeeName = passedParams.assignee_id;
-							};
+						}
+						if ( passedParams.assignee_id ) {
+							params['assignee_id']       = passedParams.assignee_id;
+							filter.filterByEmployeeName = passedParams.assignee_id;
 						} else {
 							params['all_employees_selected'] = true;
 						};
 					} else {
 						if ( filter.filterByWorkType ) {
 							params['work_type_id'] = filter.filterByWorkType;
-
-							if ( filter.filterByEmployeeName ) {
-								params['assignee_id'] = filter.filterByEmployeeName;
-							} else {
-								params['all_employees_selected'] = true;
-							};
+						}
+						if ( filter.filterByEmployeeName ) {
+							params['assignee_id'] = filter.filterByEmployeeName;
 						} else {
 							params['all_employees_selected'] = true;
-						};
+						}
 					};
 				};
 
@@ -140,6 +145,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		}.bind(this);
 
 		var roomList = {};
+
 		this.fetchRoomListPost = function(passedParams) {
 			var deferred     = $q.defer(),
 				url          = '/house/search.json',
@@ -148,6 +154,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 			BaseWebSrvV2.postJSON(url, params)
 				.then(function(response) {
 					roomList = response.data;
+					roomList.summary = response.data.summary;
+
 
 					for (var i = 0, j = roomList.rooms.length; i < j; i++) {
 						var room = roomList.rooms[i];
@@ -198,21 +206,20 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 			function _fetchWorkAssignments (workTypes) {
 				fetchedWorkTypes = workTypes;
-				paramWorkTypeId  = workTypes[0]['id'];
 
 				var params = {
 					'date'         : $rootScope.businessDate,
-					'employee_ids' : [$rootScope.userId],
-					'work_type_id' : workTypes[0]['id']
+					'employee_ids' : [$rootScope.userId]
 				};
 
 				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
 			};
 
 			function _checkHasActiveWorkSheet (assignments) {
-				var _hasActiveWorkSheet = !!assignments.work_sheets.length && !!assignments.work_sheets[0].work_assignments && !!assignments.work_sheets[0].work_assignments.length;
+				var employee = assignments.employees.length && assignments.employees[0] || null,
+					hasTasks = employee && employee.room_tasks && employee.room_tasks.length || false;
 
-				if ( _hasActiveWorkSheet ) {
+				if ( hasTasks ) {
 					paramEmployeeId = $rootScope.userId;
 				} else {
 					paramEmployeeId = false;
@@ -383,7 +390,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// get the Work Assignments for a particular emp
 		this.fetchWorkAssignments = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/work_assignments';
+				url = 'api/work_assignments/assigned_rooms';
 
 			BaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
@@ -654,19 +661,26 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return false;
 			};
 
-			if ( !!room.assignee_maid.name ) {
+			var assignedStaff = {
+				name: 'Unassigned',
+				class: 'unassigned'
+			};
+			room.canAssign = true;
+
+			if ( !!room.room_tasks && room.room_tasks.length ) {
 				room.canAssign = false;
-				return {
-					'name': angular.copy(room.assignee_maid.name),
-					'class': 'assigned'
-				};
-			} else {
-				room.canAssign = true;
-				return {
-					'name': 'Unassigned',
-					'class': 'unassigned'
-				};
+				assignedStaff.class = 'assigned';
+
+				if (_.unique(_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id')).length > 1) {
+					console.log("multiple")
+					assignedStaff.name = 'Multiple Assignees';
+				} else {
+					console.log("single")
+					assignedStaff.name = room.room_tasks[0].assignee_maid.name
+				}
 			}
+
+			return assignedStaff;
 		};
 		// exposing the method to service
 		this.calculateAssignedStaff = calculateAssignedStaff;

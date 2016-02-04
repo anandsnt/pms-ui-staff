@@ -10,7 +10,12 @@ angular.module('allotmentModule', [])
             url: '/allotments',
             abstract: true,
             templateUrl: '/assets/partials/allotments/rvAllotmentRoot.html',
-            controller: 'rvAllotmentRootCtrl'
+            controller: 'rvAllotmentRootCtrl',
+            resolve: {
+                allotmentAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.allotments', 'directives']);
+                }
+            }
         });
 
         //company card details
@@ -20,12 +25,12 @@ angular.module('allotmentModule', [])
             controller: 'rvAllotmentSearchCtrl',
             resolve: {
                 //to tackle from coming admin app to rover, see the injection in next resolve function
-                businessDate: ['rvAllotmentSrv', function(rvAllotmentSrv) {
+                businessDate: ['rvAllotmentSrv', 'allotmentAssets', function(rvAllotmentSrv, allotmentAssets) {
                     return rvAllotmentSrv.fetchHotelBusinessDate();
                 }],
                 //to tackle from coming admin app to rover
-                initialAllotmentListing: ['rvAllotmentSrv', 'businessDate',
-                    function(rvAllotmentSrv, businessDate) {
+                initialAllotmentListing: ['rvAllotmentSrv', 'businessDate', 'allotmentAssets',
+                    function(rvAllotmentSrv, businessDate, allotmentAssets) {
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
@@ -56,8 +61,8 @@ angular.module('allotmentModule', [])
             }],
             resolve: {
                 //to tackle from coming admin app to rover
-                summaryData: ['rvAllotmentConfigurationSrv', '$stateParams',
-                    function(rvAllotmentConfigurationSrv, $stateParams){
+                summaryData: ['rvAllotmentConfigurationSrv', '$stateParams', 'allotmentAssets',
+                    function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets){
                         var isInAddMode = ($stateParams.id === "NEW_ALLOTMENT");
                         var params = {
                             allotmentId: $stateParams.id
@@ -65,8 +70,8 @@ angular.module('allotmentModule', [])
                         return rvAllotmentConfigurationSrv.getAllotmentSummary (params);
                     }
                 ],
-                holdStatusList: ['rvAllotmentConfigurationSrv',
-                    function (rvAllotmentConfigurationSrv) {
+                holdStatusList: ['rvAllotmentConfigurationSrv', 'allotmentAssets',
+                    function (rvAllotmentConfigurationSrv, allotmentAssets) {
                         var params = {
                             is_group : false
                         }

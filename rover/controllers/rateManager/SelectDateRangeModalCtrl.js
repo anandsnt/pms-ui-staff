@@ -1,4 +1,11 @@
-sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope', 'ngDialog', '$filter', 'dateFilter', '$rootScope', '$timeout',
+angular.module('sntRover').controller('SelectDateRangeModalCtrl',
+  ['filterDefaults',
+  '$scope',
+  'ngDialog',
+  '$filter',
+  'dateFilter',
+  '$rootScope',
+  '$timeout',
 	function(filterDefaults, $scope, ngDialog, $filter, dateFilter, $rootScope, $timeout) {
 		'use strict';
 
