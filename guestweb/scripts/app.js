@@ -90,7 +90,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
 
  	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_serviceMsg;
+ 	$rootScope.zestCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_service_msg;
  	$rootScope.termsAndConditions = reservationAndhotelData.terms_and_conditions;
  	$rootScope.isBirthdayVerified =  false;
 
