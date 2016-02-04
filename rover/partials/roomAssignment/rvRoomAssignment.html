@@ -32,7 +32,7 @@
                         <input class="query" placeholder="Search Room" type="search" autocomplete="off" ng-model="searchText" ng-change="searchRoom()">
                     </div>
 					<div class="select">
-						<select ng-model="roomType" ng-change="getRooms($index)" name="room-type" id="room-type-selectbox">
+						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox">
 							<!-- %option.placeholder{value: "all-types"} All room types -->
 							<option ng-repeat="roomtype in roomTypes" value="{{roomtype.type}}" ng-selected="roomtype.type==roomType">
 							{{roomtype.description}} </option>

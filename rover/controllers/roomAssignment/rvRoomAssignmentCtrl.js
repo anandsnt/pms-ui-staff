@@ -53,7 +53,21 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to to get the rooms based on the selected room type
 	*/
 	$scope.getRooms = function(isOldRoomType){
-		$scope.selectedRoomType = $scope.getCurrentRoomType();
+
+		var currentSelectedRoomType = $scope.roomType;
+		$scope.filteredRooms = [];;//Emptying rooms on search
+		angular.forEach($scope.allRooms, function(value, key) {
+			if(value.room_type_id === currentSelectedRoomType){
+				$scope.filteredRooms.push(value);
+			}
+		});
+		setTimeout(function(){
+			$scope.refreshScroller('roomlist');
+			},
+		1000);
+		/*$scope.selectedRoomType = $scope.getCurrentRoomType();
+
+
 		var successCallbackGetRooms = function(data){
 			$scope.rooms = data.rooms;
 			$scope.reservation_occupancy = data.reservation_occupancy;
@@ -80,7 +94,7 @@ sntRover.controller('RVroomAssignmentController',[
 		params.reservation_id = $stateParams.reservation_id;
 		//params.room_type = $scope.roomType;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
-
+*/
 	};
 
 	$scope.getCurrentRoomType = function(){
