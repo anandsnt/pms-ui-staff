@@ -445,10 +445,16 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			console.log($scope.printSettings);
 
 			// reset scroll bars to top
-			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-				var scroller = 'assignedRoomList-'+i;
-				$scope.$parent.myScroll[scroller] && $scope.$parent.myScroll[scroller].scrollTo
-				$scope.$parent.myScroll[scroller].scrollTo(0, 0);			};
+			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+			// 	var scroller = 'assignedRoomList-'+i;
+			// 	$scope.$parent.myScroll[scroller] && $scope.$parent.myScroll[scroller].scrollTo
+			// 	$scope.$parent.myScroll[scroller].scrollTo(0, 0);			};
+
+
+			// }
+			var i;
+			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
 
 			// set the sheet according to print settings.
