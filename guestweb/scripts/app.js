@@ -109,8 +109,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
     //Params for zest mobile and desktop screens
     if(reservationAndhotelData.hasOwnProperty('is_password_reset')){
-    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset ="true";
-    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true"? true: false;
+    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
+    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";
     	$rootScope.accessToken = reservationAndhotelData.token;
     	$rootScope.user_id = reservationAndhotelData.id;
     	$rootScope.user_name = reservationAndhotelData.login;
