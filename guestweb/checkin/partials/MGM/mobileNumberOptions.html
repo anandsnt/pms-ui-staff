@@ -1,0 +1,31 @@
+<!-- contentarea starts here-->
+<div class="jumbotron">
+   <div class="container backgroundbg" >
+      <div class="container-fluid">
+         <div class="row headerrow">
+            <logo-image></logo-image>
+         </div>
+      </div>
+      <!-- contentarea starts here-->
+      <div class="container">
+         <!-- top section starts here-->
+         <div class="row checkin-wrapper-top arrival-details">
+            <!-- email not updated -->
+            <div class="pre-checkin-container-padding">
+               <div class="chekin-heading centeralign">
+                  Mobile Phone Number
+               </div>
+               <p class="subTitletext">
+                  Do you want to update your mobile phone number to {{userMobile}}
+               </p>
+               <form>
+                  <div class="date-container ">
+                     <input type="submit" class="col-xs-12  link-btn with-bg nextbtn no-transform" ng-click="skip()" value="Yes"/> 
+                     <input class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="changeNumber()" value="No"/>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

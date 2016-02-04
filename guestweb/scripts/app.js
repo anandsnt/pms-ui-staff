@@ -102,6 +102,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	//room key delivery options
  	$rootScope.preckinCompleted =  false;
  	$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
+ 	$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
 
