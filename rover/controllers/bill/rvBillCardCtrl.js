@@ -903,7 +903,7 @@ sntRover.controller('RVbillCardController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        $q.all([jsMappings.fetchAssets('postcharge'), jsMappings.fetchAssets('directives')])
+        jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function(){
 
         $scope.$emit('hideLoader');
@@ -1892,7 +1892,7 @@ sntRover.controller('RVbillCardController',
     	$scope.billingInfoModalOpened = true;
     	
     	$scope.$emit('showLoader'); 
-       	$q.all([jsMappings.fetchAssets('addBillingInfo'), jsMappings.fetchAssets('directives')])
+       	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
         .then(function(){
         	$scope.$emit('hideLoader'); 
 		    ngDialog.open({

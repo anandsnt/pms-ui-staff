@@ -66,6 +66,7 @@
     "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
     "SWIPE_ERR_HEADER": "An Error Occurred",
     "EMAIL_SENT_MSG": "The e-mail is now living in your inbox.",
+    "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
     "OOPS_TEXT": "Oopsie.",
     "DAY_NIGHTS": "Nights",
     "ADDTL_RESIDENTS": "Additional Residents",
@@ -198,7 +199,7 @@
     "SEL_RES_LAST":"Previous",
     "SEL_RES_NEXT":"Next",
     
-    "IDLE_TIMEOUT_MSG":"Are you still here -?",
+    "IDLE_TIMEOUT_MSG":"Are you still here?",
     "IDLE_TIMEOUT_YES":"Yes",
     
     

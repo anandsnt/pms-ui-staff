@@ -30,7 +30,9 @@ module.exports = {
 			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js'],
 			'guestweb' 	: [ themeJsRoot + 'app_router_carlyle.js'],
 			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js'],
-			'guestweb_claridge' :[ themeJsRoot + 'app_router_common.js']
+			'guestweb_claridge' :[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_balboa':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_luxor':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_luxor.js']
 
 		}
 	}

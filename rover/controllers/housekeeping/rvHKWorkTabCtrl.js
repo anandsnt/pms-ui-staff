@@ -103,6 +103,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.manualRoomStatusChanged = function() {
 			var callback = function(data){
 				$scope.$emit('hideLoader');
+				$scope.refreshScroller('room-status-content');
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
 			};
 
@@ -146,6 +147,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				$scope.$emit('hideLoader');
 
 				// update local data
+				$scope.refreshScroller('room-status-content');
 				$scope.currentTask.work_status = $_workStatusList['inProgress'];
 				$_updateWorkStatusFlags();
 			};
@@ -165,6 +167,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				$scope.$emit('hideLoader');
 
 				// update local data
+				$scope.refreshScroller('room-status-content');
 				$scope.currentTask.work_status = $_workStatusList['completed'];
 				$_updateWorkStatusFlags();
 

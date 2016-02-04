@@ -114,18 +114,11 @@ sntZestStation.controller('zsAdminCtrl', [
 	};
         
         $scope.goToAdminPrompt = function(){
-        setTimeout(function(){
-                if (typeof cordova !== typeof undefined){
-                    $('.modal-content').addClass('re-centered');
-                }
-                $scope.$apply();
-            },000);
             $state.go('zest_station.home-admin',{'isadmin':true});
-            
         };
         $scope.adminLoginError = false;
 	$scope.goToNext  = function(){
-		if($scope.mode   === "admin-name-mode"){
+		if($scope.mode === "admin-name-mode"){
                         $scope.adminLoginError = false;
 			$scope.userName = angular.copy($scope.input.inputTextValue);
 			$scope.input.inputTextValue = "";
