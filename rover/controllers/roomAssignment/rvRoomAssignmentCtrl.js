@@ -53,17 +53,20 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to to get the rooms based on the selected room type
 	*/
 	$scope.getRooms = function(){
-
+		$scope.searchText = '';
 		var currentSelectedRoomType = $scope.roomType;
 		$scope.filteredRooms = [];;//Emptying rooms on search
+		$scope.rooms = [];//CICO-23077
+
 		angular.forEach($scope.allRooms, function(value, key) {
 			if(value.room_type_code === currentSelectedRoomType){
 				$scope.filteredRooms.push(value);
+				$scope.rooms.push(value);
 			}
 		});
-		//$scope.setSelectedFiltersList();
-		//$scope.setRoomsListWithPredefinedFilters();
-		//$scope.applyFilterToRooms();
+		$scope.setSelectedFiltersList();
+		$scope.setRoomsListWithPredefinedFilters();
+		$scope.applyFilterToRooms();
 		setTimeout(function(){
 			$scope.refreshScroller('roomlist');
 			},
@@ -112,9 +115,16 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.searchRoom = function(){
 		$scope.filteredRooms = [];;//Emptying rooms on search
 		angular.forEach($scope.allRooms, function(value, key) {
-			if(value.room_number.indexOf($scope.searchText) !== -1){
-				$scope.filteredRooms.push(value);
+			if($scope.searchText !== ''){
+				if(value.room_number.indexOf($scope.searchText) !== -1){
+					$scope.filteredRooms.push(value);
+				}
+			} else {
+				if(value.room_type_code === $scope.roomType){
+					$scope.filteredRooms.push(value);
+				}
 			}
+
 		});
 		setTimeout(function(){
 			$scope.refreshScroller('roomlist');
@@ -769,8 +779,14 @@ sntRover.controller('RVroomAssignmentController',[
 
 		$scope.roomTypes = roomPreferences.room_types;
 		$scope.roomFeatures = roomPreferences.room_features;
-		$scope.allRooms = $scope.rooms = roomsList.rooms;//$scope.allRooms - CICO-23077
+		$scope.allRooms = roomsList.rooms;//$scope.allRooms - CICO-23077
+		$scope.rooms = [];//CICO-23077
 
+		angular.forEach($scope.allRooms, function(value, key) {
+			if(value.room_type_code === $stateParams.room_type){
+				$scope.rooms.push(value);
+			}
+		});
 		$scope.floors = roomPreferences.floors.floor_details;
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.addPredefinedFilters();
