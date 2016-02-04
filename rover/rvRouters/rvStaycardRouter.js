@@ -308,7 +308,7 @@ angular.module('stayCardModule', [])
             url: '/roomassignment/:reservation_id/:room_type/:clickedButton',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
-            resolve: {            
+            resolve: {
                 roomAssignmentJsAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
                 },
@@ -316,7 +316,7 @@ angular.module('stayCardModule', [])
 
                     var params = {};
                     params.reservation_id = $stateParams.reservation_id;
-                    params.room_type = $stateParams.room_type;
+                   // params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
                 roomPreferences: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
@@ -347,7 +347,7 @@ angular.module('stayCardModule', [])
             url: '/changestaydates/:reservationId/:confirmNumber',
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
-            resolve: {            
+            resolve: {
                 changeStayDatesJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['changestaydates', 'directives'], ['ui.calendar']);
                 },
@@ -367,7 +367,7 @@ angular.module('stayCardModule', [])
             url: '/activitylog/:id',
             templateUrl: "/assets/partials/activityLog/rvActivityLog.html",
             controller: 'RVActivityLogCtrl',
-            resolve: {            
+            resolve: {
                 activityLogAssets: function(jsMappings, staycardJsAssets, mappingList) {
                     return jsMappings.fetchAssets(['rover.reservation.staycard.activitylog', 'directives']);
                 },
@@ -388,7 +388,7 @@ angular.module('stayCardModule', [])
             url: '/actions/:actions',
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",
             controller: 'RVActionsManagerController',
-            resolve: {              
+            resolve: {
                 actionsManagerAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
                 }

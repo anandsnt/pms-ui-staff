@@ -78,7 +78,7 @@ sntRover.controller('RVroomAssignmentController',[
 		}
 		var params = {};
 		params.reservation_id = $stateParams.reservation_id;
-		params.room_type = $scope.roomType;
+		//params.room_type = $scope.roomType;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
 
 	};
