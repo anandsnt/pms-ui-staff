@@ -3,24 +3,17 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
     $scope.errorMessage = "";
 
     $scope.setScroller('summary_content',{});
+
     var refreshSummaryScroller = function () {
         setTimeout(function(){$scope.refreshScroller('summary_content');}, 500);
-    };
-
-    var init = function() {
-        $scope.details = {};
-        $scope.details.summaryData = {};
-
     };
 
     $scope.$on("INITIALIZESUMMARYDETAILS", function() {
         initSummaryData();
     });
 
-    init();
 
     var getSummaryItemByBalanceType = function( balance_type ){
-
         var summaryItem = "";
 
         switch( balance_type ) {
@@ -63,7 +56,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
     var initSummaryData = function(){
 
         var successCallBackFetchSummaryData = function(responce){
-
+            $scope.details = {};
             $scope.details.summaryData = {};
             $scope.details.summaryData = responce.data;
 
@@ -83,8 +76,6 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
                     });
                 });
             });
-            //refreshSummaryScroller();
-            //$scope.$emit('hideLoader');
         };
 
         var params = {
@@ -115,27 +106,11 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         var params = {
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
-                "per_page": 2000 // Giving this value to fetch all the records without making any changes in API
+                "per_page": 2000, // Giving this value to fetch all the records without making any changes in API
                 "type": balance_type
             };
         $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
 
     };
-
-    /*
-     *   Handle Expand/Collapse on balance each type
-     *   @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
-     */
-    $scope.toggleJournalSummaryItem = function( balance_type ) {
-
-        var toggleItem = getSummaryItemByBalanceType( balance_type );
-
-        fetchBalanceDetails( balance_type, false );
-    };
-
-
-
-
-
 
 }]);

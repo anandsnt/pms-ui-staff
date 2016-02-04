@@ -327,9 +327,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     /* To PRINT Summary Deatils */
     $scope.printSummary = function(){
         if($scope.isDetailsSelected) {
-            $scope.isPrintClicked = true;
             $scope.$broadcast("INITIALIZESUMMARYDETAILS");
-
+            $scope.isPrintClicked = true;
         } else {
             $scope.$broadcast("PRINTSUMMARY");
         }
@@ -338,14 +337,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     $scope.toggleOverviewDetailSelection = function() {
        $scope.isDetailsSelected = !$scope.isDetailsSelected;
-       /*if(!$scope.isDetailsSelected) {
-        $scope.$broadcast("RELOADSUMMARYOVERVIEW");
-       }*/
-
     }
-
-    $scope.$on('PRINTSUMMARYDETAILS', function() {
-        $scope.$broadcast("PRINTSUMMARY");
-    });
 
 }]);
