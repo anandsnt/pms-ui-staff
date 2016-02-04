@@ -111,6 +111,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
+		$scope.isRoomStatusUpdate = true;
+		$scope.isServiceStatusUpdate = false;
+
 		if (!!RVHkRoomStatusSrv.defaultViewState) {
 			$scope.currentView = RVHkRoomStatusSrv.defaultViewState;
 		} else {
@@ -120,6 +123,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
 			RVHkRoomStatusSrv.defaultViewState = view;
+		};
+
+		$scope.toggleRoomServiceStatusUpdate = function() {
+
+			$scope.isRoomStatusUpdate = !$scope.isRoomStatusUpdate;
+			$scope.isServiceStatusUpdate = !$scope.isServiceStatusUpdate;
 		};
 
 		$scope.toggleView = function() {

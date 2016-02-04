@@ -1,5 +1,5 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
-	<div class="modal-content update-room-status extended">
+	<div class="modal-content update-room-status" ng-class="{'extended': isServiceStatusUpdate}">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 	    <button ng-click="closeHkStatusDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
@@ -12,12 +12,12 @@
 
 
 	    <ul class="options">
-        	<li data-show="#room-status" >Room Status</li>
-        	<li data-show="#service-status" class="active">Service Status</li>
+        	<li data-show="#room-status" ng-class="{'active':isRoomStatusUpdate}" ng-click="toggleRoomServiceStatusUpdate()">Room Status</li>
+        	<li data-show="#service-status" ng-class="{'active':isServiceStatusUpdate}" ng-click="toggleRoomServiceStatusUpdate()">Service Status</li>
     	</ul>
 
     	<!-- Room Status Form -->
-	    <div id="room-status" class="status-container hidden">
+	    <div id="room-status" class="status-container" ng-if="isRoomStatusUpdate">
         	<div class="entry radio-check">
 		       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">
 		       		<span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.hkStatusId == status.id }"></span>
@@ -33,7 +33,7 @@
 	    </div>
 
 	    <!-- Service Status Form -->
-	    <div id="service-status" class="status-container">
+	    <div id="service-status" class="status-container" ng-if="isServiceStatusUpdate">
 	        <div class="entry float-label">
 	            <div class="select">
 	                <label for="select-service-status" class="label">Service Status</label>
