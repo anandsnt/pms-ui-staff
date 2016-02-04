@@ -61,7 +61,7 @@
     		$modal.open(errorOpts);
     	}
     	else{
-        guestDetailsService.postGuestDetails({"mobile":$scope.guestDetails.mobile}).then(function(response) {
+        guestDetailsService.postGuestDetails({"mobile":$scope.dial+"-"+$scope.guestDetails.mobile}).then(function(response) {
           $scope.isLoading = false;
           $scope.mobileUpdated = true;
           $rootScope.userMobile = $scope.guestDetails.mobile;
