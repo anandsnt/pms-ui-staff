@@ -423,7 +423,19 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$( '#print-orientation' ).remove();
 		};
 
+		$scope.openPrintWorkSheetPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/workManagement/popups/rvWorkManagementPrintOptionsPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false,
+			});
+		};
+
 		$scope.printWorkSheet = function() {
+			console.log($scope.printSettings);
+
 			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo) {
 				$scope.$parent.myScroll['assignedRoomList-0'].scrollTo(0, 0);
 			}
@@ -865,15 +877,24 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 		};
 
+		var initializeVariables = function() {
+			$scope.dateSelected = $scope.multiSheetState.selectedDate;
+			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
+			$scope.workSheetChanged = false;
+
+			// print options
+			$scope.printSettings = {
+				grouping: 'room',
+				sort: 'asc',
+				employees: 1
+			};
+		};
 
 		/**
 		 * Function to bootstrap multisheet.
 		 * @return {Undefined}
 		 */
 		var init = function() {
-
-			$scope.dateSelected = null;
-			$scope.workTypeSelected = null;
 
 			// state settings
 			setBackNavAndTitle();
@@ -890,12 +911,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// Update filters
 			$scope.filterUnassigned();
 
+			initializeVariables();
+
 			// Add scrollers and listners
 			refreshView();
-
-			$scope.dateSelected = $scope.multiSheetState.selectedDate;
-			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
-			$scope.workSheetChanged = false;
 
 			setUpAutoScroller();
 		};
