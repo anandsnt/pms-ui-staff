@@ -1668,7 +1668,17 @@ sntRover.controller('RVbillCardController',
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
 		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
-		if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ){
+		
+		if($scope.isCheckoutWithoutSettlement){
+			var data = {
+				"reservation_id" : $scope.reservationBillData.reservation_id,
+				"email" : $scope.guestCardData.contactInfo.email,
+				"signature" : signatureData,
+				"allow_checkout_without_settlement": true
+			};
+			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+		}
+		else if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ){
 			showDirectDebitDisabledPopup();
 		}
 		else if($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType!=="DB"){
