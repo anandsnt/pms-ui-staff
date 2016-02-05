@@ -41,6 +41,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 			//we are going to stripe the note from the list
 			var indexToDelete = successCallBackParameters.index;
 			$scope.notes.splice(indexToDelete, 1);
+			$scope.refreshScroller('guestcard_notes_scroller');
 		};
 
 		/**
