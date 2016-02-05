@@ -26,6 +26,7 @@ module.exports = {
                     'rover/directives/overbookingAlert/rvOverbookingCalendar.js',
                     'rover/directives/onetimemousemove/*.js',
                     'rover/directives/fullCalendar/twoMonthCalendar.js', // FOR ROOM & RATES CALENDAR
+                    'rover/directives/ngrepeatend/ngrepeatend.js',
                     'shared/directives/tooltip/qtipfc.js'// FOR ROOM & RATES CALENDAR
 				]
 			};

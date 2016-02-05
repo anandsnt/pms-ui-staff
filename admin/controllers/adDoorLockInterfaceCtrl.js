@@ -18,10 +18,12 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 	var setInitialExcludedList = function(){
 		angular.forEach($scope.data.ios_versions, function(version){
 			version.isExcluded = $scope.data.excluded_ios_versions.indexOf(version.name) !== -1
+			version.value = version.name;
 		})
 
 		angular.forEach($scope.data.android_versions, function(version){
 			version.isExcluded = $scope.data.excluded_android_versions.indexOf(version.name) !== -1
+			version.value = version.name;
 		})
 	}
 
