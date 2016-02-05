@@ -21,19 +21,7 @@
                     <fieldset style="margin-top:10px;" class="holder right float">
                         <ad-textbox value="editData.code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width overlay"></ad-textbox>
                     </fieldset>
-                    
-                    <div class="entry full-width actions_margin_top">
-                        <div><label class="label">Service Available for guests on:</label>
-                        </div>
-                            <div>
-                                <ad-checkbox  is-checked="editData.isDOA" label="Day of Arrival" parent-label-class="room-likes" span-class="checkbox-background" ng-click="checkDOA()"></ad-checkbox>
-                                <ad-checkbox  is-checked="editData.isDBA" label="Day Before Arrival" parent-label-class="room-likes" span-class="checkbox-background" ng-click="checkDBA()"></ad-checkbox>
-                            </div>
-                    </div>
-                    
-                    
-                    
-                    
+                                        
                     <!--  OPT-IN  -->
 			<div class="form-title"><h3><span></span>
                             Opt-In
@@ -96,6 +84,37 @@
 					<textarea value="" type="" required="" placeholder="" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
 				</div>
 			</fieldset>
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                     <h3><span  translate="">ZEST_SETUP_SMS_HEADER</span> </h3>
+                </div>
+            <fieldset class="holder left">
+                <div class="entry full-width">
+                    <ad-toggle-button is-checked="editData.is_zest_sms_checkin" label="{{'ZEST_SETUP_SMS_HEADER' | translate}}"></ad-toggle-button>
+                </div>
+            </fieldset>
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span class="ng-scope" translate="">ZEST_SETUP_AVAILABILITY_LABEL</span> </h3>
+                </div>     
+                <div class="entry full-width">
+                    <ad-toggle-button is-checked="editData.zest_sms_checkin_day_before_arrival" label="{{'ZEST_SETUP_AVAIL_DB_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
+                </div>
+            </fieldset>
+            <fieldset class="holder left">
+                <div class="entry full-width">
+                    <span class="webcheckout-uri-label">{{editData.base_uri}}</span>
+                    <input type="text"  ng-model="editData.checkin_static_url" placeholder="" class="webcheckout-uri-field">
+                </div>
+            </fieldset>
+            <fieldset class="holder left">  
+                <div class="form-title">
+                    <h3><span class="ng-scope" translate="">ZEST_SETUP_MSG_TO_GUEST_LABEL</span> </h3>
+                </div> 
+                <div class="entry full-width">
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="editData.zest_sms_checkin_no_service_msg" label = "{{ 'ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_WEB_LABEL' | translate}}" placeholder = ""></ad-textarea>
+                </div>
+            </fieldset>
                     
 
 			<div class="actions float">
