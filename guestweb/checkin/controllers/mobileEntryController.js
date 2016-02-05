@@ -5,19 +5,20 @@
 (function() {
 	var mobileEntryController = function($scope,$modal,guestDetailsService,$state,$rootScope) {
 		
-    var errorOpts = {
+
+
+    var invalidMobileAlert = {
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage:function(){
-          return "Please enter a valid mobile number.";
+          return "Mobile No. is not valid, Please Enter 10 Digit Mobile No.";
         }
       }
     };
-
-    var emailErrorOpts = {
+    var mobileNumberSaveFailedAlert = {
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkin/partials/ccErrorModal.html',
@@ -28,7 +29,6 @@
         }
       }
     };
-
 
     $scope.guestDetails = { "mobile":""};
     $scope.mobileUpdated = false;
@@ -48,26 +48,26 @@
       $scope.isLoading = false;
     });
 
-
-   
-    function validateMobile(mobile) {
-	    // var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	    return true;
-	  };
+    function ValidateNo() {
+        var val = $scope.guestDetails.mobile
+        if (/^\d{10}$/.test(val)) {
+            return true;
+        } else {
+            $modal.open(invalidMobileAlert);
+            return false
+        }
+    };
 
     $scope.mobileSubmitted = function(){
 
-    	if(!validateMobile($scope.guestDetails.mobile)){
-    		$modal.open(errorOpts);
-    	}
-    	else{
+    	if(ValidateNo()){
         guestDetailsService.postGuestDetails({"mobile":$scope.dial+"-"+$scope.guestDetails.mobile}).then(function(response) {
           $scope.isLoading = false;
           $scope.mobileUpdated = true;
           $rootScope.userMobile = $scope.guestDetails.mobile;
         },function(){
           $scope.isLoading = false;
-          $modal.open(emailErrorOpts);
+          $modal.open(mobileNumberSaveFailedAlert);
         });
     	}
     };
