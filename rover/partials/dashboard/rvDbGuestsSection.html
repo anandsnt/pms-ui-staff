@@ -34,7 +34,7 @@
             </a>
         </li> 
         <li ng-if="statisticsData.guests.checked_out_with_balance > 0 ">
-            <a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT', statisticsData.guests.checking_out)">
+            <a class="button red" ng-click="clickedOnGuestsToday($event, 'CHECKED_OUT_WITH_BALANCE', statisticsData.guests.checked_out_with_balance)">
                 <strong bo-text="statisticsData.guests.checked_out_with_balance"></strong>
                 Checked Out<span>(with balance)</span>
             </a>
