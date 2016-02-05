@@ -37,7 +37,7 @@
             <div class="action">
                 <label translate>PRINT</label>
                 <button type="button" class="button blue with-icon only-icon"
-                    ng-click="printWorkSheet()">
+                    ng-click="openPrintWorkSheetPopup()">
                     <span class="icons icon-print"></span>
                 </button>
             </div>
@@ -79,7 +79,7 @@
                         ng-repeat="task in room.room_tasks"
                         id="unassigned-UA-{{ $parent.$index }}-{{ $index }}"
                         data-drag = "{{multiSheetState.dndEnabled}}"
-                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
                         <div class="info">
                             <!-- To Do: Improve this logic/move to controller -->
@@ -125,7 +125,7 @@
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
-            <div class="employee" ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
+            <div class="employee" ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees" ngrepeatend="onLastCol()">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
                         {{employee.display_name}}
@@ -159,14 +159,15 @@
                     ng-iscroll="assignedRoomList-{{$index}}"> <!-- Vertical scroll here -->
                     <div class="wrapper">
                         <ul class="worksheet-room"
-                            ng-repeat="(roomIndex, room) in employee.rooms">
+                            ng-repeat="(roomIndex, room) in employee.rooms" ngrepeatend="onLastRoom()">
                             <li class="worksheet-task"
                                 id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
-                                ng-class="{ 'completed-task': task.is_complete}"
+                                ngrepeatend="onLastTask()"
+                                ng-class="{ 'completed-task': task.is_completed}"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
-                                jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                                jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()' }"
                                 data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}">
                                 <div class="info">
                                     <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out'">DUE OUT</span>
@@ -192,7 +193,7 @@
                                 <h3>{{task.room_no}}</h3>
                                 <span class="task">{{task.task_name}}</span>
                                 <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:-->
-                                <span class="icons icon-ok-10" ng-show="task.is_complete"></span>
+                                <span class="icons icon-ok-10" ng-show="task.is_completed"></span>
                             </li>
                         </ul>
                     </div>
