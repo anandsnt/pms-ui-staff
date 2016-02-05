@@ -132,6 +132,9 @@ sntRover.controller('RVroomAssignmentController',[
 				if(value.room_type_code === $scope.roomType){
 					$scope.filteredRooms.push(value);
 				}
+				$scope.setSelectedFiltersList();
+				$scope.setRoomsListWithPredefinedFilters();
+				$scope.applyFilterToRooms();
 			}
 
 		});
@@ -451,10 +454,18 @@ sntRover.controller('RVroomAssignmentController',[
             successCallBack: 	successCallbackAssignRoom,
             failureCallBack: 	errorCallbackAssignRoom
         };
-        console.log("-----------")
-        console.log($scope.assignedRoom)
-        //$scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
-        //$scope.upgradeRoomClicked($scope.assignedRoom)
+        //CICO-23077
+        if($scope.assignedRoom.is_upgrade_room === "true"){
+        	var selectedRoomIndex = '';
+			angular.forEach(roomUpgrades.upsell_data, function(value, key) {
+				if($scope.assignedRoom.room_number === value.upgrade_room_number){
+					selectedRoomIndex = key;
+				}
+			});
+			$scope.$broadcast('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', selectedRoomIndex);
+        } else {
+        	$scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
+        }
 	};
 
 
@@ -567,14 +578,11 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
-console.log(room)
 
 		if(room.is_oos === "true"){
 			return "room-grey";
 		}
-
 		var reservationRoomStatusClass = "";
-
 		//CICO-9063 no need to show the color coding if future reservation
 		if($scope.reservationData.reservation_card.reservation_status === 'RESERVED'){
 			return reservationRoomStatusClass;
