@@ -423,25 +423,43 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$( '#print-orientation' ).remove();
 		};
 
+		/**
+		 * Opens a popup to select the configurations to print the worksheet.
+		 * @return {undefined}
+		 */
+		$scope.openPrintWorkSheetPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/workManagement/popups/rvWorkManagementPrintOptionsPopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false,
+			});
+		};
+
+		/**
+		 * Prints the worksheet according to options configured in the $scope.printSettings.
+		 * @return {undefined}
+		 */
 		$scope.printWorkSheet = function() {
-			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-0'].scrollTo(0, 0);
+			console.log($scope.printSettings);
+
+			// reset scroll bars to top
+			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+			// 	var scroller = 'assignedRoomList-'+i;
+			// 	$scope.$parent.myScroll[scroller] && $scope.$parent.myScroll[scroller].scrollTo
+			// 	$scope.$parent.myScroll[scroller].scrollTo(0, 0);			};
+
+
+			// }
+			var i;
+			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
-			if ($scope.$parent.myScroll['assignedRoomList-1'] && $scope.$parent.myScroll['assignedRoomList-1'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-1'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-2'] && $scope.$parent.myScroll['assignedRoomList-2'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-2'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-3'] && $scope.$parent.myScroll['assignedRoomList-3'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-3'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-4'] && $scope.$parent.myScroll['assignedRoomList-4'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-4'].scrollTo(0, 0);
-			}
-			if ($scope.$parent.myScroll['assignedRoomList-5'] && $scope.$parent.myScroll['assignedRoomList-5'].scrollTo) {
-				$scope.$parent.myScroll['assignedRoomList-5'].scrollTo(0, 0);
-			}
+
+			// set the sheet according to print settings.
+			configureMultisheetForPrinting();
+
 			// add the orientation
 			addPrintOrientation();
 
@@ -753,7 +771,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					}
 				);
 
-
 			$scope.filters = {
 				selectedFloor: "",
 				selectedReservationStatus: "",
@@ -794,22 +811,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				UNDEF = undefined;
 
 			var dragDir    = UNDEF,
-				scrollInst = UNDEF,
 				timer      = UNDEF,
 				dim        = UNDEF;
 
 			var getDimentions = function() {
-				var LEFT_OFFSET = 200;
-				var COL_WIDTH   = 220;
+				var LEFT_OFFSET = 200,
+					COL_WIDTH   = 220,
+					TASK_OFFSET = 110;	// half of COL_WIDTH; since task inside col
 
 				var winWidth = $(window).width();
 
 				var scrollX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
 
 				dim = {
-					screenStart : LEFT_OFFSET,
+					screenStart : LEFT_OFFSET + TASK_OFFSET,
 					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET + TASK_OFFSET,
 					scrollEnd   : -scrollX
 				};
 			};
@@ -822,6 +839,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 
 			var scrollExec = function() {
+				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+
 				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dim.scrollStart ) {
 					scrollInst.scrollBy(10, 0, 1);
 				};
@@ -832,12 +851,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 
 			$scope.dragStart = function() {
-				if ( $scope.$parent.hasOwnProperty('myScroll') && $scope.$parent.myScroll.hasOwnProperty('worksheetHorizontal') ) {
-					scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
-				} else {
-					return;
-				}
-
 				timer = setInterval( scrollExec, 1 );
 			};
 
@@ -865,15 +878,34 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 		};
 
+		var checkAutoScroll = function() {
+			if ( $scope.$parent.hasOwnProperty('myScroll') && $scope.$parent.myScroll.hasOwnProperty('worksheetHorizontal') ) {
+				setUpAutoScroller();
+			} else {
+				setTimeout(checkAutoScroll, 100);
+			};
+		};
+
+
+
+		var initializeVariables = function() {
+			$scope.dateSelected = $scope.multiSheetState.selectedDate;
+			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
+			$scope.workSheetChanged = false;
+
+			// print options
+			$scope.printSettings = {
+				grouping: 'room',
+				sort: 'asc',
+				employees: 1
+			};
+		};
 
 		/**
 		 * Function to bootstrap multisheet.
 		 * @return {Undefined}
 		 */
 		var init = function() {
-
-			$scope.dateSelected = null;
-			$scope.workTypeSelected = null;
 
 			// state settings
 			setBackNavAndTitle();
@@ -890,16 +922,38 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// Update filters
 			$scope.filterUnassigned();
 
+			initializeVariables();
+
 			// Add scrollers and listners
 			refreshView();
 
-			$scope.dateSelected = $scope.multiSheetState.selectedDate;
-			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
-			$scope.workSheetChanged = false;
-
-			setUpAutoScroller();
+			// check for scroll instance and setup auto scroll
+			checkAutoScroll();
 		};
 
 		init();
+
+
+		var lastCol = false,
+			lastRoom = false;
+		/**/
+		$scope.onLastCol = function() {
+            lastCol = true;
+        };
+		/**/
+		$scope.onLastRoom = function() {
+            if ( lastCol ) {
+				lastRoom = true;
+            };
+        };
+        /**/
+        $scope.onLastTask = function() {
+            if ( lastRoom ) {
+				console.log('NG-repeat done!');
+
+				lastCol = false;
+				lastRoom = false;
+            };
+        };
 	}
 ]);
