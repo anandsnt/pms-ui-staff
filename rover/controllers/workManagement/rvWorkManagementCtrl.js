@@ -15,7 +15,6 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 		$scope.workTypes = workTypes;
 
 		$scope.employeeList = employees;
-		$scope.employeeListBackup = angular.copy(employees);
 
 		$scope.shifts = shifts;
 

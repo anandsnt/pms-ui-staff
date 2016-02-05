@@ -423,11 +423,18 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$( '#print-orientation' ).remove();
 		};
 
+
+
+
+		var employeeListBackup = null;
+
 		/**
 		 * Opens a popup to select the configurations to print the worksheet.
 		 * @return {undefined}
 		 */
 		$scope.openPrintWorkSheetPopup = function() {
+			employeeListBackup = angular.copy($scope.employeeList);
+
 			ngDialog.open({
 				template: '/assets/partials/workManagement/popups/rvWorkManagementPrintOptionsPopup.html',
 				className: '',
@@ -435,6 +442,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				closeByDocument: false,
 				closeByEscape: false,
 			});
+		};
+
+		$scope.cancelPopupDialog = function() {
+			$scope.employeeList = angular.copy(employeeListBackup);
+			$scope.onEmployeeListClosed();
+
+			ngDialog.close();
 		};
 
 		/**
@@ -481,7 +495,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// remove the orientation after similar delay
 			$timeout(function() {
 				removePrintOrientation();
+
 				$scope.multiSheetState = angular.copy(multiSheetStateBackup);
+				$scope.employeeList = angular.copy(employeeListBackup);
+				$scope.onEmployeeListClosed();
+
 				multiSheetStateBackup = null;
 				runDigestCycle();
 				console.info('----End print sequence----');
@@ -499,8 +517,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			console.info('----Initate print sequence----');
 			$scope.closeDialog();
 			$scope.$emit('showLoader');
-			multiSheetStateBackup = angular.copy($scope.multiSheetState);
 
+			multiSheetStateBackup = angular.copy($scope.multiSheetState);
 
 			// set the sheet according to print settings.
 			configureMultisheetForPrinting($scope.printSettings);
@@ -734,7 +752,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			for ( i = employee.rooms.length - 1; i >= 0; i-- ) {
 				allTasks  = employee.rooms[i].room_tasks;
 
-				completed = _.where(allTasks, { is_complete: true }) || [];
+				completed = _.where(allTasks, { is_completed: true }) || [];
 
 				totalTime = _.reduce(allTasks, function(s, task) {
 					time = task.time_allocated;

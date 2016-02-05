@@ -32,7 +32,7 @@
                     <option value="{n}">{n}</option>
                 </select>
             </div>-->
-            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name" max-labels="0" on-item-click="selectEmployee()" on-open="" on-close="" tick-property="ticked" disable-property="checkboxDisabled"></div>
+            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name" max-labels="0" on-item-click="selectEmployee()" on-open="" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
         </div>
 
         <div class="entry full-width">
@@ -47,7 +47,7 @@
 
         <div class="actions">
             <button type="button" class="button blue" ng-click="printWorkSheet()">Print work sheet</button>
-            <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+            <button type="button" class="button blank" ng-click="cancelPopupDialog()">Cancel</button>
         </div>
     </div>
 </div>
