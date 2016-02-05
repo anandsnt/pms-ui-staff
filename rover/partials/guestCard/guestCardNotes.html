@@ -1,0 +1,41 @@
+<!-- Guest Card Tab - Notes -->
+<form method="post" id="gc-notes" name="gc-notes" ng-controller="rvGuestCardNotesCtrl" class="form card-tab notes-tab">
+	<strong class="h3 margin">Notes</strong>
+
+	<div class="entry">
+	    <textarea ng-model="note_text" placeholder="Write a note" rows="4"></textarea>
+	    <label class="checkbox inline" ng-hide="true">
+	        <span class="icon-form icon-checkbox"></span>
+	        <input value="{value}" type="checkbox">
+	        Add to Stay Card
+	    </label>
+	    <button type="button" ng-click="createGuestcardNote()" class="button brand-colors" ng-class="{'brand-colors': note_text.trim()!==''}" ng-disabled="note_text.trim()===''">Post</button>
+	</div>
+	<div class="holder scrollable" ng-show="notes.length" ng-iscroll="guestcard_notes_scroller">
+	    <ul class="notes wrapper">
+	        <li ng-repeat="note in notes">
+	            <figure class="guest-image">
+	                <img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />
+	                <img ng-if="note.posted_user_image_url!==''" src="/assets/images/avatar-trans.png" alt="" />
+	            </figure>
+	            <div class="note-title">
+	                <h4>{{note.posted_user_first_name}} {{note.posted_user_last_name}}</h4>
+	                <time datetime="">
+	                    <span class="time">{{note.time}}</span>
+	                    <span class="date">{{note.date}}</span>
+	                </time>
+	                <button type="button" class="icons icon-trash" ng-click="deleteGuestcardNote(note.id, $index)">Delete post</button>
+	            </div>
+	            <p>{{note.text}}</p>
+	        </li>
+	    </ul>
+	</div>
+	<div class="holder scrollable" ng-show="!notes.length">
+		<div class="no-content">
+	        <div class="info">
+	            <span class="icon-no-content icon-notes"></span>
+	            <strong class="h1">No Notes</strong>
+	        </div>
+	    </div> 
+	</div>
+</form>
