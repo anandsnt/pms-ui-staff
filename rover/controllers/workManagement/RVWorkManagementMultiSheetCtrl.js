@@ -479,10 +479,17 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				*/
 			}, 100);
 			// remove the orientation after similar delay
-			$timeout(removePrintOrientation, 150);
+			$timeout(function() {
+				removePrintOrientation();
+				$scope.multiSheetState = angular.copy(multiSheetStateBackup);
+				multiSheetStateBackup = null;
+				runDigestCycle();
+				console.info('----End print sequence----');
+			}, 150);
 
-			console.info('----End print sequence----');
 		};
+
+		var multiSheetStateBackup = null;
 
 		/**
 		 * Prints the worksheet according to options configured in the $scope.printSettings.
@@ -492,7 +499,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			console.info('----Initate print sequence----');
 			$scope.closeDialog();
 			$scope.$emit('showLoader');
-
+			multiSheetStateBackup = angular.copy($scope.multiSheetState);
 
 
 			// set the sheet according to print settings.
