@@ -451,8 +451,10 @@ sntRover.controller('RVroomAssignmentController',[
             successCallBack: 	successCallbackAssignRoom,
             failureCallBack: 	errorCallbackAssignRoom
         };
+        console.log("-----------")
+        console.log($scope.assignedRoom)
         //$scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
-        $scope.upgradeRoomClicked($scope.assignedRoom)
+        //$scope.upgradeRoomClicked($scope.assignedRoom)
 	};
 
 
@@ -565,9 +567,9 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
+console.log(room)
 
-
-		if(room.is_oos){
+		if(room.is_oos === "true"){
 			return "room-grey";
 		}
 
