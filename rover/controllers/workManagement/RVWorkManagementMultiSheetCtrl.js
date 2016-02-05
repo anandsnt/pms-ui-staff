@@ -816,17 +816,18 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				dim        = UNDEF;
 
 			var getDimentions = function() {
-				var LEFT_OFFSET = 200;
-				var COL_WIDTH   = 220;
+				var LEFT_OFFSET = 200,
+					TASK_OFFSET = 100,	// half of a task width
+					COL_WIDTH   = 220;
 
 				var winWidth = $(window).width();
 
 				var scrollX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
 
 				dim = {
-					screenStart : LEFT_OFFSET,
+					screenStart : LEFT_OFFSET + TASK_OFFSET,
 					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET + TASK_OFFSET,
 					scrollEnd   : -scrollX
 				};
 			};
