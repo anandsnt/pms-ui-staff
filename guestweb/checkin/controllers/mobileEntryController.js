@@ -14,7 +14,7 @@
       controller: ccVerificationModalCtrl,
       resolve: {
         errorMessage:function(){
-          return "Mobile No. is not valid, Please Enter 10 Digit Mobile No.";
+          return "Please Enter a valid Mobile Number.";
         }
       }
     };
@@ -50,7 +50,7 @@
 
     function ValidateNo() {
         var val = $scope.guestDetails.mobile
-        if (/^\d{10}$/.test(val)) {
+        if (/^[0-9]{1,15}$/.test(val)) {
             return true;
         } else {
             $modal.open(invalidMobileAlert);
