@@ -1,0 +1,23 @@
+<section ng-controller="ADClientUsageReportFilterCtrl">
+    <!--Date Range-->
+    <div class="date-range">
+        <label>DATE RANGE</label>
+        <div class="has-datepicker">
+            <input type="text" class="range-datepicker" ui-date="filterState.fromDateOptions" ng-model="filterState.fromDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        </div>
+        <span class="span-to"> To </span>
+        <div class="has-datepicker">
+            <input type="text" class="range-datepicker" ui-date="filterState.toDateOptions" ng-model="filterState.toDate" ng-change="dateChanged(item, 'hasDateFilter')" readonly>
+        </div>
+    </div>
+    <!--PMS/Overlay-->
+    <faux-select source="filterState.pmsTypes" label="PMS TYPES"></faux-select>
+    <!--HotelChains-->
+    <faux-select source="filterState.pmsTypes" label="HOTEL CHAIN(S)"></faux-select>
+    <!--Hotels-->
+    <faux-select source="filterState.pmsTypes" label="HOTEL(S)"></faux-select>
+    <!-- Buttons -->
+    <button ng-click="exportCSV(item)" class="button with-icon only-icon purple" button="button" ng-if="item.canExport">
+        <span class="icons icon-save">Export</span>
+    </button>
+</section>

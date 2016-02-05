@@ -36,7 +36,7 @@ module.exports = function (gulp, $, options) {
 
 	//Be careful: PRODUCTION
 	gulp.task('admin-template-cache-production', function () {
-	  return gulp.src(PARTIALS_PATH_LIST, {cwd:'admin/'})
+	  return gulp.src([PARTIALS_PATH_LIST, {cwd:'admin/'}],PARTIALS_PATH_LIST, {cwd:'shared/'})
 	  		.pipe($.minifyHTML({
 	  			conditionals: true,
     			spare: true,
