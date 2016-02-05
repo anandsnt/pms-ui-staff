@@ -638,7 +638,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.shouldShowTimeSelector = function() {
 
-			return $rootScope.isHourlyRateOn
+			return $rootScope.isHourlyRateOn;
 		};
 
 		$scope.closeDialog = function() {
@@ -693,6 +693,44 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			// }
 		}, datePickerCommon);
 
+		/**
+		 * @param  {Date}
+		 * @return {String}
+		 */
+		var getApiFormattedDate = function(date) {
+			return ($filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI));
+		};
+
+		/**
+		 * Service Stauts update Button action
+		 * API Call - Post
+		 */
+		$scope.updateServiceStatus = function() {
+
+			var params = {
+
+   				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
+				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
+				room_service_status_id: $scope.updateServiceData.room_service_status_id,
+				begin_time 			: $scope.updateServiceData.begin_time,
+				end_time			: $scope.updateServiceData.end_time,
+				reason_id			: $scope.updateServiceData.reason_id,
+				comment 			: $scope.updateServiceData.comments
+			};
+
+			// To check All Rooms are Choosen or not
+			params.room_id = [];
+			if($scope.multiRoomAction.allChosen){
+				params.room_id = $scope.allRoomIDs;
+			} 
+			else {
+				params.room_id = $scope.multiRoomAction.rooms;
+			}
+
+
+		};
+
+
 		var initilizeServiceStatusData = function(){
 
 			// $scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
@@ -707,7 +745,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			fetchAllServiceStatus();
 			initilizeServiceStatusData();
 			$scope.refreshScroller('room-service-status-update');
-		}
+		};
+
+
+
 		/* ***** ***** ***** ***** ***** */
 
 

@@ -78,7 +78,7 @@
 
 	                        </div>
 	                        <div class="select" ng-show="shouldShowTimeSelector()">
-								<select id="room-out-to-time" class="placeholder" ng-model="updateService.end_time">
+								<select id="room-out-to-time" class="placeholder" ng-model="updateServiceData.end_time">
 	                                <option value="" selected>To Time</option>
 	                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="">{{timeSelector.text}}</option>
                             </select>
@@ -96,7 +96,7 @@
 	                    </div>
 	                    <div class="entry">
 	                        <label for="reason-comments">Comments <span>(optional)</span></label>
-	                        <textarea name="reason-comments" id="reason-comments" rows="4"></textarea>
+	                        <textarea name="reason-comments" id="reason-comments" ng-model="updateServiceData.comments" rows="4"></textarea>
 	                    </div>
 	                </div>
 	        	</div>
