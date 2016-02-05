@@ -76,6 +76,9 @@
       $rootScope.userMobileSkipped = true;
       $state.go('preCheckinStatus');
     };
+    $scope.changeMobile =  function(){
+       $scope.mobileUpdated = false;
+    };
 };
 
 var dependencies = [

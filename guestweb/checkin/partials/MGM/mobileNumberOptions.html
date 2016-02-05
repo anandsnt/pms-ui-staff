@@ -16,12 +16,13 @@
                   Mobile Phone Number
                </div>
                <p class="subTitletext">
-                  Do you want to update your mobile phone number to {{userMobile}}
+                  Your current mobile phone number is <span class="white-text">{{userMobile}}.</span><br/>
+                  Do you want to update it ?.
                </p>
                <form>
                   <div class="date-container ">
-                     <input type="submit" class="col-xs-12  link-btn with-bg nextbtn no-transform" ng-click="skip()" value="Yes"/> 
-                     <input class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="changeNumber()" value="No"/>
+                     <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" ng-click="changeNumber()" value="Yes"/>
+                     <input class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="skip()" value="No"/>
                   </div>
                </form>
             </div>

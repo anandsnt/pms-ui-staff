@@ -32,7 +32,7 @@
                      <div class="row">
                         <em class="labelText">MOBILE PHONE NUMBER</em>
                         <!--  -->
-                        <div class="row cabin_number_field">
+                        <div class="row cabin_number_field padding-top-10">
                            <div class="expiry-year-container eta-container country-container">
                               <div class="select-style flag-container"><div class="flag {{ country_code}}">
                               </div>
@@ -57,14 +57,14 @@
                   Mobile Phone NUmber Updated
                </div>
                <p class="subTitletext">
-                  We updated your Guest profile to include this mobile phone number.
+                  We updated your Guest profile to include this mobile phone number : <span class="white-text">{{dial}}-{{guestDetails.mobile}}</span>.
                </p>
-               <div class="row cabin_number_field">        
-                  <button class="checkin-button continue-button"
-                     ng-click="continueClicked()">
-                  <span class="white-text">Continue</span>
-                  </button>
-               </div>
+               <form>
+                  <div class="date-container ">
+                     <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" ng-click="continueClicked()" value="Continue"/>
+                     <input class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="changeMobile()" value="Change Mobile  Number"/>
+                  </div>
+               </form>
             </div>
             <!--  -->
          </div>
