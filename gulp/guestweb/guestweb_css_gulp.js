@@ -7,6 +7,8 @@ module.exports = function (gulp, $, options) {
 	    GUESTWEB_CSS_MANIFEST_FILE = "login_css_manifest.json",
 		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
 	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
+	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
+		GUESTWEB_JS_MANIFEST_FILE  = "guestweb_js_manifest.json",
 	    LessPluginCleanCSS 		= require('less-plugin-clean-css'),
     	cleancss 				= new LessPluginCleanCSS({advanced: true }),
     	nano 					= require('gulp-cssnano'),
@@ -21,19 +23,29 @@ module.exports = function (gulp, $, options) {
 		guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/css/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebCSSThemeMappings.json';
 
-	gulp.task('create-theme-mapping-css-production', function(){
-	    var mkdirp = require('mkdirp'),
-			fs = require('fs');
-		
-		mkdirp(guestwebGenDir, function (err) {
-		    if (err) console.error('guestweb theme css mapping directory failed!! (' + err + ')');
-	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-			    if(err) {
-			        return console.error('guestweb theme css mapping file failed!! (' + err + ')');
-			    }
-			    console.log('guestweb theme css mapping file created (' + guestwebGenFile + ')');
-			}); 
-		});
+
+	gulp.task('create-guestweb-theme-css-list', function(){
+		var fs = require('fs-extra');
+		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
+	});
+
+	gulp.task('create-theme-mapping-css-production', ['create-guestweb-theme-css-list'], function(){
+	    var edit = require('gulp-json-editor'),
+			js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
+			file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE];
+			//cache invalidating
+			return gulp.src(guestwebGenFile, {base: '.'})
+				.pipe($.rev())
+				.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+				.pipe($.rev.manifest())
+				.pipe(edit(function(manifest){
+					gulp.src('../../public/assets/' + file_name)
+					.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/css\/____generatedGuestWebCSSThemeMappings.json/g , 
+						URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+					.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+					console.log('guestweb theme css mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+					return {};
+				}));
 	});
 
 	gulp.task('guestweb-css-theme-generate-mapping-list-prod', function(){
@@ -101,7 +113,7 @@ module.exports = function (gulp, $, options) {
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});
 		return es.merge(tasks).on('end', function(){
-			return runSequence('create-theme-mapping-css-production')
+			return runSequence('create-guestweb-theme-css-list')
 		 });
 	});
 
@@ -115,7 +127,7 @@ module.exports = function (gulp, $, options) {
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat(['guestweb/img/**/*.*', 'guestweb/common_images/**/*.*']);
+		guestwebSourceList = guestwebSourceList.concat(['guestweb/img/**/*.*', 'guestweb/common_images/**/*.*','guestweb/**/*.json']);
 		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
@@ -128,8 +140,6 @@ module.exports = function (gulp, $, options) {
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat(['guestweb/**/*.less', 'asset_list/js/guestweb/**/*.js', 'asset_list/theming/guestweb/css/*.js']);
-		console.log(guestwebSourceList);
 		return gulp.watch(guestwebSourceList, function(callback){
 			return runSequence('build-guestweb-css-dev', 'copy-guestweb-base-html');
 		});

@@ -571,7 +571,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		function printList () {
-			var domRoomInsertDelay = 400;
+			var domRoomInsertDelay = 100;
 
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
@@ -589,10 +589,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 		    	*/
 
-		        $window.print();
-		        if ( sntapp.cordovaLoaded ) {
-		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		        };
+		        $timeout(function () {
+		        	$window.print();
+			        if ( sntapp.cordovaLoaded ) {
+			            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+			        };
+		        }, 0);
 		    }, domRoomInsertDelay);
 
 		    /*
