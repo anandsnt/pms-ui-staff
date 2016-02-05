@@ -572,28 +572,6 @@
 "is_independent": "Yes"
 },
 {
-"name": "Bonaire",
-"name_fr": "Bonaire, Saint-Eustache et Saba",
-"countrycode": "BQ",
-"ISO3166-1-Alpha-3": "BES",
-"ISO3166-1-numeric": "535",
-"ITU": "ATN",
-"MARC": "ca",
-"WMO": "NU",
-"DS": "NA",
-"dial": "599",
-"FIFA": "ANT",
-"FIPS": "NL",
-"GAUL": "176",
-"IOC": "AHO",
-"currency_alphabetic_code": "USD",
-"currency_country_name": "BONAIRE, SINT EUSTATIUS AND SABA",
-"currency_minor_unit": "2",
-"currency_name": "US Dollar",
-"currency_numeric_code": "840",
-"is_independent": "Part of NL"
-},
-{
 "name": "Bosnia and Herzegovina",
 "name_fr": "Bosnie-Herzégovine",
 "countrycode": "BA",
@@ -1100,7 +1078,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Congo",
+"name": "Congo (DRC)",
 "name_fr": "Congo, la République Démocratique du",
 "countrycode": "CD",
 "ISO3166-1-Alpha-3": "COD",
@@ -1208,28 +1186,6 @@
 "currency_name": "Cuban Peso",
 "currency_numeric_code": "192",
 "is_independent": "Yes"
-},
-{
-"name": "Curaçao",
-"name_fr": "Curaçao",
-"countrycode": "CW",
-"ISO3166-1-Alpha-3": "CUW",
-"ISO3166-1-numeric": "531",
-"ITU": "",
-"MARC": "co",
-"WMO": "",
-"DS": "",
-"dial": "599",
-"FIFA": "",
-"FIPS": "UC",
-"GAUL": "",
-"IOC": "",
-"currency_alphabetic_code": "ANG",
-"currency_country_name": "CURAÇAO",
-"currency_minor_unit": "2",
-"currency_name": "Netherlands Antillean Guilder",
-"currency_numeric_code": "532",
-"is_independent": "Part of NL"
 },
 {
 "name": "Cyprus",
