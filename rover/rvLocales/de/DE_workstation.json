@@ -7,7 +7,9 @@
 "KEY_ENCODER" : "Key Encoder",
 "ADD_TERMINAL" : "Add terminal",
 "TERMINAL_DEFAULT_OPTION" : "Select a Terminal",
-"KEY_ENCODER_DEFAULT_OPTION" : "Select an Encoder",
+"KEY_ENCODER_DEFAULT_OPTION" : "Select an Encoder"
+
+
 "PRINT_WORKSHEET": "Print Work Sheet",
 "SORT": "sort By",
 "ROOM": "Room",
