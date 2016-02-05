@@ -932,28 +932,5 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		init();
-
-
-		var lastCol = false,
-			lastRoom = false;
-		/**/
-		$scope.onLastCol = function() {
-            lastCol = true;
-        };
-		/**/
-		$scope.onLastRoom = function() {
-            if ( lastCol ) {
-				lastRoom = true;
-            };
-        };
-        /**/
-        $scope.onLastTask = function() {
-            if ( lastRoom ) {
-				console.log('NG-repeat done!');
-
-				lastCol = false;
-				lastRoom = false;
-            };
-        };
 	}
 ]);
