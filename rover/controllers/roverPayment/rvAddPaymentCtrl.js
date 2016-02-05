@@ -311,9 +311,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	*/
 
 	var saveNewCardSuccess = function(data){
-
+		
 		// Update reservation type
-		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id );
 
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = creditCardType.toLowerCase()+".png";
@@ -328,7 +328,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	var existingCardSuccess = function(data){
 
 		// Update reservation type
-		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
+		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id );
 
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.renderData.creditCardType+".png";
@@ -480,7 +480,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 
 			// Update reservation type
-			$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
+			$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id);
 		};
     	$scope.closeDialog();
     };
