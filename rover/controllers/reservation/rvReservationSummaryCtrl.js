@@ -1324,8 +1324,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $q.all(promises).then(updateSuccess, updateFailure);
         };
 
-        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
+        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId) {
             $scope.reservationData.reservation_type = data;
+            // CICO-24768 - Updating Payment id after adding new CC.
+            if(!!paymentId){
+                $scope.reservationData.reservation_card.payment_details.id = paymentId;
+            }
         });
 
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {
