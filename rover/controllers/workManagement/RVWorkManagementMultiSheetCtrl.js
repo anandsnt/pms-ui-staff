@@ -835,22 +835,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				UNDEF = undefined;
 
 			var dragDir    = UNDEF,
-				scrollInst = UNDEF,
 				timer      = UNDEF,
 				dim        = UNDEF;
 
 			var getDimentions = function() {
-				var LEFT_OFFSET = 200;
-				var COL_WIDTH   = 220;
+				var LEFT_OFFSET = 200,
+					COL_WIDTH   = 220,
+					TASK_OFFSET = 110;	// half of COL_WIDTH; since task inside col
 
 				var winWidth = $(window).width();
 
 				var scrollX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
 
 				dim = {
-					screenStart : LEFT_OFFSET,
+					screenStart : LEFT_OFFSET + TASK_OFFSET,
 					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET + TASK_OFFSET,
 					scrollEnd   : -scrollX
 				};
 			};
@@ -863,6 +863,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 
 			var scrollExec = function() {
+				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+
 				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dim.scrollStart ) {
 					scrollInst.scrollBy(10, 0, 1);
 				};
@@ -873,12 +875,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 
 			$scope.dragStart = function() {
-				if ( $scope.$parent.hasOwnProperty('myScroll') && $scope.$parent.myScroll.hasOwnProperty('worksheetHorizontal') ) {
-					scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
-				} else {
-					return;
-				}
-
 				timer = setInterval( scrollExec, 1 );
 			};
 
@@ -905,6 +901,16 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 			};
 		};
+
+		var checkAutoScroll = function() {
+			if ( $scope.$parent.hasOwnProperty('myScroll') && $scope.$parent.myScroll.hasOwnProperty('worksheetHorizontal') ) {
+				setUpAutoScroller();
+			} else {
+				setTimeout(checkAutoScroll, 100);
+			};
+		};
+
+
 
 		var initializeVariables = function() {
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
@@ -945,7 +951,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// Add scrollers and listners
 			refreshView();
 
-			setUpAutoScroller();
+			// check for scroll instance and setup auto scroll
+			checkAutoScroll();
 		};
 
 		init();
