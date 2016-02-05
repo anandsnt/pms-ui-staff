@@ -550,7 +550,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Bolivia, Plurinational State of",
+"name": "Bolivia",
 "name_fr": "Bolivie, l'État Plurinational de",
 "countrycode": "BO",
 "ISO3166-1-Alpha-3": "BOL",
@@ -572,7 +572,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Bonaire, Sint Eustatius and Saba",
+"name": "Bonaire",
 "name_fr": "Bonaire, Saint-Eustache et Saba",
 "countrycode": "BQ",
 "ISO3166-1-Alpha-3": "BES",
@@ -1100,7 +1100,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Congo, the Democratic Republic of the",
+"name": "Congo",
 "name_fr": "Congo, la République Démocratique du",
 "countrycode": "CD",
 "ISO3166-1-Alpha-3": "COD",
@@ -2266,7 +2266,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Iran, Islamic Republic of",
+"name": "Iran",
 "name_fr": "Iran, République Islamique d'",
 "countrycode": "IR",
 "ISO3166-1-Alpha-3": "IRN",
@@ -2552,7 +2552,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Korea, Democratic People's Republic of",
+"name": "North Korea",
 "name_fr": "Corée, République Populaire Démocratique de",
 "countrycode": "KP",
 "ISO3166-1-Alpha-3": "PRK",
@@ -2574,7 +2574,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Korea, Republic of",
+"name": "South Korea",
 "name_fr": "Corée, République de",
 "countrycode": "KR",
 "ISO3166-1-Alpha-3": "KOR",
@@ -2860,7 +2860,7 @@
 "is_independent": "Part of CN"
 },
 {
-"name": "Macedonia, the Former Yugoslav Republic of",
+"name": "Macedonia",
 "name_fr": "Macédoine, l'Ex-république Yougoslave de",
 "countrycode": "MK",
 "ISO3166-1-Alpha-3": "MKD",
@@ -3146,7 +3146,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Micronesia, Federated States of",
+"name": "Micronesia",
 "name_fr": "Micronésie, États Fédérés de",
 "countrycode": "FM",
 "ISO3166-1-Alpha-3": "FSM",
@@ -3168,7 +3168,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Moldova, Republic of",
+"name": "Moldova",
 "name_fr": "Moldova, République de",
 "countrycode": "MD",
 "ISO3166-1-Alpha-3": "MDA",
@@ -3696,7 +3696,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Palestine, State of",
+"name": "Palestine",
 "name_fr": "Palestine, État de",
 "countrycode": "PS",
 "ISO3166-1-Alpha-3": "PSE",
@@ -4796,7 +4796,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Tanzania, United Republic of",
+"name": "Tanzania",
 "name_fr": "Tanzanie, République-Unie de",
 "countrycode": "TZ",
 "ISO3166-1-Alpha-3": "TZA",
@@ -5258,7 +5258,7 @@
 "is_independent": "Yes"
 },
 {
-"name": "Venezuela, Bolivarian Republic of",
+"name": "Venezuela",
 "name_fr": "Venezuela, République Bolivarienne du",
 "countrycode": "VE",
 "ISO3166-1-Alpha-3": "VEN",
