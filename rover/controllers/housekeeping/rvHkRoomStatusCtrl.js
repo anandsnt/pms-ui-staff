@@ -13,6 +13,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 	'hkStatusList',
 	'ngDialog',
 	'RVWorkManagementSrv',
+	'RVHkRoomDetailsSrv',
+	'rvUtilSrv',
 	function(
 		$scope,
 		$rootScope,
@@ -27,7 +29,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		floors,
 		hkStatusList,
 		ngDialog,
-		RVWorkManagementSrv
+		RVWorkManagementSrv,
+		RVHkRoomDetailsSrv,
+		util
 	) {
 		// hook it up with base ctrl
 		BaseCtrl.call( this, $scope );
@@ -111,8 +115,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.assignRoom         = {};
 
+		// HK status Update popup
 		$scope.isRoomStatusUpdate = true;
 		$scope.isServiceStatusUpdate = false;
+		$scope.updateServiceData = {}; 
 
 		if (!!RVHkRoomStatusSrv.defaultViewState) {
 			$scope.currentView = RVHkRoomStatusSrv.defaultViewState;
@@ -123,12 +129,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.changeView = function(view) {
 			$scope.currentView = view;
 			RVHkRoomStatusSrv.defaultViewState = view;
-		};
-
-		$scope.toggleRoomServiceStatusUpdate = function() {
-
-			$scope.isRoomStatusUpdate = !$scope.isRoomStatusUpdate;
-			$scope.isServiceStatusUpdate = !$scope.isServiceStatusUpdate;
 		};
 
 		$scope.toggleView = function() {
@@ -577,6 +577,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			};
 		};
 
+
+		// HK status Update popup
+
 		$scope.openChangeHkStatusModal = function() {
 			ngDialog.open({
 			    template: '/assets/partials/housekeeping/rvChangeHkStatusModal.html',
@@ -584,7 +587,129 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			    closeByDocument: true,
 			    scope: $scope
 			});
+			$scope.initilizeServiceStatus();
 		};
+
+		$scope.toggleRoomServiceStatusUpdate = function() {
+
+			$scope.isRoomStatusUpdate = !$scope.isRoomStatusUpdate;
+			$scope.isServiceStatusUpdate = !$scope.isServiceStatusUpdate;
+		};
+
+		
+
+		/* ***** ***** ***** ***** ***** */
+
+		/*
+		 * fetch Maintenence resons
+		 */
+
+		var fetchMaintenanceReasons = function() {
+
+			function $_maintenanceReasonsCallback(data) {
+				$scope.$emit('hideLoader');
+				$scope.maintenanceReasonsList = data;
+			};
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
+		};
+
+		/*
+		 * fetch all Service Status 
+		 */		
+		var fetchAllServiceStatus = function() {
+
+			function $_allServiceStatusCallback(data) {
+				$scope.$emit('hideLoader');
+				$scope.serviceStatusList = data;
+				$scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
+			}
+			
+			$scope.invokeApi(RVHkRoomDetailsSrv.fetchAllServiceStatus, {}, $_allServiceStatusCallback);
+		};
+
+		/*
+		 * Using Utilty service for Time selector
+		 *
+		 */
+		var intervalForTimeSelector = 15,
+			mode = 12;
+		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
+
+		$scope.shouldShowTimeSelector = function() {
+
+			return $rootScope.isHourlyRateOn
+		};
+
+		$scope.closeDialog = function() {
+			ngDialog.close();
+		};
+
+		var datePickerCommon = {
+			dateFormat: $rootScope.jqDateFormat,
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div').addClass('reservation hide-arrow');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+
+				setTimeout(function() {
+					$('body').find('#ui-datepicker-overlay')
+						.on('click', function() {
+							$('#room-out-from').blur();
+							$('#room-out-to').blur();
+						});
+				}, 100);
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div').removeClass('reservation hide-arrow');
+				$('#ui-datepicker-overlay').off('click').remove();
+			}
+		};
+
+		var adjustDates = function() {
+			if (tzIndependentDate($scope.updateServiceData.from_date) > tzIndependentDate($scope.updateServiceData.to_date)) {
+				$scope.updateServiceData.to_date = $filter('date')(tzIndependentDate($scope.updateServiceData.from_date), 'yyyy-MM-dd');
+			}
+			$scope.untilDateOptions.minDate = $filter('date')(tzIndependentDate($scope.updateServiceData.from_date), $rootScope.dateFormat);
+		};
+
+		$scope.fromDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: adjustDates,
+			beforeShowDay: $scope.setClass,
+			// onChangeMonthYear: function(year, month, instance) {
+			// 	$scope.updateCalendar(year, month);
+			// }
+		}, datePickerCommon);
+
+		$scope.untilDateOptions = angular.extend({
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			onSelect: adjustDates,
+			beforeShowDay: $scope.setClass,
+			// onChangeMonthYear: function(year, month, instance) {
+			// 	$scope.updateCalendar(year, month);
+			// }
+		}, datePickerCommon);
+
+		var initilizeServiceStatusData = function(){
+
+			// $scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
+			$scope.updateServiceData.from_date = $rootScope.businessDate;
+			$scope.updateServiceData.to_date = $scope.updateServiceData.from_date;
+		};
+
+
+		$scope.initilizeServiceStatus = function(){
+
+			fetchMaintenanceReasons();
+			fetchAllServiceStatus();
+			initilizeServiceStatusData();
+			$scope.refreshScroller('room-service-status-update');
+		}
+		/* ***** ***** ***** ***** ***** */
+
 
 		$scope.resetMultiRoomAction = function() {
 
