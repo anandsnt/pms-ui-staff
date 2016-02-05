@@ -382,8 +382,36 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			return deferred.promise;
 		};
 
+		/**
+		 * Sorts/Groups the assigneed empployees list with options
+		 * @param {Object} employees list
+		 * @param {Object} data of all rooms
+		 * @param {Object} data of all tasks
+		 * @param {Object} sorting options
+		 * @return {Object} sorted list of employees
+		 **/
+		this.sortAssigned = function(assigned, allRooms, allTasks, options) {
+			var length = assigned.length,
+				employee;
+			for (var i = 0; i < length; i++) {
+				employee = assigned[i];
+				if (options.grouping === 'room') {
+					employee.rooms = _.sortBy(employee.rooms, function(room) {
+						return allRooms[room.room_index]['room_no'];
+					});
+					if (options.sort === 'desc')
+						employee.rooms.reverse();
+				} else {
+					/*_.each(employee.rooms, function(room, i) {
+						room.room_tasks = _.sortBy(room.room_tasks, function(x) { return x['task_name'].toLowerCase(); });
+						if (options.sort === 'desc')
+							rooms.room_tasks.reverse();
+					});*/
+				}
+			};
 
-
+			return assigned;
+		};
 
 		/**
 		 * PRIVATE METHODS
