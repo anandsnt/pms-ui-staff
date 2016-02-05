@@ -438,52 +438,76 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		/**
+		 * Transform data model for printing.
+		 */
+		var configureMultisheetForPrinting = function(options) {
+			console.info('----Starting data transformation----');
+			var multiSheetState 		= $scope.multiSheetState;
+			multiSheetState.selectedEmployees = RVWorkManagementSrv.sortAssigned(multiSheetState.selectedEmployees,
+										multiSheetState.allRooms,
+										multiSheetState.allTasks,
+										options);
+			var listner = $rootScope.$watch(function() {
+				listner();
+				$timeout(startPrinting, 0);
+			});
+			runDigestCycle();
+			console.info('----Data transformation complete----');
+
+
+		};
+
+		var startPrinting = function() {
+			console.warn("Digest completed");
+			/*
+			*	======[ READY TO PRINT ]======
+			*/
+			/*
+			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			*/
+
+			console.warn('Printing started');
+			$scope.$emit('hideLoader');
+			$timeout(function() {
+				$window.print();
+				if ( sntapp.cordovaLoaded ) {
+					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				};
+
+				/*
+				*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+				*/
+			}, 100);
+			// remove the orientation after similar delay
+			$timeout(removePrintOrientation, 150);
+
+			console.info('----End print sequence----');
+		};
+
+		/**
 		 * Prints the worksheet according to options configured in the $scope.printSettings.
 		 * @return {undefined}
 		 */
 		$scope.printWorkSheet = function() {
-			console.log($scope.printSettings);
+			console.info('----Initate print sequence----');
+			$scope.closeDialog();
+			$scope.$emit('showLoader');
+
+
+
+			// set the sheet according to print settings.
+			configureMultisheetForPrinting($scope.printSettings);
 
 			// reset scroll bars to top
-			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-			// 	var scroller = 'assignedRoomList-'+i;
-			// 	$scope.$parent.myScroll[scroller] && $scope.$parent.myScroll[scroller].scrollTo
-			// 	$scope.$parent.myScroll[scroller].scrollTo(0, 0);			};
-
-
-			// }
 			var i;
 			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
 				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
 
-			// set the sheet according to print settings.
-			configureMultisheetForPrinting();
-
+			console.info('----Add print orientation to head----');
 			// add the orientation
 			addPrintOrientation();
 
-			/*
-			*	======[ READY TO PRINT ]======
-			*/
-			// this will show the popup with full bill
-			$timeout(function() {
-				/*
-				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-				*/
-
-				$window.print();
-				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
-			}, 100);
-
-			/*
-			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			*/
-
-			// remove the orientation after similar delay
-			$timeout(removePrintOrientation, 100);
 		};
 
 		/**
