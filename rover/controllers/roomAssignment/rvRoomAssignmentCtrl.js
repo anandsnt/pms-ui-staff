@@ -113,8 +113,17 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.searchRoom = function(){
-		$scope.filteredRooms = [];;//Emptying rooms on search
-		angular.forEach($scope.allRooms, function(value, key) {
+		var allAllowedRooms = [];
+		allAllowedRooms = angular.copy($scope.allRooms);
+
+		angular.forEach(roomUpgrades.upsell_data, function(value, key) {
+			value.room_number = value.upgrade_room_number
+			allAllowedRooms.push(value)
+		});
+
+		$scope.searchText = $scope.searchText.toUpperCase();
+		$scope.filteredRooms = [];
+		angular.forEach(allAllowedRooms, function(value, key) {
 			if($scope.searchText !== ''){
 				if(value.room_number.indexOf($scope.searchText) !== -1){
 					$scope.filteredRooms.push(value);
@@ -442,7 +451,8 @@ sntRover.controller('RVroomAssignmentController',[
             successCallBack: 	successCallbackAssignRoom,
             failureCallBack: 	errorCallbackAssignRoom
         };
-        $scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
+        //$scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
+        $scope.upgradeRoomClicked($scope.assignedRoom)
 	};
 
 
@@ -493,22 +503,26 @@ sntRover.controller('RVroomAssignmentController',[
 	* Listener to update the reservation details on upgrade selection
 	*/
 	$scope.$on('upgradeSelected', function(event, data){
-			$scope.reservationData.reservation_card.room_id = data.room_id;
-			$scope.reservationData.reservation_card.room_number = data.room_no;
-			$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
-			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
-			$scope.reservationData.reservation_card.room_status = "READY";
-			$scope.reservationData.reservation_card.fo_status = "VACANT";
-			$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
-			// CICO-7904 and CICO-9628 : update the upsell availability to staycard
-			$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
-			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-			if($scope.clickedButton === "checkinButton"){
-				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-			} else {
-				$scope.backToStayCard();
-			}
+			$scope.upgradeRoomClicked(data);
 	});
+
+	$scope.upgradeRoomClicked = function(data){
+		$scope.reservationData.reservation_card.room_id = data.room_id;
+		$scope.reservationData.reservation_card.room_number = data.room_no;
+		$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
+		$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
+		$scope.reservationData.reservation_card.room_status = "READY";
+		$scope.reservationData.reservation_card.fo_status = "VACANT";
+		$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
+		// CICO-7904 and CICO-9628 : update the upsell availability to staycard
+		$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
+		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+		if($scope.clickedButton === "checkinButton"){
+			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		} else {
+			$scope.backToStayCard();
+		}
+	}
 
 	/**
 	* function to go back to reservation details
