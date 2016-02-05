@@ -14,11 +14,11 @@ var gulp 	  = require('gulp'),
 			        DEST_ROOT_PATH  : '../../public/assets/',
 			        URL_APPENDER    : '/assets',
 				    onError: function (error) {
-				    	console.log ('--------GULP TASK FAILED---\n\n')
+				    	console.log ('--------GULP TASK FAILED---\n\n');
 				    	
 				    	console.trace(error);
-				    	console.log('\n\n---END OF GULP ERROR MESSAGE--')
-				    	require('exit')(0);
+				    	console.log('\n\n---END OF GULP ERROR MESSAGE--');
+				    	require('exit')(1);
 				    },
 				    silentErrorShowing: function(error){
 				    	// If you want details of the error in the console
