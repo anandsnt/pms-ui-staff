@@ -9,5 +9,5 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require '../guestweb/static/lib/css/bootstrap.min.css'
- *= require '../guestweb/common_css/signatureatmgm/theme.less'
+ *= require '../guestweb/common_css/signature_at_mgm/theme.less'
  */
