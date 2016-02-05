@@ -79,6 +79,15 @@
 				<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
 			</div>
 			
+			<div class="entry full-width">
+                             <div class="entry inline-flex" >
+                        <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
+                        </div><div class="switch-button single" ng-class="{ on: data.sms_active }" ng-click="data.sms_active = !data.sms_active">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
+			</div>
 		</fieldset>
 		
 		<fieldset class="holder right">

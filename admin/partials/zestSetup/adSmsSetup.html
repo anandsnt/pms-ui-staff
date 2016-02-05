@@ -1,0 +1,108 @@
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2>{{ 'ZEST_SETUP_SMS_HEADER' | translate}}</h2>
+        
+        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK_TO_ZEST_SETUP' | translate}}</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+        <!-- Add chain -->
+		<form class="form inline-form float">
+                    <div class="entry inline-flex" >
+                        <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
+                        </div><div class="switch-button single" ng-class="{ on: editData.sms_active }" ng-click="editData.sms_active = !editData.sms_active">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
+                    
+                    
+                    <fieldset style="margin-top:10px;" class="holder right float">
+                        <ad-textbox value="editData.code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width overlay"></ad-textbox>
+                    </fieldset>
+                    
+                    <div class="entry full-width actions_margin_top">
+                        <div><label class="label">Service Available for guests on:</label>
+                        </div>
+                            <div>
+                                <ad-checkbox  is-checked="editData.isDOA" label="Day of Arrival" parent-label-class="room-likes" span-class="checkbox-background" ng-click="checkDOA()"></ad-checkbox>
+                                <ad-checkbox  is-checked="editData.isDBA" label="Day Before Arrival" parent-label-class="room-likes" span-class="checkbox-background" ng-click="checkDBA()"></ad-checkbox>
+                            </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <!--  OPT-IN  -->
+			<div class="form-title"><h3><span></span>
+                            Opt-In
+                        </h3></div>
+                    
+			<fieldset style="margin-top:10px;" class="holder right float">
+				<!-- Help Keywords + response-->
+                                <ad-textbox value="editData.sms_optin_keywords"  label = "Opt-In Keywords" placeholder = "Enter Keywords" required = "yes" styleclass="full-width"></ad-textbox>
+                                <div class="entry full-width">
+					<label for="sms_help_response">
+                                            Opt-In Response 
+                                            (<span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}'>
+                                                {{charLimitPerText-editData.sms_optin_response.length}}
+                                            </span>)
+                                            <span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}' ng-show='editData.sms_optin_response.length>charLimitPerText'>
+                                                *May split into ({{getPages(editData.sms_optin_response.length)}}) messages</span>
+					</label>
+					<textarea value="" type="" required="" placeholder="Enter Opt-In Response" name="sms_optin_response" ng-model="editData.sms_optin_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
+				</div>
+			</fieldset>
+                    
+                    
+                    <!--  STOP -->
+                    <div class="form-title"><h3><span></span>
+                            Stop
+                        </h3></div>
+			<fieldset style="margin-top:10px;" class="holder right float">
+				<!-- Help Keywords + response-->
+                                <ad-textbox value="editData.sms_stop_keywords"  label = "Stop Keywords" placeholder = "Enter Keywords" required = "no" styleclass="full-width overlay"></ad-textbox>
+                                <div class="entry full-width">
+					<label for="sms_help_response">
+                                            Stop Response 
+                                            (<span ng-class='{"green-color-force":editData.sms_stop_response.length <= charLimitPerText, "snt-color-force":editData.sms_stop_response.length > charLimitPerText}'>
+                                                {{charLimitPerText-editData.sms_stop_response.length}}
+                                            </span>)
+                                            <span ng-class='{"green-color-force":editData.sms_stop_response.length <= charLimitPerText, "snt-color-force":editData.sms_stop_response.length > charLimitPerText}' ng-show='editData.sms_stop_response.length>charLimitPerText'>
+                                                *May split into ({{getPages(editData.sms_stop_response.length)}}) messages</span>
+					</label>
+                                    <textarea value="" type="" required="" placeholder="" name="sms_stop_response" ng-model="editData.sms_stop_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
+				</div>
+			</fieldset>
+                    
+                    
+                    <!--  Help (non-editable) set in SNT Admin -->
+                    <div class="form-title"><h3><span></span>
+                            Help
+                        </h3></div>
+			<fieldset style="margin-top:10px;" class="holder right float">
+				<!-- Help Keywords + response-->
+                                <ad-textbox value="editData.sms_help_keywords"  label = "Help Keywords" placeholder = "Enter Keywords" required = "no" styleclass="full-width overlay"></ad-textbox>
+                                <div class="entry full-width overlay">
+					<label for="sms_help_response">
+                                            Help Response 
+                                            (<span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}'>
+                                                {{charLimitPerText-editData.sms_help_response.length}}
+                                            </span>)
+                                            <span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}' ng-show='editData.sms_help_response.length>charLimitPerText'>
+                                                *May split into ({{getPages(editData.sms_help_response.length)}}) messages</span>
+					</label>
+					<textarea value="" type="" required="" placeholder="" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
+				</div>
+			</fieldset>
+                    
+
+			<div class="actions float">
+				<button style="margin-top:15px;" type="button" ng-click="cancelClicked()" class="button blank edit-data-inline">Cancel</button>
+				<button style="margin-top:15px;" type="button" id="save" class="button green edit-data-inline" ng-click="saveClicked()">Save changes</button>
+			</div>
+
+		</form>
+    </section>
+</section>

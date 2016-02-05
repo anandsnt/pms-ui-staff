@@ -13,7 +13,7 @@ angular.module('allotmentModule', [])
             controller: 'rvAllotmentRootCtrl',
             resolve: {
                 allotmentAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.allotments');
+                    return jsMappings.fetchAssets(['rover.allotments', 'directives']);
                 }
             }
         });

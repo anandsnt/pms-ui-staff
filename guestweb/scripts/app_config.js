@@ -40,16 +40,27 @@ sntGuestWeb.config(function ($httpProvider) {
 
 
 
-sntGuestWeb.run(function($rootScope, $location, $http){
+sntGuestWeb.run(function($rootScope, $location, $http, $window){
 
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-		$rootScope.title =toState.title;
+
+		if(toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')){
+			event.preventDefault();
+		}else{
+			$rootScope.title =toState.title;
+		}	
+		
 	});
+	
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       
       console.error(error);
       //TODO: Log the error in proper way
     });
+        // track pageview on state change
+        $rootScope.$on('$stateChangeSuccess', function (event) {
+            $window.ga('send', 'pageview', $location.path());
+        });
 });

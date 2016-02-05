@@ -604,7 +604,6 @@ sntRover.controller('RVPostChargeControllerV2',
 			};
 
 			$scope.$on('POSTCHARGE', function( event, data ) {
-				console.log("@@@POSTCHARGE");
 			   	$scope.postCharges();
 			});
 
