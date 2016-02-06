@@ -24,12 +24,18 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		this.fetchWorkTypes = function() {
 			var deferred = $q.defer();
+
+
 			var url = 'api/work_types';
+
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data.results);
 			}, function(data) {
 				deferred.reject(data);
 			});
+
+
 			return deferred.promise;
 		};
 

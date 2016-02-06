@@ -90,7 +90,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
 
  	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_serviceMsg;
+ 	$rootScope.zestCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_service_msg;
  	$rootScope.termsAndConditions = reservationAndhotelData.terms_and_conditions;
  	$rootScope.isBirthdayVerified =  false;
 
@@ -102,6 +102,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	//room key delivery options
  	$rootScope.preckinCompleted =  false;
  	$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
+ 	$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
 
