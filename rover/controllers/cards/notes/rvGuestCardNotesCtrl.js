@@ -74,7 +74,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 			var noteToAdd = {
 				'posted_user_first_name': userDetails.first_name,
 				'posted_user_last_name' : userDetails.last_name,
-				'posted_user_image_url' : userDetails.image_url,
+				'posted_user_image_url' : userDetails.user_image_url,
 				'text'					: $scope.note_text,
 				'time' 					: data.time,
 				'date' 					: data.date,
