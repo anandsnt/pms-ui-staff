@@ -4,9 +4,13 @@
     <div class="row" ng-hide="isFetching">
         <div class="col-md-2"></div>
         <div class="col-md-4 top-spacing">
+            <!-- default main text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Check-Out</p>
+            <!-- CMS main text -->
             <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
             <p class="sub-main-text" ng-if="!screenCMSDetails.description">Your balance is</p>
+            <!-- CMS sub  text -->
             <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
             <p class="balance-amount">{{currencySymbol}}{{billData.balance}}</p>
             <div class="view-bill" ng-hide="showBill"  ng-click="showBill = true">

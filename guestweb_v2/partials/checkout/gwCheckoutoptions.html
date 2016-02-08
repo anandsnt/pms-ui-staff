@@ -4,9 +4,13 @@
         <div class="col-sm-2"></div>
         <!-- left side -->
         <div class="col-sm-4 top-spacing">
+            <!-- default main text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Late check out?</p>
+            <!-- CMS main text -->
             <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
-            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Check-out time is at 10:30PM.Request a late check-out if you need more time.</p>
+            <!-- default sub  text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Check-out time is at {{checkout_time}}.Request a late check-out if you need more time.</p>
+            <!-- CMS sub  text -->
              <p class="sub-main-text template-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
         </div>
         <div class="col-sm-1"></div>

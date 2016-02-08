@@ -28,7 +28,7 @@
 
 
 .calendar-back {
-  background-image: url('/assets/guestweb_v2/images/back_icon_white.png');
+  background-image: url('/assets/guestweb_v2/images/back_icon.png');
 }
 
 
@@ -42,7 +42,7 @@
 }
 
 .date-picker-wrap {
-  background-color: #FFF !important;
+  background-color: #E4E4E4 !important;
   max-width: 460px;
   height: 100%;
   margin: auto;
@@ -51,8 +51,12 @@
 .date-picker-header{
   font-size: 17px;
   color: #fff;
-  background-color: #AE222B;
+  background-color: #3D3D3B;
   padding: 15px 5px 5px 5px;
+}
+
+.date-picker-bg {
+  background: rgba(0,0,0,0.5);
 }
 
 @media (max-width: 420px) {
@@ -64,6 +68,7 @@
 
 .pickadate-header {
   position: relative;
+  color:#696969;
 }
 
 .pickadate {
@@ -110,18 +115,21 @@
 .pickadate-cell li:nth-child(22),
 .pickadate-cell li:nth-child(29),
 .pickadate-cell li:nth-child(36) {
-  border-left: 1px solid #DCDCDC;
+  border-left: 1px solid #fff;
 }
 
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-  background-color: #DEDCD0;
+   background-color: #CDCDCD;
 }
 
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-disabled a {
   color: #ac9557;
+}
+.pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
+  color: #000 !important;
 }
 
 // must not be changed
@@ -147,7 +155,7 @@
 
 
 .pickadate-cell .pickadate-active {
-  background-color: #AE222B !important;
+  background-color: #3D3D3B !important;
   color:#FFFFFF !important;
 }
 
@@ -197,7 +205,7 @@
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
   // date must be hidden
   // user must not see or select it
-  color: #fff;
+  color: #363634;
   color: transparent;
 
   cursor: default;
