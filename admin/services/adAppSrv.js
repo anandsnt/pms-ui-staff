@@ -6,22 +6,6 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 
 
 		var fetchSuccess = function(data){
-            // TODO: Clean this code up
-            data.menus.push({
-                components: [{
-                    action_path: "/admin/reports",
-                    icon_class: "icon-admin-menu icon-hotel",
-                    id: 99,
-                    is_bookmarked: true,
-                    is_group: false, 
-                    name: "Reports",
-                    state: "admin.reports",
-                    sub_components: []
-                }],
-                header_name: "Admin Reports",
-                menu_id: 13,
-                menu_name: "Reports"
-            });
 			deferred.resolve(data);
 		};
 		var fetchFailed = function(data){
