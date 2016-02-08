@@ -79,6 +79,10 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             });
         };
 
+        /**
+         * The PMS-TYPE and HOTEL-CHAIN both control the hotels listed in the HOTEL filter
+         * The following method filters the HOTEL with the selected values in the PMS-TYPE and HOTEL-CHAIN
+         */
         $scope.filterHotelsList = function() {
             var selectedTypes = [],
                 selectedChains = [],
