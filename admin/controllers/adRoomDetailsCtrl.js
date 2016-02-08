@@ -128,7 +128,8 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	* method to update the room details
 	*/
 	$scope.updateRoomDetails = function(){
-
+        
+		console.log($scope.data);
 		var postData = {};
 		postData.room_id = $scope.data.room_id;
 		postData.room_number = $scope.data.room_number;
@@ -137,6 +138,11 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.active_room_likes = [];
 		postData.selected_floor = $scope.data.selected_floor;
 		postData.max_occupancy = $scope.data.max_occupancy;
+		postData.is_exclude_from_manual_room_assignment = $scope.data.is_exclude_from_manual_room_assignment;
+		postData.is_exclude_from_auto_room_assignment = $scope.data.is_exclude_from_auto_room_assignment;
+		postData.is_exclude_from_manual_checkin = $scope.data.is_exclude_from_manual_checkin;
+		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
+		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
@@ -174,16 +180,6 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 	};
 
-
-	$scope.excludeManualCheckin = function(){
-		//is_exclude_from_manual_checkin
-	}
-	$scope.excludeAutoCheckin = function(){
-
-	}
-	$csope.excludeHousekeeping = function(){
-
-	}
 	/**
 	* Success function of updateRoomDetails's web service call
 	*/
