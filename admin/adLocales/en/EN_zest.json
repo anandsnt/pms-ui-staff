@@ -64,8 +64,10 @@
 "ZEST_SETUP_SEND": "Send Message",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_EMAIL_LABEL": "Service is OFF - Email",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEON_EMAIL_LABEL": "Service is ON - Start Email",
+"ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_SMS_LABEL": "Service is OFF - SMS",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEON_NO_RECOG": "Service is ON - Did not recognize keyword",
-"ZEST_SETUP_DIRECT_URL_HEADER":"Check-In By Direct URL From Guest Setup"
+"ZEST_SETUP_DIRECT_URL_HEADER":"Check-In By Direct URL From Guest Setup",
+"ZEST_SETUP_SMS_HEADER":"Check-In By SMS From Guest Setup"
 
 
 

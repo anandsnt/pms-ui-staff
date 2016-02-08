@@ -1,4 +1,4 @@
-admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','$filter',function($scope, $state, ADZestShortCodeSrv,$filter){
+admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','adZestCheckinCheckoutSrv','$filter',function($scope, $state, ADZestShortCodeSrv,adZestCheckinCheckoutSrv,$filter){
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -11,13 +11,28 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     $scope.cancelClicked = function(){
         $scope.goBackToPreviousState();
     };
+
+     var saveSMSUrl = function(){
+        var data = {
+             "active": true,
+             "application": "SMS",
+             "guest_web_url_type": "CHECKIN",
+             "name":"SMS URL",
+             "url_suffix": $scope.editData.checkin_static_url
+        }
+        var options = {
+            params          : data
+        };
+        $scope.callAPI(adZestCheckinCheckoutSrv.saveNewDirectURL, options);
+    };
     $scope.onCallback = function(response){
         if (response.status === 'success'){
-            $scope.successMessage = response.status;
+            saveSMSUrl();
         } else {
             $scope.errorMessage = ["Error"];
         }
     };
+
     $scope.saveClicked = function(){
         console.info('saving',$scope.editData);
         var params = $scope.editData;

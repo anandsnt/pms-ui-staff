@@ -218,6 +218,7 @@
                     <div class="select">
                         <select id="work-type"
                             ng-model="currentFilters.filterByWorkType"
+                             ng-class=" { 'placeholder': !currentFilters.filterByWorkType }"
                             ng-options="item.id as item.name for item in workTypes">
                             <option value="" translate>ALL_WORK_TYPES</option>
                         </select>
@@ -226,7 +227,10 @@
                 <strong class="title" ng-hide="isMaintenanceStaff && hasActiveWorkSheet" translate>EMPLOYEE</strong>
                 <div class="entry" ng-hide="isMaintenanceStaff && hasActiveWorkSheet">
                     <div class="select">
-                        <select id="employees" ng-model="currentFilters.filterByEmployeeName" ng-options="emp.id as emp.maid_name for emp in employees">
+                        <select id="employees"
+                        ng-model="currentFilters.filterByEmployeeName"
+                        ng-class=" { 'placeholder': !currentFilters.filterByEmployeeName }"
+                        ng-options="emp.id as emp.maid_name for emp in employees">
                             <option value="">All Employees</option>
                         </select>
                     </div>
@@ -316,10 +320,12 @@
             </div>
             <div class="holder" ng-if="!isStandAlone">
                 <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-                <div class="select">
-                    <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
-                        <option value="" selected>All Room Types</option>
-                    </select>
+                <div class="entry rooms">
+                    <div class="select">
+                        <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
+                            <option value="" selected>All Room Types</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="holder">
@@ -414,14 +420,14 @@
             </div>
 
             <div class="holder" ng-if="isStandAlone">
-              <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-              <div class="entry radio-check" ng-repeat="type in roomTypes track by $index">
-                <label class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
-                  <input type="checkbox" ng-model="type.isSelected" name="room-filters">
-                  <label>{{ type.name }}</label>
-                </label>
-              </div>
+                <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
+                <div class="entry radio-check" ng-repeat="type in roomTypes track by $index">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
+                        <input type="checkbox" ng-model="type.isSelected" name="room-filters">
+                        <label>{{ type.name }}</label>
+                    </label>
+                </div>
             </div>
         </div>
     </div>

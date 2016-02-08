@@ -11,12 +11,9 @@ angular.module('groupModule', [])
             abstract: true,
             templateUrl: '/assets/partials/groups/rvGroupRoot.html',
             controller: 'rvGroupRootCtrl',
-            resolve: {
-                directivesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('directives');
-                },                
-                groupAssets: function(jsMappings, mappingList, directivesJsAssets) {
-                    return jsMappings.fetchAssets('rover.groups');
+            resolve: {            
+                groupAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.groups', 'directives']);
                 }
             }
         });

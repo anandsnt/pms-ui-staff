@@ -79,9 +79,7 @@
                     }
 
                     .entry {
-                        padding: 5px 0;
-                        margin-bottom: 0;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        margin-bottom: 20px;
                         .show;
 
                         .radio,
@@ -104,20 +102,16 @@
                             }
                         }
 
-                        &.rooms {
-                            .select {
-                                select { background-color: @grey1; }
+                        .select {
+                            select { background-color: @grey1; }
 
-                                &:after { background-color: @grey1; }
-                            }
+                            &:after { background-color: @grey1; }
                         }
 
                         &:first-child { padding-top: 0; }
                         &:last-child { border-bottom: 0; }
 
                         &.floors {
-                            margin-bottom: 20px;
-
                             .entry-data {
                                 margin-bottom: 10px;
                                 background-color: @grey1;
@@ -146,21 +140,9 @@
                                     }
 
                                     .select {
-                                        position: relative;
-                                        .faux-clickable;
+                                        select { background-color: @white; }
 
-                                        select { 
-                                            text-align: center;
-                                            vertical-align: middle;
-                                            position: relative;
-                                            background: transparent;
-                                            border: 0;
-                                            padding: 10px;
-                                            line-height: 40px; 
-                                            height: 40px;
-                                            min-height: 40px;
-                                            .box-shadow(none);
-                                        }
+                                        &:after { background-color: @white; }
                                     }
                                 }
 
@@ -192,6 +174,12 @@
                                     .select:first-of-type { margin-bottom: 10px; }
                                 }
                             }
+                        }
+
+                        &.radio-check:not(.floors) { 
+                            padding: 5px 0;
+                            margin-bottom: 0;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
                         }
                     }
                 }

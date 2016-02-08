@@ -1,0 +1,47 @@
+<div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content form print-modal">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+            <span class="icons icon-close invert">
+        </button>
+
+        <strong class="h2 message" translate>PRINT_WORKSHEET</strong>
+
+        <div class="entry radio-check">
+            <label for="worksheet-sort1" translate>SORT</label>
+            <label for="worksheet-sort1" class="radio" ng-class="{ 'checked': printSettings.grouping === 'room' }">
+                <span class="icon-form icon-radio" ng-class="{ 'checked': printSettings.grouping === 'room' }">
+                </span>
+                <input name="worksheet-sort" id="worksheet-sort1" value="room" type="radio"
+                    ng-model="printSettings.grouping">
+                {{'ROOM' | translate}}
+            </label>
+            <label for="worksheet-sort2" class="radio" ng-class="{ 'checked': printSettings.grouping === 'task' }">
+                <span class="icon-form icon-radio" ng-class="{ 'checked': printSettings.grouping === 'task' }">
+                </span>
+                <input name="worksheet-sort" id="worksheet-sort2" value="task" type="radio"
+                    ng-model="printSettings.grouping">
+                {{'TASK' | translate}}
+            </label>
+        </div>
+
+        <div class="entry full-width">
+            <label for="worksheet-employees" translate>NUMBER_EMPLOYEES</label>
+            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name" max-labels="0" on-item-click="selectEmployee()" on-open="" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
+        </div>
+
+        <div class="entry full-width">
+            <label for="worksheet-sorting" translate>SORT_ORDER</label>
+            <div class="select">
+                <select name="worksheet-sorting" id="worksheet-sorting" ng-model="printSettings.sort">
+                     <option value="asc" selected="selected">Ascending</option>
+                     <option value="desc">Descending</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button blue" ng-click="printWorkSheet()" translate>PRINT_WORKSHEET</button>
+            <button type="button" class="button blank" ng-click="cancelPopupDialog()" translate>CANCEL</button>
+        </div>
+    </div>
+</div>

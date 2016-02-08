@@ -43,9 +43,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		var _title = $rootScope.isMaintenanceStaff ? 'My WorkSheet' : 'ROOM_STATUS';
+		_title = $filter( 'translate')(_title);
+
 		// set title in header
-		$scope.setTitle($filter( 'translate')(_title));
-		$scope.heading = $filter( 'translate')(_title);
+		$scope.setTitle(_title);
+		$scope.heading = _title;
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
 
 		// set the scroller
@@ -255,25 +257,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			};
 		};
 
-		// when user changes the employee filter
-		$scope.applyWorkTypefilter = function() {
-			$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
-
-			// if work type is null reset filter by employee
-			if ( !$scope.currentFilters.filterByWorkType ) {
-				$scope.topFilter.byEmployee = '';
-				$scope.applyEmpfilter();
-			} else {
-				$scope.filterDoneButtonPressed();
-			}
-		};
-
-		// when user changes the employee filter
-		$scope.applyEmpfilter = function() {
-			$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
-			$scope.filterDoneButtonPressed();
-		};
-
 		var $_filterByQuery = function(forced) {
 			var _makeCall = function() {
 					$_updateFilters('query', $scope.query);
@@ -326,8 +309,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
 			if ( $scope.isStandAlone ) {
-				$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
-				$scope.currentFilters.filterByEmployeeName = $scope.topFilter.byEmployee;
+				$scope.currentFilters.filterByWorkType = "";
+				$scope.currentFilters.filterByEmployeeName = "";
 			};
 			RVHkRoomStatusSrv.currentFilters = angular.copy( $scope.currentFilters );
 
@@ -365,99 +348,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				});
 
 			return !!ret ? ret.employees : [];
-		};
-
-		$scope.openAssignRoomModal = function(room) {
-			$_tobeAssignedRoom = room;
-
-			$scope.assignRoom.rooms = [$_tobeAssignedRoom.id];
-			$scope.assignRoom.work_type_id = $scope.topFilter.byWorkType;
-			$scope.activeWorksheetEmp = [];
-
-			var _onError = function() {
-				$scope.$emit('hideLoader');
-			};
-
-			var _onActiveWorksheetEmpSuccess = function(response) {
-				$scope.$emit('hideLoader');
-
-				$_activeWorksheetData = response.data;
-				$scope.activeWorksheetEmp = $_findEmpAry();
-				ngDialog.open({
-				    template: '/assets/partials/housekeeping/rvAssignRoomModal.html',
-				    className: 'ngdialog-theme-default',
-				    closeByDocument: true,
-				    scope: $scope,
-				    data: []
-				});
-
-			};
-
-			var _onCheckRoomSucess = function(response) {
-				var staff = response.data.rooms[0].assignee_maid;
-
-				if ( !!staff && !staff.id ) {
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchActiveWorksheetEmp, {}, _onActiveWorksheetEmpSuccess, _onError);
-				} else {
-					$scope.$emit('hideLoader');
-					$_tobeAssignedRoom.assignee_maid = angular.copy( staff );
-					$_tobeAssignedRoom.assigned_staff = RVHkRoomStatusSrv.calculateAssignedStaff( $_tobeAssignedRoom );
-				};
-			};
-
-			$scope.invokeApi(RVHkRoomStatusSrv.checkRoomAssigned, {
-				'query': $_tobeAssignedRoom.room_no,
-				'date' : $rootScope.businessDate
-			}, _onCheckRoomSucess, _onError);
-		};
-
-		$scope.assignRoomWorkTypeChanged = function() {
-			$scope.activeWorksheetEmp = $_findEmpAry();
-		};
-
-		$scope.submitAssignRoom = function() {
-		    $scope.errorMessage = "";
-		    if (!$scope.assignRoom.work_type_id) {
-		        $scope.errorMessage = ['Please select a work type.'];
-		        return false;
-		    }
-		    if (!$scope.assignRoom.user_id) {
-		        $scope.errorMessage = ['Please select an employele.'];
-		        return false;
-		    }
-		    var _onAssignSuccess = function(data) {
-		            $scope.$emit('hideLoader');
-
-		            var assignee = _.find($scope.activeWorksheetEmp, function(emp) {
-		            	return emp.id === $scope.assignRoom.user_id;
-		            });
-		            $_tobeAssignedRoom.canAssign = false;
-		            $_tobeAssignedRoom.assigned_staff = {
-		            	'name': assignee.name,
-		            	'class': 'assigned'
-		            };
-
-		            $scope.assignRoom = {};
-
-		            $scope.closeDialog();
-		        },
-		        _onAssignFailure = function(errorMessage) {
-		            $scope.$emit('hideLoader');
-		            $scope.errorMessage = errorMessage;
-		        },
-		        _data = {
-			        "date": $rootScope.businessDate,
-			        "task_id": $scope.assignRoom.work_type_id,
-			        "order": "",
-			        "assignments": [{
-			            "assignee_id": $scope.assignRoom.user_id,
-			            "room_ids": $scope.assignRoom.rooms,
-			            "work_sheet_id": "",
-			            "from_search": true
-			        }]
-			    };
-
-		    $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, _data, _onAssignSuccess, _onAssignFailure);
 		};
 
 		$scope.singleRoomTypeFiltered = function() {
@@ -869,7 +759,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		function printList () {
-			var domRoomInsertDelay = 400;
+			var domRoomInsertDelay = 100;
 
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
@@ -887,10 +777,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 		    	*/
 
-		        $window.print();
-		        if ( sntapp.cordovaLoaded ) {
-		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		        };
+		        $timeout(function () {
+		        	$window.print();
+			        if ( sntapp.cordovaLoaded ) {
+			            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+			        };
+		        }, 0);
 		    }, domRoomInsertDelay);
 
 		    /*
@@ -991,6 +883,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		function $_checkHasActiveWorkSheet(alreadyFetched) {
+			if ($scope.currentFilters.filterByEmployeeName) {
+				$_defaultEmp = $scope.currentFilters.filterByEmployeeName;
+			}
 			var _params = {
 					'date': $rootScope.businessDate,
 					'employee_ids': [$_defaultEmp || $rootScope.userId] // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
@@ -1022,17 +917,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					}, 10);
 				};
 
-			// reset before fetch/process
-
-
-
-			// if the assignements has been loaded
-			// as part of the inital load, just process it
-			if ( alreadyFetched ) {
-				_callback.call(null, fetchPayload.assignments);
-			} else {
-				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
-			};
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
 		};
 
 		/* ***** ***** ***** ***** ***** */
