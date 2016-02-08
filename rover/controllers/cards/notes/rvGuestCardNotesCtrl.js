@@ -1,7 +1,7 @@
 angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 	['$scope',
-	'rvGuestCardNotesSrv', 'RVDashboardSrv',
-	function($scope, rvGuestCardNotesSrv, RVDashboardSrv) {
+	'rvGuestCardNotesSrv', 'RVDashboardSrv', '$timeout',
+	function($scope, rvGuestCardNotesSrv, RVDashboardSrv, $timeout) {
 
   BaseCtrl.call(this, $scope);
 
@@ -15,6 +15,10 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   var successCallBackOfFetchNotesForThisGuest = function(notes) {
     $scope.notes = notes;
     $scope.refreshScroller('guestcard_notes_scroller');
+    var scroller = $scope.getScroller('guestcard_notes_scroller');
+    $timeout(function(){
+        scroller.scrollTo(0, 0, 300);
+    }, 0);
   };
 
   /**
