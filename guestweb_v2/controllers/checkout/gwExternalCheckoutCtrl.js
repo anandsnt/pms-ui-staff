@@ -5,16 +5,26 @@
 */
 
 
-sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state','gwCheckoutSrv','gwWebSrv','$timeout',
- function($scope,$state,gwCheckoutSrv,gwWebSrv,$timeout) {
+sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', 
+	['$scope','$state','gwCheckoutSrv','gwWebSrv','$timeout','$filter',
+ function($scope,$state,gwCheckoutSrv,gwWebSrv,$timeout,$filter) {
 	 	  //TODO : remove unwanted injections like $timeout
 	 	BaseCtrl.call(this, $scope);
 	 	
 	 	var init = function(){
-			var screenIdentifier = "EXTERNAL_CHECKOUT";
+			var screenIdentifier 	= "EXTERNAL_CHECKOUT";
 			$scope.screenCMSDetails =  gwWebSrv.extractScreenDetails(screenIdentifier);
+			$scope.stayDetails 		=  {
+											"room_number"	: "",
+											"last_name"		: "",
+											"arrival_date"	: "",
+											"email"			: ""
+						 			   };
+		    $scope.date 			=  $filter('date')(new Date(),'yyyy-MM-dd');
 		}();
 
+		var dateToSend 		= "";
+	
 		
 		// Calendar toggle actions and date select action
 		$scope.showCalender = function(){
@@ -25,21 +35,30 @@ sntGuestWeb.controller('gwExternalCheckoutVerificationCtrl', ['$scope','$state',
 			$scope.calendarView = false;
 		};
 		$scope.dateChoosen = function(){
-			$scope.stayDetails.arrival_date = ($filter('date')($scope.date, $rootScope.dateFormat));
+			$scope.stayDetails.arrival_date = ($filter('date')($scope.date,gwWebSrv.reservationAndhotelData.dateFormat));
 			dateToSend = dclone($scope.date,[]);
-			dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
+			dateToSend = $filter('date')(dateToSend,'yyyy-MM-dd');
 			$scope.closeCalender();
+		};
+
+		var verifyUserSuccess = function(response){
+			$scope.$emit('hideLoader');
+       	    $state.go('checkOutOptions');
 		};
 
 		// On submitting we will be checking if the details eneterd matches any reservations
 		// If matches will return the reservation details and we save it for future usage
 		$scope.submit = function(){
-			// $scope.invokeApi(gwCheckoutSrv.verifyCheckoutUser, params, setReservartionDetails);
+			// $scope.stayDetails.hotel_identifier = gwWebSrv.reservationAndhotelData.hotelIdentifier;
+			// $scope.stayDetails.arrival_date     = dateToSend;
+			// $scope.invokeApi(gwCheckoutSrv.verifyCheckoutUser, $scope.stayDetails, verifyUserSuccess);
+
 			$scope.$emit('showLoader');
 			$timeout(function() {
        			 $scope.$emit('hideLoader');
        			 $state.go('checkOutOptions');
    			}, 1500);
+
 		};
 
 }]);

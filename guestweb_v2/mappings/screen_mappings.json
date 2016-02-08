@@ -5,5 +5,9 @@
 }, {
 	"value":"CHECKOUT_LANDING",
 	"id": "121"
+},
+{
+	"value":"CHECKOUT_NOW_LANDING",
+	"id":"111"
 }
 ]

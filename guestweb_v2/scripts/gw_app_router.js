@@ -13,16 +13,23 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	data : { pageTitle: 'External Checkout verification' }
 
 	});
-    $stateProvider.state('noOptionAvailable', {
-    	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/gwNoOption.html',
-	 	data : { pageTitle: 'Feature not available' }
-	});
+  
 	$stateProvider.state('checkOutOptions', {
  		url: '/checkOutOptions',
 		templateUrl: '/assets/partials/checkout/gwCheckoutoptions.html',
 		controller: 'checkOutOptionsController',
 		data : { pageTitle: 'Check-out options' }
+	}).state('checkOutConfirmation', {
+        url: '/checkOutConfirmation',
+       	controller: 'gwCheckoutNowInitialCtrl',
+       	templateUrl:  '/assets/partials/checkout/gwCheckout.html',
+		data : { pageTitle:'Confirm - Check-out Now'}
+    });
+
+     $stateProvider.state('noOptionAvailable', {
+    	url: '/noOptionAvailable',
+	 	templateUrl: '/assets/partials/gwNoOption.html',
+	 	data : { pageTitle: 'Feature not available' }
 	}).state('seeFrontDesk', {
  		url: '/seeFrontDesk',
 		templateUrl: '/assets/partials/gwErrorPage.html',
