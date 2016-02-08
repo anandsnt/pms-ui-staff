@@ -10,7 +10,7 @@
 	        Add to Stay Card
 	    </label>
 	    <button type="button" ng-click="createGuestcardNote()" class="button" ng-class="{'brand-colors': noteText.trim()!==''}" ng-disabled="noteText.trim()===''" ng-show="editingNote===null">Post</button>
-        <button type="button" class="button brand-colors" ng-show="editingNote!==null" ng-click="updateActiveNote()">Save</button>
+        <button type="button" class="button brand-colors" ng-class="{'brand-colors': noteText.trim()!==''}" ng-show="editingNote!==null" ng-disabled="noteText.trim()===''"  ng-click="updateActiveNote()">Save</button>
         <button type="button" class="button blank" ng-show="editingNote!==null" ng-click="cancelEditMode()">Cancel</button>	    
 	</div>
 	<div class="holder scrollable" ng-show="notes.length" ng-iscroll="guestcard_notes_scroller">
