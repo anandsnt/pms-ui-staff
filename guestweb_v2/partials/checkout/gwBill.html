@@ -13,10 +13,10 @@
             <!-- CMS sub  text -->
             <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
             <p class="balance-amount">{{currencySymbol}}{{billData.balance}}</p>
-            <div class="view-bill" ng-hide="showBill"  ng-click="showBill = true">
+            <div class="view-bill template-text" ng-hide="showBill"  ng-click="showBill = true">
                 <div class="right-arrow-button"></div>VIEW BILL
             </div>
-            <div class="view-bill" ng-show="showBill" ng-click="showBill = false">
+            <div class="view-bill template-text" ng-show="showBill" ng-click="showBill = false">
                 <div class="down-arrow-button">&nbsp;</div>VIEW BILL
             </div>
         </div>
