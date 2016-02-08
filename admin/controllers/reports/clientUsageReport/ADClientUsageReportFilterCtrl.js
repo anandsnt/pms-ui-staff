@@ -39,8 +39,8 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                         return hotel.isSelected;
                     }),
                     payLoad = {
-                        from_date: $filter('date')(state.fromDate, $rootScope.mmddyyyyFormat),
-                        to_date: $filter('date')(state.toDate, $rootScope.mmddyyyyFormat),
+                        from_date: $filter('date')(state.fromDate, "yyyy-MM-dd"),
+                        to_date: $filter('date')(state.toDate, "yyyy-MM-dd"),
                         hotel_ids: _.pluck(selectedHotels, 'value')
                     }
 
@@ -79,6 +79,10 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             });
         };
 
+        /**
+         * The PMS-TYPE and HOTEL-CHAIN both control the hotels listed in the HOTEL filter
+         * The following method filters the HOTEL with the selected values in the PMS-TYPE and HOTEL-CHAIN
+         */
         $scope.filterHotelsList = function() {
             var selectedTypes = [],
                 selectedChains = [],
