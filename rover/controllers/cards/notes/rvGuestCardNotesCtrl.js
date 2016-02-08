@@ -1,7 +1,7 @@
 angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 	['$scope',
-	'rvGuestCardNotesSrv', 'RVDashboardSrv', '$timeout',
-	function($scope, rvGuestCardNotesSrv, RVDashboardSrv, $timeout) {
+	'rvGuestCardNotesSrv', 'RVDashboardSrv', '$timeout', '$filter', '$rootScope', 
+	function($scope, rvGuestCardNotesSrv, RVDashboardSrv, $timeout, $filter, $rootScope) {
 
   BaseCtrl.call(this, $scope);
 
@@ -177,6 +177,28 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   $scope.cancelEditMode = function(){
     $scope.editingNote 	= null;
     $scope.noteText 	= '';
+  };
+
+  /**
+   * we want to display date in what format set from hotel admin
+   * @param {String/DateObject}
+   * @return {String}
+   */
+  $scope.formatDateForUI = function(date_) {
+    var type_ = typeof date_,
+        returnString = '';
+    switch (type_) {
+      //if date string passed
+      case 'string':
+          returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
+          break;
+
+          //if date object passed
+      case 'object':
+          returnString = $filter('date')(date_, $rootScope.dateFormat);
+          break;
+    }
+    return (returnString);
   };
 
   /**
