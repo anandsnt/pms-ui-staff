@@ -55,6 +55,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     var indexToDelete = successCallBackParameters.index;
     $scope.notes.splice(indexToDelete, 1);
     $scope.refreshScroller('guestcard_notes_scroller');
+    $scope.guestCardData.contactInfo.notes_count = $scope.notes.length;
   };
 
   /**
@@ -86,7 +87,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    * @param  {Object} data [response from backend with new note id, time, user details]
    * @return {undefined}
    */
-  var successCallBackOfFetchCreateNoteFromGuestCard = function(data) {
+  var successCallBackOfCreateNoteFromGuestCard = function(data) {
     //we are adding to the list with the response
     var userDetails = RVDashboardSrv.getUserDetails();
     var noteToAdd = {
@@ -106,6 +107,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 
     $scope.refreshScroller('guestcard_notes_scroller');
     scrollToTop();
+    $scope.guestCardData.contactInfo.notes_count = $scope.notes.length;
   };
 
   /**
@@ -121,7 +123,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 
     var options = {
       params 			: params,
-      successCallBack 	: successCallBackOfFetchCreateNoteFromGuestCard
+      successCallBack 	: successCallBackOfCreateNoteFromGuestCard
     };
     $scope.callAPI(rvGuestCardNotesSrv.createNoteFromGuestCard, options);
   };
