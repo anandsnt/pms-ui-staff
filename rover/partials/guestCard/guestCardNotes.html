@@ -3,17 +3,20 @@
 	<strong class="h3 margin">Notes</strong>
 	<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div class="entry">
-	    <textarea ng-model="note_text" placeholder="Write a note" rows="4"></textarea>
+	    <textarea ng-model="noteText" placeholder="Write a note" rows="4"></textarea>
 	    <label class="checkbox inline" ng-hide="true">
 	        <span class="icon-form icon-checkbox"></span>
 	        <input value="{value}" type="checkbox">
 	        Add to Stay Card
 	    </label>
-	    <button type="button" ng-click="createGuestcardNote()" class="button brand-colors" ng-class="{'brand-colors': note_text.trim()!==''}" ng-disabled="note_text.trim()===''">Post</button>
+	    <button type="button" ng-click="createGuestcardNote()" class="button brand-colors" ng-class="{'brand-colors': noteText.trim()!==''}" ng-disabled="noteText.trim()===''" ng-show="editingNote===null">Post</button>
+        <button type="button" class="button brand-colors" ng-show="editingNote!==null" ng-click="updateActiveNote()">Save</button>
+        <button type="button" class="button blank" ng-show="editingNote!==null" ng-click="cancelEditMode()">Cancel</button>	    
 	</div>
 	<div class="holder scrollable" ng-show="notes.length" ng-iscroll="guestcard_notes_scroller">
 	    <ul class="notes wrapper">
-	        <li ng-repeat="note in notes">
+	        <li ng-repeat="note in notes" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
+	        	ng-click="clickedOnNote(note)">
 	            <figure class="guest-image">
 	                <img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />
 	                <img ng-if="note.posted_user_image_url!==''" ng-src="{{note.posted_user_image_url}}" alt="" />
@@ -24,7 +27,7 @@
 	                    <span class="time">{{note.time}}</span>
 	                    <span class="date">{{note.date}}</span>
 	                </time>
-	                <button type="button" class="icons icon-trash" ng-click="deleteGuestcardNote(note.id, $index)">Delete post</button>
+	                <button type="button" class="icons icon-trash" ng-click="deleteGuestcardNote($event, note.id, $index)">Delete post</button>
 	            </div>
 	            <p>{{note.text}}</p>
 	        </li>
