@@ -8,12 +8,10 @@
     <a class="button red" ng-click="reservationData.check_in_via_queue = false; goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
         		</a>
-        <a class="button purple" ng-click=" unAvailablePopup();" >
+      
+    <a class="button purple" ng-click = "unAvailablePopup()" ng-show = "reservationData.reservation_card.is_exclude_from_manual_checkin">
             Unavailable
-        </a>
-    <!-- <a class="button purple" ng-click=" unAvailablePopup();" ng-show = "reservationData.reservation_card.is_exclude_from_manual_checkin">
-            Unavailable
-        </a> -->
+    </a>
     <!-- Show balance -->
     <div class="balance break">
         <span class="label">Balance</span>
