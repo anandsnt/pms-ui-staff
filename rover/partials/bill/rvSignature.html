@@ -63,6 +63,15 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="entry" ng-show=" $index === 0 && hasPermissionToShowCheckoutWithoutSettlement()">
+            <label class="checkbox inline single">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked': isCheckoutWithoutSettlement }"></span>
+                <input type="checkbox" ng-click="toggleCheckoutWithoutSettlement()" ng-model="isCheckoutWithoutSettlement">
+                {{ 'CHECK_OUT_WITHOUT_SETTLEMENT' | translate }}
+            </label>
+        </div>
+
 		<!-- 
 			CICO-9597 : While required_signature_at is not 'CHECKOUT',
 						#terms-and-conditions field is making hidden and
