@@ -36,15 +36,25 @@ sntGuestWeb.config(function ($httpProvider) {
 
 sntGuestWeb.run(function($rootScope,$state,$stateParams, $window){
 
-  $rootScope.$state = $state;
-  $rootScope.$stateParams = $stateParams;
+  	$rootScope.$state = $state;
+  	$rootScope.$stateParams = $stateParams;
 
-	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+ 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       console.error(error);
-  });
+  	});
     // track pageview on state change
     $rootScope.$on('$stateChangeSuccess', function (event) {
        // $window.ga('send', 'pageview', $location.path());
-   });
+   	});
+   	// the page was getting loaded and scrolled to bottom by default
+   	// to override that we use the following
+    $rootScope.$on('$viewContentLoaded', function(){
+		var interval = setInterval(function(){
+		  if (document.readyState == "complete") {
+		      $window.scrollTo(0, 0);
+		      clearInterval(interval);
+		  }
+		},100);
+	});
 });
