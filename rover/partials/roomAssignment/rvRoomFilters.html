@@ -21,7 +21,7 @@
 		<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
 		<span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}" ></span>
 		<input type="checkbox" value="{{feature.id}}" 
-		touch-press="setSelectionForFeature($parent.$index, $index)">
+		ng-click="setSelectionForFeature($parent.$index, $index)">
 		{{feature.name}} </label>
 	</div>	
 </div>
