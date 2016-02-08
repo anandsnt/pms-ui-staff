@@ -66,6 +66,7 @@
     "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
     "SWIPE_ERR_HEADER": "An Error Occurred",
     "EMAIL_SENT_MSG": "The e-mail is now living in your inbox.",
+    "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
     "OOPS_TEXT": "Oopsie.",
     "DAY_NIGHTS": "Nights",
     "ADDTL_RESIDENTS": "Additional Residents",
@@ -164,7 +165,7 @@
     
     
     "NO_MATCH_TALK":"Talk",
-    "NO_MATCH_TALK_SUB":"Speak to a Sidekick",
+    "NO_MATCH_TALK_SUB":"to a Sidekick",
     "NO_MATCH_OR":"Or",
     "NO_MATCH_RE_LAST":"Re-Enter",
     "NO_MATCH_HEADER":"Sorry.",

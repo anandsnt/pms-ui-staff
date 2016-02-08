@@ -365,4 +365,70 @@ body {
 .no-transform{
 	text-transform:none !important;
 }
+.bottom-separation{
+	padding-bottom:25px;
+	border-bottom:1px white solid;
+}
+
+/* mobile number section */
+
+.country-container{
+	width:18% !important;
+}
+.flag-container{
+	overflow: visible; 
+	height: 40px; 
+	width: 105%;
+}
+.flag-container::after{
+	left:80% !important;
+}
+.country-dropdown{
+	width: 200px;
+	position: absolute; 
+	opacity: 0; 
+	height: 40px;
+}
+.dial-div{
+	background: #D3D3D3 none repeat scroll 0px 0px;
+	float: left;
+	height: 40px;
+	padding: 2%;
+	width: 18%;
+	margin-left:4%;
+	text-align:right;
+}
+.mobile-field{
+	float:right;
+	width:54%;
+	margin-left:3%;
+}
+.padding-top-10{
+ 	padding-top: 10px !important;
+}
+.left-0{
+	left:0 !important;
+	cursor: pointer;
+}
+
+
+@media (max-width:480px) {
+	.flag-container{ 
+		width: 125%;
+	}
+	.mobile-field{
+		width:51%;
+	}
+	.dial-div{
+		margin-left:8%;
+	}
+	.flag {
+   		margin-top: 4px;
+    }
+}
+
+
+
+/* mobile number end section */
+
 

@@ -28,7 +28,12 @@ module.exports = {
 			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
 			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
 			'guestweb_galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css'],
-			'guestweb_claridge':[ themeCSSRoot + 'guestweb_claridge.css']
+			'guestweb_claridge':[ themeCSSRoot + 'guestweb_claridge.css'],
+			'guestweb_balboa':[ themeCSSRoot + 'guestweb_balboa.css'],
+			'guestweb_luxor':[ themeCSSRoot + 'guestweb_luxor.css'],
+			'guestweb_mgm_grand':[ themeCSSRoot + 'guestweb_mgm_grand.css'],
+			'guestweb_signature_at_mgm':[ themeCSSRoot + 'guestweb_signature_at_mgm.css']
+			
 		}
 	}
 }

@@ -21,7 +21,7 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
                 staycardJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.reservation');
+                    return jsMappings.fetchAssets(['rover.reservation', 'directives']);
                 },
                 /**
                  *   We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -294,7 +294,7 @@ angular.module('stayCardModule', [])
             controller: 'RVbillCardController',
             resolve: {
                 billstaycardJsAssets: function(staycardJsAssets, jsMappings) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.billcard');
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.billcard']);
                 },
                 reservationBillData: function(RVBillCardSrv, $stateParams, billstaycardJsAssets) {
                     return RVBillCardSrv.fetch($stateParams.reservationId);
@@ -310,13 +310,13 @@ angular.module('stayCardModule', [])
             controller: 'RVroomAssignmentController',
             resolve: {
                 roomAssignmentJsAssets: function(jsMappings) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
                 },
                 roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
 
                     var params = {};
                     params.reservation_id = $stateParams.reservation_id;
-                    params.room_type = $stateParams.room_type;
+                   // params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
                 roomPreferences: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
@@ -337,7 +337,7 @@ angular.module('stayCardModule', [])
             controller: 'RVUpgradesController',
             resolve: {
                 roomAssignmentJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.roomassignment');
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
                 }
             }
         });
@@ -349,7 +349,7 @@ angular.module('stayCardModule', [])
             controller: 'RVchangeStayDatesController',
             resolve: {
                 changeStayDatesJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('changestaydates', ['ui.calendar']);
+                    return jsMappings.fetchAssets(['changestaydates', 'directives'], ['ui.calendar']);
                 },
                 stayDateDetails: function(RVChangeStayDatesSrv, $stateParams, changeStayDatesJsAssets) {
                     return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
@@ -369,7 +369,7 @@ angular.module('stayCardModule', [])
             controller: 'RVActivityLogCtrl',
             resolve: {
                 activityLogAssets: function(jsMappings, staycardJsAssets, mappingList) {
-                    return jsMappings.fetchAssets('rover.reservation.staycard.activitylog');
+                    return jsMappings.fetchAssets(['rover.reservation.staycard.activitylog', 'directives']);
                 },
                 activityLogResponse: function(RVActivityLogSrv, $stateParams, activityLogAssets) {
                     if (!!RVActivityLogSrv) {
@@ -387,6 +387,11 @@ angular.module('stayCardModule', [])
         $stateProvider.state('rover.actionsManager', {
             url: '/actions/:actions',
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",
-            controller: 'RVActionsManagerController'
+            controller: 'RVActionsManagerController',
+            resolve: {
+                actionsManagerAssets: function(jsMappings) {
+                    return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
+                }
+            }
         });
     });

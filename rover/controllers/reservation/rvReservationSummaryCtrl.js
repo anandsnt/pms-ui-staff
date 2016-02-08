@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods',
-    function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods',
+    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods) {
 
 
         BaseCtrl.call(this, $scope);
@@ -1275,11 +1275,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
                 $scope.reservationData.user_id = $scope.reservationData.company.id;
             }
 
-            ngDialog.open({
-                template: '/assets/partials/bill/rvBillingInformationPopup.html',
-                controller: 'rvBillingInformationPopupCtrl',
-                className: '',
-                scope: $scope
+            $scope.$emit('showLoader'); 
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+            .then(function(){
+                $scope.$emit('hideLoader'); 
+                ngDialog.open({
+                    template: '/assets/partials/bill/rvBillingInformationPopup.html',
+                    controller: 'rvBillingInformationPopupCtrl',
+                    className: '',
+                    scope: $scope
+                });
             });
         };
 
@@ -1324,8 +1329,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
             $q.all(promises).then(updateSuccess, updateFailure);
         };
 
-        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
+        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId) {
             $scope.reservationData.reservation_type = data;
+            // CICO-24768 - Updating Payment id after adding new CC.
+            if(!!paymentId){
+                $scope.reservationData.reservation_card.payment_details.id = paymentId;
+            }
         });
 
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {

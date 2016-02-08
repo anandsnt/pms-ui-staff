@@ -33,8 +33,8 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		$state.go('noOptionAvailable'); 
 	})
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
- function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
+sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData','$window',
+ function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData,$window) {
 	var that = this;
 	loadAssets('/assets/favicon.png', 'icon', 'image/png');
 	loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
@@ -43,6 +43,9 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
 	loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
+	var trackinID = reservationAndhotelData.google_analytics_tracking_id;
+	// initialise google analytics
+    $window.ga('create', trackinID, 'auto');
 	//store basic details as rootscope variables
 	if(typeof reservationAndhotelData.access_token !== "undefined") {
 		$rootScope.accessToken = reservationAndhotelData.access_token	;
@@ -87,7 +90,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
 
  	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_serviceMsg;
+ 	$rootScope.zestCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_service_msg;
  	$rootScope.termsAndConditions = reservationAndhotelData.terms_and_conditions;
  	$rootScope.isBirthdayVerified =  false;
 
@@ -99,6 +102,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	//room key delivery options
  	$rootScope.preckinCompleted =  false;
  	$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
+ 	$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
 
@@ -106,15 +110,15 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
     //Params for zest mobile and desktop screens
     if(reservationAndhotelData.hasOwnProperty('is_password_reset')){
-    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset ="true";
-    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true"? true: false;
+    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
+    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";
     	$rootScope.accessToken = reservationAndhotelData.token;
     	$rootScope.user_id = reservationAndhotelData.id;
     	$rootScope.user_name = reservationAndhotelData.login;
     }
     else{
-		$rootScope.dateFormatPlaceholder = reservationAndhotelData.date_format.value;
- 		$rootScope.dateFormat = getDateFormat(reservationAndhotelData.date_format.value);
+		$rootScope.dateFormatPlaceholder = !!reservationAndhotelData.date_format ? reservationAndhotelData.date_format.value :"";
+ 		$rootScope.dateFormat = !!reservationAndhotelData.date_format ? getDateFormat(reservationAndhotelData.date_format.value):"";
     }
 
     //work around to fix flashing of logo before app loads
@@ -155,7 +159,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		var path = $rootScope.isPasswordResetView === 'true'? 'resetPassword' : 'emailVerification';
 		$state.go(path);
 	}else{
-         $state.go('checkoutRoomVerification'); // checkout landing page
+         !reservationAndhotelData.error_occured ? $state.go('checkoutRoomVerification') : $state.go('errorOccured'); // checkout landing page
 	};
 
 	$( ".loading-container" ).hide();

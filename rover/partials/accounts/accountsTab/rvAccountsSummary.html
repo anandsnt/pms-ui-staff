@@ -8,14 +8,14 @@
             </div>
             <div class="entry margin">
                 <label for="account-number" translate>ACCOUNT_NUMBER</label>
-                <input id="account-number" ng-model="accountConfigData.summary.posting_account_number" type="text" />
+                <input id="account-number" ng-disabled="accountConfigData.summary.account_number_locked" ng-model="accountConfigData.summary.posting_account_number" type="text" />
             </div>
             <div class="entry">
                 <label for="account-type" translate>ACCOUNT_TYPE</label>
                 <div class="select">
                     <select iscroll-stop-propagation id="account-type" ng-model="accountConfigData.summary.posting_account_type" ng-change="onAccountTypeModification();" ng-disabled="!!groupConfigData">
                         <option value="HOUSE" selected>House</option>
-                        <option value="GROUP">Group</option>
+                        <option value="GROUP" ng-hide="isHourlyRateOn">Group</option>
                     </select>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                         ... repeat
                     </select>
                 </div>
-            </div> 
+            </div>
             -->
             <div class="entry break full-width" ng-if="!groupConfigData">
                 <a ng-click="openDemographicsPopup();" class="button white brand-text" translate>DEMOGRAPHICS</a>
@@ -40,7 +40,7 @@
             <strong class="h3">Balance / Status</strong>
             <div class="entry margin">
                 <label for="account-balance" translate>BALANCE</label>
-                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}" 
+                <input id="account-balance" ng-class="{'balance-red' : accountConfigData.summary.balance > 0, 'balance-green' : accountConfigData.summary.balance <= 0}"
                 value="{{getBalanceAmount(accountConfigData.summary.balance)}}" type="text" readonly />
             </div>
             <div class="entry">

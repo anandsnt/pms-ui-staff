@@ -204,15 +204,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchReservationAddons = function() {
-			return callApi({
-				name   : 'reservationAddons',
-				method : 'getJSON',
-				url    : 'api/addons/not_rate_only',
-				resKey : 'results'
-			});
-		};
-
 		service.fetchAddonReservations = function(params) {
 			return callApi({
 				name   : 'addonReservations',
@@ -229,6 +220,9 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : '/api/rates/active',
 				resKey : 'rates',
+                params : {
+                    include_custom_rates: true //This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
+                }
 			});
 		};
 
