@@ -18,6 +18,10 @@ sntGuestWeb.controller('gwCheckoutReviewBillCtrl', ['$scope','$state','gwWebSrv'
 			$scope.roomNo 	= response.room_number;
 		};
 
+		$scope.gotToNextStep = function(){
+			$state.go('checkOutFinal');
+		};
+
 
 
 }]);

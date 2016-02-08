@@ -51,8 +51,8 @@ var loseFocus = function() {
 var extractScreenDetails =  function(identifier,screen_mappings,cms_data){
   var screen_id = "";
   var screen_details = {};
-  screen_id =  _.find(screen_mappings,function(mapping){ return mapping.value === identifier}).id;
-  screen_details = _.find(cms_data,function(cms_item){ return cms_item.screen_id === screen_id});
+  // screen_id =  _.find(screen_mappings,function(mapping){ return mapping.value === identifier}).id;
+  screen_details = _.find(cms_data,function(cms_item){ return cms_item.screen_name === identifier});
   return screen_details;
 
 };

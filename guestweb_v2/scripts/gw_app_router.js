@@ -29,6 +29,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
         controller: 'gwCheckoutReviewBillCtrl',
        	templateUrl: '/assets/partials/checkout/gwBill.html',
 	    data : { pageTitle:'Balance - Check-out Now'}
+    }).state('checkOutFinal', {
+        url: '/checkOutFinal',
+       	controller: 'gwCheckoutFinalCtrl',
+       	templateUrl: '/assets/partials/checkout/gwCheckoutfinal.html',
+		data : { pageTitle:'Status - Check-out Now'}
     });
 
      $stateProvider.state('noOptionAvailable', {

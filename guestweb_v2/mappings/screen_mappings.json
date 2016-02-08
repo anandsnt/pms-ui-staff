@@ -13,5 +13,9 @@
 {
 	"value":"REVIEW_BILL",
 	"id":"151"
+},
+{
+	"value":"CHECKOUT_FINAL",
+	"id":"15556"
 }
 ]
