@@ -21,7 +21,7 @@
                                 </em>
                             </div>
                         </a>
-                        <div class="configure-report" ng-class="{'two-buttons': item.canExport && canView}" ng-show="item.viewFilters" ng-include="getFilterTemplate(item)"></div>
+                        <div class="configure-report" ng-init="reportKey = item.key" ng-class="{'two-buttons': item.canExport && canView}" ng-if="item.viewFilters" ng-include="getFilterTemplate(item)" ></div>
                     </li>
                 </ul>
             </div>

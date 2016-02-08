@@ -1,15 +1,15 @@
 <div class="options long-list">
     <label for="report-options">{{label}}</label>
-    <div class="faux-select placeholder" ng-click="toggleList($event)">{{ item.hasDisplay.title }}</div>
+    <div class="faux-select placeholder" ng-click="toggleList()">{{ title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !show }">
-        <label class="checkbox inline" ng-show="item.hasDisplay.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : item.hasDisplay.selectAll }"></span>
-            <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="fauxSelectChange(item, item.hasDisplay, true)" name="room-filters"> Select All
+        <label class="checkbox inline" ng-show="source.length > 1">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : selectAll }"></span>
+            <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="toggleSelectAll()" /> Select All
         </label>
         </label>
         <label class="checkbox inline" ng-repeat="display in source">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
-            <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(item, item.hasDisplay)" name="room-filters"> {{ display.desc }}
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.isSelected }"></span>
+            <input type="checkbox" ng-model="display.isSelected" ng-change="fauxSelectChange()" /> {{ display.name }}
         </label>
     </div>
 </div>
