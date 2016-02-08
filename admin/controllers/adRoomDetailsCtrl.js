@@ -174,6 +174,16 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 	};
 
+
+	$scope.excludeManualCheckin = function(){
+		//is_exclude_from_manual_checkin
+	}
+	$scope.excludeAutoCheckin = function(){
+
+	}
+	$csope.excludeHousekeeping = function(){
+
+	}
 	/**
 	* Success function of updateRoomDetails's web service call
 	*/

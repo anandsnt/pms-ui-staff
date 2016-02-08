@@ -110,7 +110,16 @@
 					</div>
 										
 				</div>
-				
+				<div>
+
+					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>	
+					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>	
+					<ad-checkbox is-checked="data.is_exclude_from_manual_checkin" label="{{ 'EXCLUDE_FROM_MANUAL_CHECK_IN' | translate}}" div-class="full-width" ng-click="excludeManualCheckin()"></ad-checkbox>	
+					<ad-checkbox is-checked="data.is_exclude_from_auto_checkin" label="{{ 'EXCLUDE_FROM_AUTO_CHECK_IN' | translate}}" div-class="full-width" ng-click="excludeAutoCheckin()"></ad-checkbox>	
+					<ad-checkbox is-checked="data.is_exclude_from_housekeeping" label="{{ 'EXCLUDE_FROM_HOUSEKEEPING' | translate}}" div-class="full-width" ng-click="excludeHousekeeping()"></ad-checkbox>
+				</div>
+			
+
 
 			</fieldset>
 			<div class="actions float">

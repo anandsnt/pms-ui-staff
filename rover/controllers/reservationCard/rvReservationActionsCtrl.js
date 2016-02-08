@@ -424,6 +424,15 @@ sntRover.controller('reservationActionsController', [
 		$scope.goToCheckin = function() {
                     startCheckin();
 		};
+		$scope.unAvailablePopup = function(){
+			// ngDialog.open({
+   //              template: '/assets/rover/partials/reservationCard/reservationActions.html',
+   //              controller: 'reservationActionsController',
+   //              className: '',
+   //              scope: $scope
+   //          });
+
+		}
 		/******************************************/
 		$scope.showPutInQueue = function() {
                      //In standalone hotels we do not show the putInQueue option
