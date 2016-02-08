@@ -36,7 +36,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
         they are NOT already there. If, you are adding a NEW filter for a report, please implement supporting functions
         in the 'adReportsFilterSrv' Service     
         --------------------------------------------------------------------------------------------------------------*/
-        var selectFilters = {
+        var reportFiltersMap = {
             "PMS_TYPES": ["CLIENT_USAGE"],
             "HOTELS": ["CLIENT_USAGE"],
             "HOTEL_CHAINS": ["CLIENT_USAGE"]
@@ -49,54 +49,60 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             return deferred.promise;
         };
 
+        // Pre Fetch Iniital Dependencies Reqiured to show the filters
         self.fetchFilterData = function(ReportKey) {
-            var filters = _.filter(_.keys(selectFilters), function(key) {
-                return _.indexOf(selectFilters[key], ReportKey) > -1
+            var filters = _.filter(_.keys(reportFiltersMap), function(key) {
+                return _.indexOf(reportFiltersMap[key], ReportKey) > -1
             });
             var deferred = $q.defer();
-            $q.when(adReportsFilterSrv.fetchFilterData(filters), function(filters) {
-                self.cache.filters[ReportKey] = {
-                    data: filters,
-                    expiryDate: Date.now() + (self.cache['config'].lifeSpan * 1000)
-                };
-                deferred.resolve("success");
-            }, function(error) {
-                deferred.reject(error);
-            })
+            if (!self.cache.filters[ReportKey] || Date.now() > self.cache.filters[ReportKey]['expiryDate']) {
+                $q.when(adReportsFilterSrv.fetchFilterData(filters), function(filters) {
+                    self.cache.filters[ReportKey] = {
+                        data: filters,
+                        expiryDate: Date.now() + (self.cache['config'].lifeSpan * 1000)
+                    };
+                    deferred.resolve("success");
+                }, function(error) {
+                    deferred.reject(error);
+                })
+            } else {
+                deferred.resolve(self.cache.filters[ReportKey]['data']);
+            }
             return deferred.promise;
         };
 
+        //gets pre fetched filter data
         self.getFilterData = function(ReportKey) {
             var deferred = $q.defer();
             deferred.resolve(self.cache.filters[ReportKey].data);
             return deferred.promise;
         }
 
-        self.exportCSV = function(params){
+        self.exportCSV = function(params) {
             var deferred = $q.defer();
             $http({
-                method: 'POST', 
-                url: params.url, 
+                method: 'POST',
+                url: params.url,
                 data: params.payload
             }).success(function(data, status, headers, config) {
-                 var hiddenAnchor = angular.element('<a/>');
-                 hiddenAnchor.attr({
-                     href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
-                     target: '_blank',
-                     download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
-                 })[0].click();
-                 deferred.resolve(true);
+                var hiddenAnchor = angular.element('<a/>');
+                hiddenAnchor.attr({
+                    href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+                    target: '_blank',
+                    download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
+                })[0].click();
+                deferred.resolve(true);
             }).error(function(errorMessage) {
                 deferred.reject(errorMessage);
             });
-            return deferred.promise;        
+            return deferred.promise;
         };
 
         // ------------------------------------------------------------------------------------------------------------- C. CACHING
 
         self.cache = {
             config: {
-                lifeSpan: 3600 //in seconds
+                lifeSpan: 600 //in seconds
             },
             filters: {}
         }

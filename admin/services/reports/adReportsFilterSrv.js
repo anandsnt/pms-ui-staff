@@ -1,10 +1,8 @@
 admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
     function($q, ADBaseWebSrvV2) {
         var self = this;
-        // ------------------------------------------------------------------------------------------------------------- A. MAPPING
 
-
-        // ------------------------------------------------------------------------------------------------------------- B. CACHING
+        // ------------------------------------------------------------------------------------------------------------- A. EXPOSED METHODS
         self.fetchFilterData = function(filters) {
             var deferred = $q.defer(),
                 promises = [];
@@ -30,12 +28,12 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
 
         self.cache = {
             config: {
-                lifeSpan: 300 //in seconds
+                lifeSpan: 600 //in seconds
             },
             responses: {}
         }
 
-        // ------------------------------------------------------------------------------------------------------------- A. MAPPING
+        // ------------------------------------------------------------------------------------------------------------- C. MAPPING
         var requestMap = {
             "PMS_TYPES": function() {
                 var deferred = $q.defer();
@@ -52,22 +50,30 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                 var deferred = $q.defer(),
                     url = "/admin/hotels?is_minimal=true";
 
-                ADBaseWebSrvV2.getJSON(url).then(function(response) {
-                    var hotels = [];
-                    _.each(response.data.hotels, function(hotel) {
+                if (!self.cache.responses['HOTELS'] || Date.now() > self.cache.responses['HOTELS']['expiryDate']) {
+                    ADBaseWebSrvV2.getJSON(url).then(function(response) {
+                        var hotels = [];
+                        _.each(response.data.hotels, function(hotel) {
+                            hotels.push({
+                                value: hotel.id,
+                                name: hotel.hotel_name,
+                                isStandAlone: hotel.is_external_pms_available === "false",
+                                chain: hotel.chain_id
+                            })
+                        });
 
-                        hotels.push({
-                            value: hotel.id,
-                            name: hotel.hotel_name,
-                            isStandAlone: hotel.is_external_pms_available === "false",
-                            chain: hotel.chain_id
-                        })
+                        self.cache.responses['HOTELS'] = {
+                            data: hotels,
+                            expiryDate: Date.now() + (self.cache['config'].lifeSpan * 1000)
+                        };
 
+                        deferred.resolve(hotels);
+                    }, function(data) {
+                        deferred.reject(data);
                     });
-                    deferred.resolve(hotels);
-                }, function(data) {
-                    deferred.reject(data);
-                });
+                } else {
+                    deferred.resolve(self.cache.responses['HOTELS']['data']);
+                }
 
                 return deferred.promise;
             },
@@ -76,14 +82,21 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                 var deferred = $q.defer(),
                     url = "/admin/hotel_chains.json?is_minimal=true";
 
-                ADBaseWebSrvV2.getJSON(url).then(function(response) {
-                    deferred.resolve(response.data.chain_list);
-                }, function(data) {
-                    deferred.reject(data);
-                });
+                if (!self.cache.responses['HOTEL_CHAINS'] || Date.now() > self.cache.responses['HOTEL_CHAINS']['expiryDate']) {
+                    ADBaseWebSrvV2.getJSON(url).then(function(response) {
+                        self.cache.responses['HOTEL_CHAINS'] = {
+                            data: response.data.chain_list,
+                            expiryDate: Date.now() + (self.cache['config'].lifeSpan * 1000)
+                        };
 
+                        deferred.resolve(response.data.chain_list);
+                    }, function(data) {
+                        deferred.reject(data);
+                    });
+                } else {
+                    deferred.resolve(self.cache.responses['HOTEL_CHAINS']['data']);
+                }
                 return deferred.promise;
-
             }
         }
     }
