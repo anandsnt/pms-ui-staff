@@ -1,6 +1,6 @@
 <div  class="wrapper" >
 	<div class="action">
-		<button type="button" id="clear-filters-button" class="button blank clear-selection" ng-click="clearAllFilters()" translate>
+		<button type="button" id="clear-filters-button" class="button blank clear-selection" click-touch="clearAllFilters()" translate>
 		CLEAR_FILTERS_LABEL
 		</button>
 	</div>
@@ -21,7 +21,7 @@
 		<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
 		<span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}" ></span>
 		<input type="checkbox" value="{{feature.id}}" 
-		click-touch="setSelectionForFeature($parent.$index, $index)">
+		ng-click="setSelectionForFeature($parent.$index, $index)">
 		{{feature.name}} </label>
 	</div>	
 </div>
