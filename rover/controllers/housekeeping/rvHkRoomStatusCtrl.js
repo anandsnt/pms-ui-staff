@@ -702,20 +702,27 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		/**
-		 * Service Stauts update Button action
+		 * Service Stauts update action
 		 * API Call - Post
 		 */
 		$scope.updateServiceStatus = function() {
+
+			var updateServiceStatusSuccessCallBack = function() {
+
+				$scope.$emit( 'hideLoader' );
+				$timeout( $scope.closeHkStatusDialog, 100 );
+				$scope.refreshData();
+			};
 
 			var params = {
 
    				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
 				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
-				room_service_status_id: $scope.updateServiceData.room_service_status_id,
 				begin_time 			: $scope.updateServiceData.begin_time,
 				end_time			: $scope.updateServiceData.end_time,
 				reason_id			: $scope.updateServiceData.reason_id,
-				comment 			: $scope.updateServiceData.comments
+				comment 			: $scope.updateServiceData.comments,
+				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
 			// To check All Rooms are Choosen or not
@@ -727,7 +734,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				params.room_id = $scope.multiRoomAction.rooms;
 			}
 
-
+			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, updateServiceStatusSuccessCallBack);
 		};
 
 
@@ -736,6 +743,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			// $scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
 			$scope.updateServiceData.from_date = $rootScope.businessDate;
 			$scope.updateServiceData.to_date = $scope.updateServiceData.from_date;
+			$scope.updateServiceData.begin_time = "";
+			$scope.updateServiceData.end_time = "";
+			$scope.updateServiceData.reason_id = "";
+			$scope.updateServiceData.comments = "";
 		};
 
 

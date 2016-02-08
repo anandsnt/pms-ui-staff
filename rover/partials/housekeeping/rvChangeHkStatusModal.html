@@ -58,7 +58,7 @@
 	                            <span id="room-out-from-year" class="year">{{ updateServiceData.from_date | date:'yyyy' }}</span>
 
 	                        </div>
-	                        <div class="select" ng-show="shouldShowTimeSelector()">
+	                        <div class="select">
 	                            <select id="room-out-from-time" class="placeholder" ng-model="updateServiceData.begin_time">
 	                                <option value="" selected>From Time</option>
 	                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="">{{timeSelector.text}}</option>
@@ -67,7 +67,7 @@
 	                    </div>
 	                    <div id="out-to" class="entry">
 	                        <label id="room-out-to-label" for="room-out-to">To 
-	                        	<span>{{getSimplifiedDayName(updateService.to_date) }}</span>
+	                        	<span>{{getSimplifiedDayName(updateServiceData.to_date) }}</span>
                         	</label>
 	                        <div class="entry-data">
 	                            <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="updateServiceData.to_date" ui-date-format readonly>
@@ -77,7 +77,7 @@
 	                            <span id="room-out-to-year" class="year">{{ updateServiceData.to_date | date:'yyyy' }}</span>
 
 	                        </div>
-	                        <div class="select" ng-show="shouldShowTimeSelector()">
+	                        <div class="select">
 								<select id="room-out-to-time" class="placeholder" ng-model="updateServiceData.end_time">
 	                                <option value="" selected>To Time</option>
 	                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="">{{timeSelector.text}}</option>
