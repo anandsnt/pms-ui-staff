@@ -9,5 +9,9 @@
 {
 	"value":"CHECKOUT_NOW_LANDING",
 	"id":"111"
+},
+{
+	"value":"REVIEW_BILL",
+	"id":"151"
 }
 ]
