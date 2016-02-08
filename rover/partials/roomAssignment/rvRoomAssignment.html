@@ -22,7 +22,7 @@
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
-				<div class="search float">
+				<div class="search float" ng-class="{'only-filters': !isStandAlone}">
 					<a  class="button white with-icon only-icon toggle" ng-class="{'active':isFiltersVisible}" ng-click="toggleFiltersView()"> <span class="icons icon-filter" ng-class="{'active':isFiltersVisible}" ></span> Room attributes </a>
 					 <div class="search-query-input" ng-show="isStandAlone">
                         <button class="clear-query"><!-- Add class "visible" when room number entered in L52 -->
