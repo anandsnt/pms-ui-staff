@@ -39,8 +39,8 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                         return hotel.isSelected;
                     }),
                     payLoad = {
-                        from_date: $filter('date')(state.fromDate, $rootScope.mmddyyyyFormat),
-                        to_date: $filter('date')(state.toDate, $rootScope.mmddyyyyFormat),
+                        from_date: $filter('date')(state.fromDate, "yyyy-MM-dd"),
+                        to_date: $filter('date')(state.toDate, "yyyy-MM-dd"),
                         hotel_ids: _.pluck(selectedHotels, 'value')
                     }
 
