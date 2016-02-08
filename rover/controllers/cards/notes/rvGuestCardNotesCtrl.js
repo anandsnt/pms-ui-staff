@@ -8,6 +8,17 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   var guestID = null;
 
   /**
+   * used to scroll to top as the user add/edits the note
+   * @return {undefined}
+   */
+  var scrollToTop = function(){
+    var scroller = $scope.getScroller('guestcard_notes_scroller');
+    $timeout(function(){
+        scroller.scrollTo(0, 0, 300);
+    }, 0);
+  };
+
+  /**
    * success call back for notes list fetch
    * @param  {Array} notes [description]
    * @return {undefined}
@@ -15,10 +26,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   var successCallBackOfFetchNotesForThisGuest = function(notes) {
     $scope.notes = notes;
     $scope.refreshScroller('guestcard_notes_scroller');
-    var scroller = $scope.getScroller('guestcard_notes_scroller');
-    $timeout(function(){
-        scroller.scrollTo(0, 0, 300);
-    }, 0);
+    scrollToTop();
   };
 
   /**
@@ -97,6 +105,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     $scope.noteText = '';
 
     $scope.refreshScroller('guestcard_notes_scroller');
+    scrollToTop();
   };
 
   /**
