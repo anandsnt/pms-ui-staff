@@ -44,14 +44,14 @@
                   E-mail Address Updated
                </div>
                <p class="subTitletext">
-                  We updated your Guest profile to include this e-mail address.
+                  We updated your Guest profile to include this e-mail address: <span class="white-text">{{guestDetails.email}}</span>.
                </p>
-               <div class="row cabin_number_field">        
-                  <button class="checkin-button continue-button"
-                     ng-click="changeEmail()">
-                  <span class="white-text">Continue</span>
-                  </button>
-               </div>
+               <form>
+                  <div class="date-container ">
+                     <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" ng-click="continueToPrecheckin()" value="Continue"/>
+                     <input class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="changeEmail()" value="Change Email address"/>
+                  </div>
+               </form>
             </div>
             <!--  -->
          </div>
