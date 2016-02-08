@@ -44,6 +44,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
 
                 if (state.sortByValue) {
                     payLoad['sort_field'] = state.sortByValue;
+                    payLoad['sort_dir'] = true;
                 }
                 return payLoad;
             };
@@ -69,7 +70,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
         $scope.exportCSV = function() {
             // http://localhost:3000/api/reports/client_usage?from_date=2015-12-01&to_date=2016-02-01&hotel_ids[]=85&sort_field=total_queued&sort_dir=true 
             $scope.invokeApi(adReportsSrv.exportCSV, {
-                url: '/api/reports/client_usage/submit.csv',
+                url: '/api/reports/client_usage.csv',
                 payload: genParams()
             }, function(response) {
                 $scope.$emit('hideLoader');
