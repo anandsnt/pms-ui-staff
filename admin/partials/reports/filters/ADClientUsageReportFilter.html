@@ -13,7 +13,7 @@
     <!--PMS/Overlay-->
     <faux-select source="filterState.filters['PMS_TYPES']" label="PMS TYPES" select-all="true"></faux-select>
     <!--HotelChains-->
-    <faux-select source="filterState.filters['HOTEL_CHAINS']" label="HOTEL CHAIN(S)"></faux-select>
+    <faux-select source="filterState.filters['HOTEL_CHAINS']" label="HOTEL CHAIN(S)" select-all="true"></faux-select>
     <!--Hotels-->
     <faux-select source="filterState.filters['HOTELS']" label="HOTEL(S)"></faux-select>
     
@@ -21,7 +21,7 @@
     <div class="sort">
         <label>Sort By</label>
         <div class="select">
-            <select ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in filterState.sortOptions" iscroll-stop-propagation>
+            <select ng-model="filterState.sortByValue" ng-options="sortBy.value as sortBy.description for sortBy in filterState.sortOptions" iscroll-stop-propagation>
                 <option value="">Sort By</option>
             </select>
         </div>

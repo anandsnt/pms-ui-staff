@@ -30,11 +30,28 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                 // NOTE: $scope.reportKey is initiated in the partial so that it is availble in the respective controllers
                 $scope.invokeApi(adReportsSrv.getFilterData, $scope.reportKey, onGetFilterSuccess);
                 $scope.invokeApi(adReportsSortOptionsSrv.getSortOptions, $scope.reportKey, onGetSortOptionsSuccess);
+            },
+            genParams = function() {
+                var state = $scope.filterState,
+                    selectedHotels = _.filter(state.filters['HOTELS'], function(hotel) {
+                        return hotel.isSelected;
+                    }),
+                    payLoad = {
+                        from_date: $filter('date')(state.fromDate, $rootScope.mmddyyyyFormat),
+                        to_date: $filter('date')(state.toDate, $rootScope.mmddyyyyFormat),
+                        hotel_ids: _.pluck(selectedHotels, 'value')
+                    }
+
+                if (state.sortByValue) {
+                    payLoad['sort_field'] = state.sortByValue;
+                }
+                return payLoad;
             };
 
         $scope.filterState = {
             fromDate: initDay,
             toDate: initDay,
+            sortByValue: '',
             fromDateOptions: angular.extend({
                 maxDate: initDay,
                 onSelect: function(value) {
@@ -47,8 +64,20 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                     $scope.filterState.fromDateOptions.maxDate = value;
                 }
             }, commonDateOptions)
-        }
+        };
 
+        $scope.exportCSV = function() {
+            // http://localhost:3000/api/reports/client_usage?from_date=2015-12-01&to_date=2016-02-01&hotel_ids[]=85&sort_field=total_queued&sort_dir=true 
+            $scope.invokeApi(adReportsSrv.exportCSV, {
+                url: '/api/reports/client_usage/submit.csv',
+                payload: genParams()
+            }, function(response) {
+                $scope.$emit('hideLoader');
+            }, function(errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            });
+        }
 
         init();
     }
