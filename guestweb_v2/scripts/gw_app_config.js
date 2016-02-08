@@ -43,7 +43,7 @@ sntGuestWeb.run(function($rootScope,$state,$stateParams, $window){
       // Hide loading message
       console.error(error);
   	});
-    // track pageview on state change
+    // track pageview on state change by  google analytics
     $rootScope.$on('$stateChangeSuccess', function (event) {
        // $window.ga('send', 'pageview', $location.path());
    	});
@@ -55,6 +55,6 @@ sntGuestWeb.run(function($rootScope,$state,$stateParams, $window){
 		      $window.scrollTo(0, 0);
 		      clearInterval(interval);
 		  }
-		},100);
+		},20);
 	});
 });
