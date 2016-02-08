@@ -14,7 +14,7 @@ function addStyleString(str) {
 var styleString = "";
 
 function appendStyleString(str){
-	styleString = styleString.length > 0 ? (styleString + str)  : str;
+	styleString = styleString + str;
 };
 
 /*
