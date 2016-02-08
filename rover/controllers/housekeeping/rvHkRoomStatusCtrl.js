@@ -701,17 +701,39 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			return ($filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI));
 		};
 
+		var showAlreadyAssignedToReservationsPopup = function(reservationList) {
+			var data = {
+				reservations : reservationList
+			};
+
+            ngDialog.open({
+                template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabReservationExist.html',
+                className: '',
+                scope: $scope,
+                data: JSON.stringify(data),
+                closeByDocument: false,
+                closeByEscape: false
+            });
+		};
+
 		/**
 		 * Service Stauts update action
 		 * API Call - Post
 		 */
 		$scope.updateServiceStatus = function() {
 
-			var updateServiceStatusSuccessCallBack = function() {
+			var updateServiceStatusSuccessCallBack = function(data) {
 
 				$scope.$emit( 'hideLoader' );
-				$timeout( $scope.closeHkStatusDialog, 100 );
-				$scope.refreshData();
+				if(data.assigned_rooms.length > 0) {
+					showAlreadyAssignedToReservationsPopup(data.assigned_rooms);
+				}
+				else {
+					$timeout( $scope.closeHkStatusDialog, 100 );
+					$scope.refreshData();
+					console.log(data);
+				}
+
 			};
 
 			var params = {
