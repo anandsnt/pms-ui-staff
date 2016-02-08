@@ -11,9 +11,9 @@
         </div>
     </div>
     <!--PMS/Overlay-->
-    <faux-select source="filterState.filters['PMS_TYPES']" label="PMS TYPES" select-all="true"></faux-select>
+    <faux-select source="filterState.filters['PMS_TYPES']" change="filterHotelsList" label="PMS TYPE(S)" select-all="true"></faux-select>
     <!--HotelChains-->
-    <faux-select source="filterState.filters['HOTEL_CHAINS']" label="HOTEL CHAIN(S)" select-all="true"></faux-select>
+    <faux-select source="filterState.filters['HOTEL_CHAINS']" change="filterHotelsList" label="HOTEL CHAIN(S)" select-all="true"></faux-select>
     <!--Hotels-->
     <faux-select source="filterState.filters['HOTELS']" label="HOTEL(S)"></faux-select>
     

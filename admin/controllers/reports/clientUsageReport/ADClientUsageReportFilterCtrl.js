@@ -20,6 +20,8 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             init = function() {
                 var onGetFilterSuccess = function(filters) {
                         $scope.$emit('hideLoader');
+                        //backUp the entire list
+                        $scope.filterState.store = angular.copy(filters);
                         $scope.filterState.filters = filters;
                     },
                     onGetSortOptionsSuccess = function(sortOptions) {
@@ -54,13 +56,11 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             toDate: initDay,
             sortByValue: '',
             fromDateOptions: angular.extend({
-                maxDate: initDay,
                 onSelect: function(value) {
                     $scope.filterState.toDateOptions.minDate = value;
                 }
             }, commonDateOptions),
             toDateOptions: angular.extend({
-                maxDate: initDay,
                 onSelect: function(value) {
                     $scope.filterState.fromDateOptions.maxDate = value;
                 }
@@ -68,7 +68,6 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
         };
 
         $scope.exportCSV = function() {
-            // http://localhost:3000/api/reports/client_usage?from_date=2015-12-01&to_date=2016-02-01&hotel_ids[]=85&sort_field=total_queued&sort_dir=true 
             $scope.invokeApi(adReportsSrv.exportCSV, {
                 url: '/api/reports/client_usage.csv',
                 payload: genParams()
@@ -78,7 +77,37 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             });
-        }
+        };
+
+        $scope.filterHotelsList = function() {
+            var selectedTypes = [],
+                selectedChains = [],
+                filteredHotels = [];
+
+            _.each($scope.filterState.filters["PMS_TYPES"], function(type) {
+                if (type.isSelected) {
+                    selectedTypes.push(type.value);
+                }
+            });
+
+            _.each($scope.filterState.filters["HOTEL_CHAINS"], function(type) {
+                if (type.isSelected) {
+                    selectedChains.push(parseInt(type.value, 10));
+                }
+            });
+
+            _.each($scope.filterState.store["HOTELS"], function(hotel) {
+                var pmsType = hotel.isStandAlone ? "STANDALONE" : "OVERLAY";
+                if (_.indexOf(selectedTypes, pmsType) > -1 &&
+                    _.indexOf(selectedChains, hotel.chain) > -1) {
+                    filteredHotels.push(_.extend(hotel, {
+                        isSelected: true
+                    }));
+                }
+            });
+
+            $scope.filterState.filters["HOTELS"] = angular.copy(filteredHotels);
+        };
 
         init();
     }

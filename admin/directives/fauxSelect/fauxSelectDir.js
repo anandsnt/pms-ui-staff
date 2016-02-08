@@ -34,10 +34,11 @@ admin.directive('fauxSelect', function() {
                     $scope.title = selectedItems[0].name;
                 } else if (selectedCount === $scope.source.length) {
                     $scope.title = 'All Selected';
+                    $scope.selectAll = true;
                 } else {
                     $scope.title = selectedCount + " Selected"
                 }
-            }
+            };
 
             $scope.toggleSelectAll = function() {
                 _.each($scope.source, function(item) {
@@ -47,11 +48,12 @@ admin.directive('fauxSelect', function() {
                 $scope.selectAll = !$scope.selectAll;
 
                 setTitle();
-            }
+                $scope.change && $scope.change();
+            };
 
             if (!$scope.title) {
                 setTitle();
-            }
+            };
 
             $scope.toggleList = function() {
                 $scope.show = !$scope.show;
@@ -59,7 +61,12 @@ admin.directive('fauxSelect', function() {
 
             $scope.fauxSelectChange = function() {
                 setTitle();
-            }
+                $scope.change && $scope.change();
+            };
+
+            $scope.$watch('source', function(newVal) {
+                setTitle();
+            });
         }
     };
 

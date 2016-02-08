@@ -7,7 +7,7 @@
             <input type="checkbox" ng-model="item.hasDisplay.selectAll" ng-change="toggleSelectAll()" /> Select All
         </label>
         </label>
-        <label class="checkbox inline" ng-repeat="display in source">
+        <label class="checkbox inline" ng-repeat="display in source" ng-hide="selectAll">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.isSelected }"></span>
             <input type="checkbox" ng-model="display.isSelected" ng-change="fauxSelectChange()" /> {{ display.name }}
         </label>

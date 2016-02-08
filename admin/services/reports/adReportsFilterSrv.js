@@ -41,10 +41,10 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                 var deferred = $q.defer();
                 deferred.resolve([{
                     value: 'STANDALONE',
-                    name: 'STANDALONE'
+                    name: 'Standalone'
                 }, {
                     value: 'OVERLAY',
-                    name: 'OVERLAY'
+                    name: 'Overlay'
                 }]);
                 return deferred.promise;
             },
