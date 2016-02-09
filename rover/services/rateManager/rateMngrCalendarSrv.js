@@ -223,6 +223,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 			calendarData.selectedRateDetails = selectedRate;
 			calendarData.is_fixed_rate = data.is_fixed_rate;
 			calendarData.is_child = !data.can_modify;
+			calendarData.parentRateName = data.parent_rate_name;
 			deferred.resolve(calendarData);
 		},rejectDeferred);
 
