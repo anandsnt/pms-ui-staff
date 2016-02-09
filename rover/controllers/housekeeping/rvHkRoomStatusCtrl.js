@@ -477,6 +477,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			    closeByDocument: true,
 			    scope: $scope
 			});
+
 			$scope.initilizeServiceStatus();
 		};
 
@@ -591,13 +592,18 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			return ($filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI));
 		};
 
-		var showAlreadyAssignedToReservationsPopup = function(reservationList) {
+
+		var showUpdateResultPopup = function(roomDetails) {
+
+			$scope.closeDialog();
+			$scope.assignedRoomsList = roomDetails;
 			var data = {
-				reservations : reservationList
+				roomsList : roomDetails
+				// _.forEach(data.roomsList, function(room){_.extend(room, room[_.keys(room)[0]])})
 			};
 
             ngDialog.open({
-                template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabReservationExist.html',
+                template: '/assets/partials/housekeeping/popups/rvMultipleRoomSeviceStatusResultPopup.html',
                 className: '',
                 scope: $scope,
                 data: JSON.stringify(data),
@@ -616,7 +622,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 				$scope.$emit( 'hideLoader' );
 				if(data.assigned_rooms.length > 0) {
-					showAlreadyAssignedToReservationsPopup(data.assigned_rooms);
+					showUpdateResultPopup(data.assigned_rooms);
 				}
 				else {
 					$timeout( $scope.closeHkStatusDialog, 100 );
@@ -647,6 +653,45 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, updateServiceStatusSuccessCallBack);
+		};
+
+		/**
+		 * @param  {room_no1:{id:321,..},room_no2:{id:123,...},....}
+		 * @return {array[321,123,...]}
+		 */
+		var getRoomIds = function(roomsList) {
+
+			_.forEach(roomsList, function(room){_.extend(room, room[_.keys(room)[0]])});
+			var roomIds = _.pluck(roomsList,'id');
+			return roomIds;
+		};
+
+		/**
+		 * when the user chooses for force fully put room oos/ooo from popup
+		 * @return {[type]} [description]
+		 */
+		$scope.forcefullyPutRoomToOOSorOOO = function() {
+
+			var successCallBack = function() {
+
+				$scope.$emit( 'hideLoader' );
+				$timeout( $scope.closeHkStatusDialog, 100 );
+				$scope.refreshData();
+			};
+
+			var params = {
+
+   				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
+				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
+				begin_time 			: $scope.updateServiceData.begin_time,
+				end_time			: $scope.updateServiceData.end_time,
+				reason_id			: $scope.updateServiceData.reason_id,
+				comment 			: $scope.updateServiceData.comments,
+				room_service_status_id: $scope.updateServiceData.room_service_status_id
+			};
+
+			params.room_id = getRoomIds($scope.assignedRoomsList);
+
 		};
 
 
@@ -699,6 +744,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.multiRoomAction.anyChosen   = false;
 			$scope.multiRoomAction.allChosen   = false;
 			$scope.multiRoomAction.hkStatusId  = '';
+			$scope.isRoomStatusUpdate = true;
+			$scope.isServiceStatusUpdate = false;
+			$scope.updateServiceData = {};
+
 		};
 
 		$scope.closeHkStatusDialog = function() {

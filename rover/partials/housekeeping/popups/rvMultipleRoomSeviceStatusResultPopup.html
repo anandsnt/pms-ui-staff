@@ -1,0 +1,28 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+	<div class="modal-content update-room-status" ng-class="{'extended': isServiceStatusUpdate}">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+	    <button ng-click="closeHkStatusDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+	    
+	    <strong class="h2 message">Request not updated for 14 Rooms</strong>
+	    <span class="message">Request not updated for 14 Rooms</span>
+
+	    <div>
+	    	<ul class="search-results display">
+	    		<li >
+	    			asdasdsdad
+	    		</li>
+	    		<li >
+	    			asdasdsdad
+	    		</li>
+	    		<li >
+	    			asdasdsdad
+	    		</li>	    		
+	    	</ul>
+	    </div>
+	    <div class="actions">
+	        <button type="button" class="button blue" ng-click="forcefullyPutRoomToOOSorOOO()">Put {{ooOsTitle}} anyway</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</div>
+</div>

@@ -37,14 +37,14 @@
 	        <div class="entry float-label">
 	            <div class="select">
 	                <label for="select-service-status" class="label">Service Status</label>
-	                <select name="room-service-status" id="room-service-status" ng-model="updateServiceData.room_service_status_id" ng-options="item.id as item.description for item in serviceStatusList" ng-change="">
+	                <select name="room-service-status" id="room-service-status" ng-model="updateServiceData.room_service_status_id" ng-options="item.id as item.description for item in serviceStatusList" ng-change="refreshScroller('room-service-status-update')">
             </select>
 	            </div>
 	        </div>
 
 	        <div id="status-details" class="scrollable" ng-iscroll="room-service-status-update">
 	            <div class="wrapper room-service-status">
-	                <div id="dates" class="row">
+	                <div id="dates" class="row" ng-if="updateServiceData.room_service_status_id != 1">
                     <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
 	                    <div id="out-from" class="entry">
 	                        <label id="room-out-from-label" for="room-out-from">From 
@@ -85,7 +85,7 @@
 	                        </div>
 	                    </div>
                 	</div>
-	                <div id="reason" class="row">
+	                <div id="reason" class="row" ng-if="updateServiceData.room_service_status_id != 1">
 	                    <div class="entry">
 	                        <label for="reason">Reason</label>
 	                        <div class="select">
@@ -99,6 +99,9 @@
 	                        <textarea name="reason-comments" id="reason-comments" ng-model="updateServiceData.comments" rows="4"></textarea>
 	                    </div>
 	                </div>
+	                <div ng-if="updateServiceData.room_service_status_id == 1">
+                		<span class="icon-no-content icon-ok"></span>
+            		</div>
 	        	</div>
 	        </div>
 
