@@ -596,19 +596,16 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		var showUpdateResultPopup = function(roomDetails) {
 
 			$scope.closeDialog();
+			_.each(roomDetails, function(item) {
+  				item['is_add_to_update']=true;
+			});
 			$scope.assignedRoomsList = roomDetails;
-			var data = {
-				roomsList : roomDetails
-				// _.forEach(data.roomsList, function(room){_.extend(room, room[_.keys(room)[0]])})
-			};
 
             ngDialog.open({
                 template: '/assets/partials/housekeeping/popups/rvMultipleRoomSeviceStatusResultPopup.html',
                 className: '',
-                scope: $scope,
-                data: JSON.stringify(data),
-                closeByDocument: false,
-                closeByEscape: false
+                closeByDocument: true,
+			    scope: $scope
             });
 		};
 
@@ -690,7 +687,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			params.room_id = getRoomIds($scope.assignedRoomsList);
 
 		};
 

@@ -99,9 +99,10 @@
 	                        <textarea name="reason-comments" id="reason-comments" ng-model="updateServiceData.comments" rows="4"></textarea>
 	                    </div>
 	                </div>
-	                <div ng-if="updateServiceData.room_service_status_id == 1">
-                		<span class="icon-no-content icon-ok"></span>
-            		</div>
+	                <div class="wrapper room-service-status in-service" ng-if="updateServiceData.room_service_status_id == 1" >
+            			<strong class="h2">In Service</strong>
+            			<span class="icon-no-content icon-ok"></span>
+        			</div>
 	        	</div>
 	        </div>
 
