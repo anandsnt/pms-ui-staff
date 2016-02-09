@@ -44,10 +44,9 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                         hotel_ids: _.pluck(selectedHotels, 'value')
                     }
 
-                if (state.sortByValue) {
-                    payLoad['sort_field'] = state.sortByValue;
-                    payLoad['sort_dir'] = true;
-                }
+                payLoad['sort_field'] = state.sortByValue || "hotel_name";
+                payLoad['sort_dir'] = true;
+
                 return payLoad;
             };
 

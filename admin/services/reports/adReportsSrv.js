@@ -85,9 +85,10 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 url: params.url,
                 data: params.payload
             }).success(function(data, status, headers, config) {
-                var hiddenAnchor = angular.element('<a/>');
+                var hiddenAnchor = angular.element('<a/>'),
+                    blob = new Blob([data]);
                 hiddenAnchor.attr({
-                    href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+                    href: window.URL.createObjectURL(blob),
                     target: '_blank',
                     download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
                 })[0].click();
