@@ -1,12 +1,11 @@
 /*
 *	This Controller is to show the  late checkout options
 */
-sntGuestWeb.controller('GwCheckoutLaterController', ['$scope','$state','GwWebSrv','GwCheckoutSrv',
- function($scope,$state,GwWebSrv,GwCheckoutSrv) {
+sntGuestWeb.controller('GwCheckoutLaterController', ['$scope','$state','$controller','GwWebSrv','GwCheckoutSrv',
+ function($scope,$state,$controller,GwWebSrv,GwCheckoutSrv) {
 
 	    //TODO : remove unwanted injections like $timeout
-	 	BaseController.call(this, $scope);
-
+	 	$controller('BaseController', { $scope: $scope });
 	 	var fetchLateCheckoutOptionsSuccess = function(response){
 			$scope.$emit("hideLoader");
 			$scope.lateCheckoutOptions = response;

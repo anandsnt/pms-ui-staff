@@ -1,17 +1,17 @@
 
-
-function BaseController ($scope) {
-
-
+sntGuestWeb.controller('BaseController',
+    ['$scope','$state',function ($scope,$state) {
+    
     $scope.$on('showLoader',function(){$scope.loading = true;});
     $scope.$on('hideLoader',function(){$scope.loading = false;});
     
 	$scope.fetchedCompleted = function(data){
-		$scope.$emit('hideLoader');
+		$$scope.$emit('hideLoader');
 	};
 
 	$scope.fetchedFailed = function(errorMessage){
 		$scope.$emit('hideLoader');
+		$state.go('seeFrontDesk');
 	};
 
 	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType){
@@ -28,4 +28,5 @@ function BaseController ($scope) {
 		return serviceApi(params).then(successCallback, failureCallback);
 
 	};
-}
+}]);
+

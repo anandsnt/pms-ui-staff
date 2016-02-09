@@ -2,10 +2,10 @@
 *	This Controller is to view bill
 */
 
-sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope','$state','GwWebSrv','GwCheckoutSrv',
- function($scope,$state,GwWebSrv,GwCheckoutSrv) {
+sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope','$state','$controller','GwWebSrv','GwCheckoutSrv',
+ function($scope,$state,$controller,GwWebSrv,GwCheckoutSrv) {
 
-	 	BaseController.call(this, $scope);
+	 	$controller('BaseController', { $scope: $scope });
 
 	 	var fetchBillSuccess =function(response){
 			$scope.$emit("hideLoader");

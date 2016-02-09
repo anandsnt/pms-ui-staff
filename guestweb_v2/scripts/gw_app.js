@@ -16,9 +16,9 @@ The initial condtions to determine the status of reseravations are extracted fro
 
 
 var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickaDate','ngSanitize']);
-sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state', function($scope,$rootScope,$state){
+sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state','$controller', function($scope,$rootScope,$state,$controller){
 	
-    BaseController.call(this, $scope);
+    $controller('BaseController', { $scope: $scope });
 	$scope.$emit('showLoader');
     $state.go('guestwebRoot');
 
@@ -40,10 +40,10 @@ sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state', functi
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','GwWebSrv',
- function($scope,$rootScope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','$controller','reservationAndhotelData','screenMappings','screenDataFromCMS','GwWebSrv',
+ function($scope,$rootScope,$state,$controller,reservationAndhotelData,screenMappings,screenDataFromCMS,GwWebSrv) {
 
- 	BaseController.call(this, $scope);
+ 	$controller('BaseController', { $scope: $scope });
  	//There will be a keyword for each screen which has to be mapped with screen id
  	// this is fetched and saved in service for future usage
  	GwWebSrv.setScreenList(screenMappings);
@@ -59,7 +59,6 @@ sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','reserv
     $rootScope.hotelPhone      = reservationAndhotelData.hotel_phone;
     $rootScope.uiViewDOMloaded = true;
 	$scope.$emit('hideLoader');
-
 	//conditional page navigations
 	if(reservationAndhotelData.is_external_verification === "true"){
 		$state.go('externalCheckoutVerification'); //external checkout URL

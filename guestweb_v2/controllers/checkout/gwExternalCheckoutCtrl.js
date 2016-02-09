@@ -6,10 +6,10 @@
 
 
 sntGuestWeb.controller('GwExternalCheckoutVerificationController', 
-	['$scope','$state','GwCheckoutSrv','GwWebSrv','$timeout','$filter',
- function($scope,$state,GwCheckoutSrv,GwWebSrv,$timeout,$filter) {
+	['$scope','$state','$controller','GwCheckoutSrv','GwWebSrv','$timeout','$filter',
+ function($scope,$state,$controller,GwCheckoutSrv,GwWebSrv,$timeout,$filter) {
 	 	  //TODO : remove unwanted injections like $timeout
-	 	BaseController.call(this, $scope);
+	 	$controller('BaseController', { $scope: $scope });
 	 	
 	 	var init = function(){
 			var screenIdentifier 	= "EXTERNAL_CHECKOUT";
