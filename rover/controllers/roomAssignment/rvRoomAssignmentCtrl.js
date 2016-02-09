@@ -122,13 +122,26 @@ sntRover.controller('RVroomAssignmentController',[
 		});
 
 		$scope.searchText = $scope.searchText.toUpperCase();
-		$scope.filteredRooms = [];
-		angular.forEach(allAllowedRooms, function(value, key) {
-			if($scope.searchText !== ''){
-				if(value.room_number.indexOf($scope.searchText) !== -1){
-					$scope.filteredRooms.push(value);
+
+
+		if($scope.searchText !== ''){
+				var isRoomSearchAllowed = false;
+				if(($rootScope.isSingleDigitSearch && $scope.searchText.length >=1) || (!$rootScope.isSingleDigitSearch && $scope.searchText.length >=3)){
+					$scope.filteredRooms = [];
+					isRoomSearchAllowed = true;
 				}
 			} else {
+				$scope.filteredRooms = [];
+			}
+
+		angular.forEach(allAllowedRooms, function(value, key) {
+				if(isRoomSearchAllowed){
+					if(value.room_number.indexOf($scope.searchText) !== -1){
+						$scope.filteredRooms.push(value);
+					}
+				}
+
+			else {
 				if(value.room_type_code === $scope.roomType){
 					$scope.filteredRooms.push(value);
 				}
@@ -180,25 +193,25 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to check occupancy for the reservation
 	*/
-	$scope.showMaximumOccupancyDialog = function(index){
+	$scope.showMaximumOccupancyDialog = function(roomObject){
 
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
 		var showOccupancyMessage = false;
-			if($scope.filteredRooms[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
-					if($scope.filteredRooms[index].room_max_occupancy < $scope.reservation_occupancy){
+			if(roomObject.room_max_occupancy != null && $scope.reservation_occupancy != null){
+					if(roomObject.room_max_occupancy < $scope.reservation_occupancy){
 						showOccupancyMessage = true;
-						$scope.max_occupancy = $scope.filteredRooms[index].room_max_occupancy;
+						$scope.max_occupancy = roomObject.room_max_occupancy;
 				}
-			}else if($scope.filteredRooms[index].room_type_max_occupancy != null && $scope.reservation_occupancy != null){
-					if($scope.filteredRooms[index].room_type_max_occupancy < $scope.reservation_occupancy){
+			}else if(roomObject.room_type_max_occupancy != null && $scope.reservation_occupancy != null){
+					if(roomObject.room_type_max_occupancy < $scope.reservation_occupancy){
 						showOccupancyMessage = true;
-						$scope.max_occupancy = $scope.filteredRooms[index].room_type_max_occupancy;
+						$scope.max_occupancy = roomObject.room_type_max_occupancy;
 					}
 			}
 
-		$scope.assignedRoom = $scope.filteredRooms[index];
-		$scope.roomTransfer.newRoomNumber = $scope.filteredRooms[index].room_number;
+		$scope.assignedRoom = roomObject;
+		$scope.roomTransfer.newRoomNumber = roomObject.room_number;
 		if(showOccupancyMessage){
 
 	    	$scope.oldRoomType = oldRoomType;
@@ -212,7 +225,7 @@ sntRover.controller('RVroomAssignmentController',[
 			if(reservationStatus === "CHECKEDIN"){
 				$scope.moveInHouseRooms();
 			}else{
-				if(oldRoomType !== $scope.roomType){
+				if(oldRoomType !== roomObject.room_type_code){
 
 					$scope.oldRoomType = oldRoomType;
 					$scope.openApplyChargeDialog();
