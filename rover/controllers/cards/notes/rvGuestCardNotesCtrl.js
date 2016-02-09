@@ -26,7 +26,6 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   var successCallBackOfFetchNotesForThisGuest = function(notes) {
     $scope.notes = notes;
     $scope.refreshScroller('guestcard_notes_scroller');
-    scrollToTop();
   };
 
   /**
@@ -39,8 +38,8 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
     };
 
     var options = {
-      params 			: params,
-      successCallBack 	: successCallBackOfFetchNotesForThisGuest
+      params : params,
+      successCallBack : successCallBackOfFetchNotesForThisGuest
     };
     $scope.callAPI(rvGuestCardNotesSrv.fetchNotesForGuest, options);
   };
@@ -59,6 +58,15 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   };
 
   /**
+   * @param  {Array} [error message from backend]
+   * @return {undefined}
+   */
+  var failureCallBackOfFetchDeleteNoteFromGuestCard = function(errorMessage) {
+    $scope.errorMessage = errorMessage;
+    fetchNotesForThisGuest();
+  };
+
+  /**
    * to delete a note from the list
    * @param  {number} noteID
    * @return {undefined}
@@ -69,13 +77,14 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   	$scope.cancelEditMode();
 
     var params  = {
-      noteID 	: noteID,
+      noteID 	  : noteID,
       guestID 	: guestID
     };
 
     var options = {
       params 			: params,
       successCallBack 	: successCallBackOfFetchDeleteNoteFromGuestCard,
+      failureCallBack   : failureCallBackOfFetchDeleteNoteFromGuestCard,
       successCallBackParameters : {
         index: deletingIndex
       }
@@ -117,13 +126,13 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    */
   $scope.createGuestcardNote = function() {
     var params  = {
-      guestID 	: guestID,
+      guestID : guestID,
       text 		: $scope.noteText
     };
 
     var options = {
-      params 			: params,
-      successCallBack 	: successCallBackOfCreateNoteFromGuestCard
+      params : params,
+      successCallBack : successCallBackOfCreateNoteFromGuestCard
     };
     $scope.callAPI(rvGuestCardNotesSrv.createNoteFromGuestCard, options);
   };
@@ -134,8 +143,13 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    * @return {undefined}
    */
   var successCallBackOfFetchUpdateActiveNote = function(data){
+    var indexOfNote = _.findIndex($scope.notes, {id: $scope.editingNote.id}) + 1;
   	$scope.cancelEditMode();
   	fetchNotesForThisGuest();
+    var scroller = $scope.getScroller('guestcard_notes_scroller');
+    $timeout(function(){
+        scroller.scrollToElement('.notes.wrapper li:nth-child('+indexOfNote+')', 300);
+    }, 0);
   };
 
   /**
@@ -150,13 +164,13 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
 
     var params  = {
       noteID 	: $scope.editingNote.id,
-      guestID 	: guestID,
+      guestID : guestID,
       text 		: $scope.noteText
     };
 
     var options = {
-      params 			: params,
-      successCallBack 	: successCallBackOfFetchUpdateActiveNote
+      params : params,
+      successCallBack : successCallBackOfFetchUpdateActiveNote
     };
     $scope.callAPI(rvGuestCardNotesSrv.updateNoteFromGuestCard, options);  	
   };
@@ -206,10 +220,10 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    * @return {undefined}
    */
   var initializeMe = function() {
-    guestID 			= $scope.guestCardData.userId;
-    $scope.editingNote 	= null;
-    $scope.notes 		= [];
-    $scope.noteText 	= '';
+    guestID = $scope.guestCardData.userId;
+    $scope.editingNote    = null;
+    $scope.notes          = [];
+    $scope.noteText       = '';
 
     $scope.setScroller('guestcard_notes_scroller', {});
 
