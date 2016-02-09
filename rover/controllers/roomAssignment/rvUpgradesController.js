@@ -164,6 +164,10 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
+	$scope.$on('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', function(event, indexValue) {
+		$scope.selectedUpgradeIndex = indexValue;
+		$scope.selectUpgrade();
+    });
 	/**
 	* function to show and hide the upgrades detail view
 	*/

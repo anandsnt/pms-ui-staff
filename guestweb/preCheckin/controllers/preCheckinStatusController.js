@@ -7,9 +7,18 @@
 	// we will always ask for CC addition in case of MLI
 
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
+	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
 
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
 		$state.go('checkinCcVerification');
+	}
+	else if($rootScope.offerRoomDeliveryOptions && $rootScope.application ==="SMS" 
+			&& $rootScope.userMobile.length >0 && !$rootScope.userMobileSkipped){
+		$state.go('mobileNumberOptions');// if user has not attached an mobile
+	}
+	else if($rootScope.offerRoomDeliveryOptions && $rootScope.application ==="SMS" 
+			&& $rootScope.userMobile.length ===0 && !$rootScope.userMobileSkipped){
+		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
 	else if($rootScope.offerRoomDeliveryOptions &&  $rootScope.userEmail.length ===0){
 		$state.go('emailAddition');// if user has not attached an email

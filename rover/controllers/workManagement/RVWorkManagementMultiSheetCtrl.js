@@ -455,32 +455,27 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 * Transform data model for printing.
 		 */
 		var configureMultisheetForPrinting = function(options) {
-			console.info('----Starting data transformation----');
 			var multiSheetState 		= $scope.multiSheetState;
 			multiSheetState.selectedEmployees = RVWorkManagementSrv.sortAssigned(multiSheetState.selectedEmployees,
 										multiSheetState.allRooms,
 										multiSheetState.allTasks,
 										options);
+
+			// Add an event to fire when the next digest cycle completes.
 			var listner = $rootScope.$watch(function() {
 				listner();
 				$timeout(startPrinting, 0);
 			});
 			runDigestCycle();
-			console.info('----Data transformation complete----');
-
-
 		};
 
 		var startPrinting = function() {
-			console.warn("Digest completed");
 			/*
 			*	======[ READY TO PRINT ]======
 			*/
 			/*
 			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 			*/
-
-			console.warn('Printing started');
 			$scope.$emit('hideLoader');
 			$timeout(function() {
 				$window.print();
@@ -502,7 +497,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				multiSheetStateBackup = null;
 				runDigestCycle();
-				console.info('----End print sequence----');
 			}, 150);
 
 		};
@@ -514,7 +508,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 * @return {undefined}
 		 */
 		$scope.printWorkSheet = function() {
-			console.info('----Initate print sequence----');
 			$scope.closeDialog();
 			$scope.$emit('showLoader');
 
@@ -529,7 +522,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
 
-			console.info('----Add print orientation to head----');
 			// add the orientation
 			addPrintOrientation();
 
@@ -981,28 +973,5 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		init();
-
-
-		var lastCol = false,
-			lastRoom = false;
-		/**/
-		$scope.onLastCol = function() {
-            lastCol = true;
-        };
-		/**/
-		$scope.onLastRoom = function() {
-            if ( lastCol ) {
-				lastRoom = true;
-            };
-        };
-        /**/
-        $scope.onLastTask = function() {
-            if ( lastRoom ) {
-				console.log('NG-repeat done!');
-
-				lastCol = false;
-				lastRoom = false;
-            };
-        };
 	}
 ]);

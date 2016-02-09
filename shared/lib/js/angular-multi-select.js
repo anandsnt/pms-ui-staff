@@ -688,8 +688,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
                     // open callback
                     $scope.onOpen( { data: element } );
-                    
-                    refreshScroller("multiSelectEmployees");
+                    $timeout(refreshScroller.bind(null, "multiSelectEmployees"), 200);
                 }                            
             }
             
