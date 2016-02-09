@@ -41,6 +41,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedEmployeesName = [];
     $scope.data.selectedEmployeesName.push('ALL');
 
+    $scope.isDetailsSelected = false;
+    $scope.isPrintClicked = false;
+
     var retrieveCashierName = function(){
         if($scope.data.filterData.selectedCashier !== ""){
             angular.forEach($scope.data.filterData.cashiers,function(item, index) {
@@ -323,7 +326,17 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     /* To PRINT Summary Deatils */
     $scope.printSummary = function(){
-        $scope.$broadcast("PRINTSUMMARY");
+        if($scope.isDetailsSelected) {
+            $rootScope.$broadcast("INITIALIZESUMMARYDETAILS");
+            $scope.isPrintClicked = true;
+        } else {
+            $scope.$broadcast("PRINTSUMMARY");
+        }
+
     };
+
+    $scope.toggleOverviewDetailSelection = function() {
+       $scope.isDetailsSelected = !$scope.isDetailsSelected;
+    }
 
 }]);

@@ -108,8 +108,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.moveChargesClicked = function(){
-            $scope.$emit('showLoader'); 
-            jsMappings.fetchAssets('addBillingInfo')
+            $scope.$emit('showLoader');
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
                 $scope.$emit('hideLoader');
 
@@ -354,7 +354,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('postcharge')
+        jsMappings.fetchAssets(['postcharge','directives'])
         .then(function(){
         	$scope.$emit('hideLoader');
 
@@ -419,7 +419,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.showPayemntModal = function() {
             $scope.$emit('showLoader'); 
-            jsMappings.fetchAssets('addBillingInfo')
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
                 $scope.$emit('hideLoader'); 			
 				$scope.passData = getPassData();

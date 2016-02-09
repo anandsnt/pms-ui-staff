@@ -10,6 +10,8 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/partials/Row_nyc/*.html', 'guestweb/**/landing/Row_nyc/*.html', 'guestweb/**/shared/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
+	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
+		GUESTWEB_JS_MANIFEST_FILE  = "guestweb_js_manifest.json",
 	    extendedMappings 		= {},
 	    runSequence 			= require('run-sequence'),
 		generated 				= "____generated",
@@ -18,20 +20,28 @@ module.exports = function(gulp, $, options){
 	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
+	gulp.task('create-guestweb-theme-template-list', function(){
+		var fs = require('fs-extra');
+		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
+	});
 
-	gulp.task('create-theme-mapping-template-production', function(){
-	    var mkdirp = require('mkdirp'),
-			fs = require('fs');
-		
-		mkdirp(guestwebGenDir, function (err) {
-		    if (err) console.error('guestweb theme template mapping directory failed!! (' + err + ')');
-	    	fs.writeFile(guestwebGenFile, JSON.stringify(extendedMappings), function(err) {
-			    if(err) {
-			        return console.error('guestweb theme template mapping file failed!! (' + err + ')');
-			    }
-			    console.log('guestweb theme template mapping file created (' + guestwebGenFile + ')');
-			}); 
-		});
+	gulp.task('create-theme-mapping-template-production', ['create-guestweb-theme-template-list'], function(){
+	    var edit = require('gulp-json-editor'),
+			js_manifest_json = require(MANIFEST_DIR + GUESTWEB_JS_MANIFEST_FILE),
+	        file_name = js_manifest_json[GUESTWEB_JS_COMBINED_FILE];
+			//cache invalidating
+		    return gulp.src(guestwebGenFile, {base: '.'})
+		    .pipe($.rev())
+	        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true })
+	        .pipe($.rev.manifest())
+	        .pipe(edit(function(manifest){
+	        	gulp.src('../../public/assets/' + file_name)
+	        	.pipe($.replace(/\/assets\/asset_list\/____generatedThemeMappings\/____generatedGuestweb\/template\/____generatedGuestWebTemplateThemeMappings.json/g , 
+	        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
+	        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+	        	console.log('guestweb theme template mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
+	        	return {};
+	        }));
 	});
 
 	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
