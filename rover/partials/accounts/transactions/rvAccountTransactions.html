@@ -20,7 +20,7 @@
         </li>
     </ul>
 </div>
-<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
 <div id="account-transactions-content" class="tab-details">
     <!-- If no transactions: -->
     <div class="no-content" ng-show="transactionsDetails.bills.length === 0">
@@ -32,6 +32,7 @@
 
     <div class="registration-content scrollable" ng-iscroll="registration-content">
         <div class="wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="registration-summary" id ="registration-summary">
 
                 <!-- Bills Nav-->
