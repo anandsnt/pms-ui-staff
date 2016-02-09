@@ -1,5 +1,5 @@
-	sntGuestWeb.service('GwWebSrv', ['$q','$http',
-		function($q,$http) {
+	sntGuestWeb.service('GwWebSrv', ['$q','$http','GwScreenMappingSrv',
+		function($q,$http,GwScreenMappingSrv) {
 
 
 		this.screenList = [];
@@ -32,15 +32,7 @@
 		* @return {object} mapping details
 		*/
 		this.fetchScreenMappings = function(){
-			var deferred = $q.defer();
-			var url = '/assets/guestweb_v2/mappings/screen_mappings.json';
-			$http.get(url).success(function(response) {
-				deferred.resolve(response);	
-			}.bind(this))
-			.error(function() {
-				deferred.reject();
-			});
-			return deferred.promise;
+			return GwScreenMappingSrv.screenMappingList;
 			
 		};
 
