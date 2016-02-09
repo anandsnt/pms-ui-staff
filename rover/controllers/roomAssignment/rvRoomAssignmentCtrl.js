@@ -237,6 +237,27 @@ sntRover.controller('RVroomAssignmentController',[
 		}
 	};
 
+	$scope.$on('closeDialogWithError', function(event, error){
+		ngDialog.close();
+		openWantedToBorrowPopup(error);
+	})
+
+	/**
+	 * to open the room aleady chhosed popup
+	 * @return undefined
+	 */
+	var openWantedToBorrowPopup = function(error) {
+		$scope.passingParams = {
+			"errorMessage": error.errorMessage[0]
+		};
+		ngDialog.open(
+		{
+			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+			controller 	: 'rvBorrowRoomTypeCtrl',
+			scope 		: $scope
+        });
+	};
+
 	$scope.openApplyChargeDialog = function(){
 		ngDialog.open({
 	          template: '/assets/partials/roomAssignment/rvApplyRoomCharge.html',
@@ -401,10 +422,14 @@ sntRover.controller('RVroomAssignmentController',[
 	 * to open the room aleady chhosed popup
 	 * @return undefined
 	 */
-	var openWantedToBorrowPopup = function() {
+	var openWantedToBorrowPopup = function(error) {
+		$scope.passingParams = {
+			"errorMessage": error.errorMessage[0]
+		}
 		ngDialog.open(
 		{
 			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+			controller 	: 'rvBorrowRoomTypeCtrl',
 			scope 		: $scope
         });
 	};
@@ -422,7 +447,7 @@ sntRover.controller('RVroomAssignmentController',[
 			switch (error.httpStatus) {
 				case 470:
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup ();
+						openWantedToBorrowPopup (error);
 				 	break;
 				default:
 					break;
