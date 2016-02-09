@@ -201,6 +201,16 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 				}
 			}
 		});
-
+        
+        $stateProvider.state('admin.reports', {
+			templateUrl: '/assets/partials/reports/ADReportsList.html',
+			controller: 'ADReportsListCtrl',
+			url : '/reports',
+            resolve: {
+                reports: function(adReportsSrv){
+                    return adReportsSrv.fetchReportsList();
+                }
+            }
+		});
 
 });

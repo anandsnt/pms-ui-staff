@@ -12,11 +12,11 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 
 		$scope.heading = 'Room Upgrades';
 		$scope.setHeadingTitle($scope.heading);
-                
+
                 $scope.buttonText = {
-                  noThanks: 'NO THANKS, proceed with Check In'  
+                  noThanks: 'NO THANKS, proceed with Check In'
                 };
-                
+
                 $scope.initAdvQueCheck = function(){
                     var adv = $rootScope.advanced_queue_flow_enabled;
                     var viaQueue = $scope.$parent.reservation.check_in_via_queue;
@@ -62,13 +62,13 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 				$scope.setUpgradesDescriptionInitialStatuses();
 				$scope.$emit('hideLoader');
 				setTimeout(function() {
-                                            if (typeof $scope.$parent === typeof {}){
-                                                if (typeof $scope.$parent.myScroll === typeof {}){
-                                                    $scope.$parent.myScroll['upgradesView'].refresh();
-                                                }
-                                            }
-					},
-					3000);
+                            if (typeof $scope.$parent === typeof {}){
+                                if (typeof $scope.$parent.myScroll === typeof {}){
+                                    $scope.$parent.myScroll['upgradesView'].refresh();
+                                }
+                            }
+				},
+				3000);
 			};
 			var errorCallbackgetAllUpgrades = function(error) {
 				$scope.$emit('hideLoader');
@@ -120,10 +120,14 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 		 * to open the room aleady chhosed popup
 		 * @return undefined
 		 */
-		var openWantedToBorrowPopup = function() {
+		var openWantedToBorrowPopup = function(error) {
+			$scope.passingParams = {
+				"errorMessage": error.errorMessage[0]
+			}
 			ngDialog.open(
 			{
-				template 	: '/assets/partials/upgrades/rvGroupRoomTypeNotConfigured.html',
+				template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+				controller 	: 'rvBorrowRoomTypeCtrl',
 				scope 		: $scope
 	        });
 		};
@@ -174,7 +178,7 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 				switch (error.httpStatus) {
 					case 470:
 							wanted_to_forcefully_assign = true;
-							openWantedToBorrowPopup ();
+							openWantedToBorrowPopup (error);
 					 	break;
 					default:
 						break;
@@ -281,8 +285,8 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 		$scope.getHorizontalScrollWidth = function() {
 			return 465 * $scope.upgradesList.length;
 		};
-                
-                
+
+
                 $scope.putGuestInQueue = false;
                 if (!$rootScope.reservationUpgradeWatch){//alternative to $destroy, this is an init-once method
                     $rootScope.reservationUpgradeWatch = 1;
@@ -293,10 +297,10 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
                         } else {
                             $scope.putGuestInQueue = false;
                         }
-                        
+
                     });
                 }
-                
+
 		$scope.goToCheckinScreen = function(putGuestInQueue) {
                    // var adv = $rootScope.advanced_queue_flow_enabled;
                   //  var viaQueue = $scope.$parent.reservation.check_in_via_queue;
@@ -311,7 +315,7 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 				"clickedButton": "checkinButton"
 			});
                     //}
-                        
+
 		};
 
 		/**

@@ -12,11 +12,11 @@
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
 		$state.go('checkinCcVerification');
 	}
-	else if($rootScope.offerRoomDeliveryOptions && $rootScope.application ==="SMS" 
+	else if($rootScope.application ==="SMS" 
 			&& $rootScope.userMobile.length >0 && !$rootScope.userMobileSkipped){
 		$state.go('mobileNumberOptions');// if user has not attached an mobile
 	}
-	else if($rootScope.offerRoomDeliveryOptions && $rootScope.application ==="SMS" 
+	else if($rootScope.application ==="SMS" 
 			&& $rootScope.userMobile.length ===0 && !$rootScope.userMobileSkipped){
 		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
