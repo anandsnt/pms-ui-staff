@@ -4992,6 +4992,119 @@
                     &.hidden { #fade > .out(); }
                 }
             }
+
+            /* Room Status not Completed Alert*/
+            &.room-status-not-completed {
+                width:520px;
+                
+                .h2 { margin-bottom:10px; }
+
+                > .text {
+                    margin-bottom:20px;
+                    border-bottom:1px solid @grey2; }
+            
+                .wrapper { 
+                    padding-right:10px;
+                    padding-bottom:5px; }
+
+                .iScrollVerticalScrollbar { 
+                    top:0;
+                    bottom:0;
+                    right:0; }
+
+                .rooms-not-completed {
+                    max-height:340px;
+                    position: relative; }
+
+                .room {
+                    position:relative;
+                    width:100%;
+                    height:50px;
+                    margin-bottom:10px;
+                    padding:10px;
+                    padding-right:50px;
+                    line-height: 30px;
+                    .float;
+                    .clickable;
+                   
+                    &.locked {
+                        background-color:white;
+                        width:100%;
+                        display:block;
+                        .faux-clickable;
+
+                        .text {
+                            padding:0;
+                            font-size:14px;
+                            .calc-width(100,100);
+                            .pull-left;
+                            text-align: left; 
+                            line-height: 30px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    }
+
+                    .number {
+                        font-size:24px;
+                        font-weight: bold;
+                        display:block;
+                        .pull-left;
+                        width:100px;
+                    }
+
+                    .guest {
+                        .pull-left;
+                        font-size:18px;
+                        font-weight: bold;
+                        display:block;
+                        .calc-width(100,100);
+                        line-height: 30px;
+                    }
+
+                    .reservation {
+                        text-transform: uppercase;
+                        font-weight: normal;
+                        color:@grey3;
+                        font-size:14px;
+                        padding-left: 14px;
+                        display:inline-block;
+                    }
+
+                    .checkbox {
+                        position: absolute;
+                        text-align: center;
+                        z-index: 9999;
+                        .square(40px);
+                        top:5px;
+                        right:5px;
+
+                        .icon-form { 
+                            top: 10px; 
+                            left: 10px;
+                            background-color: @grey1;
+                        }
+
+                        input {
+                            min-height: 35px;
+                            line-height: 35px;
+                        }
+
+                        &.disabled { .opacity(0); }
+                    }
+                }
+
+                .actions {
+                    text-align: center;
+                    border-top:1px solid @grey2;
+                    padding-top:10px;
+                    .button {
+                        display:inline-block;
+                        width:auto;
+                        margin-bottom:0;
+                    }
+                }
+            }
         }
     }
 
