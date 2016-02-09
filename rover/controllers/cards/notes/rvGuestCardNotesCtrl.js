@@ -75,6 +75,8 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   	event.stopPropagation();
   	
   	$scope.cancelEditMode();
+    
+    $scope.errorMessage = '';
 
     var params  = {
       noteID 	  : noteID,
@@ -130,6 +132,8 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
       text 		: $scope.noteText
     };
 
+    $scope.errorMessage = '';
+
     var options = {
       params : params,
       successCallBack : successCallBackOfCreateNoteFromGuestCard
@@ -162,6 +166,8 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   		return;
   	}
 
+    $scope.errorMessage = '';
+    
     var params  = {
       noteID 	: $scope.editingNote.id,
       guestID : guestID,
