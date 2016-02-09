@@ -55,7 +55,7 @@ var overrideStylesWithCMSdata = function (styles){
 		appendStyleString('.dark-button,.dark-button:hover { background:'+ styles.dark_button_bg+'!important}');
 	}
 	if(styleString.length > 0){
-		addStyleString(styleString+';');
+		addStyleString(styleString);
 	}
 	else{
 		return;
