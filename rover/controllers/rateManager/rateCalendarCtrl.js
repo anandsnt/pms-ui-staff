@@ -633,6 +633,11 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                 $scope.popupData.rate_name = 'this';
             }
             $stateParams.calendarMode = $scope.calendarMode;
+
+            if($scope.calendarData.is_child){
+                $scope.popupData.parentRate = '"' + $scope.calendarData.parentRateName + '"';
+            }
+
             ngDialog.open({
                 template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
                 className: popupClassName,
