@@ -11,14 +11,18 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         refreshSummaryScroller();
     });
 
+    $scope.$on('RELOADSUMMARYOVERVIEW', function() {
+        initSummaryData();
+    });
+
     /* Utility method to get the summary type details.
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
-        @return {object} 
+        @return {object}
      */
     var getSummaryItemByBalanceType = function( balance_type ){
-        
+
         var summaryItem = "";
-        
+
         switch( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
 
@@ -60,7 +64,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 	var initSummaryData = function(){
 
 		var successCallBackFetchSummaryData = function(responce){
-			
+
             $scope.data.summaryData = {};
             $scope.data.summaryData = responce.data;
 
@@ -68,7 +72,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             $scope.data.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
             $scope.data.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
             $scope.data.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-			
+
             $scope.errorMessage = "";
             refreshSummaryScroller();
             $scope.$emit('hideLoader');
@@ -85,12 +89,12 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         initSummaryData();
     });
 
-    /* To fetch the details on each balance tab 
+    /* To fetch the details on each balance tab
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
-        @return {object} 
+        @return {object}
      */
     var fetchBalanceDetails = function( balance_type , isFromPagination ){
-        
+
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 
         var successCallBackFetchBalanceDetails = function(responce){
@@ -136,15 +140,15 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             refreshSummaryScroller();
         }
     };
-    
-    /* 
-     *   Handle Expand/Collapse on balance each type 
+
+    /*
+     *   Handle Expand/Collapse on balance each type
      *   @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
      */
     $scope.toggleJournalSummaryItem = function( balance_type ) {
-        
+
         var toggleItem = getSummaryItemByBalanceType( balance_type );
-        
+
         fetchBalanceDetails( balance_type, false );
     };
 

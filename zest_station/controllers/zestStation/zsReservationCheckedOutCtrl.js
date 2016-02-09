@@ -21,11 +21,25 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 	});
 
   var checkOutSuccess = function(){
-      $scope.mode = "final-mode"
+      if ($state.printOpted){
+          $scope.printOpted = true;
+      } else {
+          $scope.printOpted = false;
+      }
+      
+      $scope.toCheckoutFinal();
+      
+  };
+  $scope.toCheckoutFinal = function(){
+        
+      $state.checkout_finalmode = true;
+      $scope.mode = "final-mode";
+      setTimeout(function(){
+          $state.go('zest_station.reservation_checked_out');
+      },50);
   };
 
   var checkOutGuest = function(){
-
     var params   = {
                     "reservation_id":$scope.zestStationData.reservationData.reservation_id,
                     "is_kiosk":true
@@ -36,39 +50,102 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
                     failureCallBack:    $scope.failureCallBack
                   };
     //if user has no CC and a positive balance, checkout is not allowed
-    if(!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.reservationData.balance >0){
-      $state.go('zest_station.speak_to_staff');
+    if($scope.cashReservationBalanceDue()){
+        console.warn("reservation has balance due");
+        $state.go('zest_station.speak_to_staff');
     }
     else{
       $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
     }
     
   };
-
-
-  var init = function(){
-     $scope.email = "";
-
-     // we check if the reservation has an email id and the admin settings for 
-     // email bill is set as true
-     if((!$scope.zestStationData.reservationData.email || $scope.zestStationData.reservationData.email.length === 0 ) && $scope.zestStationData.guest_bill.email){
-          $scope.mode       = "email-mode";
-          $scope.emailError = false;
-     }
-     //else we check if admin settings for print bill is set as true
-     else if($scope.zestStationData.guest_bill.print){
-          $scope.mode       = "print-mode";
-          $scope.email      = $stateParams.email;
-     }
-     else{
-           checkOutGuest();
-     }
-     
-     $scope.printOpted = false;
-     $scope.emailOpted = $scope.zestStationData.emailEnabled;
+  
+  $scope.cashReservationBalanceDue = function(){
+      return (!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.reservationData.balance >0);
   };
 
+    $scope.editEmailAddress = function(){
+        $scope.zestStationData.reservationData.edit_email = true;
+        $scope.zestStationData.reservationData.edit_email_ad = $scope.zestStationData.reservationData.email;
+        $state.go('zest_station.reservation_checked_out');
+    };
 
+    $scope.toBillDelivery = function(){
+        $scope.at = 'email-delivery';
+        $scope.headingText = "SEND_BILL_TO";
+        $scope.subHeadingText = $scope.zestStationData.reservationData.email;
+    };
+    
+    $scope.toEditEmail = function(){
+        $scope.email = $scope.zestStationData.reservationData.edit_email_ad;
+        $scope.mode       = "email-mode";
+        $scope.emailError = false;
+        $scope.emailOpted = $scope.zestStationData.guest_bill.email;  
+    };
+    $scope.initFinalMode = function(){
+        $state.checkout_finalmode = false;
+        $scope.mode       = "final-mode";
+        $scope.printOpted = false;
+        $scope.emailOpted = $scope.zestStationData.emailEnabled;
+    };
+    
+  var init = function(){
+      if ($state.checkout_finalmode){
+            $scope.initFinalMode();
+            $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
+      } else {
+      
+        var current = $state.current.name;
+        $scope.emailEnabled = false;
+        $scope.email = "";
+
+        //first check if we are editing the email address, then test the other stuff as usual
+        if ($scope.zestStationData.reservationData.edit_email && $scope.zestStationData.guest_bill.email){
+              $scope.toEditEmail();
+            return;
+        } else if ($scope.zestStationData.guest_bill.email && 
+                current === 'zest_station.bill_delivery_options' &&
+                !$scope.zestStationData.guest_bill.print){
+            if($scope.emailMode()){
+                $scope.mode       = "email-mode";
+                $scope.emailError = false;
+                if ($scope.zestStationData.reservationData.email === null){
+                    $state.go('zest_station.reservation_checked_out');
+                } else if ($scope.zestStationData.reservationData.email.length === 0){
+                    $state.go('zest_station.reservation_checked_out');
+                } 
+            }
+            else {
+                $scope.toBillDelivery();
+            }
+            return;
+        }  else if ($scope.zestStationData.guest_bill.email && current === 'zest_station.bill_delivery_options'){
+                $scope.toBillDelivery();
+                return;
+         }
+         // we check if the reservation has an email id and the admin settings for 
+         // email bill is set as true
+         if($scope.emailMode()){
+              $scope.mode       = "email-mode";
+              $scope.emailError = false;
+         }
+         //else we check if admin settings for print bill is set as true
+         else if($scope.zestStationData.guest_bill.print && current === 'zest_station.reservation_checked_out'){
+              $scope.mode       = "print-mode";
+              $scope.email      = $stateParams.email;
+         } else{
+               checkOutGuest();
+         }
+
+         $scope.printOpted = false;
+         $scope.emailOpted = $scope.zestStationData.emailEnabled;
+    };
+  };
+
+    $scope.emailMode = function(){
+      return ((!$scope.zestStationData.reservationData.email || $scope.zestStationData.reservationData.email.length === 0 ) && $scope.zestStationData.guest_bill.email);
+    };
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -87,13 +164,51 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
    * [clickedNoThanks description]
    * @return {[type]} [description]
    */
-  $scope.clickedNoThanks = function(){
-      checkOutGuest();
+  $scope.clickedNoThanks = function(printed){//from print
+      if (!printed){
+            $scope.printOpted = false;
+            $state.printOpted = false;
+        } else {
+            $scope.printOpted = true;
+            $state.printOpted = true;
+        }
+      var guest_bill = $scope.zestStationData.guest_bill;
+        if (!guest_bill.email){
+            checkOutGuest();
+
+        } else if (guest_bill.email){
+            $state.go('zest_station.bill_delivery_options');
+
+        } 
+      
   };
 
+$scope.send = function(){
+    checkOutGuest();
+};
+
+$scope.afterEmailSave = function(){
+    if ($scope.zestStationData.reservationData.edit_email){
+        $scope.zestStationData.reservationData.edit_email = false;
+        $state.go('zest_station.bill_delivery_options');
+    } else {
+        $scope.zestStationData.reservationData.edit_email = false;
+        checkOutGuest();
+    }
+};
   var emailSaveSuccess = function(){
+      $scope.zestStationData.reservationData.email = $scope.email;
       //check if admin settings for print bill is set as true
-      $scope.zestStationData.guest_bill.print ? $scope.mode = "print-mode" : checkOutGuest();
+      if ($scope.zestStationData.reservationData.edit_email){
+          $scope.afterEmailSave();
+      } else {//email was input before print screen
+          if ($scope.zestStationData.guest_bill.print){
+            $scope.mode = "print-mode";
+          } else {
+              $scope.afterEmailSave();
+          }
+      }
+      
   };
 
 
@@ -115,8 +230,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
    * @return {[type]} [description]
    */
   $scope.saveEmail = function(){
-    
-    if($scope.email.length === 0){
+      if($scope.email.length === 0){
           return;
       }
       else{
@@ -152,7 +266,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
           if ( sntZestStation.cordovaLoaded ) {
               var printer = (sntZestStation.selectedPrinter);
               cordova.exec(function(success) {
-                  checkOutGuest();
+                  $scope.clickedNoThanks(true);//now checking for email update / send
+                  //checkOutGuest();
               }, function(error) {
                   $state.go('zest_station.error');
               }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);

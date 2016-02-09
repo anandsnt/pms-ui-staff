@@ -62,6 +62,7 @@
     "SUBMIT": "Submit",
     "KEY_NOT_PRINTED": "Keys not printed",
     
+    "CHECK_OUT_WITHOUT_SETTLEMENT" : "Check Out Without Settlement",
     "ACCEPT_CHARGE_TEXT" : "By checking this box you hereby Accept the Charges",
     "REVIEW_BILL": "Review Bill",
     "AND_CONTINUE": "and Continue",

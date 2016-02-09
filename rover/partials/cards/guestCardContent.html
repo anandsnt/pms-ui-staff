@@ -5,16 +5,16 @@
         
         <!-- Guest Card tabs navigation -->
         <ul class="card-tabs-nav" id="guest-card-tabs-nav">
-            <li ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
+            <li ng-class="{'ui-tabs-active': current == 'guest-contact'}" click-touch="guestCardTabSwitch('guest-contact')">
                 <a id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
+            <li ng-class="{'ui-tabs-active': current == 'guest-like'}" click-touch="guestCardTabSwitch('guest-like')">
                 <a id="guest-like" ng-class="{'error':likesInfoError}">Likes</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
+            <li ng-class="{'ui-tabs-active': current == 'guest-credit'}" click-touch="guestCardTabSwitch('guest-credit')">
                 <a id="guest-credit">Credit Cards &amp; Payment</a>
-            </li>           
-            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
+            </li>
+            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
             <li ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">

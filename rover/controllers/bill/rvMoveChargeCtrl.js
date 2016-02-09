@@ -162,8 +162,11 @@ sntRover.controller('RVMoveChargeCtrl',
 				$scope.$emit("hideLoader");
 				$scope.$emit('moveChargeSuccsess');
 				$scope.closeDialog();
-				
 			};
-			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess);
+			var failureCallback = function(data) {
+                $scope.errorMessage = data;
+                $scope.$emit('hideLoader');
+            };
+			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess, failureCallback );
 		};
 }]);

@@ -91,7 +91,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                             '<button type="submit" name="submit" class="icons icon-search" ng-click="inputLabel.labelFilter=\'\';updateFilter();prepareGrouping();prepareIndex();select( \'clear\', $event )">&times;</button> ' +
                             '<input id="multi-select-query" class="query" placeholder="Search by Employee Name" type="search" autocomplete="off" ng-click="select( \'filter\', $event )" ng-model="inputLabel.labelFilter" ng-change="updateFilter();$scope.getFormElements();" class="query" />' +
                         '</div>' +
-                        '<div  id="multi-select-options" class="entry scrollable" ng-iscroll-delay=3000 ng-iscroll="multiSelectEmployees">' +
+                        '<div  id="multi-select-options" class="entry scrollable" ng-iscroll-delay=3000 ng-iscroll="{{scroller}}">' +
                             '<div class="wrapper">' +               
                                 // '<div ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"' +
                                 //     'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"' +
@@ -138,6 +138,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             itemLabel       : '@',
             maxLabels       : '@',
             orientation     : '@',
+            scroller        : '@',
             selectionMode   : '@',
             customTemplate  : "@",         
                                                          
@@ -254,7 +255,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     $scope.getFormElements();               
                 },0);
                
-                refreshScroller("multiSelectEmployees");
+                refreshScroller($scope.scroller);
             };
 
 
@@ -688,8 +689,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
                     // open callback
                     $scope.onOpen( { data: element } );
-                    
-                    refreshScroller("multiSelectEmployees");
+                    $timeout(refreshScroller.bind(null, $scope.scroller), 200);
                 }                            
             }
             
