@@ -1,10 +1,11 @@
 <!-- main section starts here -->
 <div class="container sm-full-strech">
     <!-- options -->
-    <div class="row" ng-hide="isFetching">
+    <div class="row" ng-show="isOperationCompleted">
         <div class="col-md-2"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
+            <!-- default text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Select your new<br>check out time:</p>
             <!-- CMS main text -->
             <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>

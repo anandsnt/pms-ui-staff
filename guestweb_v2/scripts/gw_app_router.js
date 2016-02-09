@@ -39,13 +39,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/partials/checkout/gwLatecheckoutoptions.html',
 	 	controller: 'GwCheckoutLaterController',
 		data : { pageTitle: 'Check-out Later'}
-	});
-	/*.state('checkOutLaterSuccess', {
-		url: '/checkOutLaterOptions/:id',
+	}).state('checkOutLaterFinal', {
+		url: '/checkOutLaterFinal/:id',
 		templateUrl: '/assets/partials/checkout/gwLateCheckoutfinal.html',
-		controller: 'checkOutLaterSuccessController',
+		controller: 'gwLateCheckoutFinalController',
 		data : { pageTitle: 'Status - Check-out Later'}
-	 });*/
+	 });
 
      $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',

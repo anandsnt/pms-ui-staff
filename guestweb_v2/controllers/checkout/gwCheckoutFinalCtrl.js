@@ -5,7 +5,7 @@
 */
 
 sntGuestWeb.controller('GwCheckoutFinalController', ['$scope','$state','$controller','GwWebSrv','$timeout','GwCheckoutSrv',
- function($scope,$state,$controller,GwWebSrv,$timeout,GwCheckoutSrv,$controller) {
+ function($scope,$state,$controller,GwWebSrv,$timeout,GwCheckoutSrv) {
 	    //TODO : remove unwanted injections like $timeout
 	 	$controller('BaseController', { $scope: $scope });
 	 	var init = function(){
@@ -16,7 +16,7 @@ sntGuestWeb.controller('GwCheckoutFinalController', ['$scope','$state','$control
 		$scope.$emit('showLoader');
 		$timeout(function() {
    			 $scope.$emit('hideLoader');
-   			 $scope.isCheckoutCompleted = true;
+   			 $scope.isOperationCompleted = true;
 		}, 500);
 
 
