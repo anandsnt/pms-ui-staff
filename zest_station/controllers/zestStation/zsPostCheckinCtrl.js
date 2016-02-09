@@ -133,7 +133,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $state.go('zest_station.check_in_keys');
         };
         
-        $scope.sendRegistration = function(){
+        $scope.send = function(){
             var fetchHotelCompleted = function(response){
                 $state.go('zest_station.last_confirm');
                 $scope.$emit('hideLoader');
