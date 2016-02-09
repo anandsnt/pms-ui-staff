@@ -1,0 +1,25 @@
+<div class="block-wrapper">
+    <a ng-click="toggleDetails()" class="block-title toggle has-arrow">External Reference Numbers</a>
+    <div ng-class="{'hidden': !stateExternalRef.viewDetails}">
+        <!-- Remove class hidden when 'a.toggle' is clicked -->
+        <div class="block-item item-reference">
+            <div class="entry" ng-repeat="reference in stateExternalRef.references">
+                <div class="select">
+                    <select ng-disabled="!reference.can_edit" ng-class="{'placeholder' : !reference.external_system}" ng-model="reference.external_system">
+                        <!-- Add attr 'disabled' if value is inserted by external system itself. Remove class 'palceholder' when system is selected (class should be applied only when first(blank) option is selected -->
+                        <option value="" selected>Select External System</option>
+                        <option ng-repeat="externalSystem in stateExternalRef.thirdParties" value="{{externalSystem.id}}" ng-selected="externalSystem.id == reference.external_system">
+                            {{externalSystem.name}}
+                        </option>
+                    </select>
+                </div>
+                <input placeholder="Reference No." ng-disabled="!reference.can_edit" value="{{reference.reference_number}}" type="text" />
+                <!-- <!-- Add attr 'disabled' if value is inserted by external system itself.-->
+                <!-- Remove button: show for all existing numbers (except system added ones) -->
+                <button type="button" class="button white icons icon-remove-60" ng-if="reference.can_edit && reference.external_system" ng-click="deleteReference($index)">-</button>
+                <!-- Add button: show it when new number can be added:-->
+                <button type="button" ng-if="$last && reference.external_system" class="button white icons icon-add-60" ng-click="addNewReference()">+</button>
+            </div>
+        </div>
+    </div>
+</div>
