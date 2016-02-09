@@ -20,7 +20,7 @@
         </li>
     </ul>
 </div>
-
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <div id="account-transactions-content" class="tab-details">
     <!-- If no transactions: -->
     <div class="no-content" ng-show="transactionsDetails.bills.length === 0">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
 
-                    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                    
                     <!-- Invoice -->
                     <div class="invoice">
                         <ng-include src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
