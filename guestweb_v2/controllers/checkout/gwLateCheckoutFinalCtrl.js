@@ -1,6 +1,6 @@
 
 /*
-*	This Controller is late checkout final page
+*	This Controller is for late checkout final page
 */
 
 sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope','$rootScope','$state','$controller','GwWebSrv','$timeout','GwCheckoutSrv',
