@@ -44,7 +44,7 @@
       };
     }]);
 
-  angular.module('pickadate', ['pickadate.utils'])
+  angular.module('pickaDate', ['pickadate.utils'])
 
     .directive('pickadate', ['$locale', 'pickadateUtils', 'dateFilter', function($locale, dateUtils, dateFilter) {
       return {

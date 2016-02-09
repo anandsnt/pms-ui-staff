@@ -1,6 +1,6 @@
 
 
-function BaseCtrl ($scope) {
+function BaseController ($scope) {
 
 
     $scope.$on('showLoader',function(){$scope.loading = true;});

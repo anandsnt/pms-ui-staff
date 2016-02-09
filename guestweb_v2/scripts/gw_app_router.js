@@ -9,7 +9,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     $stateProvider.state('externalCheckoutVerification', {
 	 	url: '/externalCheckoutVerification',
 	 	templateUrl: '/assets/partials/checkout/gwExternal.html',
-	 	controller : 'gwExternalCheckoutVerificationCtrl',
+	 	controller : 'GwExternalCheckoutVerificationController',
 	 	data : { pageTitle: 'External Checkout verification' }
 
 	});
@@ -17,21 +17,21 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	$stateProvider.state('checkOutOptions', {
  		url: '/checkOutOptions',
 		templateUrl: '/assets/partials/checkout/gwCheckoutoptions.html',
-		controller: 'checkOutOptionsController',
+		controller: 'GwCheckOutOptionsController',
 		data : { pageTitle: 'Check-out options' }
 	}).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
-       	controller: 'gwCheckoutNowInitialCtrl',
+       	controller: 'GwCheckoutNowInitialController',
        	templateUrl:  '/assets/partials/checkout/gwCheckout.html',
 		data : { pageTitle:'Confirm - Check-out Now'}
     }).state('checkoutBalance', {
         url: '/checkoutBalance',
-        controller: 'gwCheckoutReviewBillCtrl',
+        controller: 'GwCheckoutReviewBillController',
        	templateUrl: '/assets/partials/checkout/gwBill.html',
 	    data : { pageTitle:'Balance - Check-out Now'}
     }).state('checkOutFinal', {
         url: '/checkOutFinal',
-       	controller: 'gwCheckoutFinalCtrl',
+       	controller: 'GwCheckoutFinalController',
        	templateUrl: '/assets/partials/checkout/gwCheckoutfinal.html',
 		data : { pageTitle:'Status - Check-out Now'}
     });

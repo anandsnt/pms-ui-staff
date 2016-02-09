@@ -1,4 +1,4 @@
-	sntGuestWeb.service('gwWebSrv', ['$q','$http',
+	sntGuestWeb.service('GwWebSrv', ['$q','$http',
 		function($q,$http) {
 
 

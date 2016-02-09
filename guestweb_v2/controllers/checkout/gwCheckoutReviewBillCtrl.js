@@ -1,15 +1,16 @@
 /*
-*	This Ctrl is to view bill
+*	This Controller is to view bill
 */
 
-sntGuestWeb.controller('gwCheckoutReviewBillCtrl', ['$scope','$state','gwWebSrv','$timeout','gwCheckoutSrv',
- function($scope,$state,gwWebSrv,$timeout,gwCheckoutSrv) {
+sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope','$state','GwWebSrv','$timeout','GwCheckoutSrv',
+ function($scope,$state,GwWebSrv,$timeout,GwCheckoutSrv) {
 	    //TODO : remove unwanted injections like $timeout
-	 	BaseCtrl.call(this, $scope);
+	 	BaseController.call(this, $scope);
 	 	var init = function(){
-			var screenIdentifier = "REVIEW_BILL";
-			$scope.screenCMSDetails =  gwWebSrv.extractScreenDetails(screenIdentifier); 
-			$scope.invokeApi(gwCheckoutSrv.fetchBillDetails, {}, fetchBillSuccess);
+			var screenIdentifier    = "REVIEW_BILL";
+			$scope.screenCMSDetails =  GwWebSrv.extractScreenDetails(screenIdentifier); 
+			$scope.invokeApi(GwCheckoutSrv.fetchBillDetails, {}, fetchBillSuccess);
+			$scope.showBill         =  false;
 		}();
 
 		function fetchBillSuccess(response){

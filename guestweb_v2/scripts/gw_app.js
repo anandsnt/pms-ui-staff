@@ -14,12 +14,11 @@ The initial condtions to determine the status of reseravations are extracted fro
 
 */
 
-var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
 
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate','oc.lazyLoad','ngSanitize']);
-sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', function($scope,$rootScope,$state){
+var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickaDate','ngSanitize']);
+sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state', function($scope,$rootScope,$state){
 	
-    BaseCtrl.call(this, $scope);
+    BaseController.call(this, $scope);
 	$scope.$emit('showLoader');
     $state.go('guestwebRoot');
 
@@ -41,17 +40,17 @@ sntGuestWeb.controller('rootController', ['$scope','$rootScope','$state', functi
 
 }]);
 
-sntGuestWeb.controller('homeController', ['$scope','$rootScope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','gwWebSrv',
- function($scope,$rootScope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,gwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','reservationAndhotelData','screenMappings','screenDataFromCMS','GwWebSrv',
+ function($scope,$rootScope,$state,reservationAndhotelData,screenMappings,screenDataFromCMS,GwWebSrv) {
 
- 	BaseCtrl.call(this, $scope);
+ 	BaseController.call(this, $scope);
  	//There will be a keyword for each screen which has to be mapped with screen id
  	// this is fetched and saved in service for future usage
- 	gwWebSrv.setScreenList(screenMappings);
+ 	GwWebSrv.setScreenList(screenMappings);
  	// This will save the available screen details set in hotel amdin
- 	gwWebSrv.setCMSdata(screenDataFromCMS.screen_list);
+ 	GwWebSrv.setCMSdata(screenDataFromCMS.screen_list);
     //save the data for future usage
-    gwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+    GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
     //override styles if styles are set in hotel admin
     overrideStylesWithCMSdata(screenDataFromCMS.style_list);
     //set static items

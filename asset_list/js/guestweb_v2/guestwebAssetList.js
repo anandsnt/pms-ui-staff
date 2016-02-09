@@ -8,11 +8,9 @@ module.exports = {
 				jsLibRoot + 'jquery.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'angular.min.js',
-				jsLibRoot + 'angular-route.min.js', 
 				jsLibRoot + 'angular-ui-router.min.js',
 				jsLibRoot + 'bootstrap.min.js',
 				jsLibRoot + 'ui-bootstrap-tpls-0.10.0.js',
-				jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
 				jsLibRoot + 'angular-sanitize.min.js'
 			],
 			nonMinifiedFiles: [

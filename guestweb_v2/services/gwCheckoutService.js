@@ -1,4 +1,4 @@
-sntGuestWeb.service('gwCheckoutSrv',['$q', 'GWBaseWebSrv', function($q, GWBaseWebSrv){
+sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv', function($q, GWBaseWebSrv){
 
 	/**
 	 * to verify checkout user

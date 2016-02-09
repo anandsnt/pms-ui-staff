@@ -3,16 +3,16 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('guestwebRoot', {
         url: '/guestwebRoot',
-        controller: 'homeController',
+        controller: 'HomeController',
         resolve: {
 
-            screenMappings: function(gwWebSrv) {
-                    return gwWebSrv.fetchScreenMappings();
+            screenMappings: function(GwWebSrv) {
+                    return GwWebSrv.fetchScreenMappings();
             },
-            screenDataFromCMS: function(gwWebSrv) {
-                    return gwWebSrv.fetchScreenFromCMSSetup();
+            screenDataFromCMS: function(GwWebSrv) {
+                    return GwWebSrv.fetchScreenFromCMSSetup();
             },
-            reservationAndhotelData: function(gwWebSrv, $stateParams) {
+            reservationAndhotelData: function(GwWebSrv, $stateParams) {
 
                  var absUrl = window.location.href;
                  var apiUrl = "";
@@ -53,7 +53,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
                  }
 
             	
-            	return gwWebSrv.fetchHotelDetailsFromUrl(apiUrl);
+            	return GwWebSrv.fetchHotelDetailsFromUrl(apiUrl);
             
    			 }
 		}
