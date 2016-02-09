@@ -111,6 +111,27 @@
 			background-size: 120px;
 		}
 	}
+	
+/* Icons before Text 			==================================*/
+	.icon-before-text {
+		position: relative;
+
+		&:before {
+			display:inline-block;
+			vertical-align: middle;
+			background-image: @icons;
+			background-repeat: no-repeat;
+			border: 0;
+			content:'';
+			margin-right:.5em;
+		}
+
+		&.icon-ok-10:before{
+			background-color: transparent;
+			background-position: 0 -5860px;
+			.square(14px);
+		}
+	}
 
 /* Global icons			==================================*/
 	.icons {
