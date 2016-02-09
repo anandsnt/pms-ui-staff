@@ -56,6 +56,8 @@
     "TYPE_EMAIL_IN": "Type in your e-mail address",
     "TYPE_EMAIL_IN_SUB": "You can receive your bill, check-out (or order a late check-out) and all sorts of other wonderful things…",
     "SEND_REGISTRATION_TO": "We will send your registration to:",
+    "SEND_BILL_TO": "We will send your bill to:",
+    
     "BROKE_HEADER_SUB": "Something broke. Our bad. Please reach out to a Sidekick.",
     "BROKE_HEADER": "So Sorry.",
     "TALK_TO_STAFF": "Please speak to a sidekick.",

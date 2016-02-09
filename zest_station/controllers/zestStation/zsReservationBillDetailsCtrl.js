@@ -12,9 +12,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 	 * @return {[type]} 
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-        $state.go('zest_station.reservation_search', {
-            mode: zsModeConstants.CHECKOUT_MODE
-        });
+            if ($state.current.name === 'zest_station.review_bill'){
+                $state.from = $state.current.name;
+                $state.lastAt = 'review_bill';
+            }
+            $state.go('zest_station.reservation_search', {
+                mode: zsModeConstants.CHECKOUT_MODE
+            });
 	});
 
     /* 
@@ -105,13 +109,31 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
      *  We check if the balance is greater than 0 and has no CC.
      *  If so we redirect to the staff
      */
+    
+    $scope.cashReservationBalanceDue = function(){
+        return (!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.reservationData.balance >0);
+    };
     $scope.nextClicked = function(){
-        if(!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.balance > 0){
+      $scope.zestStationData.reservationData.edit_email = false;
+      
+        if($scope.cashReservationBalanceDue()){
+            console.warn("reservation has balance due");
             $state.go('zest_station.speak_to_staff');
-        }
-        else{
-             $state.go('zest_station.reservation_checked_out');
-        }
+        } else {
+            var guest_bill = $scope.zestStationData.guest_bill;
+            
+            if (!guest_bill.email && !guest_bill.print){//just_checkout
+                $state.go('zest_station.reservation_checked_out');
+                
+            } else if (guest_bill.email && !guest_bill.print){//email_only
+                $state.go('zest_station.bill_delivery_options');
+                
+            } else if ( guest_bill.print ){//go to print nav
+                $state.go('zest_station.reservation_checked_out');
+                
+            }
+        
+        };
     };
         
         
