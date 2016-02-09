@@ -17,7 +17,7 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">
+            <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">
                 <a id="guest-credit">Notes</a>
             </li>             
         </ul>
