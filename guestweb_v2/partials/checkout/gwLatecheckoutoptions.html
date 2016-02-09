@@ -5,28 +5,30 @@
         <div class="col-md-2"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-            <p class="main-text">Select your new<br>check out time:</p>
+            <p class="main-text" ng-if="!screenCMSDetails.title">Select your new<br>check out time:</p>
+            <!-- CMS main text -->
+            <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
         </div>
        <!-- right side -->
         <div class="col-md-5 top-spacing mob-no-padding">
             <div class="row options-container">
-             <a class="btn triple-button one-third-width {{ charge.class }}" ng-repeat="charge in charges" ng-click="gotToNextStep(charge.amount,charge.id)">
+             <a class="btn triple-button one-third-width {{ option.class }}" ng-repeat="option in lateCheckoutOptions" ng-click="gotToNextStep(option.amount,option.id)">
                  <div class="row">
                         <div class="circle-bg">
                             <text x="40%" y="65%" fill="white">
                                 <tspan class="time">
-                                    {{ charge.time | number }}
+                                    {{ option.time | number }}
                                 </tspan>
                                 <tspan class="ap">
-                                     {{ charge.ap }}
+                                     {{ option.ap }}
                                 </tspan>
                             </text>
                         </div>
                     </div>
                     <div class="row late-charge">
                     <span class="for">for</span><br/>
-                    <span class="amount" ng-hide="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
-                    <span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
+                    <span class="amount" ng-hide="option.amount.toString().length>2">{{currencySymbol}}{{option.amount| number:2}}</span>
+                    <span class="amount" ng-show="option.amount.toString().length>2">{{currencySymbol}}{{option.amount| number:0}}</span>
                 </div>
              </a>
             </div>

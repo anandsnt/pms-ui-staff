@@ -1,4 +1,4 @@
-sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv', function($q, GWBaseWebSrv){
+sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', function($q, GWBaseWebSrv,GWBaseWebSrv2){
 
 	/**
 	 * to verify checkout user
@@ -32,4 +32,21 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv', function($q, GWBaseWe
 		return deferred.promise;
 	};
 
+	/**
+	 * to fetch late checkout options
+	 * @return {undefined}
+	 */
+	this.fetchLateCheckoutOptions = function(params) {
+		var deferred = $q.defer();
+		var url = '/sample_json/zestweb_v2/late_checkout_options.json';
+
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	
 }]);
