@@ -20,7 +20,7 @@ var admin = angular.module('admin',
 	'ngClassWithoutAnimation',
 	'documentTouchMovePrevent',
 	'divTouchMoveStopPropogate',
-	'ui.utils']);
+	'ui.utils','uiColorpicker']);
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config(function ($httpProvider) {

@@ -67,7 +67,10 @@
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEOFF_SMS_LABEL": "Service is OFF - SMS",
 "ZEST_SETUP_MSG_TO_GUEST_SERVICEON_NO_RECOG": "Service is ON - Did not recognize keyword",
 "ZEST_SETUP_DIRECT_URL_HEADER":"Check-In By Direct URL From Guest Setup",
-"ZEST_SETUP_SMS_HEADER":"Check-In By SMS From Guest Setup"
+"ZEST_SETUP_SMS_HEADER":"Check-In By SMS From Guest Setup",
+"ZESTSWEB_GLOBAL_TITLE":"Zestweb global settings",
+"CMS_STATUS": "CMS status",
+"LANGUAGES":"LANGUAGES"
 
 
 

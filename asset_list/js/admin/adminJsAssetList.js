@@ -19,7 +19,8 @@ module.exports = {
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
-				jsLibRoot + 'fastclick.min.js'			
+				jsLibRoot + 'fastclick.min.js',
+				jsLibRoot + 'spectrum.js'		
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',
@@ -46,7 +47,8 @@ module.exports = {
 				adminRoot + '../rover/rvSntApp.js',
 				adminRoot + 'controllers/**/*.js',
 				adminRoot + 'directives/**/*.js',
-				adminRoot + 'services/**/*.js'
+				adminRoot + 'services/**/*.js',
+				sharedRoot +'directives/uiColorpicker/uiColorpicker.js'
 			]
 		};		
 		
