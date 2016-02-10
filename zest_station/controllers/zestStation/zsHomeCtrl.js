@@ -419,8 +419,15 @@ sntZestStation.controller('zsHomeCtrl', [
             $state.go ('zest_station.home');
         }
     });
-    
+    $scope.resetFlags = function(){
+        $state.skipCheckinEmail = false;
+        $state.updatedEmail = false;
+        $state.skipCheckoutEmail = false;
+        $state.checkout_finalmode = false;
+        $state.emailEdited = false;
+    };
     $scope.init = function(){
+        $scope.resetFlags();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
            

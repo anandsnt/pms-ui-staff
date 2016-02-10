@@ -227,7 +227,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     *   1.enter last name
     *   2.enter room number
     */
-    var goToNextForCheckout = function(){
+    $scope.goToNextForCheckout = function(){
         /*
          * 1) Enter Last name (saves to state.input.last)
          * 2) Enter Room number (saves to state.input.room)
@@ -314,31 +314,45 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.callAPI(zsCheckoutSrv.findReservation, options);
     };
 
+    $scope.onNextReEnterLast = function(){
+        $scope.pickupValues.last = $scope.input.inputTextValue;
+        $state.input.last = $scope.input.inputTextValue;
+        $scope.pickupValues.room = $state.input.room;
+
+        var options = $scope.getPickupKeyOptions();
+        $scope.fetchReservations(options);
+    };
+    $scope.onNextReEnterRoom = function(){
+        $scope.pickupValues.room = $scope.input.inputTextValue;
+        $state.input.room = $scope.input.inputTextValue;
+        $scope.pickupValues.last = $state.input.last;
+
+        var options = $scope.getPickupKeyOptions();
+        $scope.fetchReservations(options);
+    };
+    $scope.onPickupInputRoom = function(){
+        $scope.pickupValues.room = $scope.input.inputTextValue;
+        $state.input.room = $scope.input.inputTextValue;
+        var options = $scope.getPickupKeyOptions();
+        $scope.fetchReservations(options);
+    };
     $scope.goToNext =  function(){
-            if($scope.isInCheckoutMode()){
-                    goToNextForCheckout();
-            } else if ($scope.isInPickupKeyMode() && $scope.at === 'input-last'){
-                    $scope.goToNextForPickup();
-            } else if ($scope.at === 're-input-last'){
-                $scope.pickupValues.last = $scope.input.inputTextValue;
-                $state.input.last = $scope.input.inputTextValue;
-                $scope.pickupValues.room = $state.input.room;
-                
-                var options = $scope.getPickupKeyOptions();
-                $scope.fetchReservations(options);
-            } else if ($scope.at === 're-input-room'){
-                $scope.pickupValues.room = $scope.input.inputTextValue;
-                $state.input.room = $scope.input.inputTextValue;
-                $scope.pickupValues.last = $state.input.last;
-                
-                var options = $scope.getPickupKeyOptions();
-                $scope.fetchReservations(options);
-            }else if ($scope.isInPickupKeyMode() && $scope.at === 'input-room'){
-                $scope.pickupValues.room = $scope.input.inputTextValue;
-                $state.input.room = $scope.input.inputTextValue;
-                var options = $scope.getPickupKeyOptions();
-                $scope.fetchReservations(options);
-            }
+        if($scope.isInCheckoutMode()){//checkout
+                $scope.goToNextForCheckout();
+
+        } else if ($scope.isInPickupKeyMode() && $scope.at === 'input-last'){//pickup
+                $scope.goToNextForPickup();
+
+        } else if ($scope.isInPickupKeyMode() && $scope.at === 'input-room'){//pickup
+            $scope.onPickupInputRoom();
+
+        } else if ($scope.at === 're-input-last'){//check in
+            $scope.onNextReEnterLast();
+
+        } else if ($scope.at === 're-input-room'){//check in
+            $scope.onNextReEnterRoom();
+
+        }
     };
           
         $scope.initErrorScreen = function(){
