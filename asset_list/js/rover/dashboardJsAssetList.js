@@ -37,7 +37,7 @@ module.exports = {
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
-				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvDesktopUUIDService.js',
+				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvUUIDService.js', roverRoot + 'rvDesktopUUIDService.js',
 				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js',
 				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
 
@@ -48,6 +48,7 @@ module.exports = {
 				controllerRoot + 'dashboard/**/*.js',
 				controllerRoot + 'availability/rvAvailabilityButtonCtrl.js',
 				controllerRoot + 'search/**/*.js',
+				controllerRoot + 'errorPopup/rvTimeoutErrorCtrl.js',
 				controllerRoot + 'workstation/rvWorkstationCtrl.js',
 
 				serviceRoot + 'baseWebSrvV2.js',
@@ -55,6 +56,7 @@ module.exports = {
 				serviceRoot + 'rvBaseWebSrvV2.js',
 				serviceRoot + 'rvDashboardSrv.js',
 				serviceRoot + 'menu/rvMenuSrv.js',
+				serviceRoot + 'rvHKOWSTestSrv.js',
 				serviceRoot + 'jsMappings/jsMappingsSrv.js',
 				serviceRoot + 'permissions/rvPermissionSrv.js',
 				serviceRoot + 'rvSearchSrv.js',

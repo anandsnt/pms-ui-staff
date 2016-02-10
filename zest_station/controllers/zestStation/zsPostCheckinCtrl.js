@@ -425,7 +425,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                setTimeout(function() {
                     var printer = (sntZestStation.selectedPrinter);
                     $window.print();
-                    if ( sntapp.cordovaLoaded ) {
+                    if ( sntZestStation.cordovaLoaded ) {
                             cordova.exec(
                                 $scope.onPrintSuccess(), //print complete, should go to final screen
                                 $scope.onPrintError(), //if print error, inform guest there was an error

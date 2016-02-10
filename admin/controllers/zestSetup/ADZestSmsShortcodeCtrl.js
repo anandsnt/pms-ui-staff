@@ -1,4 +1,4 @@
-admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','$filter',function($scope, $state, ADZestShortCodeSrv,$filter){
+admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','adZestCheckinCheckoutSrv','$filter',function($scope, $state, ADZestShortCodeSrv,adZestCheckinCheckoutSrv,$filter){
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -11,10 +11,32 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     $scope.cancelClicked = function(){
         $scope.goBackToPreviousState();
     };
-    $scope.onCallback = function(response){
-      console.info('callback from shortcode stuff save')  
+
+     var saveSMSUrl = function(){
+        var data = {
+             "active": true,
+             "application": "SMS",
+             "guest_web_url_type": "CHECKIN",
+             "name":"SMS URL",
+             "url_suffix": $scope.editData.checkin_static_url
+        }
+        var options = {
+            params          : data
+        };
+        $scope.callAPI(adZestCheckinCheckoutSrv.saveNewDirectURL, options);
     };
+    $scope.onCallback = function(response){
+        if (response.status === 'success'){
+            saveSMSUrl();
+        } else {
+            $scope.errorMessage = ["Error"];
+        }
+    };
+
     $scope.saveClicked = function(){
+        console.info('saving',$scope.editData);
+        var params = $scope.editData;
+        //params.id = $scope.editData.hotel_id;
         var options = {
             params 			: params,
             successCallBack             : $scope.onCallback,
@@ -34,11 +56,11 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     };
     
     $scope.fetch = function(){
-        console.log('fetching settings;')
         var callback = function(response){
-            console.info('fetch success;',response);
+            console.info('fetch: ',response)
             if (response.status === 'success'){
                 $scope.editData = response.data;
+                console.info('$scope.editData: ',$scope.editData)
             }
         };
         var options = {

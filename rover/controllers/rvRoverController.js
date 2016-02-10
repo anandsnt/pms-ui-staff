@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q) {
 
     // TODO: remove this after CICO-19912 is done
     SWITCH_ROOM_AND_RATES_ALT = true;
@@ -272,7 +272,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('staffpasswordchange')
+        jsMappings.fetchAssets(['staffpasswordchange'])
         .then(function(){
             $scope.$emit('hideLoader');
             ngDialog.open({
@@ -402,7 +402,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('endofday')
+        jsMappings.fetchAssets(['endofday'])
         .then(function(){
             $scope.$emit('hideLoader');
             ngDialog.open({
@@ -417,7 +417,7 @@ sntRover.controller('roverController',
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets('postcharge')
+        jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function(){
             $scope.isOutsidePostCharge = true;
             $scope.$emit('hideLoader');

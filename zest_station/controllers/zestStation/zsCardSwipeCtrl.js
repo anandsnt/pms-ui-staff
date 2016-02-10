@@ -562,30 +562,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 	};
         $scope.initSixPaySuccess = function(response){
 		$scope.$emit("hideLoader");
-                if ($scope.isSimulated){
                     $scope.goToCardSign();
-                }
-		var cardType = getSixCreditCardType(response.card_type).toLowerCase();
-		var endingWith = response.ending_with;
-		var expiryDate = response.expiry_date.slice(-2)+"/"+response.expiry_date.substring(0, 2);
-		if($scope.dataToSave.addToGuestCard || $scope.isFromGuestCard){
-				var dataToGuestList = {
-					"card_code": cardType,
-					"mli_token": endingWith,
-					"card_expiry": expiryDate,
-					"card_name": "",
-					"id": response.guest_payment_method_id,
-					"isSelected": true,
-					"is_primary":false,
-					"payment_type":"CC",
-					"payment_type_id": 1,
-					"is_credit_card": true
 
-				};
-				$scope.cardsList.push(dataToGuestList);
-				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-		};
-		$scope.closeDialog();
         };
         
         
@@ -857,7 +835,6 @@ var SwipeOperation = function(){
 	 * Function to create the data to save which is passed to API
 	 */
 	this.createSWipedDataToSave = function(swipedCardData){
-            alert('createSWipedDataToSave')
 		var swipedCardDataToSave = {
 			"cardType": swipedCardData.cardType,
 			"et2": swipedCardData.et2,

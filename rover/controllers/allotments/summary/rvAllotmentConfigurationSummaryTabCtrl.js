@@ -14,7 +14,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	'rvUtilSrv',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, jsMappings, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
+	'$q',
+	function($scope, jsMappings, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $q) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -348,7 +349,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			});
 
             $scope.$emit('showLoader'); 
-            jsMappings.fetchAssets('addBillingInfo')
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
                 $scope.$emit('hideLoader'); 
                 ngDialog.open({

@@ -26,7 +26,7 @@ module.exports = {
 										  precheckinPartials+'common-black/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
 			'guestweb_camby' 		:[ 'guestweb/**/common_templates/partials/checkin/**.html',
-										'guestweb/partials/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'
@@ -58,7 +58,7 @@ module.exports = {
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
 			'guestweb_claridge'		:[ 'guestweb/**/common_templates/partials/checkin/**.html',
-										'guestweb/partials/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
@@ -133,7 +133,7 @@ module.exports = {
 										  checkoutNowlaterPartials+'Fontainebleau/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
 			'guestweb_great_wolf' 	:[ 'guestweb/**/common_templates/partials/checkin/**.html',
-										'guestweb/partials/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
@@ -161,7 +161,30 @@ module.exports = {
 										  checkoutNowlaterPartials+'Galleria/*.html',
 										  checkinPartials+'Galleria/*.html',checkinPartials+"*.html",
 										  precheckinPartials+'Galleria/*.html', precheckinPartials+'*.html',
-										  sharedHtml]
+										  sharedHtml],
+			'guestweb_balboa'		:[ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+			'guestweb_luxor'		: [ 'guestweb/**/common_templates/partials/MGM/*.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+
+			'guestweb_mgm_grand'		: [ 'guestweb/**/common_templates/partials/MGM/*.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+
+			'guestweb_signature_at_mgm'		: [ 'guestweb/**/common_templates/partials/MGM/*.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html']
 		}
 	}
 }

@@ -58,6 +58,10 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         }
                         return $('<li></li>').append($result).appendTo(ul);
                     };
+
+                scope.$on('$destroy', function(){
+                    $(el).autocomplete( "destroy" );
+                });                    
             }
         };
     }

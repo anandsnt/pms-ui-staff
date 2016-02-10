@@ -219,14 +219,19 @@
                                         StayNTouch
                                 </label>
                                 <span style='margin-bottom:15px;'>&nbsp</span>
-                                <ad-textbox value="editData.sms_auth_token"   label = "SMS Auth Token" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
-                                <ad-textbox value="editData.sms_account_sid"   label = "SMS Account SID" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
-                                <ad-textbox value="editData.sms_code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
+                                <ad-textbox value="editData.code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
+                                <ad-textbox value="editData.sms_auth_token"   label = "SMS Auth Token" placeholder = "" required = "no" styleclass="full-width"></ad-textbox>
+                                <ad-textbox value="editData.sms_account_sid"   label = "SMS Account SID" placeholder = "" required = "no" styleclass="full-width"></ad-textbox>
+                                
                                
 			</fieldset>
+                    
+                    
 			<fieldset class="holder right float">
 				<!-- Help Keywords + response-->
-                                 <ad-textbox value="editData.sms_help_keywords"  label = "Help Keywords" placeholder = "Enter Help Keywords" required = "yes" styleclass="full-width"></ad-textbox>
+                                <ad-textbox value="editData.sms_stop_keywords"  label = "Stop Keywords" placeholder = "Enter Keywords" required = "no" styleclass="full-width overlay"></ad-textbox>
+                                
+                                 <ad-textbox value="editData.sms_help_keywords"  label = "Help Keywords" placeholder = "Enter Help Keywords" required = "no" styleclass="full-width"></ad-textbox>
                                 <div class="entry full-width">
 					<label for="sms_help_response">
                                             Help Response 
@@ -238,7 +243,7 @@
 					</label>
 					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
 				</div>
-                                <!--span class='overlay'>* Separate help keywords with (;) for multiple keywords </span-->
+                                <span class='overlay'>* Separate help keywords with (;) for multiple keywords </span>
                                 
                                 
                                 
