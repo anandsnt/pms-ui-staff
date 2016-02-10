@@ -1,27 +1,29 @@
 /*
-*	This Controller is to view bill
-*/
+ *	This Controller is to view bill
+ */
+sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckoutSrv',
+	function($scope, $state, $controller, GwWebSrv, GwCheckoutSrv) {
 
-sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope','$state','$controller','GwWebSrv','GwCheckoutSrv',
- function($scope,$state,$controller,GwWebSrv,GwCheckoutSrv) {
+		$controller('BaseController', {
+			$scope: $scope
+		});
 
-	 	$controller('BaseController', { $scope: $scope });
-
-	 	var fetchBillSuccess =function(response){
+		var fetchBillSuccess = function(response) {
 			$scope.$emit("hideLoader");
 			$scope.billData = response.bill_details;
-			$scope.roomNo 	= response.room_number;
+			$scope.roomNo = response.room_number;
 		};
-	 	var init = function(){
-			var screenIdentifier    = "REVIEW_BILL";
-			$scope.screenCMSDetails =  GwWebSrv.extractScreenDetails(screenIdentifier); 
+		var init = function() {
+			var screenIdentifier = "REVIEW_BILL";
+			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.invokeApi(GwCheckoutSrv.fetchBillDetails, {}, fetchBillSuccess);
-			$scope.showBill         =  false;
+			$scope.showBill = false;
 		}();
-		$scope.gotToNextStep = function(){
+		$scope.gotToNextStep = function() {
 			$state.go('checkOutFinal');
 		};
 
 
 
-}]);
+	}
+]);
