@@ -640,13 +640,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			var updateServiceStatusSuccessCallBack = function(data) {
 
 				$scope.$emit( 'hideLoader' );
-				if(data.assigned_rooms.length > 0) {
+				if(typeof data.assigned_rooms !='undefined' && data.assigned_rooms.length > 0) {
 					showUpdateResultPopup(data.assigned_rooms);
 				}
 				else {
 					$timeout( $scope.closeHkStatusDialog, 100 );
 					$scope.refreshData();
-					console.log(data);
 				}
 
 			};
