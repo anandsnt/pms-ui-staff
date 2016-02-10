@@ -8,7 +8,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 			},
 			save = function(reference) {
 				var onSaveSuccess = function(response) {
-					reference.id = response.external_reference;
+					reference.id = response.id;
 					$scope.$emit('hideLoader');
 				};
 
