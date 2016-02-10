@@ -20,6 +20,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 			update = function(reference) {
 				var onUpdateSuccess = function() {
 					$scope.$emit('hideLoader');
+					$scope.errorMessage = "";
 				};
 				$scope.invokeApi(RVExternalReferencesSrv.update, {
 					reference: reference,
@@ -81,7 +82,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 			$scope.refreshReservationDetailsScroller(100);
 		};
 
-		$scope.onEditReference = function(reference) {
+		$scope.onEditReference = function(reference, event) {
 			if (!reference.id && reference.external_interface_type_id && reference.external_confirm_no) {
 				save(reference);
 			} else if (reference.id) {

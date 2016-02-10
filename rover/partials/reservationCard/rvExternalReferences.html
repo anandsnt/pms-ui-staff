@@ -14,7 +14,7 @@
                         </option>
                     </select>
                 </div>
-                <input placeholder="Reference No." ng-disabled="!reference.is_from_rover" ng-model="reference.external_confirm_no" type="text" ng-blur="onEditReference(reference)"/>
+                <input placeholder="Reference No." ng-disabled="!reference.is_from_rover" ng-model="reference.external_confirm_no" type="text" rv-delay-textbox delay="1000" function-to-fire="onEditReference" function-param="reference"/>
                 <!-- <!-- Add attr 'disabled' if value is inserted by external system itself.-->
                 <!-- Remove button: show for all existing numbers (except system added ones) -->
                 <button type="button" class="button white icons icon-remove-60" ng-if="reference.is_from_rover && reference.id" ng-click="deleteReference(reference)">-</button>
