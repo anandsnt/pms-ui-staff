@@ -4,39 +4,33 @@
             <span class="icons icon-close invert">
         </button>
 
-        <strong class="h2 message">Print Work Sheet</strong>
+        <strong class="h2 message" translate>PRINT_WORKSHEET</strong>
 
         <div class="entry radio-check">
-            <label for="worksheet-sort1">Sort by</label>
+            <label for="worksheet-sort1" translate>SORT</label>
             <label for="worksheet-sort1" class="radio" ng-class="{ 'checked': printSettings.grouping === 'room' }">
                 <span class="icon-form icon-radio" ng-class="{ 'checked': printSettings.grouping === 'room' }">
                 </span>
                 <input name="worksheet-sort" id="worksheet-sort1" value="room" type="radio"
                     ng-model="printSettings.grouping">
-                Room
+                {{'ROOM' | translate}}
             </label>
             <label for="worksheet-sort2" class="radio" ng-class="{ 'checked': printSettings.grouping === 'task' }">
                 <span class="icon-form icon-radio" ng-class="{ 'checked': printSettings.grouping === 'task' }">
                 </span>
                 <input name="worksheet-sort" id="worksheet-sort2" value="task" type="radio"
                     ng-model="printSettings.grouping">
-                Task
+                {{'TASK' | translate}}
             </label>
         </div>
 
         <div class="entry full-width">
-            <label for="worksheet-employees">Number of Employees</label>
-            <!--<div class="select">
-                <select name="worksheet-employees" id="worksheet-employees" ng-model="printSettings.employees">
-                    <option value="1">1</option>
-                    <option value="{n}">{n}</option>
-                </select>
-            </div>-->
-            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name" max-labels="0" on-item-click="selectEmployee()" on-open="" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
+            <label for="worksheet-employees" translate>NUMBER_EMPLOYEES</label>
+            <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name" max-labels="0" on-item-click="selectEmployee()" on-open="" on-close="onEmployeeListClosed()" tick-property="ticked" scroller="multiSelectPrintPopup" disable-property="checkboxDisabled"></div>
         </div>
 
         <div class="entry full-width">
-            <label for="worksheet-sorting">Sorting Order</label>
+            <label for="worksheet-sorting" translate>SORT_ORDER</label>
             <div class="select">
                 <select name="worksheet-sorting" id="worksheet-sorting" ng-model="printSettings.sort">
                      <option value="asc" selected="selected">Ascending</option>
@@ -46,8 +40,8 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="button blue" ng-click="printWorkSheet()">Print work sheet</button>
-            <button type="button" class="button blank" ng-click="cancelPopupDialog()">Cancel</button>
+            <button type="button" class="button blue" ng-click="printWorkSheet()" translate>PRINT_WORKSHEET</button>
+            <button type="button" class="button blank" ng-click="cancelPopupDialog()" translate>CANCEL</button>
         </div>
     </div>
 </div>
