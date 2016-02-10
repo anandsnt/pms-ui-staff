@@ -32,6 +32,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
   };
   $scope.toCheckoutFinal = function(){
         
+        $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+        $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
       $state.checkout_finalmode = true;
       $scope.mode = "final-mode";
       setTimeout(function(){
@@ -83,17 +85,20 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         $scope.emailOpted = $scope.zestStationData.guest_bill.email;  
     };
     $scope.initFinalMode = function(){
+        $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+        $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
         $state.checkout_finalmode = false;
         $scope.mode       = "final-mode";
         $scope.printOpted = false;
-        $scope.emailOpted = $scope.zestStationData.emailEnabled;
+        $scope.emailOpted = false;
+        if ($scope.zestStationData.guest_bill.email){
+            $scope.emailOpted = true;
+        }
     };
     
   var init = function(){
       if ($state.checkout_finalmode){
             $scope.initFinalMode();
-            $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
-            $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
       } else {
       
         var current = $state.current.name;
@@ -139,7 +144,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
          }
 
          $scope.printOpted = false;
-         $scope.emailOpted = $scope.zestStationData.emailEnabled;
+         $scope.emailOpted = $scope.zestStationData.guest_bill.email;
     };
   };
 
@@ -263,7 +268,7 @@ $scope.afterEmailSave = function(){
           * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
           */
           $window.print();
-          if ( sntZestStation.cordovaLoaded ) {
+          if ( sntapp.cordovaLoaded ) {
               var printer = (sntZestStation.selectedPrinter);
               cordova.exec(function(success) {
                   $scope.clickedNoThanks(true);//now checking for email update / send
