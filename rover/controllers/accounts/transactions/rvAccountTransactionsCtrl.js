@@ -300,6 +300,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 * Failure Callback of move action
 			 */
 			var moveToBillFailureCallback = function(errorMessage) {
+				console.log("@moveToBillFailureCallback");
+				console.log(errorMessage);
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
