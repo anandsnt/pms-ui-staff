@@ -12,36 +12,31 @@
         <!-- {update-status} is the new status of the rooms: 'out of order' or 'out of service' -->
     </span>
     <div class="rooms-not-completed scrollable" ng-iscroll="rooms-list-to-forcefully-update">
-        <ul class="wrapper" ng-repeat="rooms in completedData.assignedRoomsList">
+        <ul class="wrapper" >
             <!-- This is the HTML of a room which status can be changed/updated -->
-            <li class="room" ng-hide="rooms.is_locked">
-                <span class="number">
+            <li class="room" ng-class="{'locked': rooms.is_locked}" ng-repeat="rooms in completedData.assignedRoomsList">
+                <span class="number" ng-hide="rooms.is_locked">
                     {{rooms.room_number}}
                 </span>
-                <span class="guest" ng-hide="rooms.isMultipleReservation">
+                <span class="guest" ng-hide="rooms.is_locked && rooms.isMultipleReservation">
                     {{rooms.GuestName}}
                     <span class="reservation">
                        {{rooms.reservationData}}
                     </span>
                 </span>
-                <span class="reservation" ng-show="rooms.isMultipleReservation">
+                <span class="reservation" ng-show="!rooms.is_locked && rooms.isMultipleReservation">
                        {{rooms.reservationData}}
                     </span>
-                <label class="checkbox inline" for="Room Number" ng-class="{ checked : rooms.is_add_to_update}">
+                <label ng-hide="rooms.is_locked" class="checkbox inline" for="Room Number" ng-class="{ checked : rooms.is_add_to_update}">
                     <span class="icon-form icon-checkbox" ng-class="{ checked : rooms.is_add_to_update}"></span>
                     <input type="checkbox" ng-model="rooms.is_add_to_update"/>
                 </label>
-            </li>
-
-            <!-- This is the HTML of a room which status cannot be changed/updated -->
-            <li class="room locked" ng-show="rooms.is_locked">
-                <span class="number">
-
-                </span>
-                <span class="text">
+                <span class="text" ng-show="rooms.is_locked">
                     Web booking in progress, can't place room {{completedData.serviceName}}
                 </span>
             </li>
+
+
 
         </ul>
     </div>
