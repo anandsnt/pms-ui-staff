@@ -1,63 +1,80 @@
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+	$urlRouterProvider.otherwise("/noOptionAvailable");
 
-    $urlRouterProvider.otherwise("/noOptionAvailable");
 
-   
 
-    // External checkout verification
-    $stateProvider.state('externalCheckoutVerification', {
-	 	url: '/externalCheckoutVerification',
-	 	templateUrl: '/assets/partials/checkout/gwExternal.html',
-	 	controller : 'GwExternalCheckoutVerificationController',
-	 	data : { pageTitle: 'External Checkout verification' }
+	// External checkout verification
+	$stateProvider.state('externalCheckoutVerification', {
+		url: '/externalCheckoutVerification',
+		templateUrl: '/assets/partials/checkout/gwExternal.html',
+		controller: 'GwExternalCheckoutVerificationController',
+		data: {
+			pageTitle: 'External Checkout verification'
+		}
 
 	});
-  
+
 	$stateProvider.state('checkOutOptions', {
- 		url: '/checkOutOptions',
+		url: '/checkOutOptions',
 		templateUrl: '/assets/partials/checkout/gwCheckoutoptions.html',
 		controller: 'GwCheckOutOptionsController',
-		data : { pageTitle: 'Check-out options' }
+		data: {
+			pageTitle: 'Check-out options'
+		}
 	}).state('checkOutConfirmation', {
-        url: '/checkOutConfirmation',
-       	controller: 'GwCheckoutNowInitialController',
-       	templateUrl:  '/assets/partials/checkout/gwCheckout.html',
-		data : { pageTitle:'Confirm - Check-out Now'}
-    }).state('checkoutBalance', {
-        url: '/checkoutBalance',
-        controller: 'GwCheckoutReviewBillController',
-       	templateUrl: '/assets/partials/checkout/gwBill.html',
-	    data : { pageTitle:'Balance - Check-out Now'}
-    }).state('checkOutFinal', {
-        url: '/checkOutFinal',
-       	controller: 'GwCheckoutFinalController',
-       	templateUrl: '/assets/partials/checkout/gwCheckoutfinal.html',
-		data : { pageTitle:'Status - Check-out Now'}
-    }).state('checkOutLaterOptions', {
-	 	url: '/checkOutLaterOptions',
+		url: '/checkOutConfirmation',
+		controller: 'GwCheckoutNowInitialController',
+		templateUrl: '/assets/partials/checkout/gwCheckout.html',
+		data: {
+			pageTitle: 'Confirm - Check-out Now'
+		}
+	}).state('checkoutBalance', {
+		url: '/checkoutBalance',
+		controller: 'GwCheckoutReviewBillController',
+		templateUrl: '/assets/partials/checkout/gwBill.html',
+		data: {
+			pageTitle: 'Balance - Check-out Now'
+		}
+	}).state('checkOutFinal', {
+		url: '/checkOutFinal',
+		controller: 'GwCheckoutFinalController',
+		templateUrl: '/assets/partials/checkout/gwCheckoutfinal.html',
+		data: {
+			pageTitle: 'Status - Check-out Now'
+		}
+	}).state('checkOutLaterOptions', {
+		url: '/checkOutLaterOptions',
 		templateUrl: '/assets/partials/checkout/gwLatecheckoutoptions.html',
-	 	controller: 'GwCheckoutLaterController',
-		data : { pageTitle: 'Check-out Later'}
+		controller: 'GwCheckoutLaterController',
+		data: {
+			pageTitle: 'Check-out Later'
+		}
 	}).state('checkOutLaterFinal', {
 		url: '/checkOutLaterFinal/:id',
 		templateUrl: '/assets/partials/checkout/gwLateCheckoutfinal.html',
 		controller: 'gwLateCheckoutFinalController',
-		data : { pageTitle: 'Status - Check-out Later'}
-	 });
+		data: {
+			pageTitle: 'Status - Check-out Later'
+		}
+	});
 
-     $stateProvider.state('noOptionAvailable', {
-    	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/partials/gwNoOption.html',
-	 	data : { pageTitle: 'Feature not available' }
+	$stateProvider.state('noOptionAvailable', {
+		url: '/noOptionAvailable',
+		templateUrl: '/assets/partials/gwNoOption.html',
+		data: {
+			pageTitle: 'Feature not available'
+		}
 	}).state('seeFrontDesk', {
- 		url: '/seeFrontDesk',
+		url: '/seeFrontDesk',
 		templateUrl: '/assets/partials/gwErrorPage.html',
-		data : { pageTitle: 'Error..' }
+		data: {
+			pageTitle: 'Error..'
+		}
 	});
 
 
- //    //room and cc verification 
+	//    //room and cc verification 
 
 	//  $stateProvider.state('checkoutRoomVerification', {
 	//  	url: '/checkoutRoomVerification',
@@ -71,30 +88,30 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	//  	title: 'CC verification'
 	//  });
 
- //    // checkout now states
+	//    // checkout now states
 
 	// $stateProvider.state('checkoutBalance', {
- //        url: '/checkoutBalance',
- //        controller: 'checkOutBalanceController',
- //       	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
+	//        url: '/checkoutBalance',
+	//        controller: 'checkOutBalanceController',
+	//       	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
 	//     title: 'Balance - Check-out Now'
- //    })
- //    .state('checkOutStatus', {
- //        url: '/checkOutStatus',
- //       	controller: 'checkOutStatusController',
- //       	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
+	//    })
+	//    .state('checkOutStatus', {
+	//        url: '/checkOutStatus',
+	//       	controller: 'checkOutStatusController',
+	//       	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
 	// 	title: 'Status - Check-out Now'
- //    }).state('checkOutConfirmation', {
- //        url: '/checkOutConfirmation',
- //       	controller: 'checkOutConfirmationController',
- //       	templateUrl:  '/assets/common_templates/partials/checkout/gwCheckout.html',
+	//    }).state('checkOutConfirmation', {
+	//        url: '/checkOutConfirmation',
+	//       	controller: 'checkOutConfirmationController',
+	//       	templateUrl:  '/assets/common_templates/partials/checkout/gwCheckout.html',
 	// 	title: 'Confirm - Check-out Now'
- //    });
+	//    });
 
- //    // late checkout states
+	//    // late checkout states
 
- //    $stateProvider.state('checkOutOptions', {
- //    	url: '/checkOutOptions',
+	//    $stateProvider.state('checkOutOptions', {
+	//    	url: '/checkOutOptions',
 	//  	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutoptions.html',
 	//  	controller: 'checkOutLandingController',
 	//  	title: 'Check-out'
@@ -147,11 +164,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	//  	controller : 'guestDetailsController',
 	//     title: 'Guest Details'
 	//  })
-	 
+
 
 	// // pre checkin states
 
- //    $stateProvider.state('preCheckinStatus', {
+	//    $stateProvider.state('preCheckinStatus', {
 	// 	url: '/preCheckinStatus',
 	// 	templateUrl: '/assets/common_templates/partials/checkin/gwPreCheckinFinal.html',
 	// 	controller : 'preCheckinStatusController',
@@ -176,7 +193,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	//  });
 
 	//  $stateProvider.state('noOptionAvailable', {
- //    	url: '/noOptionAvailable',
+	//    	url: '/noOptionAvailable',
 	//  	templateUrl: '/assets/partials/gwNoOption.html',
 	//  	title: 'Feature not available'
 	// });

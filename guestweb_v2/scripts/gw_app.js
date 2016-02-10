@@ -15,17 +15,19 @@ The initial condtions to determine the status of reseravations are extracted fro
 */
 
 
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickaDate','ngSanitize']);
-sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state','$controller', function($scope,$rootScope,$state,$controller){
-	
-    $controller('BaseController', { $scope: $scope });
-	$scope.$emit('showLoader');
+var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickaDate', 'ngSanitize']);
+sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$controller', function($scope, $rootScope, $state, $controller) {
+
+    $controller('BaseController', {
+        $scope: $scope
+    });
+    $scope.$emit('showLoader');
     $state.go('guestwebRoot');
 
     //in order to prevent url change or fresh url entering with states
     var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
+        event.preventDefault();
+        return;
     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
@@ -33,43 +35,38 @@ sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state','$contr
     window.history.pushState("initial", "Showing Landing Page", "#/guestwebRoot");
 
     //function to handle exception when state is not found
-	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-		event.preventDefault();
-		$state.go('noOptionAvailable'); 
-	});
+    $scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+        event.preventDefault();
+        $state.go('noOptionAvailable');
+    });
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','$controller','reservationAndhotelData','screenMappings','screenDataFromCMS','zestWebGlobalSettings','GwWebSrv',
- function($scope,$rootScope,$state,$controller,reservationAndhotelData,screenMappings,screenDataFromCMS,zestWebGlobalSettings,GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'reservationAndhotelData', 'screenMappings', 'screenDataFromCMS', 'zestWebGlobalSettings', 'GwWebSrv',
+    function($scope, $rootScope, $state, $controller, reservationAndhotelData, screenMappings, screenDataFromCMS, zestWebGlobalSettings, GwWebSrv) {
 
- 	$controller('BaseController', { $scope: $scope });
- 	//There will be a keyword for each screen which has to be mapped with screen id
- 	// this is fetched and saved in service for future usage
- 	GwWebSrv.setScreenList(screenMappings);
- 	// This will save the available screen details set in hotel amdin
- 	GwWebSrv.setCMSdata(screenDataFromCMS);
-    //save the data for future usage
-    GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
-    //override styles if styles are set in hotel admin
-    overrideStylesWithCMSdata(zestWebGlobalSettings);
-    //set static items
-    $rootScope.hotelLogo       = reservationAndhotelData.hotel_logo;
-    $rootScope.currencySymbol  = reservationAndhotelData.currency_symbol;
-    $rootScope.hotelPhone      = reservationAndhotelData.hotel_phone;
-    //to start displaying contents in the page
-    $rootScope.uiViewDOMloaded = true;
-	$scope.$emit('hideLoader');
-	//conditional page navigations
-	if(reservationAndhotelData.is_external_verification === "true"){
-		$state.go('externalCheckoutVerification'); //external checkout URL
-	}
-}]);
-
-
-
-
-
-
-
-
+        $controller('BaseController', {
+            $scope: $scope
+        });
+        //There will be a keyword for each screen which has to be mapped with screen id
+        // this is fetched and saved in service for future usage
+        GwWebSrv.setScreenList(screenMappings);
+        // This will save the available screen details set in hotel amdin
+        GwWebSrv.setCMSdata(screenDataFromCMS);
+        //save the data for future usage
+        GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+        //override styles if styles are set in hotel admin
+        overrideStylesWithCMSdata(zestWebGlobalSettings);
+        //set static items
+        $rootScope.hotelLogo = reservationAndhotelData.hotel_logo;
+        $rootScope.currencySymbol = reservationAndhotelData.currency_symbol;
+        $rootScope.hotelPhone = reservationAndhotelData.hotel_phone;
+        //to start displaying contents in the page
+        $rootScope.uiViewDOMloaded = true;
+        $scope.$emit('hideLoader');
+        //conditional page navigations
+        if (reservationAndhotelData.is_external_verification === "true") {
+            $state.go('externalCheckoutVerification'); //external checkout URL
+        }
+    }
+]);
