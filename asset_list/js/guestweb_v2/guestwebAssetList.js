@@ -14,12 +14,12 @@ module.exports = {
 				jsLibRoot + 'angular-sanitize.min.js'
 			],
 			nonMinifiedFiles: [
-				guestwebroot + 'scripts/gw_util.js',
-				guestwebroot + 'scripts/gw_theming_utility.js',
+				guestwebroot + 'utility/gw_util.js',
+				guestwebroot + 'utility/gw_theming_utility.js',
 				guestwebroot + 'scripts/gw_app.js',
 				guestwebroot + 'scripts/gw_app_config.js',
-				guestwebroot + 'scripts/gw_main_app_router.js',
-				guestwebroot + 'scripts/gw_app_router.js',
+				guestwebroot + 'routers/gw_main_app_router.js',
+				guestwebroot + 'routers/gw_app_router.js',
 				guestwebroot + 'scripts/angular-pickdate.js',
 				guestwebroot + 'services/*.js',
 				guestwebroot + 'controllers/**/*.js'
