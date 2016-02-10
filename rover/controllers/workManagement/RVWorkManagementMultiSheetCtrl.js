@@ -571,7 +571,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				scrollY: true
 			}, commonScrollerOptions);
 			$scope.setScroller('unAssignedRoomList', vertical);
-			$scope.setScroller("multiSelectEmployees", commonScrollerOptions);
+			$scope.setScroller("multiSelectWorkSheet", commonScrollerOptions);
+			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
 			$scope.setScroller("worksheetHorizontal", horizontal);
 
 			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {

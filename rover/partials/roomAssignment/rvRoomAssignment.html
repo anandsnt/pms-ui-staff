@@ -23,7 +23,7 @@
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
 				<div class="search float" ng-class="{'only-filters': !isStandAlone}">
-					<a  class="button white with-icon only-icon toggle" ng-class="{'active':isFiltersVisible}" ng-click="toggleFiltersView()"> <span class="icons icon-filter" ng-class="{'active':isFiltersVisible}" ></span> Room attributes </a>
+					<a  class="button white with-icon only-icon toggle" ng-class="{'active':isFiltersVisible}" click-touch="toggleFiltersView()"> <span class="icons icon-filter" ng-class="{'active':isFiltersVisible}" ></span> Room attributes </a>
 					 <div class="search-query-input" ng-show="isStandAlone">
                         <button class="clear-query"><!-- Add class "visible" when room number entered in L52 -->
                             <span class="icons icon-clear-search">Clear query</span>
@@ -46,7 +46,7 @@
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
 						<ul class="wrapper"  ng-show = "!isRoomListEmpty()">
-							<li ng-repeat="room in filteredRooms | limitTo: 25" ng-click="showMaximumOccupancyDialog($index)">
+							<li ng-repeat="room in filteredRooms | limitTo: 25" ng-click="showMaximumOccupancyDialog(room)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span>
 									<span data-value="{{room.room_number}}" class="room-status" ng-class="getRoomStatusClassForRoom(room)" ng-show="room.room_status == 'NOTREADY'">{{getNotReadyRoomTag(room)}}</span>
 									<span class="room-preassignment" ng-show="room.is_preassigned">{{room.last_name + " "+ room.guarantee_type}}</span></a>
