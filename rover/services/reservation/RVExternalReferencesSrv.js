@@ -3,62 +3,72 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
 
         var self = this;
 
-        self.fetchExternalSystems = function() {
-            var deferred = $q.defer();
 
-            deferred.resolve([{
-                id: 1,
-                name: 'SynXis',
-            }, {
-                id: 2,
-                name: 'Traveltripper'
-            }, {
-                id: 3,
-                name: 'Siteminder'
-            }, {
-                id: 4,
-                name: 'Windsurfer'
-            }]);
 
+        var fetchExternalSystems = function() {
+            var deferred = $q.defer(),
+                url = "/api/hotels/external_interfaces";
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response.external_interface_types)
+            }, function(errorMessage) {
+                deferred.resolve(errorMessage)
+            });
             return deferred.promise;
         }
 
-        self.fetchExternalReferences = function() {
-            var deferred = $q.defer();
-            // var response = [{
-            //     external_system: 1,
-            //     reference_number: "AX123",
-            //     can_edit: false
-            // }, {
-            //     external_system: 3,
-            //     reference_number: "12338NN221",
-            //     can_edit: true
-            // }];
-
-            var response = [];
-
-            if (response.length === 0) {
-                response.push({
-                    external_system: "",
-                    reference_number: "",
-                    can_edit: true
-                })
-            }
-
-            deferred.resolve(response);
+        var fetchExternalReferences = function(reservationId) {
+            var deferred = $q.defer(),
+                url = "/api/reservations/" + reservationId + "/external_references";
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                var references = response.external_references;
+                if (references.length === 0) {
+                    references.push(self.getEmptyRow());
+                }
+                deferred.resolve(references);
+            }, function(errorMessage) {
+                deferred.resolve(errorMessage)
+            });
             return deferred.promise;
         };
 
-        self.getExternalData = function() {
+        self.save = function(payLoad) {
+            var deferred = $q.defer(),
+                url = "/api/reservations/" + payLoad.reservationId + "/external_references";
+            RVBaseWebSrvV2.postJSON(url, payLoad.reference).then(function(response) {
+                deferred.resolve(response);
+            }, function(errorMessage) {
+                deferred.resolve(errorMessage)
+            });
+            return deferred.promise;
+        };
+
+        self.update = function() {
+
+        };
+
+        self.remove = function() {
+
+        };
+
+        self.getEmptyRow = function() {
+            return {
+                external_interface_type_id: "",
+                external_confirm_no: "",
+                id: "",
+                is_from_rover: true
+            }
+        }
+
+        self.getExternalData = function(reservationId) {
             var deferred = $q.defer(),
                 promises = [];
 
             self['extRef'] = {};
 
-            promises.push(self.fetchExternalSystems().then(function(response) {
+            promises.push(fetchExternalSystems().then(function(response) {
                 self['extRef']['systems'] = response;
             }));
-            promises.push(self.fetchExternalReferences().then(function(response) {
+            promises.push(fetchExternalReferences(reservationId).then(function(response) {
                 self['extRef']['references'] = response;
             }));
 
