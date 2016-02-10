@@ -240,7 +240,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             setTimeout(function(){
                 var el = $('[name=default-rate]');
                 $(el).val(value);
-            },50);
+            },950);
         };
     };
     
