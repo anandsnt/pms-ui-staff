@@ -8,7 +8,7 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 			},
 			save = function(reference) {
 				var onSaveSuccess = function(response) {
-					reference.id = response;
+					reference.id = response.external_reference;
 					$scope.$emit('hideLoader');
 				};
 
@@ -19,23 +19,28 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 			},
 			update = function(reference) {
 				var onUpdateSuccess = function() {
-
-					},
-					onUpdateFailure = function() {
-
-					};
-
-				$scope.invokeApi(RVExternalReferencesSrv.update, reference, onUpdateSuccess, onFailure);
+					$scope.$emit('hideLoader');
+				};
+				$scope.invokeApi(RVExternalReferencesSrv.update, {
+					reference: reference,
+					reservationId: $scope.reservationParentData.reservationId
+				}, onUpdateSuccess, onFailure);
 			},
-			remove = function() {
+			remove = function(reference) {
 				var onDeleteSuccess = function() {
+					$scope.$emit('hideLoader');
+					if ($scope.stateExternalRef.references.length === 1) {
+						$scope.stateExternalRef.references.push(RVExternalReferencesSrv.getEmptyRow());
+					}
+					$scope.stateExternalRef.references = _.without($scope.stateExternalRef.references, reference);
 
-					},
-					onDeleteFailure = function() {
-
-					};
-				$scope.invokeApi(RVExternalReferencesSrv.remove, reference, onUpdateSuccess, onFailure);
-			};
+				};
+				$scope.invokeApi(RVExternalReferencesSrv.remove, {
+					referenceId: reference.id,
+					reservationId: $scope.reservationParentData.reservationId
+				}, onDeleteSuccess, onFailure);
+			},
+			memento;
 
 		$scope.stateExternalRef = {
 			viewDetails: false,
@@ -65,12 +70,15 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 			}
 		};
 
-		$scope.deleteReference = function() {
-
+		$scope.deleteReference = function(reference) {
+			if (reference.id) {
+				remove(reference);
+			}
 		};
 
 		$scope.addNewRow = function() {
-
+			$scope.stateExternalRef.references.push(RVExternalReferencesSrv.getEmptyRow());
+			$scope.refreshReservationDetailsScroller(100);
 		};
 
 		$scope.onEditReference = function(reference) {

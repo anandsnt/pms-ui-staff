@@ -11,7 +11,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
             RVBaseWebSrvV2.getJSON(url).then(function(response) {
                 deferred.resolve(response.external_interface_types)
             }, function(errorMessage) {
-                deferred.resolve(errorMessage)
+                deferred.reject(errorMessage)
             });
             return deferred.promise;
         }
@@ -26,7 +26,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
                 }
                 deferred.resolve(references);
             }, function(errorMessage) {
-                deferred.resolve(errorMessage)
+                deferred.reject(errorMessage)
             });
             return deferred.promise;
         };
@@ -34,20 +34,40 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         self.save = function(payLoad) {
             var deferred = $q.defer(),
                 url = "/api/reservations/" + payLoad.reservationId + "/external_references";
-            RVBaseWebSrvV2.postJSON(url, payLoad.reference).then(function(response) {
+            RVBaseWebSrvV2.postJSON(url, {
+                external_confirm_no: payLoad.reference.external_confirm_no,
+                external_interface_type_id: payLoad.reference.external_interface_type_id
+            }).then(function(response) {
                 deferred.resolve(response);
             }, function(errorMessage) {
-                deferred.resolve(errorMessage)
+                deferred.reject(errorMessage)
             });
             return deferred.promise;
         };
 
-        self.update = function() {
-
+        self.update = function(payLoad) {
+            var deferred = $q.defer(),
+                url = "/api/reservations/" + payLoad.reservationId + "/external_references/" + payLoad.reference.id;
+            RVBaseWebSrvV2.putJSON(url, {
+                external_confirm_no: payLoad.reference.external_confirm_no,
+                external_interface_type_id: payLoad.reference.external_interface_type_id
+            }).then(function(response) {
+                deferred.resolve(response);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage)
+            });
+            return deferred.promise;
         };
 
-        self.remove = function() {
-
+        self.remove = function(payLoad) {
+            var deferred = $q.defer(),
+                url = "/api/reservations/" + payLoad.reservationId + "/external_references/" + payLoad.referenceId;
+            RVBaseWebSrvV2.deleteJSON(url).then(function(response) {
+                deferred.resolve(response);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage)
+            });
+            return deferred.promise;
         };
 
         self.getEmptyRow = function() {
