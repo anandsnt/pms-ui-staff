@@ -53,7 +53,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
         $scope.filterState = {
             fromDate: initDay,
             toDate: initDay,
-            sortByValue: '',
+            sortByValue: 'hotel_name', //DEFAULT SORT
             fromDateOptions: angular.extend({
                 onSelect: function(value) {
                     $scope.filterState.toDateOptions.minDate = value;
