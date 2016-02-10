@@ -5,17 +5,18 @@
         <div class="col-md-2"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-             <!-- default main text -->
+            <!-- default main text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Thank you!</p>
             <!-- CMS main text -->
             <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
             <!-- default sub  text -->
-            <p class="sub-main-text" ng-if="!screenCMSDetails.description"><em>The following will appear on your bill.</em><br/>Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</p>
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description"><em>The following will appear on your bill.</em>
+                <br/>Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}</p>
             <!-- CMS sub  text -->
             <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
-           <p class="sub-main-text">
-            <em>{{keyExpiry}}</em>
-           </p>
+            <p class="sub-main-text">
+                <em>{{keyExpiry}}</em>
+            </p>
         </div>
         <div class="col-md-1"></div>
         <!-- right side -->
@@ -23,6 +24,6 @@
             <a class="btn btn-template margin-top-10" ui-sref="checkOutConfirmation">Back to Check-out</a>
         </div>
         <div class="col-md-1">
-        </div>                   
+        </div>
     </div>
 </div>

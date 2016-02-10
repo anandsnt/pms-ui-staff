@@ -4,17 +4,16 @@
     <div class="row" ng-show="isLoading">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="request-text">Your request is being processed.
-            This may take a few seconds..... please wait!</p>
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
         </div>
         <div class="col-md-2">
-        </div>                   
+        </div>
     </div>
     <!-- error message -->
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>
@@ -29,12 +28,14 @@
         </div>
         <div class="horizontal-line-sep-mobile"></div>
         <!-- right side -->
-        <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
+        <div class="col-md-2">
+            <div class="vertical-line">&nbsp;</div>
+        </div>
         <div class="col-md-3 top-spacing sm-no-top-spacing">
-             <p class="sub-main-text">{{responseData.confirmation_message}}
-             </p>
+            <p class="sub-main-text">{{responseData.confirmation_message}}
+            </p>
         </div>
         <div class="col-md-1">
-        </div>                   
+        </div>
     </div>
 </div>
