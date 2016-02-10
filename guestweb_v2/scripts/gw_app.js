@@ -40,23 +40,24 @@ sntGuestWeb.controller('RootController', ['$scope','$rootScope','$state','$contr
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','$controller','reservationAndhotelData','screenMappings','screenDataFromCMS','GwWebSrv',
- function($scope,$rootScope,$state,$controller,reservationAndhotelData,screenMappings,screenDataFromCMS,GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope','$rootScope','$state','$controller','reservationAndhotelData','screenMappings','screenDataFromCMS','zestWebGlobalSettings','GwWebSrv',
+ function($scope,$rootScope,$state,$controller,reservationAndhotelData,screenMappings,screenDataFromCMS,zestWebGlobalSettings,GwWebSrv) {
 
  	$controller('BaseController', { $scope: $scope });
  	//There will be a keyword for each screen which has to be mapped with screen id
  	// this is fetched and saved in service for future usage
  	GwWebSrv.setScreenList(screenMappings);
  	// This will save the available screen details set in hotel amdin
- 	GwWebSrv.setCMSdata(screenDataFromCMS.screen_list);
+ 	GwWebSrv.setCMSdata(screenDataFromCMS);
     //save the data for future usage
     GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
     //override styles if styles are set in hotel admin
-    overrideStylesWithCMSdata(screenDataFromCMS.style_list);
+    overrideStylesWithCMSdata(zestWebGlobalSettings);
     //set static items
     $rootScope.hotelLogo       = reservationAndhotelData.hotel_logo;
     $rootScope.currencySymbol  = reservationAndhotelData.currency_symbol;
     $rootScope.hotelPhone      = reservationAndhotelData.hotel_phone;
+    //to start displaying contents in the page
     $rootScope.uiViewDOMloaded = true;
 	$scope.$emit('hideLoader');
 	//conditional page navigations

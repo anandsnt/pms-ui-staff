@@ -12,6 +12,9 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
             screenDataFromCMS: function(GwWebSrv) {
                     return GwWebSrv.fetchScreenFromCMSSetup();
             },
+            zestWebGlobalSettings: function(GwWebSrv){
+                    return GwWebSrv.fetchZestwebGlobalSettings();
+            },
             reservationAndhotelData: function(GwWebSrv, $stateParams) {
 
                  var absUrl = window.location.href;
