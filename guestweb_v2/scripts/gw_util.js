@@ -47,12 +47,17 @@ var loseFocus = function() {
     }
 };
 
+var returnEmptyScreenDetails = function(){
+  return {"title":"","description":""};
+}
+
 
 var extractScreenDetails =  function(identifier,screen_mappings,cms_data){
-  var screen_id = "";
-  var screen_details = {};
+  var screen_id = returnEmptyScreenDetails();
+  var screen_details = {"title":"","description":""};
   screen_id =  _.find(screen_mappings,function(mapping){ return mapping.value === identifier}).id;
   screen_details = _.find(cms_data,function(cms_item){ return cms_item.screen_id === screen_id});
+  screen_details = (typeof screen_details !== "undefined")? screen_details : returnEmptyScreenDetails();
   return screen_details;
 
 };
