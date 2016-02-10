@@ -1,4 +1,4 @@
-admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', function($scope) {
+admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope','ADzestWebGlobalSettingsSrv', function($scope,ADzestWebGlobalSettingsSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.languages = ["EN", "ES"];
@@ -14,5 +14,11 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', function($scope) {
 		"light_button_bg": "",
 		"dark_button_bg": ""
 	};
+	var successCallbackFetch = function(data){
+			$scope.globalSettings  = data;
+			$scope.$emit('hideLoader');
+	};
+	$scope.invokeApi(ADzestWebGlobalSettingsSrv.fetchZestwebGlobalSettings, "", successCallbackFetch);
 
+	
 }]);
