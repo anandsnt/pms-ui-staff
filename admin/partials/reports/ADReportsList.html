@@ -8,7 +8,6 @@
                 <ul class="reports-list">
                     <li ng-repeat="item in reportsState.list" ngrepeatend>
                         <a href="#" class="toggle-filter has-arrow" ng-class="{'active': item.viewFilters}" ng-click="toggleFilter($event, item)">
-                            <span ng-class="item.reportIconCls"></span>
                             <div class="data">
                                 <h2 ng-class="{'single-title': !item.desc}">
                                      {{ item.title }}
