@@ -2152,51 +2152,73 @@ body { overflow: hidden; }
 		        position: relative;
 		        font-size: 14px;
 		        min-height: 40px;
-		        padding: 0 0 20px 60px;
+		        padding: 10px 10px 10px 60px;
 		        margin-bottom: 20px;
-		        border-bottom: 1px solid rgba(0,0,0,.1);
+		        cursor: pointer;
+		        background-color: @white;
+				#border-radius > .rounded();
+				.box-shadow();
+				.show;
 
-		        .guest-image {
-		            position: absolute;
-		            top: 0;
-		            left: 0;
-		            .square(40px);
+				&:hover,
+				&:active { 
+					.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+				}
+			}
 
-		            .vip {
-		                bottom: -10px;
-		                left: 0;
-		            }
-		        }
+	        .guest-image {
+	            position: absolute;
+	            top: 10px;
+	            left: 10px;
+	            .square(40px);
 
-		        .note-title {
-		            font-size: 16px;
-		            text-transform: uppercase;
+	            &.accompany {
+					img { width: 25px; }
+				}
+	        }
 
-		            h4 {
-		                display: inline-block;
-		                margin-right: 20px;
-		                font-size: 16px;
-		                font-weight: 600;
-		            }
+	        .note-title {
+	            text-transform: uppercase;
+	        	padding-bottom: 5px;
+	        	margin-bottom: 5px;
+	        	.float;
+	        	.box-shadow(inset 0 -1px 0 rgba(0,0,0,.1));
 
-		            time {
-		                display: inline-block;
-		                color: @grey3;
-		                margin-right: 20px;
-		            }
+	            h4 {
+	                margin-right: 20px;
+	                font-size: 16px;
+	                line-height: 20px;
+	                font-weight: 600;
+	                .pull-left;
+	            }
 
-		            .icon-trash {
-		                display: inline-block;
-		                cursor: pointer;
-		                .pull-right;
-		            }
-		        }
+	            time {
+	                color: @grey3;
+	                line-height: 20px;
+	                margin-right: 20px;
+	                .show;
+	                .pull-left;
+	            }
 
-		        &:last-child { 
-		            margin-bottom: 0;
-		            border-bottom: 0; 
-		        }
-		    }
+	            .topic { .hide; }
+
+	            .icon-trash {
+	            	position: absolute;
+	            	top: 10px;
+	            	right: 10px;
+	                cursor: pointer;
+	            }
+	        }
+
+            .editing {
+                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+
+                time,
+                p { 
+                    color: @grey3;
+                    text-decoration: line-through;
+                }
+            }
 		}
 	}
 
