@@ -2,7 +2,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
     function($scope, $rootScope, $filter, adReportsSrv, adReportsSortOptionsSrv) {
         BaseCtrl.call(this, $scope);
 
-        var initDay = $filter('date')(new Date(), $rootScope.mmddyyyyFormat);
+        var initDay = $filter('date')(new Date(), "yyyy-MM-dd");
 
         // common date picker options object
         var commonDateOptions = {
