@@ -39,6 +39,7 @@
                 <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' |translate}}</button>
             </div>
         </form>
+        <button id="skipEmailInputBtn" ng-show='mode === "email-mode"' type='button' class='button' touch-press='skipEmailEntryAfterSwipe(); resetTime()'>{{'SKIP_BTN' |translate}}</button>
     </div>
     <!-- Email invalid -->
     <div id="content" ng-show="emailError">
@@ -55,9 +56,9 @@
                 </li>
             </ul>
         </nav>
-        <div id="actions" class="align-right">
+        <!--div id="actions" class="align-right">
             <button type="button" class="button transparent" touch-press='printBill()'>Print Bill</button>
-        </div>
+        </div-->
     </div>
 </section>
 
