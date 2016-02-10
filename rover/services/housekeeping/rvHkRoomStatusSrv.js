@@ -243,7 +243,9 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 				_.extend( passedParams, additionalParams, {'initialLoad': true} );
 
-				this.fetchRoomListPost( passedParams ).then( _resolveData );
+				this.fetchRoomListPost( passedParams ).then( _resolveData, function(error){
+					deferred.reject(error);
+				});
 			};
 
 			function _resolveData (roomList) {
