@@ -1,6 +1,7 @@
 <div class="block-wrapper">
     <a ng-click="toggleDetails()" class="block-title toggle has-arrow">External Reference Numbers</a>
     <div ng-class="{'hidden': !stateExternalRef.viewDetails}">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Remove class hidden when 'a.toggle' is clicked -->
         <div class="block-item item-reference">
             <div class="entry" ng-repeat="reference in stateExternalRef.references">
