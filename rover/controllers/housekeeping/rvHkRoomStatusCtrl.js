@@ -53,9 +53,10 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		// set the scroller
 		$scope.setScroller('room-status-filter');
 		$scope.setScroller('room-service-status-update');
-
+		$scope.setScroller('rooms-list-to-forcefully-update');
 		setTimeout(function(){
 			$scope.refreshScroller('room-status-filter');
+			$scope.refreshScroller('rooms-list-to-forcefully-update');
 		}, 1500);
 
 
@@ -624,7 +625,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
             });
 
             setTimeout(function(){
-            	$scope.setScroller('rooms-list-to-forcefully-update');
             	$scope.refreshScroller('rooms-list-to-forcefully-update');
             }, 1500);
 

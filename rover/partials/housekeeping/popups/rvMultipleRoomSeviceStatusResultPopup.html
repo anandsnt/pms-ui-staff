@@ -18,7 +18,7 @@
                 <span class="number" ng-hide="rooms.is_locked">
                     {{rooms.room_number}}
                 </span>
-                <span class="guest" ng-hide="rooms.is_locked && rooms.isMultipleReservation">
+                <span class="guest" ng-hide="!rooms.is_locked && rooms.isMultipleReservation">
                     {{rooms.GuestName}}
                     <span class="reservation">
                        {{rooms.reservationData}}
