@@ -33,9 +33,9 @@
                 Departures
             </a>
         </li> 
-        <li ng-if="statisticsData.guests.checked_out_with_balance > 0 ">
-            <a class="button red" ng-click="clickedOnGuestsToday($event, 'CHECKED_OUT_WITH_BALANCE', statisticsData.guests.checked_out_with_balance)">
-                <strong bo-text="statisticsData.guests.checked_out_with_balance"></strong>
+        <li ng-if="statisticsData.guests.open_bill_checkout > 0 ">
+            <a class="button red" ng-click="clickedOnGuestsToday($event, 'OPEN_BILL_CHECKOUT', statisticsData.guests.open_bill_checkout)">
+                <strong bo-text="statisticsData.guests.open_bill_checkout"></strong>
                 Checked Out<span>(with balance)</span>
             </a>
         </li> 
@@ -58,7 +58,7 @@
         </li>
         <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">Queued <strong class="green" bo-text="userInfo.queue_rooms_count"></strong></li>
         <li>Departures <strong class="red" bo-text="statisticsData.guests.checking_out"></strong></li>
-        <li ng-if="statisticsData.guests.checked_out_with_balance > 0 ">Checked Out (With Balance) <strong class="red" bo-text="statisticsData.guests.checked_out_with_balance"></strong></li>
+        <li ng-if="statisticsData.guests.open_bill_checkout > 0 ">Checked Out (With Balance) <strong class="red" bo-text="statisticsData.guests.open_bill_checkout"></strong></li>
         <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">Late Check Out <strong class="red" bo-text="userInfo.late_checkout_count"></strong></li>
         <li>In-house <strong class="blue" bo-text="statisticsData.guests.in_house"></strong></li>
         <li>VIPs <strong class="yellow" bo-text="statisticsData.guests.vip"></strong></li>
