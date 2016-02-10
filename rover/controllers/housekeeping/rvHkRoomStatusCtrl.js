@@ -49,11 +49,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.setTitle(_title);
 		$scope.heading = _title;
 		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
-
+		$scope.totalRoomsSelectedForUpdate = 0;
 		// set the scroller
 		$scope.setScroller('room-status-filter');
 		$scope.setScroller('room-service-status-update');
-		setTimeout(function(){ $scope.refreshScroller('room-status-filter'); }, 1500);
+
+		setTimeout(function(){
+			$scope.refreshScroller('room-status-filter');
+		}, 1500);
 
 
 
@@ -120,7 +123,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		// HK status Update popup
 		$scope.isRoomStatusUpdate = true;
 		$scope.isServiceStatusUpdate = false;
-		$scope.updateServiceData = {}; 
+		$scope.updateServiceData = {};
 
 		if (!!RVHkRoomStatusSrv.defaultViewState) {
 			$scope.currentView = RVHkRoomStatusSrv.defaultViewState;
@@ -487,7 +490,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.isServiceStatusUpdate = !$scope.isServiceStatusUpdate;
 		};
 
-		
+
 
 		/* ***** ***** ***** ***** ***** */
 
@@ -506,8 +509,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		/*
-		 * fetch all Service Status 
-		 */		
+		 * fetch all Service Status
+		 */
 		var fetchAllServiceStatus = function() {
 
 			function $_allServiceStatusCallback(data) {
@@ -515,7 +518,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				$scope.serviceStatusList = data;
 				$scope.updateServiceData.room_service_status_id = $scope.serviceStatusList[0].id;
 			}
-			
+
 			$scope.invokeApi(RVHkRoomDetailsSrv.fetchAllServiceStatus, {}, $_allServiceStatusCallback);
 		};
 
@@ -595,10 +598,22 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		var showUpdateResultPopup = function(roomDetails) {
 
-			$scope.closeDialog();			
-			$scope.assignedRoomsList = roomDetails;
-			_.each($scope.assignedRoomsList, function(item) {
-  				item['is_add_to_update']=true;
+			$scope.closeDialog();
+			$scope.completedData = {};
+			$scope.completedData.serviceName = $scope.selectedServiceStatusName;
+			$scope.completedData.assignedRoomsList = roomDetails;
+			$scope.completedData.successFullyUpdated = parseInt($scope.totalRoomsSelectedForUpdate) - parseInt($scope.completedData.assignedRoomsList.length);
+			$scope.completedData.notSuccessFullyUpdated = parseInt($scope.completedData.assignedRoomsList.length);
+			_.each($scope.completedData.assignedRoomsList, function(item) {
+  				item.is_add_to_update =true;
+  				if(item.reservations.length > 1){
+  					item.reservationData = "Multiple Reservations";
+  					item.isMultipleReservation = true;
+  				} else if((item.reservations.length === 1)){
+  					item.reservationData = "#"+item.reservations[0].confirm_no;
+  					item.GuestName = item.reservations[0].last_name+", "+item.reservations[0].first_name;
+  					item.isMultipleReservation = false;
+  				}
 			});
 
             ngDialog.open({
@@ -607,6 +622,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
                 closeByDocument: true,
 			    scope: $scope
             });
+
+            setTimeout(function(){
+            	$scope.setScroller('rooms-list-to-forcefully-update');
+            	$scope.refreshScroller('rooms-list-to-forcefully-update');
+            }, 1500);
+
+
 		};
 
 		/**
@@ -644,11 +666,15 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			params.room_id = [];
 			if($scope.multiRoomAction.allChosen){
 				params.room_id = $scope.allRoomIDs;
-			} 
+			}
 			else {
 				params.room_id = $scope.multiRoomAction.rooms;
 			}
-
+			//Used - to minus from this value on status update
+			$scope.totalRoomsSelectedForUpdate = parseInt(params.room_id.length);
+			$scope.selectedServiceStatusName = $scope.serviceStatusList[_.findIndex
+							($scope.serviceStatusList, {id: params.room_service_status_id
+})].description;
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, updateServiceStatusSuccessCallBack);
 		};
 
@@ -688,7 +714,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			var roomsToAdd = _.filter($scope.assignedRoomsList, function(room){ return room.is_add_to_update});
+			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room){ return room.is_add_to_update});
 			params.room_id = _.pluck(roomsToAdd,'id');
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
