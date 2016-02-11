@@ -294,19 +294,6 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         $scope.billingInfoFlags.isInAddRoutesMode = false;
         $scope.billingInfoFlags.isInitialPage     = false;
 
-        /*if (type === 'ATTACHED_ENTITY') {
-        	var selectedEntityDetails = $scope.routes[index];
-        	$scope.setSelectedEntity(selectedEntityDetails);
-            $scope.selectedEntity.is_new = true;
-
-            if ($scope.selectedEntity.entity_type !=='RESERVATION') {
-                $scope.selectedEntity.guest_id = null;
-            }
-
-            if ($scope.selectedEntity.entity_type === "RESERVATION") {
-                $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
-            }
-        }else*/ 
         if (type === 'RESERVATIONS') {
         	var data = $scope.searchResults.reservations[index];
         	var selectedEntityDetails = {
@@ -323,7 +310,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                 "credit_card_details"     : {},
                 "id"                      : data.id
 			};
-			$scope.setSelectedEntity(selectedEntityDetails);
+			$scope.setSelectedEntity(selectedEntityDetails, type);
         }
         else if (type === 'ACCOUNT') {
         	var data = $scope.searchResults.cards[index];
@@ -372,7 +359,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
                     "credit_card_details"     : {},
                     "entity_type"             : data.account_type
                 };
-                $scope.setSelectedEntity(selectedEntityDetails);
+                $scope.setSelectedEntity(selectedEntityDetails, type);
             }
         }
 	};

@@ -717,7 +717,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         );
 
         // fetch default routing if entity not set
-        if ($scope.billingInformationPresent) {
+        if (!$scope.selectedEntity.entity_type) {
             var params = {};
             params.id = $scope.allotmentId;
             params.entity_type = "ALLOTMENT";

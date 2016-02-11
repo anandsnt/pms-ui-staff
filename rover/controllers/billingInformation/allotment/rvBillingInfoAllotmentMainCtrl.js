@@ -35,33 +35,17 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
      * @return {undefined}
      */
 	$scope.setSelectedEntity = function(data, type) {
-
         $scope.errorMessage = "";
-		$scope.isEntitySelected = true;
-        $scope.isInAddRoutesMode = false;
-        $scope.isInitialPage = false;
-        $scope.selectedEntityChanged = true;
 
         if(type === 'RESERVATIONS') {
-        	$scope.selectedEntity = {
-			    "attached_charge_codes": [],
-			    "attached_billing_groups": [],
-                "images": data.images,
-                "reservation_status" : data.reservation_status,
-                "is_opted_late_checkout" : data.is_opted_late_checkout,
-                "name": data.firstname + " " + data.lastname,
-                "entity_type": "RESERVATION",
-                "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
-                "bill_no": "",
-                "is_new" : true,
-                "credit_card_details": {},
+        	$scope.selectedEntity = _.extend (data, {
                 "id": $scope.allotmentId,
                 "allotment_id": $scope.allotmentId,
                 'charge_routes_recipient': {
                     'id': data.id,
                     'type': 'RESERVATION'
                 }
-			};
+			});
 
         }
         else if(type === 'ACCOUNT') {
@@ -75,23 +59,14 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
             });
         }
         else if(type === 'GROUP' || type === 'HOUSE') {
-            $scope.selectedEntity = {
-                "id": data.id,
-                "name": data.account_name,
-                "bill_no": "",
-                "attached_charge_codes": [],
-                "attached_billing_groups": [],
-                "is_new" : true,
-                "selected_payment" : "",
-                "credit_card_details": {},
-                "entity_type": data.account_type,
+            $scope.selectedEntity = _.extend (data, {
                 "id": $scope.allotmentId,
                 "allotment_id": $scope.allotmentId,
                 'charge_routes_recipient': {
                     'id': data.id,
                     'type': 'POSTING_ACCOUNT'
                 }
-            };
+            });
         }
 	};
 
@@ -131,6 +106,27 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
     $scope.escapeNull = function(value, replaceWith){
 		return escapeNull(value, replaceWith);
 
+    };
+
+    /**
+     * Function to check whether the routing for a group/house already exist.
+     * if already exists, we cannot add new one.
+     * @return {Boolean}
+     */
+    $scope.isRoutingForPostingAccountExist = function() {
+        var routeToPostingAccountExist = false;
+        var routesList = dclone($scope.routes,[]);
+
+        for (var i = 0; i < routesList.length; i++) {
+            if (routesList[i].entity_type === "GROUP" || 
+                routesList[i].entity_type === "HOUSE" || 
+                routesList[i].entity_type === "ALLOTMENT" ) {
+
+                routeToPostingAccountExist = true;
+                return routeToPostingAccountExist;
+            }
+        }
+        return routeToPostingAccountExist;
     };
 
     /**
