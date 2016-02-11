@@ -25,7 +25,7 @@ module.exports = function (gulp, $, options) {
        		.pipe(gulp.dest(GUESTWEB_V2_TEMPLATE_ROOT, { overwrite: true }));
 	};
 
-	gulp.task('inject-gusetweb-v2-less-production-to-template', function(){
+	gulp.task('inject-guestweb-v2-less-production-to-template', function(){
 		var template_manifest_json = require(MANIFEST_DIR + GUESTWEB_V2_CSS_MANIFEST_FILE),
 	        file_name = template_manifest_json[GUESTWEB_V2_CSS_FILE];
 	    return cssInjector(file_name);
