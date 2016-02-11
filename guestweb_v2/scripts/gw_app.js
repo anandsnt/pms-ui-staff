@@ -57,7 +57,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         //save the data for future usage
         //GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
         //override styles if styles are set in hotel admin
-        overrideStylesWithCMSdata(reservationAndhotelDetails.zest_web);
+        !!reservationAndhotelDetails.zest_web ? overrideStylesWithCMSdata(reservationAndhotelDetails.zest_web) :'';
         //set static items
         $rootScope.hotelLogo = reservationAndhotelDetails.hotel_logo;
         $rootScope.currencySymbol = reservationAndhotelDetails.currency_symbol;

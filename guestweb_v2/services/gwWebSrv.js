@@ -32,7 +32,11 @@
 				$http.get(url).success(function(response) {
 						if (response.status === "success") {
 							that.reservationAndhotelData.generalDetails = response.data;
-							fetchScreenFromCMSSetup(response.data.zest_web.language);
+							if(!!response.data.zest_web){
+								fetchScreenFromCMSSetup(response.data.zest_web.language);
+							}else{
+								deferred.resolve(that.reservationAndhotelData);
+							}
 						} else {
 							// when some thing is broken , need to redirect to error page with default theme
 							response.data.hotel_theme = "guestweb";
