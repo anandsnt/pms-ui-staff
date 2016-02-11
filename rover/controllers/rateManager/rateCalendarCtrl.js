@@ -582,7 +582,13 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
          * Set scope variables to be passed to the popup.
          */
         $scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type, isForAllData) {
-            $scope.calendarData.is_child = $scope.rateIsChild($scope.currentSelectedRate);
+
+            // In case of selecting rates and coming into room-view, the isChildRate[] is not initialized
+            // USE 'is_child' from API response on such cases
+            if($scope.calendarData.isChildRate !== undefined || $scope.lastChildRates !== undefined){
+                 $scope.calendarData.is_child = $scope.rateIsChild($scope.currentSelectedRate);
+            }
+
             $stateParams.openUpdatePriceRestrictions = true;
             //flag to show update price restriction window
             $scope.popupData.all_room_types = $scope.calendarData.room_types_all;
@@ -633,6 +639,11 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                 $scope.popupData.rate_name = 'this';
             }
             $stateParams.calendarMode = $scope.calendarMode;
+
+            if($scope.calendarData.is_child){
+                $scope.popupData.parentRate = '"' + $scope.calendarData.parentRateName + '"';
+            }
+
             ngDialog.open({
                 template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
                 className: popupClassName,
