@@ -1,8 +1,8 @@
 <div id="restrictionPriceContainer" class="price-div" ng-if="hasPermissionToUpdateRates()">
 	<div class="restriction_text" >
 		<h4> PRICE </h4>
-                <div ng-show='calendarData.is_child' ng-hide="!calendarData.is_child" class="notice rate-mgr" >
-                    <span>Manual update is disabled for {{popupData.rate_name}} rate, as its based on another rate.</span>
+                <div ng-show='calendarData.is_child' ng-hide="!calendarData.is_child" class="notice rate-mgr"sourc>
+                    <span>To update this child rate, update {{popupData.parentRate}}.</span>
                 </div> 
                 <div ng-show='!calendarData.is_child' ng-hide="calendarData.is_child">
 		<em ng-if="!data.isHourly && popupData.all_data_selected">Adjust price for all room types</em>
