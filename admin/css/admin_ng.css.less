@@ -54,6 +54,44 @@
   @import "stylesheets/less/admin/07-B_1024.less";
 }
 
+
+/* CICO-24493 report overrides start ***/
+  .reports-list {
+        padding: 0;
+
+        li {
+            .toggle-filter { 
+                background-size: 14px;
+                background-repeat: no-repeat;
+                background-image: @arrowDown2x; 
+                .show; 
+
+                &.active { background-image: @arrowUp2x; }
+            }
+
+            .data { margin-left: 0; }
+
+            .configure-report {
+                
+                .button.purple {
+                    &:last-child { right: 10px; }
+                }
+
+                .button.only-icon {
+                    .app-icons {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        margin: -10px 0 0 -10px;
+                        .square(20px);
+                    }
+                }
+            }
+        }
+    }
+
+/* CICO-24493 report overrides stop ***/
+
 .ui-match { 
   color: #F6991B !important; margin-right: 0px !important;
 }

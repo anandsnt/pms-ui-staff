@@ -195,6 +195,8 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.showMaximumOccupancyDialog = function(roomObject){
 
+
+
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
 		var showOccupancyMessage = false;
@@ -211,27 +213,38 @@ sntRover.controller('RVroomAssignmentController',[
 			}
 
 		$scope.assignedRoom = roomObject;
-		$scope.roomTransfer.newRoomNumber = roomObject.room_number;
-		if(showOccupancyMessage){
+		if($scope.assignedRoom.is_upgrade_room === "true"){
+        	var selectedRoomIndex = '';
+			angular.forEach(roomUpgrades.upsell_data, function(value, key) {
+				if($scope.assignedRoom.room_number === value.upgrade_room_number){
+					selectedRoomIndex = key;
+				}
+			});
+			$scope.$broadcast('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', selectedRoomIndex);
+        } else {
 
-	    	$scope.oldRoomType = oldRoomType;
-			ngDialog.open({
-                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
-                  controller: 'rvMaximumOccupancyDialogController',
-                  className: 'ngdialog-theme-default',
-                  scope: $scope
-                });
-		}else{
-			if(reservationStatus === "CHECKEDIN"){
-				$scope.moveInHouseRooms();
+			$scope.roomTransfer.newRoomNumber = roomObject.room_number;
+			if(showOccupancyMessage){
+
+		    	$scope.oldRoomType = oldRoomType;
+				ngDialog.open({
+	                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+	                  controller: 'rvMaximumOccupancyDialogController',
+	                  className: 'ngdialog-theme-default',
+	                  scope: $scope
+	                });
 			}else{
-				if(oldRoomType !== roomObject.room_type_code){
+				if(reservationStatus === "CHECKEDIN"){
+					$scope.moveInHouseRooms();
+				}else{
+					if(oldRoomType !== roomObject.room_type_code){
 
-					$scope.oldRoomType = oldRoomType;
-					$scope.openApplyChargeDialog();
-				} else {
-					$scope.roomTransfer.withoutRateChange = true;
-					$scope.assignRoom();
+						$scope.oldRoomType = oldRoomType;
+						$scope.openApplyChargeDialog();
+					} else {
+						$scope.roomTransfer.withoutRateChange = true;
+						$scope.assignRoom();
+					}
 				}
 			}
 		}
@@ -493,17 +506,17 @@ sntRover.controller('RVroomAssignmentController',[
             failureCallBack: 	errorCallbackAssignRoom
         };
         //CICO-23077
-        if($scope.assignedRoom.is_upgrade_room === "true"){
-        	var selectedRoomIndex = '';
-			angular.forEach(roomUpgrades.upsell_data, function(value, key) {
-				if($scope.assignedRoom.room_number === value.upgrade_room_number){
-					selectedRoomIndex = key;
-				}
-			});
-			$scope.$broadcast('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', selectedRoomIndex);
-        } else {
+   //      if($scope.assignedRoom.is_upgrade_room === "true"){
+   //      	var selectedRoomIndex = '';
+			// angular.forEach(roomUpgrades.upsell_data, function(value, key) {
+			// 	if($scope.assignedRoom.room_number === value.upgrade_room_number){
+			// 		selectedRoomIndex = key;
+			// 	}
+			// });
+			// $scope.$broadcast('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', selectedRoomIndex);
+   //      } else {
         	$scope.callAPI(RVRoomAssignmentSrv.assignRoom, options);
-        }
+        // }
 	};
 
 

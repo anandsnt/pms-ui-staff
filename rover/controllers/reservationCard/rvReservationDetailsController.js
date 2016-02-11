@@ -1172,5 +1172,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
               //     $scope.giftCardAmountAvailable = false;
               // }
             };
+
+     var unbindChildContentModListener = $scope.$on('CHILD_CONTENT_MOD',function(event, timer){
+     	event.stopPropagation();
+     	$scope.refreshReservationDetailsScroller(timer || 0);
+     });
+
+     $scope.$on( '$destroy', unbindChildContentModListener );
         
 }]);
