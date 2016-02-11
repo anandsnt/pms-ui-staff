@@ -386,13 +386,13 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
         };
         $scope.setSelectedEntity(selectedEntityDetails);
 
-        $scope.selectedEntity.reservation_status     = $scope.reservationData.reservation_status;
-        $scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
-
         if (type === 'GUEST') {
             $scope.selectedEntity.id       = $scope.reservationData.reservation_id;
             $scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
             $scope.selectedEntity.name     = $scope.attachedEntities.primary_guest_details.name;
+
+  			$scope.selectedEntity.reservation_status     = $scope.reservationData.reservation_status;
+       		$scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
 
             $scope.selectedEntity.images = [{
                 "is_primary"  : true,
@@ -404,6 +404,9 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
             $scope.selectedEntity.id       = $scope.reservationData.reservation_id;
             $scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
             $scope.selectedEntity.name     = $scope.attachedEntities.accompanying_guest_details[index].name;
+
+  			$scope.selectedEntity.reservation_status     = $scope.reservationData.reservation_status;
+        	$scope.selectedEntity.is_opted_late_checkout = $scope.reservationData.is_opted_late_checkout;
 
             $scope.selectedEntity.images = [{
                 "is_primary"   : false,
