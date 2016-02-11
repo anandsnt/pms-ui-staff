@@ -23,36 +23,36 @@ function appendStyleString(str) {
  */
 var overrideStylesWithCMSdata = function(styles) {
 	//set the background color
-	if (!isBlank(styles.body_background)) {
-		appendStyleString('body { background:' + styles.body_background + ' !important}');
+	if (!isBlank(styles.main_bg.background)) {
+		appendStyleString('body { background:' + styles.main_bg.background + ' !important}');
 	}
 	// set nav bar background color
-	if (!isBlank(styles.header_background)) {
-		appendStyleString('.header-bar { background:' + styles.header_background + ' !important}');
+	if (!isBlank(styles.header_bg.background)) {
+		appendStyleString('.header-bar { background:' + styles.header_bg.background + ' !important}');
 	}
 	// set sub main text color
-	if (!isBlank(styles.template_sub_text_color)) {
-		appendStyleString('.sub-main-text { color:' + styles.template_sub_text_color + ' !important}');
+	if (!isBlank(styles.sub_text_color)) {
+		appendStyleString('.sub-main-text { color:' + styles.sub_text_color + ' !important}');
 	}
 	// set  main text color
-	if (!isBlank(styles.template_text_color)) {
-		appendStyleString('.template-text,.main-text { color:' + styles.template_text_color + '!important}');
+	if (!isBlank(styles.title_text_color)) {
+		appendStyleString('.template-text,.main-text { color:' + styles.title_text_color + '!important}');
 	}
 	// set template button bg color
-	if (!isBlank(styles.template_button_bg)) {
-		appendStyleString('.btn,.btn:hover { background:' + styles.template_button_bg + '!important}');
+	if (!isBlank(styles.button.background)) {
+		appendStyleString('.btn,.btn:hover { background:' + styles.button.background + '!important}');
 	}
 	// set template button text color
-	if (!isBlank(styles.template_button_color)) {
-		appendStyleString('.btn,.btn:hover  { color:' + styles.template_button_color + '!important}');
+	if (!isBlank(styles.button.color)) {
+		appendStyleString('.btn,.btn:hover  { color:' + styles.button.color + '!important}');
 	}
 	// set light button bg color
-	if (!isBlank(styles.light_button_bg)) {
-		appendStyleString('.light-button,.light-button:hover { background:' + styles.light_button_bg + '!important}');
+	if (!isBlank(styles.light_button.background)) {
+		appendStyleString('.light-button,.light-button:hover { background:' + styles.light_button.background + '!important}');
 	}
 	// set dark button bg color
-	if (!isBlank(styles.dark_button_bg)) {
-		appendStyleString('.dark-button,.dark-button:hover { background:' + styles.dark_button_bg + '!important}');
+	if (!isBlank(styles.dark_button.background)) {
+		appendStyleString('.dark-button,.dark-button:hover { background:' + styles.dark_button.background + '!important}');
 	}
 	if (styleString.length > 0) {
 		addStyleString(styleString);
