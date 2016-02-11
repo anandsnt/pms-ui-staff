@@ -10,7 +10,7 @@ admin.service('ADzestWebGlobalSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q,
     */
 	this.fetchZestwebGlobalSettings = function(){
 		var deferred = $q.defer();
-		var url = '/sample_json/zestweb_v2/zestweb_global_settings.json';
+		var url = '/api/hotel_settings/zest_web_global.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -26,7 +26,7 @@ admin.service('ADzestWebGlobalSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q,
 	*/
 	this.saveZestwebGlobalSettings = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotel/save_announcements_settings';
+		var url = '/api/hotel_settings/change_settings';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
