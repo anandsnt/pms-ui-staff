@@ -19,6 +19,12 @@
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
+
+    "EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT": "Exclude from manual room assignment",
+    "EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT": "Exclude from auto room assignment",
+    "EXCLUDE_FROM_MANUAL_CHECK_IN": "Exclude from manual Check In",
+    "EXCLUDE_FROM_AUTO_CHECK_IN": "Exclude from auto Check In",
+    "EXCLUDE_FROM_HOUSEKEEPING": "Exclude from Housekeeping",
     
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
     "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
