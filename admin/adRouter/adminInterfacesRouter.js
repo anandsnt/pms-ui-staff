@@ -28,6 +28,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
+  $stateProvider.state('admin.gustoPosSetup', {
+    templateUrl: '/assets/partials/GustoPOS/adGustoPOSSetup.html',
+    controller: 'adGustoPOSSetupCtrl',
+    url : '/guestopos/setup',
+    resolve: {
+      gustoSetupValues: ['adGustoPOSSetupSrv', function(adGustoPOSSetupSrv) {
+        return adGustoPOSSetupSrv.fetchGustoPOSConfiguration();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.britePabXSetup', {
     templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
     controller: 'adBritePabXSetupCtrl',
