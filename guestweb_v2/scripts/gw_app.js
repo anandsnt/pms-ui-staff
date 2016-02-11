@@ -55,7 +55,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         // This will save the available screen details set in hotel amdin
         GwWebSrv.setCMSdata(reservationAndhotelData.screenDataFromCMS);
         //save the data for future usage
-        //GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+        GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
         //override styles if styles are set in hotel admin
         !!reservationAndhotelDetails.zest_web ? overrideStylesWithCMSdata(reservationAndhotelDetails.zest_web) :'';
         //set static items

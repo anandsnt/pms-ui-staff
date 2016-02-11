@@ -16,6 +16,7 @@
 				 */
 
 				var fetchScreenFromCMSSetup = function(language) {
+					var language = (language !== null && typeof language !== "undefined")? language : 'EN';//if no language is selected
 					var url = '/sample_json/zestweb_v2/screen_list_' + language + '.json';
 					$http.get(url).success(function(response) {
 							that.reservationAndhotelData.screenDataFromCMS = response;
