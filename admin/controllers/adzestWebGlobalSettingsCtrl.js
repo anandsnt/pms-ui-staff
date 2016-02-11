@@ -47,7 +47,11 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 			"zest_web": $scope.globalSettings
 		}
 		$scope.invokeApi(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, data,saveSettingsCallback);
-	}
+	};
+	//on scolling hide all the color pickers
+	$scope.pageScrolled = function(){
+		$("*").spectrum("hide");
+	};
 
 
 }]);

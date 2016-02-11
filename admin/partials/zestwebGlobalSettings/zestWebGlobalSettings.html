@@ -3,7 +3,7 @@
         <h2 translate>ZESTSWEB_GLOBAL_TITLE</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>ZESTSTATION_BACK</a>
     </header>
-    <section class="content-scroll">
+    <section class="content-scroll" on-scroll="pageScrolled">
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <form class="form float">
