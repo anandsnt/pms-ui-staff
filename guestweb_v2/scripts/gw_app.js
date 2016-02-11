@@ -42,30 +42,31 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'reservationAndhotelData', 'screenMappings', 'screenDataFromCMS', 'zestWebGlobalSettings', 'GwWebSrv',
-    function($scope, $rootScope, $state, $controller, reservationAndhotelData, screenMappings, screenDataFromCMS, zestWebGlobalSettings, GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'reservationAndhotelData', 'screenMappings', 'zestWebGlobalSettings', 'GwWebSrv',
+    function($scope, $rootScope, $state, $controller, reservationAndhotelData, screenMappings, zestWebGlobalSettings, GwWebSrv) {
 
         $controller('BaseController', {
             $scope: $scope
         });
+        var reservationAndhotelDetails = reservationAndhotelData.generalDetails;
         //There will be a keyword for each screen which has to be mapped with screen id
         // this is fetched and saved in service for future usage
         GwWebSrv.setScreenList(screenMappings);
         // This will save the available screen details set in hotel amdin
-        GwWebSrv.setCMSdata(screenDataFromCMS);
+        GwWebSrv.setCMSdata(reservationAndhotelData.screenDataFromCMS);
         //save the data for future usage
-        GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+        //GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
         //override styles if styles are set in hotel admin
-        overrideStylesWithCMSdata(reservationAndhotelData.zest_web);
+        overrideStylesWithCMSdata(reservationAndhotelDetails.zest_web);
         //set static items
-        $rootScope.hotelLogo = reservationAndhotelData.hotel_logo;
-        $rootScope.currencySymbol = reservationAndhotelData.currency_symbol;
-        $rootScope.hotelPhone = reservationAndhotelData.hotel_phone;
+        $rootScope.hotelLogo = reservationAndhotelDetails.hotel_logo;
+        $rootScope.currencySymbol = reservationAndhotelDetails.currency_symbol;
+        $rootScope.hotelPhone = reservationAndhotelDetails.hotel_phone;
         //to start displaying contents in the page
         $rootScope.uiViewDOMloaded = true;
         $scope.$emit('hideLoader');
         //conditional page navigations
-        if (reservationAndhotelData.is_external_verification === "true") {
+        if (reservationAndhotelDetails.is_external_verification === "true") {
             $state.go('externalCheckoutVerification'); //external checkout URL
         }
     }

@@ -8,9 +8,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             screenMappings: function(GwWebSrv) {
                 return GwWebSrv.fetchScreenMappings();
             },
-            screenDataFromCMS: function(GwWebSrv) {
-                return GwWebSrv.fetchScreenFromCMSSetup();
-            },
             zestWebGlobalSettings: function(GwWebSrv) {
                 return GwWebSrv.fetchZestwebGlobalSettings();
             },
