@@ -55,18 +55,6 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	 * to open the room aleady chhosed popup
 	 * @return undefined
 	 */
-	var openWantedToBorrowPopup = function() {
-		ngDialog.open(
-		{
-			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
-			scope 		: $scope
-        });
-	};
-
-	/**
-	 * to open the room aleady chhosed popup
-	 * @return undefined
-	 */
 	var openRoomAlreadyChoosedPopup = function() {
 		ngDialog.open(
 		{
@@ -95,14 +83,15 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	};
 
 	$scope.failureCallbackUpgrade = function(error) {
-		ngDialog.close();
+		// ngDialog.close();
 		//since we are expecting some custom http error status in the response
 		//and we are using that to differentiate among errors
 		if(error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup ();
+						// openWantedToBorrowPopup(error);
+						$scope.$emit('closeDialogWithError', error);
 				 	break;
 				default:
 					break;

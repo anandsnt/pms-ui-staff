@@ -423,11 +423,18 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$( '#print-orientation' ).remove();
 		};
 
+
+
+
+		var employeeListBackup = null;
+
 		/**
 		 * Opens a popup to select the configurations to print the worksheet.
 		 * @return {undefined}
 		 */
 		$scope.openPrintWorkSheetPopup = function() {
+			employeeListBackup = angular.copy($scope.employeeList);
+
 			ngDialog.open({
 				template: '/assets/partials/workManagement/popups/rvWorkManagementPrintOptionsPopup.html',
 				className: '',
@@ -437,53 +444,87 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 		};
 
+		$scope.cancelPopupDialog = function() {
+			$scope.employeeList = angular.copy(employeeListBackup);
+			$scope.onEmployeeListClosed();
+
+			ngDialog.close();
+		};
+
+		/**
+		 * Transform data model for printing.
+		 */
+		var configureMultisheetForPrinting = function(options) {
+			var multiSheetState 		= $scope.multiSheetState;
+			multiSheetState.selectedEmployees = RVWorkManagementSrv.sortAssigned(multiSheetState.selectedEmployees,
+										multiSheetState.allRooms,
+										multiSheetState.allTasks,
+										options);
+
+			// Add an event to fire when the next digest cycle completes.
+			var listner = $rootScope.$watch(function() {
+				listner();
+				$timeout(startPrinting, 0);
+			});
+			runDigestCycle();
+		};
+
+		var startPrinting = function() {
+			/*
+			*	======[ READY TO PRINT ]======
+			*/
+			/*
+			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			*/
+			$scope.$emit('hideLoader');
+			$timeout(function() {
+				$window.print();
+				if ( sntapp.cordovaLoaded ) {
+					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				};
+
+				/*
+				*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+				*/
+			}, 100);
+			// remove the orientation after similar delay
+			$timeout(function() {
+				removePrintOrientation();
+
+				$scope.multiSheetState = angular.copy(multiSheetStateBackup);
+				$scope.employeeList = angular.copy(employeeListBackup);
+				$scope.onEmployeeListClosed();
+
+				multiSheetStateBackup = null;
+				runDigestCycle();
+			}, 150);
+
+		};
+
+		var multiSheetStateBackup = null;
+
 		/**
 		 * Prints the worksheet according to options configured in the $scope.printSettings.
 		 * @return {undefined}
 		 */
 		$scope.printWorkSheet = function() {
-			console.log($scope.printSettings);
+			$scope.closeDialog();
+			$scope.$emit('showLoader');
+
+			multiSheetStateBackup = angular.copy($scope.multiSheetState);
+
+			// set the sheet according to print settings.
+			configureMultisheetForPrinting($scope.printSettings);
 
 			// reset scroll bars to top
-			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-			// 	var scroller = 'assignedRoomList-'+i;
-			// 	$scope.$parent.myScroll[scroller] && $scope.$parent.myScroll[scroller].scrollTo
-			// 	$scope.$parent.myScroll[scroller].scrollTo(0, 0);			};
-
-
-			// }
 			var i;
 			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
 				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
 
-			// set the sheet according to print settings.
-			configureMultisheetForPrinting();
-
 			// add the orientation
 			addPrintOrientation();
 
-			/*
-			*	======[ READY TO PRINT ]======
-			*/
-			// this will show the popup with full bill
-			$timeout(function() {
-				/*
-				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-				*/
-
-				$window.print();
-				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-				};
-			}, 100);
-
-			/*
-			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			*/
-
-			// remove the orientation after similar delay
-			$timeout(removePrintOrientation, 100);
 		};
 
 		/**
@@ -530,7 +571,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				scrollY: true
 			}, commonScrollerOptions);
 			$scope.setScroller('unAssignedRoomList', vertical);
-			$scope.setScroller("multiSelectEmployees", commonScrollerOptions);
+			$scope.setScroller("multiSelectWorkSheet", commonScrollerOptions);
+			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
 			$scope.setScroller("worksheetHorizontal", horizontal);
 
 			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
@@ -703,7 +745,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			for ( i = employee.rooms.length - 1; i >= 0; i-- ) {
 				allTasks  = employee.rooms[i].room_tasks;
 
-				completed = _.where(allTasks, { is_complete: true }) || [];
+				completed = _.where(allTasks, { is_completed: true }) || [];
 
 				totalTime = _.reduce(allTasks, function(s, task) {
 					time = task.time_allocated;
@@ -932,28 +974,5 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		init();
-
-
-		var lastCol = false,
-			lastRoom = false;
-		/**/
-		$scope.onLastCol = function() {
-            lastCol = true;
-        };
-		/**/
-		$scope.onLastRoom = function() {
-            if ( lastCol ) {
-				lastRoom = true;
-            };
-        };
-        /**/
-        $scope.onLastTask = function() {
-            if ( lastRoom ) {
-				console.log('NG-repeat done!');
-
-				lastCol = false;
-				lastRoom = false;
-            };
-        };
 	}
 ]);

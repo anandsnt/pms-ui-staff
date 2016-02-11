@@ -180,6 +180,16 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/emailEntryPage.html',
 	 	controller : 'emailEntryController',
 	 	title: 'E-mail entry'
+	 }).state('mobileNumberAddition', {
+	 	url: '/mobileNumberAddition',
+	 	templateUrl: '/assets/checkin/partials/MGM/mobileNumberEntry.html',
+	 	controller : 'mobileEntryController',
+	 	title: 'Phone number entry'
+	 }).state('mobileNumberOptions', {
+	 	url: '/mobileNumberOptions',
+	 	templateUrl: '/assets/checkin/partials/MGM/mobileNumberOptions.html',
+	 	controller : 'mobileOptionsController',
+	 	title: 'Phone number entry'
 	 });
 	
 	

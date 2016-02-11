@@ -1,0 +1,186 @@
+<!-- Print header -->
+<ul class="journal-header-print summary">
+    <li>
+        <span>Summary</span>
+        {{'BAL_AS_OF_EOD' | translate}}
+        <span>{{ data.summaryDate | date : 'MMMM d, y'}}</span>
+    </li>
+</ul>
+
+<!-- Content -->
+<div ng-controller="RVJournalSummaryDetailsController" id="journal-content" ng-iscroll='summary_content' class="journal-content summary scrollable">
+    <div class="wrapper">
+        <div class="journal-summary first">
+            <h3 ng-if="(details.summaryData.deposit_debits !== 0 || details.summaryData.deposit_credits !== 0)" class="has-arrow toggle" ng-class="{'active': details.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
+            <h3 ng-if="(details.summaryData.deposit_debits === 0 && details.summaryData.deposit_credits === 0)" translate>DEPOSIT_BAL</h3>
+            <ul>
+                <li>{{'OPENING' | translate}}<span>{{currencySymbol}}{{details.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
+                <li>{{'DEBIT' | translate}}<span>{{currencySymbol}}{{details.summaryData.deposit_debits | number: precisonTwo }}</span></li>
+                <li>{{'CREDIT' | translate}}<span>{{currencySymbol}}{{details.summaryData.deposit_credits | number: precisonTwo }}</span></li>
+                <li>{{'CLOSING' | translate}}<span>{{currencySymbol}}{{details.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
+            </ul>
+        </div>
+
+        <div class="journal-grid print-details" ng-show="details.summaryData.deposit_balance.active">
+            <table class="grid-items">
+                <thead>
+                    <tr>
+                        <th scope="col" translate>ROOM_LABEL</th>
+                        <th scope="col" translate>NAME</th>
+                        <th scope="col" translate>RESERVATION_NUMBER</th>
+                        <th scope="col" translate>TYPE</th>
+                        <th scope="col" translate>DETAILS</th>
+                        <th scope="col" translate>TIME</th>
+                        <th scope="col" translate>CHARGE_CODE</th>
+                        <th scope="col" translate>CHARGE_DESCRIPTION</th>
+                        <th scope="col" translate>DEBIT</th>
+                        <th scope="col" translate>CREDIT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in details.summaryData.deposit_balance.transactions">
+                        <td>{{item.room}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.reservation_number}}</td>
+                        <td>{{item.type}}</td>
+                        <td ng-bind-html="item.details"></td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.charge_code}}</td>
+                        <td>{{item.charge_desc}}</td>
+                        <td>{{item.debit | number: precisonTwo}}</td>
+                        <td>{{item.credit | number: precisonTwo}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="journal-summary">
+            <h3 ng-if="(details.summaryData.guest_debits !== 0 || details.summaryData.guest_debits !== 0)" class="has-arrow toggle" ng-class="{'active': details.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
+            <h3 ng-if="(details.summaryData.guest_debits === 0 && details.summaryData.guest_debits === 0)" translate>GUEST_BAL</h3>
+            <ul>
+                <li><span>{{currencySymbol}}{{details.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{details.summaryData.guest_debits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{details.summaryData.guest_credits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{details.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
+            </ul>
+        </div>
+
+        <div class="journal-grid print-details" ng-show="details.summaryData.guest_balance.active">
+            <table class="grid-items">
+                <thead>
+                    <tr>
+                        <th scope="col" translate>ROOM_LABEL</th>
+                        <th scope="col" translate>NAME</th>
+                        <th scope="col" translate>RESERVATION_NUMBER</th>
+                        <th scope="col" translate>TYPE</th>
+                        <th scope="col" translate>DETAILS</th>
+                        <th scope="col" translate>TIME</th>
+                        <th scope="col" translate>CHARGE_CODE</th>
+                        <th scope="col" translate>CHARGE_DESCRIPTION</th>
+                        <th scope="col" translate>DEBIT</th>
+                        <th scope="col" translate>CREDIT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in details.summaryData.guest_balance.transactions">
+                        <td>{{item.room}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.reservation_number}}</td>
+                        <td>{{item.type}}</td>
+                        <td ng-bind-html="item.details"></td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.charge_code}}</td>
+                        <td>{{item.charge_desc}}</td>
+                        <td>{{item.debit | number: precisonTwo}}</td>
+                        <td>{{item.credit | number: precisonTwo}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="journal-summary">
+            <h3 ng-if="(details.summaryData.ar_debits !== 0 || details.summaryData.ar_credits !== 0)" class="has-arrow toggle" ng-class="{'active': details.summaryData.ar_balance.active }" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
+            <h3 ng-if="(details.summaryData.ar_debits === 0 && details.summaryData.ar_credits === 0)" translate>AR_BALANCE</h3>
+            <ul>
+                <li><span>{{currencySymbol}}{{details.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{details.summaryData.ar_debits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{details.summaryData.ar_credits | number: precisonTwo }}</span></li>
+                <li><span>{{currencySymbol}}{{details.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
+            </ul>
+        </div>
+
+        <div class="journal-grid print-details" ng-show="details.summaryData.ar_balance.active">
+            <table class="grid-items">
+                <thead>
+                    <tr>
+                        <th scope="col" translate>ROOM_LABEL</th>
+                        <th scope="col" translate>NAME</th>
+                        <th scope="col" translate>RESERVATION_NUMBER</th>
+                        <th scope="col" translate>TYPE</th>
+                        <th scope="col" translate>DETAILS</th>
+                        <th scope="col" translate>TIME</th>
+                        <th scope="col" translate>CHARGE_CODE</th>
+                        <th scope="col" translate>CHARGE_DESCRIPTION</th>
+                        <th scope="col" translate>DEBIT</th>
+                        <th scope="col" translate>CREDIT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in details.summaryData.ar_balance.transactions">
+                        <td>{{item.room}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.reservation_number}}</td>
+                        <td>{{item.type}}</td>
+                        <td ng-bind-html="item.details"></td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.charge_code}}</td>
+                        <td>{{item.charge_desc}}</td>
+                        <td>{{item.debit | number: precisonTwo}}</td>
+                        <td>{{item.credit | number: precisonTwo}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="journal-summary totals">
+            <h3 translate>TOTALS</h3>
+            <ul>
+                <li>
+                    <span>
+                        {{currencySymbol}}
+                        {{details.summaryData.deposit_opening_balance+details.summaryData.guest_opening_balance+details.summaryData.ar_opening_balance | number: precisonTwo }}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        {{currencySymbol}}
+                        {{details.summaryData.deposit_debits+details.summaryData.guest_debits+details.summaryData.ar_debits | number: precisonTwo }}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        {{currencySymbol}}
+                        {{details.summaryData.deposit_credits+details.summaryData.guest_credits+details.summaryData.ar_credits | number: precisonTwo }}
+                    </span>
+                </li>
+                <li>
+                    <span>
+                        {{currencySymbol}}
+                        {{details.summaryData.deposit_closing_balance+details.summaryData.guest_closing_balance+details.summaryData.ar_closing_balance | number: precisonTwo }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Print footer -->
+<ul class="journal-footer-print summary">
+    <li>
+        Date <span>{{ data.summaryDate | date : 'MMMM d, y'}}</span>
+    </li>
+    <li>
+        Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
+        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+    </li>
+</ul>

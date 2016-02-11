@@ -22,7 +22,7 @@
                         <input type="checkbox" ng-model="singleAddon.bestseller" ng-change="bestsellerChanged()">
                     </label>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                <div ng-hide="isConnectedToPMS || isHourlyRatesEnabled" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
                         <label>{{'RATE_ONLY' | translate}}</label>
@@ -130,7 +130,7 @@
                     </label>
                 </div>
             </fieldset>
-            <fieldset class="holder holder full-width">
+            <fieldset ng-hide="isHourlyRatesEnabled" class="holder holder full-width">
                 <div class="form-title">
                     <h3>
                         <span>Exclude from&nbsp;</span>                                                    
