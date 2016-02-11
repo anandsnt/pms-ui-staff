@@ -44,8 +44,15 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window){
 
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-		$rootScope.title =toState.title;
+
+		if(toState.name === 'noOptionAvailable' && (fromState.name === 'emailVerification' || fromState.name === 'resetPassword')){
+			event.preventDefault();
+		}else{
+			$rootScope.title =toState.title;
+		}	
+		
 	});
+	
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
       

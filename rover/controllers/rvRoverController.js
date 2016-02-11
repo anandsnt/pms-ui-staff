@@ -498,7 +498,7 @@ sntRover.controller('roverController',
       // Hide loading message
       $scope.$emit('hideLoader');
       console.error(error);
-      //TODO: Log the error in proper way
+      $scope.$broadcast("showErrorMessage", error);
     });
 
     //This variable is used to identify whether guest card is visible

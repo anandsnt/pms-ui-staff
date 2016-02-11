@@ -186,6 +186,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
          });
          
+         $stateProvider.state('zest_station.bill_delivery_options', {
+            url       : '/delivery_options/:mode',
+            controller: 'zsReservationCheckedOutCtrl',
+            templateUrl: '/assets/partials/kiosk/generic/nav-2-options.html'
+         });
+         
          $stateProvider.state('zest_station.error', {
              url: '/error/:mode', 
              controller: 'zsPostCheckinCtrl',

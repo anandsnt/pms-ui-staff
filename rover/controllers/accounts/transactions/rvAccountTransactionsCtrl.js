@@ -295,7 +295,17 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 			};
-			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback);
+
+			/*
+			 * Failure Callback of move action
+			 */
+			var moveToBillFailureCallback = function(data) {
+				console.log("@moveToBillFailureCallback");
+				console.log(errorMessage);
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data.errorMessage;
+			};
+			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
 
 

@@ -10,7 +10,7 @@
 		<label id="terms-and-conditions" for="terms" class="checkbox inline" ng-hide="reservationBillData.is_disabled_terms_conditions_checkin">
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
 			<input type="checkbox" class = "termsandconditions-checkbox" ng-model="saveData.termsAndConditions">
-			<div class = "agree-terms-and-conditions" ng-click = "termsAndConditionsClicked()">{{ 'T_AND_C_TEXT' | translate }}</div> </label>
+			<div class = "agree-terms-and-conditions" click-touch = "termsAndConditionsClicked()">{{ 'T_AND_C_TEXT' | translate }}</div> </label>
 		<label id="subscribe-via-email" for="subscribe" class="checkbox inline checked">
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.promotions}"></span>
 			<input type="checkbox" value="1" name="checkin" checked="" ng-model="saveData.promotions">
@@ -22,7 +22,7 @@
 		<!-- Advance put in Queue flow now exists, from admin -> rooms -> housekeeping -> ENABLE ADVANCED QUEUE PRE-CHECKIN -->
 		<!--  if using the advanced queue flow, only via 'Put in Queue' will the button text change, all other functionality is the same: CICO-19673-->
 		<button ng-show="!putInQueue"
-                    id="checkin-button" ng-click="clickedCompleteCheckin()" 
+                    id="checkin-button" click-touch="clickedCompleteCheckin()" 
                         data-room-status="READY" 
                         data-reseravation-status="CHECKING_IN" 
                         data-required-signature="CHECKIN" 
@@ -32,7 +32,7 @@
 			COMPLETE_CHECKIN
 		</button>
 		<button ng-show="putInQueue"
-                    id="checkin-button" ng-click="clickedCompleteAddToQueue()" 
+                    id="checkin-button" click-touch="clickedCompleteAddToQueue()" 
                         data-room-status="READY" 
                         data-reseravation-status="CHECKING_IN" 
                         data-required-signature="CHECKIN" 
@@ -45,7 +45,7 @@
                 
                 
 		<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
-			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()' ng-hide="isSigned()" translate>CLEAR_SIGNATURE</a>
+			<a id="clear-signature" class="button blank" click-touch='clickedClearSignature()' ng-hide="isSigned()" translate>CLEAR_SIGNATURE</a>
 		</div>
 	</div>
 </form>
@@ -63,6 +63,15 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="entry" ng-show=" $index === 0 && hasPermissionToShowCheckoutWithoutSettlement()">
+            <label class="checkbox inline single">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked': isCheckoutWithoutSettlement }"></span>
+                <input type="checkbox" ng-click="toggleCheckoutWithoutSettlement()" ng-model="isCheckoutWithoutSettlement">
+                {{ 'CHECK_OUT_WITHOUT_SETTLEMENT' | translate }}
+            </label>
+        </div>
+
 		<!-- 
 			CICO-9597 : While required_signature_at is not 'CHECKOUT',
 						#terms-and-conditions field is making hidden and

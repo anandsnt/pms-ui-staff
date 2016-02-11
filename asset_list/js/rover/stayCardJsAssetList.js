@@ -35,6 +35,7 @@ module.exports = {
                     controllerRoot + "smartbands/**/**.js",
                     controllerRoot + "validateCheckout/**/**.js",
                     controllerRoot + "validateCheckin/**/**.js",
+
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
                     servicesRoot + "actionTasks/rvActionTasksSrv.js",
@@ -56,7 +57,8 @@ module.exports = {
                     servicesRoot + "rvSaveWakeupTimeSrv.js",
                     servicesRoot + "rvNewspaperPreferenceSrv.js",
                     servicesRoot + "rvLoyaltyProgramSrv.js",
-                    servicesRoot + "bill/rvBillCardSrv.js"
+                    servicesRoot + "bill/rvBillCardSrv.js",
+                    servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js"
                 ]
             };
 	}
