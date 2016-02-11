@@ -1,47 +1,58 @@
 sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExternalReferencesSrv',
 	function($rootScope, $scope, RVExternalReferencesSrv) {
-		BaseCtrl.call(this, $scope);
 
 		var onFailure = function(errorMessage) {
-				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			},
 			save = function(reference) {
 				var onSaveSuccess = function(response) {
-					reference.id = response.id;
-					$scope.$emit('hideLoader');
-				};
+						reference.id = response.id;
+					},
+					options = {
+						params: {
+							reference: reference,
+							reservationId: $scope.reservationParentData.reservationId
+						},
+						successCallBack: onSaveSuccess,
+						failureCallBack: onFailure
+					};
 
-				$scope.invokeApi(RVExternalReferencesSrv.save, {
-					reference: reference,
-					reservationId: $scope.reservationParentData.reservationId
-				}, onSaveSuccess, onFailure);
+				$scope.callAPI(RVExternalReferencesSrv.save, options);
 			},
 			update = function(reference) {
 				var onUpdateSuccess = function() {
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = "";
-				};
-				$scope.invokeApi(RVExternalReferencesSrv.update, {
-					reference: reference,
-					reservationId: $scope.reservationParentData.reservationId
-				}, onUpdateSuccess, onFailure);
+						$scope.errorMessage = "";
+					},
+					options = {
+						params: {
+							reference: reference,
+							reservationId: $scope.reservationParentData.reservationId
+						},
+						successCallBack: onUpdateSuccess,
+						failureCallBack: onFailure
+					};
+
+				$scope.callAPI(RVExternalReferencesSrv.update, options);
 			},
 			remove = function(reference) {
 				var onDeleteSuccess = function() {
-					$scope.$emit('hideLoader');
-					if ($scope.stateExternalRef.references.length === 1) {
-						$scope.stateExternalRef.references.push(RVExternalReferencesSrv.getEmptyRow());
-					}
-					$scope.stateExternalRef.references = _.without($scope.stateExternalRef.references, reference);
+						if ($scope.stateExternalRef.references.length === 1) {
+							$scope.stateExternalRef.references.push(RVExternalReferencesSrv.getEmptyRow());
+						}
+						$scope.stateExternalRef.references = _.without($scope.stateExternalRef.references, reference);
 
-				};
-				$scope.invokeApi(RVExternalReferencesSrv.remove, {
-					referenceId: reference.id,
-					reservationId: $scope.reservationParentData.reservationId
-				}, onDeleteSuccess, onFailure);
-			},
-			memento;
+					},
+					options = {
+						params: {
+							referenceId: reference.id,
+							reservationId: $scope.reservationParentData.reservationId
+						},
+						successCallBack: onDeleteSuccess,
+						failureCallBack: onFailure
+					};
+
+				$scope.callAPI(RVExternalReferencesSrv.remove, options);
+			};
 
 		$scope.stateExternalRef = {
 			viewDetails: false,
@@ -51,21 +62,21 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 
 		$scope.toggleDetails = function() {
 			var toggleView = function() {
-				$scope.stateExternalRef.viewDetails = !$scope.stateExternalRef.viewDetails;
-				$scope.refreshReservationDetailsScroller(100);
-			};
+					$scope.stateExternalRef.viewDetails = !$scope.stateExternalRef.viewDetails;
+					$scope.refreshReservationDetailsScroller(100);
+				},
+				initializeData = function(response) {
+					$scope.stateExternalRef.thirdParties = response.systems;
+					$scope.stateExternalRef.references = response.references;
+					toggleView();
+				},
+				options = {
+					params: $scope.reservationParentData.reservationId,
+					successCallBack: initializeData
+				};
 
 			if (!$scope.stateExternalRef.viewDetails) {
-				$scope.invokeApi(RVExternalReferencesSrv.getExternalData,
-					$scope.reservationParentData.reservationId,
-					function(reponse) {
-						$scope.$emit('hideLoader');
-						$scope.stateExternalRef.thirdParties = reponse.systems;
-						$scope.stateExternalRef.references = reponse.references;
-						toggleView();
-					}, function() {
-						$scope.$emit('hideLoader');
-					})
+				$scope.callAPI(RVExternalReferencesSrv.getExternalData, options);
 			} else {
 				toggleView();
 			}
@@ -89,6 +100,5 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 				update(reference);
 			}
 		};
-
 	}
 ]);
