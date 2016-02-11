@@ -7,7 +7,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
 
         var fetchExternalSystems = function() {
             var deferred = $q.defer(),
-                url = "/api/hotels/external_interfaces";
+                url = "/api/reference_values/manual_external_reference_interfaces";
             RVBaseWebSrvV2.getJSON(url).then(function(response) {
                 deferred.resolve(response.external_interface_types)
             }, function(errorMessage) {
