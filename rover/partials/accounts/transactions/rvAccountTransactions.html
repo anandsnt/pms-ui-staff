@@ -3,7 +3,7 @@
     <ul class="totals">
         <li>
             <div class="data">
-                <span class="label" translate>TOTAL_FEES</span> 
+                <span class="label" translate>TOTAL_FEES</span>
                 <span class="value">{{currencySymbol}}{{transactionsDetails.total_fees | number: precisonTwo}}</span>
             </div>
         </li>
@@ -55,9 +55,9 @@
 
                 <!-- Bill -->
                 <div class="bill-summary" ng-repeat="billData in transactionsDetails.bills" ng-class="{'hidden': $index!=currentActiveBill}">
-                    
+
                     <!-- Bill Summary -->
-                    <div class="bill-summary-wrapper">  
+                    <div class="bill-summary-wrapper">
                         <div class="scrollable" ng-iscroll="billDays">
                             <ul class="wrapper" style="width{Outer lenght of all li items}px">
                                 <li class="add-new">
@@ -99,7 +99,7 @@
                     <!-- Invoice -->
                     <div class="invoice">
                         <ng-include src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
-                    </div> 
+                    </div>
 
                     <!-- Balance / Signature / Card -->
                     <div class="total-stay-fees">
@@ -112,11 +112,11 @@
                             </li>
                             <li class="break">
                                 <button type="button" class="button with-icon only-icon blue" click-touch="mailInvoice(billData.bill_number)">
-                                    <span class="icons icon-email"></span> 
+                                    <span class="icons icon-email"></span>
                                     {{'EMAIL' |translate}}
                                 </button>
-                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" click-touch="printInvoice()">
-                                    <span class="icons icon-print"></span> 
+                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" click-touch="printInvoice(billData.bill_number)">
+                                    <span class="icons icon-print"></span>
                                     {{'PRINT' |translate}}
                                 </button>
                             </li>
@@ -134,14 +134,14 @@
                                 <span class="title" ng-show="billData.payment_details.payment_type != 'CC'">{{billData.guest_or_company_name}}&nbsp;{{billData.payment_details.payment_type_description}}</span>
                                 <!-- Credit Card -->
                                 <span class="title" ng-show="billData.payment_details.payment_type === 'CC' && billData.payment_details.payment_type.length >0">{{billData.guest_or_company_name}}&nbsp;{{billData.payment_details.card_number}}</span>
-                            </li> 
-                            
+                            </li>
+
                             <li>
                             	<!-- Only when fees selected in table below:-->
                                 <button type="button" class="button with-icon only-icon brand-colors"ng-show="((isAllChargeCodesSelected() || isAnyOneChargeCodeIsExcluded())&& hasMoveToOtherBillPermission())&& isStandAlone" ng-click="moveChargesClicked()">
-                                    <span class="icons icon-move"></span> 
+                                    <span class="icons icon-move"></span>
                                     Move selected
-                                </button> 
+                                </button>
                             </li>
                         </ul>
 
@@ -169,11 +169,11 @@
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
                                             <button type="button" class="button with-icon only-icon blue inline" click-touch="mailInvoice(billData.bill_number)">
-                                                <span class="icons icon-email"></span> 
+                                                <span class="icons icon-email"></span>
                                                 {{'EMAIL' |translate}}
                                             </button>
                                             <button type="button" class="button with-icon only-icon blue inline" click-touch="printInvoice()">
-                                                <span class="icons icon-print"></span> 
+                                                <span class="icons icon-print"></span>
                                                 {{'PRINT' |translate}}
                                             </button>
                                             {{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{billData.total_fees.fees_date | date:dateFormat}}):
@@ -208,13 +208,13 @@
                                 <tbody>
                                     <tr class="active edit" ng-repeat="feesData in billData.total_fees.fees_details" >
                                         <td>{{feesData.date |date:dateFormat}}</td>
-                                    	<td> 
+                                    	<td>
                                     		<span ng-repeat="description in feesData.description">
                                     			{{description.charge_code}}
                                     			<br />
-                                    		</span> 
+                                    		</span>
                                     	</td>
-                                    	<td class="description"> 
+                                    	<td class="description">
                                     		<span ng-repeat="description in feesData.description">
                                     			{{description.fees_desc}}
                                     			<br />
@@ -230,7 +230,7 @@
 											</strong>
 										</td>
                                         <td>
-                                        	<strong ng-show="feesData.credits!=''"> 
+                                        	<strong ng-show="feesData.credits!=''">
 												{{currencySymbol}}{{feesData.credits| number: precisonTwo}}
                                         	</strong>
                                         </td>
@@ -250,7 +250,7 @@
                                             </button>
                                         </td>
                                         <td class="action" ng-if="hasMoveToOtherBillPermission()">
-                                            <label class="checkbox inline"> 
+                                            <label class="checkbox inline">
                                                 <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
                                                 <input ng-model="feesData.isSelected" type="checkbox"/>
                                             </label>
@@ -266,6 +266,6 @@
     </div>
 
 </div>
-   
+
 
 </form>
