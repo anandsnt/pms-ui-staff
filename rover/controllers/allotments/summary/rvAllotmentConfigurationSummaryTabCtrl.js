@@ -299,6 +299,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var successCallBackOfCopyDefaultBilling = function() {
 			$scope.$emit('hideLoader');
+			$scope.allotmentConfigData.summary.default_billing_info_present = true;
 			openBillingInformationPopup();
 		};
 
