@@ -3,7 +3,7 @@
         <h2 translate>ZESTSWEB_GLOBAL_TITLE</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>ZESTSTATION_BACK</a>
     </header>
-    <section class="content-scroll">
+    <section class="content-scroll" onscroll="contentScrolled()">
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <form class="form float">
@@ -29,42 +29,42 @@
                         <h3><span translate>COLOR_SEC_LABEL</span></h3>
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Background Color</label>
+                        <label>Background Color</label>
                         <ui-colorpicker ng-model="globalSettings.body_background"></ui-colorpicker>
                         <input ng-model="globalSettings.body_background">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Header Background</label>
+                        <label>Header Background</label>
                         <ui-colorpicker ng-model="globalSettings.header_background"></ui-colorpicker>
                         <input ng-model="globalSettings.header_background">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country"> Template text color</label>
+                        <label> Template text color</label>
                         <ui-colorpicker ng-model="globalSettings.template_text_color"></ui-colorpicker>
                         <input ng-model="globalSettings.template_text_color">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Sub text color</label>
+                        <label>Sub text color</label>
                         <ui-colorpicker ng-model="globalSettings.template_sub_text_color"></ui-colorpicker>
                         <input ng-model="globalSettings.template_sub_text_color">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Template button Background</label>
+                        <label>Template button Background</label>
                         <ui-colorpicker ng-model="globalSettings.template_button_bg"></ui-colorpicker>
                         <input ng-model="globalSettings.template_button_bg">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Template button text color</label>
+                        <label>Template button text color</label>
                         <ui-colorpicker ng-model="globalSettings.template_button_color"></ui-colorpicker>
                         <input ng-model="globalSettings.template_button_color">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Light button Background</label>
+                        <label>Light button Background</label>
                         <ui-colorpicker ng-model="globalSettings.light_button_bg"></ui-colorpicker>
                         <input ng-model="globalSettings.light_button_bg">
                     </div>
                     <div class="entry entry-color-picker">
-                        <label for="hotel-country">Dark button Background</label>
+                        <label>Dark button Background</label>
                         <ui-colorpicker ng-model="globalSettings.dark_button_bg"></ui-colorpicker>
                         <input ng-model="globalSettings.dark_button_bg">
                     </div>
