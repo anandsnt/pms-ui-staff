@@ -13,56 +13,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/hoteldetails/edit'
 		});
 
-		$stateProvider.state('admin.propertyInterfaceSetup', {
-			templateUrl: '/assets/partials/property/propertyInterfaceSetup.html',
-			controller: 'ADPropertyInterfaceSetupCtrl',
-			url : '/propertyinterface/setup'
-		});
-
-		$stateProvider.state('admin.letshareSetup', {
-			templateUrl: '/assets/partials/letshare/letShareSetup.html',
-			controller: 'adLetShareSetupCtrl',
-			url : '/letshare/setup',
-			resolve: {
-				letsShareSetupValues: ['adLetShareSetupSrv', function(adLetShareSetupSrv) {
-					return adLetShareSetupSrv.fetchLetShareConfiguration();
-				}]
-			}
-		});
-
-		$stateProvider.state('admin.lightspeedPosSetup', {
-			templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
-			controller: 'adLightSpeedPOSSetupCtrl',
-			url : '/lightspeedpos/setup',
-			resolve: {
-				lightSpeedSetupValues: ['adLightSpeedPOSSetupSrv', function(adLightSpeedPOSSetupSrv) {
-					return adLightSpeedPOSSetupSrv.fetchLightSpeedPOSConfiguration();
-				}]
-			}
-		});
-
-		$stateProvider.state('admin.britePabXSetup', {
-			templateUrl: '/assets/partials/britePabX/britePabXSetup.html',
-			controller: 'adBritePabXSetupCtrl',
-			url : '/britePabX/setup',
-			resolve: {
-				britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
-					return adBritePabXSetupSrv.fetchBritePabXConfiguration();
-				}]
-			}
-		});
-
-		$stateProvider.state('admin.afasSetup', {
-			templateUrl: '/assets/partials/afas/afasSetup.html',
-			controller: 'adAfasSetupCtrl',
-			url : '/letshare/setup',
-			resolve: {
-				afasSetupValues: ['adAfasSetupSrv', function(adAfasSetupSrv) {
-					return adAfasSetupSrv.fetchAfasConfiguration();
-				}]
-			}
-		});
-
 		$stateProvider.state('admin.permissions', {
 			templateUrl: '/assets/partials/hotel/adUserRolePermissions.html',
 			controller: 'ADUserRolePermissionsCtrl',
@@ -113,41 +63,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/brands'
 		});
 
-		$stateProvider.state('admin.mapping', {
-			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
-			controller: 'ADMappingCtrl',
-			url : '/mapping/:hotelId'
-		});
-		$stateProvider.state('admin.ffp', {
-			templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
-			controller: 'ADFrequentFlyerProgramCtrl',
-			url : '/ffp'
-		});
-
-		$stateProvider.state('admin.icare', {
-			templateUrl: '/assets/partials/icare/adIcareServices.html',
-			controller: 'ADIcareServicesCtrl',
-			url : '/icare'
-		});
-
-		$stateProvider.state('admin.keyEncoders', {
-			templateUrl: '/assets/partials/keyEncoders/adKeyEncoderList.html',
-			controller: 'ADKeyEncoderCtrl',
-			url : '/encoders'
-		});
-
-		$stateProvider.state('admin.emvTerminals', {
-			templateUrl: '/assets/partials/emvTerminals/emvTerminalList.html',
-			controller: 'ADEmvTerminalCtrl',
-			url : '/terminals'
-		});
-
-		$stateProvider.state('admin.emvTerminalDetails', {
-			templateUrl: '/assets/partials/emvTerminals/emvTerminalDetails.html',
-			controller: 'ADEmvTerminalDetailsCtrl',
-			url : '/terminaldetails/:itemid'
-		});
-
 		$stateProvider.state('admin.templateconfiguration', {
 			templateUrl: '/assets/partials/templateConfiguration/adListHotel.html',
 			controller: 'ADTemplateConfigurationCtrl',
@@ -170,11 +85,6 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/campaigns/adAddCampaign.html',
 			controller: 'ADAddCampaignCtrl',
 			url : '/campaigns/:id/:type'
-		});
-		$stateProvider.state('admin.doorlockInterface', {
-			templateUrl: '/assets/partials/doorLockInterface/adDoorLockInterface.html',
-			controller: 'ADDoorLockInterfaceCtrl',
-			url : '/doorlockinterface'
 		});
                 
 		$stateProvider.state('admin.zest_shortcode', {
