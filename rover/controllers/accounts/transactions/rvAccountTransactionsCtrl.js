@@ -299,11 +299,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			/*
 			 * Failure Callback of move action
 			 */
-			var moveToBillFailureCallback = function(errorMessage) {
+			var moveToBillFailureCallback = function(data) {
 				console.log("@moveToBillFailureCallback");
 				console.log(errorMessage);
 				$scope.$emit('hideLoader');
-				$scope.errorMessage = errorMessage;
+				$scope.errorMessage = data.errorMessage;
 			};
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
