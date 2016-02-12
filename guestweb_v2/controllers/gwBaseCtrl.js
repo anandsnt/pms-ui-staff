@@ -15,19 +15,48 @@ sntGuestWeb.controller('BaseController', ['$scope', '$state', function($scope, $
 		$scope.$emit('hideLoader');
 		$state.go('seeFrontDesk');
 	};
+	$scope.callAPI = function(serviceApi, options) {
+		var options = options ? options : {},
+			params = options["params"] ? options["params"] : null,
+			loader = options["loader"] ? options["loader"] : 'BLOCKER',
+			showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
+			successCallBack = options["successCallBack"] ? options["successCallBack"] : $scope.fetchedCompleted,
+			failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : $scope.fetchedFailed,
+			successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null,
+			failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 
-	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType) {
-		//loaderType options are "BLOCKER", "NONE"
-		if (typeof loaderType === 'undefined') {
-			loaderType = 'BLOCKER';
-		}
-		if (loaderType.toUpperCase() === 'BLOCKER') {
+		if (showLoader) {
 			$scope.$emit('showLoader');
 		}
-		successCallback = (typeof successCallback === 'undefined') ? $scope.fetchedCompleted : successCallback;
-		failureCallback = (typeof failureCallback === 'undefined') ? $scope.fetchedFailed : failureCallback;
 
-		return serviceApi(params).then(successCallback, failureCallback);
 
+		return serviceApi(params).then(
+			//success call back
+			function(data) {
+				if (showLoader) {
+					$scope.$emit('hideLoader');
+				}
+				if (successCallBack) {
+					if (successCallBackParameters) {
+						successCallBack(data, successCallBackParameters);
+					} else {
+						successCallBack(data);
+					}
+				}
+			},
+			//failure callback
+			function(error) {
+				if (showLoader) {
+					$scope.$emit('hideLoader');
+				}
+				if (failureCallBack) {
+					if (failureCallBackParameters) {
+						failureCallBack(error, failureCallBackParameters);
+					} else {
+						failureCallBack(error);
+					}
+				}
+			}
+		);
 	};
 }]);

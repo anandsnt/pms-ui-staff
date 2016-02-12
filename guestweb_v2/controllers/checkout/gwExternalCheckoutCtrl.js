@@ -50,7 +50,14 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 		$scope.submit = function() {
 			// $scope.stayDetails.hotel_identifier = GwWebSrv.reservationAndhotelData.hotelIdentifier;
 			// $scope.stayDetails.arrival_date     = dateToSend;
-			// $scope.invokeApi(GwCheckoutSrv.verifyCheckoutUser, $scope.stayDetails, verifyUserSuccess);
+			// var onSuccess = function(data) {
+			// 	$state.go('checkOutOptions');
+			// };
+			// var options = {
+			// 	params: $scope.stayDetails,
+			// 	successCallBack: onSuccess
+			// };
+			// $scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 
 			$scope.$emit('showLoader');
 			$timeout(function() {
