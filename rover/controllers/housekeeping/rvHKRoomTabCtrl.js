@@ -145,6 +145,13 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
 
+		
+		$scope.$watch("updateService.room_service_status_id", function (newValue, oldValue) {
+        	if(newValue !== oldValue){
+            	$scope.prev_room_service_status_id = oldValue;
+        	}
+    	});
+
 		// when user changes the room status from top dropdown
 		$scope.statusChange = function() {
 			var item = _.find($scope.allServiceStatus, function(item) {
@@ -414,6 +421,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			var _error = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
+				$scope.updateService.room_service_status_id = $scope.prev_room_service_status_id;
+				$scope.statusChange();
 				if ($scope.$parent.myScroll['room-tab-scroll'] && $scope.$parent.myScroll['room-tab-scroll'].scrollTo) {
 					$scope.$parent.myScroll['room-tab-scroll'].scrollTo(0, 0);
 				}

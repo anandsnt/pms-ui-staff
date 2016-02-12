@@ -13,7 +13,6 @@ admin.controller('ADInvoiceSettingsCtrl',[
 
         $scope.errorMessage = [];
 
-        var EMPTY_INVOICE_PREFIX_ERROR = $filter('translate')('EMPTY_INVOICE_NO_PREFIX');
 
         /**
         * To handle save button action
@@ -26,10 +25,6 @@ admin.controller('ADInvoiceSettingsCtrl',[
                  $scope.$emit('hideLoader');
                  $scope.goBackToPreviousState();
             };
-            if (!$scope.invoiceSettings.invoice_no_prefix) {
-                $scope.errorMessage = [EMPTY_INVOICE_PREFIX_ERROR];
-                return;
-            }
             $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings ,saveInvoiceSettingsSuccessCallback);
         };
 

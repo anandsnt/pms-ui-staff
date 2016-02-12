@@ -44,7 +44,7 @@
 						<img ng-src="{{data.room_image}}" id="file-preview" alt="">
 					</span>
 				</div>
-				<div>
+				<div ng-hide="isStandAlone">
 					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>	
 					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>	
 					<ad-checkbox is-checked="data.is_exclude_from_manual_checkin" label="{{ 'EXCLUDE_FROM_MANUAL_CHECK_IN' | translate}}" div-class="full-width" ></ad-checkbox>	
