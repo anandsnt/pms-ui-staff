@@ -16,7 +16,7 @@
                 </label>
                 <div class="entry">
                     <div class="select">
-                        <select ng-options="font for font in supportedFonts" ng-model="globalSettings.font_family">
+                        <select ng-options="font for font in supportedFonts" ng-model="globalSettings.template_font">
                         </select>
                     </div>
                 </div>
@@ -38,43 +38,51 @@
                     <tr>
                         <td>Template text color</td>
                         <td>
-                            <ui-colorpicker ng-model="globalSettings.title_text_color"></ui-colorpicker>
-                            <input ng-model="globalSettings.title_text_color">
+                            <ui-colorpicker ng-model="globalSettings.title_text.color"></ui-colorpicker>
+                            <input ng-model="globalSettings.title_text.color">
                         </td>
                         <td>
-                            <input ng-model="globalSettings.title_text_color">
+                            <input ng-model="globalSettings.title_text.sd_font_size">
                         </td>
                         <td>
-                            <input ng-model="globalSettings.title_text_color">
+                            <input ng-model="globalSettings.title_text.ld_font_size">
                         </td>
                     </tr>
                     <tr>
                         <td>Sub text color</td>
                         <td>
-                            <ui-colorpicker ng-model="globalSettings.sub_text_color"></ui-colorpicker>
-                            <input ng-model="globalSettings.sub_text_color">
+                            <ui-colorpicker ng-model="globalSettings.sub_title_text.color"></ui-colorpicker>
+                            <input ng-model="globalSettings.sub_title_text.color">
                         </td>
                         <td>
-                            <input ng-model="globalSettings.title_text_color">
+                            <input ng-model="globalSettings.sub_title_text.sd_font_size">
                         </td>
                         <td>
-                            <input ng-model="globalSettings.title_text_color">
+                            <input ng-model="globalSettings.sub_title_text.ld_font_size">
                         </td>
                     </tr>
                     <tr>
                         <td>Button text color</td>
                         <td>
-                            <ui-colorpicker ng-model="globalSettings.button.color"></ui-colorpicker>
-                            <input ng-model="globalSettings.button.color">
+                            <ui-colorpicker ng-model="globalSettings.button_text.color"></ui-colorpicker>
+                            <input ng-model="globalSettings.button_text.color">
                         </td>
                         <td>
-                            <input ng-model="globalSettings.title_text_color">
+                            <input ng-model="globalSettings.button_text.sd_font_size">
                         </td>
                         <td>
-                            <input ng-model="globalSettings.title_text_color">
+                            <input ng-model="globalSettings.button_text.ld_font_size">
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
     </form>
 </div>
