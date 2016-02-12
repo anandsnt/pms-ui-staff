@@ -139,95 +139,10 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
     };
 
     /**
-     * function to switch between the charge code and billing groups views
+     * Set entity details when we have data from API.
+     * @param {Object} API response
+     * @return {undefined}
      */
-    $scope.toggleChargeType = function(){
-        $scope.isBillingGroup = !$scope.isBillingGroup;
-        if($scope.isBillingGroup){
-            $scope.refreshScroller('billingGroups');
-        }
-        else {
-            $scope.refreshScroller('chargeCodes');
-        }
-        $scope.showChargeCodes = false;
-    };
-
-    /**
-     * function to know if the billing grup is selected or not, to adjust the UI
-     */
-    $scope.isBillingGroupSelected = function(billingGroup){
-        for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
-            if($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id ) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    /**
-     * function to switch the billing group selection
-     */
-    $scope.toggleSelectionForBillingGroup = function(billingGroup){
-        for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
-            if($scope.selectedEntity.attached_billing_groups[i].id === billingGroup.id ){
-                $scope.selectedEntity.attached_billing_groups.splice(i, 1);
-                return;
-            }
-        }
-        $scope.selectedEntity.attached_billing_groups.push(billingGroup);
-        $scope.refreshScroller('billingGroups');
-    };
-
-    /**
-     * function to remove the charge code
-     */
-    $scope.removeChargeCode = function(chargeCode){
-        for(var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++){
-            if($scope.selectedEntity.attached_charge_codes[i].id === chargeCode.id ){
-                $scope.selectedEntity.attached_charge_codes.splice(i, 1);
-                return;
-            }
-        }
-    };
-
-    /**
-     * function to show available charge code list on clicking the dropdown
-     */
-    $scope.showAvailableChargeCodes = function(){
-        $scope.clearResults ();
-        displayFilteredResultsChargeCodes();
-        $scope.showChargeCodes = !$scope.showChargeCodes;
-    };
-
-    /**
-     * function to select charge code
-     */
-    $scope.addChargeCode = function(){
-        for(var i=0; i < $scope.availableChargeCodes.length; i++){
-            if($scope.availableChargeCodes[i].id === $scope.chargeCodeToAdd){
-                for(var j=0; j < $scope.selectedEntity.attached_charge_codes.length; j++){
-
-                    if($scope.selectedEntity.attached_charge_codes[j].id === $scope.chargeCodeToAdd ){
-                        return;
-                    }
-                }
-                $scope.selectedEntity.attached_charge_codes.push($scope.availableChargeCodes[i]);
-                $scope.refreshScroller('chargeCodes');
-                return;
-            }
-        }
-    };
-
-    /**
-     * function to select the charge code to be used in UI
-     */
-    $scope.selectChargeCode = function(selected_chargecode_id){
-        $scope.chargeCodeToAdd = selected_chargecode_id;
-        $scope.addChargeCode();
-        $scope.chargeCodeSearchText = '';
-        $scope.showChargeCodes = false;
-    };
-
     var fetchDefaultAccountRoutingsuccessCallback = function(data) {
         // CICO-19848: In case of allotment
         if (data.charge_routes_recipient !== undefined) {
@@ -303,7 +218,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
      * Function to fetch available billing groups from the server
      * @return {undefined}
      */
-    $scope.fetchAllBillingGroups = function(){
+    $scope.fetchAllBillingGroups = function() {
         $scope.invokeApi(RVBillinginfoSrv.fetchAllBillingGroups, '',
             fetchAllBillingGroupsSuccessCallback,
             fetchAllBillingGroupsFailureCallback);
@@ -322,111 +237,55 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
      * Fetch the available charge codes
      * @return {undefined}
      */
-    $scope.fetchAllChargeCodes = function(){
+    $scope.fetchAllChargeCodes = function() {
         $scope.invokeApi(RVBillinginfoSrv.fetchAllChargeCodes, '',
             fetchAllChargeCodesSuccessCallBack,
             fetchAllChargeCodesFailureCallBack);
     };
 
     /**
-    * function to trigger the filtering when the search text is entered
-    */
-    $scope.chargeCodeEntered = function(){
-        $scope.showChargeCodes = false;
-        displayFilteredResultsChargeCodes();
-        var queryText = $scope.chargeCodeSearchText;
-        $scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
-    };
-    /**
-    * function to clear the charge code search text
-    */
-    $scope.clearResults = function(){
-        $scope.chargeCodeSearchText = "";
-    };
-
-    /**
-    * function to perform filering on results.
-    * if not fouund in the data, it will request for webservice
-    */
-    var displayFilteredResultsChargeCodes = function(){
-        //if the entered text's length < 3, we will show everything, means no filtering
-        if($scope.chargeCodeSearchText.length < 3){
-          //based on 'is_row_visible' parameter we are showing the data in the template
-          for(var i = 0; i < $scope.availableChargeCodes.length; i++){
-            if($scope.isChargeCodeSelected($scope.availableChargeCodes[i])){
-                $scope.availableChargeCodes[i].is_row_visible = false;
-                $scope.availableChargeCodes[i].is_selected = false;
-            } else {
-                $scope.availableChargeCodes[i].is_row_visible = true;
-                $scope.availableChargeCodes[i].is_selected = true;
-            }
-
-          }
-          $scope.refreshScroller('chargeCodesList');
-          // we have changed data, so we are refreshing the scrollerbar
-
-        }
-        else{
-          var value = "";
-          //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-          //if it is zero, then we will request for webservice
-          for(var i = 0; i < $scope.availableChargeCodes.length; i++){
-            value = $scope.availableChargeCodes[i];
-            if ((($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0 ||
-                ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0) && (!$scope.isChargeCodeSelected($scope.availableChargeCodes[i])))
-                {
-                   $scope.availableChargeCodes[i].is_row_visible = true;
-                }
-            else {
-              $scope.availableChargeCodes[i].is_row_visible = false;
-            }
-
-          }
-
-          $scope.refreshScroller('chargeCodesList');
-        }
-    };
-
-    $scope.escapeNull = function(value, replaceWith){
+     * Function that converts a null value to a desired string.
+     * if no replace value is passed, it returns an empty string.
+     * @return {String}
+     */
+    $scope.escapeNull = function(value, replaceWith) {
         return escapeNull(value, replaceWith);
     };
 
     /**
     * Listener for the save button click
     */
-    $scope.$on('routeSaveClicked', function(event){
+    $scope.$on('routeSaveClicked', function(event) {
         $scope.saveRoute();
     });
-
-    /**
-    * function to update the company and travel agent in stay card header
-    */
-    $scope.updateCardInfo = function(){
-
-        if(($scope.selectedEntity.entity_type === 'COMPANY_CARD' && (typeof $scope.reservationDetails.companyCard.id === 'undefined'|| $scope.reservationDetails.companyCard.id === '')) ||
-            ($scope.selectedEntity.entity_type === 'TRAVEL_AGENT' && ($scope.reservationDetails.travelAgent.id === 'undefined' || $scope.reservationDetails.travelAgent.id === ''))) {
-            $rootScope.$broadcast('CardInfoUpdated', $scope.selectedEntity.id, $scope.selectedEntity.entity_type);
-        }
-    };
 
     /**
      * Save the route details. if payment data exists then save payment also.
      * @return {undefined}
      */
-    $scope.saveRoute = function(){
+    $scope.saveRoute = function() {
         var saveData = $scope.saveData,
             entity   = $scope.selectedEntity;
 
         // If no charge codes and billing group selected abort saving.
-        if(entity.attached_charge_codes.length === 0 && entity.attached_billing_groups.length === 0){
+        if(entity.attached_charge_codes.length === 0 &&
+            entity.attached_billing_groups.length === 0) {
+
             $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
             return;
         }
 
-        if( $scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "" && !$scope.paymentFlags.isShownExistingCCPayment){
+        if( $scope.saveData.payment_type !== null &&
+            $scope.saveData.payment_type !== "" &&
+            !$scope.paymentFlags.isShownExistingCCPayment){
+
+            /**
+             * If new payment type is added, save the payment first,
+             * then save the route.
+             */
             $scope.savePayment();
         }
-        else{
+        else {
             saveRouteAPICall();
         }
     };
@@ -581,17 +440,6 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
             data.allotment_id = $scope.allotmentId;
             data.bill_number = $scope.getSelectedBillNumber();
             $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
-        }
-    };
-
-    /**
-    * function to get selected bill number
-    */
-    $scope.getSelectedBillNumber = function(){
-        for(var i = 0; i < $scope.bills.length; i++){
-            if($scope.bills[i].id === $scope.selectedEntity.to_bill) {
-                return $scope.bills[i].bill_number;
-            }
         }
     };
 
