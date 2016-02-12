@@ -1,0 +1,80 @@
+<!-- Collapse View -->
+<div ng-hide="selectedMenu ==='text-setup'" ng-click="$emit('changeMenu','text-setup')" class="cursor_pointer">
+    <em class="rate_step_title">Text</em>&nbsp;<span class="italic_text">Setup</span>
+    <div style="float:right"><img src="/assets/cssimg/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+<div ng-show="selectedMenu ==='text-setup'">
+    <form class="form zest-web-settins-form float">
+        <fieldset class="holder max-width">
+            <div class="form-title full-width">
+                <h3><span>Text setup</span></h3>
+            </div>
+            <div class="entry full-width">
+                <label>
+                    template font
+                </label>
+                <div class="entry">
+                    <div class="select">
+                        <select ng-options="font for font in supportedFonts" ng-model="globalSettings.font_family">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder left max-width">
+            <table class="grid rate_addons">
+                <col width="15%">
+                <col width="30%">
+                <col width="20%">
+                <col width="20%">
+                <thead>
+                    <th class="header">#</th>
+                    <th class="header">color</th>
+                    <th class="header">small screen font size</th>
+                    <th class="header center_align">large screen font size</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Template text color</td>
+                        <td>
+                            <ui-colorpicker ng-model="globalSettings.title_text_color"></ui-colorpicker>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                        <td>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                        <td>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sub text color</td>
+                        <td>
+                            <ui-colorpicker ng-model="globalSettings.sub_text_color"></ui-colorpicker>
+                            <input ng-model="globalSettings.sub_text_color">
+                        </td>
+                        <td>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                        <td>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Button text color</td>
+                        <td>
+                            <ui-colorpicker ng-model="globalSettings.button.color"></ui-colorpicker>
+                            <input ng-model="globalSettings.button.color">
+                        </td>
+                        <td>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                        <td>
+                            <input ng-model="globalSettings.title_text_color">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </form>
+</div>

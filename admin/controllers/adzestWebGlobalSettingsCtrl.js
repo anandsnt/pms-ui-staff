@@ -3,6 +3,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 	BaseCtrl.call(this, $scope);
 	$scope.successMessage = '';
 	$scope.languages = ["EN", "ES"];
+	$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
 	$scope.selectedMenu = "general";
 	$scope.globalSettings = {
 		"zest_web": {
@@ -40,7 +41,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 
 
 	$scope.saveSettings = function() {
-		var saveSettingsCallback = function(){
+		var saveSettingsCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.successMessage = 'Success';
 			$scope.selectedMenu = "";
@@ -48,17 +49,17 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		var data = {
 			"zest_web": $scope.globalSettings
 		}
-		$scope.invokeApi(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, data,saveSettingsCallback);
+		$scope.invokeApi(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, data, saveSettingsCallback);
 	};
 	//on scolling hide all the color pickers
-	$scope.pageScrolled = function(){
+	$scope.pageScrolled = function() {
 		$("*").spectrum("hide");
 	};
 
 	$scope.$on("changeMenu", function(e, value) {
 		$scope.selectedMenu = value;
 	});
-	$scope.cancelClicked = function(){
+	$scope.cancelClicked = function() {
 		$scope.selectedMenu = "";
 	};
 
