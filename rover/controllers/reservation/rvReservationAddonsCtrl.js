@@ -1,11 +1,8 @@
 sntRover.controller('RVReservationAddonsCtrl', [
     '$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv', '$stateParams', '$vault', 'RVReservationPackageSrv', 'RVReservationStateService', 'rvGroupConfigurationSrv', 'rvPermissionSrv',
     function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault, RVReservationPackageSrv, RVReservationStateService, rvGroupConfigurationSrv, rvPermissionSrv) {
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-        if (SWITCH_ROOM_AND_RATES_ALT) {
-            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        }
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        
 
         var setBackButton = function() {
                 if ($stateParams.from_screen === "staycard") {
