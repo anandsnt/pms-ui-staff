@@ -8,16 +8,19 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var fetchLateCheckoutOptionsSuccess = function(response) {
-			$scope.$emit("hideLoader");
-			$scope.lateCheckoutOptions = response;
-			$scope.isOperationCompleted = true;
-		};
 
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LATER_OPTIONS";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-			$scope.invokeApi(GwCheckoutSrv.fetchLateCheckoutOptions, {}, fetchLateCheckoutOptionsSuccess);
+			var onSuccess = function(response) {
+				$scope.lateCheckoutOptions = response;
+				$scope.isOperationCompleted = true;
+			};
+			var options = {
+				params: {},
+				successCallBack: onSuccess
+			};
+			$scope.callAPI(GwCheckoutSrv.fetchLateCheckoutOptions, options);
 		}();
 
 
