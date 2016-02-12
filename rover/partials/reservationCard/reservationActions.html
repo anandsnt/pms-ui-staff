@@ -9,7 +9,7 @@
 			Check out
         		</a>
 
-    <a class="button purple" ng-click = "unAvailablePopup()" ng-show = "(reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT') && (reservationData.reservation_card.is_exclude_from_manual_checkin)">
+    <a class="button purple" ng-click = "unAvailablePopup()" ng-show = "(reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT') && (reservationData.reservation_card.is_exclude_from_manual_checkin)&&(!isStandAlone)">
             Unavailable
     </a>
     <!-- Show balance -->
