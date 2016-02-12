@@ -5,30 +5,30 @@
 </div>
 <!-- Expanded View -->
 <div ng-show="selectedMenu ==='general'">
-   <form class="form zest-web-settins-form float">
-            <fieldset class="holder left max-width">
-                <ad-toggle-button is-checked="globalSettings.is_cms_on" label="{{ 'CMS_STATUS' | translate}}"></ad-toggle-button>
-                </float>
-                <fieldset class="holder right">
-                    <div class="entry full-width">
-                        <label>
-                            {{ 'LANGUAGES' | translate}}
-                        </label>
-                        <div class="entry">
-                            <div class="select">
-                                <select ng-options="language for language in languages" ng-model="globalSettings.language">
-                                </select>
-                            </div>
+    <form class="form zest-web-settins-form float">
+        <fieldset class="holder left max-width">
+            <ad-toggle-button is-checked="globalSettings.is_cms_on" label="{{ 'CMS_STATUS' | translate}}"></ad-toggle-button>
+            </float>
+            <fieldset class="holder right">
+                <div class="entry full-width">
+                    <label>
+                        {{ 'LANGUAGES' | translate}}
+                    </label>
+                    <div class="entry">
+                        <div class="select">
+                            <select ng-options="language for language in languages" ng-model="globalSettings.language">
+                            </select>
                         </div>
                     </div>
-                </fieldset>
-                <div class="actions float">
-                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
-                        CANCEL
-                    </button>
-                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
-                        SAVE_CHANGES
-                    </button>
                 </div>
-        </form>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+    </form>
 </div>
