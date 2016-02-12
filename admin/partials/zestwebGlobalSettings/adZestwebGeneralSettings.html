@@ -1,0 +1,34 @@
+<!-- Collapse View -->
+<div ng-hide="selectedMenu ==='general'" ng-click="$emit('changeMenu','general')" class="cursor_pointer">
+    <em class="rate_step_title">General</em>&nbsp;<span class="italic_text">Setup</span>
+    <div style="float:right"><img src="/assets/cssimg/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+<div ng-show="selectedMenu ==='general'">
+    <form class="form zest-web-settins-form float">
+        <fieldset class="holder left max-width">
+            <ad-toggle-button is-checked="globalSettings.is_cms_on" label="{{ 'CMS_STATUS' | translate}}"></ad-toggle-button>
+            </float>
+            <fieldset class="holder right">
+                <div class="entry full-width">
+                    <label>
+                        {{ 'LANGUAGES' | translate}}
+                    </label>
+                    <div class="entry">
+                        <div class="select">
+                            <select ng-options="language for language in languages" ng-model="globalSettings.language">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+    </form>
+</div>

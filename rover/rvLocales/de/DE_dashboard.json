@@ -12,4 +12,6 @@
     "CHECKING_IN": "Einchecken",
     "INHOUSE": "Im Haus",
     "CHECKING_OUT": "AUSCHECKEN",
-    "DASHBOARD_HEADING": "Armaturenbrett"
+    "DASHBOARD_HEADING": "Armaturenbrett",
+    "CHECKED_OUT": "Checked Out",
+    "WITH_BALANCE": "with balance"

@@ -1,5 +1,6 @@
 sntZestStation.controller('zsPostCheckinCtrl', [
 	'$scope',
+	'$rootScope',
 	'$state',
 	'zsModeConstants',
 	'zsEventConstants',
@@ -8,7 +9,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	'$stateParams',
 	'$sce',
 	'$window',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $window) {
+	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $window) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -22,6 +23,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	 * @param  {[type]} event
 	 * @return {[type]} 
 	 */
+        
+        var hideNavButtons = function(){
+            $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
+	};
+	var showNavButtons = function(){
+		$scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
+		$scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
+	};
+        
+        
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             //$state.go ('zest_station.home');//go back to reservation search results
             
@@ -29,7 +41,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if (current === 'zest_station.delivery_options'){
                 $scope.at = 'deliver-registration';
                 $scope.selectedReservation = $state.selectedReservation;
-                
+                hideNavButtons();
             } 
             else if (current === 'zest_station.room_error'){
                 $state.go('zest_station.reservation_details');
@@ -40,9 +52,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } 
             
             else if (current === 'zest_station.error'){
-                console.info('from: ',$state.from);
                 if ($state.from === 'card-swipe'){
                     $state.go('zest_station.card_swipe');
+                } if ($state.from === 'deliver-registration'){
+                    $state.go('zest_station.delivery_options');
                 } else {
                     $scope.initErrorScreen();
                 }
@@ -50,7 +63,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.invalid_email_retry' && $state.from !== 'email-delivery'){
                 $state.go('zest_station.input_reservation_email_after_swipe');
                 
-            }else if (current === 'zest_station.invalid_email_retry' && $state.from === 'email-delivery'){
+            } else if (current === 'zest_station.invalid_email_retry' && $state.from === 'email-delivery'){
                $scope.selectEmailDelivery();
                 
             } else if (current === 'zest_station.key_error'){
@@ -126,10 +139,15 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         
 
         $scope.selectEmailDelivery = function(){
-            $scope.at = 'email-delivery';
+            if ($state.skipCheckinEmail){
+                $scope.editEmailAddress();
+            } else {
+                $scope.at = 'email-delivery';
+            }
         };
         
         $scope.skipEmailEntryAfterSwipe = function(){
+            $state.skipCheckinEmail = true;
             $state.go('zest_station.check_in_keys');
         };
         
@@ -218,7 +236,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 if (response.status === 'success'){
                     if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
                         $state.go('zest_station.check_in_keys');
-                    } else {
+                    } else {//at the end of check-in and now updating email address
+                        showNavButtons();
+                        $state.from = 'deliver-registration';
+                        $state.skipCheckinEmail = false;
+                        //if skipped email before
+                        $state.updatedEmail = true;
                         $state.go('zest_station.delivery_options');
                     }
                     //$scope.selectEmailDelivery();
@@ -254,11 +277,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 var isValidEmail = $scope.validEmailAddress($state.input.email);
                 if (isValidEmail){
                     $scope.updateGuestEmail();
+                    $state.skipCheckinEmail = false;
                 } else {
                     $state.go('zest_station.invalid_email_retry');
                 }
-                
-                
                 
             } if ($scope.at === 'invalid-email'){
                 $state.input.email = $scope.input.inputTextValue;
@@ -269,8 +291,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 } else {
                     $state.go('zest_station.invalid_email_retry');
                 }
-                
-                
                 
             } else if ($scope.at === 'email-delivery'){
                 $state.input.email = $scope.input.inputTextValue;
@@ -296,6 +316,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.selectedReservation = $state.selectedReservation;
             $scope.headingText = "REGISTRATION_READY_HEADER";
             $scope.subHeadingText = "REGISTRATION_READY_HEADER_SUB";
+            hideNavButtons();
         };
         
         $scope.reTryCardSwipe = function(){
@@ -319,6 +340,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             
             if (current === 'zest_station.delivery_options'){
                 $scope.setDeliveryParams();
+                if ($state.updatedEmail){
+                    showNavButtons();
+                    $scope.selectEmailDelivery();
+                }
             } else if (current === 'zest_station.swipe_pay_error'){
                 $scope.at = 'swipe-pay-error';
                 $scope.headingText = 'SWIPE_ERR_HEADER';
@@ -349,6 +374,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.at = 'last_confirm';   
                 $scope.modalBtn1 = '';
                 $scope.modalBtn2 = 'Exit';
+                
+                hideNavButtons();
+                
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
                 
@@ -399,7 +427,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $state.go('zest_station.error');
         };
         $scope.onPrintSuccess = function(success){
-            console.info('print success, continue');
             $state.fromPrintSuccess = true;
             $state.go('zest_station.last_confirm');
             $scope.$emit('hideLoader');
@@ -425,7 +452,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                setTimeout(function() {
                     var printer = (sntZestStation.selectedPrinter);
                     $window.print();
-                    if ( sntZestStation.cordovaLoaded ) {
+                    if ( sntapp.cordovaLoaded ) {
                             cordova.exec(
                                 $scope.onPrintSuccess(), //print complete, should go to final screen
                                 $scope.onPrintError(), //if print error, inform guest there was an error

@@ -1,0 +1,93 @@
+<!-- Collapse View -->
+<div ng-hide="selectedMenu ==='colors'" ng-click="$emit('changeMenu','colors')" class="cursor_pointer">
+    <em class="rate_step_title">Color</em>&nbsp;<span class="italic_text">Setup</span>
+    <div style="float:right"><img src="/assets/cssimg/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+<div ng-show="selectedMenu ==='colors'">
+    <form class="form zest-web-settins-form float">
+        <fieldset class="holder left max-width">
+            <div class="form-title full-width">
+                <h3><span translate>COLOR_SEC_LABEL</span></h3>
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Background Color</label>
+                <ui-colorpicker ng-model="globalSettings.main_bg.background"></ui-colorpicker>
+                <input ng-model="globalSettings.main_bg.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Header Background</label>
+                <ui-colorpicker ng-model="globalSettings.header_bg.background"></ui-colorpicker>
+                <input ng-model="globalSettings.header_bg.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label> Template text color</label>
+                <ui-colorpicker ng-model="globalSettings.title_text_color"></ui-colorpicker>
+                <input ng-model="globalSettings.title_text_color">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Sub text color</label>
+                <ui-colorpicker ng-model="globalSettings.sub_text_color"></ui-colorpicker>
+                <input ng-model="globalSettings.sub_text_color">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Template button Background</label>
+                <ui-colorpicker ng-model="globalSettings.button.background"></ui-colorpicker>
+                <input ng-model="globalSettings.button.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Template button text color</label>
+                <ui-colorpicker ng-model="globalSettings.button.color"></ui-colorpicker>
+                <input ng-model="globalSettings.button.color">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Light button Background</label>
+                <ui-colorpicker ng-model="globalSettings.light_button.background"></ui-colorpicker>
+                <input ng-model="globalSettings.light_button.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Dark button Background</label>
+                <ui-colorpicker ng-model="globalSettings.dark_button.background"></ui-colorpicker>
+                <input ng-model="globalSettings.dark_button.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Checkout time 1 Background</label>
+                <ui-colorpicker ng-model="globalSettings.checkout_time_1.background"></ui-colorpicker>
+                <input ng-model="globalSettings.checkout_time_1.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Checkout time 2 Background</label>
+                <ui-colorpicker ng-model="globalSettings.checkout_time_2.background"></ui-colorpicker>
+                <input ng-model="globalSettings.checkout_time_2.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Checkout time 3 Background</label>
+                <ui-colorpicker ng-model="globalSettings.checkout_time_3.background"></ui-colorpicker>
+                <input ng-model="globalSettings.checkout_time_3.background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Calendar main Background</label>
+                <ui-colorpicker ng-model="globalSettings.calender_main_background"></ui-colorpicker>
+                <input ng-model="globalSettings.calender_main_background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Calendar header Background</label>
+                <ui-colorpicker ng-model="globalSettings.calender_header_background"></ui-colorpicker>
+                <input ng-model="globalSettings.calender_header_background">
+            </div>
+            <div class="entry entry-color-picker">
+                <label>Calendar cell Background</label>
+                <ui-colorpicker ng-model="globalSettings.calender_cell_background"></ui-colorpicker>
+                <input ng-model="globalSettings.calender_cell_background">
+            </div>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                CANCEL
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+    </form>
+</div>

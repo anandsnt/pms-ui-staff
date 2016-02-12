@@ -13,6 +13,14 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/hoteldetails/edit'
 		});
 
+		$stateProvider.state('admin.zestWebGlobalSetup', {
+			templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
+			controller: 'ADzestWebGlobalSettingsCtrl',
+			url : '/zestWebGlobalSettings'
+		});
+
+		
+
 		$stateProvider.state('admin.propertyInterfaceSetup', {
 			templateUrl: '/assets/partials/property/propertyInterfaceSetup.html',
 			controller: 'ADPropertyInterfaceSetupCtrl',

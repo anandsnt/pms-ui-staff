@@ -1,0 +1,23 @@
+<!-- main section starts here -->
+<div class="container">
+    <!-- main content -->
+    <div class="row" ng-hide="isPosting">
+        <div class="col-md-1"></div>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing">
+            <p class="main-text final-text">You're checked in!</p>
+            <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+        </div>
+        <div class="horizontal-line-sep-mobile"></div>
+        <!-- right side -->
+        <div class="col-md-2">
+            <div class="vertical-line">&nbsp;</div>
+        </div>
+        <div class="col-md-3 top-spacing sm-no-top-spacing">
+            <p class="sub-main-text">{{responseData.delivery_message}}
+            </p>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+</div>

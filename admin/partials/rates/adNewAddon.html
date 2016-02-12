@@ -130,7 +130,7 @@
                     </label>
                 </div>
             </fieldset>
-            <fieldset class="holder holder full-width">
+            <fieldset ng-hide="isHourlyRatesEnabled" class="holder holder full-width">
                 <div class="form-title">
                     <h3>
                         <span>Exclude from&nbsp;</span>                                                    
@@ -168,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-hide="isHourlyRatesEnabled" class="entry has-sortable no-margin-right">
+                    <div class="entry has-sortable no-margin-right">
                         <label class="center_align">
                             <span class="assigned_room_text">Excluded from Rates</span></label>
                         <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="singleAddon.excludedRates" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
