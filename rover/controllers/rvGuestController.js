@@ -13,12 +13,7 @@ angular.module('sntRover').controller('guestCardController', [
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-		if (SWITCH_ROOM_AND_RATES_ALT) {
-			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		}
-
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 		BaseCtrl.call(this, $scope);
 

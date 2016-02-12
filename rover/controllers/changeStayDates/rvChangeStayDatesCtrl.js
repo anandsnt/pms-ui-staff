@@ -10,11 +10,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			scope: $scope
 		};
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-		if (SWITCH_ROOM_AND_RATES_ALT) {
-			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		}
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 		// pass in something to the next state which ever it may be
 		$rootScope.setNextState = {

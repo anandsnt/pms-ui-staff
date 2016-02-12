@@ -34,11 +34,8 @@ sntRover.controller('reservationActionsController', [
 		var TZIDate = tzIndependentDate,
 			reservationMainData = $scope.reservationParentData;
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-        if (SWITCH_ROOM_AND_RATES_ALT) {
-            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        }
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        
 
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied

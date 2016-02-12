@@ -11,11 +11,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-        if (SWITCH_ROOM_AND_RATES_ALT) {
-            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        }
+        var roomAndRatesState ='rover.reservation.staycard.mainCard.room-rates';
+        
 
 
         $rootScope.setPrevState = {
