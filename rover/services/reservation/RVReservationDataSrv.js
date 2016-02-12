@@ -276,15 +276,45 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 		};
 
 		self.sortRatesAsc = function(a, b) {
-			var averageA = parseFloat(a.adr);
-			var averageB = parseFloat(b.adr);
-			if (averageA < averageB) {
-				return -1;
+			if (a.isCorporate != b.isCorporate) {
+				return a.isCorporate ? -1 : 1;
 			}
-			if (averageA > averageB) {
-				return 1;
+			if (a.score != b.score) {
+				return b.score - a.score; // descending
 			}
 			return 0;
+		};
+
+		self.sortRatesInRoomsDESC = function(a, b) {
+			if (a.isCorporate != b.isCorporate) {
+				return a.isCorporate ? -1 : 1;
+			}
+			if (a.isMember != b.isMember) {
+				return a.isMember ? -1 : 1;
+			}
+			if (a.isPromotion != b.isPromotion) {
+				return a.isPromotion ? -1 : 1;
+			}
+			if (a.adr != b.adr) {
+				return b.adr - a.adr;
+			}
+			return a.adr - b.adr;
+		};
+
+		self.sortRatesInRoomsASC = function(a, b) {
+			if (a.isCorporate != b.isCorporate) {
+				return a.isCorporate ? -1 : 1;
+			}
+			if (a.isMember != b.isMember) {
+				return a.isMember ? -1 : 1;
+			}
+			if (a.isPromotion != b.isPromotion) {
+				return a.isPromotion ? -1 : 1;
+			}
+			if (a.adr != b.adr) {
+				return a.adr - b.adr;
+			}
+			return b.adr - a.adr;
 		};
 
 		self.sortRoomTypesAscADR = function(a, b) {
@@ -306,46 +336,6 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			}
 			return 0;
 		};
-
-		self.raiseCorpRates = function(a, b) {
-			if (a.isCorporate && b.isCorporate) {
-				// TODO : Revisit this!
-				// if (parseInt($scope.displayData.allRates[a].account_id) === parseInt($scope.reservationDetails.companyCard.id)) {
-				// 	return -1;
-				// }
-				// if (parseInt($scope.displayData.allRates[b].account_id) === parseInt($scope.reservationDetails.companyCard.id)) {
-				// 	return 1;
-				// }
-				return 0;
-			}
-			if (a.isCorporate) {
-				return -1;
-			}
-			if (b.isCorporate) {
-				return 1;
-			}
-			return 0;
-		};
-
-		self.raiseMemberRates = function(a, b) {
-			if (a.isMember) {
-				return -1;
-			}
-			if (b.isMember) {
-				return 1;
-			}
-			return 0;
-		};
-
-		self.raisePromoRates = function(a, b) {
-			if (a.isPromotion && !b.isPromotion) {
-				return -1
-			}
-			if (b.isPromotion && !a.isPromotion) {
-				return 1
-			}
-			return 0;
-		}
 
 		self.isVaryingOccupancy = function(stayDates, arrivalDate, departureDate, numNights) {
 			// If staying for just one night then there is no chance for varying occupancy
