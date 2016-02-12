@@ -54,6 +54,18 @@ var overrideStylesWithCMSdata = function(styles) {
 	if (!isBlank(styles.dark_button.background)) {
 		appendStyleString('.dark-button,.dark-button:hover { background:' + styles.dark_button.background + '!important}');
 	}
+	// set checkouttime1 bg color
+	if (!isBlank(styles.checkout_time_1.background)) {
+		appendStyleString('.checkouttime1,.checkouttime1:hover { background:' + styles.checkout_time_1.background + '!important}');
+	}
+	// set checkouttime2 bg color
+	if (!isBlank(styles.checkout_time_2.background)) {
+		appendStyleString('.checkouttime2,.checkouttime2:hover { background:' + styles.checkout_time_2.background + '!important}');
+	}
+	// set checkouttime3 bg color
+	if (!isBlank(styles.checkout_time_3.background)) {
+		appendStyleString('.checkouttime3,.checkouttime3:hover { background:' + styles.checkout_time_3.background + '!important}');
+	}
 	if (styleString.length > 0) {
 		addStyleString(styleString);
 	} else {
