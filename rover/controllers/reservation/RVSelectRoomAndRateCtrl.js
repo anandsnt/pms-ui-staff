@@ -300,29 +300,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 					// ************************************************************************************************* STEP 1a : Sort rates based on the preference
 					if ($scope.stateCheck.sortOrder === "HIGH_TO_LOW") {
-						roomType.ratesArray.sort(RVReservationDataService.sortRatesDesc);
+						roomType.ratesArray.sort(RVReservationDataService.sortRatesInRoomsDESC);
 					} else {
-						roomType.ratesArray.sort(RVReservationDataService.sortRatesAsc);
-					}
-					// ************************************************************************************************* STEP 1b : Bring Corporate rates on top
-
-					//[CICO-7792] Bring the corporate rates to the top
-					/*  https://stayntouch.atlassian.net/browse/CICO-7792
-					 *	If both a Travel Agent and a Company are linked to the reservation,
-					 *	both with active, valid contracts,
-					 *	display the Company first, then the Travel Agent.
-					 */
-					if (!!$scope.reservationDetails.companyCard.id || !!$scope.reservationDetails.travelAgent.id) {
-						roomType.ratesArray.sort(RVReservationDataService.raiseCorpRates);
-					}
-
-					// ************************************************************************************************* STEP 1c : Bring Member rates to top
-					if (!!$scope.reservationData.member.isSelected) {
-						roomType.ratesArray.sort(RVReservationDataService.raiseMemberRates);
-					}
-					// ************************************************************************************************* STEP 1d : Bring Promotion rates to the top
-					if (!!$scope.reservationData.code.id) {
-						roomType.ratesArray.sort(RVReservationDataService.raisePromoRates);
+						roomType.ratesArray.sort(RVReservationDataService.sortRatesInRoomsASC);
 					}
 
 					if (roomType.ratesArray.length > 0) {
@@ -359,7 +339,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					});
 					if ($scope.stateCheck.showLessRooms) { //--------------------------- [ minimal view ]
 						// put the first room and the least room in the next level
-
 						_.each(roomTypesArray, function(roomType) {
 							if ($scope.display.roomFirstGrid.length < 2) { // ------------------------------------------[ as the rooms are in sorted order by now, put the next best room here. This will remain as the next option unless a room in next level is available ]
 								$scope.display.roomFirstGrid.push(roomType);
