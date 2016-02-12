@@ -33,6 +33,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		if($stateParams.type === "OPEN_BILL_CHECKOUT" ){
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
+			$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
 		}
 		else{
 		//Date picker from date should default to current business date - CICO-8490
@@ -333,7 +334,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.allotment) || 
 					txtInQry(escN(res.room).toString(), false) ||
 					txtInQry(escN(res.confirmation).toString(), false) ||
-					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0));
+					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0)  ||
+					txtInQry(res.external_confirm_no));
 		};
 
 		var applyFilters = function(isLocalFiltering) {

@@ -914,6 +914,7 @@
                     &:nth-child(even) { margin-right: 0; }
                 }
 
+                /* Commision ***/
                 &.item-commission {
                     .entry {
                         .float;
@@ -934,6 +935,47 @@
                             .size(50px, 60px);
                             .pull-left;
                         }
+                    }
+                }
+
+                /* Reference Numbers ***/
+                &.item-reference {
+                    margin: 0;
+                    float: none;
+                    width: 100%;
+
+                    .entry {
+                        margin-bottom: 10px;
+                        .float;
+
+                        .select {
+                            margin-right: 10px;
+                            .calc-width(60, 65);
+                            .pull-left;
+                        }
+
+                        input {
+                            line-height: 50px;
+                            margin-right: 10px;
+                            .calc-width(40, 65);
+                            .placeholder-text(16px, 50px, 400, @grey3);
+                            .pull-left;
+                        }
+
+                        .icons {
+                            padding: 0;
+                            .show;
+                            .square(50px);
+                            .pull-left;
+
+                            &:nth-last-child(2) { margin-right: 10px; }
+                        }
+ 
+                        .icon-add-60 { background-position: 15px -3685px;  }
+
+                        .icon-remove-60 { background-position: 15px -3745px; }
+
+                        &:last-child { margin-bottom: 20px; }
                     }
                 }
             }

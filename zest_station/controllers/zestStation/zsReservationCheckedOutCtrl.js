@@ -38,7 +38,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
                 $state.at = 'email-nav';
                 $scope.afterEmailSave();
             } else {
-                if ($state.at === 'print-nav' && $state.from === 'email-skip'){//coming from email skip means email IS enabled and user doesnt have an email on file
+                if ($state.at === 'print-nav' && $stateParams.from === 'email-skip'){//coming from email skip means email IS enabled and user doesnt have an email on file
                     $state.at = 'edit-email';//back to email by way of print-nav, 
                     $state.from = 'review-bill';
                     $scope.init();
@@ -58,6 +58,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.toCheckoutFinal();
   };
   $scope.toCheckoutFinal = function(){
+        if ($stateParams.from === 'email-skip'){
+            $scope.emailSkipped = true;
+        } else {
+            $scope.emailSkipped = false;
+        }
         $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
         $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
         $state.checkout_finalmode = true;
@@ -165,15 +170,18 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
    */
     
     $scope.skipEmailEntryAfterSwipe = function(){
-        
         $state.skipCheckoutEmail = true;
         if ($state.updatedEmail){
+            $stateParams.from = 'updated-email';
                 $scope.afterEmailSave();
         } else {
             if ($scope.zestStationData.guest_bill.print && !$state.emailEdited){
-                $state.from = 'email-skip';
+                $stateParams.from = 'email-skip';
                 $scope.mode = "print-mode";
             } else {
+                if (!$state.emailEdited){
+                    $stateParams.from = 'email-skip';
+                }
                 $scope.afterEmailSave();
             }
         }
