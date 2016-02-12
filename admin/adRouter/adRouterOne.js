@@ -14,7 +14,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		});
 
 		$stateProvider.state('admin.zestWebGlobalSetup', {
-			templateUrl: '/assets/partials/zestwebGlobalSettings/zestWebGlobalSettings.html',
+			templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
 			controller: 'ADzestWebGlobalSettingsCtrl',
 			url : '/zestWebGlobalSettings'
 		});

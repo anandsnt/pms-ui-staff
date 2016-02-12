@@ -3,6 +3,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 	BaseCtrl.call(this, $scope);
 	$scope.successMessage = '';
 	$scope.languages = ["EN", "ES"];
+	$scope.selectedMenu = "general";
 	$scope.globalSettings = {
 		"zest_web": {
 			"is_cms_on": false,
@@ -42,6 +43,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		var saveSettingsCallback = function(){
 			$scope.$emit('hideLoader');
 			$scope.successMessage = 'Success';
+			$scope.selectedMenu = "";
 		}
 		var data = {
 			"zest_web": $scope.globalSettings
@@ -53,5 +55,11 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$("*").spectrum("hide");
 	};
 
+	$scope.$on("changeMenu", function(e, value) {
+		$scope.selectedMenu = value;
+	});
+	$scope.cancelClicked = function(){
+		$scope.selectedMenu = "";
+	};
 
 }]);
