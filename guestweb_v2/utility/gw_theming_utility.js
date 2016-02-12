@@ -66,6 +66,18 @@ var overrideStylesWithCMSdata = function(styles) {
 	if (!isBlank(styles.checkout_time_3.background)) {
 		appendStyleString('.checkouttime3,.checkouttime3:hover { background:' + styles.checkout_time_3.background + '!important}');
 	}
+	// set calender bg color
+	if (!isBlank(styles.calender_header_background)) {
+		appendStyleString('.date-picker-header ,.pickadate-cell .pickadate-active{ background:' + styles.calender_header_background + '!important}');
+	}
+	// set calender main bg color
+	if (!isBlank(styles.calender_main_background)) {
+		appendStyleString('.date-picker-wrap { background:' + styles.calender_main_background + '!important}');
+	}
+	//set calender cell bg
+	if (!isBlank(styles.calender_cell_background)) {
+		appendStyleString('.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled { background:' + styles.calender_cell_background + '!important}');
+	}
 	if (styleString.length > 0) {
 		addStyleString(styleString);
 	} else {
