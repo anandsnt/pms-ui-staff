@@ -54,6 +54,30 @@ var overrideStylesWithCMSdata = function(styles) {
 	if (!isBlank(styles.dark_button.background)) {
 		appendStyleString('.dark-button,.dark-button:hover { background:' + styles.dark_button.background + '!important}');
 	}
+	// set checkouttime1 bg color
+	if (!isBlank(styles.checkout_time_1.background)) {
+		appendStyleString('.checkouttime1,.checkouttime1:hover { background:' + styles.checkout_time_1.background + '!important}');
+	}
+	// set checkouttime2 bg color
+	if (!isBlank(styles.checkout_time_2.background)) {
+		appendStyleString('.checkouttime2,.checkouttime2:hover { background:' + styles.checkout_time_2.background + '!important}');
+	}
+	// set checkouttime3 bg color
+	if (!isBlank(styles.checkout_time_3.background)) {
+		appendStyleString('.checkouttime3,.checkouttime3:hover { background:' + styles.checkout_time_3.background + '!important}');
+	}
+	// set calender bg color
+	if (!isBlank(styles.calender_header_background)) {
+		appendStyleString('.date-picker-header ,.pickadate-cell .pickadate-active{ background:' + styles.calender_header_background + '!important}');
+	}
+	// set calender main bg color
+	if (!isBlank(styles.calender_main_background)) {
+		appendStyleString('.date-picker-wrap { background:' + styles.calender_main_background + '!important}');
+	}
+	//set calender cell bg
+	if (!isBlank(styles.calender_cell_background)) {
+		appendStyleString('.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled { background:' + styles.calender_cell_background + '!important}');
+	}
 	if (styleString.length > 0) {
 		addStyleString(styleString);
 	} else {
