@@ -16,8 +16,8 @@ module.exports = {
 			nonMinifiedFiles: [
 				guestwebroot + 'utility/gw_util.js',
 				guestwebroot + 'utility/gw_theming_utility.js',
-				guestwebroot + 'scripts/gw_app.js',
-				guestwebroot + 'scripts/gw_app_config.js',
+				guestwebroot + 'gw_app.js',
+				guestwebroot + 'gw_app_config.js',
 				guestwebroot + 'routers/gw_main_app_router.js',
 				guestwebroot + 'routers/gw_app_router.js',
 				guestwebroot + 'scripts/angular-pickdate.js',
