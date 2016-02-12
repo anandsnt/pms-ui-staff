@@ -376,7 +376,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.headingText = 'TO_COMPLETE';
             }
             $scope.signatureData = "";
-            $scope.initiateCardReader();
+            
+        if ($scope.zestStationData.payment_gateway === "sixpayments") {
+            $scope.initiateCardReader();//sixpay
+        } else {
+            console.info('not sixpay :)')
+        }
+            
          //   $scope.refreshIframeWithGuestData($scope.selectedReservation); //used only for manual entry
         };
         
@@ -384,43 +390,33 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $scope.$on('SWIPE_ACTION',function(swipedCardData){
-            
-            /*
+        $scope.$on('SWIPE_ACTION',function(evt, swipedCardData){
                 var swipeOperationObj = new SwipeOperation();
                 var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
                     
-                var tokenizeSuccessCallback = function(tokenValue){
+                    var cb = function(response){
+                        
+                        $scope.$emit('hideLoader');
+                    console.info('general callback');
+                    console.info(response);
+                    }
+                    
+                    var tokenizeSuccessCallback = function(tokenValue){
                   //  alert('token success: ',tokenValue);
-                    $scope.$emit('hideLoader');
+                    
+                        $scope.$emit('hideLoader');
                         swipedCardData.token = tokenValue;
-                        console.info('got token from sixpay swipe/chip');
-                        console.info('swipedCardData, ',swipedCardData);
                         
                         //$scope.addNewPaymentModal(swipedCardData);
                         $scope.swippedCard = true;
                         $scope.saveCardDataFromSwipe(swipedCardData);
                 };
                 var failcb = function(response){
+                    $scope.$emit('hideLoader');
+                    console.warn('failed to get token from MLI');
                     alert('failed to tokenize');
                 };
-                $scope.invokeApi(zsPaymentSrv.tokenize, getTokenFrom, tokenizeSuccessCallback, failcb);
-            */
+                $scope.invokeApi(zsPaymentSrv.tokenize, getTokenFrom, cb);
         });
         
        $scope.saveCardDataFromSwipe = function(swipedCardData){
@@ -465,8 +461,115 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         var initiateDesktopCardReader = function(){
             //var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
             //zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         };
         $scope.cardReader = new CardOperation();
+
+
+$scope.initWsSwipe = function(){
+  
+        var config = {
+          "swipeService":"wss://localhost:4649/CCSwipeService"   ,
+          "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
+          "close_alert":"Socket Server is no longer connected.",
+          "swipe_alert":"Please swipe.",
+          "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
+        };
+    
+    
+	var isActive;
+	function onBlur() {
+		isActive = false;
+	};
+	function onFocus(){
+		isActive = true;
+	};
+
+	var ws;
+        function simulateSwipe() {
+            ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
+	}
+	function observe() {
+	    ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
+	}
+	function UUIDforDevice() {
+	    ws.send("{\"Command\" : \"cmd_device_uid\"}");
+	}
+	function DispenseKey() {
+	    ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"25CC2CDA31A70E87AF3731961096C90CA0\"}");
+	}
+	function EjectKeyCard() {
+	    ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
+	}
+	function CaptureKeyCard() {
+	    ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
+	}
+	function InsertKeyCard() {
+	    ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
+	}
+	function connect() {
+            ws = new WebSocket(config['swipeService']);
+            
+	    //Triggers when websocket connection is established.
+            ws.onopen = function () {
+		//alert(config['connected_alert']);
+            };
+            
+	    // Triggers when there is a message from websocket server.
+	    ws.onmessage = function (evt) {
+                	var received_msg = evt.data;
+			/*if(0 == received_msg.localeCompare("checkactive")) {
+				if(isActive == true)
+					ws.send("active");
+				else 
+					ws.send("not_active");
+			}
+			else {
+                		alert(received_msg);
+			}*/
+			console.log(received_msg);
+                        
+                        $scope.$emit('SWIPE_ACTION',received_msg)
+                        
+                        $scope.goToCardSign();
+            };
+
+	    // Triggers when the server is down.
+            ws.onclose = function () {
+                // websocket is closed.
+                alert(config['close_alert']);
+            };
+            return ws;
+        };
+        setTimeout(function(){
+            connect();    
+        },config['connect_delay']);
+        
+            
+        setTimeout(function(){
+            observe();    
+        },5000);
+            
+            
+            console.log('------')
+            console.log('------')
+            
+            
+    
+    
+    
+};
 
         $scope.initiateCardReader = function() {
             console.info('init card reader for sixpay');
@@ -491,13 +594,22 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         /*
          * Start Card reader now!.
          */
+        
+        
+        
+        $scope.initWsSwipe();
         if ($scope.zestStationData.payment_gateway !== "sixpayments") {
         /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
          * desktopSwipeEnabled flag is true
          */
+        
+        
+        
             if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
+                console.log('init desktop swipe, any device');
                 initiateDesktopCardReader();
             } else {
+                console.log('init reader')
               //Time out is to call set Browser
                   setTimeout(function() {
                     $scope.initiateCardReader();
@@ -533,8 +645,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     data.payment_type = "CC";
                 }   
                 data.emv_terminal_id = $state.emv_terminal_id;
-                
-                $scope.$emit('showLoader');
+                console.log('trying to get sixpayment swipe...')
+                //$scope.$emit('showLoader');
 		$scope.shouldShowWaiting = true;
                 console.warn('getting chip and pin token, waiting for sixpay....')
 		zsPaymentSrv.chipAndPinGetToken(data).then(function(response) {
@@ -596,8 +708,8 @@ var CardOperation = function(){
 
 	this.startReader = function(options){
 		options['shouldCallRecursively'] = true;
-                console.log('listening for swipe--------------')
-		that.listenForSingleSwipe(options);
+                that.listenForSingleSwipe(options);
+            
 	};
 
 	// function used to call cordova services
@@ -635,12 +747,10 @@ var CardOperation = function(){
                         // if success call back require any parameters
                         function(data){
                                 if(successCallBackParameters !== null){
-                                        alert('card read success');
                                         successCallBack(data, successCallBackParameters);
                                         that.callRecursively(options);
                                 }
                                 else{
-                                        alert('card read success!');
                                         successCallBack(data);
                                         that.callRecursively(options);
                                 }
@@ -648,7 +758,6 @@ var CardOperation = function(){
                         },
                         // if failure/error call back require any parameters
                         function(error){
-                            alert('failed!')
                                 if(failureCallBackParameters !== null){
                                         failureCallBack(error, failureCallBackParameters);
                                 }
@@ -779,29 +888,24 @@ var SwipeOperation = function(){
 	 * @param {obj} swipedCardData - initial swiped data to create token
 	 */
 	this.createDataToTokenize = function(swipedCardData){
-                alert('createDataToTokenize')
+            if (typeof swipedCardData === typeof 'str'){
+                swipedCardData = JSON.parse(swipedCardData);
+            }
+            console.log(swipedCardData);
 			var ksn = swipedCardData.RVCardReadTrack2KSN;
-      		if(swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined"){
+                        if(swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined"){
 				ksn = swipedCardData.RVCardReadETBKSN;
 			}
-                        alert('ksn: [ '+ksn+' ]');
 			var getTokenFrom = {
 				'ksn': ksn,
 				'pan': swipedCardData.RVCardReadMaskedPAN
 			};
                         
-                        alert('pan: [ '+getTokenFrom.pan+' ]');
-
 			if(swipedCardData.RVCardReadTrack2!==''){
 				getTokenFrom.et2 = swipedCardData.RVCardReadTrack2;
 			} else if(swipedCardData.RVCardReadETB !==""){
 				getTokenFrom.etb = swipedCardData.RVCardReadETB;
 			}
-                        
-                        
-                        alert('et2: [ '+getTokenFrom.et2+' ]');
-                        alert('etb: [ '+getTokenFrom.etb+' ]');
-                        
                         
 			getTokenFrom.is_encrypted = true;
 			if(swipedCardData.RVCardReadIsEncrypted === 0 || swipedCardData.RVCardReadIsEncrypted === '0'){
@@ -813,7 +917,6 @@ var SwipeOperation = function(){
 	 * Function to create the data to render in screens
 	 */
 	this.createSWipedDataToRender = function(swipedCardData){
-            alert('createSWipedDataToRender')
 		var swipedCardDataToRender = {
 			"cardType": swipedCardData.RVCardReadCardType,
 			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),
