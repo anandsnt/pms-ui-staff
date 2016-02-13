@@ -4,7 +4,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 	$scope.successMessage = '';
 	$scope.languages = ["EN", "ES"];
 	$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
-	$scope.selectedMenu = "general";
+	$scope.selectedMenu = "";
 	$scope.globalSettings = {
 		"zest_web": {
 			"is_cms_on": false,
