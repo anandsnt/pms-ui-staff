@@ -1,10 +1,11 @@
+//blank check
 function isBlank(pString) {
 	if (!pString || pString.length == 0) {
 		return true;
 	}
 	return !/[^\s]+/.test(pString);
 }
-
+// inject styles to head tag
 function addStyleString(str) {
 	var node = document.createElement('style');
 	node.innerHTML = str;
@@ -12,7 +13,7 @@ function addStyleString(str) {
 }
 
 var styleString = "";
-
+//concat style strings
 function appendStyleString(str) {
 	styleString = styleString + str;
 };
