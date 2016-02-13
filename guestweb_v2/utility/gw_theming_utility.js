@@ -106,6 +106,30 @@ var overrideStylesWithCMSdata = function(styles) {
 	if (!isBlank(styles.button_text.sd_font_size)) {
 		appendStyleString('@media (max-width: 480px) {.btn { font-size:'+styles.button_text.sd_font_size+'px !important}}');
 	}
+	// set template footer text color
+	if (!isBlank(styles.footer_text.color)) {
+		appendStyleString('.footer-text,.footer-text:hover  { color:' + styles.footer_text.color + '!important}');
+	}
+	// set template label text color
+	if (!isBlank(styles.label_text.color)) {
+		appendStyleString('.sub-text,.sub-text:hover  { color:' + styles.label_text.color + '!important}');
+	}
+	// set footer font size for large devices
+	if (!isBlank(styles.footer_text.ld_font_size)) {
+		appendStyleString('.footer-text { font-size:'+styles.footer_text.ld_font_size+'px !important}');
+	}
+	// set footer font size for small devices
+	if (!isBlank(styles.footer_text.sd_font_size)) {
+		appendStyleString('@media (max-width: 480px) {.footer-text { font-size:'+styles.footer_text.sd_font_size+'px !important}}');
+	}
+	// set label font size for large devices
+	if (!isBlank(styles.label_text.ld_font_size)) {
+		appendStyleString('.sub-text { font-size:'+styles.label_text.ld_font_size+'px !important}');
+	}
+	// set label font size for small devices
+	if (!isBlank(styles.label_text.sd_font_size)) {
+		appendStyleString('@media (max-width: 480px) {.sub-text{ font-size:'+styles.label_text.sd_font_size+'px !important}}');
+	}
 
 	if (styleString.length > 0) {
 		addStyleString(styleString);
