@@ -31,20 +31,20 @@ var overrideStylesWithCMSdata = function(styles) {
 		appendStyleString('.header-bar { background:' + styles.header_bg.background + ' !important}');
 	}
 	// set sub main text color
-	if (!isBlank(styles.sub_text_color)) {
-		appendStyleString('.sub-main-text { color:' + styles.sub_text_color + ' !important}');
+	if (!isBlank(styles.sub_title_text.color)) {
+		appendStyleString('.sub-main-text { color:' + styles.sub_title_text.color + ' !important}');
 	}
 	// set  main text color
-	if (!isBlank(styles.title_text_color)) {
-		appendStyleString('.template-text,.main-text { color:' + styles.title_text_color + '!important}');
+	if (!isBlank(styles.title_text.color)) {
+		appendStyleString('.template-text,.main-text { color:' + styles.title_text.color + '!important}');
 	}
 	// set template button bg color
 	if (!isBlank(styles.button.background)) {
 		appendStyleString('.btn,.btn:hover { background:' + styles.button.background + '!important}');
 	}
 	// set template button text color
-	if (!isBlank(styles.button.color)) {
-		appendStyleString('.btn,.btn:hover  { color:' + styles.button.color + '!important}');
+	if (!isBlank(styles.button_text.color)) {
+		appendStyleString('.btn,.btn:hover  { color:' + styles.button_text.color + '!important}');
 	}
 	// set light button bg color
 	if (!isBlank(styles.light_button.background)) {
@@ -78,6 +78,35 @@ var overrideStylesWithCMSdata = function(styles) {
 	if (!isBlank(styles.calender_cell_background)) {
 		appendStyleString('.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled { background:' + styles.calender_cell_background + '!important}');
 	}
+	//set template font family
+	if (!isBlank(styles.template_font)) {
+		appendStyleString('body { font-family:'+styles.template_font+'!important}');
+	}
+	// set title font size for large devices
+	if (!isBlank(styles.title_text.ld_font_size)) {
+		appendStyleString('.main-text { font-size:'+styles.title_text.ld_font_size+'px !important}');
+	}
+	// set sub title font size for large devices
+	if (!isBlank(styles.sub_title_text.ld_font_size)) {
+		appendStyleString('.sub-main-text { font-size:'+styles.sub_title_text.ld_font_size+'px !important}');
+	}
+	// set button font size for large devices
+	if (!isBlank(styles.button_text.ld_font_size)) {
+		appendStyleString('.btn { font-size:'+styles.button_text.ld_font_size+'px !important}');
+	}
+	// set title font size for small devices
+	if (!isBlank(styles.title_text.sd_font_size)) {
+		appendStyleString('@media (max-width: 480px) {.main-text { font-size:'+styles.title_text.sd_font_size+'px !important}}');
+	}
+	// set sub title font size for small devices
+	if (!isBlank(styles.sub_title_text.sd_font_size)) {
+		appendStyleString('@media (max-width: 480px) {.sub-main-text { font-size:'+styles.sub_title_text.sd_font_size+'px !important}}');
+	}
+	// set button font size for small devices
+	if (!isBlank(styles.button_text.sd_font_size)) {
+		appendStyleString('@media (max-width: 480px) {.btn { font-size:'+styles.button_text.sd_font_size+'px !important}}');
+	}
+
 	if (styleString.length > 0) {
 		addStyleString(styleString);
 	} else {
