@@ -33,6 +33,21 @@ var applyStyle = function(target, style, type) {
 	};
 };
 
+// icons of each color has to be in corresponding folders
+var applyIconStyles =  function(color){
+	var styleString =""
+	
+	styleString = styleString + ".calendar-back {background-image: url('/assets/guestweb_v2/images/"+color+"/back_icon.png')}";
+	styleString = styleString + ".calendar-done{background-image: url('/assets/guestweb_v2/images/"+color+"/done_icon.png')}";
+	styleString = styleString + ".circle-bg { background: url('/assets/guestweb_v2/images/"+color+"/circle_bg.png')  no-repeat scroll center top transparent;}";
+	styleString = styleString + ".back-to-checkout{background: url('/assets/guestweb_v2/images/"+color+"/left_arrow.png')no-repeat scroll center top transparent}";
+	styleString = styleString + ".checkout-icon{background-image: url('/assets/guestweb_v2/images/"+color+"/checkout_icon.png')}";
+	styleString = styleString + ".late-checkout-icon{ background-image: url('/assets/guestweb_v2/images/"+color+"/checkout_later.png')}";
+	styleString = styleString + ".accept-charge-icon{background-image: url('/assets/guestweb_v2/images/"+color+"/creditcard_icon.png')}";
+	styleString = styleString + ".upgrade-icon{background-image: url('/assets/guestweb_v2/images/"+color+"/upgrade_icon.png')}";
+
+	addStyleString(styleString);
+}
 /*
  * This is to override the existing demo theme styling with the CMS contents if
  * set in the admin
@@ -92,7 +107,10 @@ var overrideStylesWithCMSdata = function(styles) {
 	applyStyle('@media (max-width: 480px) {.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
 	// set label font size for small devices
 	applyStyle('@media (max-width: 480px) {.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
-
+	//apply icon styles
+	if(!styles.icon_color !== "white"){
+		applyIconStyles(styles.icon_color)
+	}
 	if (styleString.length > 0) {
 		addStyleString(styleString);
 	} else {
