@@ -17,119 +17,80 @@ function appendStyleString(str) {
 	styleString = styleString + str;
 };
 
+var applyStyle = function(target, style, type) {
+	if (!isBlank(style)) {
+		if (type === "font-size") {
+			appendStyleString(target + style + 'px !important}');
+		} else if (type === "media-query") {
+			appendStyleString(target + style + 'px !important}}');
+		} else {
+			appendStyleString(target + style + ' !important}');
+		}
+
+	} else {
+		return;
+	};
+};
+
 /*
  * This is to override the existing demo theme styling with the CMS contents if
  * set in the admin
  */
 var overrideStylesWithCMSdata = function(styles) {
 	//set the background color
-	if (!isBlank(styles.main_bg.background)) {
-		appendStyleString('body { background:' + styles.main_bg.background + ' !important}');
-	}
+	applyStyle('body { background:', styles.main_bg.background);
 	// set nav bar background color
-	if (!isBlank(styles.header_bg.background)) {
-		appendStyleString('.header-bar { background:' + styles.header_bg.background + ' !important}');
-	}
-	// set sub main text color
-	if (!isBlank(styles.sub_title_text.color)) {
-		appendStyleString('.sub-main-text { color:' + styles.sub_title_text.color + ' !important}');
-	}
-	// set  main text color
-	if (!isBlank(styles.title_text.color)) {
-		appendStyleString('.template-text,.main-text { color:' + styles.title_text.color + '!important}');
-	}
+	applyStyle('.header-bar { background:', styles.header_bg.background);
 	// set template button bg color
-	if (!isBlank(styles.button.background)) {
-		appendStyleString('.btn,.btn:hover { background:' + styles.button.background + '!important}');
-	}
-	// set template button text color
-	if (!isBlank(styles.button_text.color)) {
-		appendStyleString('.btn,.btn:hover  { color:' + styles.button_text.color + '!important}');
-	}
+	applyStyle('.btn,.btn:hover { background:', styles.button.background);
 	// set light button bg color
-	if (!isBlank(styles.light_button.background)) {
-		appendStyleString('.light-button,.light-button:hover { background:' + styles.light_button.background + '!important}');
-	}
+	applyStyle('.light-button,.light-button:hover { background:', styles.light_button.background);
 	// set dark button bg color
-	if (!isBlank(styles.dark_button.background)) {
-		appendStyleString('.dark-button,.dark-button:hover { background:' + styles.dark_button.background + '!important}');
-	}
+	applyStyle('.dark-button,.dark-button:hover { background:', styles.dark_button.background);
 	// set checkouttime1 bg color
-	if (!isBlank(styles.checkout_time_1.background)) {
-		appendStyleString('.checkouttime1,.checkouttime1:hover { background:' + styles.checkout_time_1.background + '!important}');
-	}
+	applyStyle('.checkouttime1,.checkouttime1:hover { background:', styles.checkout_time_1.background);
 	// set checkouttime2 bg color
-	if (!isBlank(styles.checkout_time_2.background)) {
-		appendStyleString('.checkouttime2,.checkouttime2:hover { background:' + styles.checkout_time_2.background + '!important}');
-	}
+	applyStyle('.checkouttime2,.checkouttime2:hover { background:', styles.checkout_time_2.background);
 	// set checkouttime3 bg color
-	if (!isBlank(styles.checkout_time_3.background)) {
-		appendStyleString('.checkouttime3,.checkouttime3:hover { background:' + styles.checkout_time_3.background + '!important}');
-	}
+	applyStyle('.checkouttime3,.checkouttime3:hover { background:', styles.checkout_time_3.background);
 	// set calender bg color
-	if (!isBlank(styles.calender_header_background)) {
-		appendStyleString('.date-picker-header ,.pickadate-cell .pickadate-active{ background:' + styles.calender_header_background + '!important}');
-	}
+	applyStyle('.date-picker-header ,.pickadate-cell .pickadate-active{ background:', styles.calender_header_background);
 	// set calender main bg color
-	if (!isBlank(styles.calender_main_background)) {
-		appendStyleString('.date-picker-wrap { background:' + styles.calender_main_background + '!important}');
-	}
+	applyStyle('.date-picker-wrap { background:', styles.calender_main_background);
 	//set calender cell bg
-	if (!isBlank(styles.calender_cell_background)) {
-		appendStyleString('.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled { background:' + styles.calender_cell_background + '!important}');
-	}
+	applyStyle('.pickadate-cell .pickadate-disabled, .pickadate-cell .pickadate-enabled, .pickadate-cell .pickadate-outofrange-disabled { background:', styles.calender_cell_background);
+	// set template button text color
+	applyStyle('.btn,.btn:hover  { color:', styles.button_text.color);
 	//set template font family
-	if (!isBlank(styles.template_font)) {
-		appendStyleString('body { font-family:'+styles.template_font+'!important}');
-	}
-	// set title font size for large devices
-	if (!isBlank(styles.title_text.ld_font_size)) {
-		appendStyleString('.main-text { font-size:'+styles.title_text.ld_font_size+'px !important}');
-	}
-	// set sub title font size for large devices
-	if (!isBlank(styles.sub_title_text.ld_font_size)) {
-		appendStyleString('.sub-main-text { font-size:'+styles.sub_title_text.ld_font_size+'px !important}');
-	}
-	// set button font size for large devices
-	if (!isBlank(styles.button_text.ld_font_size)) {
-		appendStyleString('.btn { font-size:'+styles.button_text.ld_font_size+'px !important}');
-	}
-	// set title font size for small devices
-	if (!isBlank(styles.title_text.sd_font_size)) {
-		appendStyleString('@media (max-width: 480px) {.main-text { font-size:'+styles.title_text.sd_font_size+'px !important}}');
-	}
-	// set sub title font size for small devices
-	if (!isBlank(styles.sub_title_text.sd_font_size)) {
-		appendStyleString('@media (max-width: 480px) {.sub-main-text { font-size:'+styles.sub_title_text.sd_font_size+'px !important}}');
-	}
-	// set button font size for small devices
-	if (!isBlank(styles.button_text.sd_font_size)) {
-		appendStyleString('@media (max-width: 480px) {.btn { font-size:'+styles.button_text.sd_font_size+'px !important}}');
-	}
+	applyStyle('body { font-family:', styles.template_font);
+	// set  main text color
+	applyStyle('.template-text,.main-text { color:', styles.title_text.color);
+	// set sub main text color
+	applyStyle('.sub-main-text { color:', styles.sub_title_text.color);
 	// set template footer text color
-	if (!isBlank(styles.footer_text.color)) {
-		appendStyleString('.footer-text,.footer-text:hover  { color:' + styles.footer_text.color + '!important}');
-	}
+	applyStyle('.footer-text,.footer-text:hover  { color:', styles.footer_text.color);
 	// set template label text color
-	if (!isBlank(styles.label_text.color)) {
-		appendStyleString('.sub-text,.sub-text:hover  { color:' + styles.label_text.color + '!important}');
-	}
+	applyStyle('.sub-text,.sub-text:hover  { color:', styles.label_text.color);
+	// set title font size for large devices
+	applyStyle('.main-text { font-size:', styles.title_text.ld_font_size, "font-size");
+	// set sub title font size for large devices
+	applyStyle('.sub-main-text { font-size:', styles.sub_title_text.ld_font_size, "font-size");
+	// set button font size for large devices
+	applyStyle('.btn { font-size:', styles.button_text.ld_font_size, "font-size");
 	// set footer font size for large devices
-	if (!isBlank(styles.footer_text.ld_font_size)) {
-		appendStyleString('.footer-text { font-size:'+styles.footer_text.ld_font_size+'px !important}');
-	}
-	// set footer font size for small devices
-	if (!isBlank(styles.footer_text.sd_font_size)) {
-		appendStyleString('@media (max-width: 480px) {.footer-text { font-size:'+styles.footer_text.sd_font_size+'px !important}}');
-	}
+	applyStyle('.footer-text { font-size:', styles.footer_text.ld_font_size, "font-size");
 	// set label font size for large devices
-	if (!isBlank(styles.label_text.ld_font_size)) {
-		appendStyleString('.sub-text { font-size:'+styles.label_text.ld_font_size+'px !important}');
-	}
+	applyStyle('.sub-text { font-size:', styles.label_text.ld_font_size, "font-size");
+	// set button font size for small devices
+	applyStyle('@media (max-width: 480px) {.btn { font-size:', styles.button_text.sd_font_size, "media-query");
+	// set sub title font size for small devices
+	applyStyle('@media (max-width: 480px) {.sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "media-query");
+	// set title font size for small devices
+	applyStyle('@media (max-width: 480px) {.main-text { font-size:', styles.title_text.sd_font_size, "media-query");
+	// set footer font size for small devices
+	applyStyle('@media (max-width: 480px) {.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
 	// set label font size for small devices
-	if (!isBlank(styles.label_text.sd_font_size)) {
-		appendStyleString('@media (max-width: 480px) {.sub-text{ font-size:'+styles.label_text.sd_font_size+'px !important}}');
-	}
+	applyStyle('@media (max-width: 480px) {.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 
 	if (styleString.length > 0) {
 		addStyleString(styleString);
