@@ -1,18 +1,13 @@
-admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSettingsSrv', function($scope, ADzestWebGlobalSettingsSrv) {
+admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSettingsSrv','ngDialog','zestWebGlobalSettings',
+ function($scope, ADzestWebGlobalSettingsSrv,ngDialog,zestWebGlobalSettings) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.successMessage = '';
 	$scope.languages = ["EN", "ES"];
 	$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
-	$scope.iconColors = ["White","Black"];
+	$scope.iconColors = ["White", "Black"];
 	$scope.selectedMenu = "";
-	$scope.globalSettings = {};
-
-	var successCallbackFetch = function(data) {
-		$scope.globalSettings = data.zest_web;
-		$scope.$emit('hideLoader');
-	};
-	$scope.invokeApi(ADzestWebGlobalSettingsSrv.fetchZestwebGlobalSettings, "", successCallbackFetch);
+	$scope.globalSettings = zestWebGlobalSettings.zest_web;
 
 
 	$scope.saveSettings = function() {
@@ -37,5 +32,17 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 	$scope.cancelClicked = function() {
 		$scope.selectedMenu = "";
 	};
+	$scope.closeDialog = function() {
+		ngDialog.close();
+	};
+	$scope.previewClicked = function() {
+		ngDialog.open({
+			template: '/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
+			className: 'ngdialog-theme-default single-calendar-modal phone-preview',
+			controller: 'adZestWebPreviewCtrl',
+			scope: $scope,
+			closeByDocument: true
+		});
+	}
 
 }]);

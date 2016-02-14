@@ -108,7 +108,7 @@ var overrideStylesWithCMSdata = function(styles) {
 	// set label font size for small devices
 	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 	//apply icon styles
-	if(!styles.icon_color !== "white"){
+	if(styles.icon_color !== "White"){
 		applyIconStyles(styles.icon_color)
 	}
 	if (styleString.length > 0) {
