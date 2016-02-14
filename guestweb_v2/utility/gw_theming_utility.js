@@ -23,7 +23,7 @@ var applyStyle = function(target, style, type) {
 		if (type === "font-size") {
 			appendStyleString(target + style + 'px !important}');
 		} else if (type === "media-query") {
-			appendStyleString(target + style + 'px !important}}');
+			appendStyleString('@media (max-width: 480px) {'+target + style + 'px !important}}');
 		} else {
 			appendStyleString(target + style + ' !important}');
 		}
@@ -98,15 +98,15 @@ var overrideStylesWithCMSdata = function(styles) {
 	// set label font size for large devices
 	applyStyle('.sub-text { font-size:', styles.label_text.ld_font_size, "font-size");
 	// set button font size for small devices
-	applyStyle('@media (max-width: 480px) {.btn { font-size:', styles.button_text.sd_font_size, "media-query");
+	applyStyle('.btn { font-size:', styles.button_text.sd_font_size, "media-query");
 	// set sub title font size for small devices
-	applyStyle('@media (max-width: 480px) {.sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "media-query");
+	applyStyle('.sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "media-query");
 	// set title font size for small devices
-	applyStyle('@media (max-width: 480px) {.main-text { font-size:', styles.title_text.sd_font_size, "media-query");
+	applyStyle('.main-text { font-size:', styles.title_text.sd_font_size, "media-query");
 	// set footer font size for small devices
-	applyStyle('@media (max-width: 480px) {.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
+	applyStyle('.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
 	// set label font size for small devices
-	applyStyle('@media (max-width: 480px) {.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
+	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 	//apply icon styles
 	if(!styles.icon_color !== "white"){
 		applyIconStyles(styles.icon_color)
