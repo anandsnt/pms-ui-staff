@@ -3,6 +3,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   $stateProvider.state('admin.zestWebGlobalSetup', {
     templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
     controller: 'ADzestWebGlobalSettingsCtrl',
+    resolve: {
+      zestWebGlobalSettings: ['ADzestWebGlobalSettingsSrv', function(ADzestWebGlobalSettingsSrv) {
+        return ADzestWebGlobalSettingsSrv.fetchZestwebGlobalSettings();
+      }]
+    },
     url : '/zestWebGlobalSettings'
   });
 
