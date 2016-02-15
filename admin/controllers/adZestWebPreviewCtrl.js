@@ -94,7 +94,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			};
 
 			//apply icon styles
-			if (styles.icon_color !== "White") {
+			if (styles.icon_color !== "White" && styles.icon_color !== null) {
 				applyIconStyles(styles.icon_color)
 			}
 			if (styleString.length > 0) {
