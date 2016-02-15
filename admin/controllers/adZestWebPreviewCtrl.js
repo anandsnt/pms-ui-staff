@@ -36,8 +36,9 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 		};
 		// icons of each color has to be in corresponding folders
 		var applyIconStyles = function(color) {
+
 				var styleString = ""
-				styleString = styleString + ".zest-web-checkout-icon{background-image: url('/assets/cssimg/" + color + "/checkout_icon.png') !important}"
+				styleString = styleString + ".zest-web-checkout-icon{background-image: url('/assets/cssimg/" + color + "/checkout_icon.png')}"
 				addStyleString(styleString);
 			}
 			/*
@@ -86,10 +87,6 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			//apply icon styles
 			if (styles.icon_color !== "White") {
 				applyIconStyles(styles.icon_color)
-			}
-			else{
-				styleString = ".zest-web-checkout-icon{background-image: url('/assets/cssimg/checkout_icon.png') !important}"
-				addStyleString(styleString);
 			}
 			if (styleString.length > 0) {
 				addStyleString(styleString);
