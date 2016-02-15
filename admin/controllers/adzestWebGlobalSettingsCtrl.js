@@ -10,7 +10,6 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.previewData = {};
 		$scope.globalSettings = zestWebGlobalSettings.zest_web;
 
-
 		$scope.saveSettings = function() {
 			var saveSettingsCallback = function() {
 				$scope.$emit('hideLoader');
@@ -36,9 +35,9 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.closeDialog = function() {
 			ngDialog.close();
 		};
-		$scope.previewClicked = function() {
+		var openPreviewForSmallerScreens = function() {
 			$scope.previewData = ($scope.previewData.hasOwnProperty("is_cms_on")) ? $scope.previewData : angular.copy($scope.globalSettings);
-			$scope.previewData.isSmallDevice =  true;
+			$scope.previewData.isSmallDevice = true;
 			ngDialog.open({
 				template: '/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
 				className: 'ngdialog-theme-default single-calendar-modal phone-preview',
@@ -47,8 +46,8 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 				closeByDocument: true
 			});
 		};
-		$scope.largeScreenPreviewClicked = function() {
-			$scope.previewData.isSmallDevice =  false;
+		var openPreviewForLargerScreens = function() {
+			$scope.previewData.isSmallDevice = false;
 			$scope.previewData = ($scope.previewData.hasOwnProperty("is_cms_on")) ? $scope.previewData : angular.copy($scope.globalSettings);
 			ngDialog.open({
 				template: '/assets/partials/zestwebGlobalSettings/adZestWebLargeScreenPreview.html',
@@ -58,6 +57,15 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 				closeByDocument: true
 			});
 		};
+		$scope.previewClicked = function() {
+			$scope.previewData = ($scope.previewData.hasOwnProperty("is_cms_on")) ? $scope.previewData : angular.copy($scope.globalSettings);
+			if ($scope.globalSettings.is_large_screen_preview_on) {
+				openPreviewForLargerScreens();
+			} else {
+				openPreviewForSmallerScreens();
+			};
+		};
+
 
 	}
 ]);

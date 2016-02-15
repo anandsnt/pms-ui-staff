@@ -11,10 +11,11 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 		function addStyleString(str) {
 			var node = document.createElement('style');
 			node.innerHTML = str;
-			setTimeout(function(){ var a  = console.log(document.getElementById('zest-web-main-container'));
-			document.getElementById('zest-web-main-container').appendChild(node);}, 100);
+			setTimeout(function() {
+				document.getElementById('zest-web-main-container').appendChild(node);
+			}, 100);
 
-			
+
 		}
 
 		var styleString = "";
