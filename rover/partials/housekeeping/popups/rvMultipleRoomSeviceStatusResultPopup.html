@@ -1,6 +1,6 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
 <div class="modal-content alert room-status-not-completed">
-    <button id="modal-close" type="button" class="modal-close" ng-click="closeHkStatusDialog()">
+    <button id="modal-close" type="button" class="modal-close" ng-click="closeForcefullyUpdatePopup()">
     	<span class="icons icon-close invert"></span>
     </button>
     <span class="icons icon-popup-alert"></span>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="actions">
-         <button type="button" class="button blank" ng-click="closeHkStatusDialog()">Close</button>
+         <button type="button" class="button blank" ng-click="closeForcefullyUpdatePopup()">Close</button>
          <button type="button" class="button blue" ng-click="forcefullyPutRoomToOOSorOOO()">Put Selected Rooms {{completedData.serviceName}}</button>
          <!-- {update-status-short} is an acronym of the status we want to update (OOO or OOS)  -->
     </div>

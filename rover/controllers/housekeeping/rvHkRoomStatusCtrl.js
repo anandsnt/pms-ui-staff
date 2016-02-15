@@ -397,7 +397,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			} else {
 				if ( _.has($scope.multiRoomAction.indexes, _key) ) {
 					// remove from array
-					$scope.multiRoomAction.rooms.splice(i, 1);
+					var indexToRemove = _.indexOf($scope.multiRoomAction.rooms,$scope.rooms[i].id);
+					$scope.multiRoomAction.rooms.splice(indexToRemove, 1);
 
 					// remove keyMirror
 					$scope.multiRoomAction.indexes[_key] = undefined;
@@ -632,6 +633,15 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		/**
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowTimeSelector = function() {
+			//as per CICO-11840 we will show this for hourly hotels only
+			return $rootScope.isHourlyRateOn
+		};
+
+
+		/**
 		 * Service Stauts update action
 		 * API Call - Post
 		 */
@@ -654,12 +664,17 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
    				from_date			: getApiFormattedDate($scope.updateServiceData.from_date),
 				to_date				: getApiFormattedDate($scope.updateServiceData.to_date),
-				begin_time 			: $scope.updateServiceData.begin_time,
-				end_time			: $scope.updateServiceData.end_time,
+				begin_time 			:"",
+				end_time			: "",
 				reason_id			: $scope.updateServiceData.reason_id,
 				comment 			: $scope.updateServiceData.comments,
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
+
+			if($scope.shouldShowTimeSelector()){
+				params.begin_time = $scope.updateServiceData.begin_time;
+				params.end_time = $scope.updateServiceData.end_time;
+			}
 
 			// To check All Rooms are Choosen or not
 			params.room_id = [];
@@ -677,16 +692,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, updateServiceStatusSuccessCallBack);
 		};
 
-		/**
-		 * @param  {room_no1:{id:321,..},room_no2:{id:123,...},....}
-		 * @return {array[321,123,...]}
-		 */
-		var getRoomIds = function(roomsList) {
-
-			_.forEach(roomsList, function(room){_.extend(room, room[_.keys(room)[0]])});
-			var roomIds = _.pluck(roomsList,'id');
-			return roomIds;
-		};
 
 		/**
 		 * when the user chooses for force fully put room oos/ooo from popup
@@ -779,6 +784,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.closeHkStatusDialog = function() {
 			$scope.resetMultiRoomAction();
 			$scope.closeDialog();
+		};
+
+		$scope.closeForcefullyUpdatePopup = function() {
+			$scope.closeHkStatusDialog();
+			$scope.refreshData();
 		};
 
 		$scope.submitHkStatusChange = function() {
@@ -1404,14 +1414,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				!!$rooms.length && $rooms.removeEventListener('touchend');
 				!!$rooms.length && $rooms.removeEventListener('touchcancel');
 			});
-		};
-
-		/**
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowTimeSelector = function() {
-			//as per CICO-11840 we will show this for hourly hotels only
-			return $rootScope.isHourlyRateOn
 		};
 
 		// initiate $_pullUpDownModule
