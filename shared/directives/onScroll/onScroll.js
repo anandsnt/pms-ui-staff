@@ -9,6 +9,9 @@ angular.module('onScroll', []).directive('onScroll', function() {
             element.bind('scroll', function() {
                 expressionHandler();
             });
+            scope.$on("$destroy",function(e) {
+                element.unbind('scroll');
+            });
         }
     };
     return directiveDefinitionObject;
