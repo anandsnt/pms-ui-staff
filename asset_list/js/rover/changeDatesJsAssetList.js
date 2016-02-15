@@ -6,8 +6,7 @@ module.exports = {
 			assetsForView 	= {
 				minifiedFiles: [
 				],
-				nonMinifiedFiles: [
-					sharedJs + 'fullcalender/**/*.js',					
+				nonMinifiedFiles: [				
 					controllerRoot + "changeStayDates/**/*.js",
 					servicesRoot + "changeStayDates/**/*.js"
 				]
