@@ -253,39 +253,8 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			};
 		};
 
-		self.sortRatesDesc = function(a, b) {
-			var averageA = parseFloat(a.adr);
-			var averageB = parseFloat(b.adr);
-			if (averageA > averageB) {
-				return -1;
-			}
-			if (averageA < averageB) {
-				return 1;
-			}
-			return 0;
-		};
-
 		self.sortRateAlphabet = function(a, b) {
-			if (a.name.toLowerCase() < b.name.toLowerCase()) {
-				return -1;
-			}
-			if (a.name.toLowerCase() > b.name.toLowerCase()) {
-				return 1;
-			}
-			return 0;
-		};
-
-		self.sortRatesAsc = function(a, b) {
-			if (a.isCorporate != b.isCorporate) {
-				return a.isCorporate ? -1 : 1;
-			}
-			if (a.score != b.score) {
-				return b.score - a.score; // descending
-			}
-			return 0;
-		};
-
-		self.sortRatesInRoomsDESC = function(a, b) {
+			// Put corp; member and promoted rates on top
 			if (a.isCorporate != b.isCorporate) {
 				return a.isCorporate ? -1 : 1;
 			}
@@ -295,6 +264,40 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			if (a.isPromotion != b.isPromotion) {
 				return a.isPromotion ? -1 : 1;
 			}
+
+			// Sort Rates by Rate Name alphabetically
+			if (a.name.toLowerCase() < b.name.toLowerCase()) {
+				return -1;
+			} else if(a.name.toLowerCase() > b.name.toLowerCase()){
+				return 1;
+			}
+			return 0;
+		};
+
+		self.sortRatesAsc = function(a, b) {
+			var averageA = parseFloat(a.adr);
+			var averageB = parseFloat(b.adr);
+			if (averageA < averageB) {
+				return -1;
+			}
+			if (averageA > averageB) {
+				return 1;
+			}
+			return 0;
+		};
+
+		self.sortRatesInRoomsDESC = function(a, b) {
+			// Put corp; member and promoted rates on top
+			if (a.isCorporate != b.isCorporate) {
+				return a.isCorporate ? -1 : 1;
+			}
+			if (a.isMember != b.isMember) {
+				return a.isMember ? -1 : 1;
+			}
+			if (a.isPromotion != b.isPromotion) {
+				return a.isPromotion ? -1 : 1;
+			}
+			// descending
 			if (a.adr != b.adr) {
 				return b.adr - a.adr;
 			}
@@ -302,6 +305,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 		};
 
 		self.sortRatesInRoomsASC = function(a, b) {
+			// Put corp; member and promoted rates on top
 			if (a.isCorporate != b.isCorporate) {
 				return a.isCorporate ? -1 : 1;
 			}
@@ -311,6 +315,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			if (a.isPromotion != b.isPromotion) {
 				return a.isPromotion ? -1 : 1;
 			}
+			// ascending
 			if (a.adr != b.adr) {
 				return a.adr - b.adr;
 			}

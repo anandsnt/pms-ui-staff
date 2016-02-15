@@ -471,22 +471,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 
 				// ********************************************************************************************************************************************* STEP 2a : Sort ASC rate names
-				ratesArray.sort(RVReservationDataService.sortRateAlphabet);
-
 				// ********************************************************************************************************************************************* STEP 2b : Bring Member rates to top
-				if (!!$scope.reservationData.member.isSelected) {
-					ratesArray.sort(RVReservationDataService.raiseMemberRates);
-				}
-
 				// ********************************************************************************************************************************************* STEP 2c : Bring Promoted rates to top
-				if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
-					ratesArray.sort(RVReservationDataService.raisePromoRates);
-				}
-
 				// ********************************************************************************************************************************************* STEP 2d : Bring Corporate rates to top
-				if (!!$scope.reservationDetails.companyCard.id || !!$scope.reservationDetails.travelAgent.id) {
-					ratesArray.sort(RVReservationDataService.raiseCorpRates);
-				}
+				ratesArray.sort(RVReservationDataService.sortRateAlphabet);
 
 				$scope.display.rateFirstGrid = ratesArray;
 				$scope.refreshScroll();
