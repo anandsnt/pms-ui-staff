@@ -514,7 +514,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				angular.extend($scope.serviceStatus, data.service_status);
 				
 				var isNotInService 		= $scope.updateService.room_service_status_id > 1,
-					selectedServiceData = $scope.serviceStatus[$scope.updateService.selected_date],
+					selectedServiceData = $scope.serviceStatus[getApiFormattedDate($scope.updateService.selected_date)],
 					hourlyEnabledHotel 	= $rootScope.isHourlyRateOn;
 
 				//CICO-11840

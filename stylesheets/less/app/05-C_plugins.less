@@ -4577,7 +4577,133 @@
                     border-top: 1px solid rgba(0,0,0,.1);
                 }
 
-                @media only screen and (min-width: 600px) {
+
+                .options {
+                    margin: 0 auto;
+                   width:100%;
+                    .show;
+                    .float;
+
+                    li {
+                        font-size: 14px;
+                        line-height: 40px;
+                        text-align: center;
+                        color: @textColor;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        cursor: pointer;
+                        width: 50%;
+                        .clickable;
+                        #border-radius > .rounded(0);
+                        .pull-left;
+
+                        &:hover { color: @logoPrimary; }
+
+                        &.active {
+                            cursor: default;
+                            color: @white;
+                            text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+                            .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.1)");
+                            .gradient (@logoGradientEnd, @logoGradientStart);
+                        }
+
+                        &:first-child { #border-radius > .left(); }
+                        &:last-child { #border-radius > .right(); }
+                    }
+                }
+
+                /* Entries ***/
+                .radio-check,
+                .float-label {
+                    padding-top: 20px;
+                    .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+                }
+
+                .radio-check {
+                    .float;
+
+                    .radio {
+                        .calc-width(50, 5);
+                        .pull-left;
+
+                        &:nth-child(odd) { margin-right: 10px; }
+                    }
+                }
+
+                .float-label {
+                    .select {
+                        max-width: 248px;
+                        margin:0 auto 10px auto;
+                        input,
+                        select { 
+                            font-size: 16px;
+                            font-weight: 700;
+                            .size(50px, 100%);
+                        }
+
+                        input { padding: 15px 10px 0; }
+
+                        select { padding: 15px 10px 0 10px; font-size: 1.25em;}
+
+                        option {
+                            font-size: 16px;
+                            font-weight: 400;
+                        }
+
+                        label {
+                            position: absolute;
+                            top: 10px;
+                            left: 10px;
+                            font-size: 12px;
+                            line-height: 1;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            margin: 0;
+                        }
+                    }
+                }
+
+                /* Actions ***/
+                .actions {
+                    position: static;
+                    margin-top: 10px;
+                    padding: 20px 0 0 0;
+                }
+
+                &.extended { 
+                   
+                    
+                    .status-container { 
+                        position: relative; 
+                        .calc-height(100, 135);
+                    }
+
+                    .scrollable {
+                        position: relative;
+                        .calc-height(100, 250);
+
+                        .wrapper { padding: 20px 20px 0 20px; }
+
+                        .iScrollVerticalScrollbar {
+                            top: 0;
+                            bottom: 0;
+                        }
+                    }
+                    
+                    .actions {
+                        margin-top: 20px;
+                        text-align: center;
+
+                        .button {
+                            display: inline-block;
+                            padding: 0 40px;
+                            width: auto;
+                        }
+                    }
+                }
+
+
+                @media screen and (min-width:600px){
                     position: static;
                     .size(auto, 320px);
 
@@ -4585,131 +4711,19 @@
                         top: -20px;
                         left: -20px;
                     }
-
                     .options {
-                        margin: 0 auto;
-                        width: 240px;
-                        .show;
-                        .float;
-
-                        li {
-                            font-size: 14px;
-                            line-height: 40px;
-                            text-align: center;
-                            color: @textColor;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            cursor: pointer;
-                            width: 50%;
-                            .clickable;
-                            #border-radius > .rounded(0);
-                            .pull-left;
-
-                            &:hover { color: @logoPrimary; }
-
-                            &.active {
-                                cursor: default;
-                                color: @white;
-                                text-shadow: 1px 1px 0 rgba(0,0,0,.1);
-                                .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.1)");
-                                .gradient (@logoGradientEnd, @logoGradientStart);
-                            }
-
-                            &:first-child { #border-radius > .left(); }
-                            &:last-child { #border-radius > .right(); }
-                        }
+                         width: 240px;
                     }
-
-                    /* Entries ***/
-                    .radio-check,
-                    .float-label {
-                        padding-top: 20px;
-                        .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
-                    }
-
-                    .radio-check {
-                        .float;
-
-                        .radio {
-                            .calc-width(50, 5);
-                            .pull-left;
-
-                            &:nth-child(odd) { margin-right: 10px; }
-                        }
-                    }
-
-                    .float-label {
-                        .select {
-                            max-width: 248px;
-                            margin:0 auto 10px auto;
-                            input,
-                            select { 
-                                font-size: 16px;
-                                font-weight: 700;
-                                .size(50px, 100%);
-                            }
-
-                            input { padding: 15px 10px 0; }
-
-                            select { padding: 15px 10px 0 10px; font-size: 1.25em;}
-
-                            option {
-                                font-size: 16px;
-                                font-weight: 400;
-                            }
-
-                            label {
-                                position: absolute;
-                                top: 10px;
-                                left: 10px;
-                                font-size: 12px;
-                                line-height: 1;
-                                text-transform: uppercase;
-                                color: @grey3;
-                                margin: 0;
-                            }
-                        }
-                    }
-
-                    /* Actions ***/
-                    .actions {
-                        position: static;
-                        margin-top: 10px;
-                        padding: 20px 0 0 0;
-                    }
-
                     &.extended { 
                         .size(640px, 560px); 
-                        
-                        .status-container { 
-                            position: relative; 
-                            .calc-height(100, 135);
-                        }
 
                         .scrollable {
                             position: relative;
                             .calc-height(100, 170);
-
-                            .wrapper { padding: 20px 20px 0 20px; }
-
-                            .iScrollVerticalScrollbar {
-                                top: 0;
-                                bottom: 0;
-                            }
-                        }
-                        
-                        .actions {
-                            margin-top: 20px;
-                            text-align: center;
-
-                            .button {
-                                display: inline-block;
-                                padding: 0 40px;
-                                width: auto;
-                            }
                         }
                     }
                 }
+                
             }
 
             /* Availability Calendar ***/
@@ -4995,7 +5009,8 @@
 
             /* Room Status not Completed Alert*/
             &.room-status-not-completed {
-                width:520px;
+                 position: relative;
+                .square(100%);
                 
                 .h2 { margin-bottom:10px; }
 
@@ -5013,7 +5028,7 @@
                     right:0; }
 
                 .rooms-not-completed {
-                    max-height:340px;
+                    max-height:170px;
                     position: relative; }
 
                 .room {
@@ -5035,7 +5050,7 @@
 
                         .text {
                             padding:0;
-                            font-size:14px;
+                            font-size:12px;
                             .calc-width(100,100);
                             .pull-left;
                             text-align: left; 
@@ -5046,29 +5061,34 @@
                     }
 
                     .number {
-                        font-size:24px;
+                        font-size:18px;
                         font-weight: bold;
                         display:block;
                         .pull-left;
-                        width:100px;
+                        width:70px;
                     }
 
                     .guest {
                         .pull-left;
-                        font-size:18px;
+                        font-size:12px;
                         font-weight: bold;
+                        position: absolute;
+                        left:80px;
+                        top:0;
+                        bottom:0;
+                        margin:auto;
+                        height:30px;
                         display:block;
                         .calc-width(100,100);
-                        line-height: 30px;
+                        line-height: 15px;
                     }
 
                     .reservation {
                         text-transform: uppercase;
                         font-weight: normal;
                         color:@grey3;
-                        font-size:14px;
-                        padding-left: 14px;
-                        display:inline-block;
+                        font-size:12px;
+                        display:block;
                     }
 
                     .checkbox {
@@ -5093,6 +5113,41 @@
                         &.disabled { .opacity(0); }
                     }
                 }
+
+                @media only screen and (min-width: 600px) {
+                    width:520px;
+                    .rooms-not-completed {
+                        max-height:340px;
+                    }
+
+                    .room {
+
+                        &.locked { 
+                            .text {
+                             font-size:14px;
+                            }
+                        }
+                        .number {
+                            font-size:24px;
+                            width:100px;
+                        }
+
+                        .guest {
+                            .pull-left;
+                            font-size:18px;
+                            position: static;
+                            display:block;
+                            .calc-width(100,100);
+                            line-height: 30px;
+                        }
+
+                        .reservation {
+                            font-size:14px;
+                            padding-left: 14px;
+                            display:inline-block;
+                        }
+                    }
+                 }
 
                 .actions {
                     text-align: center;
