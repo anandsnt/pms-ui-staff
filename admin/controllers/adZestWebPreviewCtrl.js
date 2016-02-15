@@ -104,7 +104,13 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			};
 		};
 		BaseCtrl.call(this, $scope);
-		overrideStylesWithCMSdata($scope.previewData);
+		if($scope.previewData.is_cms_on){
+			overrideStylesWithCMSdata($scope.previewData);
+		}
+		else{
+			return;
+		};
+		
 
 	}
 ]);
