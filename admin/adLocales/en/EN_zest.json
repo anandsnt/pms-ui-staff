@@ -70,9 +70,26 @@
 "ZEST_SETUP_SMS_HEADER":"Check-In By SMS From Guest Setup",
 "ZESTSWEB_GLOBAL_TITLE":"Zestweb global settings",
 "CMS_STATUS": "CMS status",
-"LANGUAGES":"LANGUAGES"
-
-
+"LANGUAGES":"LANGUAGES",
+"LARGE_SCREEN_PREVIEW_STATUS": "Large screen preview status",
+"ZESTWEB_SETTINGS_INSTRUCTION": "(LEAVE THE FIELDS BLANK TO USE THEIR DEFAULT SETTINGS. TO PREVIEW, PLEASE SAVE THE CHANGES AND CLICK THE PREVIEW BUTTON)",
+"TEMPLATE_FONT":"template font",
+"TEMPLATE_TEXT_COLOR":"Template text color",
+"SUB_TEXT_COLOR":"Sub text color",
+"BUTTON_TEXT_COLOR":"Button text color",
+"FOOTER_TEXT_COLOR":"Footer text color",
+"LABEL_TEXT_COLOR":"Label text color",
+"MAIN_BG":"Background Color",
+"HEADER_BG":"Header Background",
+"TEMPLATE_BTN_BG":"Template button Background",
+"LIGHT_BTN_BG":"Light button Background",
+"DARK_BTN_BG":"Dark button Background",
+"CHECKOUT_TIME_1_BG":"Checkout time 1 Background",
+"CHECKOUT_TIME_2_BG":"Checkout time 2 Background",
+"CHECKOUT_TIME_3_BG":"Checkout time 3 Background",
+"CALENDAR_BG":"Calendar main Background",
+"CALENDAR_HEADER_BG":"Calendar header Background",
+"CALENDAR_CELL_BG":"Calendar cell Background"
 
 
 
