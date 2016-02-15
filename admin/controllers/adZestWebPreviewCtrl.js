@@ -11,7 +11,10 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 		function addStyleString(str) {
 			var node = document.createElement('style');
 			node.innerHTML = str;
-			document.head.appendChild(node);
+			setTimeout(function(){ var a  = console.log(document.getElementById('zest-web-main-container'));
+			document.getElementById('zest-web-main-container').appendChild(node);}, 100);
+
+			
 		}
 
 		var styleString = "";
@@ -64,26 +67,31 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			applyStyle('.zest-web-footer-text,.zest-web-footer-text:hover  { color:', styles.footer_text.color);
 			// set template label text color
 			applyStyle('.zest-web-sub-text,.zest-web-sub-text:hover  { color:', styles.label_text.color);
-			// // set title font size for large devices
-			// applyStyle('.zest-web-main-text { font-size:', styles.title_text.ld_font_size, "font-size");
-			// // set sub title font size for large devices
-			// applyStyle('.zest-web-sub-main-text { font-size:', styles.sub_title_text.ld_font_size, "font-size");
-			// // set button font size for large devices
-			// applyStyle('.zest-web-btn { font-size:', styles.button_text.ld_font_size, "font-size");
-			// // set footer font size for large devices
-			// applyStyle('.zest-web-footer-text { font-size:', styles.footer_text.ld_font_size, "font-size");
-			// // set label font size for large devices
-			// applyStyle('.szest-web-ub-text { font-size:', styles.label_text.ld_font_size, "font-size");
-			// set button font size for small devices
-			applyStyle('.zest-web-btn { font-size:', styles.button_text.sd_font_size, "font-size");
-			// set sub title font size for small devices
-			applyStyle('.zest-web-sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "font-size");
-			// set title font size for small devices
-			applyStyle('.zest-web-main-text { font-size:', styles.title_text.sd_font_size, "font-size");
-			// set footer font size for small devices
-			applyStyle('.zest-web-footer-text { font-size:', styles.footer_text.sd_font_size, "font-size");
-			// set label font size for small devices
-			applyStyle('.zest-web-sub-text{ font-size:', styles.label_text.sd_font_size, "font-size");
+
+			if ($scope.previewData.isSmallDevice) {
+				// set button font size for small devices
+				applyStyle('.zest-web-btn { font-size:', styles.button_text.sd_font_size, "font-size");
+				// set sub title font size for small devices
+				applyStyle('.zest-web-sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "font-size");
+				// set title font size for small devices
+				applyStyle('.zest-web-main-text { font-size:', styles.title_text.sd_font_size, "font-size");
+				// set footer font size for small devices
+				applyStyle('.zest-web-footer-text { font-size:', styles.footer_text.sd_font_size, "font-size");
+				// set label font size for small devices
+				applyStyle('.zest-web-sub-text{ font-size:', styles.label_text.sd_font_size, "font-size");
+			} else {
+				// set title font size for large devices
+				applyStyle('.zest-web-main-text { font-size:', styles.title_text.ld_font_size, "font-size");
+				// set sub title font size for large devices
+				applyStyle('.zest-web-sub-main-text { font-size:', styles.sub_title_text.ld_font_size, "font-size");
+				// set button font size for large devices
+				applyStyle('.zest-web-btn { font-size:', styles.button_text.ld_font_size, "font-size");
+				// set footer font size for large devices
+				applyStyle('.zest-web-footer-text { font-size:', styles.footer_text.ld_font_size, "font-size");
+				// set label font size for large devices
+				applyStyle('.szest-web-ub-text { font-size:', styles.label_text.ld_font_size, "font-size");
+			};
+
 			//apply icon styles
 			if (styles.icon_color !== "White") {
 				applyIconStyles(styles.icon_color)

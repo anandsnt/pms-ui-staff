@@ -38,6 +38,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		};
 		$scope.previewClicked = function() {
 			$scope.previewData = ($scope.previewData.hasOwnProperty("is_cms_on")) ? $scope.previewData : angular.copy($scope.globalSettings);
+			$scope.previewData.isSmallDevice =  true;
 			ngDialog.open({
 				template: '/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
 				className: 'ngdialog-theme-default single-calendar-modal phone-preview',
@@ -45,7 +46,18 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 				scope: $scope,
 				closeByDocument: true
 			});
-		}
+		};
+		$scope.largeScreenPreviewClicked = function() {
+			$scope.previewData.isSmallDevice =  false;
+			$scope.previewData = ($scope.previewData.hasOwnProperty("is_cms_on")) ? $scope.previewData : angular.copy($scope.globalSettings);
+			ngDialog.open({
+				template: '/assets/partials/zestwebGlobalSettings/adZestWebLargeScreenPreview.html',
+				className: 'ngdialog-theme-default single-calendar-modal ipad-preview',
+				controller: 'adZestWebPreviewCtrl',
+				scope: $scope,
+				closeByDocument: true
+			});
+		};
 
 	}
 ]);

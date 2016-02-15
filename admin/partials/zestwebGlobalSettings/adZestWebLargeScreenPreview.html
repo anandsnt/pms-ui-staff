@@ -66,21 +66,42 @@
     .zest-web-main-container {
         background: grey;
         margin: 0;
-        min-height: 580px;
-        max-width: 350px;
+        width: 956px;
+        max-width: 1056px;
+        min-height: 600px;
         border-radius: 25px;
         border-style: solid;
-        border-width: 60px 25px 90px;
+        border-width: 25px;
         margin: 0 auto;
+        height: auto;
+    }
+    
+    .zest-web-col-md-2 {
+        width: 210px;
+    }
+    
+    .zest-web-col-md-4 {
+        width: 334px;
+    }
+    
+    .zest-web-col-md-1 {
+        width: 84px;
+    }
+    
+    .zest-web-col-md-3 {
+        width: 300px;
     }
     
     .zest-web-col-md-1,
     .zest-web-col-md-2,
     .zest-web-col-md-3,
     .zest-web-col-md-4 {
-        min-height: 1px;
+        min-height: 200px;
         position: relative;
         margin-top: 5%;
+        float: left;
+        padding-left: 15px;
+        padding-right: 15px;
     }
     
     .zest-web-container-sm,
@@ -96,6 +117,7 @@
     
     .zest-web-row-sm {
         text-align: center;
+        width: 100%;
     }
     
     .zest-web-btn {
@@ -123,8 +145,10 @@
     }
     
     .zest-web-header-bar {
-        min-height: 70px;
+        min-height: 30px;
         background: black;
+        height: 100px;
+        margin-bottom: 25px;
     }
     
     .zest-web-checkout-icon {
@@ -137,19 +161,19 @@
     }
     
     .zest-web-main-text {
-        font-size: 30px;
+        font-size: 44px;
     }
     
     .zest-web-sub-main-text {
-        font-size: 15px;
+        font-size: 24px;
     }
     
     .zest-web-footer-text {
-        font-size: 14px;
+        font-size: 18px;
     }
     
     .checkout-zest-web-btn {
-        font-size: 24px;
+        font-size: 30px;
     }
     </style>
 </head>
@@ -162,7 +186,7 @@
             </div>
         </div>
         <!-- main section starts here -->
-        <div class="zest-web-container-sm">
+        <div class="zest-web-container-sm" style="height:300px">
             <div class="zest-web-row-sm">
                 <div class="zest-web-col-md-1"></div>
                 <!-- left side -->
@@ -182,9 +206,11 @@
                         </div>
                     </a>
                 </div>
-                <div class="zest-web-col-md-2">
+                <div class="zest-web-col-md-1">
                 </div>
             </div>
+        </div>
+        <div class="zest-web-container-fluid-sm">
             <div class="zest-web-row-sm zest-web-footer-text">
                 Come back to this page to check out at any time before 12:00PM.
             </div>
