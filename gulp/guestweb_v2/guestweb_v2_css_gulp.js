@@ -37,7 +37,7 @@ module.exports = function (gulp, $, options) {
 	    return cssInjector(GUESTWEB_V2_CSS_FILE);
 	});
 	
-	gulp.task('guestweb-v2-less-production', function () {
+	gulp.task('guestweb-v2-less-production',['guestweb-v2-copy-less-files'], function () {
 	  return gulp.src(GUESTWEB_V2_LESS_FILE)
 	        .pipe($.less({
 	        	compress: true
