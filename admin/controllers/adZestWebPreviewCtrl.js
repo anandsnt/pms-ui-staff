@@ -54,9 +54,9 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			// set nav bar background color
 			applyStyle('.zest-web-header-bar { background:', styles.header_bg.background);
 			// set template button bg color
-			applyStyle('.zest-web-btn,.zest-web-btn:hover { background:', styles.button.background);
+			applyStyle('.zest-web-btn { background:', styles.button.background);
 			// set template button text color
-			applyStyle('.zest-web-btn,.zest-web-btn:hover  { color:', styles.button_text.color);
+			applyStyle('.zest-web-btn  { color:', styles.button_text.color);
 			//set template font family
 			applyStyle('.zest-web-main-container { font-family:', styles.template_font);
 			// set  main text color
@@ -64,9 +64,9 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			// set sub main text color
 			applyStyle('.zest-web-sub-main-text { color:', styles.sub_title_text.color);
 			// set template footer text color
-			applyStyle('.zest-web-footer-text,.zest-web-footer-text:hover  { color:', styles.footer_text.color);
+			applyStyle('.zest-web-footer-text  { color:', styles.footer_text.color);
 			// set template label text color
-			applyStyle('.zest-web-sub-text,.zest-web-sub-text:hover  { color:', styles.label_text.color);
+			applyStyle('.zest-web-sub-text { color:', styles.label_text.color);
 
 			if ($scope.previewData.isSmallDevice) {
 				// set button font size for small devices
