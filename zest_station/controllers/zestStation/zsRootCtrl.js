@@ -625,7 +625,15 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.closePopup = function(){
 		ngDialog.closeAll();
             };
+            
+            
+            $scope.isFromChromeApp = function(){
+                console.log(chrome.app);
+                console.log(localStorage);
+                return true;
+            };
             $scope.startIdleCounter = function(){
+                //console.info('isFromChromeApp: ', $scope.isFromChromeApp());
                 var time = $scope.idle_max, promptTime = $scope.idle_prompt;
                 
                     var timer = time, minutes, seconds;
@@ -710,13 +718,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	}();
-        
-        
-        
-        
-        
-        
-        
         
         
         
