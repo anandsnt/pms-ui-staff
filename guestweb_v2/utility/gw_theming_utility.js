@@ -78,7 +78,7 @@ var overrideStylesWithCMSdata = function(styles) {
 	// set template button text color
 	applyStyle('.btn,.btn:hover  { color:', styles.button_text.color);
 	//set template font family
-	// applyStyle('body { font-family:', styles.template_font);
+	applyStyle('body { font-family:', styles.template_font);
 	// set  main text color
 	applyStyle('.template-text,.main-text { color:', styles.title_text.color);
 	// set sub main text color
@@ -88,25 +88,25 @@ var overrideStylesWithCMSdata = function(styles) {
 	// set template label text color
 	applyStyle('.sub-text,.sub-text:hover  { color:', styles.label_text.color);
 	// set title font size for large devices
-	// applyStyle('.main-text { font-size:', styles.title_text.ld_font_size, "font-size");
-	// // set sub title font size for large devices
-	// applyStyle('.sub-main-text { font-size:', styles.sub_title_text.ld_font_size, "font-size");
-	// // set button font size for large devices
-	// applyStyle('.btn { font-size:', styles.button_text.ld_font_size, "font-size");
-	// // set footer font size for large devices
-	// applyStyle('.footer-text { font-size:', styles.footer_text.ld_font_size, "font-size");
-	// // set label font size for large devices
-	// applyStyle('.sub-text { font-size:', styles.label_text.ld_font_size, "font-size");
-	// // set button font size for small devices
-	// applyStyle('.btn { font-size:', styles.button_text.sd_font_size, "media-query");
-	// // set sub title font size for small devices
-	// applyStyle('.sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "media-query");
-	// // set title font size for small devices
-	// applyStyle('.main-text { font-size:', styles.title_text.sd_font_size, "media-query");
-	// // set footer font size for small devices
-	// applyStyle('.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
-	// // set label font size for small devices
-	// applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
+	applyStyle('.main-text { font-size:', styles.title_text.ld_font_size, "font-size");
+	// set sub title font size for large devices
+	applyStyle('.sub-main-text { font-size:', styles.sub_title_text.ld_font_size, "font-size");
+	// set button font size for large devices
+	applyStyle('.btn { font-size:', styles.button_text.ld_font_size, "font-size");
+	// set footer font size for large devices
+	applyStyle('.footer-text { font-size:', styles.footer_text.ld_font_size, "font-size");
+	// set label font size for large devices
+	applyStyle('.sub-text { font-size:', styles.label_text.ld_font_size, "font-size");
+	// set button font size for small devices
+	applyStyle('.btn { font-size:', styles.button_text.sd_font_size, "media-query");
+	// set sub title font size for small devices
+	applyStyle('.sub-main-text { font-size:', styles.sub_title_text.sd_font_size, "media-query");
+	// set title font size for small devices
+	applyStyle('.main-text { font-size:', styles.title_text.sd_font_size, "media-query");
+	// set footer font size for small devices
+	applyStyle('.footer-text { font-size:', styles.footer_text.sd_font_size, "media-query");
+	// set label font size for small devices
+	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 	//apply icon styles
 	if(styles.icon_color !== "White"){
 		applyIconStyles(styles.icon_color)

@@ -1,4 +1,4 @@
-/*
+/**
  *	This Controller is to list checkout options
  */
 sntGuestWeb.controller('GwCheckOutOptionsController', ['$scope', '$state', '$controller', 'GwWebSrv', '$timeout',

@@ -1,5 +1,5 @@
-admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
-	function($scope, ngDialog) {
+admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
+	function($scope, isSmallDevice) {
 		//blank check
 		function isBlank(pString) {
 			if (!pString || pString.length == 0) {
@@ -69,7 +69,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			// set template label text color
 			applyStyle('.zest-web-sub-text { color:', styles.label_text.color);
 
-			if ($scope.previewData.isSmallDevice) {
+			if (isSmallDevice) {
 				// set button font size for small devices
 				applyStyle('.zest-web-btn { font-size:', styles.button_text.sd_font_size, "font-size");
 				// set sub title font size for small devices
@@ -104,8 +104,8 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'ngDialog',
 			};
 		};
 		BaseCtrl.call(this, $scope);
-		if($scope.previewData.is_cms_on){
-			overrideStylesWithCMSdata($scope.previewData);
+		if($scope.globalSettings.is_cms_on){
+			overrideStylesWithCMSdata($scope.globalSettings);
 		}
 		else{
 			return;

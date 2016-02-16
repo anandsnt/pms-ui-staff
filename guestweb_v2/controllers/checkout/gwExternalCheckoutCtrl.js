@@ -1,4 +1,4 @@
-/*
+/**
 	External verification Controller 
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
