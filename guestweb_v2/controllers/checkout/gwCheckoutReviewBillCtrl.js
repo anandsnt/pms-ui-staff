@@ -1,4 +1,4 @@
-/*
+/**
  *	This Controller is to view bill
  */
 sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckoutSrv',
