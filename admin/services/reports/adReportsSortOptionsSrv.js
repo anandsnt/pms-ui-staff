@@ -11,18 +11,6 @@ admin.service('adReportsSortOptionsSrv', ['$q', 'ADBaseWebSrvV2',
 			"hotel_chain": {
 				associatedReports: ["CLIENT_USAGE"],
 				desc: "Hotel Chain"
-			},
-			"total_check_ins": {
-				associatedReports: ["CLIENT_USAGE"],
-				desc: "Total Check-ins"
-			},
-			"total_check_outs": {
-				associatedReports: ["CLIENT_USAGE"],
-				desc: "Total Check-outs"
-			},
-			"total_queued": {
-				associatedReports: ["CLIENT_USAGE"],
-				desc: "Total Queued"
 			}
 		};
 

@@ -37,7 +37,7 @@ module.exports = function (gulp, $, options) {
 	    return cssInjector(GUESTWEB_V2_CSS_FILE);
 	});
 	
-	gulp.task('guestweb-v2-less-production', function () {
+	gulp.task('guestweb-v2-less-production',['guestweb-v2-copy-images-and-fonts-files'], function () {
 	  return gulp.src(GUESTWEB_V2_LESS_FILE)
 	        .pipe($.less({
 	        	compress: true
@@ -48,7 +48,7 @@ module.exports = function (gulp, $, options) {
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
-	gulp.task('guestweb-v2-less-dev', ['guestweb-v2-copy-less-files'], function () {
+	gulp.task('guestweb-v2-less-dev', ['guestweb-v2-copy-less-files','guestweb-v2-copy-images-and-fonts-files'], function () {
 	  return gulp.src(GUESTWEB_V2_LESS_FILE)
 	        .pipe($.less())
 	        .pipe(gulp.dest(DEST_ROOT_PATH));
@@ -58,8 +58,13 @@ module.exports = function (gulp, $, options) {
 	    return cssInjector(GUESTWEB_V2_CSS_FILE);
 	});
 
+	gulp.task('guestweb-v2-copy-images-and-fonts-files', function(){
+		return gulp.src(['type/**/**.*','guestweb_v2/images/**/*.*'], {base: '.'})
+			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+	});
+
 	gulp.task('guestweb-v2-copy-less-files', function(){
-		return gulp.src(['stylesheets/**/*.*', 'guestweb_v2/css/*.less', 'type/**/**.*','guestweb_v2/images/**/*.*'], {base: '.'})
+		return gulp.src(['stylesheets/**/*.*', 'guestweb_v2/css/*.less'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 

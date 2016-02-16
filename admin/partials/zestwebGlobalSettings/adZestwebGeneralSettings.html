@@ -5,30 +5,51 @@
 </div>
 <!-- Expanded View -->
 <div ng-show="selectedMenu ==='general'">
-   <form class="form zest-web-settins-form float">
-            <fieldset class="holder left max-width">
-                <ad-toggle-button is-checked="globalSettings.is_cms_on" label="{{ 'CMS_STATUS' | translate}}"></ad-toggle-button>
-                </float>
-                <fieldset class="holder right">
-                    <div class="entry full-width">
-                        <label>
-                            {{ 'LANGUAGES' | translate}}
-                        </label>
-                        <div class="entry">
-                            <div class="select">
-                                <select ng-options="language for language in languages" ng-model="globalSettings.language">
-                                </select>
-                            </div>
-                        </div>
+    <form class="form zest-web-settins-form float">
+        <div class="form-title full-width">
+            <h3><span>General setup</span></h3>
+        </div>
+        <div class="form-subtitle-title margin-bottom-50">
+            <h6><span translate="">ZESTWEB_SETTINGS_INSTRUCTION</span></h6>
+        </div>
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="globalSettings.is_cms_on" label="{{ 'CMS_STATUS' | translate}}"></ad-toggle-button>
+            <ad-toggle-button is-checked="globalSettings.is_large_screen_preview_on" label="{{ 'LARGE_SCREEN_PREVIEW_STATUS' | translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder right">
+            <div class="entry full-width">
+                <label>
+                    {{ 'LANGUAGE' | translate}}
+                </label>
+                <div class="entry">
+                    <div class="select">
+                        <select ng-options="language for language in languages" ng-model="globalSettings.language">
+                        </select>
                     </div>
-                </fieldset>
-                <div class="actions float">
-                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
-                        CANCEL
-                    </button>
-                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
-                        SAVE_CHANGES
-                    </button>
                 </div>
-        </form>
+            </div>
+            <div class="entry full-width">
+                <label>
+                    Icon color
+                </label>
+                <div class="entry">
+                    <div class="select">
+                        <select ng-options="icon_color for icon_color in iconColors" ng-model="globalSettings.icon_color">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                CANCEL
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding blue" ng-click="previewClicked()">
+                PREVIEW
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+    </form>
 </div>

@@ -83,4 +83,16 @@ sntZestStation.service('zsCheckoutSrv',
                     return deferred.promise;
                 };
 
+                 // send email
+                this.sendBill = function (params) {
+                    var deferred = $q.defer(),
+                            url = '/api/reservations/email_guest_bill.json';
+                    zsBaseWebSrv.postJSON(url,params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+
  }]);

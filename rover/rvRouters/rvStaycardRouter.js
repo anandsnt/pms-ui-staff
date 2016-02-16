@@ -104,17 +104,17 @@ angular.module('stayCardModule', [])
                 }
             },
             resolve: {
-                sortOrder: function(RVReservationBaseSearchSrv) {
+                sortOrder: function(RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchSortPreferences();
                 },
-                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams) { //CICO-16874
+                areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { //CICO-16874
                     return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date,
                         is_active: true
                     });
                 },
-                rates: function(RVReservationBaseSearchSrv, $stateParams) {
+                rates: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchRates({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date,
@@ -128,77 +128,20 @@ angular.module('stayCardModule', [])
                         promotion_id: $stateParams.promotion_id
                     })
                 },
-                ratesMeta: function(RVReservationBaseSearchSrv) {
+                ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchRatesMeta();
                 },
-                house: function(RVReservationBaseSearchSrv, $stateParams) {
+                house: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchHouseAvailability({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
                     });
-                },
-                rateAddons: function($stateParams, RVReservationBaseSearchSrv) {
-                    return RVReservationBaseSearchSrv.fetchAddonsForRates({
-                        from_date: $stateParams.from_date,
-                        to_date: $stateParams.to_date
-                    });
-                }
-            }
-        });
-
-        $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
-            url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard',
-            templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
-            controller: 'RVReservationRoomTypeCtrl',
-            onEnter: function($stateParams) {
-                if (!$stateParams.view) {
-                    $stateParams.view = "DEFAULT";
-                }
-                if (!$stateParams.company_id) {
-                    $stateParams.company_id = null;
-                }
-                if (!$stateParams.travel_agent_id) {
-                    $stateParams.travel_agent_id = null;
-                }
-                if (!$stateParams.group_id) {
-                    $stateParams.group_id = null;
-                }
-                if (!$stateParams.allotment_id) {
-                    $stateParams.allotment_id = null;
-                }
-                if (!$stateParams.promotion_code) {
-                    $stateParams.promotion_code = null;
-                }
-
-            },
-            resolve: {
-                roomRates: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) {
-                    var params = {};
-                    params.from_date = $stateParams.from_date;
-                    params.to_date = $stateParams.to_date;
-                    params.company_id = $stateParams.company_id;
-                    params.travel_agent_id = $stateParams.travel_agent_id;
-                    params.group_id = $stateParams.group_id,
-                        params.allotment_id = $stateParams.allotment_id,
-                        params.promotion_code = $stateParams.promotion_code
-                    return RVReservationBaseSearchSrv.fetchAvailability(params);
-                },
-                sortOrder: function(RVReservationBaseSearchSrv, staycardJsAssets) {
-                    return RVReservationBaseSearchSrv.fetchSortPreferences();
                 },
                 rateAddons: function($stateParams, RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchAddonsForRates({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
                     });
-                },
-                isAddonsConfigured: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { //CICO-16874
-
-                    var params = {};
-                    params.from_date = $stateParams.from_date;
-                    params.to_date = $stateParams.to_date;
-                    params.is_active = true;
-                    return RVReservationBaseSearchSrv.hasAnyConfiguredAddons(params);
                 }
             }
         });

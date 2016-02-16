@@ -14,11 +14,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		};
 
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-		if (SWITCH_ROOM_AND_RATES_ALT) {
-			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		}
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		
 
 
 		$scope.setHeadingTitle = function(heading) {
