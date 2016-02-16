@@ -33,27 +33,29 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 			$scope.selectedMenu = "";
 		};
 
+		var setUpPopUpData = function(template, className) {
+			return {
+				controller: 'adZestWebPreviewCtrl',
+				scope: $scope,
+				closeByDocument: true,
+				template: template,
+				className: className
+			};
+		};
+		
 		var openPreviewForSmallerScreens = function() {
 			$scope.previewData = angular.copy($scope.globalSettings);
 			$scope.previewData.isSmallDevice = true;
-			ngDialog.open({
-				template: '/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
-				className: 'ngdialog-theme-default single-calendar-modal phone-preview',
-				controller: 'adZestWebPreviewCtrl',
-				scope: $scope,
-				closeByDocument: true
-			});
+			var popupSetup = setUpPopUpData('/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
+				'ngdialog-theme-default single-calendar-modal phone-preview');
+			ngDialog.open(popupSetup);
 		};
 		var openPreviewForLargerScreens = function() {
 			$scope.previewData = angular.copy($scope.globalSettings);
 			$scope.previewData.isSmallDevice = false;
-			ngDialog.open({
-				template: '/assets/partials/zestwebGlobalSettings/adZestWebLargeScreenPreview.html',
-				className: 'ngdialog-theme-default single-calendar-modal ipad-preview',
-				controller: 'adZestWebPreviewCtrl',
-				scope: $scope,
-				closeByDocument: true
-			});
+			var popupSetup = setUpPopUpData('/assets/partials/zestwebGlobalSettings/adZestWebLargeScreenPreview.html',
+				'ngdialog-theme-default single-calendar-modal ipad-preview');
+			ngDialog.open(popupSetup);
 		};
 		$scope.previewClicked = function() {
 			$scope.previewData = angular.copy($scope.globalSettings);
