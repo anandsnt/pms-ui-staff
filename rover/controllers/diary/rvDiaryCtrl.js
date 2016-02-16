@@ -980,8 +980,8 @@ sntRover
 
 		$scope.renderGrid = function(params) {
 			var args = params || {};
-	 		React.renderComponent(
-				DiaryContent(_.extend(args, $scope.gridProps)),
+	 		ReactDOM.render(
+				React.createElement(DiaryContent, _.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
 			);
 		};

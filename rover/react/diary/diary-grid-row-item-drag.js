@@ -18,7 +18,7 @@ var GridRowItemDrag = React.createClass({
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
 	componentWillUnmount: function() {
-  		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
+  		ReactDOM.findDOMNode(this).removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
   	},
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state, display = props.display;
@@ -30,7 +30,7 @@ var GridRowItemDrag = React.createClass({
 		document.addEventListener (this.mouseLeavingEvent, this.__onMouseUp);
 		document.addEventListener (this.mouseMovingEvent, this.__dbMouseMove);
 
-		page_offset = this.getDOMNode().getBoundingClientRect();
+		page_offset = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
 		el = props.viewport.element();
 		var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int,
@@ -149,7 +149,7 @@ var GridRowItemDrag = React.createClass({
 			//towards left
 			else if(e.pageX < state.origin_x) {
 				draggingTopOrBottom = false;
-				var item_offset = this.getDOMNode().getBoundingClientRect();
+				var item_offset = ReactDOM.findDOMNode(this).getBoundingClientRect();
 				var diffX_left = e.pageX - item_offset.left;
 				if((diffX_left + display.px_per_hr) < viewport.offset().left) {
 					if((xScPos + width_of_res) > 0) {
@@ -289,7 +289,7 @@ var GridRowItemDrag = React.createClass({
 
 		document.removeEventListener (this.mouseLeavingEvent, this.__onMouseUp);
 		document.removeEventListener (this.mouseMovingEvent, this.__dbMouseMove);
-		var page_offset = this.getDOMNode().getBoundingClientRect();
+		var page_offset = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
 		if(state.dragging && props.edit.active && (props.data.key !== props.currentDragItem.key)){
 			return;
@@ -371,7 +371,7 @@ var GridRowItemDrag = React.createClass({
 		this.mouseStartingEvent = this.isTouchEnabled ? 'touchstart': 'mousedown';
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
-		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);
+		ReactDOM.findDOMNode(this).addEventListener(this.mouseStartingEvent, this.__onMouseDown);
 	},
 	getInitialState: function() {
 		return {
@@ -399,7 +399,7 @@ var GridRowItemDrag = React.createClass({
 			className = '';
 		}
 
-		return this.transferPropsTo(React.DOM.div({
+		return (React.DOM.div({
 			style:       style,
 			className:   props.className + className,
 			children:    props.children

@@ -37,7 +37,7 @@ var RoomPanel = React.createClass({
 			id: 'diary-rooms',
 			className: 'diary-rooms scrollable'
 		},
-		Rooms({
+		React.createElement( Rooms, {
 			display: props.display,
 			meta:    props.meta,
 			data:    props.data

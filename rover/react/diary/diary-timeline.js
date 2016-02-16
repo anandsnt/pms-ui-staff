@@ -108,7 +108,7 @@ var Timeline = React.createClass({
 		}, React.DOM.div({
 			className: 'hours'
 		}, hourly_spans),
-		Resizable({
+		React.createElement( Resizable, {
 			display:               display,
 			edit:                  props.edit,
 			filter:                props.filter,

@@ -26,7 +26,7 @@ var GridRow = React.createClass({
 		return render;
 	},
 	componentDidMount: function(){
-		$(this.getDOMNode()).droppable();
+		$(ReactDOM.findDOMNode(this)).droppable();
 	},
 	render: function() {
 		var props 				= this.props,
@@ -67,7 +67,7 @@ var GridRow = React.createClass({
 		hourly_divs,
 		room_inactives,
 		_.map(props.data[room_meta_children], function(occupancy) {
-			return GridRowItem({
+			return React.createElement( GridRowItem, {
 				key: 			occupancy.key,
 				display: 		display,
 				viewport:    	props.viewport,
