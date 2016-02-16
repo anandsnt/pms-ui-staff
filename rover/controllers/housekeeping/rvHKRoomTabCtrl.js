@@ -190,6 +190,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 						to_date: $scope.updateService.selected_date
 					}, $_fetchSavedStausCallback);
 				}
+				$scope.$apply();
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
@@ -203,7 +204,15 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 					to_date: $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd')
 				};
 
-				var _callback = function() {
+				var _errorCallback = function(error) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = error;
+					$scope.updateService.room_service_status_id = $scope.prev_room_service_status_id;
+					$_updateRoomDetails('room_reservation_hk_status', $scope.prev_room_service_status_id);
+					$scope.statusChange();
+				};
+
+				var _successCallback = function() {
 					$scope.$emit('hideLoader');
 					$scope.showSaved = false;
 
@@ -215,7 +224,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 				// only "put" in service if original status was not inService
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _callback);
+					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _successCallback,_errorCallback);
 				}
 			};
 
