@@ -1,5 +1,5 @@
-admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSettingsSrv', 'ngDialog', 'zestWebGlobalSettings',
-	function($scope, ADzestWebGlobalSettingsSrv, ngDialog, zestWebGlobalSettings) {
+admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSettingsSrv', 'ngDialog', 'zestWebGlobalSettings','$controller',
+	function($scope, ADzestWebGlobalSettingsSrv, ngDialog, zestWebGlobalSettings,$controller) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.successMessage = '';
@@ -7,58 +7,53 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
 		$scope.iconColors = ["White", "Black"];
 		$scope.selectedMenu = "";
-		$scope.previewData = {};
-		$scope.globalSettings = zestWebGlobalSettings.zest_web;
+		$scope.globalSettings = zestWebGlobalSettings.zest_web; //resolved on route change
 
 		$scope.saveSettings = function() {
 			var saveSettingsCallback = function() {
-				$scope.$emit('hideLoader');
 				$scope.successMessage = 'Success';
-				$scope.previewData = angular.copy($scope.globalSettings);
-			}
-			var data = {
-				"zest_web": $scope.globalSettings
-			}
-			$scope.invokeApi(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, data, saveSettingsCallback);
+			};
+			var options = {
+				params: {
+					"zest_web": $scope.globalSettings
+				},
+				successCallBack: saveSettingsCallback
+			};
+			$scope.callAPI(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, options);
 		};
 		//on scolling hide all the color pickers
 		$scope.pageScrolled = function() {
 			$("*").spectrum("hide");
 		};
-
+		// selected menu changed
 		$scope.$on("changeMenu", function(e, value) {
 			$scope.selectedMenu = value;
 		});
 		$scope.cancelClicked = function() {
 			$scope.selectedMenu = "";
 		};
-
-		var setUpPopUpData = function(template, className) {
+		var setUpPopUpData = function(template, className, isSmallDevice) {
 			return {
-				controller: 'adZestWebPreviewCtrl',
-				scope: $scope,
+				controller: $controller('adZestWebPreviewCtrl', {
+					$scope: $scope,
+					isSmallDevice: isSmallDevice
+				}),
 				closeByDocument: true,
 				template: template,
 				className: className
 			};
 		};
-		
 		var openPreviewForSmallerScreens = function() {
-			$scope.previewData = angular.copy($scope.globalSettings);
-			$scope.previewData.isSmallDevice = true;
 			var popupSetup = setUpPopUpData('/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
-				'ngdialog-theme-default single-calendar-modal phone-preview');
+				'ngdialog-theme-default single-calendar-modal phone-preview', true);
 			ngDialog.open(popupSetup);
 		};
 		var openPreviewForLargerScreens = function() {
-			$scope.previewData = angular.copy($scope.globalSettings);
-			$scope.previewData.isSmallDevice = false;
 			var popupSetup = setUpPopUpData('/assets/partials/zestwebGlobalSettings/adZestWebLargeScreenPreview.html',
-				'ngdialog-theme-default single-calendar-modal ipad-preview');
+				'ngdialog-theme-default single-calendar-modal ipad-preview', false);
 			ngDialog.open(popupSetup);
 		};
 		$scope.previewClicked = function() {
-			$scope.previewData = angular.copy($scope.globalSettings);
 			if ($scope.globalSettings.is_large_screen_preview_on) {
 				openPreviewForLargerScreens();
 			} else {
