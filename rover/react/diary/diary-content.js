@@ -1,4 +1,4 @@
-React.initializeTouchEvents(true);
+//React.initializeTouchEvents(true);
 
 var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {

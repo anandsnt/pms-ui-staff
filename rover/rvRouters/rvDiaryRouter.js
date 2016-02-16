@@ -7,7 +7,7 @@ angular
         controller: 'rvDiaryCtrl',
         resolve: {
             diaryAssets: function(jsMappings, mappingList) {
-                return jsMappings.fetchAssets(['rover.diary', 'directives'], ['ngReact']);
+                return jsMappings.fetchAssets(['rover.diary', 'directives'], ['react']);
             },
             propertyTime: function(RVReservationBaseSearchSrv, diaryAssets) {
                 return RVReservationBaseSearchSrv.fetchCurrentTime();
