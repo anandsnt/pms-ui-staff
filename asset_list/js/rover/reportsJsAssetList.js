@@ -9,6 +9,7 @@ module.exports = {
 				jsLibRoot + "react/react.min.js",
 				jsLibRoot + "react/JSXTransformer.min.js",
 				jsLibRoot + "react/react-with-addons.min.js",
+				jsLibRoot + "react/react-dom.min.js",
 				roverRoot + "directives/ngReact/ngReact.js"
 			],
 			nonMinifiedFiles: [

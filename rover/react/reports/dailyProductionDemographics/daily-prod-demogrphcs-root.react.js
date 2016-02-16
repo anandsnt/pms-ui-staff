@@ -1,4 +1,4 @@
-React.initializeTouchEvents(true);
+//React.initializeTouchEvents(true);
 
 var DailyProductionByDemographics = React.createClass({
   toggleRevenue: function() {
@@ -100,7 +100,7 @@ var DailyProductionByDemographics = React.createClass({
   },
 
   render: function() {
-    return React.DOM.span({}, DailyProductionLeftSide(this.state),
-			DailyProductionRightSide(this.state));
+    return React.DOM.span({}, React.createElement(DailyProductionLeftSide, this.state),
+			React.createElement(DailyProductionRightSide, this.state));
   }
 });

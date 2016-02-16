@@ -1,4 +1,4 @@
-React.initializeTouchEvents(true);
+//React.initializeTouchEvents(true);
 
 var DPthCell = React.createClass({
 	render: function() {
