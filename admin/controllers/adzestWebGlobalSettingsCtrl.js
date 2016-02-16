@@ -32,33 +32,25 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.cancelClicked = function() {
 			$scope.selectedMenu = "";
 		};
-		var setUpPopUpData = function(template, className, isSmallDevice) {
-			return {
+		var setUpPopUpDataAndOpen = function(template, className, isSmallDevice) {
+			ngDialog.open({
 				controller: $controller('adZestWebPreviewCtrl', {
 					$scope: $scope,
 					isSmallDevice: isSmallDevice
 				}),
 				closeByDocument: true,
-				template: template,
-				className: className
-			};
+				template: '/assets/partials/zestwebGlobalSettings/'+template,
+				className: 'ngdialog-theme-default '+className
+			});
 		};
-		var openPreviewForSmallerScreens = function() {
-			var popupSetup = setUpPopUpData('/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
-				'ngdialog-theme-default single-calendar-modal phone-preview', true);
-			ngDialog.open(popupSetup);
+		var openSmallScreenPreview = function() {
+			setUpPopUpDataAndOpen('adZestWebPreview.html','phone-preview', true);
 		};
-		var openPreviewForLargerScreens = function() {
-			var popupSetup = setUpPopUpData('/assets/partials/zestwebGlobalSettings/adZestWebLargeScreenPreview.html',
-				'ngdialog-theme-default single-calendar-modal ipad-preview', false);
-			ngDialog.open(popupSetup);
+		var openLargeScreenPreview = function() {
+			setUpPopUpDataAndOpen('adZestWebLargeScreenPreview.html','ipad-preview', false);
 		};
 		$scope.previewClicked = function() {
-			if ($scope.globalSettings.is_large_screen_preview_on) {
-				openPreviewForLargerScreens();
-			} else {
-				openPreviewForSmallerScreens();
-			};
+			$scope.globalSettings.is_large_screen_preview_on? openLargeScreenPreview():openSmallScreenPreview();
 		};
 		//image upload section starts here
 		$scope.isImageAvailable = function(image) {
@@ -68,6 +60,5 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.stripAndDisplay = function(str) {
 			return (typeof str === "undefined" || str === null || str.length === 0) ? "select image.." : "..." + str.substring((str.length - 15), str.length);
 		};
-
 	}
 ]);
