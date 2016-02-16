@@ -32,11 +32,9 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		$scope.cancelClicked = function() {
 			$scope.selectedMenu = "";
 		};
-		$scope.closeDialog = function() {
-			ngDialog.close();
-		};
+
 		var openPreviewForSmallerScreens = function() {
-			$scope.previewData =  angular.copy($scope.globalSettings);
+			$scope.previewData = angular.copy($scope.globalSettings);
 			$scope.previewData.isSmallDevice = true;
 			ngDialog.open({
 				template: '/assets/partials/zestwebGlobalSettings/adZestWebPreview.html',
@@ -65,7 +63,14 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 				openPreviewForSmallerScreens();
 			};
 		};
-
+		//image upload section starts here
+		$scope.isImageAvailable = function(image) {
+			return (image !== '') ? true : false;
+		};
+		//image place holder texts
+		$scope.stripAndDisplay = function(str) {
+			return (typeof str === "undefined" || str === null || str.length === 0) ? "select image.." : "..." + str.substring((str.length - 15), str.length);
+		};
 
 	}
 ]);
