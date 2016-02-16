@@ -34,7 +34,9 @@ module.exports = {
 			'guestweb_luxor':[ themeCSSRoot + 'guestweb_luxor.css'],
 			'guestweb_mgm_grand':[ themeCSSRoot + 'guestweb_mgm_grand.css'],
 			'guestweb_signature_at_mgm':[ themeCSSRoot + 'guestweb_signature_at_mgm.css'],
-			'guestweb_11Howard':[ themeCSSRoot + 'guestweb_11Howard.css']
+			'guestweb_11Howard':[ themeCSSRoot + 'guestweb_11Howard.css'],
+			'guestweb_excalibur':[ themeCSSRoot + 'guestweb_luxor.css']
+
 		}
 	}
 }
