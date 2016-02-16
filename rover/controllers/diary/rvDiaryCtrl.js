@@ -2055,7 +2055,7 @@ sntRover
 
                 if(item.company_logo === '') {
                 	img_url = item.account_type === 'COMPANY' ? 'avatar-company.png' : 'avatar-travel-agent.png';
-                	eachItem.image = img_url;
+                	eachItem.image = '/assets/images/' + img_url;
                 }
 
                 // making sure that the newly created 'eachItem'
