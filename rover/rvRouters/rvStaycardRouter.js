@@ -21,7 +21,8 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
                 staycardJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.reservation', 'directives']);
+                    return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments', 
+                        'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 },
                 /**
                  *   We have moved the fetching of 'baseData' form 'rover.reservation' state

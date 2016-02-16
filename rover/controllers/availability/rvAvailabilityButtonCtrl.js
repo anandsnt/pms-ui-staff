@@ -48,7 +48,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 			}
 			else{
 				$scope.$emit("showLoader");
-				jsMappings.fetchAssets(['rover.availability'], ['highcharts-ng'])
+				jsMappings.fetchAssets(['rover.availability', 'highcharts'], ['highcharts-ng'])
                 .then(function(){
                 	$scope.$emit("hideLoader");
                 	$timeout(function(){

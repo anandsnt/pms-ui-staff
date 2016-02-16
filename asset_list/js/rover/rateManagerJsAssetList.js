@@ -1,13 +1,10 @@
 module.exports = {	
 	getList : function() {
-		var jsLibRoot 	= 'shared/lib/js/',
-		roverRoot 		= 'rover/',
+		var roverRoot 	= 'rover/',
 		rateMgrJsAssets = {
 			minifiedFiles: [
-				jsLibRoot + "highcharts.min.js"
 			],
-			nonMinifiedFiles: [	
-				jsLibRoot + "angular-highcharts.js",			
+			nonMinifiedFiles: [		
 				roverRoot + "controllers/rateManager/**/*.js",
 				roverRoot + "services/rateManager/**/*.js"
 			]
