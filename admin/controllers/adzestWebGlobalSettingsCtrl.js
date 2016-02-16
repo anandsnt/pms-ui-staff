@@ -58,7 +58,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 			});
 		};
 		$scope.previewClicked = function() {
-			$scope.previewData = ($scope.previewData.hasOwnProperty("is_cms_on")) ? $scope.previewData : angular.copy($scope.globalSettings);
+			$scope.previewData = angular.copy($scope.globalSettings);
 			if ($scope.globalSettings.is_large_screen_preview_on) {
 				openPreviewForLargerScreens();
 			} else {
