@@ -383,7 +383,7 @@ var GridRowItemDrag = React.createClass({
 	render: function() {
 		var props = this.props,
 			state = this.state,
-			style = {},
+			style = props.style,
 			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
 
 			className = '';
@@ -398,7 +398,6 @@ var GridRowItemDrag = React.createClass({
 		} else {
 			className = '';
 		}
-
 		return (React.DOM.div({
 			style:       style,
 			className:   props.className + className,
