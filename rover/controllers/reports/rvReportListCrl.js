@@ -20,9 +20,11 @@ sntRover.controller('RVReportListCrl', [
         /**
          * inorder to refresh after list rendering
          */
-        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+        var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
+            $scope.refreshScroller( LIST_ISCROLL_ATTR );
         });
+        
+        $scope.$on( '$destroy', listRendered );
 
 
 
