@@ -183,6 +183,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// Populate a Room First Grid Here
 				var roomTypes = {},
 					isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1 : $scope.getLeastHouseAvailability() < 1,
+                    isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
 					isPromoInvalid = $scope.reservationData.code &&
 					$scope.reservationData.code.id &&
 					!_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
@@ -218,7 +219,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 							//---------------------------------------------------------------------------------------------- Add FULL-HOUSE if applicable in restrictions
 
-							if (isHouseFull && (!roomType.first_restriction || roomType.first_restriction.type_id != 99)) {
+							if (!isGroupReservation && isHouseFull && (!roomType.first_restriction || roomType.first_restriction.type_id != 99)) {
 								roomType.restriction_count = roomType.restriction_count ? roomType.restriction_count + 1 : 1;
 								if (roomType.restriction_count === 1) {
 									roomType.first_restriction = {
@@ -1028,6 +1029,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			var computeDetails = function() {
 				RVSelectRoomRateSrv.houseAvailability = $scope.stateCheck.house;
+				RVSelectRoomRateSrv.isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
 
 				if ($scope.reservationData.code && //------------------------------------------------------------------- Place INVALID PROMO to be set IFF 
 					$scope.reservationData.code.id && //---------------------------------------------------------------- a) A promotion has been entered [AND]
@@ -1564,6 +1566,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				fetchRates();
 			});
 
+            var booobooboo;
 			$scope.$on('resetGuestTab', function() {
 				// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
 				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id, function(data) {
