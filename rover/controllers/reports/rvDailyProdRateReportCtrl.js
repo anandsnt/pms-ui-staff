@@ -74,7 +74,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 			delete mainCtrlScope.myScroll[RIGHT_PANE_SCROLL];
 		};
 
-		$scope.$on('destroy', destroyScrolls);
+		$scope.$on('$destroy', destroyScrolls);
 
 
 
@@ -335,9 +335,9 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], reInit);
 		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], reInit);
 
-		$scope.$on('destroy', reportSubmited);
-		$scope.$on('destroy', reportUpdated);
-		$scope.$on('destroy', reportPrinting);
-		$scope.$on('destroy', reportPageChanged);
+		$scope.$on('$destroy', reportSubmited);
+		$scope.$on('$destroy', reportUpdated);
+		$scope.$on('$destroy', reportPrinting);
+		$scope.$on('$destroy', reportPageChanged);
 	}
 ]);
