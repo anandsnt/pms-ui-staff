@@ -759,7 +759,7 @@ sntRover.controller('reservationActionsController', [
 		//Checking whether email is attached with guest card or not
 		$scope.isEmailAttached = function() {
 			var isEmailAttachedFlag = false;
-			if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
+			if (!!$scope.guestCardData.contactInfo.email && $scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
 				isEmailAttachedFlag = true;
 			}
 			return isEmailAttachedFlag;
