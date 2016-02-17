@@ -857,7 +857,8 @@ angular.module('sntRover').controller('guestCardController', [
 						name: $scope.searchData.groupCard.name,
 						code: $scope.searchData.groupCard.code,
 						from_date: $scope.reservationData.arrivalDate,
-						to_date: $scope.reservationData.departureDate
+						to_date: $scope.reservationData.departureDate,
+                        is_take_from_inventory: true //https://stayntouch.atlassian.net/browse/CICO-24923
 					},
 					successCallBack: onGroupSearchSuccess,
 					failureCallBack: onGroupSearchFailure

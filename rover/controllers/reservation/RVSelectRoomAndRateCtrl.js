@@ -1303,6 +1303,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else {
 					var i,
 						roomInfo = $scope.stateCheck.lookUp[roomId],
+                        isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
 						rateInfo = roomInfo.rates[rateId];
 					if (!TABS[$scope.activeRoom].roomTypeId || parseInt(TABS[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
 						TABS[$scope.activeRoom].roomTypeId = parseInt(roomId);
@@ -1333,7 +1334,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 
 					// IFF Overbooking Alert is configured to be shown
-					if ($scope.otherData.showOverbookingAlert) {
+                    // NOTE: The overbooking house alert is not to be shown for group reservations. CICO-24923
+
+					if ($scope.otherData.showOverbookingAlert && !isGroupReservation) {
 
 						var leastHouseAvailability = $scope.getLeastHouseAvailability(),
 							leastRoomTypeAvailability = $scope.getLeastAvailability(roomId, rateId),
