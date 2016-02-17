@@ -70,7 +70,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	$rootScope.isCheckin     =   (reservationAndhotelData.is_checkin ==='true') ? true : false;
 	$rootScope.reservationStatusCheckedIn = (reservationAndhotelData.reservation_status ==='CHECKIN')? true :false;
     $rootScope.isActiveToken = (reservationAndhotelData.is_active_token ==="true") ? true : false;
- 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
+ 	$rootScope.isCheckedin  =  (($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken) || reservationAndhotelData.is_checked_in);
  	$rootScope.isCCOnFile = (reservationAndhotelData.is_cc_attached ==="true")? true:false;
  	$rootScope.isPreCheckedIn   = (reservationAndhotelData.is_pre_checked_in === 'true') ? true: false;
  	$rootScope.isRoomVerified =  false;
