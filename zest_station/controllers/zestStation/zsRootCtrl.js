@@ -526,10 +526,14 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.callAPI(zsTabletSrv.fetchEncoders, options);
         };*/
+
+        $scope.trustAsHtml = function(string) {
+            return $sce.trustAsHtml(string);
+        };
         $scope.fetchHotelSettings = function(){
             var onSuccess = function(data){
                     $scope.zestStationData.hotel_settings = data;
-                    $scope.zestStationData.hotel_terms_and_conditions = $sce.trustAsHtml(data.terms_and_conditions).$$unwrapTrustedValue();
+                    $scope.zestStationData.hotel_terms_and_conditions = data.terms_and_conditions;
                     //fetch the idle timer settings
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
