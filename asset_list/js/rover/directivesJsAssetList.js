@@ -28,6 +28,7 @@ module.exports = {
                     'rover/directives/fullCalendar/twoMonthCalendar.js', // FOR ROOM & RATES CALENDAR
                     'rover/directives/ngrepeatend/ngrepeatend.js',
                     'shared/directives/tooltip/qtipfc.js',// FOR ROOM & RATES CALENDAR
+                    'shared/directives/emitWhen/emitWhen.js',
 
                     jsLibRoot + 'fullcalender/**/*.js'
 				]

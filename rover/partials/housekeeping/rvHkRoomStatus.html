@@ -121,7 +121,7 @@
             <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
         </li>
 
-        <li class="room" bindonce ng-repeat="room in rooms track by $index">
+        <li class="room" bindonce ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
             <div ng-if="isStandAlone" class="check">
                 <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room, $index)">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
