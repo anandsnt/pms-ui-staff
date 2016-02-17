@@ -641,7 +641,7 @@ $scope.initWsSwipe = function(){
 	    // Triggers when the server is down.
             ws.onclose = function () {
                 // websocket is closed.
-                alert(config['close_alert']);
+              //  alert(config['close_alert']);
             };
             return ws;
         };
