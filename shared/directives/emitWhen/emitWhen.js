@@ -11,9 +11,13 @@
  * ng-repeat=".." emit-when="{event: 'CUSTOM_EVENT_NAME', condition: $last}"
  *
  * USAGE on CTRL:
- * ===================
+ * ==============
  * var handler = $scope.$on( 'CUSTOM_EVENT_NAME', callback );
  * $scope.$on( '$destroy', allRendered );
+ *
+ * DRAWBACK:
+ * =========
+ * - For nested ng-repeats we need to listen to more than one render complete events
  */
 
 angular

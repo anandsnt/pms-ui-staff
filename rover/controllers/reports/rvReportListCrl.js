@@ -153,7 +153,7 @@ sntRover.controller('RVReportListCrl', [
         });
 
         // removing event listners when scope is destroyed
-        $scope.$on( 'destroy', serveRefresh );
+        $scope.$on( '$destroy', serveRefresh );
 
         
     }
