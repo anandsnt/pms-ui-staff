@@ -1,11 +1,9 @@
 sntRover.controller('rvAllotmentReservationEditCtrl', [
     '$rootScope',
     '$scope',
-    'rvGroupRoomingListSrv',
     '$filter',
     '$timeout',
     'rvUtilSrv',
-    'rvGroupConfigurationSrv',
     'RVBillCardSrv',
     '$state',
     'ngDialog',
@@ -13,11 +11,9 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
     'rvAllotmentReservationsListSrv',
     function($rootScope,
         $scope,
-        rvGroupRoomingListSrv,
         $filter,
         $timeout,
         util,
-        rvGroupConfigurationSrv,
         RVBillCardSrv,
         $state,
         ngDialog,
@@ -333,7 +329,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           params: paramsForListOfFreeRooms,
           successCallBack: successCallBackOfListOfFreeRoomsAvailable
         };
-        $scope.callAPI(rvGroupRoomingListSrv.getFreeAvailableRooms, options);
+        $scope.callAPI(rvAllotmentReservationsListSrv.getFreeAvailableRooms, options);
       };
 
       /**
