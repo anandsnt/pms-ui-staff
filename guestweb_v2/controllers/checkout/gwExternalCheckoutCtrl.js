@@ -34,7 +34,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			$scope.calendarView = false;
 		};
 		$scope.dateChoosen = function() {
-			$scope.stayDetails.arrival_date = ($filter('date')($scope.date, GwWebSrv.reservationAndhotelData.dateFormat));
+			$scope.stayDetails.arrival_date = ($filter('date')($scope.date, GwWebSrv.zestwebData.dateFormat));
 			dateToSend = dclone($scope.date, []);
 			dateToSend = $filter('date')(dateToSend, 'yyyy-MM-dd');
 			$scope.closeCalender();
@@ -48,23 +48,22 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 		// On submitting we will be checking if the details eneterd matches any reservations
 		// If matches will return the reservation details and we save it for future usage
 		$scope.submit = function() {
-			// $scope.stayDetails.hotel_identifier = GwWebSrv.reservationAndhotelData.hotelIdentifier;
-			// $scope.stayDetails.arrival_date     = dateToSend;
-			// var onSuccess = function(data) {
-			// 	$state.go('checkOutOptions');
-			// };
-			// var options = {
-			// 	params: $scope.stayDetails,
-			// 	successCallBack: onSuccess
-			// };
-			// $scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
-
-			$scope.$emit('showLoader');
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-				$state.go('checkOutOptions');
-			}, 1500);
-
+			$scope.stayDetails.hotel_identifier = GwWebSrv.zestwebData.hotelIdentifier;
+			$scope.stayDetails.arrival_date = dateToSend;
+			var onSuccess = function(data) {
+				GwWebSrv.setReservationDataForExternalCheckout(data);
+				// check and navigate base upon checkout later option is available
+				GwWebSrv.zestwebData.isLateCheckoutAvailable ? $state.go('checkOutOptions') : $state.go('checkOutConfirmation');
+			};
+			var onFail = function(data) {
+				alert(data);
+			};
+			var options = {
+				params: $scope.stayDetails,
+				successCallBack: onSuccess,
+				failureCallBack: onFail
+			};
+			$scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 		};
 
 	}

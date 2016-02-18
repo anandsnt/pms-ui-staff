@@ -4,7 +4,7 @@
 sntGuestWeb.controller('GwCheckoutNowInitialController', ['$scope', '$state', '$controller', 'GwWebSrv', '$timeout',
 	function($scope, $state, $controller, GwWebSrv, $timeout) {
 
-		$scope.checkout_time = GwWebSrv.reservationAndhotelData.checkoutTime = "10:20 PM";
+		$scope.checkout_time = GwWebSrv.zestwebData.checkoutTime = "10:20 PM";
 
 		//TODO : remove unwanted injections like $timeout
 		$controller('BaseController', {

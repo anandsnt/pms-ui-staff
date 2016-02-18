@@ -8,7 +8,7 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 		var deferred = $q.defer();
 		var url = '/guest_web/authenticate_checkout_guest';
 
-		GWBaseWebSrv.postJSON(url, params).then(function(data) {
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

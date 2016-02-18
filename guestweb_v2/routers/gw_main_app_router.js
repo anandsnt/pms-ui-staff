@@ -11,7 +11,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             zestWebGlobalSettings: function(GwWebSrv) {
                 return GwWebSrv.fetchZestwebGlobalSettings();
             },
-            reservationAndhotelData: function(GwWebSrv, $stateParams) {
+            zestwebData: function(GwWebSrv, $stateParams) {
 
                 var absUrl = window.location.href;
                 var apiUrl = "";
