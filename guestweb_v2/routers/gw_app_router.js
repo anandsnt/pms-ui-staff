@@ -51,7 +51,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 			pageTitle: 'Check-out Later'
 		}
 	}).state('checkOutLaterFinal', {
-		url: '/checkOutLaterFinal/:id',
+		url: '/checkOutLaterFinal/:time/:ap/:amount',
 		templateUrl: '/assets/partials/checkout/gwLateCheckoutfinal.html',
 		controller: 'gwLateCheckoutFinalController',
 		data: {

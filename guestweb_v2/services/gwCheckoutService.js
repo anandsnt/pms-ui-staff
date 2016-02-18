@@ -47,6 +47,22 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 		});
 		return deferred.promise;
 	};
+	/**
+	 * to fetch late checkout options
+	 * @return {undefined}
+	 */
+	this.updateReservationWithNewCheckoutOptions = function(params) {
+		var deferred = $q.defer();
+		//var url = '/sample_json/zestweb_v2/late_checkout_options.json';
+		var url = '/guest_web/apply_late_checkout';
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 
 
 	/**

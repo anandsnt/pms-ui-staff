@@ -26,8 +26,19 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		}();
 
 
-		$scope.gotToNextStep = function() {
-			$state.go('checkOutLaterFinal');
+		$scope.gotToNextStep = function(option) {
+			var onSuccess = function(response) {
+				$state.go('checkOutLaterFinal',{time:option.time,ap:option.ap,amount:option.amount});
+			};
+			var options = {
+				params: {
+					'reservation_id': GwWebSrv.zestwebData.reservationID,
+					'late_checkout_offer_id': option.id
+				},
+				//'is_cc_attached_from_guest_web':false};
+				successCallBack: onSuccess
+			};
+			$scope.callAPI(GwCheckoutSrv.updateReservationWithNewCheckoutOptions, options);
 		};
 	}
 ]);
