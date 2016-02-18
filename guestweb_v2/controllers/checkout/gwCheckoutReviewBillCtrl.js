@@ -7,7 +7,7 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 		$controller('BaseController', {
 			$scope: $scope
 		});
-
+//to do:CC
 
 		var init = function() {
 			var screenIdentifier = "REVIEW_BILL";

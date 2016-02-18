@@ -8,7 +8,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		$controller('BaseController', {
 			$scope: $scope
 		});
-
+//to do:CC
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LATER_OPTIONS";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
