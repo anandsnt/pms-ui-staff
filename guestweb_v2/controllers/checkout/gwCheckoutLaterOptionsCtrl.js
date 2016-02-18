@@ -17,7 +17,9 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 				$scope.isOperationCompleted = true;
 			};
 			var options = {
-				params: {},
+				params: {
+					'reservation_id': GwWebSrv.zestwebData.reservationID
+				},
 				successCallBack: onSuccess
 			};
 			$scope.callAPI(GwCheckoutSrv.fetchLateCheckoutOptions, options);
