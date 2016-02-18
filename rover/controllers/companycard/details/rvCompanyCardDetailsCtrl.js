@@ -148,6 +148,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		/*-------AR account starts here-----------*/
+		
+		$scope.$on('ERRORONARTAB', function(e) {
+			$scope.switchTabTo('', 'cc-ar-accounts');
+		});
 
 		$scope.showArAccountButtonClick = function($event) {
 			$scope.switchTabTo($event, 'cc-ar-accounts');
