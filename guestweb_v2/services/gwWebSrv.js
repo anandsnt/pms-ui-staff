@@ -1,5 +1,5 @@
-	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv',
-		function($q, $http, GwScreenMappingSrv) {
+	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv','$rootScope',
+		function($q, $http, GwScreenMappingSrv,$rootScope) {
 
 
 			this.screenList = [];
@@ -97,14 +97,14 @@
 				that.zestwebData.isLateCheckoutAvailable = response.is_late_checkout_available;
 				that.zestwebData.emailAddress = response.email_address;
 				that.zestwebData.isCCOnFile = response.is_cc_attached;
-				that.zestwebData.accessToken = response.guest_web_token;
+				that.zestwebData.accessToken = $rootScope.accessToken = response.guest_web_token;
 
 			};
 			this.setzestwebData = function(zestwebData) {
 
 				//store basic details as rootscope variables
 				if (typeof zestwebData.access_token !== "undefined") {
-					that.zestwebData.accessToken = zestwebData.access_token;
+					that.zestwebData.accessToken = $rootScope.accessToken = zestwebData.access_token;
 				}
 				that.zestwebData.hotelName = zestwebData.hotel_name;
 				that.zestwebData.currencySymbol = zestwebData.currency_symbol;
@@ -167,7 +167,7 @@
 				if (zestwebData.hasOwnProperty('is_password_reset')) {
 					that.zestwebData.isPasswordResetView = zestwebData.is_password_reset = "true";
 					that.zestwebData.isTokenExpired = zestwebData.is_token_expired === "true" ? true : false;
-					that.zestwebData.accessToken = zestwebData.token;
+					that.zestwebData.accessToken = $rootScope.accessToken = zestwebData.token;
 					that.zestwebData.user_id = zestwebData.id;
 					that.zestwebData.user_name = zestwebData.login;
 				} else {

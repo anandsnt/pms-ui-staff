@@ -51,6 +51,10 @@ var returnEmptyScreenDetails = function() {
   };
 }
 
+var replaceStringWithScopeVariable = function(string,substring_to_be_replaced,new_string){
+  return string = string.replace(substring_to_be_replaced,new_string);
+};
+
 
 var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
   var screen_id = returnEmptyScreenDetails();
