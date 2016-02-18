@@ -5,9 +5,19 @@ sntRover.controller('rvBorrowRoomTypeCtrl',[
     // BaseCtrl.call(this, $scope);
 
     console.log(">>>>>>>>>>");
-    console.log($scope.reservationData)
+    console.log($scope)
     console.log("=======")
     console.log($scope.passingParams)
+    $scope.selectedUpgrade = {};
+
+    _.extend($scope.selectedUpgrade,
+        {
+            room_id         : $scope.assignedRoom.room_id,
+            room_no         : $scope.assignedRoom.room_number,
+         //   room_type_name  : $scope.assignedRoom.upgrade_room_type_name,
+            room_type_code  : $scope.assignedRoom.room_type_code,
+          //  room_type_level : parseInt(selectedListItem.room_type_level)
+        });
     $scope.clickedBorrowButton = function(){
         var params = {};
 

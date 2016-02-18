@@ -90,7 +90,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 			switch (error.httpStatus) {
 				case 470:
 						var dataToBorrowRoom = {
-							"errorMessage": errorMessage,
+							"errorMessage": error.errorMessage[0],
 							"upsell_amount" : $scope.roomCharge
 						};
 						wanted_to_forcefully_assign = true;
