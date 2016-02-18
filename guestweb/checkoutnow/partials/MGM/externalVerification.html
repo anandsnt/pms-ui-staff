@@ -25,12 +25,12 @@
                             Ready to Check-out?
                         </div>
                         <br/>
-                        <div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
+                        <div class="row" >
                             <em class="labelText">Your Room Number</em>
                             <input type="text" ng-model="stayDetails.room_number" class = "col-xs-12 textBox" />
                         </div>
                         <br/>
-                        <div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
+                        <div class="row">
                             <em class="labelText">Last Name</em>
                             <input type="text" ng-model="stayDetails.last_name" class = "col-xs-12 textBox"/>
                         </div>
@@ -44,7 +44,7 @@
                         </div>
                          <p class="labelText centeralign">To receive a copy of your bill,<br/>
                                     please enter your e-mail address</p>
-                        <div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
+                        <div class="row" >
                             <input type="text" ng-model="stayDetails.email" class = "col-xs-12 textBox"/>
                         </div>
                         <div class="row cabin_number_field">
