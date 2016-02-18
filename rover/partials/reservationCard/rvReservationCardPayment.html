@@ -9,7 +9,7 @@
 		<!-- The credit card selection popup is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-if="reservationData.reservation_card.payment_method_used == 'CC'" ng-click="openPaymentList()">
 			<figure class="card-logo">
-				<img ng-src="/assets/images/{{reservationData.reservation_card.payment_details.card_type_image}}" alt="">
+				<img ng-src="/assets/{{reservationData.reservation_card.payment_details.card_type_image}}" alt="">
 			</figure> 
 			<span class="number"> {{ 'ENDING_WITH' | translate }} 
 				<span id="token-last-value" class="value number"> {{reservationData.reservation_card.payment_details.card_number}} </span> 

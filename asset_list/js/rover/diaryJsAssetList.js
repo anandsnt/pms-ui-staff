@@ -5,12 +5,7 @@ module.exports = {
 		diaryViewRoot 	= roverRoot + 'react/diary/',
 
 		diaryJsAssets 	= {
-			minifiedFiles: [
-				jsLibRoot + "react/react.min.js",
-				jsLibRoot + "react/JSXTransformer.min.js",
-				jsLibRoot + "react/react-with-addons.min.js",
-				roverRoot + "directives/ngReact/ngReact.js"
-			],
+			minifiedFiles: [],
 			nonMinifiedFiles: [
 				roverRoot + "services/diary/**/*.js",
 				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
