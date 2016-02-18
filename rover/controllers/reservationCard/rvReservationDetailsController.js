@@ -553,9 +553,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		};
 
+		/**
+		 * CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+		 * CICO-25179: should be disabled for allotment as well
+		 * @return {Boolean} flag to disable button
+		 */
+		$scope.shouldDisableExtendNightsButton = function() {
+			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id,
+				isGroupPresent 		= $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id;
+
+			return (isAllotmentPresent || isGroupPresent);
+		};
+
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
-			if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
+			if ($scope.shouldDisableExtendNightsButton()) {
 				return false;
 			};
 
