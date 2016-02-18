@@ -89,9 +89,13 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 		if(error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
+						var dataToBorrowRoom = {
+							"errorMessage": error.errorMessage[0],
+							"upsell_amount" : $scope.roomCharge
+						};
 						wanted_to_forcefully_assign = true;
 						// openWantedToBorrowPopup(error);
-						$scope.$emit('closeDialogWithError', error);
+						$scope.$emit('closeDialogWithError', dataToBorrowRoom);
 				 	break;
 				default:
 					break;
