@@ -6,8 +6,35 @@
 (function() {
 	var checkinOptionsController = function($scope,$rootScope,$state) {
 		$rootScope.checkinOptionShown = true;
+
+		var earlyCheckinOn = true;
+		var isInEarlyCheckinWindow = true;
+		var offerEci = false;
+
+
+		var assignRoom = function(type){
+			var onFailre = function(){
+				
+			};
+			var onSuccess = function(){
+
+			};
+		};
+
+
+
 		$scope.checkinNow = function(){
-			$state.go('checkinReservationDetails');
+			if(earlyCheckinOn && isInEarlyCheckinWindow){
+				if(offerEci){
+					assignRoom('offerEci');
+				}
+				else{
+					assignRoom('noEci');
+				}
+			}
+			else{
+				assignRoom('earlyCheckinOff');
+			}
 		};
 
 		$scope.checkinLater = function(){
