@@ -33,19 +33,11 @@ var GridRowItemDrag = React.createClass({
 		page_offset = this.getDOMNode().getBoundingClientRect();
 
 		el = props.viewport.element();
-		var left = (((page_offset.left-props.display.x_0 - props.iscroll.grid.x)) / display.px_per_int).toFixed() * display.px_per_int,
-			viewport 	= props.viewport.element(),
-			xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left;
 
-
-		this.__x_diff_left_pagex = left - xCurPos;
-		this.__lastXDiff = 0;
-		this.__lastYDiff = 0;
-		startingColNumber	= Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - 120))/display.px_per_int);
+		this.startingColNumber	= Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - this.__roomListingAreaWidth))/display.px_per_int);
+		this.reservationTimeStartColNumber = parseFloat(this.props.style.left) / display.px_per_int;
 
 		this.setState({
-			//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
-			left: left,
 			top: page_offset.top - el.offset().top - el[0].scrollTop,
 			mouse_down: true,
 			selected: true,
@@ -56,7 +48,7 @@ var GridRowItemDrag = React.createClass({
 			offset_y: el.offset().top + props.iscroll.grid.y,
 			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
 			element_y: page_offset.top,
-			currentClickedCol: startingColNumber
+			currentClickedCol: this.startingColNumber
 		},
 		function() {
 			props.iscroll.grid.disable();
@@ -75,14 +67,12 @@ var GridRowItemDrag = React.createClass({
 			viewport 	= props.viewport.element(),
 			display 	= props.display,
 			px_per_ms 	= display.px_per_ms,
-			delta_x 	= e.pageX - state.origin_x, //TODO - CHANGE TO left max distance
+			delta_x 	= e.pageX - state.origin_x,
 			delta_y 	= e.pageY - state.origin_y - state.offset_y,
 			yCurPos 	= e.pageY - props.iscroll.grid.y - viewport.offset().top,
-			xCurPos 	= e.pageX - props.iscroll.grid.x - viewport.offset().left,
 			adj_height 	= display.row_height + display.row_height_margin,
 			x_origin 	= (display.x_n instanceof Date ? display.x_n.getTime() : display.x_n),
 			fifteenMin	= 900000,
-			colNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int),
 			rowNumber 	= Math.floor(yCurPos / adj_height),
 			model;
 
@@ -114,88 +104,63 @@ var GridRowItemDrag = React.createClass({
 		} else if(state.dragging) {
 			model = (props.currentDragItem);
 			scroller = props.iscroll.grid;
-			if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
-				//return;
-			}
 
-	 		xScPos 	 = scroller.x;
-	 		yScPos	 = scroller.y;
-
-	 		/* sroll_beyond_edge : Possible values
-	 		0 : None
-	 		1 : Right
-	 		2 : Left
-	 		3 : Bottom
-	 		4 : Top
-	 		*/
-	 		
-            mouseMovingColNumber = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - 120)) / display.px_per_int);
-            var totalMovedArea = (mouseMovingColNumber - this.state.currentClickedCol),
-            	width_of_res = this.getDOMNode().offsetWidth,
-            	reservationTimeStartColNumber = parseFloat(this.props.style.left) / display.px_per_int;
+	 		var xScPos = scroller.x,
+	 			yScPos = scroller.y,
+	 			width_of_res = this.getDOMNode().offsetWidth,
+      			mouseMovingColNumber = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - this.__roomListingAreaWidth)) / display.px_per_int);
             
             // we need to manually scroll the area while dragging
             // dragging towards
             // RIGHT
-            if ( mouseMovingColNumber -  startingColNumber > 0 ) {
+            if ( mouseMovingColNumber -  this.startingColNumber > 0 ) {
             	var reachingRightEdge = (parseFloat(e.pageX) + parseFloat(width_of_res) + parseFloat(width_of_res)/4 ) > Math.abs( scroller.maxScrollX );
             		
             	if ( reachingRightEdge ) {
-            		var  distanceMouseMoved = ( mouseMovingColNumber -  this.state.currentClickedCol ) * display.px_per_int;
+            		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+            		var distanceMouseMoved = ( mouseMovingColNumber -  state.currentClickedCol ) * display.px_per_int;
             		xScPos = (xScPos - distanceMouseMoved);	
             	}
             }
 
             // LEFT
-            if ( mouseMovingColNumber -  startingColNumber < 0 ) {
+            if ( mouseMovingColNumber -  this.startingColNumber < 0 ) {
             	var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res)/4 ) <= 0;
             		
             	if ( reachingLeftEdge ) {
-            		var distanceMouseMoved = ( mouseMovingColNumber -  this.state.currentClickedCol ) * display.px_per_int;
+            		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+            		var distanceMouseMoved = ( mouseMovingColNumber -  state.currentClickedCol ) * display.px_per_int;
             		xScPos = (xScPos - distanceMouseMoved);
             	}
             }
 
-            if (scroller.maxScrollX <= xScPos && xScPos <= 0  ){
-    			scroller.scrollTo(xScPos, yScPos, 0);
-				scroller._scrollFn();
-    		}
-			var state_to_set = {
-                top: top
-            };
+            var newLeft = ((this.reservationTimeStartColNumber + mouseMovingColNumber - this.startingColNumber) * display.px_per_int);
 
-			var cLeft = mouseMovingColNumber * display.px_per_int,
-				left, cFactor,
-				top = rowNumber * (display.row_height) + display.row_height_margin;
-
-			left = cFactor = cLeft;
-
-			
-
-
-			var commonFactor= (((cFactor / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
-				newArrival  = (commonFactor * fifteenMin);
-
-			var diff = newArrival - model.arrival;
             if(props.currentDragItem.reservation_status === 'inhouse' ){
-                state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;
+                newLeft = (state.element_x / display.px_per_int).toFixed() * display.px_per_int;
             }
-            else if (totalMovedArea * display.px_per_int !== 0 ){
-	            state_to_set.left = parseFloat(this.props.style.left) + parseFloat(totalMovedArea * display.px_per_int);
+            else {
+				var newArrival = ((((newLeft / px_per_ms) + x_origin) / fifteenMin).toFixed(0) * fifteenMin),
+					diff = newArrival - model.arrival;
+
 	            model.arrival = newArrival;
 	            model.departure = model.departure + diff;
             }
-           // }
-		
+
 			this.setState({
 				currentClickedCol: mouseMovingColNumber,
 				currentResizeItem: 	model,
-				resizing: true
+				resizing: true,
+				left: parseFloat( newLeft )
 			}, function() {
+				
 				props.__onResizeCommand(model);
-			});
-
-			this.setState(state_to_set);
+	            
+	            if (scroller.maxScrollX <= xScPos && xScPos <= 0  ){
+	    			scroller.scrollTo(xScPos, yScPos, 0);
+					scroller._scrollFn();
+	    		}					
+			});		
 		}
 	},
 	__onMouseUp: function(e) {
@@ -226,12 +191,12 @@ var GridRowItemDrag = React.createClass({
 				dragging: false,
 				currentDragItem: undefined,
 				//left: state.left,
-				top: state.top
+				//top: state.top
 			}, function() {
 
 				props.iscroll.grid.enable();
 
-				var prevArrival = item.arrival,
+				/*var prevArrival = item.arrival,
 					fifteenMin	= 900000,
 					commonFactor= ((((state.element_x + delta_x) / px_per_ms) + x_origin) / fifteenMin),
 					newArrival  = commonFactor * fifteenMin,
@@ -254,7 +219,7 @@ var GridRowItemDrag = React.createClass({
 
 				item.arrival = arrival;
 				var diff = item.arrival - prevArrival;
-				item.departure = item.departure + diff;
+				item.departure = item.departure + diff;*/
 				props.__onDragStop(e, state.left, state.top, item);
 
 			});
@@ -311,7 +276,6 @@ var GridRowItemDrag = React.createClass({
 			state = this.state,
 			style = {},
 			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
-
 			className = '';
 
 		if(state.dragging) {
@@ -324,7 +288,7 @@ var GridRowItemDrag = React.createClass({
 		} else {
 			className = '';
 		}
-
+		this.__roomListingAreaWidth =  120;
 		return this.transferPropsTo(React.DOM.div({
 			style:       style,
 			className:   props.className + className,
