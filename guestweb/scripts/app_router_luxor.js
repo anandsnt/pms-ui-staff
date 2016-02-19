@@ -150,15 +150,5 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/common_templates/partials/MGM/Luxor/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
-   	 })
-	
+   	 });
 }]);
-
-
-
-
-
-
-
-	
-
