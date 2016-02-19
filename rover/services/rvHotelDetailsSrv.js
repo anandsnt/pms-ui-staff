@@ -11,8 +11,8 @@ angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', 
 				userHotelsData: data
 			});
 			deferred.resolve(data);
-		},function(){
-			deferred.reject();
+		},function(errorMessage){
+			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
 	};
