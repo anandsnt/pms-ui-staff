@@ -5,15 +5,13 @@
 
 (function() {
 	var checkinOptionsController = function($scope,$rootScope,$state) {
-
+		$rootScope.checkinOptionShown = true;
 		$scope.checkinNow = function(){
-			$rootScope.isAutoCheckinOn = false;
 			$state.go('checkinReservationDetails');
 		};
 
 		$scope.checkinLater = function(){
-			$rootScope.isAutoCheckinOn = true;
-			$state.go('checkinReservationDetails');
+			$state.go('checkinArrival');
 		};
 };
 
