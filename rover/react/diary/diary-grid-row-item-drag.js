@@ -132,13 +132,13 @@ var GridRowItemDrag = React.createClass({
             mouseMovingColNumber = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - 120)) / display.px_per_int);
             var totalMovedArea = (mouseMovingColNumber - this.state.currentClickedCol),
             	width_of_res = this.getDOMNode().offsetWidth,
-            	reservationTimeStartColNumber = parseInt(this.props.style.left, 10) / display.px_per_int;
+            	reservationTimeStartColNumber = parseFloat(this.props.style.left) / display.px_per_int;
             
             // we need to manually scroll the area while dragging
             // dragging towards
             // RIGHT
             if ( mouseMovingColNumber -  startingColNumber > 0 ) {
-            	var reachingRightEdge = (parseInt(e.pageX, 10) + parseInt(width_of_res, 10) + parseInt(width_of_res, 10)/4 ) > Math.abs( scroller.maxScrollX );
+            	var reachingRightEdge = (parseFloat(e.pageX) + parseFloat(width_of_res) + parseFloat(width_of_res)/4 ) > Math.abs( scroller.maxScrollX );
             		
             	if ( reachingRightEdge ) {
             		var  distanceMouseMoved = ( mouseMovingColNumber -  this.state.currentClickedCol ) * display.px_per_int;
@@ -148,7 +148,7 @@ var GridRowItemDrag = React.createClass({
 
             // LEFT
             if ( mouseMovingColNumber -  startingColNumber < 0 ) {
-            	var reachingLeftEdge = (parseInt(e.pageX, 10) - parseInt(width_of_res, 10) - parseInt(width_of_res, 10)/4 ) <= 0;
+            	var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res)/4 ) <= 0;
             		
             	if ( reachingLeftEdge ) {
             		var distanceMouseMoved = ( mouseMovingColNumber -  this.state.currentClickedCol ) * display.px_per_int;
@@ -181,8 +181,7 @@ var GridRowItemDrag = React.createClass({
                 state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;
             }
             else if (totalMovedArea * display.px_per_int !== 0 ){
-
-	            state_to_set.left = parseInt(this.props.style.left, 10) + parseInt(totalMovedArea * display.px_per_int, 10);
+	            state_to_set.left = parseFloat(this.props.style.left) + parseFloat(totalMovedArea * display.px_per_int);
 	            model.arrival = newArrival;
 	            model.departure = model.departure + diff;
             }
