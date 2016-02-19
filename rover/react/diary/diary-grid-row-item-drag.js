@@ -41,7 +41,7 @@ var GridRowItemDrag = React.createClass({
 		this.__x_diff_left_pagex = left - xCurPos;
 		this.__lastXDiff = 0;
 		this.__lastYDiff = 0;
-		var	starting_ColNumber	= Math.floor((xCurPos + this.__x_diff_left_pagex) / display.px_per_int);
+		startingColNumber	= Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - 120))/display.px_per_int);
 
 		this.setState({
 			//left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
@@ -56,7 +56,7 @@ var GridRowItemDrag = React.createClass({
 			offset_y: el.offset().top + props.iscroll.grid.y,
 			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
 			element_y: page_offset.top,
-			starting_ColNumber: starting_ColNumber
+			currentClickedCol: startingColNumber
 		},
 		function() {
 			props.iscroll.grid.disable();
@@ -115,7 +115,7 @@ var GridRowItemDrag = React.createClass({
 			model = (props.currentDragItem);
 			scroller = props.iscroll.grid;
 			if(colNumber < 0 || colNumber/4 > display.hours || rowNumber < 0 || rowNumber > (display.total_rows-1)){
-				return;
+				//return;
 			}
 
 	 		xScPos 	 = scroller.x;
@@ -128,141 +128,68 @@ var GridRowItemDrag = React.createClass({
 	 		3 : Bottom
 	 		4 : Top
 	 		*/
-	 		var scroll_beyond_edge  = 0,
-	 			width_of_res        = (model.departure - model.arrival) * display.px_per_ms,
-	 			draggingTopOrBottom = false;
+	 		
+            mouseMovingColNumber = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - 120)) / display.px_per_int);
+            var totalMovedArea = (mouseMovingColNumber - this.state.currentClickedCol),
+            	width_of_res = this.getDOMNode().offsetWidth,
+            	reservationTimeStartColNumber = parseInt(this.props.style.left, 10) / display.px_per_int;
+            
+            // we need to manually scroll the area while dragging
+            // dragging towards
+            // RIGHT
+            if ( mouseMovingColNumber -  startingColNumber > 0 ) {
+            	var reachingRightEdge = (parseInt(e.pageX, 10) + parseInt(width_of_res, 10) + parseInt(width_of_res, 10)/4 ) > Math.abs( scroller.maxScrollX );
+            		
+            	if ( reachingRightEdge ) {
+            		var  distanceMouseMoved = ( mouseMovingColNumber -  this.state.currentClickedCol ) * display.px_per_int;
+            		xScPos = (xScPos - distanceMouseMoved);	
+            	}
+            }
 
-			//towards right
-			if(e.pageX > state.origin_x) {
-				draggingTopOrBottom = false;
-				if((e.pageX + width_of_res) > window.innerWidth) {
-					if((xScPos - width_of_res) < scroller.maxScrollX) {
-						xScPos = scroller.maxScrollX;
-					}
-					else{
-						xScPos -=  width_of_res;
-					}
-					scroll_beyond_edge = 1;
-				}
-			}
+            // LEFT
+            if ( mouseMovingColNumber -  startingColNumber < 0 ) {
+            	var reachingLeftEdge = (parseInt(e.pageX, 10) - parseInt(width_of_res, 10) - parseInt(width_of_res, 10)/4 ) <= 0;
+            		
+            	if ( reachingLeftEdge ) {
+            		var distanceMouseMoved = ( mouseMovingColNumber -  this.state.currentClickedCol ) * display.px_per_int;
+            		xScPos = (xScPos - distanceMouseMoved);
+            	}
+            }
 
-			//towards left
-			else if(e.pageX < state.origin_x) {
-				draggingTopOrBottom = false;
-				var item_offset = this.getDOMNode().getBoundingClientRect();
-				var diffX_left = e.pageX - item_offset.left;
-				if((diffX_left + display.px_per_hr) < viewport.offset().left) {
-					if((xScPos + width_of_res) > 0) {
-						xScPos = 0;
-					}
-					else{
-						xScPos +=  width_of_res;
-					}
-					scroll_beyond_edge = 2;
-				}
-			}
-
-			//towards bottom
-			if(e.pageY > state.origin_y) {
-				draggingTopOrBottom = true;
-				if((e.pageY + display.row_height) > window.innerHeight) {
-					if((yScPos - display.row_height) < scroller.maxScrollY) {
-						yScPos = scroller.maxScrollY;
-					}
-					else{
-						yScPos -=  display.row_height;
-					}
-					scroll_beyond_edge = 3;
-				}
-			}
-			//towards top
-			else if(e.pageY < state.origin_y) {
-				draggingTopOrBottom = true;
-				if((e.pageY - display.row_height) < viewport.offset().top) {
-					if((yScPos + display.row_height) >= 0) {
-						yScPos = 0;
-					}
-					else{
-						yScPos +=  display.row_height;
-						if(e.pageY < viewport.offset().top ){
-							yScPos = 0;
-							rowNumber = 0;
-						}
-					}
-					scroll_beyond_edge = 4;
-				}
-			}
-
-			this.__lastXDiff = Math.abs(e.pageX - this.__lastXDiff);
-			this.__lastYDiff = Math.abs(e.pageY - this.__lastYDiff);
-
-			//on dragging down or top continueslly there may be some fluctations in the mouse pointer
-			// which will lead to 'Shaky' UI. To remove that
-			if (this.__lastXDiff < this.__lastYDiff &&
-				draggingTopOrBottom &&
-				(Math.abs(state.starting_ColNumber - colNumber) <= 4)){
-
-				colNumber = state.starting_ColNumber;
-			}
-
-			this.__lastXDiff = e.pageX;
-			this.__lastYDiff = e.pageY;
-
-			if(scroller.maxScrollX <= xScPos &&  xScPos <= 0 &&
-				scroller.maxScrollY <= yScPos && yScPos <= 0) {
-
-				scroller.scrollTo(xScPos, yScPos, 0);
+            if (scroller.maxScrollX <= xScPos && xScPos <= 0  ){
+    			scroller.scrollTo(xScPos, yScPos, 0);
 				scroller._scrollFn();
+    		}
+			var state_to_set = {
+                top: top
+            };
 
-			}
-	 		if(colNumber < 0) {
-	 			colNumber = 0;
-	 		}
-	 		if(colNumber / 4 > (display.hours - 1) ) {
-	 			colNumber = (display.hours - 1);
-	 		}
-	 		if(rowNumber < 0) {
-	 			rowNumber = 0;
-	 		}
-
-	 		if(rowNumber > (display.total_rows - 1) ) {
-	 			rowNumber = (display.total_rows - 1);
-	 		}
-
-			var cLeft = colNumber * display.px_per_int,
+			var cLeft = mouseMovingColNumber * display.px_per_int,
 				left, cFactor,
 				top = rowNumber * (display.row_height) + display.row_height_margin;
 
 			left = cFactor = cLeft;
 
-			if (scroll_beyond_edge === 1){
-				left = cLeft - display.px_per_hr;
-				cFactor = left;
-			}
-			else if (scroll_beyond_edge === 2){
-				left = cLeft + display.px_per_hr - display.x_0;
-				cFactor = left;
-			}
+			
 
-			var commonFactor= ((((cFactor) / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
+
+			var commonFactor= (((cFactor / px_per_ms) + x_origin) / fifteenMin).toFixed(0),
 				newArrival  = (commonFactor * fifteenMin);
 
 			var diff = newArrival - model.arrival;
-
-			var state_to_set = {
-                top: top
-            };
-            if(props.currentDragItem.reservation_status === 'inhouse'){
+            if(props.currentDragItem.reservation_status === 'inhouse' ){
                 state_to_set.left = (((state.element_x)) / display.px_per_int).toFixed() * display.px_per_int;
             }
-            else {
-	            state_to_set.left = left;
+            else if (totalMovedArea * display.px_per_int !== 0 ){
+
+	            state_to_set.left = parseInt(this.props.style.left, 10) + parseInt(totalMovedArea * display.px_per_int, 10);
 	            model.arrival = newArrival;
 	            model.departure = model.departure + diff;
             }
-
-
+           // }
+		
 			this.setState({
+				currentClickedCol: mouseMovingColNumber,
 				currentResizeItem: 	model,
 				resizing: true
 			}, function() {
@@ -299,7 +226,7 @@ var GridRowItemDrag = React.createClass({
 			this.setState({
 				dragging: false,
 				currentDragItem: undefined,
-				left: state.left,
+				//left: state.left,
 				top: state.top
 			}, function() {
 
