@@ -57,8 +57,8 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var url = '/api/hotel_settings.json';
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(){//CICO-25086
-			deferred.reject();
+		},function(errorMessage){
+			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
 	};
