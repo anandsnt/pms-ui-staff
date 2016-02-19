@@ -89,13 +89,18 @@ var GridRowItemDrag = React.createClass({
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			model = this._update(props.currentDragItem);
 
-			this.setState({
-				dragging: true,
-				currentDragItem: model
-			}, function() {
-				props.__onDragStart(props.row_data, model);
-			});
-		} else if(state.dragging) {
+			if(this.isMounted()) {
+				this.setState({
+					dragging: true,
+					currentDragItem: model,
+					left: parseFloat( ((this.reservationTimeStartColNumber) * display.px_per_int) ),
+				}, function() {
+					props.__onDragStart(props.row_data, model);
+				});
+			}
+		} 
+
+		else if(state.dragging) {
 			model = (props.currentDragItem);
 
 	 		var xScPos = scroller.x,
@@ -105,7 +110,7 @@ var GridRowItemDrag = React.createClass({
             // dragging towards
             // RIGHT
             if ( mouseMovingColNumber -  this.startingColNumber > 0 ) {
-            	var reachingRightEdge = (parseFloat(e.pageX) + parseFloat(width_of_res) + parseFloat(width_of_res)/4 ) > Math.abs( scroller.maxScrollX );
+            	var reachingRightEdge = ( parseFloat(e.pageX) + Math.abs( scroller.maxScrollX ) / 4 ) > window.innerWidth;
             		
             	if ( reachingRightEdge ) {
             		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
@@ -119,8 +124,8 @@ var GridRowItemDrag = React.createClass({
             }
 
             // LEFT
-            if ( mouseMovingColNumber -  this.startingColNumber < 0 ) {
-            	var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res)/4 ) <= 0;
+            else if ( mouseMovingColNumber -  this.startingColNumber < 0 ) {
+            	var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res) / 4 ) <= 0;
             		
             	if ( reachingLeftEdge ) {
             		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
@@ -136,11 +141,10 @@ var GridRowItemDrag = React.createClass({
             //TOP
             if ( mouseMovingRowNumber -  this.startingRowNumber < 0 ) {
             	var reachingTopEdge = (parseFloat(e.pageY) - 3 * adj_height ) <= props.viewport.element().offset().top;
-
             	if ( Math.abs( mouseMovingColNumber - this.startingColNumber ) < 3 ) {
             		mouseMovingColNumber = this.startingColNumber;
             	}
-            	            	
+
             	if ( reachingTopEdge ) {
             		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
             		var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
@@ -153,9 +157,8 @@ var GridRowItemDrag = React.createClass({
             }
 
             //BOTTOM
-            if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
+            else if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
             	var reachingBottomEdge = (parseFloat(e.pageY) + 3 * adj_height ) >= window.innerHeight;
-            	
             	if ( Math.abs( mouseMovingColNumber - this.startingColNumber ) < 3 ) {
             		mouseMovingColNumber = this.startingColNumber;
             	}
@@ -185,23 +188,25 @@ var GridRowItemDrag = React.createClass({
 	            model.departure = model.departure + diff;
             }
 
-			this.setState({
-				currentClickedCol: mouseMovingColNumber,
-				currentResizeItem: model,
-				resizing: true,
-				left: parseFloat( newLeft ),
-				top: newTop
-			}, function() {
-				
-				props.__onResizeCommand(model);
+            if(this.isMounted()) {
+				this.setState({
+					currentClickedCol: mouseMovingColNumber,
+					currentResizeItem: model,
+					resizing: true,
+					left: parseFloat( newLeft ),
+					top: newTop
+				}, function() {
+					
+					props.__onResizeCommand(model);
 
-	            if (scroller.maxScrollX <= xScPos && xScPos <= 0 &&
-					scroller.maxScrollY <= yScPos ){
-	    			
-	    			scroller.scrollTo(xScPos, yScPos, 0);
-					scroller._scrollFn();
-	    		}					
-			});		
+		            if (scroller.maxScrollX <= xScPos && xScPos <= 0 &&
+						scroller.maxScrollY <= yScPos && yScPos <= 0 ){
+		    			
+		    			scroller.scrollTo(xScPos, yScPos, 0);
+						scroller._scrollFn();
+		    		}					
+				});
+            }		
 		}
 	},
 	__onMouseUp: function(e) {
