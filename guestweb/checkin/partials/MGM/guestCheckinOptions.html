@@ -1,0 +1,28 @@
+<!-- contentarea starts here-->
+<div class="jumbotron">
+    <div class="container backgroundbg">
+        <div class="container-fluid">
+            <div class="row headerrow">
+                <logo-image></logo-image>
+            </div>
+        </div>
+        <!-- contentarea starts here-->
+        <div class="container line-top  line-bottom">
+            <!-- top section starts here-->
+            <div class="row checkin-wrapper">
+                <div class="col-md-3 pad-lf-60"></div>
+                <div class="col-md-6 headtext centeralign pad-rt-60">
+                    Arrival Details
+                    <p class="subTitletext">
+                        When do you plan to arrive at {{hotelName}}?.
+                    </p>
+                    <form>
+                        <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" ng-click="checkinNow()" value="{{checkin_now_text}}" />
+                        <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="checkinLater()" value="{{checkin_later_text}}" />
+                    </form>
+                </div>
+                <div class="col-md-3 pad-lf-60"></div>
+            </div>
+        </div>
+    </div>
+</div>

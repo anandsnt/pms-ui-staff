@@ -126,11 +126,24 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
         $rootScope.hotelLogo     = reservationAndhotelData.hotel_logo;
     }, 750);
 
+    
+// to delete
+// 
+// 
+// 
+
+$rootScope.is_checkin_now_on = reservationAndhotelData.is_checkin_now_on = true;
+$rootScope.checkin_now_text = reservationAndhotelData.checkin_now_text = 'I am already here';
+$rootScope.checkin_later_text = reservationAndhotelData.checkin_later_text = 'Arriving later';
+
+//to delete
+//
+// 
+//   
  	if(typeof reservationAndhotelData.accessToken !== "undefined") {
 		$rootScope.accessToken = reservationAndhotelData.accessToken	;
 	}
 	//navigate to different pages
-
 	if(reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="false"){
 		$state.go('guestCheckinTurnedOff');
 	}

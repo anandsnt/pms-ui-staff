@@ -190,6 +190,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/MGM/mobileNumberOptions.html',
 	 	controller : 'mobileOptionsController',
 	 	title: 'Phone number entry'
+	 }).state('guestCheckinOptions',{
+	 	url:'/guestCheckinOptions',
+	 	templateUrl: '/assets/checkin/partials/MGM/guestCheckinOptions.html',
+	    controller : 'checkinOptionsController',
+	 	title: 'Checkin options'
 	 });
 	
 	

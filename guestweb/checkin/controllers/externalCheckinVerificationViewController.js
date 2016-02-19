@@ -72,7 +72,13 @@
 				$rootScope.userMobile = response.results[0].guest_mobile;
 
 				//navigate to next page
-				$state.go('checkinReservationDetails');
+				if($rootScope.is_checkin_now_on){
+					$state.go('guestCheckinOptions');
+				}
+				else{
+					$state.go('checkinReservationDetails');
+				};
+				
 			},function(){
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
