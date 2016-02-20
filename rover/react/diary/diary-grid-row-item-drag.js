@@ -188,7 +188,7 @@ var GridRowItemDrag = React.createClass({
 	            model.departure = model.departure + diff;
             }
 
-            if(this.isMounted()) {
+            if( this.isMounted() ) {
 				this.setState({
 					currentClickedCol: mouseMovingColNumber,
 					currentResizeItem: model,
@@ -210,7 +210,6 @@ var GridRowItemDrag = React.createClass({
 		}
 	},
 	__onMouseUp: function(e) {
-
 		e.stopPropagation();
 		e.preventDefault();
 
@@ -233,25 +232,28 @@ var GridRowItemDrag = React.createClass({
 		}
 
 		if(state.dragging) {
-			this.setState({
-				dragging: false,
-				currentDragItem: undefined
-			}, function() {
-				props.iscroll.grid.enable();
-				props.__onDragStop(e, state.left, state.top, item);
+			if( this.isMounted() ) {
+				this.setState({
+					dragging: false,
+					currentDragItem: undefined
+				}, function() {
+					props.iscroll.grid.enable();
+					props.__onDragStop(e, state.left, state.top, item);
 
-			});
+				});
+			}
 		} else if(this.state.mouse_down) {
-
-			this.setState({
-				mouse_down: false,
-				selected: !state.selected
-			}, function() {
-				var data = (_.has(state, 'selected') ? props.data : props.currentDragItem);
-				props.iscroll.grid.enable();
-				props.iscroll.timeline.enable();
-				props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content
-			});
+			if( this.isMounted() ) {
+				this.setState({
+					mouse_down: false,
+					selected: !state.selected
+				}, function() {
+					var data = (_.has(state, 'selected') ? props.data : props.currentDragItem);
+					props.iscroll.grid.enable();
+					props.iscroll.timeline.enable();
+					props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content
+				});
+			}
 		}
 
 
@@ -293,7 +295,7 @@ var GridRowItemDrag = React.createClass({
 		var props = this.props,
 			state = this.state,
 			style = {},
-			x_origin 			= (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
+			x_origin = (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
 			className = '';
 
 		if(state.dragging) {
@@ -307,6 +309,7 @@ var GridRowItemDrag = React.createClass({
 			className = '';
 		}
 		this.__roomListingAreaWidth =  120;
+
 		return this.transferPropsTo(React.DOM.div({
 			style:       style,
 			className:   props.className + className,
