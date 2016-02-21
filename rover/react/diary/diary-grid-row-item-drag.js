@@ -24,7 +24,7 @@ var GridRowItemDrag = React.createClass({
 
 		el = props.viewport.element();
 
-		this.startingColNumber = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - this.__roomListingAreaWidth))/display.px_per_int);
+		this.mouseClickedColOnStarting = Math.floor(Math.abs(props.iscroll.grid.x - (e.pageX - this.__roomListingAreaWidth))/display.px_per_int);
 		this.reservationTimeStartColNumber = parseFloat(this.props.style.left) / display.px_per_int;
 
 		this.startingRowNumber = Math.floor((e.pageY - props.iscroll.grid.y - props.viewport.element().offset().top)/ (display.row_height + display.row_height_margin));
@@ -39,7 +39,7 @@ var GridRowItemDrag = React.createClass({
 			offset_y: el.offset().top + props.iscroll.grid.y,
 			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
 			element_y: page_offset.top,
-			currentClickedCol: this.startingColNumber
+			currentClickedCol: this.mouseClickedColOnStarting
 		},
 		function() {
 			props.iscroll.grid.disable();
@@ -112,7 +112,7 @@ var GridRowItemDrag = React.createClass({
 
             // dragging towards
             // RIGHT
-            if ( mouseMovingColNumber -  this.startingColNumber > 0 ) {
+            if ( mouseMovingColNumber -  this.mouseClickedColOnStarting > 0 ) {
             	var reachingRightEdge = ( parseFloat(e.pageX) + Math.abs( scroller.maxScrollX ) / 4 ) > window.innerWidth;
             		
             	if ( reachingRightEdge ) {
@@ -127,7 +127,7 @@ var GridRowItemDrag = React.createClass({
             }
 
             // LEFT
-            else if ( mouseMovingColNumber -  this.startingColNumber < 0 ) {
+            else if ( mouseMovingColNumber -  this.mouseClickedColOnStarting < 0 ) {
             	var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res) / 4 ) <= 0;
             		
             	if ( reachingLeftEdge ) {
@@ -144,8 +144,8 @@ var GridRowItemDrag = React.createClass({
             //TOP
             if ( mouseMovingRowNumber -  this.startingRowNumber < 0 ) {
             	var reachingTopEdge = (parseFloat(e.pageY) - 3 * adj_height ) <= props.viewport.element().offset().top;
-            	if ( Math.abs( mouseMovingColNumber - this.startingColNumber ) < 3 ) {
-            		mouseMovingColNumber = this.startingColNumber;
+            	if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
+            		mouseMovingColNumber = this.mouseClickedColOnStarting;
             	}
 
             	if ( reachingTopEdge ) {
@@ -162,8 +162,8 @@ var GridRowItemDrag = React.createClass({
             //BOTTOM
             else if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
             	var reachingBottomEdge = (parseFloat(e.pageY) + 3 * adj_height ) >= window.innerHeight;
-            	if ( Math.abs( mouseMovingColNumber - this.startingColNumber ) < 3 ) {
-            		mouseMovingColNumber = this.startingColNumber;
+            	if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
+            		mouseMovingColNumber = this.mouseClickedColOnStarting;
             	}
 
             	if ( reachingBottomEdge ) {
@@ -177,7 +177,7 @@ var GridRowItemDrag = React.createClass({
             	}
             }
 
-            var newLeft = ((this.reservationTimeStartColNumber + mouseMovingColNumber - this.startingColNumber) * display.px_per_int),
+            var newLeft = ((this.reservationTimeStartColNumber + mouseMovingColNumber - this.mouseClickedColOnStarting) * display.px_per_int),
             	newTop = mouseMovingRowNumber * adj_height;
 
             if(props.currentDragItem.reservation_status === 'inhouse' ) {
