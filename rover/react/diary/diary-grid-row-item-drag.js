@@ -4,7 +4,7 @@ var GridRowItemDrag = React.createClass({
 	},
 	__dbMouseMove: undefined,
 	componentWillMount: function() {
-		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
+		this.__dbMouseMove = _.debounce(this.__onMouseMove, 1);
 	},
 	componentWillUnmount: function() {
   		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
@@ -233,6 +233,7 @@ var GridRowItemDrag = React.createClass({
 
 		if(state.dragging) {
 			if( this.isMounted() ) {
+				this.reservationTimeStartColNumber = parseFloat(state.left) / display.px_per_int;
 				this.setState({
 					dragging: false,
 					currentDragItem: undefined
@@ -298,7 +299,7 @@ var GridRowItemDrag = React.createClass({
 			x_origin = (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
 			className = '';
 
-		if(state.dragging) {
+		if(state.dragging) { 		
 			style = {
 				position: 'fixed',
 				left: state.left,
