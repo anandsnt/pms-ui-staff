@@ -1845,7 +1845,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ){
 			console.log(errorMessage);
-			$scope.errorMessage = ["Rate amount is unavailable for this occupancy"];
+			$scope.errorMessage = errorMessage;
 		});
 	}
 ]);
