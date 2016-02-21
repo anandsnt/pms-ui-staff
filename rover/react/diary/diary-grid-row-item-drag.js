@@ -9,9 +9,10 @@ var GridRowItemDrag = React.createClass({
 	componentWillUnmount: function() {
   		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
   	},
+  	isInProperDraggingCycle: false,
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state, display = props.display;
-
+		this.isInProperDraggingCycle =  true;
 		e.stopPropagation();
 		e.preventDefault();
 		e = this.isTouchEnabled ? e.changedTouches[0] : e;
@@ -48,7 +49,9 @@ var GridRowItemDrag = React.createClass({
 	__onMouseMove: function(e) {
 		e.stopPropagation();
 		e.preventDefault();
-
+		if (!this.isInProperDraggingCycle) {
+			return;
+		}
 		e = this.isTouchEnabled ? e.changedTouches[0] : e;
 		var state 		= this.state,
 			props 		= this.props,
@@ -231,6 +234,7 @@ var GridRowItemDrag = React.createClass({
 			return;
 		}
 
+		this.isInProperDraggingCycle =  false;
 		if(state.dragging) {
 			if( this.isMounted() ) {
 				this.reservationTimeStartColNumber = parseFloat(state.left) / display.px_per_int;
