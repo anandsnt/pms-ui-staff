@@ -270,7 +270,7 @@ var TimelineResizeGrip = React.createClass({
 				React.DOM.span({
 					className: 'line',
 					style: {
-						display: this.props.edit.active ? 'block' : 'none'
+						display: this.props.edit.active ? 'inline' : 'none'
 					}
 				})
 			);
