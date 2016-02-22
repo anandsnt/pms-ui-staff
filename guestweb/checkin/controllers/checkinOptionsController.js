@@ -4,7 +4,7 @@
 */
 
 (function() {
-	var checkinOptionsController = function($scope, $rootScope, $state) {
+	var checkinOptionsController = function($scope, $rootScope, $state, $modal) {
 		$rootScope.checkinOptionShown = true;
 
 		var earlyCheckinOn = true;
@@ -12,12 +12,40 @@
 		var offerEci = true;
 
 
-		var assignRoom = function(type) {
-			var onFailre = function() {
+		var showRoomAssigErrorPopup = function() {
+			$scope.errorOpts = {
+				backdrop: true,
+				backdropClick: true,
+				templateUrl: '/assets/checkin/partials/commonErrorModal.html',
+				controller: 'roomAssignErrorPopupCtrl',
+				resolve: {
+					errorMessage: function() {
+						return "Something went room while assigning room.Please click continue to checkin later.";
+					}
+				}
+			};
+			$modal.open($scope.errorOpts);
+		};
 
+		var assignRoom = function(type) {
+			console.log("assignRoom");
+			var onFailre = function() {
+				if (earlyCheckinOn && isInEarlyCheckinWindow) {
+					if (offerEci) {
+					// Early checkin is  on and offer available now
+						showRoomAssigErrorPopup();
+					} else {
+					// Early checkin is  on and offer unavailable now
+						// to do
+					}
+				} else {
+					// Early checkin is not on
+					showRoomAssigErrorPopup();
+				};
 			};
 			var onSuccess = function() {
 				if (earlyCheckinOn && isInEarlyCheckinWindow) {
+					// Early checkin is  on and offer available now
 					if (offerEci) {
 						$state.go('earlyCheckinOptions', {
 							'time': '02:00 PM',
@@ -26,30 +54,39 @@
 							'isFromCheckinNow': 'true'
 						});
 					} else {
-						console.log('noEci');
+					// Early checkin is  on but no offer available now
+						console.log('noEci'); // to do
 					}
 				} else {
-					console.log('earlyCheckinOff');
+					// Early checkin is not on
+					$state.go('checkinKeys');
 				}
 			};
-			onSuccess();
+			onFailre();
 		};
-
-
-
 		$scope.checkinNow = function() {
 			assignRoom();
 		};
-
 		$scope.checkinLater = function() {
 			$state.go('checkinArrival');
 		};
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state',
+		'$scope', '$rootScope', '$state', '$modal',
 		checkinOptionsController
 	];
 
 	sntGuestWeb.controller('checkinOptionsController', dependencies);
 })();
+
+// controller for the modal
+
+var roomAssignErrorPopupCtrl = function($scope, $modalInstance, $state, errorMessage) {
+
+	$scope.errorMessage = errorMessage;
+	$scope.closeDialog = function() {
+		$modalInstance.dismiss('cancel');
+		$state.go('checkinArrival');
+	};
+};

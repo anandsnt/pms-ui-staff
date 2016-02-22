@@ -35,13 +35,9 @@
 			$stateParams.isFromCheckinNow = $stateParams.isFromCheckinNow === 'true' ? true : false;
 
 			$scope.nextButtonClicked = function() {
-				// check if checkin now is selected and ask for CC is turned on
-				// and is using MLI payment gateway
-				if ($stateParams.isFromCheckinNow && $rootScope.collectCCOnCheckin 
-					&& $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb) {
-					$rootScope.isAutoCheckinOn = false;
-					$state.go('checkinCcVerification');
-				} else if ($stateParams.isFromCheckinNow) {
+				// check if checkin now is selected 
+				if ($stateParams.isFromCheckinNow){
+					$rootScope.isAutoCheckinOn = false;// turn off for applying direct checkin
 					$state.go('checkinKeys');
 				} else {
 					$state.go('preCheckinStatus');

@@ -40,9 +40,11 @@
 			}
 
 			var releaseRoom = function() {
-				console.log("releaseRoom");
-				onSuccess = function() {
+				var onSuccess = function() {
 					changeArrivalTime();
+				};
+				var onFailure = function(){
+
 				};
 				onSuccess();
 			};
