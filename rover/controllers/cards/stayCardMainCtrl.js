@@ -712,15 +712,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					ngDialog.close();
 				},
 				onReplaceFailure = function(error) {
-					console.log(error);
-					console.log(error.httpStatus);
-					//$scope.$broadcast("SHOWERRORMESSAGE",error);
-					/*ngDialog.open({
-						template: '/assets/partials/cards/alerts/contractedRateChangeFailure.html',
-						scope: $scope,
-						closeByDocument: false,
-						closeByEscape: false
-					});*/
+					
 					$scope.cardRemoved();
 					//480 is reserved for cases where trial to use the card fails fails
 					if (error.httpStatus === 480) {
@@ -734,6 +726,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						$scope.newCardData = cardData;
 						that.attachCompanyTACardRoutings(card, cardData);
 						RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', true);
+						ngDialog.close();
 	 				}
 	 				else{
 	 					$scope.$broadcast("SHOWERRORMESSAGE",error);

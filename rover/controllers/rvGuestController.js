@@ -1843,8 +1843,8 @@ angular.module('sntRover').controller('guestCardController', [
 			}
 		};
 
+		// CICO-25249 - Catch error from staycard main controler - card replace API.
 		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ){
-			console.log(errorMessage);
 			$scope.errorMessage = errorMessage;
 		});
 	}
