@@ -49,12 +49,17 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     });
     $scope.$watch('emailError',function(to, from){
         if (typeof to === typeof undefined){
-            $scope.emailError = true;
+            if ($state.emailError){
+                $scope.emailError = true;
+            } else {
+                $scope.emailError = false;
+            }
         }
     });
     var sendBill = function() {
         
         var sendBillSuccess = function(response) {
+            $scope.emailOpted = $scope.zestStationData.guest_bill.email;
             $state.emailError = false;
           if ($state.printOpted) {
             $scope.printOpted = true;
@@ -396,10 +401,13 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
           $scope.mode = "print-mode";
           $scope.email = $stateParams.email;
           if ($state.emailError){
-              $scope.emailError = true;
+                $scope.emailError = true;
+          } else {
+                $scope.emailError = false;
           }
         } else {
-          checkOutGuest();
+            $scope.emailError = false;
+            checkOutGuest();
         }
 
         $scope.printOpted = false;
