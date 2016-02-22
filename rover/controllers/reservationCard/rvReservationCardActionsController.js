@@ -204,12 +204,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
             }
             if (dateStr){
-                return aDayString+$scope.flipDateFormat(dateStr)+'  '+timeStr;
+                return aDayString +
+                    $filter('date')(new tzIndependentDate(dateStr), $rootScope.dateFormat) +
+                    '  ' +
+                    timeStr;
             } else {
                 return timeStr;
             }
         };
-
 
         $scope.setActionsHeaderInfo = function(){
             var arDate = $scope.reservationData.reservation_card.arrival_date,
@@ -235,16 +237,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.actions.departureDateString = departureDayString;
         };
 
-        $scope.flipDateFormat = function(str){
-            //take 2015-04-10  |   yr / mo / day and >>> month, day, yr (04-10-2015)
-          if (str){
-              var spl = str.split('-');
-              var year = spl[0], month = spl[1], day = spl[2];
-              return month+'-'+day+'-'+year;
-          }
-
-
-        };
         
         $scope.getActionsCountStatus = function(data){
                 $scope.actions.pendingCount = data.data.pending_action_count;
