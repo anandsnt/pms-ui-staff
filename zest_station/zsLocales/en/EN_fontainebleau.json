@@ -70,6 +70,7 @@
     "SWIPE_ERR_HEADER": "An Error Occurred",
     "EMAIL_SENT_MSG": "The e-mail is now living in your inbox.",
     "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
+    "EMAIL_BILL_NOT_SENT_MSG": "A copy of your bill could not be delivered to your e-mail. Please see a staff member.",
     "OOPS_TEXT": "Oopsie.",
     "DAY_NIGHTS": "Nights",
     "ADDTL_RESIDENTS": "Additional Residents",
