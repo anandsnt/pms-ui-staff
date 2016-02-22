@@ -4,40 +4,64 @@
 */
 
 (function() {
-	var earlyCheckinOptionsController = function($scope,$rootScope,$state,$stateParams) {
+	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams) {
 
-	$scope.pageValid = false;
+		$scope.pageValid = false;
 
-	if($rootScope.isCheckedin){
-		$state.go('checkinSuccess');
-	}
-	else if($rootScope.isCheckedout ){
-		$state.go('checkOutStatus');
-	}
-	else{
-		$scope.pageValid = true;
-	}
+		if ($rootScope.isCheckedin) {
+			$state.go('checkinSuccess');
+		} else if ($rootScope.isCheckedout) {
+			$state.go('checkOutStatus');
+		} else {
+			$scope.pageValid = true;
+		}
 
-	if($scope.pageValid){
+		if ($scope.pageValid) {
+			$scope.checkinTime = $stateParams.time;
+			$scope.earlyCheckinCharge = $stateParams.charge;
+			var offerId = $stateParams.id;
 
-		$scope.checkinTime = $stateParams.time;
-		$scope.earlyCheckinCharge = $stateParams.charge;
-		var offerId = $stateParams.id;
+			$scope.nextButtonClicked = function() {
+				var stateParams = {
+					'time': $scope.checkinTime,
+					'charge': $stateParams.charge,
+					'id': offerId,
+					'isFromCheckinNow': !!$stateParams.isFromCheckinNow
+				};
+				$state.go('earlyCheckinFinal', stateParams);
+			};
 
-		$scope.nextButtonClicked = function(){
-			$state.go('earlyCheckinFinal',{'time':$scope.checkinTime,'charge': $stateParams.charge,'id':offerId});
-		};
 
-		$scope.changeArrivalTime = function(){
-			$state.go('laterArrival',{'time':$scope.checkinTime,'isearlycheckin':true});
-		};
-	}
-};
+			var changeArrivalTime = function() {
+				$state.go('laterArrival', {
+					'time': $scope.checkinTime,
+					'isearlycheckin': true
+				});
+			}
 
-var dependencies = [
-'$scope','$rootScope','$state','$stateParams',
-earlyCheckinOptionsController
-];
+			var releaseRoom = function() {
+				console.log("releaseRoom");
+				onSuccess = function() {
+					changeArrivalTime();
+				};
+				onSuccess();
+			};
 
-sntGuestWeb.controller('earlyCheckinOptionsController', dependencies);
+			$scope.changeArrivalTime = function() {
+				if (!!$stateParams.isFromCheckinNow) {
+					releaseRoom();
+				}
+				else {
+					changeArrivalTime();
+				}
+			};
+		}
+	};
+
+	var dependencies = [
+		'$scope', '$rootScope', '$state', '$stateParams',
+		earlyCheckinOptionsController
+	];
+
+	sntGuestWeb.controller('earlyCheckinOptionsController', dependencies);
 })();
