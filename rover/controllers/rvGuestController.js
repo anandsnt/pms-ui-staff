@@ -1593,13 +1593,13 @@ angular.module('sntRover').controller('guestCardController', [
 			if (cardData.account_type === 'TRAVELAGENT') {
 				$scope.selectTravelAgent(cardData, chooseCardRate);
 			}
-			ngDialog.close();
+			//ngDialog.close();
 		};
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function(cardData) {
 			$scope.selectCard(cardData, true);
 			//$scope.navigateToRoomAndRates();
-			ngDialog.close();
+			//ngDialog.close();
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
 
@@ -1842,5 +1842,10 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.$broadcast('saveContactInfo');
 			}
 		};
+
+		// CICO-25249 - Catch error from staycard main controler - card replace API.
+		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ){
+			$scope.errorMessage = errorMessage;
+		});
 	}
 ]);
