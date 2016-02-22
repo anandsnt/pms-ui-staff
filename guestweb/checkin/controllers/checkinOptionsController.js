@@ -9,7 +9,7 @@
 
 		var earlyCheckinOn = true;
 		var isInEarlyCheckinWindow = true;
-		var offerEci = true;
+		var offerEci = false;
 
 
 		var showRoomAssigErrorPopup = function() {
@@ -36,7 +36,7 @@
 						showRoomAssigErrorPopup();
 					} else {
 					// Early checkin is  on and offer unavailable now
-						// to do
+						$state.go('roomsUnavailable');
 					}
 				} else {
 					// Early checkin is not on
@@ -55,14 +55,14 @@
 						});
 					} else {
 					// Early checkin is  on but no offer available now
-						console.log('noEci'); // to do
+						$state.go('earlyCheckinReady');
 					}
 				} else {
 					// Early checkin is not on
 					$state.go('checkinKeys');
 				}
 			};
-			onFailre();
+			onSuccess();
 		};
 		$scope.checkinNow = function() {
 			assignRoom();

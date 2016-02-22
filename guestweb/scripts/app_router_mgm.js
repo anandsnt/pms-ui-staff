@@ -194,5 +194,13 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/checkin/partials/MGM/guestCheckinOptions.html',
 		controller: 'checkinOptionsController',
 		title: 'Checkin options'
+	}).state('roomsUnavailable', {
+		url: '/roomsUnavailable',
+		templateUrl: '/assets/checkin/partials/MGM/roomsUnavailable.html',
+		title: 'Room unavailable'
+	}).state('earlyCheckinReady', {
+		url: '/earlyCheckinReady',
+		templateUrl: '/assets/checkin/partials/MGM/earlyCheckinReady.html',
+		title: 'Early Check in ready'
 	});
 }]);
