@@ -7,7 +7,6 @@ sntGuestWeb.controller('ModalInstanceCtrl', ['$scope','$rootScope','$modalInstan
   };
 
   $scope.cancel = function() {
-    alert('cancel')
     $modalInstance.dismiss();
   };
 
