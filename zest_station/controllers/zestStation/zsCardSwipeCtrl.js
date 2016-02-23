@@ -220,8 +220,27 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         $scope.shouldShowWaiting = false;
         $scope.pageloadingOver = false;
-        
+        $scope.inProd = function(){
+            var notProd = false;
+            var url = true ? document.location : window.location;
+            if (url.hostname){
+                if (typeof url.hostname === typeof 'str'){
+                    if (url.hostname.indexOf('pms-dev') !==-1 || 
+                        url.hostname.indexOf('pms-release') !==-1 || 
+                        url.hostname.indexOf('localhost') !==-1){
+                        notProd = true;
+                    }
+                }
+            }
+            if (!notProd){//in production, dont allow this function
+                return true;
+            } else return false;
+        };
         $scope.simulateSixPay = function(){
+            var inProduction = $scope.inProd();
+            if (inProduction){
+                return;
+            }
             $scope.$emit('showLoader');
             $scope.isSimulated = true;
             $scope.shouldShowWaiting = true;
