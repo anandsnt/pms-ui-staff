@@ -1473,7 +1473,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					params[key] = [];
 					/**/
 					_.each(selected, function(each) {
-						params[key].push( each.id );
+						params[key].push( each.id.toString() );
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.reservationStatus.push( each.status );
