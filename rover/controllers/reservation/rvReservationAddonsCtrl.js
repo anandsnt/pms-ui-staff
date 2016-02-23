@@ -257,7 +257,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         totalAmount: addonQty * (addon.price),
                         price_per_piece: addon.price,
                         amount_type: addon.amountType.description,
-                        post_type: addon.postType.description
+                        post_type: addon.postType.description,
+                        charge_full_weeks_only: addon.chargefullweeksonly
                     });
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
@@ -568,6 +569,15 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.setScroller("enhanceStays");
             }
         };
+
+        //Get addon count
+        $scope.getAddonCount = function(amountType, postType, numAdults, numChildren, numNights) {
+            var postingRythm = postType === 'Every Week' ? 7 : 0;
+            amountType = amountType.toUpperCase();
+            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights);
+            return addonCount;
+        };
+
         initController();
     }
 ]);
