@@ -636,9 +636,14 @@ sntZestStation.controller('zsRootCtrl', [
                 console.log(localStorage);
                 return true;
             };
+            $scope.getPromptTime = function(){
+                if ($scope.idle_max>$scope.idle_prompt){
+                    return $scope.idle_max-$scope.idle_prompt;
+                } else return -1;
+            };
             $scope.startIdleCounter = function(){
                 //console.info('isFromChromeApp: ', $scope.isFromChromeApp());
-                var time = $scope.idle_max, promptTime = $scope.idle_prompt;
+                var time = $scope.idle_max, promptTime = $scope.getPromptTime();
                 
                     var timer = time, minutes, seconds;
                     var timerInt = setInterval(function () {

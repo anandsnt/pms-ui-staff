@@ -201,5 +201,17 @@
     
      
     "CHOOSE_TOWER_AND_ENTER_ROOM_NUMBER": "Next, Choose your tower and enter your room number",   
-    "HOME_PUK_SUB": "If you have already checked in online."
+    "HOME_PUK_SUB": "If you have already checked in online.",
+    
+    
+    
+    "ADMIN_SAVE": "Save",
+    "ADMIN_CANCEL": "Cancel",
+    "ADMIN_TITLE": "Admin",
+    "ADMIN_TIMER_ENABLED_BTN": "Kiosk Idle Timer",
+    "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
+    "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
+    "ADMIN_WORKSTATION": "Work Station",
+    "ADMIN_STATION_PRINTER": "Select Printer"
+    
 }
