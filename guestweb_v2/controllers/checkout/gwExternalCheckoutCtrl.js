@@ -3,8 +3,8 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
-sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$timeout', '$filter',
-	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $timeout, $filter) {
+sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$timeout', '$filter','$modal',
+	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $timeout, $filter,$modal) {
 		//TODO : remove unwanted injections like $timeout
 		$controller('BaseController', {
 			$scope: $scope
@@ -56,7 +56,13 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				GwWebSrv.zestwebData.isLateCheckoutAvailable ? $state.go('checkOutOptions') : $state.go('checkOutConfirmation');
 			};
 			var onFail = function(data) {
-				alert(data);
+				var popupOptions = angular.copy($scope.errorOpts);
+				popupOptions.resolve = {
+					message: function() {
+						return "We could not find your reservation. Please check for typos, or call <hotelPhone>."
+					}
+				};
+				$modal.open(popupOptions);
 			};
 			var options = {
 				params: $scope.stayDetails,
