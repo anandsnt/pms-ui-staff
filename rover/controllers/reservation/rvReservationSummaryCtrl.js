@@ -1367,61 +1367,48 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         };
 
 
-        $scope.isDemographicsFormValid = function(assertValidation) {
+        var validateDemographicsData = function(demographicsData){
             var isValid = true;
+            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
+                isValid = demographicsData.reservationType !== "";
+            }
+            if ($scope.otherData.marketsEnabled && $scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
+                isValid = demographicsData.market !== "";
+            }
+            if ($scope.otherData.sourcesEnabled && $scope.otherData.sourceIsForced && $scope.otherData.sources.length > 0 && isValid) {
+                isValid = demographicsData.source !== "";
+            }
+            if ($scope.otherData.originsEnabled && $scope.otherData.originIsForced && $scope.otherData.origins.length > 0 && isValid) {
+                isValid = demographicsData.origin !== "";
+            }
+            if ($scope.otherData.segmentsEnabled && $scope.otherData.segmentsIsForced && $scope.otherData.segments.length > 0 && isValid) {
+                isValid = demographicsData.segment !== "";
+            }
+            return isValid;
+        };
+
+        $scope.isDemographicsFormValid = function(assertValidation) {
+            var isValid = true,
+                demographicsData;
             if (assertValidation) {
                 if ($scope.otherData.reservationTypeIsForced || $scope.otherData.marketIsForced || $scope.otherData.sourceIsForced || $scope.otherData.originIsForced) {
-                    _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    _.each($scope.reservationData.rooms, function(room) {
                         if (!room.demographics) {
                             isValid = false;
                         } else {
-                            var demographicsData = room.demographics;
-
-                            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
-
-                            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
-                                isValid = demographicsData.reservationType !== "";
-                            }
-                            if ($scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
-                                isValid = demographicsData.market !== "";
-                            }
-                            if ($scope.otherData.sourceIsForced && $scope.otherData.sources.length > 0 && isValid) {
-                                isValid = demographicsData.source !== "";
-                            }
-                            if ($scope.otherData.originIsForced && $scope.otherData.origins.length > 0 && isValid) {
-                                isValid = demographicsData.origin !== "";
-                            }
-                            if ($scope.otherData.segmentsIsForced && $scope.otherData.segments.length > 0 && isValid) {
-                                isValid = demographicsData.segment !== "";
-                            }
+                            demographicsData = room.demographics;
+                            isValid = validateDemographicsData(demographicsData);
                         }
                     });
                 }
             } else {
-                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-
-                    var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
-
-                    // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
-
-
-                    if ($scope.otherData.reservationTypeIsForced) {
-                        isValid = demographicsData.reservationType !== "";
-                    }
-                    if ($scope.otherData.marketIsForced && isValid) {
-                        isValid = demographicsData.market !== "";
-                    }
-                    if ($scope.otherData.sourceIsForced && isValid) {
-                        isValid = demographicsData.source !== "";
-                    }
-                    if ($scope.otherData.originIsForced && isValid) {
-                        isValid = demographicsData.origin !== "";
-                    }
-                    if ($scope.otherData.segmentsIsForced && isValid) {
-                        isValid = demographicsData.segment !== "";
-                    }
+                _.each($scope.reservationData.rooms, function(room) {
+                    demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
+                    isValid = validateDemographicsData(demographicsData);
                 });
             }
+
             return isValid;
         };
 
