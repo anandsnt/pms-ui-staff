@@ -55,7 +55,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/common_templates/partials/MGM/Luxor/gwLateCheckoutfinal.html',
+		templateUrl: '/assets/common_templates/partials/MGM/Excalibur/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -97,6 +97,13 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	controller : 'guestDetailsController',
 	    title: 'Guest Details'
 	 });
+
+	 $stateProvider.state('checkOutStatus', {
+        url: '/checkOutStatus',
+       	controller: 'checkOutStatusController',
+       	templateUrl: '/assets/common_templates/partials/MGM/gwCheckoutfinal.html',
+		title: 'Status - Check-out Now'
+   	 });
 	 // state('birthDateDetails', {
 	 // 	url: '/birthDateDetails',
 	 // 	templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
@@ -145,10 +152,5 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
 	 	title: 'Feature not available'
 	});
-	 $stateProvider.state('checkOutStatus', {
-        url: '/checkOutStatus',
-       	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/common_templates/partials/MGM/Luxor/gwCheckoutfinal.html',
-		title: 'Status - Check-out Now'
-   	 });
+
 }]);
