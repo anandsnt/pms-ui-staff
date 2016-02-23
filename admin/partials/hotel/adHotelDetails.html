@@ -79,6 +79,15 @@
 				<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
 			</div>
 			
+			<div class="entry full-width">
+                             <div class="entry inline-flex" >
+                        <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
+                        </div><div class="switch-button single" ng-class="{ on: data.sms_active }" ng-click="data.sms_active = !data.sms_active">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
+			</div>
 		</fieldset>
 		
 		<fieldset class="holder right">
@@ -433,6 +442,11 @@
 						<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'SAFERPAY'}"></span>
 						<input type="radio" ng-model="data.payment_gateway" value="SAFERPAY" class="change-data">
 						Saferpay
+				</label>
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI_TRANSACTION_LINK'}">
+						<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'MLI_TRANSACTION_LINK'}"></span>
+						<input type="radio" ng-model="data.payment_gateway" value="MLI_TRANSACTION_LINK" class="change-data">
+						MLI Transaction Link
 				</label>				
 			</div>
 			<div class="entry full-width"></div>
@@ -552,6 +566,18 @@
 					HTTPS
 				</label>
 			</div>
+			<div class="entry" ng-if="data.payment_gateway === 'MLI_TRANSACTION_LINK'" >
+				<label>
+					Merchant Access Code
+				</label>
+				<input type="text" ng-model="data.merchant_access_code" placeholder="Enter merchant access code">
+			</div>
+			<div class="entry" ng-if="data.payment_gateway === 'MLI_TRANSACTION_LINK'" >
+				<label>
+					MLI Transaction Company Code
+				</label>
+				<input type="text" ng-model="data.merchantlink_txn_company_code" placeholder="Enter MLI company code">
+			</div>
 			<div class="entry full-width">
 				<label>Allow CC processors per payment methods</label>
 				<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
@@ -559,6 +585,8 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
+
+			
 			
 		</fieldset>
 		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
@@ -598,6 +626,37 @@
 			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
 				Test MerchantLink Connectivity
 			</button>
+
+		</fieldset>
+
+		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI_TRANSACTION_LINK'" >
+			<div class="form-title">
+				<h3><span>Hotel</span> MLI Transaction Settings </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<div class="entry">
+				<label for="mli-hotel-code"> MLI Transaction Site Code</label>
+				<input type="text" ng-model="data.merchantlink_txn_site_code" value="{{data.merchantlink_txn_site_code}}" placeholder="Enter MLI transaction site code" name="merchantlink_txn_site_code" id="merchantlink_txn_site_code">
+			</div>
+
+			<div class="entry">
+				<label for="mli-chain-code"> MLI Transaction Access URL </label>
+				<input type="text" ng-model="data.merchantlink_txn_access_url" value="{{data.merchantlink_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="merchantlink_txn_access_url">
+			</div>
+
+			<div class="entry full-width">
+				<label for="certificate">
+					 MLI Transaction Certificate
+				</label>
+				<div class="file-upload">
+					<span class="input">{{mli_transaction_certificate_file_name}}</span>
+					<input type="file" ng-model="mli_transaction.certificate" accept="*" app-filereader emit-data="cert_string" />
+					<button type="button" class="button brand-colors">
+						Attach Certificate
+					</button>
+                                        <input type="text" id="cert_string" hidden>
+				</div>
+			</div>
 
 		</fieldset>
 		
@@ -670,7 +729,7 @@
 			
 			
 
-		</fieldset>
+		</fieldset>		
 
 		<div class="actions float">
 			<button type="button" ng-click ="back()" class="button blank">

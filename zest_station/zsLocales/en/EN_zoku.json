@@ -12,7 +12,7 @@
     "NEXT_BTN": "Next",
     "CLEAR_BTN": "Clear",
     "REMOVE_BTN": "Remove",
-    "ADD_BTN": "+ Add A Guest",
+    "ADD_BTN": "+ Add A Resident",
     "EMAIL_ERR_HEADER": "Oopsie.",
     "EMAIL_ERR_HEADER_SUB": "This doesn’t seem to be a valid e-mail address. Please try again. Practice makes perfect.",
     "SWIPE_CARD_PLEASE": "Please Insert Credit Card",
@@ -20,10 +20,10 @@
     "NO_THX": "No, thanks",
     "RES_DETAIL_HEADER": "Check your reservation details",
     "RESIDENTS": "resident(s)",
-    "ADD_REMOVE_GUESTS": "Add / Remove Guests",
+    "ADD_REMOVE_GUESTS": "Add / Remove Residents",
     "AVG_DAILY": "Average Daily Rate",
     "INCLUDED": "INCLUDED",
-    "ADDTL_GUESTS_HEADING": "Additional Guests",
+    "ADDTL_GUESTS_HEADING": "Additional Residents",
     "ENTER_LAST": "Enter the Residents Last Name",
     "ENTER_FIRST": "Enter the Residents First Name",
     "ERR_PAGE": "Oopsie.",
@@ -56,16 +56,19 @@
     "TYPE_EMAIL_IN": "Type in your e-mail address",
     "TYPE_EMAIL_IN_SUB": "You can receive your bill, check-out (or order a late check-out) and all sorts of other wonderful things…",
     "SEND_REGISTRATION_TO": "We will send your registration to:",
+    "SEND_BILL_TO": "We will send your bill to:",
+    
     "BROKE_HEADER_SUB": "Something broke. Our bad. Please reach out to a Sidekick.",
     "BROKE_HEADER": "So Sorry.",
-    "TALK_TO_STAFF": "Please speak to a sidekick.",
-    "NO_KEYS_MADE": "We were not able to make keys.",
-    "NO_KEYS_MADE_SUB": "Oopsie. Unable to make key.",
+    "TALK_TO_STAFF": "Please talk to a sidekick.",
+    "NO_KEYS_MADE": "Oopsie. We were not able to make keys.",
+    "NO_KEYS_MADE_SUB": "Please re-try or talk a sidekick.",
     "ROOM_NOT_AVAIL_MSG": "We can take care of your luggage until a room becomes available.",
     "REGISTRATION_READY_HEADER": "Your registration is ready for lift-off.",
     "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
     "SWIPE_ERR_HEADER": "An Error Occurred",
     "EMAIL_SENT_MSG": "The e-mail is now living in your inbox.",
+    "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
     "OOPS_TEXT": "Oopsie.",
     "DAY_NIGHTS": "Nights",
     "ADDTL_RESIDENTS": "Additional Residents",
@@ -98,9 +101,9 @@
     "RE_TYPE": "Re-Type",
     "SEE_YOU": "Hope to see you again soon!",
     "TRY_AGAIN": "Try Again",
-    "SPEAK": "Speak",
-    "SPEAK_SUB": "to a Sidekick",
-    "SPEAK_TO_STAFF": "Speak to a Sidekick",
+    "SPEAK": "Help",
+    "SPEAK_SUB": "Talk to a Sidekick",
+    "SPEAK_TO_STAFF": "",
     "SPEAK_TO_STAFF_SUB": "Check the Living Room for Sidekicks. They’ll be happy to help you out!",
     "SPEAK_TO_STAFF_RETURN": "Return",
     
@@ -136,16 +139,16 @@
     "BILL_DEP":"Deposits",
     "BILL_BAL":"Balance due",
     "BILL_QUEST":"Questions?",
-    "BILL_SUB_QUESTION":"Tap “Cancel” and see a sidekick.",
+    "BILL_SUB_QUESTION":"Tap “X” above and see a sidekick.",
     "BILL_NEXT":"Next",
     "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
-    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
+    "USER_CHECKED_OUT_ALRDY_SUB":"You have already checked out.",
     "USER_CHECKED_OUT_ALRDY_RTN":"Return",
     
     
     "OOS_HEADER":"Out of service",
     "DEPOSIT_NEXT_BUTTON":"Proceed",
-    "OOS_SUB":"Please try another kiosk or Speak to a Sidekick.",
+    "OOS_SUB":"Please try another kiosk or Talk to a Sidekick.",
     
     "RES_TAX_FEES":"Taxes / Fees",
     "RES_SUB":"Subtotal",
@@ -163,8 +166,8 @@
     "RES_SRCH_SRY":"Sorry.",
     
     
-    "NO_MATCH_TALK":"Speak",
-    "NO_MATCH_TALK_SUB":"to a Sidekick",
+    "NO_MATCH_TALK":"Help",
+    "NO_MATCH_TALK_SUB":"Talk to a Sidekick",
     "NO_MATCH_OR":"Or",
     "NO_MATCH_RE_LAST":"Re-Enter",
     "NO_MATCH_HEADER":"Sorry.",
@@ -177,7 +180,7 @@
     "RES_SRCH_TALK":"Talk",
     "RES_NEXT":"Next",
     "RES_Q":"Questions?",
-    "RES_Q_SUB":"Tap “Cancel” and see a sidekick.",
+    "RES_Q_SUB":"Tap “X” above and see a sidekick.",
     "RES_SRCH_TALK_SUB":"To a Sidekick ",
     
     
@@ -198,9 +201,9 @@
     "SEL_RES_LAST":"Previous",
     "SEL_RES_NEXT":"Next",
     
-    "IDLE_TIMEOUT_MSG":"Are you still here -?",
+    "IDLE_TIMEOUT_MSG":"Are you still here?",
     "IDLE_TIMEOUT_YES":"Yes",
     
     
-    "HOME_PUK_SUB": "If you have already checked in online."
+    "HOME_PUK_SUB": "If you already checked in online."
 }

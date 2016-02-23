@@ -14,7 +14,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 	'rvUtilSrv',
 	'$state',
 	'rvPermissionSrv',
-	function($scope, jsMappings, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv) {
+	'$q',
+	function($scope, jsMappings, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $q) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -343,13 +344,20 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.billingInfoModalOpened = true;
 			$scope.attachedEntities = {};
 			$scope.billingInformationPresent = summaryData.default_billing_info_present;
-            $scope.$emit('showLoader');
-            jsMappings.fetchAssets('addBillingInfo')
+			$scope.attachedEntities.posting_account = _.extend({}, {
+				id: summaryData.allotment_id,
+				name: summaryData.posting_account_name,
+				logo: "ALLOTMENT_DEFAULT"
+			});
+            $scope.$emit('showLoader'); 
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
                 $scope.$emit('hideLoader');
                 ngDialog.open({
-                    template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
-                    controller: 'rvBillingInfoAllotmentMainCtrl',
+                	template: '/assets/partials/bill/rvBillingInformationPopup.html',
+                    controller: 'rvBillingInformationPopupCtrl',
+                    //template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
+                    //controller: 'rvBillingInfoAllotmentMainCtrl',
                     className: '',
                     scope: $scope
                 });

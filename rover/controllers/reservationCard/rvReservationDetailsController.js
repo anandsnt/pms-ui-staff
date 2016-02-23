@@ -12,11 +12,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-		if (SWITCH_ROOM_AND_RATES_ALT) {
-			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		}
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		
 
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
@@ -556,9 +553,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		};
 
+		/**
+		 * CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+		 * CICO-25179: should be disabled for allotment as well
+		 * @return {Boolean} flag to disable button
+		 */
+		$scope.shouldDisableExtendNightsButton = function() {
+			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id,
+				isGroupPresent 		= $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id;
+
+			return (isAllotmentPresent || isGroupPresent);
+		};
+
 		$scope.extendNights = function() {
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
-			if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
+			if ($scope.shouldDisableExtendNightsButton()) {
 				return false;
 			};
 
@@ -1172,5 +1181,12 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
               //     $scope.giftCardAmountAvailable = false;
               // }
             };
+
+     var unbindChildContentModListener = $scope.$on('CHILD_CONTENT_MOD',function(event, timer){
+     	event.stopPropagation();
+     	$scope.refreshReservationDetailsScroller(timer || 0);
+     });
+
+     $scope.$on( '$destroy', unbindChildContentModListener );
         
 }]);

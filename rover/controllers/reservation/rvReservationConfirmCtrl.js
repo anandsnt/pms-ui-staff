@@ -515,7 +515,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			}
 
 	    	$scope.$emit('showLoader'); 
-           	jsMappings.fetchAssets('addBillingInfo')
+           	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader'); 
 			    ngDialog.open({

@@ -60,7 +60,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 					$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.dataToPaymentList.bills[billIndex].credit_card_details );
 				}
 			} else {
-				$scope.dataToPaymentList.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
+				$scope.dataToPaymentList.reservation_card.payment_details.card_type_image =  'images/' + cardCode.toLowerCase()+".png";
 				$scope.dataToPaymentList.reservation_card.payment_details.card_number = cardNumberEndingWith;
 				$scope.dataToPaymentList.reservation_card.payment_details.card_expiry = expiryDate;
 				$scope.dataToPaymentList.reservation_card.payment_method_used = "CC";

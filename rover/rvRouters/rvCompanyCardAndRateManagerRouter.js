@@ -7,7 +7,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             controller: 'searchCompanyCardController',
             resolve: {
                 comapanycardSearchAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.companycardsearch');
+                    return jsMappings.fetchAssets(['rover.companycardsearch', 'directives']);
                 }
             }
         });
@@ -19,7 +19,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             controller: 'companyCardDetailsController',
             resolve: {
                 comapanycardDetailsAssets: function(jsMappings) {
-                    return jsMappings.fetchAssets('rover.companycarddetails');
+                    return jsMappings.fetchAssets(['rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 }
             }
         });
@@ -28,9 +28,9 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             url: '/rateManager',
             templateUrl: '/assets/partials/rateManager/dashboard.html',
             controller  : 'RMDashboradCtrl',
-            resolve: {
+            resolve: {            
                 rateMangerAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets('rover.ratemanager', ['highcharts-ng']);
+                    return jsMappings.fetchAssets(['rover.ratemanager', 'directives', 'highcharts'], ['highcharts-ng']);
                 },
                 sortOrder: function(RateMngrCalendarSrv, rateMangerAssets) {
                     return RateMngrCalendarSrv.fetchSortPreferences();

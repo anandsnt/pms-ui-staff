@@ -56,8 +56,11 @@
     	}
     };
 
-    $scope.changeEmail =  function(){
+    $scope.continueToPrecheckin =  function(){
       $state.go('preCheckinStatus');
+    };
+    $scope.changeEmail =  function(){
+       $scope.emailUpdated = false;
     };
 };
 

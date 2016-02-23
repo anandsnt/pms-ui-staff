@@ -1,23 +1,115 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
-	<div class="modal-content form update-room-status">
+	<div class="modal-content update-room-status" ng-class="{'extended': isServiceStatusUpdate}">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 	    <button ng-click="closeHkStatusDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
-	    
-	    <strong class="h2 message">Update Status</strong>
-	    <span ng-hide="multiRoomAction.allChosen" class="text">{{ multiRoomAction.rooms.length }} rooms selected</span>
-	    <span ng-show="multiRoomAction.allChosen" class="text">{{ allRoomIDs.length }} rooms selected</span>
 
-	    <div class="entry full-width">
-	       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">
-	       		<span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.hkStatusId == status.id }"></span>
-	       		<input name="room-status" id="{{ status.id }}" type="radio" value="{{ status.id }}" ng-model="multiRoomAction.hkStatusId" />
-	       		{{ status.description }}
-	       	</label>
+	    <!-- <strong class="h2 message">Update Status</strong>
+	    <span ng-hide="multiRoomAction.allChosen" class="text">{{ multiRoomAction.rooms.length }} rooms selected</span>
+	    <span ng-show="multiRoomAction.allChosen" class="text">{{ allRoomIDs.length }} rooms selected</span> -->
+	    <strong class="h2 message" ng-hide="multiRoomAction.allChosen">Update {{ multiRoomAction.rooms.length }} rooms</strong>
+	    <strong class="h2 message" ng-show="multiRoomAction.allChosen">Update {{ allRoomIDs.length }} rooms</strong>
+
+
+	    <ul class="options">
+        	<li data-show="#room-status" ng-class="{'active':isRoomStatusUpdate}" ng-click="toggleRoomServiceStatusUpdate()">Room Status</li>
+        	<li data-show="#service-status" ng-class="{'active':isServiceStatusUpdate}" ng-click="toggleRoomServiceStatusUpdate()">Service Status</li>
+    	</ul>
+
+    	<!-- Room Status Form -->
+	    <div id="room-status" class="status-container" ng-if="isRoomStatusUpdate">
+        	<div class="entry radio-check">
+		       	<label ng-repeat="status in hkStatusList" class="radio" for="status.id">
+		       		<span class="icon-form icon-radio" ng-class="{ 'checked' : multiRoomAction.hkStatusId == status.id }"></span>
+		       		<input name="room-status" type="radio" id="{{ status.id }}" value="{{ status.id }}" ng-model="multiRoomAction.hkStatusId" />
+		       		{{ status.description }}
+		       	</label>
+		    </div>
+
+		    <div class="actions">
+		        <button ng-click="submitHkStatusChange()" type="button" class="button green">Confirm</button>
+		        <button ng-click="closeHkStatusDialog()" type="button" class="button blank">Cancel</button>
+	    	</div>
 	    </div>
-	    <div class="actions">
-	        <button ng-click="submitHkStatusChange()" type="button" class="button green">Confirm</button>
-	        <button ng-click="closeHkStatusDialog()" type="button" class="button blank">Cancel</button> 
+
+	    <!-- Service Status Form -->
+	    <div id="service-status" class="status-container" ng-if="isServiceStatusUpdate">
+	        <div class="entry float-label">
+	            <div class="select">
+	                <label for="select-service-status" class="label">Service Status</label>
+	                <select name="room-service-status" id="room-service-status" ng-model="updateServiceData.room_service_status_id" ng-options="item.id as item.description for item in serviceStatusList" ng-change="refreshScroller('room-service-status-update')">
+            </select>
+	            </div>
+	        </div>
+
+	        <div id="status-details" class="scrollable" ng-iscroll="room-service-status-update">
+	            <div class="wrapper room-service-status">
+	                <div id="dates" class="row" ng-if="updateServiceData.room_service_status_id != 1">
+                    <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
+	                    <div id="out-from" class="entry">
+	                        <label id="room-out-from-label" for="room-out-from">From
+	                        	<span>{{ getSimplifiedDayName(updateServiceData.from_date) }}</span>
+                        	</label>
+	                        <div class="entry-data">
+	                            <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="updateServiceData.from_date" ui-date-format readonly>
+
+	                            <strong id="room-out-from-day" class="day">{{ updateServiceData.from_date | date:'dd' }}</strong>
+	                            <span id="room-out-from-month" class="month">{{ updateServiceData.from_date | date:'MMMM' }}</span>
+	                            <span id="room-out-from-year" class="year">{{ updateServiceData.from_date | date:'yyyy' }}</span>
+
+	                        </div>
+	                        <div class="select" ng-show="shouldShowTimeSelector()">
+	                            <select id="room-out-from-time" class="placeholder" ng-model="updateServiceData.begin_time">
+	                                <option value="" selected>From Time</option>
+	                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="">{{timeSelector.text}}</option>
+                            	</select>
+	                        </div>
+	                    </div>
+	                    <div id="out-to" class="entry">
+	                        <label id="room-out-to-label" for="room-out-to">To
+	                        	<span>{{getSimplifiedDayName(updateServiceData.to_date) }}</span>
+                        	</label>
+	                        <div class="entry-data">
+	                            <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="updateServiceData.to_date" ui-date-format readonly>
+
+	                            <strong id="room-out-to-day" class="day">{{ updateServiceData.to_date | date:'dd' }}</strong>
+	                            <span id="room-out-to-month" class="month">{{ updateServiceData.to_date | date:'MMMM' }}</span>
+	                            <span id="room-out-to-year" class="year">{{ updateServiceData.to_date | date:'yyyy' }}</span>
+
+	                        </div>
+	                        <div class="select" ng-show="shouldShowTimeSelector()">
+								<select id="room-out-to-time" class="placeholder" ng-model="updateServiceData.end_time">
+	                                <option value="" selected>To Time</option>
+	                                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList" ng-selected="">{{timeSelector.text}}</option>
+                            </select>
+	                        </div>
+	                    </div>
+                	</div>
+	                <div id="reason" class="row" ng-if="updateServiceData.room_service_status_id != 1">
+	                    <div class="entry">
+	                        <label for="reason">Reason</label>
+	                        <div class="select">
+	                            <select name="reason" id="reason" ng-model="updateServiceData.reason_id" ng-options="item.value as item.name for item in maintenanceReasonsList">
+                                	<option value="">Choose reason</option>
+                            	</select>
+	                        </div>
+	                    </div>
+	                    <div class="entry">
+	                        <label for="reason-comments">Comments <span>(optional)</span></label>
+	                        <textarea name="reason-comments" id="reason-comments" ng-model="updateServiceData.comments" rows="4"></textarea>
+	                    </div>
+	                </div>
+	                <div class="wrapper room-service-status in-service" ng-if="updateServiceData.room_service_status_id == 1" >
+            			<strong class="h2">In Service</strong>
+            			<span class="icon-no-content icon-ok"></span>
+        			</div>
+	        	</div>
+	        </div>
+
+	        <div class="actions">
+	            <button type="button" class="button blank" ng-click="closeHkStatusDialog()">Cancel</button>
+	            <button type="button" class="button green" ng-click="updateServiceStatus()">Update</button>
+       		</div>
 	    </div>
 	</div>
 </div>

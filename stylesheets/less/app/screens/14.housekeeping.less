@@ -56,6 +56,7 @@
         }
     }
 
+    /* Room Status Filters ***/
     #filter-rooms {
         background: @white;
         z-index: 6000;
@@ -78,9 +79,7 @@
                     }
 
                     .entry {
-                        padding: 5px 0;
-                        margin-bottom: 0;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        margin-bottom: 20px;
                         .show;
 
                         .radio,
@@ -103,20 +102,16 @@
                             }
                         }
 
-                        &.rooms {
-                            .select {
-                                select { background-color: @grey1; }
+                        .select {
+                            select { background-color: @grey1; }
 
-                                &:after { background-color: @grey1; }
-                            }
+                            &:after { background-color: @grey1; }
                         }
 
                         &:first-child { padding-top: 0; }
                         &:last-child { border-bottom: 0; }
 
                         &.floors {
-                            margin-bottom: 20px;
-
                             .entry-data {
                                 margin-bottom: 10px;
                                 background-color: @grey1;
@@ -145,21 +140,9 @@
                                     }
 
                                     .select {
-                                        position: relative;
-                                        .faux-clickable;
+                                        select { background-color: @white; }
 
-                                        select { 
-                                            text-align: center;
-                                            vertical-align: middle;
-                                            position: relative;
-                                            background: transparent;
-                                            border: 0;
-                                            padding: 10px;
-                                            line-height: 40px; 
-                                            height: 40px;
-                                            min-height: 40px;
-                                            .box-shadow(none);
-                                        }
+                                        &:after { background-color: @white; }
                                     }
                                 }
 
@@ -192,6 +175,12 @@
                                 }
                             }
                         }
+
+                        &.radio-check:not(.floors) { 
+                            padding: 5px 0;
+                            margin-bottom: 0;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+                        }
                     }
                 }
             }
@@ -206,6 +195,7 @@
         }
     }
 
+    /* Room details ***/
     #room-details {
         .room-header {
             height: 60px;
@@ -484,101 +474,123 @@
 
                     .icon-ok { margin-top: 20px; }
                 }
+            }
+        }
+    }
 
-                /* Room Tab ***/
-                .row {
-                    text-align: left;
-                    margin-bottom: 20px;
+    /* Room Tab - Change Room Service Status ***/
+    .room-service-status {
+        .row {
+            text-align: left;
+            margin-bottom: 20px;
 
-                    .entry {
-                        padding-bottom: 20px;
-                        margin-bottom: 20px;
-                        .box-shadow(0 1px 0 rgba(0,0,0,.1));
+            .entry {
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                .box-shadow(0 1px 0 rgba(0,0,0,.1));
 
-                        label {
-                            font-size: 14px;
-                            text-transform: uppercase;
-                            color: @textColor;
+                label {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    color: @textColor;
 
-                            span,
-                            &.label { color: @grey3; }
-                        }
+                    span,
+                    &.label { color: @grey3; }
+                }
 
-                        input,
-                        select {
-                            font-size: 18px;
-                            min-height: 50px;
-                            .size(50px, 100%);
-                        }
+                input,
+                select {
+                    font-size: 18px;
+                    min-height: 50px;
+                    .size(50px, 100%);
+                }
 
-                        textarea {
-                            font-size: 18px;
-                            width: 100%;
-                        }
+                textarea {
+                    font-size: 18px;
+                    width: 100%;
+                }
 
-                        .entry-data {
-                            cursor: pointer;
-                            .size(50px, 100%);
-                            .faux-clickable;
+                .entry-data {
+                    cursor: pointer;
+                    .size(50px, 100%);
+                    .faux-clickable;
 
-                            input,
-                            select {
-                                background: transparent;
-                                border: 0;
-                                .box-shadow(none);
-                            }
-                        }
-                    }
-
-                    &#dates {
-                        .entry {
-                            .entry-data { 
-                                padding: 0 10px;
-                                background: @white @calendar no-repeat 95% 15px;
-                                background-size: 20px;
-                                position: relative;
-                                margin-bottom:10px; /* CICO-11840 fix suggested by Stjepan */
-
-                                input { .hide; }
-
-                                .ui-datepicker-trigger {
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    z-index: 99;
-                                    cursor: pointer;
-                                    .square(100%);
-                                    .opacity(0);
-                                }
-
-                                .day,
-                                .month,
-                                .year {
-                                    display: inline-block;
-                                    font-size: 18px;
-                                    line-height: 50px;
-                                }
-
-                                &:hover { background-position: 95% -35px; }
-
-                                @media @highdpi { background-image: @calendar2x; }                                
-                            }
-
-                            &#out-from { color: @green; }
-                            &#out-to { color: @red; }
-                        }
-                    }
-
-                    &#actions {
-                        text-align: center;
-                        margin-bottom: 0;
-
-                        .button {
-                            line-height: 50px;
-                            .size(50px, 100%);
-                        }
+                    input,
+                    select {
+                        background: transparent;
+                        border: 0;
+                        .box-shadow(none);
                     }
                 }
+            }
+
+            &#dates {
+                .entry {
+                    .entry-data { 
+                        padding: 0 10px;
+                        background: @white @calendar no-repeat 95% 15px;
+                        background-size: 20px;
+                        position: relative;
+                        margin-bottom: 10px;
+
+                        input { 
+                            opacity: 0;
+                            position: absolute;
+                            width:100%;
+                            height:100%;
+                            left:0;
+                            top:0;
+                        }
+
+                        .ui-datepicker-trigger {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            z-index: 99;
+                            cursor: pointer;
+                            .square(100%);
+                            .opacity(0);
+                        }
+
+                        .day,
+                        .month,
+                        .year {
+                            display: inline-block;
+                            font-size: 18px;
+                            line-height: 50px;
+                        }
+
+                        &:hover { background-position: 95% -35px; }
+
+                        @media @highdpi { background-image: @calendar2x; }                                
+                    }
+
+                    &#out-from { color: @green; }
+                    &#out-to { color: @red; }
+                }
+            }
+
+            &#actions {
+                text-align: center;
+                margin-bottom: 0;
+
+                .button {
+                    line-height: 50px;
+                    .size(50px, 100%);
+                }
+            } 
+        }
+
+        &.in-service {
+            .calc-height( 100, 200 );
+            
+            .h2 {
+                color: #9d9d9d;
+                font-weight: 700;
+                margin: 20px 0;
+                font-size: 30px;
+                margin-top: 40px;
+                text-align: center;
             }
         }
     }
@@ -586,7 +598,7 @@
 
 /* 600px+               ==============================*/
 @media only screen and (min-width: 600px) {
-
+    /* Maid Room Status Dashboard Summary ***/
     .worksheet-summary {
         height: 80px;
 
@@ -595,6 +607,7 @@
         span { font-size: 30px; }
     }
     
+    /* Room Status Filters ***/
     #filter-rooms {
         .background(@white);
 
@@ -617,6 +630,7 @@
         }
     }
 
+    /* Room details ***/
     #room-details {
         .room-header {
             height: 80px;
@@ -693,7 +707,7 @@
                 h2 { font-size: 36px; }
 
                 .button {
-                    &:not(.action) { width: 80%; }
+                    &:not(.action) { width: 50%; }
                 }
 
                 /* Work Tab ***/
@@ -749,6 +763,7 @@
         }
     }
 
+    /* Room details ***/
     #room-details {
         .room-header {
             height: 90px;
@@ -803,86 +818,88 @@
 
                     .wrapper {  padding: 0 25% 20px 25%; }
                 }
+            }
+        }
+    }
 
-                /* Room Tab ***/
-                .row {
-                    margin-bottom: 0;
+    /* Room Tab - Change Room Service Status ***/
+    .room-service-status {
+        .row {
+            margin-bottom: 0;
 
-                    .entry {
-                        padding-bottom: 0;
+            .entry {
+                padding-bottom: 0;
+                .box-shadow(none);
+
+                input {
+                    font-size: 18px;
+                    line-height: 60px;
+                    min-height: 60px;
+                    padding: 0 10px;
+                    .size(60px, 100%);
+                }
+
+                .entry-data {
+                    cursor: pointer;
+                    .size(60px, 100%);
+                    .faux-clickable;
+
+                    input,
+                    select {
+                        background: transparent;
+                        border: 0;
                         .box-shadow(none);
-
-                        input {
-                            font-size: 18px;
-                            line-height: 60px;
-                            min-height: 60px;
-                            padding: 0 10px;
-                            .size(60px, 100%);
-                        }
-
-                        .entry-data {
-                            cursor: pointer;
-                            .size(60px, 100%);
-                            .faux-clickable;
-
-                            input,
-                            select {
-                                background: transparent;
-                                border: 0;
-                                .box-shadow(none);
-                            }
-                        }
-                    }
-
-                    &#dates {
-                        .float;
-
-                        .entry {
-                            margin-right: 20px;
-                            .pull-left;
-                            
-                            &#out-from,
-                            &#out-to {
-                                .calc-width(50, 10);
-
-                                .entry-data {
-                                    padding: 0;
-                                    background-position: 90% 20px;
-                                    
-                                    .day,
-                                    .month,
-                                    .year { position: absolute; }
-
-                                    .month,
-                                    .year {
-                                        left: 80px;
-                                        font-size: 18px;
-                                        line-height: 18px;
-                                    }
-
-                                    .day {
-                                        top: 8px;
-                                        left: 15px;
-                                        font-size: 48px;
-                                    }
-
-                                    .month { top: 10px; }
-                                    .year { top: 30px; }
-
-                                    &:hover { background-position: 90% -30px; }
-                                
-                                }                       
-                            }                               
-
-                            &:last-child { margin-right: 0; }                   
-                        }
-                    }
-
-                    &#actions {
-                        .button { width: 50%; }
                     }
                 }
             }
-        }
+
+            &#dates {
+                .float;
+
+                .entry {
+                    margin-right: 20px;
+                    .pull-left;
+                    
+                    &#out-from,
+                    &#out-to {
+                        .calc-width(50, 10);
+
+                        .entry-data {
+                            padding: 0;
+                            background-position: 90% 20px;
+                            
+                            .day,
+                            .month,
+                            .year { position: absolute; }
+
+                            .month,
+                            .year {
+                                left: 80px;
+                                font-size: 18px;
+                                line-height: 18px;
+                            }
+
+                            .day {
+                                top: 8px;
+                                left: 15px;
+                                font-size: 48px;
+                            }
+
+                            .month { top: 10px; }
+                            .year { top: 30px; }
+
+                            &:hover { background-position: 90% -30px; }
+                        
+                        }                       
+                    }                               
+
+                    &:last-child { margin-right: 0; }                   
+                }
+            }
+
+            &#actions {
+                .button { width: 50%; }
+            }
+        } 
     }
 }

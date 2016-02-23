@@ -13,12 +13,7 @@ angular.module('sntRover').controller('guestCardController', [
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-		if (SWITCH_ROOM_AND_RATES_ALT) {
-			roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		}
-
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 		BaseCtrl.call(this, $scope);
 
@@ -421,7 +416,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');
 			}
-			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1 && $(targetElement).find("#loading").length < 1 && $(targetElement).closest("#loading").length < 1 && $(targetElement).closest('.nav-toggle').length < 1) {
+			if ($(targetElement).closest(".nav-bar").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1 && $(targetElement).find("#loading").length < 1 && $(targetElement).closest("#loading").length < 1 && $(targetElement).closest('.nav-toggle').length < 1) {
 				$scope.closeGuestCard();
 			}
 		};
@@ -1598,13 +1593,13 @@ angular.module('sntRover').controller('guestCardController', [
 			if (cardData.account_type === 'TRAVELAGENT') {
 				$scope.selectTravelAgent(cardData, chooseCardRate);
 			}
-			ngDialog.close();
+			//ngDialog.close();
 		};
 		// To change to contracted Rate and proceed.
 		$scope.changeToContractedRate = function(cardData) {
 			$scope.selectCard(cardData, true);
 			//$scope.navigateToRoomAndRates();
-			ngDialog.close();
+			//ngDialog.close();
 			//we will be in card opened mode, so closing
 			$scope.closeGuestCard();
 
@@ -1847,5 +1842,10 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.$broadcast('saveContactInfo');
 			}
 		};
+
+		// CICO-25249 - Catch error from staycard main controler - card replace API.
+		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ){
+			$scope.errorMessage = errorMessage;
+		});
 	}
 ]);

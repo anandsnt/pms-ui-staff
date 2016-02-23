@@ -1,7 +1,7 @@
-sntRover.controller('RVReservationSearchToDatepickerCtrl', ['$scope', 'ngDialog',
-	function($scope, ngDialog) {
+sntRover.controller('RVReservationSearchToDatepickerCtrl', ['$scope', '$rootScope', 'ngDialog',
+	function($scope, $rootScope, ngDialog) {
 		$scope.setUpData = function() {
-			$scope.datePicked = $scope.toDate;
+			$scope.datePicked = $scope.toDate ? $scope.toDate : $rootScope.businessDate;
 			$scope.dateOptions = {
 				changeYear: true,
 				changeMonth: true,

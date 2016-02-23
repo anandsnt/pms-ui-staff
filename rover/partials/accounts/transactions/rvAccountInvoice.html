@@ -32,7 +32,7 @@
             <td ng-if="!!groupConfigData">{{groupConfigData.summary.travel_agent.name}}</td>
             <td ng-if="!groupConfigData">{{accountConfigData.summary.company.name}}</td>
             <td ng-if="!groupConfigData">{{accountConfigData.summary.travel_agent.name}}</td>
-            <td>{{billData.invoice_number}}</td>
+            <td>{{printData.invoice_number}}</td>
         </tr>
     </tbody>
 </table>
@@ -41,11 +41,11 @@
     <!-- Header text hidden for now as not applicable -->
 </div>
 <div class="invoice-body">
-    <p class="date"><strong>Invoice date</strong>{{invoiceDate | date:dateFormat}}</p>
+    <p class="date"><strong>Invoice date</strong>{{printData.invoice_date | date:dateFormat}}</p>
     <table class="invoice-details">
         <caption>
-            {{currentHotelData.name}}
-            <span ng-if="transactionsDetails.show_hotel_address">{{transactionsDetails.hotel_details.hotel_address}}</span>
+            {{printData.hotel_name}}
+            <span ng-if="printData.show_hotel_address">{{printData.hotel_address}}</span>
         </caption>
         <thead>
             <tr>
@@ -59,45 +59,45 @@
         <tfoot>
             <tr>
                 <td colspan="4"><strong>Total Charge</strong></td>
-                <td><strong>{{currencySymbol}}{{billData.total_amount | number:2}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.bill_transactions_info.total_charge | number:2}}</strong></td>
             </tr>
             <tr>
                 <td colspan="4"><strong>Total Credits</strong></td>
-                <td><strong>{{currencySymbol}}{{billData.total_payments | number:2}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.bill_transactions_info.total_credits | number:2}}</strong></td>
             </tr>
             <tr>
                 <td colspan="4"><strong>Balance</strong></td>
-                <td><strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number:2}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.bill_transactions_info.balance | number:2}}</strong></td>
             </tr>
             <tr>
                 <td colspan="4">Net Amount</td>
-                <td>{{currencySymbol}}{{billData.net_amount | number:2}}</td>
+                <td>{{currencySymbol}}{{printData.bill_transactions_info.net_amount | number:2}}</td>
             </tr>
-            <tr ng-repeat="tax in billData.tax_info">
+            <tr ng-repeat="tax in printData.bill_transactions_info.tax_info">
                 <td colspan="4">{{tax.location}}</td>
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
             </tr>
             <tr>
                 <td colspan="4">Total Incl Tax</td>
-                <td>{{currencySymbol}}{{billData.total_incl_tax | number:2}}</td>
+                <td>{{currencySymbol}}{{printData.bill_transactions_info.total_incl_tax | number:2}}</td>
             </tr>
         </tfoot>
         <tbody>
-            <tr ng-repeat="charge in billData.total_fees.fees_details">
+            <tr ng-repeat="charge in printData.bill_transactions_info.fees_details">
                 <td>{{charge.date | date:dateFormat}}</td>
-                <td>{{charge.description[0].charge_code}}</td>
+                <td>{{charge.description.charge_code}}</td>
                 <td class="description">
-                    <span>{{charge.description[0].fees_desc}}</span>
+                    <span>{{charge.description.fees_desc}}</span>
                     <span class="reference">{{charge.reference_text}}</span>
                 </td>
-                <td class="align-right"><span ng-show="!!charge.description[0].fees_amount">{{currencySymbol}}{{charge.description[0].fees_amount | number: 2}}</span></td>
+                <td class="align-right"><span ng-show="!!charge.description.fees_amount">{{currencySymbol}}{{charge.description.fees_amount | number: 2}}</span></td>
                 <td class="align-right"><span ng-show="!!charge.credits">{{currencySymbol}}{{charge.credits | number: 2}}</span></td>
             </tr>
         </tbody>
     </table>
 </div>
-<div class="invoice-footer" ng-show="!!transactionsDetails.hotel_details.custom_text_footer">
+<div class="invoice-footer" ng-show="!!printData.custom_text_footer">
     <!-- Don't ouput if footer is not defined -->
     <!-- Footer text hidden for now as not applicable -->
-    {{transactionsDetails.hotel_details.custom_text_footer}}
+    {{printData.custom_text_footer}}
 </div>

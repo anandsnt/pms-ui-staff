@@ -285,6 +285,7 @@
                     .icon-form { 
                         left: 10px; 
                         background-color: @grey1;
+                        &.middle { top: 10px; }
                     }
 
                     &:last-child { .box-shadow(none); }
@@ -322,11 +323,16 @@
                 padding: 0;
                 .size(40px, 80px);
 
-                &.purple { right: 100px; }
+                &.purple { right: 10px; }
                 &.green { right: 10px; }
             }
 
-            &.two-buttons { padding-right: 200px; }
+            &.two-buttons { 
+                padding-right: 200px; 
+                .button{
+                    &.purple { right: 100px;}
+                }
+            }
         }
     }
 }

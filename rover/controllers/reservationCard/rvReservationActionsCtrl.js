@@ -34,11 +34,8 @@ sntRover.controller('reservationActionsController', [
 		var TZIDate = tzIndependentDate,
 			reservationMainData = $scope.reservationParentData;
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-        if (SWITCH_ROOM_AND_RATES_ALT) {
-            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        }
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        
 
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied
@@ -424,6 +421,12 @@ sntRover.controller('reservationActionsController', [
 		$scope.goToCheckin = function() {
                     startCheckin();
 		};
+		$scope.unAvailablePopup = function(){
+			ngDialog.open({
+				template: '/assets/partials/staycard/unavailablePopup.html',
+				scope: $scope
+			});
+		};
 		/******************************************/
 		$scope.showPutInQueue = function() {
                      //In standalone hotels we do not show the putInQueue option
@@ -756,7 +759,7 @@ sntRover.controller('reservationActionsController', [
 		//Checking whether email is attached with guest card or not
 		$scope.isEmailAttached = function() {
 			var isEmailAttachedFlag = false;
-			if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
+			if (!!$scope.guestCardData.contactInfo.email && $scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
 				isEmailAttachedFlag = true;
 			}
 			return isEmailAttachedFlag;

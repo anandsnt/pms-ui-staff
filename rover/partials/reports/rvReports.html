@@ -5,7 +5,7 @@
     <section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll">
         <div class="wrapper">
             <ul class="reports-list">
-                <li ng-repeat="item in reportList" ngrepeatend>
+                <li ng-repeat="item in reportList" emit-when="{event: 'REPORT_LIST_RENDERED', condition: $last}">
                     <a href="#" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter($event, item)">
                         <span ng-class="item.reportIconCls"></span>
                         <div class="data">

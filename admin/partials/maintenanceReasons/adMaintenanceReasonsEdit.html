@@ -1,6 +1,8 @@
 <div class="data-holder">
 	<form class="form single-field-form float">
-		<ad-textbox value="item.name" name = "item-name" label = "" placeholder = "{{'MAINTENANCE_REASON_PLACEHOLDER' | translate}}" required = ""></ad-textbox>
+		<ad-textbox value="item.name" name = "item-name" label = "{{'NAME' | translate}}" placeholder = "{{'MAINTENANCE_REASON_PLACEHOLDER' | translate}}" required = "yes"></ad-textbox>
+
+		<ad-textbox value="item.code" name = "item-code" label = "{{'CODE' | translate}}" placeholder = "{{'MAINTENANCE_REASON_CODE_PLACEHOLDER' | translate}}" required = "yes"></ad-textbox>
 
 		<div class="actions float">
 			<button type="button" class="button blank edit-data-inline" ng-click="clickedCancel()" translate>

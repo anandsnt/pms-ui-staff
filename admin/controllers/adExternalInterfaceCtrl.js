@@ -1,5 +1,5 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
+admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adTravelTripperSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
+  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adTravelTripperSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
     $scope.$emit("changedSelectedMenu", 8);
     $scope.errorMessage = '';
     $scope.successMessage = '';
@@ -52,6 +52,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         'controller': adZDirectSetupSrv,
         'name': $scope.simpleName,
         'service_name': 'adZDirectSetupSrv'
+      },
+      'admin.travelTripperSetup': {
+        'controller': adTravelTripperSetupSrv,
+        'name': $scope.simpleName,
+        'service_name': 'adTravelTripperSetupSrv'
       },
       'admin.givexSetup': {'controller': adGivexSetupSrv, 'name': $scope.simpleName, 'service_name': 'adGivexSetupSrv'}
     };
@@ -212,7 +217,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       } else if ($scope.interfaceName === 'ZDirect') {
         $scope.data = data;
         $scope.$emit('hideLoader');
-      } else {
+      } else {//siteminder, synxis, traveltripper all use these
         $scope.data = data;
         if (data.data.product_cross_customer){
             if (typeof data.data.product_cross_customer.default_rate === typeof 123){
@@ -235,7 +240,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             setTimeout(function(){
                 var el = $('[name=default-rate]');
                 $(el).val(value);
-            },50);
+            },950);
         };
     };
     
@@ -317,28 +322,13 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     };
 
     $scope.init();
-    //////////////////////
-    ////SAVE
-    //
-    // Save changes button click action
-    $scope.saveSetup = function () {
-      var saveSetupSuccessCallback = function (data) {
-        $scope.isLoading = false;
-        $scope.successMessage = $scope.interfaceName + ' Save Success';
-        $scope.$emit('hideLoader');
-      };
-      var saveSetupFailureCallback = function (data) {
-        $scope.isLoading = false;
-        $scope.errorMessage = $scope.interfaceName + ' Save Failed ';
-        $scope.$emit('hideLoader');
-      };
-      var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
-      var saveData = dclone($scope.data, unwantedKeys);
-      saveData.interface = $scope.interfaceId;
-      if ($scope.interfaceName === 'Givex') {
-        $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, saveSetupSuccessCallback, saveSetupFailureCallback);
+    
+    $scope.initSave = function(){
+        var saveData = $scope.lastSaved;
+        if ($scope.interfaceName === 'Givex') {
+        $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
-        $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
+        $scope.invokeApi($scope.serviceController.saveSetup, saveData, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else {
         //these values currently coming back as strings, parse to int before sending back
         if (saveData.data.product_cross_customer.default_origin) {
@@ -347,8 +337,61 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         if (saveData.data.product_cross_customer.default_payment_id) {
           saveData.data.product_cross_customer.default_payment_id = parseInt($scope.data.data.product_cross_customer.default_payment_id);
         }
-        $scope.invokeApi($scope.serviceController.saveSetup, saveData, saveSetupSuccessCallback, saveSetupFailureCallback);
+        $scope.invokeApi($scope.serviceController.saveSetup, saveData, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       }
+    }
+    
+    $scope.initActiveInactiveSave = function(){
+      if ($scope.interfaceName === 'Givex') {
+        $scope.initSave();
+      } else {
+        if ($scope.data.data) {
+          if ($scope.data.data.product_cross_customer) {
+            var active = $scope.data.data.product_cross_customer.active,
+              id = $scope.interfaceId,
+              int_id = $scope.interface_id;
+
+            $scope.invokeApi(adExternalInterfaceCommonSrv.toggleActive, {
+              'interface': id,
+              //'interface_id': int_id,
+              'active': active
+            }, $scope.initSave());
+          }
+        }
+      }
+    }
+    //////////////////////
+    ////SAVE
+    //
+    // Save changes button click action
+    $scope.saveSetupSuccessCallback = function (data) {
+        $scope.isLoading = false;
+        $scope.successMessage = $scope.interfaceName + ' Save Success';
+        $scope.$emit('hideLoader');
+      };
+      $scope.saveSetupFailureCallback = function (data) {
+        $scope.isLoading = false;
+        $scope.errorMessage = $scope.interfaceName + ' Save Failed ';
+        $scope.$emit('hideLoader');
+      };
+    $scope.saveSetup = function () {
+        var saveData;
+        if ($scope.interfaceName === 'Givex'){
+            saveData = $scope.data;
+        } else {
+            var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
+             saveData = dclone($scope.data, unwantedKeys);
+        }
+      
+      saveData.interface = $scope.interfaceId;
+      $scope.lastSaved = saveData;
+      
+      if ($scope.activeDirty){
+          $scope.initActiveInactiveSave();
+      } else {
+          $scope.initSave();
+      }
+      
     };
     //////////////////////
     //Active / Inactive Toggle to turn ON/OFF interface for the hotel
@@ -361,30 +404,24 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       }, $scope.fetchSetupSuccessCallback);
     };
 
+    $scope.activeDirty = false;
     $scope.toggleSMClicked = function () {
-      if ($scope.interfaceName === 'Givex') {
-        $scope.givex.enabled = !$scope.givex.enabled;
-        $scope.saveSetup();
-      } else {
-        if ($scope.data.data) {
-          if ($scope.data.data.product_cross_customer) {
-            var active = $scope.data.data.product_cross_customer.active,
-              id = $scope.interfaceId,
-              int_id = $scope.interface_id;
-            if (active) {
-              active = false;
-            } else {
-              active = true;
-            }
-
-            $scope.invokeApi(adExternalInterfaceCommonSrv.toggleActive, {
-              'interface': id,
-              //'interface_id': int_id,
-              'active': active
-            }, $scope.toggleSMActiveSuccess);
+        $scope.activeDirty = true;
+        if ($scope.interfaceName === 'Givex') {
+            $scope.givex.enabled = !$scope.givex.enabled;
+          } else {
+                if ($scope.data.data) {
+                    if ($scope.data.data.product_cross_customer) {
+                      var active = $scope.data.data.product_cross_customer.active;
+                      if (active) {
+                        $scope.data.data.product_cross_customer.active = false;
+                      } else {
+                        $scope.data.data.product_cross_customer.active = true;
+                      }
+                    }
+                }
           }
-        }
-      }
+        
     };
     
         $scope.refreshDatePickerData = {

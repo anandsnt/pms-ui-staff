@@ -11,11 +11,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-        if (SWITCH_ROOM_AND_RATES_ALT) {
-            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        }
+        var roomAndRatesState ='rover.reservation.staycard.mainCard.room-rates';
+        
 
 
         $rootScope.setPrevState = {
@@ -1276,7 +1273,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
 
             $scope.$emit('showLoader'); 
-            jsMappings.fetchAssets('addBillingInfo')
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
                 $scope.$emit('hideLoader'); 
                 ngDialog.open({
@@ -1329,8 +1326,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $q.all(promises).then(updateSuccess, updateFailure);
         };
 
-        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data) {
+        $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId) {
             $scope.reservationData.reservation_type = data;
+            // CICO-24768 - Updating Payment id after adding new CC.
+            if(!!paymentId){
+                $scope.reservationData.reservation_card.payment_details.id = paymentId;
+            }
         });
 
         $scope.setDemographics = function(showRequiredFieldsOnly, index) {
