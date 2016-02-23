@@ -59,7 +59,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				var popupOptions = angular.copy($scope.errorOpts);
 				popupOptions.resolve = {
 					message: function() {
-						return "We could not find your reservation. Please check for typos, or call <hotelPhone>."
+						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
 					}
 				};
 				$modal.open(popupOptions);
