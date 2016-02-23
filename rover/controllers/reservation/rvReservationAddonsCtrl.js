@@ -258,7 +258,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         price_per_piece: addon.price,
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description,
-                        charge_full_weeks_only: addon.chargefullweeksonly
+                        charge_full_weeks_only: addon.chargefullweeksonly,
+                        posting_frequency : addon.postType.frequency
                     });
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
