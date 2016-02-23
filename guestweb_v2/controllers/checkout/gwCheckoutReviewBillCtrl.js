@@ -7,7 +7,6 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 		$controller('BaseController', {
 			$scope: $scope
 		});
-//to do:CC
 
 		var init = function() {
 			var screenIdentifier = "REVIEW_BILL";
@@ -30,8 +29,14 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 			$scope.callAPI(GwCheckoutSrv.fetchBillDetails, options);
 			$scope.showBill = false;
 		}();
+
 		$scope.gotToNextStep = function() {
-			$state.go('checkOutFinal');
+			if(!GwWebSrv.zestwebData.isCCOnFile && parseInt($scope.billData.balance) > 0.00 && GwWebSrv.zestwebData.isMLI){
+				$state.go('ccAddition',{'fee':$scope.billData.balance,'message':'Check-out fee','isFromCheckoutNow':true});
+			}
+			else{
+				$state.go('checkOutFinal');
+			};
 		};
 	}
 ]);

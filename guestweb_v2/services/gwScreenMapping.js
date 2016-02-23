@@ -28,5 +28,8 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	}, {
 		"value": "ROOM_VERIFICATION",
 		"id": "1233"
+	},{
+		"value": "CC_ADDITION",
+		"id" : "2233"
 	}];
 }]);

@@ -17,6 +17,21 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	};
 
 	/**
+	 * to save payment
+	 * @return {undefined}
+	 */
+	this.savePayment = function(params) {
+		var deferred = $q.defer();
+		var url = "/staff/reservation/save_payment";
+
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	/**
 	 * to verify checkout user
 	 * @return {undefined}
 	 */

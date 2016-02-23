@@ -12,13 +12,22 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		data: {
 			pageTitle: 'External Checkout verification'
 		}
-
 	}).state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
 	 	templateUrl: '/assets/partials/checkout/gwRoomVerification.html',
 	 	controller : 'GwRoomVerificationController',
-	 	title: 'Room verification'
+	 	data: {
+			pageTitle: 'Room verification'
+		}
+	 }).state('ccAddition', {
+	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow',
+	 	templateUrl: '/assets/partials/checkout/gwCcEntry.html',
+	 	controller : 'GwCCAdditionController',
+	 	data: {
+			pageTitle: 'CC Addition'
+		}
 	 });
+
 
 	$stateProvider.state('checkOutOptions', {
 		url: '/checkOutOptions',

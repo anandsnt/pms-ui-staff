@@ -8,7 +8,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		$controller('BaseController', {
 			$scope: $scope
 		});
-//to do:CC
+		//to do:CC
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LATER_OPTIONS";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -28,7 +28,20 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 
 		$scope.gotToNextStep = function(option) {
 			var onSuccess = function(response) {
-				$state.go('checkOutLaterFinal',{time:option.time,ap:option.ap,amount:option.amount});
+				if (!GwWebSrv.zestwebData.isCCOnFile && GwWebSrv.zestwebData.isMLI) {
+					$state.go('ccVerification', {
+						'fee': option.amount,
+						'message': "Late check-out fee",
+						'isFromCheckoutNow': false
+					});
+				} else {
+					$state.go('checkOutLaterFinal', {
+						time: option.time,
+						ap: option.ap,
+						amount: option.amount
+					});
+				};
+
 			};
 			var options = {
 				params: {
