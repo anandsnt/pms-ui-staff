@@ -925,6 +925,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
+            //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+            canOverbookHouse = false;
+            canOverbookRoomType = false;
+            //CICO-24923 TEMPORARY
+
 			if (canOverbookHouse && canOverbookRoomType) {
 				//CICO-17948
 				//check actual hotel availability with permissions
