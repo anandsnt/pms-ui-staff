@@ -13,7 +13,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 			pageTitle: 'External Checkout verification'
 		}
 
-	});
+	}).state('checkoutRoomVerification', {
+	 	url: '/checkoutRoomVerification',
+	 	templateUrl: '/assets/partials/checkout/gwRoomVerification.html',
+	 	controller : 'GwRoomVerificationController',
+	 	title: 'Room verification'
+	 });
 
 	$stateProvider.state('checkOutOptions', {
 		url: '/checkOutOptions',

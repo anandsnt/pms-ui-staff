@@ -17,6 +17,22 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	};
 
 	/**
+	 * to verify checkout user
+	 * @return {undefined}
+	 */
+	this.verifyRoom = function(params) {
+		var deferred = $q.defer();
+		var url = '/guest_web/verify_room.json';
+
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
 	 * to fetch bill details
 	 * @return {undefined}
 	 */
