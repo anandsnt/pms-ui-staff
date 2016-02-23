@@ -422,7 +422,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.setFreshDate = function(){
 
             $scope.newAction.hasDate = true;
-            $scope.newAction.date_due = $filter('date')(new tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
+            $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
+            $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
                 $scope.newAction.time_due = $scope.timeFieldValue[0];
             }
