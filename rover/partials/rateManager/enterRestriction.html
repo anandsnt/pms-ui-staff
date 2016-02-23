@@ -9,8 +9,9 @@
             </div>
             <div class="cancellationbuttonwrap">
                 <button ng-if="hasPermissionToUpdateRestrictions()" class="button green"
-                        ng-class="{'grey' :!options.daysEntered}" type="button"
-                        ng-click="updateRestrictionBtnClicked(restrictionType.id)" ng-disabled="!options.daysEntered">
+                        ng-class="{'grey' :!options.daysEntered && options.daysEntered!== 0}" type="button"
+                        ng-click="updateRestrictionBtnClicked(restrictionType.id)"
+                        ng-disabled="!options.daysEntered && options.daysEntered!== 0">
                     Set Restriction
                 </button>
                 <button ng-show="restrictionType.showEdit" class="button blank cancel" type="button"
