@@ -183,11 +183,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// Populate a Room First Grid Here
 				var roomTypes = {},
 					isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1 : $scope.getLeastHouseAvailability() < 1,
-                    isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
+                    isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
 					isPromoInvalid = $scope.reservationData.code &&
 					$scope.reservationData.code.id &&
 					!_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
-						return a && b
+						return a && b;
 					});
 
 				// for every rate
@@ -1303,8 +1303,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else {
 					var i,
 						roomInfo = $scope.stateCheck.lookUp[roomId],
-                        isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
+                        isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
 						rateInfo = roomInfo.rates[rateId];
+
 					if (!TABS[$scope.activeRoom].roomTypeId || parseInt(TABS[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
 						TABS[$scope.activeRoom].roomTypeId = parseInt(roomId);
 					}
