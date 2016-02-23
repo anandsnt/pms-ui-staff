@@ -227,7 +227,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.go('zest_station.reservation_search');
         };
         $scope.searchWithConfirmation = function(){
-            $scope.inputType = 'number';
+            $scope.inputType = 'text';
             $state.search = true; 
             $state.lastAt = 'find-by-confirmation';
             if (!$state.input){
