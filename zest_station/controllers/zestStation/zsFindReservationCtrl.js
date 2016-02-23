@@ -349,7 +349,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.clearInputText();
             $scope.hideNavBtns = false;
             
-            $scope.inputType = 'number';
+            $scope.inputType = 'text';
             
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.confirmation;
