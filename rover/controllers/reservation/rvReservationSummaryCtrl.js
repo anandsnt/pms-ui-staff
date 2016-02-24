@@ -1304,6 +1304,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.errorMessage = data;
             };
 
+            var postData = {
+                'reservation_type_id': parseInt($scope.demographics.reservationType),
+                'source_id': parseInt($scope.demographics.source),
+                'market_segment_id': parseInt($scope.demographics.market),
+                'booking_origin_id': parseInt($scope.demographics.origin),
+                'segment_id': parseInt($scope.demographics.segment)
+            };
+
             $scope.errorMessage = [];
 
             if (typeof index === 'undefined') {
@@ -1311,14 +1319,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                     room.demographics = angular.copy($scope.demographics);
                     $scope.reservationData.demographics = angular.copy($scope.demographics);
-                    var postData = $scope.computeReservationDataforUpdate(false, true, currentRoomIndex);
                     postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
                     promises.push(RVReservationSummarySrv.updateReservation(postData));
                 });
             } else {
                 $scope.reservationData.rooms[index].demographics = angular.copy($scope.demographics);
                 $scope.reservationData.demographics = angular.copy($scope.demographics);
-                var postData = $scope.computeReservationDataforUpdate(false, true, index);
                 postData.reservationId = reservationId;
                 promises.push(RVReservationSummarySrv.updateReservation(postData));
             }
