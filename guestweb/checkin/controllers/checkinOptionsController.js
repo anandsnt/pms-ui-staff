@@ -4,23 +4,34 @@
 */
 
 (function() {
-	var checkinOptionsController = function($scope, $rootScope, $state, $modal) {
+	var checkinOptionsController = function($scope, $rootScope, $state, $modal, sntGuestWebSrv) {
 		$rootScope.checkinOptionShown = true;
 
 		var earlyCheckinOn = true;
 		var isInEarlyCheckinWindow = true;
-		var offerEci = false;
+		var offerEci = true;
 
+		//popup data with default texts
+		// it can be overrided using the admin settings
+		var setUpPopDataOfferEci = function() {
+			var screenIdentifier = "32433";
+			var screenCMSDetails = sntGuestWebSrv.extractScreenDetails(screenIdentifier);
+			screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Early Check in";
+			screenCMSDetails.description = screenCMSDetails.description.length > 0 ?
+				screenCMSDetails.description : "Something went room while assigning room. Please click continue to checkin later.";
+			return screenCMSDetails;
+		};
 
 		var showRoomAssigErrorPopup = function() {
+			var screenDetails = setUpPopDataOfferEci();
 			$scope.errorOpts = {
 				backdrop: true,
 				backdropClick: true,
 				templateUrl: '/assets/checkin/partials/commonErrorModal.html',
 				controller: 'roomAssignErrorPopupCtrl',
 				resolve: {
-					errorMessage: function() {
-						return "Something went room while assigning room.Please click continue to checkin later.";
+					screenDetails: function() {
+						return screenDetails;
 					}
 				}
 			};
@@ -32,10 +43,10 @@
 			var onFailre = function() {
 				if (earlyCheckinOn && isInEarlyCheckinWindow) {
 					if (offerEci) {
-					// Early checkin is  on and offer available now
+						// Early checkin is  on and offer available now
 						showRoomAssigErrorPopup();
 					} else {
-					// Early checkin is  on and offer unavailable now
+						// Early checkin is  on and offer unavailable now
 						$state.go('roomsUnavailable');
 					}
 				} else {
@@ -54,7 +65,7 @@
 							'isFromCheckinNow': 'true'
 						});
 					} else {
-					// Early checkin is  on but no offer available now
+						// Early checkin is  on but no offer available now
 						$state.go('earlyCheckinReady');
 					}
 				} else {
@@ -62,7 +73,7 @@
 					$state.go('checkinKeys');
 				}
 			};
-			onSuccess();
+			onFailre();
 		};
 		$scope.checkinNow = function() {
 			assignRoom();
@@ -73,7 +84,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', '$modal',
+		'$scope', '$rootScope', '$state', '$modal', 'sntGuestWebSrv',
 		checkinOptionsController
 	];
 
@@ -82,9 +93,9 @@
 
 // controller for the modal
 
-var roomAssignErrorPopupCtrl = function($scope, $modalInstance, $state, errorMessage) {
+var roomAssignErrorPopupCtrl = function($scope, $modalInstance, $state, screenDetails) {
 
-	$scope.errorMessage = errorMessage;
+	$scope.screenDetails = screenDetails;
 	$scope.closeDialog = function() {
 		$modalInstance.dismiss('cancel');
 		$state.go('checkinArrival');

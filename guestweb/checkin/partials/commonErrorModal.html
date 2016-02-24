@@ -1,7 +1,10 @@
 <div class="modal-content modal-vertical-centered">
-	<div class="centeralign alert-box">
-		<img src="/assets/guestweb/img/alert_icon.png"  alt="" width="43" height="43" class="alert-element"/>
-		<p class="cc-error">{{errorMessage}}</p>
-		<button type="button" ng-click="closeDialog()" class="btn btn-close room-error-button room-error-green-button">CONTINUE</button>
-	</div>
+    <div class="centeralign cc-alert">
+        <div class="cc-number-description">
+            <p class="ccv-headings" ng-bind="screenDetails.title"></p>
+            <span ng-bind="screenDetails.description">
+			</span>
+        </div>
+        <button type="button" ng-click="closeDialog()" class="btn btn-close room-error-button room-error-green-button pop-up-button">CONTINUE</button>
+    </div>
 </div>
