@@ -130,7 +130,9 @@ angular.module('sntRover').service('RVReservationStateService', [
 			var getTotalPostedAddons = function(postType, baseCount) {
 				if (postingRythm === 0) {
 					return baseCount;
-				} else {
+				} else if (postingRythm === 1) {
+                    return baseCount * numNights;
+                } else {
 					if(typeof chargeFullWeeksOnly !== "undefined" && !!chargeFullWeeksOnly) {
 						return baseCount * parseInt((numNights / postingRythm), 10);
 					} else {
