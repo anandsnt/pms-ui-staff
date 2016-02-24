@@ -9,7 +9,7 @@
 
 		var earlyCheckinOn = true;
 		var isInEarlyCheckinWindow = true;
-		var offerEci = false;
+		var offerEci = true;
 
 		//popup data with default texts
 		// it can be overrided using the admin settings

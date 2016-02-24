@@ -44,7 +44,7 @@
 					changeArrivalTime();
 				};
 				var onFailure = function(){
-
+					$scope.netWorkError = true;
 				};
 				onSuccess();
 			};
