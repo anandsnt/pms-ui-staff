@@ -33,8 +33,8 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		$state.go('noOptionAvailable');
 	})
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData','$window',
-	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData,$window) {
+sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window',
+	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window) {
 
 		var that = this;
 		loadAssets('/assets/favicon.png', 'icon', 'image/png');
@@ -126,9 +126,12 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			$rootScope.hotelLogo = reservationAndhotelData.hotel_logo;
 		}, 750);
 
+		var checkinNowisAvailable = function() {
+			return ((reservationAndhotelData.zest_email_allow_checkin_now && reservationAndhotelData.application === "EMAIL") ||
+				(reservationAndhotelData.zest_sms_allow_checkin_now && reservationAndhotelData.application === "SMS"));
+		};
 
-
-		$rootScope.is_checkin_now_on = reservationAndhotelData.zest_email_allow_checkin_now || reservationAndhotelData.zest_sms_allow_checkin_now;
+		$rootScope.is_checkin_now_on = checkinNowisAvailable();
 		$rootScope.checkin_now_text = reservationAndhotelData.zest_checkin_now_text;
 		$rootScope.checkin_later_text = reservationAndhotelData.zest_checkin_later_text;
 
