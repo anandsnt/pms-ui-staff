@@ -32,6 +32,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     var fetchNotes = function() {
+        accountID = $scope.contactInformation.id;
         var params  = {
             accountID : accountID
         };
@@ -124,6 +125,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     $scope.createNote = function() {
+        accountID = $scope.contactInformation.id;
         var params  = {
             accountID : accountID,
             text      : $scope.noteText
