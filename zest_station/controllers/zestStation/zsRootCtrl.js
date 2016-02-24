@@ -181,7 +181,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $translate('NA');
               }, 1000); //Word around.
             } else {
-              $translate.use('EN_zoku');
+              $translate.use('EN_snt');
             };
         };
         
@@ -205,13 +205,13 @@ sntZestStation.controller('zsRootCtrl', [
             } else if (theme === 'Fontainebleau') {
                 return theme.toLowerCase();
             } else {//default to zoku for now until other stylesheets are generated
-                return 'zoku';
+                return 'snt';
             }
         };
         $scope.getThemeLink = function(theme){
             var link, assetPath = '../assets/zest_station/css/', ext = '.css.less';
             theme = $scope.getThemeName(theme);
-            link = assetPath+theme.toLowerCase()+ext;//default to zoku for now until other stylesheets are generated
+            link = assetPath+theme.toLowerCase()+ext;//default to snt for now until other stylesheets are generated
             return link;
         };
         
