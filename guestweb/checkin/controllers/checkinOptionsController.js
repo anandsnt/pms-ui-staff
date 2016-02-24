@@ -50,7 +50,7 @@
 
 		var assignRoom = function(type) {
 			console.log("assignRoom");
-			var onFailre = function() {
+			var onFailure = function() {
 				if (earlyCheckinOn && isInEarlyCheckinWindow) {
 					if (offerEci) {
 						// Early checkin is  on and offer available now
@@ -83,7 +83,7 @@
 					$state.go('checkinKeys');
 				}
 			};
-			onFailre();
+			onSuccess();
 		};
 		$scope.checkinNow = function() {
 			assignRoom();

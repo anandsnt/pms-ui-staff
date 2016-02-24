@@ -1,28 +1,21 @@
-<!-- contentarea starts here-->
 <div class="jumbotron">
-    <div class="container backgroundbg">
+    <div class="container ">
         <div class="container-fluid">
-            <div class="row headerrow">
-                <logo-image></logo-image>
+            <div class="container-fluid">
+                <div class="row headerrow">
+                    <logo-image></logo-image>
+                </div>
             </div>
-        </div>
-        <!-- contentarea starts here-->
-        <div class="container line-top  line-bottom">
-            <!-- top section starts here-->
-            <div class="row checkin-wrapper">
-                <div class="col-md-6 headtext centeralign pad-rt-60">
-                    Early Check In
-                    <p class="subTitletext">
-                        Your early check in is ready!
-                    </p>
+            <div class="row">
+                <div class="checkout-status centeralign">
+                    <p class="msg-head" ng-bind="screenDetails.title"></p>
+                    <p class="msg-body" ng-bind="screenDetails.description"></p>
                 </div>
-                <div class="verti-ruler margin-bottom-20"></div>
-                <!-- top section ends here-->
-                <div class="col-md-6 pad-lf-60">
-                    <a ui-sref="checkinKeys">
-                        <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" value="Continue" />
-                    </a>
-                </div>
+            </div>
+            <div class="row checkin-wrapper-top arrival-details no-top-padding">
+                <a ui-sref="checkinKeys">
+                    <input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" value="Continue" />
+                </a>
             </div>
         </div>
     </div>
