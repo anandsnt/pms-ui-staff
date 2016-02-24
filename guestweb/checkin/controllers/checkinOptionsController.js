@@ -14,7 +14,7 @@
 		//popup data with default texts
 		// it can be overrided using the admin settings
 		var setUpPopDataOfferEci = function() {
-			var screenIdentifier = "32433"; //this value needs to set in admin(can be anything, but has to be same in both)
+			var screenIdentifier = "ECI-1"; //this value needs to set in admin(can be anything, but has to be same in both)
 			var screenCMSDetails = sntGuestWebSrv.extractScreenDetails(screenIdentifier);
 			screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Early Check In.";
 			screenCMSDetails.description = screenCMSDetails.description.length > 0 ?
@@ -24,7 +24,7 @@
 		//popup data with default texts
 		// it can be overrided using the admin settings
 		var setUpPopDataNoEci = function() {
-			var screenIdentifier = "32434"; //this value needs to set in admin(can be anything, but has to be same in both)
+			var screenIdentifier = "ECI-2"; //this value needs to set in admin(can be anything, but has to be same in both)
 			var screenCMSDetails = sntGuestWebSrv.extractScreenDetails(screenIdentifier);
 			screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Sorry";
 			screenCMSDetails.description = screenCMSDetails.description.length > 0 ?
@@ -83,7 +83,7 @@
 					$state.go('checkinKeys');
 				}
 			};
-			onSuccess();
+			onFailure();
 		};
 		$scope.checkinNow = function() {
 			assignRoom();
