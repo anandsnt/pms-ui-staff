@@ -9,22 +9,32 @@
 
 		var earlyCheckinOn = true;
 		var isInEarlyCheckinWindow = true;
-		var offerEci = true;
+		var offerEci = false;
 
 		//popup data with default texts
 		// it can be overrided using the admin settings
 		var setUpPopDataOfferEci = function() {
-			var screenIdentifier = "32433";
+			var screenIdentifier = "32433"; //this value needs to set in admin(can be anything, but has to be same in both)
 			var screenCMSDetails = sntGuestWebSrv.extractScreenDetails(screenIdentifier);
-			screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Early Check in";
+			screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Early Check In.";
+			screenCMSDetails.description = screenCMSDetails.description.length > 0 ?
+				screenCMSDetails.description : "Something went room while assigning room. Please click continue to checkin later.";
+			return screenCMSDetails;
+		};
+		//popup data with default texts
+		// it can be overrided using the admin settings
+		var setUpPopDataNoEci = function() {
+			var screenIdentifier = "32434"; //this value needs to set in admin(can be anything, but has to be same in both)
+			var screenCMSDetails = sntGuestWebSrv.extractScreenDetails(screenIdentifier);
+			screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Sorry";
 			screenCMSDetails.description = screenCMSDetails.description.length > 0 ?
 				screenCMSDetails.description : "Something went room while assigning room. Please click continue to checkin later.";
 			return screenCMSDetails;
 		};
 
 		var showRoomAssigErrorPopup = function() {
-			var screenDetails = setUpPopDataOfferEci();
-			$scope.errorOpts = {
+			var screenDetails = (earlyCheckinOn && isInEarlyCheckinWindow) ? setUpPopDataOfferEci() : setUpPopDataNoEci();
+			var errorOpts = {
 				backdrop: true,
 				backdropClick: true,
 				templateUrl: '/assets/checkin/partials/commonErrorModal.html',
@@ -35,7 +45,7 @@
 					}
 				}
 			};
-			$modal.open($scope.errorOpts);
+			$modal.open(errorOpts);
 		};
 
 		var assignRoom = function(type) {

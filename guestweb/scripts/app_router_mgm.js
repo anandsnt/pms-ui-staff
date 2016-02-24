@@ -197,6 +197,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	}).state('roomsUnavailable', {
 		url: '/roomsUnavailable',
 		templateUrl: '/assets/checkin/partials/MGM/roomsUnavailable.html',
+		controller: 'roomsUnavailableController',
 		title: 'Room unavailable'
 	}).state('earlyCheckinReady', {
 		url: '/earlyCheckinReady',
