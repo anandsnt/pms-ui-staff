@@ -169,7 +169,11 @@ var GridRowItem = React.createClass({
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
 										+ (show_outstanding_indicator ? ' deposit-required': '');
 
-
+		if(state.editing) {
+			start_time_ms = state.currentResizeItem[m.start_date];
+			end_time_ms = state.currentResizeItem[m.end_date];
+			left = (start_time_ms - x_origin) * px_per_ms + 'px';
+		}
 		var start_date = new Date(start_time_ms);
 
 		var display_start_time = (display.x_n instanceof Date ? display.x_n : new Date (display.x_n) );

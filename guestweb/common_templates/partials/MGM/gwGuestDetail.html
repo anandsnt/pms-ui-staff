@@ -36,7 +36,7 @@
                 <p class="sub-text left-align">COUNTRY</p>
                 <div class="row">
                     <div class="select-style">
-                        <select ng-model="guestDetails.country_id"
+                        <select ng-model="guestDetails.country"
                               ng-options="country.id as country.value  for country in countries">
                             <option value="">SELECT</option>
                         </select>
@@ -45,7 +45,7 @@
                 <!-- street -->
                 <p class="sub-text left-align margin-top-10">STREET ADDRESS</p>
                 <div class="row">
-                    <input type="text" class="input-field padding-1" ng-model="guestDetails.street1"/>
+                    <input type="text" class="input-field padding-1" ng-model="guestDetails.street"/>
                     <input type="text" class="input-field padding-1 margin-top-10" ng-model="guestDetails.street2"/>
                 </div>
                 <!-- city -->
