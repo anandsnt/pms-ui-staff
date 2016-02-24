@@ -15,10 +15,11 @@ angular.module('sntRover').service('rvCompanyCardNotesSrv', ['$q', 'rvBaseWebSrv
     };
 
     this.updateNote = function(params) {
-        var url = '/api/accounts/' + params.accountID + '/update_account_note/' + params.noteID,
+        var url = '/api/accounts/' + params.accountID + '/update_account_note',
             deferred = $q.defer(),
             data = {
-                'text': params.text
+                'description': params.text,
+                'note_id': params.noteID
             };
 
         rvBaseWebSrvV2.putJSON(url, data)
@@ -32,8 +33,11 @@ angular.module('sntRover').service('rvCompanyCardNotesSrv', ['$q', 'rvBaseWebSrv
     };
 
     this.deleteNote = function(params) {
-        var url = '/api/accounts/' + params.accountID + '/delete_account_note/' + params.noteID,
-            deferred = $q.defer();
+        var url = '/api/accounts/' + params.accountID + '/delete_account_note/',
+            deferred = $q.defer(),
+            data = {
+                note_id: params.noteID
+            };
 
         rvBaseWebSrvV2.deleteJSON(url)
             .then(function(data) {
@@ -46,7 +50,7 @@ angular.module('sntRover').service('rvCompanyCardNotesSrv', ['$q', 'rvBaseWebSrv
 
     this.createNote = function(params) {
         var data = {
-                'text': params.text
+                'description': params.text
             },
             //url 		= 'ui/show?json_input=cards/new_note.json&format=json',
             url = '/api/accounts/' + params.accountID + '/save_account_note',
