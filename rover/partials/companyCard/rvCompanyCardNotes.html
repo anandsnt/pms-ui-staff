@@ -19,17 +19,17 @@
 	        	ng-click="clickedOnNote(note)">
 	            <figure class="guest-image">
 	                <img ng-if="note.posted_user_image_url===''" src="/assets/images/avatar-trans.png" alt="" />
-	                <img ng-if="note.posted_user_image_url!==''" ng-src="{{note.posted_user_image_url}}" alt="" />
+	                <img ng-if="note.posted_user_image_url!==''" ng-src="{{note.avatar}}" alt="" />
 	            </figure>
 	            <div class="note-title">
-	                <h4>{{note.posted_user_first_name}} {{note.posted_user_last_name}}</h4>
+	                <h4>{{note.user_name}}</h4>
 	                <time datetime="">
 	                    <span class="time">{{note.time}}</span>
-	                    <span class="date">{{formatDateForUI(note.date)}}</span>
+	                    <span class="date">{{note.date}}</span>
 	                </time>
 	                <button type="button" class="icons icon-trash" ng-click="deleteNote($event, note.id, $index)">Delete post</button>
 	            </div>
-	            <p>{{note.text}}</p>
+	            <p>{{note.note}}</p>
 	        </li>
 	    </ul>
 	</div>
