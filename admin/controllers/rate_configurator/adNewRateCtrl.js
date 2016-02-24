@@ -41,7 +41,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "addOns": [],
                 "end_date": "",
                 "end_date_for_display": "",
-                "commission_details":{}
+                "commission_details":{},
+                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default
             };
             // intialize rateData dictionary - END
 

@@ -67,8 +67,19 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
     refreshCardsList();
 
 	$scope.successRender = function(data){
+		
 		$scope.$emit("hideLoader");
-		$scope.renderData = data;
+
+		if($scope.passData.isFromGuestCard){
+			// CICO-25348 => Only Credit card payment method needed to be add via Guest card -> Add Payment popup.
+			// Removing all other payment methods.
+			var creditCardPaymentTypeObj = _.find(data, function(obj){ return obj.name === 'CC' });
+      		$scope.renderData = [ creditCardPaymentTypeObj ];
+		}
+		else{
+			$scope.renderData = data;
+		}
+
 		$scope.creditCardTypes = [];
 		angular.forEach($scope.renderData, function(item, key) {
 			if(item.name === 'CC'){

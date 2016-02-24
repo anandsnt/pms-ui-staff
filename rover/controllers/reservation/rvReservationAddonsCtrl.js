@@ -258,7 +258,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         price_per_piece: addon.price,
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description,
-                        charge_full_weeks_only: addon.chargefullweeksonly
+                        charge_full_weeks_only: addon.chargefullweeksonly,
+                        posting_frequency : addon.postType.frequency
                     });
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
@@ -571,10 +572,18 @@ sntRover.controller('RVReservationAddonsCtrl', [
         };
 
         //Get addon count
-        $scope.getAddonCount = function(amountType, postType, numAdults, numChildren, numNights) {
-            var postingRythm = postType === 'Every Week' ? 7 : 0;
+        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
+           if(!postingRythm) {
+                if(postType ==='Every Week' || postType ==='WEEKLY') {
+                    postingRythm = 7;
+                } else if (postType === 'Entire Stay' ||  postType ==='STAY') {
+                    postingRythm = 1;
+                } else if (postType === 'First Night' || postType ==='NIGHT') {
+                    postingRythm = 0;
+                }
+            }
             amountType = amountType.toUpperCase();
-            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights);
+            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
             return addonCount;
         };
 
