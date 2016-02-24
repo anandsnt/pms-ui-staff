@@ -62,7 +62,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     */
     var failureCallBackOfDeleteNote = function(errorMessage) {
         $scope.errorMessage = errorMessage;
-        fetchNotesFor();
+        fetchNotes();
     };
 
     /**
@@ -100,13 +100,12 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     var successCallBackOfCreateNote = function(data) {
         //we are adding to the list with the response
         var noteToAdd = {
-            'posted_user_first_name'  : data.first_name,
-            'posted_user_last_name'   : data.last_name,
-            'posted_user_image_url'   : data.user_image_url,
-            'text'                    : $scope.noteText,
-            'time'                    : data.time,
-            'date'                    : data.date,
-            'id'                      : data.id
+            'user_name'  : data.user_name,
+            'avatar'     : data.avatar,
+            'note'       : data.note,
+            'time'       : data.time,
+            'date'       : data.date,
+            'id'         : data.id
         };
         $scope.notes.unshift(0);
         $scope.notes[0] = noteToAdd;
@@ -185,7 +184,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     */
     $scope.clickedOnNote = function(note) {
         $scope.editingNote  = note;
-        $scope.noteText     = note.text;
+        $scope.noteText     = note.note;
         };
 
         /**
