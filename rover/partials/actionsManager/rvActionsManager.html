@@ -26,10 +26,10 @@
             </div>
             <!-- Advanced search fields -->
             <ul id="extra_filters" class="filters">
-                <li ng-click="setActiveFilter('All')" ng-class="{'active':activeFilter === 'All'}">All</li>
-                <li ng-click="setActiveFilter('Unassigned')"  ng-class="{'active':activeFilter === 'Unassigned'}">Unassigned</li>
-                <li ng-click="setActiveFilter('Assigned')"  ng-class="{'active':activeFilter === 'Assigned'}">Assigned</li>
-                <li ng-click="setActiveFilter('Completed')"  ng-class="{'active':activeFilter === 'Completed'}">Completed</li>
+                <li ng-click="setActiveFilter('ALL')" ng-class="{'active':filterOptions.selectedStatus === 'ALL'}">All</li>
+                <li ng-click="setActiveFilter('UNASSIGNED')"  ng-class="{'active':filterOptions.selectedStatus === 'UNASSIGNED'}">Unassigned</li>
+                <li ng-click="setActiveFilter('ASSIGNED')"  ng-class="{'active':filterOptions.selectedStatus === 'ASSIGNED'}">Assigned</li>
+                <li ng-click="setActiveFilter('COMPLETED')"  ng-class="{'active':filterOptions.selectedStatus === 'COMPLETED'}">Completed</li>
             </ul>
         </form>
 
@@ -86,7 +86,7 @@
     
     <!-- Change department -->
     <div id="change-department" class="select">
-        <select name="change-department" ng-options="department.name for department in departments" ng-model="filter_department">
+        <select name="change-department" ng-options="department.name for department in departments" ng-model="filterOptions.selectedDepartment" ng-change="onDepartmentSelectionChange()">
             <option value="" selected>All Departments</option>
         </select>
     </div>

@@ -1,5 +1,10 @@
 angular.module('sntRover').service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 
+    var self = this;
+
+    self.searchPerPage = 50;
+    self.page = 1;
+    self.to_date = "";
 
 	this.getTasksCount = function(data){
             var deferred = $q.defer();
@@ -87,19 +92,22 @@ angular.module('sntRover').service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', fun
 		var deferred = $q.defer();
 		var url = 'admin/departments.json';
 
-		BaseWebSrvV2.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
-		},function(data){
-		    deferred.reject(data);
-		});
+        if (self.cache.responses['departments'] === null || Date.now() > self.cache.responses['departments']['expiryDate']) {
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                self.cache.responses['departments'] = {
+                    data: data,
+                    expiryDate: Date.now() + (self.cache['config'].lifeSpan * 1000)
+                };
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+        }else {
+            deferred.resolve(self.cache.responses['departments']['data']);
+        }
 		return deferred.promise;
 	};
-        
-        
-        var self = this;
-	self.searchPerPage = 50;
-	self.page = 1;
-	self.to_date = "";
+
 
 	this.fetchGuestInfo = function(dataToSend){
 		var deferred = $q.defer();
@@ -155,6 +163,18 @@ angular.module('sntRover').service('rvActionTasksSrv',['$q', 'BaseWebSrvV2', fun
 
 		return deferred.promise;
 	};
+
+
+    //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+
+    this.cache = {
+        config: {
+            lifeSpan: 900 //in seconds
+        },
+        responses: {
+            departments: null
+        }
+    }
 
 
 

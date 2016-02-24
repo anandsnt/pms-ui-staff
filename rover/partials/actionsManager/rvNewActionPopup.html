@@ -1,0 +1,73 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+
+    <form method="post" action="" id="action-new" class="modal-content form actions-form">
+        <button class="modal-close" ng-click="closeDialog()" id="modal-close" type="button"><span
+                class="icons icon-close invert"></span>
+        </button>
+
+        <span class="h2 message">New Action</span>
+
+        <div class="entry full-width">
+            <label for="search-guest-or-room">Guest Name or Room</label>
+            <input id="search-guest-or-room" placeholder="Search by Guest Name or Room No." value="" type="text"
+                   autocomplete="off"/> <!-- Autocomplete search here -->
+            <!-- UI Autocomplete output should have this structure like this:
+            <ul class="{default classes} find-guest">
+                <li {attrs}>
+                    <a {attrs}>
+                        <figure class="guest-image">
+                            <img src="{guest-image}" alt="" />
+                        </figure>
+                        <span class="name">Peter <span class="highlight">Smi</span>th</span>
+                        <span class="room">Room 203</span>
+                    </a>
+                </li>
+                <li {attrs}>
+                    <a {attrs}>
+                        <figure class="guest-image accompany ">
+                            <img src="{primray-guest}" alt="" />
+                            <img src="{acc-image}" alt="" />
+                        </figure>
+                        <span class="name">Peter <span class="highlight">Smi</span>th</span>
+                        <span class="room">Room 203</span>
+                    </a>
+                </li>
+        -->
+        </div>
+        <div class="entry full-width">
+            <label for="department">Assign to Department</label>
+            <div class="select">
+                <select id="department" class="placeholder">
+                    <!-- Remove class "placeholder" when Department is selected -->
+                    <option value="" selected>Select department</option>
+                    <option value="{Department}">{Department}</option>
+                    ... repeat for all
+                </select>
+            </div>
+        </div>
+        <div class="entry date margin">
+            <label for="due-date">Date Due</label>
+            <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <input id="due-date" type="text" class="datepicker" value="{Due Date}" readonly/>
+        </div>
+        <div class="entry">
+            <label for="due-time">Time Due</label>
+            <div class="select">
+                <select id="due-time">
+                    <option value="00:00">00:00</option>
+                    ...
+                </select>
+            </div>
+        </div>
+        <div class="entry full-width">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" placeholder="Enter message..." rows="4"></textarea>
+        </div>
+        <div class="actions">
+            <button type="button" class="button green">Post Action</button>
+            <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+        </div>
+    </form>
+</div>
