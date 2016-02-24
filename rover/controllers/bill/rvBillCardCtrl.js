@@ -1912,13 +1912,23 @@ sntRover.controller('RVbillCardController',
     	$scope.$emit('showLoader'); 
        	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
         .then(function(){
-        	$scope.$emit('hideLoader'); 
-		    ngDialog.open({
-		        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
-		        controller: 'rvBillingInfoReservationMainCtrl',
-		        className: '',
-		        scope: $scope
-		    });
+        	$scope.$emit('hideLoader');
+        	if($rootScope.billingInfoRefactoringCodeEnabled){
+			    ngDialog.open({
+			        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+			        controller: 'rvBillingInfoReservationMainCtrl',
+			        className: '',
+			        scope: $scope
+			    });
+			}
+			else{
+				ngDialog.open({
+			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			        controller: 'rvBillingInformationPopupCtrl',
+			        className: '',
+			        scope: $scope
+			    });
+			}
 		});
     };
 

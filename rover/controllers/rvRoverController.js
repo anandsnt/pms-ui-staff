@@ -89,6 +89,9 @@ sntRover.controller('roverController',
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.timeWithAMPM = "hh:mm a"; //01:00 AM
 
+    // CICO-25098 - Flag to enable/disable the billing info code refactoring.
+    $rootScope.billingInfoRefactoringCodeEnabled = false;
+
     $rootScope.isCurrentUserChangingBussinessDate = false;
     $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*
