@@ -1,28 +1,5 @@
 <!-- Navbar -->
-<header class="nav-bar no-print" role="banner"> <!-- Make sure to add class "no-print" in this screen, as we need to hide this from the invoice -->
-    <!-- Back button -->
-    <a class="back-button">Back</a>
-
-    <!-- Logo -->
-    <div class="logo">
-        <img src="{image}" alt="" />
-    </div>
-
-    <!-- Title -->
-    <h1>
-        <strong class="hotel">{{currentHotelData.name}}</strong>
-        {{heading | translate}}
-        <div class="user">
-            <strong>{{userInfo.first_name}}
-		{{userInfo.last_name}}</strong>
-             <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
-             <em class="date updating" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
-        </div>
-    </h1>
-    
-    
-</header>
-
+<div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Actions -->
 <section id="actions" class="content actions-content actions-manager" role="main">
 
