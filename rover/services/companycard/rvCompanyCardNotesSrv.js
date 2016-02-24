@@ -39,7 +39,7 @@ angular.module('sntRover').service('rvCompanyCardNotesSrv', ['$q', 'rvBaseWebSrv
                 note_id: params.noteID
             };
 
-        rvBaseWebSrvV2.deleteJSON(url)
+        rvBaseWebSrvV2.deleteJSON(url, data)
             .then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
