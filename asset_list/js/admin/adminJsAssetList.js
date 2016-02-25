@@ -50,7 +50,7 @@ module.exports = {
 				adminRoot + 'services/**/*.js',
 				sharedRoot +'directives/uiColorpicker/uiColorpicker.js',
 				sharedRoot + 'directives/onScroll/onScroll.js',
-				sharedRoot + 'directives/onScroll/onScroll.js'
+				sharedRoot + 'directives/limitInputRange/limitInputRange.js'
 			]
 		};		
 		
