@@ -318,8 +318,23 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 	var received_msg = evt.data;
                         if (received_msg){
                             received_msg = JSON.parse(received_msg);
+                            var cmd = received_msg.Command;
+                            console.info('[ '+cmd+' ]');
+                            if (cmd === 'cmd_device_uid'){
+                                console.info('$scope.input.makeKeys: ',$scope.input.makeKeys)
+                                console.info('$scope.input.madeKey: ',$scope.input.madeKey);
                                 
-                            if (received_msg.Command === 'cmd_device_uid'){
+                                
+                                if ($scope.input.madeKey > $scope.input.makeKeys){
+                                    console.info('made enough keys: going to success');
+                                    if ($scope.input.makeKeys === 1){
+                                        $scope.goToKeySuccess();
+                                    } else {
+                                        $scope.keyTwoOfTwoSuccess();
+                                    }
+                                    
+                                    return;
+                                }
                                 $scope.lastCardUid = received_msg.Message;
                                 DispenseKey();
                                 setTimeout(function(){
@@ -332,27 +347,22 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                                         $scope.oneKeySuccess();
                                     }
                                     ++$scope.input.madeKey;
-                                    
-                                    
                                 },2000);
-                                
-                                
-                            } else if (received_msg.Command === 'cmd_eject_key_card'){{
-                                    console.info($scope.input.madeKey,$scope.input.makeKeys);
-                                    ++$scope.input.madeKey;
+                            } else if (cmd === 'cmd_eject_key_card'){
+                                console.info('$scope.input.makeKeys: ',$scope.input.makeKeys)
+                                console.info('$scope.input.madeKey: ',$scope.input.madeKey)
+                                console.info($scope.input.madeKey,$scope.input.makeKeys);
                                     
-                                    if ($scope.input.madeKey < $scope.input.makeKeys){
+                                if ($scope.input.madeKey < $scope.input.makeKeys){
+                                    setTimeout(function(){
+                                        console.info('dispense + eject #2');
+                                        DispenseKey();
                                         setTimeout(function(){
-                                            DispenseKey();
-                                            setTimeout(function(){
-                                                EjectKeyCard();
-                                                 $scope.keyTwoOfTwoSuccess();
-                                            },2000);
+                                            EjectKeyCard();
+                                             $scope.keyTwoOfTwoSuccess();
                                         },2000);
-                                    }
-                            }
-                            
-                                
+                                    },2000);
+                                }
                             }
                         }
                         
