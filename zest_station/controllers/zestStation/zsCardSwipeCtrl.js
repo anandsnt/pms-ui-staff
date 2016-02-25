@@ -807,8 +807,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var onResponse = function(response){
                 console.info(response);
                 if (response.enable_remote_encoding !== typeof undefined){
-                    //$scope.enable_remote_encoding = response.enable_remote_encoding;
-                    $scope.enable_remote_encoding = false;
+                    $scope.enable_remote_encoding = response.enable_remote_encoding;
+                    //$scope.enable_remote_encoding = false;
                 }
                 $scope.setInitSwipeSettings();
             };
