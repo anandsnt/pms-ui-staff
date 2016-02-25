@@ -1039,9 +1039,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		// CICO-17067 PMS: Rover - Stay Card: Add manual authorization
 		$scope.authData = {
-			'authAmount': '',
+
+			'authAmount'			: '',
 			'manualCCAuthPermission': true,
-			'billData' : []
+			'billData' 				: [],
+			'selectedCardDetails' 	: 
+				{
+					'name' 			: '',
+					'number'		: '',
+					'bill_no' 		: '',
+					'last_auth_date': '',
+					'balance_amount': ''
+				}
 		};
 
 		// Flag for CC auth permission
@@ -1076,6 +1085,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 
+		};
+
+		$scope.selectCCforAuth = function( index ){
+			var selectedCardData = $scope.authData.billData[index];
+			var selectedCardDetails = {
+				'name' 			: selectedCardData.card_name,
+				'number' 		: selectedCardData.card_number,
+				'bill_no' 		: selectedCardData.number,
+				'bill_id' 		: selectedCardData.id,
+				'last_auth_date': selectedCardData.last_auth_date,
+				'balance_amount': selectedCardData.balance
+			}
+			$scope.authData.selectedCardDetails = {};
+			$scope.authData.selectedCardDetails = selectedCardDetails;
 		};
 
 		var authInProgress = function() {
@@ -1119,8 +1142,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			};
 
 			var data = {
-				"payment_method_id": $scope.reservationData.reservation_card.payment_details.id,
-				"amount": $scope.authData.authAmount
+				"payment_method_id"	: $scope.reservationData.reservation_card.payment_details.id,
+				"amount"			: $scope.authData.authAmount,
+				"bill_id"			: $scope.authData.selectedCardDetails.bill_id
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, data, onAuthorizationSuccess, onAuthorizationFaliure);
 		};

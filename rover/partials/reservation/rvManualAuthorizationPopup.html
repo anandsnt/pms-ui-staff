@@ -7,9 +7,9 @@
             <div class="credit-cards scrollable">
                 <div class="wrapper">
                     <!-- if the .block-item is active (clicked) add class .item-active -->
-                    <button class="block-item item-payment" ng-repeat="card in authData.billData">
+                    <button ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
-                            <img ng-src="/assets/images/{{card.card_code}}.png" alt="" />
+                            <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
                         </figure>
                         <span class="number">No. 
                             <span class="value">{{card.card_number}}</span>
@@ -27,10 +27,10 @@
         </fieldset>
 
         <fieldset class="content-right">
-            <span class="h2 message">{card-name} No. {card-number}</span>
+            <span class="h2 message">{{authData.selectedCardDetails.name}} No. {{authData.selectedCardDetails.number}}</span>
             <!-- Dont output L31 - L33 if the fields for code and amount are empty or "-" -->
             <span class="text">Last Authorization: 
-                <time datetime="{yyyy-mm-dd}">{yyyy-mm-dd}</time>
+                <time datetime="{yyyy-mm-dd}">{{authData.selectedCardDetails.last_auth_date | date : dateFormat}}</time>
             </span>
             
             <!-- Dont output L36 - L56 if the fields for code and amount are empty or "-" -->
@@ -42,16 +42,16 @@
                                 Bill #
                             </td>
                             <td class="value">
-                                {bill-id}
+                                {{authData.selectedCardDetails.bill_no}}
                             </td>
                             <td>
                                 Balance
                             </td>
                             <td class="value"><!-- Add class .green if the value is 0,00 otherwise add class .red -->
-                                ${balance}
+                                {{ currencySymbol }} {{authData.selectedCardDetails.balance_amount}}
                             </td>
                         </tr>
-                        ..repeat L39 - L52 for each bill
+                        
                     </table>
                 </div>
             </div>
