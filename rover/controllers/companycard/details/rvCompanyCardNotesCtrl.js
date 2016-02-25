@@ -25,7 +25,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     var successCallBackOfFetchNotes = function(notes) {
         $scope.notes = notes;
         $scope.refreshScroller('companycard_notes_scroller');
-        $scope.contactInformation.notes_count = $scope.notes.length;
+        $scope.contactInformation.account_notes_count = $scope.notes.length;
     };
 
     /**
@@ -55,7 +55,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
         var indexToDelete = successCallBackParameters.index;
         $scope.notes.splice(indexToDelete, 1);
         $scope.refreshScroller('companycard_notes_scroller');
-        $scope.contactInformation.notes_count = $scope.notes.length;
+        $scope.contactInformation.account_notes_count = $scope.notes.length;
     };
 
     /**
@@ -117,7 +117,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
 
         $scope.refreshScroller('companycard_notes_scroller');
         scrollToTop();
-        $scope.contactInformation.notes_count = $scope.notes.length;
+        $scope.contactInformation.account_notes_count = $scope.notes.length;
     };
 
     /**
