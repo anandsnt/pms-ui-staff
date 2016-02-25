@@ -5,12 +5,14 @@ sntZestStation.controller('zsHomeCtrl', [
 	'zsModeConstants',
 	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
 	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
+
+            
+            $scope.keypath = '/assets/zest_station/css/icons/key.svg';
+            
             
             /*
              * This is the main controller for the Home Screen + Admin Popup
              */
-            
-            
             $scope.storageKey = 'snt_zs_workstation';
             $scope.oosKey = 'snt_zs_workstation.in_oos';
             $scope.storageKeyEncoder = 'snt_zs_encoder';
@@ -463,7 +465,22 @@ sntZestStation.controller('zsHomeCtrl', [
         $state.emailEdited = false;
         $state.emailError = false;
     };
+    $rootScope.$watch('iconsPath',function(to, from){
+        if (to){
+            $scope.iconsPath = $rootScope.iconsPath;
+            $scope.icons = {
+                url: {
+                    key: $scope.iconsPath+'/key.svg',
+                    checkin: $scope.iconsPath+'/checkin.svg',
+                    checkout: $scope.iconsPath+'/checkout.svg'
+                }
+            };
+        }
+            
+    });
+    
     $scope.init = function(){
+        
         $scope.resetFlags();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
