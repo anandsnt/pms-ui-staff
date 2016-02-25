@@ -1882,18 +1882,26 @@
                     }
                 }
 
-                .entry.break {
-                    padding-bottom: 20px;
-                    margin-bottom: 20px;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
+                .entry {
+                    &.radio-check { margin-bottom: 0; }
 
-                    &:not(.full-width) {
-                        padding-right: 50%;
-                        width: 100%;
+                    &.break-top {
+                        margin-top: 20px;
+                        padding-top: 10px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                    }
+
+                    &.break-bottom {
+                        margin-bottom: 20px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
                     }
                 }
 
                 .actions {
+                    margin-top: 10px;
+                    padding-top: 10px;
+                    
                     .button {
                         font-size: 18px;
                         line-height: 24px;
