@@ -526,11 +526,30 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'adZestAddonSetupCtrl',
 			url : '/zestAddonSetup'
 		});
-                
 		$stateProvider.state('admin.zestStationConfig', {
 			templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
 			controller: 'ADZestStationCtrl',
 			url : '/zestStationConfig'
+		});
+		$stateProvider.state('admin.ZestStationCheckin', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',
+			controller: 'ADZestStationCtrl',
+			url : '/zestStationCheckin'
+		});
+		$stateProvider.state('admin.ZestStationCheckout', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCheckout.html',
+			controller: 'ADZestStationCtrl',
+			url : '/zestStationCheckout'
+		});
+		$stateProvider.state('admin.ZestStationColorsGraphics', {
+			templateUrl: '/assets/partials/zestStation/adZestStationColorsAndGraphics.html',
+			controller: 'ADZestStationCtrl',
+			url : '/zestStationColorsAndGraphics'
+		});
+		$stateProvider.state('admin.ZestStationPickUpKeys', {
+			templateUrl: '/assets/partials/zestStation/adZestStationPickUpKeys.html',
+			controller: 'ADZestStationCtrl',
+			url : '/zestStationPickUpKeys'
 		});
 
 		$stateProvider.state('admin.emailBlacklist', {
