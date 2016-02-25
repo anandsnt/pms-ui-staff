@@ -139,7 +139,7 @@
    "BILL_DEP":"Deposits",
    "BILL_BAL":"Balance due",
    "BILL_QUEST":"Questions?",
-   "BILL_SUB_QUESTION":"Tap “Cancel” and see a Staff Member.",
+   "BILL_SUB_QUESTION":"Tap “X” and see a Staff Member.",
    "BILL_NEXT":"Next",
    "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
@@ -180,7 +180,7 @@
    "RES_SRCH_TALK":"Talk",
    "RES_NEXT":"Next",
    "RES_Q":"Questions?",
-   "RES_Q_SUB":"Tap “Cancel” and see a Staff Member.",
+   "RES_Q_SUB":"Tap “X” and see a Staff Member.",
    "RES_SRCH_TALK_SUB":"To a Staff Member ",
     
     

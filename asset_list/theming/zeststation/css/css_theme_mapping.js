@@ -5,7 +5,7 @@ module.exports = {
 		return {
 			'zoku' 			: [ themeCSSRoot + 'zoku.less'],
 			'fontainebleau' : [ themeCSSRoot + 'fontainebleau.less'],
-			'snt' : [ themeCSSRoot + 'snt.css']
+			'snt' : [ themeCSSRoot + 'snt.less']
 		}
 	}
 }
