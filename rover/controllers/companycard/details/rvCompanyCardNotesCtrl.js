@@ -25,6 +25,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     var successCallBackOfFetchNotes = function(notes) {
         $scope.notes = notes;
         $scope.refreshScroller('companycard_notes_scroller');
+        $scope.contactInformation.notes_count = $scope.notes.length;
     };
 
     /**
