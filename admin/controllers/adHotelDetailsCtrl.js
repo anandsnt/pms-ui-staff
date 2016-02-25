@@ -21,9 +21,6 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.mli = {
 		certificate: ''
 	};
-	$scope.mli_transaction = {
-		certificate: ''
-	};
 	$scope.isHotelChainEditable =  true;
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
@@ -77,9 +74,6 @@ admin.controller('ADHotelDetailsCtrl', [
 				if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
 					$scope.data.check_out_time.primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
-				}
-				if($scope.data.merchantlink_txn_certificate_loaded) {
-					$scope.mli_transaction_certificate_file_name = "Certificate Attached";
 				}
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
