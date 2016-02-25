@@ -89,8 +89,27 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.input.makeKeys = 2;
             initKeyCreate();  
         };
-        $scope.initKeyCreate = function(){
+        
+        $scope.fetchDoorLockSettings = function(){
+            var onResponse = function(response){
+                console.info(response);
+                if (response.status!== 'failure'){
+                    if (response.data){
+                        //$scope.enable_remote_encoding = response.data.enable_remote_encoding;
+                    }
+                };
+                
+                $scope.finInit();
+            };
             
+            
+          $scope.callAPI(zsTabletSrv.getDoorLockSettings, {
+                params: {},
+                'successCallBack':onResponse,
+                'failureCallBack':onResponse
+            });  
+        };
+        $scope.finInit = function(){//after fetching door lock interface settings
             $scope.input =  $state.passParams;
             //init key create, set # of keys from the input object
             /*
@@ -124,8 +143,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     $scope.keyTwoOfTwoSetup();//sets up screen and runs init to make second key
                 } 
             }
-            
-            
+        };
+        $scope.initKeyCreate = function(){
+            $scope.fetchDoorLockSettings();//get fresh settings on each call to ensure latest door lock settings are used, then continue using finInit
         };
         $scope.keyTwoOfTwoSetup = function(){
                 $scope.at = 'make-keys';
