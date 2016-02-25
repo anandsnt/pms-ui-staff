@@ -1,11 +1,36 @@
+/**
+ * A directive to limit the numeric input value between a from-to value
+ * For better UX: The directive will throttle user inputs and will process from last input
+ *
+ * USAGE:
+ * ======
+ * <input ng-model="" limit-input-range="{from: 0, to: 12, callback: 'afterUpdate'}"
+ *
+ * REQUIRED:
+ * =========
+ * ng-model is required, otherwise it wont work and will throw error
+ *
+ * @param {number} 'from'     - (required) the from value
+ * @param {number} 'to'       - (required) the to value
+ * @param {string} 'callback' - (optional) the method on scope that must be called after updating the value
+ */
 admin.directive('limitInputRange', ['$timeout', function($timeout) {
     return {
     	restrict: 'A',
         require: 'ngModel',
     	link: function(scope, elem, attrs, ngModel) {
-            var options = scope.$eval( attrs.limitInputRange );
+            var options,
+                processIt,
+                throttled;
 
-            var processIt = function() {
+            options = scope.$eval( attrs.limitInputRange );
+
+            if ( ! options.hasOwnProperty('from') || ! options.hasOwnProperty('to') typeof options.from != 'number' || typeof options.to != 'number') {
+                console.error( "'Must provide 'from' and 'to' values." );
+                return;
+            };
+
+            processIt = function() {
                 var value = parseInt( ngModel.$viewValue ),
                     apply = value;
 
@@ -29,7 +54,7 @@ admin.directive('limitInputRange', ['$timeout', function($timeout) {
                 scope[options.callback] && scope[options.callback]();
             };
 
-            var throttled = _.throttle(processIt, 300, { leading: false });
+            throttled = _.throttle(processIt, 300, { leading: false });
 
             angular.element(elem).on('keyup', throttled);
 
