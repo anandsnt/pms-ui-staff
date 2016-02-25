@@ -34,7 +34,6 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2','zsBaseWebSrv','$q'
 	};
 
 	this.fetchHotelSettings = function(){
-            console.info('sending fetch return')
                     var deferred = $q.defer(),
                             url = '/api/hotel_settings.json';
 
