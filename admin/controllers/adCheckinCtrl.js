@@ -32,6 +32,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
   $scope.init();
 
   var setUpData = function () {
+    $scope.checkinData.is_allow_early_checkin_from_zest = ($scope.checkinData.is_allow_early_checkin_from_zest === 'true') ? true : false;
     $scope.checkinData.is_send_alert_flag = ($scope.checkinData.is_send_alert === 'true') ? true : false;
     $scope.checkinData.is_send_zest_alert_flag = ($scope.checkinData.is_zest_checkin_alert_on === 'true') ? true : false;
     $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true : false;
@@ -122,6 +123,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
    */
   $scope.saveCheckin = function () {
 
+    $scope.checkinData.is_allow_early_checkin_from_zest = ($scope.checkinData.is_allow_early_checkin_from_zest) ? 'true' : 'false';
     $scope.checkinData.is_send_alert = ($scope.checkinData.is_send_alert_flag) ? 'true' : 'false';
     $scope.checkinData.is_send_zest_alert = ($scope.checkinData.is_send_zest_alert_flag) ? 'true' : 'false';
     $scope.checkinData.is_send_checkin_staff_alert = ($scope.checkinData.is_send_checkin_staff_alert_flag) ? 'true' : 'false';
@@ -153,6 +155,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'checkin_alert_message': $scope.checkinData.checkin_alert_message,
       'checkin_staff_alert_option': $scope.checkinData.checkin_staff_alert_option,
       'emails': $scope.checkinData.emails,
+      'is_allow_early_checkin_from_zest': $scope.checkinData.is_allow_early_checkin_from_zest,
       'is_notify_on_room_not_assigned': $scope.checkinData.is_notify_on_room_not_assigned,
       'is_notify_on_room_ready': $scope.checkinData.is_notify_on_room_ready,
       'is_send_alert': $scope.checkinData.is_send_alert,
