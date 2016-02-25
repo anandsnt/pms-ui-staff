@@ -113,6 +113,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.receivedCardSwipeOrChipSuccess();
             }
         });
+        MLISessionId = '';
         
         $scope.receivedCardSwipeOrChipSuccess = function(){
             var cardCode = getSixCreditCardType($scope.sixpay_data.card_type).toLowerCase();//from Utils.js
@@ -153,8 +154,34 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             };*/
              
              
+			 var sessionDetails = {};
+			 sessionDetails.cardNumber = $scope.postData.card_number;
+			 //sessionDetails.cardSecurityCode = $scope.postData.cvv;
+			 sessionDetails.cardExpiryMonth = $scope.expirMonth;
+			 sessionDetails.cardExpiryYear = $scope.expirYear;
+
+			 var callback = function(response){
+                             console.info(response);
+			 	$scope.$emit("hideLoader");
+
+			 	if(response.status ==="ok"){
+                                    MLISessionId = response.session;
+                                    $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
+			 	}
+			 	else{
+                                    console.warn('there was a problem with the card');
+			 	}
+			 };
+
+			try {
+                            console.info('trying updatesession')
+			    HostedForm.updateSession(sessionDetails, callback);
+			    $scope.$emit("showLoader");  
+			}
+			catch(err) {
+                            console.warn(err);
+			};
              
-             $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
         };
         
         $scope.successSavePayment = function(response){
@@ -740,7 +767,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 'failureCallBack':onResponse
             });  
         };
-        $scope.fetchDoorLockSettings()
+        $scope.fetchDoorLockSettings();
         
         
 	 $scope.sixPaymentSwipe = function(){
