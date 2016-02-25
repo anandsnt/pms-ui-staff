@@ -7,21 +7,21 @@
             <div class="credit-cards scrollable">
                 <div class="wrapper">
                     <!-- if the .block-item is active (clicked) add class .item-active -->
-                    <button class="block-item item-payment">
+                    <button class="block-item item-payment" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
-                            <img src="{card-logo}" alt="" />
+                            <img ng-src="/assets/images/{{card.card_code}}.png" alt="" />
                         </figure>
                         <span class="number">No. 
-                            <span class="value">{card-number}</span>
+                            <span class="value">{{card.card_number}}</span>
                         </span>
                         <span class="code">Code 
-                            <span class="value">{authorization-code}</span>
+                            <span class="value">{{card.authorization_code}}</span>
                         </span>
                         <span class="amount">Amount 
-                            <span class="value">{authorization-amount}</span>
+                            <span class="value">{{card.authorization_amount}}</span>
                         </span>
                     </button>
-                    ... repeat L9 - L22 for each card authorization        
+                    
                 </div>
             </div>
         </fieldset>

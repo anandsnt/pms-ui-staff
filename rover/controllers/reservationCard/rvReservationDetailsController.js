@@ -1040,7 +1040,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		// CICO-17067 PMS: Rover - Stay Card: Add manual authorization
 		$scope.authData = {
 			'authAmount': '',
-			'manualCCAuthPermission': true
+			'manualCCAuthPermission': true,
+			'billData' : []
 		};
 
 		// Flag for CC auth permission
@@ -1049,15 +1050,32 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		};
 
 		$scope.showAuthAmountPopUp = function() {
-			$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-			$scope.authData.authAmount = "";
-			ngDialog.open({
-				template: '/assets/partials/reservation/rvManualAuthorizationPopup.html',
-				className: '',
-				closeByEscape : false,
-				closeByDocument : false,
-				scope: $scope
-			});
+
+			var fetchCreditCardAuthInfoSuccess = function( data ){
+				$scope.$emit('hideLoader');
+				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
+				$scope.authData.authAmount = "";
+				$scope.authData.billData = data.bill_data;
+				// Show Multiple auth popup
+				ngDialog.open({
+					template: '/assets/partials/reservation/rvManualAuthorizationPopup.html',
+					className: '',
+					closeByEscape : false,
+					closeByDocument : false,
+					scope: $scope
+				});
+			};
+
+			var fetchCreditCardAuthInfoFaliure = function( errorMessage ){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			};
+
+			var data = {
+				"reservation_id":$scope.reservationData.reservation_card.reservation_id
+			};
+			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
+
 		};
 
 		var authInProgress = function() {
