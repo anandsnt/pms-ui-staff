@@ -740,6 +740,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 'failureCallBack':onResponse
             });  
         };
+        $scope.fetchDoorLockSettings()
         
         
 	 $scope.sixPaymentSwipe = function(){
