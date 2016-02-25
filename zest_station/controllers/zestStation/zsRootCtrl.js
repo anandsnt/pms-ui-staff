@@ -134,6 +134,18 @@ sntZestStation.controller('zsRootCtrl', [
         };
            
         $scope.hotelThemeCB = function(response){
+            //call Zest station settings API
+            var options = {
+                params: 		{"id":$scope.hotelid},
+                successCallBack: 	function(response){
+                    console.info(response);
+                    $scope.zestStationData.mli_merchant_id = response.mli_merchant_id;
+                    $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
+                    console.info('set mli merch id to: ',$scope.zestStationData.mli_merchant_id)
+                }
+            };
+            $scope.callAPI(hotelDetailsSrv.fetchHotelSettings, options);
+            
             var theme = null;
             /*
              * This will identify the theme attached to the hotel
@@ -143,7 +155,7 @@ sntZestStation.controller('zsRootCtrl', [
             if (response && response.existing_email_templates && response.themes){
                 var hotelDetails = _.findWhere(response.themes, {id: response.existing_email_template_theme});
                 theme = hotelDetails && hotelDetails.name;
-  
+                console.info(hotelDetailsSrv);
             }
             theme = $scope.getThemeName(theme);//from here we can change the default theme(to stayntouch, or other hotel)
             $state.theme = theme;
