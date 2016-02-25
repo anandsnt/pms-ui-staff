@@ -1,0 +1,80 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content form card-authorize">
+    	<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <fieldset class="content-left">
+            <strong class="h2 message">Credit Cards</strong>
+            <div class="credit-cards scrollable">
+                <div class="wrapper">
+                    <!-- if the .block-item is active (clicked) add class .item-active -->
+                    <button class="block-item item-payment">
+                        <figure class="card-logo">
+                            <img src="{card-logo}" alt="" />
+                        </figure>
+                        <span class="number">No. 
+                            <span class="value">{card-number}</span>
+                        </span>
+                        <span class="code">Code 
+                            <span class="value">{authorization-code}</span>
+                        </span>
+                        <span class="amount">Amount 
+                            <span class="value">{authorization-amount}</span>
+                        </span>
+                    </button>
+                    ... repeat L9 - L22 for each card authorization        
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="content-right">
+            <span class="h2 message">{card-name} No. {card-number}</span>
+            <!-- Dont output L31 - L33 if the fields for code and amount are empty or "-" -->
+            <span class="text">Last Authorization: 
+                <time datetime="{yyyy-mm-dd}">{yyyy-mm-dd}</time>
+            </span>
+            
+            <!-- Dont output L36 - L56 if the fields for code and amount are empty or "-" -->
+            <div class="authorization-bills scrollable">
+                <div class="wrapper">
+                    <table>
+                        <tr>
+                            <td>
+                                Bill #
+                            </td>
+                            <td class="value">
+                                {bill-id}
+                            </td>
+                            <td>
+                                Balance
+                            </td>
+                            <td class="value"><!-- Add class .green if the value is 0,00 otherwise add class .red -->
+                                ${balance}
+                            </td>
+                        </tr>
+                        ..repeat L39 - L52 for each bill
+                    </table>
+                </div>
+            </div>
+
+            <div class="entry full-width">
+                <label for="auth-amount">Amount (<span>{{ currencySymbol }}</span>)</label>
+                <input ng-model="authData.authAmount" id="auth-amount" value="" type="text" />
+            </div>
+
+            <div class="entry manual_auth full-width hidden">
+                    <label for="{Manual Checkbox ID}" class="checkbox inline"> <!-- Add class 'checked' if checked -->
+                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' if checked -->
+                        <input id="{Manual Checkbox ID}" value="1" type="checkbox" />
+                        Manual Auth.
+                    </label>
+                    <!-- Remove class hidden if Manual Auth. is checked -->
+                    <input type="text" value="" class="hidden" placeholder="Enter Auth Code" />
+            </div>
+
+            <div class="actions">
+                <button ng-click="authorize()" ng-disabled="!authData.manualCCAuthPermission" ng-class="{'grey':!authData.manualCCAuthPermission }" type="button" class="button green">Authorize</button>
+                <button ng-click="closeDialog()" type="button" class="button blank">Cancel</button>
+            </div>
+        </fieldset>
+    </div>
+</div>

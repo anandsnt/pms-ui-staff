@@ -1052,8 +1052,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 			$scope.authData.authAmount = "";
 			ngDialog.open({
-				template: '/assets/partials/reservation/rvManualAuthorizationAddAmount.html',
+				template: '/assets/partials/reservation/rvManualAuthorizationPopup.html',
 				className: '',
+				closeByEscape : false,
+				closeByDocument : false,
 				scope: $scope
 			});
 		};
