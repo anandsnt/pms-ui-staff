@@ -17,7 +17,6 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.hotel_logo_file = $scope.fileName;
 	$scope.hotel_template_logo_file = $scope.fileName;
 	$scope.mli_pem_certificate_file_name = "Choose File....";
-	$scope.mli_transaction_certificate_file_name = "Choose File....";
 	$scope.mli = {
 		certificate: ''
 	};
@@ -163,10 +162,6 @@ admin.controller('ADHotelDetailsCtrl', [
 			var data = dclone($scope.data, unwantedKeys);
 			if ($scope.mli.certificate != "") {
 				data.mli_certificate = $scope.mli.certificate;
-			}
-
-			if ($scope.mli_transaction.certificate != "") {
-				data.merchantlink_txn_certificate = $scope.mli_transaction.certificate;
 			}
 
 			var postSuccess = function(){
