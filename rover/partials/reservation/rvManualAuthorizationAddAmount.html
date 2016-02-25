@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
     <div class="modal-content form card-authorize">
 
     	<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button">

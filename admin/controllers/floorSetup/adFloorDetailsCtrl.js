@@ -15,6 +15,15 @@ admin.controller('ADFloorDetailsCtrl',
 
 	BaseCtrl.call(this, $scope);
 
+    $scope.paginationState = {
+        roomsPerPage : 5,
+        currentPage: 1,
+        firstIndex: 0,
+        lastIndex: 0,
+        totalRecords: 0,
+        maxPages: 0
+    };
+
     /**
     * set of initial settings - edit mode
     * @return - None
@@ -335,17 +344,6 @@ admin.controller('ADFloorDetailsCtrl',
     	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params , successCallbackSave);
     };
 
-    /**
-    * successcallback of getFloorDetails APi call
-    * will set assignrooms with what we got  from API
-    * @return - None
-    */
-    var successCallBackOfGetAssignedRoomAgainstFloor = function(data) {
-   		$scope.assignedRooms = data.rooms;
-
-	 	$scope.floorData.floortitle = data.description ;
-	 	$scope.floorData.floor_number_old = data.floor_number ;
-    };
 
 
     /**
@@ -354,6 +352,9 @@ admin.controller('ADFloorDetailsCtrl',
     * @return - None
     */
     var successCallBackOfFetchAllUnAssignedRoom = function(data) {
+
+        var minIndex = (($scope.paginationState.currentPage - 1) * $scope.paginationState.roomsPerPage) + 1,
+            maxIndex = $scope.paginationState.currentPage * $scope.paginationState.roomsPerPage;
 
     	$scope.isSearchResult = true ;
         // filtering asignedrooms.
@@ -369,6 +370,14 @@ admin.controller('ADFloorDetailsCtrl',
 
         //resetting already choosed unassigned in last
         $scope.selectedUnassignedRooms = [];
+
+        //pagination updates
+        _.extend($scope.paginationState,{
+            totalRecords : data.total_count,
+            firstIndex :  minIndex,
+            lastIndex : _.min([maxIndex, data.total_count]),
+            maxPages: parseInt((data.total_count + $scope.paginationState.roomsPerPage - 1) / $scope.paginationState.roomsPerPage, 10)
+        });
     };
 
     /**
@@ -378,7 +387,9 @@ admin.controller('ADFloorDetailsCtrl',
     $scope.showAllUnassignedRooms = function(){
         $scope.unassignedRooms = [];
 		var params 	= {
-			query: 	''
+			query: 	'',
+            roomsPerPage: $scope.paginationState.roomsPerPage,
+            currentPage: $scope.paginationState.currentPage
 		};
     	var options = {
     		params: 			params,
@@ -402,11 +413,13 @@ admin.controller('ADFloorDetailsCtrl',
     */
     $scope.searchInUnassignedRooms = function() {
 		var params 	= {
-			query: $scope.floorData.searchKey
+			query: $scope.floorData.searchKey,
+            roomsPerPage: $scope.paginationState.roomsPerPage,
+            currentPage: $scope.paginationState.currentPage
 		};
     	var options = {
     		params: 			params,
-    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom
+    		successCallBack: 	successCallBackOfFetchAllUnAssignedRoom,
         };
         $scope.callAPI(ADFloorSetupSrv.getUnAssignedRooms, options);
     };
@@ -509,6 +522,16 @@ admin.controller('ADFloorDetailsCtrl',
     $scope.getFormNameForMe = function(){
         return ($scope.isAddMode ? "new-floor" : "edit-floor");
     };
+
+    $scope.navigateFromPage = function(gotoNext){
+        if(gotoNext){
+            $scope.paginationState.currentPage +=1 ;
+        }else{
+            $scope.paginationState.currentPage -=1 ;
+        }
+        $scope.searchInUnassignedRooms();
+    };
+
     initializeMe();
 
 }]);

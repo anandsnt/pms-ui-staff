@@ -27,9 +27,6 @@
         </div>
 
 
-
-
-
         <!-- item_02: deposit date range -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDepositDateFilter" ng-class="{'active': filterItemsToggle.item_02}" ng-click="toggleFilterItems('item_02')">
             <span class="title">{{ chosenReport.hasDepositDateFilter.description }}</span>
@@ -99,8 +96,9 @@
                     <input ng-if="chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="!chosenReport.hasPrevDateLimit && chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
-                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit&& !chosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneYearLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="chosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneMonthLimit" ng-model="chosenReport.fromDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.hasDateFilter.showRemove}" class="clear-query">
                         <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasDateFilter')">Clear query</span>
                     </button>
@@ -110,8 +108,9 @@
                     <input ng-if="chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="!chosenReport.hasPrevDateLimit && chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="chosenReport.untilDate"  ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
-                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="!chosenReport.hasPrevDateLimit && !chosenReport.hasDateLimit && !chosenReport.hasSysDateLimit && !chosenReport.hasOneYearLimit && !chosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <input ng-if="chosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
+                    <input ng-if="chosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneMonthLimit" ng-model="chosenReport.untilDate" ng-change="dateChanged(chosenReport, 'hasDateFilter')" readonly>
                     <button ng-if="chosenReport.canRemoveDate" ng-class="{'visible': chosenReport.hasDateFilter.showRemove}" class="clear-query">
                         <span class="icons icon-clear-search" ng-click="clearDateFromFilter(chosenReport, 'hasDateFilter')">Clear query</span>
                     </button>
@@ -366,9 +365,6 @@
         </div>
 
 
-
-
-
         <!-- item_12: Display options -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'active': filterItemsToggle.item_12 }" ng-click="toggleFilterItems('item_12')">
             <span class="title">Display(s)</span>
@@ -389,8 +385,24 @@
         </div>
 
 
-
-
+        <!-- item_29: Exclude options -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'active': filterItemsToggle.item_29 }" ng-click="toggleFilterItems('item_29')">
+            <span class="title">Exclude </span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_29 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasExclusions.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasExclusions.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasExclusions.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasExclusions, true)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasExclusions.data.length > 1 && chosenReport.hasExclusions.selectAll) }">
+                    <label class="checkbox" ng-repeat="exclusion in chosenReport.hasExclusions.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : exclusion.selected }"></span>
+                        <input type="checkbox" ng-model="exclusion.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasExclusions)" name="room-filters"> {{ exclusion.description }}
+                    </label>
+                </div>
+            </div>
+        </div>
 
         <!-- item_23: Hold status -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasHoldStatus" ng-class="{ 'active': filterItemsToggle.item_23 }" ng-click="toggleFilterItems('item_23')">
@@ -595,7 +607,43 @@
         </div>
 
 
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateTypeFilter" ng-class="{'active': filterItemsToggle.item_32}" ng-click="toggleFilterItems('item_32')">
+            <span class="title">Rate Type</span>
+        </a>
 
+        <div class="settings-content" ng-if="chosenReport.hasRateTypeFilter" ng-class="{ 'hidden': !filterItemsToggle.item_32 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasRateTypeFilter.data.length > 1">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasRateTypeFilter.selectAll }"></span>
+                    <input type="checkbox" ng-model="chosenReport.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(chosenReport)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasRateTypeFilter.data.length > 1 && chosenReport.hasRateTypeFilter.selectAll) }">
+                    <label class="checkbox" ng-repeat="rateType in chosenReport.hasRateTypeFilter.data">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : rateType.selected}"></span>
+                        <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(chosenReport, chosenReport.hasRateTypeFilter)" name="room-filters"> {{ rateType.name }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateFilter" ng-class="{'active': filterItemsToggle.item_33}" ng-click="toggleFilterItems('item_33')">
+            <span class="title">Rates</span>
+        </a>
+
+        <div class="settings-content" ng-if="chosenReport.hasRateFilter" ng-class="{ 'hidden': !filterItemsToggle.item_33 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasRateFilter.data.length > 1">
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasRateFilter.selectAll }"></span>
+                    <input type="checkbox" ng-model="chosenReport.hasRateFilter.selectAll" ng-change="toggleRateSelectAll(chosenReport)" name="room-filters"> Select All
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasRateFilter.data.length > 1 && chosenReport.hasRateFilter.selectAll) }">
+                    <label class="checkbox" ng-repeat="rate in getRates(chosenReport)">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : rate.selected}"></span>
+                        <input type="checkbox" ng-model="rate.selected" ng-change="rateChanged(chosenReport)" name="room-filters"> {{ rate.rate_name }}
+                    </label>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -607,12 +655,12 @@
             <div class="faux-select-options">
                 <label class="checkbox" ng-show="chosenReport.hasByChargeGroup.data.length > 1">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasByChargeGroup.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasByChargeGroup.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasByChargeGroup, true)" name="room-filters"> Select All
+                        <input type="checkbox" ng-model="chosenReport.hasByChargeGroup.selectAll" ng-change="chargeGroupfauxSelectChange(chosenReport, chosenReport.hasByChargeGroup, true)" name="room-filters"> Select All
                 </label>
                 <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasByChargeGroup.data.length > 1 && chosenReport.hasByChargeGroup.selectAll) }">
                     <label class="checkbox" ng-repeat="group in chosenReport.hasByChargeGroup.data">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
-                        <input type="checkbox" ng-model="group.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasByChargeGroup)" name="room-filters"> {{ group.description }}
+                        <input type="checkbox" ng-model="group.selected" ng-change="chargeGroupfauxSelectChange(chosenReport, chosenReport.hasByChargeGroup)" name="room-filters"> {{ group.description }}
                     </label>
                 </div>
             </div>
@@ -627,14 +675,14 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasByChargeCode" ng-class="{ 'hidden': !filterItemsToggle.item_17 }">
             <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasByChargeCode.data.length > 1">
+                <label class="checkbox" ng-show="chosenReport.hasByChargeCode.originalData.length > 1">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasByChargeCode.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasByChargeCode.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasByChargeCode, true)" name="room-filters"> Select All
+                        <input type="checkbox" ng-model="chosenReport.hasByChargeCode.selectAll" ng-change="chargeCodeFauxSelectChange(chosenReport, chosenReport.hasByChargeCode, true)" name="room-filters"> Select All
                 </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasByChargeCode.data.length > 1 && chosenReport.hasByChargeCode.selectAll) }">
-                    <label class="checkbox" ng-repeat="code in chosenReport.hasByChargeCode.data">
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasByChargeCode.originalData.length > 1 && chosenReport.hasByChargeCode.selectAll) }">
+                    <label class="checkbox" ng-repeat="code in chosenReport.hasByChargeCode.originalData" ng-hide="code.disabled">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : code.selected }"></span>
-                        <input type="checkbox" ng-model="code.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasByChargeCode)" name="room-filters"> {{ code.description }}
+                        <input type="checkbox" ng-model="code.selected" ng-change="chargeCodeFauxSelectChange(chosenReport, chosenReport.hasByChargeCode)" name="room-filters"> {{ code.description }}
                     </label>
                 </div>
             </div>

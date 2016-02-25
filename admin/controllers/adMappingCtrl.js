@@ -152,7 +152,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
 
         $scope.fetchInterfaceMappingsSuccess = function (data) {
-            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, val, mappingTypeDesc;
+            var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, mappingTypeRefObject, mappingTypeDesc;
             $scope.mappingInterface = {};
             $scope.mappingInterface = data;
 
@@ -169,11 +169,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             for (var x in data.mapping_type) {//cache this off
                 mTypeName = data.mapping_type[x].name;
                 for (var vals in data.mapping_type[x].sntvalues) {
-                    val = data.mapping_type[x].sntvalues[vals].name;
                     if (typeof $scope.mappingInterface.mappingTypeRefs[mTypeName] !== typeof []) {
                         $scope.mappingInterface.mappingTypeRefs[mTypeName] = [];
                     }
-                    $scope.mappingInterface.mappingTypeRefs[mTypeName].push({"name": val});
+                    mappingTypeRefObject = {
+                        name: data.mapping_type[x].sntvalues[vals].name
+                    };
+                    if (typeof data.mapping_type[x].sntvalues[vals].description !== "undefined") {
+                        mappingTypeRefObject.description = data.mapping_type[x].sntvalues[vals].description; 
+                    }
+                    $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }
             }
 

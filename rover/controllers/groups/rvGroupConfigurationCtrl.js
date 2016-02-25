@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupConfigurationCtrl', [
+angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
     '$scope',
     '$rootScope',
     'rvGroupSrv',
@@ -26,6 +26,9 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 $scope.$digest();
             }
         };
+
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        
 
         /**
          * whether current screen is in Add Mode
@@ -152,10 +155,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             var arrDateLeftChangeAllowed = function(){
                 var sumryData                   = $scope.groupConfigData.summary,
-                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),                 
+                    roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
                     notAPastGroup               = !sumryData.is_a_past_group,
-                    fromDateleftMovedAllowed    = sumryData.is_from_date_left_move_allowed;                
-                
+                    fromDateleftMovedAllowed    = sumryData.is_from_date_left_move_allowed;
+
                 return (roomBlockExist &&
                         notAPastGroup &&
                         fromDateleftMovedAllowed);
@@ -168,10 +171,10 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var arrDateRightChangeAllowed = function(){
                 var sumryData                   = $scope.groupConfigData.summary,
                     roomBlockExist              = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),                    
+                    noInHouseReservationExist   = (parseInt(sumryData.total_checked_in_reservations) === 0),
                     notAPastGroup               = !sumryData.is_a_past_group,
-                    fromDateRightMovedAllowed   = sumryData.is_from_date_right_move_allowed;                     
-                
+                    fromDateRightMovedAllowed   = sumryData.is_from_date_right_move_allowed;
+
                 return (roomBlockExist &&
                         noInHouseReservationExist &&
                         notAPastGroup &&
@@ -408,7 +411,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @return {Boolean}
              */
             var hasPermissionToOverBook = function () {
-                return rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');               
+                return rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
             };
 
             /**
@@ -436,12 +439,12 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     $scope.callMoveDatesAPI (args[0], true);
                 }
 
-                //is in left/right date change                
+                //is in left/right date change
                 else {
                     $scope.callChangeDatesAPI (args[0], args[1], true);
                 }
             };
-            
+
             /**
              * [openNoAvailabilityPopup description]
              * @return {[type]} [description]
@@ -464,7 +467,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             var failureCallBackOfChangeDatesAPI= function (error) {
                 $scope.closeDialog ();
-                
+
                 //since we are expecting some custom http error status in the response
                 //and we are using that to differentiate among errors
                 if(error.hasOwnProperty ('httpStatus')) {
@@ -473,7 +476,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             $timeout(
                                 function(){
                                     openNoAvailabilityPopup ();
-                                }, 
+                                },
                             750);
                             break;
                         default:
@@ -494,13 +497,13 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            $scope.callChangeDatesAPI = function (options, changeReservationDates, forcefullyOverbook) {                
+            $scope.callChangeDatesAPI = function (options, changeReservationDates, forcefullyOverbook) {
                 var dataSet         = options && options["dataset"],
                     successCallBack = lastSuccessCallback,
                     failureCallBack = lastFailureCallback,
                     arrChangeOnly   = 'changeInArr' in dataSet && dataSet['changeInArr'],
                     depChangeOnly   = 'changeInDep' in dataSet && dataSet['changeInDep'],
-                    conditnalParams = {},                    
+                    conditnalParams = {},
                     forcefullyOverbook = typeof forcefullyOverbook === "undefined" ? false : forcefullyOverbook;
 
                 lastApiFnParams = _.extend({}, arguments);
@@ -524,7 +527,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                     };
                 }
 
-                _.extend(params, conditnalParams);             
+                _.extend(params, conditnalParams);
 
                 var options = {
                     params          : params,
@@ -541,11 +544,11 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             var shouldShowMoveButton = function () {
                 var sumryData                       = $scope.groupConfigData.summary,
                     roomBlockExist                  = (parseInt(sumryData.rooms_total) > 0),
-                    noInHouseReservationExist       = (parseInt(sumryData.total_checked_in_reservations) === 0),                    
+                    noInHouseReservationExist       = (parseInt(sumryData.total_checked_in_reservations) === 0),
                     notAPastGroup                   = !sumryData.is_a_past_group;
 
-                return (roomBlockExist && 
-                        noInHouseReservationExist && 
+                return (roomBlockExist &&
+                        noInHouseReservationExist &&
                         notAPastGroup &&
                         !isInCompleteMoveMode());
             };
@@ -606,7 +609,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              */
             var failureCallBackOfMoveDatesAPI= function (error) {
                 $scope.closeDialog ();
-                
+
                 //since we are expecting some custom http error status in the response
                 //and we are using that to differentiate among errors
                 if(error.hasOwnProperty ('httpStatus')) {
@@ -615,7 +618,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                             $timeout(
                                 function(){
                                     openNoAvailabilityPopup ();
-                                }, 
+                                },
                             750);
                             break;
                         default:
@@ -636,7 +639,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * @param  {[type]} options [description]
              * @return {[type]}         [description]
              */
-            $scope.callMoveDatesAPI = function (options, forcefullyOverbook) {                
+            $scope.callMoveDatesAPI = function (options, forcefullyOverbook) {
                 var dataSet         = options && options["dataset"],
                     newFromDate     = dataSet["fromDate"] ? formatDateForAPI(dataSet["fromDate"]) : null,
                     newToDate       = dataSet["toDate"] ? formatDateForAPI(dataSet["toDate"]) : null,
@@ -692,7 +695,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
              * Returns true if in move group mode.
              * @return {Boolean} True for move mode.
              */
-            var isInCompleteMoveMode = function() {            
+            var isInCompleteMoveMode = function() {
                 return (activeMode === "COMPLETE_MOVE");
             };
 
@@ -833,6 +836,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
                 groupSummary.block_from = new tzIndependentDate(groupSummary.block_from);
                 groupSummary.block_to = new tzIndependentDate(groupSummary.block_to);
             }
+
 
             // if we searched a group name that wasnt in the db
             // pass over that search term here
@@ -1260,7 +1264,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             /** @type {Object} states that are part of reservation flow */
             var reservationFlow = {
                 forRoutes: [
-                    'rover.reservation.staycard.mainCard.roomType',
+                    roomAndRatesState,
                     'rover.reservation.staycard.mainCard.addons',
                     'rover.reservation.staycard.mainCard.summaryAndConfirm',
                     'rover.reservation.staycard.mainCard.reservationConfirm'
@@ -1303,7 +1307,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
         }
 
         // function to set Back Navigation params
-        var setBackNavigation = function() {            
+        var setBackNavigation = function() {
             $rootScope.setPrevState = {
                 'title'    : resolvedBackBtn.title,
                 'callback' : 'updateAndBack',
@@ -1362,7 +1366,7 @@ sntRover.controller('rvGroupConfigurationCtrl', [
             setBackNavigation();
 
             //updating the left side menu
-            setActiveLeftSideMenu();            
+            setActiveLeftSideMenu();
         };
 
         initGroupConfig();

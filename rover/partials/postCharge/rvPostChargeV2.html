@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}"  >
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}"  >
 	<div id="post-charge" class="modal-content post-charge" ng-class="{ 'extended': isOutsidePostCharge }" ng-click="setPosition()" ng-cloak>
 
 		<button type="button" id="modal-close" class="modal-close" ng-class="{ 'dark-title': isOutsidePostCharge }" ng-click="closeDialog()">
@@ -7,7 +7,7 @@
 
 		<span ng-if="isOutsidePostCharge">
 			<!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div -->
-		    <div id="cant-post" class="inner-overlay" ng-class="{'visible': noGuestOrRoomSelected == true}">
+		    <div  id="cant-post" ng-show="noGuestOrRoomSelected" class="inner-overlay" ng-class="{'visible': noGuestOrRoomSelected == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>NO_GUEST_ROOM_SELECTED</span>
 					<span class="text" translate>SELECT_GUEST_ROOM</span>
@@ -15,17 +15,17 @@
 					<button type="button" class="button blank" ng-click="clickedAddGuestOrRoomCancel()" translate>CANCEL</button>
 				</div>
 			</div>
-
-			<div id="not-checked-in" class="inner-overlay" ng-class="{'visible': guestHasNotCheckedin == true}">
+		
+			<div id="not-checked-in" ng-show="guestHasNotCheckedin" class="inner-overlay" ng-class="{'visible': guestHasNotCheckedin == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>GUEST_NOT_CHECKEDIN_MSG</span>
 					<span class="text" translate>PROCEED_WITH_PROCEEDING</span>
-					<button type="button" class="button green" ng-click="clickedPostCharge()" translate>POST_CHARGE</button>
+					<button ng-disabled="disableOutsidePostChargeButton" type="button" class="button green" ng-click="clickedPostCharge($event)" translate>POST_CHARGE</button>
 					<button type="button" class="button blank" ng-click="clickedPostChargeCancel()" translate>CANCEL</button>
 				</div>
 			</div>
-
-			<div id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
+		
+			<div ng-show="chargePosted" id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>CHARGE_POSTED</span>
 					<button type="button" class="button green" ng-click="clickedPostAnotherCharge()" translate>POST_ANOTHER_CHARGE</button>
@@ -42,7 +42,7 @@
 				    		<!-- 1.search -->
 				    		<div ng-show="!isCardAttched">
 					        	<figure class="guest-image">
-						            <img src="/assets/avatar-trans.png" alt="" />
+						            <img src="/assets/images/avatar-trans.png" alt="" />
 						            <span class="search-indicator"></span>
 						        </figure>
 						        <div class="card-search-form">
@@ -119,7 +119,7 @@
 				                    	<li class="reservation post-charge" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
 				                    		<a ng-class="getReservationClass(row.reservation_status)" ng-click="selectReservation(row)">
 
-				                    			<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">
+				                    			<figure class="guest-image" ng-class="{'accompany': row.images.length >1}">
 				                    				<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}">
 													<span class="vip" ng-show="row.vip==true">VIP</span>
 				                    			</figure>
@@ -328,9 +328,9 @@
 					</div>
 					<div class="actions float">
 
-						<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': shouldDisablePostCharge()}" translate>POST_CHARGE</button>
+						<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="disablePostChargeButton || shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': disablePostChargeButton || shouldDisablePostCharge()}" translate>POST_CHARGE</button>
 
-						<button ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges()" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
+						<button ng-disabled="disableOutsidePostChargeButton" ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges($event)" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
 
 						<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
 					</div>

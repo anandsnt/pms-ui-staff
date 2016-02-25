@@ -129,7 +129,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             var fetchSuccess = function(isAddonsConfigured){
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
                 //CICO-9429
-                if ($rootScope.isAddonOn&&isAddonsConfigured) {
+                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn&&isAddonsConfigured) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
                     $state.go('rover.reservation.staycard.mainCard.addons', {
@@ -196,14 +196,5 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             $scope.renderGrid();
         };
 
-        $scope.closeDialog = function() {
-            //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false;
-            $timeout(function(){
-                ngDialog.close();
-                $scope.cancelSelection();
-                $scope.renderGrid();
-            }, 300);
-        };
     }
 ]);

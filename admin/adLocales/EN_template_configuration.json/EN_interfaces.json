@@ -2,4 +2,8 @@
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
 	"STATION_ID": "Work Station Id",
-	"WORKSTATIONS":"Work Stations"
+	"STATION_PRINTER": "Work Station Printer",
+	"WORKSTATIONS":"Work Stations",
+	"WORKSTATION_IS_OOS":"Out of Service",
+	"WORKSTATION_OOS_MSG":"OOS Message",
+	"ROVER_DEVICE_ID" : "Rover Device ID"

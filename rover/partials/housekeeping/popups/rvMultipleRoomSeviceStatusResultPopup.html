@@ -1,0 +1,50 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+<div class="modal-content alert room-status-not-completed">
+    <button id="modal-close" type="button" class="modal-close" ng-click="closeForcefullyUpdatePopup()">
+    	<span class="icons icon-close invert"></span>
+    </button>
+    <span class="icons icon-popup-alert"></span>
+    <span class="h2 message">Request not completed for {{completedData.notSuccessFullyUpdated}} rooms</span>
+    <!-- {not-completed} is the number of rooms for which the update was not completed -->
+    <span class="text">
+        <span class="icon-before-text icon-ok-10">{{completedData.successFullyUpdated}} Rooms were placed {{completedData.serviceName}}</span>
+        <!-- {completed} is the number of rooms for which the status has been successfully updated -->
+        <!-- {update-status} is the new status of the rooms: 'out of order' or 'out of service' -->
+    </span>
+    <div class="rooms-not-completed scrollable" ng-iscroll="rooms-list-to-forcefully-update">
+        <ul class="wrapper" >
+            <!-- This is the HTML of a room which status can be changed/updated -->
+            <li class="room" ng-class="{'locked': rooms.is_locked}" ng-repeat="rooms in completedData.assignedRoomsList">
+                <span class="number" ng-hide="rooms.is_locked">
+                    {{rooms.room_number}}
+                </span>
+                <span class="guest" ng-hide="!rooms.is_locked && rooms.isMultipleReservation">
+                    {{rooms.GuestName}}
+                    <span class="reservation">
+                       {{rooms.reservationData}}
+                    </span>
+                </span>
+                <span class="reservation" ng-show="!rooms.is_locked && rooms.isMultipleReservation">
+                       {{rooms.reservationData}}
+                    </span>
+                <label ng-hide="rooms.is_locked" class="checkbox inline" for="Room Number" ng-class="{ checked : rooms.is_add_to_update}">
+                    <span class="icon-form icon-checkbox" ng-class="{ checked : rooms.is_add_to_update}"></span>
+                    <input type="checkbox" ng-model="rooms.is_add_to_update"/>
+                </label>
+                <span class="text" ng-show="rooms.is_locked">
+                    Web booking in progress, can't place room {{completedData.serviceName}}
+                </span>
+            </li>
+
+
+
+        </ul>
+    </div>
+
+    <div class="actions">
+         <button type="button" class="button blank" ng-click="closeForcefullyUpdatePopup()">Close</button>
+         <button type="button" class="button blue" ng-click="forcefullyPutRoomToOOSorOOO()">Put Selected Rooms {{completedData.serviceName}}</button>
+         <!-- {update-status-short} is an acronym of the status we want to update (OOO or OOS)  -->
+    </div>
+</div>
+</div>

@@ -1,9 +1,10 @@
-sntRover.service('RVreportsSrv', [
+angular.module('sntRover').service('RVreportsSrv', [
 	'$q',
 	'rvBaseWebSrvV2',
 	'RVreportsSubSrv',
 	'$vault',
-	function($q, rvBaseWebSrvV2, subSrv, $vault) {
+	'$http',
+	function($q, rvBaseWebSrvV2, subSrv, $vault, $http) {
 		var service       = {},
 			choosenReport = {};
 
@@ -56,6 +57,26 @@ sntRover.service('RVreportsSrv', [
 				.then( fetchAdditionalAPIs.bind(null, deferred), failed );
 
 			return deferred.promise;
+		};
+
+		service.exportCSV = function(params){
+			var deferred = $q.defer();
+			$http({
+				method: 'POST', 
+				url: params.url, 
+				data: params.payload
+			}).success(function(data, status, headers, config) {
+                 var hiddenAnchor = angular.element('<a/>');
+			     hiddenAnchor.attr({
+			         href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+			         target: '_blank',
+			         download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
+			     })[0].click();
+			     deferred.resolve(true);
+            }).error(function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+			return deferred.promise;		
 		};
 
 		/**

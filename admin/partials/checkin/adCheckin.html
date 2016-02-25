@@ -22,7 +22,41 @@
 
 					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>	
 				</fieldset>
-				<fieldset class="holder right holder_margin">	
+
+                <fieldset class="holder right holder_margin">
+
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+
+                                <select ng-model="checkinData.next_day_checkin_alert_time_hour">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+
+
+                                <select ng-model="checkinData.next_day_checkin_alert_time_minute">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+
+                            </div>
+                            <div class="select select-col select-margin">
+
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.next_day_checkin_alert_primetime">
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+				<fieldset class="holder right holder_margin">
 
 					<div class="entry full-width">
 						<label>
@@ -54,6 +88,7 @@
 						</div>
 						</div>
 				</fieldset>
+
                 <fieldset class="holder right holder_margin">
 						<div class="entry full-width">
 						<label>
@@ -131,6 +166,7 @@
 						</div>
 					</div>
 				</fieldset>
+		
 				
 				<fieldset class="holder left holder_margin"  ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">	
 					<div class="entry full-width" >
@@ -327,6 +363,57 @@
 							</div>
 							</div>
 						</fieldset>
+
+
+				<fieldset class="holder full-width">
+					<div class="form-title half-width-title">
+						<h3><span translate="">GUEST_DETAIL_COLLECTION</span> </h3>
+					</div>
+					<!-- flag to check if we need to ask for guset details  -->
+					<div class="form-subtitle-title">
+						<h6><span translate="">COLLECT_ADDRESS_IN_ONE_SCREEN</span> </h6>
+					</div>
+					<ad-toggle-button is-checked="checkinData.guest_address_on" label="{{ 'ASK_GUEST_ADDRESS_DETAILS' | translate}}" div-class="full-width"></ad-toggle-button>
+					<div class="form-title half-width-title">
+						<h3><span  translate="">BIRTHDATE_COLLECTION</span> </h3>
+					</div>
+					<div class="form-subtitle-title">
+						<h6><span translate="">COLLECT_BIRTHDAY_SEPERATELY</span> </h6>
+					</div>
+					<!-- flag to check if we need to check for guset birthdate  -->
+					<ad-toggle-button is-checked="checkinData.birthdate_on" label="{{ 'PROMPT_FOR_BIRTHDATE' | translate}}" div-class="full-width"></ad-toggle-button>
+					<!-- flag to check if we need to check for guset birthdate  -->
+					<ad-toggle-button is-checked="checkinData.birthdate_mandatory" label="{{ 'BIRTHDATE_IS_MANDATORY' | translate}}" div-class="full-width"></ad-toggle-button>
+					<!-- field to set age restriction -->
+					<div class="entry full-width">
+						<label>
+							{{ 'MINIMUM_AGE_REQUIRED_TO_CHECKIN' | translate}}
+						</label>
+						<div class="form-subtitle-title">
+							<h6><span translate="">COLLECT_BIRTHDAY_INSTRUCTION</span> </h6>
+						</div>
+						<div class="entry full-width float">
+							<div class="select select-col col1-3">
+								<select ng-options="age for age  in [0,18,21]" ng-model="checkinData.minimum_age">
+									<option style="display:none" value="">SELECT AGE</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-title half-width-title">
+						<h3><span  translate="">ADDRESS_COLLECTION</span> </h3>
+					</div>
+					<div class="form-subtitle-title">
+						<h6><span translate="">COLLECT_ADDRESS_SEPERATELY</span> </h6>
+					</div>
+					<!-- flag to check if we need to ask for guest address -->
+					<ad-toggle-button is-checked="checkinData.prompt_for_address_on" label="{{ 'PROMPT_FOR_GUEST_ADDRESS' | translate}}" div-class="full-width"></ad-toggle-button>
+					<!-- flag to check if we need to ask for CC entry-->
+					<div class="form-title half-width-title">
+						<h3 class="ng-binding"><span class="ng-scope" translate="">GUEST_CC_COLLECTION</span> </h3>
+					</div>
+					<ad-toggle-button is-checked="checkinData.checkin_collect_cc" label="{{'PROMPT_FOR_CC' | translate}}" div-class="full-width"></ad-toggle-button>
+				</fieldset>
 				
 				<fieldset class="holder left">
 
@@ -356,9 +443,35 @@
 
 					</div>
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = "" ng-show="hideAddOption"></ad-textarea>
+					
 
-					<ad-toggle-button is-checked="checkinData.guest_address_on" label="{{ 'ASK_GUEST_ADDRESS_DETAILS' | translate}}"></ad-toggle-button>
-
+				</fieldset>
+						<!-- room key communication options -->
+				<fieldset class="holder left">
+					<div class="form-title half-width-title">
+						<h3><span translate="">ROOM_KEY_COMMUNICATIONS</span> </h3>
+					</div>
+					<ad-toggle-button is-checked="checkinData.offer_room_delivery_options" label="{{ 'OFFER_ROOM_DELIVERY_OPTIONS' | translate}}" div-class="full-width"></ad-toggle-button>
+					<div id="options" class="entry" ng-hide="!checkinData.offer_room_delivery_options">
+						<label>
+							{{ 'ROOM_KEY_COMMUNICATION_OPTIONS' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication== 'email'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication=='email'}"></span>
+							<input type="radio" value="email" ng-model="checkinData.guest_delivery_communication"  >
+							{{ 'EMAIL' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_or_text'}"></span>
+							<input type="radio" value="email_or_text" ng-model="checkinData.guest_delivery_communication" >
+							{{ 'EMAIL_OR_TEXT_MESSAGE' | translate}}
+						</label>
+						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_and_text'}"></span>
+							<input type="radio" value="email_and_text" ng-model="checkinData.guest_delivery_communication" >
+							{{ 'EMAIL_AND_TEXT_MESSAGE' | translate}}
+						</label>
+					</div>
 				</fieldset>
 
 				<div class="actions float">

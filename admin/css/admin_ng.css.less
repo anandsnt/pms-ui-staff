@@ -2,39 +2,41 @@
 
 /* 1. ROOT
 ==========================================================*/
-@import "../stylesheets/less/common/01-A_reset.less";
+@import "stylesheets/less/common/01-A_reset.less";
 
-@import "../stylesheets/less/common/01-B_variables.less";
-@import "../stylesheets/less/admin/01-B_variables.less"; 
+@import "stylesheets/less/common/01-B_variables.less";
+@import "stylesheets/less/admin/01-B_variables.less"; 
 
-@import "../stylesheets/less/common/01-C_mixins.less"; 
-@import "../stylesheets/less/common/01-D_mixins-animations.less"; 
+@import "stylesheets/less/common/01-C_mixins.less"; 
+@import "stylesheets/less/common/01-D_mixins-animations.less"; 
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-@import "../stylesheets/less/common/02_typography.less"; 
-@import "../stylesheets/less/admin/02_typography.less"; 
+@import "stylesheets/less/common/02_typography.less"; 
+@import "stylesheets/less/admin/02_typography.less"; 
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
-@import "../stylesheets/less/common/03_graphics.less"; 
-@import "../stylesheets/less/admin/03_graphics.less"; 
+@import "stylesheets/less/common/03_graphics.less"; 
+@import "stylesheets/less/admin/03_graphics.less"; 
 
 /* 4. LAYOUT
 ==========================================================*/
-@import "../stylesheets/less/common/04_layout.less";
-@import "../stylesheets/less/admin/04_layout.less";
+@import "stylesheets/less/common/04_layout.less";
+@import "stylesheets/less/admin/04_layout.less";
 
 /* 5. COMPONENTS
 ==========================================================*/
-@import "../stylesheets/less/common/05-A_components.less";
-@import "../stylesheets/less/admin/05-A_components.less";
+@import "stylesheets/less/common/05-A_components.less";
+@import "stylesheets/less/admin/05-A_components.less";
 
-@import "../stylesheets/less/common/05-B_forms.less";
-@import "../stylesheets/less/admin/05-B_forms.less";
+@import "stylesheets/less/app/screens/12.reports.less";
 
-@import "../stylesheets/less/common/05-C_plugins.less";
-@import "../stylesheets/less/admin/05-C_plugins.less"; 
+@import "stylesheets/less/common/05-B_forms.less";
+@import "stylesheets/less/admin/05-B_forms.less";
+
+@import "stylesheets/less/common/05-C_plugins.less";
+@import "stylesheets/less/admin/06-C_plugins.less"; 
 
 
 /* 6. IE
@@ -44,14 +46,55 @@
 
 /* 1024px                   ================*/
 @media only screen and (max-width : 1024px) {
-  @import "../stylesheets/less/admin/07-A_1024.less";
+  @import "stylesheets/less/admin/07-A_1024.less";
 }
 
 /* 1024px +                 ================*/
 @media only screen and (min-width : 1025px) {
-  @import "../stylesheets/less/admin/07-B_1024.less";
+  @import "stylesheets/less/admin/07-B_1024.less";
 }
 
+
+/* CICO-24493 report overrides start ***/
+  .reports-list {
+        padding: 0;
+
+        li {
+            .toggle-filter { 
+                background-size: 14px;
+                background-repeat: no-repeat;
+                background-image: @arrowDown2x; 
+                .show; 
+
+                &.active { background-image: @arrowUp2x; }
+            }
+
+            .data { margin-left: 0; }
+
+            .configure-report {
+                
+                .button.purple {
+                    &:last-child { right: 10px; }
+                }
+
+                .button.only-icon {
+                    .app-icons {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        margin: -10px 0 0 -10px;
+                        .square(20px);
+                    }
+                }
+            }
+        }
+    }
+
+/* CICO-24493 report overrides stop ***/
+
+.ui-match { 
+  color: #F6991B !important; margin-right: 0px !important;
+}
 
 
 .form_add_new_rate{  
@@ -164,7 +207,7 @@ height: 271px;
   background-position: 13px -789px;
 }
 .red_mover,.green_mover{
-    background-image: url("/assets/admin/admin-icons.png");
+    background-image: url("/assets/cssimg/admin/admin-icons.png");
     background-repeat: no-repeat;
     height:40px !important;
 
@@ -184,6 +227,12 @@ height: 271px;
     color:#ACCE8D;
 }
 
+.green-color-force {
+    color:#6ED41E !important;
+}
+.snt-color-force {
+    color:#ff860d !important;
+}
 .actions_margin_top{
   
   margin-top:20px;
@@ -193,7 +242,7 @@ height: 271px;
 }
 
 .icons_rates {
-    background-image: url("/assets/admin/admin-icons.png");
+    background-image: url("/assets/cssimg/admin/admin-icons.png");
     background-repeat: no-repeat;
     border: 0 none;
     display: block;
@@ -399,7 +448,7 @@ height: 271px;
 }
 .date-picker-bg{
   
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+  background: url("cssimg/texture.png") repeat scroll 0 0 #FCFCFC;
   padding:10px;
   margin:5px;
 }
@@ -1114,8 +1163,9 @@ div.move-all-icons{
     }
 }
 .webcheckout-uri-field{
-  width:200px !important;
-  margin-left:5px;
+    float: left;
+    width: 35%!important;
+    margin-left: 10px;
 }
 
 .webcheckout-uri-label{
@@ -1233,4 +1283,71 @@ div.move-all-icons{
 }
 #siteminder-date-picker {
     padding-top: 10px !important;
+}
+/* CICO-17822 key delivery check box
+---------------------------------*/
+.key-delivery-checkbox {
+    width: 100% !important;
+}
+.zest-admin-indent-20{
+    margin-left: 20px; 
+    width: 100%;
+}
+.zest-admin-label-inline{
+    float: left;
+    margin-top: 13px;
+    margin-right: 5px;
+    &.zest-nowrap-inline{
+        white-space:nowrap;
+    }
+    &.bold{
+      //  font-weight: bold;
+    }
+    >span{
+        color: black !important;
+    }
+    &.hold-left{
+        margin-left: -20px; 
+    }
+    &.admin-pre-label{
+        margin-top:-10px !important;
+    }
+}
+.zest-admin-top{
+    margin-top:-10px;
+}
+.zest-admin-url-box{
+    &>input{
+        width: 185px !important;
+        float: right !important;
+      //  margin-top: -40px !important;
+    }
+}
+
+.no-wrap-labels{
+    >div>label{
+        white-space:nowrap;
+    }
+}
+.no-margin-holder{
+    margin-bottom:0px !important;
+}
+.room-upsell-block {
+    background-color: rgb(245, 245, 245);
+    padding: 15px;
+    >div>input{
+        background-color:white !important;
+    }
+}
+#room-type-details{
+    >div>div>span>div.entry{
+        width:100% !important;
+        padding-right:3px;
+    }
+}
+
+.add-new-direct-url{
+    padding: 5px 21px;
+    float: right;
+    color: #89BD55;
 }

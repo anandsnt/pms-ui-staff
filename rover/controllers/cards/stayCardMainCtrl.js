@@ -1,16 +1,22 @@
-sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv) {
+
+angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state', 'RVReservationSummarySrv', '$timeout', 'dateFilter', 'RVContactInfoSrv', '$q', 'RVReservationStateService', 'RVReservationDataService', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv','RVReservationPackageSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state, RVReservationSummarySrv, $timeout, dateFilter, RVContactInfoSrv, $q, RVReservationStateService, RVReservationDataService, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, RVReservationPackageSrv) {
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		var that = this;
 		if ($scope.guestCardData.cardHeaderImage === undefined || $scope.guestCardData.cardHeaderImage === "") {
-			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
+			$scope.guestCardData.cardHeaderImage = '/assets/images/avatar-trans.png';
 		}
 		$scope.pendingRemoval = {
 			status: false,
 			cardType: ""
 		};
+
+
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		
+
 
 		$scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;
@@ -197,6 +203,32 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.$emit("hideLoader");
 		};
 
+		var fetchExistingAddonsAndGotoRoomRates = function(options){
+			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservationId, function(response) {
+				$scope.$emit('hideLoader');
+				var roomData = $scope.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
+				// Reset addons package
+				roomData.addons = [];
+				angular.forEach(response.existing_packages, function(addon) {
+					roomData.addons.push({
+						quantity: addon.addon_count,
+						id: addon.id,
+						price: parseFloat(addon.amount),
+						amountType: addon.amount_type,
+						postType: addon.post_type,
+						title: addon.name,
+						totalAmount: addon.addon_count * parseFloat(addon.amount),
+						is_inclusive: addon.is_inclusive,
+						taxes: addon.taxes,
+						is_rate_addon: addon.is_rate_addon,
+						allow_rate_exclusion: addon.allow_rate_exclusion,
+						excluded_rate_ids: addon.excluded_rate_ids
+					});
+				});
+				$scope.navigateToRoomAndRates(options);
+			});
+		};
+
 		$scope.initGroupCard = function(groupId) {
 			var promises = [];
 			//we are not using our normal API calling since we have multiple API calls needed
@@ -377,7 +409,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var resData = $scope.reservationData,
 				disableBackToStaycard = (options && options.disableBackToStaycard);
 
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
+			$state.go(roomAndRatesState, {
 				from_date: resData.arrivalDate,
 				to_date: resData.departureDate,
 				fromState: function() {
@@ -433,7 +465,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
 				 * else reload staycard after detaching card */
 				if (response.contracted_rate_was_present) {
-					$scope.navigateToRoomAndRates({
+					fetchExistingAddonsAndGotoRoomRates({
 						disableBackToStaycard: true
 					});
 				} else {
@@ -564,13 +596,17 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				that.reloadStaycard();
 				$scope.$broadcast('paymentTypeUpdated'); // to update bill screen data
 			};
+			var routingApplyFailed = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.$emit("hideLoader");
+			};
 
 			var params = {};
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
 			params.reservation_ids = [];
 			params.reservation_ids.push($scope.reservationData.reservationId);
 
-			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess);
+			$scope.invokeApi(RVReservationSummarySrv.applyDefaultRoutingToReservation, params, routingApplySuccess, routingApplyFailed);
 		};
 
 		$scope.okClickedForConflictingRoutes = function() {
@@ -673,8 +709,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;
 					that.attachCompanyTACardRoutings(card, cardData);
+					ngDialog.close();
 				},
 				onReplaceFailure = function(error) {
+					
 					$scope.cardRemoved();
 					//480 is reserved for cases where trial to use the card fails fails
 					if (error.httpStatus === 480) {
@@ -688,6 +726,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						$scope.newCardData = cardData;
 						that.attachCompanyTACardRoutings(card, cardData);
 						RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', true);
+						ngDialog.close();
+	 				}
+	 				else{
+	 					$scope.$broadcast("SHOWERRORMESSAGE",error);
 	 				}
 					$scope.$emit('hideLoader');
 				},
@@ -732,9 +774,9 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 * CICO-20674: when there is more than one contracted rate we
 			 * should take the user to room and rates screen after applying the routing info
 			 */
-			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== "rover.reservation.staycard.mainCard.roomType" && !$scope.reservationData.group.id) {
-				$scope.navigateToRoomAndRates();
-			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined") {
+			if ($scope.newCardData.hasOwnProperty('isMultipleContracts') && true == $scope.newCardData.isMultipleContracts && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
+				fetchExistingAddonsAndGotoRoomRates();
+			} else if ($scope.viewState.identifier === "STAY_CARD" && typeof $stateParams.confirmationId !== "undefined" && !$scope.viewState.lastCardSlot) {
 				if (RVReservationStateService.getReservationFlag('RATE_CHANGE_FAILED')) {
 					RVReservationStateService.setReservationFlag('RATE_CHANGE_FAILED', false);
 					ngDialog.open({

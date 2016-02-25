@@ -1,164 +1,32 @@
-<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()" >
-	<header class="content-title">
-	    <h2 ng-show="!isAddMode">Edit Floor <span>{{floorData.floor_number_old}}</span></h2>
-	    <h2 ng-show="isAddMode">New Floor</h2>
-	    <a ng-click ="back()" class="action back">Back to Floors</a>
-	    <button ng-show="!isAddMode" type="button" class="action remove" ng-click="deleteFloor()">
-	    	Delete Floor
-	    </button>
-	</header>
-	<section class="content-scroll">
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<form id="{{getFormIdForMe()}}" name="{{getFormNameForMe()}}" class="form">
-			<fieldset class="holder full-width">
-
-				<div class="form-title">
-					<h3 ng-show="!isAddMode"><span translate>EDIT</span> details </h3>
-					<h3 ng-show="isAddMode"><span translate>Floor</span> Details</h3>
-					<em class="status"> <span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span> </em>
-				</div>
-
-				<ad-textbox value="floorData.floor_number" name = "floor-number" id = "floor-number" label = "Number" placeholder = "Enter Floor No" required = "yes" maxlength=10 styleclass="margin"></ad-textbox>
-
-				<ad-textbox  value="floorData.description" name = "room-type-name" id = "room-type-name" label = "{{ 'DESCRIPTION' | translate }}" placeholder = "Enter Description" ></ad-textbox>
-			</fieldset>
-
-			<fieldset id="assign-rooms" class="holder full-width">
-				<div class="form-title">
-					<h3>
-						<span translate>FLOOR</span>
-						Rooms
-					</h3>
-					<em class="status"> <span translate>ASSIGN_ROOMS_TO_THIS_FLOOR</span></em>
-				</div>
-					
-				<div class="entry has-sortable">
-		            <h4 translate>UNASSIGNED_ROOMS</h4>
-
-			         <div class="boxes with-search">
-			            <div class="search-form">
-
-			                <button class="clear-query" ng-click="clearQuery()" ng-class="{'visible': isSomethingEnteredInSearchBox()}" > <!-- Add class "visible" when search params exsist. Clicking this resets search -->
-			                    <span class="icons icon-clear-search">Clear query</span>
-			                </button>
-			                <input name="rooms-query" id="rooms-query" class="query" placeholder="Search by Number or Range" autocomplete="off" type="text" ng-model="floorData.searchKey"  />
-			                
-			                <button type="button" name="button" class="button blue" ng-click="searchInUnassignedRooms()" translate>SEARCH</button>
-			            </div>	
-		                <!-- Default -->
-		                <div class="no-content" ng-show="shouldShowFindRooms()">
-		                    <div class="info">
-		                        <strong class="h1" ng-hide ="isSearchResult" translate>FIND_ROOMS</strong>
-		                        <strong class="h1" ng-show ="isSearchResult" translate>NO_RESULT_FOUND</strong>
-		                        <span class="h2">Search by number or range, e.g. "<strong>10</strong>" or "<strong>40-60</strong>"</span>
-		                        <span class="h2">Search by multiple numbers or ranges, e.g. "<strong>10; 40-60</strong>"</span>
-		                        <button type="button" id="show-all-unassigned" ng-click="showAllUnassignedRooms()" class="button brand-colors">Show All Unassigned Rooms</button>
-		                    </div>
-		                </div>
-		                            	
-						<ul class="sortable" data-type="source" 
-							
-							data-drop="true" 
-							jqyoui-droppable="{multiple:true, onDrop: 'droppedOnUnAssignedRoomList'}" 
-							data-jqyoui-options="{accept:'.assigned-rooms'}" ng-model="unassignedRooms">
-
-							<li class="non-assigned-room" 
-								ng-repeat="room in unassignedRooms"
-
-								data-drag = "true"
-								jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
-
-								ng-model="unassignedRooms"
-								data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
-
-								ng-click = "unAssignedRoomSelected(room)"
-								ng-class = "{'selected': amInSelectedUnAssignedRooms(room)}">
-
-								{{room.room_number}}
-
-								<span class="icons icon-handle"></span>
-							</li>
-						</ul>
-							<!-- Actions -->
-			            <div class="actions">
-			                <button type="button" class="button white brand-text" ng-click="selectAllUnassignedRooms()"  
-			                ng-class="{'hidden': shouldDisableSelectAllForUnAssigned()}"
-							translate>
-			                	SELECT_ALL
-			                </button>
-
-			                <button type="button" class="button green" ng-class="{'hidden': !shouldShowAssignSelectedForUnAssigned()}" ng-click="moveSelectedUnAssignToAssignList()" >
-			                	{{'ASSIGN_SELECTED'|translate}}
-			                	<span class="icons white-arrow-right"></span>
-			                	
-			                </button> <!-- Remove class "hidden" when some/all rooms are selected -->
-			            </div> 					
-						
-					</div>
-			</div>
-			<div class="entry has-sortable">
-		        <h4 class="green" translate>ASSIGNED_ROOMS</h4>
-
-				<div class="boxes">	
-				    <div class="no-content" ng-show="shouldShowNoRooms()">
-		                    <div class="info">
-		                        <strong class="h1" translate>NO_ROOMS</strong>
-		                        <span class="h2"> Search and select rooms from the left hand side first</span>
-		                    </div>
-		            </div>	
-		         <!--    <ul class="sortable empty" data-type="target" ng-show="shouldShowDropHere()">
-		                    <span class="placeholder ui-state-disabled">Drop room here to assign it to the floor</span>
-		            </ul>-->					
-					<ul class="sortable" data-type="target" 					
-						
-						data-drop="true" 
-
-						jqyoui-droppable="{multiple:true, onDrop: 'droppedOnAssignedRoomList'
-						, onOut: 'tryingToDropOnUnAssigned'}" 
-						data-jqyoui-options="{accept:'.non-assigned-room'}"  ng-model="assignedRooms"
-						ng-class = "{'empty':shouldShowDropHere()}">
-                          <span class="placeholder ui-state-disabled" ng-show="shouldShowDropHere()">Drop room here to assign it to the floor</span>
-					    <li class="assigned-rooms" 
-							 ng-repeat="room in assignedRooms"
-
-							data-drag = "true"
-							jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem', onDrag: 'tryingToDropOnUnAssigned' }"
-
-							data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
-							ng-model="assignedRooms"
-							ng-click = "assignedRoomSelected(room)"
-							ng-class = "{'selected': amInSelectedAssignedRooms(room)}">
-
-							{{room.room_number}}
-
-							<span class="icons icon-handle"></span>
-						</li>			
-					</ul>
-					 <!-- Actions -->
-		            <div class="actions">
-						<button type="button" class="button white brand-text" ng-class="{'hidden': shouldDisableSelectAllForAssigned()}" ng-click="selectAllAssignedRooms()" translate>
-					    	SELECT ALL
-				        </button>
-				        <button type="button" class="button red" ng-click="moveSelectedAssignToUnAssignList()"  ng-class="{'hidden': !shouldShowAssignSelectedForAssigned()}">
-				        	{{'UNASSIGN SELECTED'|translate}}
-					    	<span class="icons white-arrow-left"></span>
-				        </button>	
-				    </div>
-				</div>
-			</div>
-				
-			</fieldset>	
-			<div class="actions ">
-				<button type="button" id="cancel" class="button blank" ng-click="clickCancel()" translate>
-					CANCEL
-				</button>
-				<button type="button" like-type="common" id="update" class="button " 
-				ng-click="saveFloor()" ng-disabled="shouldDisableSaveButton()"
-				ng-class="{'green': !shouldDisableSaveButton(), 'grey': shouldDisableSaveButton()}"
-				translate>
-					SAVE_CHANGES
-				</button>
-			</div>
-		</form>
-	</section>
-</div> 
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title">
+        <h2 ng-show="!isAddMode">Edit Floor <span>{{floorData.floor_number_old}}</span></h2>
+        <h2 ng-show="isAddMode">New Floor</h2>
+        <a ng-click="back()" class="action back">Back to Floors</a>
+        <button ng-show="!isAddMode" type="button" class="action remove" ng-click="deleteFloor()">
+            Delete Floor
+        </button>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <form id="{{getFormIdForMe()}}" name="{{getFormNameForMe()}}" class="form">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3 ng-show="!isAddMode"><span translate>EDIT</span> details </h3>
+                    <h3 ng-show="isAddMode"><span translate>Floor</span> Details</h3>
+                    <em class="status"> <span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span> </em>
+                </div>
+                <ad-textbox value="floorData.floor_number" name="floor-number" id="floor-number" label="Number" placeholder="Enter Floor No" required="yes" maxlength=10 styleclass="margin"></ad-textbox>
+                <ad-textbox value="floorData.description" name="room-type-name" id="room-type-name" label="{{ 'DESCRIPTION' | translate }}" placeholder="Enter Description"></ad-textbox>
+            </fieldset>
+            <div class="actions ">
+                <button type="button" id="cancel" class="button blank" ng-click="clickCancel()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button " ng-click="saveFloor()" ng-disabled="shouldDisableSaveButton()" ng-class="{'green': !shouldDisableSaveButton(), 'grey': shouldDisableSaveButton()}" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </form>
+    </section>
+</div>

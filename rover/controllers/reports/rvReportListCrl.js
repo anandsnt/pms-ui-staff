@@ -20,9 +20,11 @@ sntRover.controller('RVReportListCrl', [
         /**
          * inorder to refresh after list rendering
          */
-        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+        var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
+            $scope.refreshScroller( LIST_ISCROLL_ATTR );
         });
+        
+        $scope.$on( '$destroy', listRendered );
 
 
 
@@ -94,13 +96,26 @@ sntRover.controller('RVReportListCrl', [
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function(reportItem) {
-            // this.item.show_filter = this.item.show_filter ? false : true;
-            // $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        $scope.toggleFilter = function(e, reportItem) {
+            if ( e ) {
+                e.preventDefault();
+                e.stopPropagation();
+            };
 
             var toggle = function() {
                 reportItem.show_filter = reportItem.show_filter ? false : true;
                 $scope.refreshScroller( LIST_ISCROLL_ATTR );
+
+                // close any open 'FAUX_SELECT'
+                _.each($scope.$parent.reportList, function(thatReport, index) {
+                    if ( thatReport.id != reportItem.id ) {
+                        _.each(thatReport, function(value, key) {
+                            if ( !!value && value.type === 'FAUX_SELECT' ) {
+                                value.show = false;
+                            };
+                        });
+                    };
+                });
             };
 
             var callback = function() {
@@ -117,7 +132,7 @@ sntRover.controller('RVReportListCrl', [
             };
         };
 
-        $scope.setnGenReport = function() {
+        $scope.setnGenReport = function(report) {
             var lastReportID  = reportsSrv.getChoosenReport().id,
                 mainCtrlScope = $scope.$parent;
 
@@ -125,11 +140,11 @@ sntRover.controller('RVReportListCrl', [
             // 'resetSelf' on printOption to clear out any method
             // that may have been created a specific report ctrl
             // READ MORE: rvReportsMainCtrl:L#:61-75
-            if ( lastReportID != this.item.id ) {
+            if ( lastReportID != report.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             };
-            reportsSrv.setChoosenReport( this.item );
-            $scope.genReport();
+            reportsSrv.setChoosenReport( report );
+            mainCtrlScope.genReport();
         };
 
 
@@ -138,7 +153,7 @@ sntRover.controller('RVReportListCrl', [
         });
 
         // removing event listners when scope is destroyed
-        $scope.$on( 'destroy', serveRefresh );
+        $scope.$on( '$destroy', serveRefresh );
 
         
     }

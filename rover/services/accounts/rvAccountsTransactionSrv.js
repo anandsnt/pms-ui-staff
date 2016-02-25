@@ -1,4 +1,4 @@
-sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
 		var self = this;
@@ -182,6 +182,26 @@ sntRover.service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		/*
+		* Service to get the invoice for group/house accounts
+		* @method POST
+		* @param {object} params
+		* @return {object} defer promise
+		*/
+		this.fetchAccountBillsForPrint = function(params) {
+			var deferred = $q.defer();
+			var url = '/api/posting_accounts/print_bill_card';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
 					deferred.reject(data);
 				});
 

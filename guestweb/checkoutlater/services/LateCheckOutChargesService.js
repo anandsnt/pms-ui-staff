@@ -44,5 +44,5 @@ var dependencies = [
 LateCheckOutChargesService
 ];
 
-snt.factory('LateCheckOutChargesService', dependencies);
+sntGuestWeb.factory('LateCheckOutChargesService', dependencies);
 })();

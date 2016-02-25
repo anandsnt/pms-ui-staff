@@ -1,4 +1,4 @@
-sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+angular.module('sntRover').service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 
 	this.loyalties = {};
 	var that =this;

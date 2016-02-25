@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
+	function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -10,7 +10,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 		 * @return {Boolean} [description]
 		 */
 		var whetherSummaryDataChanged = function() {
-			var currentSummaryData = $scope.groupConfigData.summary;
+			var currentSummaryData = _.omit($scope.groupConfigData.summary, ['rooms_total']);
 			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
@@ -320,7 +320,8 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 				return;
 			}
 
-			if ($scope.isInAddMode() || (targetElement.id === 'summary') ||
+			if (!$scope.updateGroupSummary || //This is used in the res-cards and this method is not available there
+                $scope.isInAddMode() || (targetElement.id === 'summary') ||
 				targetElement.id === "cancel-action" || //TODO: Need to check with Dilip/Shiju PC for more about this
 				whetherSummaryDataChanged() ||
 				$scope.groupSummaryData.isDemographicsPopupOpen ||
@@ -562,8 +563,7 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			//date picker options - Common
 			var commonDateOptions = {
 				dateFormat: $rootScope.jqDateFormat,
-				numberOfMonths: 1,
-				yearRange: '-1:'
+				numberOfMonths: 1
 			};
 
 			var sumryData = $scope.groupConfigData.summary,
@@ -676,18 +676,20 @@ sntRover.controller('rvGroupConfigurationSummaryTab', ['$scope', '$rootScope', '
 			$scope.attachedEntities = {};
 			$scope.attachedEntities.posting_account = _.extend({}, {
 				id: summaryData.group_id,
-				name: summaryData.posting_account_name,
+				name: $scope.accountConfigData.summary.posting_account_name,
 				logo: "GROUP_DEFAULT"
 			});
-
-			ngDialog.open({
-				template: '/assets/partials/bill/rvBillingInformationPopup.html',
-				controller: 'rvBillingInformationPopupCtrl',
-				className: '',
-				closeByDocument: true,
-				scope: $scope
+	    	$scope.$emit('showLoader'); 
+           	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+            .then(function(){
+            	$scope.$emit('hideLoader'); 
+			    ngDialog.open({
+			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+			        controller: 'rvBillingInformationPopupCtrl',
+			        className: '',
+			        scope: $scope
+			    });
 			});
-
 		};
 
 		$scope.$on("BILLINGINFOADDED", function() {

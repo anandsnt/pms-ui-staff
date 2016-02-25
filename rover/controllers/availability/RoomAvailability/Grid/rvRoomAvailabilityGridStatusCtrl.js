@@ -1,4 +1,4 @@
-sntRover.controller('rvRoomAvailabilityGridStatusController', [
+angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'$timeout',
@@ -116,6 +116,27 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 			if (totalColumns == 30) {
 				return (totalColumns * individualColWidth + leftMostRowCaptionWidth);
 			}
+		};
+
+		$scope.getClassForHoldStatusRow = function(source, id) {
+			var group,
+				isDeduct,
+				retCls;
+
+			if ( !$scope.showShowGroupAllotmentTotals || !source ) {
+				retCls = 'hidden';
+			} else {
+				group    = _.findWhere(source.holdStatus, { id: id });
+				isDeduct = group && group['is_take_from_inventory'];
+
+				if ( group && isDeduct ) {
+					retCls = '';
+				} else {
+					retCls = 'hidden';
+				};
+			};
+
+			return retCls;
 		};
 
 		init();

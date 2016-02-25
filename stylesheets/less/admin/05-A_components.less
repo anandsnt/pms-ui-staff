@@ -734,7 +734,7 @@
         .boxes {
             position: relative;
             padding: 0;
-            .size(420px, 100%);
+            .size(480px, 100%);
 
             .search-form {
                 position: relative;
@@ -825,7 +825,8 @@
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 .size(360px, 100%);
-                .float;
+                .float,
+                &:nth-child(2) {.size(420px, 100%);};
 
                 li {
                     margin-right: 10px;
@@ -954,6 +955,11 @@
                     .button {
                         .pull-left;
                         &.green { .pull-right; }
+                        &.pagination {
+                            .pull-right;
+                            margin: 0 5px;
+                            width: 75px;
+                        }
                     }
                 }
             }

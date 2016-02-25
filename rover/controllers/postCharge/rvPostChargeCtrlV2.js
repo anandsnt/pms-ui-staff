@@ -13,6 +13,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.fetchedData.charge_groups = [];
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
+			$scope.disablePostChargeButton = false;
 
 			var scrollerOptions = { preventDefault: false };
   			$scope.setScroller ('items_list', scrollerOptions);
@@ -446,6 +447,18 @@ sntRover.controller('RVPostChargeControllerV2',
 			};
 
 			$scope.postCharges = function() {
+
+				// CICO-23196 => to disable Multiple Postings/API requests from UI.
+				// We are disabling the POST CHARGE button on the click itself.
+				$scope.disablePostChargeButton = true;
+
+				var failureCallback = function(errorMessage){
+		  			$scope.$emit('hideLoader');
+		   			$scope.errorMessage = errorMessage;
+		   			// CICO-23196 : Enable POST CHARGE button on error.
+		   			$scope.disablePostChargeButton = false;
+		   		};
+
 				var items = [],
 					each = {};
 
@@ -479,15 +492,45 @@ sntRover.controller('RVPostChargeControllerV2',
 				/****    CICO-6094    **/
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
+					// CICO-21768 - Alert to show Credit Limit has exceeded.
+					if( data.has_crossed_credit_limit ) {
+	                    ngDialog.open({
+	                        template: '/assets/partials/bill/rvBillingInfoCreditLimitAlert.html',
+	                        className: '',
+	                        closeByDocument: false,
+	                        scope: $scope
+	                    });
+	                }
 					// update the price in staycard
-					if(!$scope.isOutsidePostCharge){
+					else if(!$scope.isOutsidePostCharge){
 						$scope.$emit('postcharge.added', data.total_balance_amount);
 						$scope.closeDialog();
 					}
 					else{
 						$rootScope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
 					}
 				};
+
+				var callbackApplyToBillOne = function(){
+					$scope.$emit( 'hideLoader' );
+					// update the price in staycard
+					if(!$scope.isOutsidePostCharge){
+						$scope.$emit('postcharge.added', data.total_balance_amount);
+					}
+					else{
+						$rootScope.$emit( 'CHARGEPOSTED' );
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
+					}
+					$scope.closeDialog();
+				};
+				// CICO-21768 - Forcefully posting to Bill#1 while Credit Limit has exceeded.
+				$scope.applyToBillOne = function(){
+					data.bill_no = "1";
+					data.post_to_bill_one = true;
+					$scope.invokeApi(RVPostChargeSrvV2.postCharges, data, callbackApplyToBillOne, failureCallback);
+				};
+
 				var accountsPostcallback = function(){
 					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
@@ -498,10 +541,10 @@ sntRover.controller('RVPostChargeControllerV2',
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
 					if(isFromAccounts){
-						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
+						$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 					}
 					else{
-						$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback);
+						$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback, failureCallback);
 					};
 				}
 				else{
@@ -519,10 +562,10 @@ sntRover.controller('RVPostChargeControllerV2',
 						var createBillSuccessCallback = function(){
 							$scope.$emit('hideLoader');
 							//Fetch data again to refresh the screen with new data
-							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback);
+							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 
 						};
-						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback, failureCallback);
 					}
 					else{
 						/*
@@ -542,7 +585,7 @@ sntRover.controller('RVPostChargeControllerV2',
 								$scope.reviewStatusArray.push(data);
 							}
 						};
-						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback, failureCallback);
 					}
 				}
 			};
@@ -560,7 +603,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				return JSON.stringify (string);
 			};
 
-			$rootScope.$on('POSTCHARGE', function( event, data ) {
+			$scope.$on('POSTCHARGE', function( event, data ) {
 			   	$scope.postCharges();
 			});
 

@@ -111,5 +111,5 @@ var dependencies = [
 checkOutLaterSuccessController
 ];
 
-snt.controller('checkOutLaterSuccessController', dependencies);
+sntGuestWeb.controller('checkOutLaterSuccessController', dependencies);
 })();

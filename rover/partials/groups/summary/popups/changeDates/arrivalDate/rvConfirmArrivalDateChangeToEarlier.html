@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <div class="modal-content group-date">
         <button id="modal-close" type="button" class="modal-close" ng-click="cancelChangeDatesAction()"><span class="icons icon-close invert"></span></button>
         

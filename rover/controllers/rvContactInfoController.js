@@ -1,4 +1,4 @@
-sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams',
+angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams',
   function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams) {
 
     BaseCtrl.call(this, $scope);
@@ -158,7 +158,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
-      if (!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) {
+      if ((!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
         $scope.saveContactInfo(true);
       } else {
         $scope.saveContactInfo();

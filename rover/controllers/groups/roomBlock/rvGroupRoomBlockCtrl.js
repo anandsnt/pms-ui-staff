@@ -1,4 +1,4 @@
-sntRover.controller('rvGroupRoomBlockCtrl', [
+angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 	'$scope',
 	'$rootScope',
 	'$filter',
@@ -785,6 +785,12 @@ sntRover.controller('rvGroupRoomBlockCtrl', [
 						$scope.saveRoomBlock(true);
 					}
 				}
+				else {
+					$scope.errorMessage = error;
+				}
+			}
+			else {
+				$scope.errorMessage = error;
 			}
 		};
 

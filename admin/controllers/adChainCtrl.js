@@ -6,6 +6,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
+        $scope.charLimitPerText = 160;
+        $scope.charMaxLimit = 500;
    /*
     * To fetch hotel chains list
     */
@@ -38,8 +40,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 				$scope.editData.lov.push({'value':'','name':''});
 			}
 			$scope.isEditmode = true;
-			$scope.fileName = ($scope.editData.ca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
-			$scope.apns_file = ( $scope.editData.apns_certificate !== "" && typeof $scope.editData.apns_certificate !== 'undefined')  ? 'Certificate Attached' :'Choose file ...';
+			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' :'Choose file ...';
+			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' :'Choose file ...';
 		};
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
@@ -139,6 +141,15 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		};
  		$scope.invokeApi(adChainsSrv.update, updateData, updateChainSuccessCallback, updateChainFailureCallback);
  	};
+        
+        $scope.getPages = function(r){//response text length
+            if (r > 0){
+                return (Math.ceil(r/$scope.charLimitPerText));
+            } else {
+                return 1;
+            }
+        };
+        
    /*
     * To handle cancel click event
     */

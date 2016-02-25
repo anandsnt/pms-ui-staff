@@ -3,13 +3,13 @@
 	<!-- Card toggle - Use only if there are exsiting cards on file -->
 	
         <ul class="card-toggle" ng-hide="hideCardToggles()" ng-init="checkForGiftCard();">
-		<li ng-class="{'active':existingSelected()}" ng-click="clickedExistingCard()">
+		<li ng-class="{'active':existingSelected()}" click-touch="clickedExistingCard()">
 			Existing Cards
 		</li>
-		<li ng-class="{'active':addNewSelected()}" ng-click="clickedAddNewCard()">
+		<li ng-class="{'active':addNewSelected()}" click-touch="clickedAddNewCard()">
 			Add New Card
 		</li>
-                <li ng-show="showGiftCardToggle()" ng-class="{'active':isGiftCard}" ng-click="clickedGiftCardToggle()">
+                <li ng-show="showGiftCardToggle()" ng-class="{'active':isGiftCard}" click-touch="clickedGiftCardToggle()">
 			Gift Card
 		</li>
 	</ul>
@@ -28,7 +28,7 @@
 
 			<label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card"> <!-- Add class "primary" when selected -->
 				<figure class="card-logo">
-					<img ng-src="/assets/{{card.card_code}}.png" alt="">
+					<img ng-src="/assets/images/{{card.card_code}}.png" alt="">
 				</figure>
 				<span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.mli_token}}</span></span>
 				<span class="date">{{'DATE' | translate}} <span class="value date">{{card.card_expiry}}</span></span>
@@ -104,12 +104,12 @@
 	</div>
         
         <div class="actions" ng-hide="!useDepositGiftCard">
-                <button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
+                <button type="button" id="close" class="button blank modal-close" click-touch="closeDepositModal()">
                         Close
                 </button>
                 <span>
                     <span>
-                        <button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close" 
+                        <button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" click-touch="clickedMakePayment()"  id="make-payment"  class="button modal-close" 
                         ng-hide="hideMakePayment()" >
                         Make Payment
                         </button>

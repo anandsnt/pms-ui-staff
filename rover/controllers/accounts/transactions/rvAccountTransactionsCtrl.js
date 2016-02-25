@@ -14,6 +14,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	'$timeout',
 	'$window',
 	'$q',
+	'jsMappings',
 	function($scope,
 		$rootScope,
 		$filter,
@@ -28,7 +29,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		rvPermissionSrv,
 		$timeout,
 		$window,
-		$q) {
+		$q,
+		jsMappings) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -58,7 +60,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				isAllChargeCodesSelected = false;
 			}
 			else{
-				console.log(billTabsData[$scope.currentActiveBill]);
 				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
 		        if (chargeCodes){
 		            if(chargeCodes.length > 0){
@@ -83,7 +84,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.isAnyOneChargeCodeIsExcluded = function(){
 			var isAnyOneChargeCodeIsExcluded = false;
 			var isAnyOneChargeCodeIsIncluded = false;
-			var billTabsData = $scope.transactionsDetails.bills;		
+			var billTabsData = $scope.transactionsDetails.bills;
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details
 			if(chargeCodes.length>0){
 				_.each(chargeCodes, function(chargeCode,index) {
@@ -107,40 +108,46 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.moveChargesClicked = function(){
-			var billTabsData = $scope.transactionsDetails.bills;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
-			//Data to pass to the popup
-			//1. Selected transaction ids
-			//2. Confirmation number
-			//3. AccountName
-			//4. CurrentBillNumber
-			//5. Current Bill id
-			$scope.moveChargeData = {};
-			$scope.moveChargeData.selectedTransactionIds = [];
-			var accountName = (typeof $scope.accountConfigData.summary.posting_account_name !== "undefined") ?$scope.accountConfigData.summary.posting_account_name :"";
-			$scope.moveChargeData.displayName = accountName;
-			$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
-			$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
+            $scope.$emit('showLoader');
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+            .then(function(){
+                $scope.$emit('hideLoader');
+
+				var billTabsData = $scope.transactionsDetails.bills;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				//Data to pass to the popup
+				//1. Selected transaction ids
+				//2. Confirmation number
+				//3. AccountName
+				//4. CurrentBillNumber
+				//5. Current Bill id
+				$scope.moveChargeData = {};
+				$scope.moveChargeData.selectedTransactionIds = [];
+				var accountName = (typeof $scope.accountConfigData.summary.posting_account_name !== "undefined") ?$scope.accountConfigData.summary.posting_account_name :"";
+				$scope.moveChargeData.displayName = accountName;
+				$scope.moveChargeData.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+				$scope.moveChargeData.fromBillId = billTabsData[$scope.currentActiveBill].bill_id;
 
 
-			if(chargeCodes.length>0){
-				_.each(chargeCodes, function(chargeCode,index) {
-					if(chargeCode.isSelected){
-						$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
-					}
-			    });
-			    ngDialog.open({
-		    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
-		    		controller: 'RVMoveChargeCtrl',
-		    		className: '',
-		    		scope: $scope
-	    		});
-			}
-			else{
-				return;
-			};
+				if(chargeCodes.length>0){
+					_.each(chargeCodes, function(chargeCode,index) {
+						if(chargeCode.isSelected){
+							$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+						}
+				    });
+				    ngDialog.open({
+			    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
+			    		controller: 'RVMoveChargeCtrl',
+			    		className: '',
+			    		scope: $scope
+		    		});
+				}
+				else{
+					return;
+				};
+			});
 		};
-	
+
 		/**
 		 * function to check whether the user has permission
 		 * to make move charges from one bill to another
@@ -230,6 +237,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
 
+		$scope.UPDATE_TRANSACTION_DATA = function(){
+			getTransactionDetails();
+		};
+
 		/*
 		 *  Bill data need to be updated after success action of
 		 *  payment, post charges, split/edit etc...
@@ -284,7 +295,17 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 			};
-			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback);
+
+			/*
+			 * Failure Callback of move action
+			 */
+			var moveToBillFailureCallback = function(data) {
+				console.log("@moveToBillFailureCallback");
+				console.log(errorMessage);
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data.errorMessage;
+			};
+			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
 
 
@@ -340,6 +361,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.openPostCharge = function( activeBillNo ) {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets(['postcharge','directives'])
+        .then(function(){
+        	$scope.$emit('hideLoader');
 
 			// pass on the reservation id
 			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
@@ -359,6 +386,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		className: '',
 	    		scope: $scope
 	    	});
+		})
 		};
 
 		var fetchPaymentMethods = function(directBillNeeded) {
@@ -400,17 +428,34 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 		$scope.showPayemntModal = function() {
-			$scope.passData = getPassData();
-			ngDialog.open({
-				template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
-				className: '',
-				controller: 'RVAccountsTransactionsPaymentCtrl',
-				closeByDocument: false,
-				scope: $scope
+            $scope.$emit('showLoader');
+            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+            .then(function(){
+                $scope.$emit('hideLoader');
+				$scope.passData = getPassData();
+				ngDialog.open({
+					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+					className: '',
+					controller: 'RVAccountsTransactionsPaymentCtrl',
+					closeByDocument: false,
+					scope: $scope
+				});
+				$scope.paymentModalOpened = true;
 			});
-			$scope.paymentModalOpened = true;
 		};
 
+
+		$scope.$on("showValidationErrorPopup", function(event, errorMessage) {
+			$scope.status = "error";
+			$scope.popupMessage = errorMessage;
+			$timeout(function() {
+				ngDialog.open({
+		    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+		    		controller: 'RVShowValidationErrorCtrl',
+		    		scope: $scope
+		    	});
+			}, 100);
+		});
 
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
@@ -491,6 +536,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.chargeCodeActive = bool;
 		};
 
+		$scope.HIDE_LOADER_FROM_POPUP =  function(){
+			$scope.$emit("hideLoader");
+		};
+
 		/*
 		 * open popup for selecting edit/split/remove transaction
 		 */
@@ -498,7 +547,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.errorMessage = "";
 			//hide edit and remove options in case type is  payment
-
+			$scope.hideRemoveAndEdit  = (type === "PAYMENT") ? true : false;
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
@@ -633,7 +682,27 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}
 		};
 
-		$scope.printInvoice = function() {
+		$scope.printInvoice = function(billNo) {
+				printBillCard(billNo);
+		};
+
+		var printBillCard = function(billNo) {
+			var requestParams = {};
+			requestParams.bill_number = billNo;
+
+			if (!!$scope.groupConfigData) {
+				requestParams.group_id = $scope.groupConfigData.summary.group_id;
+				requestParams.is_group = true;
+			} else {
+				requestParams.account_id = $scope.accountConfigData.summary.posting_account_id;
+				requestParams.is_group = false;
+			}
+
+			var printBillSuccess = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.printData = response.data;
+				$scope.errorMessage = "";
+
 				$('.nav-bar').addClass('no-print');
 				$('.cards-header').addClass('no-print');
 				$('.card-tabs-nav').addClass('no-print');
@@ -655,8 +724,17 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.card-tabs-nav').removeClass('no-print');
 
 				}, 100);
+
+
 			};
-			//CICO-13903 End
+
+			var printBillFailure = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+
+			$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
+		};
 
 		//Direct Bill payment starts here
 
@@ -790,6 +868,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				callInitialAPIs();
 			}
 		});
+
+
 
 	}
 ]);

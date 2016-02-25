@@ -1,7 +1,11 @@
-sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
 		var self = this;
+
+		//some default values
+		this.DEFAULT_PER_PAGE 	= 10;
+		this.DEFAULT_PAGE 		= 1;
 
 		/** contact information area */
 
@@ -143,10 +147,10 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		/**
 		 * service function used for retreive rates
 		 */
-		this.fetchRates = function() {
+		this.fetchRates = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/rates/contract_rates';
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -278,7 +282,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.fetchArAccountsList = function(params){
 			var deferred = $q.defer();
 
-			var url = "/api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.to_date+"&query="+params.query+"&page="+params.page_no+"&per_page="+params.per_page;
+			var url = "/api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.to_date+"&query="+params.query+"&page="+params.page_no+"&per_page="+params.per_page+"&transaction_type="+params.transaction_type;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -351,6 +355,40 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     });
                     return deferred.promise;
                 };
+
+        /**
+		 * Service for getting the commission details of a travel agent
+		 */
+        this.fetchTACommissionDetails = function(reqData) {
+			var deferred = $q.defer();
+			var url = ' api/accounts/' + reqData.accountId + '/commission_details';
+			//var url = "/assets/sampleJson/commissionTa"+ reqData.params.page + ".json";
+
+			rvBaseWebSrvV2.getJSON(url, reqData.params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		/**
+		 * Service for saving the commission details of travel agents
+		 */
+        this.saveTACommissionDetails = function(reqData) {
+			var deferred = $q.defer(),
+				params = {};
+			params.reservations = reqData.commissionDetails;
+			var url = 'api/accounts/' + reqData.accountId +'/save_commission_details';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+
 
 	}
 ]);

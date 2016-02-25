@@ -1,7 +1,16 @@
 
-snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
+
+    // External verification
+
+    $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Knickerbocker/gwExternal.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 });
 
     // checkout now states
 

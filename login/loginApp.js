@@ -1,4 +1,4 @@
-var login = angular.module('login',['ui.router', 'ng-iscroll', 'documentTouchMovePrevent']);
+var login = angular.module('login',['ui.router', 'documentTouchMovePrevent']);
 
 /*
  * Set page Titles
@@ -41,11 +41,6 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
-                 if (data.redirect_url === '/zest_station'){
-                     localStorage['isKiosk'] = true;
-                 } else {
-                     localStorage['isKiosk'] = false;
-                 }
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
 	 	while(i--) {
@@ -78,8 +73,11 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  */
 	 $scope.submit = function() {
 	 	$scope.hasLoader = true;
+	 	$scope.successMessage = "";
  		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
+
+
 
 	/*
 	  * successCallback of forgot password action
@@ -98,14 +96,15 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 };
 
 	/*
-	 * Forgot password action 
+	 * Forgot password action
 	 */
 	 $scope.forgotPassword = function() {
+        $scope.errorMessage = "";
+        $scope.successMessage = "";
 	 	var errorMessage = ["Please enter your Login email address"];
 	 	if($scope.data.email === ""){
 	 		$scope.errorMessage = errorMessage;
 	 	} else {
-	 		$scope.errorMessage = "";
 	 		var dataToPost = {"email" :$scope.data.email};
 	 		$scope.hasLoader = true;
  			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);

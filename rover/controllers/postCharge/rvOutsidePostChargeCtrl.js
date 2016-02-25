@@ -29,6 +29,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = false;
 				$scope.cardAttached = {};
+				$scope.disableOutsidePostChargeButton = false;
 			};
 
 			$scope.init();
@@ -296,7 +297,11 @@ sntRover.controller('RVOutsidePostChargeController',
 			/*
 			 * Method to handle POST CHARGE button click.
 			 */
-			$scope.clickedPostCharges = function(){
+			$scope.clickedPostCharges = function( event ){
+
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+
 				if(!$scope.isCardAttched){
 					$scope.noGuestOrRoomSelected = true;
 				}
@@ -306,6 +311,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				else {
 					$scope.reservation_id = $scope.cardAttached.id;
 					$rootScope.$broadcast('POSTCHARGE');
+					$scope.disableOutsidePostChargeButton = true;
 				}
 			};
 			/*
@@ -323,10 +329,15 @@ sntRover.controller('RVOutsidePostChargeController',
 			 * Method to handle POST CHARGE button click,
 			 * On 'Guest has not yet checked in!' popup.
 			 */
-			$scope.clickedPostCharge = function(){
+			$scope.clickedPostCharge = function( event ){
+
+				event.stopImmediatePropagation();
+                event.stopPropagation();
+
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
 				$rootScope.$broadcast('POSTCHARGE');
+				$scope.disableOutsidePostChargeButton = true;
 			};
 			$scope.clickedPostChargeCancel = function(){
 				$scope.guestHasNotCheckedin = false;
@@ -351,6 +362,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$rootScope.$on('CHARGEPOSTED', function(event, data) {
 			    $scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = true;
+				$scope.disableOutsidePostChargeButton = false;
 			});
 			$scope.keyDownRoom = function(){
 				$scope.roomSearchStatus = true;

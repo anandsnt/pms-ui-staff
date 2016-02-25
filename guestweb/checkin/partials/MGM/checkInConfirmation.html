@@ -53,7 +53,7 @@
 					<em class="labelText">HOTEL CHECK OUT DATE</em>
 					<span class="date-picker" ng-click="showCalender()" >
 					<input type="text " class = "col-xs-12 textBox" placeholder="{{dateFormatPlaceholder}}"  ng-model="departureDate" readonly/> 
-					<img src="/assets/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
+					<img src="/assets/guestweb/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
 				</div>
 
 				<div class="row" ng-show="!isAutoCheckinOn || isCCOnFile">
@@ -75,7 +75,7 @@
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12 date-picker-header">
 	      <div class="col-xs-2 date-picker-back" ng-click = "closeCalender()">
-	         <img src="/assets/img/MGM/back_icon.png " width="25" height="20" alt=""/>
+	         <img src="/assets/guestweb/img/MGM/back_icon.png " width="25" height="20" alt=""/>
 	         <div style="color:#8e6a36;">BACK</div>
 	      </div>
 
@@ -87,12 +87,12 @@
 	      </div>
 
 	      <div class="col-xs-2 date-picker-ok" ng-click = "dateChoosen()">
-	      	 <img src="/assets/img/MGM/done_icon.png " width="25" height="20" alt=""/>
+	      	 <img src="/assets/guestweb/img/MGM/done_icon.png " width="25" height="20" alt=""/>
 	         <div>DONE</div>
 	      </div>
 	   </div>
 
-	   <div class="col-xs-12">
+	   <div class="col-xs-12 no-side-padding">
 	      <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
 	   </div>
 	</div>

@@ -17,9 +17,15 @@
 	var dateToSend 		= "";
 	$scope.date 		= dateFilter(new Date(), 'yyyy-MM-dd');
 	$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
-
+	function loseFocus() {
+		var inputs = document.getElementsByTagName('input');
+		for (var i = 0; i < inputs.length; ++i) {
+		  inputs[i].blur();
+		}
+	};
 	// Calendar toggle actions and date select action
 	$scope.showCalender = function(){
+		loseFocus();// focusout the input fields , so as to fix cursor being shown above the calendar
 		$scope.calendarView = true;
 	};
 	$scope.closeCalender = function(){
@@ -65,7 +71,7 @@
 	   $scope.errorOpts = {
 	      backdrop: true,
 	      backdropClick: true,
-	      templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationErrorModal.html',
+	      templateUrl: '/assets/checkoutnow/partials/externalVerificationErrorModal.html',
 	      controller: verificationModalCtrl
         };
 
@@ -94,10 +100,10 @@ var dependencies = [
 externalVerificationViewController
 ];
 
-snt.controller('externalVerificationViewController', dependencies);
+sntGuestWeb.controller('externalVerificationViewController', dependencies);
 })();
 
-snt.controller('verificationErrorController', ['$scope', function($scope) {
+sntGuestWeb.controller('verificationErrorController', ['$scope', function($scope) {
 
 	$scope.doneClicked = function(){
 

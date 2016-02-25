@@ -19,10 +19,31 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     $state.go ('zest_station.home');
                 }
                 else{
-                    $state.go ('zest_station.find_reservation');
+                    if ($scope.isInPickupKeyMode()){
+                        if ($state.last === 'input-last'){
+                            $scope.reEnter('last');
+                        } else if ($state.last === 'input-room'){
+                            $scope.reEnter('room');
+                        } else {
+                            $scope.reEnter('room');
+                        }
+                    } else {
+                        $state.go ('zest_station.find_reservation');
+                    }
                 }
             });
-
+            $scope.goToPickupKey = function(){
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                $state.lastAt = 'home';
+                $state.isPickupKeys = true;
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                $state.go('zest_station.reservation_search', {
+                    mode: zsModeConstants.PICKUP_KEY_MODE
+                });
+            };
+            $scope.isInPickupKeyMode = function() {
+                    return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
+                };
             $scope.datePickerMin;
             $scope.business_date;
              var fetchBizDateComplete = function(data){
@@ -32,12 +53,41 @@ sntZestStation.controller('zsFindReservationCtrl', [
                         var d = data.business_date;
                         var a = d.split('-');
                         var yr = a[0], day = a[2], mo = a[1];
-                        $scope.business_date = new Date(yr, mo, day);
+                        var actual = new Date();
+                        actual.setFullYear(yr);
+                        actual.setMonth(parseInt(mo)-1);
+                        actual.setDate(day);
+                        $scope.business_date = actual;
                         $scope.resetDatePicker();
                     }
                 }
             };
-                
+            $scope.getDateRenderFormat = function(d){
+                if (d){
+                    var str = d.split('-');
+                    var month = zsUtilitySrv.getMonthName(parseInt(str[1])-1),
+                            day = str[2],
+                            year = str[0];
+
+                    return month+'-'+day+'-'+year;
+              } else return null;
+            };
+            $scope.getZSDateFormat = function(d){
+                var str = d;
+                var s = str.split('-');
+                var month = parseInt(zsUtilitySrv.getMonthN(s[0]))+1,
+                day = parseInt(s[1]),
+                year = parseInt(s[2]);
+
+                if (parseInt(day) < 10){
+                    day = '0'+day;
+                }
+                if (parseInt(month) < 10){
+                    month = '0'+month;
+                }
+
+                return year+'-'+month+'-'+day;
+            };
             $scope.dateOptions = {
                     dateFormat: 'MM-dd-yy',
                     yearRange: "0:+10",
@@ -48,7 +98,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
                             $('#datepicker').val(text[2]+'-'+text[0]+'-'+text[1]);
                             $('#datepicker').val(value);
                             $state.setDate = value;
-                            $scope.input.lastDateValue = value;
+                            $scope.input.lastDateValue = $scope.getZSDateFormat(value);
+                            
                             setTimeout(function(){
                                 $scope.showDatePick = false;  
                                 $scope.$apply();
@@ -68,13 +119,31 @@ sntZestStation.controller('zsFindReservationCtrl', [
                         $state.go('zest_station.find_by_email');
                         break;
                     case "last":
-                        $state.go('zest_station.find_reservation_input_last');
+                        if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
+                            $state.lastAt = 're-enter-last';
+                            $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                            $state.go('zest_station.reservation_search', {
+                                mode: zsModeConstants.PICKUP_KEY_MODE
+                            });
+                        } else {
+                            $state.go('zest_station.find_reservation_input_last');
+                        }
                         break;
                     case "confirmation":
                         $state.go('zest_station.find_by_confirmation');
                         break;
                     case "date":
                         $state.go('zest_station.find_by_date');
+                        break;
+                    case "room"://pick-up-key flow
+                        $state.lastAt = 'pick-up-room';
+                        if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
+                            $state.lastAt = 're-enter-room';
+                            $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                            $state.go('zest_station.reservation_search', {
+                                mode: zsModeConstants.PICKUP_KEY_MODE
+                            });
+                        }
                         break;
                 }
             };
@@ -108,8 +177,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
                         var d = defaultDate.split(' ');
                         //day of wk = d[0]
                         var year = d[3]+'',
-                                month = zsUtilitySrv.getMonthN(d[1])-1,//this method is 1 based, adjust for 0-based date obj
-                                day = d[2]+'';
+                                month = zsUtilitySrv.getMonthN(d[1]),//this method is 1 based, adjust for 0-based date obj
+                                day = parseInt(d[2])+'';
                         if (parseInt(day) < 10){
                             day = '0'+day;
                         }
@@ -136,11 +205,15 @@ sntZestStation.controller('zsFindReservationCtrl', [
         
         $scope.searchWithEmail = function(){
             $state.search = true; 
+            $scope.inputType = 'text';
             $state.lastAt = 'find-by-email';
             if (!$state.input){
                 $state.input = {};
             }
             $state.input.email = $scope.input.inputTextValue;
+            if ($state.input.email === ''){
+                return;
+            }
             $state.go('zest_station.reservation_search');
         };
         $scope.searchWithDate = function(){
@@ -149,16 +222,21 @@ sntZestStation.controller('zsFindReservationCtrl', [
             if (!$state.input){
                 $state.input = {};
             }
-            $state.input.date = $scope.input.date;
+            $state.input.date = $scope.input.lastDateValue;
+            
             $state.go('zest_station.reservation_search');
         };
         $scope.searchWithConfirmation = function(){
+            $scope.inputType = 'text';
             $state.search = true; 
             $state.lastAt = 'find-by-confirmation';
             if (!$state.input){
                 $state.input = {};
             }
             $state.input.confirmation = $scope.input.inputTextValue;
+            if ($state.input.confirmation === ''){
+                return;
+            }
             $state.go('zest_station.reservation_search');
         };
         $scope.goToFindReservation = function(){
@@ -175,7 +253,6 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $state.lastAt = $state.lastSearchWith;
             $state.search = true;
             var updated = $state.reEntered;
-            console.info('updated: '+updated)
             switch(updated){
                 case "email":
                     $state.input.email = $state.lastInput;
@@ -187,7 +264,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     $state.input.confirmation = $state.lastInput;
                     break;
                 case "date":
-                    $state.input.date = $scope.input.date;
+                    $state.input.date = $scope.getZSDateFormat($scope.input.date);
                     break;
             }
             $state.go('zest_station.reservation_search');
@@ -198,12 +275,14 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         
         $scope.goToNext = function(){
+            if ($scope.input.inputTextValue === ''){
+                return;
+            }
             $state.lastInput = $scope.input.inputTextValue; 
             if ($state.lastAt !== 'no-match'){
                 $state.lastAt = $scope.at;
             }
             var at = $state.lastAt;
-            console.log(at);
             switch(at){
                 case "find-by-email":
                     $scope.searchWithEmail();
@@ -226,15 +305,23 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     break;
             }
         };
+        $scope.setCheckingGuestIn = function(){
+            $scope.at = 'checking_in_guest';
+            $scope.headingText = 'WAIT_MOMENT';
+            $scope.subHeadingText = '';
+            $scope.inputTextPlaceholder = '';
+            $scope.hideNavBtns = true;
+            
+        };
         
         $scope.setFindByDate = function(){
             $scope.at = 'find-by-date';
             $scope.input.date = '';
-            $scope.datepicker_heading = 'Find By Date';
             $scope.hideNavBtns = false;
             
             if ($state.lastAt === 'no-match'){
-                $scope.input.date = $state.input.date;
+                $scope.input.date = $scope.getDateRenderFormat($state.input.date);
+                $scope.input.lastDateValue = $state.input.date;
             }
             $scope.callAPI(zsTabletSrv.fetchHotelBusinessDate, {
                 'successCallBack':fetchBizDateComplete
@@ -242,10 +329,13 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         $scope.setFindByEmail = function(){
             $scope.at = 'find-by-email';
-            $scope.headingText = 'Type Your Email Address';
+            $scope.headingText = 'TYPE_EMAIL';
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
+            $scope.clearInputText();
             $scope.hideNavBtns = false;
+            
+            $scope.inputType = 'text';
             
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.email;
@@ -253,10 +343,13 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         $scope.setFindByConfirmation = function(){
             $scope.at = 'find-by-confirmation';
-            $scope.headingText = 'Type Your Confirmation Number';
+            $scope.headingText = 'TYPE_CONF';
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
-            $scope.input.inputTextValue = '';
+            $scope.clearInputText();
+            $scope.hideNavBtns = false;
+            
+            $scope.inputType = 'text';
             
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.confirmation;
@@ -264,12 +357,20 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         $scope.setInputLast = function(){
             $scope.at = 'input-last';
-            $scope.headingText = 'Type Your Last Name';
+            $scope.headingText = 'TYPE_LAST';
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
+            $scope.clearInputText();
+            $scope.hideNavBtns = false;
+            
+            $scope.inputType = 'text';
+            
             if ($state.lastAt === 'no-match'){
                 $scope.input.inputTextValue = $state.input.last;
             }
+        };
+        $scope.clearInputText = function(){
+            $scope.input.inputTextValue = '';
         };
         $scope.setNoMatch = function(){
             $scope.at = 'no-match';
@@ -281,6 +382,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
             $scope.input.email = $state.input.email;
             $scope.input.confirmation = $state.input.confirmation;
             $scope.lastAt = $state.lastAt;
+            if ($scope.lastAt === 'pick-up-room'){
+                $scope.input.room = $state.input.room;
+            }
         };
 
 
@@ -308,6 +412,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     break;
                 case "zest_station.find_reservation_no_match":
                     $scope.setNoMatch();
+                    break;
+                case "zest_station.checking_in_guest":
+                    $scope.setCheckingGuestIn();
                     break;
             }
           

@@ -31,7 +31,7 @@
                      <em class="labelText">COUNTRY</em>
                      <div class="expiry-year-container full-width-select" style="margin-left:0px;">
                         <div class="select-style select-style-fullwidth">
-                           <select ng-model="guestDetails.country_id"
+                           <select ng-model="guestDetails.country"
                               ng-options="country.id as country.value  for country in countries">
                               <option value="">SELECT</option>
                            </select>
@@ -40,7 +40,7 @@
                   </div>
                   <div class="row">
                      <em class="labelText">STREET ADDRESS</em>
-                     <input type="text" ng-model="guestDetails.street1" class = "col-xs-12 textBox bottom-margin-10" /> 
+                     <input type="text" ng-model="guestDetails.street" class = "col-xs-12 textBox bottom-margin-10" /> 
                      <input type="text" ng-model="guestDetails.street2" class = "col-xs-12 textBox bottom-margin-10" />
                   </div>
                   <div class="row">
@@ -67,23 +67,60 @@
                      <div class="expiry-year-container eta-container">
                         <div class="select-style">
                            <select ng-model="guestDetails.month"
-                              ng-options="month as month for month in months">
+                              ng-options="month as month for month in months" ng-change="yearOrMonthChanged()">
                               <option value="">MM</option>
                            </select>
                         </div>
                      </div>
                      <div class="expiry-year-container eta-container">
                         <div class="select-style">
-                           <select ng-model="guestDetails.day"
-                              ng-options="day as day for day in days">
+                           <select ng-model="guestDetails.day">
                               <option value="">DD</option>
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                              <option>6</option>
+                              <option>7</option>
+                              <option>8</option>
+                              <option>9</option>
+                              <option>10</option>
+                              <option>11</option>
+                              <option>12</option>
+                              <option>13</option>
+                              <option>14</option>
+                              <option>15</option>
+                              <option>16</option>
+                              <option>17</option>
+                              <option>18</option>
+                              <option>19</option>
+                              <option>20</option>
+                              <option>21</option>
+                              <option>22</option>
+                              <option>23</option>
+                              <option>24</option>
+                              <option>25</option>
+                              <option>26</option>
+                              <option>27</option>
+                              <option>28</option>
+                              <option ng-show="guestDetails.month != 2 || !(guestDetails.year % 4)")>
+                                29
+                              </option>
+                              <option ng-show="guestDetails.month != 2">
+                                30
+                              </option>
+                              <option ng-show="guestDetails.month == 1 || guestDetails.month == 3 || guestDetails.month == 5 || guestDetails.month == 7 || 
+                                  guestDetails.month == 8 || guestDetails.month == 10 || guestDetails.month == 12">
+                                31
+                              </option>
                            </select>
                         </div>
                      </div>
                      <div class="expiry-year-container eta-container">
                         <div class="select-style arrival-time">
                            <select ng-model="guestDetails.year"
-                              ng-options="year as year for year in years">
+                              ng-options="year as year for year in years" ng-change="yearOrMonthChanged()">
                               <option value="">YYYY</option>
                            </select>
                         </div>
@@ -91,7 +128,7 @@
                   </div>
                </div>
             </div>
-            <div class="row cabin_number_field padding-5">			
+            <div class="row cabin_number_field extra-bottom-padding">			
                <button class="checkin-button continue-button"
                   ng-click="postGuestDetails()">
                <span class="white-text">Continue</span>

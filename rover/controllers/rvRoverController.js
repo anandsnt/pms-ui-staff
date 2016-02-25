@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,8 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q) {
+
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -112,13 +113,14 @@ sntRover.controller('roverController',
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
+    $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
       // CICO-18040
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;
       $rootScope.isPromoActive = hotelDetails.is_promotion_active;
-      
+
     //set MLI Merchant Id
     try {
       sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -153,9 +155,9 @@ sntRover.controller('roverController',
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    
-    
-    
+
+
+
     // self executing check
     $rootScope.isMaintenanceStaff = (function(roles) {
       // Values taken form DB
@@ -191,7 +193,6 @@ sntRover.controller('roverController',
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
     $rootScope.userId = hotelDetails.current_user.id;
-    RVDashboardSrv.getUserRole($rootScope.userId, $scope);
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(e, value) {
@@ -266,10 +267,17 @@ sntRover.controller('roverController',
     * @return - None
     */
     var openUpdatePasswordPopup = function(){
-        ngDialog.open({
-            template: '/assets/partials/settings/rvStaffSettingModal.html',
-            controller: 'RVStaffsettingsModalController',
-            className: 'calendar-modal'
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets(['staffpasswordchange'])
+        .then(function(){
+            $scope.$emit('hideLoader');
+            ngDialog.open({
+                template: '/assets/partials/settings/rvStaffSettingModal.html',
+                controller: 'RVStaffsettingsModalController',
+                className: 'calendar-modal'
+            });
         });
     };
 
@@ -345,7 +353,7 @@ sntRover.controller('roverController',
         // if menu is open, close it
         $scope.isMenuOpen();
         $scope.menuOpen = false;
-        
+
     };
 
     $scope.init();
@@ -388,6 +396,38 @@ sntRover.controller('roverController',
       $scope.menuOpen = false;
     };
 
+    var openEndOfDayPopup = function() {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets(['endofday'])
+        .then(function(){
+            $scope.$emit('hideLoader');
+            ngDialog.open({
+              template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+              controller: 'RVEndOfDayModalController',
+              className: 'end-of-day-popup ngdialog-theme-plain'
+            });
+        });
+    };
+
+    var openPostChargePopup = function() {
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets(['postcharge', 'directives'])
+        .then(function(){
+            $scope.isOutsidePostCharge = true;
+            $scope.$emit('hideLoader');
+            ngDialog.open(
+            {
+              template      : '/assets/partials/postCharge/rvPostChargeV2.html',
+              controller    : 'RVOutsidePostChargeController',
+              scope         : $scope
+            });
+        });
+    };
+
     //subemenu actions
 
     $scope.subMenuAction = function(subMenu) {
@@ -395,21 +435,10 @@ sntRover.controller('roverController',
       $scope.toggleDrawerMenu();
 
       if (subMenu === "postcharges") {
-
-        $scope.isOutsidePostCharge = true;
-
-        ngDialog.open({
-          template: '/assets/partials/postCharge/rvPostChargeV2.html',
-          controller: 'RVOutsidePostChargeController',
-          scope: $scope
-        });
+        openPostChargePopup();
       }
       else if (subMenu === "endOfDay") {
-        ngDialog.open({
-          template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-          controller: 'RVEndOfDayModalController',
-          className: 'end-of-day-popup ngdialog-theme-plain'
-        });
+        openEndOfDayPopup();
       }
       else if(subMenu === "adminSettings"){
             //CICO-9816 bug fix - Akhila
@@ -467,7 +496,7 @@ sntRover.controller('roverController',
       // Hide loading message
       $scope.$emit('hideLoader');
       console.error(error);
-      //TODO: Log the error in proper way
+      $scope.$broadcast("showErrorMessage", error);
     });
 
     //This variable is used to identify whether guest card is visible
@@ -492,14 +521,29 @@ sntRover.controller('roverController',
     	}
     };
 
+    $scope.uuidServiceSuccessCallBack = function(response) {
+      $rootScope.UUID = response.Data;
+    };
+
+    $scope.uuidServiceFailureCallBack = function(error) {
+      $scope.errorMessage = error;
+      $rootScope.UUID = "DEFAULT";
+    };
+
+
+
+
+
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
+    options["uuidServiceSuccessCallBack"] = $scope.uuidServiceSuccessCallBack;
+    options["uuidServiceFailureCallBack"] = $scope.uuidServiceFailureCallBack;
 
     $scope.numberOfCordovaCalls = 0;
 
     var initiateDesktopCardReader = function(){
-
+      sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
 
@@ -525,6 +569,8 @@ sntRover.controller('roverController',
       }
     };
 
+
+
     /*
      * Start Card reader now!.
      */
@@ -533,6 +579,7 @@ sntRover.controller('roverController',
        * desktopSwipeEnabled flag is true
       */
       if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
+        $rootScope.isDesktopUUIDServiceInvoked = true;
   			initiateDesktopCardReader();
   		}
       else {
@@ -541,6 +588,11 @@ sntRover.controller('roverController',
   			  $scope.initiateCardReader();
   			}, 2000);
   		}
+    }
+
+    //If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
+    if(!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {
+      sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
     }
 
     /*
@@ -568,6 +620,9 @@ sntRover.controller('roverController',
     $scope.$on('CLOSE_AVAILIBILTY_SLIDER', function(event) {
       $scope.$broadcast('CLOSED_AVAILIBILTY_SLIDER');
     });
+
+    $rootScope.modalClosing = false;
+
     /*
      * Tp close dialog box
      */
@@ -575,11 +630,10 @@ sntRover.controller('roverController',
       document.activeElement.blur();
       $scope.$emit('hideLoader');
 
-      //to add stjepan's popup showing animation
-      $rootScope.modalOpened = false;
-
+      $rootScope.modalClosing = true;
       setTimeout(function() {
         ngDialog.close();
+        $rootScope.modalClosing = false;
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);
@@ -655,11 +709,6 @@ sntRover.controller('roverController',
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
         LastngDialogId = $dialog.attr('id');
-        //to add stjepan's popup showing animation
-        $rootScope.modalOpened = false;
-        $timeout(function() {
-            $rootScope.modalOpened = true;
-        }, 300);
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {
@@ -762,4 +811,5 @@ sntRover.controller('roverController',
           }, function() {
           });
     };
+
 }]);

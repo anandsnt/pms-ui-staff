@@ -1,0 +1,134 @@
+/* StayNTouch | Kiosk styles */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#48bbc3;
+	
+	@textColor: 			@black;
+	@backgroundColor: 		@white;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#d7d7d7;
+	@transparentColor: 		rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	/* 300 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('/assets/type/sourcesanspro-light-webfont.eot');
+	    src: url('/assets/type/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('/assets/type/sourcesanspro-light-webfont.woff') format('woff'),
+	         url('/assets/type/sourcesanspro-light-webfont.ttf') format('truetype');
+	    font-weight: 300;
+	    font-style: normal;
+	} 
+
+	/* 400 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('/assets/type/sourcesanspro-regular-webfont.eot');
+	    src: url('/assets/type/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    	     url('/assets/type/sourcesanspro-regular-webfont.woff') format('woff'),
+	         url('/assets/type/sourcesanspro-regular-webfont.ttf') format('truetype');
+	    font-weight: 400;
+	    font-style: normal;
+	}  
+
+	/* 400 italic ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('/assets/type/sourcesanspro-italic-webfont.eot');
+	    src: url('/assets/type/sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('/assets/type/sourcesanspro-italic-webfont.woff') format('woff'),
+	         url('/assets/type/sourcesanspro-italic-webfont.ttf') format('truetype');
+	    font-weight: 400;
+	    font-style: italic;
+	}  
+
+	/* 600 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('/assets/type/sourcesanspro-semibold-webfont.eot');
+	    src: url('/assets/type/sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('/assets/type/sourcesanspro-semibold-webfont.woff') format('woff'),
+	         url('/assets/type/sourcesanspro-semibold-webfont.ttf') format('truetype');
+	    font-weight: 600;
+	    font-style: normal;
+	} 
+
+	/* 700 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('/assets/type/sourcesanspro-bold-webfont.eot');
+	    src: url('/assets/type/sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('/assets/type/sourcesanspro-bold-webfont.woff') format('woff'),
+	         url('/assets/type/sourcesanspro-bold-webfont.ttf') format('truetype');
+	    font-weight: 700;
+	    font-style: normal;
+	} 
+
+	@fontFamily: "source_sans_pro", sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	@background: 			@white;
+	@backgroundSize: 		'';
+
+	@headerIconsColor: 		lighten(@black, 60);
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		fill: @white; 
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-create-key { 
+			fill: @brandColor;
+			stroke: @brandColor;
+		}
+
+		&.icon-oos { fill: @brandColor; }
+	}
+
+/* 3. LAYOUT
+==========================================================*/
+
+        #logo {
+            .logo { .size(100%, auto) !important;}
+        }
+	#content {
+		
+		#textual,
+		#signature { background-color: #ebebeb; }
+
+		#textual {
+			&:before,
+			&:after { background-color: #ebebeb; }
+		}
+
+		#selection {
+	        li {
+	            .details { background-color: #ebebeb; }
+	        }
+	    }
+	}
+
+.entry {
+    
+    width: 100%;
+
+	& .checkout-screen-select-box {
+        #calc > #width > .remove(85%, 10px);
+    }
+
+    & select {
+        position: relative;
+        margin: 5px 10px 10px 0px;
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
+        appearance: menulist;
+    }
+}

@@ -78,7 +78,7 @@
 
         #content {
             position: relative;
-            overflow: hidden;
+            overflow:visible;
             max-width: 1280px;
             .square(100%);
             > .button { 
@@ -95,15 +95,14 @@
             height: 100%;
             #flexbox > .parent('', '', center, '');
 
-            #content { height: auto; padding-bottom:90px; }
+            #content { height: auto; }
         }
 
         @media only screen and (min-height: 1024px) { padding-top: 200px; }
     }
     #content{
-        top: 42px !important;
-        //height: 50% !important;
-        //padding-top: 50px;
+     //   top: 42px !important;
+        max-height: 60% !important;
     }
     .timer-checkbox{
       background-color: transparent;
@@ -116,16 +115,17 @@
         width: 50%;
         min-width: 400px;
         position: absolute;
-        min-height: 200px;
+        min-height: 390px;
         top: 0;
         bottom: 15%;
         left: 0;
         right: 0;
         margin: auto;
         height: 45%;
+        border-radius: 10px;
         #popup{
             .header{
-                margin-top:10px;
+                margin-top:18px;
             }
         }
         .admin-input{
@@ -134,15 +134,37 @@
             width: 90px;
             float: right;
             height: 40px;
-            line-height: 0px;
+            line-height: inherit;
             color: black;
             margin-top: 5px;
+            box-sizing: content-box;
+            input[type=number]::-webkit-inner-spin-button, 
+            input[type=number]::-webkit-outer-spin-button { 
+              -webkit-appearance: none; 
+              margin: 0; 
+            }
+            
+        }
+        #selectEncoder{
+            font-size: inherit;
+            width: 68%;
         }
         #popup-content{
             bottom: 25%;
             left: 0;
             right: 0;
             margin: auto;
+            button {
+                width: 185px !important;
+            }
+            .save-actions{
+                margin-top: 10px;
+                button {
+                    margin: inherit;
+                    
+                }
+            }
+            
             
             .admin-item-label{
                 margin-left: 5px;
@@ -162,6 +184,7 @@
                 margin: auto;
                 margin-top:10px;
             }
+              
         }
         .inline{
             display: inline;
@@ -211,7 +234,7 @@
     }
 
     
-    
+     .page-print { .hide; }
     
     
     
@@ -296,6 +319,10 @@
 
 /* Textual block /w scroll ***/
     #textual {
+        &.fill-height{
+            max-height: 63% !important;
+            min-height: 46% !important;
+        }
         position: relative;
         color: @black;
         background-color: @white;
@@ -382,8 +409,16 @@
 
 /* Actions ***/
     #actions {
+        &.selectPagingBtns{
+            position: relative !important;
+            bottom: 5%;
+        }
+        &.sign-screen-nav{
+            margin-bottom:-8%;
+        }
+        
         position: absolute;
-        bottom: 40px;
+        bottom: 0px;
         left: 0;
         width: 100%;
         z-index: 5;
@@ -516,11 +551,14 @@
         }
     }
 
+    .px-space{//used in reservation details for the appearance for better alignment
+        padding-left:1px;
+    }
 /* Reservation details ***/
     #guests {
         font-size: 14px;
         color: lighten(@black, 30);
-        width: 50%;
+        width: 25%;
 
         strong,
         span { .show; }
@@ -540,8 +578,11 @@
         }
     }
 
-    #rate {
+    #rate {            
         width: 50%;
+        &.reservation-details{
+            width: 65%;
+        }
 
         li {
             margin-bottom: 10px;
@@ -558,7 +599,7 @@
 
             &.sub { color: lighten(@black, 60); }
 
-            &:last-child { margin-bottom: 0; }
+            &:last-child {margin-bottom: 0;}
         }
     }
 
@@ -650,6 +691,13 @@
                 fill:green;
             }
         }
+    }
+    
+    #oos {
+        background-image: "" !important;
+        position: relative;
+        margin-top: 40px;
+        z-index: 10;
     }
 
     #key-options {
@@ -816,3 +864,155 @@
             .rotate();
         }
     }
+    #skipEmailInputBtn{
+        margin-top: 10px !important;
+    }
+    
+    
+    .admin-input{
+        margin-top: 5px;
+        width: 189px;
+        
+        &.button{
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+/* Popup ***/
+    #popup {
+        position: fixed !important;
+        overflow: auto !important;
+        -webkit-overflow-scrolling: touch;
+        -webkit-overflow: hidden;
+        right: 0 !important;
+        //bottom: 0 !important;
+        left: 0 !important;
+        top: 20% !important;
+        z-index: 9000;
+        visibility: hidden;
+        
+        padding-right: 25%;
+        padding-left: 25%;
+        &.workstations{
+           // left: 36% !important;
+           height:50%;
+           overflow:scroll;
+        }
+        
+        &.idle-popup{
+            top: 40% !important;
+        }
+        
+      //  .translate3d(-50%, -50%, 0);
+        #popup-content {
+            min-width: 320px;
+           // padding: 40px;
+            z-index: 9000;
+            color: @black;
+            
+            background: 
+                //url(sweettexture.jpg)    /* image */
+                top center / 50% /* position / size */
+                no-repeat                /* repeat */
+                fixed                    /* attachment */
+                padding-box              /* origin */
+                content-box              /* clip */
+                @white;                     /* color */
+            
+            
+            opacity: 0;
+            #flexbox > .flex();
+            #flexbox > .parent(column wrap, center, center, '');
+            #rounded > .round(5px);
+            
+          //  .scale3d(0.5, 0.5, 1);
+          //  .transition();
+        }
+
+        &.open {
+            visibility: visible; 
+
+            #popup-content {
+                opacity: 1;
+                overflow: hidden;
+                &.workstation_list{
+                    display: block;
+                }
+                
+          //      .scale3d(1, 1, 1);
+            }
+        }
+    }
+    .workstation_button{
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-bottom: 10px;
+            
+    }
+    .workstation_close{
+                position: fixed !important;
+                overflow: auto !important;
+                -webkit-overflow-scrolling: touch;
+                -webkit-overflow: hidden;
+                right: 0 !important;
+                bottom: 10% !important;
+                left: 0 !important;
+                /* top: 25% !important; */
+                z-index: 9000;
+                /* visibility: hidden; */
+                padding-right: 26%;
+                padding-left: 25%;
+                
+                
+            background: 
+                //url(sweettexture.jpg)    /* image */
+                top center / 45% /* position / size */
+                no-repeat                /* repeat */
+                fixed                    /* attachment */
+                padding-box              /* origin */
+                content-box              /* clip */
+                @white;                     /* color */
+            
+            
+    }
+    #popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 8000;
+        opacity: 0;
+        .square(100%);
+        .transition();
+
+        &.open { opacity: 1; }
+    }
+    
+    .workstation_dropdown{
+        padding: 0 25%;
+    }
+   
+/* Admin Button */
+        .bottom-right {
+            position:absolute;
+            right: 0;
+            bottom: 0;
+        }
+        .invis{
+            opacity: .0;
+        }
+        
+        .centered-exit{
+            position:fixed;
+            left: 45%;
+            margin-top:15px;
+        }
+        
+        .ngdialog-content{//fixes an issue with the default angular theme overwriting the popup layout
+            padding: 0em !important;
+        }
+        .v-middle{
+            >td{
+                vertical-align:middle !important;
+            }
+        }

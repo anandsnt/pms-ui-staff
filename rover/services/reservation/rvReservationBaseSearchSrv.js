@@ -1,12 +1,27 @@
-sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
-    function($q, RVBaseWebSrvV2) {
+angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
+    function($q, RVBaseWebSrvV2, dateFilter) {
+
         var that = this;
         this.reservation = {
-                                'settings':{},
-                                'roomTypes':{},
-                                'businessDate':{}
-                            };
+            'settings': {},
+            'roomTypes': {},
+            'businessDate': {}
+        };
 
+        //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+
+        this.cache = {
+            config: {
+                lifeSpan: 300 //in seconds
+            },
+            responses: {
+                restrictionTypes: null,
+                rateDetails: null,
+                sortOrder: null
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 
         this.fetchBaseSearchData = function() {
@@ -24,7 +39,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             };
 
             that.fetchRoomTypes = function() {
-                var url = 'api/room_types.json?is_exclude_pseudo=true';
+                var url = 'api/room_types.json?exclude_pseudo=true';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
                     that.fetchBussinessDate();
@@ -34,18 +49,18 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
                 return deferred.promise;
             };
 
-            if(isEmpty(that.reservation.settings) && isEmpty(that.reservation.roomTypes) && isEmpty(that.reservation.businessDate)){
+            if (isEmpty(that.reservation.settings) && isEmpty(that.reservation.roomTypes) && isEmpty(that.reservation.businessDate)) {
                 var url = '/api/hotel_settings/show_hotel_reservation_settings';
-                RVBaseWebSrvV2.getJSON(url).then(function(data) {        
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.settings = data;
                     that.fetchRoomTypes();
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
-            }else{
+            } else {
                 deferred.resolve(that.reservation);
             };
-            
+
             return deferred.promise;
         };
 
@@ -98,9 +113,9 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             if (!!param.group_id) {
                 url += '&group_id=' + param.group_id;
             }
-            
+
             if (!!param.promotion_code) {
-                url += '&promotion_code=' + encodeURI(param.promotion_code);//to handle special characters
+                url += '&promotion_code=' + encodeURI(param.promotion_code); //to handle special characters
             }
 
             if (!!param.allotment_id) {
@@ -128,11 +143,19 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
         this.fetchSortPreferences = function() {
             var deferred = $q.defer(),
                 url = '/api/sort_preferences/list_selections';
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data.room_rates);
-            }, function(data) {
-                deferred.reject(data);
-            });
+            if (that.cache.responses['sortOrder'] === null || Date.now() > that.cache.responses['sortOrder']['expiryDate']) {
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    that.cache.responses['sortOrder'] = {
+                        data: data.room_rates,
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
+                    };
+                    deferred.resolve(data.room_rates);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.cache.responses['sortOrder']['data']);
+            }
             return deferred.promise;
         };
 
@@ -188,6 +211,228 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        this.fetchOrdinaryRates = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/availability/rates';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchContractRates = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/availability/contracts';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchGroupRates = function(params) {
+            var deferred = $q.defer(),
+                groupId = params.group_id || params.allotment_id;
+
+            var url = '/api/availability/groups/' + groupId;
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchRates = function(params) {
+            var deferred = $q.defer(),
+                promises = [];
+
+            that['rates'] = [];
+
+            // Make this call IFF there is a group/ allotment attached
+            if (params.group_id || params.allotment_id) {
+                promises.push(that.fetchGroupRates(params).then(function(response) {
+                    _.each(response.rates, function(rate) {
+                        rate.isGroupRate = !!params.group_id;
+                        rate.isAllotmentRate = !!params.allotment_id;
+                        if (rate.id === null) {
+                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                        }
+                    });
+                    that['rates'] = that['rates'].concat(response.rates);
+                }));
+            } else {
+                promises.push(that.fetchOrdinaryRates(params).then(function(response) {
+
+                    that['rates'] = that['rates'].concat(response.rates);
+                }));
+
+                // Make this call IFF there is a company / TA card attached
+                if (!!params.company_id || !!params.travel_agent_id) {
+                    promises.push(that.fetchContractRates(params).then(function(response) {
+                        _.each(response.rates, function(rate) {
+                            rate.isCorporate = true;
+                        });
+                        that['rates'] = that['rates'].concat(response.rates);
+                    }));
+                }
+            }
+
+
+            $q.all(promises).then(function() {
+                deferred.resolve(that['rates']);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+
+        };
+
+        this.fetchRestricitonTypes = function() {
+            var deferred = $q.defer(),
+                url = '/api/restriction_types';
+            if (that.cache.responses['restrictionTypes'] === null || Date.now() > that.cache.responses['restrictionTypes'].expiryDate) {
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    data.results.push({
+                        id: 98,
+                        value: "INVALID_PROMO",
+                        description: "PROMOTION INVALID",
+                        activated: true
+                    });
+
+                    data.results.push({
+                        id: 99,
+                        activated: true,
+                        value: 'HOUSE_FULL',
+                        description: 'NO HOUSE AVAILABILITY'
+                    });
+
+                    var restriction_types = {};
+                    _.each(data.results, function(resType) {
+                        restriction_types[resType.id] = {
+                            key: resType.value,
+                            value: ['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE', 'HOUSE_FULL', 'INVALID_PROMO'].indexOf(resType.value) > -1 ? resType.description : resType.description + ':'
+                        }
+                    });
+
+                    that.cache.responses['restrictionTypes'] = {
+                        data: restriction_types,
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
+                    };
+
+                    deferred.resolve(restriction_types);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.cache.responses['restrictionTypes']['data']);
+            }
+            return deferred.promise;
+        };
+
+
+        this.fetchRatesDetailed = function() {
+            var deferred = $q.defer(),
+                url = '/api/rates/detailed';
+
+            if (that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
+                RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                    var rates = [];
+                    _.each(response.results, function(rate) {
+                        rates[rate.id] = rate;
+                    });
+
+                    that.cache.responses['rateDetails'] = {
+                        data: rates,
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
+                    };
+
+                    deferred.resolve(rates);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.cache.responses['rateDetails']['data']);
+            }
+            return deferred.promise;
+        };
+
+        this.fetchRatesMeta = function(params) {
+            var deferred = $q.defer(),
+                promises = [];
+
+            that['rates-restrictions'] = {};
+
+            promises.push(that.fetchRatesDetailed().then(function(response) {
+                that['rates-restrictions']['rates'] = response;
+            }));
+
+            promises.push(that.fetchRestricitonTypes(params).then(function(response) {
+                that['rates-restrictions']['restrictions'] = response;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve(that['rates-restrictions']);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
+        this.fetchTaxInformation = function() {
+            var deferred = $q.defer(),
+                url = 'api/rates/tax_information';
+            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                deferred.resolve(response.tax_codes);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.fetchHouseAvailability = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/availability/house';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                var houseAvailbility = {};
+                _.each(response.results, function(availability) {
+                    houseAvailbility[availability.date] = availability.house.availability;
+                })
+                deferred.resolve(houseAvailbility);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchTaxRateAddonMeta = function(params) {
+            var deferred = $q.defer(),
+                promises = [];
+
+            that['meta'] = {};
+
+            promises.push(that.fetchTaxInformation().then(function(response) {
+                that['meta']['tax-info'] = response;
+            }));
+            promises.push(that.fetchAddonsForRates(params).then(function(response) {
+                that['meta']['rate-addons'] = response;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve(that['meta']);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
             return deferred.promise;
         };
     }

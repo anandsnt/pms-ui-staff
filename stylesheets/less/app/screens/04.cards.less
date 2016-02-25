@@ -51,7 +51,6 @@
             form,
             .card-search-form {
                 height: 50px;
-                margin-left: 20px;
                 .calc-width(100, 70);
                 .pull-left;
                 .float;
@@ -108,6 +107,14 @@
                         }
                     }
 
+                    /* Notes / Loyalty Status / VIP ***/                   
+                    .icon-notes {
+                        margin-top: 10px;
+                        .show;
+                        .square(20px);
+                        .pull-left;
+                    }
+
                     .switch-button,
                     .status { 
                         line-height: 30px;
@@ -117,15 +124,19 @@
                         .pull-left;
                     }
 
-                    .switch-button { 
-                        width: 80px; 
+                    .switch-button {
+                        line-height: 30px;
+                        text-transform: uppercase;
                         text-shadow: none;
+                        margin-top: 5px;
                         background: rgba(0,0,0,.5);
+                        .pull-left;
+                        .size(30px, 80px);
                         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.75));
                         .hide;
 
                         .value {
-                            font-weight: 700;
+                            font-weight: 600;
                             .calc-width(100, 25);
                         }
 
@@ -250,6 +261,8 @@
                 left: 0;
                 z-index: 10;
                 .calc-width(100, 150);
+
+                .guest-image { margin-right: 20px; }
             }
 
             &.second,
@@ -552,17 +565,72 @@
                             }
                         }
 
+                        &.find-rate {
+                            position: relative;
+                            
+                            .clear-query {
+                                position: absolute;
+                                top: 24px;
+                                right: 0;
+                                z-index: 99;
+                                visibility: hidden;
+                                background: @white;
+                                #border-radius > .right();
+                                .box-shadow(inset -1px 1px 1px rgba(0, 0, 0, .15));
+                                .square(40px);
+
+                                .icons {
+                                    position: absolute;
+                                    top: 12.5px;
+                                    right: 12.5px;
+                                    background-color: @grey2;
+                                    .hide-text;
+                                    .square(15px);
+                                    .opacity(0);
+                                    .show;
+                                    #fade > .out();
+                                    #border-radius > .rounded(15px);
+                                }
+
+                                &.visible { 
+                                    visibility: visible;
+
+                                    .icons {    
+                                        .opacity(100); 
+                                        #fade > .in(); 
+                                    }
+                                }
+
+                                &:hover,
+                                &.active { 
+                                    .icons { background-color: @logoPrimary; }
+                                }
+                            }
+
+                            input {
+                                padding-right: 40px;
+                                .nowrap();
+                            }
+
+                            .mini-select {
+                                position: absolute;
+                                top: 24px;
+                                right: 0;
+                                z-index: 9;
+                            }
+                        }
+
                         &.price-adjust {
                             .float;
 
                             .select {
-                                #pixel-to-percent > .width(122, 432);
+                                width: 25%;
                                 .pull-left;
                             }
 
                             input {
                                 margin: 0 10px;
-                                #pixel-to-percent > .width(148, 432);
+                                .calc-width(50, 20);
                                 .pull-left;
                             }
                         }
@@ -704,6 +772,10 @@
                             }
                         }
                     }
+
+                    &.auto-height {
+                        height: auto;
+                    }
                 }
 
                 /* Occupancy graph ***/
@@ -793,7 +865,13 @@
                         #pixel-to-percent > .right-margin(80, 1888);
                         .pull-left;
 
-                        .button { margin-top: 20px; }
+                        textarea {
+                            clear: both;
+                            margin-bottom: 10px;
+                        }
+
+                        .checkbox { .pull-left; }
+                        .button { .pull-right; }
                     }
 
                     .holder {
@@ -1209,7 +1287,8 @@
                                 &:after { .hide; }
                             }
 
-                            &.status { width: 160px; }
+                            &.status,
+                            &.date { width: 160px; }
 
                             &.date-range {
                                 margin-right: 0;
@@ -1266,6 +1345,26 @@
                             .button {
                                 font-size: 24px;
                                 line-height: 70px;
+                            }
+                        }
+
+                        .next-dates {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            color: @logoPrimary;
+                            line-height: 1;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            z-index: 9920;
+                            background: @background;
+                            .size(100%, 80px);
+
+                            .has-arrow {
+                                margin: 5px auto;
+                                background-position: 50% 0;
+                                .show;
+                                .size(20px, 100%);
                             }
                         }
 
@@ -1362,7 +1461,7 @@
 
                                     em,
                                     span,
-                                    strong { line-height: 13px; }
+                                    strong { line-height: 17px; }
 
                                     strong { font-weight: 600; }
 
@@ -1692,6 +1791,16 @@
                                 }
                             }
                         }
+
+                        .room-block-timeline,
+                        .room-block-grid {
+                            &.paginated {
+                                .wrapper { 
+                                    padding-right: 100px; 
+                                    .float; 
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -1702,6 +1811,7 @@
                 &.activity {
                     .tab-header {
                         .totals {
+                            position: relative;
                             padding: 20px;
 
                             li {
@@ -1747,10 +1857,12 @@
                                 }
                                 
                                 &:last-child { 
+                                    position: absolute;
+                                    top: 20px;
+                                    right: 20px;
                                     text-align: right;
                                     padding-right: 0;
                                     border-right: 0; 
-                                    .pull-right;
                                 }
                             }
                         }
@@ -1829,7 +1941,7 @@
                             padding: 20px;
 
                             .entry {
-                                height: 40px;
+                                height: 42px;
 
                                 &.filter {
                                     width: 50px;
@@ -1839,22 +1951,52 @@
                                     }
                                 }
 
-                                &.showing { .calc-width(22, 10); }
+                                &.showing { width: 160px; }
 
                                 &.search {
-                                    .calc-width(38, 10);
+                                    .calc-width(100, 670);
 
                                     .clear-query { right: 10px; }
                                     .query { width: 100%; }
                                 }
 
-                                &.dates { .calc-width(40, 70); }
+                                &.dates {
+                                    width: 260px;
+
+                                    .entry-data { width: 125px; }
+                                }
                             }
                         }
 
                         .totals {
                             li {
+                                padding-bottom: 10px;
+
+                                .data {
+                                    .label { line-height: 20px; }
+                                    .value { line-height: 30px; }
+                                }
+
                                 .button { .pull-right; }
+
+                                .with-button {
+                                    position: relative;
+
+                                    .button {
+                                        position: absolute;
+                                        bottom: 0;
+                                        right: 0;
+                                        line-height: 30px;
+                                        height: 30px;
+                                        padding: 0 10px;
+                                    }
+                                }
+
+                                &:last-child {
+                                    top: 0;
+                                    padding: 20px 0 20px 10px;
+                                    border-left: 1px solid rgba(0,0,0,.1);
+                                }
                             }                                    
                         }
                     }
@@ -2115,6 +2257,163 @@
                         }
                     }
                 }
+
+                /* Commisions ***/
+                &.commisions {
+                    .tab-header {
+                        .float;
+
+                        .search-form { 
+                            text-align: left;
+                            padding: 5px 20px;
+                            background: @rcardTexture1;
+                            visibility: visible;
+                            #fade > .in();
+                            .size(80px, 100%);
+
+                            .entry {
+                                padding: 0;
+                                margin-right: 20px;
+                                width: 160px;
+                                .box-shadow(none);
+
+                                label { margin: 0; }
+
+                                &.date-range { 
+                                    .calc-width(100, 620);
+
+                                    .has-datepicker {
+                                        .calc-width(50, 10);
+                                        .pull-left;
+
+                                        &:first-child { margin-right: 20px; }
+                                    } 
+
+                                    .clear-query {
+                                        position: absolute;
+                                        top: 26px;
+                                        right: 0;
+                                        background-color: @white;
+                                        .square(38px);
+
+                                        .icons {
+                                            top: 11px;
+                                            right: 11px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .actions {
+                                margin-top: 24px;
+                                .pull-right;
+
+                                .button { 
+                                    padding: 0 20px;
+
+                                    &.red,
+                                    &.grey,
+                                    &.brand-colors {
+                                        &:not(:last-child) { margin-right: 10px; }
+                                    }                                
+                                }
+                            }
+
+                            &.hidden,
+                            &.ng-hide { 
+                                visibility: hidden;
+                                #fade > .out(); 
+                            }
+                        }
+                    }
+
+                    .tab-details {
+
+                        .totals {
+                            padding: 20px;
+                            height: 80px;
+                            overflow: hidden;
+
+                            li {
+                                margin-bottom: 0;
+                                color: @grey3;
+                                font-size: 15px;
+                                line-height: 15px;
+                                text-align: center;
+                                margin-right: 40px;
+                                .pull-left;
+
+                                .value {
+                                    font-size: 24px;
+                                    line-height: 25px;
+                                    color: @textColor;
+                                    .show;
+                                }
+
+                                &.action {
+                                    margin-right: 20px;
+                                    .pull-right;
+
+                                    .checkbox {
+                                        font-size: 14px;
+                                        line-height: 1;
+                                        text-align: center;
+                                        padding: 0;
+                                        margin: -5px 0 0 0;
+                                        .square(45px);
+
+                                        .icon-form {
+                                            top: 20px;
+                                            left: 50%;
+                                            margin-left: -10px;
+                                            background-color: @grey2;
+                                        }
+                                    }
+
+                                    .select {
+                                        text-align: left;
+                                        width: 160px;
+                                        .placeholder-text(14px, 30px, 400, @logoPrimary);
+
+                                        select,
+                                        option { color: @logoPrimary; }
+
+                                        .placeholder {
+                                            color: @logoPrimary;
+                                        }
+                                    }
+
+                                    .button { .square(40px); }
+
+                                    &.no-margin { margin-right: 0; }
+                                }
+                            }
+
+                            &.selected {
+                                li { 
+                                    .value { color: @logoPrimary; }
+
+                                    &.action {
+                                        .button {
+                                            .button > .orange();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .scrollable {
+                            position: relative;
+                            .calc-height(100, 80);
+
+                            .search-results { padding: 0 20px 20px; }
+
+                            .iScrollVerticalScrollbar { top: 0; }
+                        }
+
+                        &.with-pagination { .calc-height(100, 140); }
+                    }
+                }
             }
 
             &.card-tabs { padding: 20px; }
@@ -2177,6 +2476,9 @@
         &.open,
         &.fullscreen {
             .card-header {
+
+                .guest-image { margin-right: 20px; }
+
                 form { 
                     .calc-width(100, 250);
 
@@ -2250,6 +2552,17 @@
             .cards-wrapper {
                 background: @allotmentcardTexture;
                 .gradient-horizontal(@allotmentcard, @groupcard);
+            }
+        }
+
+        /* Hourly has 3 cards only ***/
+        &.hourly {
+            .card-header {
+                &.first { .calc-width(100, 100); }
+
+                &.second { #calc-position > .left(100, 100); }
+
+                &.third { #calc-position > .left(100, 50); }
             }
         }
     }

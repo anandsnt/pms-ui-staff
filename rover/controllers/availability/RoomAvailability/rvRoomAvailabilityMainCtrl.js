@@ -1,4 +1,4 @@
-sntRover.controller('roomAvailabilityMainController', [
+angular.module('sntRover').controller('roomAvailabilityMainController', [
 	'$scope',
 	'rvAvailabilitySrv',
 	'$rootScope',
@@ -137,7 +137,6 @@ sntRover.controller('roomAvailabilityMainController', [
 		}, 0);
 
 	};
-
 
 	$scope.changedAvailabilityDataParams();
 	}]);

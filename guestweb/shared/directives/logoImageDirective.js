@@ -8,7 +8,7 @@
 	};
 	};
 
-	snt.directive('logoImage', logoImage);
+	sntGuestWeb.directive('logoImage', logoImage);
 
 	var logoImageBack = function() {
 		return {
@@ -17,5 +17,5 @@
 	};
 	};
 
-	snt.directive('logoImageBack', logoImageBack);
+	sntGuestWeb.directive('logoImageBack', logoImageBack);
 })();

@@ -652,7 +652,7 @@ sntRover
 
 	    var openMessageShowingPopup = function(){
 			ngDialog.open({
-				template: 'assets/partials/diary/rvDiaryMessages.html',
+				template: '/assets/partials/diary/rvDiaryMessages.html',
 				scope: $scope,
 				controller: 'RVDiaryMessageShowingCtrl'
 			});
@@ -674,7 +674,7 @@ sntRover
 
 	    var openEditConfirmationPopup = function() {
 			ngDialog.open({
-				template: 'assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
+				template: '/assets/partials/diary/rvDiaryRoomTransferConfirmation.html',
 				controller: 'RVDiaryRoomTransferConfirmationCtrl',
 				scope: $scope
 			});
@@ -1367,7 +1367,7 @@ sntRover
 	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
 		if(newValue > oldValue) {
 			ngDialog.open({
-				template: 'assets/partials/diary/rvDiaryConfirmation.html',
+				template: '/assets/partials/diary/rvDiaryConfirmation.html',
 				controller: 'RVDiaryConfirmationCtrl',
 				scope: $scope
 			});
@@ -2009,14 +2009,6 @@ sntRover
 		$rootScope.modalOpened = false;
 	});
 
-	$scope.closeDialog = function(){
-		//to add stjepan's popup showing animation
-		$rootScope.modalOpened = false;
-		$timeout(function(){
-			ngDialog.close();
-		}, 300);
-	};
-
 	$scope.compCardOrTravelAgSelected = function(){
 		if (!$scope.gridProps.edit.active) {
 			$scope.Availability();
@@ -2062,8 +2054,8 @@ sntRover
                 };
 
                 if(item.company_logo === '') {
-                	img_url = item.account_type === 'COMPANY' ? '/assets/avatar-company.png' : '/assets/avatar-travel-agent.png';
-                	eachItem.image = img_url;
+                	img_url = item.account_type === 'COMPANY' ? 'avatar-company.png' : 'avatar-travel-agent.png';
+                	eachItem.image = '/assets/images/' + img_url;
                 }
 
                 // making sure that the newly created 'eachItem'

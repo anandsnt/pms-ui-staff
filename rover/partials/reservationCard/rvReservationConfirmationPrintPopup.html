@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
     <form method="post" action="confirm-reservation" id="confirm-reservation" class="modal-content form confirm-reservation">
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         
@@ -14,12 +14,12 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="button with-icon Grey" ng-show ="!ngData.sendConfirmatonMailTo&&!isEmailAttached()">
+            <button type="button" class="button with-icon Grey" ng-show ="sendConfirmationLetter && (!ngData.sendConfirmatonMailTo&&!isEmailAttached())">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
                 {{'EMAIL_CONFIRMATION' | translate}}
             </button>
-            <button type="button" class="button with-icon blue" ng-show ="ngData.sendConfirmatonMailTo || isEmailAttached()" ng-click="sendConfirmationEmail()">
+            <button type="button" class="button with-icon blue" ng-show ="sendConfirmationLetter && (ngData.sendConfirmatonMailTo || isEmailAttached())" ng-click="sendConfirmationEmail()">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
                 {{'EMAIL_CONFIRMATION' | translate}}

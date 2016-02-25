@@ -26,5 +26,5 @@ var dependencies = [
 externalVerificationService
 ];
 
-snt.factory('externalVerificationService', dependencies);
+sntGuestWeb.factory('externalVerificationService', dependencies);
 })();

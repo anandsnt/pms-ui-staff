@@ -9,7 +9,7 @@
 "CHARGE_CODE_TYPE":"Charge Code Type",
 "PAYMENT_TYPE":"Payment Type",
 "AMOUNT":"Amount",
-"AMOUNT_TYPE":"Amount Type", 
+"AMOUNT_TYPE":"Amount Type",
 "SELECT_AMOUNT_TYPE":"Select Amount Type",
 "POST_TYPE":"Post Type",
 "SELECT_POST_TYPE":"Select Post Type",
@@ -28,4 +28,10 @@
 "SELECT_CALCULATION_RULE":"Select Calculation Rule",
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
-"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee"
+"MINIMUM_AMOUNT_TO_CHARGE_FEE":"Minimum amount to charge fee",
+"INVOICES" : "Invoices",
+"FIRST_INVOICE_NO" : "First Invoice Number",
+"INVOICE_NO_PREFIX" : "Invoice Number Prefix",
+"PLACEHOLDER_FIRST_INVOICE_NO" : "Enter First Invoice Number",
+"PLACEHOLDER_INVOICE_NO_PREFIX" : "Enter Invoice Number Prefix",
+"EMPTY_INVOICE_NO_PREFIX" : "Invoice Number Prefix cannot be empty"

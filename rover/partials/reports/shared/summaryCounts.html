@@ -14,6 +14,11 @@
 </ul>
 
 <!-- Upsell -->
+<ul ng-if="isThisReport( 'EMAIL_CHECKIN_SUMMARY' )" class="totals">
+    <li ng-repeat="item in summaryCounts">{{item.label}}<span>{{  item.value }}</span></li>
+</ul>
+
+<!-- Upsell -->
 <ul ng-if="isThisReport( 'UPSELL' )" class="totals">
     <li>Rooms upsold<span>{{  summaryCounts.rooms_upsold }}</span></li>
     <li>Upsell Revenue<span class="brand-colors">{{ summaryCounts.upsell_revenue | currency:currencySymbol:2 }}</span></li>
@@ -21,6 +26,15 @@
 
 <!-- Web check in -->
 <ul ng-if="isThisReport( 'WEB_CHECK_IN_CONVERSION' )" class="totals">
+    <li>Emails sent<span>{{ summaryCounts.emails_sent }}</span></li>
+    <li>Up Sell Conversion<span class="brand-colors">{{ summaryCounts.up_sell_conv }}</span></li>
+    <li>Revenue<span>{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Conversion<span class="brand-colors">{{ summaryCounts.conversion }}</span></li>
+    <li>Total Web Check-Ins<span>{{ summaryCounts.total_checkin }}</span></li>
+</ul>
+
+<!-- Web check in -->
+<ul ng-if="isThisReport( 'WEB_CHECK_IN_CONV_BY_DAY' )" class="totals">
     <li>Emails sent<span>{{ summaryCounts.emails_sent }}</span></li>
     <li>Up Sell Conversion<span class="brand-colors">{{ summaryCounts.up_sell_conv }}</span></li>
     <li>Revenue<span>{{ summaryCounts.revenue | currency:currencySymbol:2 }}</span></li>
@@ -117,7 +131,14 @@
 </ul>
 
 <!-- Daily production report -->
-<ul ng-if="isThisReport( 'DAILY_PRODUCTION' )" class="totals">
+<ul ng-if="isThisReport(['DAILY_PRODUCTION_ROOM_TYPE', 'DAILY_PRODUCTION_RATE'])" class="totals">
+    <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
+    <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Daily production by demographics -->
+<ul ng-if="isThisReport( 'DAILY_PRODUCTION_DEMO' )" class="totals">
     <li>Rate Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
     <li>Actual Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>

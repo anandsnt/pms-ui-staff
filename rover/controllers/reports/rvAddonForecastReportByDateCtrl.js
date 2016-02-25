@@ -17,7 +17,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
-			results          = mainCtrlScope.results,
+			results      = {},
 			addonGrpHash = {},
 			addonHash    = {},
 			addonGroups,
@@ -185,6 +185,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  		function init () {
 			addonGroups  = mainCtrlScope.addonGroups || $scope.chosenReport.hasAddonGroups.data;
 			addons       = mainCtrlScope.addons ||  $scope.chosenReport.hasAddons.data;
+			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
 
@@ -206,6 +207,12 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
 				var date        = reportKey,
 					addonGroups = results[reportKey]['addon_groups'];
+
+				if ( results[reportKey]['guests'] > 0 ) {
+					results[reportKey]['hasData'] = true;
+				} else {
+					results[reportKey]['hasData'] = false;
+				};
 				
 				var i, j;
 				for (i = 0, j = addonGroups.length; i < j; i++) {
@@ -264,6 +271,8 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			/* LOOP ENDS */
 			$scope.modifiedResults = angular.copy( results );
 
+			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
+
 			// refresh scroll
 			$timeout( refreshScroll.bind(null, 'scrollUp'), 300 );
 		};
@@ -278,10 +287,10 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
 		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
 
-		$scope.$on( 'destroy', reportSubmited );
-		$scope.$on( 'destroy', reportUpdated );
-		$scope.$on( 'destroy', reportPrinting );
-		$scope.$on( 'destroy', reportPageChanged );
+		$scope.$on( '$destroy', reportSubmited );
+		$scope.$on( '$destroy', reportUpdated );
+		$scope.$on( '$destroy', reportPrinting );
+		$scope.$on( '$destroy', reportPageChanged );
 
  		
 

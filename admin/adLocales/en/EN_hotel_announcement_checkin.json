@@ -13,11 +13,18 @@
     "NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE": "Notify Guest When Room is not assigned",
     "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Notify Guest When Room is Ready & Vacant",
     "RESERVATION_CC_GUARANTEED": "Only if Reservation is CC guaranteed",
-    "EMAIL_TO_ALL_ARRIVALS": "Send email to all arrivals on ",
+    "EMAIL_TO_ALL_ARRIVALS": "Send email to guests on day of arrival",
+    "EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS": "SEND EMAIL TO GUESTS ON DAY BEFORE ARRIVAL",
     "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
+
+    "EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT": "Exclude from manual room assignment",
+    "EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT": "Exclude from auto room assignment",
+    "EXCLUDE_FROM_MANUAL_CHECK_IN": "Exclude from manual Check In",
+    "EXCLUDE_FROM_AUTO_CHECK_IN": "Exclude from auto Check In",
+    "EXCLUDE_FROM_HOUSEKEEPING": "Exclude from Housekeeping",
     
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
     "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
@@ -37,4 +44,8 @@
     "PRE_CHECK_IN_EMAIL_TITLE":"PRE CHECK IN - EMAIL TITLE ",
     "PRE_CHECK_IN_TOP_BODY":"PRE CHECK IN - TOP BODY",
     "PRE_CHECK_IN_BOTTOM_BODY":"PRE CHECK IN - BOTTOM BODY",
-    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields"
+    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields",
+    "TEXT_MESSAGE":"Text Message",
+    "ROOM_KEY_COMMUNICATION_OPTIONS":"Room key communication options",
+    "EMAIL_AND_TEXT_MESSAGE":"Email and Text Message",
+    "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message"

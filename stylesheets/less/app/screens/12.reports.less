@@ -282,7 +282,11 @@
                     .box-shadow(0 1px 0 rgba(0,0,0,.15));
                     .flex(center);
 
-                    .icon-form { left: 10px; }
+                    .icon-form { 
+                        left: 10px; 
+                        background-color: @grey1;
+                        &.middle { top: 10px; }
+                    }
 
                     &:last-child { .box-shadow(none); }
                 }
@@ -291,6 +295,8 @@
 
                 &.cols-2 {
                     width: 200%;
+                    position: relative;
+                    z-index: 999;
                     .float;
 
                     strong {
@@ -317,11 +323,16 @@
                 padding: 0;
                 .size(40px, 80px);
 
-                &.purple { right: 100px; }
+                &.purple { right: 10px; }
                 &.green { right: 10px; }
             }
 
-            &.two-buttons { padding-right: 200px; }
+            &.two-buttons { 
+                padding-right: 200px; 
+                .button{
+                    &.purple { right: 100px;}
+                }
+            }
         }
     }
 }
@@ -1309,7 +1320,7 @@
 
                             &.day-end { border-right: 1px solid @grey4; }
 
-                            strong { font-weight: 600; }
+                            strong {font-weight: 600;}
 
                             &:last-child { border-right-width: 0; }
                         }
@@ -1892,7 +1903,7 @@
                                 right: 0;
                                 top: 0;
 
-                                .switch-icon { .gradient(@redStart, @redEnd); }
+                                .switch-icon {.gradient(@redStart, @redEnd);}
                             }
 
                             .data-on {
@@ -1900,7 +1911,7 @@
                                 right: 0;
                                 top: 100%;
 
-                                .switch-icon { .gradient(@greenStart, @greenEnd); }
+                                .switch-icon {.gradient(@greenStart, @greenEnd);}
                             }
 
                             &.on {

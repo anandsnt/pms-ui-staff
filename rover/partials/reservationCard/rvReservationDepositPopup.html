@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
     <form ng-show="!shouldShowWaiting" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -15,7 +15,7 @@
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
-                        <img ng-src="/assets/{{depositData.card_type}}.png" alt="" />
+                        <img ng-src="/assets/images/{{depositData.card_type}}.png" alt="" />
                     </figure>
                     <span class="number">Ending with <span class="value number">{{depositData.cardNumber}}</span></span>
                     <span class="date">Date <span class="value date">{{depositData.expiry_date}}</span></span>

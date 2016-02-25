@@ -1,0 +1,10 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+    <div class="modal-content alert">
+        <strong class="h2 message">This reservation is not available to check-in.</strong>
+        <span class = "message">Reason: Room number is excluded from Manual Check-In</span>
+        <button type="button" class="button blank"
+            ng-click="closeDialog()">
+            Cancel
+        </button>
+    </div>
+</div>

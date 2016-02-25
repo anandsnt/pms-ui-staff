@@ -1,4 +1,6 @@
 sntZestStation.constant('zsEventConstants', {
+	'OOS_OFF'  	: 'oos_off',
+	'PUT_OOS'  	: 'oos_on',
 	'SHOW_BACK_BUTTON'  	: 'Show_back_button',
 	'HIDE_BACK_BUTTON' 		: 'Hide_back_button',
 	'SHOW_CLOSE_BUTTON'  	: 'Show_close_button',

@@ -1,4 +1,4 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
+angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
 	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams) {
 
 		$scope.searchMode = true;
@@ -32,6 +32,10 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 			}
 			else if (tabToSwitch === 'cc-ar-transactions') {
 				$scope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
+			else if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
 			}
 			if (!$scope.viewState.isAddNewCard) {
@@ -291,7 +295,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout'
 	}
 ]);
 
-sntRover.controller('travelAgentResults', ['$scope', '$timeout',
+angular.module('sntRover').controller('travelAgentResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
 		BaseCtrl.call(this, $scope);
 		var scrollerOptionsForGraph = {

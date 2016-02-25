@@ -1,5 +1,5 @@
 input,
-.button {
+.button, select {
     font-family: @fontFamily;
     font-size: 1.389em;
     line-height: 64px;
@@ -10,7 +10,11 @@ input,
     .show;
     .transition();
 } 
-
+select {
+    width: 100%;
+    color: @textColor;
+    padding: 0 20px;
+}
 input {
     color: @textColor;
     background: @inputBackground;
@@ -44,6 +48,12 @@ input {
     }
 }
 
+.overlay{
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
 .form {
     #flexbox > .flex();
     #flexbox > .parent('', flex-start, flex-start, '');
@@ -55,6 +65,7 @@ input {
 }
 
 .entry {
+    
     &.input { 
         position: relative;
         margin-right: 10px;

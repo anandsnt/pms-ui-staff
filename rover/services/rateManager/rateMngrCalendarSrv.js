@@ -1,6 +1,8 @@
-sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
+angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 	var that = this;
 	that.allRestrictionTypes = [];
+
+	this.restrictionsIndependentOfDays = []; // CICO-21942
 
 	this.fetchAllRestrictionTypes = function(onComplete, params, url){
 		//TODO: Modify to handle case of date range changes, if needed.
@@ -14,6 +16,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				for(var i in data.results) {
 					if(data.results[i].activated && !data.results[i].editable){
 						that.allRestrictionTypes.push(data.results[i]);
+						if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(data.results[i].value) >= 0){
+							 that.restrictionsIndependentOfDays.push(data.results[i].id);
+						}
 					}
 				}
 				deferred.resolve(data);
@@ -217,7 +222,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//Pass the rate details to the controller
 			calendarData.selectedRateDetails = selectedRate;
 			calendarData.is_fixed_rate = data.is_fixed_rate;
-			calendarData.is_child = !data.can_modify;
+			calendarData.is_child = (data.can_modify !== undefined && !data.modify) || data.is_child;
+			calendarData.parentRateName = data.parent_rate_name;
 			deferred.resolve(calendarData);
 		},rejectDeferred);
 
@@ -284,8 +290,17 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		angular.forEach(that.roomTypeRates.results, function(item){
 		   	datesList.push(item.date);
+		   	
+		   	// CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+		   	_.each(item.rate_restrictions,function(rate){
+		   		if(_.indexOf(that.restrictionsIndependentOfDays, parseInt(rate.restriction_type_id, 10)) > -1){
+		   			rate.days = null;
+		   		}
+		   	});
+
 		   	//UI requires al-rates separated from daily rates.
-		   	ratesRestrictions[item.date] = item.rate_restrictions;
+		   	ratesRestrictions[item.date] = item.rate_restrictions; 	
+		  
 
 		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
 		   	for(var ri in item.room_rates){
@@ -309,6 +324,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   			roomRateData.push(rateData);
 		   		}
 		   		var rr = {};
+		   		// CICO-21942 Set days count of restrictionsIndependentOfDays to be null
+			   	_.each(rate.restrictions,function(rate){
+			   		if(_.indexOf(that.restrictionsIndependentOfDays, parseInt(rate.restriction_type_id, 10)) > -1){
+			   			rate.days = null;
+			   		}
+			   	});
 		   		rr.restrictions = rate.restrictions;
 		   		rr.single = rate.single;
 		   		rr["double"] = rate["double"];

@@ -1,7 +1,20 @@
-sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'RVWorkManagementSrv', '$timeout',
+angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'RVWorkManagementSrv', '$timeout',
     function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, RVWorkManagementSrv, $timeout) {
         $scope.setHeading("Work Management");
         BaseCtrl.call(this, $scope);
+
+        var scrollerOptions = {click: true, scrollbars: true};
+        $scope.setScroller('work_management', scrollerOptions);
+
+        $scope.refreshScroller = function (key){
+            setTimeout(function() {
+                if ( !!$scope && $scope.myScroll ) {
+                    if( key in $scope.myScroll ){
+                        $scope.myScroll[key].refresh();
+                    }
+                };
+            }, 100);
+        };
 
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
@@ -12,13 +25,11 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             });
         };
 
-        $scope.setScroller('roomsSearchResults');
-        $scope.setScroller('maidsSearchResults');
-
         var setStats = function() {
             var onFetchSuccess = function(wmStatistics) {
                     $scope.$emit('hideLoader');
                     $scope.workStats = wmStatistics;
+                    $scope.refreshScroller('work_management');
                 },
                 onFetchFailure = function(errorMessage) {
                     $scope.errorMessage = "";
@@ -27,8 +38,6 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 };
             $scope.invokeApi(RVWorkManagementSrv.fetchStatistics, $scope.stateVariables.viewingDate, onFetchSuccess, onFetchFailure);
         };
-
-
 
         $scope.stateVariables = {
             searching: false,
@@ -149,64 +158,6 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             }, onAssignSuccess, onAssignFailure);
         };
 
-        function isSearchOnSingleDigit(searchTerm){
-            if($rootScope.isSingleDigitSearch){
-                return isNaN(searchTerm);
-            } else {
-                return true;
-            }
-        };
-
-        $scope.workManagementSearch = function(refresh) {
-            /**
-            * Single digit search for room number will be initiated based on the settings in admin
-            * Ref Story: CICO-10323
-            */
-            if(isSearchOnSingleDigit($scope.stateVariables.searchQuery) && $scope.stateVariables.searchQuery.length < 3){
-                return false;
-            }
-
-            if (refresh || ($scope.stateVariables.searchQuery.length > 0 && $scope.stateVariables.lastSearchQuery !== $scope.stateVariables.searchQuery)) {
-                var searchKey = $scope.stateVariables.searchQuery;
-                $scope.stateVariables.lastSearchQuery = $scope.stateVariables.searchQuery;
-                $scope.stateVariables.searching = true;
-                if (searchKey.match(/[0-9]/)) {
-                    var onRoomSearchSuccess = function(rooms) {
-                        $scope.stateVariables.employeeSearch = false;
-                        $scope.stateVariables.searchResults.rooms = rooms;
-                        $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.rooms.length === 0;
-                        $scope.refreshScroller('roomsSearchResults');
-                        $scope.$emit('hideLoader');
-                    };
-                    $scope.invokeApi(RVWorkManagementSrv.searchRooms, {
-                        key: searchKey,
-                        date: $scope.stateVariables.viewingDate.date
-                    }, onRoomSearchSuccess);
-                } else {
-                    var onEmployeeSearchSuccess = function(maids) {
-                        $scope.stateVariables.employeeSearch = true;
-                        $scope.stateVariables.searchResults.maids = maids;
-                        $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.maids.length === 0;
-                        $scope.refreshScroller('maidsSearchResults');
-                        $scope.$emit('hideLoader');
-                    };
-                    $scope.invokeApi(RVWorkManagementSrv.searchEmployees, {
-                        key: searchKey,
-                        date: $scope.stateVariables.viewingDate.date,
-                        workType: $scope.stateVariables.viewingDate.work_type_id
-                    }, onEmployeeSearchSuccess);
-                }
-
-            } else {
-                $scope.stateVariables.searchResults.maids = [];
-                $scope.stateVariables.searchResults.rooms = [];
-                $scope.stateVariables.lastSearchQuery = "";
-                $scope.stateVariables.searching = false;
-                $scope.stateVariables.noSearchResults = false;
-                $scope.$apply();
-            }
-        };
-
         $scope.showCalendar = function(controller) {
             ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementSearchDateFilter.html',
@@ -218,20 +169,13 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         };
 
         $scope.showCreateCalendar = function() {
-            ngDialog.open({
+            $scope.calendarDialog = ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementCreateDatePicker.html',
                 controller: 'RVWorkManagementCreateDatePickerController',
                 className: 'ngdialog-theme-default single-date-picker',
                 closeByDocument: true,
                 scope: $scope
             });
-        };
-
-        $scope.onWorkTypeChanged = function() {
-            if ($scope.stateVariables.searching) {
-                $scope.workManagementSearch(true);
-            }
-            setStats();
         };
 
         $scope.onViewDateChanged = function() {
@@ -241,6 +185,28 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             setStats();
         };
 
+        /**
+         * Fired when clicked on the reset button.
+         * Resets date to buisiness date and refresh statistics.
+         * @return {undefined}
+         */
+        $scope.resetView = function() {
+            // reset to buisiness date
+            $scope.stateVariables.viewingDate.date = $rootScope.businessDate;
+            setStats();
+        };
+
+        $scope.toggleTasksList = function(workType) {
+            workType.showTasks = workType.showTasks ? false : true;
+            $scope.refreshScroller('work_management');
+        };
+
+        $scope.navigateToMultiSheet = function() {
+            $state.go('rover.workManagement.multiSheet', {
+                date: $scope.stateVariables.viewingDate.date
+            });
+        };
+        // Initialize statistics.
         setStats();
 
 

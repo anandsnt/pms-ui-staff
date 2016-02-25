@@ -38,26 +38,17 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	$scope.clickChargeButton = function(){
 		choosedNoCharge = false;
 
-		var data = {
-			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-			"room_no": $scope.assignedRoom.room_number,
-			"upsell_amount": $scope.roomCharge,
-			forcefully_assign_room: wanted_to_forcefully_assign
-		};
-		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, data, $scope.successCallbackUpgrade, $scope.failureCallbackUpgrade);
-
-	};
-
-	/**
-	 * to open the room aleady chhosed popup
-	 * @return undefined
-	 */
-	var openWantedToBorrowPopup = function() {
-		ngDialog.open(
-		{
-			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
-			scope 		: $scope
-        });
+		var options = {
+            params : {
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
+				"room_no": $scope.assignedRoom.room_number,
+				"upsell_amount": $scope.roomCharge,
+				"forcefully_assign_room": wanted_to_forcefully_assign
+			},
+            successCallBack : $scope.successCallbackUpgrade,
+            failureCallBack : $scope.failureCallbackUpgrade
+        };
+        $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
 	/**
@@ -71,21 +62,6 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 			controller 	: 'rvRoomAlreadySelectedCtrl',
 			className 	: 'ngdialog-theme-default',
 			scope 		: $scope
-        });
-	};
-
-	/**
-	 * to open the room aleady chhosed popup
-	 * @return undefined
-	 */
-	var openPopupForErrorMessageShowing = function(errorMessage) {
-		ngDialog.open(
-		{
-			template 	: '/assets/partials/roomAssignment/rvRoomAssignmentShowErrorMessage.html',
-			className 	: 'ngdialog-theme-default',
-			controller 	: 'rvRoomAlreadySelectedCtrl',
-			scope 		: $scope,
-			data  		: JSON.stringify(errorMessage)
         });
 	};
 
@@ -107,29 +83,26 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	};
 
 	$scope.failureCallbackUpgrade = function(error) {
-		ngDialog.close();
+		// ngDialog.close();
 		//since we are expecting some custom http error status in the response
 		//and we are using that to differentiate among errors
 		if(error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
+						var dataToBorrowRoom = {
+							"errorMessage": error.errorMessage[0],
+							"upsell_amount" : $scope.roomCharge
+						};
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup ();
+						// openWantedToBorrowPopup(error);
+						$scope.$emit('closeDialogWithError', dataToBorrowRoom);
 				 	break;
 				default:
 					break;
 			}
 		}
 		else {
-				if (!$rootScope.isStandAlone) {
-					openRoomAlreadyChoosedPopup ();
-				}
-				else {
-					var errorMessagePopup = {
-						errorMessage: error.toString()
-					};
-					openPopupForErrorMessageShowing(errorMessagePopup);
-				}
+			$scope.displayRoomAssignementError(error.toString());
 		}
 		$scope.$emit('hideLoader');
 
@@ -172,20 +145,20 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 		$scope.goToNextView();
 
 	};
+
 	$scope.clickedNoChargeButton = function(){
 		choosedNoCharge = true;
+		var options = {
+            params : {
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
+				"room_no": $scope.assignedRoom.room_number,
+				"forcefully_assign_room" : wanted_to_forcefully_assign
+			},
+            successCallBack : $scope.successCallbackUpgrade,
+            failureCallBack : $scope.failureCallbackUpgrade
+        };
 
-		var data = {
-			"reservation_id" 	: $scope.reservationData.reservation_card.reservation_id,
-			"room_no" 			: $scope.assignedRoom.room_number,
-			forcefully_assign_room : wanted_to_forcefully_assign
-		};
-		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, data, $scope.successCallbackUpgrade, $scope.failureCallbackUpgrade);
-
-	};
-	$scope.clickedCancelButton = function(){
-		$scope.getRooms(true);
-		$scope.closeDialog();
+        $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
 }]);

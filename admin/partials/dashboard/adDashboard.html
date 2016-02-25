@@ -7,7 +7,8 @@
       <section class="content-scroll">
          <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard"></div>
          <ul class="dashboard-items float">
-            <li ng-repeat="submenu in selectedMenu.components" >
+         <!-- ng-hide added For CICO-21697  -->
+            <li ng-repeat="submenu in selectedMenu.components" ng-hide ="(isStandAlone || isEnabledRoomTypeByRoomClass == false ) && submenu.name =='Room classes'">
                <a data-type="load-listing"  
                   class="{{submenu.icon_class}}" 
 

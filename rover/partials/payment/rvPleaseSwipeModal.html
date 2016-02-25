@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content">
 		<span class="h3 message">PLEASE SWIPE CREDIT CARD</span>
 		<button id="ok" class="button red modal-close" ng-click="closeDialog()">

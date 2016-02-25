@@ -5,9 +5,11 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.iBeaconLinker = null;
     this.enableURLChange = true;
+    this.uuidService = null;
     try{
     	this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
+        this.desktopUUIDService = new DesktopUUIDService();
     }
         catch(er){
     };
@@ -30,7 +32,7 @@ var GlobalApp = function(){
     	}
     	if(browser === 'rv_native' && !that.cordovaLoaded){
     	   //TODO: check URL
-    		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
+    		var url = "/assets/shared/cordova.js";
 
     		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
     		 * webview of iOS / Android.
@@ -39,7 +41,7 @@ var GlobalApp = function(){
 
     		xhr.onreadystatechange=function() {
   				if (xhr.readyState===4 && xhr.status===200){
-  					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
+                      that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
   					that.fetchFailedOfCordovaPlugins();
   				}
@@ -54,18 +56,32 @@ var GlobalApp = function(){
 
 
     // success function of coddova plugin's appending
-    this.fetchCompletedOfCordovaPlugins = function(data){
-    	$('body').append(data);
+    this.fetchCompletedOfCordovaPlugins = function(script){
+        $("head").append('<script type="text/javascript">'+ script +'</script>');
         that.cordovaLoaded = true;
         try{
+
     	   that.cardReader = new CardOperation();
+
         }
         catch(er){
         };
         try{
+
             that.iBeaconLinker = new iBeaconOperation();
+
         }
         catch(er){};
+
+        try {
+
+            that.uuidService = new UUIDService();
+
+        }
+        catch(er){
+
+        };
+
 
     };
 
