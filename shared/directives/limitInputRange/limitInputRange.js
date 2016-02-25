@@ -21,11 +21,11 @@ admin.directive('limitInputRange', ['$timeout', function($timeout) {
     	link: function(scope, elem, attrs, ngModel) {
             var options,
                 processIt,
-                throttled;
+                debounced;
 
             options = scope.$eval( attrs.limitInputRange );
 
-            if ( ! options.hasOwnProperty('from') || ! options.hasOwnProperty('to') typeof options.from != 'number' || typeof options.to != 'number') {
+            if ( ! options.hasOwnProperty('from') || ! options.hasOwnProperty('to') || typeof options.from !== 'number' || typeof options.to !== 'number') {
                 console.error( "'Must provide 'from' and 'to' values." );
                 return;
             };
@@ -50,13 +50,14 @@ admin.directive('limitInputRange', ['$timeout', function($timeout) {
 
                 ngModel.$setViewValue(apply);
                 ngModel.$render();
+                scope.$digest();
 
                 scope[options.callback] && scope[options.callback]();
             };
 
-            throttled = _.throttle(processIt, 300, { leading: false });
+            debounced = _.debounce(processIt, 300);
 
-            angular.element(elem).on('keyup', throttled);
+            angular.element(elem).on('keyup', debounced);
 
             scope.$on('$destroy', function() {
                 angular.element(elem).off('keyup');
