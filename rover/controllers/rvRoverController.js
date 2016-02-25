@@ -16,8 +16,6 @@ sntRover.controller('roverController',
 
     rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q) {
 
-    // TODO: remove this after CICO-19912 is done
-    SWITCH_ROOM_AND_RATES_ALT = true;
 
 
     $rootScope.isOWSErrorShowing = false;
@@ -498,7 +496,7 @@ sntRover.controller('roverController',
       // Hide loading message
       $scope.$emit('hideLoader');
       console.error(error);
-      //TODO: Log the error in proper way
+      $scope.$broadcast("showErrorMessage", error);
     });
 
     //This variable is used to identify whether guest card is visible

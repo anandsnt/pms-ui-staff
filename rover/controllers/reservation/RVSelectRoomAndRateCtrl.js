@@ -183,10 +183,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// Populate a Room First Grid Here
 				var roomTypes = {},
 					isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1 : $scope.getLeastHouseAvailability() < 1,
+                    isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
 					isPromoInvalid = $scope.reservationData.code &&
 					$scope.reservationData.code.id &&
 					!_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
-						return a && b
+						return a && b;
 					});
 
 				// for every rate
@@ -218,7 +219,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 							//---------------------------------------------------------------------------------------------- Add FULL-HOUSE if applicable in restrictions
 
-							if (isHouseFull && (!roomType.first_restriction || roomType.first_restriction.type_id != 99)) {
+							if (!isGroupReservation && isHouseFull && (!roomType.first_restriction || roomType.first_restriction.type_id != 99)) {
 								roomType.restriction_count = roomType.restriction_count ? roomType.restriction_count + 1 : 1;
 								if (roomType.restriction_count === 1) {
 									roomType.first_restriction = {
@@ -300,29 +301,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 					// ************************************************************************************************* STEP 1a : Sort rates based on the preference
 					if ($scope.stateCheck.sortOrder === "HIGH_TO_LOW") {
-						roomType.ratesArray.sort(RVReservationDataService.sortRatesDesc);
+						roomType.ratesArray.sort(RVReservationDataService.sortRatesInRoomsDESC);
 					} else {
-						roomType.ratesArray.sort(RVReservationDataService.sortRatesAsc);
-					}
-					// ************************************************************************************************* STEP 1b : Bring Corporate rates on top
-
-					//[CICO-7792] Bring the corporate rates to the top
-					/*  https://stayntouch.atlassian.net/browse/CICO-7792
-					 *	If both a Travel Agent and a Company are linked to the reservation,
-					 *	both with active, valid contracts,
-					 *	display the Company first, then the Travel Agent.
-					 */
-					if (!!$scope.reservationDetails.companyCard.id || !!$scope.reservationDetails.travelAgent.id) {
-						roomType.ratesArray.sort(RVReservationDataService.raiseCorpRates);
-					}
-
-					// ************************************************************************************************* STEP 1c : Bring Member rates to top
-					if (!!$scope.reservationData.member.isSelected) {
-						roomType.ratesArray.sort(RVReservationDataService.raiseMemberRates);
-					}
-					// ************************************************************************************************* STEP 1d : Bring Promotion rates to the top
-					if (!!$scope.reservationData.code.id) {
-						roomType.ratesArray.sort(RVReservationDataService.raisePromoRates);
+						roomType.ratesArray.sort(RVReservationDataService.sortRatesInRoomsASC);
 					}
 
 					if (roomType.ratesArray.length > 0) {
@@ -359,7 +340,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					});
 					if ($scope.stateCheck.showLessRooms) { //--------------------------- [ minimal view ]
 						// put the first room and the least room in the next level
-
 						_.each(roomTypesArray, function(roomType) {
 							if ($scope.display.roomFirstGrid.length < 2) { // ------------------------------------------[ as the rooms are in sorted order by now, put the next best room here. This will remain as the next option unless a room in next level is available ]
 								$scope.display.roomFirstGrid.push(roomType);
@@ -492,22 +472,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 
 				// ********************************************************************************************************************************************* STEP 2a : Sort ASC rate names
-				ratesArray.sort(RVReservationDataService.sortRateAlphabet);
-
 				// ********************************************************************************************************************************************* STEP 2b : Bring Member rates to top
-				if (!!$scope.reservationData.member.isSelected) {
-					ratesArray.sort(RVReservationDataService.raiseMemberRates);
-				}
-
 				// ********************************************************************************************************************************************* STEP 2c : Bring Promoted rates to top
-				if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
-					ratesArray.sort(RVReservationDataService.raisePromoRates);
-				}
-
 				// ********************************************************************************************************************************************* STEP 2d : Bring Corporate rates to top
-				if (!!$scope.reservationDetails.companyCard.id || !!$scope.reservationDetails.travelAgent.id) {
-					ratesArray.sort(RVReservationDataService.raiseCorpRates);
-				}
+				ratesArray.sort(RVReservationDataService.sortRateAlphabet);
 
 				$scope.display.rateFirstGrid = ratesArray;
 				$scope.refreshScroll();
@@ -957,6 +925,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
+            //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+            if(!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
+                canOverbookHouse = false;
+                canOverbookRoomType = false;
+            }
+            //CICO-24923 TEMPORARY
+
 			if (canOverbookHouse && canOverbookRoomType) {
 				//CICO-17948
 				//check actual hotel availability with permissions
@@ -1061,6 +1036,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			var computeDetails = function() {
 				RVSelectRoomRateSrv.houseAvailability = $scope.stateCheck.house;
+				RVSelectRoomRateSrv.isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
 
 				if ($scope.reservationData.code && //------------------------------------------------------------------- Place INVALID PROMO to be set IFF 
 					$scope.reservationData.code.id && //---------------------------------------------------------------- a) A promotion has been entered [AND]
@@ -1334,7 +1310,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else {
 					var i,
 						roomInfo = $scope.stateCheck.lookUp[roomId],
+                        isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
 						rateInfo = roomInfo.rates[rateId];
+
 					if (!TABS[$scope.activeRoom].roomTypeId || parseInt(TABS[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
 						TABS[$scope.activeRoom].roomTypeId = parseInt(roomId);
 					}
@@ -1364,7 +1342,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 
 					// IFF Overbooking Alert is configured to be shown
-					if ($scope.otherData.showOverbookingAlert) {
+                    // NOTE: The overbooking house alert is not to be shown for group reservations. CICO-24923
+
+					if ($scope.otherData.showOverbookingAlert && !isGroupReservation) {
 
 						var leastHouseAvailability = $scope.getLeastHouseAvailability(),
 							leastRoomTypeAvailability = $scope.getLeastAvailability(roomId, rateId),
@@ -1597,6 +1577,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				fetchRates();
 			});
 
+            var booobooboo;
 			$scope.$on('resetGuestTab', function() {
 				// While coming in the guest Id might be retained in reservationData.guest.id in case another reservation is created for the same guest
 				$scope.invokeApi(RVReservationBaseSearchSrv.fetchUserMemberships, $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id, function(data) {

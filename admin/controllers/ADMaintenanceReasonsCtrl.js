@@ -5,6 +5,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	$scope.$emit("changedSelectedMenu", 4);
 	$scope.currentClickedElement = -1;
 	$scope.preveousName = "";
+	$scope.preveousCode = "";
     /*
     * To fetch Maintenance Reasons list
     */
@@ -22,6 +23,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
 		$scope.preveousName = $scope.data.maintenance_reasons[index].name;
+		$scope.preveousCode = $scope.data.maintenance_reasons[index].code;
 	};
 	/*
     * To get the template of edit screen
@@ -39,9 +41,12 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	$scope.clickedCancel = function(){
 		if($scope.currentClickedElement !== 'new'){
 			$scope.data.maintenance_reasons[$scope.currentClickedElement].name = $scope.preveousName;
+			$scope.data.maintenance_reasons[$scope.currentClickedElement].code = $scope.preveouscode;
 			$scope.preveousName = "";
+			$scope.preveousCode = "";
 		}
 		$scope.data.name = "";
+		$scope.data.code = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*
@@ -62,9 +67,15 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
+			$scope.data.code = "";
 			$scope.data.maintenance_reasons.push(data);
 		};
-  		$scope.invokeApi(ADMaintenanceReasonsSrv.save, { 'name' : $scope.data.name }, postSuccess);
+
+		var params = {
+			'name' : $scope.data.name,
+			'code' : $scope.data.code
+		};
+  		$scope.invokeApi(ADMaintenanceReasonsSrv.save, params, postSuccess);
 	};
 	/*
     * To handle save button in edit box.

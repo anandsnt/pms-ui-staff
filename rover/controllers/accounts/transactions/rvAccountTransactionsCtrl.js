@@ -84,7 +84,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.isAnyOneChargeCodeIsExcluded = function(){
 			var isAnyOneChargeCodeIsExcluded = false;
 			var isAnyOneChargeCodeIsIncluded = false;
-			var billTabsData = $scope.transactionsDetails.bills;		
+			var billTabsData = $scope.transactionsDetails.bills;
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details
 			if(chargeCodes.length>0){
 				_.each(chargeCodes, function(chargeCode,index) {
@@ -147,7 +147,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				};
 			});
 		};
-	
+
 		/**
 		 * function to check whether the user has permission
 		 * to make move charges from one bill to another
@@ -240,7 +240,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.UPDATE_TRANSACTION_DATA = function(){
 			getTransactionDetails();
 		};
-		
+
 		/*
 		 *  Bill data need to be updated after success action of
 		 *  payment, post charges, split/edit etc...
@@ -295,7 +295,17 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				//Fetch data again to refresh the screen with new data
 				getTransactionDetails();
 			};
-			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback);
+
+			/*
+			 * Failure Callback of move action
+			 */
+			var moveToBillFailureCallback = function(data) {
+				console.log("@moveToBillFailureCallback");
+				console.log(errorMessage);
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data.errorMessage;
+			};
+			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
 
 
@@ -418,10 +428,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 		$scope.showPayemntModal = function() {
-            $scope.$emit('showLoader'); 
+            $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
-                $scope.$emit('hideLoader'); 			
+                $scope.$emit('hideLoader');
 				$scope.passData = getPassData();
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
@@ -672,7 +682,27 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}
 		};
 
-		$scope.printInvoice = function() {
+		$scope.printInvoice = function(billNo) {
+				printBillCard(billNo);
+		};
+
+		var printBillCard = function(billNo) {
+			var requestParams = {};
+			requestParams.bill_number = billNo;
+
+			if (!!$scope.groupConfigData) {
+				requestParams.group_id = $scope.groupConfigData.summary.group_id;
+				requestParams.is_group = true;
+			} else {
+				requestParams.account_id = $scope.accountConfigData.summary.posting_account_id;
+				requestParams.is_group = false;
+			}
+
+			var printBillSuccess = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.printData = response.data;
+				$scope.errorMessage = "";
+
 				$('.nav-bar').addClass('no-print');
 				$('.cards-header').addClass('no-print');
 				$('.card-tabs-nav').addClass('no-print');
@@ -694,8 +724,17 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.card-tabs-nav').removeClass('no-print');
 
 				}, 100);
+
+
 			};
-			//CICO-13903 End
+
+			var printBillFailure = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+
+			$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
+		};
 
 		//Direct Bill payment starts here
 
@@ -829,6 +868,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				callInitialAPIs();
 			}
 		});
+
+
 
 	}
 ]);

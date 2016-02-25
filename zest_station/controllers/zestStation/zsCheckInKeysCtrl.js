@@ -16,6 +16,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
             });
         $scope.input = {};
+        
 	/**
 	 * when the back button clicked
 	 * @param  {[type]} event
@@ -167,11 +168,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.subHeadingText = 'GRAB_KEY_BELOW';
             $scope.modalBtn1 = 'NEXT_BTN';
             $scope.input.madeKey = 1;
-            console.info('success, made key: [ 1 ] of [ 1 ]');
         };
        $scope.keyOneOfTwoSuccess = function(){
             $scope.input.madeKey = 1;
-            console.info('success, made key: [ 1 ] of [ 2 ]');
             $scope.keyTwoOfTwoSetup();
         };
         
@@ -185,7 +184,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.successMakeKey = function(response){
                 var makeKeySuccess = $scope.successfulKeyEncode(response);
                 if (makeKeySuccess){
-                    
                     if ($scope.makingKey === 1 && $scope.input.makeKeys === 1){
                         $scope.oneKeySuccess();
                         
@@ -222,14 +220,146 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 options.is_additional = true;
             }
             
-            $scope.callAPI(zsTabletSrv.encodeKey, {
-                params: options,
-                'successCallBack':$scope.successMakeKey,
-                'failureCallBack':$scope.emitKeyError
-            });
+                $scope.initDispenseKey();
+                
+                setTimeout(function(){
+                    if (!$scope.wsOpen){
+                        console.info('not using websockets')
+                        $scope.callAPI(zsTabletSrv.encodeKey, {
+                            params: options,
+                            'successCallBack':$scope.successMakeKey,
+                            'failureCallBack':$scope.emitKeyError
+                        });
+                    } else {
+                        console.info('using websockets')
+                    }
+                },2000);
+                
+                
+            
+            
+            
+            
+            
+            
             
         };
+        $scope.initDispenseKey = function(){
+        $scope.lastCardUid;
+        initWsSwipe = function(){
+  
+        var config = {
+          "swipeService":"wss://localhost:4649/CCSwipeService"   ,
+          "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
+          "close_alert":"Socket Server is no longer connected.",
+          "swipe_alert":"Please swipe.",
+          "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
+        };
+    
+	var ws;
+        function simulateSwipe() {
+            ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
+	}
+	function observe() {
+	    ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
+	}
+	function UUIDforDevice() {
+	    ws.send("{\"Command\" : \"cmd_device_uid\"}");
+	}
+	function DispenseKey() {
+	    ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"25CC2CDA31A70E87AF3731961096C90CA0\"}");
+	}
+	function EjectKeyCard() {
+	    ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
+	}
+	function CaptureKeyCard() {
+	    ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
+	}
+	function InsertKeyCard() {
+	    ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
+	}
+	function connect() {
+            ws = new WebSocket(config['swipeService']);
+            
+	    //Triggers when websocket connection is established.
+            ws.onopen = function () {
+                $scope.wsOpen = true;
+		console.info(config['connected_alert']);
+            };
+            
+	    // Triggers when there is a message from websocket server.
+	    ws.onmessage = function (evt) {
+                	var received_msg = evt.data;
+                        if (received_msg){
+                            received_msg = JSON.parse(received_msg);
+                                
+                            if (received_msg.Command === 'cmd_device_uid'){
+                                $scope.lastCardUid = received_msg.Message;
+                                DispenseKey();
+                                setTimeout(function(){
+                                    EjectKeyCard();
+                                    
+                                    if ($scope.input.madeKey < $scope.input.makeKeys){
+                                        $scope.keyOneOfTwoSuccess();
+                                        $scope.makingKey = 2;
+                                    } else {
+                                        $scope.oneKeySuccess();
+                                    }
+                                    ++$scope.input.madeKey;
+                                    
+                                    
+                                },2000);
+                                
+                                
+                            } else if (received_msg.Command === 'cmd_eject_key_card'){{
+                                    console.info($scope.input.madeKey,$scope.input.makeKeys);
+                                    ++$scope.input.madeKey;
+                                    
+                                    if ($scope.input.madeKey < $scope.input.makeKeys){
+                                        setTimeout(function(){
+                                            DispenseKey();
+                                            setTimeout(function(){
+                                                EjectKeyCard();
+                                                 $scope.keyTwoOfTwoSuccess();
+                                            },2000);
+                                        },2000);
+                                    }
+                            }
+                            
+                                
+                            }
+                        }
+                        
+            };
 
+	    // Triggers when the server is down.
+            ws.onclose = function () {
+                // websocket is closed.
+                //alert(config['close_alert']);
+                $scope.wsOpen = false;
+            };
+            return ws;
+        };
+            setTimeout(function(){
+                connect();    
+            },config['connect_delay']);
+        
+            
+            setTimeout(function(){
+                UUIDforDevice();    
+            },4000);
+    
+        };
+        //boom
+        initWsSwipe();
+        };
+        
+        
+        
+        
+        
+        
+        
         $scope.deliverRegistration = function(){
             if ($scope.isInPickupKeyMode()){
                 $state.go ('zest_station.home');
@@ -244,11 +374,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
 
 
-
         $scope.init = function(){
             $scope.selectedReservation = $state.selectedReservation;
-            console.info('init: with reservation: ',$scope.selectedReservation);
-            console.info('$state.current.name: ',$state.current.name)
             if ($state.current.name === 'zest_station.make_keys'){
                 $scope.at = 'make-keys';
                 $scope.initKeyCreate();
@@ -257,7 +384,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.initKeySuccess();
             } else if ($state.current.name === 'zest_station.pickup_keys'){
                 $stateParams.mode = zsModeConstants.PICKUP_KEY_MODE;
-                console.info('$stateParams.mode: ',$stateParams.mode)
                 $scope.at = 'select-keys-after-checkin';
                 $scope.isPickupKeys = true;
                 $state.isPickupKeys = true;

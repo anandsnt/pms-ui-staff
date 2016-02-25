@@ -429,11 +429,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
                 if ($scope.checkOccupancyLimit()) {
 
-                    var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
-
-                    if (SWITCH_ROOM_AND_RATES_ALT) {
-                        roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-                    }
+                    var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+                    
 
                     $state.go(roomAndRatesState, {
                         'from_date': $scope.reservationData.arrivalDate,

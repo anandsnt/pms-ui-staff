@@ -5,7 +5,8 @@ sntRover.directive('rvDelayTextbox', function($timeout) {
       	scope: {
             delay: '@delay',
 	        ngModel: '=ngModel',
-            functionToFire: '=functionToFire'
+            functionToFire: '=functionToFire',
+            functionParam: '=functionParam'
 	    },
     	link: function(scope, element, attrs){
             //we are setting delay to 2sec. if it is undefined
@@ -16,12 +17,12 @@ sntRover.directive('rvDelayTextbox', function($timeout) {
                 if(scope.currentTimeoutFn){
                     clearTimeout(scope.currentTimeoutFn);
                     scope.currentTimeoutFn = setTimeout(function(){
-                     scope.functionToFire();
+                     scope.functionToFire(scope.functionParam);
                     }, scope.delay);
                 }
                 else{
                     scope.currentTimeoutFn = setTimeout(function(){
-                        scope.functionToFire();
+                        scope.functionToFire(scope.functionParam);
                     }, scope.delay);
                 }
             });

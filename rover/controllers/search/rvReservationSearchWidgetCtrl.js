@@ -29,9 +29,17 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name === "rover.search");
 		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
+		
+		if($stateParams.type === "OPEN_BILL_CHECKOUT" ){
+			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
+			$scope.fromDate = "";
+			$scope.$emit("UpdateHeading", 'Checked Out (With Balance)');
+		}
+		else{
 		//Date picker from date should default to current business date - CICO-8490
 		//Get the date stored in service, and clear the service
 		$scope.fromDate = RVSearchSrv.fromDate === undefined ? $rootScope.businessDate : RVSearchSrv.fromDate;
+		}
 		$scope.toDate = RVSearchSrv.toDate === undefined ? "" : RVSearchSrv.toDate;
 		RVSearchSrv.fromDate = $rootScope.businessDate;
 		RVSearchSrv.toDate = '';
@@ -326,7 +334,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.allotment) || 
 					txtInQry(escN(res.room).toString(), false) ||
 					txtInQry(escN(res.confirmation).toString(), false) ||
-					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false) >= 0));
+					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false))  ||
+					txtInQry(res.external_confirm_no));
 		};
 
 		var applyFilters = function(isLocalFiltering) {

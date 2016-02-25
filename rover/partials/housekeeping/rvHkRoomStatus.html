@@ -121,7 +121,7 @@
             <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
         </li>
 
-        <li class="room" bindonce ng-repeat="room in rooms track by $index">
+        <li class="room" bindonce ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
             <div ng-if="isStandAlone" class="check">
                 <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room, $index)">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
@@ -218,8 +218,9 @@
                     <div class="select">
                         <select id="work-type"
                             ng-model="currentFilters.filterByWorkType"
-                             ng-class=" { 'placeholder': !currentFilters.filterByWorkType }"
-                            ng-options="item.id as item.name for item in workTypes">
+                            ng-class=" { 'placeholder': !currentFilters.filterByWorkType }"
+                            ng-options="item.id as item.name for item in workTypes"
+                            iscroll-stop-propagation>
                             <option value="" translate>ALL_WORK_TYPES</option>
                         </select>
                     </div>
@@ -230,7 +231,8 @@
                         <select id="employees"
                         ng-model="currentFilters.filterByEmployeeName"
                         ng-class=" { 'placeholder': !currentFilters.filterByEmployeeName }"
-                        ng-options="emp.id as emp.maid_name for emp in employees">
+                        ng-options="emp.id as emp.maid_name for emp in employees"
+                        iscroll-stop-propagation>
                             <option value="">All Employees</option>
                         </select>
                     </div>
@@ -249,7 +251,7 @@
                         <div class="left">
                             <span class="h4" translate>HK_SINGLE</span>
                             <div class="select">
-                                <select name="floor-filter-single" id="floor-filter-single" class="placeholder floor-filter" ng-model="currentFilters.floorFilterSingle" ng-change="validateFloorSelection('SINGLE_FLOOR')">
+                                <select name="floor-filter-single" id="floor-filter-single" class="placeholder floor-filter" ng-model="currentFilters.floorFilterSingle" ng-change="validateFloorSelection('SINGLE_FLOOR')" iscroll-stop-propagation>
                                   <option selected translate>FLOOR_#</option>
                                   <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterSingle"> {{floor.floor_number}}</option>
                                 </select>
@@ -258,13 +260,13 @@
                         <div class="right">
                             <span class="h4" translate>HK_MULTIPLE</span>
                             <div class="select">
-                                <select name="floor-filter-start" id="floor-filter-start" class="placeholder floor-filter" ng-model="currentFilters.floorFilterStart" ng-change="validateFloorSelection('FROM_FLOOR')">
+                                <select name="floor-filter-start" id="floor-filter-start" class="placeholder floor-filter" ng-model="currentFilters.floorFilterStart" ng-change="validateFloorSelection('FROM_FLOOR')" iscroll-stop-propagation>
                                   <option selected translate>HK_FROM</option>
                                   <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterStart"> {{floor.floor_number}}</option>
                                 </select>
                             </div>
                             <div class="select">
-                                <select name="floor-filter-stop" id="floor-filter-stop" class="placeholder floor-filter" ng-model='currentFilters.floorFilterEnd' ng-change="validateFloorSelection('TO_FLOOR')">
+                                <select name="floor-filter-stop" id="floor-filter-stop" class="placeholder floor-filter" ng-model='currentFilters.floorFilterEnd' ng-change="validateFloorSelection('TO_FLOOR')" iscroll-stop-propagation>
                                   <option selected translate>HK_TO</option>
                                   <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterEnd"> {{floor.floor_number}}</option>
                                 </select>
@@ -318,11 +320,11 @@
                     </label>
                 </div>
             </div>
-            <div class="holder" ng-if="!isStandAlone">
+            <div class="holder" ng-if="roomTypes.length">
                 <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
                 <div class="entry rooms">
                     <div class="select">
-                        <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()">
+                        <select ng-options="type.id as type.name for type in roomTypes"  ng-model="currentFilters.singleRoomType" ng-change="singleRoomTypeFiltered()" iscroll-stop-propagation>
                             <option value="" selected>All Room Types</option>
                         </select>
                     </div>
@@ -419,7 +421,13 @@
                 </div>
             </div>
 
-            <div class="holder" ng-if="isStandAlone">
+            <!--
+                DEPRICATED!! 
+                Note: Since previously we could chose multiple room, controller 
+                has code to compare mutilpe values (filterDoneButtonPressed method).
+                The code is not removed. Keeping for future.
+            -->
+            <!-- <div class="holder" ng-if="isStandAlone">
                 <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
                 <div class="entry radio-check" ng-repeat="type in roomTypes track by $index">
                     <label class="checkbox">
@@ -428,7 +436,7 @@
                         <label>{{ type.name }}</label>
                     </label>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

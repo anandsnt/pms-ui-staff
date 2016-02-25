@@ -127,7 +127,7 @@ module.exports = function (gulp, $, options) {
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(GUESTWEB_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat(['guestweb/img/**/*.*', 'guestweb/common_images/**/*.*']);
+		guestwebSourceList = guestwebSourceList.concat(['guestweb/img/**/*.*', 'guestweb/common_images/**/*.*','guestweb/**/*.json']);
 		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});

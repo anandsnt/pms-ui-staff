@@ -70,7 +70,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 	$rootScope.isCheckin     =   (reservationAndhotelData.is_checkin ==='true') ? true : false;
 	$rootScope.reservationStatusCheckedIn = (reservationAndhotelData.reservation_status ==='CHECKIN')? true :false;
     $rootScope.isActiveToken = (reservationAndhotelData.is_active_token ==="true") ? true : false;
- 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
+ 	$rootScope.isCheckedin  =  (($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken) || reservationAndhotelData.is_checked_in);
  	$rootScope.isCCOnFile = (reservationAndhotelData.is_cc_attached ==="true")? true:false;
  	$rootScope.isPreCheckedIn   = (reservationAndhotelData.is_pre_checked_in === 'true') ? true: false;
  	$rootScope.isRoomVerified =  false;
@@ -90,7 +90,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
 
  	$rootScope.isGuestEmailURl =  (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin ==="true") ?true:false;
- 	$rootScope.zestEmailCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_serviceMsg;
+ 	$rootScope.zestCheckinNoServiceMsg = reservationAndhotelData.zest_checkin_no_service_msg;
  	$rootScope.termsAndConditions = reservationAndhotelData.terms_and_conditions;
  	$rootScope.isBirthdayVerified =  false;
 
@@ -102,6 +102,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	//room key delivery options
  	$rootScope.preckinCompleted =  false;
  	$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
+ 	$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
 
@@ -109,8 +110,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 
     //Params for zest mobile and desktop screens
     if(reservationAndhotelData.hasOwnProperty('is_password_reset')){
-    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset ="true";
-    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true"? true: false;
+    	$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
+    	$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";
     	$rootScope.accessToken = reservationAndhotelData.token;
     	$rootScope.user_id = reservationAndhotelData.id;
     	$rootScope.user_name = reservationAndhotelData.login;

@@ -243,7 +243,9 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 				_.extend( passedParams, additionalParams, {'initialLoad': true} );
 
-				this.fetchRoomListPost( passedParams ).then( _resolveData );
+				this.fetchRoomListPost( passedParams ).then( _resolveData, function(error){
+					deferred.reject(error);
+				});
 			};
 
 			function _resolveData (roomList) {
@@ -672,10 +674,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				assignedStaff.class = 'assigned';
 
 				if (_.unique(_.pluck(_.pluck(room.room_tasks, 'assignee_maid'), 'id')).length > 1) {
-					console.log("multiple")
 					assignedStaff.name = 'Multiple Assignees';
 				} else {
-					console.log("single")
 					assignedStaff.name = room.room_tasks[0].assignee_maid.name
 				}
 			}

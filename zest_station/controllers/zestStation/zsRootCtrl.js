@@ -526,10 +526,14 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.callAPI(zsTabletSrv.fetchEncoders, options);
         };*/
+
+        $scope.trustAsHtml = function(string) {
+            return $sce.trustAsHtml(string);
+        };
         $scope.fetchHotelSettings = function(){
             var onSuccess = function(data){
                     $scope.zestStationData.hotel_settings = data;
-                    $scope.zestStationData.hotel_terms_and_conditions = $sce.trustAsHtml(data.terms_and_conditions).$$unwrapTrustedValue();
+                    $scope.zestStationData.hotel_terms_and_conditions = data.terms_and_conditions;
                     //fetch the idle timer settings
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
@@ -625,8 +629,21 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.closePopup = function(){
 		ngDialog.closeAll();
             };
+            
+            
+            $scope.isFromChromeApp = function(){
+                console.log(chrome.app);
+                console.log(localStorage);
+                return true;
+            };
+            $scope.getPromptTime = function(){
+                if ($scope.idle_max>$scope.idle_prompt){
+                    return $scope.idle_max-$scope.idle_prompt;
+                } else return -1;
+            };
             $scope.startIdleCounter = function(){
-                var time = $scope.idle_max, promptTime = $scope.idle_prompt;
+                //console.info('isFromChromeApp: ', $scope.isFromChromeApp());
+                var time = $scope.idle_max, promptTime = $scope.getPromptTime();
                 
                     var timer = time, minutes, seconds;
                     var timerInt = setInterval(function () {
@@ -710,13 +727,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	}();
-        
-        
-        
-        
-        
-        
-        
         
         
         

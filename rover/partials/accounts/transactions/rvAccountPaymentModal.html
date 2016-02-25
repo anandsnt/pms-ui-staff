@@ -32,7 +32,7 @@
                 <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
                 <label class="active-item item-payment">
                     <figure class="card-logo">
-                        <img src="/assets/{{defaultPaymentTypeCard}}.png" alt="" />
+                        <img src="/assets/images/{{defaultPaymentTypeCard}}.png" alt="" />
                     </figure>
                     <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{defaultPaymentTypeCardNumberEndingWith}}</span></span>
                     <span class="date">{{'DATE' | translate}} <span class="value date">{{defaultPaymentTypeCardExpiry}}</span></span>    
@@ -110,8 +110,8 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                  <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="shouldShowMakePaymentButton && hasPermissionToMakePayment" translate>MAKE PAYMENT</button> 
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" ng-click="submitPayment()" ng-show="!shouldShowMakePaymentButton && hasPermissionToRefundPayment" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button> 
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" click-touch="submitPayment()" ng-show="shouldShowMakePaymentButton && hasPermissionToMakePayment" translate>MAKE PAYMENT</button> 
+                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" click-touch="submitPayment()" ng-show="!shouldShowMakePaymentButton && hasPermissionToRefundPayment" translate>REFUND {{currencySymbol}}{{defaultRefundAmount}}</button> 
             </div>
              <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()" translate>CLOSE</button>

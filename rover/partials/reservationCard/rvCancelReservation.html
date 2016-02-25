@@ -44,7 +44,7 @@
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
-                      <img src="/assets/{{cancellationData.card_type}}.png" alt="" />
+                      <img src="/assets/images/{{cancellationData.card_type}}.png" alt="" />
                     </figure>
                     <span class="number">Ending with <span class="value number">{{cancellationData.cardNumber}}</span></span>
                     <span class="date">Date <span class="value date">{{cancellationData.expiry_date}}</span></span>
@@ -104,7 +104,7 @@
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
                 <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()">Close</button>
-                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" ng-click="submitPayment()">Make Payment</button> 
+                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" click-touch="submitPayment()">Make Payment</button> 
             </div>
             <div class="actions" ng-hide="!depositPaidSuccesFully">
                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation(true)" translate>CANCEL_RESERVATION</button>

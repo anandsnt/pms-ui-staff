@@ -15,6 +15,8 @@ module.exports = {
 			'postcharge'		: roverJsListRoot + 'postChargeJsAssetList.js',
 			'endofday'			: roverJsListRoot + 'endOfDayJsAssetList.js',
 			'directives'		: roverJsListRoot + 'directivesJsAssetList.js',
+			'react.files' 		: roverJsListRoot + 'reactJsAssetList.js',
+			'highcharts'		: roverJsListRoot + 'highchartsJsAssetList.js',
 			'addBillingInfo'	: roverJsListRoot + 'addBillingInfoPopupJsAssetList.js',
 			'changestaydates'	: roverJsListRoot + 'changeDatesJsAssetList.js',
 			'rover.accounts'	: roverJsListRoot + 'accountsJsAssetList.js',

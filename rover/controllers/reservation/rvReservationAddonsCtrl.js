@@ -1,11 +1,8 @@
 sntRover.controller('RVReservationAddonsCtrl', [
     '$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout', 'RVReservationSummarySrv', '$stateParams', '$vault', 'RVReservationPackageSrv', 'RVReservationStateService', 'rvGroupConfigurationSrv', 'rvPermissionSrv',
     function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout, RVReservationSummarySrv, $stateParams, $vault, RVReservationPackageSrv, RVReservationStateService, rvGroupConfigurationSrv, rvPermissionSrv) {
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.roomType';
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-        if (SWITCH_ROOM_AND_RATES_ALT) {
-            roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        }
 
         var setBackButton = function() {
                 if ($stateParams.from_screen === "staycard") {
@@ -176,7 +173,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     _.each(data.results, function(item) {
                         if (!!item) {
                             if(!item.allow_rate_exclusion || (item.allow_rate_exclusion && _.indexOf(item.excluded_rate_ids, currentRate) < 0)){
-                                $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));   
+                                $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));
                             }
                         }
                     });
@@ -222,7 +219,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     'to_date': $scope.reservationData.departureDate,
                     'is_active': true,
                     'is_not_rate_only': true,
-                    'rate_id': $scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId
+                    'rate_id': $scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId,
+                    'no_pagination' : true //Added for CICO-25066
                 }, successCallBackFetchAddons);
             },
             insertAddon = function(addon, addonQty) {
@@ -259,7 +257,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         totalAmount: addonQty * (addon.price),
                         price_per_piece: addon.price,
                         amount_type: addon.amountType.description,
-                        post_type: addon.postType.description
+                        post_type: addon.postType.description,
+                        charge_full_weeks_only: addon.chargefullweeksonly,
+                        posting_frequency : addon.postType.frequency
                     });
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
@@ -430,7 +430,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     };
                 };
 
-               
+
                 // Set the departure date for the query as the date before actual departure and in case of day reservations,
                 // make it the arrival date.
                 // Change made for CICO-21037
@@ -514,7 +514,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
                             is_inclusive: item.is_inclusive,
-                            is_rate_addon : item.is_rate_addon 
+                            is_rate_addon : item.is_rate_addon
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -530,7 +530,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                                 totalAmount: addonsData.totalAmount,
                                 is_inclusive: addonsData.is_inclusive,
                                 taxes: item.taxes,
-                                is_rate_addon: item.is_rate_addon 
+                                is_rate_addon: item.is_rate_addon
                             });
                         }
 
@@ -570,6 +570,23 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 $scope.setScroller("enhanceStays");
             }
         };
+
+        //Get addon count
+        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
+           if(!postingRythm) {
+                if(postType ==='Every Week' || postType ==='WEEKLY') {
+                    postingRythm = 7;
+                } else if (postType === 'Entire Stay' ||  postType ==='STAY') {
+                    postingRythm = 1;
+                } else if (postType === 'First Night' || postType ==='NIGHT') {
+                    postingRythm = 0;
+                }
+            }
+            amountType = amountType.toUpperCase();
+            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
+            return addonCount;
+        };
+
         initController();
     }
 ]);

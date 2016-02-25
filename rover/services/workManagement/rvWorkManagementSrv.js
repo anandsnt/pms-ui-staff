@@ -24,12 +24,18 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		this.fetchWorkTypes = function() {
 			var deferred = $q.defer();
+
+
 			var url = 'api/work_types';
+
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data.results);
 			}, function(data) {
 				deferred.reject(data);
 			});
+
+
 			return deferred.promise;
 		};
 
@@ -382,13 +388,67 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			return deferred.promise;
 		};
 
+		/**
+		 * Sorts/Groups the assigneed empployees list with options
+		 * @param {Object} employees list
+		 * @param {Object} data of all rooms
+		 * @param {Object} data of all tasks
+		 * @param {Object} sorting options
+		 * @return {Object} sorted list of employees
+		 **/
+		this.sortAssigned = function(assigned, allRooms, allTasks, options) {
+			var length = assigned.length,
+				employee;
+			for (var i = 0; i < length; i++) {
+				employee = assigned[i];
 
+				// Case 1: group by rooms. rooms will not repeat.
+				if (options.grouping === 'room') {
+					employee.rooms = _.sortBy(employee.rooms, function(room) {
+						return allRooms[room.room_index]['room_no'];
+					});
+					if (options.sort === 'desc') {
+						employee.rooms.reverse();
+					}
+				}
+				// Case 2: group by tasks. in this case rooms will repeat.
+				else {
+					var allTasks 	= _.flatten(_.pluck(employee.rooms, 'room_tasks')),
+						roomsSorted = [];
 
+					allTasks = _.sortBy(allTasks,
+						function(x) { return x['task_name'].toLowerCase();
+					});
+					if (options.sort === 'desc') {
+						allTasks.reverse();
+					}
+
+					var roomIndex, copyRoom;
+
+					// map tasks to rooms
+					_.each(allTasks, function(task) {
+						roomIndex = _.findIndex(allRooms, { room_id: task.room_id }),
+						copyRoom  = $.extend(
+											{},
+											{ 'room_id': task.room_id },
+											{ 'room_index': roomIndex },
+											{ 'room_tasks': [task] }
+										);
+
+						roomsSorted.push(copyRoom);
+					});
+
+					employee.rooms = roomsSorted;
+				}
+			};
+
+			return assigned;
+		};
 
 		/**
 		 * PRIVATE METHODS
 		 */
-		
+
 		function compileAllRooms (unassignedRoomsResponse, assignedRoomsResponse) {
 			var allRooms = [];
 
@@ -421,7 +481,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					});
 
 					copyRoom = $.extend(
-							{}, 
+							{},
 							{ 'room_id': rooms[i].id },
 							{ 'room_index': roomIndex },
 							{ 'room_tasks': [] }
@@ -434,7 +494,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					 *   room_tasks: []
 					 * }
 					 */
-					
+
 					compiled.push(copyRoom);
 				};
 			};
@@ -602,12 +662,12 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						 */
 
 						// keeping a top ref of all work_types_touched
-						// pushing new arrays, will flatten & uniq it just before 
+						// pushing new arrays, will flatten & uniq it just before
 						// pushing to complied
 						copyEmployee
 							.touched_work_types
 							.push( [copyTask.work_type_id] );
-						
+
 						copyEmployee
 							.rooms[k]			// wonder why its k?
 							.room_tasks
@@ -748,14 +808,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		// ALL APIS
 		// ========
-		// 
+		//
 		// api/tasks to get all tasks
 		// api/work_assignments/unassigned_rooms to get 'rooms' & 'room_tasks'
-		
+
 		// STEPS
 		// =====
-		// 
-		// 1. Loop through 'rooms' and grab { id, room_no, current_status, reservation_status, checkout_time } 
+		//
+		// 1. Loop through 'rooms' and grab { id, room_no, current_status, reservation_status, checkout_time }
 		//    to create each entity in 'unassignedRooms'
 		// 2. Loop through 'room_tasks' and match { room_id } to unassignedRooms[n].id.
 		//    Then add { task_id } to matched unassignedRooms[n].room_tasks

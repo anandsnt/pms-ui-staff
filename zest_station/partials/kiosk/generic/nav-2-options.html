@@ -3,7 +3,7 @@
 <section id="main" class="centered" role="main" ng-show='at === "key-error" || at === "swipe-pay-error" || at === "card-swipe" || at === "deliver-registration" || at === "email-delivery" || at === "timeout" || at === "invalid-email" || at === "deposit-agree"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{headingText |translate}}</h1>
-        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText |translate}}{{depositAmountValue}}</h2>
+        <h2 ng-hide='at === "deliver-registration" && (!printEnabled || !emailEnabled)'>{{subHeadingText |translate}} {{depositAmountValue}}</h2>
         
         <h2 ng-hide='at !== "deposit-agree"'>{{subsubheadingText |translate}}</h2>
         <nav id="options" role="nav">
@@ -64,8 +64,6 @@
                     <span translate>OR_TEXT</span>
                 </li>
                 
-                
-                
                 <!-- retry-key -->
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
@@ -100,7 +98,7 @@
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show='at === "email-delivery"'> 
-                    <button type="button" class="button option" touch-press='sendRegistration()'>
+                    <button type="button" class="button option" touch-press='send()'>
                         <div ng-include="'/assets/zest_station/css/icons/email.svg'"></div>
                     </button>
                     <span translate>SEND_EMAIL</span>
