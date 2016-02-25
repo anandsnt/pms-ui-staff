@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv', 'RVReservationPackageSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', 'RVCCAuthorizationSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv', 'RVReservationPackageSrv',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -1104,7 +1104,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				"payment_method_id": $scope.reservationData.reservation_card.payment_details.id,
 				"amount": $scope.authData.authAmount
 			};
-			$scope.invokeApi(RVReservationCardSrv.manualAuthorization, data, onAuthorizationSuccess, onAuthorizationFaliure);
+			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, data, onAuthorizationSuccess, onAuthorizationFaliure);
 		};
 
 		// To handle authorize button click on 'auth amount popup' ..
