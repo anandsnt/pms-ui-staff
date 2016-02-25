@@ -587,23 +587,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             //var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
             //zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
         };
         $scope.cardReader = new CardOperation();
 
-$scope.serviceStarted = false;
-$scope.initWsSwipe = function(){
-  $scope.serviceStarted = true;
+    $scope.serviceStarted = false;
+    $scope.initWsSwipe = function(){
+        $scope.serviceStarted = true;
         var config = {
           "swipeService":"wss://localhost:4649/CCSwipeService"   ,
           "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
@@ -688,7 +677,7 @@ $scope.initWsSwipe = function(){
         $scope.initiateCardReader = function() {
             console.info('init card reader for sixpay');
             //if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
-            if (true) {
+            if (true) {//debugging ?
               setTimeout(function() {
                   console.warn('start card reader');
                   $scope.cardReader.startReader(options);
@@ -709,30 +698,50 @@ $scope.initWsSwipe = function(){
          * Start Card reader now!.
          */
         
+        $scope.setInitSwipeSettings = function(){
+                if (!$scope.enable_remote_encoding){
+                    $scope.initWsSwipe();
+
+                } else {
+                    if ($scope.zestStationData.payment_gateway !== "sixpayments") {
+                /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
+                 * desktopSwipeEnabled flag is true
+                 */
+
+                    if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
+                        console.log('init desktop swipe, any device');
+                        initiateDesktopCardReader();
+                    } else {
+                        console.log('init reader')
+                      //Time out is to call set Browser
+                          setTimeout(function() {
+                            $scope.initiateCardReader();
+                          }, 2000);
+                      }
+                    } else {
+                        console.warn('refresh iframe with: ',$state.selectedReservation);
+                        $scope.refreshIframeWithGuestData($state.selectedReservation);
+                    }
+                }
+        };
+        $scope.fetchDoorLockSettings = function(){
+            var onResponse = function(response){
+                console.info(response);
+                if (response.enable_remote_encoding !== typeof undefined){
+                    $scope.enable_remote_encoding = response.enable_remote_encoding;
+                }
+                $scope.setInitSwipeSettings();
+            };
+            
+            
+          $scope.callAPI(zsTabletSrv.getDoorLockSettings, {
+                params: {},
+                'successCallBack':onResponse,
+                'failureCallBack':onResponse
+            });  
+        };
         
         
-        $scope.initWsSwipe();
-        if ($scope.zestStationData.payment_gateway !== "sixpayments") {
-        /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
-         * desktopSwipeEnabled flag is true
-         */
-        
-        
-        
-            if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
-                console.log('init desktop swipe, any device');
-                initiateDesktopCardReader();
-            } else {
-                console.log('init reader')
-              //Time out is to call set Browser
-                  setTimeout(function() {
-                    $scope.initiateCardReader();
-                  }, 2000);
-              }
-        } else {
-            console.warn('refresh iframe with: ',$state.selectedReservation);
-            $scope.refreshIframeWithGuestData($state.selectedReservation);
-        }
 	 $scope.sixPaymentSwipe = function(){
 		var data = {};
                 console.info('debugging sixpay: ',$state.debugSixpay)

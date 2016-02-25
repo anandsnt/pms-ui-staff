@@ -95,7 +95,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 console.info(response);
                 if (response.status!== 'failure'){
                     if (response.data){
-                        //$scope.enable_remote_encoding = response.data.enable_remote_encoding;
+                        $scope.enable_remote_encoding = response.enable_remote_encoding;
                     }
                 };
                 
@@ -239,12 +239,18 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             } else {
                 options.is_additional = true;
             }
-            
-                $scope.initDispenseKey();
                 
+                
+                
+                
+                if (!$scope.enable_remote_encoding){
+                    $scope.initDispenseKey();
+                } else {
+                    $scope.wsOpen = false;
+                }
                 setTimeout(function(){
                     if (!$scope.wsOpen){
-                        console.info('not using websockets')
+                        console.info('not using websockets');
                         $scope.callAPI(zsTabletSrv.encodeKey, {
                             params: options,
                             'successCallBack':$scope.successMakeKey,
