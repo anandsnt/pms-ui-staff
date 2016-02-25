@@ -14,7 +14,8 @@
  * @param {number} 'to'       - (required) the to value
  * @param {string} 'callback' - (optional) the method on scope that must be called after updating the value
  */
-admin.directive('limitInputRange', ['$timeout', function($timeout) {
+angular
+.module('limitInputRange', []).directive('limitInputRange', ['$timeout', function($timeout) {
     return {
     	restrict: 'A',
         require: 'ngModel',
