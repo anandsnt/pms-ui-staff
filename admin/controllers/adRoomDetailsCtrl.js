@@ -41,7 +41,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
           $scope.data.suite_room_numbers.splice(index, 1);
         }
         angular.forEach($scope.data.suite_room_numbers,function(item, i) {
-          if (item.room_no === "") {
+          if (item.room_number === "") {
            $scope.data.suite_room_numbers.splice(i, 1);
          }
        });
@@ -190,7 +190,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.is_exclude_from_manual_checkin = $scope.data.is_exclude_from_manual_checkin;
 		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
 		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
-		postData.suite_room_numbers = _.pluck($scope.data.suite_room_numbers,"room_no");
+		postData.suite_room_numbers = _.pluck($scope.data.suite_room_numbers,"room_number");
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
@@ -221,10 +221,10 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 
 		if($scope.editMode) {
-		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
+		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails,$scope.failureCallBackOfUpdateRoomDetails);
 		}
 		else {
-			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
+			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails,$scope.failureCallBackOfUpdateRoomDetails);
 		}
 	};
 
@@ -233,6 +233,15 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.successCallbackOfUpdateRoomDetails = function(data){
 		$scope.goBack();
+	};
+
+	/*
+	 * Failure action of updateRoomDetail web service call
+	 */
+	$scope.failureCallBackOfUpdateRoomDetails = function(errorMessage) {
+
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
 	};
 
 }]);
