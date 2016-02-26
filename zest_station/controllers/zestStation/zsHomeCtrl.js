@@ -147,7 +147,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 'idle_timer':$scope.zestStationData.idle_timer
             }
         };
-        
+            console.info('$scope.zestStationData.selectedWorkStation: ',$scope.zestStationData.selectedWorkStation)
             params.kiosk.work_station = $scope.zestStationData.selectedWorkStation;
             if (!params.kiosk.work_station){
                 $state.workstation_id = null;
@@ -246,8 +246,8 @@ sntZestStation.controller('zsHomeCtrl', [
         }
              $scope.saveSelected();
                 //also update and save off the printer value to the workstation
-                $scope.saveWorkStationPrinter();
-                $scope.setStationEncoder();
+            $scope.saveWorkStationPrinter();
+            $scope.setStationEncoder();
     };
     
     
@@ -289,6 +289,8 @@ sntZestStation.controller('zsHomeCtrl', [
         var station = $scope.getWorkStation();
         
             try {
+                $scope.zestStationData.selectedWorkStation = station.station_identifier;
+                console.info('saved selected workstation;')
                 storage.setItem(storageKeyEncoder, station.station_identifier);
             } catch(err){
                 console.warn(err);
@@ -478,6 +480,18 @@ sntZestStation.controller('zsHomeCtrl', [
         }
             
     });
+    
+    
+    $scope.saveSettings = function(){
+        //save settings 
+        //update workstation printer
+        //set in cache
+        
+        
+        
+    };
+    
+    
     
     $scope.init = function(){
         
