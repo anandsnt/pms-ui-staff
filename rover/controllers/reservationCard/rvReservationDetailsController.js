@@ -1077,6 +1077,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					});
 					// Default to select the first CC as active one.
 					$scope.selectCCforAuth(0);
+					// Handle scroller
+					var scrollerOptions = { preventDefault: false };
+   				    $scope.setScroller('cardsList', scrollerOptions);
+   				    $scope.refreshScroller('cardsList');
 				}
 				else{
 					console.warn("There should be atleast one credit card needed");

@@ -4,7 +4,7 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <fieldset class="content-left">
             <strong class="h2 message">Credit Cards</strong>
-            <div class="credit-cards scrollable">
+            <div class="credit-cards scrollable" ng-iscroll='cardsList' ng-iscroll-delay='300'>
                 <div class="wrapper">
                     <!-- if the .block-item is active (clicked) add class .item-active -->
                     <button ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
