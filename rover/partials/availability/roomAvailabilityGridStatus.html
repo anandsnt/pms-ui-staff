@@ -62,7 +62,7 @@
 					</td>
 				</tr>
 				<!-- Best Available Rate -->
-				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-if="!isHourlyRateOn">
+				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-if="!isHourlyRateOn && !hideRateOfDay">
 					<th scope="row">Best Available Rate</th>
 					<td ng-repeat="bar in data.additionalData.bestAvailabilityRate track by $index">
 						<div class="inner" ng-if="bar == 'C'" ng-bind="bar"></div>
