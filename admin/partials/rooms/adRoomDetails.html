@@ -31,20 +31,20 @@
 
 				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
 
-				<div class="entry full-width" ng-show="isSuite">
+				<div class="entry full-width" ng-show="isSuite && isStandAlone">
 					<label for="select-option1">
 						{{'ROOM_NUMBERS' |translate}}
 					</label>
 					<div class="boxes">
-						<div ng-repeat="number in data.suite_room_numbers" style="width: 20%; height: 30px; margin: 2%;float: left;">
+						<div class="room-no-box" ng-repeat="number in data.suite_rooms">
 							<input type="text"  name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="box" ng-model="number.room_number">
 
-							<div style="width: 20px;position: relative;float: right;top: -28px;" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
+							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
 								<a class="icons icon-delete" ></a>				
 							</div>
 						</div>
 						<div>
-							<label data-type="newspaper" class="add-new-checkbox inline" ng-click="showNewRoomNumber()" style="width: 24% !important;top: 20px;margin-bottom: 6%;">
+							<label data-type="newspaper" class="add-new-checkbox inline add-no-label" ng-click="showNewRoomNumber()">
 								<span class="icons icon-add"></span>
 								{{'ADD_ROOM' | translate}}
 							</label>
