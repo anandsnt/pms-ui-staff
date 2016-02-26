@@ -1,5 +1,5 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'hotelDetails', '$timeout', '$state', '$stateParams',
-    function ($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, hotelDetails, $timeout, $state, $stateParams) {
+sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'hotelDetails', '$timeout', '$state', '$stateParams', 'departments',
+    function ($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, hotelDetails, $timeout, $state, $stateParams, departments) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -48,28 +48,26 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         }
 
         $scope.filterOptions = {
+            showFilters: false,
             selectedDay: $rootScope.businessDate,
             selectedDepartment: "",
-            selectedStatus: "ALL" // other values "ASSIGNED", "UNASSIGNED", "COMPLETED"
+            selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
+            query: ""
         };
 
         var init = function () {
             var heading = 'Actions Manager';
 
-            if ($rootScope.isStandAlone) {
-                $scope.fetchDepartments();
-            }
-
             $scope.setScroller("rvActionListScroller");
             $scope.setScroller("rvActionContentScroller");
 
 
-            //$scope.setUpData();
+            $scope.departments = departments.data.departments;
 
 
             $scope.setHeadingTitle(heading);
 
-            $scope.fetchActionsList();
+            fetchActionsList();
 
             setDetailsHeight();
             $timeout(function () {
@@ -167,7 +165,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         };
 
 
-
         var refreshScroller = function () {
             $scope.refreshScroller('rvActionListScroller');
             $scope.refreshScroller('rvActionContentScroller');
@@ -176,10 +173,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
 
         $scope.hasArrivalDate = false;
         $scope.hasDepartureDate = false;
-
-
-
-
 
 
         $scope.flipDateFormat = function (str) {
@@ -210,21 +203,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             return $scope.actionsCount;
         };
 
-        $scope.departments = [];
-        $scope.fetchDepartments = function () {
-            var onSuccess = function (data) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.departments = data.data.departments;
-                $scope.departmentsCount = $scope.departments.length;
-            };
-            var onFailure = function (data) {
-                $scope.departmentsCount = 0;
-                $scope.$parent.$emit('hideLoader');
-            };
 
-            var data = {};//not sending a reservation id because we need to get all departments available
-            $scope.invokeApi(rvActionTasksSrv.fetchDepartments, data, onSuccess, onFailure);
-        };
         $scope.selectAction = function (a) {
             var action = a;
             if (action) {
@@ -303,14 +282,18 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             onSelect: function (date, dateObj) {
                 //var selectedDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(dateObj));
                 $scope.closeDateFilter();
-                refreshActionsList();
+                fetchActionsList();
             }
         };
 
-        var refreshActionsList = function () {
-            //TODO: Reload the list here
-            console.log("filterOptions", $scope.filterOptions);
-        }
+        $scope.queryActions = function (isReset) {
+            // isReset will come as true from the template if user attempts to clears the query
+            if (isReset) {
+                $scope.filterOptions.query = "";
+            }
+            fetchActionsList();
+        };
+
 
         $scope.actionsDateOptions = {
             firstDay: 1,
@@ -664,8 +647,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 }
 
 
-
-
                 var isStandAlone = $scope.isStandAlone;
                 if ($scope.lastSelectedItemId) {
                     for (var a in $scope.actions) {
@@ -785,69 +766,37 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             } else return false;
         };
 
-        $scope.onFetchListSuccess = function (data) {
-            $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+        var onFetchListSuccess = function (response) {
             $scope.lastFetchActionsList = [];
-            var list = data.data;
-            var matchObj;
-            for (var x in list) {
-                if (list[x].assigned_to !== null) {
-                    list[x].assigned = true;
-                } else {
-                    list[x].assigned = false;
-                }
-                if (typeof list[x].time_due === typeof 'string') {
-                    matchObj = getTimeObj(list[x].time_due);
-                    list[x].due_at_time = matchObj;
-
-                } else {
-                    list[x].due_at_time = $scope.timeFieldValue[0];
-                }
-                if (typeof list[x].due_at === typeof 'string') {
-                    list[x].due_at_date = getFormattedDate(list[x].due_at, 'due_at_date');
-                    list[x].hasDate = true;
-                } else {
-                    list[x].hasDate = false;
-                }
-
-                if (list[x].action_status === "COMPLETED") {
-                    list[x].isCompleted = true;
-                    list[x].date_completed = getFormattedDate(list[x].completed_at, 'date_completed');
-                    list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
-                }
-
-                if (list[x].created_at) {
-                    list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
-                    list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
-                }
-                $scope.lastFetchActionsList.push(list[x]);
-            }
-            $scope.actions = list;
-
-
-
-            setTimeout(function () {
-                if ($scope.actions[0]) {
-                    $scope.selectAction($scope.actions[0]);
-                }
-                $scope.$apply();
-            }, 100);
-            if ($scope.openingPopup) {
-                setTimeout(function () {
-                    $scope.initPopup();
-                }, 900);
-            }
-            $scope.openingPopup = false;
-        };
-        $scope.onFetchListFailure = function (response) {
-            $scope.$parent.$emit('hideLoader');
+            _.each(response.results,function(action){
+                $scope.lastFetchActionsList.push(_.extend(action, {
+                    assigned: !!action.department_id,
+                    isCompleted: action.action_status === "COMPLETED"
+                }));
+            });
         };
 
-        $scope.fetchActionsList = function (id) {
-            $scope.fetchDepartments();//store this to use in assignments of department
+        var fetchActionsList = function () {
+            var payLoad = {
+                date: $scope.filterOptions.selectedDay
+            };
 
-            var data = {};
-            $scope.invokeApi(rvActionTasksSrv.getActionsManagerTasksList, data, $scope.onFetchListSuccess, $scope.onFetchListFailure);
+            if(!!$scope.filterOptions.department){
+                payLoad.department = $scope.filterOptions.department;
+            }
+
+            if($scope.filterOptions.selectedStatus !== "ALL"){
+                payLoad.action_status = $scope.filterOptions.selectedStatus;
+            }
+
+            if(!!$scope.filterOptions.query){
+                payLoad.query = $scope.filterOptions.query;
+            }
+
+            $scope.callAPI(rvActionTasksSrv.fetchActions, {
+                params: payLoad,
+                successCallBack: onFetchListSuccess
+            })
         };
 
         var getTimeFromDateStr = function (d, via) {
@@ -1053,23 +1002,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             '2215', '2230', '2245', '2300',
             '2315', '2330', '2345'
         ];
-        $scope.initPopup = function () {
-            return;
-            ngDialog.open({
-                template: '/assets/partials/reservationCard/Actions/rvReservationCardActionsPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false,
-                preCloseCallback: function () {
-                    $scope.fetchActionsCount();
-                }
-            });
-        };
-        $scope.openActionsPopup = function () {
-            $scope.openingPopup = true;
-            $scope.fetchActionsList();
-        };
+
         $scope.clearAssignSection = function () {
             $scope.departmentSelect.selected = {};
             $scope.closeSelectedCalendar();
@@ -1198,85 +1131,19 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             $scope.setTitle(heading);
         };
 
-        $scope.showExtraFilters = true;
 
         $scope.toggleExtraFilters = function () {
-            $scope.showExtraFilters = !$scope.showExtraFilters;
-            if (!$scope.showExtraFilters) {
-                $scope.activeFilter = 'All';
-                $scope.actions = $scope.lastFetchActionsList;
-            }
+            $scope.filterOptions.showFilters = !$scope.filterOptions.showFilters;
         };
 
         $scope.setActiveFilter = function (selectedFilter) {
             $scope.filterOptions.selectedStatus = selectedFilter;
-            refreshActionsList();
+            fetchActionsList();
         };
 
         $scope.onDepartmentSelectionChange = function () {
-            refreshActionsList();
+            fetchActionsList();
         };
-
-
-        $scope.initFetchGuestInfo = function () {
-            var query;
-            $scope.textInQueryBox = $('#search-guest-or-room').val();
-            if ($scope.textInQueryBox) {
-                query = $scope.textInQueryBox.trim();
-            } else {
-                query = $scope.textInQueryBox;
-            }
-            if ($scope.escapeNull(query) === "" && $scope.escapeNull($stateParams.type) === "") {
-                $scope.searchResults = [];
-                $scope.searchResultsCount = 0;
-                $scope.showAutocompleteResults = false;
-                return false;
-            }
-            if (query.length < 2) {
-                return;
-            }
-
-            var n = new Date();
-            var queryTime = n.valueOf();
-            $scope.searchQuery = queryTime;
-
-            var dataDict = {};
-            if (query !== '') {
-                dataDict.query = query;
-            }
-
-            //CICO-10323. for hotels with single digit search,
-            //If it is a numeric query with less than 3 digits, then lets assume it is room serach.
-            if ($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3) {
-                dataDict.room_search = true;
-            }
-
-
-            var onSuccess = function (data) {
-                if ($scope.searchQuery === data.queryTime) {
-                    $scope.showAutocompleteResults = true;
-                    $scope.searchResults = data.data.results;
-                    $scope.searchResultsCount = data.data.total_count;
-                    $scope.$emit('hideLoader');
-                }
-            };
-            var onFailure = function (data) {
-                $scope.showAutocompleteResults = false;
-
-                $scope.$emit('hideLoader');
-            };
-            dataDict.queryTime = queryTime;
-            $scope.invokeApi(rvActionTasksSrv.fetchGuestInfo, dataDict, onSuccess, onFailure);
-
-        };
-
-        $scope.newActionGuestInfo;
-        $scope.selectGuestInfo = function (info) {
-            $scope.newActionGuestInfo = info;
-            $scope.showAutocompleteResults = false;
-            $('#search-guest-or-room').val(info.lastname + ', ' + info.firstname);
-        };
-
 
         $scope.openDateFilter = function () {
             $scope.filterCalendarShow = true;
@@ -1329,14 +1196,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             $scope.refreshScroller('details');
         };
 
-        $scope.$on("CLOSE_POPUP",function(){
+        $scope.$on("CLOSE_POPUP", function () {
             ngDialog.close();
         });
 
-        $scope.$on("NEW_ACTION_POSTED",function(){
+        $scope.$on("NEW_ACTION_POSTED", function () {
             ngDialog.close();
         });
-
 
 
         init();

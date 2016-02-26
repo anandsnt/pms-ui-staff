@@ -7,48 +7,69 @@
     <div class="content-left">
 
         <!-- Search / filter -->
-        <form method="post" action="" id="actions-search"  ng-class="{'action_filters_visible':showExtraFilters}" class="search-form actions-form" role="search"> <!-- Add class "open" when filters are opened -->
-            <button ng-click="toggleExtraFilters()" type="button" class="button with-icon only-icon" ng-class="{'active':showExtraFilters}">
-                <span class="icons icon-filter" ></span>
+        <form method="post" action="" id="actions-search"
+              ng-class="{'action_filters_visible open':filterOptions.showFilters}" class="search-form actions-form"
+              role="search"> <!-- Add class "open" when filters are opened -->
+            <button ng-click="toggleExtraFilters()" type="button" class="button with-icon only-icon"
+                    ng-class="{'active open':filterOptions.showFilters}">
+                <span class="icons icon-filter"></span>
             </button>
+
             <div class="entry dates">
-                <input id="filter-date" class="button white with-icon only-icon datepicker" value="" readonly click-touch="openDateFilter()"/>
+                <input id="filter-date" class="button white with-icon only-icon datepicker" value="" readonly
+                       click-touch="openDateFilter()"/>
             </div>
-            
-            <div class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/actionsManager/rvActionsMgrFilterCalendar.html'"  ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !filterCalendarShow">
+
+            <div class="ngmodal-uidate-wrap" id="selectCalendar"
+                 ng-include="'/assets/partials/actionsManager/rvActionsMgrFilterCalendar.html'"
+                 ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !filterCalendarShow">
             </div>
+
             <div class="entry search">
-                <button type="button" class="clear-query"> <!-- Add class "visible" to show. Clicking it clears search input and resets results -->
+                <button type="button" class="clear-query" ng-class="{'visible':!!filterOptions.query}"
+                        ng-click="queryActions(true)">
+                    <!-- Add class "visible" to show. Clicking it clears search input and resets results -->
                     <span class="icons icon-clear-search">Clear query</span>
-                </button> 
+                </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input id="actions-query" ng-model="textInFilterdBox" placeholder="Search Actions" type="search" class="query" autocomplete="off" />
+                <input id="actions-query" ng-model="filterOptions.query" placeholder="Search Actions" type="search"
+                       class="query" autocomplete="off" rv-delay-textbox delay="1000"
+                       function-to-fire="queryActions"/>
             </div>
+
             <!-- Advanced search fields -->
             <ul id="extra_filters" class="filters">
-                <li ng-click="setActiveFilter('ALL')" ng-class="{'active':filterOptions.selectedStatus === 'ALL'}">All</li>
-                <li ng-click="setActiveFilter('UNASSIGNED')"  ng-class="{'active':filterOptions.selectedStatus === 'UNASSIGNED'}">Unassigned</li>
-                <li ng-click="setActiveFilter('ASSIGNED')"  ng-class="{'active':filterOptions.selectedStatus === 'ASSIGNED'}">Assigned</li>
-                <li ng-click="setActiveFilter('COMPLETED')"  ng-class="{'active':filterOptions.selectedStatus === 'COMPLETED'}">Completed</li>
+                <li ng-click="setActiveFilter('ALL')" ng-class="{'active':filterOptions.selectedStatus === 'ALL'}">All
+                </li>
+                <li ng-click="setActiveFilter('UNASSIGNED')"
+                    ng-class="{'active':filterOptions.selectedStatus === 'UNASSIGNED'}">Unassigned
+                </li>
+                <li ng-click="setActiveFilter('ASSIGNED')"
+                    ng-class="{'active':filterOptions.selectedStatus === 'ASSIGNED'}">Assigned
+                </li>
+                <li ng-click="setActiveFilter('COMPLETED')"
+                    ng-class="{'active':filterOptions.selectedStatus === 'COMPLETED'}">Completed
+                </li>
             </ul>
         </form>
 
         <!-- Listing, this is the same list of actions view used for both Action Manager and Actions from within a staycard -->
-            <div ng-include="'/assets/partials/common/actions_list.html'" class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>
+        <div ng-include="'/assets/partials/common/actions_list.html'" class="scrollable"
+             ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>
     </div>
 
     <!-- Action details -->
     <div class="content-right">
         <div class="sender-details">
-            <figure class="guest-image"  ng-show="showGuestDetails"> <!-- If accompany, add class accompany -->
+            <figure class="guest-image" ng-show="showGuestDetails"> <!-- If accompany, add class accompany -->
                 <!-- If accompany, show primar guest image here: <img src="{primary guest}" alt="" /> -->
-                <img src="{{selectedAction.guest_image}}" alt="" />
+                <img src="{{selectedAction.guest_image}}" alt=""/>
             </figure>
-            <div class="data"  ng-show="showGuestDetails">
+            <div class="data" ng-show="showGuestDetails">
                 <h1>{{selectedAction.firstname}} {{selectedAction.lastname}}</h1>
                 <strong class="h2">Room {{selectedAction.room}}</strong>
             </div>
-            <div class="dates"  ng-show="showGuestDetails">
+            <div class="dates" ng-show="showGuestDetails">
                 <div class="date">
                     <span class="guest-status small-icon check-in">check-in</span>
                     {{selectedAction.arrive_weekday}}{{selectedAction.arrival_date}} {{selectedAction.arrival_time}}
@@ -62,26 +83,27 @@
         </div>
         <div class="summary">
             <!-- Action summary -->
-            <div  ng-show="showActionSummary()" ng-click="stopEditClick()" class="scrollable">
-                <div ng-include=" '/assets/partials/common/actions_summary.html'" ></div>
+            <div ng-show="showActionSummary()" ng-click="stopEditClick()" class="scrollable">
+                <div ng-include=" '/assets/partials/common/actions_summary.html'"></div>
             </div>
             <!-- Action Assignment -->
             <div ng-show="showAssignScreen()" class="scrollable">
                 <div ng-include=" '/assets/partials/common/actions_assign.html'"></div>
             </div>
         </div>
-        
-        
+
+
     </div>
 
 </section>
 
 <!-- Post form -->
 <form method="get" action="" id="actions-post" class="post-form">
-    
+
     <!-- Change department -->
     <div id="change-department" class="select">
-        <select name="change-department" ng-options="department.name for department in departments" ng-model="filterOptions.selectedDepartment" ng-change="onDepartmentSelectionChange()">
+        <select name="change-department" ng-options="department.name for department in departments"
+                ng-model="filterOptions.selectedDepartment" ng-change="onDepartmentSelectionChange()">
             <option value="" selected>All Departments</option>
         </select>
     </div>

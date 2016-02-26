@@ -335,6 +335,9 @@ angular.module('stayCardModule', [])
             resolve: {
                 actionsManagerAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
+                },
+                departments: function(rvActionTasksSrv, actionsManagerAssets) {
+                    return rvActionTasksSrv.fetchDepartments();
                 }
             }
         });

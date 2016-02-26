@@ -23,13 +23,10 @@ sntRover.controller('RVNewActionPopupCtrl', ['$scope', '$rootScope', 'rvUtilSrv'
             var ref = $scope.newAction,
                 payLoad = {
                     description: ref.note,
-                    assigned_to: parseInt(ref.department, 10),
+                    assigned_to: ref.department? parseInt(ref.department, 10) : "",
                     due_at: dateFilter(ref.dueDate, "yyyy-MM-dd") + "T" + ref.dueTime + ":00",
                     reservation_id: ref.reservation.id
                 };
-
-            console.log(payLoad);
-            return false;
 
             $scope.callAPI(rvActionTasksSrv.postNewAction,{
                 params: payLoad,
