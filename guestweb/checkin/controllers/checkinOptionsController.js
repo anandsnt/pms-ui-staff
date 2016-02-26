@@ -16,17 +16,20 @@
 		var is_room_ready = false;
 		var is_donot_move_room_marked = true;
 
-		var finalNavigations = function() {
+		var navigateToNextScreen = function() {
 			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_in_early_checkin_window)) {
+				// earlycheckin turened off or is out of early checkin window
 				$state.go('checkinKeys');
 			} else if (early_checkin_switch_on && reservation_in_early_checkin_window) {
 				if (offer_eci_bypass) {
-					// Early checkin is  on but no offer available now
+					// Early checkin byepass
 					$state.go('earlyCheckinReady');
 				} else {
 					if (eci_upsell_limit_reached) {
+						//limted by overall count and room type
 						$state.go('checkinArrival');
 					} else {
+						//offer early checkin purchase
 						$state.go('earlyCheckinOptions', {
 							'time': '02:00 PM',
 							'charge': '$20',
@@ -43,7 +46,7 @@
 				$state.go("roomAssignFailed");
 			}
 			var onSuccess = function() {
-				finalNavigations();
+				navigateToNextScreen();
 			};
 			onFailure();
 		};
@@ -54,10 +57,10 @@
 				assignRoom();
 			}
 			if (is_room_already_assigned && is_room_ready) {
-				// room available 
-				finalNavigations();
+				// Hurray! room available. navigate to next screen.
+				navigateToNextScreen();
 			} else if (is_room_already_assigned && !is_room_ready && is_donot_move_room_marked) {
-				// room not ready and cannot assign new room
+				// oops!.room not ready and cannot assign new room
 				$state.go('roomNotReady');
 			} else {
 				return;
