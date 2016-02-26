@@ -1106,8 +1106,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'number' 		: selectedCardData.card_number,
 				'bill_no' 		: selectedCardData.number,
 				'payment_id' 	: selectedCardData.payment_method_id,
-				'last_auth_date': selectedCardData.auth_date,
-				'balance_amount': selectedCardData.balance
+				'last_auth_date': selectedCardData.last_authorization.date ? selectedCardData.last_authorization.date : '',
+				'balance_amount': selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
 			};
 			
 			$scope.authData.selectedCardDetails = selectedCardDetails;
