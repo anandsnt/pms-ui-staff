@@ -179,17 +179,22 @@ sntRover.factory('RVReportUtilsFac', [
             'INCLUDE_SEGMENT' : true
         };
 
-        var _guestOrAccountFilterNames = {
+        var __guestOrAccountFilterNames = {
             'GUEST': true,
             'ACCOUNT': true
         };
 
+        var __showFilterNames = {
+            'SHOW_COMPANY': true,
+            'SHOW_TRAVEL_AGENT': true
+        };
+
         /**
          * Create a DS representing the found filter into the general options DS
-         * @param {Object} objRef The ith report object
+         * @param {Object} report The ith report object
          * @param {Object} filter The ith report's filter object
          */
-        var __pushGeneralOptionData = function(objRef, filter) {
+        var __pushGeneralOptionData = function(report, filter) {
             var selected = false;
             var mustSend = false;
 
@@ -208,15 +213,15 @@ sntRover.factory('RVReportUtilsFac', [
                     };
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
+            if ( report['title'] == reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
-                objRef['hasGeneralOptions']['title'] = filter.description;
+                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, make it selected by default
             if ( dueInDueOut[filter.value] ) {
                 selected = true;
-                objRef['hasGeneralOptions']['title'] = filter.description;
+                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, must include when report submit
@@ -225,22 +230,22 @@ sntRover.factory('RVReportUtilsFac', [
             };
 
             // if filter value is either of these, must include when report submit
-            if ( objRef['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
-                objRef['hasGeneralOptions']['title'] = filter.description;
+            if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
+                report['hasGeneralOptions']['title'] = filter.description;
             };
 
-            if (objRef['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
+            if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
                 selected = true;
-                objRef['hasGeneralOptions']['title'] = filter.description;
+                report['hasGeneralOptions']['title'] = filter.description;
             }
 
             // if filter is this, make it selected by default
-            if ( objRef['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
+            if ( report['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
                 selected = true;
-                objRef['hasGeneralOptions']['title'] = filter.description;
+                report['hasGeneralOptions']['title'] = filter.description;
             };
 
-            objRef['hasGeneralOptions']['data'].push({
+            report['hasGeneralOptions']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected,
@@ -250,19 +255,18 @@ sntRover.factory('RVReportUtilsFac', [
 
         /**
          * Create a DS representing the found filter into the display DS
-         * @param {Object} objRef The ith report object
+         * @param {Object} report The ith report object
          * @param {Object} filter The ith report's filter object
          */
-        var __pushDisplayData = function(objRef, filter) {
-
+        var __pushDisplayData = function(report, filter) {
             var selected = false;
             
-            if ( objRef['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
+            if ( report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
                 selected = true;
-                objRef['hasDisplay']['title'] = filter.description;
+                report['hasDisplay']['title'] = filter.description;
             };
 
-            objRef['hasDisplay']['data'].push({
+            report['hasDisplay']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected
@@ -271,14 +275,22 @@ sntRover.factory('RVReportUtilsFac', [
 
         /**
          * Create a DS representing the found filter into the display DS
-         * @param {Object} objRef The ith report object
+         * @param {Object} report The ith report object
          * @param {Object} filter The ith report's filter object
          */
-        var __pushGuestOrAccountData = function(objRef, filter) {
-            objRef['hasGuestOrAccountFilter']['data'].push({
+        var __pushGuestOrAccountData = function(report, filter) {
+            report['hasGuestOrAccountFilter']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : true
+            });
+        };
+
+        var __pushShowData = function(report, filter) {
+            report['hasShow']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : false
             });
         };
 
@@ -288,120 +300,43 @@ sntRover.factory('RVReportUtilsFac', [
          * @param  {Object} report The ith report
          */
         factory.applyIconClass = function ( report ) {
-            switch ( report['title'] ) {
-                case reportNames['CHECK_IN_CHECK_OUT']:
-                    report['reportIconCls'] = 'icon-report icon-check-in-check-out';
-                    break;
-
-                case reportNames['UPSELL']:
-                    report['reportIconCls'] = 'icon-report icon-upsell';
-                    break;
-
-                case reportNames['WEB_CHECK_OUT_CONVERSION']:
-                    report['reportIconCls'] = 'icon-report icon-check-out';
-                    break;
-
-                case reportNames['WEB_CHECK_IN_CONVERSION']:
-                    report['reportIconCls'] = 'icon-report icon-check-in';
-                    break;
-
-                case reportNames['LATE_CHECK_OUT']:
-                    report['reportIconCls'] = 'guest-status late-check-out';
-                    break;
-
-                case reportNames['IN_HOUSE_GUEST']:
-                    report['reportIconCls'] = 'guest-status inhouse';
-                    break;
-
-                case reportNames['ARRIVAL']:
-                    report['reportIconCls'] = 'guest-status check-in';
-                    break;
-
-                case reportNames['DEPARTURE']:
-                    report['reportIconCls'] = 'guest-status check-out';
-                    break;
-
-                case reportNames['CANCELLATION_NO_SHOW']:
-                    report['reportIconCls'] = 'guest-status cancel';
-                    break;
-
-                case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-booking';
-                    break;
-
-                case reportNames['LOGIN_AND_OUT_ACTIVITY']:
-                    report['reportIconCls'] = 'icon-report icon-activity';
-                    break;
-
-                case reportNames['DEPOSIT_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-deposit';
-                    break;
-
-                case reportNames['GROUP_DEPOSIT_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-deposit';
-                    break;
-
-                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                    report['reportIconCls'] = 'icon-report icon-occupancy';
-                    break;
-
-                case reportNames['RESERVATIONS_BY_USER']:
-                    report['reportIconCls'] = 'icon-report icon-reservations';
-                    break;
-
-                case reportNames['DAILY_TRANSACTIONS']:
-                case reportNames['DAILY_PAYMENTS']:
-                    report['reportIconCls'] = 'icon-report icon-transactions';
-                    break;
-
-                case reportNames['ROOMS_QUEUED']:
-                    report['reportIconCls'] = 'icons guest-status icon-queued';
-                    break;
-
-                case reportNames['FORECAST_BY_DATE']:
-                    report['reportIconCls'] = 'icon-report icon-forecast';
-                    break;
-
-                case reportNames['MARKET_SEGMENT_STAT_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-market';
-                    break;
-
-                case reportNames['FORECAST_GUEST_GROUPS']:
-                    report['reportIconCls'] = 'icon-report icon-forecast';
-                    break;
-
-                case reportNames['COMPARISION_BY_DATE']:
-                    report['reportIconCls'] = 'icon-report icon-comparison';
-                    break;
-
-                case reportNames['RATE_ADJUSTMENTS_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-rate';
-                    break;
-
-                case reportNames['GROUP_PICKUP_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-group';
-                    break;
-
-                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
-                    report['reportIconCls'] = 'icon-report icon-forecast';
-                    break;
-
-                case reportNames['AR_SUMMARY_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-balance';
-                    break;
-
-                case reportNames['GUEST_BALANCE_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-balance';
-                    break;
-
-                case reportNames['RATE_RESTRICTION_REPORT']:
-                    report['reportIconCls'] = 'icon-report icon-rate';
-                    break;
-
-                default:
-                    report['reportIconCls'] = 'icon-report';
-                    break;
+            var cssClassName = {
+                'CHECK_IN_CHECK_OUT'           : 'icon-report icon-check-in-check-out',
+                'UPSELL'                       : 'icon-report icon-upsell',
+                'WEB_CHECK_OUT_CONVERSION'     : 'icon-report icon-check-out',
+                'WEB_CHECK_IN_CONVERSION'      : 'icon-report icon-check-in',
+                'LATE_CHECK_OUT'               : 'guest-status late-check-out',
+                'IN_HOUSE_GUEST'               : 'guest-status inhouse',
+                'ARRIVAL'                      : 'guest-status check-in',
+                'DEPARTURE'                    : 'guest-status check-out',
+                'CANCELLATION_NO_SHOW'         : 'guest-status cancel',
+                'BOOKING_SOURCE_MARKET_REPORT' : 'icon-report icon-booking',
+                'LOGIN_AND_OUT_ACTIVITY'       : 'icon-report icon-activity',
+                'DEPOSIT_REPORT'               : 'icon-report icon-deposit',
+                'GROUP_DEPOSIT_REPORT'         : 'icon-report icon-deposit',
+                'OCCUPANCY_REVENUE_SUMMARY'    : 'icon-report icon-occupancy',
+                'RESERVATIONS_BY_USER'         : 'icon-report icon-reservations',
+                'DAILY_TRANSACTIONS'           : 'icon-report icon-transactions',
+                'DAILY_PAYMENTS'               : 'icon-report icon-transactions',
+                'ROOMS_QUEUED'                 : 'icons guest-status icon-queued',
+                'FORECAST_BY_DATE'             : 'icon-report icon-forecast',
+                'MARKET_SEGMENT_STAT_REPORT'   : 'icon-report icon-market',
+                'FORECAST_GUEST_GROUPS'        : 'icon-report icon-forecast',
+                'COMPARISION_BY_DATE'          : 'icon-report icon-comparison',
+                'RATE_ADJUSTMENTS_REPORT'      : 'icon-report icon-rate',
+                'GROUP_PICKUP_REPORT'          : 'icon-report icon-group',
+                'DAILY_PRODUCTION_ROOM_TYPE'   : 'icon-report icon-forecast',
+                'AR_SUMMARY_REPORT'            : 'icon-report icon-forecast',
+                'GUEST_BALANCE_REPORT'         : 'icon-report icon-balance',
+                'RATE_RESTRICTION_REPORT'      : 'icon-report icon-rate',
+                'COMPANY_TA_TOP_PRODUCERS'     : 'icon-report icon-cards',
+                /**/
+                'DEFAULT'                      : 'icon-report'
             };
+
+            var name = _.findKey(reportNames, function(value, key){ return value === report['title'] });
+
+            report['reportIconCls'] = cssClassName[name] || cssClassName['DEFAULT'];
         };
 
 
@@ -578,6 +513,16 @@ sntRover.factory('RVReportUtilsFac', [
                 selectAll    : true,
                 defaultTitle : 'Select',
                 title        : 'All Selected',
+                data         : []
+            });
+
+            // create DS for options combo box
+            __setData(report, 'hasShow', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : false,
+                defaultTitle : 'Select Options',
+                title        : 'Select Options',
                 data         : []
             });
 
@@ -838,11 +783,13 @@ sntRover.factory('RVReportUtilsFac', [
                 };
 
                 // fill up DS for options combo box
-                if ( _guestOrAccountFilterNames[filter.value] ) {
+                if ( __guestOrAccountFilterNames[filter.value] ) {
                     __pushGuestOrAccountData( report, filter );
                 };
 
-
+                if ( __showFilterNames[filter.value] ) {
+                    __pushShowData( report, filter );
+                };
             });
         };
 
