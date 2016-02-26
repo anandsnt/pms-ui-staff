@@ -1,8 +1,8 @@
-admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
+admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 1);
         
-        $scope.data = {};        
+        $scope.data = {};       
         
         $scope.fetchSettings = function(){
             var fetchSuccess = function(data){
@@ -29,29 +29,19 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
                 return str;
             };
             
-            var data = $scope.zestSettings.colors;
-            var colorData = {};
-             colorData.text = hasTagsRemoved(data.text);
-             colorData.background = hasTagsRemoved(data.background);
-             colorData.button = hasTagsRemoved(data.button);
-             colorData.transparent = hasTagsRemoved(data.transparent);
-             colorData.input_field_background = hasTagsRemoved(data.input_field_background);
-             colorData.header_icons = hasTagsRemoved(data.header_icons);
-             colorData.header_icons_pressed = hasTagsRemoved(data.header_icons_pressed);
+            var data = $scope.zestSettings.colors;           
             var dataToSend = {
                                 'kiosk':
                                         {
-                                            "home_screen":$scope.zestSettings.home_screen,
-                                            "guest_bill":$scope.zestSettings.guest_bill,
                                             "registration_card":$scope.zestSettings.registration_card,
                                             "reg_card_text":$scope.zestSettings.reg_card_text,
-                                            "show_room_number":$scope.zestSettings.show_room_number,
                                             "enforce_deposit":$scope.zestSettings.enforce_deposit
                                         }
 
                              };
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
-        };        
+        };
+        
         $scope.init = function(){
             $scope.fetchSettings();
         };

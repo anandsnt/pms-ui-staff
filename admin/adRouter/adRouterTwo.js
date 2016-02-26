@@ -533,22 +533,22 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 		$stateProvider.state('admin.ZestStationCheckin', {
 			templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',
-			controller: 'ADZestStationCtrl',
+			controller: 'ADZestStationCheckInCtrl',
 			url : '/zestStationCheckin'
 		});
 		$stateProvider.state('admin.ZestStationCheckout', {
 			templateUrl: '/assets/partials/zestStation/adZestStationCheckout.html',
-			controller: 'ADZestStationCtrl',
+			controller: 'ADZestStationCheckOutCtrl',
 			url : '/zestStationCheckout'
 		});
 		$stateProvider.state('admin.ZestStationColorsGraphics', {
 			templateUrl: '/assets/partials/zestStation/adZestStationColorsAndGraphics.html',
-			controller: 'ADZestStationCtrl',
+			controller: 'ADZestStationColorsAndGraphicsCtrl',
 			url : '/zestStationColorsAndGraphics'
 		});
 		$stateProvider.state('admin.ZestStationPickUpKeys', {
 			templateUrl: '/assets/partials/zestStation/adZestStationPickUpKeys.html',
-			controller: 'ADZestStationCtrl',
+			controller: 'ADZestStationPickUpKeysCtrl',
 			url : '/zestStationPickUpKeys'
 		});
 
