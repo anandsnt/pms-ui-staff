@@ -54,12 +54,37 @@
         </form>
 
         <!-- Listing, this is the same list of actions view used for both Action Manager and Actions from within a staycard -->
-        <div ng-include="'/assets/partials/common/actions_list.html'" class="scrollable"
-             ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>
+        <!--<div ng-include="'/assets/partials/common/actions_list.html'" class="scrollable"-->
+        <!--ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>-->
+
+        <!-- Listing -->
+        <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500">
+            <ul class="wrapper">
+                <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
+                <li ng-class="{'active': action.id === selectedActionId}" ng-repeat="action in actions"
+                    ng-click="onSelectAction(action.id)">
+                    <!-- {type} can be "unassigned", "assigned", "completed" or "specials". Also add class "active" when selected, first one should be active by default when screen is loaded -->
+                    <span class="icons icon-action {{action.iconClass}}" ng-class="{'active' : action.id === selectedActionId}"
+                    ng-if="action.is_overdue === 'true'">
+                        {{action.action_type}}
+                        overdue
+                    </span>
+                     <span class="icons icon-action {{action.iconClass}}" ng-class="{'active' : action.id === selectedActionId}"
+                           ng-if="action.is_overdue !== 'true'">
+                         {{action.action_type}}
+                    </span>
+                    <div class="data">
+                        <h3>{{action.description}}</h3>
+                        <em><span class="room">{{action.room_no}}</span>{{action.guest_name}}</em>
+                    </div>
+                    <span class="department">{{action.departmentName}}</span>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Action details -->
-    <div class="content-right">
+    <div class="content-right" ng-hide="actions.length === 0">
         <div class="sender-details">
             <figure class="guest-image" ng-show="showGuestDetails"> <!-- If accompany, add class accompany -->
                 <!-- If accompany, show primar guest image here: <img src="{primary guest}" alt="" /> -->

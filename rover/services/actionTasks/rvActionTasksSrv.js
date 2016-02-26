@@ -174,7 +174,19 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
             deferred.reject(data);
         });
         return deferred.promise;
-    }
+    };
+
+    this.getActionDetails = function(actionId){
+        var deferred = $q.defer(),
+            url = "api/action_tasks/"+actionId;
+
+        BaseWebSrvV2.getJSON(url).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
 
     //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS

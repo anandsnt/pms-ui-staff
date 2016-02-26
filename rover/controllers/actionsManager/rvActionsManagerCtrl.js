@@ -61,19 +61,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             $scope.setScroller("rvActionListScroller");
             $scope.setScroller("rvActionContentScroller");
 
-
             $scope.departments = departments.data.departments;
-
-
             $scope.setHeadingTitle(heading);
 
             fetchActionsList();
-
-            setDetailsHeight();
-            $timeout(function () {
-                refreshScroller();
-            }, 600);
-
         };
         $scope.lastSavedDescription = '';
         $scope.updateActionDescription = function (description_old, description_new) {
@@ -766,14 +757,38 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             } else return false;
         };
 
+        $scope.onSelectAction = function (actionId) {
+            $scope.selectedActionId = actionId;
+            getActionDetails();
+        };
+
+        var getActionDetails = function(){
+            $scope.callAPI(rvActionTasksSrv.getActionDetails, {
+                params: $scope.selectedActionId,
+                successCallBack: function(response){
+                    console.log(response);
+                }
+            })
+        };
+
         var onFetchListSuccess = function (response) {
-            $scope.lastFetchActionsList = [];
-            _.each(response.results,function(action){
-                $scope.lastFetchActionsList.push(_.extend(action, {
+            $scope.actions = [];
+            _.each(response.results, function (action) {
+                $scope.actions.push(_.extend(action, {
                     assigned: !!action.department_id,
-                    isCompleted: action.action_status === "COMPLETED"
+                    isCompleted: action.action_status === "COMPLETED",
+                    iconClass: action.action_status ? "icon-" + action.action_status.toLowerCase() : "",
+                    departmentName: !!action.department_id ? _.find($scope.departments, {
+                        value: action.department_id.toString()
+                    }).name : ""
                 }));
             });
+            if ($scope.actions.length > 0) {
+                // By default the first action is selected
+                $scope.selectedActionId = $scope.actions[0].id;
+                getActionDetails();
+            }
+            refreshScroller();
         };
 
         var fetchActionsList = function () {
@@ -781,15 +796,15 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 date: $scope.filterOptions.selectedDay
             };
 
-            if(!!$scope.filterOptions.department){
+            if (!!$scope.filterOptions.department) {
                 payLoad.department = $scope.filterOptions.department;
             }
 
-            if($scope.filterOptions.selectedStatus !== "ALL"){
+            if ($scope.filterOptions.selectedStatus !== "ALL") {
                 payLoad.action_status = $scope.filterOptions.selectedStatus;
             }
 
-            if(!!$scope.filterOptions.query){
+            if (!!$scope.filterOptions.query) {
                 payLoad.query = $scope.filterOptions.query;
             }
 
