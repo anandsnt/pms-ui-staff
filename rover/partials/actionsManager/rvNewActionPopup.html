@@ -13,9 +13,13 @@
         <div class="entry full-width">
             <label for="department">Assign to Department</label>
             <div class="select">
-                <select id="department" ng-options="department.name for department in departments"
-                        ng-model="newAction.department" ng-class="{'placeholder': !newAction.department}">
+                <select id="department" ng-model="newAction.department"
+                        ng-class="{'placeholder': !newAction.department}">
                     <option value="" selected>Select department</option>
+                    <option value="department.value" ng-selected="newAction.department == department.value"
+                            ng-repeat="department in departments">
+                        {{department.name}}
+                    </option>
                 </select>
             </div>
         </div>
@@ -34,7 +38,8 @@
         </div>
         <div class="entry full-width">
             <label for="notes">Notes</label>
-            <textarea id="notes" name="notes" placeholder="Enter message..." ng-model="newAction.note" rows="4"></textarea>
+            <textarea id="notes" name="notes" placeholder="Enter message..." ng-model="newAction.note"
+                      rows="4"></textarea>
         </div>
         <div class="actions">
             <button type="button" class="button green" ng-click="saveNewAction()"
