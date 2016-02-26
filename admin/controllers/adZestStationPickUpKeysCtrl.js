@@ -6,9 +6,6 @@ admin.controller('ADZestStationPickUpKeysCtrl',['$scope','$rootScope', '$state',
         
         $scope.fetchSettings = function(){
             var fetchSuccess = function(data){
-                if (data.colors){
-                    $scope.data = data.colors;
-                }
                 $scope.zestSettings = data;
                 $scope.$emit('hideLoader');
             };
