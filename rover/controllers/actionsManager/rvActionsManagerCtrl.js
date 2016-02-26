@@ -166,23 +166,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             $scope.invokeApi(rvActionTasksSrv.syncActionCount, id, onSuccess, onFailure);
         };
 
-        $scope.setInitialActionsCount = function (data) {
-            if (data) {
-                $scope.actions.totalCount = data.action_count;
-                $scope.actions.pendingCount = data.pending_action_count;
-                var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
-                if (total === 0) {
-                    $scope.actionsCount = 'none';//none, pending, all-completed
-                } else if (total > 0 && pending === 0) {
-                    $scope.actionsCount = 'all-completed';
-                } else if (total > 0 && total === pending) {
-                    $scope.actionsCount = 'only-pending';
-                } else {
-                    $scope.actionsCount = 'pending';
-                }
-            }
-        };
 
         var refreshScroller = function () {
             $scope.refreshScroller('rvActionListScroller');
@@ -193,60 +177,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         $scope.hasArrivalDate = false;
         $scope.hasDepartureDate = false;
 
-        $scope.getArDeDateStr = function (dateStr, timeStr) {
-            if (!dateStr) {
-                dateStr = ' ';
-            }
-            if (!timeStr) {
-                timeStr = ' ';
-            }
-            var aDay = $scope.getDateFromDate(dateStr), aDayString = ' ';
-            if (aDay) {
-                aDay = aDay.toLowerCase();
-                aDayString = aDay.substring(0, 1).toUpperCase() + aDay.substring(1, 3) + ' ';
-            }
-            //make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
-            if (timeStr !== ' ') {
-                var timeSpl = timeStr.split(':');
-                var hour = timeSpl[0];
-                var hourInt = parseInt(hour);
-                if (hour < 10) {
-                    timeStr = '0' + hourInt + ':' + timeSpl[1];
-                }
-            }
-            if (dateStr) {
-                return aDayString + $scope.flipDateFormat(dateStr) + '  ' + timeStr;
-            } else {
-                return timeStr;
-            }
-        };
 
 
-        $scope.setActionsHeaderInfo = function () {
-            if ($scope.reservationData) {
-                var arDate = $scope.reservationData.reservation_card.arrival_date,
-                    arTime = $scope.reservationData.reservation_card.arrival_time;
 
-                var arrivalDayString = $scope.getArDeDateStr(arDate, arTime);
-                if (!arrivalDayString) {
-                    $scope.hasArrivalDate = false;
-                } else {
-                    $scope.hasArrivalDate = true;
-                }
 
-                var deDate = $scope.reservationData.reservation_card.departure_date,
-                    deTime = $scope.reservationData.reservation_card.departure_time;
-
-                var departureDayString = $scope.getArDeDateStr(deDate, deTime);
-                if (!departureDayString) {
-                    $scope.hasDepartureDate = false;
-                } else {
-                    $scope.hasDepartureDate = true;
-                }
-                $scope.actions.arrivalDateString = arrivalDayString;
-                $scope.actions.departureDateString = departureDayString;
-            } else return;
-        };
 
         $scope.flipDateFormat = function (str) {
             //take 2015-04-10  |   yr / mo / day and >>> month, day, yr (04-10-2015)
@@ -275,54 +209,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             ;
             return $scope.actionsCount;
         };
-        $scope.fetchActionsCount = function () {
-            var onSuccess = function (data) {
-                if (!$scope.isRefreshing) {
-                    $scope.refreshing = false;
-                } else {
-                    setTimeout(function () {
-                        $scope.refreshing = false;
-                        $scope.$parent.$emit('hideLoader');
-                        $scope.$apply();
-                    }, 500);
-                }
 
-                $scope.$parent.$emit('hideLoader');
-                if (!data.data || data.data.action_count === 0) {
-                    $scope.setRightPane('none');
-                }
-                $scope.actions.totalCount = data.data.action_count;
-                if (!data.data) {
-                    $scope.actions.totalCount = 0;
-                }
-
-                $scope.actionsCount = $scope.getActionsCountStatus(data);
-                if ($scope.recountAfterDelete) {
-                    if ($scope.actions.totalCount === 1 && $scope.actions[0].is_deleted) {
-                        $scope.actions.totalCount = 0;
-                        $scope.actionSelected === "none";
-                        $scope.setRightPane('none');
-                    }
-                    $scope.recountAfterDelete = false;
-                }
-
-                if ($scope.actions.totalCount === 0) {
-                    $scope.initNewAction();
-                }
-            };
-            var onFailure = function (data) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.refreshing = false;
-            };
-
-            if ($scope.isRefreshing) {
-                $scope.refreshing = true;
-            }
-
-            $scope.setRightPane('new');//remove once hooked up to api
-            //  var data = {id:$scope.$parent.reservationData.reservation_card.reservation_id};
-            // $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
-        };
         $scope.departments = [];
         $scope.fetchDepartments = function () {
             var onSuccess = function (data) {
@@ -378,58 +265,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         $scope.clearErrorMessage = function () {
             $scope.errorMessage = [];
         };
-        $scope.postAction = function () {
-            $scope.selectedAction = 'selected';
-            var onSuccess = function (response) {
-                if (response.status === 'failure') {
-                    if (response.errors && response.errors[0]) {
-                        $scope.errorMessage = response.errors[0];
-                    }
-                }
-                $scope.fetchActionsList();
-                $scope.refreshScroller("rvActionListScroller");
-                $scope.refreshScroller("rvActionContentScroller");
-            };
-            var onFailure = function (data) {
-                if (data[0]) {
-                    $scope.errorMessage = data[0];
-                }
-                $scope.$parent.$emit('hideLoader');
-            };
-            //reservation_id=1616903&action_task[description]=test
 
-            var params = {
-                'reservation_id': $scope.newActionGuestInfo.id,
-                'action_task': {
-                    'description': $scope.newAction.notes
-                }
-            };
-            if ($scope.newAction.department) {
-                if ($scope.newAction.department.value) {
-                    params['assigned_to'] = $scope.newAction.department.value;
-                }
-            }
-
-            if ($scope.newAction.date_due) {
-                var splitChar = $scope.newAction.date_due[2];
-                var dateObj = new Date($scope.getBasicDateInMilli($scope.newAction.date_due, splitChar));
-                var coreTime, hours, mins;
-                coreTime = $scope.newAction.time_due.core_time;
-                hours = parseInt(coreTime[0] + '' + coreTime[1]);
-                mins = parseInt(coreTime[2] + '' + coreTime[3]);
-
-                dateObj.setHours(parseInt(hours));
-                //verify this is the correct hours to set using core_time
-                dateObj.setMinutes(parseInt(mins));
-                dateObj.setSeconds(0);
-                var dueAtStr = dateObj.toISOString();
-                var dueAtNoTimeZone = dueAtStr.split('.');
-                params['due_at'] = dueAtNoTimeZone[0];
-                //params['time_due'] = dateObj.valueOf();
-            }
-
-            $scope.invokeApi(rvActionTasksSrv.postNewAction, params, onSuccess, onFailure);
-        };
 
         $scope.reformatDateOption = function (d, spl, newSpl) {
             //expecting ie. 01/09/2015 (month, day, yr)
@@ -828,8 +664,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 }
 
 
-                $scope.fetchActionsCount();
-                $scope.setActionsHeaderInfo();
+
+
                 var isStandAlone = $scope.isStandAlone;
                 if ($scope.lastSelectedItemId) {
                     for (var a in $scope.actions) {
@@ -987,8 +823,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 $scope.lastFetchActionsList.push(list[x]);
             }
             $scope.actions = list;
-            $scope.fetchActionsCount();
-            $scope.setActionsHeaderInfo();
+
+
 
             setTimeout(function () {
                 if ($scope.actions[0]) {
@@ -1005,7 +841,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         };
         $scope.onFetchListFailure = function (response) {
             $scope.$parent.$emit('hideLoader');
-            $scope.setActionsHeaderInfo();
         };
 
         $scope.fetchActionsList = function (id) {
@@ -1114,7 +949,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             return dayString;
         };
         function closeDialog() {
-            $scope.fetchActionsCount();
             $scope.actionSelected = 'selected';
             ngDialog.close();
         }
@@ -1494,6 +1328,15 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         var refreshScroller = function () {
             $scope.refreshScroller('details');
         };
+
+        $scope.$on("CLOSE_POPUP",function(){
+            ngDialog.close();
+        });
+
+        $scope.$on("NEW_ACTION_POSTED",function(){
+            ngDialog.close();
+        });
+
 
 
         init();
