@@ -3,14 +3,16 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	var jsMappingList = {},
 		cssMappingList = {},
 		templateMappingList = {},
-		cmsData = [],
+		cms_screen_details = [],
 		that = this;
 
-	this.fetchScreenWiseData = function() {
+	this.fetchScreenWiseData = function(hotel_identifier) {
 		var deferred = $q.defer();
-		var url = '/sample_json/zestweb_v2/screen_list_EN.json';
+		var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
 		$http.get(url).success(function(response) {
-				that.cmsData = response;
+				that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
+					return cms_item.screen_name === "ZEST_WEB"
+				});
 				deferred.resolve(response);
 			}.bind(this))
 			.error(function() {
@@ -18,8 +20,19 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 			});
 		return deferred.promise;
 	};
+
+	//call CMS details only for checkin URLs now
+	var absUrl = window.location.href;
+	if (absUrl.indexOf("checkin") !== -1) {
+		//to strip away state URLS
+		absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
+		var urlComponents = absUrl.split('/');;
+		var hotel_identifier = urlComponents[urlComponents.length - 2];
+		that.fetchScreenWiseData(hotel_identifier);
+	};
+
 	this.extractScreenDetails = function(screen_identifier) {
-		return extractScreenDetails(screen_identifier,that.cmsData);
+		return extractScreenDetails(screen_identifier, that.cms_screen_details);
 	};
 
 	this.fetchHotelDetailsFromUrl = function(url) {

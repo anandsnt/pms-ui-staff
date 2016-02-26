@@ -47,20 +47,21 @@ var getJqDateFormat = function(dateFormat) {
 
 var returnEmptyScreenDetails = function() {
   return {
-    "title": "",
-    "description": ""
+    "screen_title": "",
+    "item_description": ""
   };
 }
 
-var extractScreenDetails = function(identifier, cms_data) {
+var extractScreenDetails = function(identifier,cms_screen_details) {
   var screen_id = returnEmptyScreenDetails();
   var screen_details = {
     "title": "",
     "description": ""
   };
-  screen_details = _.find(cms_data, function(cms_item) {
-    return cms_item.screen_id === identifier
+  screen_details = _.find(cms_screen_details.screen_messages, function(cms_item) {
+    return cms_item.screen_id === identifier;
   });
+  
   screen_details = (typeof screen_details !== "undefined") ? screen_details : returnEmptyScreenDetails();
   return screen_details;
 

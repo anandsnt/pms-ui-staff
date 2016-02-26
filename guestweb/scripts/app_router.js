@@ -4,9 +4,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         url: '/guestwebRoot/:mode/:reservationId',
         controller: 'homeController',
         resolve: {
-            cmsData: ['sntGuestWebSrv', function(sntGuestWebSrv) {
-                return sntGuestWebSrv.fetchScreenWiseData();
-            }],
             reservationAndhotelData: ['sntGuestWebSrv', '$stateParams', function(sntGuestWebSrv, $stateParams) {
 
                 var absUrl = window.location.href;
@@ -48,7 +45,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
 
 
-                return sntGuestWebSrv.fetchHotelDetailsFromUrl(apiUrl);
+                return sntGuestWebSrv.fetchHotelDetailsFromUrl(apiUrl,hotel_identifier);
 
             }],
             jsThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {

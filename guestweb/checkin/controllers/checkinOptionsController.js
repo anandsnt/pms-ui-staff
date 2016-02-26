@@ -13,7 +13,7 @@
 		var offer_eci_bypass = true;
 		var eci_upsell_limit_reached = false;
 		var is_room_already_assigned = true;
-		var is_room_ready = false;
+		var is_room_ready = true;
 		var is_donot_move_room_marked = true;
 
 		var finalNavigations = function() {
@@ -45,7 +45,7 @@
 			var onSuccess = function() {
 				finalNavigations();
 			};
-			onFailure();
+			onSuccess();
 		};
 
 		var roomAssignmentActions = function() {
