@@ -1048,6 +1048,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 					'name' 			: '',
 					'number'		: '',
 					'bill_no' 		: '',
+					'payment_id'	: '',
 					'last_auth_date': '',
 					'balance_amount': ''
 				}
@@ -1063,7 +1064,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			var fetchCreditCardAuthInfoSuccess = function( data ){
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-				$scope.authData.authAmount = "";
 				$scope.authData.billData = data.bill_data;
 				
 				if( $scope.authData.billData.length > 0 ){
@@ -1101,7 +1101,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'name' 			: selectedCardData.card_name,
 				'number' 		: selectedCardData.card_number,
 				'bill_no' 		: selectedCardData.number,
-				'bill_id' 		: selectedCardData.id,
+				'payment_id' 	: selectedCardData.payment_method_id,
 				'last_auth_date': selectedCardData.auth_date,
 				'balance_amount': selectedCardData.balance
 			};
@@ -1155,12 +1155,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				authFailure();
 			};
 
-			var data = {
-				"payment_method_id"	: $scope.reservationData.reservation_card.payment_details.id,
-				"amount"			: $scope.authData.authAmount,
-				"bill_id"			: $scope.authData.selectedCardDetails.bill_id
+			var postData = {
+				"payment_method_id"	: $scope.authData.selectedCardDetails.payment_id,
+				"amount"			: $scope.authData.authAmount
 			};
-			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, data, onAuthorizationSuccess, onAuthorizationFaliure);
+			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 		};
 
 		// To handle authorize button click on 'auth amount popup' ..
