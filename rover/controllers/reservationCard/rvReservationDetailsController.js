@@ -1065,14 +1065,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 				$scope.authData.authAmount = "";
 				$scope.authData.billData = data.bill_data;
-				// Show Multiple auth popup
-				ngDialog.open({
-					template: '/assets/partials/reservation/rvManualAuthorizationPopup.html',
-					className: '',
-					closeByEscape : false,
-					closeByDocument : false,
-					scope: $scope
-				});
+				
+				if( $scope.authData.billData.length > 0 ){
+					// Show Multiple Credit card auth popup
+					ngDialog.open({
+						template		: '/assets/partials/reservation/rvManualAuthorizationPopup.html',
+						className		: '',
+						closeByEscape 	: false,
+						closeByDocument : false,
+						scope 			: $scope
+					});
+					// Default to select the first CC as active one.
+					$scope.selectCCforAuth(0);
+				}
+				else{
+					console.warn("There should be atleast one credit card needed");
+				}
 			};
 
 			var fetchCreditCardAuthInfoFaliure = function( errorMessage ){
@@ -1083,8 +1091,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			var data = {
 				"reservation_id":$scope.reservationData.reservation_card.reservation_id
 			};
-			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 
+			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 		};
 
 		$scope.selectCCforAuth = function( index ){
@@ -1094,11 +1102,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'number' 		: selectedCardData.card_number,
 				'bill_no' 		: selectedCardData.number,
 				'bill_id' 		: selectedCardData.id,
-				'last_auth_date': selectedCardData.last_auth_date,
+				'last_auth_date': selectedCardData.auth_date,
 				'balance_amount': selectedCardData.balance
-			}
-			$scope.authData.selectedCardDetails = {};
+			};
+			
 			$scope.authData.selectedCardDetails = selectedCardDetails;
+
+			_.each($scope.authData.billData, function( card ) {
+				card.active = false;
+			});
+			$scope.authData.billData[index].active = true;
+			console.log($scope.authData.billData);
 		};
 
 		var authInProgress = function() {

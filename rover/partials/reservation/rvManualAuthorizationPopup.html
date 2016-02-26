@@ -7,7 +7,7 @@
             <div class="credit-cards scrollable">
                 <div class="wrapper">
                     <!-- if the .block-item is active (clicked) add class .item-active -->
-                    <button ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-repeat="card in authData.billData">
+                    <button ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
                             <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
                         </figure>
