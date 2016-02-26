@@ -64,12 +64,14 @@
                 <li ng-class="{'active': action.id === selectedActionId}" ng-repeat="action in actions"
                     ng-click="onSelectAction(action.id)">
                     <!-- {type} can be "unassigned", "assigned", "completed" or "specials". Also add class "active" when selected, first one should be active by default when screen is loaded -->
-                    <span class="icons icon-action {{action.iconClass}}" ng-class="{'active' : action.id === selectedActionId}"
-                    ng-if="action.is_overdue === 'true'">
+                    <span class="icons icon-action {{action.iconClass}}"
+                          ng-class="{'active' : action.id === selectedActionId}"
+                          ng-if="action.is_overdue === 'true'">
                         {{action.action_type}}
                         overdue
                     </span>
-                     <span class="icons icon-action {{action.iconClass}}" ng-class="{'active' : action.id === selectedActionId}"
+                     <span class="icons icon-action {{action.iconClass}}"
+                           ng-class="{'active' : action.id === selectedActionId}"
                            ng-if="action.is_overdue !== 'true'">
                          {{action.action_type}}
                     </span>
@@ -86,34 +88,64 @@
     <!-- Action details -->
     <div class="content-right" ng-hide="actions.length === 0">
         <div class="sender-details">
-            <figure class="guest-image" ng-show="showGuestDetails"> <!-- If accompany, add class accompany -->
-                <!-- If accompany, show primar guest image here: <img src="{primary guest}" alt="" /> -->
-                <img src="{{selectedAction.guest_image}}" alt=""/>
+            <figure class="guest-image"> <!-- If accompany, add class accompany -->
+                <!-- If accompany, show primary guest image here: <img src="{primary guest}" alt="" /> -->
+                <img ng-src="{{selectedAction.guest_image}}" alt=""/>
             </figure>
-            <div class="data" ng-show="showGuestDetails">
-                <h1>{{selectedAction.firstname}} {{selectedAction.lastname}}</h1>
-                <strong class="h2">Room {{selectedAction.room}}</strong>
+            <div class="data">
+                <h1>{{selectedAction.guest_name}}</h1>
+                <strong class="h2" ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
             </div>
-            <div class="dates" ng-show="showGuestDetails">
+            <div class="dates">
                 <div class="date">
                     <span class="guest-status small-icon check-in">check-in</span>
-                    {{selectedAction.arrive_weekday}}{{selectedAction.arrival_date}} {{selectedAction.arrival_time}}
+                    {{selectedAction.arrival_date | date:dayInWeek }}&nbsp;{{selectedAction.arrival_date |
+                    date:dateFormat}}
+                    &nbsp;{{selectedAction.arrival_time}}
                 </div>
                 <div class="date">
                     <span class="guest-status small-icon check-out">check-out</span>
-                    {{selectedAction.depart_weekday}}{{selectedAction.departure_date}} {{selectedAction.departure_time}}
+                    {{selectedAction.departure_date|date:dayInWeek}}&nbsp;{{selectedAction.departure_date | date:
+                    dateFormat}}
+                    &nbsp;{{selectedAction.departure_time}}
                 </div>
             </div>
-            <button type="button" class="button brand-colors">Stay Card</button>
+            <button type="button" class="button brand-colors" ng-click="toStayCard()">Stay Card</button>
         </div>
+
         <div class="summary">
-            <!-- Action summary -->
-            <div ng-show="showActionSummary()" ng-click="stopEditClick()" class="scrollable">
-                <div ng-include=" '/assets/partials/common/actions_summary.html'"></div>
+            <div id="action-summary">
+                <h3>{{selectedAction.description}}</h3>
+                <div class="info assigned">
+                    <span class="label">Assigned To</span>
+                    {{selectedAction.assigned_to.name}}
+                </div>
+                <div class="info created">
+                    <span class="label">Created By</span>
+                    {{selectedAction.created_by.name}} {Date Created} &#8226; {Time Created}
+                </div>
+                <div class="entry action-info date">
+                    <label for="due-date">Date Due</label>
+                    <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input id="due-date" type="text" class="datepicker" value="{Due Date}" readonly/>
+                </div>
+                <div class="entry action-info time">
+                    <label for="due-time">Time Due</label>
+                    <input id="due-time" type="time" ng-model="selectedAction.dueTime" placeholder="HH:mm:ss" required/>
+                </div>
+                <!-- If action completed, show this as well:
+                <div class="notice">
+                    <span>Completed By</span>
+                    {Department} {Date Completed} &#8226; {Time Completed}
+                </div> -->
             </div>
-            <!-- Action Assignment -->
-            <div ng-show="showAssignScreen()" class="scrollable">
-                <div ng-include=" '/assets/partials/common/actions_assign.html'"></div>
+
+            <div class="detail-actions col-2">
+                <button type="button" class="button white brand-text">Assign</button>
+                <!-- Change text to "Reassign" for assigned action -->
+                <button type="button" class="button white green-text">Complete</button>
             </div>
         </div>
 
@@ -128,8 +160,12 @@
     <!-- Change department -->
     <div id="change-department" class="select">
         <select name="change-department" ng-options="department.name for department in departments"
-                ng-model="filterOptions.selectedDepartment" ng-change="onDepartmentSelectionChange()">
+                ng-model="filterOptions.department" ng-change="onDepartmentSelectionChange()">
             <option value="" selected>All Departments</option>
+            <option value="department.value" ng-selected="newAction.department == department.value"
+                    ng-repeat="department in departments">
+                {{department.name}}
+            </option>
         </select>
     </div>
 
