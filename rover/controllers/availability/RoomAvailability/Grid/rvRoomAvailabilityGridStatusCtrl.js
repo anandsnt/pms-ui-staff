@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', [
 	'$scope',
 	'rvAvailabilitySrv',
-    '$rootScope',
-	function($scope, rvAvailabilitySrv,$rootScope){
+	'$timeout',
+	function($scope, rvAvailabilitySrv, $timeout){
 
 		BaseCtrl.call(this, $scope);
 
@@ -36,7 +36,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 		$scope.toggle = function(source){
 			$scope.toggleStatusOf[source] = !$scope.toggleStatusOf[source];
 			//fetches additional data if not available.
-			if(!$rootScope.hideRateOfDay && !isFullDataAvaillable()){
+			if(!isFullDataAvaillable()){
 				$scope.$parent.fetchAdditionalData();
 			};
 			$scope.refreshScroller('room_availability_scroller');
