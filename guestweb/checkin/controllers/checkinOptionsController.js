@@ -14,7 +14,7 @@
 		var eci_upsell_limit_reached = false;
 		var is_room_already_assigned = true;
 		var is_room_ready = false;
-		var is_donot_move_room_marked = false;
+		var is_donot_move_room_marked = true;
 
 		var finalNavigations = function() {
 			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_in_early_checkin_window)) {
@@ -45,7 +45,7 @@
 			var onSuccess = function() {
 				finalNavigations();
 			};
-			onSuccess();
+			onFailure();
 		};
 
 		var roomAssignmentActions = function() {
@@ -58,7 +58,7 @@
 				finalNavigations();
 			} else if (is_room_already_assigned && !is_room_ready && is_donot_move_room_marked) {
 				// room not ready and cannot assign new room
-				$state.go('roomsNotReady');
+				$state.go('roomNotReady');
 			} else {
 				return;
 			}

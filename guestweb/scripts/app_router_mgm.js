@@ -204,10 +204,10 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller:'earlyCheckinReadyController',
 		templateUrl: '/assets/checkin/partials/MGM/earlyCheckinReady.html',
 		title: 'Early Check in ready'
-	}).state('roomsNotReady', {
-		url: '/roomsNotReady',
+	}).state('roomNotReady', {
+		url: '/roomNotReady',
 		templateUrl: '/assets/checkin/partials/MGM/roomsUnavailable.html',
-		controller: 'roomsroomsNotReadyController',
+		controller: 'roomNotReadyController',
 		title: 'Room unavailable'
 	}).state('roomAssignFailed', {
 		url: '/roomAssignFailed',

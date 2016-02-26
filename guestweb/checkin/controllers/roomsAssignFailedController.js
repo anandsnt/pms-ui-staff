@@ -5,7 +5,7 @@
 		var screenCMSDetails = sntGuestWebSrv.extractScreenDetails(screenIdentifier);
 		screenCMSDetails.title = screenCMSDetails.title.length > 0 ? screenCMSDetails.title : "Early Check In";
 		screenCMSDetails.description = screenCMSDetails.description.length > 0 ?
-			screenCMSDetails.description : "Sorry, we don't have any rooms available for an Early Check In. Please contact the Front Desk";
+			screenCMSDetails.description : "Sorry, we don't have any rooms available for an Early Check In. Please contact the Front Desk.";
 		$scope.screenDetails = screenCMSDetails;
 	};
 
