@@ -6,11 +6,11 @@ admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
      */
     this.fetchWindsurferCRSConfiguration = function() {
         var deferred = $q.defer();
-        //var url = '/api/hotel_settings.json';
-        var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
+        var url = '/api/ota_config/windsurfer';
+        //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
-            deferred.resolve(data.windsurfer);
+            deferred.resolve(data);
         },function(data){
             deferred.reject(data);
         });
@@ -23,9 +23,9 @@ admin.service('adWindsurferCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', funct
      */
     this.saveWindsurferCRSConfiguration = function(params) {
         var deferred = $q.defer();
-        var url = '/api/hotel_settings/change_settings';
+        var url = '/api/ota_config/windsurfer';
 
-        ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+        ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);

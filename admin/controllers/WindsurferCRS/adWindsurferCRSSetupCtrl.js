@@ -26,10 +26,10 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', 'windsurferCRSSetupValue
         $scope.saveWindsurferCRSSetup = function() {
             var params 	= {};
 
-            if (!$scope.windsurferSetup.enabled) {
-                params.windsurfer = _.pick($scope.windsurferSetup, 'enabled');
+            if (!$scope.windsurferSetup.active) {
+                params = _.pick($scope.windsurferSetup, 'active');
             } else {
-                params.windsurfer = _.extendOwn({}, $scope.windsurferSetup);
+                params = _.extendOwn({}, $scope.windsurferSetup);
             }
 
             var options = {
