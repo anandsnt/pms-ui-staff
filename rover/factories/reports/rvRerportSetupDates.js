@@ -7,7 +7,7 @@ angular.module('reportsModule')
             	init: function( report ) {
             		var getDates = reportUtils.processDate();
 
-            		var dates = {
+            		var datesConfig = {
             			'ARRIVAL': {
             				'fromDate': getDates.businessDate,
             				'untilDate': getDates.businessDate
@@ -99,9 +99,11 @@ angular.module('reportsModule')
             			}
             		};
 
-            		var reportName = _.findKey(reportNames, function(value, key){ return value === report['title'] }) || 'DEFAULT';
+            		var reportName = _.findKey(reportNames, function(value, key){ return value === report['title'] });
 
-            		_.each(dates[reportName], function(value, key) {
+            		var dates = datesConfig[reportName] || datesConfig['DEFAULT']; 
+
+            		_.each(dates, function(value, key) {
             		    report[key] = value;
             		});
 
