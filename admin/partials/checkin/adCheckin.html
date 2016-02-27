@@ -1,484 +1,384 @@
-
-	<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
-		<header class="content-title float">
-			<h2>{{ 'GUEST_CHECKIN_SETUP' | translate}}</h2>
-			<a ui-sref="admin.checkinEmail" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
-			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
-		</header>
-		<section class="content-scroll">
-			<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
-			<form style="overflow-y:auto;" class="form float" >
-				<fieldset class="holder left">
-
-					<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only"></ad-toggle-button>
-
-					<ad-toggle-button is-checked="checkinData.is_send_zest_alert_flag" label="{{ 'SEND_ZEST_CHECKIN_ALERT' | translate}}" ></ad-toggle-button>
-
-					<ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"  div-class="full-width"></ad-toggle-button>
-
-					<ad-checkbox is-checked="checkinData.is_notify_on_room_not_assigned_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE' | translate}}" div-class="full-width" ></ad-checkbox>
-
-					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
-
-					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>	
-				</fieldset>
-
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-click="clearErrorMessage()">
+    <div data-view="ZestCheckinConfiguration">
+        <header class="content-title float">
+            <h2>{{ 'GUEST_CHECKIN_SETUP' | translate}}</h2>
+            <a ui-sref="admin.checkinEmail" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
+            <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <form style="overflow-y:auto;" class="form float">
+                <fieldset class="holder left">
+                    <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only"></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"  ></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_send_zest_alert_flag" label="{{ 'SEND_ZEST_CHECKIN_ALERT' | translate}}" ></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_allow_early_checkin_from_zest" label="{{ 'ZEST_ALLOW_EARLY_CHECKIN' | translate}}"  ></ad-toggle-button>
+                    <ad-checkbox is-checked="checkinData.is_notify_on_room_not_assigned_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE' | translate}}" div-class="full-width"></ad-checkbox>
+                    <ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>
+                    <ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>
+                </fieldset>
                 <fieldset class="holder right holder_margin">
-
                     <div class="entry full-width">
                         <label>
                             {{ 'EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS' | translate}}
                         </label>
                         <div class="entry full-width float">
                             <div class="select select-col select-margin">
-
                                 <select ng-model="checkinData.next_day_checkin_alert_time_hour">
                                     <option value="">HH</option>
                                     <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
                                 </select>
                             </div>
                             <div class="select select-col select-margin">
-
-
                                 <select ng-model="checkinData.next_day_checkin_alert_time_minute">
                                     <option value="">MM</option>
                                     <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
                                 </select>
-
                             </div>
                             <div class="select select-col select-margin">
-
                                 <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.next_day_checkin_alert_primetime">
                                 </select>
-
                             </div>
                         </div>
                     </div>
                 </fieldset>
-                
-				<fieldset class="holder right holder_margin">
-
-					<div class="entry full-width">
-						<label>
-							{{ 'EMAIL_TO_ALL_ARRIVALS' | translate}}
-						</label>
-						<div class="entry full-width float">
-							<div class="select select-col select-margin">
-								
-								<select ng-model="checkinData.checkin_alert_time_hour">
-									<option value="">HH</option>
-									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
-								</select>
-							</div>
-							<div class="select select-col select-margin">
-								
-
-								<select ng-model="checkinData.checkin_alert_time_minute">
-									<option value="">MM</option>
-									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
-								</select>
-
-							</div>
-							<div class="select select-col select-margin">
-
-								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
-								</select>
-
-							</div>
-						</div>
-						</div>
-				</fieldset>
-
                 <fieldset class="holder right holder_margin">
-						<div class="entry full-width">
-						<label>
-							{{ 'ZEST_ALERT_TO_ALL_ARRIVALS' | translate}}
-						</label>
-						<div class="entry full-width float">
-							<div class="select select-col select-margin">
-								
-								<select ng-model="checkinData.zest_checkin_alert_time_hour">
-									<option value="">HH</option>
-									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
-								</select>
-							</div>
-							<div class="select select-col select-margin">
-								
-
-								<select ng-model="checkinData.zest_checkin_alert_time_min">
-									<option value="">MM</option>
-									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
-								</select>
-
-							</div>
-							<div class="select select-col select-margin">
-
-								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.zest_checkin_alert_primetime">
-								</select>
-
-							</div>
-						</div>
-
-					</div>
-				</fieldset>	
-					
-					
-				</fieldset>
-				<fieldset class="holder left holder_margin" ng-show="checkinData.is_precheckin_only">	
-					<div id="options" class="entry" ng-hide="hideAddOption">
-						<label>
-							{{ 'CHECKIN_ACTION' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.checkin_action== 'sent_to_queue'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action=='sent_to_queue'}"></span>
-							<input type="radio" value="sent_to_queue" ng-model="checkinData.checkin_action"  >
-							{{ 'SENT_TO_QUEUE' | translate}}
-						</label>
-
-						<label class="radio" ng-class="{'checked':checkinData.checkin_action == 'auto_checkin'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'auto_checkin'}"></span>
-							<input type="radio" value="auto_checkin" ng-model="checkinData.checkin_action" >
-							{{ 'AUTO_CHECK_IN' | translate}}
-						</label>
-
-						<label class="radio" ng-class="{'checked':checkinData.checkin_action == 'none'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'none'}"></span>
-							<input type="radio" value="none" ng-model="checkinData.checkin_action" >
-							{{ 'NONE' | translate}}
-						</label>
-
-					</div>
-					<div class="entry full-width">
-						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label = "{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder = ""></ad-textarea>
-					</div>
-
-					<div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue' || checkinData.checkin_action == 'auto_checkin'">
-						<label>
-							{{ 'MINUTES_PRIOR_TO_ETA' | translate}}
-						</label>
-						<div class="entry full-width float">
-							<div class="select select-col col1-3">
-								
-								<select ng-options="minute for minute  in prior_minutes" ng-model="checkinData.prior_to_arrival">
-									<option style="display:none" value="">MM</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-		
-				
-				<fieldset class="holder left holder_margin"  ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">	
-					<div class="entry full-width" >
-						<label>
-							{{ 'START_AUTO_CHECK_IN_FROM' | translate}}
-						</label>
-							<div class="select select-col select-margin">
-								
-								<select ng-model="checkinData.auto_checkin_from_hour">
-									<option value="">HH</option>
-									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
-								</select>
-							</div>
-							<div class="select select-col select-margin">
-								
-
-								<select ng-model="checkinData.auto_checkin_from_minute">
-									<option value="">MM</option>
-									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
-								</select>
-
-							</div>
-							<div class="select select-col select-margin">
-
-								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.start_auto_checkin_from_prime_time">
-								</select>
-
-							</div>
-					</div>
-					</fieldset>
-				<fieldset class="holder right holder_margin" ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">	
-					<div class="entry full-width" >
-						<label>
-							{{ 'STOP_AUTO_CHECK_IN_AT' | translate}}
-						</label>
-							<div class="select select-col select-margin">
-								
-								<select ng-model="checkinData.auto_checkin_to_hour">
-									<option value="">HH</option>
-									<option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
-								</select>
-							</div>
-							<div class="select select-col select-margin">
-								
-
-								<select ng-model="checkinData.auto_checkin_to_minute">
-									<option value="">MM</option>
-									<option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
-								</select>
-
-							</div>
-							<div class="select select-col select-margin">
-
-								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.start_auto_checkin_to_prime_time">
-								</select>
-
-							</div>
-						
-					</div>
-				</fieldset>
-
-				<fieldset class="holder full-width" ng-show="checkinData.is_precheckin_only">
-					<ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width margin-top-30" ></ad-checkbox>
-				</fieldset>	
-
-				<fieldset class="holder left" ng-hide="!checkinData.is_precheckin_only">
-
-					<ad-textbox value="checkinData.max_webcheckin" label = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}"  styleclass="full-width" maxlength="4"></ad-textbox>
-
-					<div class="form-title">
-						<h3 class="ng-binding"><span class="ng-scope" translate="">PRE_CHECK_IN_EMAIL_FIELDS</span> </h3>
-					</div>
-
-					<ad-textbox value="checkinData.pre_checkin_email_title" label = "{{'PRE_CHECK_IN_EMAIL_TITLE' | translate}}" placeholder = ""  styleclass="full-width" ></ad-textbox>
-
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_body" label = "{{ 'PRE_CHECK_IN_TOP_BODY' | translate}}" placeholder = ""></ad-textarea>
-
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label = "{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder = ""></ad-textarea>
-
-					
-				</fieldset>
-					
-					
-				<fieldset class="holder full-width">
-					<div class="entry">
-						<label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
-						<div     
-						multi-select
-						input-model="rate_codes"
-						button-label="name"
-						item-label="name"
-						tick-property="ticked"
-						max-labels="0"
-						default-label="None selected"
-						max-height="300px"
-						>
-					</div>
-					</div>
-					<div class="entry entry-padding-left"><label>&nbsp;&nbsp;</label>
-						<button translate="" ng-click="clickExcludeRateCode()"  class="button green" translate="">EXCLUDE_RATE_CODES</button>
-					</div>
-
-					<div class="entry full-width" ng-show="excludedRateCodes.length>0">
-						<div class='entry' >
-								<label> <h4 translate>EXCLUDED_RATE_CODES</h4> </label>
-						</div>
-						<div id='room-type-details' ng-repeat="rateCode in excludedRateCodes">								
-							<div class="entry full-width room-type-details" >
-								<div class="entry">
-									<span class="align-text-center"> {{rateCode.name}} </span>
-								</div>
-								<div class="entry">
-									<span class="entry">
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'EMAIL_TO_ALL_ARRIVALS' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.checkin_alert_time_hour">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.checkin_alert_time_minute">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder right holder_margin">
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'ZEST_ALERT_TO_ALL_ARRIVALS' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.zest_checkin_alert_time_hour">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.zest_checkin_alert_time_min">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.zest_checkin_alert_primetime">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                </fieldset>
+                <fieldset class="holder left holder_margin" ng-show="checkinData.is_precheckin_only">
+                    <div id="options" class="entry" ng-hide="hideAddOption">
+                        <label>
+                            {{ 'CHECKIN_ACTION' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.checkin_action== 'sent_to_queue'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action=='sent_to_queue'}"></span>
+                            <input type="radio" value="sent_to_queue" ng-model="checkinData.checkin_action"> {{ 'SENT_TO_QUEUE' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.checkin_action == 'auto_checkin'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'auto_checkin'}"></span>
+                            <input type="radio" value="auto_checkin" ng-model="checkinData.checkin_action"> {{ 'AUTO_CHECK_IN' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.checkin_action == 'none'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'none'}"></span>
+                            <input type="radio" value="none" ng-model="checkinData.checkin_action"> {{ 'NONE' | translate}}
+                        </label>
+                    </div>
+                    <div class="entry full-width">
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label="{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder=""></ad-textarea>
+                    </div>
+                    <div class="entry" ng-show="checkinData.checkin_action == 'sent_to_queue' || checkinData.checkin_action == 'auto_checkin'">
+                        <label>
+                            {{ 'MINUTES_PRIOR_TO_ETA' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col col1-3">
+                                <select ng-options="minute for minute  in prior_minutes" ng-model="checkinData.prior_to_arrival">
+                                    <option style="display:none" value="">MM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder left holder_margin" ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'START_AUTO_CHECK_IN_FROM' | translate}}
+                        </label>
+                        <div class="select select-col select-margin">
+                            <select ng-model="checkinData.auto_checkin_from_hour">
+                                <option value="">HH</option>
+                                <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                            </select>
+                        </div>
+                        <div class="select select-col select-margin">
+                            <select ng-model="checkinData.auto_checkin_from_minute">
+                                <option value="">MM</option>
+                                <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                            </select>
+                        </div>
+                        <div class="select select-col select-margin">
+                            <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.start_auto_checkin_from_prime_time">
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder right holder_margin" ng-show="checkinData.checkin_action == 'auto_checkin' && checkinData.is_precheckin_only">
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'STOP_AUTO_CHECK_IN_AT' | translate}}
+                        </label>
+                        <div class="select select-col select-margin">
+                            <select ng-model="checkinData.auto_checkin_to_hour">
+                                <option value="">HH</option>
+                                <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                            </select>
+                        </div>
+                        <div class="select select-col select-margin">
+                            <select ng-model="checkinData.auto_checkin_to_minute">
+                                <option value="">MM</option>
+                                <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                            </select>
+                        </div>
+                        <div class="select select-col select-margin">
+                            <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.start_auto_checkin_to_prime_time">
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder full-width" ng-show="checkinData.is_precheckin_only">
+                    <ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width margin-top-30"></ad-checkbox>
+                </fieldset>
+                <fieldset class="holder left" ng-hide="!checkinData.is_precheckin_only">
+                    <ad-textbox value="checkinData.max_webcheckin" label="{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder="{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" styleclass="full-width" maxlength="4"></ad-textbox>
+                    <div class="form-title">
+                        <h3 class="ng-binding"><span class="ng-scope" translate="">PRE_CHECK_IN_EMAIL_FIELDS</span> </h3>
+                    </div>
+                    <ad-textbox value="checkinData.pre_checkin_email_title" label="{{'PRE_CHECK_IN_EMAIL_TITLE' | translate}}" placeholder="" styleclass="full-width"></ad-textbox>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_body" label="{{ 'PRE_CHECK_IN_TOP_BODY' | translate}}" placeholder=""></ad-textarea>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label="{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder=""></ad-textarea>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <div class="entry">
+                        <label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
+                        <div multi-select input-model="rate_codes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        </div>
+                    </div>
+                    <div class="entry entry-padding-left">
+                        <label>&nbsp;&nbsp;</label>
+                        <button translate="" ng-click="clickExcludeRateCode()" class="button green" translate="">EXCLUDE_RATE_CODES</button>
+                    </div>
+                    <div class="entry full-width" ng-show="excludedRateCodes.length>0">
+                        <div class='entry'>
+                            <label>
+                                <h4 translate>EXCLUDED_RATE_CODES</h4> </label>
+                        </div>
+                        <div id='room-type-details' ng-repeat="rateCode in excludedRateCodes">
+                            <div class="entry full-width room-type-details">
+                                <div class="entry">
+                                    <span class="align-text-center"> {{rateCode.name}} </span>
+                                </div>
+                                <div class="entry">
+                                    <span class="entry">
 										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRateCode(rateCode.id)"></a>
 									</span>
-								</div>
-							</div>								
-						</div>
-					</div>
-				</fieldset>
-					<fieldset class="holder full-width">
-					<div class="entry">
-						<label translate>BLOCK_CODES_EXCLUDE_FROM_CHECKIN</label>
-						<div     
-						multi-select
-						input-model="block_codes"
-						button-label="group_code"
-						item-label="group_code"
-						tick-property="ticked"
-						max-labels="0"
-						default-label="None selected"
-						max-height="300px"
-						>
-					</div>
-					</div>
-
-					<div class="entry entry-padding-left" ><label>&nbsp;&nbsp;</label>
-						<button translate="" ng-click="clickExcludeBlockCode()"  class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
-					</div>
-
-					<div class="entry full-width" ng-show="excludedBlockCodes.length>0">
-						<div class='entry' >
-								<label> <h4 translate>EXCLUDED_BLOCK_CODES</h4> </label>
-						</div>
-						<div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">								
-							<div class="entry full-width room-type-details" >
-								<div class="entry">
-									<span class="align-text-center"> {{blockCode.group_code}} </span>
-								</div>
-								<div class="entry">
-									<span class="entry">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <div class="entry">
+                        <label translate>BLOCK_CODES_EXCLUDE_FROM_CHECKIN</label>
+                        <div multi-select input-model="block_codes" button-label="group_code" item-label="group_code" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        </div>
+                    </div>
+                    <div class="entry entry-padding-left">
+                        <label>&nbsp;&nbsp;</label>
+                        <button translate="" ng-click="clickExcludeBlockCode()" class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
+                    </div>
+                    <div class="entry full-width" ng-show="excludedBlockCodes.length>0">
+                        <div class='entry'>
+                            <label>
+                                <h4 translate>EXCLUDED_BLOCK_CODES</h4> </label>
+                        </div>
+                        <div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">
+                            <div class="entry full-width room-type-details">
+                                <div class="entry">
+                                    <span class="align-text-center"> {{blockCode.group_code}} </span>
+                                </div>
+                                <div class="entry">
+                                    <span class="entry">
 										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
 									</span>
-								</div>
-							</div>								
-						</div>
-					</div>		
-
-				</fieldset>	
-				<fieldset class="holder full-width">
-							<div class="entry">
-								<label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
-								<div     
-								multi-select
-								input-model="roomTypes"
-								button-label="name"
-								item-label="name"
-								tick-property="ticked"
-								max-labels="0"
-								default-label="None selected"
-								max-height="300px"
-								>
-							</div>
-							</div>
-							<div class="entry entry-padding-left"><label>&nbsp;&nbsp;</label>
-							<button translate="" ng-click="clickExcludeRoomType()"  class="button green" translate="">EXCLUDE_ROOM_TYPES</button>
-							</div>
-
-							<div class="entry full-width" ng-show="excludedRoomTypes.length>0">
-							<div class='entry' >
-								<label> <h4 translate>EXCLUDED_ROOM_TYPES</h4> </label>
-							</div>
-							<div id='room-type-details' ng-repeat="roomType in excludedRoomTypes">								
-								<div class="entry full-width room-type-details" >
-									<div class="entry">
-										<span class="align-text-center"> {{roomType.name}} </span>
-									</div>
-									<div class="entry">
-										<span class="entry">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <div class="entry">
+                        <label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
+                        <div multi-select input-model="roomTypes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        </div>
+                    </div>
+                    <div class="entry entry-padding-left">
+                        <label>&nbsp;&nbsp;</label>
+                        <button translate="" ng-click="clickExcludeRoomType()" class="button green" translate="">EXCLUDE_ROOM_TYPES</button>
+                    </div>
+                    <div class="entry full-width" ng-show="excludedRoomTypes.length>0">
+                        <div class='entry'>
+                            <label>
+                                <h4 translate>EXCLUDED_ROOM_TYPES</h4> </label>
+                        </div>
+                        <div id='room-type-details' ng-repeat="roomType in excludedRoomTypes">
+                            <div class="entry full-width room-type-details">
+                                <div class="entry">
+                                    <span class="align-text-center"> {{roomType.name}} </span>
+                                </div>
+                                <div class="entry">
+                                    <span class="entry">
 											<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id)"></a>
 										</span>
-									</div>
-								</div>								
-							</div>
-							</div>
-						</fieldset>
-
-
-				<fieldset class="holder full-width">
-					<div class="form-title half-width-title">
-						<h3><span translate="">GUEST_DETAIL_COLLECTION</span> </h3>
-					</div>
-					<!-- flag to check if we need to ask for guset details  -->
-					<div class="form-subtitle-title">
-						<h6><span translate="">COLLECT_ADDRESS_IN_ONE_SCREEN</span> </h6>
-					</div>
-					<ad-toggle-button is-checked="checkinData.guest_address_on" label="{{ 'ASK_GUEST_ADDRESS_DETAILS' | translate}}" div-class="full-width"></ad-toggle-button>
-					<div class="form-title half-width-title">
-						<h3><span  translate="">BIRTHDATE_COLLECTION</span> </h3>
-					</div>
-					<div class="form-subtitle-title">
-						<h6><span translate="">COLLECT_BIRTHDAY_SEPERATELY</span> </h6>
-					</div>
-					<!-- flag to check if we need to check for guset birthdate  -->
-					<ad-toggle-button is-checked="checkinData.birthdate_on" label="{{ 'PROMPT_FOR_BIRTHDATE' | translate}}" div-class="full-width"></ad-toggle-button>
-					<!-- flag to check if we need to check for guset birthdate  -->
-					<ad-toggle-button is-checked="checkinData.birthdate_mandatory" label="{{ 'BIRTHDATE_IS_MANDATORY' | translate}}" div-class="full-width"></ad-toggle-button>
-					<!-- field to set age restriction -->
-					<div class="entry full-width">
-						<label>
-							{{ 'MINIMUM_AGE_REQUIRED_TO_CHECKIN' | translate}}
-						</label>
-						<div class="form-subtitle-title">
-							<h6><span translate="">COLLECT_BIRTHDAY_INSTRUCTION</span> </h6>
-						</div>
-						<div class="entry full-width float">
-							<div class="select select-col col1-3">
-								<select ng-options="age for age  in [0,18,21]" ng-model="checkinData.minimum_age">
-									<option style="display:none" value="">SELECT AGE</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="form-title half-width-title">
-						<h3><span  translate="">ADDRESS_COLLECTION</span> </h3>
-					</div>
-					<div class="form-subtitle-title">
-						<h6><span translate="">COLLECT_ADDRESS_SEPERATELY</span> </h6>
-					</div>
-					<!-- flag to check if we need to ask for guest address -->
-					<ad-toggle-button is-checked="checkinData.prompt_for_address_on" label="{{ 'PROMPT_FOR_GUEST_ADDRESS' | translate}}" div-class="full-width"></ad-toggle-button>
-					<!-- flag to check if we need to ask for CC entry-->
-					<div class="form-title half-width-title">
-						<h3 class="ng-binding"><span class="ng-scope" translate="">GUEST_CC_COLLECTION</span> </h3>
-					</div>
-					<ad-toggle-button is-checked="checkinData.checkin_collect_cc" label="{{'PROMPT_FOR_CC' | translate}}" div-class="full-width"></ad-toggle-button>
-				</fieldset>
-				
-				<fieldset class="holder left">
-
-					<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="{{ 'WEB_CHECKIN_STAFF_ALERT' | translate}}"></ad-toggle-button>
-
-					<div id="options" class="entry full-width" ng-hide="hideAlertOption">
-
-						<label class="radio" ng-class="{'checked':checkinData.checkin_staff_alert_option=='all'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
-							<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="all" class="change-data">
-							{{ 'ALL' | translate}}
-							
-						</label>
-
-						<label class="radio" ng-class="{'checked':checkinData.require_cc_for_checkin_email_flag}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}"></span>
-							<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="not_success" class="change-data">
-							{{ 'ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL' | translate}}
-							
-						</label>
-
-					</div>
-					
-					<div class="entry full-width">
-
-						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
-
-					</div>
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = "" ng-show="hideAddOption"></ad-textarea>
-					
-
-				</fieldset>
-						<!-- room key communication options -->
-				<fieldset class="holder left">
-					<div class="form-title half-width-title">
-						<h3><span translate="">ROOM_KEY_COMMUNICATIONS</span> </h3>
-					</div>
-					<ad-toggle-button is-checked="checkinData.offer_room_delivery_options" label="{{ 'OFFER_ROOM_DELIVERY_OPTIONS' | translate}}" div-class="full-width"></ad-toggle-button>
-					<div id="options" class="entry" ng-hide="!checkinData.offer_room_delivery_options">
-						<label>
-							{{ 'ROOM_KEY_COMMUNICATION_OPTIONS' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication== 'email'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication=='email'}"></span>
-							<input type="radio" value="email" ng-model="checkinData.guest_delivery_communication"  >
-							{{ 'EMAIL' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_or_text'}"></span>
-							<input type="radio" value="email_or_text" ng-model="checkinData.guest_delivery_communication" >
-							{{ 'EMAIL_OR_TEXT_MESSAGE' | translate}}
-						</label>
-						<label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_and_text'}"></span>
-							<input type="radio" value="email_and_text" ng-model="checkinData.guest_delivery_communication" >
-							{{ 'EMAIL_AND_TEXT_MESSAGE' | translate}}
-						</label>
-					</div>
-				</fieldset>
-
-				<div class="actions float">
-					<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
-					<button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
-				</div>
-			</form>
-		</section>
-	</div>
-	</section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <div class="form-title half-width-title">
+                        <h3><span translate="">GUEST_DETAIL_COLLECTION</span> </h3>
+                    </div>
+                    <!-- flag to check if we need to ask for guset details  -->
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">COLLECT_ADDRESS_IN_ONE_SCREEN</span> </h6>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.guest_address_on" label="{{ 'ASK_GUEST_ADDRESS_DETAILS' | translate}}" div-class="full-width"></ad-toggle-button>
+                    <div class="form-title half-width-title">
+                        <h3><span  translate="">BIRTHDATE_COLLECTION</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">COLLECT_BIRTHDAY_SEPERATELY</span> </h6>
+                    </div>
+                    <!-- flag to check if we need to check for guset birthdate  -->
+                    <ad-toggle-button is-checked="checkinData.birthdate_on" label="{{ 'PROMPT_FOR_BIRTHDATE' | translate}}" div-class="full-width"></ad-toggle-button>
+                    <!-- flag to check if we need to check for guset birthdate  -->
+                    <ad-toggle-button is-checked="checkinData.birthdate_mandatory" label="{{ 'BIRTHDATE_IS_MANDATORY' | translate}}" div-class="full-width"></ad-toggle-button>
+                    <!-- field to set age restriction -->
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'MINIMUM_AGE_REQUIRED_TO_CHECKIN' | translate}}
+                        </label>
+                        <div class="form-subtitle-title">
+                            <h6><span translate="">COLLECT_BIRTHDAY_INSTRUCTION</span> </h6>
+                        </div>
+                        <div class="entry full-width float">
+                            <div class="select select-col col1-3">
+                                <select ng-options="age for age  in [0,18,21]" ng-model="checkinData.minimum_age">
+                                    <option style="display:none" value="">SELECT AGE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-title half-width-title">
+                        <h3><span  translate="">ADDRESS_COLLECTION</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">COLLECT_ADDRESS_SEPERATELY</span> </h6>
+                    </div>
+                    <!-- flag to check if we need to ask for guest address -->
+                    <ad-toggle-button is-checked="checkinData.prompt_for_address_on" label="{{ 'PROMPT_FOR_GUEST_ADDRESS' | translate}}" div-class="full-width"></ad-toggle-button>
+                    <!-- flag to check if we need to ask for CC entry-->
+                    <div class="form-title half-width-title">
+                        <h3 class="ng-binding"><span class="ng-scope" translate="">GUEST_CC_COLLECTION</span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.checkin_collect_cc" label="{{'PROMPT_FOR_CC' | translate}}" div-class="full-width"></ad-toggle-button>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <div class="form-title half-width-title">
+                        <h3><span translate="">CHECKIN_NOW_MAIN_HEADING</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">CHECKIN_NOW_SUB_HEADING</span> </h6>
+                    </div>
+                    <fieldset class="holder left">
+                        <ad-textbox value="checkinData.zest_checkin_now_text" label="Check in now" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="checkinData.zest_checkin_later_text" label="check in later" styleclass="full-width" placeholder=""></ad-textbox>
+                    </fieldset>
+                </fieldset>
+                <fieldset class="holder left">
+                    <ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="{{ 'WEB_CHECKIN_STAFF_ALERT' | translate}}"></ad-toggle-button>
+                    <div id="options" class="entry full-width" ng-hide="hideAlertOption">
+                        <label class="radio" ng-class="{'checked':checkinData.checkin_staff_alert_option=='all'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
+                            <input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="all" class="change-data"> {{ 'ALL' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.require_cc_for_checkin_email_flag}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}"></span>
+                            <input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="not_success" class="change-data"> {{ 'ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL' | translate}}
+                        </label>
+                    </div>
+                    <div class="entry full-width">
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder=""></ad-textarea>
+                    </div>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label="{{ 'CHECKIN_ALERT' | translate}}" placeholder="" ng-show="hideAddOption"></ad-textarea>
+                </fieldset>
+                <!-- room key communication options -->
+                <fieldset class="holder left">
+                    <div class="form-title half-width-title">
+                        <h3><span translate="">ROOM_KEY_COMMUNICATIONS</span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.offer_room_delivery_options" label="{{ 'OFFER_ROOM_DELIVERY_OPTIONS' | translate}}" div-class="full-width"></ad-toggle-button>
+                    <div id="options" class="entry" ng-hide="!checkinData.offer_room_delivery_options">
+                        <label>
+                            {{ 'ROOM_KEY_COMMUNICATION_OPTIONS' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication== 'email'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication=='email'}"></span>
+                            <input type="radio" value="email" ng-model="checkinData.guest_delivery_communication"> {{ 'EMAIL' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_or_text'}"></span>
+                            <input type="radio" value="email_or_text" ng-model="checkinData.guest_delivery_communication"> {{ 'EMAIL_OR_TEXT_MESSAGE' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':checkinData.guest_delivery_communication == 'email_or_text'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:checkinData.guest_delivery_communication == 'email_and_text'}"></span>
+                            <input type="radio" value="email_and_text" ng-model="checkinData.guest_delivery_communication"> {{ 'EMAIL_AND_TEXT_MESSAGE' | translate}}
+                        </label>
+                    </div>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
+                    <button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</section>

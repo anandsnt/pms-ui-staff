@@ -377,7 +377,7 @@ select[disabled],{
             }
         }
 
-        &:after {
+        &:not(.no-bg):after {
             content: "";
             position: absolute;
             top: 0;
@@ -388,10 +388,6 @@ select[disabled],{
             z-index: 99;
             .size(100%, 25px);
             #border-radius > .right();
-        }
-
-        &.no-bg:after {
-            background: none;
         }
     }
 
