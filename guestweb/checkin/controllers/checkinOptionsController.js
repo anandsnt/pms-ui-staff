@@ -4,7 +4,7 @@
 */
 
 (function() {
-	var checkinOptionsController = function($scope, $rootScope, $state, sntGuestWebSrv) {
+	var checkinOptionsController = function($scope, $rootScope, $state, checkinNowService) {
 		$rootScope.checkinOptionShown = true;
 
 		var early_checkin_switch_on = true;
@@ -78,7 +78,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', 'sntGuestWebSrv',
+		'$scope', '$rootScope', '$state','checkinNowService',
 		checkinOptionsController
 	];
 
