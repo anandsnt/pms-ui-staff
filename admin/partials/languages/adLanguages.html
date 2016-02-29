@@ -8,7 +8,7 @@
         </header>
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <table id="languages" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil">
+            <table id="languages" class="grid datatable dataTable" ng-table="itemList">
                 <tbody>
                     <tr ng-repeat="language in languageData.languages track by $index">
                         <td data-item="1" data-title="'Name'" header-class="width-50">
