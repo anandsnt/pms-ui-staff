@@ -4,7 +4,7 @@
 */
 
 (function() {
-	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams) {
+	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams, checkinNowService) {
 
 		$scope.pageValid = false;
 
@@ -40,20 +40,21 @@
 			}
 
 			var releaseRoom = function() {
-				var onSuccess = function() {
+				var params = {
+					'reservation_id': $rootScope.reservationID
+				};
+				checkinNowService.releaseRoomRoom(params).then(function(response) {
 					changeArrivalTime();
-				};
-				var onFailure = function(){
+				}, function() {
 					$scope.netWorkError = true;
-				};
-				onSuccess();
+					$scope.isLoading = false;
+				});
 			};
 
 			$scope.changeArrivalTime = function() {
 				if (!!$stateParams.isFromCheckinNow) {
 					releaseRoom();
-				}
-				else {
+				} else {
 					changeArrivalTime();
 				}
 			};
@@ -61,7 +62,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', '$stateParams',
+		'$scope', '$rootScope', '$state', '$stateParams', 'checkinNowService',
 		earlyCheckinOptionsController
 	];
 

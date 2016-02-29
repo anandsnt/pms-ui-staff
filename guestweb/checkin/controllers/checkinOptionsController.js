@@ -23,7 +23,9 @@
 		var init = function() {
 
 			$scope.isLoading = true;
-			var params = {'reservation_id':$rootScope.reservationID};
+			var params = {
+				'reservation_id': $rootScope.reservationID
+			};
 			checkinNowService.fetchEarlyCheckinData(params).then(function(response) {
 				//set variables based on the response
 				early_checkin_switch_on = response.early_checkin_on;
@@ -69,13 +71,17 @@
 		};
 
 		var assignRoom = function(type) {
-			var onFailure = function() {
-				$state.go("roomAssignFailed");
-			}
-			var onSuccess = function() {
-				navigateToNextScreen();
+			var params = {
+				application: 'WEB',
+				forcefully_assign_room: false,
+				reservation_id: $rootScope.reservationID,
+				without_rate_change: true
 			};
-			onSuccess();
+			checkinNowService.assignRoom(params).then(function(response) {
+				navigateToNextScreen();
+			}, function() {
+				$state.go("roomAssignFailed");
+			});
 		};
 
 		var roomAssignmentActions = function() {
