@@ -1074,7 +1074,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				if( $scope.authData.billData.length > 0 ){
 					// Show Multiple Credit card auth popup
 					ngDialog.open({
-						template		: '/assets/partials/reservation/rvManualAuthorizationPopup.html',
+						template		: '/assets/partials/authorization/rvManualAuthorizationPopup.html',
 						className		: '',
 						closeByEscape 	: false,
 						closeByDocument : false,
@@ -1183,7 +1183,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			setTimeout(function() {
 
 				ngDialog.open({
-					template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
+					template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
 					className: '',
 					closeByDocument: false,
 					scope: $scope
