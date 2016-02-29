@@ -32,6 +32,22 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     };
 
     /**
+    *   Service to fetch the initial data for adding new service provider
+    */
+    this.fetchServiceProviderAddData = function(){
+        var deferred = $q.defer();
+        var url = '/admin/service_providers/new.json';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+
+    /**
     *   Service to update a new service provider
     *   @param {Object} data holding the service provider details.
     */

@@ -41,19 +41,19 @@ admin.controller('ADServiceProviderListCtrl',['$scope','$rootScope', '$state','$
                 // show first page
                 page: 1,
                 // count per page - Need to change when on pagination implemntation
-                count: $scope.data.service.length,
+                count: $scope.data.length,
                 sorting: {
                     // initial sorting
                     name: 'asc'
                 }
             }, {
                 // length of data
-                total: $scope.data.hotels.length,
+                total: $scope.data.length,
                 getData: function($defer, params) {
                     // use build-in angular filter
                     var orderedData = params.sorting() ?
-                                        $filter('orderBy')($scope.data.hotels, params.orderBy()) :
-                                        $scope.data.hotels;
+                                        $filter('orderBy')($scope.data, params.orderBy()) :
+                                        $scope.data;
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 }
             });

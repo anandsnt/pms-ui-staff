@@ -129,4 +129,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/serviceProviders'
 		});
 
+		$stateProvider.state('admin.sntserviceproviderdetails', {
+			templateUrl: '/assets/partials/serviceProviders/adServiceProviderDetails.html',
+			controller: 'ADServiceProviderDetailsCtrl',
+			url : '/serviceproviderdetails/:action/:id'
+		});
+
 });
