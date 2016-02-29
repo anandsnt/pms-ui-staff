@@ -36,6 +36,17 @@ sntZestStation.service('zsTabletSrv',
                     return deferred.promise;
                 };
                 
+                this.getDoorLockSettings = function () {
+                    var deferred = $q.defer(),
+                            url = 'api/door_lock_interfaces.json';
+                    
+                    zsBaseWebSrv.getJSON(url).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
                 this.encodeKey = function (params) {
                     var deferred = $q.defer(),
                             url = '/staff/reservation/print_key';

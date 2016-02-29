@@ -41,6 +41,9 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				$scope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
 			}
+			else if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
