@@ -1125,7 +1125,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				card.active = false;
 			});
 			$scope.authData.billData[index].active = true;
-			console.log($scope.authData.billData);
 		};
 
 		var authInProgress = function() {
