@@ -1,5 +1,16 @@
 angular.module('adminInterfacesRouter', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
+  $stateProvider.state('admin.exactOnlineSetup', {
+    templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
+    controller: 'adExactOnlineSetupCtrl',
+    url : '/exactonlline/setup',
+    resolve: {
+      exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.zestWebGlobalSetup', {
     templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
     controller: 'ADzestWebGlobalSettingsCtrl',
