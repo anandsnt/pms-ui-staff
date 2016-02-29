@@ -16,13 +16,8 @@
             </button>
 
             <div class="entry dates">
-                <input id="filter-date" class="button white with-icon only-icon datepicker" value="" readonly
-                       click-touch="openDateFilter()"/>
-            </div>
-
-            <div class="ngmodal-uidate-wrap" id="selectCalendar"
-                 ng-include="'/assets/partials/actionsManager/rvActionsMgrFilterCalendar.html'"
-                 ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !filterCalendarShow">
+                <input id="filter-date" class="button white with-icon only-icon datepicker" ui-date="selectDateOptions"
+                       ng-model="filterOptions.selectedDay" value="" readonly/>
             </div>
 
             <div class="entry search">
@@ -52,10 +47,6 @@
                 </li>
             </ul>
         </form>
-
-        <!-- Listing, this is the same list of actions view used for both Action Manager and Actions from within a staycard -->
-        <!--<div ng-include="'/assets/partials/common/actions_list.html'" class="scrollable"-->
-        <!--ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>-->
 
         <!-- Listing -->
         <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500">
@@ -112,7 +103,6 @@
             </div>
             <button type="button" class="button brand-colors" ng-click="toStayCard()">Stay Card</button>
         </div>
-
         <div class="summary">
             <div id="action-summary">
                 <h3>{{selectedAction.description}}</h3>
@@ -122,34 +112,36 @@
                 </div>
                 <div class="info created">
                     <span class="label">Created By</span>
-                    {{selectedAction.created_by.name}} {Date Created} &#8226; {Time Created}
+                    {{selectedAction.created_by.name}} {{selectedAction.created_at | date:dateFormat}} &#8226; {{selectedAction.created_at | date:"hh:mm a"}}
                 </div>
                 <div class="entry action-info date">
                     <label for="due-date">Date Due</label>
                     <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
                         <span class="icons icon-clear-search">Clear query</span>
                     </button>
-                    <input id="due-date" type="text" class="datepicker" value="{Due Date}" readonly/>
+                    <input id="due-date" class="datepicker" ui-date="dueDateEditOptions"
+                           ng-model="selectedAction.dueDate" value="" readonly/>
                 </div>
                 <div class="entry action-info time">
                     <label for="due-time">Time Due</label>
-                    <input id="due-time" type="time" ng-model="selectedAction.dueTime" placeholder="HH:mm:ss" required/>
+                    <input id="due-time" type="time" ng-model="selectedAction.dueTime" placeholder="HH:mm:ss" required
+                           rv-delay-textbox delay="1000" function-to-fire="updateAction"/>
                 </div>
-                <!-- If action completed, show this as well:
-                <div class="notice">
+                <!-- If action completed, show this as well: -->
+                <div class="notice" ng-if="selectedAction.action_status === _actionCompleted">
                     <span>Completed By</span>
-                    {Department} {Date Completed} &#8226; {Time Completed}
-                </div> -->
+                    {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226; {{selectedAction.completed_at | date: "hh:mm a"}}
+                </div>
             </div>
 
-            <div class="detail-actions col-2">
-                <button type="button" class="button white brand-text">Assign</button>
-                <!-- Change text to "Reassign" for assigned action -->
-                <button type="button" class="button white green-text">Complete</button>
+            <div class="detail-actions col-2" ng-if="selectedAction.action_status !== _actionCompleted">
+                <button type="button" ng-hide="" class="button white brand-text" ng-click="changeAssignment()">
+                    {{!!selectedAction.assigned_to.name? "ReAssign": "Assign"}}
+                </button>
+                <button type="button" class="button white green-text" ng-click="completeAction()">Complete
+                </button>
             </div>
         </div>
-
-
     </div>
 
 </section>

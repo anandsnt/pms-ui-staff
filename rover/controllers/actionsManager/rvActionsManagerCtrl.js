@@ -1,7 +1,9 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'hotelDetails', '$timeout', '$state', '$stateParams', 'departments',
-    function ($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, hotelDetails, $timeout, $state, $stateParams, departments) {
+sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv',
+    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv) {
 
         //-------------------------------------------------------------------------------------------------------------- A. Scope Variables
+
+        $scope._actionCompleted = "COMPLETED";
 
         $scope.filterOptions = {
             showFilters: false,
@@ -10,6 +12,26 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
             selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
             query: ""
         };
+
+        $scope.selectedAction = {};
+
+        $scope.selectDateOptions = {
+            defaultDate: tzIndependentDate($rootScope.businessDate),
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            onSelect: function () {
+                fetchActionsList();
+            }
+        };
+
+        $scope.dueDateEditOptions = {
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            onSelect: function (date, datePickerObj) {
+                $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
+                $scope.updateAction();
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
@@ -30,14 +52,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
                 $scope.callAPI(rvActionTasksSrv.getActionDetails, {
                     params: $scope.selectedActionId,
                     successCallBack: function (response) {
-                        var actionDetails = angular.copy(response.data);
-                        $scope.selectedAction = actionDetails
+                        $scope.selectedAction = angular.copy(response.data);
                     }
                 })
             },
             fetchActionsList = function () {
                 var payLoad = {
-                    date: $scope.filterOptions.selectedDay,
+                    date: dateFilter($scope.filterOptions.selectedDay, "yyyy-MM-dd"),
                 }, onFetchListSuccess = function (response) {
                     $scope.actions = [];
                     _.each(response.results, function (action) {
@@ -125,6 +146,25 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$filter', '$rootSc
         $scope.onDepartmentSelectionChange = function () {
             fetchActionsList();
         };
+
+        $scope.changeAssignment = function(){
+            ngDialog.open({
+                template: '/assets/partials/actionsManager/rvActionAssignmentPopup.html',
+                scope: $scope,
+                closeByDocument: true,
+                closeByEscape: true
+            });
+        };
+
+        $scope.updateAction = function(){
+            console.log('update', $scope.selectedAction);
+            ngDialog.close();
+        };
+
+        $scope.completeAction = function(){
+            $scope.selectedAction.action_status = $scope._actionCompleted;
+            $scope.updateAction();
+        }
 
         //-------------------------------------------------------------------------------------------------------------- D. Listeners
 
