@@ -28,6 +28,7 @@
     
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
     "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
+    "ZEST_ALLOW_EARLY_CHECKIN":"ALLOW EARLY CHECKIN FROM ZEST APP",
     "SENT_TO_QUEUE":"SENT TO QUEUE",
     "YES_SMALL":"Yes",
     "NO_SMALL":"No",
