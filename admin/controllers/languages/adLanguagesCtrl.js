@@ -19,7 +19,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
 
     // on change activation
     $scope.onToggleActivation = function(language) {
-        language.show_language_field = !language.show_language_field;
+        language.is_show_on_guest_card = !language.is_show_on_guest_card;
         $scope.updateLanguage(language);
     };
 
