@@ -2,6 +2,7 @@ admin.service('ADLanguagesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 
    /**
     * To fetch the list of languages
+    * @return {Object} promise function
     */
 	this.fetch = function(){
 		var deferred = $q.defer();
@@ -15,13 +16,32 @@ admin.service('ADLanguagesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 	};
 
 	/**
-	 *
+	 * call to change the show on guest card flag.
+	 * @param {Object} paramenters
 	 */
-	this.toggleLanguagesUse = function() {
-
+	this.toggleLanguagesUse = function(params) {
+		var deferred = $q.defer();
+		var url = '/api/languages';
+		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.resolve(data);
+		});
+		return deferred.promise;
 	};
 
-	this.updateLanguage = function() {
-
+	/**
+	 * Update status of a language to disable it in the dropdown in the guestcard.
+	 * @param {Object} languade details
+	 */
+	this.updateLanguage = function(language) {
+		var deferred = $q.defer();
+		var url = '/api/languages';
+		ADBaseWebSrvV2.postJSON(url, language).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.resolve(data);
+		});
+		return deferred.promise;
 	};
 }]);
