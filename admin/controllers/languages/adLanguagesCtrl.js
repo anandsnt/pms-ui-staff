@@ -19,12 +19,15 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
 
     // on change activation
     $scope.onToggleActivation = function(language) {
-        language.is_active = !language.is_active;
+        language.show_language_field = !language.show_language_field;
         $scope.updateLanguage(language);
     };
 
     $scope.updateLanguage = function(language) {
-
+        var onToggleSuccess = function(data) {
+            $scope.$emit('hideLoader');
+        };
+        $scope.invokeApi(ADLanguagesSrv.updateLanguage, language, onToggleSuccess);
     };
 
     $scope.toggleLanguagesUse = function() {
@@ -32,7 +35,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
             $scope.$emit('hideLoader');
         };
         $scope.invokeApi(ADLanguagesSrv.toggleLanguagesUse, {
-            use_languages: $scope.languageData.use_languages
+            show_language_field: $scope.languageData.show_language_field
         }, onToggleSuccess);
     };
 
@@ -42,7 +45,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
         $scope.isLoading = true;
         $scope.languageData = {
             languages: [],
-            use_languages: true
+            show_language_field: true
         };
 
         $scope.itemList = new ngTableParams(
