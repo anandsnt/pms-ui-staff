@@ -33,7 +33,7 @@
         <!-- Company - AR Transactions -->
         <span ng-controller="RVCompanyCardArTransactionsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardArTransactions.html'" ng-show="(contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable) && currentSelectedTab == 'cc-ar-transactions'"></span>
         <!-- Company - Notes -->
-        <span ng-controller="companyCardNotesController" ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
+        <span ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
         <!-- Company - Resevations -->
         <!-- <span ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></span>    -->           
     </div>
