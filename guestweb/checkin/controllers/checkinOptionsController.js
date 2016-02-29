@@ -77,9 +77,12 @@
 				reservation_id: $rootScope.reservationID,
 				without_rate_change: true
 			};
+			$scope.isLoading = true;
 			checkinNowService.assignRoom(params).then(function(response) {
+				$scope.isLoading = false;
 				navigateToNextScreen();
 			}, function() {
+				$scope.isLoading = false;
 				$state.go("roomAssignFailed");
 			});
 		};

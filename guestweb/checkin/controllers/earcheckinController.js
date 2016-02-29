@@ -40,6 +40,7 @@
 			}
 
 			var releaseRoom = function() {
+				$scope.isPosting = true;
 				var params = {
 					'reservation_id': $rootScope.reservationID
 				};
@@ -47,7 +48,7 @@
 					changeArrivalTime();
 				}, function() {
 					$scope.netWorkError = true;
-					$scope.isLoading = false;
+					$scope.isPosting = false;
 				});
 			};
 
