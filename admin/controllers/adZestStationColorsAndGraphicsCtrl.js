@@ -1,6 +1,6 @@
 admin.controller('ADZestStationColorsAndGraphicsCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
 	BaseCtrl.call(this, $scope);
-	$scope.$emit("changedSelectedMenu", 1);
+	$scope.$emit("changedSelectedMenu", 10);
         
         $scope.data = {}; 
         $scope.updateField = function(field, value, old){
@@ -18,6 +18,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl',['$scope','$rootScope', '$
             $scope.data[field] = value;
             
         };
+        //CICO-21976
         $scope.$watch('zestSettings.colors.text',function(value, old){$scope.updateField('text',value, old)});
         $scope.$watch('zestSettings.colors.background',function(value, old){$scope.updateField('background',value, old)});
         $scope.$watch('zestSettings.colors.button',function(value, old){$scope.updateField('button',value, old)});

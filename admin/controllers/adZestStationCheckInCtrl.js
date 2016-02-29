@@ -1,6 +1,6 @@
 admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
 	BaseCtrl.call(this, $scope);
-	$scope.$emit("changedSelectedMenu", 1);
+	$scope.$emit("changedSelectedMenu", 10);
         
         $scope.data = {};       
         
@@ -20,13 +20,7 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
                 $scope.errorMessage = 'Failed';
                 $scope.$emit('hideLoader');
             };
-            var hasTagsRemoved = function(str){
-                var regexp = new RegExp('#','g');
-                str = str.replace(regexp, '');
-                return str;
-            };
-            
-            var data = $scope.zestSettings.colors;           
+
             var dataToSend = {
                                 'kiosk':
                                         {
