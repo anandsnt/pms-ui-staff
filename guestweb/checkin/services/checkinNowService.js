@@ -29,6 +29,7 @@
 
 			var fetchEarlyCheckinData =  function(data){
 				var deferred = $q.defer();
+				var url = '/sample_json/zestweb_v2/checkin_now.json';
 				// var url = '/guest_web/checkin_reservation_search.json';
 				$http.get(url,{params: data}).success(function(response) {
 					deferred.resolve(response);

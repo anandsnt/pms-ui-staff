@@ -5,16 +5,43 @@
 
 (function() {
 	var checkinOptionsController = function($scope, $rootScope, $state, checkinNowService) {
-		$rootScope.checkinOptionShown = true;
 
-		var early_checkin_switch_on = true;
-		var reservation_in_early_checkin_window = true;
-		var offerEci = (typeof early_checkin_offer_id !== 'undefined') ? true : false;
-		var offer_eci_bypass = true;
+		$rootScope.checkinOptionShown = true;
+		//set default values
+		var early_checkin_switch_on = false;
+		var reservation_in_early_checkin_window = false;
+		var early_checkin_offer_id = "";
+		var offer_eci_bypass = false;
 		var eci_upsell_limit_reached = false;
-		var is_room_already_assigned = true;
+		var is_room_already_assigned = false;
 		var is_room_ready = false;
-		var is_donot_move_room_marked = true;
+		var is_donot_move_room_marked = false;
+		var early_checkin_charge = "";
+		var checkin_time = "";
+
+
+		var init = function() {
+
+			$scope.isLoading = true;
+			var params = {'reservation_id':$rootScope.reservationID};
+			checkinNowService.fetchEarlyCheckinData(params).then(function(response) {
+				//set variables based on the response
+				early_checkin_switch_on = response.early_checkin_on;
+				reservation_in_early_checkin_window = response.early_checkin_available;
+				early_checkin_offer_id = response.early_checkin_offer_id
+				offer_eci_bypass = response.offer_eci_bypass;
+				eci_upsell_limit_reached = response.eci_upsell_limit_reached;
+				is_room_already_assigned = response.is_room_already_assigned;
+				is_room_ready = response.is_room_ready;
+				is_donot_move_room_marked = response.is_donot_move_room_marked;
+				early_checkin_charge = response.early_checkin_charge;
+				checkin_time = response.checkin_time;
+				$scope.isLoading = false;
+			}, function() {
+				$scope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		}();
 
 		var navigateToNextScreen = function() {
 			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_in_early_checkin_window)) {
@@ -31,9 +58,9 @@
 					} else {
 						//offer early checkin purchase
 						$state.go('earlyCheckinOptions', {
-							'time': '02:00 PM',
-							'charge': '$20',
-							'id': 2,
+							'time': checkin_time,
+							'charge': early_checkin_charge,
+							'id': early_checkin_offer_id,
 							'isFromCheckinNow': 'true'
 						});
 					}
@@ -48,7 +75,7 @@
 			var onSuccess = function() {
 				navigateToNextScreen();
 			};
-			onFailure();
+			onSuccess();
 		};
 
 		var roomAssignmentActions = function() {
@@ -78,7 +105,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state','checkinNowService',
+		'$scope', '$rootScope', '$state', 'checkinNowService',
 		checkinOptionsController
 	];
 

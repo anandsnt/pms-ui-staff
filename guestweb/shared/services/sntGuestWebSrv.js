@@ -11,8 +11,9 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 		var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
 		$http.get(url).success(function(response) {
 				that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
-					return cms_item.screen_name === "ZEST_WEB"
+					return cms_item.screen_name === "ECI SCREENS"
 				});
+				that.cms_screen_details = typeof that.cms_screen_details !=='undefined' ? that.cms_screen_details : [];
 				deferred.resolve(response);
 			}.bind(this))
 			.error(function() {
