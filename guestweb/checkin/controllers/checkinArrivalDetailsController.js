@@ -54,7 +54,13 @@
 	    $scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
 
 	};
-	init();
+	if($rootScope.is_checkin_now_on && !$rootScope.checkinOptionShown){
+		$state.go('guestCheckinOptions');
+	}
+	else{
+		init();
+	};
+	
 
 	$scope.postStayDetails = function(){
 		$scope.isLoading = true;
