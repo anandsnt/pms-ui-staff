@@ -290,6 +290,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 3;
 					break;
 
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 6;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -531,6 +536,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRateReport.html';
 					break;
 
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -607,6 +618,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
 					break;
 
+				// COMPANY_TA_TOP_PRODUCERS report row
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					template = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducersRow.html';
+					break;
 
 				// Default report row
 				default:
@@ -907,6 +922,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 				subString = subString.toLowerCase();
 
 			return string.indexOf( subString ) > -1;
+		};
+
+		$scope.isAsc = function(index) {
+			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
+		};
+
+		$scope.isDesc = function(index) {
+			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === false;
 		};
 
 		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {

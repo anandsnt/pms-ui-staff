@@ -401,57 +401,57 @@ angular.module('reportsModule')
                 }
 
                 // check for date filter and keep a ref to that item
-                if ( filter.value === 'DATE_RANGE' ) {
-                    report['hasDateFilter'] = filter;
+                // if ( filter.value === 'DATE_RANGE' ) {
+                //     report['hasDateFilter'] = filter;
 
-                    // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
-                    // rather than the default 'Date Range'
-                    if ( report['title'] === 'Cancellation & No Show' ) {
-                        report['hasDateFilter']['description'] = 'Arrival Date Range';
-                    };
+                //     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
+                //     // rather than the default 'Date Range'
+                //     if ( report['title'] === 'Cancellation & No Show' ) {
+                //         report['hasDateFilter']['description'] = 'Arrival Date Range';
+                //     };
 
-                    // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( report['title'] === 'Booking Source & Market Report' ) {
-                        report['hasDateFilter']['description'] = 'Booked Date';
-                    };
+                //     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
+                //     if ( report['title'] === 'Booking Source & Market Report' ) {
+                //         report['hasDateFilter']['description'] = 'Booked Date';
+                //     };
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromDate',
-                        untilModel : 'untilDate'
-                    });
-                    report.allDates.push( 'hasDateFilter' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasDateFilter'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromDate',
+                //         untilModel : 'untilDate'
+                //     });
+                //     report.allDates.push( 'hasDateFilter' );
+                // };
 
                 // check for cancellation date filter and keep a ref to that item
-                if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
-                    report['hasCancelDateFilter'] = filter;
+                // if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
+                //     report['hasCancelDateFilter'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasCancelDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromCancelDate',
-                        untilModel : 'untilCancelDate'
-                    });
-                    report.allDates.push( 'hasCancelDateFilter' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasCancelDateFilter'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromCancelDate',
+                //         untilModel : 'untilCancelDate'
+                //     });
+                //     report.allDates.push( 'hasCancelDateFilter' );
+                // };
 
                 // check for arrival date filter and keep a ref to that item
-                if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
-                    report['hasArrivalDateFilter'] = filter;
+                // if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
+                //     report['hasArrivalDateFilter'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasArrivalDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromArrivalDate',
-                        untilModel : 'untilArrivalDate'
-                    });
-                    report.allDates.push( 'hasArrivalDateFilter' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasArrivalDateFilter'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromArrivalDate',
+                //         untilModel : 'untilArrivalDate'
+                //     });
+                //     report.allDates.push( 'hasArrivalDateFilter' );
+                // };
 
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
@@ -466,87 +466,87 @@ angular.module('reportsModule')
                 };                
                 
                 // check for group start date filter and keep a ref to that item
-                if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
-                    report['hasGroupStartDateRange'] = filter;
+                // if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
+                //     report['hasGroupStartDateRange'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasGroupStartDateRange'], {
-                        showRemove : true,
-                        fromModel  : 'groupStartDate',
-                        untilModel : 'groupEndDate'
-                    });
-                    report.allDates.push( 'hasGroupStartDateRange' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasGroupStartDateRange'], {
+                //         showRemove : true,
+                //         fromModel  : 'groupStartDate',
+                //         untilModel : 'groupEndDate'
+                //     });
+                //     report.allDates.push( 'hasGroupStartDateRange' );
+                // };
 
                 // check for Deposit due date range filter and keep a ref to that item
-                if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
-                    report['hasDepositDateFilter'] = filter;
+                // if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
+                //     report['hasDepositDateFilter'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasDepositDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromDepositDate',
-                        untilModel : 'untilDepositDate'
-                    });
-                    report.allDates.push( 'hasDepositDateFilter' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasDepositDateFilter'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromDepositDate',
+                //         untilModel : 'untilDepositDate'
+                //     });
+                //     report.allDates.push( 'hasDepositDateFilter' );
+                // };
 
                 // check for create date range filter and keep a ref to that item
-                if ( filter.value === 'CREATE_DATE_RANGE' ) {
-                    report['hasCreateDateFilter'] = filter;
+                // if ( filter.value === 'CREATE_DATE_RANGE' ) {
+                //     report['hasCreateDateFilter'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasCreateDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromCreateDate',
-                        untilModel : 'untilCreateDate'
-                    });
-                    report.allDates.push( 'hasCreateDateFilter' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasCreateDateFilter'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromCreateDate',
+                //         untilModel : 'untilCreateDate'
+                //     });
+                //     report.allDates.push( 'hasCreateDateFilter' );
+                // };
 
                 // check for paid date range filter and keep a ref to that item
-                if ( filter.value === 'PAID_DATE_RANGE' ) {
-                    report['hasPaidDateRange'] = filter;
+                // if ( filter.value === 'PAID_DATE_RANGE' ) {
+                //     report['hasPaidDateRange'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasPaidDateRange'], {
-                        showRemove : true,
-                        fromModel  : 'fromPaidDate',
-                        untilModel : 'untilPaidDate'
-                    });
-                    report.allDates.push( 'hasPaidDateRange' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasPaidDateRange'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromPaidDate',
+                //         untilModel : 'untilPaidDate'
+                //     });
+                //     report.allDates.push( 'hasPaidDateRange' );
+                // };
 
                 // check for "by single date" filter and keep a ref to that item
-                if ( filter.value === 'SINGLE_DATE' ) {
-                    report['hasSingleDateFilter'] = filter;
+                // if ( filter.value === 'SINGLE_DATE' ) {
+                //     report['hasSingleDateFilter'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasSingleDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'singleValueDate'
-                    });
-                    report.allDates.push( 'hasSingleDateFilter' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasSingleDateFilter'], {
+                //         showRemove : true,
+                //         fromModel  : 'singleValueDate'
+                //     });
+                //     report.allDates.push( 'hasSingleDateFilter' );
+                // };
 
                 // check for rate adjustment date range filter and keep a ref to that item
-                if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
-                    report['hasAdjustmentDateRange'] = filter;
+                // if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
+                //     report['hasAdjustmentDateRange'] = filter;
 
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasAdjustmentDateRange'], {
-                        showRemove : true,
-                        fromModel  : 'fromAdjustmentDate',
-                        untilModel : 'untilAdjustmentDate'
-                    });
-                    report.allDates.push( 'hasAdjustmentDateRange' );
-                };
+                //     // track - showRemove flag, model names.
+                //     // push date name to 'allDates'
+                //     angular.extend(report['hasAdjustmentDateRange'], {
+                //         showRemove : true,
+                //         fromModel  : 'fromAdjustmentDate',
+                //         untilModel : 'untilAdjustmentDate'
+                //     });
+                //     report.allDates.push( 'hasAdjustmentDateRange' );
+                // };
 
 
 
@@ -1368,6 +1368,26 @@ angular.module('reportsModule')
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = balance;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
+                var name       = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) ),
+                    roomNights = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NIGHTS' }) ),
+                    revenue    = angular.copy( _.find(report['sort_fields'], { 'value': 'REVENUE' }) );
+
+                // report['sort_fields'][0] = name;
+                report['sort_fields'][0] = null;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = roomNights;
+                report['sort_fields'][5] = null;
+                report['sort_fields'][6] = null;
+                report['sort_fields'][7] = revenue;
+                report['sort_fields'][8] = null;
+                report['sort_fields'][9] = null;
             };
         };
 
