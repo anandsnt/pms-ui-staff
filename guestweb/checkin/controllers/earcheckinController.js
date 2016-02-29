@@ -4,7 +4,7 @@
 */
 
 (function() {
-	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams, checkinNowService) {
+	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams) {
 
 		$scope.pageValid = false;
 
@@ -31,7 +31,6 @@
 				$state.go('earlyCheckinFinal', stateParams);
 			};
 
-
 			var changeArrivalTime = function() {
 				$state.go('laterArrival', {
 					'time': $scope.checkinTime,
@@ -39,31 +38,14 @@
 				});
 			}
 
-			var releaseRoom = function() {
-				$scope.isPosting = true;
-				var params = {
-					'reservation_id': $rootScope.reservationID
-				};
-				checkinNowService.releaseRoomRoom(params).then(function(response) {
-					changeArrivalTime();
-				}, function() {
-					$scope.netWorkError = true;
-					$scope.isPosting = false;
-				});
-			};
-
 			$scope.changeArrivalTime = function() {
-				if (!!$stateParams.isFromCheckinNow) {
-					releaseRoom();
-				} else {
-					changeArrivalTime();
-				}
+				changeArrivalTime();
 			};
 		}
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', '$stateParams', 'checkinNowService',
+		'$scope', '$rootScope', '$state', '$stateParams',
 		earlyCheckinOptionsController
 	];
 

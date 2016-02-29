@@ -88,14 +88,14 @@
 		};
 
 		var roomAssignmentActions = function() {
-			if (!is_room_already_assigned || (is_room_already_assigned && !is_room_ready && !is_donot_move_room_marked)) {
+			if (!is_room_already_assigned) {
 				// room not ready and but can assign new room
 				assignRoom();
 			}
 			if (is_room_already_assigned && is_room_ready) {
 				// Hurray! room available. navigate to next screen.
 				navigateToNextScreen();
-			} else if (is_room_already_assigned && !is_room_ready && is_donot_move_room_marked) {
+			} else if (is_room_already_assigned && !is_room_ready) {
 				// oops!.room not ready and cannot assign new room
 				$state.go('roomNotReady');
 			} else {
