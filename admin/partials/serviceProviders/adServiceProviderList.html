@@ -5,7 +5,7 @@
             <header class="content-title float">
                 <h2>Service Providers</h2>
                 <span class="count">({{data.length}})</span>
-                <a ui-sref="admin.snthoteldetails({action:'add'})" class="action add">Add new</a>
+                <a ui-sref="admin.sntserviceproviderdetails({action:'add'})" class="action add">Add new</a>
             </header>
             <section class="content-scroll">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -13,7 +13,7 @@
                     <tbody>
                         <tr data-hotel-id="{{serviceProvider.id}}" ng-repeat="serviceProvider in data">
                             <td data-title="'Service Provider'" sortable="'name'" header-class="width-40">
-                                <a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
+                                <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProvider.id})" class="title">
                                      <strong> {{serviceProvider.name}} </strong>
                                      <em> {{serviceProvider.country}}</em>
                                 </a>

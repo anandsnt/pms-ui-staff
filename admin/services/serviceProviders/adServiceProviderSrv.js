@@ -67,9 +67,9 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     *   Service to get service provider details
     *   @param id unique identifier of the service provider
     */
-    this.getServiceProviderDetails = function(id){
+    this.getServiceProviderDetails = function(request){
         var deferred = $q.defer();
-        var url = '/admin/service_providers/' + id;
+        var url = '/admin/service_providers/' + request.id;
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);

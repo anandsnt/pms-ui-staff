@@ -15,7 +15,7 @@
 
             <ad-textbox value="data.name" name = "name" id = "name" label = "Name" placeholder = "Enter service provider name" required = "yes" ></ad-textbox>
 
-            <ad-textbox value="data.address" name = "address" id = "address" label = "Address" placeholder = "Enter address" required = "yes"></ad-textbox>
+            <ad-textbox value="data.address" name = "address" id = "address" label = "Address" placeholder = "Enter address" ></ad-textbox>
 
             <ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter phone number" name="phone" id="phone"></ad-textbox>
 
@@ -37,20 +37,20 @@
                 <h3><span>Service Provider Contact</span> Details </h3>
                 <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
             </div>
-
-            <ad-textbox value="data.first_name" label = "First Name" placeholder = "Enter first name"></ad-textbox>
-            <ad-textbox value="data.last_name" label = "Last Name" placeholder = "Enter last name"></ad-textbox>
             <div class="entry">
                 <label for="title"> Title <strong>*</strong> </label>
                 <div class="select">
-                    <select ng-model="data.title" name="title" id="title" class="placeholder">
+                    <select ng-model="data.title" name="title" id="title" class="placeholder" required = "yes">
                         <option value=""> Title </option>
                         <option value="Mr"> Mr </option>
                         <option value="Mrs"> Mrs </option>
                     </select>
                 </div>
             </div>
-            <ad-textbox value="data.email" label = "Email" placeholder = "Enter email"></ad-textbox>
+            <ad-textbox value="data.first_name" label = "First Name" placeholder = "Enter first name" required = "yes"></ad-textbox>
+            <ad-textbox value="data.last_name" label = "Last Name" placeholder = "Enter last name" required = "yes"></ad-textbox>
+
+            <ad-textbox value="data.email" label = "Email" placeholder = "Enter email" required = "yes"></ad-textbox>
 
         </fieldset>
 

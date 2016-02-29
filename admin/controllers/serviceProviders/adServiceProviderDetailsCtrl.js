@@ -32,27 +32,12 @@ admin.controller('ADServiceProviderDetailsCtrl', [
         // SNT Admin -To edit existing hotel view
         else if($stateParams.action === "edit"){
             $scope.isEdit = true;
-            $scope.title = "Edit Hotel";
+            $scope.title = "Edit Service Provider";
             var fetchSuccess = function(data){
-                $scope.data = data.data;
-                $scope.languages = data.languages;
+                $scope.data = data;
                 $scope.$emit('hideLoader');
-                if($scope.data.mli_pem_certificate_loaded){
-                    $scope.mli_pem_certificate_file_name = "Certificate Attached";
-                }
-                if($scope.data.check_in_time.primetime === "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
-                    $scope.data.check_in_time.primetime = "AM";
-                    $scope.data.check_in_primetime ="AM";
-                }
-                if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
-                    $scope.data.check_out_time.primetime = "AM";
-                    $scope.data.check_out_primetime = "AM";
-                }
-                if($scope.data.merchantlink_txn_certificate_loaded) {
-                    $scope.mli_transaction_certificate_file_name = "Certificate Attached";
-                }
             };
-            $scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
+            $scope.invokeApi(ADServiceProviderSrv.getServiceProviderDetails, {'id':$stateParams.id}, fetchSuccess);
         }
 
     }
@@ -64,12 +49,10 @@ admin.controller('ADServiceProviderDetailsCtrl', [
     $scope.clickedSave = function(){
         // SNT Admin - To save Add/Edit data
         if($scope.isAdminSnt){
-            var data = dclone($scope.data, unwantedKeys);
-
 
             var postSuccess = function(){
                 $scope.$emit('hideLoader');
-                $state.go("admin.hotels");
+                $state.go("admin.serviceProviders");
             };
 
             if($scope.isEdit) {
@@ -90,26 +73,7 @@ admin.controller('ADServiceProviderDetailsCtrl', [
     $scope.back = function(){
 
         if($scope.isAdminSnt) {
-
-            if($scope.previousStateIsDashBoard) {
-                $state.go("admin.dashboard",{"menu":0});
-            }
-            else{
-                $state.go("admin.hotels");
-            }
-
-        }
-        else {
-            if($rootScope.previousStateParam){
-                $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-            }
-            else if($rootScope.previousState){
-                $state.go($rootScope.previousState);
-            }
-            else
-            {
-                $state.go('admin.dashboard', {menu : 0});
-            }
+            $state.go("admin.serviceProviders");
         }
     };
 
