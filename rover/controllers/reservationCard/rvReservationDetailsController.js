@@ -1038,19 +1038,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		});
 
 		// CICO-17067 PMS: Rover - Stay Card: Add manual authorization
+		// CICO-24426 - multiple authorizations
 		$scope.authData = {
 
 			'authAmount'			: '',
 			'manualCCAuthPermission': true,
 			'billData' 				: [],
-			'selectedCardDetails' 	: 
+			'selectedCardDetails' 	: 		// To keep the selected/active card details.
 				{
-					'name' 			: '',
-					'number'		: '',
-					'bill_no' 		: '',
-					'payment_id'	: '',
-					'last_auth_date': '',
-					'balance_amount': ''
+					'name' 			: '',	// card - name
+					'number'		: '',	// card - number
+					'payment_id'	: '',	// card - payment method id
+					'last_auth_date': '',	// card - last autheticated date
+					'bill_no' 		: '',	// bill - number
+					'bill_balance'	: ''	// bill - balance amount
 				}
 		};
 
@@ -1059,6 +1060,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');
 		};
 
+		/**
+		* Method to show Authentication popup.
+		* Fetching cards data before showing the popup.
+		*/
 		$scope.showAuthAmountPopUp = function() {
 
 			var fetchCreditCardAuthInfoSuccess = function( data ){
@@ -1099,15 +1104,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 		};
 
+		/**
+		* Method to hanlde each credit card click.
+		* @param {int} index of the selected card
+		*/
 		$scope.selectCCforAuth = function( index ){
 			var selectedCardData = $scope.authData.billData[index];
 			var selectedCardDetails = {
 				'name' 			: selectedCardData.card_name,
 				'number' 		: selectedCardData.card_number,
-				'bill_no' 		: selectedCardData.number,
 				'payment_id' 	: selectedCardData.payment_method_id,
 				'last_auth_date': selectedCardData.last_authorization.date ? selectedCardData.last_authorization.date : '',
-				'balance_amount': selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
+				'bill_no' 		: selectedCardData.number,
+				'bill_balance'	: selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
 			};
 			
 			$scope.authData.selectedCardDetails = selectedCardDetails;

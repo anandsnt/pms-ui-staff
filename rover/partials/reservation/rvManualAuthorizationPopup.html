@@ -6,7 +6,6 @@
             <strong class="h2 message">Credit Cards</strong>
             <div class="credit-cards scrollable" ng-iscroll='cardsList' ng-iscroll-delay='300'>
                 <div class="wrapper">
-                    <!-- if the .block-item is active (clicked) add class .item-active -->
                     <button ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
                             <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
@@ -29,13 +28,13 @@
         </fieldset>
 
         <fieldset class="content-right">
-            <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >{{authData.selectedCardDetails.name}} No. {{authData.selectedCardDetails.number}}</span>
-            <!-- Dont output L31 - L33 if the fields for code and amount are empty or "-" -->
-            <span class="text" ng-hide="authData.selectedCardDetails.last_auth_date == '' ">Last Authorization: 
-                <time datetime="{yyyy-mm-dd}">{{authData.selectedCardDetails.last_auth_date | date : dateFormat}}</time>
+            <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >{{authData.selectedCardDetails.name}} No. {{authData.selectedCardDetails.number}}
             </span>
             
-            <!-- Dont output L36 - L56 if the fields for code and amount are empty or "-" -->
+            <span class="text" ng-hide="authData.selectedCardDetails.last_auth_date == '' ">Last Authorization: 
+                <time>{{authData.selectedCardDetails.last_auth_date | date : dateFormat}}</time>
+            </span>
+            
             <div class="authorization-bills scrollable">
                 <div class="wrapper">
                     <table>
@@ -49,8 +48,8 @@
                             <td>
                                 Balance
                             </td>
-                            <td class="value" ng-class="{ 'green' : authData.selectedCardDetails.balance_amount == 0.00, 'red' : authData.selectedCardDetails.balance_amount > 0.00 }">
-                                {{ currencySymbol }} {{authData.selectedCardDetails.balance_amount}}
+                            <td class="value" ng-class="{ 'green' : authData.selectedCardDetails.bill_balance == 0.00, 'red' : authData.selectedCardDetails.bill_balance > 0.00 }">
+                                {{ currencySymbol }} {{authData.selectedCardDetails.bill_balance}}
                             </td>
                         </tr>
                         
