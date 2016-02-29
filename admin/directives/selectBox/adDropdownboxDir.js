@@ -18,7 +18,8 @@ admin.directive('adDropdown', function($timeout) {
             labelClass:'@labelClass',
             options: '=',
             ngHide: '@hide',
-            onChange: '='
+            onChange: '=',
+            ngDisable: '@disable'
 	    },
         link: function ($scope, $element, $attr)
         {
