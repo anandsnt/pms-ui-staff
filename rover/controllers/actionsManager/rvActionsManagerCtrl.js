@@ -1,5 +1,5 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv',
-    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv) {
+sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state',
+    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
 
         //-------------------------------------------------------------------------------------------------------------- A. Scope Variables
 
@@ -10,7 +10,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             selectedDay: $rootScope.businessDate,
             selectedDepartment: "",
             selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
-            query: ""
+            query: "",
+            page: 1,
+            perPage: 5,
+            totalCount: null
         };
 
         $scope.selectedAction = {};
@@ -59,7 +62,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             fetchActionsList = function () {
                 var payLoad = {
                     date: dateFilter($scope.filterOptions.selectedDay, "yyyy-MM-dd"),
+                    per_page: $scope.filterOptions.perPage,
+                    page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
+                    $scope.filterOptions.totalCount = response.total_count;
+                    $scope.filterOptions.startRecord = (($scope.filterOptions.page - 1) * $scope.filterOptions.perPage) + 1;
+                    // TODO : endRecord on last page
+                    $scope.filterOptions.endRecord = $scope.filterOptions.page * $scope.filterOptions.perPage;
                     $scope.actions = [];
                     _.each(response.results, function (action) {
                         $scope.actions.push(_.extend(action, {
@@ -147,7 +156,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             fetchActionsList();
         };
 
-        $scope.changeAssignment = function(){
+        $scope.changeAssignment = function () {
             ngDialog.open({
                 template: '/assets/partials/actionsManager/rvActionAssignmentPopup.html',
                 scope: $scope,
@@ -156,15 +165,34 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             });
         };
 
-        $scope.updateAction = function(){
+        $scope.updateAction = function () {
             console.log('update', $scope.selectedAction);
             ngDialog.close();
         };
 
-        $scope.completeAction = function(){
+        $scope.completeAction = function () {
             $scope.selectedAction.action_status = $scope._actionCompleted;
             $scope.updateAction();
-        }
+        };
+
+        $scope.toStayCard = function () {
+            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                "id": $scope.selectedAction.reservation_id,
+                "confirmationId": $scope.selectedAction.reservation_confirm_no,
+                "isrefresh": false
+            });
+        };
+
+        $scope.loadPrevPage = function () {
+            $scope.filterOptions.page--;
+            fetchActionsList();
+        };
+
+        $scope.loadNextPage = function () {
+            $scope.filterOptions.page++;
+            fetchActionsList();
+        };
+
 
         //-------------------------------------------------------------------------------------------------------------- D. Listeners
 

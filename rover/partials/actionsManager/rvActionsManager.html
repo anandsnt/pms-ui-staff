@@ -74,6 +74,24 @@
                 </li>
             </ul>
         </div>
+        <div class="search-pagination ng-scope" ng-if="filterOptions.totalCount > filterOptions.perPage"
+             style="bottom:61px">
+            <label class="button dark-grey next" ng-click="loadNextPage($event)"
+                   ng-class="{'disabled': disableNextBtn}">Next</label>
+            <label class="button dark-grey prev disabled" ng-click="loadPrevPage($event)"
+                   ng-class="{'disabled': disablePrevBtn}">Previous</label>
+            <p>
+                Showing
+                <strong class="ng-binding">
+                    {{filterOptions.startRecord}}-{{filterOptions.endRecord}}
+                </strong>
+                of
+                <strong id="total-count" class="ng-binding">
+                    {{filterOptions.totalCount}}
+                </strong>
+                items
+            </p>
+        </div>
     </div>
 
     <!-- Action details -->
@@ -112,7 +130,8 @@
                 </div>
                 <div class="info created">
                     <span class="label">Created By</span>
-                    {{selectedAction.created_by.name}} {{selectedAction.created_at | date:dateFormat}} &#8226; {{selectedAction.created_at | date:"hh:mm a"}}
+                    {{selectedAction.created_by.name}} {{selectedAction.created_at | date:dateFormat}} &#8226;
+                    {{selectedAction.created_at | date:"hh:mm a"}}
                 </div>
                 <div class="entry action-info date">
                     <label for="due-date">Date Due</label>
@@ -130,7 +149,8 @@
                 <!-- If action completed, show this as well: -->
                 <div class="notice" ng-if="selectedAction.action_status === _actionCompleted">
                     <span>Completed By</span>
-                    {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226; {{selectedAction.completed_at | date: "hh:mm a"}}
+                    {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
+                    {{selectedAction.completed_at | date: "hh:mm a"}}
                 </div>
             </div>
 
