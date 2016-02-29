@@ -89,8 +89,27 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.input.makeKeys = 2;
             initKeyCreate();  
         };
-        $scope.initKeyCreate = function(){
+        
+        $scope.fetchDoorLockSettings = function(){
+            var onResponse = function(response){
+                console.info(response);
+                if (response.status!== 'failure'){
+                    if (response.data){
+                        $scope.enable_remote_encoding = response.enable_remote_encoding;
+                    }
+                };
+                
+                $scope.finInit();
+            };
             
+            
+          $scope.callAPI(zsTabletSrv.getDoorLockSettings, {
+                params: {},
+                'successCallBack':onResponse,
+                'failureCallBack':onResponse
+            });  
+        };
+        $scope.finInit = function(){//after fetching door lock interface settings
             $scope.input =  $state.passParams;
             //init key create, set # of keys from the input object
             /*
@@ -124,8 +143,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     $scope.keyTwoOfTwoSetup();//sets up screen and runs init to make second key
                 } 
             }
-            
-            
+        };
+        $scope.initKeyCreate = function(){
+            $scope.fetchDoorLockSettings();//get fresh settings on each call to ensure latest door lock settings are used, then continue using finInit
         };
         $scope.keyTwoOfTwoSetup = function(){
                 $scope.at = 'make-keys';
@@ -219,12 +239,18 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             } else {
                 options.is_additional = true;
             }
-            
-                $scope.initDispenseKey();
                 
+                
+                
+                
+                if (!$scope.enable_remote_encoding){
+                    $scope.initDispenseKey();
+                } else {
+                    $scope.wsOpen = false;
+                }
                 setTimeout(function(){
                     if (!$scope.wsOpen){
-                        console.info('not using websockets')
+                        console.info('not using websockets');
                         $scope.callAPI(zsTabletSrv.encodeKey, {
                             params: options,
                             'successCallBack':$scope.successMakeKey,
@@ -292,8 +318,23 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 	var received_msg = evt.data;
                         if (received_msg){
                             received_msg = JSON.parse(received_msg);
+                            var cmd = received_msg.Command;
+                            console.info('[ '+cmd+' ]');
+                            if (cmd === 'cmd_device_uid'){
+                                console.info('$scope.input.makeKeys: ',$scope.input.makeKeys)
+                                console.info('$scope.input.madeKey: ',$scope.input.madeKey);
                                 
-                            if (received_msg.Command === 'cmd_device_uid'){
+                                
+                                if ($scope.input.madeKey > $scope.input.makeKeys){
+                                    console.info('made enough keys: going to success');
+                                    if ($scope.input.makeKeys === 1){
+                                        $scope.goToKeySuccess();
+                                    } else {
+                                        $scope.keyTwoOfTwoSuccess();
+                                    }
+                                    
+                                    return;
+                                }
                                 $scope.lastCardUid = received_msg.Message;
                                 DispenseKey();
                                 setTimeout(function(){
@@ -306,27 +347,22 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                                         $scope.oneKeySuccess();
                                     }
                                     ++$scope.input.madeKey;
-                                    
-                                    
                                 },2000);
-                                
-                                
-                            } else if (received_msg.Command === 'cmd_eject_key_card'){{
-                                    console.info($scope.input.madeKey,$scope.input.makeKeys);
-                                    ++$scope.input.madeKey;
+                            } else if (cmd === 'cmd_eject_key_card'){
+                                console.info('$scope.input.makeKeys: ',$scope.input.makeKeys)
+                                console.info('$scope.input.madeKey: ',$scope.input.madeKey)
+                                console.info($scope.input.madeKey,$scope.input.makeKeys);
                                     
-                                    if ($scope.input.madeKey < $scope.input.makeKeys){
+                                if ($scope.input.madeKey < $scope.input.makeKeys){
+                                    setTimeout(function(){
+                                        console.info('dispense + eject #2');
+                                        DispenseKey();
                                         setTimeout(function(){
-                                            DispenseKey();
-                                            setTimeout(function(){
-                                                EjectKeyCard();
-                                                 $scope.keyTwoOfTwoSuccess();
-                                            },2000);
+                                            EjectKeyCard();
+                                             $scope.keyTwoOfTwoSuccess();
                                         },2000);
-                                    }
-                            }
-                            
-                                
+                                    },2000);
+                                }
                             }
                         }
                         

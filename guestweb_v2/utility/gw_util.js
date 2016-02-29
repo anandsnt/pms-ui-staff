@@ -51,6 +51,10 @@ var returnEmptyScreenDetails = function() {
   };
 }
 
+var replaceStringWithScopeVariable = function(string, substring_to_be_replaced, new_string) {
+  return string = string.length>0 ? string.replace(substring_to_be_replaced, new_string) :'';
+};
+
 
 var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
   var screen_id = returnEmptyScreenDetails();
@@ -68,3 +72,53 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
   return screen_details;
 
 };
+
+var returnYears = function() {
+  var years = [];
+  var startYear = new Date().getFullYear();
+  var endYear = parseInt(startYear) + 100;
+  for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
+    years.push(year);
+  };
+  return years;
+}
+
+var returnMonthsArray = function() {
+  return [{
+    'name': 'January',
+    'value': '01'
+  }, {
+    'name': 'February',
+    'value': '02'
+  }, {
+    'name': 'March',
+    'value': '03'
+  }, {
+    'name': 'April',
+    'value': '04'
+  }, {
+    'name': 'May',
+    'value': '05'
+  }, {
+    'name': 'June',
+    'value': '06'
+  }, {
+    'name': 'July',
+    'value': '07'
+  }, {
+    'name': 'August',
+    'value': '08'
+  }, {
+    'name': 'September',
+    'value': '09'
+  }, {
+    'name': 'October',
+    'value': '10'
+  }, {
+    'name': 'November',
+    'value': '11'
+  }, {
+    'name': 'December',
+    'value': '12'
+  }];
+}
