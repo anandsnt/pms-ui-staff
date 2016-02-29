@@ -124,7 +124,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 	});
 
 	$stateProvider.state('earlyCheckinOptions', {
-		url: '/earlyCheckinOptions/:time/:charge/:id/:isFromCheckinNow',
+		url: '/earlyCheckinOptions/:time/:charge/:id/:isFromCheckinNow/:roomAssignedFromZestWeb',
 		templateUrl: '/assets/checkin/partials/MGM/earlyCheckinOptions.html',
 		controller: 'earlyCheckinOptionsController',
 		title: 'Early Check-in'

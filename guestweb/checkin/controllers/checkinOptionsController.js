@@ -18,6 +18,7 @@
 		var is_donot_move_room_marked = false;
 		var early_checkin_charge = "";
 		var checkin_time = "";
+		var roomAssignedFromZestWeb = false;
 
 
 		var init = function() {
@@ -38,7 +39,13 @@
 				is_donot_move_room_marked = response.is_donot_move_room_marked;
 				early_checkin_charge = response.early_checkin_charge;
 				checkin_time = response.checkin_time;
-				$scope.isLoading = false;
+				// if user is not arriving today
+				if (!response.guest_arriving_today) {
+					$state.go('checkinArrival');
+				} else {
+					$scope.isLoading = false;
+				}
+
 			}, function() {
 				$scope.netWorkError = true;
 				$scope.isLoading = false;
@@ -63,7 +70,8 @@
 							'time': checkin_time,
 							'charge': early_checkin_charge,
 							'id': early_checkin_offer_id,
-							'isFromCheckinNow': 'true'
+							'isFromCheckinNow': 'true',
+							'roomAssignedFromZestWeb': roomAssignedFromZestWeb ? 'true' :'false'
 						});
 					}
 				}
@@ -80,6 +88,7 @@
 			$scope.isLoading = true;
 			checkinNowService.assignRoom(params).then(function(response) {
 				$scope.isLoading = false;
+				roomAssignedFromZestWeb = true;
 				navigateToNextScreen();
 			}, function() {
 				$scope.isLoading = false;

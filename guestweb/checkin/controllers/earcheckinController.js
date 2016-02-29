@@ -4,7 +4,7 @@
 */
 
 (function() {
-	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams) {
+	var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams, checkinNowService) {
 
 		$scope.pageValid = false;
 
@@ -31,6 +31,7 @@
 				$state.go('earlyCheckinFinal', stateParams);
 			};
 
+
 			var changeArrivalTime = function() {
 				$state.go('laterArrival', {
 					'time': $scope.checkinTime,
@@ -38,14 +39,32 @@
 				});
 			}
 
+			var releaseRoom = function() {
+				$scope.isPosting = true;
+				var params = {
+					'reservation_id': $rootScope.reservationID
+				};
+				checkinNowService.releaseRoomRoom(params).then(function(response) {
+					changeArrivalTime();
+				}, function() {
+					$scope.netWorkError = true;
+					$scope.isPosting = false;
+				});
+			};
+
 			$scope.changeArrivalTime = function() {
-				changeArrivalTime();
+				//if room is assigned inside zestweb , release it
+				if ((!!$stateParams.isFromCheckinNow && $stateParams.isFromCheckinNow === 'true') && (!!$stateParams.roomAssignedFromZestWeb  && $stateParams.roomAssignedFromZestWeb === 'true')) {
+					releaseRoom();
+				} else {
+					changeArrivalTime();
+				}
 			};
 		}
 	};
 
 	var dependencies = [
-		'$scope', '$rootScope', '$state', '$stateParams',
+		'$scope', '$rootScope', '$state', '$stateParams', 'checkinNowService',
 		earlyCheckinOptionsController
 	];
 
