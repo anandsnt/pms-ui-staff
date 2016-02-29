@@ -581,8 +581,21 @@ angular.module('reportsModule')
 
 
                 // check for include company/ta/group filter and keep a ref to that item
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
+                    report['hasIncludeComapnyTa'] = filter;
+                };
+
+                // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeComapnyTaGroup'] = filter;
+                };
+
+
+                if ( filter.value === 'MIN_REVENUE' ) {
+                    report['hasMinRevenue'] = filter;
+                };
+                if ( filter.value === 'MIN_ROOM_NIGHTS' ) {
+                    report['hasMinRoomNights'] = filter;
                 };
 
 
@@ -1373,12 +1386,11 @@ angular.module('reportsModule')
             // need to reorder the sort_by options
             // for guest balance report in the following order
             if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
-                var name       = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) ),
-                    roomNights = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NIGHTS' }) ),
-                    revenue    = angular.copy( _.find(report['sort_fields'], { 'value': 'REVENUE' }) );
+                var accountName = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
+                    roomNights  = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NIGHTS' }) ),
+                    revenue     = angular.copy( _.find(report['sort_fields'], { 'value': 'REVENUE' }) );
 
-                // report['sort_fields'][0] = name;
-                report['sort_fields'][0] = null;
+                report['sort_fields'][0] = accountName;
                 report['sort_fields'][1] = null;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;

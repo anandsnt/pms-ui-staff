@@ -537,7 +537,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
-					$scope.hasReportTotals    = false;
+					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
 					break;

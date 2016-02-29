@@ -176,11 +176,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchComTaGrp = function(query) {
+		service.fetchComTaGrp = function(query, exclude_groups) {
+			var urlPrams = '?query=' + query;
+
+			if (exclude_groups) {
+				urlPrams += '&exclude_groups=true';
+			};
+
 			return callApi({
 				// no name here since we dont want to cache it in the store ever
 				method : 'getJSON',
-				url    : 'api/reports/search_by_company_agent_group?query=' + query,
+				url    : 'api/reports/search_by_company_agent_group' + urlPrams,
 				resKey : 'results'
 			});
 		};

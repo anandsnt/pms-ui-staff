@@ -1779,7 +1779,60 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				'collision' : 'flip'
 			}
 		}, userAutoCompleteCommon);
+
+		// for Company TA only
+		var ctAutoCompleteCommon = {
+			source: function(request, response) {
+				$scope.$emit( 'showLoader' );
+				reportsSubSrv.fetchComTaGrp(request.term, true)
+					.then(function(data) {
+						var list = [];
+						var entry = {};
+						$.map(data, function(each) {
+							entry = {
+								label: each.name,
+								value: each.id,
+								type: each.type
+							};
+							list.push(entry);
+						});
+
+						response(list);
+						$scope.$emit( 'hideLoader' );
+					});
+			},
+			select: function(event, ui) {
+				this.value = ui.item.label;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						touchedReport.uiChosenIncludeComapnyTa = ui.item.label;
+						touchedReport.chosenIncludeComapnyTa = ui.item.value;
+					});
+				}.bind(this), 100);
+				return false;
+			},
+			focus: function(event, ui) {
+				return false;
+			}
+		};
+
+		$scope.listCtAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left top',
+				at: 'left bottom',
+				collision: 'flip'
+			}
+		}, ctAutoCompleteCommon);
+
+		$scope.detailsCtAutoCompleteOptions = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'right+20 bottom',
+				collision: 'flip'
+			}
+		}, ctAutoCompleteCommon);
 		
+		// for Company TA Group
 		var ctgAutoCompleteCommon = {
 			source: function(request, response) {
 				$scope.$emit( 'showLoader' );
