@@ -1,8 +1,8 @@
-admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
+admin.controller('ADZestStationCheckOutCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 10);
         
-        $scope.data = {};        
+        $scope.data = {};       
         
         $scope.fetchSettings = function(){
             var fetchSuccess = function(data){
@@ -23,12 +23,13 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
             var dataToSend = {
                                 'kiosk':
                                         {
-                                            "home_screen":$scope.zestSettings.home_screen
+                                            "guest_bill":$scope.zestSettings.guest_bill
                                         }
 
                              };
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
-        };        
+        };
+        
         $scope.init = function(){
             $scope.fetchSettings();
         };
