@@ -82,6 +82,20 @@
 				};
 			};
 
+			var restrictMinutes = function(){
+				if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) < 15) {
+					$scope.minutesWithRestrictions = ["15", "30", "45"];
+				} else if (parseInt(restrictMinute) >= 15 && parseInt(restrictMinute) < 30) {
+					$scope.minutesWithRestrictions = ["30", "45"];
+				} else if (parseInt(restrictMinute) >= 30 && parseInt(restrictMinute) < 45) {
+					$scope.minutesWithRestrictions = ["45"];
+				} else if (parseInt(restrictMinute) >= 45) {
+					$scope.minutesWithRestrictions = [];
+				} else {
+					$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
+				};
+			};
+
 			$scope.primeTimeChanged = function() {
 
 				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
@@ -90,13 +104,18 @@
 					} else if ($rootScope.earlyCheckinRestrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hours = $scope.hoursWithRestrictions = restrictHoursListByHour($rootScope.earlyCheckinRestrictHour);
 					};
-
 				} else if ($rootScope.restrictByHotelTimeisOn) {
 					if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "PM") {
 						$scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 					} else if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hoursWithRestrictions = restrictHoursListByHour(restrictHour);
 					};
+					if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour && restrictPrimetime === $scope.stayDetails.primeTime){
+						restrictMinutes()
+					}
+					else{
+						$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
+					}
 				} else {
 					return;
 				}
@@ -104,20 +123,10 @@
 
 			$scope.hoursChanged = function() {
 				// restrict minute selection based on a time
-				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour) {
+				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
 
-					if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) < 15) {
-						$scope.minutesWithRestrictions = ["15", "30", "45"];
-					} else if (parseInt(restrictMinute) >= 15 && parseInt(restrictMinute) < 30) {
-						$scope.minutesWithRestrictions = ["30", "45"];
-					} else if (parseInt(restrictMinute) >= 30 && parseInt(restrictMinute) < 45) {
-						$scope.minutesWithRestrictions = ["45"];
-					} else if (parseInt(restrictMinute) >= 45) {
-						$scope.minutesWithRestrictions = [];
-					} else {
-						$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
-					};
-
+				} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour && restrictPrimetime === $scope.stayDetails.primeTime) {
+					restrictMinutes();
 				} else {
 					$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
 				};
