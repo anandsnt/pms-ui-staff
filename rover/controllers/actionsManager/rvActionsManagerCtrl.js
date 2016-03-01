@@ -64,7 +64,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 var action = angular.copy(response),
                     dueDate = new tzIndependentDate(parseInt(action.due_at));
                 action.department = action.assigned_to && action.assigned_to.id || "";
-                action.dueDate = dateFilter(dueDate, $rootScope.dateFormat);
+                action.dueDate = dateFilter(dueDate, "yyyy-MM-dd");
                 action.dueTime = dateFilter(dueDate, "hh:mm");
                 return action;
             },
@@ -145,8 +145,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     }).name : "",
                     isCompleted: !!$scope.selectedAction.completed_at
                 })
-
-                console.log('actions', $scope.actions);
             }
 
 
