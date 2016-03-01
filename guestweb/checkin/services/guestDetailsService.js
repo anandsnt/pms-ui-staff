@@ -69,7 +69,7 @@
 	};
 	var fetchHotelTime = function(){
 		var deferred = $q.defer();
-		var url = '/guest_web/home/fecth_hotel_time.json';
+		var url = '/guest_web/home/fetch_hotel_time.json';
 		parameters = {'reservation_id':$rootScope.reservationID};
 		$http.get(url,{
 			params: parameters
