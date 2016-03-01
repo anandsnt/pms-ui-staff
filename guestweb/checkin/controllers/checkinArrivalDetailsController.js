@@ -48,10 +48,10 @@
 				guestDetailsService.fetchHotelTime().then(function(response) {
 					$scope.showHotelTime = true;
 
-					$scope.hotelTime = response.hote_time;
+					$scope.hotelTime = response.hotel_time_hour + ":"+response.hotel_time_minute+" "+response.hotel_time_prime_time;
 					restrictPrimetime = response.hotel_time_prime_time;
-					restrictHour = response.hotel_time_hour;
-					restrictMinute = response.hotel_time_minute;
+					restrictHour = parseInt(response.hotel_time_hour).toString();
+					restrictMinute = parseInt(response.hotel_time_minute).toString();
 
 					restrictMinute = (restrictMinute.length === 1) ? ("0" + restrictMinute) : restrictMinute;
 					restrictHour = (restrictHour.length === 1) ? ("0" + restrictHour) : restrictHour;
@@ -106,13 +106,13 @@
 				// restrict minute selection based on a time
 				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour) {
 
-					if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) <= 15) {
+					if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) < 15) {
 						$scope.minutesWithRestrictions = ["15", "30", "45"];
-					} else if (parseInt(restrictMinute) > 15 && parseInt(restrictMinute) <= 30) {
+					} else if (parseInt(restrictMinute) >= 15 && parseInt(restrictMinute) < 30) {
 						$scope.minutesWithRestrictions = ["30", "45"];
-					} else if (parseInt(restrictMinute) > 30 && parseInt(restrictMinute) <= 45) {
+					} else if (parseInt(restrictMinute) >= 30 && parseInt(restrictMinute) < 45) {
 						$scope.minutesWithRestrictions = ["45"];
-					} else if (parseInt(restrictMinute) > 45) {
+					} else if (parseInt(restrictMinute) >= 45) {
 						$scope.minutesWithRestrictions = [];
 					} else {
 						$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
