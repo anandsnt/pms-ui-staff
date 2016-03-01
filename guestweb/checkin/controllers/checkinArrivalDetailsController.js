@@ -7,6 +7,12 @@
 
 	var checkinArrivalDetailsController = function($scope, preCheckinSrv, $rootScope, $state, $modal, $stateParams, guestDetailsService) {
 
+		var restrictPrimetime = "";
+		var	restrictHour = "";
+		var	restrictMinute = "";
+		var	restrictMinute = "";
+		var	restrictHour = "";
+		var	isDayOfArrival = false;
 		var restrictHoursListByHour = function(restrictHour) {
 			// restrict hour selection based on a time
 			var hoursList = angular.copy($scope.hourCopy);
@@ -52,13 +58,9 @@
 					restrictPrimetime = response.hotel_time_prime_time;
 					restrictHour = parseInt(response.hotel_time_hour).toString();
 					restrictMinute = parseInt(response.hotel_time_minute).toString();
-
 					restrictMinute = (restrictMinute.length === 1) ? ("0" + restrictMinute) : restrictMinute;
 					restrictHour = (restrictHour.length === 1) ? ("0" + restrictHour) : restrictHour;
-
-
-					isDayOfArrival = true;
-					//
+					isDayOfArrival = response.guest_arriving_today;
 					$scope.isLoading = false;
 					if (isDayOfArrival) {
 						$scope.primeTimesNewWithRestrictions = (restrictPrimetime === "PM") ? $scope.primeTimesNewWithRestrictions.slice(1) : $scope.primeTimesNewWithRestrictions;
@@ -104,7 +106,7 @@
 					} else if ($rootScope.earlyCheckinRestrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hours = $scope.hoursWithRestrictions = restrictHoursListByHour($rootScope.earlyCheckinRestrictHour);
 					};
-				} else if ($rootScope.restrictByHotelTimeisOn) {
+				} else if ($rootScope.restrictByHotelTimeisOn && isDayOfArrival) {
 					if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "PM") {
 						$scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 					} else if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
@@ -125,7 +127,8 @@
 				// restrict minute selection based on a time
 				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
 
-				} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour && restrictPrimetime === $scope.stayDetails.primeTime) {
+				} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour
+				 && restrictPrimetime === $scope.stayDetails.primeTime && isDayOfArrival) {
 					restrictMinutes();
 				} else {
 					$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
