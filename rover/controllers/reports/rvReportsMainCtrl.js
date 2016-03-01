@@ -1840,7 +1840,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
-								value: each.id,
+								value: each.id.replace( 'account', each.type.toLowerCase() ),
 								type: each.type
 							};
 							list.push(entry);
