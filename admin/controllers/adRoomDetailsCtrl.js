@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$stateParams', function($scope, ADRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state', '$stateParams', function($timeout, $scope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -10,6 +10,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	BaseCtrl.call(this, $scope);
 
 	var roomId = $stateParams.roomId;
+	$scope.isSuite = false;
 
 	if(roomId){
 		//if roomnumber is null returning to room list
@@ -28,10 +29,40 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 	};
 
-    $scope.roomTypeChanged = function(value) {
-    	$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
-    };
+    
+	$scope.$watch("data.room_type_id", function(newType, oldType){
+		
+		if ($scope.editMode && newType !== undefined){
+			if(oldType == undefined){
+				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite;
+			}	
+			else {
+				var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite,
+					isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": oldType}).is_suite
+				if (isNewTypeSuite && isOldTypeSuite) {
+					$scope.isSuite = true;
+				}
+				else {
+					var message = [];
+					if (isNewTypeSuite){					
+						message = ["Regular room type cannot be changed to suite room type"];
+					}
+					else {
+						message = ["Suite room type cannot be changed to regular room type"];
+					}
 
+					$timeout(function() {
+						$scope.errorMessage = message;
+					}, 500);
+				}
+			}
+		}
+		else{
+			if(!$scope.editMode && (newType !== undefined && newType !== "")){
+				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite;
+			}
+		}
+	});
    
     /*
      * To handle blur event on Suite rooms
@@ -79,7 +110,6 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		// creating custom copy of room likes and active room likes
 		$scope.likeCopy       = angular.copy( $scope.data.room_likes );
 		$scope.activeLikeCopy = angular.copy( $scope.data.active_room_likes );
-		$scope.roomTypeChanged(data.room_type_id);
 
 		var i, j, k, l;
 		var each, options, match;
