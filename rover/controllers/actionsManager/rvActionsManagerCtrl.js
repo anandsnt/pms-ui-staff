@@ -61,8 +61,11 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             refreshScroller = function () {
                 $scope.refreshScroller('rvActionListScroller');
             }, getBindabaleAction = function (response) {
-                var action = angular.copy(response);
+                var action = angular.copy(response),
+                    dueDate = new tzIndependentDate(parseInt(action.due_at));
                 action.department = action.assigned_to && action.assigned_to.id || "";
+                action.dueDate = dateFilter(dueDate, $rootScope.dateFormat);
+                action.dueTime = dateFilter(dueDate, "hh:mm");
                 return action;
             },
             getActionDetails = function () {
