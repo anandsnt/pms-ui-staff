@@ -47,11 +47,11 @@
 				$scope.isLoading = true;
 				guestDetailsService.fetchHotelTime().then(function(response) {
 					$scope.showHotelTime = true;
-					$scope.hotelTime = "06:23 PM";
-					//
-					restrictPrimetime = "PM";
-					restrictHour = "12";
-					restrictMinute = "5";
+
+					$scope.hotelTime = response.hote_time;
+					restrictPrimetime = response.hotel_time_prime_time;
+					restrictHour = response.hotel_time_hour;
+					restrictMinute = response.hotel_time_minute;
 
 					restrictMinute = (restrictMinute.length === 1) ? ("0" + restrictMinute) : restrictMinute;
 					restrictHour = (restrictHour.length === 1) ? ("0" + restrictHour) : restrictHour;

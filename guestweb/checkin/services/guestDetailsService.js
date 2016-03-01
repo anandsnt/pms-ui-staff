@@ -69,9 +69,12 @@
 	};
 	var fetchHotelTime = function(){
 		var deferred = $q.defer();
-		var url = '/assets/guestweb/checkin/services/country_code.json';
-		$http.get(url).success(function(response) {
-			deferred.resolve(response);	
+		var url = '/guest_web/home/fecth_hotel_time.json';
+		parameters = {'reservation_id':$rootScope.reservationID};
+		$http.get(url,{
+			params: parameters
+		}).success(function(response) {
+			deferred.resolve(response);
 		}.bind(this))
 		.error(function() {
 			deferred.reject();
