@@ -42,36 +42,31 @@ admin.controller('ADServiceProviderDetailsCtrl', [
 
     }
 
-
     /**
     *   A post method for Add New and UPDATE Existing hotel details.
     */
     $scope.clickedSave = function(){
-        // SNT Admin - To save Add/Edit data
-        if($scope.isAdminSnt){
 
+        if($scope.isAdminSnt){
+            var requestData = $scope.data;
             var postSuccess = function(){
                 $scope.$emit('hideLoader');
                 $state.go("admin.serviceProviders");
             };
 
             if($scope.isEdit) {
+                requestData.id = $scope.id;
                 $scope.invokeApi(ADServiceProviderSrv.updateServiceProvider, $scope.data, postSuccess);
             }
             else {
-                $scope.invokeApi(ADServiceProviderSrv.addServiceProvider, $scope.data, postSuccess);
+                $scope.invokeApi(ADServiceProviderSrv.addServiceProvider, requestData, postSuccess);
             }
         }
     };
-
-
-
-
     /**
     *   Method to go back to previous state.
     */
     $scope.back = function(){
-
         if($scope.isAdminSnt) {
             $state.go("admin.serviceProviders");
         }

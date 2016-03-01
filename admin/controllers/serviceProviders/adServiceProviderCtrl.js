@@ -1,35 +1,5 @@
 admin.controller('ADServiceProviderListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADServiceProviderSrv','ngTableParams', '$filter',  function($scope, $state,$rootScope, $stateParams, ADServiceProviderSrv, ngTableParams, $filter){
     BaseCtrl.call(this, $scope);
-    $scope.$emit("changedSelectedMenu", 0);
-    var selectedHotel;
-
-
-
-
-    /**
-    *   A post method to update ReservationImport for a hotel
-    *   @param {String} index value for the hotel list item.
-    */
-
-    $scope.toggleClicked = function(hotel){
-        var confirmForReservationImport = true;
-        // show confirm if it is going turn on stage
-        if(hotel.is_res_import_on === 'false'){
-            confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
-        }
-        // If pressed OK button proceed toggle action ON.
-        // Toggle OFF action perform without confirm box.
-        if(confirmForReservationImport){
-            var isResImportOn = hotel.is_res_import_on === 'true' ? false : true;
-            var data = {'hotel_id' :  hotel.id,  'is_res_import_on': isResImportOn };
-            selectedHotel = hotel;
-            var postSuccess = function(){
-                selectedHotel.is_res_import_on = (selectedHotel.is_res_import_on === 'true') ? 'false' : 'true';
-                $scope.$emit('hideLoader');
-            };
-            $scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess);
-        }
-    };
 
     var fetchServiceProviderList = function() {
         var onFetchSuccess = function(data){
@@ -60,6 +30,14 @@ admin.controller('ADServiceProviderListCtrl',['$scope','$rootScope', '$state','$
         };
         $scope.invokeApi(ADServiceProviderSrv.fetchServiceProviderList, {}, onFetchSuccess);
 
+    };
+
+    //Delete a service provide with given id
+    $scope.deleteServiceProvider = function(serviceProviderId) {
+        var onDeleteSuccess = function(data) {
+            fetchServiceProviderList();
+        }
+        $scope.invokeApi(ADServiceProviderSrv.deleteServiceProvider, serviceProviderId, onDeleteSuccess);
     };
 
     var init = function() {

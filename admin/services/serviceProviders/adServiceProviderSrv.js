@@ -80,7 +80,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     };
 
     /**
-    *   Service to delete a service provider detail
+    *   Service to delete a service provider
     *   @param id unique identifier of the service provider
     */
     this.deleteServiceProvider = function(id){
