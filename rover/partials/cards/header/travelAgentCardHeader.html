@@ -9,6 +9,7 @@
 				<div class="entry">
 					<input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
 				</div>
+				<span class="icons icon-notes" ng-show="contactInformation.account_notes_count"></span>
 			</div>
 			<div class="holder data">
 				<input name="cc-city" id="cc-city" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location" data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>

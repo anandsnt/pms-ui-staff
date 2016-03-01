@@ -5,10 +5,11 @@ sntRover.controller('RVReservationPackageController',
 				  '$state',
 				  '$timeout',
 				  'ngDialog',
+				  'RVReservationStateService',
 				function($scope,
 					$rootScope,
 					RVReservationPackageSrv,
-					$state, $timeout, ngDialog) {
+					$state, $timeout, ngDialog, RVReservationStateService) {
 
 	var reservationId = $scope.reservationData.reservation_card.reservation_id;
 	var successCallBack = function(data){
@@ -72,6 +73,22 @@ sntRover.controller('RVReservationPackageController',
 		};
 		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
 	};
+
+	//Get addon count
+        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
+            if(!postingRythm) {
+                if(postType ==='WEEK') {
+                    postingRythm = 7;
+                } else if (postType === 'STAY') {
+                    postingRythm = 1;
+                } else if (postType === 'NIGHT') {
+                    postingRythm = 0;
+                }
+            }
+            amountType = amountType.toUpperCase();
+            var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
+            return addonCount;
+        };
 
 }
 

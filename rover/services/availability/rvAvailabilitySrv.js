@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSrv',
-	function($q, rvBaseWebSrvV2, RVHotelDetailsSrv){
+angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSrv', 'dateFilter',
+	function($q, rvBaseWebSrvV2, RVHotelDetailsSrv, dateFilter){
 
 	var that = this;
 
@@ -709,18 +709,27 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		return that.data.gridDataForItemInventory;
 	};
 
-	var formGridDataForItemInventory = function (response) {
-		var dates = [];
-		//extracting dates from response
-		_.each(response.addons[0].availability_details, function (key) {
-			var dateToCheck = tzIndependentDate(key.date);
-			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
-			var eachDate = {"date" : key.date, "isWeekend" : isWeekend};
-			dates.push(eachDate);
-		});
-		var result = { "addons": response.addons, "dates": dates };
-		return result;
-	};
+
+    /**
+     * This method returns an array of rates including the from and to Date provided to it
+      * @param fromDate String in yyyy-MM-dd format
+     * @param toDate String in yyyy-MM-dd format
+     * @returns {Array}
+     */
+    var getDateRange = function(fromDate, toDate){
+        var dates = [],
+            currDate = new tzIndependentDate(fromDate) * 1,
+            lastDate = new tzIndependentDate(toDate) * 1;
+
+        for (; currDate <= lastDate; currDate += (24 * 3600 * 1000)) {
+            var dateObj = new tzIndependentDate(currDate);
+            dates.push({
+                date: dateFilter(dateObj, 'yyyy-MM-dd'),
+                isWeekend: dateObj.getDay() === 0 || dateObj.getDay() === 6
+            });
+        }
+        return dates;
+    };
 
 	/**
 	* function to fetch item inventory between from date & to date
@@ -738,7 +747,10 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			url = '/api/availability/addons';
 		
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
-			that.data.gridDataForItemInventory = formGridDataForItemInventory(resultFromAPI);
+			that.data.gridDataForItemInventory = {
+                "addons": resultFromAPI.addons,
+                "dates": getDateRange(firstDate, secondDate)
+            };
 			deferred.resolve(that.data);
 		},function(data){
 			deferred.reject(data);
