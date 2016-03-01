@@ -77,6 +77,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("refreshComissionsScroll");
 			}
+			if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
 
 			$scope.currentSelectedTab = tabToSwitch;
 		};
@@ -199,6 +202,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-ar-transactions') {
 				$rootScope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
+			}
+			if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
 			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};
