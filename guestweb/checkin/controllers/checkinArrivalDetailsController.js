@@ -22,9 +22,10 @@
 		var init = function() {
 
 			$scope.hours = $scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-			$scope.minutes = ["00", "15", "30", "45"];
+			$scope.minutes = $scope.minutesWithRestrictions = ["00", "15", "30", "45"];
 			$scope.primeTimes = $scope.primeTimesNewWithRestrictions = ["AM", "PM"];
 			$scope.hourCopy = angular.copy($scope.hours);
+			$scope.minutesCopy = angular.copy($scope.minutes);
 
 			// when eta has to restricted bases on early checkin settings
 			if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
@@ -46,19 +47,23 @@
 				$scope.isLoading = true;
 				guestDetailsService.fetchHotelTime().then(function(response) {
 					$scope.showHotelTime = true;
-					$scope.hotelTime = "06:00 PM";
+					$scope.hotelTime = "06:23 PM";
 					//
 					restrictPrimetime = "PM";
-					restrictHour = "06";
+					restrictHour = "12";
+					restrictMinute = "5";
+
+					restrictMinute = (restrictMinute.length === 1) ? ("0" + restrictMinute) : restrictMinute;
 					restrictHour = (restrictHour.length === 1) ? ("0" + restrictHour) : restrictHour;
+
+
 					isDayOfArrival = true;
 					//
 					$scope.isLoading = false;
 					if (isDayOfArrival) {
-						$scope.primeTimesNewWithRestrictions = (restrictPrimetime === "PM") ?$scope.primeTimesNewWithRestrictions.slice(1) : $scope.primeTimesNewWithRestrictions;
+						$scope.primeTimesNewWithRestrictions = (restrictPrimetime === "PM") ? $scope.primeTimesNewWithRestrictions.slice(1) : $scope.primeTimesNewWithRestrictions;
 						$scope.hoursWithRestrictions = restrictHoursListByHour(restrictHour);
 					}
-					console.log($scope.hoursWithRestrictions);
 
 				}, function() {
 					$rootScope.netWorkError = true;
@@ -79,26 +84,43 @@
 
 			$scope.primeTimeChanged = function() {
 
-				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined"){
+				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {
 					if ($rootScope.earlyCheckinRestrictPrimetime === "AM" && $scope.stayDetails.primeTime === "PM") {
 						$scope.hours = $scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 					} else if ($rootScope.earlyCheckinRestrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hours = $scope.hoursWithRestrictions = restrictHoursListByHour($rootScope.earlyCheckinRestrictHour);
 					};
-					console.log($scope.hoursWithRestrictions);
 
-				}
-				else if ($rootScope.restrictByHotelTimeisOn) {
+				} else if ($rootScope.restrictByHotelTimeisOn) {
 					if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "PM") {
 						$scope.hoursWithRestrictions = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 					} else if (restrictPrimetime === "AM" && $scope.stayDetails.primeTime === "AM") {
 						$scope.hoursWithRestrictions = restrictHoursListByHour(restrictHour);
 					};
-					console.log($scope.hoursWithRestrictions);
-				}
-				else{
+				} else {
 					return;
 				}
+			};
+
+			$scope.hoursChanged = function() {
+
+				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour) {
+
+					if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) <= 15) {
+						$scope.minutesWithRestrictions = ["15", "30", "45"];
+					} else if (parseInt(restrictMinute) > 15 && parseInt(restrictMinute) <= 30) {
+						$scope.minutesWithRestrictions = ["30", "45"];
+					} else if (parseInt(restrictMinute) > 30 && parseInt(restrictMinute) <= 45) {
+						$scope.minutesWithRestrictions = ["45"];
+					} else if (parseInt(restrictMinute) > 45) {
+						$scope.minutesWithRestrictions = [];
+					} else {
+						$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
+					};
+
+				} else {
+					$scope.minutesWithRestrictions = ["00", "15", "30", "45"];
+				};
 			};
 
 			$scope.errorOpts = {
