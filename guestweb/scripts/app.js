@@ -105,6 +105,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
+ 	//to do
+ 	$rootScope.restrictByHotelTimeisOn = true;
 
  	$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options  ==="true") ? true:false;
 
@@ -135,7 +137,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		$state.go('guestCheckinTurnedOff');
 	}
 	else if(reservationAndhotelData.checkin_url_verification === "true"){
-		$state.go('externalCheckinVerification'); // external checkin URL available and is on
+		$state.go('checkinArrival'); // external checkin URL available and is on
 	}
 	else if(reservationAndhotelData.is_external_verification ==="true"){
 		$state.go('externalVerification'); //external checkout URL

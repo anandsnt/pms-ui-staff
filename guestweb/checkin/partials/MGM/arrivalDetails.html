@@ -26,11 +26,12 @@
 					</div>
 					<div class="date-container ">
 						<div class="row cabin_number_field ">
-							<p class="lightcontent grey-text">ESTIMATED ARRIVAL TIME</p>
+							<p class="lightcontent grey-text">ESTIMATED ARRIVAL TIME<br>
+								<span ng-if="showHotelTime">(ETA is based on the Hotel's time :- {{hotelTime}})</span></p>
 							<div class="expiry-year-container eta-container">
 								<div class="select-style">
 									<select ng-model="stayDetails.hour"
-									ng-options="hour as hour  for hour in hours">
+									ng-options="hour as hour  for hour in hoursWithRestrictions">
 									<option value="">HH</option>
 								</select>
 							</div>
@@ -45,10 +46,9 @@
 					</div>
 					<div class="expiry-year-container eta-container">
 						<div class="select-style arrival-time">
-							<select ng-model="stayDetails.primeTime">
-								<option value="AM" selected="" >AM</option>
-								<option value="PM" >PM</option>
-								<option value="">AM/PM</option>
+							<select ng-model="stayDetails.primeTime"
+								ng-options="primeTime as primeTime  for primeTime in primeTimesNewWithRestrictions" ng-change="primeTimeChanged()">
+							<option value="">AM/PM</option>
 							</select>
 						</div>
 					</div>

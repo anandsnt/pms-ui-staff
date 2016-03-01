@@ -67,6 +67,19 @@
 		return deferred.promise;
 		
 	};
+	var fetchHotelTime = function(){
+		var deferred = $q.defer();
+		var url = '/assets/guestweb/checkin/services/country_code.json';
+		$http.get(url).success(function(response) {
+			deferred.resolve(response);	
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+		
+	};
+	
 
 	return {
 	responseData: responseData,
@@ -74,7 +87,8 @@
 	getGuestDetails:getGuestDetails,
 	fetchCountryList:fetchCountryList,
 	postGuestBirthDate:postGuestBirthDate,
-	fetchCountryCode:fetchCountryCode
+	fetchCountryCode:fetchCountryCode,
+	fetchHotelTime:fetchHotelTime
 	}
 };
 
