@@ -580,14 +580,14 @@ angular.module('reportsModule')
 
 
 
-                // check for include company/ta/group filter and keep a ref to that item
+                // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
-                    report['hasIncludeComapnyTa'] = filter;
+                    report['hasIncludeCompanyTa'] = filter;
                 };
 
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
-                    report['hasIncludeComapnyTaGroup'] = filter;
+                    report['hasIncludeCompanyTaGroup'] = filter;
                 };
 
 

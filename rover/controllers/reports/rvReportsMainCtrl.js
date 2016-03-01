@@ -1239,13 +1239,23 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				});
 			};
 
-			// include company/ta/group
-			if ( report.hasOwnProperty('hasIncludeComapnyTaGroup') && !!report.chosenIncludeComapnyTaGroup ) {
-				key         = report.hasIncludeComapnyTaGroup.value.toLowerCase();
-				params[key] = report.chosenIncludeComapnyTaGroup;
+			// include company/ta
+			if ( report.hasOwnProperty('hasIncludeCompanyTa') && !!report.chosenIncludeCompanyTa ) {
+				key         = report.hasIncludeCompanyTa.value.toLowerCase();
+				params[key] = report.chosenIncludeCompanyTa;
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeComapnyTaGroup;
+					$scope.appliedFilter['companyTa'] = report.uiChosenIncludeCompanyTa;
+				};		
+			};
+
+			// include company/ta/group
+			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !!report.chosenIncludeCompanyTaGroup ) {
+				key         = report.hasIncludeCompanyTaGroup.value.toLowerCase();
+				params[key] = report.chosenIncludeCompanyTaGroup;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeCompanyTaGroup;
 				};		
 			};
 
@@ -1781,7 +1791,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		}, userAutoCompleteCommon);
 
 		// for Company TA only
-		var ctAutoCompleteCommon = {
+		var autoCompleteForCompTa = {
 			source: function(request, response) {
 				$scope.$emit( 'showLoader' );
 				reportsSubSrv.fetchComTaGrp(request.term, true)
@@ -1805,8 +1815,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				this.value = ui.item.label;
 				setTimeout(function() {
 					$scope.$apply(function() {
-						touchedReport.uiChosenIncludeComapnyTa = ui.item.label;
-						touchedReport.chosenIncludeComapnyTa = ui.item.value;
+						touchedReport.uiChosenIncludeCompanyTa = ui.item.label;
+						touchedReport.chosenIncludeCompanyTa = ui.item.value;
 					});
 				}.bind(this), 100);
 				return false;
@@ -1816,24 +1826,24 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 		};
 
-		$scope.listCtAutoCompleteOptions = angular.extend({
+		$scope.compTaAutoCompleteOnList = angular.extend({
 			position: {
 				my: 'left top',
 				at: 'left bottom',
 				collision: 'flip'
 			}
-		}, ctAutoCompleteCommon);
+		}, autoCompleteForCompTa);
 
-		$scope.detailsCtAutoCompleteOptions = angular.extend({
+		$scope.compTaAutoCompleteOnDetails = angular.extend({
 			position: {
 				my: 'left bottom',
 				at: 'right+20 bottom',
 				collision: 'flip'
-			}
-		}, ctAutoCompleteCommon);
+			}		
+		}, autoCompleteForCompTa);
 		
 		// for Company TA Group
-		var ctgAutoCompleteCommon = {
+		var autoCompleteForCompTaGrp = {
 			source: function(request, response) {
 				$scope.$emit( 'showLoader' );
 				reportsSubSrv.fetchComTaGrp(request.term)
@@ -1857,8 +1867,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				this.value = ui.item.label;
 				setTimeout(function() {
 					$scope.$apply(function() {
-						touchedReport.uiChosenIncludeComapnyTaGroup = ui.item.label;
-						touchedReport.chosenIncludeComapnyTaGroup = ui.item.value;
+						touchedReport.uiChosenIncludeCompanyTaGroup = ui.item.label;
+						touchedReport.chosenIncludeCompanyTaGroup = ui.item.value;
 					});
 				}.bind(this), 100);
 				return false;
@@ -1868,20 +1878,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 		};
 
-		$scope.listCtgAutoCompleteOptions = angular.extend({
+		$scope.compTaGrpAutoCompleteOnList = angular.extend({
 			position: {
 				my: 'left top',
 				at: 'left bottom',
 				collision: 'flip'
 			}
-		}, ctgAutoCompleteCommon);
+		}, autoCompleteForCompTaGrp);
 
-		$scope.detailsCtgAutoCompleteOptions = angular.extend({
+		$scope.compTaGrpAutoCompleteOnDetails = angular.extend({
 			position: {
 				my: 'left bottom',
 				at: 'right+20 bottom',
 				collision: 'flip'
 			}
-		}, ctgAutoCompleteCommon);
+		}, autoCompleteForCompTaGrp);
 	}
 ]);

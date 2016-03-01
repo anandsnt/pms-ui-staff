@@ -257,16 +257,16 @@
 </div>
 
 
-<div class="filter" ng-if="item.hasIncludeComapnyTa">
+<div class="filter" ng-if="item.hasIncludeCompanyTa">
     <label>Company/TA</label>
-    <input class="icons icon-search" auto-complete auto-options="listCtAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
-    <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTa">
+    <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
+    <input type="text" class="hidden" ng-model="item.chosenIncludeCompanyTa">
 </div>
 
-<div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
+<div class="filter" ng-if="item.hasIncludeCompanyTaGroup">
     <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="listCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
-    <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup">
+    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
+    <input type="text" class="hidden" ng-model="item.chosenIncludeCompanyTaGroup">
 </div>
 
 <div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
