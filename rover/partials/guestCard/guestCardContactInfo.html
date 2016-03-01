@@ -22,6 +22,14 @@
 					</select>
 				</div>
 			</div>
+			<div class="entry" ng-if="languageData.show_language_field">
+				<label for="languages">Language</label>
+				<div form="contact-info" class="select">
+					<select iscroll-stop-propagation ng-options="language.id as language.language for language in languageData.languages" ng-model="guestCardData.contactInfo.language_id">
+						<option style="display:none" value=""></option>
+					</select>
+				</div>
+			</div>
 			<div class="entry margin">
 				<label for="country">Id Type</label>
 				<div form="contact-info" class="select">
