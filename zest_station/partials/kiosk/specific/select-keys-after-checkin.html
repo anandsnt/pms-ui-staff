@@ -1,9 +1,9 @@
 <section id="main" class="centered" role="main" ng-hide='at !== "select-keys-after-checkin"' click-touch='resetTime()'>
         <div id="content">
-            <h2 ng-hide="isPickupKeys" class="no-margin">{{'CONGRATS' |translate}} {{selectedReservation.guest_details[0].first_name}}.</h2>
-            <h1 ng-hide="isPickupKeys">{{'CHKED_IN_MSG' |translate}}</h1>
+            <h2 ng-hide="isPickupKeys" class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{selectedReservation.guest_details[0].first_name}}.</h2>
+            <h1 ng-hide="isPickupKeys">{{'CHKED_IN_SUCCESS_MSG' |translate}}</h1>
             <h1 ng-show="isPickupKeys" class="no-margin" >{{selectedReservation.first_name}}.</h2>
-            <h1 ng-show="isPickupKeys">{{'CHKED_IN_MSG_SUB' |translate}}</h1>
+            <h1 ng-show="isPickupKeys">{{'PUK_CHKED_IN_MSG' |translate}}</h1>
             <div id="room" ng-show="zestStationData.show_room_number">
                 <span class="number">{{selectedReservation.room}}</span>
             </div>
