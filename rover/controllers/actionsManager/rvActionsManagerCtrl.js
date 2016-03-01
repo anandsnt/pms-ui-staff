@@ -1,6 +1,6 @@
 sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state',
     function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
-
+        BaseCtrl.call(this, $scope);
         //-------------------------------------------------------------------------------------------------------------- A. Scope Variables
 
         $scope._actionCompleted = "COMPLETED";
@@ -12,7 +12,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
             query: "",
             page: 1,
-            perPage: 15,
+            perPage: 25,
             totalCount: null,
             startRecord: 1,
             endRecord: null,
@@ -24,6 +24,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.selectDateOptions = {
+            minDate: tzIndependentDate($rootScope.businessDate),
             defaultDate: tzIndependentDate($rootScope.businessDate),
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
@@ -44,7 +45,11 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         //-------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
                 var heading = 'Actions Manager';
-                $scope.setScroller("rvActionListScroller");
+                $scope.setScroller("rvActionListScroller", {
+                    scrollbars: true,
+                    preventDefault: false,
+                    fadeScrollbars: true
+                });
                 $scope.departments = departments.data.departments;
                 setHeadingTitle(heading);
                 fetchActionsList();
@@ -55,12 +60,16 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             },
             refreshScroller = function () {
                 $scope.refreshScroller('rvActionListScroller');
+            }, getBindabaleAction = function (response) {
+                var action = angular.copy(response);
+                action.department = action.assigned_to && action.assigned_to.id || "";
+                return action;
             },
             getActionDetails = function () {
                 $scope.callAPI(rvActionTasksSrv.getActionDetails, {
                     params: $scope.selectedActionId,
                     successCallBack: function (response) {
-                        $scope.selectedAction = angular.copy(response.data);
+                        $scope.selectedAction = getBindabaleAction(response.data);
                     }
                 })
             },
@@ -102,7 +111,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 };
 
                 if (!!$scope.filterOptions.department) {
-                    payLoad.department = $scope.filterOptions.department.value;
+                    payLoad.department_id = $scope.filterOptions.department.value;
                 }
 
                 if ($scope.filterOptions.selectedStatus !== "ALL") {
@@ -117,7 +126,26 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     params: payLoad,
                     successCallBack: onFetchListSuccess
                 });
-            };
+            }, updateListEntry = function () {
+                var currentAction = _.find($scope.actions, function (action) {
+                    return action.id === $scope.selectedActionId
+                }), departmentId = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id;
+
+
+                _.extend(currentAction, {
+                    action_status: $scope.selectedAction.action_status,
+                    iconClass: $scope.selectedAction.action_status ? "icon-" + $scope.selectedAction.action_status.toLowerCase() : "",
+                    department_id: departmentId,
+                    assigned: !!departmentId,
+                    departmentName: !!departmentId ? _.find($scope.departments, {
+                        value: departmentId.toString()
+                    }).name : "",
+                    isCompleted: !!$scope.selectedAction.completed_at
+                })
+
+                console.log('actions', $scope.actions);
+            }
+
 
         //-------------------------------------------------------------------------------------------------------------- C.Scope Methods
 
@@ -184,7 +212,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     id: $scope.selectedAction.id
                 },
                 reservation_id: $scope.selectedAction.reservation_id,
-                assigned_to: $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.value,
+                assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, "yyyy-MM-dd") +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : ""),
             }
@@ -195,7 +223,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             $scope.callAPI(rvActionTasksSrv.updateNewAction, {
                 params: payLoad,
                 successCallBack: function (response) {
-                    $scope.selectedAction = angular.copy(response.data);
+                    $scope.selectedAction = getBindabaleAction(response.data);
+                    updateListEntry();
                 }
             })
             ngDialog.close();
@@ -233,6 +262,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         var listenerNewActionPosted = $scope.$on("NEW_ACTION_POSTED", function () {
             ngDialog.close();
+            fetchActionsList();
         });
 
         //-------------------------------------------------------------------------------------------------------------- E. Cleanup

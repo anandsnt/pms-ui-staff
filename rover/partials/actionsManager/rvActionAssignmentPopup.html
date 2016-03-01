@@ -9,9 +9,10 @@
         <div class="entry full-width">
             <label for="department">Assign to Department</label>
             <div class="select">
-                <select  ng-model="selectedAction.assigned_to.value" id="department" ng-class="{'placeholder': !selectedAction.assigned_to.id}">
+                <select ng-model="selectedAction.department" id="department"
+                        ng-class="{'placeholder': !selectedAction.department}">
                     <option value="">Select Department</option>
-                    <option value="{{department.value}}" ng-selected="selectedAction.assigned_to.value == department.value"
+                    <option value="{{department.value}}" ng-selected="selectedAction.department == department.value"
                             ng-repeat="department in departments">
                         {{department.name}}
                     </option>
@@ -20,7 +21,9 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="button brand-colors" ng-click="updateAction()">Assign</button>
+            <button type="button" class="button grey" ng-class="{'brand-colors': selectedAction.department}" ng-click="updateAction()"
+                    ng-disabled="!selectedAction.department">Assign
+            </button>
             <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
         </div>
     </form>
