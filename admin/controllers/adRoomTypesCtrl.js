@@ -137,6 +137,11 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
    /*
     * To handle click event
     */
+    $scope.deleteRoomTypes = function(){
+    	//console.log($scope.roomTypeData.image_of_room_type );
+    	//$scope.roomTypeData.image_of_room_type = null;
+    	$scope.is_deleted = true;
+    }
 	$scope.clickCancel = function(){
 		if($scope.isAddMode){
 			$scope.isAddMode =false;
