@@ -9,9 +9,9 @@
         <div class="entry full-width">
             <label for="department">Assign to Department</label>
             <div class="select">
-                <select  ng-model="selectedAction.assigned_to.id" id="department" ng-class="{'placeholder': !selectedAction.assigned_to.id}">
+                <select  ng-model="selectedAction.assigned_to.value" id="department" ng-class="{'placeholder': !selectedAction.assigned_to.id}">
                     <option value="">Select Department</option>
-                    <option value="department.value" ng-selected="selectedAction.assigned_to.id == department.value"
+                    <option value="{{department.value}}" ng-selected="selectedAction.assigned_to.value == department.value"
                             ng-repeat="department in departments">
                         {{department.name}}
                     </option>

@@ -74,12 +74,13 @@
                 </li>
             </ul>
         </div>
+        <!--Pagingation controls used for development. Have to be replaced once markup is finalized by design team-->
         <div class="search-pagination ng-scope" ng-if="filterOptions.totalCount > filterOptions.perPage"
-             style="bottom:61px">
-            <label class="button dark-grey next" ng-click="loadNextPage($event)"
-                   ng-class="{'disabled': disableNextBtn}">Next</label>
-            <label class="button dark-grey prev disabled" ng-click="loadPrevPage($event)"
-                   ng-class="{'disabled': disablePrevBtn}">Previous</label>
+             style="bottom:61px" ng-hide=" true">
+            <button style="width:80px" class="button dark-grey next" ng-click="loadNextPage($event)"
+                   ng-class="{'disabled': filterOptions.isLastPage}" ng-disabled="filterOptions.isLastPage">Next</button>
+            <button style="width:80px" class="button dark-grey prev" ng-click="loadPrevPage($event)"
+                   ng-class="{'disabled': filterOptions.page === 1}" ng-disabled="filterOptions.page === 1">Prev</button>
             <p>
                 Showing
                 <strong class="ng-binding">
@@ -174,7 +175,7 @@
         <select name="change-department" ng-options="department.name for department in departments"
                 ng-model="filterOptions.department" ng-change="onDepartmentSelectionChange()">
             <option value="" selected>All Departments</option>
-            <option value="department.value" ng-selected="newAction.department == department.value"
+            <option value="department.value" ng-selected="filterOptions.department == department.value"
                     ng-repeat="department in departments">
                 {{department.name}}
             </option>

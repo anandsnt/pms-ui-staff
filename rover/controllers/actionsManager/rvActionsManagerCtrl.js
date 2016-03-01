@@ -8,15 +8,20 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         $scope.filterOptions = {
             showFilters: false,
             selectedDay: $rootScope.businessDate,
-            selectedDepartment: "",
+            department: "",
             selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
             query: "",
             page: 1,
-            perPage: 5,
-            totalCount: null
+            perPage: 15,
+            totalCount: null,
+            startRecord: 1,
+            endRecord: null,
+            isLastPage: false
         };
 
-        $scope.selectedAction = {};
+        $scope.selectedAction = {
+            dueTime: "00:00"
+        };
 
         $scope.selectDateOptions = {
             defaultDate: tzIndependentDate($rootScope.businessDate),
@@ -65,10 +70,18 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     per_page: $scope.filterOptions.perPage,
                     page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
+                    //Pagination
                     $scope.filterOptions.totalCount = response.total_count;
                     $scope.filterOptions.startRecord = (($scope.filterOptions.page - 1) * $scope.filterOptions.perPage) + 1;
-                    // TODO : endRecord on last page
-                    $scope.filterOptions.endRecord = $scope.filterOptions.page * $scope.filterOptions.perPage;
+                    if (response.results.length === $scope.filterOptions.perPage) {
+                        $scope.filterOptions.endRecord = $scope.filterOptions.page * $scope.filterOptions.perPage;
+                    } else {
+                        $scope.filterOptions.endRecord = $scope.filterOptions.startRecord + response.results.length - 1;
+                    }
+                    $scope.filterOptions.isLastPage = $scope.filterOptions.endRecord === $scope.filterOptions.totalCount;
+
+
+                    //Parsing
                     $scope.actions = [];
                     _.each(response.results, function (action) {
                         $scope.actions.push(_.extend(action, {
@@ -89,7 +102,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 };
 
                 if (!!$scope.filterOptions.department) {
-                    payLoad.department = $scope.filterOptions.department;
+                    payLoad.department = $scope.filterOptions.department.value;
                 }
 
                 if ($scope.filterOptions.selectedStatus !== "ALL") {
@@ -166,7 +179,25 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.updateAction = function () {
-            console.log('update', $scope.selectedAction);
+            var payLoad = {
+                action_task: {
+                    id: $scope.selectedAction.id
+                },
+                reservation_id: $scope.selectedAction.reservation_id,
+                assigned_to: $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.value,
+                due_at: dateFilter($scope.selectedAction.dueDate, "yyyy-MM-dd") +
+                ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : ""),
+            }
+
+            if ($scope.selectedAction.action_status === $scope._actionCompleted) {
+                payLoad.is_complete = true;
+            }
+            $scope.callAPI(rvActionTasksSrv.updateNewAction, {
+                params: payLoad,
+                successCallBack: function (response) {
+                    $scope.selectedAction = angular.copy(response.data);
+                }
+            })
             ngDialog.close();
         };
 
