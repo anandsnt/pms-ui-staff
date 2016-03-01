@@ -29,40 +29,36 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		}
 	};
 
-    
-	$scope.$watch("data.room_type_id", function(newType, oldType){
-		
-		if ($scope.editMode && newType !== undefined){
-			if(oldType == undefined){
-				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite;
-			}	
-			else {
-				var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite,
-					isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": oldType}).is_suite
-				if (isNewTypeSuite && isOldTypeSuite) {
-					$scope.isSuite = true;
+	$scope.roomTypeChanged = function(value) {
+
+		if ($scope.editMode){
+
+			var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
+				isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
+			if (isNewTypeSuite && isOldTypeSuite) {
+				$scope.isSuite = true;
+				$scope.selectedRoomTypeId = $scope.data.room_type_id
+			}
+			else if(isNewTypeSuite || isOldTypeSuite) {
+				var message = [];
+				if (isNewTypeSuite){					
+					message = ["Regular room type cannot be changed to suite room type"];
 				}
 				else {
-					var message = [];
-					if (isNewTypeSuite){					
-						message = ["Regular room type cannot be changed to suite room type"];
-					}
-					else {
-						message = ["Suite room type cannot be changed to regular room type"];
-					}
-
-					$timeout(function() {
-						$scope.errorMessage = message;
-					}, 500);
+					message = ["Suite room type cannot be changed to regular room type"];
 				}
+
+				$timeout(function() {
+					$scope.errorMessage = message;
+					$scope.data.room_type_id = $scope.selectedRoomTypeId;
+					$('.content-scroll').animate({scrollTop: 0}, 'fast');
+				}, 500);
 			}
 		}
 		else{
-			if(!$scope.editMode && (newType !== undefined && newType !== "")){
-				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite;
-			}
+			$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
 		}
-	});
+	};
    
     /*
      * To handle blur event on Suite rooms
@@ -95,6 +91,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		$scope.data = data;
 		$scope.floors = data.floors;
 		$scope.roomNumber = $scope.data.room_number;
+		$scope.selectedRoomTypeId = data.room_type_id;
+		$scope.roomTypeChanged(data.room_type_id);
 		/*
 		* adding the selected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
