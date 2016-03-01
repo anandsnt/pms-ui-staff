@@ -137,7 +137,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
 		$state.go('guestCheckinTurnedOff');
 	}
 	else if(reservationAndhotelData.checkin_url_verification === "true"){
-		$state.go('checkinArrival'); // external checkin URL available and is on
+		$state.go('externalCheckinVerification');// external checkin URL available and is on
 	}
 	else if(reservationAndhotelData.is_external_verification ==="true"){
 		$state.go('externalVerification'); //external checkout URL
