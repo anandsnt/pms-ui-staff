@@ -51,7 +51,8 @@ module.exports = {
                     servicesRoot + "rvNewspaperPreferenceSrv.js",
                     servicesRoot + "rvLoyaltyProgramSrv.js",
                     servicesRoot + "bill/rvBillCardSrv.js",
-                    servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js"
+                    servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
+                    servicesRoot + "rvCCAuthorizationSrv.js"
                 ]
             };
 	}
