@@ -226,7 +226,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             var options = {
                 card_info: "",
                 key: $scope.makingKey,
-                key_encoder_id: sntZestStation.encoder,
+                key_encoder_id: $state.encoder,
                 reservation_id: $scope.selectedReservation.id
             };
             if ($scope.isInPickupKeyMode()){
@@ -261,135 +261,136 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
                 },2000);
                 
-                
+            
+            
+        };
+        
+        $scope.wsConfig = {
+            "swipeService":"wss://localhost:4649/CCSwipeService"   ,
+            "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
+            "close_alert":"Socket Server is no longer connected.",
+            "swipe_alert":"Please swipe.",
+            "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
+        };
+        $scope.lastCardUid;//used to save off uuid of card when writing new keys
+        $scope.ws = new WebSocket($scope.wsConfig['swipeService']);
+        
+        $scope.setupWebSocketForSankyo = function(){
+                $scope.simulateSwipe = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
+                };
+                $scope.observe = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
+                };
+                $scope.UUIDforDevice = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_device_uid\"}");
+                };
+                $scope.DispenseKey = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"25CC2CDA31A70E87AF3731961096C90CA0\"}");
+                };
+                 $scope.EjectKeyCard = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
+                };
+                $scope.CaptureKeyCard = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
+                };
+                 $scope.InsertKeyCard = function() {
+                    $scope.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
+                };
+                $scope.connect = function() {
+                    //Triggers when websocket connection is established.
+                    $scope.ws.onopen = function () {
+                        $scope.wsOpen = true;
+                        console.info($scope.wsConfig['connected_alert']);
+                    };
+
+                    // Triggers when there is a message from websocket server.
+                    $scope.ws.onmessage = function (evt) {
+                                var received_msg = evt.data;
+                                if (received_msg){
+                                    received_msg = JSON.parse(received_msg);
+                                    var cmd = received_msg.Command, msg = received_msg.Message;
+                                    console.info('[ '+cmd+' ]');
+
+                                    $scope.initSankyoCmd(cmd, msg);
+                                }
+                    };
+
+                    // Triggers when the server is down.
+                    $scope.ws.onclose = function () {
+                        // websocket is closed.
+                        $scope.wsOpen = false;
+                    };
+                    return $scope.ws;
+                };
             
             
             
-            
-            
-            
-            
+        };
+        
+        
+        $scope.connectWebSocket = function(){
+            setTimeout(function(){
+                $scope.ws.connect();    
+            },$scope.wsConfig['connect_delay']);
         };
         $scope.initDispenseKey = function(){
-        $scope.lastCardUid;
-        initWsSwipe = function(){
-  
-        var config = {
-          "swipeService":"wss://localhost:4649/CCSwipeService"   ,
-          "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
-          "close_alert":"Socket Server is no longer connected.",
-          "swipe_alert":"Please swipe.",
-          "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
-        };
-    
-	var ws;
-        function simulateSwipe() {
-            ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
-	}
-	function observe() {
-	    ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
-	}
-	function UUIDforDevice() {
-	    ws.send("{\"Command\" : \"cmd_device_uid\"}");
-	}
-	function DispenseKey() {
-	    ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"25CC2CDA31A70E87AF3731961096C90CA0\"}");
-	}
-	function EjectKeyCard() {
-	    ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
-	}
-	function CaptureKeyCard() {
-	    ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
-	}
-	function InsertKeyCard() {
-	    ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
-	}
-	function connect() {
-            ws = new WebSocket(config['swipeService']);
-            
-	    //Triggers when websocket connection is established.
-            ws.onopen = function () {
-                $scope.wsOpen = true;
-		console.info(config['connected_alert']);
-            };
-            
-	    // Triggers when there is a message from websocket server.
-	    ws.onmessage = function (evt) {
-                	var received_msg = evt.data;
-                        if (received_msg){
-                            received_msg = JSON.parse(received_msg);
-                            var cmd = received_msg.Command;
-                            console.info('[ '+cmd+' ]');
-                            if (cmd === 'cmd_device_uid'){
-                                console.info('$scope.input.makeKeys: ',$scope.input.makeKeys)
-                                console.info('$scope.input.madeKey: ',$scope.input.madeKey);
-                                
-                                
-                                if ($scope.input.madeKey > $scope.input.makeKeys){
-                                    console.info('made enough keys: going to success');
-                                    if ($scope.input.makeKeys === 1){
-                                        $scope.goToKeySuccess();
-                                    } else {
-                                        $scope.keyTwoOfTwoSuccess();
-                                    }
-                                    
-                                    return;
-                                }
-                                $scope.lastCardUid = received_msg.Message;
-                                DispenseKey();
-                                setTimeout(function(){
-                                    EjectKeyCard();
-                                    
-                                    if ($scope.input.madeKey < $scope.input.makeKeys){
-                                        $scope.keyOneOfTwoSuccess();
-                                        $scope.makingKey = 2;
-                                    } else {
-                                        $scope.oneKeySuccess();
-                                    }
-                                    ++$scope.input.madeKey;
-                                },2000);
-                            } else if (cmd === 'cmd_eject_key_card'){
-                                console.info('$scope.input.makeKeys: ',$scope.input.makeKeys)
-                                console.info('$scope.input.madeKey: ',$scope.input.madeKey)
-                                console.info($scope.input.madeKey,$scope.input.makeKeys);
-                                    
-                                if ($scope.input.madeKey < $scope.input.makeKeys){
-                                    setTimeout(function(){
-                                        console.info('dispense + eject #2');
-                                        DispenseKey();
-                                        setTimeout(function(){
-                                            EjectKeyCard();
-                                             $scope.keyTwoOfTwoSuccess();
-                                        },2000);
-                                    },2000);
-                                }
-                            }
-                        }
-                        
-            };
-
-	    // Triggers when the server is down.
-            ws.onclose = function () {
-                // websocket is closed.
-                //alert(config['close_alert']);
-                $scope.wsOpen = false;
-            };
-            return ws;
-        };
-            setTimeout(function(){
-                connect();    
-            },config['connect_delay']);
-        
-            
-            setTimeout(function(){
-                UUIDforDevice();    
+            $scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
+            setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
+                $scope.UUIDforDevice();    
             },4000);
-    
-        };
-        //boom
-        initWsSwipe();
         };
         
+        
+        /*
+         * dispense one key
+         * dispense first key (of 2)
+         * dispense second key (2 of 2)
+         */
+        
+        $scope.initSankyoCmd = function(cmd, msg){
+                if (cmd === 'cmd_device_uid'){
+                    if ($scope.input.madeKey > $scope.input.makeKeys){
+                        if ($scope.input.makeKeys === 1){
+                            $scope.goToKeySuccess();
+                        } else {
+                            $scope.keyTwoOfTwoSuccess();
+                        }
+                        return;
+                    }
+                    $scope.lastCardUid = msg;
+                    DispenseKey();
+                    setTimeout(function(){
+                        EjectKeyCard();
+                        if ($scope.input.madeKey < $scope.input.makeKeys){
+                            $scope.keyOneOfTwoSuccess();
+                            $scope.makingKey = 2;
+                        } else {
+                            $scope.oneKeySuccess();
+                        }
+                        ++$scope.input.madeKey;
+                    },2000);
+                } else if (cmd === 'cmd_eject_key_card'){
+                    if ($scope.input.madeKey < $scope.input.makeKeys){
+                        $scope.keyOneOfTwoSuccess();
+                        $scope.makingKey = 2;
+                    } else {
+                        $scope.keyTwoOfTwoSuccess();
+                    }
+
+
+                    if ($scope.input.madeKey < $scope.input.makeKeys){
+                        setTimeout(function(){
+                            DispenseKey();
+                            setTimeout(function(){
+                                EjectKeyCard();
+                            },2000);
+                        },2000);
+                    }
+                }  
+            
+            
+        };
         
         
         
