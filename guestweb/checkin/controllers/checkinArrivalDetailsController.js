@@ -8,6 +8,7 @@
 	var checkinArrivalDetailsController = function($scope, preCheckinSrv, $rootScope, $state, $modal, $stateParams, guestDetailsService) {
 
 		var restrictHoursListByHour = function(restrictHour) {
+			// restrict hour selection based on a time
 			var hoursList = angular.copy($scope.hourCopy);
 			if (restrictHour !== "12") {
 				angular.forEach(hoursList, function(hour, index) {
@@ -35,7 +36,6 @@
 				$scope.hours = restrictHoursListByHour($rootScope.earlyCheckinRestrictHour);
 				$scope.hoursWithRestrictions = angular.copy($scope.hours);
 				$scope.primeTimesNewWithRestrictions = angular.copy($scope.primeTimes);
-				console.log($scope.hoursWithRestrictions);
 
 				$scope.stayDetails = {
 					"hour": $rootScope.earlyCheckinRestrictHour,
@@ -103,7 +103,7 @@
 			};
 
 			$scope.hoursChanged = function() {
-
+				// restrict minute selection based on a time
 				if (typeof $rootScope.earlyCheckinRestrictHour !== "undefined") {} else if ($rootScope.restrictByHotelTimeisOn && $scope.stayDetails.hour === restrictHour) {
 
 					if (parseInt(restrictMinute) >= 0 && parseInt(restrictMinute) <= 15) {
