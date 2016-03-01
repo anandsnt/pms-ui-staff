@@ -31,7 +31,7 @@
 							<div class="expiry-year-container eta-container">
 								<div class="select-style">
 									<select ng-model="stayDetails.hour"
-									ng-options="hour as hour  for hour in hoursWithRestrictions">
+									ng-options="hour as hour  for hour in hoursWithRestrictions" ng-change="hoursChanged()">
 									<option value="">HH</option>
 								</select>
 							</div>
@@ -39,7 +39,7 @@
 						<div class="expiry-year-container eta-container">
 							<div class="select-style">
 								<select ng-model="stayDetails.minute"
-								ng-options="minute as minute  for minute in minutes">
+								ng-options="minute as minute  for minute in minutesWithRestrictions">
 								<option value="">MM</option>
 							</select>
 						</div>

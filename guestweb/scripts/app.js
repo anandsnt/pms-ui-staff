@@ -105,9 +105,8 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
  	$rootScope.keyDeliveryByEmail = true;
  	//$rootscope.keyDeliveryByText  = true;
- 	//to do
- 	$rootScope.restrictByHotelTimeisOn = true;
-
+ 	
+ 	$rootScope.restrictByHotelTimeisOn = reservationAndhotelData.eta_enforcement;
  	$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options  ==="true") ? true:false;
 
     //Params for zest mobile and desktop screens

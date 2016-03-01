@@ -190,7 +190,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'birthdate_mandatory':$scope.checkinData.birthdate_mandatory,
       'checkin_collect_cc':$scope.checkinData.checkin_collect_cc,
       'guest_delivery_communication':$scope.checkinData.guest_delivery_communication,
-      'offer_room_delivery_options':$scope.checkinData.offer_room_delivery_options
+      'offer_room_delivery_options':$scope.checkinData.offer_room_delivery_options,
+      'eta_enforcement':$scope.checkinData.eta_enforcement
 
     };
 
