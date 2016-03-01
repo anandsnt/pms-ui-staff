@@ -73,6 +73,7 @@
 
 				//navigate to next page
 				$state.go('checkinReservationDetails');
+				
 			},function(){
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
