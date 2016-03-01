@@ -38,7 +38,10 @@ module.exports = {
 			'guestweb_mgm_grand':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mgm_grand.js'],
 			'guestweb_signature_at_mgm':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_signature_at_mgm.js'],
 			'guestweb_11Howard':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_terranea':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_terranea':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_naples_grande':[ themeJsRoot + 'app_router_common.js']
+
+
 		}
 	}
 }
