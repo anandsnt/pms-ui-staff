@@ -883,6 +883,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.appliedFilter = {
 					'options'      : [],
 					'display'      : [],
+					'show'         : [],
 					'markets'      : [],
 					'sources'      : [],
 					'origins'      : [],
@@ -893,7 +894,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': []
+					'guestOrAccount': [],
 				};
 			};
 
@@ -1211,6 +1212,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				});
 			};
 
+			// generate params for selected shows
+			if ( report['hasShow']['data'].length ) {
+				_.each(report['hasShow']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.show.push( each.description );
+						};
+					};
+				});
+			};
+
 			// generate params for selected exclusions
 			if ( report['hasExclusions']['data'].length ) {
 				_.each(report['hasExclusions']['data'], function(each) {
@@ -1495,6 +1510,26 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$scope.appliedFilter.reservationStatus = ['All Reservation Status'];
 					};
 				};
+			};
+
+			// has min revenue
+			if ( report.hasOwnProperty('hasMinRevenue') && !!report.hasMinRevenue.data ) {
+				key         = report.hasMinRevenue.value.toLowerCase();
+				params[key] = report.hasMinRevenue.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinRevenue'] = report.hasMinRevenue.data;
+				};		
+			};
+
+			// has min room nights
+			if ( report.hasOwnProperty('hasMinRoomNights') && !!report.hasMinRoomNights.data ) {
+				key         = report.hasMinRoomNights.value.toLowerCase();
+				params[key] = report.hasMinRoomNights.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinRoomNights'] = report.hasMinRoomNights.data;
+				};		
 			};
 
 			// need to reset the "group by" if any new filter has been applied

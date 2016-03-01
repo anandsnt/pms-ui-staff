@@ -120,6 +120,13 @@
 
 
 
+		<!-- chosen show -->
+		<div ng-if="appliedFilter.show.length">
+			Show: <span>{{ appliedFilter.show.join(', ') }}</span>
+		</div>
+
+
+
 		<!-- Company / TA -->
 		<div ng-if="appliedFilter.companyTa">
 			Company / TA: <span>{{ appliedFilter.companyTa }}</span>
@@ -186,6 +193,18 @@
 		<!-- chosen charge codes -->
 		<div ng-if="appliedFilter.reservationAddons.length">
 			Reservation Addons: <span>{{ appliedFilter.reservationAddons.join(', ') }}</span>
+		</div>
+
+
+		<!-- Minimum revenue -->
+		<div ng-if="appliedFilter.hasMinRevenue">
+			Minimum Revenue: <span>{{ appliedFilter.hasMinRevenue | currency:currencySymbol:2 }}</span>
+		</div>
+
+
+		<!-- Minimum Room Nights -->
+		<div ng-if="appliedFilter.hasMinRoomNights">
+			Minimum Room Nights: <span>{{ appliedFilter.hasMinRoomNights }}</span>
 		</div>
 
 
