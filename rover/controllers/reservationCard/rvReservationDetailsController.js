@@ -1041,7 +1041,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		// CICO-24426 - multiple authorizations
 		$scope.authData = {
 
-			'authAmount'			: '',
+			'authAmount'			: '0.00',
 			'manualCCAuthPermission': true,
 			'billData' 				: [],
 			'selectedCardDetails' 	: 		// To keep the selected/active card details.
@@ -1172,6 +1172,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				"amount"			: $scope.authData.authAmount
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+		};
+
+		// To handle close/cancel button click after success/declined of auth process.
+		$scope.cancelButtonClick = function(){
+			$scope.showAuthAmountPopUp();
 		};
 
 		// To handle authorize button click on 'auth amount popup' ..
