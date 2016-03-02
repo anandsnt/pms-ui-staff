@@ -259,13 +259,13 @@
 
 <div class="filter" ng-if="item.hasIncludeCompanyTa">
     <label>Company/TA</label>
-    <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
+    <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
     <input type="text" class="hidden" ng-model="item.chosenIncludeCompanyTa">
 </div>
 
 <div class="filter" ng-if="item.hasIncludeCompanyTaGroup">
     <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
+    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
     <input type="text" class="hidden" ng-model="item.chosenIncludeCompanyTaGroup">
 </div>
 

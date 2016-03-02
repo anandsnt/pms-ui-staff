@@ -1719,6 +1719,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			touchedReport = item;
 		};
 
+		$scope.removeCompTaGrpId = function(item, uiValue, modelValue) {
+			if ( ! item[uiValue] ) {
+				item[modelValue] = '';
+			};
+		};
+
 		var split = function (val) {
 			return val.split(/,\s*/);
 		};
