@@ -295,9 +295,15 @@ sntZestStation.controller('zsHomeCtrl', [
             name = 'Select';
         }
         $scope.printerName = name;
+        console.info('setting printer name to: ',name);
+        console.info('printerName')
     };
+    $scope.$watch('printerName',function(to, from){
+        console.log(arguments)
+    })
     $scope.setSavedWorkstation = function(){
         $scope.savedStationObj = $scope.getSavedWorkStation();
+        
     };
     $scope.selectedWorkstationName = '';
     
@@ -352,7 +358,8 @@ sntZestStation.controller('zsHomeCtrl', [
                 if (response){
                     $scope.workstations = response.work_stations;
                     $scope.oosIfNoWorkstations();//if no workstations are available, place oos
-                    $scope.fetchSettings();
+                    $scope.setAdminSettings();
+                    
                 }
             };
             var onFail = function(response){
@@ -408,14 +415,18 @@ sntZestStation.controller('zsHomeCtrl', [
      * Fetching / Saving Settings in Station Admin
      */
     
-        $scope.fetchSettings = function(){
-            //get idle timer settings
-
+        $scope.setAdminSettings = function(){
+            $scope.setSavedWorkstation();
+            var station = $scope.getSavedWorkStation();
+                $scope.workstation = {
+                    selected: station
+                };
+                
+            console.info('station: ',station);
+            $scope.initialWorkstation = true;
+            $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
+            $scope.setWorkstationPrinter(station.id);
         };
-        $scope.fetchStation = function(){
-
-        };
-        
         
         $scope.saveSettings = function(){
             var params = $scope.getSettings();
