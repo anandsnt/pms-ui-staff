@@ -381,6 +381,26 @@
         }
 
         &.find-user { width: auto; }
+
+        &.find-guest{
+             img {
+                 position: absolute;
+                 .square(30px);
+                 #border-radius > .rounded();
+             }
+
+             .name{
+              font-size: 18px;
+             }
+
+             .room{
+                 font-size: 10px;
+                 float: right;
+                 margin-right: 10px;
+                 text-transform: uppercase;
+                 color:@grey3
+             }
+         }
     }
 
     .ui-helper-hidden-accessible { .hide; }

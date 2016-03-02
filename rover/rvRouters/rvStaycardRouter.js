@@ -329,7 +329,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.actionsManager', {
-            url: '/actions/:actions',
+            url: '/actions/:restore',
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",
             controller: 'RVActionsManagerController',
             resolve: {

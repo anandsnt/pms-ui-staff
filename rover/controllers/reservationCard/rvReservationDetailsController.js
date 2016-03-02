@@ -27,7 +27,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			setNavigationBookMark();
 		}
 
-		if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
+        if($scope.previousState.name === "rover.actionsManager"){
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'ACTIONS MANAGER',
+                name: 'rover.actionsManager',
+                param: {
+                    restore: true
+                }
+            };
+        }
+		else if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
 			}
