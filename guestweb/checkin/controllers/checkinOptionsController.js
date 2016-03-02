@@ -71,7 +71,7 @@
 							'charge': early_checkin_charge,
 							'id': early_checkin_offer_id,
 							'isFromCheckinNow': 'true',
-							'roomAssignedFromZestWeb': roomAssignedFromZestWeb ? 'true' :'false'
+							'roomAssignedFromZestWeb': roomAssignedFromZestWeb ? 'true' : 'false'
 						});
 					}
 				}
@@ -88,8 +88,13 @@
 			$scope.isLoading = true;
 			checkinNowService.assignRoom(params).then(function(response) {
 				$scope.isLoading = false;
-				roomAssignedFromZestWeb = true;
-				navigateToNextScreen();
+				if (response.status !== "failure") {
+					roomAssignedFromZestWeb = true;
+					navigateToNextScreen();
+				} else {
+					$scope.isLoading = false;
+					$state.go("roomAssignFailed");
+				}
 			}, function() {
 				$scope.isLoading = false;
 				$state.go("roomAssignFailed");
