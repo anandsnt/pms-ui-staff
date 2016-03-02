@@ -22,7 +22,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry" ng-if="languageData.show_language_field">
+			<div class="entry" ng-if="isStandAlone && languageData.show_language_field">
 				<label for="languages">Language</label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-model="guestCardData.contactInfo.language_id">
