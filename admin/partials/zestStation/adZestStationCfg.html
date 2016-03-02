@@ -19,6 +19,12 @@
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
             </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate> Speak To Staff Message</span> </h3>
+                </div>
+                <ad-textbox value="zestSettings.zest_station_message_texts.speak_to_crew_mod_message2"  name = "zest-web" id = "zest-web" label = "Speak To Crew Mod Message 2" placeholder = "{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width" ></ad-textbox>
+            </fieldset>
             
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>

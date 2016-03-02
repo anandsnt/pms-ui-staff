@@ -23,7 +23,8 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
             var dataToSend = {
                                 'kiosk':
                                         {
-                                            "home_screen":$scope.zestSettings.home_screen
+                                            "home_screen":$scope.zestSettings.home_screen,
+                                            "zest_station_message_texts" :$scope.zestSettings.zest_station_message_texts
                                         }
 
                              };
