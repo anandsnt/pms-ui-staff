@@ -16,7 +16,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             totalCount: null,
             startRecord: 1,
             endRecord: null,
-            isLastPage: false
+            isLastPage: false,
+            selectedActionId: null
         };
 
         $scope.selectedAction = {
@@ -51,6 +52,9 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     fadeScrollbars: true
                 });
                 $scope.departments = departments.data.departments;
+                if (!!$state.params.restore && !!rvActionTasksSrv.getFilterState()) {
+                    $scope.filterOptions = rvActionTasksSrv.getFilterState();
+                }
                 setHeadingTitle(heading);
                 fetchActionsList();
             },
@@ -69,12 +73,14 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 return action;
             },
             getActionDetails = function () {
-                $scope.callAPI(rvActionTasksSrv.getActionDetails, {
-                    params: $scope.selectedActionId,
-                    successCallBack: function (response) {
-                        $scope.selectedAction = getBindabaleAction(response.data);
-                    }
-                })
+                if (!!$scope.filterOptions.selectedActionId) {
+                    $scope.callAPI(rvActionTasksSrv.getActionDetails, {
+                        params: $scope.filterOptions.selectedActionId,
+                        successCallBack: function (response) {
+                            $scope.selectedAction = getBindabaleAction(response.data);
+                        }
+                    })
+                }
             },
             fetchActionsList = function () {
                 var payLoad = {
@@ -82,6 +88,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     per_page: $scope.filterOptions.perPage,
                     page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
+                    //catch empty pages
+                    if(response.results.length === 0 && response.total_count !== 0 && $scope.filterOptions.page !== 1){
+                        $scope.filterOptions.page = 1;
+                        fetchActionsList();
+                    }
+
                     //Pagination
                     $scope.filterOptions.totalCount = response.total_count;
                     $scope.filterOptions.startRecord = (($scope.filterOptions.page - 1) * $scope.filterOptions.perPage) + 1;
@@ -107,7 +119,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     });
                     if ($scope.actions.length > 0) {
                         // By default the first action is selected
-                        $scope.selectedActionId = $scope.actions[0].id;
+                        // While coming back from staycard, the previously selected action is selected
+                        var selectedAction = _.findWhere($scope.actions, {
+                            id: $scope.filterOptions.selectedActionId
+                        })
+                        if (!selectedAction) {
+                            $scope.filterOptions.selectedActionId = $scope.actions[0].id;
+                        }
                         getActionDetails();
                     }
                     refreshScroller();
@@ -131,7 +149,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 });
             }, updateListEntry = function () {
                 var currentAction = _.find($scope.actions, function (action) {
-                    return action.id === $scope.selectedActionId
+                    return action.id === $scope.filterOptions.selectedActionId
                 }), departmentId = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id;
 
 
@@ -181,7 +199,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.onSelectAction = function (actionId) {
-            $scope.selectedActionId = actionId;
+            $scope.filterOptions.selectedActionId = actionId;
             getActionDetails();
         };
 
@@ -237,6 +255,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.toStayCard = function () {
+            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            rvActionTasksSrv.setFilterState($scope.filterOptions);
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 "id": $scope.selectedAction.reservation_id,
                 "confirmationId": $scope.selectedAction.reservation_confirm_no,

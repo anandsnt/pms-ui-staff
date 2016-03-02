@@ -1,6 +1,7 @@
 angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', function ($q, BaseWebSrvV2) {
 
-    var self = this;
+    var self = this,
+        filterState = null;
 
     self.searchPerPage = 50;
     self.page = 1;
@@ -199,6 +200,22 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
             departments: null
         }
     }
+
+    self.setFilterState = function(params){
+        filterState = angular.copy(params);
+    };
+
+    self.getFilterState = function(params){
+        return filterState;
+    };
+
+    self.clearFilterState = function(params){
+        filterState = null;
+    };
+
+
+
+
 
 
 }]);

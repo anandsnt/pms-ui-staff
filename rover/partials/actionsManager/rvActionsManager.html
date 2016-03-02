@@ -52,17 +52,17 @@
         <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="1000">
             <ul class="wrapper">
                 <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
-                <li ng-class="{'active': action.id === selectedActionId,'overdue': action.is_overdue === 'true'}" ng-repeat="action in actions"
+                <li ng-class="{'active': action.id === filterOptions.selectedActionId,'overdue': action.is_overdue === 'true'}" ng-repeat="action in actions"
                     ng-click="onSelectAction(action.id)">
                     <!-- {type} can be "unassigned", "assigned", "completed" or "specials". Also add class "active" when selected, first one should be active by default when screen is loaded -->
                     <span class="icons icon-action {{action.iconClass}}"
-                          ng-class="{'active' : action.id === selectedActionId}"
+                          ng-class="{'active' : action.id === filterOptions.selectedActionId}"
                           ng-if="action.is_overdue === 'true'">
                         {{action.action_type}}
                         overdue
                     </span>
                      <span class="icons icon-action {{action.iconClass}}"
-                           ng-class="{'active' : action.id === selectedActionId}"
+                           ng-class="{'active' : action.id === filterOptions.selectedActionId}"
                            ng-if="action.is_overdue !== 'true'">
                          {{action.action_type}}
                     </span>
@@ -76,7 +76,7 @@
         </div>
         <!--Pagingation controls used for development. Have to be replaced once markup is finalized by design team-->
         <div class="search-pagination ng-scope" ng-if="filterOptions.totalCount > filterOptions.perPage"
-             style="bottom:61px" ng-hide=" true">
+             style="bottom:61px">
             <button style="width:80px" class="button dark-grey next" ng-click="loadNextPage($event)"
                    ng-class="{'disabled': filterOptions.isLastPage}" ng-disabled="filterOptions.isLastPage">Next</button>
             <button style="width:80px" class="button dark-grey prev" ng-click="loadPrevPage($event)"
