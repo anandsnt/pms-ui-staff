@@ -16,7 +16,7 @@
                 <select id="department" ng-model="newAction.department"
                         ng-class="{'placeholder': !newAction.department}">
                     <option value="" selected>Select department</option>
-                    <option value="department.value" ng-selected="newAction.department == department.value"
+                    <option value="{{department.value}}" ng-selected="newAction.department == department.value"
                             ng-repeat="department in departments">
                         {{department.name}}
                     </option>
