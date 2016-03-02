@@ -758,6 +758,85 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		return deferred.promise;
 	};
 
+
+        this.getRoomsAvailability = function(dateRange){
+            var deferred = $q.defer(),
+                url = '/api/availability/room_types';
+
+            rvBaseWebSrvV2.getJSON(url,dateRange).then(function(response) {
+                var roomTypeNames = [];
+
+                if(!that.data.gridData.additionalData) {
+                    that.data.gridData.additionalData = {};
+                }
+
+                if(response.results.length > 0){
+                    // Inorder to get the room type names in the order of display fetch the first result set
+                    var firstDayRoomDetails = response.results[0].room_types,
+                        idsInOrder = _.pluck(firstDayRoomDetails,'id');
+
+                    _.each(idsInOrder,function(roomTypeId){
+                        roomTypeNames.push(_.find(that.data.gridData.roomTypes,{
+                            id:roomTypeId
+                        }).name)
+                    });
+                }
+                _.extend(that.data.gridData.additionalData,{
+                    'roomTypeWiseDetails': _.zip.apply(null, _.pluck(response.results, 'room_types')),
+                    'roomTypeNames': roomTypeNames
+                });
+                deferred.resolve(true);
+            },function(data){
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.getGuestOccupancies = function(dateRange){
+            var deferred = $q.defer(),
+                url = '/api/daily_occupancies/guest_counts';
+
+            rvBaseWebSrvV2.getJSON(url,dateRange).then(function(response) {
+                var adultsChildrenCounts = [];
+
+                if(!that.data.gridData.additionalData) {
+                    that.data.gridData.additionalData = {};
+                }
+                _.each(response.results,function(occupancy){
+                    adultsChildrenCounts.push({
+                        'bothCount': occupancy.adults + '/' + occupancy.children,
+                    });
+                });
+
+                _.extend(that.data.gridData.additionalData,{
+                    'adultsChildrenCounts': adultsChildrenCounts
+                });
+
+                deferred.resolve(true);
+            },function(data){
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.getOccupancyCount = function(dateRange){
+            var deferred = $q.defer(),
+                promises = [];
+
+            if(!that.data.gridData.additionalData || !that.data.gridData.additionalData.roomTypeWiseDetails){
+                promises.push(that.getRoomsAvailability(dateRange));
+            }
+            promises.push(that.getGuestOccupancies(dateRange));
+
+            $q.all(promises).then(function() {
+                deferred.resolve(true);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
 	/***************************************************************************************************/
 
 }]);
