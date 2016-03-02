@@ -34,6 +34,7 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
         var onToggleSuccess = function(data) {
             $scope.$emit('hideLoader');
         };
+        $scope.languageData.show_language_field = !$scope.languageData.show_language_field;
         $scope.invokeApi(ADLanguagesSrv.toggleLanguagesUse, {
             show_language_field: $scope.languageData.show_language_field
         }, onToggleSuccess);

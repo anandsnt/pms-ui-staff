@@ -191,7 +191,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
     var successCallBackForLanguagesFetch = function(data) {
       $scope.$emit('hideLoader');
-      data.languages = _.where(data.languages, { is_show_on_guest_card: true });
       $scope.languageData = data;
     };
 

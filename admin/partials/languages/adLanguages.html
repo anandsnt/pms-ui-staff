@@ -3,10 +3,15 @@
         <header class="content-title float">
             <h2 translate> LANGUAGES </h2>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <ad-toggle-button is-checked="languageData.show_language_field" ng-click="toggleLanguagesUse()" div-class="header-title" ><!--label="{{'USE_LANGUAGES'| translate}}">-->
-            </ad-toggle-button>
+            <div class="header-title">
+                <h2>Use Languages</h2>
+                <div name="active-inactive-toggle" class="switch-button single header-switch-btn" ng-class="{ on: languageData.show_language_field }" ng-click="toggleLanguagesUse()">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
         </header>
-        <section class="content-scroll">
+        <section class="content-scroll" ng-class="{'overlay' : !languageData.show_language_field}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <table id="languages" class="grid datatable dataTable" ng-table="itemList">
                 <tbody>
