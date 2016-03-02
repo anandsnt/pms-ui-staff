@@ -35,7 +35,7 @@
             <div class="entry margin">
                 <label>Charge code <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
+                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes" ng-change="onChangeChargeCode()">
                         <option value="">Select Charge Code</option>
                     </select>
                 </div>

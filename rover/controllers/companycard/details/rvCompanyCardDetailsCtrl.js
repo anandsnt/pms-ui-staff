@@ -77,6 +77,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("refreshComissionsScroll");
 			}
+			if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
 
 			$scope.currentSelectedTab = tabToSwitch;
 		};
@@ -148,6 +151,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		/*-------AR account starts here-----------*/
+		
+		$scope.$on('ERRORONARTAB', function(e) {
+			$scope.switchTabTo('', 'cc-ar-accounts');
+		});
 
 		$scope.showArAccountButtonClick = function($event) {
 			$scope.switchTabTo($event, 'cc-ar-accounts');
@@ -195,6 +202,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-ar-transactions') {
 				$rootScope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
+			}
+			if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
 			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};

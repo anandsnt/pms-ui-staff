@@ -1,5 +1,5 @@
-/*
- *	Checkout final Controller
+/**
+ * Checkout final Controller
  */
 sntGuestWeb.controller('GwCheckoutFinalController', ['$scope', '$state', '$controller', 'GwWebSrv', '$timeout', 'GwCheckoutSrv',
 	function($scope, $state, $controller, GwWebSrv, $timeout, GwCheckoutSrv) {
@@ -12,12 +12,15 @@ sntGuestWeb.controller('GwCheckoutFinalController', ['$scope', '$state', '$contr
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}();
 
-		$scope.$emit('showLoader');
-		$timeout(function() {
-			$scope.$emit('hideLoader');
+		var onSuccess = function(response) {
 			$scope.isOperationCompleted = true;
-		}, 500);
-
-
+		};
+		var options = {
+			params: {
+				'reservation_id': GwWebSrv.zestwebData.reservationID
+			},
+			successCallBack: onSuccess
+		};
+		$scope.callAPI(GwCheckoutSrv.completeCheckout, options);
 	}
 ]);

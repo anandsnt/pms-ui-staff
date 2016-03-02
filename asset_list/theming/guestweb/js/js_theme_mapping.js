@@ -33,11 +33,14 @@ module.exports = {
 			'guestweb_claridge' :[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_demo' 		: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_balboa':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_luxor':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_luxor.js'],
+			'guestweb_excalibur':[ themeJsRoot + 'app_router_excalibur.js'],
+			'guestweb_luxor':[themeJsRoot + 'app_router_luxor.js'],
 			'guestweb_mgm_grand':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mgm_grand.js'],
 			'guestweb_signature_at_mgm':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_signature_at_mgm.js'],
 			'guestweb_11Howard':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_excalibur':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_terranea':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_naples_grande':[ themeJsRoot + 'app_router_common.js']
+
 		}
 	}
 }

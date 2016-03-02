@@ -114,6 +114,14 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         });
         
+	var MLISessionId = "";
+	try {
+                HostedForm.setMerchant($scope.zestStationData.MLImerchantId);
+        }
+        catch(err) {
+            console.warn('mli set session err: ',err);
+        };
+        
         $scope.receivedCardSwipeOrChipSuccess = function(){
             var cardCode = getSixCreditCardType($scope.sixpay_data.card_type).toLowerCase();//from Utils.js
             //save the payment to guest card/reservation
@@ -125,13 +133,44 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                  add_to_guest_card: true,
                  card_code: cardCode,
                  card_expiry: expirYear+'-01-'+expirMonth,
+                 credit_card: data.RVCardReadCardType,
                  card_name: $scope.sixpay_data.card_holder_name,
                  payment_type: "CC",
                  reservation_id: reservationId,
-                 token: $scope.sixpay_data.token_no
+                 mli_token: $scope.sixpay_data.token_no
              };
-             $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
+             
+             /*
+              var data = {
+                    "is_promotions_and_email_set" : $scope.saveData.promotions,
+                    "signature" : signatureData,
+                    "reservation_id" : $scope.reservationBillData.reservation_id,
+                    "payment_type": "CC",
+                    "mli_token": swipedTrackDataForCheckin.token,
+                    "et2": swipedTrackDataForCheckin.RVCardReadTrack2,
+                    "etb": swipedTrackDataForCheckin.RVCardReadETB,
+                    "ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
+                    "pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
+                    "card_name": swipedTrackDataForCheckin.RVCardReadCardName,
+                    "name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
+                    "card_expiry": cardExpiry,
+                    "credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
+                    "do_not_cc_auth" : true,
+                    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled,
+                    "add_to_guest_card" : addToGuest
+            };*/
+             
+             
+             
         };
+        
+        $scope.getMLISession = function(){
+                this.MLIOperator = new MLIOperation();
+                $scope.saveSwipedCardMLI();
+        }
+        
+        
+        
         
         $scope.successSavePayment = function(response){
             if (response.status === 'success'){
@@ -196,8 +235,27 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         $scope.shouldShowWaiting = false;
         $scope.pageloadingOver = false;
-        
+        $scope.inProd = function(){
+            var notProd = false;
+            var url = true ? document.location : window.location;
+            if (url.hostname){
+                if (typeof url.hostname === typeof 'str'){
+                    if (url.hostname.indexOf('pms-dev') !==-1 || 
+                        url.hostname.indexOf('pms-release') !==-1 || 
+                        url.hostname.indexOf('localhost') !==-1){
+                        notProd = true;
+                    }
+                }
+            }
+            if (!notProd){//in production, dont allow this function
+                return true;
+            } else return false;
+        };
         $scope.simulateSixPay = function(){
+            var inProduction = $scope.inProd();
+            if (inProduction){
+                return;
+            }
             $scope.$emit('showLoader');
             $scope.isSimulated = true;
             $scope.shouldShowWaiting = true;
@@ -353,6 +411,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
            
             var current=$state.current.name;
             if (current === 'zest_station.card_sign'){
+                
+                $scope.$emit('hideLoader');
                  $scope.signaturePluginOptions = {
                     height : 230,
                     width : $(window).width() - 120,
@@ -368,6 +428,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             } else {
                 $scope.at = 'card-swipe';
             }
+            
             $state.from = $scope.at;
             $scope.show = {
                 swipecardScreen: true
@@ -377,11 +438,11 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
             $scope.signatureData = "";
             
-        if ($scope.zestStationData.payment_gateway === "sixpayments") {
-            $scope.initiateCardReader();//sixpay
-        } else {
-            console.info('not sixpay :)')
-        }
+            if ($scope.zestStationData.payment_gateway === "sixpayments") {
+                $scope.initiateCardReader();//sixpay
+            } else {
+                console.info('not sixpay :)')
+            }
             
          //   $scope.refreshIframeWithGuestData($scope.selectedReservation); //used only for manual entry
         };
@@ -390,40 +451,183 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 
 
 
+        $scope.dbugMLI = function(){
+            var debugCard = {
+                
+            };
+            
+            
+            
+            
+        };
+
+        $scope.getDebugCardData = function(){
+          return {"Command":"cmd_observe_for_swipe","Message":"","ResponseCode":0,"RVCardReadCardIIN":"478800","RVCardReadCardName":" ","RVCardReadCardType":"VA","RVCardReadETB":"","RVCardReadETBKSN":"","RVCardReadExpDate":"1712","RVCardReadIsEncrypted":"1","RVCardReadMaskedPAN":"4788000050008291","RVCardReadPAN":"4788000050008291","RVCardReadTrack1":"654B3A6E63F6C65C0DD7D58B9D2D7B0629B36C5E832A37854148A31C9D3D6579AA42C3286B6494D80B21DC7729FAD75637DE9B5B805DD347F6332A0F1DCB8E95","RVCardReadTrack1KSN":"9012080B2ACA760002B4","RVCardReadTrack2":"3E7A44B5657F96F6F005AA82620D940C8EE99448063956CABBDA021EEAFDA6642A2BD8878B8E4FE2","RVCardReadTrack2KSN":"9012080B2ACA760002B4","RVCardReadTrack3":"","RVCardReadTrack3KSN":"9012080B2ACA760002B4"};
+        };
+
+
+        $scope.token = '';
+        $scope.swipeData;
         $scope.$on('SWIPE_ACTION',function(evt, swipedCardData){
+            console.info('swipedCardData: ');
+            console.info(swipedCardData)
                 var swipeOperationObj = new SwipeOperation();
+                $scope.swipeData = JSON.parse(swipedCardData);
+                
                 var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
                     
                     var cb = function(response){
-                        
-                        $scope.$emit('hideLoader');
-                    console.info('general callback');
-                    console.info(response);
-                    }
+                        //if (response && response.status !== 'failure'){
+                        if (true){//debugging
+                            $scope.$emit('hideLoader');
+                            console.info('general callback');
+                            console.info(response);
+                            $scope.token = response.data;
+                            //$scope.swipeData.token = response.data;
+                            $scope.swipeData.token = '8041637101448291';//debugging
+                            console.info('debugging token success; save to staycard;');
+                            tokenizeSuccessCallback();
+                        } else {
+                            failcb(response);
+                        }
+                    };
                     
-                    var tokenizeSuccessCallback = function(tokenValue){
-                  //  alert('token success: ',tokenValue);
-                    
+                    var tokenizeSuccessCallback = function(){
+                        console.info('now tokenize and save to staycard')
                         $scope.$emit('hideLoader');
-                        swipedCardData.token = tokenValue;
-                        
-                        //$scope.addNewPaymentModal(swipedCardData);
                         $scope.swippedCard = true;
-                        $scope.saveCardDataFromSwipe(swipedCardData);
-                };
+                        
+                        $scope.getMLISession();
+                    };
                 var failcb = function(response){
                     $scope.$emit('hideLoader');
                     console.warn('failed to get token from MLI');
-                    alert('failed to tokenize');
+                    //alert('failed to tokenize');
                 };
                 $scope.invokeApi(zsPaymentSrv.tokenize, getTokenFrom, cb);
         });
         
-       $scope.saveCardDataFromSwipe = function(swipedCardData){
-            //post to guest card/reservation then change screens
-            //var obj = $scope.alertProps(swipedCardData.token);
-            //alert(obj);
-            $scope.goToCardSign();
+        
+        $scope.getCardDataToSave = function(swipedTrackDataForCheckin){
+            var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
+            var data = {
+                    "is_promotions_and_email_set" : $scope.saveData.promotions,
+                    "signature" : signatureData,
+                    "reservation_id" : $scope.reservationBillData.reservation_id,
+                    "payment_type": "CC",
+                    "mli_token": swipedTrackDataForCheckin.token,
+                    "et2": swipedTrackDataForCheckin.RVCardReadTrack2,
+                    "etb": swipedTrackDataForCheckin.RVCardReadETB,
+                    "ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
+                    "pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
+                    "card_name": swipedTrackDataForCheckin.RVCardReadCardName,
+                    "name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
+                    "card_expiry": cardExpiry,
+                    "credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
+                    "do_not_cc_auth" : true,
+                    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled,
+                    "add_to_guest_card" : true
+            };
+            //CICO-12554 indicator if the track data is encrypted or not
+            data.is_encrypted = true;
+            if(swipedTrackDataForCheckin.RVCardReadIsEncrypted === 0 || swipedTrackDataForCheckin.RVCardReadIsEncrypted === '0'){
+                    data.is_encrypted = false;
+                    data.card_number = swipedTrackDataForCheckin.RVCardReadPAN;
+            }
+            //CICO-12554 Adding the KSN conditionally
+            data.ksn = swipedTrackDataForCheckin.RVCardReadTrack2KSN;
+            
+            if(swipedTrackDataForCheckin.RVCardReadETBKSN !== "" && typeof swipedTrackDataForCheckin.RVCardReadETBKSN !== "undefined"){
+                    data.ksn = swipedTrackDataForCheckin.RVCardReadETBKSN;
+            }
+            return data;
+        }
+        
+        $scope.createSWipedDataToRender = function(swipedCardData){
+		var swipedCardDataToRender = {
+			"cardType": swipedCardData.RVCardReadCardType,
+			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),
+			"nameOnCard": swipedCardData.RVCardReadCardName,
+			"cardExpiry": swipedCardData.RVCardReadExpDate,
+			"cardExpiryMonth": swipedCardData.RVCardReadExpDate.slice(-2),
+			"cardExpiryYear": swipedCardData.RVCardReadExpDate.substring(0, 2),
+			"et2": swipedCardData.RVCardReadTrack2,
+			'ksn': swipedCardData.RVCardReadTrack2KSN,
+			'pan': swipedCardData.RVCardReadMaskedPAN,
+			'etb': swipedCardData.RVCardReadETB,
+			'swipeFrom': swipedCardData.swipeFrom,
+			'token': swipedCardData.token
+		};
+
+		return swipedCardDataToRender;
+	};
+        
+        $scope.saveSwipedCardMLI = function(data){
+            if (!data){
+                data = $scope.swipeData;
+                console.log(data)
+            }
+            var cardCode = data.RVCardReadCardType;
+            //save the payment to guest card/reservation
+            var reservationId = $scope.selectedReservation.id;
+            var expirYear = '20'+data.RVCardReadExpDate.substring(0, 2);
+            var expirMonth = data.RVCardReadExpDate.substring(2, 4);
+            
+            var postData = {
+                 add_to_guest_card: true,
+                 card_code: cardCode,
+                 card_type: cardCode,
+                 card_expiry: expirYear+'-01-'+expirMonth,
+                 card_name: data.RVCardReadCardName,
+                 payment_type: "CC",
+                 reservation_id: reservationId,
+                 expirMonth: expirMonth,
+                 expirYear: expirYear,
+                 card_number: "xxxx-xxxx-xxxx-" + data.token.slice(-4),
+                 token: data.token
+             };
+             
+             
+             
+			 var sessionDetails = {};
+			 sessionDetails.cardNumber = postData.card_number;
+			 //sessionDetails.cardSecurityCode = $scope.postData.cvv;
+			 sessionDetails.cardExpiryMonth = $scope.expirMonth;
+			 sessionDetails.cardExpiryYear = $scope.expirYear;
+
+			 var callback = function(response){
+                             console.info(response);
+			 	$scope.$emit("hideLoader");
+
+			 	if(response.status ==="ok"){
+                                    MLISessionId = response.session;
+                                    postData.session_id = MLISessionId;
+                                    console.info('sessionId: ',postData);
+                                    $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
+			 	}
+			 	else{
+                                    console.warn('there was a problem with the card');
+			 	}
+			 };
+
+			try {
+                            console.info('trying updatesession')
+			    HostedForm.updateSession(sessionDetails, callback);
+			    $scope.$emit("showLoader");  
+			}
+			catch(err) {
+                            console.warn(err);
+			};
+             
+             
+        };
+        
+       $scope.saveCardDataFromSwipe = function(){
+           console.log('saveCardDataFromSwipe: ',$scope.swipeData);
+          
+           var swipedCardDataToSave = $scope.createSWipedDataToRender($scope.swipeData);
+           console.log(swipedCardDataToSave);
+           $scope.saveSwipedCardMLI(swipedCardDataToSave);//onsuccess proceeds to signature
        };
        $scope.alertProps = function(o){//to assist in debugging from ipad
            var propsNumber = Object.keys(o).length;
@@ -462,23 +666,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             //var listeningPort = $scope.zestStationData.hotel_settings.cc_swipe_listening_port;
             //zestSntApp.desktopCardReader.startDesktopReader(listeningPort, options);
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
         };
         $scope.cardReader = new CardOperation();
 
-
-$scope.initWsSwipe = function(){
-  
+    $scope.serviceStarted = false;
+    $scope.initWsSwipe = function(){
+        $scope.serviceStarted = true;
         var config = {
           "swipeService":"wss://localhost:4649/CCSwipeService"   ,
           "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
@@ -529,26 +722,15 @@ $scope.initWsSwipe = function(){
 	    // Triggers when there is a message from websocket server.
 	    ws.onmessage = function (evt) {
                 	var received_msg = evt.data;
-			/*if(0 == received_msg.localeCompare("checkactive")) {
-				if(isActive == true)
-					ws.send("active");
-				else 
-					ws.send("not_active");
-			}
-			else {
-                		alert(received_msg);
-			}*/
 			console.log(received_msg);
-                        
                         $scope.$emit('SWIPE_ACTION',received_msg)
-                        
                         $scope.goToCardSign();
             };
 
 	    // Triggers when the server is down.
             ws.onclose = function () {
                 // websocket is closed.
-                alert(config['close_alert']);
+              //  alert(config['close_alert']);
             };
             return ws;
         };
@@ -574,7 +756,7 @@ $scope.initWsSwipe = function(){
         $scope.initiateCardReader = function() {
             console.info('init card reader for sixpay');
             //if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
-            if (true) {
+            if (true) {//debugging ?
               setTimeout(function() {
                   console.warn('start card reader');
                   $scope.cardReader.startReader(options);
@@ -595,30 +777,52 @@ $scope.initWsSwipe = function(){
          * Start Card reader now!.
          */
         
+        $scope.setInitSwipeSettings = function(){
+                if (!$scope.enable_remote_encoding){
+                    $scope.initWsSwipe();
+
+                } else {
+                    if ($scope.zestStationData.payment_gateway !== "sixpayments") {
+                /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
+                 * desktopSwipeEnabled flag is true
+                 */
+
+                    if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
+                        console.log('init desktop swipe, any device');
+                        initiateDesktopCardReader();
+                    } else {
+                        console.log('init reader')
+                      //Time out is to call set Browser
+                          setTimeout(function() {
+                            $scope.initiateCardReader();
+                          }, 2000);
+                      }
+                    } else {
+                        console.warn('refresh iframe with: ',$state.selectedReservation);
+                        $scope.refreshIframeWithGuestData($state.selectedReservation);
+                    }
+                }
+        };
+        $scope.fetchDoorLockSettings = function(){
+            var onResponse = function(response){
+                console.info(response);
+                if (response.enable_remote_encoding !== typeof undefined){
+                    $scope.enable_remote_encoding = response.enable_remote_encoding;
+                    //$scope.enable_remote_encoding = false;
+                }
+                $scope.setInitSwipeSettings();
+            };
+            
+            
+          $scope.callAPI(zsTabletSrv.getDoorLockSettings, {
+                params: {},
+                'successCallBack':onResponse,
+                'failureCallBack':onResponse
+            });  
+        };
+        $scope.fetchDoorLockSettings();
         
         
-        $scope.initWsSwipe();
-        if ($scope.zestStationData.payment_gateway !== "sixpayments") {
-        /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
-         * desktopSwipeEnabled flag is true
-         */
-        
-        
-        
-            if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
-                console.log('init desktop swipe, any device');
-                initiateDesktopCardReader();
-            } else {
-                console.log('init reader')
-              //Time out is to call set Browser
-                  setTimeout(function() {
-                    $scope.initiateCardReader();
-                  }, 2000);
-              }
-        } else {
-            console.warn('refresh iframe with: ',$state.selectedReservation);
-            $scope.refreshIframeWithGuestData($state.selectedReservation);
-        }
 	 $scope.sixPaymentSwipe = function(){
 		var data = {};
                 console.info('debugging sixpay: ',$state.debugSixpay)
@@ -891,7 +1095,6 @@ var SwipeOperation = function(){
             if (typeof swipedCardData === typeof 'str'){
                 swipedCardData = JSON.parse(swipedCardData);
             }
-            console.log(swipedCardData);
 			var ksn = swipedCardData.RVCardReadTrack2KSN;
                         if(swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined"){
 				ksn = swipedCardData.RVCardReadETBKSN;

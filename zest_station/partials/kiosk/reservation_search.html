@@ -39,8 +39,10 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" touch-press='reEnterLastName()'>
-                        <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
+                    <button type="button" class="button option" touch-press='reEnterLastName(reservationParams.last_name)'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                        
                     </button>
                     {{'RES_SRCH_RE_ENTER_LAST' |translate}}
                     <span>"{{reservationParams.last_name}}"</span>
@@ -49,8 +51,9 @@
                     <span>Or</span>
                 </li>
                 <li ng-show="showRoomEnter">
-                    <button type="button" class="button option" touch-press='reEnterRoomNumber()'>
-                        <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
+                    <button type="button" class="button option" touch-press='reEnterRoomNumber(reservationParams.room_no)'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
                     <span>"{{reservationParams.room_no}}"</span>
@@ -60,7 +63,8 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
-                        <div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
                     </button>
                     {{'RES_SRCH_TALK' |translate}}
                     <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>

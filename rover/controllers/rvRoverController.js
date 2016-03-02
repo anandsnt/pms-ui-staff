@@ -116,6 +116,11 @@ sntRover.controller('roverController',
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
+      //CICO-25728
+      //TEMPORARY FLAG TO SKIP BAR AREAS
+      $rootScope.hideRateOfDay = hotelDetails.hide_rate_of_day;
+
+
       // CICO-18040
       $rootScope.isFFPActive = hotelDetails.is_ffp_active;
       $rootScope.isHLPActive = hotelDetails.is_hlp_active;

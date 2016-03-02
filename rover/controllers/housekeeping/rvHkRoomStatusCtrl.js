@@ -97,6 +97,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
+		var $_printQueued = false;
+
 		$scope.resultFrom         = $_page;
 		$scope.resultUpto         = $_perPage;
 		$scope.netTotalCount      = 0;
@@ -364,7 +366,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			});
 		};
 
-
 		$scope.printData = function() {
 			$scope.returnToPage = $_page;
 
@@ -373,11 +374,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			function callback (data) {
 				$_fetchRoomListCallback(data);
-				printList();
+				$_printQueued = true;
 			};
 
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomListPost, {}, callback);
 		};
+
+		var allRendered = $scope.$on('ALL_RENDERED', function() {
+			if ( $_printQueued ) {
+				$_startPrinting();
+				$_printQueued = false;
+			}
+		});
+
+		$scope.$on( '$destroy', allRendered );
 
 
 
@@ -499,7 +509,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/*
 		 * fetch Maintenence resons
 		 */
-
 		var fetchMaintenanceReasons = function() {
 
 			function $_maintenanceReasonsCallback(data) {
@@ -865,40 +874,31 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 
-		function printList () {
-			var domRoomInsertDelay = 100;
-
-			// add the orientation
-			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
-
-			$scope.$emit('hideLoader');
-
+		function $_startPrinting() {
 			/*
 			*	======[ READY TO PRINT ]======
 			*/
 
-			// this will show the popup with full report
-		    $timeout(function() {
+			// add the orientation
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+			$scope.$emit('hideLoader');
 
-		    	/*
-		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-		    	*/
-
-		        $timeout(function () {
-		        	$window.print();
-			        if ( sntapp.cordovaLoaded ) {
-			            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-			        };
-		        }, 0);
-		    }, domRoomInsertDelay);
-
-		    /*
-		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
-		    */
-
-		    // in background we need to keep the report with its original state
-		    $timeout(function() {
-		    	// remove the orientation
+			/*
+			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			*/
+			$timeout(function() {
+				$window.print();
+				if ( sntapp.cordovaLoaded ) {
+					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				};
+			}, 100);
+			/*
+			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			*/
+		
+			// remove the orientation after similar delay
+			$timeout(function() {
+				// remove the orientation
 				$( '#print-orientation' ).remove();
 
 				// reset params to what it was before printing
@@ -907,9 +907,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
 
 				$_callRoomsApi();
-		    }, domRoomInsertDelay);
+			}, 150);
 		};
-
 
 
 		function $_fetchRoomListCallback(data, alreadyFetched) {
@@ -1032,47 +1031,19 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		function $_postProcessRooms() {
-			var _processCount = 0,
-				_minCount     = 13,
-				i             = 0;
+			var rooms = $_roomList.rooms,
+				i     = 0,
+				j     = 0;
 
-			// if   : results -> load 0 to '_processCount' after a small delay
-			// else : empty and hide loader
-			if ( $scope.uiTotalCount ) {
-				_processCount = Math.min( $scope.uiTotalCount, _minCount );
-				_firstInsert();
-			} else {
-				$scope.rooms = [];
-				_hideLoader();
+			/** removed code for rendering in two phase */
+
+			for ( i = 0, j = rooms.length; i < j; i++ ) {
+				$scope.rooms.push( rooms[i] );
 			};
 
-			function _firstInsert () {
-				for ( i = 0; i < _processCount; i++ ) {
-					$scope.rooms.push( $_roomList.rooms[i] );
-				};
-
-				// if   : more than '_minCount' results -> load '_processCount' to last
-				// else : hide loader
-				if ( $scope.uiTotalCount > _minCount ) {
-					$timeout(_secondInsert, 50);
-				} else {
-					_hideLoader();
-				};
-			};
-
-			function _secondInsert () {
-				for ( i = _processCount; i < $scope.uiTotalCount; i++ ) {
-					$scope.rooms.push( $_roomList.rooms[i] );
-				};
-
-				_hideLoader();
-			};
-
-			function _hideLoader () {
-				$_roomList = {};
-				$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
-				$scope.$emit( 'hideLoader' );
-			};
+			$_roomList = {};
+			$_refreshScroll( localStorage.getItem('roomListScrollTopPos') );
+			$scope.$emit( 'hideLoader' );
 		};
 
 
@@ -1447,6 +1418,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			angular.element( $_roomsEl ).off('ontouchmove');
 			angular.element( $_filterRoomsEl ).off('ontouchmove');
 		});
+
 		$scope.getWidthForSummary = function(){
 			var summaryWidth = 0,
 				tasksLength = $scope.summary.work_types.length;

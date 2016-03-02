@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$stateParams', function($scope, ADRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state', '$stateParams', function($timeout, $scope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -10,6 +10,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	BaseCtrl.call(this, $scope);
 
 	var roomId = $stateParams.roomId;
+	$scope.isSuite = false;
 
 	if(roomId){
 		//if roomnumber is null returning to room list
@@ -18,6 +19,68 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 		$scope.editMode = true;
 	}
+	
+	/*
+     * To handle add new room number click
+     */
+	$scope.showNewRoomNumber = function() {
+		if($scope.data.suite_rooms.length == 0 || _.last($scope.data.suite_rooms).room_number !== "") {
+			$scope.data.suite_rooms.push({'room_number':''});
+		}
+	};
+
+	$scope.roomTypeChanged = function(value) {
+
+		if ($scope.editMode){
+
+			var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
+				isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
+			if (isNewTypeSuite && isOldTypeSuite) {
+				$scope.isSuite = true;
+				$scope.selectedRoomTypeId = $scope.data.room_type_id
+			}
+			else if(isNewTypeSuite || isOldTypeSuite) {
+				var message = [];
+				if (isNewTypeSuite){					
+					message = ["Regular room type cannot be changed to suite room type"];
+				}
+				else {
+					message = ["Suite room type cannot be changed to regular room type"];
+				}
+
+				$timeout(function() {
+					$scope.errorMessage = message;
+					$scope.data.room_type_id = $scope.selectedRoomTypeId;
+					$('.content-scroll').animate({scrollTop: 0}, 'fast');
+				}, 500);
+			}
+		}
+		else{
+			$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
+		}
+	};
+   
+    /*
+     * To handle blur event on Suite rooms
+     */
+    $scope.onBlur = function(index){
+        if($scope.data.suite_rooms[index].name === "") {
+          $scope.data.suite_rooms.splice(index, 1);
+        }
+        angular.forEach($scope.data.suite_rooms,function(item, i) {
+          if (item.room_number === "") {
+           $scope.data.suite_rooms.splice(i, 1);
+         }
+       });
+    };
+
+	/*
+     * To handle individual deletion of Suite rooms
+     */
+    $scope.deleteRoomNumber = function(index) {
+    	$scope.data.suite_rooms.splice(index, 1);
+    };
+
 
 	/*
 	* Success function of room details fetch
@@ -28,6 +91,8 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		$scope.data = data;
 		$scope.floors = data.floors;
 		$scope.roomNumber = $scope.data.room_number;
+		$scope.selectedRoomTypeId = data.room_type_id;
+		$scope.roomTypeChanged(data.room_type_id);
 		/*
 		* adding the selected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
@@ -87,6 +152,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	var fecthAllRoomDetailsSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
 		$scope.data = data;
+		$scope.data.suite_rooms = [];
 		for(var i = 0; i < $scope.data.room_features.length; i++){
 			$scope.data.room_features[i].selected = false;
 		}
@@ -117,6 +183,17 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
     }
 
 
+    /*
+    * To handle cancel click
+    */
+
+    $scope.cancelCliked   = function(){
+
+      $scope.isAddmode = false;
+      $scope.isEditmode = false;
+    };
+
+
 	/*
 	* method for go back to previous stage, it is always room listing
 	*/
@@ -129,7 +206,6 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.updateRoomDetails = function(){
         
-		console.log($scope.data);
 		var postData = {};
 		postData.room_id = $scope.data.room_id;
 		postData.room_number = $scope.data.room_number;
@@ -143,6 +219,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.is_exclude_from_manual_checkin = $scope.data.is_exclude_from_manual_checkin;
 		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
 		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
+		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms,"room_number");
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
@@ -173,10 +250,10 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 
 		if($scope.editMode) {
-		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
+		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails,$scope.failureCallBackOfUpdateRoomDetails);
 		}
 		else {
-			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);
+			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails,$scope.failureCallBackOfUpdateRoomDetails);
 		}
 	};
 
@@ -185,6 +262,15 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.successCallbackOfUpdateRoomDetails = function(data){
 		$scope.goBack();
+	};
+
+	/*
+	 * Failure action of updateRoomDetail web service call
+	 */
+	$scope.failureCallBackOfUpdateRoomDetails = function(errorMessage) {
+
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
 	};
 
 }]);

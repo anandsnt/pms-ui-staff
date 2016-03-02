@@ -1,0 +1,118 @@
+/* StayNTouch | SNT Default Kiosk styles */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#f6991b;
+	
+	@textColor: 			#202225;
+	@backgroundColor: 		#fcfcfc;
+
+	@actionColor:			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#d8d8d8;
+	@transparentColor: 		fade(@textColor, 20%);
+
+	@gradientStart: 		#ffb319;
+	@gradientEnd: 			#ff860d;
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	/* 300 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('../../type/sourcesanspro-light-webfont.eot');
+	    src: url('../../type/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('../../type/sourcesanspro-light-webfont.woff') format('woff'),
+	         url('../../type/sourcesanspro-light-webfont.ttf') format('truetype');
+	    font-weight: 300;
+	    font-style: normal;
+	} 
+
+	/* 400 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('../../type/sourcesanspro-regular-webfont.eot');
+	    src: url('../../type/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    	     url('../../type/sourcesanspro-regular-webfont.woff') format('woff'),
+	         url('../../type/sourcesanspro-regular-webfont.ttf') format('truetype');
+	    font-weight: 400;
+	    font-style: normal;
+	}  
+
+	/* 400 italic ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('../../type/sourcesanspro-italic-webfont.eot');
+	    src: url('../../type/sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('../../type/sourcesanspro-italic-webfont.woff') format('woff'),
+	         url('../../type/sourcesanspro-italic-webfont.ttf') format('truetype');
+	    font-weight: 400;
+	    font-style: italic;
+	}  
+
+	/* 600 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('../../type/sourcesanspro-semibold-webfont.eot');
+	    src: url('../../type/sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('../../type/sourcesanspro-semibold-webfont.woff') format('woff'),
+	         url('../../type/sourcesanspro-semibold-webfont.ttf') format('truetype');
+	    font-weight: 600;
+	    font-style: normal;
+	} 
+
+	/* 700 ***/
+	@font-face {
+	    font-family: 'source_sans_pro';
+	    src: url('../../type/sourcesanspro-bold-webfont.eot');
+	    src: url('../../type/sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('../../type/sourcesanspro-bold-webfont.woff') format('woff'),
+	         url('../../type/sourcesanspro-bold-webfont.ttf') format('truetype');
+	    font-weight: 700;
+	    font-style: normal;
+	} 
+
+	@fontFamily: "source_sans_pro", sans-serif;
+
+/* 3. ICONS & IMAGES
+==========================================================*/
+	@background: 			@backgroundColor url("/assets/zest_station/css/themes/snt/background.png") repeat;
+	@backgroundSize: 		'';
+
+	@headerIconsColor: 		@actionBackground;
+	@headerIconsActive:		@textColor; 
+
+	.icons { 
+		fill: @white; 
+
+		&.icon-no-print,
+		&.icon-pen { stroke: @white; }
+
+		&.icon-oos { fill: @actionBackground; }
+
+		&.icon-create-key {
+			fill: @actionBackground;
+			stroke: @actionBackground;
+		}
+	}
+
+	.form {
+        .entry {
+        	input { background-color: @white; }
+        	
+            &.input { 
+                .icons { fill: @brandColor; }
+            }
+        }
+    }
+
+    .button:not(.transparent):not(.blank) {
+	    background: linear-gradient(to bottom, @gradientStart 0%, @gradientEnd 100%);
+	    box-shadow: inset 0 -2px 0 rgba(0,0,0,.2);
+
+	    &:active { 
+	    	background: linear-gradient(to top, @gradientStart 0%, @gradientEnd 100%);
+	    	box-shadow: inset 0 2px 2px rgba(0,0,0,.3);
+	    }
+	}

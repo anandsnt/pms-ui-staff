@@ -8,7 +8,9 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='printBill()'>
-                        <div ng-include="'/assets/zest_station/css/icons/print.svg'"></div>
+                        <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
+                        <div ng-include="icons.url.print"></div>
+                        
                     </button>
                     {{'PRINT_BILL' |translate}}
                 </li>
@@ -17,7 +19,8 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='clickedNoThanks()'>
-                        <div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div>
+                        <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
+                        <div ng-include="icons.url.noprint"></div>
                     </button>
                     {{'NO_THX' |translate}}
                 </li>
@@ -49,7 +52,8 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reTypeEmail()'>
-                         <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
+                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     {{'RE_TYPE' |translate}}
                     <span>{{email}}</span>
@@ -65,8 +69,9 @@
 <!-- Final view-->
 <section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
     <div id="content">
-        <h1>{{'SEE_YOU' |translate}}</h1>
-        <h3 ng-show="emailOpted && !emailSkipped">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
+        <h1>{{'END_THANKS' |translate}}</h1>
+        <h3 ng-show="emailOpted && !emailSkipped && !emailError">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
+        <h3 ng-show="emailOpted && !emailSkipped && emailError">{{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
         <h3 ng-show="printOpted">{{'BILL_PRINTED_BELOW' |translate}}</h3>
         <button type="button" class="button" click-touch='clickedOnCloseButton()'>{{'DONE_BTN' |translate}}</button>
     </div>
