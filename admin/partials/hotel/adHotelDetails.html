@@ -12,8 +12,7 @@
 				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
-
-	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
+	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" readonly="{{isFieldsReadOnly}}"></ad-textbox>
 
 			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
 
@@ -41,7 +40,7 @@
 			</div>
 			<div class="entry">
 				<label for="hotel-service-provider"> Service Provider <strong>*</strong> </label>
-				<div class="select">
+				<div class="select" ng-class="{'overlay' : isFieldsReadOnly === 'yes'}">
 					<select ng-model="data.service_provider_id" name="hotel-service-provider" id="hotel-service-provider" class="placeholder">
 						<option value=""> Select Service Provider </option>
 						<option ng-model="serviceprovider.id" ng-repeat="serviceprovider in data.service_providers" value="{{serviceprovider.id}}" ng-selected="serviceprovider.id==data.service_provider_id"> {{serviceprovider.name}}</option>
@@ -49,11 +48,11 @@
 					</select>
 				</div>
 			</div>
-			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
+			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{isFieldsReadOnly}}"></ad-textbox>
 
 			<div class="entry full-width actions_margin_top">
 					<label for="hotel-service-provider"> Services Provided <strong>*</strong> </label>
-					<div id="services-provided" class="boxes col2">
+					<div ng-class="{'overlay' : isFieldsReadOnly === 'yes'}"  id="services-provided" class="boxes col2">
 						<fieldset class="holder left">
 							<label class="radio" ng-class = "{'checked': data.hotel_pms_type==''}">
 	                            <span class="icon-form icon-radio " ng-class = "{'checked': data.hotel_pms_type==''}"></span>
@@ -196,8 +195,8 @@
 				</div>
 				<div class="entry">
 					<label for="hotel-chain"> Hotel chain <strong>*</strong> </label>
-					<div class="select">
-						<select ng-disabled="isHotelChainEditable" ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
+					<div class="select" >
+						<select ng-disabled="isHotelChainReadonly" ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
 							<option value=""> Hotel chain </option>
 							<option ng-repeat="chain in data.chains" value="{{chain.id}}" ng-selected="chain.id==data.hotel_chain" >{{chain.name}}</option>
 						</select>

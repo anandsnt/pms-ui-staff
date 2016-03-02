@@ -20,7 +20,8 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.mli = {
 		certificate: ''
 	};
-	$scope.isHotelChainEditable =  true;
+	$scope.isHotelChainReadonly =  false;
+	$scope.isFieldsReadOnly = $rootScope.isSntAdmin && $rootScope.isServiceProvider ? "yes" : "no";
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
@@ -31,7 +32,6 @@ admin.controller('ADHotelDetailsCtrl', [
 	    }
   	};
 	if($rootScope.adminRole === "snt-admin"){
-		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
 		if($stateParams.action ==="addfromSetup"){
 			$scope.previousStateIsDashBoard = true;
@@ -39,7 +39,6 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if($stateParams.action === "add" || $stateParams.action ==="addfromSetup"){
 			$scope.title = "Add New Hotel";
-
 			var fetchSuccess = function(data){
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -73,6 +72,10 @@ admin.controller('ADHotelDetailsCtrl', [
 				if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
 					$scope.data.check_out_time.primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
+				}
+				//CICO-24330 -Make the chain non-editable once its saved
+				if(!!$scope.hotel_chain) {
+					$scope.isHotelChainReadonly = true;
 				}
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
