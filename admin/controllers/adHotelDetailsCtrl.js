@@ -325,4 +325,19 @@ admin.controller('ADHotelDetailsCtrl', [
     	}
     };
 
+    $scope.toggleInterfaceType = function(index) {
+    	$scope.data.interface_types[index].is_checked = $scope.data.interface_types[index].is_checked === 'true' ? "false" : "true";
+    	var id = $scope.data.interface_types[index].id;
+    	if(!$scope.data.interface_type_ids) {
+    		$scope.data.interface_type_ids = [];
+    	}
+
+    	if($scope.data.interface_types[index].is_checked === 'true') {
+    		$scope.data.interface_type_ids.push(id);
+    	} else {
+    		var index = $scope.data.interface_types.indexOf(id);
+  			$scope.data.interface_type_ids.splice(index, 1);
+    	}
+    }
+
 }]);

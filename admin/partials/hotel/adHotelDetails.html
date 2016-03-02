@@ -7,7 +7,7 @@
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 	<form class="form float" >
-		<fieldset class="holder left">
+		<fieldset class="holder full-width">
 			<div class="form-title">
 				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
@@ -15,25 +15,11 @@
 
 	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
 
-			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="{{readOnly}}"></ad-textbox>
-
 			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
-
-			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
 
 			<div class="entry">
 				<label for="hotel-city"> City <strong>*</strong> </label>
 				<input type="text" ng-model="data.city" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
-			</div>
-
-			<div class="entry">
-				<label for="hotel-state"> State </label>
-				<input type="text" ng-model="data.state" value="{{data.state}}" required="" placeholder="Enter state name" name="hotel-state" id="hotel-state">
-			</div>
-
-			<div class="entry">
-				<label for="hotel-zipcode"> ZipCode</label>
-				<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
 			</div>
 
 			<div class="entry">
@@ -47,16 +33,77 @@
 				</div>
 			</div>
 
+		</fieldset>
+		<fieldset class="holder full-width" >
+			<div class="form-title">
+				<h3><span>Hotel</span> Services </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<div class="entry">
+				<label for="hotel-service-provider"> Service Provider <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.service_provider_id" name="hotel-service-provider" id="hotel-service-provider" class="placeholder">
+						<option value=""> Select Service Provider </option>
+						<option ng-model="serviceprovider.id" ng-repeat="serviceprovider in data.service_providers" value="{{serviceprovider.id}}" ng-selected="serviceprovider.id==data.service_provider_id"> {{serviceprovider.name}}</option>
+
+					</select>
+				</div>
+			</div>
+			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
+
+			<div class="entry full-width actions_margin_top">
+					<label for="hotel-service-provider"> Services Provided <strong>*</strong> </label>
+					<div id="services-provided" class="boxes col2">
+						<fieldset class="holder left">
+							<label class="radio" ng-class = "{'checked': data.hotel_pms_type==''}">
+	                            <span class="icon-form icon-radio " ng-class = "{'checked': data.hotel_pms_type==''}"></span>
+	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_service" value="" />
+	                            <span translate>PMS</span>
+	                        </label>
+	                        <label class="radio" ng-class = "{'checked': data.hotel_pms_type=='OWS'}">
+	                            <span class="icon-form icon-radio" ng-class = "{'checked': data.hotel_pms_type=='OWS'}"></span>
+	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
+	                            <span translate>PMS_OVERLAY</span>
+	                        </label>
+                        </fieldset>
+                        <fieldset class="holder right">
+                        	<label class="checkbox" ng-repeat="interfaceType in data.interface_types">
+
+								<ad-checkboxgrp toggle="toggleInterfaceType($index)" label="{{interfaceType.description}}" is-checked="interfaceType.is_checked === 'true'" option-id="interfaceType.id" ng-hide="interfaceType.value == 'PMS_OVERLAY_HOUSEKEEPING' && data.hotel_pms_type != 'OWS' "></ad-checkboxgrp>
+							</label>
+
+                    	</fieldset>
+
+					</div>
+			</div>
+
+		</fieldset>
+		<fieldset ng-hide="true">
+		<fieldset class="holder full-width">
+			<div class="form-title">
+				<h3><span>Hotel</span> Details </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="{{readOnly}}"></ad-textbox>
+
+			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
+
+			<div class="entry">
+				<label for="hotel-state"> State </label>
+				<input type="text" ng-model="data.state" value="{{data.state}}" required="" placeholder="Enter state name" name="hotel-state" id="hotel-state">
+			</div>
+			<div class="entry">
+				<label for="hotel-zipcode"> ZipCode</label>
+				<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
+			</div>
 			<div class="entry">
 				<label for="hotel-longitude"> Longitude </label>
 				<input type="text" ng-model="data.longitude" value="{{data.longitude}}" required="" readonly="readonly" placeholder="Enter hotel longitude" name="hotel-longitude">
 			</div>
-
 			<div class="entry">
 				<label for="hotel-latitude"> Latitude </label>
 				<input type="text" ng-model="data.latitude" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" >
 			</div>
-
 			<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 				<label for="rover"> Rover Registration </label>
 				<div  id="registration-for-rover" class="boxes">
@@ -72,14 +119,14 @@
 				</div>
 			</div>
 
-			<div class="entry full-width">
+			<div class="entry">
 				<label for="terms_and_conditions" translate>
 				TERMS_AND_CONDITIONS_LABEL
 				</label>
 				<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
 			</div>
 
-			<div class="entry full-width">
+			<div class="entry">
                              <div class="entry inline-flex" >
                         <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
                         </div><div class="switch-button single" ng-class="{ on: data.sms_active }" ng-click="data.sms_active = !data.sms_active">
@@ -88,16 +135,6 @@
                             </div>
                         </div>
 			</div>
-		</fieldset>
-
-		<fieldset class="holder right">
-			<div class="form-title">
-				<h3><span>Hotel</span> Details </h3>
-				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-			</div>
-
-			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
-
 			<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
 				<label>Enable single digit room number search</label>
 				<div class="switch-button single" ng-class="{ on : data.is_single_digit_search == true }" ng-click="data.is_single_digit_search = !data.is_single_digit_search">
@@ -246,7 +283,7 @@
                          ...
                 </button>
 			</div>
-			<div class="entry full-width" ng-if="isAdminSnt">
+			<div class="entry" ng-if="isAdminSnt">
 				<label for="hotel-pms-type"> Language </label>
 				<div class="select">
 					<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -258,7 +295,7 @@
 				</div>
 			</div>
 
-			<div class="entry full-width">
+			<div class="entry">
 				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
@@ -350,7 +387,6 @@
 				</div>
 				<span class="file-preview"> <img src="{{data.hotel_template_logo}}" alt="" height="112" width="auto"> </span>
 			</div>
-
 		</fieldset>
 
 		<fieldset class="holder left">
@@ -378,6 +414,46 @@
 				<input type="text" ng-model="data.contact_phone" value="{{data.contact_phone}}" required="yes" placeholder="Enter phone number" name="contact-phone" id="contact-phone">
 			</div>
 
+		</fieldset>
+
+		<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="form-title">
+				<h3><span>Hotel</span> External Reference Import </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<div class="entry" ng-if="isAdminSnt">
+				<label for="is-external-references-import-on">Enable</label>
+				<div class="switch-button single" ng-class="{ on : data.is_external_references_import_on}">
+					<input type="checkbox" ng-model="data.is_external_references_import_on" value="{{data.is_external_references_import_on}}" name="is-external-references-import-on" id="is-external-references-import-on">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label for="contact-phone"> Frequency [Minutes] <!-- strong>*</strong> --> </label>
+				<input type="text" ng-model="data.external_references_import_freq" value="{{data.external_references_import_freq}}"placeholder="Enter frequency" name="frequency" id="frequency">
+			</div>
+		</fieldset>
+
+		<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
+			<div class="form-title">
+				<h3><span>Hotel</span> Hold Room Import </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<div class="entry" ng-if="isAdminSnt">
+				<label for="is_hold_room_import_on">Enable</label>
+				<div class="switch-button single" ng-class="{ on : data.is_hold_room_import_on }">
+					<input type="checkbox" ng-model="data.is_hold_room_import_on" value="{{ data.is_hold_room_import_on }}" name="is_hold_room_import_on" id="is_hold_room_import_on">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label for="hold_room_import_freq"> Frequency [Minutes] <!-- strong>*</strong> --> </label>
+				<input type="text" ng-model="data.hold_room_import_freq" value="{{ data.hold_room_import_freq }}" placeholder="Enter frequency" name="hold_room_import_freq" id="hold_room_import_freq">
+			</div>
 		</fieldset>
 
 		<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
@@ -587,9 +663,6 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-
-
-
 		</fieldset>
 		<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 			<div class="form-title">
@@ -701,7 +774,7 @@
 
 
 		</fieldset>
-
+		</fieldset>
 		<div class="actions float">
 			<button type="button" ng-click ="back()" class="button blank">
 				Cancel
