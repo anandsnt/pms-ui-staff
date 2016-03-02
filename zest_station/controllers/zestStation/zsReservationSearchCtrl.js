@@ -290,7 +290,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.mode = "search-final-mode";
         $scope.input.inputTextValue = "";
         $scope.headingText = "NEXT_ROOM_NUMBER";
-        $scope.inputType = 'number';
+        $scope.inputType = 'text';
         $scope.setFontainebleauTowers();
     };
     $scope.getReservationParams = function(){
@@ -412,7 +412,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     
     $scope.reEnterRoomNumber = function(room){
-        $scope.inputType = 'number';
+        $scope.inputType = 'text';
         $scope.reEnteredRoomInfo = true;
         $scope.reEnteredNameInfo = false;
         $scope.headingText = "NEXT_ROOM_NUMBER";
@@ -509,7 +509,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                $scope.mode = "search-final-mode";
                $scope.reEnteredRoomInfo = true;
                $scope.input.inputTextValue = "";
-               $scope.inputType = 'number';
+               $scope.inputType = 'text';
                $scope.headingText = "NEXT_ROOM_NUMBER";
                $scope.setFontainebleauTowers();
             } else {
