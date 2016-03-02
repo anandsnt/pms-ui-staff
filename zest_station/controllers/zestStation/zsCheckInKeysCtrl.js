@@ -261,7 +261,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 options.is_additional = true;
             }
             
-           // options.is_kiosk = true;
+            options.is_kiosk = true;
             return options;
         };
         
