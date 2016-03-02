@@ -89,8 +89,8 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 {key: "SUN", day: "SUNDAY", value: false}
             ],
             "numOfWeeks": 1,
-            "applyToPrice": false,
-            "applyToRestrictions": false
+            "applyToPrice": true,
+            "applyToRestrictions": true
         };
 
         $scope.hideUpdatePriceAndRestrictionsDialog = function () {
