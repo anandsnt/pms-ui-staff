@@ -39,7 +39,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             };
 
             that.fetchRoomTypes = function() {
-                var url = 'api/room_types.json?exclude_pseudo=true';
+                var url = 'api/room_types.json?exclude_pseudo=true&exclude_suite=true';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
                     that.fetchBussinessDate();

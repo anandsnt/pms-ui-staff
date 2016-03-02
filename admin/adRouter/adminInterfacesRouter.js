@@ -39,15 +39,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
-  $stateProvider.state('admin.gustoPosSetup', {
-    templateUrl: '/assets/partials/GustoPOS/adGustoPOSSetup.html',
-    controller: 'adGustoPOSSetupCtrl',
-    url : '/guestopos/setup',
+  $stateProvider.state('admin.ifcComtrolSetup', {
+    templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
+    controller: 'adIFCComtrolSetupCtrl',
+    url : '/ifc_comtrol/setup',
     resolve: {
-      gustoSetupValues: ['adGustoPOSSetupSrv', function(adGustoPOSSetupSrv) {
-        return adGustoPOSSetupSrv.fetchGustoPOSConfiguration();
+      ifcComtrolSetupValues: ['adIFCComtrolSetupSrv', function(adIFCComtrolSetupSrv) {
+        return adIFCComtrolSetupSrv.fetchIFCComtrolConfiguration();
       }]
     }
+  });
+
+  $stateProvider.state('admin.gustoPosSetup', {
+      templateUrl: '/assets/partials/GustoPOS/adGustoPOSSetup.html',
+      controller: 'adGustoPOSSetupCtrl',
+      url : '/guestopos/setup',
+      resolve: {
+          gustoSetupValues: ['adGustoPOSSetupSrv', function(adGustoPOSSetupSrv) {
+              return adGustoPOSSetupSrv.fetchGustoPOSConfiguration();
+          }]
+      }
   });
 
   $stateProvider.state('admin.britePabXSetup', {

@@ -1153,7 +1153,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 
 			} else {
-				$scope.errrorMessage = error;
+				$scope.errorMessage = error;
 			}
 		};
 
@@ -1213,7 +1213,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 * when we failed in attaching a group
 		 */
 		var failureCallBackOfDetachGroupFromThisReservation = function(error) {
-			$scope.errrorMessage = error;
+			$scope.errorMessage = error;
 		};
 
 		/**
@@ -1479,7 +1479,7 @@ angular.module('sntRover').controller('guestCardController', [
 					showCreditLimitExceedPopup();
 				}
 			} else {
-				$scope.errrorMessage = error.errorMessage;
+				$scope.errorMessage = error.errorMessage;
 			}
 		};
 
