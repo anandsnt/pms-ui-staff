@@ -333,10 +333,10 @@ angular.module('stayCardModule', [])
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",
             controller: 'RVActionsManagerController',
             resolve: {
-                actionsManagerAssets: function(jsMappings) {
+                actionsJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
                 },
-                departments: function(rvActionTasksSrv, actionsManagerAssets) {
+                departments: function(rvActionTasksSrv, actionsJsAssets) {
                     return rvActionTasksSrv.fetchDepartments();
                 }
             }
