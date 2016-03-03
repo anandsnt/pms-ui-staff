@@ -503,13 +503,13 @@
 				</label>
 				<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled " >
+			<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''" >
 				<label>
 					Merchant Access Code
 				</label>
 				<input type="text" ng-model="data.merchant_access_code" placeholder="Enter merchant access code">
 			</div>
-			<div class="entry" ng-if="data.payment_gateway === 'MLI'">
+			<div class="entry" ng-if="data.payment_gateway === 'MLI' && data.hotel_pms_type == ''">
 				<label for="mli-emv-enabled">
 					Enable EMV (TransactionLink)
 				</label>
@@ -518,7 +518,7 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-			<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled">
+			<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''">
 				<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
 				<input type="text" ng-model="data.merchantlink_txn_access_url" value="{{data.merchantlink_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="mli-transaction-access-url">
 			</div>
