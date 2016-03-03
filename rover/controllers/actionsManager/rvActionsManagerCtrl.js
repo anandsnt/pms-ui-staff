@@ -25,7 +25,6 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.selectDateOptions = {
-            minDate: tzIndependentDate($rootScope.businessDate),
             defaultDate: tzIndependentDate($rootScope.businessDate),
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
@@ -35,6 +34,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.dueDateEditOptions = {
+            minDate: tzIndependentDate($rootScope.businessDate),
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
             onSelect: function (date, datePickerObj) {
@@ -65,11 +65,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             refreshScroller = function () {
                 $scope.refreshScroller('rvActionListScroller');
             }, getBindabaleAction = function (response) {
-                var action = angular.copy(response),
-                    dueDate = new tzIndependentDate(parseInt(action.due_at));
+                var action = angular.copy(response);
                 action.department = action.assigned_to && action.assigned_to.id || "";
-                action.dueDate = dateFilter(dueDate, "yyyy-MM-dd");
-                action.dueTime = dateFilter(dueDate, "hh:mm");
+                action.dueDate = dateFilter(action.due_at_str, "yyyy-MM-dd");
+                action.dueTime = dateFilter(action.due_at_str, "HH:mm");
                 return action;
             },
             getActionDetails = function () {
@@ -107,6 +106,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
                     //Parsing
                     $scope.actions = [];
+
                     _.each(response.results, function (action) {
                         $scope.actions.push(_.extend(action, {
                             assigned: !!action.department_id,
@@ -117,6 +117,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                             }).name : ""
                         }));
                     });
+
                     if ($scope.actions.length > 0) {
                         // By default the first action is selected
                         // While coming back from staycard, the previously selected action is selected
@@ -127,6 +128,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                             $scope.filterOptions.selectedActionId = $scope.actions[0].id;
                         }
                         getActionDetails();
+                    }else{
+                        $scope.$broadcast("INIT_NEW_ACTION");
                     }
                     refreshScroller();
                 };
@@ -192,7 +195,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             ngDialog.open({
                 template: '/assets/partials/actionsManager/rvNewActionPopup.html',
                 scope: $scope,
-                controller: 'RVNewActionPopupCtrl',
+                controller: 'RVNewActionCtrl',
                 closeByDocument: true,
                 closeByEscape: true
             });

@@ -81,6 +81,13 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                 scope.$on('$destroy', function () {
                     el.find("input").autocomplete("destroy");
                 });
+
+                ngModel.$render = function () {
+                    // Clear up the guest name if the model is cleared from the controller end
+                    if(!ngModel.$viewValue){
+                        scope.guestName = null;
+                    }
+                };
             }
         };
     }]);
