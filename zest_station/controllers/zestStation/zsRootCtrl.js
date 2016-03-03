@@ -38,9 +38,11 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.closeDialog = function() {
-		ngDialog.hide();
-		ngDialog.close();
+                $scope.zestStationData.popup = false;
 	};
+        $scope.$watch('zestStationData.popup',function(){
+            console.info(arguments);
+        })
 
 	/**
 	 * event for child controllers to show loader
@@ -529,6 +531,7 @@ sntZestStation.controller('zsRootCtrl', [
                                      station = $scope.zestStationData.workstations[i];
                                      hasWorkstation = true;
                                      $state.hasWorkstation = true;
+                                     $scope.zestStationData.printerLabel = $scope.getPrinterLabel(station.printer);
                                 }
                             }
                         } else {
@@ -559,6 +562,25 @@ sntZestStation.controller('zsRootCtrl', [
                     return station;
             }
         };
+        
+    $scope.getPrinterLabel = function(name){
+        if (name && typeof name === typeof 'str'){
+             if (name.length > 1){
+                 //printer name convention has something like IPP://somename..
+                 //so lets pull out that IPP:// from the display to user, so they will see its
+                 //HP or other printer identifiers
+                 var str = name.split('ipp://');
+                 if (str[1]){
+                     name = str[1];
+                 }
+             } else {
+                name = 'Select';
+             }
+        } else {
+            name = 'Select';
+        }
+        return name;
+    };
         
 	$scope.failureCallBack =  function(data){
             if ($state.is_oos){
@@ -604,6 +626,7 @@ sntZestStation.controller('zsRootCtrl', [
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */
+                    $scope.zestStationData.popup = true;
                     ngDialog.open({
                             template: '/assets/partials/rvTabletIdlePopup.html',
                             scope: $scope,
@@ -661,7 +684,7 @@ sntZestStation.controller('zsRootCtrl', [
                 }   
             };
             $scope.closePopup = function(){
-		ngDialog.closeAll();
+                $scope.zestStationData.popup = false;
             };
             
             

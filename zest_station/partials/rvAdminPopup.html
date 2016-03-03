@@ -69,14 +69,21 @@
                         <label class='admin-item-label'>{{'ADMIN_STATION_PRINTER' |translate}}</label>
                     </td>
                     <td>
-                        <button ng-show='printerName===""' type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
-                            Select
-                        </button>
-                        <button ng-show='printerName!==""' type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
-                            {{printerName}}
+                        <button type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
+                            {{zestStationData.printerLabel}}
                         </button>
                     </td>
                 </tr>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                  <tr class='admin-item ng-hide v-middle'>
                     <td>
