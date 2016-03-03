@@ -182,17 +182,17 @@ sntZestStation.controller('zsRootCtrl', [
             switch(lang){
                 case "Castellano":
                         break;
-                case "Dutch":
+                case "Deutsche":
                         break;
                 case "English":
                         prefix = 'EN';
                         break;
-                case "Spanish":
+                case "Español":
                         break;
-                case "French":
+                case "Français":
                     prefix = 'FR';
                         break;
-                case    "Italian":
+                case    "Italiano":
                     break;
                 
                 default: 
@@ -479,6 +479,34 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
         });
+        
+        
+        
+        $scope.languageTimerReset = false;
+        $scope.startLanguageCounter = function(){
+            var time = 120;
+                var timer = time, minutes, seconds, timeInMilliSec = 1000;
+                var timerInt = setInterval(function () {
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                            if (--timer < 0) {
+                                setTimeout(function(){
+                                    //fetch latest settings
+                                        if (!$scope.timeStopped){
+                                            $scope.handleSettingsTimeout();
+                                        }
+                                },timeInMilliSec);
+
+                                clearInterval(timerInt);
+                                return;
+                            }
+                }, timeInMilliSec);
+        };
+        
+        
         $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
             var time = $scope.syncOOSInterval;
@@ -680,13 +708,40 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.selectedLanguage = 'English';
         $scope.langflag = 'flag-gb';
+        $scope.getLanguageDisplayName = function(lang){
+            switch(lang){
+                case "Castellano":
+                        return "Castellano";
+                        break;
+                        
+                case "German":
+                        return 'Deutsche';
+                        break;
+                        
+                case "English":
+                        return 'English';
+                        break;
+                        
+                case "Spanish":
+                        return 'Español';
+                        break;
+                        
+                case "French":
+                        return 'Français';
+                        break;
+                case "Italian":
+                        return 'Italiano';
+                        break;
+            };
+        };
         $scope.selectLanguage = function(lang, icon){
+            
             if (lang === null || lang === 'null'){
                 $scope.showLanguagePopup = false;
                 $scope.timeOut = false;
                 return;
             } else {
-                $scope.selectedLanguage = lang;
+                $scope.selectedLanguage = $scope.getLanguageDisplayName(lang);
                 $scope.langflag = icon;
             }
             $scope.showLanguagePopup = false;
