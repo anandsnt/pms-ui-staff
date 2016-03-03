@@ -178,6 +178,7 @@
                 </fieldset>
                 <fieldset class="holder left" ng-hide="!checkinData.is_precheckin_only">
                     <ad-textbox value="checkinData.max_webcheckin" label="{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder="{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" styleclass="full-width" maxlength="4"></ad-textbox>
+                    <ad-toggle-button is-checked="checkinData.eta_enforcement" label="{{ 'ETA_ENFORCEMENT' | translate}}"></ad-toggle-button>
                     <div class="form-title">
                         <h3 class="ng-binding"><span class="ng-scope" translate="">PRE_CHECK_IN_EMAIL_FIELDS</span> </h3>
                     </div>
@@ -207,8 +208,8 @@
                                 </div>
                                 <div class="entry">
                                     <span class="entry">
-										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRateCode(rateCode.id)"></a>
-									</span>
+                                        <a class="icons icon-delete large-icon align-text-center" ng-click="deleteRateCode(rateCode.id)"></a>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -236,8 +237,8 @@
                                 </div>
                                 <div class="entry">
                                     <span class="entry">
-										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
-									</span>
+                                        <a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -265,8 +266,8 @@
                                 </div>
                                 <div class="entry">
                                     <span class="entry">
-											<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id)"></a>
-										</span>
+                                            <a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id)"></a>
+                                        </span>
                                 </div>
                             </div>
                         </div>
