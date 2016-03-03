@@ -166,7 +166,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			if ($scope.mli.certificate != "") {
 				data.mli_certificate = $scope.mli.certificate;
 			}
-
+			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go("admin.hotels");
@@ -330,17 +330,16 @@ admin.controller('ADHotelDetailsCtrl', [
 
     $scope.toggleInterfaceType = function(index) {
     	$scope.data.interface_types[index].is_checked = $scope.data.interface_types[index].is_checked === 'true' ? "false" : "true";
-    	var id = $scope.data.interface_types[index].id;
-    	if(!$scope.data.interface_type_ids) {
-    		$scope.data.interface_type_ids = [];
-    	}
+    }
 
-    	if($scope.data.interface_types[index].is_checked === 'true') {
-    		$scope.data.interface_type_ids.push(id);
-    	} else {
-    		var index = $scope.data.interface_types.indexOf(id);
-  			$scope.data.interface_type_ids.splice(index, 1);
+    var getSelectedInterfaceTypes = function(data) {
+    	var selectedIds = [];
+    	for (var i = 0; i < data.interface_types.length; i++) {
+    		if(data.interface_types[i].is_checked === 'true') {
+    			selectedIds.push(data.interface_types[i].id);
+    		}
     	}
+    	return selectedIds;
     }
 
 }]);

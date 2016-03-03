@@ -57,18 +57,18 @@
 							<label class="radio" ng-class = "{'checked': data.hotel_pms_type==''}">
 	                            <span class="icon-form icon-radio " ng-class = "{'checked': data.hotel_pms_type==''}"></span>
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_service" value="" />
-	                            <span translate>PMS</span>
+	                            PMS
 	                        </label>
 	                        <label class="radio" ng-class = "{'checked': data.hotel_pms_type=='OWS'}">
 	                            <span class="icon-form icon-radio" ng-class = "{'checked': data.hotel_pms_type=='OWS'}"></span>
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
-	                            <span translate>PMS_OVERLAY</span>
+	                            PMS Overlay
 	                        </label>
                         </fieldset>
                         <fieldset class="holder right">
                         	<label class="checkbox" ng-repeat="interfaceType in data.interface_types">
 
-								<ad-checkboxgrp toggle="toggleInterfaceType($index)" label="{{interfaceType.description}}" is-checked="interfaceType.is_checked === 'true'" option-id="interfaceType.id" ng-hide="interfaceType.value == 'PMS_OVERLAY_HOUSEKEEPING' && data.hotel_pms_type != 'OWS' "></ad-checkboxgrp>
+								<ad-checkboxgrp toggle="toggleInterfaceType($index)" label="{{interfaceType.description}}" is-checked="interfaceType.is_checked" option-id="interfaceType.id" ng-hide="interfaceType.value == 'PMS_OVERLAY_HOUSEKEEPING' && data.hotel_pms_type != 'OWS' "></ad-checkboxgrp>
 							</label>
 
                     	</fieldset>
@@ -233,15 +233,6 @@
 					</div>
 				</div>
 
-				<div class="entry hotel-pms-type" ng-if="isAdminSnt">
-					<label for="hotel-pms-type"> PMS Type</label>
-					<div class="select">
-						<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
-							<option value=""> PMS Type </option>
-							<option ng-repeat="pms_types in data.pms_types" value="{{pms_types.value}}" ng-selected="pms_types.value==data.hotel_pms_type">{{pms_types.value}}</option>
-						</select>
-					</div>
-				</div>
 				<div class="entry">
 					<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
 					<div class="select">
