@@ -173,10 +173,42 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit('hideLoader');
         };
         $scope.language = null;
-        $scope.loadTranslations = function(theme){
-            if ($scope.language) {
+        
+        
+        $scope.getActiveLangPrefix = function(){
+            var lang = $scope.selectedLanguage,
+                    prefix = 'EN';
+           
+            switch(lang){
+                case "Castellano":
+                        break;
+                case "Dutch":
+                        break;
+                case "English":
+                        prefix = 'EN';
+                        break;
+                case "Spanish":
+                        break;
+                case "French":
+                    prefix = 'FR';
+                        break;
+                case    "Italian":
+                    break;
                 
-              $translate.use('EN_'+theme.toLowerCase());
+                default: 
+                    break;
+            }
+            console.info('returning prefix: (',prefix+'_',')');
+            return prefix.toLowerCase()+'/'+prefix+'_';
+        };
+        
+        $scope.loadTranslations = function(theme){
+            console.info('loading languages')
+            if ($scope.language) {
+                var langPrefix = $scope.getActiveLangPrefix();
+                
+                console.info('using: ',langPrefix+theme.toLowerCase());
+              $translate.use(langPrefix+theme.toLowerCase());
             //  $translate.fallbackLanguage('EN');
               /* For reason unclear, the fallback translation does not trigger
                * unless a translation is requested explicitly, for second screen
@@ -659,7 +691,11 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $scope.showLanguagePopup = false;
             $scope.timeOut = false;
+            setTimeout(function(){
+               $scope.loadTranslations($scope.theme); 
+            },5);
         };
+        
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
                 //updates the idle timer settings here from what was successfully saved in zest station admin
@@ -761,6 +797,7 @@ sntZestStation.controller('zsRootCtrl', [
                     
                     $scope.selectedLanguage = 'English';
                     $scope.langflag = 'flag-gb';
+                    $scope.selectLanguage(English);//set back to default language; currently just english
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
@@ -843,7 +880,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
-        console.info('settings: ',zestStationSettings.zest_lang);
         
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
              
