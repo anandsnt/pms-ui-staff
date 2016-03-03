@@ -80,10 +80,6 @@ angular.module('reportsModule')
             			'IN_HOUSE_GUEST': {
             				'singleValueDate': getDates.businessDate,
             			},
-                        'COMPANY_TA_TOP_PRODUCERS': {
-                            'fromDate': undefined,
-                            'untilDate': undefined
-                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
@@ -116,14 +112,12 @@ angular.module('reportsModule')
             	},
                 execFilter: function ( report, filter ) {
     	        	var setUp = function(dateKey, fromModel, untilModel) {
-    					report[dateKey] = $.extend(
-    						{},
-    						filter,
-    						{
-    							showRemove : true,
-    							fromModel  : fromModel
-    						}
-    					);
+                        report[dateKey] = filter;
+
+                        angular.extend(report[dateKey], {
+                            showRemove : true,
+                            fromModel  : fromModel
+                        });
 
     					if ( !! untilModel ) {
     						report[dateKey]['untilModel'] = untilModel;

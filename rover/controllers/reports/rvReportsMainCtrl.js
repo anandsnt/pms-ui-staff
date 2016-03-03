@@ -360,8 +360,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// 2.2 - else find out other dates available on this 'reportItem'
 			//     - if any of the other dates have valid date value, enable 'showRemove'
 			if ( isDateValid(reportItem, dateName) ) {
+
+				console.log( reportItem );
+
 				if ( reportItem['allDates'].length === 1 ) {
 					dateObj['showRemove'] = true;
+
+					forceScopeApply();
 				} else {
 					otherDatesNames = _.without( reportItem['allDates'], dateName );
 
@@ -1858,16 +1863,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				reportsSubSrv.fetchComTaGrp(term, true)
 					.then(function(data) {
 						var entry = {},
-							found;
+							found,
+							hasIn;
 
-						activeCompTaCompleteAry = [];
-						$.map(data, function(each) {
-							entry = {
-								label: each.name,
-								value: each.id.replace( 'account_', '' ), 	// remove 'account_' part and just get the id
-								type: each.type
+						_.each(data, function(item) {
+							var hasIn = _.find(activeCompTaCompleteAry, function(added) {
+								return added.value === item.id.replace( 'account_', '' );
+							});
+
+							if ( ! hasIn ) {
+								activeCompTaCompleteAry.push({
+									label: item.name,
+									value: item.id.replace( 'account_', '' ), 	// remove 'account_' part and just get the id
+									type: item.type
+								});
 							};
-							activeCompTaCompleteAry.push(entry);
 						});
 
 						found = $.ui.autocomplete.filter(activeCompTaCompleteAry, term);
@@ -1894,25 +1904,39 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var uiValues = split(this.value);
 				var modelVal = [];
 
-				_.each(activeCompTaCompleteAry, function(compTa) {
-					var match = _.find(uiValues, function(label) {
-						return label === compTa.label;
+				console.log( activeCompTaCompleteAry );
+
+				if ( ! uiValues.length ) {
+					activeCompTaCompleteAry = [];
+
+					setTimeout(function() {
+						$scope.$apply(function() {
+							touchedReport.chosenIncludeCompanyTa = modelVal.join('');
+						});
+					}.bind(this), 10);
+				} else {
+					_.each(activeCompTaCompleteAry, function(compTa) {
+						var match = _.find(uiValues, function(label) {
+							return label === compTa.label;
+						});
+
+						if (!!match) {
+							modelVal.push(compTa.value);
+						};
 					});
 
-					if (!!match) {
-						modelVal.push(compTa.value);
-					};
-				});
-
-				setTimeout(function() {
-					$scope.$apply(function() {
-						touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
-					});
-				}.bind(this), 10);
+					setTimeout(function() {
+						$scope.$apply(function() {
+							touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
+						});
+					}.bind(this), 10);
+				}
 			},
 			change: function () {
 				var uiValues = split(this.value);
 				var modelVal = [];
+
+				console.log( activeCompTaCompleteAry );
 
 				_.each(activeCompTaCompleteAry, function(compTa) {
 					var match = _.find(uiValues, function(label) {
