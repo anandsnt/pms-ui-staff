@@ -1,6 +1,16 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 
 <div ng-include="'/assets/partials/rvTabletHeader.html'"></div>
+                    
+
+<!-- Popup -->
+<div class="popup" ng-class="{'open':timeOut}"> <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">{{'IDLE_TIMEOUT_MSG'|translate}}</h2>
+        <button type="button" class="button"  click-touch='resetTime();' >{{'IDLE_TIMEOUT_YES'|translate}}</button>
+    </div>
+</div>
+<div id="popup-overlay"  ng-class="{'open':timeOut, 'ng-hide':!timeOut}"></div> <!-- Remove class "open" to hide popup overlay -->
 
 <ui-view></ui-view>
 

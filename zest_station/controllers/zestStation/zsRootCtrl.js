@@ -40,9 +40,6 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.closeDialog = function() {
                 $scope.zestStationData.popup = false;
 	};
-        $scope.$watch('zestStationData.popup',function(){
-            console.info(arguments);
-        })
 
 	/**
 	 * event for child controllers to show loader
@@ -626,16 +623,41 @@ sntZestStation.controller('zsRootCtrl', [
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */
-                    $scope.zestStationData.popup = true;
-                    ngDialog.open({
-                            template: '/assets/partials/rvTabletIdlePopup.html',
-                            scope: $scope,
-                            closeByDocument: false,
-                            closeByEscape: false
-                    });
+                    $scope.timeOut = true;
+                    $scope.$apply();
                 }
             }
 
+        };
+        
+        $scope.languageSelect = function(){
+            $scope.showLanguagePopup = true;
+            console.info('select language');
+        };
+        
+        $scope.supportedLangs = [];
+        $scope.isSupported = function(lang){
+            var langs = $scope.supportedLangs;
+            for (var i in langs){
+                if (lang === langs[i]){
+                    return true;
+                }
+            }
+            return false;
+        };
+        
+        $scope.selectedLanguage = 'English';
+        $scope.langflag = 'flag-gb';
+        $scope.selectLanguage = function(lang, icon){
+            console.info(arguments);
+            if (lang === null || lang === 'null'){
+                $scope.showLanguagePopup = false;
+                return;
+            } else {
+                $scope.selectedLanguage = lang;
+                $scope.langflag = icon;
+            }
+            $scope.showLanguagePopup = false;
         };
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
@@ -683,8 +705,12 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.startIdleCounter();
                 }   
             };
+            
+                $scope.timeOut = false;
             $scope.closePopup = function(){
-                $scope.zestStationData.popup = false;
+                //ngDialog.hide();
+                $scope.timeOut = false;
+                //$scope.zestStationData.popup = false;
             };
             
             
@@ -731,6 +757,9 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.handleIdleTimeout = function(){
                 if ($state.current.name !== 'zest_station.oos' && $state.current.name !== 'zest_station.admin-screen' && $state.current.name !== 'zest_station.admin'){
                     $state.go('zest_station.home');
+                    
+                    $scope.selectedLanguage = 'English';
+                    $scope.langflag = 'flag-gb';
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
@@ -779,7 +808,22 @@ sntZestStation.controller('zsRootCtrl', [
             };
         
         
-        
+        $scope.setSupportedLangList = function(langs){
+            var allLangs = Object.getOwnPropertyNames(langs).sort();
+           // $scope.supportedLangs = zestStationSettings.zest_lang;
+            
+            var supported = [];
+            for (var i in allLangs){
+                if (zestStationSettings.zest_lang[allLangs[i]]){
+                    if (allLangs[i] === 'enabled'){
+                        continue;
+                    }
+                    supported.push(allLangs[i]);
+                }
+            }
+            console.info('supported languages: ',supported)
+            $scope.supportedLangs = supported;
+        };
         
 	/**
 	 * [initializeMe description]
@@ -798,6 +842,9 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        console.info('settings: ',zestStationSettings.zest_lang);
+        
+        $scope.setSupportedLangList(zestStationSettings.zest_lang);
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
