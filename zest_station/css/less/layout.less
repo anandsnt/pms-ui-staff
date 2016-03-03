@@ -131,116 +131,8 @@
       background-color: transparent;
       box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.15);
     }
-    
-    #tablet-popup{
-        color: @textColor;
-        background-color:#707070;
-        width: 50%;
-        min-width: 400px;
-        position: absolute;
-        min-height: 390px;
-        top: 0;
-        bottom: 15%;
-        left: 0;
-        right: 0;
-        margin: auto;
-        height: 45%;
-        border-radius: 10px;
-        #popup{
-            .header{
-                margin-top:18px;
-            }
-        }
-        .admin-input{
-            background-color: white !important;
-            display: inline;
-            width: 90px;
-            float: right;
-            height: 40px;
-            line-height: inherit;
-            color: black;
-            margin-top: 5px;
-            box-sizing: content-box;
-            input[type=number]::-webkit-inner-spin-button, 
-            input[type=number]::-webkit-outer-spin-button { 
-              -webkit-appearance: none; 
-              margin: 0; 
-            }
-            
-        }
-        #selectEncoder{
-            font-size: inherit;
-            width: 68%;
-        }
-        #popup-content{
-            bottom: 25%;
-            left: 0;
-            right: 0;
-            margin: auto;
-            button {
-                width: 185px !important;
-            }
-            .save-actions{
-                margin-top: 10px;
-                button {
-                    margin: inherit;
-                    
-                }
-            }
-            
-            
-            .admin-item-label{
-                margin-left: 5px;
-                width: 300px;
-                margin-top: 5px;
-            }
-            .admin-item{
-                margin-top:5px;
-            }
-            .admin-table{
-                width: 95%;
-                margin: auto;
-            }
-            .button{
-                left: 0;
-                right: 0;
-                margin: auto;
-                margin-top:10px;
-            }
-              
-        }
-        .inline{
-            display: inline;
-        }
-        .inputItem {
-            background-color: gray;
-            color: white;
-            height: 20px;
-            line-height: 0px;
-            width: 50%;
-            display: inline;
-            float: right;
-            margin-right: 15px;
-            .number{
-                width: 13%;
-                min-width: 87px;
-            }
-        }
-        .footer-buttons{
-            margin: auto;
-            left: 0;
-            right: 0;
-            width: 400px;
-            display: flex;
-            bottom: 0px;
-            position: absolute !important;
-            margin-bottom: 15px;
-            >button{
-                margin-right: 15px;
-            }
-        }
-        
-        
+    .admin-item-label{
+        color:black !important ;
     }
 
     #flex-holder {
@@ -483,6 +375,7 @@
         
          &.align-center {
             #flexbox > .parent('', center, '', '');
+            
             .button:nth-child(2) { margin-left: 40px; }
         }
 
@@ -602,7 +495,6 @@
             font-size: 14px;
             line-height: 54px;
             height: 54px;
-            padding: 0 10px;
         }
     }
 
@@ -706,7 +598,6 @@
     }
 
     #keys {
-        background-image: "" !important;
         position: relative;
         margin-top: 40px;
         z-index: 10;
@@ -715,18 +606,10 @@
             margin: 80px auto;
             .size(250px, auto); 
             .show;
-            &.green{
-                fill:green;
-            }
+            
         }
     }
     
-    #oos {
-        background-image: "" !important;
-        position: relative;
-        margin-top: 40px;
-        z-index: 10;
-    }
 
     #key-options {
         #flexbox > .flex();
@@ -972,6 +855,9 @@
                 padding: 0;
                 .square(100%);
             }
+            >table>tbody>tr>td>button.overlay{
+                opacity: .5;
+            }
         }
 
         iframe {
@@ -1074,9 +960,6 @@
             margin-top:15px;
         }
         
-        .ngdialog-content{//fixes an issue with the default angular theme overwriting the popup layout
-            padding: 0em !important;
-        }
         .v-middle{
             >td{
                 vertical-align:middle !important;

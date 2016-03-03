@@ -632,7 +632,7 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.languageSelect = function(){
             $scope.showLanguagePopup = true;
-            console.info('select language');
+            $scope.timeOut = true;
         };
         
         $scope.supportedLangs = [];
@@ -649,15 +649,16 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.selectedLanguage = 'English';
         $scope.langflag = 'flag-gb';
         $scope.selectLanguage = function(lang, icon){
-            console.info(arguments);
             if (lang === null || lang === 'null'){
                 $scope.showLanguagePopup = false;
+                $scope.timeOut = false;
                 return;
             } else {
                 $scope.selectedLanguage = lang;
                 $scope.langflag = icon;
             }
             $scope.showLanguagePopup = false;
+            $scope.timeOut = false;
         };
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
