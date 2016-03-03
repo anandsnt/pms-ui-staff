@@ -74,7 +74,7 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.data.check_out_primetime = "AM";
 				}
 				//CICO-24330 -Make the chain non-editable once its saved
-				if(!!$scope.hotel_chain) {
+				if(!!$scope.data.hotel_chain) {
 					$scope.isHotelChainReadonly = true;
 				}
 			};
