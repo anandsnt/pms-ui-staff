@@ -40,9 +40,6 @@ sntZestStation.controller('zsRootCtrl', [
 	$scope.closeDialog = function() {
                 $scope.zestStationData.popup = false;
 	};
-        $scope.$watch('zestStationData.popup',function(){
-            console.info(arguments);
-        })
 
 	/**
 	 * event for child controllers to show loader
@@ -626,16 +623,27 @@ sntZestStation.controller('zsRootCtrl', [
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */
-                    $scope.zestStationData.popup = true;
-                    ngDialog.open({
-                            template: '/assets/partials/rvTabletIdlePopup.html',
-                            scope: $scope,
-                            closeByDocument: false,
-                            closeByEscape: false
-                    });
+                    $scope.timeOut = true;
+                    $scope.$apply();
                 }
             }
 
+        };
+        
+        $scope.languageSelect = function(){
+            $scope.showLanguagePopup = true;
+            console.info('select language');
+        };
+        $scope.selectedLanguage = '';
+        $scope.selectLanguage = function(lang){
+            console.info(arguments);
+            if (lang === null || lang === 'null'){
+                $scope.showLanguagePopup = false;
+                return;
+            } else {
+                $scope.selectedLanguage = lang;
+            }
+            $scope.showLanguagePopup = false;
         };
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
@@ -683,8 +691,12 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.startIdleCounter();
                 }   
             };
+            
+                $scope.timeOut = false;
             $scope.closePopup = function(){
-                $scope.zestStationData.popup = false;
+                //ngDialog.hide();
+                $scope.timeOut = false;
+                //$scope.zestStationData.popup = false;
             };
             
             
@@ -798,6 +810,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;

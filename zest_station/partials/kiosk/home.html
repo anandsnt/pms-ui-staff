@@ -1,6 +1,48 @@
 <!--  Home -->
 <section id="main" class="centered kiosk" role="main" >
 	<div id="content">
+            
+            <div class="popup" ng-class="{'open':showLanguagePopup,'ng-hide':!showLanguagePopup}">
+                <div class="popup-content">
+                    <i class="close-popup" data-action="popup" touch-press="selectLanguage('null')"></i>
+                    <h2 class="nocaps">Select Language</h2>
+                    <div id="languages">
+                        <button touch-press="selectLanguage('ca')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='ca' }">
+                            <i class="icons icon-flag flag-ca"></i>
+                            Castellano
+                        </button>
+                        <button touch-press="selectLanguage('de')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='de' }">
+                            <i class="icons icon-flag flag-de"></i>
+                            Deutsche
+                        </button>
+                        <button touch-press="selectLanguage('gb')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='gb' }">
+                            <i class="icons icon-flag flag-gb"></i>
+                            English
+                        </button>  
+                        <button touch-press="selectLanguage('es')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='es' }">
+                            <i class="icons icon-flag flag-es"></i>
+                            Español
+                        </button>
+                        <button touch-press="selectLanguage('fr')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='fr' }">
+                            <i class="icons icon-flag flag-fr"></i>
+                            Français
+                        </button>
+                        <button touch-press="selectLanguage('it')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='it' }">
+                            <i class="icons icon-flag flag-it"></i>
+                            Italiano
+                        </button>
+                        <button touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
+                            <i class="icons icon-flag flag-nl"></i>
+                            Nederlands
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
 		<nav id="options" class="large-icons" role="nav">
 			<ul role="menu">
 				<li ng-if="zestStationData.home_screen.pickup_keys">
@@ -29,6 +71,21 @@
 				</li>
 			</ul>
 		</nav>
+            
+            
+            
 	</div>
+    
+            <div id="actions" class="align-center" ng-hide="!zestStationData.zest_lang.enabled">
+                <!-- Yotel Internet Booking Engine 
+                <button type="button" class="button">
+                    Yotel Internet Booking Engine
+                </button> -->
+                <button type="button" class="button with-icon" touch-press="languageSelect()">
+                    <i class="icons icon-flag flag-gb"></i>
+                    English
+                </button>
+            </div>
+    
 <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>
