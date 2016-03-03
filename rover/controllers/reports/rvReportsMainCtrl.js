@@ -1261,11 +1261,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// include company/ta
 			if ( report.hasOwnProperty('hasIncludeCompanyTa') && !!report.chosenIncludeCompanyTa ) {
 				key         = report.hasIncludeCompanyTa.value.toLowerCase();
-				params[key] = report.chosenIncludeCompanyTa;
+				params[key] = [];
+				/**/
+				_.each(report.chosenIncludeCompanyTa.split(', '), function(entry) {
+					params[key].push( entry );
+				});
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['companyTa'] = report.uiChosenIncludeCompanyTa;
-				};		
+				};
 			};
 
 			// include company/ta/group
@@ -1835,42 +1839,96 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 		}, userAutoCompleteCommon);
 
+
+
+
+
 		// for Company TA only
+		var activeCompTaCompleteAry = [];
 		var autoCompleteForCompTa = {
 			source: function(request, response) {
+				var term = extractLast(request.term);
+
 				$scope.$emit( 'showLoader' );
-				reportsSubSrv.fetchComTaGrp(request.term, true)
+				reportsSubSrv.fetchComTaGrp(term, true)
 					.then(function(data) {
-						var list = [];
-						var entry = {};
+						var entry = {},
+							found;
+
+						activeCompTaCompleteAry = [];
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
 								value: each.id.replace( 'account', each.type.toLowerCase() ),
 								type: each.type
 							};
-							list.push(entry);
+							activeCompTaCompleteAry.push(entry);
 						});
 
-						response(list);
+						found = $.ui.autocomplete.filter(activeCompTaCompleteAry, term);
+						response(found);
+
 						$scope.$emit( 'hideLoader' );
 					});
 			},
 			select: function(event, ui) {
-				this.value = ui.item.label;
+				var uiValue = split(this.value);
+				uiValue.pop();
+				uiValue.push(ui.item.label);
+				uiValue.push("");
+
+				this.value = uiValue.join(", ");
 				setTimeout(function() {
 					$scope.$apply(function() {
-						touchedReport.uiChosenIncludeCompanyTa = ui.item.label;
-						touchedReport.chosenIncludeCompanyTa = ui.item.value;
+						touchedReport.uiChosenIncludeCompanyTa = uiValue.join(", ");
 					});
 				}.bind(this), 100);
 				return false;
+			},
+			close: function(event, ui) {
+				var uiValues = split(this.value);
+				var modelVal = [];
+
+				_.each(activeCompTaCompleteAry, function(compTa) {
+					var match = _.find(uiValues, function(label) {
+						return label === compTa.label;
+					});
+
+					if (!!match) {
+						modelVal.push(compTa.value);
+					};
+				});
+
+				setTimeout(function() {
+					$scope.$apply(function() {
+						touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
+					});
+				}.bind(this), 10);
+			},
+			change: function () {
+				var uiValues = split(this.value);
+				var modelVal = [];
+
+				_.each(activeCompTaCompleteAry, function(compTa) {
+					var match = _.find(uiValues, function(label) {
+						return label === compTa.label;
+					});
+
+					if (!!match) {
+						modelVal.push(compTa.value);
+					};
+				});
+
+				setTimeout(function() {
+					$scope.$apply(function() {
+						touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
+					});
+				}.bind(this), 10);
 			},
 			focus: function(event, ui) {
 				return false;
 			}
 		};
-
 		$scope.compTaAutoCompleteOnList = angular.extend({
 			position: {
 				my: 'left top',
@@ -1878,7 +1936,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				collision: 'flip'
 			}
 		}, autoCompleteForCompTa);
-
 		$scope.compTaAutoCompleteOnDetails = angular.extend({
 			position: {
 				my: 'left bottom',
@@ -1887,6 +1944,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}		
 		}, autoCompleteForCompTa);
 		
+
+
+
 		// for Company TA Group
 		var autoCompleteForCompTaGrp = {
 			source: function(request, response) {
