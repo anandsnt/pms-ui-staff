@@ -52,7 +52,7 @@
 				// eta restricted based on hotel time
 				$scope.isLoading = true;
 				guestDetailsService.fetchHotelTime().then(function(response) {
-					$scope.showHotelTime = true;
+					$scope.showHotelTime = response.guest_arriving_today;
 
 					$scope.hotelTime = response.hotel_time_hour + ":"+response.hotel_time_minute+" "+response.hotel_time_prime_time;
 					restrictPrimetime = response.hotel_time_prime_time;
