@@ -68,9 +68,16 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
   screen_details = _.find(cms_data, function(cms_item) {
     return cms_item.screen_id === screen_id
   });
-  screen_details = (typeof screen_details !== "undefined") ? screen_details : returnEmptyScreenDetails();
+  if(typeof screen_details !== "undefined"){
+    screen_details.title = screen_details.screen_title;
+    screen_details.description = screen_details.item_description;
+    delete screen_details.screen_title;
+    delete screen_details.item_description;
+  }
+  else{
+    screen_details = returnEmptyScreenDetails();
+  }
   return screen_details;
-
 };
 
 var returnYears = function() {

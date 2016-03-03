@@ -6,30 +6,30 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	 */
 	this.screenMappingList = [{
 		"value": "EXTERNAL_CHECKOUT",
-		"id": "123"
+		"id": "ZS-1"
 	}, {
 		"value": "CHECKOUT_LANDING",
-		"id": "121"
+		"id": "ZS-2"
 	}, {
 		"value": "CHECKOUT_NOW_LANDING",
-		"id": "111"
+		"id": "ZS-3"
 	}, {
 		"value": "REVIEW_BILL",
-		"id": "151"
+		"id": "ZS-4"
 	}, {
 		"value": "CHECKOUT_FINAL",
-		"id": "15556"
+		"id": "ZS-5"
 	}, {
 		"value": "CHECKOUT_LATER_OPTIONS",
-		"id": "12312"
+		"id": "ZS-6"
 	}, {
 		"value": "LATE_CHECKOUT_FINAL",
-		"id": "555"
+		"id": "ZS-7"
 	}, {
 		"value": "ROOM_VERIFICATION",
-		"id": "1233"
+		"id": "ZS-8"
 	},{
 		"value": "CC_ADDITION",
-		"id" : "2233"
+		"id" : "ZS-9"
 	}];
 }]);
