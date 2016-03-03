@@ -476,6 +476,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			return returnObj;
 		};
 
+		var resetShowFlags = function() {
+			// reset flag
+			_.map($scope.roomTypesList, function(roomType) {
+				roomType.show = false;
+				return roomType
+			});
+		};
+
 		$scope.openTaskListForm = function(typeIndex, isSystemDefined) {
 			if(!isSystemDefined)
 			{
@@ -483,6 +491,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					$scope.taskListForm = 'add';
 					$scope.taskListClickedElement = 'new';
 					resetEachTaskList();
+					resetShowFlags();
 					$timeout(function() {
 						$location.hash('new-form-holder-task-list');
 						$anchorScroll();
