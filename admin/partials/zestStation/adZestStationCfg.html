@@ -19,6 +19,16 @@
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
             </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                 <h3><span translate> STATION_LANGUAGE_SUPPORT </span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_DUTCH' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.zest_lang.Dutch" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>  
+                <ad-checkbox is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>  
+            </fieldset>
             
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
