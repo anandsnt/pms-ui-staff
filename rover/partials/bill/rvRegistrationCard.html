@@ -148,13 +148,16 @@
         <td colspan="2" class="terms" ng-bind-html="printRegCardData.terms_conditions"></td>
     </tr>
     <tr>
-        <td>
+        <td ng-if="reservationBillData.signature_details.is_signed === 'true'" style="text-align: left;">
+            <img ng-src="{{printRegCardData.signature_url}}" width="30%"/>
+        </td>
+        <td ng-if="reservationBillData.signature_details.is_signed !== 'true'" style="text-align: left;">
             <img ng-src="{{printRegCardData.signature_url}}" width="50%"/>
         </td>
     </tr>
     <tr>
         <td>
-            <span class="signature">
+            <span class="signature1">
                 Guest Signature
             </span>
         </td>
