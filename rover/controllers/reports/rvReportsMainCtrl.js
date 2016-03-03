@@ -903,17 +903,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include dates
-			if (!!report.hasDateFilter) {
-				fromKey  = reportParams['FROM_DATE'];
-				untilKey = reportParams['TO_DATE'];
-				/**/
-				params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
-				params[untilKey] = $filter('date')(report.untilDate, 'yyyy/MM/dd');
-				/**/
-				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
-					$scope.appliedFilter['toDate']   = angular.copy( report.untilDate );
-				}	
+			if ( !! report.hasDateFilter ) {
+				if ( !! report.fromDate ) {
+					fromKey = reportParams['FROM_DATE'];
+					params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
+					};
+				}
+
+				if ( !! report.untilDate ) {
+					fromKey = reportParams['TO_DATE'];
+					params[fromKey]  = $filter('date')(report.untilDate, 'yyyy/MM/dd');
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['toDate'] = angular.copy( report.untilDate );
+					};
+				}
 			};
 
 			// include cancel dates
@@ -1653,7 +1658,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.subHeaders      = response.sub_headers || [];
 				$scope.results         = response.results || [];
 				$scope.resultsTotalRow = response.results_total_row || [];
-				$scope.summaryCounts   = response.summary_counts || [];
+				$scope.summaryCounts   = response.summary_counts || false;
 				$scope.reportGroupedBy = response.group_by || '';
 
 				// track the total count
