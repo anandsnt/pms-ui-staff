@@ -291,7 +291,7 @@ angular.module('reportsModule')
             report['hasShow']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
-                selected    : false
+                selected    : true
             });
         };
 
@@ -370,9 +370,9 @@ angular.module('reportsModule')
             __setData(report, 'hasShow', {
                 type         : 'FAUX_SELECT',
                 show         : false,
-                selectAll    : false,
+                selectAll    : true,
                 defaultTitle : 'Select Options',
-                title        : 'Select Options',
+                title        : 'All Selected',
                 data         : []
             });
 

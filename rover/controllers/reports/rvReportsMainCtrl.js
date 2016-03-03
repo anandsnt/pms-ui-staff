@@ -1859,7 +1859,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,
-								value: each.id.replace( 'account', each.type.toLowerCase() ),
+								value: each.id.replace( 'account_', '' ), 	// remove 'account_' part and just get the id
 								type: each.type
 							};
 							activeCompTaCompleteAry.push(entry);
