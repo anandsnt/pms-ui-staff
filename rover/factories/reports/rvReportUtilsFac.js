@@ -376,9 +376,6 @@ angular.module('reportsModule')
                 data         : []
             });
 
-            // track all the dates avaliable on this report
-            report.allDates = [];
-
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
 
@@ -400,59 +397,6 @@ angular.module('reportsModule')
                     report['hasRateFilter'] = filter;
                 }
 
-                // check for date filter and keep a ref to that item
-                // if ( filter.value === 'DATE_RANGE' ) {
-                //     report['hasDateFilter'] = filter;
-
-                //     // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
-                //     // rather than the default 'Date Range'
-                //     if ( report['title'] === 'Cancellation & No Show' ) {
-                //         report['hasDateFilter']['description'] = 'Arrival Date Range';
-                //     };
-
-                //     // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                //     if ( report['title'] === 'Booking Source & Market Report' ) {
-                //         report['hasDateFilter']['description'] = 'Booked Date';
-                //     };
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasDateFilter'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromDate',
-                //         untilModel : 'untilDate'
-                //     });
-                //     report.allDates.push( 'hasDateFilter' );
-                // };
-
-                // check for cancellation date filter and keep a ref to that item
-                // if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
-                //     report['hasCancelDateFilter'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasCancelDateFilter'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromCancelDate',
-                //         untilModel : 'untilCancelDate'
-                //     });
-                //     report.allDates.push( 'hasCancelDateFilter' );
-                // };
-
-                // check for arrival date filter and keep a ref to that item
-                // if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
-                //     report['hasArrivalDateFilter'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasArrivalDateFilter'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromArrivalDate',
-                //         untilModel : 'untilArrivalDate'
-                //     });
-                //     report.allDates.push( 'hasArrivalDateFilter' );
-                // };
-
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
                 };
@@ -464,91 +408,6 @@ angular.module('reportsModule')
                 if(filter.value === 'RESTRICTION') {
                     report['hasRestrictionListFilter'] = filter;
                 };                
-                
-                // check for group start date filter and keep a ref to that item
-                // if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
-                //     report['hasGroupStartDateRange'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasGroupStartDateRange'], {
-                //         showRemove : true,
-                //         fromModel  : 'groupStartDate',
-                //         untilModel : 'groupEndDate'
-                //     });
-                //     report.allDates.push( 'hasGroupStartDateRange' );
-                // };
-
-                // check for Deposit due date range filter and keep a ref to that item
-                // if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
-                //     report['hasDepositDateFilter'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasDepositDateFilter'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromDepositDate',
-                //         untilModel : 'untilDepositDate'
-                //     });
-                //     report.allDates.push( 'hasDepositDateFilter' );
-                // };
-
-                // check for create date range filter and keep a ref to that item
-                // if ( filter.value === 'CREATE_DATE_RANGE' ) {
-                //     report['hasCreateDateFilter'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasCreateDateFilter'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromCreateDate',
-                //         untilModel : 'untilCreateDate'
-                //     });
-                //     report.allDates.push( 'hasCreateDateFilter' );
-                // };
-
-                // check for paid date range filter and keep a ref to that item
-                // if ( filter.value === 'PAID_DATE_RANGE' ) {
-                //     report['hasPaidDateRange'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasPaidDateRange'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromPaidDate',
-                //         untilModel : 'untilPaidDate'
-                //     });
-                //     report.allDates.push( 'hasPaidDateRange' );
-                // };
-
-                // check for "by single date" filter and keep a ref to that item
-                // if ( filter.value === 'SINGLE_DATE' ) {
-                //     report['hasSingleDateFilter'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasSingleDateFilter'], {
-                //         showRemove : true,
-                //         fromModel  : 'singleValueDate'
-                //     });
-                //     report.allDates.push( 'hasSingleDateFilter' );
-                // };
-
-                // check for rate adjustment date range filter and keep a ref to that item
-                // if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
-                //     report['hasAdjustmentDateRange'] = filter;
-
-                //     // track - showRemove flag, model names.
-                //     // push date name to 'allDates'
-                //     angular.extend(report['hasAdjustmentDateRange'], {
-                //         showRemove : true,
-                //         fromModel  : 'fromAdjustmentDate',
-                //         untilModel : 'untilAdjustmentDate'
-                //     });
-                //     report.allDates.push( 'hasAdjustmentDateRange' );
-                // };
-
-
 
 
                 // check for time filter and keep a ref to that item
@@ -557,8 +416,6 @@ angular.module('reportsModule')
                     report['hasTimeFilter'] = filter;
                     report['timeFilterOptions'] = factory.createTimeSlots();
                 };
-
-
 
 
                 // check for CICO filter and keep a ref to that item
@@ -578,8 +435,6 @@ angular.module('reportsModule')
                 };
 
 
-
-
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
                     report['hasIncludeCompanyTa'] = filter;
@@ -597,8 +452,6 @@ angular.module('reportsModule')
                 if ( filter.value === 'MIN_ROOM_NIGHTS' ) {
                     report['hasMinRoomNights'] = filter;
                 };
-
-
 
 
                 // fill up DS for options combo box

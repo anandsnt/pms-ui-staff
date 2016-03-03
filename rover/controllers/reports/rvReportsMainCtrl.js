@@ -361,12 +361,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			//     - if any of the other dates have valid date value, enable 'showRemove'
 			if ( isDateValid(reportItem, dateName) ) {
 
-				console.log( reportItem );
-
 				if ( reportItem['allDates'].length === 1 ) {
 					dateObj['showRemove'] = true;
-
-					forceScopeApply();
 				} else {
 					otherDatesNames = _.without( reportItem['allDates'], dateName );
 
@@ -377,10 +373,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					if ( !!otherFilledDates ) {
 						dateObj['showRemove'] = true;
 						reportItem[otherFilledDates]['showRemove'] = true;
-
-						forceScopeApply();
 					};
 				};
+
+				forceScopeApply();
 			};
 
 			function isDateValid (report, name) {
