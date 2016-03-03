@@ -21,6 +21,8 @@
 "SPECIFIC_USERS":"Specific User(s)",
 "EXTERNAL_CHECKIN":"External Checkin",
 "ON_CHECKIN" : "On Checkin",
+"PRE_CHECKIN" : "Pre Checkin",
+"ROOM_READY" : "Room Ready",
 "ON_CHECKIN_DELAY_LABEL": "Delay after checkin",
 "MINUTES_LABEL": "(min)",
 "EXTERNAL_CHECKOUT":"External Checkout",

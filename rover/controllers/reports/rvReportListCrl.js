@@ -7,7 +7,9 @@ sntRover.controller('RVReportListCrl', [
     'RVReportUtilsFac',
     'RVReportMsgsConst',
     '$timeout',
-    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout) {
+    'RVReportApplyIconClass',
+    'RVReportApplyFlags',
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags) {
 
         BaseCtrl.call(this, $scope);
 
@@ -35,11 +37,11 @@ sntRover.controller('RVReportListCrl', [
         var postProcess = function(report) {
             for (var i = 0, j = report.length; i < j; i++) {
 
-                // add icon class to this report
-                reportUtils.applyIconClass( report[i] );
+                // apply icon class based on the report name
+                applyIconClass.init( report[i] );
 
-                // add required flags this report
-                reportUtils.applyFlags( report[i] );
+                // apply certain flags based on the report name
+                applyFlags.init( report[i] );
 
                 // add users filter for needed reports
                 // unfortunately this is not sent from server
