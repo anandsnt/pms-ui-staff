@@ -1479,7 +1479,7 @@ angular.module('sntRover').controller('guestCardController', [
 					showCreditLimitExceedPopup();
 				}
 			} else {
-				$scope.errrorMessage = error.errorMessage;
+				$scope.errrorMessage = error;
 			}
 		};
 
