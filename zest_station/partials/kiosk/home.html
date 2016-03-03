@@ -7,34 +7,34 @@
                     <i class="close-popup" data-action="popup" touch-press="selectLanguage('null')"></i>
                     <h2 class="nocaps">Select Language</h2>
                     <div id="languages">
-                        <button touch-press="selectLanguage('ca')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='ca' }">
+                        <button ng-hide="!isSupported('Castellano')" touch-press="selectLanguage('Castellano','flag-ca')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Castellano' }">
                             <i class="icons icon-flag flag-ca"></i>
                             Castellano
                         </button>
-                        <button touch-press="selectLanguage('de')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='de' }">
+                        <button ng-hide="!isSupported('Dutch')" touch-press="selectLanguage('Dutch','flag-de')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Dutch' }">
                             <i class="icons icon-flag flag-de"></i>
                             Deutsche
                         </button>
-                        <button touch-press="selectLanguage('gb')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='gb' }">
+                        <button ng-hide="!isSupported('English')" touch-press="selectLanguage('English','flag-gb')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='English' }">
                             <i class="icons icon-flag flag-gb"></i>
                             English
                         </button>  
-                        <button touch-press="selectLanguage('es')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='es' }">
+                        <button ng-hide="!isSupported('Spanish')" touch-press="selectLanguage('Spanish','flag-es')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Spanish' }">
                             <i class="icons icon-flag flag-es"></i>
                             Español
                         </button>
-                        <button touch-press="selectLanguage('fr')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='fr' }">
+                        <button ng-hide="!isSupported('French')" touch-press="selectLanguage('French','flag-fr')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='French' }">
                             <i class="icons icon-flag flag-fr"></i>
                             Français
                         </button>
-                        <button touch-press="selectLanguage('it')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='it' }">
+                        <button ng-hide="!isSupported('Italian')" touch-press="selectLanguage('Italian','flag-it')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Italian' }">
                             <i class="icons icon-flag flag-it"></i>
                             Italiano
                         </button>
-                        <button touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
+                        <!--button ng-hide="!isSupported('nl')" touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
                             <i class="icons icon-flag flag-nl"></i>
                             Nederlands
-                        </button>
+                        </button-->
                     </div>
                 </div>
             </div>
@@ -82,8 +82,8 @@
                     Yotel Internet Booking Engine
                 </button> -->
                 <button type="button" class="button with-icon" touch-press="languageSelect()">
-                    <i class="icons icon-flag flag-gb"></i>
-                    English
+                    <i class="icons icon-flag {{langflag}}"></i>
+                    {{selectedLanguage}}
                 </button>
             </div>
     

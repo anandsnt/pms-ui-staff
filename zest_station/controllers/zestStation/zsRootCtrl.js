@@ -634,14 +634,28 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showLanguagePopup = true;
             console.info('select language');
         };
-        $scope.selectedLanguage = '';
-        $scope.selectLanguage = function(lang){
+        
+        $scope.supportedLangs = [];
+        $scope.isSupported = function(lang){
+            var langs = $scope.supportedLangs;
+            for (var i in langs){
+                if (lang === langs[i]){
+                    return true;
+                }
+            }
+            return false;
+        };
+        
+        $scope.selectedLanguage = 'English';
+        $scope.langflag = 'flag-gb';
+        $scope.selectLanguage = function(lang, icon){
             console.info(arguments);
             if (lang === null || lang === 'null'){
                 $scope.showLanguagePopup = false;
                 return;
             } else {
                 $scope.selectedLanguage = lang;
+                $scope.langflag = icon;
             }
             $scope.showLanguagePopup = false;
         };
@@ -743,6 +757,9 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.handleIdleTimeout = function(){
                 if ($state.current.name !== 'zest_station.oos' && $state.current.name !== 'zest_station.admin-screen' && $state.current.name !== 'zest_station.admin'){
                     $state.go('zest_station.home');
+                    
+                    $scope.selectedLanguage = 'English';
+                    $scope.langflag = 'flag-gb';
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
@@ -791,7 +808,22 @@ sntZestStation.controller('zsRootCtrl', [
             };
         
         
-        
+        $scope.setSupportedLangList = function(langs){
+            var allLangs = Object.getOwnPropertyNames(langs).sort();
+           // $scope.supportedLangs = zestStationSettings.zest_lang;
+            
+            var supported = [];
+            for (var i in allLangs){
+                if (zestStationSettings.zest_lang[allLangs[i]]){
+                    if (allLangs[i] === 'enabled'){
+                        continue;
+                    }
+                    supported.push(allLangs[i]);
+                }
+            }
+            console.info('supported languages: ',supported)
+            $scope.supportedLangs = supported;
+        };
         
 	/**
 	 * [initializeMe description]
@@ -810,7 +842,9 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        console.info('settings: ',zestStationSettings.zest_lang);
         
+        $scope.setSupportedLangList(zestStationSettings.zest_lang);
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
