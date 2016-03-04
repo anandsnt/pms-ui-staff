@@ -38,8 +38,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.closeDialog = function() {
-		ngDialog.hide();
-		ngDialog.close();
+                $scope.zestStationData.popup = false;
 	};
 
 	/**
@@ -174,10 +173,42 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit('hideLoader');
         };
         $scope.language = null;
-        $scope.loadTranslations = function(theme){
-            if ($scope.language) {
+        
+        
+        $scope.getActiveLangPrefix = function(){
+            var lang = $scope.selectedLanguage,
+                    prefix = 'EN';
+           
+            switch(lang){
+                case "Castellano":
+                        break;
+                case "Deutsche":
+                        break;
+                case "English":
+                        prefix = 'EN';
+                        break;
+                case "Español":
+                        break;
+                case "Français":
+                    prefix = 'FR';
+                        break;
+                case    "Italiano":
+                    break;
                 
-              $translate.use('EN_'+theme.toLowerCase());
+                default: 
+                    break;
+            }
+            console.info('returning prefix: (',prefix+'_',')');
+            return prefix.toLowerCase()+'/'+prefix+'_';
+        };
+        
+        $scope.loadTranslations = function(theme){
+            console.info('loading languages')
+            if ($scope.language) {
+                var langPrefix = $scope.getActiveLangPrefix();
+                
+                console.info('using: ',langPrefix+theme.toLowerCase());
+              $translate.use(langPrefix+theme.toLowerCase());
             //  $translate.fallbackLanguage('EN');
               /* For reason unclear, the fallback translation does not trigger
                * unless a translation is requested explicitly, for second screen
@@ -448,6 +479,34 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
         });
+        
+        
+        
+        $scope.languageTimerReset = false;
+        $scope.startLanguageCounter = function(){
+            var time = 120;
+                var timer = time, minutes, seconds, timeInMilliSec = 1000;
+                var timerInt = setInterval(function () {
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                            if (--timer < 0) {
+                                setTimeout(function(){
+                                    //fetch latest settings
+                                        if (!$scope.timeStopped){
+                                            $scope.handleSettingsTimeout();
+                                        }
+                                },timeInMilliSec);
+
+                                clearInterval(timerInt);
+                                return;
+                            }
+                }, timeInMilliSec);
+        };
+        
+        
         $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
             var time = $scope.syncOOSInterval;
@@ -529,6 +588,7 @@ sntZestStation.controller('zsRootCtrl', [
                                      station = $scope.zestStationData.workstations[i];
                                      hasWorkstation = true;
                                      $state.hasWorkstation = true;
+                                     $scope.zestStationData.printerLabel = $scope.getPrinterLabel(station.printer);
                                 }
                             }
                         } else {
@@ -559,6 +619,25 @@ sntZestStation.controller('zsRootCtrl', [
                     return station;
             }
         };
+        
+    $scope.getPrinterLabel = function(name){
+        if (name && typeof name === typeof 'str'){
+             if (name.length > 1){
+                 //printer name convention has something like IPP://somename..
+                 //so lets pull out that IPP:// from the display to user, so they will see its
+                 //HP or other printer identifiers
+                 var str = name.split('ipp://');
+                 if (str[1]){
+                     name = str[1];
+                 }
+             } else {
+                name = 'Select';
+             }
+        } else {
+            name = 'Select';
+        }
+        return name;
+    };
         
 	$scope.failureCallBack =  function(data){
             if ($state.is_oos){
@@ -604,16 +683,74 @@ sntZestStation.controller('zsRootCtrl', [
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */
-                    ngDialog.open({
-                            template: '/assets/partials/rvTabletIdlePopup.html',
-                            scope: $scope,
-                            closeByDocument: false,
-                            closeByEscape: false
-                    });
+                    $scope.timeOut = true;
+                    $scope.$apply();
                 }
             }
 
         };
+        
+        $scope.languageSelect = function(){
+            $scope.showLanguagePopup = true;
+            $scope.timeOut = true;
+        };
+        
+        $scope.supportedLangs = [];
+        $scope.isSupported = function(lang){
+            var langs = $scope.supportedLangs;
+            for (var i in langs){
+                if (lang === langs[i]){
+                    return true;
+                }
+            }
+            return false;
+        };
+        
+        $scope.selectedLanguage = 'English';
+        $scope.langflag = 'flag-gb';
+        $scope.getLanguageDisplayName = function(lang){
+            switch(lang){
+                case "Castellano":
+                        return "Castellano";
+                        break;
+                        
+                case "German":
+                        return 'Deutsche';
+                        break;
+                        
+                case "English":
+                        return 'English';
+                        break;
+                        
+                case "Spanish":
+                        return 'Español';
+                        break;
+                        
+                case "French":
+                        return 'Français';
+                        break;
+                case "Italian":
+                        return 'Italiano';
+                        break;
+            };
+        };
+        $scope.selectLanguage = function(lang, icon){
+            
+            if (lang === null || lang === 'null'){
+                $scope.showLanguagePopup = false;
+                $scope.timeOut = false;
+                return;
+            } else {
+                $scope.selectedLanguage = $scope.getLanguageDisplayName(lang);
+                $scope.langflag = icon;
+            }
+            $scope.showLanguagePopup = false;
+            $scope.timeOut = false;
+            setTimeout(function(){
+               $scope.loadTranslations($scope.theme); 
+            },5);
+        };
+        
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
                 //updates the idle timer settings here from what was successfully saved in zest station admin
@@ -660,8 +797,12 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.startIdleCounter();
                 }   
             };
+            
+                $scope.timeOut = false;
             $scope.closePopup = function(){
-		ngDialog.closeAll();
+                //ngDialog.hide();
+                $scope.timeOut = false;
+                //$scope.zestStationData.popup = false;
             };
             
             
@@ -708,6 +849,10 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.handleIdleTimeout = function(){
                 if ($state.current.name !== 'zest_station.oos' && $state.current.name !== 'zest_station.admin-screen' && $state.current.name !== 'zest_station.admin'){
                     $state.go('zest_station.home');
+                    
+                    $scope.selectedLanguage = 'English';
+                    $scope.langflag = 'flag-gb';
+                    $scope.selectLanguage(English);//set back to default language; currently just english
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
@@ -756,7 +901,22 @@ sntZestStation.controller('zsRootCtrl', [
             };
         
         
-        
+        $scope.setSupportedLangList = function(langs){
+            var allLangs = Object.getOwnPropertyNames(langs).sort();
+           // $scope.supportedLangs = zestStationSettings.zest_lang;
+            
+            var supported = [];
+            for (var i in allLangs){
+                if (zestStationSettings.zest_lang[allLangs[i]]){
+                    if (allLangs[i] === 'enabled'){
+                        continue;
+                    }
+                    supported.push(allLangs[i]);
+                }
+            }
+            console.info('supported languages: ',supported)
+            $scope.supportedLangs = supported;
+        };
         
 	/**
 	 * [initializeMe description]
@@ -775,6 +935,8 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        
+        $scope.setSupportedLangList(zestStationSettings.zest_lang);
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;

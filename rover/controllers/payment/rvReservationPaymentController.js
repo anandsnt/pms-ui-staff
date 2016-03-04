@@ -28,7 +28,7 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 
 	// To hide/show CCAuthButton
 	$scope.showCCAuthButton = function(){
-		if($scope.reservationData.reservation_card.has_any_credit_card_attached_bill && $scope.isStandAlone && !$scope.reservationData.reservation_card.is_hourly_reservation){
+		if($scope.reservationData.reservation_card.has_any_credit_card_attached_bill && $scope.isStandAlone){
 			return true;
 		}
 		else{

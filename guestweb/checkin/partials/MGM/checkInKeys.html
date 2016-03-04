@@ -1,36 +1,32 @@
 <!-- contentarea starts here-->
 <div class="jumbotron" id="checkin">
-	<div class="container backgroundbg" >
-		<div class="container-fluid">
-			<div class="row headerrow">
-				<logo-image></logo-image>
-			</div>
-		</div>
-		<!--- show posting message   -->
-		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			<p class="msg-head">Your request is being processed.</p>
-			<p class="msg-body">This may take a few seconds..... please wait!</p>
-		</div>
-		<!-- show error message -->
-		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
-		</div>	
-		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isPosting || netWorkError">
-			<!-- top section starts here-->
-			<div class="row checkin-wrapper" id="get-key-wrapper">
-				<div class="chekin-heading centeralign">
-					You are checked in!
-				</div>
-				<div class="reservation-id centeralign">
-					<span class="res-conf-no">RESERVATION #: {{confirmationNumber}}</span>
-				</div>
-				<div class="get-key">
-					<p>{{responseData.delivery_message}}</p>
-				</div>
-			</div>
-			<!-- checkinbtn section ends here-->
-		</div>
-	</div>
+    <div class="container backgroundbg">
+        <div class="container-fluid">
+            <div class="row headerrow">
+                <logo-image></logo-image>
+            </div>
+        </div>
+        <!--- show posting message   -->
+        <div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status">
+            <p class="msg-head">Your request is being processed.</p>
+            <p class="msg-body">This may take a few seconds..... please wait!</p>
+        </div>
+        <!-- show error message -->
+        <div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+            <p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
+            <p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}" class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+        </div>
+        <!-- contentarea starts here-->
+        <div class="container" ng-hide="isPosting || netWorkError">
+            <div class="container-fluid">
+                <div class="row checkin-wrapper-top">
+                    <div class="checkout-status centeralign padding-top-bottom-50">
+                        <p class="msg-head blue-text preckin-status-header">You are checked in!</p>
+                        <p class="msg-body">Reservation #:{{confirmationNumber}}</p>
+                        <p class="msg-body">{{responseData.delivery_message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

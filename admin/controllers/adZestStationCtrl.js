@@ -4,10 +4,20 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
         
         $scope.data = {};        
         
+        
         $scope.fetchSettings = function(){
             var fetchSuccess = function(data){
                 $scope.zestSettings = data;
                 $scope.$emit('hideLoader');
+                
+                if (!$scope.zestSettings.zest_lang){$scope.zestSettings.zest_lang={}};
+                if (!$scope.zestSettings.zest_lang.English){$scope.zestSettings.zest_lang.English=false};
+                if (!$scope.zestSettings.zest_lang.French){$scope.zestSettings.zest_lang.French=false};
+                if (!$scope.zestSettings.zest_lang.Spanish){$scope.zestSettings.zest_lang.Spanish=false};
+                if (!$scope.zestSettings.zest_lang.Dutch){$scope.zestSettings.zest_lang.Dutch=false};
+                if (!$scope.zestSettings.zest_lang.Italian){$scope.zestSettings.zest_lang.Italian=false};
+                if (!$scope.zestSettings.zest_lang.enabled){$scope.zestSettings.zest_lang.enabled=false};
+                
             };
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
         };
@@ -20,10 +30,14 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
                 $scope.errorMessage = 'Failed';
                 $scope.$emit('hideLoader');
             };
+            
+            
+            
             var dataToSend = {
                                 'kiosk':
                                         {
-                                            "home_screen":$scope.zestSettings.home_screen
+                                            "home_screen":$scope.zestSettings.home_screen,
+                                            "zest_lang":$scope.zestSettings.zest_lang
                                         }
 
                              };
