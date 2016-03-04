@@ -87,6 +87,14 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		}
 	});
 
+	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/partials/checkin/gwExternalCheckin.html',
+		controller: 'GwExternalCheckInVerificationController',
+		data: {
+			pageTitle: 'External Check in verification'
+		}
+	});
 
 	//    //room and cc verification 
 

@@ -1,0 +1,101 @@
+<div class="container">
+    <div class="row" ng-show="!noMatchesFound && !multipleMatchesFound">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <!-- default main text -->
+            <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
+            <!-- CMS main text -->
+            <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number OR departure date:</p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
+            <!-- fields -->
+            <div class="section-container">
+                <!-- Lat name -->
+                <p class="pull-left sub-text margin-top-10">LAST NAME ON RESERVATION</p>
+                <input type="text" class="input-field padding-2" ng-model="lastname"></input>
+                <!-- Confirmation number -->
+                <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
+                <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                <br/>
+                <p class="sub-text margin-top-10">OR</p>
+                <!-- Departure date -->
+                <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
+                <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                <!-- Submit button -->
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="submit()"> Continue</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <!-- no matches -->
+    <div class="row" ng-show="noMatchesFound && !multipleMatchesFound">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <!-- default main text -->
+            <p class="main-text">No Match</p>
+            <!-- default sub  text -->
+            <p class="sub-main-text">We did not find a matching reservation with the information you provided:</p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
+            <!--  -->
+            <div class="section-container">
+                <p class="pull-left sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
+                <p class="pull-left sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
+                <p class="pull-left sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="tryAgain()"> Try Again</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <!-- multiple matches -->
+    <div class="row" ng-show="!noMatchesFound && multipleMatchesFound">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <!-- default main text -->
+            <p class="main-text">Multiple Matches</p>
+            <!-- default sub  text -->
+            <p class="sub-main-text">We found more than one matching reservation with the information you provided. Enter the confirmation number to continue:</p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
+            <!--  -->
+            <div class="section-container">
+                <p class="pull-left sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
+                <p class="pull-left sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
+                <p class="pull-left sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
+                <br>
+                <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
+                <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                <br/>
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="submit()">Continue</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</div>
+<!-- calendar view -->
+<div class="date-picker-bg" ng-show="calendarView">
+    <div class="date-picker-wrap">
+        <div class="col-xs-12 date-picker-header">
+            <div class="col-xs-2 calendar-selection" ng-click="closeCalender()">
+                <div class="calendar-selection-button calendar-back">&nbsp;</div>
+                <div>BACK</div>
+            </div>
+            <div class="col-xs-8 center-align departure-date">
+                <p>DEPARTURE DATE</p>
+                <p class="date-text">{{date | date:'MMM dd'}}</p>
+            </div>
+            <div class="col-xs-2 calendar-selection done-calendar" ng-click="dateChoosen()">
+                <div class="calendar-selection-button calendar-done">&nbsp;</div>
+                <div class="calendar-done-text">DONE</div>
+            </div>
+        </div>
+        <div class="col-xs-12 no-side-padding">
+            <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
+        </div>
+    </div>
+</div>

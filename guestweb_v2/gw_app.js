@@ -67,5 +67,8 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         if (reservationAndhotelDetails.is_external_verification === "true") {
             $state.go('externalCheckoutVerification'); //external checkout URL
         }
+        else if(reservationAndhotelDetails.is_zest_checkin === "true"){
+            $state.go('externalCheckinVerification'); //external checkin URL
+        }
     }
 ]);

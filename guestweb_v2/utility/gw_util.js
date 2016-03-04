@@ -57,7 +57,7 @@ var replaceStringWithScopeVariable = function(string, substring_to_be_replaced, 
 
 
 var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
-  var screen_id = returnEmptyScreenDetails();
+  var screen_id = "";
   var screen_details = {
     "title": "",
     "description": ""
