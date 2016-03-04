@@ -26,7 +26,8 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
                                         {
                                             "registration_card":$scope.zestSettings.registration_card,
                                             "reg_card_text":$scope.zestSettings.reg_card_text,
-                                            "enforce_deposit":$scope.zestSettings.enforce_deposit
+                                            "enforce_deposit":$scope.zestSettings.enforce_deposit,
+                                            "show_room_number":$scope.zestSettings.show_room_number
                                         }
 
                              };

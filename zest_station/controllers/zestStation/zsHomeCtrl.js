@@ -200,8 +200,8 @@ sntZestStation.controller('zsHomeCtrl', [
         if (to){
             $scope.set_workstation_id = $scope.getStationIdFromName(to);
             $scope.initialWorkstation = true;
-            $scope.setWorkstationPrinter($scope.set_workstation_id);
         }
+        $scope.setWorkstationPrinter($scope.set_workstation_id);
         
     });
     $scope.saveWorkStation = function(id){
@@ -217,13 +217,18 @@ sntZestStation.controller('zsHomeCtrl', [
         
     };
     $scope.setWorkstationPrinter = function(id){
-        var printer = '';
+        var printer = '', isStation = false;
+        
         for (var i in $scope.zestStationData.workstations){
             if ($scope.zestStationData.workstations[i].id === id){
+                isStation = true;
                 printer = $scope.zestStationData.workstations[i].printer;
                 sntZestStation.selectedPrinter = printer;
                 $scope.setPrinterLabel(printer); 
             }
+        }
+        if (!isStation){
+            $scope.setPrinterLabel('Select'); 
         }
     };
     $scope.getSavedWorkStation = function(){
@@ -242,6 +247,9 @@ sntZestStation.controller('zsHomeCtrl', [
             console.warn(err);
         }
         var station = $scope.getSavedWorkStationObj(storedWorkStation);
+        if (typeof station === typeof undefined){
+            return null;
+        }
         return station;
     };  
     $scope.getSavedWorkStationObj = function(stored_station_id){
@@ -277,7 +285,9 @@ sntZestStation.controller('zsHomeCtrl', [
         } 
         return station;  
     };
-    $scope.printerName = '';
+    $scope.printer = {
+        name: ''
+    };
     $scope.setPrinterLabel = function(name){
         if (name && typeof name === typeof 'str'){
              if (name.length > 1){
@@ -294,13 +304,13 @@ sntZestStation.controller('zsHomeCtrl', [
         } else {
             name = 'Select';
         }
-        $scope.printerName = name;
+        $scope.zestStationData.printerLabel = name;
     };
     $scope.setSavedWorkstation = function(){
         $scope.savedStationObj = $scope.getSavedWorkStation();
+        
     };
     $scope.selectedWorkstationName = '';
-    
     
     $scope.openWorkStationList = function(){
         $scope.selectedWorkstation = $state.workstation_id;
@@ -352,7 +362,9 @@ sntZestStation.controller('zsHomeCtrl', [
                 if (response){
                     $scope.workstations = response.work_stations;
                     $scope.oosIfNoWorkstations();//if no workstations are available, place oos
-                    $scope.fetchSettings();
+                    if ($state.current.name === 'zest_station.admin-screen'){
+                        $scope.setAdminSettings();
+                    }
                 }
             };
             var onFail = function(response){
@@ -408,14 +420,18 @@ sntZestStation.controller('zsHomeCtrl', [
      * Fetching / Saving Settings in Station Admin
      */
     
-        $scope.fetchSettings = function(){
-            //get idle timer settings
-
+        $scope.setAdminSettings = function(){
+            $scope.setSavedWorkstation();
+            var station = $scope.getSavedWorkStation();
+                $scope.workstation = {
+                    selected: station
+                };
+            $scope.initialWorkstation = true;
+            if (station !== null){
+                $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
+                $scope.setWorkstationPrinter(station.id);
+            }
         };
-        $scope.fetchStation = function(){
-
-        };
-        
         
         $scope.saveSettings = function(){
             var params = $scope.getSettings();
