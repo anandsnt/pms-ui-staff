@@ -292,6 +292,7 @@ sntZestStation.controller('zsRootCtrl', [
                         moon: $scope.iconsPath+'/moon.svg',
                         back: $scope.iconsPath+'/back.svg',
                         close: $scope.iconsPath+'/close.svg',
+                        qr: $scope.iconsPath+'/key.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                     }
                 };
@@ -952,6 +953,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData = zestStationSettings;
         
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
+        $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;
+        
+        //$scope.zestStationData.pickup_qr_scan = true;//fake it till ya make it
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
