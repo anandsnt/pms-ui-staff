@@ -55,7 +55,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				// check and navigate base upon checkout later option is available
 				GwWebSrv.zestwebData.isLateCheckoutAvailable ? $state.go('checkOutOptions') : $state.go('checkOutConfirmation');
 			};
-			var onFail = function(data) {
+			var onFailure = function(data) {
 				var popupOptions = angular.copy($scope.errorOpts);
 				popupOptions.resolve = {
 					message: function() {
@@ -67,7 +67,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			var options = {
 				params: $scope.stayDetails,
 				successCallBack: onSuccess,
-				failureCallBack: onFail
+				failureCallBack: onFailure
 			};
 			$scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 		};
