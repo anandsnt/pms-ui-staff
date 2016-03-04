@@ -15,30 +15,15 @@
         <i class="close-popup" data-action="popup" touch-press="selectLanguage('null')"></i>
         <h2 class="nocaps">Select Language</h2>
         <div id="languages">
-            <button ng-hide="!isSupported('Castellano')" touch-press="selectLanguage('Castellano','flag-ca')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Castellano' }">
-                <i class="icons icon-flag flag-ca"></i>
-                Castellano
+            
+            <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" 
+                    touch-press="selectLanguage('{{language.language}}','{{language.info.flag}}')" 
+                    type="button" class="button with-icon" 
+                    ng-class=" {'active':selectedLanguage==='{{language.language}}' }">
+                <i class="icons icon-flag {{language.info.flag}}"></i>
+                {{language.language}}
             </button>
-            <button ng-hide="!isSupported('German')" touch-press="selectLanguage('German','flag-de')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='German' }">
-                <i class="icons icon-flag flag-de"></i>
-                Deutsche
-            </button>
-            <button ng-hide="!isSupported('English')" touch-press="selectLanguage('English','flag-gb')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='English' }">
-                <i class="icons icon-flag flag-gb"></i>
-                English
-            </button>  
-            <button ng-hide="!isSupported('Spanish')" touch-press="selectLanguage('Spanish','flag-es')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Spanish' }">
-                <i class="icons icon-flag flag-es"></i>
-                Español
-            </button>
-            <button ng-hide="!isSupported('French')" touch-press="selectLanguage('French','flag-fr')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='French' }">
-                <i class="icons icon-flag flag-fr"></i>
-                Français
-            </button>
-            <button ng-hide="!isSupported('Italian')" touch-press="selectLanguage('Italian','flag-it')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Italian' }">
-                <i class="icons icon-flag flag-it"></i>
-                Italiano
-            </button>
+            
             <!--button ng-hide="!isSupported('nl')" touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
                 <i class="icons icon-flag flag-nl"></i>
                 Nederlands
