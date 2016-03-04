@@ -35,7 +35,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 payLoad = {
                     description: ref.note,
                     assigned_to: ref.department? parseInt(ref.department, 10) : "",
-                    due_at: dateFilter(ref.dueDate, "yyyy-MM-dd") + "T" + ref.dueTime + ":00",
+                    due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
                     reservation_id: ref.reservation.id
                 };
 
@@ -45,10 +45,6 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                     $scope.$emit("NEW_ACTION_POSTED");
                 }
             });
-        };
-
-        $scope.closeDialog = function(){
-            $scope.$emit("CLOSE_POPUP");
         };
 
         var listenerInit = $scope.$on("INIT_NEW_ACTION",function(){

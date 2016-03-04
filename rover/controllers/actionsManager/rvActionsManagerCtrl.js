@@ -1,59 +1,6 @@
 sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state',
     function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
         BaseCtrl.call(this, $scope);
-        //-------------------------------------------------------------------------------------------------------------- A. Scope Variables
-
-        $scope._actionCompleted = "COMPLETED";
-
-        $scope.filterOptions = {
-            showFilters: false,
-            selectedDay: $rootScope.businessDate,
-            department: "",
-            selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
-            query: "",
-            page: 1,
-            perPage: 25,
-            totalCount: null,
-            startRecord: 1,
-            endRecord: null,
-            isLastPage: false,
-            selectedActionId: null
-        };
-
-        $scope.selectedAction = {
-            dueTime: "00:00"
-        };
-
-        $scope.selectDateOptions = {
-            defaultDate: tzIndependentDate($rootScope.businessDate),
-            dateFormat: $rootScope.jqDateFormat,
-            numberOfMonths: 1,
-            onSelect: function () {
-                fetchActionsList();
-            },
-            beforeShow: function(){
-                addDatePickerOverlay();
-            },
-            onClose: function(){
-                removeDatePickerOverlay();
-            }
-        };
-
-        $scope.dueDateEditOptions = {
-            minDate: tzIndependentDate($rootScope.businessDate),
-            dateFormat: $rootScope.jqDateFormat,
-            numberOfMonths: 1,
-            onSelect: function (date, datePickerObj) {
-                $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
-                $scope.updateAction();
-            },
-            beforeShow: function(){
-                addDatePickerOverlay();
-            },
-            onClose: function(){
-                removeDatePickerOverlay();
-            }
-        }
 
         //-------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
@@ -67,10 +14,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 if (!!$state.params.restore && !!rvActionTasksSrv.getFilterState()) {
                     $scope.filterOptions = rvActionTasksSrv.getFilterState();
                 }
-                setHeadingTitle(heading);
+                setHeadingAndTitle(heading);
                 fetchActionsList();
             },
-            setHeadingTitle = function (heading) {
+            setHeadingAndTitle = function (heading) {
                 $scope.heading = heading;
                 $scope.setTitle(heading);
             },
@@ -79,7 +26,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             }, getBindabaleAction = function (response) {
                 var action = angular.copy(response);
                 action.department = action.assigned_to && action.assigned_to.id || "";
-                action.dueDate = dateFilter(action.due_at_str, "yyyy-MM-dd");
+                action.dueDate = dateFilter(action.due_at_str, $rootScope.dateFormatForAPI);
                 action.dueTime = dateFilter(action.due_at_str, "HH:mm");
                 return action;
             },
@@ -95,7 +42,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             },
             fetchActionsList = function () {
                 var payLoad = {
-                    date: dateFilter($scope.filterOptions.selectedDay, "yyyy-MM-dd"),
+                    date: dateFilter($scope.filterOptions.selectedDay, $rootScope.dateFormatForAPI),
                     per_page: $scope.filterOptions.perPage,
                     page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
@@ -122,7 +69,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     _.each(response.results, function (action) {
                         $scope.actions.push(_.extend(action, {
                             assigned: !!action.department_id,
-                            isCompleted: action.action_status === "COMPLETED",
+                            isCompleted: action.action_status === $scope._actionCompleted,
                             iconClass: action.action_status ? "icon-" + action.action_status.toLowerCase() : "",
                             departmentName: !!action.department_id ? _.find($scope.departments, {
                                 value: action.department_id.toString()
@@ -162,7 +109,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     params: payLoad,
                     successCallBack: onFetchListSuccess
                 });
-            }, updateListEntry = function () {
+            },
+            updateListEntry = function () {
                 var currentAction = _.find($scope.actions, function (action) {
                     return action.id === $scope.filterOptions.selectedActionId
                 }), departmentId = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id;
@@ -178,14 +126,58 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     }).name : "",
                     isCompleted: !!$scope.selectedAction.completed_at
                 })
-            }, addDatePickerOverlay = function () {
-                angular.element("#ui-datepicker-div").after(angular.element('<div></div>',{
-                    id :"ui-datepicker-overlay"
+            },
+            addDatePickerOverlay = function () {
+                angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
+                    id: "ui-datepicker-overlay"
                 }));
-            }, removeDatePickerOverlay = function () {
+            },
+            removeDatePickerOverlay = function () {
                 angular.element("#ui-datepicker-overlay").remove();
+            },
+            datePickerConfig = {
+                dateFormat: $rootScope.jqDateFormat,
+                numberOfMonths: 1,
+                beforeShow: addDatePickerOverlay,
+                onClose: removeDatePickerOverlay
             };
 
+
+        //-------------------------------------------------------------------------------------------------------------- B. Scope Variables
+
+        $scope._actionCompleted = "COMPLETED";
+
+        $scope.filterOptions = {
+            showFilters: false,
+            selectedDay: $rootScope.businessDate,
+            department: "",
+            selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
+            query: "",
+            page: 1,
+            perPage: 25,
+            totalCount: 0,
+            startRecord: 1,
+            endRecord: null,
+            isLastPage: false,
+            selectedActionId: null
+        };
+
+        $scope.selectedAction = {
+            dueTime: "00:00"
+        };
+
+        $scope.selectDateOptions = _.extend(datePickerConfig, {
+            defaultDate: tzIndependentDate($rootScope.businessDate),
+            onSelect: fetchActionsList
+        });
+
+        $scope.dueDateEditOptions = _.extend(datePickerConfig, {
+            minDate: tzIndependentDate($rootScope.businessDate),
+            onSelect: function (date, datePickerObj) {
+                $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
+                $scope.updateAction();
+            }
+        });
 
         //-------------------------------------------------------------------------------------------------------------- C.Scope Methods
 
@@ -253,7 +245,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 },
                 reservation_id: $scope.selectedAction.reservation_id,
                 assigned_to: $scope.selectedAction.department || null,
-                due_at: dateFilter($scope.selectedAction.dueDate, "yyyy-MM-dd") +
+                due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : ""),
             }
 
