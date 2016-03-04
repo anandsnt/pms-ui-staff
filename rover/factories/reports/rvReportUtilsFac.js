@@ -1284,6 +1284,15 @@ angular.module('reportsModule')
                         report['chosenSortBy'] = roomType['value'];
                     };
                 };
+
+                // making sort by Revenue [desc] default
+                if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
+                    var revenue = _.find(report['sort_fields'], { 'value': 'REVENUE' });
+                    if ( !! revenue ) {
+                        revenue['sortDir'] = false;
+                        report['chosenSortBy'] = revenue['value'];
+                    };
+                };
             };
         };
 
