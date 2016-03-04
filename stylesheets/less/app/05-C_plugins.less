@@ -4353,11 +4353,13 @@
 
                     h1 {
                         font-weight: 700;
+                        line-height: 30px;
                         clear: none;
                     }
 
                     strong { 
                         font-weight: 600;
+                        line-height: 20px;
                         .h4; 
                     }
 
@@ -4420,10 +4422,18 @@
             &.staycard-actions {
 
                 .modal-header {
+
+                    h1,
+                    strong {
+                        .calc-width(100, 420);
+                        .nowrap();
+                    }
+                    
                     .dates {
                         position: absolute;
                         top: 23px;
-                        left: 220px;
+                        right: 200px;
+                        width: 200px;
 
                         .date { 
                             line-height: 20px; 
