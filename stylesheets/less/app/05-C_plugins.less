@@ -4339,7 +4339,30 @@
                     .size(460px, 920px);
 
                     .content-left {
-                        .scrollable { height: 100%;}
+                        .scrollable { 
+                            height: 100%;
+
+                            &.with-pagination { .calc-height(100, 60); }
+                        }
+                            
+                        .search-pagination {
+                            position: relative;
+                            padding: 10px;
+                            background: @grey2 @darkTexture repeat;
+
+                            p {
+                                font-size: 14px;
+                                margin-right: 10px;
+                                .pull-left;
+                            }
+
+                            .button {
+                                font-size: 14px;
+                                line-height: 40px;
+                                width: 90px;
+                                .pull-right;
+                            }
+                        }
                     }
 
                     .content-right {
