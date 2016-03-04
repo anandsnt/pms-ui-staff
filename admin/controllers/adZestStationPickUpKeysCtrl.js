@@ -6,6 +6,7 @@ admin.controller('ADZestStationPickUpKeysCtrl',['$scope','$rootScope', '$state',
         
         $scope.fetchSettings = function(){
             var fetchSuccess = function(data){
+                console.info('updaing for guest bill');
                 $scope.zestSettings = data;
                 $scope.$emit('hideLoader');
             };
@@ -21,12 +22,12 @@ admin.controller('ADZestStationPickUpKeysCtrl',['$scope','$rootScope', '$state',
                 $scope.$emit('hideLoader');
             };
             var dataToSend = {
-                                'kiosk':
-                                        {
-                                            "guest_bill":$scope.zestSettings.guest_bill
-                                        }
+                'kiosk':
+                    {
+                        "guest_bill":$scope.zestSettings.guest_bill
+                    }
 
-                             };
+            };
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };
         
