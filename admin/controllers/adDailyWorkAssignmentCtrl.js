@@ -31,6 +31,29 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
+		var SCROLL_POS_KEY = 'rooms_task_management_scroll';
+		/**/
+		var $dailyWorkAssign = document.getElementById( 'daily-work-assignment' );
+		/**/
+		var setScrollPos = function() {
+			localStorage.setItem( SCROLL_POS_KEY, $dailyWorkAssign.scrollTop );
+		};
+		/**/
+		var getScrollPos = function() {
+			var pos = parseInt( localStorage.getItem(SCROLL_POS_KEY) );
+			return isNaN(pos) ? 0 : pos;
+		};
+		/**/
+		var scrollToPos = function() {
+			var toPos = getScrollPos();
+
+			$timeout(function() {
+				$dailyWorkAssign.scrollTop = toPos;
+				localStorage.removeItem( SCROLL_POS_KEY );
+			}, 100);
+		};
+
+
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
@@ -485,6 +508,16 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		$scope.openTaskListForm = function(typeIndex, isSystemDefined) {
+			var item = this.item;
+
+			setScrollPos();
+
+			$timeout(function() {
+				openTaskListForm(item, typeIndex, isSystemDefined);
+			}, 100);
+		};
+
+		function openTaskListForm (item, typeIndex, isSystemDefined) {
 			if(!isSystemDefined)
 			{
 				if (typeIndex === 'new') {
@@ -498,28 +531,28 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					});
 				} else {
 					$scope.taskListForm = 'edit';
-					var frequencyType = checkForFrequencyType(this.item.frequency);
+					var frequencyType = checkForFrequencyType(item.frequency);
 					$scope.taskListClickedElement = typeIndex;
-					var time = this.item.completion_time;
+					var time = item.completion_time;
 
 					$scope.eachTaskList = {
-						name                         : this.item.name,
-						work_type_id                 : this.item.work_type_id,
-						room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
-						front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
-						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
-						is_occupied                  : this.item.is_occupied,
-						is_vacant                    : this.item.is_vacant,
+						name                         : item.name,
+						work_type_id                 : item.work_type_id,
+						room_type_ids                : applyIds( $scope.roomTypesList, item.room_type_ids ),
+						front_office_status_ids      : applyIds( $scope.foStatusList, item.front_office_status_ids ),
+						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, item.reservation_statuses_ids ),
+						is_occupied                  : item.is_occupied,
+						is_vacant                    : item.is_vacant,
 						hours                        : !!time ? time.split(':')[0] : '',
 						mins                         : !!time ? time.split(':')[1] : '',
-						task_completion_hk_status_id : this.item.task_completion_hk_status_id,
-						id                           : this.item.id,
-						rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time),
+						task_completion_hk_status_id : item.task_completion_hk_status_id,
+						id                           : item.id,
+						rooms_task_completion        : initateRoomTaskTimes(time, item.room_types_completion_time),
 						isWeekDay                    :frequencyType.isWeekDay,
 						isWeekEnd                    :frequencyType.isWeekEnd,
 						isCustom                     :frequencyType.isCustom,
-						frequency 					 : this.item.frequency,
-						is_active					 : this.item.is_active
+						frequency 					 : item.frequency,
+						is_active					 : item.is_active
 					};
 					mapRoomShowflag($scope.eachTaskList);
 					if(frequencyType.isCustom === true){
@@ -534,6 +567,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.closeTaskListForm = function() {
 			$scope.taskListClickedElement = -1;
 			resetEachTaskList();
+
+			scrollToPos();
 		};
 
 		$scope.deleteTaskListItem = function() {
