@@ -189,8 +189,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
+                if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === ""){
+                    $scope.subHeadingText = 'ROOM_NOT_AVAIL_MSG';
+                }else{
+                    $scope.subHeadingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
+                }
                 $scope.headingText = 'BROKE_HEADER';
-                $scope.subHeadingText = 'BROKE_HEADER_SUB';
                 $scope.modalBtn1 = 'DONE_BTN';
         };
         $scope.initRoomErrorScreen = function(){
