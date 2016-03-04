@@ -30,6 +30,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             numberOfMonths: 1,
             onSelect: function () {
                 fetchActionsList();
+            },
+            beforeShow: function(){
+                addDatePickerOverlay();
+            },
+            onClose: function(){
+                removeDatePickerOverlay();
             }
         };
 
@@ -40,6 +46,12 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             onSelect: function (date, datePickerObj) {
                 $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
                 $scope.updateAction();
+            },
+            beforeShow: function(){
+                addDatePickerOverlay();
+            },
+            onClose: function(){
+                removeDatePickerOverlay();
             }
         }
 
@@ -88,7 +100,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     page: $scope.filterOptions.page
                 }, onFetchListSuccess = function (response) {
                     //catch empty pages
-                    if(response.results.length === 0 && response.total_count !== 0 && $scope.filterOptions.page !== 1){
+                    if (response.results.length === 0 && response.total_count !== 0 && $scope.filterOptions.page !== 1) {
                         $scope.filterOptions.page = 1;
                         fetchActionsList();
                     }
@@ -128,7 +140,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                             $scope.filterOptions.selectedActionId = $scope.actions[0].id;
                         }
                         getActionDetails();
-                    }else{
+                    } else {
                         $scope.$broadcast("INIT_NEW_ACTION");
                     }
                     refreshScroller();
@@ -166,7 +178,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                     }).name : "",
                     isCompleted: !!$scope.selectedAction.completed_at
                 })
-            }
+            }, addDatePickerOverlay = function () {
+                angular.element("#ui-datepicker-div").after(angular.element('<div></div>',{
+                    id :"ui-datepicker-overlay"
+                }));
+            }, removeDatePickerOverlay = function () {
+                angular.element("#ui-datepicker-overlay").remove();
+            };
 
 
         //-------------------------------------------------------------------------------------------------------------- C.Scope Methods

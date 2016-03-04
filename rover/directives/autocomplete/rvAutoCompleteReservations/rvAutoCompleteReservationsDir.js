@@ -1,5 +1,5 @@
-angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv', 'highlightFilter',
-    function (RVSearchSrv, highlightFilter) {
+angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv', 'highlightFilter', 'rvUtilSrv',
+    function (RVSearchSrv, highlightFilter, rvUtilSrv) {
 
         return {
             restrict: 'A',
@@ -34,7 +34,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                             });
                         }
                     }, reservationsACSelectHandler = function (event, selection) {
-                        scope.guestName = selection.item.lastname + ', ' + selection.item.firstname;
+                        scope.guestName = rvUtilSrv.escapeNull(selection.item.lastname) + ', ' + rvUtilSrv.escapeNull(selection.item.firstname);
                         ngModel.$setViewValue(angular.copy(selection.item));
                         refreshTemplate();
                         return false;
@@ -59,7 +59,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                         }),
                         guestName = angular.element('<span></span>', {
                             class: "name",
-                            html: highlightFilter(item.firstname + ' ' + item.lastname, lastSearchText)
+                            html: highlightFilter(rvUtilSrv.escapeNull(item.lastname) + ', ' + rvUtilSrv.escapeNull(item.firstname), lastSearchText)
                         }),
                         roomNumber = angular.element('<span></span>', {
                             class: "room",
@@ -84,7 +84,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
 
                 ngModel.$render = function () {
                     // Clear up the guest name if the model is cleared from the controller end
-                    if(!ngModel.$viewValue){
+                    if (!ngModel.$viewValue) {
                         scope.guestName = null;
                     }
                 };
