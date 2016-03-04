@@ -83,7 +83,7 @@
 					<h3><span>Hotel</span> Details </h3>
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
-				<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="{{readOnly}}"></ad-textbox>
+				<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel code" required = "yes" readonly="{{readOnly}}"></ad-textbox>
 
 				<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
 
@@ -567,7 +567,7 @@
 					<label for="mli-site-code">
 						MerchantLink site code
 					</label>
-					<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
+					<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI site code">
 				</div>
 				<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''" >
 					<label>
