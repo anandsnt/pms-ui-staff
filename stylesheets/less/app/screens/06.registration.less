@@ -764,6 +764,32 @@
                         padding: 0 10px;
                         font-weight: 600;
 
+                        .sort {
+                            position: relative;
+                            cursor: pointer;
+                            padding-left: 20px;
+                            .show;
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                top: 2px;
+                                left: 0;
+                                background: @arrowSort no-repeat;
+                                background-size: 14px;
+                                .square(14px);
+                                .show();
+
+                                @media @highdpi {
+                                    background-image: @arrowSort2x;
+                                }
+                            }
+
+                            &.sorting-desc {
+                                &:after { .rotate(180deg); }
+                            }
+                        }
+
                         &.form,
                         &.action { 
                             padding: 0;
@@ -832,6 +858,26 @@
                                 .square(40px); 
 
                                 &:not(.inline) { .show; }
+                            }
+                        }
+                    }
+
+                    &.pagination {
+                        td {
+                            
+                            .search-pagination {
+                                position: static;
+                                left: auto;
+                                bottom: auto;
+                                padding: 0;
+                                height: 40px;
+                                background-color: transparent;
+                                .box-shadow(none);
+
+                                .button { font-size: 14px; }
+
+                                &:before,
+                                &:after { .hide; }
                             }
                         }
                     }
