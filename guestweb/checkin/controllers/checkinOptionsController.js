@@ -61,7 +61,7 @@
 					// Early checkin byepass
 					$state.go('earlyCheckinReady');
 				} else {
-					if (eci_upsell_limit_reached || !offerEci || early_checkin_offer_id === null) {
+					if (eci_upsell_limit_reached || typeof early_checkin_offer_id === 'undefined' || early_checkin_offer_id === null) {
 						//limted by overall count and room type
 						$state.go('checkinArrival');
 					} else {
