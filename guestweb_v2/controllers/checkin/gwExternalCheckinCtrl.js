@@ -18,7 +18,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 		    $scope.departureDate        = "";
 			$scope.date = $filter('date')(new Date(), 'yyyy-MM-dd');
 			$scope.noMatchesFound = false;
-			$scope.multipleMatchesFound = true;
+			$scope.multipleMatchesFound = false;
 		}();
 
 		var dateToSend = "";
