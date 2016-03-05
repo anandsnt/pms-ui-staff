@@ -220,7 +220,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
 		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
 		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms,"room_number");
-		postData.is_suite = $scope.isSuite;
+		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types,{"value": postData.room_type_id}).is_pseudo;
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){

@@ -1,5 +1,5 @@
 <!-- search mode -->
-<ng-include src="'/assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match'"></ng-include>
+<ng-include src="'/assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match' && at !== 'input-qr-code'"></ng-include>
 
 <!-- reservation list view -->
 <section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match'" click-touch="resetTime()">
@@ -70,6 +70,31 @@
                     <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
                 </li>
             </ul>
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+</section>
+
+
+
+<section id="main" class="centered" role="main" ng-show='at === "input-qr-code"' click-touch='resetTime()'>
+    <div id="content">
+        <h1 style="padding-top: 23px;">{{'QR_LOOKUP_HEADER' |translate}}</h1>
+        <h2>{{'QR_LOOKUP_SUB_HEADER' |translate}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" 
+                            class="button option" 
+                            touch-press='scanQRCode()'>
+                        <div ng-include="icons.url.qr"></div>
+                        
+                    </button>
+                </li>
+                
+                
+            </ul>
+        <h1>{{'QR_LOOKUP_BUTTON_TEXT' |translate}}</h1>
         </nav>
     </div>
     <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>

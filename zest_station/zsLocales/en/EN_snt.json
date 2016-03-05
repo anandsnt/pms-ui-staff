@@ -43,6 +43,9 @@
     
     
     
+        "QR_LOOKUP_HEADER": "To Pick Up Your Keys...",
+        "QR_LOOKUP_SUB_HEADER": "Scan The QR Code You Received.",
+        "QR_LOOKUP_BUTTON_TEXT": "Scanner To The Right",
     
     
     "NEXT_ROOM_NUMBER": "Next, Enter your Room number",
