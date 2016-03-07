@@ -307,7 +307,11 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         $scope.setCheckingGuestIn = function(){
             $scope.at = 'checking_in_guest';
-            $scope.headingText = 'WAIT_MOMENT';
+            if($scope.zestStationData.check_in_message_texts){
+                $scope.headingText = $scope.zestStationData.check_in_message_texts.not_available_message;
+            }else{
+                $scope.headingText = 'WAIT_MOMENT';
+            }
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
             $scope.hideNavBtns = true;
