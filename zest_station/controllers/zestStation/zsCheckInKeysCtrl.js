@@ -149,7 +149,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
                 $scope.headingText = 'MADE_FIRST_KEY_MSG';
                 $scope.subHeadingText = 'MADE_FIRST_KEY_MSG_SUB';
-                $scope.$digest();
+                
+                //$scope.$digest();
 
                 $scope.initMakeKey(2);
 
@@ -284,8 +285,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     $state.keyDispenseUID = '';//used if
 
                     var onResponseSuccess;
-                    if (!$scope.remoteEncoding){
                         options.is_kiosk = true;
+                    if (!$scope.remoteEncoding){
                         onResponseSuccess = $scope.printLocalKey;
                     } else {
                         onResponseSuccess = $scope.successMakeKey;
