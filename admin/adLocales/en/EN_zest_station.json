@@ -20,6 +20,19 @@
 "GUEST_BILL_DELIVERY":"Guest bill delivery options",
 "EMAIL_UPDATE_ZS":"Update Email",
 "PRINT":"Print",
+
+
+
+"STATION_LANGUAGE_SUPPORT":"Language Support",
+"STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
+"STATION_LANGUAGE_ENGLISH":"English",
+"STATION_LANGUAGE_FRENCH":"Français",
+"STATION_LANGUAGE_SPANISH":"Español",
+"STATION_LANGUAGE_GERMAN":"Deutsch",
+"STATION_LANGUAGE_ITALIAN":"Italiano",
+
+
+
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
@@ -28,6 +41,8 @@
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
+"QR_SCANNER":"QR Scanner",
+"PUK_AUTH":"Authentication",
 "REG_CARD_DELIVERY":"Registration card delivery options"
 
         

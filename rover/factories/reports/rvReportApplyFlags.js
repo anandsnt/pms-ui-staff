@@ -5,7 +5,6 @@ angular.module('reportsModule')
             return {
                 init: function ( report ) {
                     var flags = {
-                        'CANCELLATION_NO_SHOW'         : ['canRemoveDate'],
                         'BOOKING_SOURCE_MARKET_REPORT' : ['canRemoveDate'],
                         'LOGIN_AND_OUT_ACTIVITY'       : ['hasUserFilter'],
                         'DEPOSIT_REPORT'               : ['canRemoveDate'],

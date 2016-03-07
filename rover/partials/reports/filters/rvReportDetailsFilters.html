@@ -309,7 +309,7 @@
 
 
 
-        
+        <!-- item_08: general options -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'active': filterItemsToggle.item_09 }" ng-click="toggleFilterItems('item_09')">
             <span class="title">Option(s)</span>
         </a>
@@ -333,12 +333,12 @@
 
 
         <!-- item_10: company/ta/group -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasIncludeComapnyTaGroup" ng-class="{'active': filterItemsToggle.item_10}" ng-click="toggleFilterItems('item_10')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasIncludeCompanyTaGroup" ng-class="{'active': filterItemsToggle.item_10}" ng-click="toggleFilterItems('item_10')">
             <span class="title">Company/TA/Group</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasIncludeComapnyTaGroup" ng-class="{'hidden': !filterItemsToggle.item_10}">
-            <input class="icons icon-search" auto-complete auto-options="detailsCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport)">
-            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeComapnyTaGroup">
+        <div class="settings-content" ng-if="chosenReport.hasIncludeCompanyTaGroup" ng-class="{'hidden': !filterItemsToggle.item_10}">
+            <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTaGroup">
         </div>
 
 
@@ -607,10 +607,13 @@
         </div>
 
 
+
+
+
+        <!-- item_32: Rate Type -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateTypeFilter" ng-class="{'active': filterItemsToggle.item_32}" ng-click="toggleFilterItems('item_32')">
             <span class="title">Rate Type</span>
         </a>
-
         <div class="settings-content" ng-if="chosenReport.hasRateTypeFilter" ng-class="{ 'hidden': !filterItemsToggle.item_32 }">
             <div class="faux-select-options">
                 <label class="checkbox" ng-show="chosenReport.hasRateTypeFilter.data.length > 1">
@@ -626,10 +629,12 @@
             </div>
         </div>
 
+
+
+        <!-- item_33: Rates -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateFilter" ng-class="{'active': filterItemsToggle.item_33}" ng-click="toggleFilterItems('item_33')">
             <span class="title">Rates</span>
         </a>
-
         <div class="settings-content" ng-if="chosenReport.hasRateFilter" ng-class="{ 'hidden': !filterItemsToggle.item_33 }">
             <div class="faux-select-options">
                 <label class="checkbox" ng-show="chosenReport.hasRateFilter.data.length > 1">
@@ -690,6 +695,59 @@
 
 
 
+
+        <!-- item_34: company/ta -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasIncludeCompanyTa" ng-class="{'active': filterItemsToggle.item_34}" ng-click="toggleFilterItems('item_34')">
+            <span class="title">Company/TA</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasIncludeCompanyTa" ng-class="{'hidden': !filterItemsToggle.item_34}">
+            <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
+            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTa">
+        </div>
+
+
+
+
+
+        <!-- item_35: Min. Revenue -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMinRevenue" ng-class="{'active': filterItemsToggle.item_35}" ng-click="toggleFilterItems('item_35')">
+            <span class="title">Revenue</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasMinRevenue" ng-class="{'hidden': !filterItemsToggle.item_35}">
+            <label>Minimum Revenue</label>
+            <input ng-model="chosenReport.hasMinRevenue.data" placeholder="Enter Value" type="number" limit-input-range="{'from': 0}" />
+        </div>
+
+        <!-- item_36: Min. Room Nights -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMinRoomNights" ng-class="{'active': filterItemsToggle.item_36}" ng-click="toggleFilterItems('item_36')">
+            <span class="title">Nights</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasMinRoomNights" ng-class="{'hidden': !filterItemsToggle.item_36}">
+            <label>Minimum Nights</label>
+            <input ng-model="item.hasMinRoomNights.data" placeholder="Enter No." type="number" limit-input-range="{'from': 0}" />
+        </div>
+
+
+
+
+        <!-- item_37: Show options -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasShow.data.length" ng-class="{ 'active': filterItemsToggle.item_37 }" ng-click="toggleFilterItems('item_37')">
+            <span class="title">Show</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasShow.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_37 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasShow.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasShow.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasShow.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShow, true)" name="room-filters"> Both
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasShow.data.length > 1 && chosenReport.hasShow.selectAll) }">
+                    <label class="checkbox" ng-repeat="show in chosenReport.hasShow.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : show.selected }"></span>
+                        <input type="checkbox" ng-model="show.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShow)" name="room-filters"> {{ show.description }}
+                    </label>
+                </div>
+            </div>
+        </div>
 
 
     </div>
