@@ -257,10 +257,16 @@
 </div>
 
 
-<div class="filter" ng-if="item.hasIncludeComapnyTaGroup">
+<div class="filter" ng-if="item.hasIncludeCompanyTa">
+    <label>Company/TA</label>
+    <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
+    <input type="text" class="hidden" ng-model="item.chosenIncludeCompanyTa">
+</div>
+
+<div class="filter" ng-if="item.hasIncludeCompanyTaGroup">
     <label>Company/TA/Group</label>
-    <input class="icons icon-search" auto-complete auto-options="listCtgAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeComapnyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item)">
-    <input type="text" class="hidden" ng-model="item.chosenIncludeComapnyTaGroup">
+    <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="item.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(item)" ng-change="removeCompTaGrpId(item, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+    <input type="text" class="hidden" ng-model="item.chosenIncludeCompanyTaGroup">
 </div>
 
 <div class="options long-list" ng-if="item.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
@@ -516,6 +522,16 @@
             <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(item, item.hasOriginsList)" name="room-filters"> {{ origin.name }}
         </label>
     </div>
+</div>
+
+<div class="filter" ng-if="item.hasMinRevenue">
+    <label>Minimum Revenue</label>
+    <input ng-model="item.hasMinRevenue.data" value="" placeholder="Enter Value" type="number" limit-input-range="{'from': 0}" />
+</div>
+
+<div class="filter" ng-if="item.hasMinRoomNights">
+    <label>Minimum Nights</label>
+    <input ng-model="item.hasMinRoomNights.data" value="" placeholder="Enter No." type="number" limit-input-range="{'from': 0}" />
 </div>
 
 <div class="options long-list" ng-if="item.hasShow.data.length" ng-click="catchFauxSelectClick($event, 'hasShow')">

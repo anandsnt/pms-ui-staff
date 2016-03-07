@@ -20,7 +20,8 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.mli = {
 		certificate: ''
 	};
-	$scope.isHotelChainEditable =  true;
+	$scope.isHotelChainReadonly =  false;
+	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
@@ -31,7 +32,6 @@ admin.controller('ADHotelDetailsCtrl', [
 	    }
   	};
 	if($rootScope.adminRole === "snt-admin"){
-		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
 		if($stateParams.action ==="addfromSetup"){
 			$scope.previousStateIsDashBoard = true;
@@ -39,7 +39,6 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if($stateParams.action === "add" || $stateParams.action ==="addfromSetup"){
 			$scope.title = "Add New Hotel";
-
 			var fetchSuccess = function(data){
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -74,6 +73,12 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.data.check_out_time.primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				}
+				//CICO-24330 -Make the chain non-editable once its saved
+				if(!!$scope.data.hotel_chain) {
+					$scope.isHotelChainReadonly = true;
+				}
+
+				setDropdownDefaults();
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
 		}
@@ -97,6 +102,8 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data.check_out_time.primetime = "AM";
 				$scope.data.check_out_primetime = "AM";
 			}
+
+			setDropdownDefaults();
 		};
 		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
 	}
@@ -163,7 +170,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			if ($scope.mli.certificate != "") {
 				data.mli_certificate = $scope.mli.certificate;
 			}
-
+			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go("admin.hotels");
@@ -323,6 +330,43 @@ admin.controller('ADHotelDetailsCtrl', [
     	else {
     		return false;
     	}
+    };
+
+    $scope.toggleInterfaceType = function(index) {
+    	$scope.data.interface_types[index].is_checked = $scope.data.interface_types[index].is_checked === 'true' ? "false" : "true";
+    }
+
+    var getSelectedInterfaceTypes = function(data) {
+    	var selectedIds = [];
+    	for (var i = 0; i < data.interface_types.length; i++) {
+    		if(data.interface_types[i].is_checked === 'true') {
+    			selectedIds.push(data.interface_types[i].id);
+    		}
+    	}
+    	return selectedIds;
+    }
+
+    //Set dropdown defaults when they are empty or null
+    var setDropdownDefaults = function() {
+    	if(!$scope.data.hotel_brand) {
+			$scope.data.hotel_brand = "";
+		}
+
+		if(!$scope.data.hotel_chain) {
+			$scope.data.hotel_chain = "";
+		}
+
+		if(!$scope.data.hotel_date_format) {
+			$scope.data.hotel_date_format = "";
+		}
+
+		if(!$scope.data.default_currency) {
+			$scope.data.default_currency = "";
+		}
+
+		if(!$scope.data.selected_language) {
+			$scope.data.selected_language = "";
+		}
     };
 
 }]);

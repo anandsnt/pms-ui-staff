@@ -195,8 +195,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'guest_delivery_communication':$scope.checkinData.guest_delivery_communication,
       'offer_room_delivery_options':$scope.checkinData.offer_room_delivery_options,
       'zest_checkin_later_text':$scope.checkinData.zest_checkin_later_text,
-      'zest_checkin_now_text':$scope.checkinData.zest_checkin_now_text
-
+      'zest_checkin_now_text':$scope.checkinData.zest_checkin_now_text,
+      'eta_enforcement':$scope.checkinData.eta_enforcement
     };
 
     var saveCheckinDetailsFailureCallback = function (data) {

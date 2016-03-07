@@ -19,7 +19,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		}
 		$scope.editMode = true;
 	}
-	
+
 	/*
      * To handle add new room number click
      */
@@ -29,41 +29,37 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		}
 	};
 
-    
-	$scope.$watch("data.room_type_id", function(newType, oldType){
-		
-		if ($scope.editMode && newType !== undefined){
-			if(oldType == undefined){
-				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite;
-			}	
-			else {
-				var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite,
-					isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": oldType}).is_suite
-				if (isNewTypeSuite && isOldTypeSuite) {
-					$scope.isSuite = true;
+	$scope.roomTypeChanged = function(value) {
+
+		if ($scope.editMode){
+
+			var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
+				isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
+			if (isNewTypeSuite && isOldTypeSuite) {
+				$scope.isSuite = true;
+				$scope.selectedRoomTypeId = $scope.data.room_type_id
+			}
+			else if(isNewTypeSuite || isOldTypeSuite) {
+				var message = [];
+				if (isNewTypeSuite){
+					message = ["Regular room type cannot be changed to suite room type"];
 				}
 				else {
-					var message = [];
-					if (isNewTypeSuite){					
-						message = ["Regular room type cannot be changed to suite room type"];
-					}
-					else {
-						message = ["Suite room type cannot be changed to regular room type"];
-					}
-
-					$timeout(function() {
-						$scope.errorMessage = message;
-					}, 500);
+					message = ["Suite room type cannot be changed to regular room type"];
 				}
+
+				$timeout(function() {
+					$scope.errorMessage = message;
+					$scope.data.room_type_id = $scope.selectedRoomTypeId;
+					$('.content-scroll').animate({scrollTop: 0}, 'fast');
+				}, 500);
 			}
 		}
 		else{
-			if(!$scope.editMode && (newType !== undefined && newType !== "")){
-				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": newType}).is_suite;
-			}
+			$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
 		}
-	});
-   
+	};
+
     /*
      * To handle blur event on Suite rooms
      */
@@ -95,6 +91,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		$scope.data = data;
 		$scope.floors = data.floors;
 		$scope.roomNumber = $scope.data.room_number;
+		$scope.selectedRoomTypeId = data.room_type_id;
+		$scope.roomTypeChanged(data.room_type_id);
 		/*
 		* adding the selected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
@@ -142,7 +140,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 					};
 				};
 			};
-		}; 
+		};
 
 	};
 
@@ -207,7 +205,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 	* method to update the room details
 	*/
 	$scope.updateRoomDetails = function(){
-        
+
 		var postData = {};
 		postData.room_id = $scope.data.room_id;
 		postData.room_number = $scope.data.room_number;
@@ -222,6 +220,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
 		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
 		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms,"room_number");
+		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types,{"value": postData.room_type_id}).is_pseudo;
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
