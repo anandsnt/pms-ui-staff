@@ -1,4 +1,5 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state', '$stateParams', function($timeout, $scope, ADRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams', 
+				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -73,6 +74,14 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
          }
        });
     };
+
+    /*
+     * To show add suite room option
+     */     
+    $scope.shouldShowAddSuiteRooms = function() {
+
+			return $scope.isSuite && $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled;
+	};
 
 	/*
      * To handle individual deletion of Suite rooms
