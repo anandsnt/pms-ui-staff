@@ -327,6 +327,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
+			if (item.title === reportNames['COMPANY_TA_TOP_PRODUCERS']) {
+				if ( !! item.fromDate && item.untilDate === undefined ) {
+					item.untilDate = item.fromDate;
+				};
+
+				if ( !! item.untilDate && item.fromDate === undefined ) {
+					item.fromDate = item.untilDate;
+				};
+			}
+
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
@@ -704,7 +714,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var selectedItems;
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
-                    fauxDS.title = 'All Selected';
+                    fauxDS.title = fauxDS.allTitle || 'All Selected';
                 } else {
                     fauxDS.title = fauxDS.defaultTitle;
                 };
@@ -905,7 +915,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': [],
+					'guestOrAccount': []
 				};
 			};
 

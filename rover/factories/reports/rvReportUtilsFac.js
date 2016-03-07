@@ -372,7 +372,8 @@ angular.module('reportsModule')
                 show         : false,
                 selectAll    : true,
                 defaultTitle : 'Select Options',
-                title        : 'All Selected',
+                allTitle     : 'Both',
+                title        : 'Both',
                 data         : []
             });
 
