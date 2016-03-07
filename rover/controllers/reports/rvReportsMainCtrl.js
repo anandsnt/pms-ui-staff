@@ -733,14 +733,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
                     fauxDS.selectAll = true;
-                    fauxDS.title = 'All Selected';
+                    fauxDS.title = fauxDS.allTitle || 'All Selected';
                 } else {
                     fauxDS.selectAll = false;
                     fauxDS.title = selectedItems.length + ' Selected';
                 };
 
-				// CICO-10202
-				$scope.$emit( reportMsgs['REPORT_FILTER_CHANGED'] );
+				console.info( reportMsgs['REPORT_FILTER_CHANGED'] );
+				$scope.$broadcast( reportMsgs['REPORT_FILTER_CHANGED'] );
 			};
 
 			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
