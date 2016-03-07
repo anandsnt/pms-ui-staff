@@ -41,7 +41,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     sort_dir: true,
                     sort_field: 'name'
                 },
-                successCallBack: 	    onSuccess,
+                successCallBack: 	onSuccess,
                 failureCallBack:        onFail
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
@@ -70,43 +70,34 @@ sntZestStation.controller('zsAdminCtrl', [
 	//* when we clicked on exit button
 	$scope.navToPrev = function(){
             $state.go ('zest_station.home');
-                
 	};
-
-        $scope.toggleOOS = function(){
-            if ($state.isOOS){
-                $rootScope.$emit(zsEventConstants.OOS_OFF);
-            } else {
-                $rootScope.$emit(zsEventConstants.OOS_OFF);
-            }
-        };
 
 	$scope.loginAdmin = function(){
             $scope.mode   = "admin-name-mode";
             $scope.headingText = 'Admin Username';
             $scope.passwordField = false;
             showNavButtons();
-            
 	};
         
         $scope.goToAdminPrompt = function(){
             $state.go('zest_station.home-admin',{'isadmin':true});
         };
+        
         $scope.adminLoginError = false;
 	$scope.goToNext  = function(){
-		if($scope.mode === "admin-name-mode"){
-                    $scope.adminLoginError = false;
-                    $scope.userName = angular.copy($scope.input.inputTextValue);
-                    $scope.input.inputTextValue = "";
-                    $scope.mode   = "admin-password-mode";
-                    $scope.headingText = 'Admin Password';
-                    $scope.passwordField = true;
-		}
-		else{
-                        $scope.adminLoginError = false;
-			$scope.passWord = angular.copy($scope.input.inputTextValue);
-                        $scope.submitLogin();
-		}
+            if($scope.mode === "admin-name-mode"){
+                $scope.adminLoginError = false;
+                $scope.userName = angular.copy($scope.input.inputTextValue);
+                $scope.input.inputTextValue = "";
+                $scope.mode   = "admin-password-mode";
+                $scope.headingText = 'Admin Password';
+                $scope.passwordField = true;
+            }
+            else{
+                $scope.adminLoginError = false;
+                $scope.passWord = angular.copy($scope.input.inputTextValue);
+                $scope.submitLogin();
+            }
 	};
         
         
