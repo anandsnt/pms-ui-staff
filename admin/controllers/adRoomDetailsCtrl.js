@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams', 
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams',
 				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
@@ -77,7 +77,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 
     /*
      * To show add suite room option
-     */     
+     */
     $scope.shouldShowAddSuiteRooms = function() {
 
 			return $scope.isSuite && $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled;
@@ -245,7 +245,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			options = each['options'];
 
 			if ( 'dropdown' == each.type || 'radio' == each.type ) {
-				postData.active_room_likes.push( each.selected );
+				if(each.selected !== ''){
+					postData.active_room_likes.push( each.selected );
+				}
+
 			} else {
 				for ( m = 0, n = options.length; m < n; m++ ) {
 					if ( !! options[m]['selected'] ) {
