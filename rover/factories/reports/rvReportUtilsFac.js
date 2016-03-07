@@ -261,7 +261,7 @@ angular.module('reportsModule')
          */
         var __pushDisplayData = function(report, filter) {
             var selected = false;
-            
+
             if ( report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
                 selected = true;
                 report['hasDisplay']['title'] = filter.description;
@@ -408,7 +408,7 @@ angular.module('reportsModule')
 
                 if(filter.value === 'RESTRICTION') {
                     report['hasRestrictionListFilter'] = filter;
-                };                
+                };
 
 
                 // check for time filter and keep a ref to that item
@@ -462,9 +462,9 @@ angular.module('reportsModule')
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
-                    
+
                     var selected = false;
-            
+
                     if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
                         selected = true;
                         report['hasExclusions']['title'] = filter.description;
@@ -542,7 +542,7 @@ angular.module('reportsModule')
                 if ( 'INCLUDE_GUARANTEE_TYPE' == filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchGuaranteeTypes()
-                        .then( fillGarntTypes );  
+                        .then( fillGarntTypes );
                 }
 
                 else if ( 'CHOOSE_MARKET' == filter.value && ! filter.filled ) {
@@ -597,10 +597,10 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchRestrictionList()
                         .then( fillRestrictionList );
-                }        
-                
+                }
+
                 else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
-                    
+
                     // fetch charge groups
                     requested++;
                     reportsSubSrv.fetchChargeNAddonGroups()
@@ -621,8 +621,8 @@ angular.module('reportsModule')
                 else {
                     // no op
                 };
-            });           
-            
+            });
+
             // lets just resolve the deferred already!
             if ( 0 == requested ) {
                 checkAllCompleted();
@@ -799,7 +799,7 @@ angular.module('reportsModule')
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
+
                         __setData(report, 'hasRateCodeFilter', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
@@ -815,16 +815,16 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             };
-            
+
             function fillRoomTypeList (data) {
                 _.each(data, function(roomType){
                     roomType.selected = true;
-                });                
+                });
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
+
                         __setData(report, 'hasRoomTypeFilter', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
@@ -839,7 +839,7 @@ angular.module('reportsModule')
 
                 completed++;
                 checkAllCompleted();
-            }; 
+            };
 
             function fillRestrictionList (data) {
                 _.each(data, function(restriction){
@@ -850,7 +850,7 @@ angular.module('reportsModule')
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
+
                         __setData(report, 'hasRestrictionListFilter', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
@@ -865,13 +865,13 @@ angular.module('reportsModule')
 
                 completed++;
                 checkAllCompleted();
-            };        
+            };
 
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
                     rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id){ 
+                    rateTypeListToReturn = rateTypeListIds.map(function(id){
                         rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
                         if(rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
@@ -892,7 +892,7 @@ angular.module('reportsModule')
             //
             function fillRateTypesAndRateList(data) {
                 var foundFilter;
-                
+
                 //default all are selected for rate & rate types
                 _.each(data, function(rate) {
                     rate.selected = true;
@@ -902,7 +902,7 @@ angular.module('reportsModule')
                     foundFilter = _.find(report['filters'], { value: 'RATE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
+
                         __setData(report, 'hasRateTypeFilter', {
                             type         : 'FAUX_SELECT',
                             filter       : foundFilter,
@@ -926,7 +926,7 @@ angular.module('reportsModule')
                 });
 
                 completed++;
-                checkAllCompleted();                
+                checkAllCompleted();
             };
 
             // fill charge group and charge codes
@@ -1240,7 +1240,7 @@ angular.module('reportsModule')
             // need to reorder the sort_by options
             // for guest balance report in the following order
             if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
-                var accountName = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
+                var accountName = angular.copy( _.find(report['sort_fields'], { 'value': 'COMPANY_TA_NAME' }) ),
                     roomNights  = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NIGHTS' }) ),
                     revenue     = angular.copy( _.find(report['sort_fields'], { 'value': 'REVENUE' }) );
 
