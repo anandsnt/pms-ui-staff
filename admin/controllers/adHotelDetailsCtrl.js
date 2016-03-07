@@ -22,6 +22,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	};
 	$scope.isHotelChainReadonly =  false;
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
+	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
