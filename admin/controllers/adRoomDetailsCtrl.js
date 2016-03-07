@@ -1,4 +1,5 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state', '$stateParams', function($timeout, $scope, ADRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams',
+				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -31,32 +32,34 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 
 	$scope.roomTypeChanged = function(value) {
 
-		if ($scope.editMode){
+		if( $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled ) {
+			if ($scope.editMode){
 
-			var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
-				isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
-			if (isNewTypeSuite && isOldTypeSuite) {
-				$scope.isSuite = true;
-				$scope.selectedRoomTypeId = $scope.data.room_type_id
-			}
-			else if(isNewTypeSuite || isOldTypeSuite) {
-				var message = [];
-				if (isNewTypeSuite){
-					message = ["Regular room type cannot be changed to suite room type"];
+				var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
+					isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
+				if (isNewTypeSuite && isOldTypeSuite) {
+					$scope.isSuite = true;
+					$scope.selectedRoomTypeId = $scope.data.room_type_id
 				}
-				else {
-					message = ["Suite room type cannot be changed to regular room type"];
-				}
+				else if(isNewTypeSuite || isOldTypeSuite) {
+					var message = [];
+					if (isNewTypeSuite){					
+						message = ["Regular room type cannot be changed to suite room type"];
+					}
+					else {
+						message = ["Suite room type cannot be changed to regular room type"];
+					}
 
-				$timeout(function() {
-					$scope.errorMessage = message;
-					$scope.data.room_type_id = $scope.selectedRoomTypeId;
-					$('.content-scroll').animate({scrollTop: 0}, 'fast');
-				}, 500);
+					$timeout(function() {
+						$scope.errorMessage = message;
+						$scope.data.room_type_id = $scope.selectedRoomTypeId;
+						$('.content-scroll').animate({scrollTop: 0}, 'fast');
+					}, 500);
+				}
 			}
-		}
-		else{
-			$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
+			else{
+				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
+			}
 		}
 	};
 
@@ -73,6 +76,14 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
          }
        });
     };
+
+    /*
+     * To show add suite room option
+     */
+    $scope.shouldShowAddSuiteRooms = function() {
+
+			return $scope.isSuite && $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled;
+	};
 
 	/*
      * To handle individual deletion of Suite rooms
@@ -236,7 +247,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
 			options = each['options'];
 
 			if ( 'dropdown' == each.type || 'radio' == each.type ) {
-				postData.active_room_likes.push( each.selected );
+				if(each.selected !== ''){
+					postData.active_room_likes.push( each.selected );
+				}
+
 			} else {
 				for ( m = 0, n = options.length; m < n; m++ ) {
 					if ( !! options[m]['selected'] ) {
