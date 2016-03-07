@@ -14,7 +14,7 @@ admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$statePar
                 if (!$scope.zestSettings.zest_lang.English){$scope.zestSettings.zest_lang.English=false};
                 if (!$scope.zestSettings.zest_lang.French){$scope.zestSettings.zest_lang.French=false};
                 if (!$scope.zestSettings.zest_lang.Spanish){$scope.zestSettings.zest_lang.Spanish=false};
-                if (!$scope.zestSettings.zest_lang.Dutch){$scope.zestSettings.zest_lang.Dutch=false};
+                if (!$scope.zestSettings.zest_lang.German){$scope.zestSettings.zest_lang.German=false};
                 if (!$scope.zestSettings.zest_lang.Italian){$scope.zestSettings.zest_lang.Italian=false};
                 if (!$scope.zestSettings.zest_lang.enabled){$scope.zestSettings.zest_lang.enabled=false};
                 
