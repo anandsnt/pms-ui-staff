@@ -74,6 +74,14 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
        });
     };
 
+    /*
+     * To show add suite room option
+     */     
+    $scope.shouldShowAddSuiteRooms = function() {
+
+			return isSuite && isStandAlone && !$rootScope.isHourlyRateOn;
+	};
+
 	/*
      * To handle individual deletion of Suite rooms
      */

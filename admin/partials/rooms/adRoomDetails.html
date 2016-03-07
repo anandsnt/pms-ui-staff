@@ -31,7 +31,7 @@
 
 				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
 
-				<div class="entry full-width" ng-show="isSuite && isStandAlone">
+				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
 					<label for="select-option1">
 						{{'ROOM_NUMBERS' |translate}}
 					</label>
