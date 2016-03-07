@@ -85,7 +85,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 if ($scope.isInCheckinMode()){
                     $state.go('zest_station.find_reservation_no_match');
                 }
-            } else if ($scope.reservations.length === 1){
+            } else if ($scope.reservations.length === 1 && !$scope.fetchingList){
                 $scope.selectReservation($scope.reservations[0]);
             } {
                 $scope.mode = "reservations-list";
@@ -450,7 +450,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * [fetchNextReservationList description]
      * @return {[type]} [description]
      */
+    $scope.fetchingList = false;
     $scope.fetchNextReservationList = function() {
+        $scope.fetchingList = true;
         if ($scope.page < $scope.totalPages) {
             $scope.page++;
         }
@@ -473,8 +475,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean}
      */
     $scope.shouldShowSearchResults = function() {
-        return true;
-        //return ($scope.reservations.length > 0);
+        return ($scope.reservations.length > 0);
     };
 
 
@@ -491,20 +492,34 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
 
     $scope.initPuk = function(){
-            $scope.at = 'input-last';
             $scope.mode = "pickup-mode";
-            $scope.headingText = "TYPE_LAST";
-            if ($state.lastAt === 're-enter-last'){
-                $scope.inputType = 'text';
+            if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page
+                $scope.setScreenIcon('key');
+                $scope.at = 'input-qr-code';
+                $scope.headingText = "QR_LOOKUP_HEADER";
+                $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
+                    
+            } else {
+                $scope.at = 'input-last';
                 $scope.headingText = "TYPE_LAST";
-                $scope.input.inputTextValue = $state.input.last;
-                $scope.at = 're-input-last';
-            } else if ($state.lastAt === 're-enter-room'){
-                $scope.inputType = 'number';
-                $scope.headingText = "NEXT_ROOM_NUMBER";
-                $scope.input.inputTextValue = $state.input.room;
-                $scope.at = 're-input-room';
-            }
+                
+                if ($state.lastAt === 're-enter-last'){
+                    $scope.inputType = 'text';
+                    $scope.headingText = "TYPE_LAST";
+                    $scope.input.inputTextValue = $state.input.last;
+                    $scope.at = 're-input-last';
+                } else if ($state.lastAt === 're-enter-room'){
+                    $scope.inputType = 'number';
+                    $scope.headingText = "NEXT_ROOM_NUMBER";
+                    $scope.input.inputTextValue = $state.input.room;
+                    $scope.at = 're-input-room';
+                }
+        }
+            
+            
+            
+            
+            
 
     };
     $scope.initCheckout = function(){

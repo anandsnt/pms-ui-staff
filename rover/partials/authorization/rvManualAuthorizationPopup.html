@@ -11,7 +11,7 @@
                             <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
                         </figure>
                         <span class="number">
-                                {{ 'NO' | translate }}
+                                {{ 'NO.' | translate }}
                             <span class="value">
                                 {{card.card_number}}
                             </span>
@@ -26,7 +26,7 @@
                         <span class="amount"> 
                                 {{ 'AMOUNT' | translate }}
                             <span class="value" ng-if="card.last_authorization.amount">
-                                {{ currencySymbol }}{{card.last_authorization.amount}}
+                                {{ currencySymbol }}{{ card.last_authorization.amount | number : 2 }}
                             </span>
                             <span class="value" ng-if="!card.last_authorization.amount">-</span>
                         </span>
@@ -37,7 +37,7 @@
         </fieldset>
 
         <fieldset class="content-right">
-            <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >      {{authData.selectedCardDetails.name}} {{ 'NO' | translate }} {{authData.selectedCardDetails.number}}
+            <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >      {{authData.selectedCardDetails.name}} {{ 'NO.' | translate }} {{authData.selectedCardDetails.number}}
             </span>
             
             <span class="text" ng-hide="authData.selectedCardDetails.last_auth_date == '' ">
@@ -57,7 +57,7 @@
                             <td class="value" ng-class="{ 
                                 'green' : authData.selectedCardDetails.bill_balance == 0.00,
                                 'red'   : authData.selectedCardDetails.bill_balance > 0.00 }">
-                                {{ currencySymbol }} {{authData.selectedCardDetails.bill_balance}}
+                                {{ currencySymbol }} {{ authData.selectedCardDetails.bill_balance | number : 2 }}
                             </td>
                         </tr>
                         

@@ -390,9 +390,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                         $scope.headingText = "END_THANKS";
                         $scope.subHeadingText = '';
                     } else if ($scope.theme === 'fontainebleau'){
-                        $scope.headingText = "SEE_YOU";
+                        $scope.headingText = "END_THANKS";
                         $scope.subHeadingText = '';
-                        
+                    } else {
+                        $scope.headingText = 'END_THANKS';
                     }
                 }
                 $scope.at = 'last_confirm';   
@@ -408,8 +409,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.invalid_email_retry'){
                 $scope.at = 'invalid-email';
-                $scope.headingText = 'OOPS_TEXT';
-                $scope.subHeadingText = 'INVALID_EMAIL_ENTERED';
+                
+                $scope.headingText = 'EMAIL_ERR_HEADER';//INVALID_EMAIL_ENTERED
+                $scope.subHeadingText = 'EMAIL_ERR_HEADER_SUB';//INVALID_EMAIL_ENTERED SUB
                 if ($state.from === 'card-swipe'){
                     $scope.from = 'card-swipe';
                 }

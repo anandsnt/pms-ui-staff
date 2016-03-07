@@ -29,6 +29,7 @@
 			
 			if ($scope.ngDialogData.penalty > 0) {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
+				$scope.ngDialogData.penalty = parseFloat($scope.ngDialogData.penalty).toFixed(2);
 			};
 
 			$scope.setScroller('cardsList', {

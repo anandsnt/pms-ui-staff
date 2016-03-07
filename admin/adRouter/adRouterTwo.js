@@ -515,6 +515,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/stationary'
 		});
 
+		$stateProvider.state('admin.languages', {
+			templateUrl: '/assets/partials/languages/adLanguages.html',
+			controller: 'ADLanguagesCtrl',
+			url : '/languages'
+		});
+
 		$stateProvider.state('admin.analyticsSetup', {
 			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
 			controller: 'adAnalyticSetupCtrl',
