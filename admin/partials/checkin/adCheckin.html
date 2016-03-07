@@ -230,14 +230,15 @@
 
 				<fieldset class="holder full-width" ng-show="checkinData.is_precheckin_only">
 					<ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width margin-top-30" ></ad-checkbox>
+					<div class="form-title">
+						<h3 class="ng-binding"><span class="ng-scope" translate="">ARRIVAL_TIMES</span> </h3>
+					</div>
+					<ad-toggle-button is-checked="checkinData.eta_enforcement" label="{{ 'LIMIT_ARRIVAL_TIMES' | translate}}"></ad-toggle-button>
 				</fieldset>	
 
 				<fieldset class="holder left" ng-hide="!checkinData.is_precheckin_only">
 
 					<ad-textbox value="checkinData.max_webcheckin" label = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}"  styleclass="full-width" maxlength="4"></ad-textbox>
-
-					<ad-toggle-button is-checked="checkinData.eta_enforcement" label="{{ 'ETA_ENFORCEMENT' | translate}}"></ad-toggle-button>
-
 
 					<div class="form-title">
 						<h3 class="ng-binding"><span class="ng-scope" translate="">PRE_CHECK_IN_EMAIL_FIELDS</span> </h3>

@@ -49,4 +49,7 @@
     "ROOM_KEY_COMMUNICATION_OPTIONS":"Room key communication options",
     "EMAIL_AND_TEXT_MESSAGE":"Email and Text Message",
     "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message",
-    "ETA_ENFORCEMENT":"ETA enforcement"
+    "ETA_ENFORCEMENT":"ETA enforcement",
+    "ARRIVAL_TIMES":"Arrival Times",
+    "LIMIT_ARRIVAL_TIMES":"Limit Arrival Times based on Hotel's local time"
+
