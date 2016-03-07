@@ -7,7 +7,7 @@
 				var deferred = $q.defer();
 				var url = ' /staff/reservation/modify_reservation.json';
 				$http.post(url,data).success(function(response) {
-					deferred.resolve(this.responseData);
+					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
@@ -19,7 +19,7 @@
 				var deferred = $q.defer();
 				var url = '/api/reservations/'+data.reservation_id+'/unassign_room';
 				$http.post(url).success(function(response) {
-					deferred.resolve(this.responseData);
+					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {
 					deferred.reject();

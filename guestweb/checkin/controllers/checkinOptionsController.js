@@ -61,7 +61,7 @@
 					// Early checkin byepass
 					$state.go('earlyCheckinReady');
 				} else {
-					if (eci_upsell_limit_reached) {
+					if (eci_upsell_limit_reached || typeof early_checkin_offer_id === 'undefined' || early_checkin_offer_id === null) {
 						//limted by overall count and room type
 						$state.go('checkinArrival');
 					} else {
@@ -71,7 +71,7 @@
 							'charge': early_checkin_charge,
 							'id': early_checkin_offer_id,
 							'isFromCheckinNow': 'true',
-							'roomAssignedFromZestWeb': roomAssignedFromZestWeb ? 'true' :'false'
+							'roomAssignedFromZestWeb': roomAssignedFromZestWeb ? 'true' : 'false'
 						});
 					}
 				}
@@ -88,8 +88,13 @@
 			$scope.isLoading = true;
 			checkinNowService.assignRoom(params).then(function(response) {
 				$scope.isLoading = false;
-				roomAssignedFromZestWeb = true;
-				navigateToNextScreen();
+				if (response.status !== "failure") {
+					roomAssignedFromZestWeb = true;
+					navigateToNextScreen();
+				} else {
+					$scope.isLoading = false;
+					$state.go("roomAssignFailed");
+				}
 			}, function() {
 				$scope.isLoading = false;
 				$state.go("roomAssignFailed");

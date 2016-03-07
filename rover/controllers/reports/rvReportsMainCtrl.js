@@ -137,11 +137,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_29: false, // Exclude Options
 			item_30: false, // Show Options
 			item_32: false,
-			item_33: false
+			item_33: false,
+			item_34: false,
+			item_35: false,
+			item_36: false,
+			item_37: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
 				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+
+				console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+				$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 			};
 		};
 		$scope.resetFilterItemsToggle = function() {
@@ -320,6 +327,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
+			if (item.title === reportNames['COMPANY_TA_TOP_PRODUCERS']) {
+				if ( !! item.fromDate && item.untilDate === undefined ) {
+					item.untilDate = item.fromDate;
+				};
+
+				if ( !! item.untilDate && item.fromDate === undefined ) {
+					item.fromDate = item.untilDate;
+				};
+			}
+
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
@@ -356,6 +373,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// 2.2 - else find out other dates available on this 'reportItem'
 			//     - if any of the other dates have valid date value, enable 'showRemove'
 			if ( isDateValid(reportItem, dateName) ) {
+
 				if ( reportItem['allDates'].length === 1 ) {
 					dateObj['showRemove'] = true;
 				} else {
@@ -368,10 +386,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					if ( !!otherFilledDates ) {
 						dateObj['showRemove'] = true;
 						reportItem[otherFilledDates]['showRemove'] = true;
-
-						forceScopeApply();
 					};
 				};
+
+				forceScopeApply();
 			};
 
 			function isDateValid (report, name) {
@@ -488,7 +506,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (!!_sortBy) {
                 _sortBy.sortDir = true;
             };
-        };
+		};
 
         var formTitleAndToggleSelectAllForRestrictionDropDown = function(item) {
         	var selectedRestrictions = _.where(item.hasRestrictionListFilter.data, {selected: true});
@@ -696,7 +714,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var selectedItems;
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
-                    fauxDS.title = 'All Selected';
+                    fauxDS.title = fauxDS.allTitle || 'All Selected';
                 } else {
                     fauxDS.title = fauxDS.defaultTitle;
                 };
@@ -715,15 +733,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     fauxDS.title = selectedItems[0].description || selectedItems[0].name || selectedItems[0].status;
                 } else if ( selectedItems.length === fauxDS.data.length ) {
                     fauxDS.selectAll = true;
-                    fauxDS.title = 'All Selected';
+                    fauxDS.title = fauxDS.allTitle || 'All Selected';
                 } else {
                     fauxDS.selectAll = false;
                     fauxDS.title = selectedItems.length + ' Selected';
                 };
 
-				// CICO-10202
-				$scope.$emit( reportMsgs['REPORT_FILTER_CHANGED'] );
+				console.info( reportMsgs['REPORT_FILTER_CHANGED'] );
+				$scope.$broadcast( reportMsgs['REPORT_FILTER_CHANGED'] );
 			};
+
+			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 
 			return selectedItems;
 		};
@@ -883,6 +904,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.appliedFilter = {
 					'options'      : [],
 					'display'      : [],
+					'show'         : [],
 					'markets'      : [],
 					'sources'      : [],
 					'origins'      : [],
@@ -898,17 +920,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include dates
-			if (!!report.hasDateFilter) {
-				fromKey  = reportParams['FROM_DATE'];
-				untilKey = reportParams['TO_DATE'];
-				/**/
-				params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
-				params[untilKey] = $filter('date')(report.untilDate, 'yyyy/MM/dd');
-				/**/
-				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
-					$scope.appliedFilter['toDate']   = angular.copy( report.untilDate );
-				}	
+			if ( !! report.hasDateFilter ) {
+				if ( !! report.fromDate ) {
+					fromKey = reportParams['FROM_DATE'];
+					params[fromKey]  = $filter('date')(report.fromDate, 'yyyy/MM/dd');
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['fromDate'] = angular.copy( report.fromDate );
+					};
+				}
+
+				if ( !! report.untilDate ) {
+					fromKey = reportParams['TO_DATE'];
+					params[fromKey]  = $filter('date')(report.untilDate, 'yyyy/MM/dd');
+					if ( changeAppliedFilter ) {
+						$scope.appliedFilter['toDate'] = angular.copy( report.untilDate );
+					};
+				}
 			};
 
 			// include cancel dates
@@ -1211,6 +1238,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				});
 			};
 
+			// generate params for selected shows
+			if ( report['hasShow']['data'].length ) {
+				_.each(report['hasShow']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.show.push( each.description );
+						};
+					};
+				});
+			};
+
 			// generate params for selected exclusions
 			if ( report['hasExclusions']['data'].length ) {
 				_.each(report['hasExclusions']['data'], function(each) {
@@ -1239,13 +1280,27 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				});
 			};
 
-			// include company/ta/group
-			if ( report.hasOwnProperty('hasIncludeComapnyTaGroup') && !!report.chosenIncludeComapnyTaGroup ) {
-				key         = report.hasIncludeComapnyTaGroup.value.toLowerCase();
-				params[key] = report.chosenIncludeComapnyTaGroup;
+			// include company/ta
+			if ( report.hasOwnProperty('hasIncludeCompanyTa') && !!report.chosenIncludeCompanyTa ) {
+				key         = report.hasIncludeCompanyTa.value.toLowerCase();
+				params[key] = [];
+				/**/
+				_.each(report.chosenIncludeCompanyTa.split(', '), function(entry) {
+					params[key].push( entry );
+				});
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeComapnyTaGroup;
+					$scope.appliedFilter['companyTa'] = report.uiChosenIncludeCompanyTa;
+				};
+			};
+
+			// include company/ta/group
+			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !!report.chosenIncludeCompanyTaGroup ) {
+				key         = report.hasIncludeCompanyTaGroup.value.toLowerCase();
+				params[key] = report.chosenIncludeCompanyTaGroup;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeCompanyTaGroup;
 				};		
 			};
 
@@ -1487,6 +1542,26 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// has min revenue
+			if ( report.hasOwnProperty('hasMinRevenue') && !!report.hasMinRevenue.data ) {
+				key         = report.hasMinRevenue.value.toLowerCase();
+				params[key] = report.hasMinRevenue.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinRevenue'] = report.hasMinRevenue.data;
+				};		
+			};
+
+			// has min room nights
+			if ( report.hasOwnProperty('hasMinRoomNights') && !!report.hasMinRoomNights.data ) {
+				key         = report.hasMinRoomNights.value.toLowerCase();
+				params[key] = report.hasMinRoomNights.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinRoomNights'] = report.hasMinRoomNights.data;
+				};		
+			};
+
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report
 			// @TODO: Fix this. May be refactor the whole logic
@@ -1600,7 +1675,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.subHeaders      = response.sub_headers || [];
 				$scope.results         = response.results || [];
 				$scope.resultsTotalRow = response.results_total_row || [];
-				$scope.summaryCounts   = response.summary_counts || [];
+				$scope.summaryCounts   = response.summary_counts || false;
 				$scope.reportGroupedBy = response.group_by || '';
 
 				// track the total count
@@ -1668,6 +1743,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.returnItem = function(item) {
 			touchedReport = item;
+		};
+
+		$scope.removeCompTaGrpId = function(item, uiValue, modelValue) {
+			if ( ! item[uiValue] ) {
+				item[modelValue] = '';
+			};
 		};
 
 		var split = function (val) {
@@ -1779,8 +1860,136 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				'collision' : 'flip'
 			}
 		}, userAutoCompleteCommon);
+
+
+
+
+
+		// for Company TA only
+		var activeCompTaCompleteAry = [];
+		var autoCompleteForCompTa = {
+			source: function(request, response) {
+				var term = extractLast(request.term);
+
+				$scope.$emit( 'showLoader' );
+				reportsSubSrv.fetchComTaGrp(term, true)
+					.then(function(data) {
+						var entry = {},
+							found,
+							hasIn;
+
+						_.each(data, function(item) {
+							var hasIn = _.find(activeCompTaCompleteAry, function(added) {
+								return added.value === item.id.replace( 'account_', '' );
+							});
+
+							if ( ! hasIn ) {
+								activeCompTaCompleteAry.push({
+									label: item.name,
+									value: item.id.replace( 'account_', '' ), 	// remove 'account_' part and just get the id
+									type: item.type
+								});
+							};
+						});
+
+						found = $.ui.autocomplete.filter(activeCompTaCompleteAry, term);
+						response(found);
+
+						$scope.$emit( 'hideLoader' );
+					});
+			},
+			select: function(event, ui) {
+				var uiValue = split(this.value);
+				uiValue.pop();
+				uiValue.push(ui.item.label);
+				uiValue.push("");
+
+				this.value = uiValue.join(", ");
+				setTimeout(function() {
+					$scope.$apply(function() {
+						touchedReport.uiChosenIncludeCompanyTa = uiValue.join(", ");
+					});
+				}.bind(this), 100);
+				return false;
+			},
+			close: function(event, ui) {
+				var uiValues = split(this.value);
+				var modelVal = [];
+
+				console.log( activeCompTaCompleteAry );
+
+				if ( ! uiValues.length ) {
+					activeCompTaCompleteAry = [];
+
+					setTimeout(function() {
+						$scope.$apply(function() {
+							touchedReport.chosenIncludeCompanyTa = modelVal.join('');
+						});
+					}.bind(this), 10);
+				} else {
+					_.each(activeCompTaCompleteAry, function(compTa) {
+						var match = _.find(uiValues, function(label) {
+							return label === compTa.label;
+						});
+
+						if (!!match) {
+							modelVal.push(compTa.value);
+						};
+					});
+
+					setTimeout(function() {
+						$scope.$apply(function() {
+							touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
+						});
+					}.bind(this), 10);
+				}
+			},
+			change: function () {
+				var uiValues = split(this.value);
+				var modelVal = [];
+
+				console.log( activeCompTaCompleteAry );
+
+				_.each(activeCompTaCompleteAry, function(compTa) {
+					var match = _.find(uiValues, function(label) {
+						return label === compTa.label;
+					});
+
+					if (!!match) {
+						modelVal.push(compTa.value);
+					};
+				});
+
+				setTimeout(function() {
+					$scope.$apply(function() {
+						touchedReport.chosenIncludeCompanyTa = modelVal.join(", ");
+					});
+				}.bind(this), 10);
+			},
+			focus: function(event, ui) {
+				return false;
+			}
+		};
+		$scope.compTaAutoCompleteOnList = angular.extend({
+			position: {
+				my: 'left top',
+				at: 'left bottom',
+				collision: 'flip'
+			}
+		}, autoCompleteForCompTa);
+		$scope.compTaAutoCompleteOnDetails = angular.extend({
+			position: {
+				my: 'left bottom',
+				at: 'right+20 bottom',
+				collision: 'flip'
+			}		
+		}, autoCompleteForCompTa);
 		
-		var ctgAutoCompleteCommon = {
+
+
+
+		// for Company TA Group
+		var autoCompleteForCompTaGrp = {
 			source: function(request, response) {
 				$scope.$emit( 'showLoader' );
 				reportsSubSrv.fetchComTaGrp(request.term)
@@ -1804,8 +2013,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				this.value = ui.item.label;
 				setTimeout(function() {
 					$scope.$apply(function() {
-						touchedReport.uiChosenIncludeComapnyTaGroup = ui.item.label;
-						touchedReport.chosenIncludeComapnyTaGroup = ui.item.value;
+						touchedReport.uiChosenIncludeCompanyTaGroup = ui.item.label;
+						touchedReport.chosenIncludeCompanyTaGroup = ui.item.value;
 					});
 				}.bind(this), 100);
 				return false;
@@ -1815,20 +2024,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			}
 		};
 
-		$scope.listCtgAutoCompleteOptions = angular.extend({
+		$scope.compTaGrpAutoCompleteOnList = angular.extend({
 			position: {
 				my: 'left top',
 				at: 'left bottom',
 				collision: 'flip'
 			}
-		}, ctgAutoCompleteCommon);
+		}, autoCompleteForCompTaGrp);
 
-		$scope.detailsCtgAutoCompleteOptions = angular.extend({
+		$scope.compTaGrpAutoCompleteOnDetails = angular.extend({
 			position: {
 				my: 'left bottom',
 				at: 'right+20 bottom',
 				collision: 'flip'
 			}
-		}, ctgAutoCompleteCommon);
+		}, autoCompleteForCompTaGrp);
 	}
 ]);

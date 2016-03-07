@@ -45,13 +45,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
 		// ref to parents for filter item toggles
-		$scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
-		$scope.toggleFilterItems = function(item) {
-			if ( item ) {
-				$scope.$parent.toggleFilterItems(item);
-			};
-			refreshSidebarScroll();
-		};
+		// $scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
+		// $scope.toggleFilterItems = function(item) {
+		// 	if ( item ) {
+		// 		$scope.$parent.toggleFilterItems(item);
+		// 	};
+		// 	refreshSidebarScroll();
+		// };
 
 
 		// common methods to do things after fetch report
@@ -288,6 +288,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GUEST_BALANCE_REPORT']:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					$scope.leftColSpan = 4;
+					$scope.rightColSpan = 6;
 					break;
 
 				default:
@@ -531,6 +536,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRateReport.html';
 					break;
 
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -607,6 +618,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReportRow.html';
 					break;
 
+				// COMPANY_TA_TOP_PRODUCERS report row
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					template = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducersRow.html';
+					break;
 
 				// Default report row
 				default:
@@ -731,7 +746,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		// refetch the report while sorting with..
 		// Note: we are resetting page to page #1
-		$scope.sortResultBy = function(sortBy) {
+		$scope.sortResultBy = function(sortBy, report) {
 			if ( !sortBy ) {
 				return;
 			};
@@ -749,7 +764,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 			});
 
 			// select sort_dir for clicked item
-			sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
+			// **
+			// $#@$@#$@# Super Creepy business logic forced to be here in UI :(
+			if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] && sortBy['value'] === 'ROOM_NIGHTS' ) {
+				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === true) ? false : true;
+			} else {
+				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
+			};
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
@@ -909,48 +930,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 			return string.indexOf( subString ) > -1;
 		};
 
-		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
-			$_pageNo = 1;
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			findBackNames();
-			calPagination();
-			refreshScroll();
-		});
+		$scope.isAsc = function(index) {
+			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
+		};
 
-		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			findBackNames();
-			calPagination();
-			refreshScroll();
-		});
+		$scope.isDesc = function(index) {
+			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === false;
+		};
 
-		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			calPagination();
-			refreshScroll();
-		});
-
-		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			findBackNames();
-			printReport();
-		});
-
-		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
-			$scope.errorMessage = $scope.$parent.errorMessage;
-			/**/
-			afterFetch();
-			calPagination();
-			refreshScroll();
-		});
 
 		/**
 	     * function to get reservation class against reservation status
@@ -1000,12 +987,61 @@ sntRover.controller('RVReportDetailsCtrl', [
 	        return class_;
 	    };
 
+
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
+			$_pageNo = 1;
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			findBackNames();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			findBackNames();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			findBackNames();
+			printReport();
+		});
+
+		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
+			$scope.errorMessage = $scope.$parent.errorMessage;
+			/**/
+			afterFetch();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
+			refreshSidebarScroll();
+		});
+
 		// removing event listners when scope is destroyed
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
+		$scope.$on( '$destroy', refreshSidebarScroll );
     }
 
 ]);

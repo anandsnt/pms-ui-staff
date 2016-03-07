@@ -105,6 +105,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
 		$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
 		$rootScope.keyDeliveryByEmail = true;
+		$rootScope.restrictByHotelTimeisOn = reservationAndhotelData.eta_enforcement;
 		//$rootscope.keyDeliveryByText  = true;
 
 		$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
@@ -148,7 +149,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if (reservationAndhotelData.is_external_verification === "true") {
 			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && !(reservationAndhotelData.is_auto_checkin === 'true')) {
-			$state.go('tripDetails'); // only available for Fontainbleau -> precheckin + sent to que
+			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true')) {
 			$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
 		} else if ($rootScope.isCheckedin) {
