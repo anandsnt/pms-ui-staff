@@ -39,6 +39,7 @@ module.exports = {
 				jsLibRoot + 'date.js',
 				'rover/rvSntApp.js',
 				zestRoot + 'zsApp.js',
+				zestRoot + 'rvMLIOperations.js',
 				zestRoot + 'controllers/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',

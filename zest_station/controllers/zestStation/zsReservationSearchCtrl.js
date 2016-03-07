@@ -290,7 +290,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.mode = "search-final-mode";
         $scope.input.inputTextValue = "";
         $scope.headingText = "NEXT_ROOM_NUMBER";
-        $scope.inputType = 'number';
+        $scope.inputType = 'text';
         $scope.setFontainebleauTowers();
     };
     $scope.getReservationParams = function(){
@@ -412,7 +412,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     
     $scope.reEnterRoomNumber = function(room){
-        $scope.inputType = 'number';
+        $scope.inputType = 'text';
         $scope.reEnteredRoomInfo = true;
         $scope.reEnteredNameInfo = false;
         $scope.headingText = "NEXT_ROOM_NUMBER";
@@ -488,20 +488,34 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
 
     $scope.initPuk = function(){
-            $scope.at = 'input-last';
             $scope.mode = "pickup-mode";
-            $scope.headingText = "TYPE_LAST";
-            if ($state.lastAt === 're-enter-last'){
-                $scope.inputType = 'text';
+            if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page
+                $scope.setScreenIcon('key');
+                $scope.at = 'input-qr-code';
+                $scope.headingText = "QR_LOOKUP_HEADER";
+                $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
+                    
+            } else {
+                $scope.at = 'input-last';
                 $scope.headingText = "TYPE_LAST";
-                $scope.input.inputTextValue = $state.input.last;
-                $scope.at = 're-input-last';
-            } else if ($state.lastAt === 're-enter-room'){
-                $scope.inputType = 'number';
-                $scope.headingText = "NEXT_ROOM_NUMBER";
-                $scope.input.inputTextValue = $state.input.room;
-                $scope.at = 're-input-room';
-            }
+                
+                if ($state.lastAt === 're-enter-last'){
+                    $scope.inputType = 'text';
+                    $scope.headingText = "TYPE_LAST";
+                    $scope.input.inputTextValue = $state.input.last;
+                    $scope.at = 're-input-last';
+                } else if ($state.lastAt === 're-enter-room'){
+                    $scope.inputType = 'number';
+                    $scope.headingText = "NEXT_ROOM_NUMBER";
+                    $scope.input.inputTextValue = $state.input.room;
+                    $scope.at = 're-input-room';
+                }
+        }
+            
+            
+            
+            
+            
 
     };
     $scope.initCheckout = function(){
@@ -509,7 +523,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                $scope.mode = "search-final-mode";
                $scope.reEnteredRoomInfo = true;
                $scope.input.inputTextValue = "";
-               $scope.inputType = 'number';
+               $scope.inputType = 'text';
                $scope.headingText = "NEXT_ROOM_NUMBER";
                $scope.setFontainebleauTowers();
             } else {

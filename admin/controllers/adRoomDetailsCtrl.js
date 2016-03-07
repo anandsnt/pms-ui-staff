@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams', 
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams',
 				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
@@ -20,7 +20,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		}
 		$scope.editMode = true;
 	}
-	
+
 	/*
      * To handle add new room number click
      */
@@ -62,7 +62,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			}
 		}
 	};
-   
+
     /*
      * To handle blur event on Suite rooms
      */
@@ -79,7 +79,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 
     /*
      * To show add suite room option
-     */     
+     */
     $scope.shouldShowAddSuiteRooms = function() {
 
 			return $scope.isSuite && $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled;
@@ -151,7 +151,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 					};
 				};
 			};
-		}; 
+		};
 
 	};
 
@@ -216,7 +216,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 	* method to update the room details
 	*/
 	$scope.updateRoomDetails = function(){
-        
+
 		var postData = {};
 		postData.room_id = $scope.data.room_id;
 		postData.room_number = $scope.data.room_number;
@@ -231,6 +231,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
 		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
 		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms,"room_number");
+		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types,{"value": postData.room_type_id}).is_pseudo;
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
@@ -246,7 +247,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			options = each['options'];
 
 			if ( 'dropdown' == each.type || 'radio' == each.type ) {
-				postData.active_room_likes.push( each.selected );
+				if(each.selected !== ''){
+					postData.active_room_likes.push( each.selected );
+				}
+
 			} else {
 				for ( m = 0, n = options.length; m < n; m++ ) {
 					if ( !! options[m]['selected'] ) {
