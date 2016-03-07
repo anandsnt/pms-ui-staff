@@ -1,4 +1,5 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state', '$stateParams', function($timeout, $scope, ADRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams', 
+				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -79,7 +80,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','ADRoomSrv', '$state
      */     
     $scope.shouldShowAddSuiteRooms = function() {
 
-			return isSuite && isStandAlone && !$rootScope.isHourlyRateOn;
+			return $scope.isSuite && $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled;
 	};
 
 	/*
