@@ -166,12 +166,13 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             dueTime: "00:00"
         };
 
-        $scope.selectDateOptions = _.extend(datePickerConfig, {
+        $scope.selectDateOptions = _.extend(angular.copy(datePickerConfig), {
             defaultDate: tzIndependentDate($rootScope.businessDate),
-            onSelect: fetchActionsList
+                onSelect: fetchActionsList
+
         });
 
-        $scope.dueDateEditOptions = _.extend(datePickerConfig, {
+        $scope.dueDateEditOptions = _.extend(angular.copy(datePickerConfig), {
             minDate: tzIndependentDate($rootScope.businessDate),
             onSelect: function (date, datePickerObj) {
                 $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));

@@ -4485,7 +4485,13 @@
             &.actions-form {
                 width: 420px;
 
-                label { margin-bottom: 0; }
+                label {
+                  margin-bottom: 0;
+                  .char-count{
+                    color: @green;
+                    &.full{ color: @red; }
+                  }
+                }
 
                 .entry:not(.full-width) {
                     .calc-width(50, 10);

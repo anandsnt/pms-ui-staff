@@ -3,6 +3,9 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
         BaseCtrl.call(this, $scope);
 
         var init = function(){
+
+            $scope.__maxLengthOfNotes = 255;
+
             $scope.newAction = {
                 reservation: null,
                 dueDate: $rootScope.businessDate,
@@ -45,6 +48,16 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                     $scope.$emit("NEW_ACTION_POSTED");
                 }
             });
+        };
+
+        /**
+         * http://stackoverflow.com/questions/10030921/chrome-counts-characters-wrong-in-textarea-with-maxlength-attribute
+         * This method mitigates the discrepancy in the character count calculation by
+         * A. The browser for text area max-length
+         * B. String length JavaScript
+         */
+        $scope.adjustedLength = function(str){
+            return str.replace(/\r(?!\n)|\n(?!\r)/g, "\r\n").length;
         };
 
         var listenerInit = $scope.$on("INIT_NEW_ACTION",function(){

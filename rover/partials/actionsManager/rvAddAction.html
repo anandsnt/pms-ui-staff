@@ -30,9 +30,14 @@
     <input id="due-time" type="time" ng-model="newAction.dueTime" placeholder="HH:mm:ss" required/>
 </div>
 <div class="entry full-width">
-    <label for="notes">Notes</label>
-            <textarea id="notes" name="notes" placeholder="Enter message..." ng-model="newAction.note"
-                      rows="4"></textarea>
+    <label for="notes">
+        Notes
+        <span class="char-count" ng-class="{'full': adjustedLength(newAction.note) >= __maxLengthOfNotes}">
+            {{__maxLengthOfNotes - adjustedLength(newAction.note)}}
+        </span>
+    </label>
+    <textarea id="notes" name="notes" placeholder="Enter message..." ng-model="newAction.note"
+              rows="4" maxlength="{{__maxLengthOfNotes}}"></textarea>
 </div>
 <div class="actions">
     <button type="button" class="button green" ng-click="saveNewAction()"

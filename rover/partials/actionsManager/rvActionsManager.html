@@ -59,13 +59,13 @@
                     <!-- {type} can be "unassigned", "assigned", "completed" or "specials". Also add class "active" when selected, first one should be active by default when screen is loaded -->
                     <span class="icons icon-action {{action.iconClass}}"
                           ng-class="{'active' : action.id === filterOptions.selectedActionId}"
-                          ng-if="action.is_overdue === 'true'">
+                          ng-if="action.is_overdue === 'true' && action.action_status != _actionCompleted">
                         {{action.action_type}}
                         overdue
                     </span>
                      <span class="icons icon-action {{action.iconClass}}"
                            ng-class="{'active' : action.id === filterOptions.selectedActionId}"
-                           ng-if="action.is_overdue !== 'true'">
+                           ng-if="action.is_overdue !== 'true' || action.action_status === _actionCompleted">
                          {{action.action_type}}
                     </span>
                     <div class="data">
