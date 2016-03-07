@@ -146,6 +146,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
 				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+
+				console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+				$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 			};
 		};
 		$scope.resetFilterItemsToggle = function() {
@@ -324,6 +327,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			}
 
+			if (item.title === reportNames['COMPANY_TA_TOP_PRODUCERS']) {
+				if ( !! item.fromDate && item.untilDate === undefined ) {
+					item.untilDate = item.fromDate;
+				};
+
+				if ( !! item.untilDate && item.fromDate === undefined ) {
+					item.fromDate = item.untilDate;
+				};
+			}
+
 			if ( item.title === reportNames['ARRIVAL'] ) {
 				if ( !angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj) ) {
 					item.chosenDueInArrivals = false;
@@ -493,7 +506,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (!!_sortBy) {
                 _sortBy.sortDir = true;
             };
-        };
+		};
 
         var formTitleAndToggleSelectAllForRestrictionDropDown = function(item) {
         	var selectedRestrictions = _.where(item.hasRestrictionListFilter.data, {selected: true});
@@ -701,7 +714,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var selectedItems;
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
-                    fauxDS.title = 'All Selected';
+                    fauxDS.title = fauxDS.allTitle || 'All Selected';
                 } else {
                     fauxDS.title = fauxDS.defaultTitle;
                 };
@@ -729,6 +742,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				// CICO-10202
 				$scope.$emit( reportMsgs['REPORT_FILTER_CHANGED'] );
 			};
+
+			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 
 			return selectedItems;
 		};
@@ -899,7 +915,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': [],
+					'guestOrAccount': []
 				};
 			};
 
