@@ -213,7 +213,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     } else if($scope.makingKey === 2 && $scope.input.makeKeys === 2) {
                         $scope.keyTwoOfTwoSuccess();
                     }
-                    
+                    $state.selectedReservation.keySuccess = true;
                 } else {
                     $scope.emitKeyError(response);
                 }

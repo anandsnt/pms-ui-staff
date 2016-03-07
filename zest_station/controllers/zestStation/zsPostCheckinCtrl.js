@@ -378,8 +378,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();
+                $scope.initRoomErrorScreen();
             } else if (current === 'zest_station.last_confirm'){
-                
+                //As part of CICO-24944 ,Customized subheading text for yotel
+                $scope.updateSubHeadingTextForLastConfirmPage();
                 if (($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled) && !$state.fromPrintSuccess){
                     $scope.headingText = "EMAIL_SENT_MSG";
                     $scope.subHeadingText = $scope.getLastInputEmail();
@@ -396,7 +398,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.at = 'last_confirm';   
                 $scope.modalBtn1 = '';
                 $scope.modalBtn2 = 'Exit';
-                
                 hideNavButtons();
                 
             } else if (current === 'zest_station.error'){
@@ -431,10 +432,26 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
             
         };
+        $scope.updateSubHeadingTextForLastConfirmPage = function(){
+            if($state.selectedReservation.printSuccess == true){
+                if($state.selectedReservation.keySuccess)
+                {
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_success_message;
+                }else{
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_success_message;
+                }
+            }else{
+                if($state.selectedReservation.keySuccess)
+                {
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_fail_message;
+                }else{
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_fail_message;
+                }
+            };
+        }
         $scope.initPrintRegistration = function(){
             $scope.printRegistrationCard();
         };
-        
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
@@ -450,6 +467,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.onPrintSuccess = function(success){
             $state.fromPrintSuccess = true;
+            $state.selectedReservation.printSuccess = true;
             $state.go('zest_station.last_confirm');
             $scope.$emit('hideLoader');
         };
@@ -548,8 +566,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 
 		//show close button
 		$scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
-                
-                $scope.init();
+        $scope.init();
 	}();
         
         

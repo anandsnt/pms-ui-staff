@@ -60,6 +60,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * success Call Back Of Search Reservations
      * @return {[type]}
      */
+
     $scope.retry = false;
     var successCallBackOfSearchReservations = function(data) {
         $scope.reservations = data.results;
@@ -358,6 +359,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.getPickupKeyOptions = function(){
         var pickupSuccess = function(response){
             $state.selectedReservation = response;
+            $state.selectedReservation.printSuccess = false;
+            $state.selectedReservation.keySuccess = false;
             $state.go('zest_station.pickup_keys');
         };
         var pickupFail = function(response){
