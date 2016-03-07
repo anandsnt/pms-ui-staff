@@ -271,7 +271,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 options.is_additional = true;
             }
 
-            options.is_kiosk = true;
             return options;
         };
 
@@ -286,10 +285,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
                     var onResponseSuccess;
                     if (!$scope.remoteEncoding){
+                        options.is_kiosk = true;
                         onResponseSuccess = $scope.printLocalKey;
                     } else {
                         onResponseSuccess = $scope.successMakeKey;
                     }
+                    
 
                     if ($state.simkey){
                         onResponseSuccess({});
