@@ -54,7 +54,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
             }
             $scope.populateTimeFieldValue();
-            $scope.setScroller("rvActionListScroller");
+            $scope.setScroller("rvActionListScroller", {
+                scrollbars: true,
+                preventDefault: false,
+                fadeScrollbars: true,
+                click: true
+            });
 
            //initially use the count from the staycard init request for reservation details
            var setActionsCount = function(){

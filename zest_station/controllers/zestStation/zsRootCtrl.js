@@ -173,10 +173,83 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit('hideLoader');
         };
         $scope.language = null;
+        
+        $scope.langInfo = [//in our admin/API, these are saved in english, we will keep reference here if needed
+            {
+                'language':'Castellano',
+                'info' :{
+                    'prefix':'',
+                    'flag':'flag-ca',
+                    'name':'Castellano'//using name as an english reference (which is in the api call)
+                }
+            },{
+                'language':'Deutsche',
+                'info' :{
+                    'prefix':'',
+                    'flag':'flag-de',
+                    'name':'German'
+                }
+            },{
+                'language':'English',
+                'info' :{
+                    'prefix':'EN',
+                    'flag':'flag-gb',
+                    'name':'English'
+                }
+            },{
+                'language':'Español',
+                'info' :{
+                    'prefix':'ES',
+                    'flag':'flag-es',
+                    'name':'Spanish'
+                }
+            },{
+                'language':'Français',
+                'info' :{
+                    'prefix':'FR',
+                    'flag':'flag-fr',
+                    'name':'French'
+                }
+            },{
+                'language':'Italiano',
+                'info' :{
+                    'prefix':'',
+                    'flag':'flag-it',
+                    'name':'Italian'
+                }
+            },{
+                'language':'Nederlands',
+                'info' :{
+                    'prefix':'NL',
+                    'flag':'flag-nl',
+                    'name':'Netherlands'
+                }
+            }
+        ];
+        $scope.getLangPrefix = function(lang){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].language === lang){
+                    return $scope.langInfo[i].info.prefix;
+                }
+            }
+        };
+        $scope.getActiveLangPrefix = function(){
+            var lang = $scope.selectedLanguage,
+                    prefix = 'EN';
+            var requestedPrefix = $scope.getLangPrefix(lang);
+            if (requestedPrefix !== ''){
+                prefix = requestedPrefix;
+            } 
+            return prefix.toLowerCase()+'/'+prefix+'_';
+        };
+        
         $scope.loadTranslations = function(theme){
+            console.info('loading languages')
             if ($scope.language) {
+                var langPrefix = $scope.getActiveLangPrefix();
                 
-              $translate.use('EN_'+theme.toLowerCase());
+                console.info('using: ',langPrefix+theme.toLowerCase());
+              $translate.use(langPrefix+theme.toLowerCase());
             //  $translate.fallbackLanguage('EN');
               /* For reason unclear, the fallback translation does not trigger
                * unless a translation is requested explicitly, for second screen
@@ -219,6 +292,7 @@ sntZestStation.controller('zsRootCtrl', [
                         moon: $scope.iconsPath+'/moon.svg',
                         back: $scope.iconsPath+'/back.svg',
                         close: $scope.iconsPath+'/close.svg',
+                        qr: $scope.iconsPath+'/key.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                     }
                 };
@@ -447,6 +521,34 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
         });
+        
+        
+        
+        $scope.languageTimerReset = false;
+        $scope.startLanguageCounter = function(){
+            var time = 120;
+                var timer = time, minutes, seconds, timeInMilliSec = 1000;
+                var timerInt = setInterval(function () {
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                            if (--timer < 0) {
+                                setTimeout(function(){
+                                    //fetch latest settings
+                                        if (!$scope.timeStopped){
+                                            $scope.handleSettingsTimeout();
+                                        }
+                                },timeInMilliSec);
+
+                                clearInterval(timerInt);
+                                return;
+                            }
+                }, timeInMilliSec);
+        };
+        
+        
         $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
             var time = $scope.syncOOSInterval;
@@ -632,7 +734,7 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.languageSelect = function(){
             $scope.showLanguagePopup = true;
-            console.info('select language');
+            $scope.timeOut = true;
         };
         
         $scope.supportedLangs = [];
@@ -649,16 +751,22 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.selectedLanguage = 'English';
         $scope.langflag = 'flag-gb';
         $scope.selectLanguage = function(lang, icon){
-            console.info(arguments);
+            
             if (lang === null || lang === 'null'){
                 $scope.showLanguagePopup = false;
+                $scope.timeOut = false;
                 return;
             } else {
                 $scope.selectedLanguage = lang;
                 $scope.langflag = icon;
             }
             $scope.showLanguagePopup = false;
+            $scope.timeOut = false;
+            setTimeout(function(){
+               $scope.loadTranslations($scope.theme); 
+            },5);
         };
+        
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
                 //updates the idle timer settings here from what was successfully saved in zest station admin
@@ -760,6 +868,7 @@ sntZestStation.controller('zsRootCtrl', [
                     
                     $scope.selectedLanguage = 'English';
                     $scope.langflag = 'flag-gb';
+                    $scope.selectLanguage($scope.selectedLanguage,$scope.langflag);//set back to default language; currently just english
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
@@ -842,9 +951,11 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
-        console.info('settings: ',zestStationSettings.zest_lang);
         
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
+        $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;
+        
+        //$scope.zestStationData.pickup_qr_scan = true;//fake it till ya make it
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;

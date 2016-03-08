@@ -39,6 +39,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
+  $stateProvider.state('admin.windsurferCRSSetup', {
+    templateUrl: '/assets/partials/WindsurferCRS/setup/adWindsurferCRSSetup.html',
+    controller: 'adWindsurferCRSSetupCtrl',
+    url : '/windsurfercrs/setup',
+    resolve: {
+      windsurferCRSSetupValues: ['adWindsurferCRSSetupSrv', function(adWindsurferCRSSetupSrv) {
+        return adWindsurferCRSSetupSrv.fetchWindsurferCRSConfiguration();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.ifcComtrolSetup', {
     templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
     controller: 'adIFCComtrolSetupCtrl',

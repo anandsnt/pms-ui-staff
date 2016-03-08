@@ -2,75 +2,37 @@
 <section id="main" class="centered kiosk" role="main" >
 	<div id="content">
             
-            <div class="popup" ng-class="{'open':showLanguagePopup,'ng-hide':!showLanguagePopup}">
-                <div class="popup-content">
-                    <i class="close-popup" data-action="popup" touch-press="selectLanguage('null')"></i>
-                    <h2 class="nocaps">Select Language</h2>
-                    <div id="languages">
-                        <button ng-hide="!isSupported('Castellano')" touch-press="selectLanguage('Castellano','flag-ca')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Castellano' }">
-                            <i class="icons icon-flag flag-ca"></i>
-                            Castellano
-                        </button>
-                        <button ng-hide="!isSupported('Dutch')" touch-press="selectLanguage('Dutch','flag-de')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Dutch' }">
-                            <i class="icons icon-flag flag-de"></i>
-                            Deutsche
-                        </button>
-                        <button ng-hide="!isSupported('English')" touch-press="selectLanguage('English','flag-gb')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='English' }">
-                            <i class="icons icon-flag flag-gb"></i>
-                            English
-                        </button>  
-                        <button ng-hide="!isSupported('Spanish')" touch-press="selectLanguage('Spanish','flag-es')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Spanish' }">
-                            <i class="icons icon-flag flag-es"></i>
-                            Español
-                        </button>
-                        <button ng-hide="!isSupported('French')" touch-press="selectLanguage('French','flag-fr')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='French' }">
-                            <i class="icons icon-flag flag-fr"></i>
-                            Français
-                        </button>
-                        <button ng-hide="!isSupported('Italian')" touch-press="selectLanguage('Italian','flag-it')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='Italian' }">
-                            <i class="icons icon-flag flag-it"></i>
-                            Italiano
-                        </button>
-                        <!--button ng-hide="!isSupported('nl')" touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
-                            <i class="icons icon-flag flag-nl"></i>
-                            Nederlands
-                        </button-->
-                    </div>
-                </div>
-            </div>
             
             
-            
-            
-            
-		<nav id="options" class="large-icons" role="nav">
-			<ul role="menu">
-				<li ng-if="zestStationData.home_screen.pickup_keys">
-					<button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
-						<div ng-include="icons.url.key"></div>
-					</button>
-                                    {{'PICKUP_KEY' |translate}}
-                                <span>
-                                    {{'HOME_PUK_SUB' |translate}}
-                                </span>
-				</li>
-				<li ng-if="zestStationData.home_screen.check_in">
-					<button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
-						<div ng-include="icons.url.checkin"></div>
-					</button>
-                                    
-                                {{'CHECK_IN' |translate}}
-					
-				</li>
-				<li ng-if="zestStationData.home_screen.check_out">
-					<button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
-						<div ng-include="icons.url.checkout"></div>
-					</button>
-                                {{'CHECK_OUT' |translate}}
-					
-				</li>
-			</ul>
-		</nav>
+
+            <nav id="options" class="large-icons" role="nav">
+                    <ul role="menu">
+                            <li ng-if="zestStationData.home_screen.pickup_keys">
+                                    <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
+                                            <div ng-include="icons.url.key"></div>
+                                    </button>
+                                {{'PICKUP_KEY' |translate}}
+                            <span>
+                                {{'HOME_PUK_SUB' |translate}}
+                            </span>
+                            </li>
+                            <li ng-if="zestStationData.home_screen.check_in">
+                                    <button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
+                                            <div ng-include="icons.url.checkin"></div>
+                                    </button>
+
+                            {{'CHECK_IN' |translate}}
+
+                            </li>
+                            <li ng-if="zestStationData.home_screen.check_out">
+                                    <button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
+                                            <div ng-include="icons.url.checkout"></div>
+                                    </button>
+                            {{'CHECK_OUT' |translate}}
+
+                            </li>
+                    </ul>
+            </nav>
             
             
             

@@ -23,7 +23,9 @@ admin.controller('ADZestStationCheckOutCtrl',['$scope','$rootScope', '$state','$
             var dataToSend = {
                                 'kiosk':
                                         {
-                                            "guest_bill":$scope.zestSettings.guest_bill
+                                            "guest_bill":$scope.zestSettings.guest_bill,
+                                            "check_out_message_texts" :$scope.zestSettings.check_out_message_texts
+
                                         }
 
                              };
