@@ -34,5 +34,8 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	},{
 		"value": "EXTERNAL_CHECKIN",
 		"id" : "ZS-10"
+	},{
+		"value": "RESERVATION_DETAILS",
+		"id" : "ZS-11"
 	}];
 }]);
