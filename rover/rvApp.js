@@ -29,7 +29,8 @@ var sntRover = angular.module('sntRover',[
 		'ngClassWithoutAnimation',
 		'clickTouch',
 		'oc.lazyLoad',
-		'limitInputRange']);
+		'limitInputRange',
+		'emitWhen']);
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 sntRover.config(function ($httpProvider) {
