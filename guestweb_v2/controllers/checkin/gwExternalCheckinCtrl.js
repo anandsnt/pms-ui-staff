@@ -3,8 +3,8 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings admin -> zest -> email/SMS/ direct URLs
 */
-sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$state', '$controller', 'GwCheckinSrv', 'GwWebSrv', '$filter', '$rootScope',
-	function($scope, $state, $controller, GwCheckinSrv, GwWebSrv, $filter, $rootScope) {
+sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$state', '$controller', 'GwCheckinSrv', 'GwWebSrv', '$filter', '$rootScope','$modal',
+	function($scope, $state, $controller, GwCheckinSrv, GwWebSrv, $filter, $rootScope,$modal) {
 
 		$controller('BaseController', {
 			$scope: $scope
@@ -142,7 +142,21 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				successCallBack: onSuccess,
 				failureCallBack: onFailure
 			};
-			$scope.callAPI(GwCheckinSrv.findUser, options);
+			if($scope.lastname.length > 0 && 
+			  ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))){
+				//if last name and either of confirmation number or departure date is provided
+				$scope.callAPI(GwCheckinSrv.findUser, options);
+			}
+			else{
+				// show popup
+				var popupOptions = angular.copy($scope.errorOpts);
+				popupOptions.resolve = {
+					message: function() {
+						return "Please provide all the required information"
+					}
+				};
+				$modal.open(popupOptions);
+			};
 		};
 
 		$scope.tryAgain = function() {
