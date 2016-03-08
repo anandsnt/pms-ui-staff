@@ -73,7 +73,6 @@ module.exports = function(gulp, $, options) {
 
 			var nonMinifiedStream = gulp.src(nonMinifiedFiles);
 			if (stateMappingList[state].babelify) {
-				console.log('YES MAN')
 				nonMinifiedStream = nonMinifiedStream.pipe($.babel());
 			}
 
@@ -147,15 +146,17 @@ module.exports = function(gulp, $, options) {
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 		var fileList = [];
 		for (state in stateMappingList) {
-			delete require.cache[require.resolve(stateMappingList[state])];
-			var combinedList = require(stateMappingList[state]).getList();
-			fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
+			delete require.cache[require.resolve(stateMappingList[state].filename)];
+			var combinedList = require(stateMappingList[state].filename).getList();
+			if (stateMappingList[state].babelify) {
+				fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
+			}
 		};
-
-		return gulp.src(fileList)
-			.pipe($.babel())
-			.pipe(gulp.dest(DEST_ROOT_PATH));
 		console.log(fileList);
+		return gulp.src(fileList, {base: '.'})
+			.pipe($.babel())
+			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+
 	});
 
 	gulp.task('build-rover-js-dev', ['rover-babelify-dev'], function(){

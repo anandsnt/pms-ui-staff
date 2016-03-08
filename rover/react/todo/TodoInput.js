@@ -7,8 +7,5 @@ var TodoInput = React.createClass({
             inputText: ''
         };
     },
-    render: function(){
-        return (<div> Hello</div>);
-    }
-
+    render: function(){ return (<div> Hello Yes my boss</div>); }
 });

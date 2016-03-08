@@ -6,6 +6,7 @@ module.exports = {
                     'shared/lib/js/redux/*.js'
                 ],
                 nonMinifiedFiles: [
+                    roverRoot + "react/todo/**/*.js",
                     roverRoot + "controllers/Todo/**/*.js"
                 ]
             };
