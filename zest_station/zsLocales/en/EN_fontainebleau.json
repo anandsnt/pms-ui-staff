@@ -44,6 +44,10 @@
     "ERR_PAGE_SUB": "Please visit the Front Desk for assistance.",
     
     
+    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+    "TERMS_CONDITIONS_ACCEPT":"I Agree",
+    "TERMS_CONDITIONS_CANCEL":"Cancel",
+    
         "QR_LOOKUP_HEADER": "To Pick Up Your Keys...",
         "QR_LOOKUP_SUB_HEADER": "Scan The QR Code You Received.",
         "QR_LOOKUP_BUTTON_TEXT": "Scanner To The Right",
