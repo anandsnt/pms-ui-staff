@@ -63,6 +63,17 @@
 			    </div>
 			</div>
 
+			<div class="entry full-width">
+			    <label for="item-type">Room status <strong>*</strong></label>
+			    <div class="boxes">
+			        <label class="checkbox inline" ng-repeat="item in roomStatusList" style="width: 46% !important">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.froom_status_ids[$index]}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.room_status_ids[$index]">
+			            {{ item.description }}
+			        </label>
+			    </div>
+			</div>
+
 			<div class="form-title">
 				<h3><span>Task</span> Interval </h3>
 

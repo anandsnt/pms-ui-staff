@@ -303,6 +303,26 @@ admin.service('ADDailyWorkAssignmentSrv', [
             return deferred.promise;
         };
 
+        var roomStatusList = [];
+        this.fetchRoomStatusList = function() {
+            var deferred = $q.defer(),
+                url = '/api/house_keeping_statuses';
+
+            if (roomStatusList.length) {
+                deferred.resolve(roomStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        roomStatusList = data.house_keeping_statuses;
+                        deferred.resolve(roomStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
         var HkStatusList = [];
         this.fetchHkStatues = function() {
             var deferred = $q.defer(),
