@@ -329,12 +329,15 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.actionsManager', {
-            url: '/actions/:actions',
+            url: '/actions/:restore',
             templateUrl: "/assets/partials/actionsManager/rvActionsManager.html",
             controller: 'RVActionsManagerController',
             resolve: {
-                actionsManagerAssets: function(jsMappings) {
+                actionsJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
+                },
+                departments: function(rvActionTasksSrv, actionsJsAssets) {
+                    return rvActionTasksSrv.fetchDepartments();
                 }
             }
         });

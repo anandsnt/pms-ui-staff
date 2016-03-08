@@ -1,7 +1,8 @@
 <!-- Content -->
 <section id="main" class="centered test" role="main">
     <div id="content" ng-hide='at === "registration_printed"'>
-        <h1>{{headingText |translate}}</h1>
+        <h1 ng-hide="messageOverride">{{headingText |translate}}</h1>
+        <h1 ng-show="messageOverride">{{headingText}}</h1>
         <h3>{{subHeadingText |translate}}</h3>
         <form class="form" ng-if='shouldShowFloorChoosing()'>
             <div class="entry">

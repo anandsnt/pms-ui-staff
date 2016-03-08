@@ -38,7 +38,8 @@
 
     <div class="notice" ng-hide="!selectedAction.date_completed || (!isStandAlone && !isTrace(selectedAction.action_task_type))">
         <span>Completed By</span>
-        {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
+        {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
+        {{selectedAction.completed_at | date: "hh:mm a"}}
     </div> 
 
     <div class="detail-actions col-2" ng-hide="(!isStandAlone && isRequest(selectedAction.action_task_type)) || selectedAction.date_completed" ng-class="{'margin-bottom:-30px':isActionManager}">

@@ -6,7 +6,7 @@
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
-        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <form class="form float" >
 
 
@@ -16,25 +16,35 @@
                  <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
                 </div>
                 <ad-checkbox is-checked="zestSettings.home_screen.pickup_keys" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
-                <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>  
-                <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>  
-            </fieldset>
-            <fieldset class="holder right">
-                <div class="form-title full-width">
-                 <h3><span translate> STATION_LANGUAGE_SUPPORT </span> </h3>
-                </div>
-                    <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class="full-width"></ad-toggle-button>
-                <ad-checkbox is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
-                
-                <ad-checkbox is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
-                
-                <ad-checkbox is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
-                
-                <ad-checkbox is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox> 
-                
-                <ad-checkbox is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>  
+                <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>
             </fieldset>
             
+            
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate> Speak To Staff Message</span> </h3>
+                </div>
+                <ad-textbox value="zestSettings.zest_station_message_texts.speak_to_crew_mod_message2"  name = "zest-web" id = "zest-web" label = "" placeholder = "{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width" ></ad-textbox>
+            </fieldset>
+            
+            
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-checkbox is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
+
+                <ad-checkbox is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
+
+                <ad-checkbox is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
+
+                <ad-checkbox is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox>
+
+                <ad-checkbox is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>
+            </fieldset>
+
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

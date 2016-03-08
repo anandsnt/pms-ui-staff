@@ -1,13 +1,13 @@
-module.exports = {	
+module.exports = {
 	getList : function() {
-		var assetsForScreen = {
+        var controllerRoot 	= 'rover/controllers/',
+            servicesRoot 	= 'rover/services/',
+            assetsForScreen = {
 				minifiedFiles: [
 				],
 				nonMinifiedFiles: [
-					'rover/controllers/rvActionsManagerCtrl.js',
-					'rover/services/rvReservationSrv.js',
-					'rover/services/actionTasks/**/*.js'
-
+                    controllerRoot + 'actionsManager/**/*.js',
+					servicesRoot + 'actionTasks/**/*.js'
 				]
 			};
 		return assetsForScreen;

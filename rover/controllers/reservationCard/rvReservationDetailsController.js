@@ -27,7 +27,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			setNavigationBookMark();
 		}
 
-		if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
+        if($scope.previousState.name === "rover.actionsManager"){
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'ACTIONS MANAGER',
+                name: 'rover.actionsManager',
+                param: {
+                    restore: true
+                }
+            };
+        }
+		else if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
 			}
@@ -227,12 +237,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 		);
 
-		$scope.shouldShowGuestDetails = false;
+	//  showing Guest button arrow as part of CICO-25774
+
+		//$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
-			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
-			if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
-				return false;
-			};
+			
+			// CICO-25774 : Enabled Guest button on Stay Card for Group reservations
+			
+			// // CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
+			// if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
+			// 	return false;
+			// };
 
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {

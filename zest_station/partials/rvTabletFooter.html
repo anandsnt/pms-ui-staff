@@ -1,4 +1,19 @@
 <div>
+     <div id="actions" class="add-guests-footer" ng-show='at === "add-guests"' >
+        <button type="button" class="button prev" click-touch="addAGuest(); resetTime();" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>{{'ADD_BTN' |translate}}</button>
+        <button type="button" class="button next" click-touch="goToNext(); resetTime();">{{'NEXT_BTN' |translate}}</button>
+    </div>
+    
+    <div id="actions" class="add-guests-footer sign" ng-hide='at !== "cc-sign"'>
+        <button type="button" class="button transparent prev" touch-press='clearSignature()'>{{'CLEAR_BTN' |translate}}</button>
+        <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">{{'NEXT_BTN' |translate}}</button>
+    </div>
+
+    <div ng-show="shouldShowSearchResults()" id="actions" class='select-reservation selectPagingBtns'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+        <button type="button" class="button transparent prev" touch-press='fetchPreviousReservationList()' ng-class='{"overlay":page == 1}'>Previous</button>
+        <label>{{page}} / {{totalPages}}</label>
+        <button type="button" class="button transparent next" touch-press='fetchNextReservationList()' ng-class='{"overlay":page == totalPages}'>Next</button>
+    </div> 
     <button class='button blue invis bottom-right' click-touch="goToAdmin()">
             Admin
     </button>
