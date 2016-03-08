@@ -202,19 +202,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = 'TALK_TO_STAFF';
                 $scope.subHeadingText = 'ROOM_NOT_AVAIL_MSG';
                 $scope.modalBtn1 = 'DONE_BTN';
-            if($scope.zestStationData.check_in_message_texts.not_available_message === "" ){
-                console.info('wait...');
+                
+            if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === "" ){
+                console.info('TALK_TO_STAFF...');
                 $scope.messageOverride = false;
-                $scope.headingText = 'WAIT_MOMENT';
+                $scope.headingText = 'TALK_TO_STAFF';
             } else {
-                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.not_available_message)
+                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1)
                 $scope.messageOverride = true;//need to turn off translate 
-                $scope.headingText = $scope.zestStationData.check_in_message_texts.not_available_message;
+                $scope.headingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
             }
             
-                
-                
-                
         };
         $scope.initKeyErrorScreen = function(){
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
