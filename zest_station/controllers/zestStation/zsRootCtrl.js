@@ -174,31 +174,72 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.language = null;
         
-        
+        $scope.langInfo = [//in our admin/API, these are saved in english, we will keep reference here if needed
+            {
+                'language':'Castellano',
+                'info' :{
+                    'prefix':'',
+                    'flag':'flag-ca',
+                    'name':'Castellano'//using name as an english reference (which is in the api call)
+                }
+            },{
+                'language':'Deutsche',
+                'info' :{
+                    'prefix':'',
+                    'flag':'flag-de',
+                    'name':'German'
+                }
+            },{
+                'language':'English',
+                'info' :{
+                    'prefix':'EN',
+                    'flag':'flag-gb',
+                    'name':'English'
+                }
+            },{
+                'language':'Español',
+                'info' :{
+                    'prefix':'ES',
+                    'flag':'flag-es',
+                    'name':'Spanish'
+                }
+            },{
+                'language':'Français',
+                'info' :{
+                    'prefix':'FR',
+                    'flag':'flag-fr',
+                    'name':'French'
+                }
+            },{
+                'language':'Italiano',
+                'info' :{
+                    'prefix':'',
+                    'flag':'flag-it',
+                    'name':'Italian'
+                }
+            },{
+                'language':'Nederlands',
+                'info' :{
+                    'prefix':'NL',
+                    'flag':'flag-nl',
+                    'name':'Netherlands'
+                }
+            }
+        ];
+        $scope.getLangPrefix = function(lang){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].language === lang){
+                    return $scope.langInfo[i].info.prefix;
+                }
+            }
+        };
         $scope.getActiveLangPrefix = function(){
             var lang = $scope.selectedLanguage,
                     prefix = 'EN';
-           
-            switch(lang){
-                case "Castellano":
-                        break;
-                case "Deutsche":
-                        break;
-                case "English":
-                        prefix = 'EN';
-                        break;
-                case "Español":
-                        break;
-                case "Français":
-                    prefix = 'FR';
-                        break;
-                case    "Italiano":
-                    break;
-                
-                default: 
-                    break;
-            }
-            console.info('returning prefix: (',prefix+'_',')');
+            var requestedPrefix = $scope.getLangPrefix(lang);
+            if (requestedPrefix !== ''){
+                prefix = requestedPrefix;
+            } 
             return prefix.toLowerCase()+'/'+prefix+'_';
         };
         
@@ -251,6 +292,7 @@ sntZestStation.controller('zsRootCtrl', [
                         moon: $scope.iconsPath+'/moon.svg',
                         back: $scope.iconsPath+'/back.svg',
                         close: $scope.iconsPath+'/close.svg',
+                        qr: $scope.iconsPath+'/key.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                     }
                 };
@@ -708,32 +750,6 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.selectedLanguage = 'English';
         $scope.langflag = 'flag-gb';
-        $scope.getLanguageDisplayName = function(lang){
-            switch(lang){
-                case "Castellano":
-                        return "Castellano";
-                        break;
-                        
-                case "German":
-                        return 'Deutsche';
-                        break;
-                        
-                case "English":
-                        return 'English';
-                        break;
-                        
-                case "Spanish":
-                        return 'Español';
-                        break;
-                        
-                case "French":
-                        return 'Français';
-                        break;
-                case "Italian":
-                        return 'Italiano';
-                        break;
-            };
-        };
         $scope.selectLanguage = function(lang, icon){
             
             if (lang === null || lang === 'null'){
@@ -741,7 +757,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.timeOut = false;
                 return;
             } else {
-                $scope.selectedLanguage = $scope.getLanguageDisplayName(lang);
+                $scope.selectedLanguage = lang;
                 $scope.langflag = icon;
             }
             $scope.showLanguagePopup = false;
@@ -852,7 +868,7 @@ sntZestStation.controller('zsRootCtrl', [
                     
                     $scope.selectedLanguage = 'English';
                     $scope.langflag = 'flag-gb';
-                    $scope.selectLanguage(English);//set back to default language; currently just english
+                    $scope.selectLanguage($scope.selectedLanguage,$scope.langflag);//set back to default language; currently just english
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
@@ -937,6 +953,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData = zestStationSettings;
         
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
+        $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;
+        
+        //$scope.zestStationData.pickup_qr_scan = true;//fake it till ya make it
              
         _.extend(hotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;

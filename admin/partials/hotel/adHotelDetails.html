@@ -12,7 +12,7 @@
 				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
-	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" readonly="{{isFieldsReadOnly}}"></ad-textbox>
+	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" readonly="{{isFieldsReadOnlyForServiceProvider}}"></ad-textbox>
 
 			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
 
@@ -125,7 +125,7 @@
 					<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
 				</div>
 
-				<div class="entry">
+				<div class="entry full-width">
 	                             <div class="entry inline-flex" >
 	                        <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
 	                        </div><div class="switch-button single" ng-class="{ on: data.sms_active }" ng-click="data.sms_active = !data.sms_active">
@@ -446,45 +446,6 @@
 				</div>
 			</fieldset>
 
-			<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
-				<div class="form-title">
-					<h3><span>Hotel</span> External Reference Import </h3>
-					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-				</div>
-
-				<div class="entry" ng-if="isAdminSnt">
-					<label for="is-external-references-import-on">Enable</label>
-					<div class="switch-button single" ng-class="{ on : data.is_external_references_import_on}">
-						<input type="checkbox" ng-model="data.is_external_references_import_on" value="{{data.is_external_references_import_on}}" name="is-external-references-import-on" id="is-external-references-import-on">
-						<span class="switch-icon"></span>
-					</div>
-				</div>
-
-				<div class="entry">
-					<label for="contact-phone"> Frequency [Minutes] <!-- strong>*</strong> --> </label>
-					<input type="text" ng-model="data.external_references_import_freq" value="{{data.external_references_import_freq}}"placeholder="Enter frequency" name="frequency" id="frequency">
-				</div>
-			</fieldset>
-
-			<fieldset class="holder right" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
-				<div class="form-title">
-					<h3><span>Hotel</span> Hold Room Import </h3>
-					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-				</div>
-
-				<div class="entry" ng-if="isAdminSnt">
-					<label for="is_hold_room_import_on">Enable</label>
-					<div class="switch-button single" ng-class="{ on : data.is_hold_room_import_on }">
-						<input type="checkbox" ng-model="data.is_hold_room_import_on" value="{{ data.is_hold_room_import_on }}" name="is_hold_room_import_on" id="is_hold_room_import_on">
-						<span class="switch-icon"></span>
-					</div>
-				</div>
-
-				<div class="entry">
-					<label for="hold_room_import_freq"> Frequency [Minutes] <!-- strong>*</strong> --> </label>
-					<input type="text" ng-model="data.hold_room_import_freq" value="{{ data.hold_room_import_freq }}" placeholder="Enter frequency" name="hold_room_import_freq" id="hold_room_import_freq">
-				</div>
-			</fieldset>
 
 			<fieldset class="holder left" ng-if="isAdminSnt">
 				<div class="form-title">

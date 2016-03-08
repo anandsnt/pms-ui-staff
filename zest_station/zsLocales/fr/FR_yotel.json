@@ -6,6 +6,10 @@
 
 
 	"TYPE_LAST":  "Entrez votre nom",
+        "QR_LOOKUP_HEADER": "NEED FRENCH TEXT",
+        "QR_LOOKUP_SUB_HEADER": "NEED FRENCH TEXT",
+        "QR_LOOKUP_BUTTON_TEXT": "NEED FRENCH TEXT",
+        
 
 	"CHECK_IN_SELECT_HEADER":  "Ensuite, entrez un des éléments suivants ",
 	"CHECK_IN_SELECT_NIGHTS":  "Nombre de nuits",

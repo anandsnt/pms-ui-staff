@@ -27,8 +27,8 @@
 "STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
 "STATION_LANGUAGE_ENGLISH":"English",
 "STATION_LANGUAGE_FRENCH":"Français",
-"STATION_LANGUAGE_DUTCH":"Español",
-"STATION_LANGUAGE_SPANISH":"Deutsch",
+"STATION_LANGUAGE_SPANISH":"Español",
+"STATION_LANGUAGE_GERMAN":"Deutsch",
 "STATION_LANGUAGE_ITALIAN":"Italiano",
 
 
@@ -41,7 +41,23 @@
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
-"REG_CARD_DELIVERY":"Registration card delivery options"
+"QR_SCANNER":"QR Scanner",
+"PUK_AUTH":"Authentication",
+"REG_CARD_DELIVERY":"Registration card delivery options",
+
+
+
+
+"NO_AVAIL_ROOM_MSG":"No Available Rooms Message",
+"KEY_PRINT_SUCCESS_MSG":"Key and Print Success Message",
+"KEY_SUCCESS_PRINT_FAIL_MSG":"Key Success / Print Fail Message",
+"KEY_FAIL_PRINT_SUCCESS":"Key Fail / Print Success Message",
+"KEY_AND_PRINT_FAIL_MSG":"Keys and Print Fail Message",
+"CHECKIN_WAIT_MSG":"Check In Wait Message"
+
+
+
+
 
         
         

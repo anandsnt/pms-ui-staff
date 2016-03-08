@@ -80,6 +80,10 @@ angular.module('reportsModule')
             			'IN_HOUSE_GUEST': {
             				'singleValueDate': getDates.businessDate,
             			},
+                        'COMPANY_TA_TOP_PRODUCERS': {
+                            'fromDate': undefined,
+                            'untilDate': undefined
+                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
