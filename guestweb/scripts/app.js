@@ -97,7 +97,7 @@ sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$st
  	$rootScope.application        = reservationAndhotelData.application;
  	$rootScope.urlSuffix        = reservationAndhotelData.url_suffix;
  	$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkin_collect_cc === "true") ? true:false;
- 	$rootScope.isMLI = (reservationAndhotelData.payment_gateway  = "MLI") ? true : false;
+ 	$rootScope.isMLI = (reservationAndhotelData.payment_gateway  === "MLI") ? true : false;
 
  	//room key delivery options
  	$rootScope.preckinCompleted =  false;
