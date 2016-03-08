@@ -15,12 +15,10 @@ sntRover
 		'payload',
 		'propertyTime',
 		'$vault',
-		'$stateParams',
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
 		'baseSearchData',
-		'$filter',
 	function($scope,
 			 $rootScope,
 			 $state,
@@ -36,10 +34,9 @@ sntRover
 			 payload,
 			 propertyTime,
 			 $vault,
-			 $stateParams,
 			 RVReservationBaseSearchSrv,
 			 $timeout,
-			 RVReservationSummarySrv, baseSearchData, $filter) {
+			 RVReservationSummarySrv, baseSearchData) {
 
 		$scope.$emit('showLoader');
 

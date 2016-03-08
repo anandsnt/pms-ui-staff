@@ -128,25 +128,6 @@
     });
   }
 
-  // # reactComponent
-  // Directive that allows React components to be used in Angular templates.
-  //
-  // Usage:
-  //     <react-component name="Hello" props="name"/>
-  //
-  // This requires that there exists an injectable or globally available 'Hello' React component.
-  // The 'props' attribute is optional and is passed to the component.
-  //
-  // The following would would create and register the component:
-  //
-  //     /** @jsx React.DOM */
-  //     var module = angular.module('ace.react.components');
-  //     module.value('Hello', React.createClass({
-  //         render: function() {
-  //             return <div>Hello {this.props.name}</div>;
-  //         }
-  //     }));
-  //
   var reactComponent = function($injector) {
     return {
       restrict: 'E',
@@ -183,33 +164,7 @@
     };
   };
 
-  // # reactDirective
-  // Factory function to create directives for React components.
-  //
-  // With a component like this:
-  //
-  //     /** @jsx React.DOM */
-  //     var module = angular.module('ace.react.components');
-  //     module.value('Hello', React.createClass({
-  //         render: function() {
-  //             return <div>Hello {this.props.name}</div>;
-  //         }
-  //     }));
-  //
-  // A directive can be created and registered with:
-  //
-  //     module.directive('hello', function(reactDirective) {
-  //         return reactDirective('Hello', ['name']);
-  //     });
-  //
-  // Where the first argument is the injectable or globally accessible name of the React component
-  // and the second argument is an array of property names to be watched and passed to the React component
-  // as props.
-  //
-  // This directive can then be used like this:
-  //
-  //     <hello name="name"/>
-  //
+
   var reactDirective = function($injector) {
     return function(reactComponentName, propNames, conf) {
       var directive = {

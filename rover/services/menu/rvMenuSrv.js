@@ -162,7 +162,12 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: 'rover.diary',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
-		        },  {
+		        }, {
+					title: "MENU_TODO",
+					action: 'rover.todo',
+					//hidden: !isHourlyRateOn,
+					menuIndex: 'todo'
+				},  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
 		            actionPopup: true,
