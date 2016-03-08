@@ -202,6 +202,19 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = 'TALK_TO_STAFF';
                 $scope.subHeadingText = 'ROOM_NOT_AVAIL_MSG';
                 $scope.modalBtn1 = 'DONE_BTN';
+            if($scope.zestStationData.check_in_message_texts.not_available_message === "" ){
+                console.info('wait...');
+                $scope.messageOverride = false;
+                $scope.headingText = 'WAIT_MOMENT';
+            } else {
+                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.not_available_message)
+                $scope.messageOverride = true;//need to turn off translate 
+                $scope.headingText = $scope.zestStationData.check_in_message_texts.not_available_message;
+            }
+            
+                
+                
+                
         };
         $scope.initKeyErrorScreen = function(){
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
@@ -378,7 +391,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();
-                $scope.initRoomErrorScreen();
+               // $scope.initRoomErrorScreen();
+                
             } else if (current === 'zest_station.last_confirm'){
                 //As part of CICO-24944 ,Customized subheading text for yotel
                 $scope.updateSubHeadingTextForLastConfirmPage();
