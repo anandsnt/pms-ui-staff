@@ -9,4 +9,5 @@
 "ZEST_IOS_LABEL": "Zest app(IOS)",
 "ZEST_ANDROID_LABEL": "Zest app(Android)",
 "ANALYTIC_SERVICE_LABEL": "Analytic service",
-"SELECT_SERVICE": "Select service"
+"SELECT_SERVICE": "Select service",
+"ZEST_CHECK_IN_MESSAGE" :"Enter Message"

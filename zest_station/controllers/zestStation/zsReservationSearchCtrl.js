@@ -60,6 +60,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * success Call Back Of Search Reservations
      * @return {[type]}
      */
+
     $scope.retry = false;
     var successCallBackOfSearchReservations = function(data) {
         $scope.reservations = data.results;
@@ -84,7 +85,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 if ($scope.isInCheckinMode()){
                     $state.go('zest_station.find_reservation_no_match');
                 }
-            } else if ($scope.reservations.length === 1){
+            } else if ($scope.reservations.length === 1 && !$scope.fetchingList){
                 $scope.selectReservation($scope.reservations[0]);
             } {
                 $scope.mode = "reservations-list";
@@ -358,6 +359,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.getPickupKeyOptions = function(){
         var pickupSuccess = function(response){
             $state.selectedReservation = response;
+            $state.selectedReservation.printSuccess = false;
+            $state.selectedReservation.keySuccess = false;
             $state.go('zest_station.pickup_keys');
         };
         var pickupFail = function(response){
@@ -447,7 +450,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * [fetchNextReservationList description]
      * @return {[type]} [description]
      */
+    $scope.fetchingList = false;
     $scope.fetchNextReservationList = function() {
+        $scope.fetchingList = true;
         if ($scope.page < $scope.totalPages) {
             $scope.page++;
         }
@@ -470,8 +475,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean}
      */
     $scope.shouldShowSearchResults = function() {
-        return true;
-        //return ($scope.reservations.length > 0);
+        return ($scope.reservations.length > 0);
     };
 
 
