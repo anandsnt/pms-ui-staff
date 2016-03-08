@@ -20,6 +20,8 @@ module.exports = {
 				guestwebroot + 'gw_app_config.js',
 				guestwebroot + 'routers/gw_main_app_router.js',
 				guestwebroot + 'routers/gw_app_router.js',
+				guestwebroot + 'routers/gw_checkin_router.js',
+				guestwebroot + 'routers/gw_checkout_router.js',
 				guestwebroot + 'scripts/angular-pickdate.js',
 				guestwebroot + 'services/*.js',
 				guestwebroot + 'controllers/**/*.js'
