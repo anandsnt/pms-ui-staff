@@ -1,24 +1,46 @@
 <div id="modal" class="modal-show right-arrow">
-    <div class="rate-dialog-tag">
-        <div ng-controller="UpdatePriceAndRestrictionsCtrl" 
-             style="background: #DEDEDE;">
-            <div ng-cloak class="updatePriceAndRestrictionsContainer">
-                <div class="header">
-                    <div class="title-wrap">
+    <div class="modal-content rate-manager-modal" ng-controller="UpdatePriceAndRestrictionsCtrl">
+            <div ng-cloak class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-header-left">
                         <h2 ng-show="!popupData.all_data_selected" ng-class="{'title-expanded': showExpandedView || (popupData.fromRoomTypeView && data.hasAmountConfigured)}">{{data.name}}</h2>
                         <em ng-show="!popupData.all_data_selected">{{popupData.selectedDate| date:'EEEE, MMMM dd'}}</em>
+
+
                         <!-- To show dates as bold for all room types and all rate types -->
-                        <h2 ng-show="(popupData.fromRoomTypeView && popupData.all_data_selected) || (!popupData.fromRoomTypeView && popupData.all_data_selected)" class="h1">
+                        <h2 ng-show="popupData.all_data_selected">
                         	{{popupData.selectedDate| date:'EEEE, MMMM dd'}}
                     	</h2>
                         <em ng-show="(popupData.fromRoomTypeView || ratesRoomsToggle !== 'RATES') && popupData.all_data_selected">All room types</em>
+
                         <em ng-show="!popupData.fromRoomTypeView && ratesRoomsToggle === 'RATES' && popupData.all_data_selected">All rates</em>
+
+                        <!-- If click on a room type and we look at all room types but no rate is selected -->
+                        <em class="rate-name no-rate-name" ng-show="ratesRoomsToggle !== 'RATES' && !popupData.fromRoomTypeView">No Rate Selected</em>
+
+                        <!-- if click on a rate and we look at the screen for all rates -->
+                        <em class="rate-name" ng-show="ratesRoomsToggle === 'RATES' && !popupData.fromRoomTypeView">All room types</em>
+
+                        <!-- if we click on a room type and we look at a single rate in the room type view -->
+                        <em class="rate-name" ng-show="popupData.fromRoomTypeView">{Rate Name}</em>
+
                     </div>
-                    <div class="toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</div>
-                    <div style="clear: both;"></div>
+                    <div class="modal-header-right">
+                        <!-- If there is a notice show the div and the text-->
+                        <!--<div class="notice">{notice-text}</div>
+                        -->
+                    </div>
                 </div>                
-                <div>
-                    <table>
+                <div class="modal-body">
+                    <div class="content-left">
+                        <div class="ng-scope" ng-include="'/assets/partials/rateManager/restrictionsList.html'" ></div>
+                    </div>
+                    <div class="content-middle">
+
+                    </div>
+                    <div class="content-right"></div>
+
+                    <!--<table>
                         <tr>
                             <td>
                                 <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
@@ -43,11 +65,11 @@
                             <td>
                             </td>
                         </tr>
-                    </table>
+                    </table>-->
 
                 </div>
                 <div class="footer">
-                    <div class="actions float">
+                    <div class="actions">
                         <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
                             Cancel
                         </button>
@@ -60,6 +82,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
