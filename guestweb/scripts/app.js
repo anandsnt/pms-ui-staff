@@ -98,13 +98,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.application = reservationAndhotelData.application;
 		$rootScope.urlSuffix = reservationAndhotelData.url_suffix;
 		$rootScope.collectCCOnCheckin = (reservationAndhotelData.checkin_collect_cc === "true") ? true : false;
-		$rootScope.isMLI = (reservationAndhotelData.payment_gateway = "MLI") ? true : false;
+		$rootScope.isMLI = (reservationAndhotelData.payment_gateway === "MLI") ? true : false;
 
 		//room key delivery options
 		$rootScope.preckinCompleted = false;
 		$rootScope.userEmail = reservationAndhotelData.primary_guest_email;
 		$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
 		$rootScope.keyDeliveryByEmail = true;
+		$rootScope.restrictByHotelTimeisOn = reservationAndhotelData.eta_enforcement;
 		//$rootscope.keyDeliveryByText  = true;
 
 		$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
@@ -132,8 +133,10 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		};
 
 		$rootScope.is_checkin_now_on = checkinNowisAvailable();
-		$rootScope.checkin_now_text = reservationAndhotelData.zest_checkin_now_text.length>0 ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
-		$rootScope.checkin_later_text = reservationAndhotelData.zest_checkin_later_text.length>0 ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
+		$rootScope.checkin_now_text = 
+		(reservationAndhotelData.zest_checkin_now_text !== null && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
+		$rootScope.checkin_later_text = 
+		(reservationAndhotelData.zest_checkin_later_text !== null && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
@@ -146,7 +149,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if (reservationAndhotelData.is_external_verification === "true") {
 			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && !(reservationAndhotelData.is_auto_checkin === 'true')) {
-			$state.go('tripDetails'); // only available for Fontainbleau -> precheckin + sent to que
+			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true')) {
 			$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
 		} else if ($rootScope.isCheckedin) {
