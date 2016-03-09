@@ -59,7 +59,9 @@
 			} else if (early_checkin_switch_on && reservation_in_early_checkin_window) {
 				if (offer_eci_bypass) {
 					// Early checkin byepass
-					$state.go('earlyCheckinReady');
+					//$state.go('earlyCheckinReady');
+					//need to change later
+					$state.go('checkinKeys');
 				} else {
 					if (eci_upsell_limit_reached || typeof early_checkin_offer_id === 'undefined' || early_checkin_offer_id === null) {
 						//limted by overall count and room type
