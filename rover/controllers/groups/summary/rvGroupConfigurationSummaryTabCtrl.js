@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout',
-	function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv',
+	function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv) {
 
 
 		var summaryMemento, demographicsMemento;
@@ -606,6 +606,61 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 			//summary memento will change we attach date picker to controller
 			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
+		};
+
+		/**
+		 * calculate class name for actions button on summary actions.
+		 * @returns {string} action button class
+		 */
+		$scope.getActionsButtonClass = function () {
+			var actionsCount = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count),
+				pendingCount = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count);
+
+			if (pendingCount > 0) {
+				return 'icon-new-actions';
+			}
+			if (actionsCount === 0) {
+				return 'icon-no-actions';
+			}
+
+			return 'icon-actions';
+		};
+
+		var successCallBackForFetchGroupActions = function(data) {
+			//TODO open popup
+			ngDialog.open({
+				template: '/assets/partials/groups/summary/rvGroupActions.html',
+				controller: 'rvGroupActionsCtrl',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+
+		var failuresCallBackForFetchGroupActions = function(error) {
+			$scope.errorMessage = error;
+		};
+
+		var fetchGroupActions = function () {
+			var defered = $q.defer(),
+				options = {};
+
+			options.params = {
+				id: $scope.groupConfigData.summary.group_id
+			};
+			options.successCallBack = defered.resolve;
+			options.failureCallBack = defered.reject;
+			$scope.callAPI(rvGroupActionsSrv.fetchTasks, options);
+			return defered.promise;
+		};
+
+		/**
+		 * Fetch actions data and opens the group actions manager popup to display group actions.
+		 * @return {undefined}
+		 */
+		$scope.openGroupActionsPopup = function () {
+			fetchGroupActions()
+				.then(successCallBackForFetchGroupActions, failuresCallBackForFetchGroupActions);
 		};
 
 		/**
