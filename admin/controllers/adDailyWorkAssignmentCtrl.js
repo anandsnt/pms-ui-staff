@@ -314,6 +314,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
+//=========== task list ================
+
 		// fetch task list
 		var fetchTaskList = function() {
 			var callback = function(data) {
@@ -403,7 +405,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				hours                        : '',
 				mins                         : '',
 				task_completion_hk_status_id : '',
-				rooms_task_completion        : initateRoomTaskTimes()
+				rooms_task_completion        : initateRoomTaskTimes(),
+				is_pickup					 : false,
+				is_clean			 	 	 : false,
+				is_dirty					 : false
 			};
 
 			var frequencyParams = {};
@@ -552,7 +557,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 						isWeekEnd                    :frequencyType.isWeekEnd,
 						isCustom                     :frequencyType.isCustom,
 						frequency 					 : item.frequency,
-						is_active					 : item.is_active
+						is_active					 : item.is_active,
+						is_dirty					 : item.is_dirty,
+						is_clean 					 : item.is_clean,
+						is_pickup					 : item.is_pickup
 					};
 					mapRoomShowflag($scope.eachTaskList);
 					if(frequencyType.isCustom === true){
@@ -607,7 +615,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				rooms_task_completion        : getRoomTaskTimes(),
-				is_active   			     : true
+				is_active   			     : true,
+				is_dirty					 : $scope.eachTaskList.is_dirty,
+				is_clean 					 : $scope.eachTaskList.is_clean,
+				is_pickup					 : $scope.eachTaskList.is_pickup
+
 			};
 
 			var frequencyParams = {};
@@ -670,7 +682,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				id                           : $scope.eachTaskList.id,
 				rooms_task_completion        : getRoomTaskTimes(),
-				is_active					 : $scope.eachTaskList.is_active
+				is_active					 : $scope.eachTaskList.is_active,
+				is_clean					 : $scope.eachTaskList.is_clean,
+				is_dirty 					 : $scope.eachTaskList.is_dirty,
+				is_pickup					 : $scope.eachTaskList.is_pickup
 			};
 			var frequencyParams = {};
 			frequencyParams.monday = false;
