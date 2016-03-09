@@ -411,6 +411,22 @@
     .inline-modal {
         .modal-content {
 
+            .entry .boxes { 
+                background-color: @white;
+                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15)); 
+                #border-radius > .rounded();
+                padding:10px;
+
+                .checkbox.inline, 
+                .radio.inline {
+                    line-height: 30px;
+
+                    .icon-form {
+                        top:5px;
+                    }
+                }
+
+            }
             /* Alert ***/
             &.alert {
                 padding: 30px 20px;
@@ -503,6 +519,24 @@
                     margin-bottom: 10px;
 
                     &:last-child { margin-bottom: 0; }
+
+                    &.with-icon-inline {
+                        padding: 0 20px 0 40px;
+                        float:left;
+                        width:45%;
+                        margin-left:5%;
+                        
+                        &:first-child {
+                            margin-right:5%;
+                            margin-left:0;
+                        }
+ 
+                        .icons {
+                            position: absolute;
+                            left: 30px;
+                            top:20px;
+                        }
+                    }
                 }
 
                 .actions { margin-top: 20px; }
