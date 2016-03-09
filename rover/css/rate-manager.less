@@ -5,10 +5,6 @@
     position: relative;
     height:100%;
 
-    .no-content {
-      padding-left: 60px;
-    }
-
     .filter-options{
       position: absolute;
       top: 60px;
@@ -723,7 +719,7 @@
             height:30px;
             left:0;
             z-index: 1;
-            background: #fcfcfc @darkTexture repeat;
+            background: #fcfcfc @textureImage repeat;
 
           }
           
@@ -773,33 +769,36 @@
               width:210px;
                
             }
+            
+            .restriction_holder {
 
-            .restriction_holder.icons-in-row {
-              position: relative;
-              height:20px;
+              .icons-in-row {
+                position: relative;
+                height:20px;
 
-              .restriction-icon {
-                margin:0;
-                position: absolute;
+                .restriction-icon {
+                  margin:0;
+                  position: absolute;
 
-                &:first-child {
-                  top:-12px;
-                  right:0;
-                }
+                  &:first-child {
+                    top:-12px;
+                    right:0;
+                  }
 
-                &:nth-child(2){
-                  right:0;
-                  bottom:-12px;
-                }
+                  &:nth-child(2){
+                    right:0;
+                    bottom:-12px;
+                  }
 
-                &:nth-child(3) {
-                  top:-12px;
-                  right:25px;
-                }
+                  &:nth-child(3) {
+                    top:-12px;
+                    right:25px;
+                  }
 
-                &:nth-child(4){
-                  right:25px;
-                  bottom:-12px;
+                  &:nth-child(4){
+                    right:25px;
+                    bottom:-12px;
+                  }
                 }
               }
             }
@@ -810,11 +809,13 @@
                 &.exp {
                   
                   .restriction_holder { 
+                    height:41px;
                     .calc-padding-left( 100, 110 );
 
                   }
 
                   .room-type-price {
+                    height: 44px;
                      span { font-size:21px; }
                   }
                 }
@@ -895,7 +896,7 @@
 
           .pinnedLeft {
             .cell.rate.expandedFirstRow {
-              height:275px;
+              height:323px;
             }
           }
         }
@@ -923,6 +924,7 @@
                 &.exp {
                   
                   .restriction_holder { 
+                    height:41px;
                     .calc-padding-left( 100, 110 );
                   }
 
@@ -969,6 +971,10 @@
                 padding:15px 10px;
                 &.exp {
                   
+                  .restriction_holder {
+                    padding:10px;
+                    height: 41px;
+                  }
 
                   .room-type-price {
                     height:58px;

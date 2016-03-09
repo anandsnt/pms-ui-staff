@@ -59,8 +59,7 @@
 			        <table class="rate-calendar">
 			            <thead>
 			                <tr class="cell">
-			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"
-			                        style="width:{{uiOptions.columnWidth}}px;" > 
+			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"> 
 			                        <div ng-if="!isHistoryDate(date)" class="date-header" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
 			                            <span class="week-day">{{date| date:'EEEE'}}</span>
 			                            <span>{{date| date:'MMMM dd'}}</span>
@@ -159,7 +158,7 @@
 			            <thead>
  			                <tr class="cell">
 			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" 
-			                        style="width:{{uiOptions.columnWidth}}px;">
+			                        >
 			                        <div  ng-if="!isHistoryDate(date)" class="date-header" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">
 			                            <span class="week-day">{{date| date:'EEEE'}}</span>
 			                            <span>{{date| date:'MMMM dd'}}</span>
