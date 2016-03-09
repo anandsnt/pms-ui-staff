@@ -411,22 +411,6 @@
     .inline-modal {
         .modal-content {
 
-            .entry .boxes { 
-                background-color: @white;
-                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15)); 
-                #border-radius > .rounded();
-                padding:10px;
-
-                .checkbox.inline, 
-                .radio.inline {
-                    line-height: 30px;
-
-                    .icon-form {
-                        top:5px;
-                    }
-                }
-
-            }
             /* Alert ***/
             &.alert {
                 padding: 30px 20px;
@@ -519,24 +503,6 @@
                     margin-bottom: 10px;
 
                     &:last-child { margin-bottom: 0; }
-
-                    &.with-icon-inline {
-                        padding: 0 20px 0 40px;
-                        float:left;
-                        width:45%;
-                        margin-left:5%;
-                        
-                        &:first-child {
-                            margin-right:5%;
-                            margin-left:0;
-                        }
- 
-                        .icons {
-                            position: absolute;
-                            left: 30px;
-                            top:20px;
-                        }
-                    }
                 }
 
                 .actions { margin-top: 20px; }
@@ -1564,6 +1530,40 @@
                 }
 
                 &.select-card { width: 520px; }
+            }
+
+            /* Format bill ***/
+            &.format-bill {
+                width: 360px;
+
+                label { margin-bottom: 0; }
+
+                .actions {
+                    margin-top: 20px;
+                    padding-top: 19px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                    .float;
+                }
+
+                .button { 
+                    line-height: 50px;
+                    height: 50px;
+                }
+
+                .with-icon {
+                    padding: 0 20px 0 40px;
+                    margin-bottom: 10px;
+                    .calc-width(50, 10);
+                    .pull-left;
+                    
+                    &:first-child { margin-right: 10px; }
+
+                    .icons {
+                        position: absolute;
+                        top: 15px;
+                        left: 20px;
+                    }
+                }
             }
 
             /* Deposits / Balance ***/
