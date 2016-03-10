@@ -69,6 +69,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.setScroller('reservationSummary');
 			$scope.setScroller('paymentInfo');
 			checkAllRoomsAreReady();
+			$scope.reservationData.enable_confirmation_custom_text = false;
 		};
 
 		/*
@@ -578,6 +579,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		$scope.watchEmailUpdate = function(){
        		$rootScope.$broadcast('guest_email_updated', $scope.reservationData.guest.email);
+   		};
+
+   		$scope.enableConfirmationCustomText = function(){
+   			$scope.reservationData.enable_confirmation_custom_text = !$scope.reservationData.enable_confirmation_custom_text;
+   			$scope.refreshScroller('paymentInfo');
    		};
 	}
 ]);
