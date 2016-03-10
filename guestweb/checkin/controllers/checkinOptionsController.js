@@ -95,7 +95,11 @@
 					navigateToNextScreen();
 				} else {
 					$scope.isLoading = false;
-					$state.go("roomAssignFailed");
+					if (!early_checkin_switch_on || !reservation_in_early_checkin_window) {
+						$state.go('eciOffroomAssignFailed');
+					} else {
+						$state.go("roomAssignFailed");
+					}
 				}
 			}, function() {
 				$scope.isLoading = false;
@@ -113,7 +117,11 @@
 				navigateToNextScreen();
 			} else if (is_room_already_assigned && !is_room_ready) {
 				// oops!.room not ready and cannot assign new room
-				$state.go('roomNotReady');
+				if (!early_checkin_switch_on || !reservation_in_early_checkin_window) {
+					$state.go('eciOffRoomNotReady');
+				} else {
+					$state.go('roomNotReady');
+				}
 			} else {
 				return;
 			}
