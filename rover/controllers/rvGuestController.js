@@ -1343,34 +1343,38 @@ angular.module('sntRover').controller('guestCardController', [
 		};
 
 		$scope.selectGroup = function(group) {
-			if ($scope.viewState.identifier === "CREATION") {
-				// In create reservation
-				$scope.reservationData.group = {
-					id: group.id,
-					name: group.name,
-					code: group.code,
-					company: group.company_id,
-					travelAgent: group.travel_agent_id
-				};
-				$scope.closeGuestCard();
-				$scope.viewState.isAddNewCard = false;
-				$scope.initGroupCard(group.id);
-				if (!!$scope.reservationData.group.travelAgent) {
-					$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
-					$scope.initTravelAgentCard();
+			$scope.closeDialog();
+			setTimeout(function(){
+				if ($scope.viewState.identifier === "CREATION") {
+					// In create reservation
+					$scope.reservationData.group = {
+						id: group.id,
+						name: group.name,
+						code: group.code,
+						company: group.company_id,
+						travelAgent: group.travel_agent_id
+					};
+					$scope.closeGuestCard();
+					$scope.viewState.isAddNewCard = false;
+					$scope.initGroupCard(group.id);
+					if (!!$scope.reservationData.group.travelAgent) {
+						$scope.reservationDetails.travelAgent.id = $scope.reservationData.group.travelAgent;
+						$scope.initTravelAgentCard();
+					}
+					if (!!$scope.reservationData.group.company) {
+						$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
+						$scope.initCompanyCard();
+					}
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
+				} else {
+					// In staycard
+					attachGroupToThisReservation(group);
 				}
-				if (!!$scope.reservationData.group.company) {
-					$scope.reservationDetails.companyCard.id = $scope.reservationData.group.company;
-					$scope.initCompanyCard();
-				}
-				$scope.showContractedRates({
-					companyCard: $scope.reservationDetails.companyCard.id,
-					travelAgent: $scope.reservationDetails.travelAgent.id
-				});
-			} else {
-				// In staycard
-				attachGroupToThisReservation(group);
-			}
+			}, 1000);
+
 		};
 
 		/**
@@ -1475,7 +1479,7 @@ angular.module('sntRover').controller('guestCardController', [
 					showCreditLimitExceedPopup();
 				}
 			} else {
-				$scope.errrorMessage = error.errorMessage;
+				$scope.errrorMessage = error;
 			}
 		};
 
@@ -1534,36 +1538,40 @@ angular.module('sntRover').controller('guestCardController', [
 		 * @return {undefined}
 		 */
 		$scope.selectAllotment = function(allotment) {
-
-			if (isInCreateReservationMode()) {
-				$scope.reservationData.allotment = {
-					id: allotment.id,
-					name: allotment.name,
-					code: allotment.code,
-					company: allotment.company_id,
-					travelAgent: allotment.travel_agent_id
-				};
-				$scope.closeGuestCard();
-				$scope.viewState.isAddNewCard = false;
-				$scope.initAllotmentCard(allotment.id);
-				if (!!$scope.reservationData.allotment.travelAgent) {
-					$scope.reservationDetails.travelAgent.id = $scope.reservationData.allotment.travelAgent;
-					$scope.initTravelAgentCard();
+			$scope.closeDialog();
+			setTimeout(function(){
+				if (isInCreateReservationMode()) {
+					$scope.reservationData.allotment = {
+						id: allotment.id,
+						name: allotment.name,
+						code: allotment.code,
+						company: allotment.company_id,
+						travelAgent: allotment.travel_agent_id
+					};
+					$scope.closeGuestCard();
+					$scope.viewState.isAddNewCard = false;
+					$scope.initAllotmentCard(allotment.id);
+					if (!!$scope.reservationData.allotment.travelAgent) {
+						$scope.reservationDetails.travelAgent.id = $scope.reservationData.allotment.travelAgent;
+						$scope.initTravelAgentCard();
+					}
+					if (!!$scope.reservationData.allotment.company) {
+						$scope.reservationDetails.companyCard.id = $scope.reservationData.allotment.company;
+						$scope.initCompanyCard();
+					}
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
 				}
-				if (!!$scope.reservationData.allotment.company) {
-					$scope.reservationDetails.companyCard.id = $scope.reservationData.allotment.company;
-					$scope.initCompanyCard();
-				}
-				$scope.showContractedRates({
-					companyCard: $scope.reservationDetails.companyCard.id,
-					travelAgent: $scope.reservationDetails.travelAgent.id
-				});
-			}
 
-			//staycard card attaching
-			else {
-				attachAllotmentToThisReservation(allotment);
-			}
+				//staycard card attaching
+				else {
+					attachAllotmentToThisReservation(allotment);
+				}
+
+			}, 1000)
+
 		};
 
 		/**
