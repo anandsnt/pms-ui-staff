@@ -168,12 +168,12 @@
                         
                         <div class="entry full-width" ng-show="reservationData.enable_confirmation_custom_text">
                             <label for="email-title">Title</label>
-                            <input id="email-title" value="" type="text" />
+                            <input id="email-title" ng-model="reservationData.confirmation_custom_title" type="text" />
                         </div>
 
                         <div class="entry full-width" ng-show="reservationData.enable_confirmation_custom_text">
                             <label for="email-text">Text</label>
-                            <textarea id="email-text" rows="3"></textarea>
+                            <textarea id="email-text" ng-model="reservationData.confirmation_custom_text" rows="3"></textarea>
                         </div>
 
                     </span>

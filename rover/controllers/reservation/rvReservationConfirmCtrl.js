@@ -273,7 +273,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					updateBackButton();
 					$scope.$emit('hideLoader');
 				};
-
+				//CICO-23139
+				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
+				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
 				if ($scope.reservationData.isHourly) {
 					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 				} else {
