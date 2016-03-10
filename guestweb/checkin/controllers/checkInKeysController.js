@@ -14,7 +14,7 @@
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ){
 		$state.go('checkinCcVerification');
 	}
-	else if($rootScope.offerRoomDeliveryOptions &&  $rootScope.userEmail.length ===0){
+	else if($rootScope.offerRoomDeliveryOptions){
 		$state.go('emailAddition',{'isFrom':'checkinNow'});// if user has not attached an email
 	}
 	else if($rootScope.isCheckedin){
