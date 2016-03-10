@@ -163,6 +163,9 @@
     "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded",
 
     "COMAPNY_NAME" : "Company Name",
-    "C_ID_OR_IATA" : "Corp ID / IATA number"
+    "TA_NAME" : "Travel Agent Name",
+    "C_ID_OR_IATA" : "Corp ID / IATA number",
+    "CORP_ID" : "Corp ID",
+    "IATA_NO" : "IATA number"
 
 

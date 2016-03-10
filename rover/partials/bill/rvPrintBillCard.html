@@ -44,8 +44,10 @@
 
     <tbody ng-if="printData.is_from_cards">
         <tr>
-            <th colspan="2" translate>COMAPNY_NAME</th>
-            <th translate>C_ID_OR_IATA</th>
+            <th ng-if="printData.card_details.type ==='COMPANY'" colspan="2" translate>COMAPNY_NAME</th>
+            <th ng-if="printData.card_details.type ==='TRAVELAGENT'" colspan="2" translate>TA_NAME</th>
+            <th ng-if="printData.card_details.type ==='COMPANY'"  translate>CORP_ID</th>
+            <th ng-if="printData.card_details.type ==='TRAVELAGENT'" translate>IATA_NO</th>
             <th translate>INVOICE_NO</th>
         </tr>
         <tr>
