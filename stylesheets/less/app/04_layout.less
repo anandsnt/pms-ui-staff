@@ -184,7 +184,9 @@ body { overflow: hidden; }
 			/* HK search ***/
 			&#rooms {
 				top: 120px;
-				.calc-height(100, 180);
+				.calc-height(100, 120);
+
+				&.has-pagination { .calc-height(100, 180); }
 
 				&.has-pagination { .calc-height(100, 180); }
 
@@ -234,11 +236,6 @@ body { overflow: hidden; }
 				&.no-pagination { .calc-height(100, 120); }
 			}
 
-			&#filter-rooms {
-				top: 120px;
-				.calc-height(100, 120);
-			}
-
 			&#guest-info {
 				top: 110px;
 				.calc-height(100, 130);
@@ -256,22 +253,10 @@ body { overflow: hidden; }
 				.calc-height(100, 150);
 			}
 
-			/* Social Lobby ***/
-			&.social-lobby-content {
-				top: 120px;
-				.calc-height(100, 180);
-			}
-
-			/* Messages ***/
-			&.messages-content {
+			/* Actions ***/
+			&.actions-content {
 				top: 60px;
 				.calc-height(100, 120);
-			}
-
-			/* Reviews ***/
-			&.reviews-content {
-				top: 60px;
-				.calc-height(100, 60);
 			}
 		}
 	}
@@ -280,54 +265,6 @@ body { overflow: hidden; }
 
 	@media not print {
 		.container {	
-
-			/* Page transitions - social lobby filtering ***/
-			&.filter-lobby-open {
-				.search-form {
-					height: 110px;
-					.transition (height, .3s, ease);
-				}
-
-				.content.social-lobby-content:not(#login) {
-					#move > #element > .bottom(openAdvancedSearch);
-					.calc-height(100, 230); /* %, px */
-				}
-			}
-			&.filter-lobby-closing {
-				.search-form {
-					height: 60px;
-					.transition (height, .3s, ease);
-				}
-
-				.content.social-lobby-content:not(#login) {
-					#move > #element > .top(closeAdvancedSearch);
-					.calc-height(100, 120); /* %, px */
-				}
-			}
-
-			/* Page transitions - message filtering ***/
-			&.filter-messages-open {
-				.search-form {
-					height: 110px;
-					.transition (height, .3s, ease);
-				}
-
-				.content-left .scrollable {
-					#move > #element > .bottom(openAdvancedSearch);
-					.calc-height(100, 120); /*  %, px */
-				}
-			}
-			&.filter-messages-closing {
-				.search-form {
-					height: 60px;
-					.transition (height, .3s, ease);
-				}
-
-				.content-left .scrollable {
-					#move > #element > .top(closeAdvancedSearch);
-					.calc-height(100, 60);  /* %, px */
-				}
-			}
 
 			/* Page transitions - opening guests details ***/
 			&.room-attributes-open {
@@ -2302,6 +2239,7 @@ body { overflow: hidden; }
 		    	width: 40%;
 
 		        .scrollable { 
+		        	z-index: 90;
 		        	.calc-height(100, 60);
 
 		        	.iScrollVerticalScrollbar { 
@@ -2369,14 +2307,12 @@ body { overflow: hidden; }
 		                	bottom: 10px;
 		                	right: 10px;
 		                	font-size: 14px;
-                                    text-overflow: ellipsis;
-                                    overflow: hidden;
-                                    width: 135px;
-                                    white-space: nowrap;
 	                        line-height: 20px;
 	                        text-transform: uppercase;
 	                        text-align: right;
 	                        color: @grey3;
+	                        width: 135px;
+	                        .nowrap();
 		                }
 
 		                .user {
@@ -2418,6 +2354,36 @@ body { overflow: hidden; }
 		            }
 
 		            &.filter-open { .calc-height(100, 110); }
+
+		            &.with-pagination {
+		            	.calc-height(100, 120);
+
+		            	&.filter-open { .calc-height(100, 170); }
+		            }
+	            }
+
+	            .search-pagination {
+	            	position: absolute;
+	            	bottom: 0;
+	            	left: 0;
+	            	z-index: 100;
+					padding: 10px;
+					background: @white @darkTexture repeat;
+
+					p {
+						font-size: 14px;
+						margin-right: 10px;
+						.pull-left;
+					}
+
+					.button {
+						font-size: 14px;
+						width: 100px;
+					}
+	            }
+
+	            .no-content { 
+	                .calc-height(100, 60);
 	            }
 		    }
 
@@ -2427,6 +2393,7 @@ body { overflow: hidden; }
 		    	.gradient-horizontal(@softRedStart, @softRedEnd);
 		    	
 		    	.sender-details {
+		    		position: relative;
 	                padding: 20px;
 	                height: 90px;
 	                color: @white;
@@ -2435,7 +2402,7 @@ body { overflow: hidden; }
 
 	                .data {
 	                    margin-left: 10px;
-	                    .calc-width(50, 90);
+	                    .calc-width(100, 370);
 	                    .pull-left;
 
 	                    h1,
@@ -2455,15 +2422,16 @@ body { overflow: hidden; }
 	                }
 
 	                .dates {
-						margin-left: 10px;
-	                    .calc-width(50, 90);
-	                    .pull-left;
+						position: absolute;
+	                	top: 20px;
+	                	right: 120px;
+	                    width: 200px;
 
 						.date { 
 							font-size: 14px;
 							line-height: 20px; 
 
-							&:first-child { margin-bottom: 5px; }
+							&:first-child { margin-bottom: 10px; }
 						}
 
 						.guest-status {
@@ -2473,10 +2441,13 @@ body { overflow: hidden; }
 					}
 
 	                .button { 
-	                	margin-top: 5px; 
+	                	position: absolute;
+	                	top: 25px;
+	                	right: 20px;
 	                	padding: 0 10px;
+	                	width: 100px;
 	                	.show;
-	                }                
+	                }                  
 	            }
 
 	            .summary {
@@ -2594,6 +2565,84 @@ body { overflow: hidden; }
 
 	            		span { .show; }
 	            	}
+
+	            	&.add-content {
+						.calc-height(100, 40);
+
+						.message { 
+							margin: 10px 0 20px 0;
+							text-align: center;
+							text-transform: uppercase;
+							font-weight: 600;
+							.show;
+						}
+
+	                    label {
+                          margin-bottom: 0;
+                          .char-count{
+                            color: @green;
+                            &.full{ color: @red; }
+                          }
+                        }
+
+
+	                    .entry:not(.full-width) {
+	                        .calc-width(50, 10);
+
+	                        &.margin { margin-right: 20px; }
+	                    }
+
+	                    .date,
+		                .search {
+		                    position: relative;
+
+		                    .clear-query {
+		                        position: absolute;
+		                        top: 25px;
+		                        right: 0;
+		                        z-index: 99;
+		                        visibility: hidden;
+		                        background-color: @grey1;
+		                        .size(38px, 40px);
+
+		                        .icons {
+		                            position: absolute;
+		                            top: 12.5px;
+		                            right: 12.5px;
+		                            background-color: @grey2;
+		                            .hide-text;
+		                            .square(15px);
+		                            .opacity(0);
+		                            .show;
+		                            #fade > .out();
+		                            #border-radius > .rounded(15px);
+		                        }
+
+		                        &.visible { 
+		                            visibility: visible;
+
+		                            .icons {    
+		                                .opacity(100); 
+		                                #fade > .in(); 
+		                            }
+		                        }
+
+		                        &:hover,
+		                        &.active { 
+		                            .icons { background-color: @logoPrimary; }
+		                        }
+		                    }
+		                }
+
+	                    .actions {
+	                        text-align: center;
+	                        background: transparent;
+	                        height: auto;
+	                        .box-shadow(none);
+
+	                        .button { display: inline-block; }
+	                    }
+	                }
 	            }
 
 	            .detail-actions {

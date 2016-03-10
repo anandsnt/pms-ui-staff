@@ -21,7 +21,8 @@ admin.controller('ADHotelDetailsCtrl', [
 		certificate: ''
 	};
 	$scope.isHotelChainReadonly =  false;
-	$scope.isFieldsReadOnly = $rootScope.isSntAdmin && $rootScope.isServiceProvider ? "yes" : "no";
+	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
+	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
@@ -77,6 +78,8 @@ admin.controller('ADHotelDetailsCtrl', [
 				if(!!$scope.data.hotel_chain) {
 					$scope.isHotelChainReadonly = true;
 				}
+
+				setDropdownDefaults();
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
 		}
@@ -100,6 +103,13 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data.check_out_time.primetime = "AM";
 				$scope.data.check_out_primetime = "AM";
 			}
+
+			//CICO-24330 -Make the chain non-editable once its saved
+			if(!!$scope.data.hotel_chain) {
+				$scope.isHotelChainReadonly = true;
+			}
+
+			setDropdownDefaults();
 		};
 		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
 	}
@@ -341,5 +351,28 @@ admin.controller('ADHotelDetailsCtrl', [
     	}
     	return selectedIds;
     }
+
+    //Set dropdown defaults when they are empty or null
+    var setDropdownDefaults = function() {
+    	if(!$scope.data.hotel_brand) {
+			$scope.data.hotel_brand = "";
+		}
+
+		if(!$scope.data.hotel_chain) {
+			$scope.data.hotel_chain = "";
+		}
+
+		if(!$scope.data.hotel_date_format) {
+			$scope.data.hotel_date_format = "";
+		}
+
+		if(!$scope.data.default_currency) {
+			$scope.data.default_currency = "";
+		}
+
+		if(!$scope.data.selected_language) {
+			$scope.data.selected_language = "";
+		}
+    };
 
 }]);

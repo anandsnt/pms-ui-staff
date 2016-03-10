@@ -381,6 +381,27 @@
         }
 
         &.find-user { width: auto; }
+
+        &.find-guest{
+            li{
+              height: 50px;
+            }
+            img {
+                 position: absolute;
+                 .square(30px);
+                 #border-radius > .rounded();
+            }
+            .name{
+              font-size: 18px;
+            }
+            .room{
+                 font-size: 14px;
+                 float: right;
+                 margin-right: 10px;
+                 text-transform: uppercase;
+                 color:@grey3
+            }
+         }
     }
 
     .ui-helper-hidden-accessible { .hide; }
@@ -4443,7 +4464,30 @@
                     .size(460px, 920px);
 
                     .content-left {
-                        .scrollable { height: 100%;}
+                        .scrollable { 
+                            height: 100%;
+
+                            &.with-pagination { .calc-height(100, 60); }
+                        }
+                            
+                        .search-pagination {
+                            position: relative;
+                            padding: 10px;
+                            background: @grey2 @darkTexture repeat;
+
+                            p {
+                                font-size: 14px;
+                                margin-right: 10px;
+                                .pull-left;
+                            }
+
+                            .button {
+                                font-size: 14px;
+                                line-height: 40px;
+                                width: 90px;
+                                .pull-right;
+                            }
+                        }
                     }
 
                     .content-right {
@@ -4565,7 +4609,13 @@
             &.actions-form {
                 width: 420px;
 
-                label { margin-bottom: 0; }
+                label {
+                  margin-bottom: 0;
+                  .char-count{
+                    color: @green;
+                    &.full{ color: @red; }
+                  }
+                }
 
                 .entry:not(.full-width) {
                     .calc-width(50, 10);

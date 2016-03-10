@@ -9,7 +9,8 @@ sntRover.controller('RVReportListCrl', [
     '$timeout',
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
-    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags) {
+    'RVReportSetupDates',
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags, setupDates) {
 
         BaseCtrl.call(this, $scope);
 
@@ -47,6 +48,11 @@ sntRover.controller('RVReportListCrl', [
                 // unfortunately this is not sent from server
                 reportUtils.addIncludeUserFilter( report[i] );
 
+                setupDates.init( report[i] );
+                _.each(report[i]['filters'], function(filter) {
+                    setupDates.execFilter( report[i], filter );
+                });
+
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
                     'guaranteeTypes'   : $scope.$parent.guaranteeTypes,
@@ -70,7 +76,7 @@ sntRover.controller('RVReportListCrl', [
                 reportUtils.processSortBy( report[i] );
 
                 // to assign inital date values for this report
-                reportUtils.initDateValues( report[i] );
+                // reportUtils.initDateValues( report[i] );
 
                 // to process the group by for this report
                 reportUtils.processGroupBy( report[i] );

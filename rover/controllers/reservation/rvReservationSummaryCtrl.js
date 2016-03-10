@@ -778,14 +778,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             });
         };
 
-
         $scope.confirmReservation = function(skipAPICall) {
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
                 return;
             }
-            var postData = $scope.computeReservationDataforUpdate(false, true);
+            var postData = $scope.computeReservationDataforUpdate(true, true);
             postData.payment_type = {};
             angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
                 if (value.value === $scope.reservationData.paymentType.type.value) {
@@ -825,8 +824,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
-        $scope.clickedContinueButton = function() {
-
+        var onSavePaymentMethodSuccess = function(){
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
@@ -888,6 +886,64 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 //
 
             }
+        };
+
+        var savePayment = function(callback){
+            var promises = [];
+            $scope.$emit('showLoader');
+
+            var updateSuccess = function(data) {
+                $scope.$emit('hideLoader');
+                callback();
+            };
+
+            var updateFailure = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = data;
+            };
+
+            var postData = {
+                payment_type : {}
+            };
+
+            if ($scope.reservationData.paymentType.type.value !== null) {
+                angular.forEach($scope.reservationData.paymentMethods, function(item) {
+                    if ($scope.reservationData.paymentType.type.value === item.value) {
+                        if ($scope.reservationData.paymentType.type.value === "CC") {
+                            postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+                        } else {
+                            postData.payment_type.type_id = item.id;
+                        }
+                    }
+                });
+                postData.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+                $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
+                postData.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+            }
+
+            $scope.errorMessage = [];
+
+            if (typeof index === 'undefined') {
+                // TO HANDLE OVERRIDE ALL SCENARIO
+                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                    promises.push(RVReservationSummarySrv.updateReservation(postData));
+                });
+            } else {
+                postData.reservationId = reservationId;
+                promises.push(RVReservationSummarySrv.updateReservation(postData));
+            }
+            $q.all(promises).then(updateSuccess, updateFailure);
+        };
+
+        $scope.onPayDepositLater = function(){
+            savePayment($scope.confirmReservation);
+        };
+
+
+        // Save the payment information initially and then proceed with the demographics check!
+        $scope.clickedContinueButton = function() {
+            savePayment(onSavePaymentMethodSuccess);
         };
 
         $scope.proceedCreatingReservation = function() {

@@ -1,0 +1,15 @@
+<tr ng-repeat="each in results track by $index">
+    <td><strong>{{ each.name }}</strong></td>
+
+    <td>{{ each.reservations.active }}</td>
+    <td><em>{{ each.reservations.cancelled }}</em></td>
+    <td><em>{{ each.reservations.noshow }}</em></td>
+
+    <td>{{ each.room_nights.active }}</td>
+    <td><em>{{ each.room_nights.cancelled }}</em></td>
+    <td><em>{{ each.reservations.noshow }}</em></td>
+
+    <td><strong>{{ each.revenue.total | currency:currencySymbol:2 }}</strong></td>
+    <td>{{ each.revenue.room | currency:currencySymbol:2 }}</td>
+    <td>{{ each.revenue.adr | currency:currencySymbol:2 }}</td>
+</tr>

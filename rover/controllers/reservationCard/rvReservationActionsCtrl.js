@@ -606,10 +606,11 @@ sntRover.controller('reservationActionsController', [
 					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type === 'day') {
 							// To get the duration of stay
-							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+							// var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
 							// Make sure that the cancellation value is -lte thatn the total duration
-							cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
-							nights = true;
+							// cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
+							cancellationCharge = data.results.calculated_penalty_amount;
+							//nights = true;
 						} else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
