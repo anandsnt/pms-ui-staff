@@ -106,6 +106,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.userMobile = reservationAndhotelData.primary_guest_mobile;
 		$rootScope.keyDeliveryByEmail = true;
 		$rootScope.restrictByHotelTimeisOn = reservationAndhotelData.eta_enforcement;
+		$rootScope.checkinOptionShown = false;
+		$rootScope.userEmailEntered = false;
 		//$rootscope.keyDeliveryByText  = true;
 
 		$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
