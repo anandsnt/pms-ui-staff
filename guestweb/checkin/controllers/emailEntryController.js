@@ -49,6 +49,7 @@
           $scope.isLoading = false;
           $scope.emailUpdated = true;
           $rootScope.userEmail = $scope.guestDetails.email;
+          $rootScope.userEmailEntered = true;
         },function(){
           $scope.isLoading = false;
           $modal.open(emailErrorOpts);
