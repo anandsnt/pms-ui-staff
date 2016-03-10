@@ -175,7 +175,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'checkinCcVerificationController',
 		title: 'CC verification'
 	}).state('emailAddition', {
-		url: '/emailAddition',
+		url: '/emailAddition/:isFrom',
 		templateUrl: '/assets/checkin/partials/MGM/emailEntryPage.html',
 		controller: 'emailEntryController',
 		title: 'E-mail entry'
