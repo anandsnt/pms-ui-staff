@@ -1,6 +1,6 @@
-sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'RVReservationCardSrv', 'rvUtilSrv',
-    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, RVReservationCardSrv, rvUtilSrv) {
-        $scope.reservationNotes = "";
+sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv',
+    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv) {
+
         /*
          *To save the reservation note and update the ui accordingly
          */
@@ -233,7 +233,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
 
         $scope.getActionsCountStatus = function(data){
-            $scope.actions.pendingCount = data.data.pending_action_count;
+            $scope.actions.pendingCount = data.pending_group_action_tasks_count;
             var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
 
             if (total === 0 && pending === 0){
@@ -260,11 +260,11 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 }
 
                 $scope.$emit('hideLoader');
-                if (!data.data || data.data.action_count === 0){
+                if (!data || data.total_group_action_tasks_count === 0){
                     $scope.setRightPane('none');
                 }
-                $scope.actions.totalCount = data.data.action_count;
-                if (!data.data){
+                $scope.actions.totalCount = data.total_group_action_tasks_count;
+                if (!data){
                     $scope.actions.totalCount = 0;
                 }
 
@@ -931,12 +931,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 }
                 $scope.$apply();
             },100);
-            if ($scope.openingPopup){
-                setTimeout(function(){
-                    $scope.initPopup();
-                },900);
-            }
-            $scope.openingPopup = false;
+
         };
 
         var fetchActionListFailureCallBack = function (data) {
@@ -1049,11 +1044,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
             return dayString;
         };
-        function closeDialog() {
-            $scope.fetchActionsCount();
-            $scope.actionSelected = 'selected';
-            ngDialog.close();
-        }
 
         var formatUserTime = function(timeInMs, via) {
             var dt = new Date(timeInMs);
@@ -1155,22 +1145,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             '2215','2230','2245','2300',
             '2315','2330','2345'
         ];
-        $scope.initPopup = function(){
-            ngDialog.open({
-                template: '/assets/partials/reservationCard/Actions/rvReservationCardActionsPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false,
-                preCloseCallback:function(){
-                    $scope.fetchActionsCount();
-                }
-            });
-        };
-        $scope.openActionsPopup = function() {
-            $scope.openingPopup = true;
-            $scope.fetchActionsList();
-        };
+
         $scope.clearAssignSection = function(){
             $scope.departmentSelect.selected = {};
             $scope.closeSelectedCalendar();
