@@ -247,7 +247,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 reservation_id: $scope.selectedAction.reservation_id,
                 assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
-                ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : ""),
+                ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
             }
 
             if ($scope.selectedAction.action_status === $scope._actionCompleted) {

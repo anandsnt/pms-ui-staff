@@ -2393,6 +2393,7 @@ body { overflow: hidden; }
 		    	.gradient-horizontal(@softRedStart, @softRedEnd);
 		    	
 		    	.sender-details {
+		    		position: relative;
 	                padding: 20px;
 	                height: 90px;
 	                color: @white;
@@ -2401,7 +2402,7 @@ body { overflow: hidden; }
 
 	                .data {
 	                    margin-left: 10px;
-	                    .calc-width(50, 90);
+	                    .calc-width(100, 370);
 	                    .pull-left;
 
 	                    h1,
@@ -2421,15 +2422,16 @@ body { overflow: hidden; }
 	                }
 
 	                .dates {
-						margin-left: 10px;
-	                    .calc-width(50, 90);
-	                    .pull-left;
+						position: absolute;
+	                	top: 20px;
+	                	right: 120px;
+	                    width: 200px;
 
 						.date { 
 							font-size: 14px;
 							line-height: 20px; 
 
-							&:first-child { margin-bottom: 5px; }
+							&:first-child { margin-bottom: 10px; }
 						}
 
 						.guest-status {
@@ -2439,10 +2441,13 @@ body { overflow: hidden; }
 					}
 
 	                .button { 
-	                	margin-top: 5px; 
+	                	position: absolute;
+	                	top: 25px;
+	                	right: 20px;
 	                	padding: 0 10px;
+	                	width: 100px;
 	                	.show;
-	                }                
+	                }                  
 	            }
 
 	            .summary {

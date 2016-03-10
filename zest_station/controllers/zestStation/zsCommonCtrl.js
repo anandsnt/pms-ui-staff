@@ -46,6 +46,17 @@ sntZestStation.controller('zsCommonCtrl', [
 
             $scope.modalBtn1 = 'SPEAK_TO_STAFF_RETURN';
             $scope.modalBtn2 = '';
+            
+            if($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 === "" ){
+                console.info('wait...');
+                $scope.messageOverride = false;
+            } else{
+                console.info('messageOverride: ',$scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2)
+                $scope.messageOverride = true;//need to turn off translate 
+                $scope.messageOverrideSpeak = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
+            }
+            
+            
         };
 
 

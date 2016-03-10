@@ -39,8 +39,9 @@
     "ERR_PAGE_SUB": "Please find a Staff Member to help you.",
     
     
-    
-    "NO_MATCH_HEADER": "Please reach out to a Staff Member.",
+    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+    "TERMS_CONDITIONS_ACCEPT":"I Agree",
+    "TERMS_CONDITIONS_CANCEL":"Cancel",
     
     
     
