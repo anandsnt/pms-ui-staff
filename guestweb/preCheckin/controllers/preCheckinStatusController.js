@@ -21,7 +21,7 @@
 		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
 	else if($rootScope.offerRoomDeliveryOptions &&  $rootScope.userEmail.length ===0){
-		$state.go('emailAddition');// if user has not attached an email
+		$state.go('emailAddition',{'isFrom':'checkinLater'});// if user has not attached an email
 	}
 	else{
 		//this page will be used again after email entry
