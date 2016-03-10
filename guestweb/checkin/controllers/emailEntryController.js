@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var emailEntryController = function($scope,$modal,guestDetailsService,$state,$rootScope) {
+	var emailEntryController = function($scope,$modal,guestDetailsService,$state,$rootScope,$stateParams) {
 		
     var errorOpts = {
       backdrop: true,
@@ -57,7 +57,7 @@
     };
 
     $scope.continueToPrecheckin =  function(){
-      $state.go('preCheckinStatus');
+      ($stateParams.isFrom === "checkinLater") ? $state.go('preCheckinStatus') : $state.go('checkinKeys');;
     };
     $scope.changeEmail =  function(){
        $scope.emailUpdated = false;
@@ -65,7 +65,7 @@
 };
 
 var dependencies = [
-'$scope','$modal','guestDetailsService','$state','$rootScope',
+'$scope','$modal','guestDetailsService','$state','$rootScope','$stateParams',
 emailEntryController
 ];
 
