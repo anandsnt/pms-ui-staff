@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('rvDateRangeModalCtrl',
-    ['$scope', 'ngDialog', '$filter', 'dateFilter', '$rootScope',
-        function($scope, ngDialog, $filter, dateFilter, $rootScope) {
+    ['$scope', 'ngDialog', '$filter', 'dateFilter', '$rootScope','rvUtilSrv',
+        function($scope, ngDialog, $filter, dateFilter, $rootScope, util ) {
             'use strict';
 
             var fromDate, toDate;
@@ -8,33 +8,27 @@ angular.module('sntRover').controller('rvDateRangeModalCtrl',
              * will set the date picker options
              */
             var initializeDatePicker = () => {
-                $scope.fromDateOptions = {
+
+                var commonDateOptions = {
                     firstDay: 1,
                     changeYear: true,
                     changeMonth: true,
                     yearRange: "-5:+5", //Show 5 years in past & 5 years in future
-                    onSelect: function(dateText, datePicker) {
-                        fromDate = $scope.fromDate;
-                        if (tzIndependentDate(fromDate) > tzIndependentDate(toDate)) {
-                            $scope.toDate = $scope.fromDate;
-                            toDate = $scope.toDate;
-                        }
-                    }
                 };
 
-                $scope.toDateOptions = {
-                    firstDay: 1,
-                    changeYear: true,
-                    changeMonth: true,
-                    yearRange: "-5:+5",
+                $scope.fromDateOptions = _.extend({
                     onSelect: function(dateText, datePicker) {
-                        toDate = $scope.toDate;
-                        if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
-                            $scope.fromDate = $scope.toDate;
-                            fromDate = $scope.fromDate;
-                        }
+                        fromDate = new tzIndependentDate(util.get_date_from_date_picker(datePicker));
+                        toDate = (fromDate > toDate) ? fromDate : toDate;
                     }
-                };
+                }, commonDateOptions);
+
+                $scope.toDateOptions = _.extend({
+                    onSelect: function(dateText, datePicker) {
+                        toDate = new tzIndependentDate(util.get_date_from_date_picker(datePicker));
+                        fromDate = (fromDate > toDate) ? toDate : fromDate;
+                    }
+                }, commonDateOptions);
             };
 
             (()=>{
@@ -45,17 +39,14 @@ angular.module('sntRover').controller('rvDateRangeModalCtrl',
                     return;
                 }
 
+                if($scope.ngDialogData)
+
                 initializeDatePicker();
 
-                fromDate = _.isEmpty($scope.ngDialogData) ? '' : filterData.begin_date;
-
+                fromDate = $scope.ngDialogData.fromDate;
+                toDate = $scope.ngDialogData.toDate;
             })();
 
-            var filterData = $scope.currentFilterData,
-                businessDate = tzIndependentDate($rootScope.businessDate),
-                defaultDate = tzIndependentDate(Date.now()),
-                fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
-                toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date;
 
             var getFirstDayOfNextMonth = function(date) {
                 var date = new tzIndependentDate(date),
@@ -65,53 +56,9 @@ angular.module('sntRover').controller('rvDateRangeModalCtrl',
                 return $filter('date')(new Date(y, m + 1, 1), $rootScope.dateFormatForAPI);
             };
 
-            $scope.setUpData = function() {
-                $scope.fromDate = fromDate || $filter('date')(businessDate, $rootScope.dateFormatForAPI);
-                $scope.toDate = toDate || $filter('date')(getFirstDayOfNextMonth(businessDate), 'yyyy-MM-dd');
-
-                if (!fromDate) {
-                    fromDate = $scope.fromDate;
-                }
-
-                $scope.fromDateOptions = {
-                    firstDay: 1,
-                    changeYear: true,
-                    changeMonth: true,
-                    yearRange: "-5:+5", //Show 5 years in past & 5 years in future
-                    onSelect: function(dateText, datePicker) {
-                        fromDate = $scope.fromDate;
-                        if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
-                            $scope.toDate = $scope.fromDate;
-                            toDate = $scope.toDate;
-                        }
-                    }
-                };
-
-                $scope.toDateOptions = {
-                    firstDay: 1,
-                    changeYear: true,
-                    changeMonth: true,
-                    yearRange: "-5:+5",
-                    onSelect: function(dateText, datePicker) {
-                        toDate = $scope.toDate;
-                        if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
-                            $scope.fromDate = $scope.toDate;
-                            fromDate = $scope.fromDate;
-                        }
-                    }
-                };
-
-                $scope.errorMessage = '';
-            };
-
             $scope.setUpData();
 
             $scope.updateClicked = function() {
-                filterData.begin_date = $scope.fromDate;
-                filterData.end_date = $scope.toDate;
-                filterData.selected_date_range = dateFilter($scope.fromDate, $rootScope.dateFormat) +
-                    ' to ' +
-                    dateFilter($scope.toDate, $rootScope.dateFormat);
 
                 ngDialog.close();
             };

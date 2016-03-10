@@ -20,7 +20,7 @@ module.exports = {
 				jsLibRoot + 'angular-translate.min.js',
 				jsLibRoot + 'angular-translate-loader-static-files.min.js',
 				jsLibRoot + 'ui-utils.min.js',
-				jsLibRoot + 'underscore.min.js',
+				jsLibRoot + 'lodash/lodash.min.js',
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js'
 			],
