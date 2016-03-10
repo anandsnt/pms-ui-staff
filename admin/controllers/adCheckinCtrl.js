@@ -97,6 +97,15 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       $scope.$emit('hideLoader');
       $scope.isLoading = false;
       $scope.checkinData = data;
+      if (!$scope.checkinData.next_day_checkin_alert_primetime){
+          $scope.checkinData.next_day_checkin_alert_primetime = 'AM';
+      }
+      if (!$scope.checkinData.checkin_alert_primetime){
+          $scope.checkinData.checkin_alert_primetime = 'AM';
+      }
+      if (!$scope.checkinData.zest_checkin_alert_primetime){
+          $scope.checkinData.zest_checkin_alert_primetime = 'AM';
+      }
       if ($scope.checkinData.start_auto_checkin_from) {
         $scope.checkinData.auto_checkin_from_hour = $scope.checkinData.start_auto_checkin_from.split(":")[0];
         $scope.checkinData.auto_checkin_from_minute = $scope.checkinData.start_auto_checkin_from.split(":")[1];
