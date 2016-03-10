@@ -209,5 +209,10 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/checkin/partials/MGM/roomAssignFailed.html',
 		controller: 'roomAssignFailedController',
 		title: 'Room Assign Failed'
+	}).state('roomNotToSell', {
+		url: '/roomNotToSell',
+		templateUrl: '/assets/checkin/partials/MGM/roomNotToSell.html',
+		controller: 'roomNotToSellController',
+		title: 'Room Assign Failed'
 	});
 }]);
