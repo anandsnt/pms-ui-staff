@@ -65,7 +65,7 @@
 				} else {
 					if (eci_upsell_limit_reached || typeof early_checkin_offer_id === 'undefined' || early_checkin_offer_id === null) {
 						//limted by overall count and room type
-						$state.go('checkinArrival');
+						$state.go('roomNotToSell');
 					} else {
 						//offer early checkin purchase
 						$state.go('earlyCheckinOptions', {
