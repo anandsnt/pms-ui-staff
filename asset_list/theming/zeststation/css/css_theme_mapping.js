@@ -6,7 +6,9 @@ module.exports = {
 			'zoku' 			: [ themeCSSRoot + 'zoku.less'],
 			'fontainebleau' : [ themeCSSRoot + 'fontainebleau.less'],
 			'yotel' : [ themeCSSRoot + 'yotel.less'],
-			'snt' : [ themeCSSRoot + 'snt.less']
+			'snt' : [ themeCSSRoot + 'snt.less'],
+			'keyboard' : [ themeCSSRoot + 'virtualkeyboard.less']
+                        
 		}
 	}
 }
