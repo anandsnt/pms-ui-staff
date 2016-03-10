@@ -642,7 +642,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				controller: 'rvGroupActionsCtrl',
 				scope: $scope,
 				closeByDocument: false,
-				closeByEscape: false
+				closeByEscape: false,
+				preCloseCallback: function () {
+					$scope.$emit("FETCH_SUMMARY");
+				}
 			});
 		};
 
