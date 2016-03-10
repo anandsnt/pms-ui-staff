@@ -467,6 +467,23 @@
 
 			&.icon-reset { background-position: 0 -6220px; }
 
+			&.delete_small {
+				background-color: transparent;
+				background-position: 0px -140px !important;
+				background-size:70px;
+				.square(10px);
+				.hide-text;
+			}
+
+			&.icon-double-arrow {
+				background: @icons 10px -1587px no-repeat;
+				.square(40px);
+				@media @highdpi {
+					background-image: @icons2x;
+					background-size: 120px;
+				}
+			}
+
 		/* Actions ***/
 			&.icon-action {
 				
@@ -480,6 +497,17 @@
 					&.icon-completed { background-position: 0 -7420px; }
 				}
 			}
+
+		/* Rotations */
+		&.rotate-down {
+			transform:rotate(-90deg);
+		}
+		&.rotate-up {
+			transform:rotate(90deg);
+		}
+		&.rotate-right {
+			transform:rotate(180deg);
+		}
 
 		/* @2x Icons ***/
 		@media @highdpi {
@@ -849,6 +877,7 @@
 		color: @white;
 		text-align: center;
 		.square(20px);
+		background-color: rgba(0,0,0, .15);
 
 		/* Color only ***/
 		&.bg-red { background-color: @red; }
@@ -856,6 +885,7 @@
 		&.bg-grey { background-color: @grey3; }
 		&.bg-purple { background-color: @purpleStart; }
 		&.bg-green { background-color: @green; }
+		&.bg-drk { background-color: @black; }
 
 		/* With image ***/
 		&.closed,
