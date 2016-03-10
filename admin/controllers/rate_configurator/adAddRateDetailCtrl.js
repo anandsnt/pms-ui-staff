@@ -141,8 +141,18 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             });
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
+                if(cancelationPenalty.amount_type === "amount") {
+                	symbol = "$";
+                } else if(cancelationPenalty.amount_type === "day") {
+                	symbol = "Night(s)";
+                } else {
+                	symbol = "%";
+                }
+                
                 if (symbol === '%') {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + symbol + ")";
+                } else if (symbol === 'Night(s)') {
+                	cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + ' ' + symbol + ")";
                 } else {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + symbol + cancelationPenalty.amount + ")";
                 }
