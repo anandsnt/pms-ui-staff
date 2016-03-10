@@ -188,9 +188,10 @@ module.exports = function(gulp, $, options) {
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 
 		for (state in stateMappingList){
+			delete require.cache[require.resolve(stateMappingList[state].filename)];
 			combinedList 	= require(stateMappingList[state].filename).getList();
 			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
-			paths 			= paths.concat(glob.sync(fileList));
+			paths 			= paths.concat(fileList);
 		}
 		paths = paths.concat('asset_list/js/rover/**/*.js', 'asset_list/stateJsMapping/rover/**/*.js');
 		gulp.watch(paths, function(callback){

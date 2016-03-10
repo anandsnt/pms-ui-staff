@@ -15,6 +15,7 @@ module.exports = {
                     'rover/directives/clearTextbox/**/*.js',
 
                     'rover/directives/fileRead/**/*.js',
+                    'rover/directives/includeTemplate/*.js',
                     'rover/directives/Outside Click handler/**/*.js',
                     'rover/directives/autocomplete/**/*.js',
                     'rover/directives/rateAutoComplete/*.js',

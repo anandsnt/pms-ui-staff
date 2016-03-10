@@ -136,170 +136,211 @@ angular.module('sntRover').service('rvMenuSrv',
 			isMenuItemVisible		= true,
             menuList = []; //storing the menu list, will process on this and return
 
+		//This list will be processed by the method processMenuList at end. If you want to hide a particular one, please
+		//do it there
+		menuList = [
+			{
+				title: "MENU_DASHBOARD",
+				action: defaultDashboardState,
+				menuIndex: "dashboard",
+				submenu: [],
+				iconClass: "icon-dashboard"
+			},
+			{
+				title: "MENU_FRONT_DESK",
+				//hidden: true,
+				action: "",
+				iconClass: "icon-frontdesk",
+				menuIndex: "front_desk",
+				submenu: [
+					{
+						title: "MENU_SEARCH_RESERVATIONS",
+						action: "rover.search",
+						menuIndex: "search"
+					},
+					{
+						title: "MENU_CREATE_RESERVATION",
+						action: "rover.reservation.search",
+						menuIndex: "createReservation"
+					},
+					{
+						title: "MENU_ROOM_DIARY",
+						action: 'rover.diary',
+						menuIndex: 'diaryReservation'
+					},
+					{
+						title: "MENU_TODO",
+						action: 'rover.todo',
+						//hidden: !isHourlyRateOn,
+						menuIndex: 'todo'
+					},
+					{
+						title: "MENU_POST_CHARGES",
+						action: "",
+						actionPopup: true,
+						menuIndex: "postcharges"
+					},
+					{
+						title: "MENU_CASHIER",
+						action: "rover.financials.journal({ id: 'CASHIER' })",
+						menuIndex: "cashier"
+					},
+					{
+						title: "MENU_ACCOUNTS",
+						action: "rover.accounts.search",
+						menuIndex: "accounts"
+					},
+					{
+						title: "MENU_END_OF_DAY",
+						action: "",
+						actionPopup: true,
+						menuIndex: "endOfDay"
+					}
+				]
+			},
+			{
+				title: "MENU_GROUPS",
+				action: "",
+				iconClass: "icon-groups",
+				menuIndex: "menuGroups",
+				submenu: [
+					{
+						title: "MENU_CREATE_GROUP",
+						action: "rover.groups.config({id:'NEW_GROUP'})",
+						menuIndex: "menuCreateGroup"
+					},
+					{
+						title: "MENU_MANAGE_GROUP",
+						action: "rover.groups.search",
+						menuIndex: "menuManageGroup"
+					},
+					{
+						title: "MENU_CREATE_ALLOTMENT",
+						action: "rover.allotments.config({id:'NEW_ALLOTMENT'})",
+						menuIndex: "menuCreateAllotment"
+					},
+					{
+						title: "MENU_MANAGE_ALLOTMENT",
+						action: "rover.allotments.search",
+						menuIndex: "menuManageAllotment"
+					}
+				]
+			},
+			{
+				title: "MENU_CONVERSATIONS",
+				action: "",
+				iconClass: "icon-conversations",
+				menuIndex: "conversations",
+				submenu: [
+					{
+						title: "MENU_SOCIAL_LOBBY",
+						action: ""
+					},
+					{
+						title: "MENU_MESSAGES",
+						action: ""
+					},
+					{
+						title: "MENU_REVIEWS",
+						action: ""
+					}
+				]
+			},
+			{
+				title: "MENU_REV_MAN",
+				action: "",
+				iconClass: "icon-revenue",
+				menuIndex: "revenue-manager",
+				submenu: [
+					{
+						title: "New Rate Manager",
+						action: "rover.newRateManager",
+						menuIndex: "newRateManager"
+					},
+					{
+						title: "MENU_RATE_MANAGER",
+						action: "rover.ratemanager",
+						menuIndex: "rateManager"
+					},
+					{
+						title: "MENU_TA_CARDS",
+						action: "rover.companycardsearch",
+						menuIndex: "cards"
+					},
+					{
+						title: "MENU_DISTRIBUTION_MANAGER",
+						action: "",
+						menuIndex: "distribution_manager"
+					}
+				]
+			},
+			{
+				title: "MENU_HOUSEKEEPING",
+				action: "",
+				iconClass: "icon-housekeeping",
+				menuIndex: "housekeeping",
+				submenu: [
+					{
+						title: "MENU_ROOM_STATUS",
+						action: "rover.housekeeping.roomStatus",
+						menuIndex: "roomStatus"
+					},
+					{
+						title: "MENU_TASK_MANAGEMENT",
+						action: "rover.workManagement.start",
+						menuIndex: "workManagement",
+						hidden: !shouldShowTaskManagementInHKMenu()
 
-		menuList = [{
-		        title: "MENU_DASHBOARD",
-		        action: defaultDashboardState,
-		        menuIndex: "dashboard",
-		        submenu: [],
-		        iconClass: "icon-dashboard"
-		    }, {
-		        title: "MENU_FRONT_DESK",
-		        //hidden: true,
-		        action: "",
-		        iconClass: "icon-frontdesk",
-		        menuIndex: "front_desk",
-		        submenu: [{
-		            title: "MENU_SEARCH_RESERVATIONS",
-		            action: "rover.search",
-		            menuIndex: "search"
-		        }, {
-		            title: "MENU_CREATE_RESERVATION",
-		            action: "rover.reservation.search",
-		            menuIndex: "createReservation"
-		        }, {
-		            title: "MENU_ROOM_DIARY",
-		            action: 'rover.diary',
-		            //hidden: !isHourlyRateOn,
-		            menuIndex: 'diaryReservation'
-		        }, {
-					title: "MENU_TODO",
-					action: 'rover.todo',
-					//hidden: !isHourlyRateOn,
-					menuIndex: 'todo'
-				},  {
-		            title: "MENU_POST_CHARGES",
-		            action: "",
-		            actionPopup: true,
-		            menuIndex: "postcharges"
-		        }, {
-		            title: "MENU_CASHIER",
-		            action: "rover.financials.journal({ id: 'CASHIER' })",
-		            menuIndex: "cashier"
-		        }, {
-		            title: "MENU_ACCOUNTS",
-		            action: "rover.accounts.search",
-		            menuIndex: "accounts"
-		        }, {
-	                title: "MENU_END_OF_DAY",
-	                action: "",
-	                actionPopup: true,
-	                menuIndex: "endOfDay"
-            	}]
-		    }, {
-		        title: "MENU_GROUPS",
-		        //hidden: true,
-		        action: "",
-		        iconClass: "icon-groups",
-		        menuIndex: "menuGroups",
-		        submenu: [{
-		            title: "MENU_CREATE_GROUP",
-		            action: "rover.groups.config({id:'NEW_GROUP'})",
-		            menuIndex: "menuCreateGroup"
-		        }, {
-		            title: "MENU_MANAGE_GROUP",
-		            action: "rover.groups.search",
-		            menuIndex: "menuManageGroup"
-        		}, {
-		            title: "MENU_CREATE_ALLOTMENT",
-		            action: "rover.allotments.config({id:'NEW_ALLOTMENT'})",
-		            menuIndex: "menuCreateAllotment"
-		        }, {
-		            title: "MENU_MANAGE_ALLOTMENT",
-		            action: "rover.allotments.search",
-		            menuIndex: "menuManageAllotment"
-		        }]
-		    }, {
-		        title: "MENU_CONVERSATIONS",
-		        //hidden: true,
-		        action: "",
-		        iconClass: "icon-conversations",
-		        menuIndex: "conversations",
-		        submenu: [{
-		            title: "MENU_SOCIAL_LOBBY",
-		            action: ""
-		        }, {
-		            title: "MENU_MESSAGES",
-		            action: ""
-		        }, {
-		            title: "MENU_REVIEWS",
-		            action: ""
-		        }]
-		    }, {
-		        title: "MENU_REV_MAN",
-		        action: "",
-		        iconClass: "icon-revenue",
-		        menuIndex: "revenue-manager",
-		        submenu: [{
-		            title: "MENU_RATE_MANAGER",
-		            action: "rover.ratemanager",
-		            menuIndex: "rateManager"
-		        }, {
-		            title: "MENU_TA_CARDS",
-		            action: "rover.companycardsearch",
-		            menuIndex: "cards"
-		        }, {
-		            title: "MENU_DISTRIBUTION_MANAGER",
-		            action: "",
-		            menuIndex: "distribution_manager"
-		        }]
-		    }, {
-		        title: "MENU_HOUSEKEEPING",
-		        //hidden: true,
-		        action: "",
-		        iconClass: "icon-housekeeping",
-		        menuIndex: "housekeeping",
-		        submenu: [{
-		            title: "MENU_ROOM_STATUS",
-		            action: "rover.housekeeping.roomStatus",
-		            menuIndex: "roomStatus"
-		        }, {
-		            title: "MENU_TASK_MANAGEMENT",
-		            action: "rover.workManagement.start",
-		            menuIndex: "workManagement",
-		            hidden: !shouldShowTaskManagementInHKMenu()
-
-		        }, {
-		            title: "MENU_MAINTAENANCE",
-		            action: "",
-		            menuIndex: "maintanance"
-		        }]
-		    }, {
-		        title: "MENU_FINANCIALS",
-		        //hidden: true,
-		        action: "",
-		        iconClass: "icon-financials",
-		        menuIndex: "financials",
-		        submenu: [{
-		            title: "MENU_JOURNAL",
-		            action: "rover.financials.journal({ id : 'REVENUE'})",
-		            menuIndex: "journals"
-		        }, {
-		            title: "MENU_CC_TRANSACTIONS",
-		            action: "rover.financials.ccTransactions({ id : 'REVENUE'})",
-		            menuIndex: "ccTransactions"
-		        }, {
-		            title: "MENU_ACCOUNTING",
-		            action: "",
-		            menuIndex: "accounting"
-		        }, {
-		            title: "MENU_COMMISIONS",
-		            action: "",
-		            menuIndex: "commisions"
-		        }]
-            }, {
-                title: "MENU_ACTIONS_MANAGER",
-                action: "rover.actionsManager",
-                menuIndex: "actionManager",
-                iconClass: "icon-actions",
-                submenu: []
-            },{
-		        title: "MENU_REPORTS",
-		        action: "rover.reports",
-		        menuIndex: "reports",
-		        iconClass: "icon-reports",
-		        submenu: []
-		    }
+					},
+					{
+						title: "MENU_MAINTAENANCE",
+						action: "",
+						menuIndex: "maintanance"
+					}
+				]
+			},
+			{
+				title: "MENU_FINANCIALS",
+				action: "",
+				iconClass: "icon-financials",
+				menuIndex: "financials",
+				submenu: [
+					{
+						title: "MENU_JOURNAL",
+						action: "rover.financials.journal({ id : 'REVENUE'})",
+						menuIndex: "journals"
+					},
+					{
+						title: "MENU_CC_TRANSACTIONS",
+						action: "rover.financials.ccTransactions({ id : 'REVENUE'})",
+						menuIndex: "ccTransactions"
+					},
+					{
+						title: "MENU_ACCOUNTING",
+						action: "",
+						menuIndex: "accounting"
+					},
+					{
+						title: "MENU_COMMISIONS",
+						action: "",
+						menuIndex: "commisions"
+					}
+				]
+			},
+			{
+				title: "MENU_ACTIONS_MANAGER",
+				action: "rover.actionsManager",
+				menuIndex: "actionManager",
+				iconClass: "icon-actions",
+				submenu: []
+			},
+			{
+				title: "MENU_REPORTS",
+				action: "rover.reports",
+				menuIndex: "reports",
+				iconClass: "icon-reports",
+				submenu: []
+			}
 		];
 
 		return processMenuList (menuList);
@@ -312,29 +353,34 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.getMainMenuForConnectedRover = function() {
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
-		var menu = [{
+		var menu = [
+			{
 				title: "MENU_DASHBOARD",
 				action: defaultDashboardState,
 				menuIndex: "dashboard",
 				submenu: [],
 				iconClass: "icon-dashboard"
-			}, {
+			},
+			{
 				title: "MENU_HOUSEKEEPING",
-				//hidden: true,
 				action: "",
 				iconClass: "icon-housekeeping",
-				submenu: [{
-					title: "MENU_ROOM_STATUS",
-					action: "rover.housekeeping.roomStatus",
-					menuIndex: "roomStatus"
-				}]
-			}, {
+				submenu: [
+					{
+						title: "MENU_ROOM_STATUS",
+						action: "rover.housekeeping.roomStatus",
+						menuIndex: "roomStatus"
+					}
+				]
+			},
+			{
 				title: "MENU_REPORTS",
 				action: "rover.reports",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: []
-		}];
+			}
+		];
 
 		return processMenuList (menu);
 	};
@@ -347,17 +393,19 @@ angular.module('sntRover').service('rvMenuSrv',
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
 	    // menu for mobile views
-	    var menu = [{
-			        title: "MENU_DASHBOARD",
-			        action: defaultDashboardState,
-			        menuIndex: "dashboard",
-			        iconClass: "icon-dashboard"
-			    },{
-			        title: "MENU_ROOM_STATUS",
-			        action: "rover.housekeeping.roomStatus",
-			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping"
-			    }
+	    var menu = [
+			{
+				title: "MENU_DASHBOARD",
+				action: defaultDashboardState,
+				menuIndex: "dashboard",
+				iconClass: "icon-dashboard"
+			},
+			{
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping"
+			}
 		];
 
 		return processMenuList (menu);
@@ -371,17 +419,19 @@ angular.module('sntRover').service('rvMenuSrv',
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
 	    // menu for mobile views
-	    var menu = [{
-			        title: "MENU_DASHBOARD",
-			        action: defaultDashboardState,
-			        menuIndex: "dashboard",
-			        iconClass: "icon-dashboard"
-			    },{
-			        title: "MENU_ROOM_STATUS",
-			        action: "rover.housekeeping.roomStatus",
-			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping"
-			    }
+	    var menu = [
+			{
+				title: "MENU_DASHBOARD",
+				action: defaultDashboardState,
+				menuIndex: "dashboard",
+				iconClass: "icon-dashboard"
+			},
+			{
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping"
+			}
 		];
 
 		return processMenuList (menu);
@@ -395,21 +445,25 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.getSettingsSubmenu = function() {
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
-		var menu = [{
+		var menu = [
+			{
 				title: "SETTINGS",
 		        menuIndex: "settings",
 		        action: "",
-		        submenu: [{
-		            title: "CAHNGE_PASSWORD",
-		            action: "",
-		            menuIndex: "changePassword",
-		            actionPopup: true
-		        }, {
-		            title: "SETTINGS",
-		            action: "",
-		            menuIndex: "adminSettings",
-		            actionPopup: true
-		        }]
+		        submenu: [
+					{
+						title: "CAHNGE_PASSWORD",
+						action: "",
+						menuIndex: "changePassword",
+						actionPopup: true
+		        	},
+					{
+						title: "SETTINGS",
+						action: "",
+						menuIndex: "adminSettings",
+						actionPopup: true
+		        	}
+				]
 		    }];
 		return processMenuList (menu);
 	};

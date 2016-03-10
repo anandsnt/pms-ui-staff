@@ -18,6 +18,7 @@ var sntRover = angular.module('sntRover',[
 		'allotmentModule',
 		'accountsModule',
 		'todoModule',
+		'rateManagerModule',
 		'FinancialsModule',
 		'cacheVaultModule',
 		'documentTouchMovePrevent',

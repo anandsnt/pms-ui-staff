@@ -1,0 +1,27 @@
+<div class="topbar float ">
+    <ul class="info" ng-class="{'has-back' : backbuttonEnabled, 'has-rates' : ratesDisplayed.length > 0, 'has-card' : currentFilterData.name_cards.length > 0}">
+        <li class="back">
+            <a ng-click="backButtonClicked()" class="back-button">Back</a>
+        </li>
+        <li class="dates">
+            <strong>Date Range</strong>
+            <span class="ng-binding">02/06/2015 to 02/06/2015</span>
+        </li>
+        <li class="rates">
+            <strong>Rate</strong>
+            <!-- ngRepeat: rate in ratesDisplayed -->
+        </li>
+        <li class="card">
+            <strong>Name Card</strong>
+            <!-- ngRepeat: card in currentFilterData.name_cards -->
+        </li>
+    </ul>
+    <ul class="display-mode">
+        <li click-touch="showCalendarView()" class="active" ng-class="{'active' : displayMode == 'CALENDAR'}">
+            <span class="icons icon-navbar only-icon icon-grid active" ng-class="{'active' : displayMode == 'CALENDAR'}" title="Show grid"> </span>
+        </li>
+        <li click-touch="showGraphView()" ng-class="{'active' : displayMode == 'GRAPH'}">
+            <span class="icons icon-navbar only-icon icon-graph" ng-class="{'active' : displayMode == 'GRAPH'}" title="Show graph"></span>
+        </li>
+    </ul>
+</div>
