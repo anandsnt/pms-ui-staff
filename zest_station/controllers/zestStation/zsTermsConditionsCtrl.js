@@ -92,10 +92,10 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
                 $scope.termsHeading = "";
                 $scope.subHeading = "";
                 $scope.subHeadingText = "";
-                $scope.headingText = "Terms & Conditions";
+                $scope.headingText = "TERMS_CONDITIONS_HEADER";
 
-                $scope.agreeButtonText = "I Agree";
-                $scope.cancelButtonText = "Cancel";
+                $scope.agreeButtonText = "TERMS_CONDITIONS_ACCEPT";
+                $scope.cancelButtonText = "TERMS_CONDITIONS_CANCEL";
 
                 $scope.at = 'terms-conditions';
                 

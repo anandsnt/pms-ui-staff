@@ -119,11 +119,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		            	action: "staff#/staff/accounts/search",
 		            	menuIndex: "accounts"
 		            	//hidden: $rootScope.isHourlyRatesEnabled
-		       	 	}, {
-                            title: "MENU_ACTIONS_MANAGER",
-                            action: "staff#/staff/actions/",
-                            menuIndex: "actionManager"
-                        }]
+		       	 	}]
 				}, {
 			        title: "MENU_GROUPS",
 
@@ -215,6 +211,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: ""
 					}]
 				}, {
+                        title: "MENU_ACTIONS_MANAGER",
+                        action: "staff#/staff/actions/",
+                        iconClass: "icon-actions",
+                        menuIndex: "actionManager",
+                        submenu: []
+
+                    },{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
 					menuIndex: "reports",

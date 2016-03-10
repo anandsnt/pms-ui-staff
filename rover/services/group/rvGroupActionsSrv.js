@@ -9,7 +9,7 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
 
     this.getTasksCount = function (data) {
         var deferred = $q.defer();
-        var url = "/api/reservations/" + data.id + '.json';
+        var url = "/api/groups/" + data.id;
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
