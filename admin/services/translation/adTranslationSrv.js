@@ -36,7 +36,7 @@ admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
 
     this.getLabelTranslationForLocale = function(request){
         var deferred = $q.defer();
-        var url = ' /admin/translations/labels';
+        var url = ' /admin/translations';
         ADBaseWebSrvV2.getJSON(url, request).then(function(data) {
             deferred.resolve(data);
         },function(data){
