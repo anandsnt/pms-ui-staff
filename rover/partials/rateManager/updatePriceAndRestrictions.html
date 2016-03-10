@@ -18,8 +18,12 @@
 
                     </div>
                     <div class="modal-header-right">
+
                         <!-- Remove class .hidden if there is any notice-->
+                        <!-- Notice are when there is a mixed restriction or when the rates are edited -->
+                        <!-- 'Mixed Restrictions Applied' or 'Rate amounts marked with * are edited' , look on CICO-25391-->
                         <div class="notice hidden">{Notice Text}</div>
+
                     </div>
                 </div>                
                 <div class="modal-body">
@@ -29,7 +33,7 @@
                     </div>
                     <div class="content-middle">
                         <!-- show no price info if we are on rate view, all data is selected or a room type is selected -->
-                        <div ng-if="!popupData.fromRoomTypeView && (popupData.all_data_selected || ratesRoomsToggle !== 'RATES')">
+                        <div ng-if="!popupData.fromRoomTypeView && (popupData.all_data_selected || ratesRoomsToggle !== 'RATES')" ng-hide="data.showEditView" >
                               <div ng-include="'/assets/partials/rateManager/noPriceInfo.html'"></div>
                         </div>
                         
