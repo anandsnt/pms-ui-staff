@@ -10,11 +10,6 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('copy-all-dev', ['copy-rover-files', 'copy-login-files', 'copy-zest-files', 'copy-zeststation-files']);
 
-	//development
-	gulp.task('build', ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev','build-guestweb-v2-dev'], function(callback){
-		return runSequence(copyBaseHtmlToPublicAssets, callback)
-	});
-	
 	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
 		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile','guestweb-v2-asset-prod-precompile'],
 
@@ -22,16 +17,52 @@ module.exports = function(gulp, $, options) {
 		 'guestweb-inject-assets-to-templates','guestweb-v2-inject-assets-to-templates', 'login-inject-assets-to-templates', 'zest-inject-assets-to-templates'],
 
 		copyBaseHtmlToPublicAssets = ['copy-login-base-html', 'copy-admin-base-html', 'copy-zest-base-html',
-			'copy-rover-base-html', 'copy-guestweb-base-html', 'compress-images-loselessly','copy-guestweb-v2-base-html'];
+			'copy-rover-base-html', 'copy-guestweb-base-html', 'compress-images-loselessly','copy-guestweb-v2-base-html'],
+
+		developmentTasks = ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev','build-guestweb-v2-dev'],
+
+		watchTasks = ['watch-rover-files', 'watch-login-files', 'watch-admin-files', 'watch-zest-files', 'watch-guestweb-files','watch-guestweb-v2-files'];
+
+	//development
+	gulp.task('build', developmentTasks, function(callback){
+		return runSequence(copyBaseHtmlToPublicAssets, callback)
+	});
 
 	gulp.task('asset-precompile', function(callback){
 		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
 	});
 
-	gulp.task('watch', ['watch-rover-files', 'watch-login-files', 'watch-admin-files', 'watch-zest-files', 'watch-guestweb-files','watch-guestweb-v2-files']);
+	gulp.task('watch', watchTasks);
 
 	gulp.task('default', ['build', 'watch']);
 
 	//starting sever & perform the default tasks
-	gulp.task('s', ['default', 'start-server']);
+	gulp.task('s', function(callback){
+		var argv = require('yargs').argv, index = -1;
+
+		//if you dont want to work with guest web (zest web),  you can pass --no-gw arg with gulp s. eg:- gulp s --no-gw
+		if( 'gw' in argv &&  !argv.gw ) {
+
+			developmentTasks.splice(developmentTasks.indexOf('build-guestweb-dev'), 1);
+			developmentTasks.splice(developmentTasks.indexOf('build-guestweb-v2-dev'), 1);
+
+			copyBaseHtmlToPublicAssets.splice(copyBaseHtmlToPublicAssets.indexOf('copy-guestweb-base-html'), 1);
+			copyBaseHtmlToPublicAssets.splice(copyBaseHtmlToPublicAssets.indexOf('copy-guestweb-v2-base-html'), 1);
+
+			watchTasks.splice(watchTasks.indexOf('watch-guestweb-files'), 1);
+			watchTasks.splice(watchTasks.indexOf('watch-guestweb-v2-files'), 1);
+		}
+
+		//if you dont want to work with zest station,  you can pass --no-zs arg with gulp s. eg:- gulp s --no-zs
+		if( 'zs' in argv &&  !argv.zs ) {
+
+			developmentTasks.splice(developmentTasks.indexOf('build-zest-dev'), 1);
+
+			copyBaseHtmlToPublicAssets.splice(copyBaseHtmlToPublicAssets.indexOf('copy-zest-base-html'), 1);
+
+			watchTasks.splice(watchTasks.indexOf('watch-zest-files'), 1);
+		}
+
+		return runSequence(['start-server', 'default'], callback);
+	});
 }
