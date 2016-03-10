@@ -1,6 +1,14 @@
-angular.module('sntRover').controller('rvRateManagerCtrl_', ['$scope', '$filter', function($scope, $filter) {
+angular.module('sntRover').controller('rvRateManagerCtrl_', [
+    '$scope',
+    '$filter',
+    'rvRateManagerDataModelSrv',
+    function($scope,
+             $filter,
+             rvRateManagerDataModelSrv) {
 
     BaseCtrl.call(this, $scope);
+
+    $scope.toggleFilterOption = () => { $scope.rateManagerDataModel.filterOptions.isVisible = ! $scope.rateManagerDataModel.filterOptions.isVisible };
 
     /**
      * to set the heading and title
@@ -16,7 +24,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', ['$scope', '$filter'
      * to set initial data model
      */
     var initializeDataModel = () => {
-        $scope.filterOpened = true;
+        $scope.rateManagerDataModel = rvRateManagerDataModelSrv.getDataModel();
     };
 
     /**
@@ -24,6 +32,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', ['$scope', '$filter'
      */
     (() => {
         setHeadingAndTitle( 'RATE_MANAGER_TITLE' );
-        initializeDataModel( );
+
+        initializeDataModel();
     })();
+
 }]);

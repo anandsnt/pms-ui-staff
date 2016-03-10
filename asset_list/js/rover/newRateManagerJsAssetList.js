@@ -6,6 +6,8 @@ module.exports = {
                 nonMinifiedFiles: [
                     roverRoot + "react/todo/**/*.js",
                     roverRoot + "redux/todo/**/*.js",
+                    roverRoot + "constants/rateManager/**/*.js",
+                    roverRoot + "services/rateManager/**/*.js",
                     roverRoot + "controllers/rateManager_/**/*.js"
                 ]
             };

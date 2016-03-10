@@ -155,6 +155,7 @@ module.exports = function(gulp, $, options) {
 
 		return gulp.src(fileList, {base: '.'})
 			.pipe($.babel())
+			.on('error', options.silentErrorShowing)
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 
 	});

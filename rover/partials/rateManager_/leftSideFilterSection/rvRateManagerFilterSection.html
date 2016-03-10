@@ -1,17 +1,17 @@
-<div id="rateManagerLeftPanel" class="filter-options slide_right" ng-click="hideCompanyCardSearchResults()">
-    <a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>
+<div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options slide_right" ng-click="hideCompanyCardSearchResults()">
+    <a class="leftMenuHandle" ng-click="toggleFilterOption()"></a>
     <div class="filter-padding">
         <div class="fixed-container">
             <h3>FILTER OPTIONS</h3>
 
 
-            <div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:336px;">
+            <div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="50">
 
-                <div class="holder left" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+                <div class="holder left">
 
                     <div class="entry has-datepicker">
                         <label for="rmDateRange">DATE RANGE</label>
-                        <input id="rmDateRange" placeholder="Select Date Range" readonly="" maxlength="8" value="02/06/2015 to 02/06/2015" class="hasDatepicker" name="">
+                        <input id="rmDateRange" placeholder="{{defaults.DATE_RANGE_PLACEHOLDER}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
                         <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
                     </div>
 
@@ -193,26 +193,6 @@
 
 
                 </div>
-                <div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;"><div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 127px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div></div></div>
-
-
-
-
-            <!-- Company Card Results / content
-            <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100" >
-                <div class="search-results">
-                    <ul id="search-list">
-                        <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row, $event)">
-                            <div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
-                            <div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
-                            <img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
-                            <h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
-                        </li>
-                    </ul>
-                </div>
-                <span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>
-            </div>-->
-
 
 
         </div>
