@@ -35,7 +35,7 @@
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
                 <a ng-click="openBillingInformation();" class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
             </div>
-            <div class="entry break full-width" ng-hide="isInStaycardScreen() || isInAddMode()">
+            <div class="entry break full-width" ng-show="shouldShowGroupActionsButton()">
                 <!-- Show only for existing groups:
                     'icon-no-actions' is grey, when there are no actions
                     'icon-actions' is green, when all actions are resloved

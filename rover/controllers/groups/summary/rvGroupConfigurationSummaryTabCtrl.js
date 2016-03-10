@@ -309,6 +309,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		$scope.shouldDisableHoldStatusChange = function() {
 			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
 		};
+
+		/**
+		 * Logic to show/hide group actions button
+		 * @return {Boolean} hide or not
+		 */
+		$scope.shouldShowGroupActionsButton = function () {
+			return ($scope.isStandAlone && !$scope.isInStaycardScreen() && !$scope.isInAddMode())
+		};
+
 		/**
 		 * we have to save when the user clicked outside of summary tab
 		 * @param  {Object} event - Angular Event
