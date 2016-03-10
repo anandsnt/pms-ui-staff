@@ -8,7 +8,33 @@ angular.module('sntRover').controller('rvDateRangeModalCtrl',
              * will set the date picker options
              */
             var initializeDatePicker = () => {
+                $scope.fromDateOptions = {
+                    firstDay: 1,
+                    changeYear: true,
+                    changeMonth: true,
+                    yearRange: "-5:+5", //Show 5 years in past & 5 years in future
+                    onSelect: function(dateText, datePicker) {
+                        fromDate = $scope.fromDate;
+                        if (tzIndependentDate(fromDate) > tzIndependentDate(toDate)) {
+                            $scope.toDate = $scope.fromDate;
+                            toDate = $scope.toDate;
+                        }
+                    }
+                };
 
+                $scope.toDateOptions = {
+                    firstDay: 1,
+                    changeYear: true,
+                    changeMonth: true,
+                    yearRange: "-5:+5",
+                    onSelect: function(dateText, datePicker) {
+                        toDate = $scope.toDate;
+                        if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
+                            $scope.fromDate = $scope.toDate;
+                            fromDate = $scope.fromDate;
+                        }
+                    }
+                };
             };
 
             (()=>{
