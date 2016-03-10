@@ -38,6 +38,9 @@
     "ERR_PAGE_SUB": "Please find a Staff Member to help you.",
     
     
+    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+    "TERMS_CONDITIONS_ACCEPT":"I Agree",
+    "TERMS_CONDITIONS_CANCEL":"Cancel",
     
     "NO_MATCH_HEADER": "Please reach out to a Staff Member.",
     
@@ -172,7 +175,6 @@
    "NO_MATCH_TALK":"Talk",
    "NO_MATCH_TALK_SUB":"to a Staff Member",
    "NO_MATCH_RE_LAST":"Re-Enter",
-   "NO_MATCH_HEADER":"Sorry",
    "NO_MATCH_HEADER_SUB":"We can't seem to find your reservation",
     
     

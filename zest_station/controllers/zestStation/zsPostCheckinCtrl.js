@@ -189,11 +189,11 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
-                if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === ""){
-                    $scope.subHeadingText = 'ROOM_NOT_AVAIL_MSG';
-                }else{
-                    $scope.subHeadingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
+                
+                if($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== ""){//speak to staff override message
+                    $scope.subHeadingText = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
                 }
+                
                 $scope.headingText = 'BROKE_HEADER';
                 $scope.modalBtn1 = 'DONE_BTN';
         };
@@ -202,6 +202,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = 'TALK_TO_STAFF';
                 $scope.subHeadingText = 'ROOM_NOT_AVAIL_MSG';
                 $scope.modalBtn1 = 'DONE_BTN';
+                
+            if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === "" ){
+                console.info('TALK_TO_STAFF...');
+                $scope.messageOverride = false;
+                $scope.headingText = 'TALK_TO_STAFF';
+            } else {
+                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1)
+                $scope.messageOverride = true;//need to turn off translate 
+                $scope.headingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
+            }
+            
         };
         $scope.initKeyErrorScreen = function(){
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
@@ -378,7 +389,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();
-                $scope.initRoomErrorScreen();
+               // $scope.initRoomErrorScreen();
+                
             } else if (current === 'zest_station.last_confirm'){
                 //As part of CICO-24944 ,Customized subheading text for yotel
                 $scope.updateSubHeadingTextForLastConfirmPage();
