@@ -56,6 +56,11 @@
 	"RES_NEXT": "Suivant",
 	"RES_Q": "Questions ?",
 	"RES_Q_SUB": "Appuyez sur « Annuler » et contactez un membre du personnel.",
+        
+        
+        "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+        "TERMS_CONDITIONS_ACCEPT":"I Agree",
+        "TERMS_CONDITIONS_CANCEL":"Cancel",
 
 	"ADDTL_RESIDENTS":  "Clients supplémentaires",
 	"REMOVE_BTN":  "Supprimer",

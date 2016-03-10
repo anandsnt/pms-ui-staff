@@ -204,6 +204,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.successMakeKey = function(response){
+            console.info('success key made?',response);
+            console.info('$scope.remoteEncoding: ',$scope.remoteEncoding)
                 var makeKeySuccess = $scope.successfulKeyEncode(response);
                 if (makeKeySuccess){
                     if ($scope.makingKey === 1 && $scope.input.makeKeys === 1){
