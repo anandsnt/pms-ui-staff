@@ -1,4 +1,5 @@
-<div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options slide_right" ng-click="hideCompanyCardSearchResults()">
+<div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options slide_right"
+     ng-click="hideCompanyCardSearchResults()">
     <a class="leftMenuHandle" ng-click="toggleFilterOption()"></a>
     <div class="filter-padding">
         <div class="fixed-container">
@@ -11,7 +12,9 @@
 
                     <div class="entry has-datepicker">
                         <label for="rmDateRange">DATE RANGE</label>
-                        <input id="rmDateRange" placeholder="{{defaults.DATE_RANGE_PLACEHOLDER}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+                        <input id="rmDateRange" placeholder="{{defaults.DATE_RANGE_PLACEHOLDER}}" readonly=""
+                               maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"
+                               name="">
                         <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
                     </div>
 
@@ -19,8 +22,29 @@
                     <div class="entry">
                         <label for="rmZoom">ZOOM LEVEL</label>
                         <div class="select">
-                            <select iscroll-stop-propagation="" id="rmZoom" name="zoom-level" ng-model="currentFilterData.zoom_level_selected" class="ng-pristine ng-valid">
-                                <!-- ngRepeat: level in currentFilterData.zoom_level --><option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder ng-scope ng-binding" value="3" selected="selected">3 days</option><!-- end ngRepeat: level in currentFilterData.zoom_level --><option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder ng-scope ng-binding" value="4">4 days</option><!-- end ngRepeat: level in currentFilterData.zoom_level --><option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder ng-scope ng-binding" value="5">5 days</option><!-- end ngRepeat: level in currentFilterData.zoom_level --><option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder ng-scope ng-binding" value="6">6 days</option><!-- end ngRepeat: level in currentFilterData.zoom_level --><option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder ng-scope ng-binding" value="7">7 days</option><!-- end ngRepeat: level in currentFilterData.zoom_level -->
+                            <select iscroll-stop-propagation="" id="rmZoom" name="zoom-level"
+                                    ng-model="currentFilterData.zoom_level_selected" class="ng-pristine ng-valid">
+                                <!-- ngRepeat: level in currentFilterData.zoom_level -->
+                                <option ng-selected="level.value == currentFilterData.zoom_level_selected"
+                                        ng-repeat="level in currentFilterData.zoom_level"
+                                        class="placeholder ng-scope ng-binding" value="3" selected="selected">3 days
+                                </option><!-- end ngRepeat: level in currentFilterData.zoom_level -->
+                                <option ng-selected="level.value == currentFilterData.zoom_level_selected"
+                                        ng-repeat="level in currentFilterData.zoom_level"
+                                        class="placeholder ng-scope ng-binding" value="4">4 days
+                                </option><!-- end ngRepeat: level in currentFilterData.zoom_level -->
+                                <option ng-selected="level.value == currentFilterData.zoom_level_selected"
+                                        ng-repeat="level in currentFilterData.zoom_level"
+                                        class="placeholder ng-scope ng-binding" value="5">5 days
+                                </option><!-- end ngRepeat: level in currentFilterData.zoom_level -->
+                                <option ng-selected="level.value == currentFilterData.zoom_level_selected"
+                                        ng-repeat="level in currentFilterData.zoom_level"
+                                        class="placeholder ng-scope ng-binding" value="6">6 days
+                                </option><!-- end ngRepeat: level in currentFilterData.zoom_level -->
+                                <option ng-selected="level.value == currentFilterData.zoom_level_selected"
+                                        ng-repeat="level in currentFilterData.zoom_level"
+                                        class="placeholder ng-scope ng-binding" value="7">7 days
+                                </option><!-- end ngRepeat: level in currentFilterData.zoom_level -->
                             </select>
                         </div>
                     </div>
@@ -28,8 +52,22 @@
                     <div class="entry">
                         <label for="rmSort">ORDER BY</label>
                         <div class="select">
-                            <select iscroll-stop-propagation="" id="rmSort" name="sort-order" ng-model="currentFilterData.sort_order" class="ng-pristine ng-valid">
-                                <!-- ngRepeat: sortOption in currentFilterData.sortOptions --><option ng-selected="sortOption.id == currentFilterData.sort_order" ng-repeat="sortOption in currentFilterData.sortOptions" class="placeholder ng-scope ng-binding" value="1" selected="selected">Lowest Rate</option><!-- end ngRepeat: sortOption in currentFilterData.sortOptions --><option ng-selected="sortOption.id == currentFilterData.sort_order" ng-repeat="sortOption in currentFilterData.sortOptions" class="placeholder ng-scope ng-binding" value="2">Highest Rate</option><!-- end ngRepeat: sortOption in currentFilterData.sortOptions --><option ng-selected="sortOption.id == currentFilterData.sort_order" ng-repeat="sortOption in currentFilterData.sortOptions" class="placeholder ng-scope ng-binding" value="3">Alphabetical</option><!-- end ngRepeat: sortOption in currentFilterData.sortOptions -->
+                            <select iscroll-stop-propagation="" id="rmSort" name="sort-order"
+                                    ng-model="currentFilterData.sort_order" class="ng-pristine ng-valid">
+                                <!-- ngRepeat: sortOption in currentFilterData.sortOptions -->
+                                <option ng-selected="sortOption.id == currentFilterData.sort_order"
+                                        ng-repeat="sortOption in currentFilterData.sortOptions"
+                                        class="placeholder ng-scope ng-binding" value="1" selected="selected">Lowest
+                                    Rate
+                                </option><!-- end ngRepeat: sortOption in currentFilterData.sortOptions -->
+                                <option ng-selected="sortOption.id == currentFilterData.sort_order"
+                                        ng-repeat="sortOption in currentFilterData.sortOptions"
+                                        class="placeholder ng-scope ng-binding" value="2">Highest Rate
+                                </option><!-- end ngRepeat: sortOption in currentFilterData.sortOptions -->
+                                <option ng-selected="sortOption.id == currentFilterData.sort_order"
+                                        ng-repeat="sortOption in currentFilterData.sortOptions"
+                                        class="placeholder ng-scope ng-binding" value="3">Alphabetical
+                                </option><!-- end ngRepeat: sortOption in currentFilterData.sortOptions -->
                             </select>
                         </div>
                     </div>
@@ -54,13 +92,16 @@
                     </ul>
 
                     <!-- Active tab has class .active -->
-                    <div id="radioShowContainer" class="tab show-rate-or-room active" ng-class="{'active':currentFilterData.is_checked_all_rates}">
+                    <div id="radioShowContainer" class="tab show-rate-or-room active"
+                         ng-class="{'active':currentFilterData.is_checked_all_rates}">
                         <!-- add Class .checked to label and icon, add attribute checked='checked' on input
                             when checked, otherwise remove all that
                          -->
                         <label class="checkbox radio inline checked">
-                            <span class="icon-form icon-radio checked" ng-class="{'checked':currentFilterData.is_checked_all_rates}"></span>
-                            <input name="show" value="rates" type="radio" ng-change="clickedAllRates()" ng-model="currentFilterData.is_checked_all_rates" class="ng-pristine ng-valid">
+                            <span class="icon-form icon-radio checked"
+                                  ng-class="{'checked':currentFilterData.is_checked_all_rates}"></span>
+                            <input name="show" value="rates" type="radio" ng-change="clickedAllRates()"
+                                   ng-model="currentFilterData.is_checked_all_rates" class="ng-pristine ng-valid">
                             ALL RATES
                         </label>
 
@@ -75,32 +116,148 @@
                     <div id="select-rate" class="tab" ng-class="{'active':!currentFilterData.is_checked_all_rates}">
                         <div class="entry">
                             <div class="select">
-                                <select iscroll-stop-propagation="" id="rmRateType" name="rate-type" ng-model="currentFilterData.rate_type_selected" ng-change="refreshFilterScroll(); selFirst()" class="ng-pristine ng-valid">
+                                <select iscroll-stop-propagation="" id="rmRateType" name="rate-type"
+                                        ng-model="currentFilterData.rate_type_selected"
+                                        ng-change="refreshFilterScroll(); selFirst()" class="ng-pristine ng-valid">
                                     <option class="placeholder" value="">Select Rate Type</option>
-                                    <!-- ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="309">Rack Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="310">Best Available Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="311">Corporate Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="312">Consortia Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="313">Group Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="314">Government Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="315">Package Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="316">Specials &amp; Promotions</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types --><option ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder ng-scope ng-binding" value="317">Membership Rates</option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <!-- ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="309">Rack Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="310">Best Available Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="311">Corporate Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="312">Consortia Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="313">Group Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="314">Government Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="315">Package Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="316">Specials &amp;
+                                        Promotions
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
+                                    <option ng-repeat="rate_type in currentFilterData.rate_types"
+                                            class="placeholder ng-scope ng-binding" value="317">Membership Rates
+                                    </option><!-- end ngRepeat: rate_type in currentFilterData.rate_types -->
                                 </select>
                             </div>
                         </div>
 
                         <!-- ngRepeat: rate_type in currentFilterData.rate_type_selected_list -->
 						<span class="deleteall">
-							<a ng-click="deleteSelectedRateType('ALL')" ng-show="currentFilterData.rate_type_selected_list.length > 1" class="ng-hide">
+							<a ng-click="deleteSelectedRateType('ALL')"
+                               ng-show="currentFilterData.rate_type_selected_list.length > 1" class="ng-hide">
                                 CLEAR ALL RATE TYPES
                             </a>
 						</span>
 
                         <div class="entry">
                             <div id="rmCurrentFilterData" class="select">
-                                <select iscroll-stop-propagation="" id="rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll(); selFirst()" class="ng-pristine ng-valid">
+                                <select iscroll-stop-propagation="" id="rmRate"
+                                        ng-model="currentFilterData.rate_selected"
+                                        ng-change="refreshFilterScroll(); selFirst()" class="ng-pristine ng-valid">
                                     <option class="placeholder" value="">Select Rate</option>
-                                    <!-- ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="772">Rack</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="787">Gatwick Standard Hourly Rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="788">Corporate Hourly Rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="814">daily rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="866">Gatwick  Rate-</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="867">Corporate Rack</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="879">Corporate Hourly Rate 2</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="883">Shiju 9481 Hourly-Corporate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="885">Shiju Stand Rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="907">Nicki</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="936">Corporate rate for QB</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="941">Gatwick Corporate Rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="945">Feb Fab</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1570">Skybreak</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1573">Ganesh</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1576">Nic</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1579">Nicole</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1608">mike-test-rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1614">test_rate</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates --><option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder ng-scope ng-binding" value="1735">sss</option><!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <!-- ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="772">Rack
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="787">Gatwick Standard Hourly
+                                        Rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="788">Corporate Hourly Rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="814">daily rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="866">Gatwick Rate-
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="867">Corporate Rack
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="879">Corporate Hourly Rate 2
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="883">Shiju 9481
+                                        Hourly-Corporate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="885">Shiju Stand Rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="907">Nicki
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="936">Corporate rate for QB
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="941">Gatwick Corporate Rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="945">Feb Fab
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1570">Skybreak
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1573">Ganesh
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1576">Nic
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1579">Nicole
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1608">mike-test-rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1614">test_rate
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
+                                    <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates"
+                                            class="placeholder ng-scope ng-binding" value="1735">sss
+                                    </option>
+                                    <!-- end ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
                                 </select>
                             </div>
                         </div>
 
                         <!-- ngRepeat: rates in currentFilterData.rates_selected_list -->
 						<span class="deleteall">
-							<a ng-click="deleteRate('ALL')" ng-show="currentFilterData.rates_selected_list.length > 2" class="ng-hide">
+							<a ng-click="deleteRate('ALL')" ng-show="currentFilterData.rates_selected_list.length > 2"
+                               class="ng-hide">
                                 CLEAR ALL RATES
                             </a>
 						</span>
@@ -112,7 +269,9 @@
                     <div id="accountsHolder" class="entry entry-company-card">
                         <label for="company-card" class="search-text">NAME CARD, IATA # OR CORPORATE ID</label>
                         <span type="submit" name="submit" class="icons icon-search1"></span>
-                        <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" class="ng-pristine ng-valid">
+                        <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off"
+                               ng-model="companySearchText" ng-keyup="companySearchTextEntered()"
+                               class="ng-pristine ng-valid">
                     </div>
 
                     <!-- if company add class .dark, if travel agent add class .purple -->
@@ -195,18 +354,23 @@
                 </div>
 
 
+            </div>
         </div>
-    </div>
-    <div class="company-card-results ng-hide" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: 42px; top: 0px">
-        <div class="search-results" iscroll="nameOnCard" ng-iscroll-delay="100">
-            <ul id="search-list">
-                <!-- ngRepeat: row in companyCardResults -->
-            </ul>
+        <div class="company-card-results ng-hide" ng-hide="companyCardResults.length === 0 || companySearchText === ''"
+             style="height: 42px; top: 0px">
+            <div class="search-results" iscroll="nameOnCard" ng-iscroll-delay="100">
+                <ul id="search-list">
+                    <!-- ngRepeat: row in companyCardResults -->
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="entry action-filter">
-        <div class="actions float">
-            <button class="button green" type="button" ng-click="showRatesBtnClicked()" ng-disabled="toggleShowRates()" ng-class="{ grey: toggleShowRates() }" style="">Show Rates</button>
+        <div class="entry action-filter">
+            <div class="actions float" style="position:absolute; bottom: 0px;">
+                <button class="button green" type="button" ng-click="onClickShowRates()"
+                        ng-disabled="toggleShowRates()"
+                        ng-class="{ grey: toggleShowRates() }" style="">Show Rates
+                </button>
+            </div>
         </div>
     </div>
 </div>

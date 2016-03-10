@@ -35,4 +35,13 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
             setScroller();
         })();
 
+        //--------------------------------------------------------------------------------------------------------------
+
+        /**
+         * This method handles on-click of the SHOW RATES BUTTON
+         */
+        $scope.onClickShowRates = function(){
+
+        };
+
     }]);
