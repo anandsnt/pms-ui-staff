@@ -23,22 +23,9 @@ module.exports = function(gulp, $, options) {
 
 		watchTasks = ['watch-rover-files', 'watch-login-files', 'watch-admin-files', 'watch-zest-files', 'watch-guestweb-files','watch-guestweb-v2-files'];
 
-	//development
-	gulp.task('build', developmentTasks, function(callback){
-		return runSequence(copyBaseHtmlToPublicAssets, callback)
-	});
-
-	gulp.task('asset-precompile', function(callback){
-		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
-	});
-
-	gulp.task('watch', watchTasks);
-
-	gulp.task('default', ['build', 'watch']);
-
-	//starting sever & perform the default tasks
-	gulp.task('s', function(callback){
-		var argv = require('yargs').argv, index = -1;
+	var processArgs = function() {
+		var argv  = require('yargs').argv,
+			index = -1;
 
 		//if you dont want to work with guest web (zest web),  you can pass --no-gw arg with gulp s. eg:- gulp s --no-gw
 		if( 'gw' in argv &&  !argv.gw ) {
@@ -62,7 +49,27 @@ module.exports = function(gulp, $, options) {
 
 			watchTasks.splice(watchTasks.indexOf('watch-zest-files'), 1);
 		}
+	};
 
-		return runSequence(['start-server', 'default'], callback);
+	//development
+	gulp.task('build', developmentTasks, function(callback){
+		return runSequence(copyBaseHtmlToPublicAssets, callback)
+	});
+
+	gulp.task('asset-precompile', function(callback){
+		return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
+	});
+
+	gulp.task('watch', watchTasks);
+
+	gulp.task('default', function(callback) {
+		processArgs();
+		return runSequence(['build', 'watch'], callback);
+	});
+
+	//starting sever & perform the default tasks
+	gulp.task('s', function(callback){
+		processArgs();
+		return runSequence(['start-server', 'build', 'watch'], callback);
 	});
 }
