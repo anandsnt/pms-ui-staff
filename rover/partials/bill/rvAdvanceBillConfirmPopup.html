@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
    <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form advanced-bill">
       <button id="modal-close" class="modal-close" type="button" ng-click = "closeAdanceBillDialog()"><span class="icons icon-close invert"></span></button>
       <span class="message h2" translate>ADVANCE_BILL_CONFIRM_TEXT</span>

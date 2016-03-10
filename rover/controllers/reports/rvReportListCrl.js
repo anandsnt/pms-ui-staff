@@ -7,7 +7,10 @@ sntRover.controller('RVReportListCrl', [
     'RVReportUtilsFac',
     'RVReportMsgsConst',
     '$timeout',
-    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout) {
+    'RVReportApplyIconClass',
+    'RVReportApplyFlags',
+    'RVReportSetupDates',
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags, setupDates) {
 
         BaseCtrl.call(this, $scope);
 
@@ -20,9 +23,11 @@ sntRover.controller('RVReportListCrl', [
         /**
          * inorder to refresh after list rendering
          */
-        $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+        var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
+            $scope.refreshScroller( LIST_ISCROLL_ATTR );
         });
+        
+        $scope.$on( '$destroy', listRendered );
 
 
 
@@ -33,15 +38,20 @@ sntRover.controller('RVReportListCrl', [
         var postProcess = function(report) {
             for (var i = 0, j = report.length; i < j; i++) {
 
-                // add icon class to this report
-                reportUtils.applyIconClass( report[i] );
+                // apply icon class based on the report name
+                applyIconClass.init( report[i] );
 
-                // add required flags this report
-                reportUtils.applyFlags( report[i] );
+                // apply certain flags based on the report name
+                applyFlags.init( report[i] );
 
                 // add users filter for needed reports
                 // unfortunately this is not sent from server
                 reportUtils.addIncludeUserFilter( report[i] );
+
+                setupDates.init( report[i] );
+                _.each(report[i]['filters'], function(filter) {
+                    setupDates.execFilter( report[i], filter );
+                });
 
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
@@ -66,7 +76,7 @@ sntRover.controller('RVReportListCrl', [
                 reportUtils.processSortBy( report[i] );
 
                 // to assign inital date values for this report
-                reportUtils.initDateValues( report[i] );
+                // reportUtils.initDateValues( report[i] );
 
                 // to process the group by for this report
                 reportUtils.processGroupBy( report[i] );
@@ -94,13 +104,26 @@ sntRover.controller('RVReportListCrl', [
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function(reportItem) {
-            // this.item.show_filter = this.item.show_filter ? false : true;
-            // $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        $scope.toggleFilter = function(e, reportItem) {
+            if ( e ) {
+                e.preventDefault();
+                e.stopPropagation();
+            };
 
             var toggle = function() {
                 reportItem.show_filter = reportItem.show_filter ? false : true;
                 $scope.refreshScroller( LIST_ISCROLL_ATTR );
+
+                // close any open 'FAUX_SELECT'
+                _.each($scope.$parent.reportList, function(thatReport, index) {
+                    if ( thatReport.id != reportItem.id ) {
+                        _.each(thatReport, function(value, key) {
+                            if ( !!value && value.type === 'FAUX_SELECT' ) {
+                                value.show = false;
+                            };
+                        });
+                    };
+                });
             };
 
             var callback = function() {
@@ -117,7 +140,7 @@ sntRover.controller('RVReportListCrl', [
             };
         };
 
-        $scope.setnGenReport = function() {
+        $scope.setnGenReport = function(report) {
             var lastReportID  = reportsSrv.getChoosenReport().id,
                 mainCtrlScope = $scope.$parent;
 
@@ -125,11 +148,11 @@ sntRover.controller('RVReportListCrl', [
             // 'resetSelf' on printOption to clear out any method
             // that may have been created a specific report ctrl
             // READ MORE: rvReportsMainCtrl:L#:61-75
-            if ( lastReportID != this.item.id ) {
+            if ( lastReportID != report.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             };
-            reportsSrv.setChoosenReport( this.item );
-            $scope.genReport();
+            reportsSrv.setChoosenReport( report );
+            mainCtrlScope.genReport();
         };
 
 
@@ -138,7 +161,7 @@ sntRover.controller('RVReportListCrl', [
         });
 
         // removing event listners when scope is destroyed
-        $scope.$on( 'destroy', serveRefresh );
+        $scope.$on( '$destroy', serveRefresh );
 
         
     }

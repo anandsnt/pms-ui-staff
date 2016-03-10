@@ -1,8 +1,16 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout', 'adTransactionCenterSrv',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout, adTransactionCenterSrv) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout', 'adminDashboardConfigData',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout,  adminDashboardConfigData) {
 
 		//hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
+
+		//store basic details as rootscope variables
+		$rootScope.adminRole = adminDashboardConfigData.admin_role;
+		$rootScope.isServiceProvider = adminDashboardConfigData.is_service_provider;
+		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
+		$rootScope.isPmsConfigured = (adminDashboardConfigData.is_pms_configured === 'true') ? true : false;
+
+		$rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin' ? true : false;
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -49,6 +57,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	    $rootScope.businessDate = businessDate;
 
+	    // flag to decide show task management under house keeping: true by default
+	    var showTaskManagementInHKMenu = true;
+
 	    var routeChange = function(event, newURL) {
 	      event.preventDefault();
 	      return;
@@ -56,7 +67,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	    $rootScope.$on('$locationChangeStart', routeChange);
 	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-
 
 		var setupLeftMenu = function(){
 			if($scope.isStandAlone){
@@ -87,7 +97,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [
 					{
 						title: "MENU_SEARCH_RESERVATIONS",
-						action: "staff#/staff/search/"
+						action: "staff#/staff/search///"
 					},
 					{
 						title: "MENU_CREATE_RESERVATION",
@@ -107,9 +117,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}, {
 		            	title: "MENU_ACCOUNTS",
 		            	action: "staff#/staff/accounts/search",
-		            	menuIndex: "accounts",
-		            	hidden: $rootScope.isHourlyRatesEnabled
-		       	 	}]
+		            	menuIndex: "accounts"
+		            	//hidden: $rootScope.isHourlyRatesEnabled
+		       	 	}, {
+                            title: "MENU_ACTIONS_MANAGER",
+                            action: "staff#/staff/actions/",
+                            menuIndex: "actionManager"
+                        }]
 				}, {
 			        title: "MENU_GROUPS",
 
@@ -178,7 +192,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_TASK_MANAGEMENT",
 						action: "staff#/staff/workmanagement/start",
 						menuIndex: "workManagement",
-			            hidden: $rootScope.isHourlyRatesEnabled
+			            hidden: ( $rootScope.isHourlyRatesEnabled || !showTaskManagementInHKMenu )
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -409,23 +423,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-			var currentTransactions = adTransactionCenterSrv.getRunningTransactions();
-			if(!!currentTransactions.length){
-				console.warn("CANNOT proceed - TRANSACTION(S) are RUNNING!");
-				_.each(currentTransactions,function(transaction){
-					$scope.$broadcast(transaction.broadcastMessage, {
-						userAction: "STATE_CHANGE",
-						params:{
-							toState: toState,
-							toParams: toParams
-						}
-					});
-				});
-				event.preventDefault();
-			}else{
 				// Show a loading message until promises are not resolve
 				$scope.$emit('showLoader');
-			}
 		});
 
 		$rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -487,6 +486,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
 
+			// flag to decide show task management under house keeping: true by default
+			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
+
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');
@@ -520,6 +522,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isFFPActive = data.is_ffp_active;
 			$rootScope.isHLPActive = data.is_hlp_active;
 			$rootScope.isPromoActive = data.is_promotion_active;
+			//CICO-21697
+			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
@@ -574,18 +578,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		});
 
 		$scope.$on("navToggled", function() {
-			var currentTransactions = adTransactionCenterSrv.getRunningTransactions();
-			if(!$scope.menuOpen && !!currentTransactions.length){
-				console.warn("CANNOT proceed - TRANSACTION(S) are RUNNING!");
-				_.each(currentTransactions,function(transaction){
-					$scope.$broadcast(transaction.broadcastMessage, {
-						userAction: "OPEN_MENU"
-					});
-				});
-			}else{
-				$scope.menuOpen = !$scope.menuOpen;
-				$scope.showSubMenu = false;
-			}	
+			$scope.menuOpen = !$scope.menuOpen;
+			$scope.showSubMenu = false;
 		});
 
 		$scope.isMenuOpen = function() {

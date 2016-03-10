@@ -1,4 +1,4 @@
-sntRover.controller('RVHKRoomTabCtrl', [
+angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',
@@ -145,6 +145,13 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasons, {}, $_maintenanceReasonsCallback);
 
+		
+		$scope.$watch("updateService.room_service_status_id", function (newValue, oldValue) {
+        	if(newValue !== oldValue){
+            	$scope.prev_room_service_status_id = oldValue;
+        	}
+    	});
+
 		// when user changes the room status from top dropdown
 		$scope.statusChange = function() {
 			var item = _.find($scope.allServiceStatus, function(item) {
@@ -183,6 +190,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 						to_date: $scope.updateService.selected_date
 					}, $_fetchSavedStausCallback);
 				}
+				$scope.$apply();
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
@@ -196,7 +204,15 @@ sntRover.controller('RVHKRoomTabCtrl', [
 					to_date: $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd')
 				};
 
-				var _callback = function() {
+				var _errorCallback = function(error) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = error;
+					$scope.updateService.room_service_status_id = $scope.prev_room_service_status_id;
+					$_updateRoomDetails('room_reservation_hk_status', $scope.prev_room_service_status_id);
+					$scope.statusChange();
+				};
+
+				var _successCallback = function() {
 					$scope.$emit('hideLoader');
 					$scope.showSaved = false;
 
@@ -208,7 +224,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 				// only "put" in service if original status was not inService
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _callback);
+					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _successCallback,_errorCallback);
 				}
 			};
 
@@ -414,6 +430,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			var _error = function(errorMessage) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
+				$scope.updateService.room_service_status_id = $scope.prev_room_service_status_id;
+				$scope.statusChange();
 				if ($scope.$parent.myScroll['room-tab-scroll'] && $scope.$parent.myScroll['room-tab-scroll'].scrollTo) {
 					$scope.$parent.myScroll['room-tab-scroll'].scrollTo(0, 0);
 				}
@@ -469,6 +487,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				from_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
 				to_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
 			};
+			$scope.refreshScroller('room-tab-scroll');	
 		};
 
 		$scope.showCalendar = function(controller) {
@@ -504,7 +523,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				angular.extend($scope.serviceStatus, data.service_status);
 				
 				var isNotInService 		= $scope.updateService.room_service_status_id > 1,
-					selectedServiceData = $scope.serviceStatus[$scope.updateService.selected_date],
+					selectedServiceData = $scope.serviceStatus[getApiFormattedDate($scope.updateService.selected_date)],
 					hourlyEnabledHotel 	= $rootScope.isHourlyRateOn;
 
 				//CICO-11840

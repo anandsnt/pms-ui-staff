@@ -155,4 +155,24 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 
 			return deferred.promise;
 		};
+
+		/* 
+	* To fectch snt products 
+	* @param 
+	* @return {list} snt products
+	*/
+	this.fetchSntProducts = function(params) {
+			var deferred = $q.defer(),
+				url      = '/api/cms_components/product_list.json', 
+				params   = params || {};
+
+			ADBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
 }]);

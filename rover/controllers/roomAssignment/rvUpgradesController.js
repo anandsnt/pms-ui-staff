@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
+angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', '$timeout', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog, $timeout){
 
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
@@ -76,10 +76,14 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	 * to open the room aleady chhosed popup
 	 * @return undefined
 	 */
-	var openWantedToBorrowPopup = function() {
+	var openWantedToBorrowPopup = function(error) {
+		$scope.passingParams = {
+			"errorMessage": error.errorMessage[0]
+		}
 		ngDialog.open(
 		{
-			template 	: '/assets/partials/upgrades/rvGroupRoomTypeNotConfigured.html',
+			template 	: '/assets/partials/roomAssignment/rvGroupRoomTypeNotConfigured.html',
+			controller 	: 'rvBorrowRoomTypeCtrl',
 			scope 		: $scope
         });
 	};
@@ -101,7 +105,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			switch (error.httpStatus) {
 				case 470:
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup ();
+						openWantedToBorrowPopup (error);
 				 	break;
 				default:
 					break;
@@ -164,6 +168,10 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
+	$scope.$on('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', function(event, indexValue) {
+		$scope.selectedUpgradeIndex = indexValue;
+		$scope.selectUpgrade();
+    });
 	/**
 	* function to show and hide the upgrades detail view
 	*/

@@ -1,13 +1,14 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
-        <h1>{{headingText}}</h1>
-        <h2>{{subHeadingText}}</h2>
+        <h1>{{headingText |translate}}</h1>
+        <h2>{{subHeadingText |translate}}</h2>
         
         <div id="keys">
-                <ng-include src="'assets/css/icons/create-key.svg'" style='fill:green' ng-class="{'green': greenKey == true}"></ng-include>
+                <!--div ng-include="'/assets/zest_station/css/icons/create-key.svg'" style='fill:green' ng-class="{'green': greenKey == true}"></div-->
+                <div ng-include="icons.url.createkey"></div>
         </div>
         
     </div>
-    <ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>

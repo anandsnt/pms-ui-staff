@@ -292,17 +292,20 @@
                     .data {
                         .calc-width(70, 150);
 
-                        h2 { margin-bottom: 6px; }
+                        h2 { 
+                            margin-bottom: 6px; 
+
+                            em { font-weight: 700; }
+                        }
 
                         .confirmation,
                         .arrival,
-                        .departure {
+                        .departure,
+                        .icon-time {
                             line-height: 20px;
                             .show;
                             .pull-left;
                         }
-
-                        .confirmation { margin: 0; }
 
                         .arrival,
                         .departure {
@@ -319,6 +322,15 @@
                             .date { margin-right: 5px; }
                             .time { color: @grey3; }
                         }
+
+                        .icon-time {
+                            color: @textColor;
+                            padding-left: 24px;
+
+                            span { margin-left: 10px; }
+                        }
+
+                        &.no-image { .calc-width(70, 80); }
                     }
 
                     .amount {
@@ -331,6 +343,8 @@
                         .calc-width(30, 150);
 
                         &.paid { color: @grey3; }
+                        &.credit { color: @green; }
+                        &.debit { color: @red; }
                     }
 
                     .switch-button {
@@ -369,6 +383,17 @@
                             .data-off { right: 0; }
                             .data-on { right: 100%; }
                         }
+                    }
+
+                    .employee {
+                        font-size: 14px;
+                        line-height: 40px;
+                        text-align: center;
+                        text-transform: uppercase;
+                        margin-top: 5px;
+                        .nowrap();
+                        .pull-left;
+                        .size(40px, 150px);
                     }
                 }
 
@@ -469,11 +494,144 @@
                         position: relative;
                         .size(50px, 27%);
 
-                        .guest-status { margin-top: 10px; }
+                        .guest-status { margin-top: 10px; }
 
                         .room-number { 
                             margin-right: 10px;
                             line-height: 50px; 
+                        }
+                    }
+                }
+
+                /* Commisions ***/
+                &.commision {
+
+                    a,
+                    .faux-anchor { background-position: 98%; }
+
+                    .values {
+                        margin: 0;
+                        .pull-left;
+
+                        .value-block {
+                            font-size: 14px;
+                            line-height: 1;
+                            color: @grey3;
+                            padding: 0 20px;
+                            text-align: center;
+                            .pull-left; 
+
+                            strong {
+                                color: @textColor;
+                                font-weight: 600;
+                                line-height: 26px;
+                                .show;
+                            }
+                            
+                            &.revenue,
+                            &.amount { width: 30%; }
+                            &.type,
+                            &.tax { width: 20%; }
+
+                            &:not(:last-child) { .box-shadow(1px 0 0 rgba(0,0,0,.1)); }
+                        }
+                    }
+
+                    &.in-card {
+                        .data {
+                            margin-right: 20px;
+                            .calc-width(45, 148); 
+
+                            h2 {
+                                font-size: 20px;
+                                line-height: 1;
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        .values {
+                            margin-right: 20px;
+                            .calc-width(55, 148);
+                        }
+
+                        .prepaid,
+                        .switch-button {
+                            margin-right: 20px;
+                            visibility: visible;
+                            #fade > .in();
+                            .pull-left;
+                            .size(40px, 150px);
+                        }
+
+                        .prepaid {
+                            text-align: center;
+                            font-size: 14px;
+                            line-height: 40px;
+                            text-transform: uppercase;
+                            color: @logoPrimary;
+                        }
+
+                        .switch-button {
+                            .data-off,
+                            .data-on {
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                line-height: 30px;
+                                height: 30px;
+                                left: auto;
+
+                                &.data-off { 
+                                   right: -100%;
+
+                                    .switch-icon { 
+                                        margin: 0 5px 0 0; 
+                                        .gradient(@greenStart, @greenEnd);                                    
+                                    }
+                                }
+                                
+                                &.data-on { 
+                                    right: 0;
+
+                                    .switch-icon { 
+                                        margin: 0 0 0 5px; 
+                                        .gradient(@redStart, @redEnd);
+                                    }
+                                }
+                            }
+
+                            &.on {
+                                .data-off { right: 0; }
+                                .data-on { right: 100%; }
+                            }
+                        }
+
+                        .checkbox {
+                            padding: 0;
+                            margin: 0;
+                            .square(40px);
+                            .hide-text();
+                            .pull-left;
+
+                            input { .square(40px); }
+
+                            .icon-form { 
+                                left: 10px; 
+                                background-color: @grey2;
+                            }
+                        }
+                    }
+
+                    &.selected {
+                        .values {
+                            .value-block {
+                                strong { color: @logoPrimary; }
+                            }
+                        }
+
+                        .prepaid,
+                        .switch-button { 
+                            visibility: hidden;
+                            #fade > .out();
                         }
                     }
                 }
@@ -490,43 +648,47 @@
                     line-height: 1.2;
                     margin-bottom: 0;
                 }
+
+                .pull-msg { color: @grey3; }
             }
 
             &.room {
                 position: relative;
+                z-index: 1010;
 
                 .check {
-                    top: 10px;
-                    right: 10px;
+                    top: 0;
+                    right: 0;
                 }
 
                 a,
-                .faux-anchor {
-                    min-height: 60px;
-                    position: relative;
-                }
+                .faux-anchor { position: relative; }
 
-                .data {
-                    margin-right: 10px;
-                    .calc-width(30, 10);
+                .room-info {
+                    width: 120px;
+                    .pull-left;
 
                     h2 {
                         font-size: 24px;
-                        line-height: 22px;
+                        line-height: 1;
+                        font-weight: 700;
+                        .nowrap();
 
                         &.clean,
                         &.inspected { color: @green; }
 
                         &.dirty,
-                        &.pickup,
                         &.clean-not-inspected { color: @red; }
+
+                        &.pickup { color: @orange; }
 
                         &.out { color: @grey3; }
                     }
 
                     .room-status {
                         font-size: 14px;
-                        line-height: 20px;
+                        line-height: 21px;
+                        .show;
 
                         &.clean,
                         &.inspected { color: @green; }
@@ -535,12 +697,12 @@
                         &.clean-not-bookable  { color: @orange; }
 
                         &.dirty { color: @red; }
-                    }
+                    } 
                 }
 
                 .reservation-status {
-                    width: 80px;
                     .pull-left;
+                    .calc-width(100, 180);
 
                     .guest-status { 
                         margin-right: 5px;
@@ -561,11 +723,68 @@
                         .nowrap();
                         .size(20px, 100%);
 
-                        &.current { margin-bottom: 2px; }
                         &.check-in { color: @green; }
                         &.check-out,
                         &.late-check-out { color: @red; }
                         &.inhouse { color: @blue; }
+                    }
+
+                    .current { margin-bottom: 5px; }
+                }
+
+                .additional-info {
+                    clear: both;
+                    width: 100%;
+                    .nowrap();
+
+                    span {
+                        font-size: 14px;
+                        line-height: 20px;
+                        text-transform: uppercase;
+                        .show;
+                        .pull-left;
+
+                        &:not(:last-child) { margin-right: 10px; }
+                    }
+
+                    .assigned { font-weight: 600; }
+                    .unassigned { color: @grey2; }
+                    .service-status { color: @grey3; }
+                }
+
+                .tasks {
+                    clear: both;
+                    width: 100%;
+                    padding-top: 5px;
+
+                    li {
+                        position: relative;
+                        font-size: 14px;
+                        line-height: 30px;
+                        margin: 0;
+                        font-weight: 600;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                        .nowrap();
+                        .show;
+
+                        &:first-child {
+                            border-top: 2px solid rgba(0,0,0,.1);
+                        }
+
+                        &.completed {
+                            color: @grey3;
+                            text-decoration: line-through;
+                            font-weight: 400;
+                            text-indent: 20px;
+                            background-image: @icons;
+                            background-repeat: no-repeat;
+                            background-position: 0 -5851px;
+
+                            @media @highdpi {
+                                background-image: @icons2x;
+                                background-size: 120px;
+                            }
+                        }
                     }
                 }
 
@@ -573,27 +792,34 @@
                 .guest-image,
                 .icon-queued {
                     position: absolute;
+                    top: 35px;
+                    right: 10px;
                     margin: 0;
-                    right: 60px;             
-                }
-
-                .show-vacant,
-                .guest-image {
-                    top: 10px;
+                    height: 20px;
                 }
 
                 .icon-queued {
-                    top: 22px;
+                    width: 30px;
+                    background-position: 0px -4178px;
                 }
 
-                .show-vacant { 
-                    font-size: 14px;
+                .guest-image {
+                    width: 20px;
+
+                    .vip {
+                        font-size: 8px;
+                        line-height: 12px;
+                        .square(12px);
+                    }
+                }
+
+                .show-vacant {
                     color: @grey3;
-                    line-height: 40px;
+                    background: transparent;
+                    font-size: 14px;
+                    line-height: 20px;
                     text-transform: uppercase;
                 }
-
-                .additional-info { .hide; }
             }
 
             /* Cards ***/
@@ -1010,20 +1236,107 @@
             &:last-child { margin-bottom: 0; }
 
             &.room {
-                .data {
-                    .calc-width(35, 10);
+
+                .check { 
+                    top: 12.5px;
+                    right: 12.5px;
+                }
+
+                .room-info { 
+                    width: 160px;
+
+                    .room-status { font-size: 15px; }
+                }
+
+                .reservation-status {
+                    margin-right: 10px;
+                    .calc-width(35, 85);
+                }
+
+                .additional-info {
+                    clear: none;
+                    margin-top: 5px;
+                    .pull-left;
+                    .calc-width(65, 85);
+
+                    span {
+                        float: none;
+                        font-size: 15px;
+                        line-height: 16px;
+
+                        &:not(:last-child) { margin: 0 0 5px 0; }
+                    }
+                }
+
+                .icon-queued,
+                .guest-image {
+                    top: 17.5px;
+                    .square(30px);
+                }
+
+                .icon-queued {
+                    right: 60px;
+                    background-position: 0 -4174px;
+                }
+
+                .guest-image {
+                    right: 60px;
+
+                    .vip {
+                        font-size: 9px;
+                        line-height: 20px;
+                        .square(18px);
+                    }
+                }
+
+                .show-vacant {
+                    top: 24px;
+                    right: 50px;
+                    width: 60px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) { 
+    .search-results {
+        li:not(.no-content) {
+            a,
+            .faux-anchor { padding: 15px; }
+
+            &.room {
+
+                .check { 
+                    top: 10px;
+                    right: 15px;
+                }
+
+                .room-info {
+                    margin: 0;
+                    width: 240px;
+                    .float;
 
                     h2,
                     .room-status {
+                        line-height: 30px;
                         width: 50%;
-                        line-height: 40px;
                         .pull-left;
+                    } 
+
+                    h2 { 
+                        font-size: 30px; 
+                        width: 40%;
+                    }
+
+                    .room-status { 
+                        font-size: 16px; 
+                        width: 60%;
                     }
                 }
 
                 .reservation-status {
-                    margin-top: 5px;
-                    .calc-width(65, 70);
+                    width: 260px;
 
                     .guest-status { 
                         margin-right: 10px;
@@ -1046,68 +1359,33 @@
                         .pull-left;
                     }       
                 }
-            }
-        }
-    }
-}
 
-@media only screen and (min-width: 768px) { 
-    .search-results {
-        li:not(.no-content) {
-            a,
-            .faux-anchor { padding: 15px; }
+                .additional-info {
+                    margin: 0;
+                    .calc-width(100, 600);
 
-            &.room {
-
-                .check { 
-                    top: 15px;
-                    right: 15px;
-                }
-
-                .data { 
-                    margin-right: 20px;
-                    .calc-width(25, 10); 
-
-                    h2 { font-size: 30px; }
-                    .room-status { font-size: 16px; }
-                }
-                
-                .reservation-status { 
-                    margin-right: 20px;
-                    .calc-width(30, 10); 
-                }
-                
-                .additional-info { 
-                    font-size: 16px;
-                    line-height: 40px;
-                    text-transform: uppercase;
-                    clear: none;
-                    .calc-width(45, 90);
-                    .pull-left;
-                    .float;
-                    .show;
-
-                    .assigned,
-                    .unassigned,
-                    .service-status {
+                    span {
+                        font-size: 16px;
+                        line-height: 30px;
+                        padding-right: 20px;
+                        margin: 0;
                         width: 50%;
-                        text-transform: uppercase;
-                        font-weight: 600;
                         .nowrap();
                         .pull-left;
+
+                        &:not(:last-child) { margin: 0; }
+
+                        &:last-child:not(:first-child) { text-align: right; }
                     }
-
-                    .unassigned { color: @grey2; }
-                    .service-status { color: @grey3; }
                 }
 
-                .show-vacant { 
-                    top: 17px;
+                .icon-queued,
+                .guest-image {
+                    top: 15px;
+                    right: 65px;
                 }
 
-                .icon-queued {
-                    top: 25px;
-                }
+                .show-vacant { top: 20px; }
             }
         }
     }

@@ -9,6 +9,7 @@
 	
 	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
+	"SEARCH_BY_ROOM_NO": "Search by Room No.",
 	"FILTER_ROOMS": "Filter rooms",
 	"CLEAR_QUERY": "Clear query",
 	"CLEAR": "Clear",
@@ -58,6 +59,8 @@
 	"ROOM_TYPE_FILTER_TITLE": "Room Type",
 
 	"SELECT_WORK_TYPE" : "Select a Work Type",
+	"WORK_TYPE": "Work Type",
+	"ALL_WORK_TYPES": "All Work Types",
 	"OO" : "Out of Order",
 	"OS" : "Out of Service",
 	"FIND_ROOM_MAID" : "Find Room or Employee",

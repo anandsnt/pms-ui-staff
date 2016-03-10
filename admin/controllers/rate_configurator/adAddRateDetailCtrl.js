@@ -4,10 +4,36 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
             $scope.rateTypesDetails = {};
+            $scope.defaultWorkTypeTasks = [];
             setRateInitialData();
+            getTasksForDefaultWorkType();
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
         };
+
+        var getTasksForDefaultWorkType = function() {
+            var succesCallBack = function(data) {
+                $scope.defaultWorkTypeTasks = data.results;
+                if (!$scope.rateData.task_id){
+                    var defaultTask = _.findWhere(data.results, {
+                        is_default: true
+                    });
+
+                    if (defaultTask) {
+                        $scope.rateData.task_id = defaultTask.id;
+                    }
+                }
+            };
+            var failureCallBack = function(error) {
+                $scope.errorMessage = error;
+            };
+            var params = {
+                work_type_id: $scope.rateTypesDetails.hotel_settings.default_work_type.id
+            };
+
+            $scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
+        };
+
         /*
          * change detials sub menu selection
          */
@@ -198,7 +224,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_member': $scope.rateData.is_member_rate,
                 'is_pms_only' : $scope.rateData.is_pms_only,
                 'is_channel_only' : $scope.rateData.is_channel_only,
-                'code':$scope.rateData.code
+                'code':$scope.rateData.code,
+                'task_id': $scope.rateData.task_id
             };
 
             // Save Rate Success Callback
@@ -243,7 +270,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          */
 
         $scope.saveRateDetails = function() {
-
             var validateEndDateSuccessCallback = function(data) {
 
                 $scope.$emit('hideLoader');
@@ -324,6 +350,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     value_sign: ""
                 };
             }
+        };
+
+        // CICO-24645 -  Show Tax Incl / Excl indicator on changing Charge code.
+        $scope.onChangeChargeCode = function(){
+            
+            var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj){
+                                    return obj.id === $scope.rateData.charge_code_id;
+                                });
+            $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;
         };
 
         $scope.init();

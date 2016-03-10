@@ -1,4 +1,4 @@
-sntRover.service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
 	function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 		this.saveContactInfo = function(param) {
@@ -40,6 +40,16 @@ sntRover.service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.fetchGuestLanguages = function() {
+			var deferred = $q.defer();
+			var url = '/api/guest_languages';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
 	}
 ]);

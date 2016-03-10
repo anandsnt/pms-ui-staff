@@ -27,5 +27,5 @@
 		resetPasswordService
 		];
 
-		snt.factory('resetPasswordService', dependencies);
+		sntGuestWeb.factory('resetPasswordService', dependencies);
 	})();

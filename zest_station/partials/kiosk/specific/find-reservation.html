@@ -1,39 +1,42 @@
 <!-- Content -->
 <section id="main" class="centered" role="main" ng-hide='at !== "find-reservation"' click-touch='resetTime()'>
     <div id="content">
-        <h1>Next, type one of the following</h1>
+        <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
-                        <ng-include src="'assets/css/icons/moon.svg'"></ng-include>
+                        <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
+                        <div ng-include="icons.url.moon"></div>
                     </button>
-                    Departure Date
+                    {{'CHECK_IN_SELECT_DATE' |translate}}
                 </li>
                 <li class="break">
-                    <span>Or</span>
+                    <span translate>OR_TEXT</span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='findByEmail(); resetTime(); clearInputText();'>
-                        <ng-include src="'assets/css/icons/email.svg'"></ng-include>
+                        <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
+                        <div ng-include="icons.url.email"></div>
                     </button>
-                    E-mail
-                    <span>Used to make Reservation</span>
+                    {{'CHECK_IN_SELECT_EMAIL' |translate}}
+                    <span translate>CHECK_IN_SELECT_EMAIL_SUB</span>
                 </li>
                 <li class="break">
-                    <span>Or</span>
+                    <span translate>OR_TEXT</span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='findByConfirmation(); resetTime()'>
-                        <ng-include src="'assets/css/icons/confirmation.svg'"></ng-include>
+                        <!--div ng-include="'/assets/zest_station/css/icons/confirmation.svg'"></div-->
+                        <div ng-include="icons.url.confirmation"></div>
                     </button>
-                    Confirmation
-                    <span>Number</span>
+                    {{'CHECK_IN_SELECT_CONF' |translate}}
+                    <span translate>CHECK_IN_SELECT_CONF_SUB</span>
                 </li>
             </ul>
         </nav>
     </div>
-<ng-include src="'assets/partials/rvTabletFooter.html'" ></ng-include>
+<span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>
 
         

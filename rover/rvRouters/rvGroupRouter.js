@@ -10,7 +10,12 @@ angular.module('groupModule', [])
             url: '/groups',
             abstract: true,
             templateUrl: '/assets/partials/groups/rvGroupRoot.html',
-            controller: 'rvGroupRootCtrl'
+            controller: 'rvGroupRootCtrl',
+            resolve: {            
+                groupAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.groups', 'directives']);
+                }
+            }
         });
 
         //company card details
@@ -20,12 +25,12 @@ angular.module('groupModule', [])
             controller: 'rvGroupSearchCtrl',
             resolve: {
                 //to tackle from coming admin app to rover, see the injection in next resolve function
-                businessDate: ['rvGroupSrv', function(rvGroupSrv) {
+                businessDate: ['rvGroupSrv', 'groupAssets', function(rvGroupSrv, groupAssets) {
                     return rvGroupSrv.fetchHotelBusinessDate();
                 }],
                 //to tackle from coming admin app to rover
-                initialGroupListing: ['rvGroupSrv', 'businessDate',
-                    function(rvGroupSrv, businessDate) {
+                initialGroupListing: ['rvGroupSrv', 'businessDate', 'groupAssets',
+                    function(rvGroupSrv, businessDate, groupAssets) {
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
@@ -56,8 +61,8 @@ angular.module('groupModule', [])
             }],
             resolve: {
                 //to tackle from coming admin app to rover
-                summaryData: ['rvGroupConfigurationSrv', '$stateParams',
-                    function(rvGroupConfigurationSrv, $stateParams){
+                summaryData: ['rvGroupConfigurationSrv', '$stateParams', 'groupAssets',
+                    function(rvGroupConfigurationSrv, $stateParams, groupAssets){
                         var isInAddMode = ($stateParams.id === "NEW_GROUP");
                         var params = {
                             groupId: $stateParams.id
@@ -65,8 +70,8 @@ angular.module('groupModule', [])
                         return rvGroupConfigurationSrv.getGroupSummary (params);
                     }
                 ],
-                holdStatusList: ['rvGroupConfigurationSrv',
-                    function (rvGroupConfigurationSrv) {
+                holdStatusList: ['rvGroupConfigurationSrv', 'groupAssets',
+                    function (rvGroupConfigurationSrv, groupAssets) {
                         var params = {
                             is_group: true
                         }

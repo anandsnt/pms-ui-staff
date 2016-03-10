@@ -2,11 +2,13 @@
 
     <div class="room-actions has-date">
         <div class="has-datepicker">
+            <label for="room-service-date">Date</label>
             <input name="room-service-date" id="room-service-date" type="text" class="datepicker" ui-date="selectDateOptions" ng-model="updateService.selected_date" ui-date-format readonly>               
             <!-- <input name="room-service-date" id="room-service-date" class="datepicker" readonly="" type="text" placeholder="{{updateService.selected_date | date : dateFormat }}" value="{{updateService.selected_date | date : dateFormat}}" />
             <button ng-click="showCalendar('rvHkServiceStatusDateSelectorCtrl')" type="button" class="ui-datepicker-trigger"></button> -->
         </div>
         <div class="select">
+            <label for="room-service-status">Service Status</label>
             <select name="room-service-status" id="room-service-status" ng-model="updateService.room_service_status_id" ng-options="item.id as item.description for item in allServiceStatus" ng-change="statusChange()">
             </select>
         </div>
@@ -14,7 +16,7 @@
 
     <!-- 3.B Room Tab - Room is OOO or OOS -->
     <div id="room-content" class="room-content row scrollable" ng-iscroll="room-tab-scroll">
-        <div class="wrapper">
+        <div class="wrapper room-service-status">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <!-- 3.A  Room Tab - Room in service -->
             <div ng-if="inService && !showForm">

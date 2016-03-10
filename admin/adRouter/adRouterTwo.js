@@ -68,6 +68,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
+		
+		$stateProvider.state('admin.roomclasses', {
+			templateUrl: '/assets/partials/roomClass/adRoomClassList.html',
+			controller: 'ADRoomClassListCtrl',
+			url : '/roomclasses'
+		});
 
 		$stateProvider.state('admin.floorsetups', {
 			templateUrl: '/assets/partials/floorSetups/adFloors.html',
@@ -509,6 +515,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/stationary'
 		});
 
+		$stateProvider.state('admin.languages', {
+			templateUrl: '/assets/partials/languages/adLanguages.html',
+			controller: 'ADLanguagesCtrl',
+			url : '/languages'
+		});
+
 		$stateProvider.state('admin.analyticsSetup', {
 			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
 			controller: 'adAnalyticSetupCtrl',
@@ -520,48 +532,46 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'adZestAddonSetupCtrl',
 			url : '/zestAddonSetup'
 		});
-
-		$stateProvider.state('admin.sitemindersSetup', {
-			templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
-			controller: 'adExternalInterfaceCtrl',
-                        interface_id: 2,
-                        simple_name: 'Siteminder',
-			url : '/siteminderSetup'
-		});
-
-		$stateProvider.state('admin.givexSetup', {
-			templateUrl: '/assets/partials/Givex/adGivexSetup.html',
-			controller: 'adExternalInterfaceCtrl',
-                        interface_id: 4,
-                        simple_name: 'Givex',
-			url : '/siteminderSetup'
-		});
-
-		$stateProvider.state('admin.synxisSetup', {
-			templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
-			controller: 'adExternalInterfaceCtrl',
-                        interface_id: 3,
-                        simple_name: 'Synxis',
-			url : '/synxisSetup'
-		});
-                
 		$stateProvider.state('admin.zestStationConfig', {
 			templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
 			controller: 'ADZestStationCtrl',
 			url : '/zestStationConfig'
 		});
-
-        $stateProvider.state('admin.zDirectSetup', {
-            templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
-            controller: 'adExternalInterfaceCtrl',
-            interface_id: 4,
-            simple_name: 'ZDirect',
-            url : '/zDirectSetup'
-        });
+		$stateProvider.state('admin.ZestStationCheckin', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',
+			controller: 'ADZestStationCheckInCtrl',
+			url : '/zestStationCheckin'
+		});
+		$stateProvider.state('admin.ZestStationCheckout', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCheckout.html',
+			controller: 'ADZestStationCheckOutCtrl',
+			url : '/zestStationCheckout'
+		});
+		$stateProvider.state('admin.ZestStationColorsGraphics', {
+			templateUrl: '/assets/partials/zestStation/adZestStationColorsAndGraphics.html',
+			controller: 'ADZestStationColorsAndGraphicsCtrl',
+			url : '/zestStationColorsAndGraphics'
+		});
+		$stateProvider.state('admin.ZestStationPickUpKeys', {
+			templateUrl: '/assets/partials/zestStation/adZestStationPickUpKeys.html',
+			controller: 'ADZestStationPickUpKeysCtrl',
+			url : '/zestStationPickUpKeys'
+		});
 
 		$stateProvider.state('admin.emailBlacklist', {
 			templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',
 			controller: 'ADEmailBlackListCtrl',
 			url : '/emailBlacklist'
+		});
+
+		$stateProvider.state('admin.invoices', {
+			templateUrl: '/assets/partials/invoices/adInvoiceSettings.html',
+			controller: 'ADInvoiceSettingsCtrl',
+			url : '/invoiceSettings',
+			resolve : {
+				invoiceSettingsData : function(ADInvoiceSettingsSrv) {
+					return ADInvoiceSettingsSrv.fetchInvoiceSettings();
+				}
+			}
 		});
 });

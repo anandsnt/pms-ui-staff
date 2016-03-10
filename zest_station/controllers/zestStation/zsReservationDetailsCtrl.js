@@ -7,7 +7,8 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 	'zsUtilitySrv',
 	'$stateParams',
 	'$sce',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce) {
+	'$timeout',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $timeout) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -43,9 +44,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     
                 }
             }
-            
-            
-            
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
 
@@ -77,10 +75,10 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.setAddGuestLast = function(){
             $scope.at = 'add-guest-last';
             $state.lastAt = 'add-guests';
-            $scope.headingText = 'Enter the Guests Last Name';
+            $scope.headingText = 'ENTER_LAST';
             setTimeout(function(){
                 $scope.clearInputText();
-            },50)
+            },50);
             
             
             $scope.hideNavBtns = false;
@@ -88,17 +86,17 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         $scope.setAddGuestFirst = function(){
             $scope.at = 'add-guest-first';
             $state.lastAt = 'add-guests';
-            $scope.headingText = 'Enter the Guests First Name';
+            $scope.headingText = 'ENTER_FIRST';
             setTimeout(function(){
                 $scope.clearInputText();
-            },50)
+            },50);
             $scope.hideNavBtns = false;
         };
 
         $scope.setAddRemoveScreen = function(){
             $scope.at = 'add-guests';
             $state.lastAt = 'reservation-details';
-            $scope.addGuestsHeading = 'Additional Guests';
+            $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
             $scope.hideNavBtns = false;
         };
         $scope.formatCurrency = function(amt){
@@ -108,7 +106,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
         $scope.init = function(r){
             var current=$state.current.name;
-            console.info('current: ',current);
             $scope.selectedReservation = $state.selectedReservation;
             if (current === 'zest_station.add_remove_guests'){
                 $scope.setAddRemoveScreen();
@@ -121,7 +118,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 
             } else {
                 $scope.selectedReservation.reservation_details = {};
-                   console.info('$scope.zestStationData: ',$scope.zestStationData)
                 $scope.hotel_settings = $scope.zestStationData;
                 $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
                 //fetch the idle timer settings
@@ -131,6 +127,12 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     'id': $scope.selectedReservation.confirmation_number
                 }, $scope.onSuccessFetchReservationDetails);
             }
+            
+            
+            setDetailsHeight();
+            $timeout(function() {
+                    refreshScroller();
+            }, 600);
             
         };
         
@@ -174,18 +176,12 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             }
         };
         $scope.addGuestToReservation = function(){
-            
             var first = $state.input.addguest_first,
             last = $state.input.addguest_last;
-            console.warn($state.selectedReservation)
             $state.selectedReservation.guest_details.push({
                 last_name: last,
                 first_name: first
             });
-            console.info({
-                last_name: last,
-                first_name: first
-            }, 'added')
         };
         
             $scope.clearInputText = function(){
@@ -199,7 +195,57 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 }
             };
         
+        
+            $scope.roomIsAssigned = function(){
+              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
+                  return true;
+              }
+              return false;
+            };
+            
+            $scope.roomIsReady = function(){
+                if ($scope.selectedReservation.reservation_details.data){
+                    if ($scope.selectedReservation.reservation_details.data.reservation_card.room_status === "READY"){
+                        return true;
+                    } else return false;
+                } else return false;
+            };
             $scope.goToTerms = function(){
+                
+                if (!$scope.roomIsAssigned()){
+                    $scope.assignRoomToReseravtion();
+                } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
+                      $scope.initTermsPage();
+                } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
+                    $scope.initRoomError();
+                }
+                
+                
+               
+            };
+            
+            $scope.initRoomError = function(){
+                $state.go('zest_station.room_error');  
+            };
+            
+            $scope.assignRoomToReseravtion = function(){
+                 var reservation_id = $scope.selectedReservation.id;
+                        $scope.invokeApi(zsTabletSrv.assignGuestRoom, {
+                         'reservation_id':reservation_id
+                     }, $scope.roomAssignCallback, $scope.roomAssignCallback); 
+            };
+            $scope.roomAssignCallback = function(response){
+                $scope.$emit('hideLoader');
+                if (response.status && response.status === 'success'){
+                    $scope.selectedReservation.room = response.data.room_number;
+                    $scope.initTermsPage();
+                   
+                } else {
+                    $scope.initRoomError();
+                }
+            };
+            
+            $scope.initTermsPage = function(){
                 $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
                 $state.go('zest_station.terms_conditions');
             };
@@ -213,7 +259,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     nites = parseInt(info.total_nights);
                     $scope.selectedReservation.total_nights = nites;
-                    avgDailyRate = parseFloat(info.deposit_attributes.room_cost).toFixed(2);
+                    avgDailyRate = parseFloat(info.avg_daily_rate).toFixed(2);
                     
                     deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);
                     
@@ -269,6 +315,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                              $scope.selectedReservation.addons[i].isLastAddon = false;
                          }
                      }
+                     refreshScroller();
                      
                  };
                   $scope.invokeApi(zsTabletSrv.fetchAddonDetails, {
@@ -302,13 +349,28 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
 
             $scope.addRemoveGuests = function(){
-              console.info('add remove guests')  ;
               $state.go('zest_station.add_remove_guests');
             };
 
 
 
 
+ 		$scope.setScroller('details');
+
+ 		var setDetailsHeight = function(){
+ 			if($('#textual').length) {
+		        var $contentHeight = ($('#content').outerHeight()),
+		            $h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
+		            $h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
+		            $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
+		            $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
+		            $textualHeight = parseFloat($contentHeight-$headingsHeight);		
+		       		$('#textual').css('max-height', $textualHeight + 'px');
+   		 	}
+ 		};
+        var refreshScroller = function(){
+        	$scope.refreshScroller('details');
+        };
 
 
 

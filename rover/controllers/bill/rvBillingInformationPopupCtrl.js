@@ -1,6 +1,7 @@
 sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 
+    $scope.isInAddRoutesMode = false;
 	$scope.isInitialPage = true;
     $scope.isEntitySelected = false;
 
@@ -61,7 +62,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     /**
     * function to handle the click 'all routes' and 'add routes' button
     */
-	$scope.headerButtonClicked = function(){
+	$scope.headerButtonClicked = function () {
+        $scope.isInAddRoutesMode = true;
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
         if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
@@ -71,6 +73,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         if($scope.isInitialPage  && $scope.isReloadNeeded){
             $scope.isReloadNeeded = false;
             $scope.fetchRoutes();
+        }
+        // While moved to initial screen
+        if ($scope.isInitialPage) {
+            init();
         }
 	};
     /**
@@ -94,6 +100,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
         $scope.errorMessage = "";
 		$scope.isEntitySelected = true;
+        $scope.isInAddRoutesMode = false;
         $scope.isInitialPage = false;
         $scope.selectedEntityChanged = true;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
@@ -155,6 +162,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "attached_billing_groups": [],
                 "is_new" : true,
                 "selected_payment" : "",
+                "is_allow_direct_debit" : data.is_allow_direct_debit,
                 "credit_card_details": {}
 			};
             if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
@@ -256,6 +264,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             }else if(type === 'COMPANY_CARD'){
                 $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
+                $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.company_card.is_allow_direct_debit;
                 $scope.selectedEntity.images = [{
                     "is_primary":true,
                     "guest_image": $scope.attachedEntities.company_card.logo
@@ -264,6 +273,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             }else if(type === 'TRAVEL_AGENT'){
                 $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
+                $scope.selectedEntity.is_allow_direct_debit = $scope.attachedEntities.travel_agent.is_allow_direct_debit;
                 $scope.selectedEntity.images = [{
                     "is_primary":true,
                     "guest_image": $scope.attachedEntities.travel_agent.logo
@@ -380,9 +390,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     };
 
     var setDefaultRoutingDates = function () {
-        $scope.arrivalDate = $scope.reservation.reservation_card.arrival_date,
-        $scope.departureDate = $scope.reservation.reservation_card.departure_date;
-        $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+        if (!!$scope.reservation) {
+            $scope.arrivalDate = $scope.reservation.reservation_card.arrival_date,
+            $scope.departureDate = $scope.reservation.reservation_card.departure_date;
+            $scope.arrivalDate = $rootScope.businessDate > $scope.arrivalDate ? $rootScope.businessDate : $scope.arrivalDate;
+        }
     }
 
     var setRoutingDateOptions = function () {
@@ -391,17 +403,19 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             to : $scope.departureDate
         };
 
-        $scope.routingDateFromOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
-        };
+        if (!!$scope.reservation) {
+            $scope.routingDateFromOptions = {       
+                dateFormat: 'dd-mm-yy',
+                minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+                maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            };
 
-        $scope.routingDateToOptions = {       
-            dateFormat: 'dd-mm-yy',
-            minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
-            maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
-        };
+            $scope.routingDateToOptions = {       
+                dateFormat: 'dd-mm-yy',
+                minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
+                maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
+            };
+        }
     }
 
     /**
@@ -451,8 +465,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.deleteDefaultRouting = function(){
         var successCallback = function(data) {
             $scope.$emit('hideLoader');
-            $scope.closeDialog();
             $scope.$emit('BILLINGINFODELETED');
+            $scope.closeDialog();
+            
         };
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');

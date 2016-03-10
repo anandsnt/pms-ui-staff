@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
     <div class="modal-content grid set-targets">
         <button class="modal-close" id="modal-close" type="button" ng-click="cancelClicked()"><span class="icons icon-close invert"></span></button>
         <span class="h2 message"><h1>SET TARGETS</h1><em>Values will be set as percentage</em></span>

@@ -30,10 +30,33 @@
 						<td data-title="'Workstation ID'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.station_identifier}}
 						</td>
+						<td data-title="'Key Encoder'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.key_encoder_description}}
+						</td>
+						<td data-title="'EMV Terminal'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.emv_name}}
+						</td>
+                                                
+						<td data-title="'Out of Service'" header-class="width-40" ng-hide="currentClickedElement == $index">
+                                                         <div class="switch-button single" ng-click="workStations.is_out_of_order = !workStations.is_out_of_order; saveWorkstation(workStations)" ng-class="{'on': workStations.is_out_of_order}">
+                                                            <input type="checkbox"  ng-checked="workStations.is_out_of_order">
+                                                            <span class="switch-icon"></span>
+                                                        </div>
+						</td>
+						<td data-title="'OOS Message'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.out_of_order_msg}}
+						</td>
+                                                
+						<td data-title="'Selected Printer'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.printer}}
+						</td>
+                                                <td data-title="'Default Printer'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.printer}}
+						</td>
 						<td data-title="'Action'" header-class="width-10" class="delete" ng-hide="currentClickedElement == $index" >
 							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDeviceMapping($index, workStations.id)"></a>
 						</td>
-						<td colspan="3" ng-include="getTemplateUrl($index,workStations.id)" ng-show="currentClickedElement == $index && isEditMode"></td>
+						<td colspan="7" ng-include="getTemplateUrl($index,workStations.id)" ng-show="currentClickedElement == $index && isEditMode"></td>
 					</tr>
 				</tbody>
 			</table>

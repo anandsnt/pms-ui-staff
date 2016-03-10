@@ -1,79 +1,86 @@
-sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', '$timeout',
-	function(filterDefaults, $scope,  ngDialog, $filter, dateFilter, $rootScope, $timeout) {
-	'use strict';
+angular.module('sntRover').controller('SelectDateRangeModalCtrl',
+  ['filterDefaults',
+  '$scope',
+  'ngDialog',
+  '$filter',
+  'dateFilter',
+  '$rootScope',
+  '$timeout',
+	function(filterDefaults, $scope, ngDialog, $filter, dateFilter, $rootScope, $timeout) {
+		'use strict';
 
-	var filterData = $scope.currentFilterData,
-		businessDate = tzIndependentDate($rootScope.businessDate),
-		defaultDate = tzIndependentDate(Date.now()),
-		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
-		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date;
+		var filterData = $scope.currentFilterData,
+			businessDate = tzIndependentDate($rootScope.businessDate),
+			defaultDate = tzIndependentDate(Date.now()),
+			fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
+			toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date;
 
-	$scope.setUpData = function() {
-                if (!fromDate){
-                    var nd = new Date(businessDate);
-                    var day = ("0" + nd.getDate()).slice(-2);
-                    var month = ("0" + (nd.getMonth() + 1)).slice(-2);
-                    var fromDateStr = nd.getFullYear()+'-'+month+'-'+day;
-                    $scope.fromDate = fromDateStr;
-                } else {
-                    $scope.fromDate = fromDate;
-                }
-		$scope.toDate = toDate;
+		var getFirstDayOfNextMonth = function(date) {
+			var date = new tzIndependentDate(date),
+				y = date.getFullYear(),
+				m = date.getMonth();
 
-		$scope.fromDateOptions = {
-			firstDay: 1,
-			changeYear: true,
-			changeMonth: true,
-			yearRange: "-5:+5", //Show 5 years in past & 5 years in future
-			onSelect: function(dateText, datePicker) {
-				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
-					$scope.toDate = $scope.fromDate;
-				}
-			}
+			return $filter('date')(new Date(y, m + 1, 1), $rootScope.dateFormatForAPI);
 		};
 
-		$scope.toDateOptions = {
-			firstDay: 1,
-			changeYear: true,
-			changeMonth: true,
-			yearRange: "-5:+5",
-			onSelect: function(dateText, datePicker) {
-				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
-					$scope.fromDate = $scope.toDate;
-				}
+		$scope.setUpData = function() {
+			$scope.fromDate = fromDate || $filter('date')(businessDate, $rootScope.dateFormatForAPI);
+			$scope.toDate = toDate || $filter('date')(getFirstDayOfNextMonth(businessDate), 'yyyy-MM-dd');
+
+			if (!fromDate) {
+				fromDate = $scope.fromDate;
 			}
+
+			$scope.fromDateOptions = {
+				firstDay: 1,
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-5:+5", //Show 5 years in past & 5 years in future
+				onSelect: function(dateText, datePicker) {
+					fromDate = $scope.fromDate;
+					if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
+						$scope.toDate = $scope.fromDate;
+						toDate = $scope.toDate;
+					}
+				}
+			};
+
+			$scope.toDateOptions = {
+				firstDay: 1,
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-5:+5",
+				onSelect: function(dateText, datePicker) {
+					toDate = $scope.toDate;
+					if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
+						$scope.fromDate = $scope.toDate;
+						fromDate = $scope.fromDate;
+					}
+				}
+			};
+
+			$scope.errorMessage = '';
 		};
 
-		$scope.errorMessage = '';
-	};
+		$scope.setUpData();
 
-	$scope.setUpData();
-	$timeout(function() {
-		/** CICO-11228 and 11309
-		* Shoddy fix for showing the next month in the 'to date' calendar!
-		* -- Emulate a click to navigate to the next month
-		*/
-		if (!toDate) {
-			$("#toDatePicker .ui-datepicker-next").click();
-		}
-	}, 300);
+		$scope.updateClicked = function() {
+			filterData.begin_date = $scope.fromDate;
+			filterData.end_date = $scope.toDate;
+			filterData.selected_date_range = dateFilter($scope.fromDate, $rootScope.dateFormat) +
+				' to ' +
+				dateFilter($scope.toDate, $rootScope.dateFormat);
 
-	$scope.updateClicked = function() {
-		filterData.begin_date = $scope.fromDate;
-		filterData.end_date = $scope.toDate;
-		filterData.selected_date_range = dateFilter($scope.fromDate, $rootScope.dateFormat) +
-										 ' to ' +
-										 dateFilter($scope.toDate, $rootScope.dateFormat);
+			ngDialog.close();
+		};
 
-		ngDialog.close();
-	};
+		$scope.toggleUpdate = function() {
+			return _.isEmpty($scope.fromDate) || _.isEmpty($scope.toDate);
+		};
 
-	$scope.toggleUpdate = function() {
-		return _.isEmpty($scope.fromDate) || _.isEmpty($scope.toDate);
-	};
+		$scope.cancelClicked = function() {
+			ngDialog.close();
+		};
 
-	$scope.cancelClicked = function() {
-		ngDialog.close();
-	};
-
-}]);
+	}
+]);

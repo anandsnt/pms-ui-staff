@@ -60,5 +60,24 @@ admin.service('ADKeyEncoderSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             return deferred.promise;
         };
 
+
+        /*
+         * To delete the seleceted encoder 
+         * @param {int} id of the selected encoder 
+         * @return {object} status of delete
+         */
+        this.deleteEncoder = function(id) {
+            var deferred = $q.defer();
+
+            var url = '/api/key_encoders/' + id;
+
+            ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

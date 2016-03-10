@@ -19,7 +19,7 @@
                 </button>
                 <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white grey-bg' : roomAssignment.activeTab!== 'ASSIGNED'}">
                     ASSIGNED
-                    <span class="bubble" ng-class="{'selected' : roomAssignment.activeTab === 'ASSIGNED'}"> {{floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count}} </span>
+                    <span class="bubble" ng-class="{'selected' : floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count > 0}"> {{floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count}} </span>
                 </button>
             </div>
             <!-- Config section and search come here! -->
@@ -29,18 +29,6 @@
                     <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
                 </div>
                 <span class="count-entries">entries</span>
-                <!-- 2. filter -->
-                <div class="three-column select filter" ng-show="roomAssignment.areSomeRoomsSelected || roomAssignment.areAllRoomsSelected">
-                    <span>Display</span>
-                    <select ng-model="roomAssignment.filterSelectedRooms" class="select filter-selected">
-                        <option value="ALL" ng-selected="roomAssignment.filterSelectedRooms === 'ALL'">
-                            All Rooms
-                        </option>
-                        <option value="SELECTED" ng-selected="roomAssignment.filterSelectedRooms === 'SELECTED'">
-                            Selected Rooms
-                        </option>
-                    </select>
-                </div>
                 <!-- 3. search -->
                 <div class="table-search three-column">
                     <span class="search-text">Search</span>
@@ -51,7 +39,7 @@
             <!--ng-table component -->
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
                 <tbody>
-                    <tr ng-repeat="room in $data" ng-click="toggleSelectRoom(room)" ng-show="roomAssignment.filterSelectedRooms === 'ALL' || (roomAssignment.filterSelectedRooms === 'SELECTED' && room.isSelected)" ng-class="{'selected': room.isSelected}">
+                    <tr ng-repeat="room in $data" ng-click="toggleSelectRoom(room)" ng-class="{'selected': room.isSelected}">
                         <td data-title="'ROOM NO.'" sortable="'room_no'" header-class="width-40">
                             <a class="room-number">
                                 <strong ng-class="{'selected': room.isSelected, 'green': roomAssignment.activeTab === 'AVAILABLE', 'red': roomAssignment.activeTab === 'ASSIGNED'}"> {{room.room_number}} </strong>

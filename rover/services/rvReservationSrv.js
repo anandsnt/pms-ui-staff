@@ -1,4 +1,4 @@
-sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope',
+angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope',
 	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $rootScope) {
 
 		this.reservationData = {};
@@ -259,17 +259,6 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.detachGroupReservation = function(param) {
 			var deferred = $q.defer();
 			var url = '/api/group_reservations/' + param.id + '/detach_group_reservation';
-			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
-			return deferred.promise;
-		};
-
-		this.manualAuthorization = function(param) {
-			var deferred = $q.defer();
-			var url = '/api/cc/authorize';
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {

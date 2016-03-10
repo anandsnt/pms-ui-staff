@@ -34,6 +34,9 @@ sntRover.controller('reservationActionsController', [
 		var TZIDate = tzIndependentDate,
 			reservationMainData = $scope.reservationParentData;
 
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        
+
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied
 		 * -departure date <= busssiness date
@@ -418,6 +421,12 @@ sntRover.controller('reservationActionsController', [
 		$scope.goToCheckin = function() {
                     startCheckin();
 		};
+		$scope.unAvailablePopup = function(){
+			ngDialog.open({
+				template: '/assets/partials/staycard/unavailablePopup.html',
+				scope: $scope
+			});
+		};
 		/******************************************/
 		$scope.showPutInQueue = function() {
                      //In standalone hotels we do not show the putInQueue option
@@ -540,9 +549,6 @@ sntRover.controller('reservationActionsController', [
 						if (nights) {
 							return penalty + (penalty > 1 ? " nights" : " night");
 						}
-						if (isPercent) {
-							return $rootScope.currencySymbol + penalty; //as calculated amount based on percentage is provided from API
-						}
 						return $rootScope.currencySymbol + $filter('number')(penalty, 2);
 					}())
 				})
@@ -600,10 +606,11 @@ sntRover.controller('reservationActionsController', [
 					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type === 'day') {
 							// To get the duration of stay
-							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+							// var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
 							// Make sure that the cancellation value is -lte thatn the total duration
-							cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
-							nights = true;
+							// cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
+							cancellationCharge = data.results.calculated_penalty_amount;
+							//nights = true;
 						} else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
@@ -753,7 +760,7 @@ sntRover.controller('reservationActionsController', [
 		//Checking whether email is attached with guest card or not
 		$scope.isEmailAttached = function() {
 			var isEmailAttachedFlag = false;
-			if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
+			if (!!$scope.guestCardData.contactInfo.email && $scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
 				isEmailAttachedFlag = true;
 			}
 			return isEmailAttachedFlag;
@@ -778,7 +785,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.showConfirmation = function(reservationStatus) {
 			var showResendConfirmationFlag = false;
-			if ($rootScope.isStandAlone) {
+			if ($rootScope.isStandAlone && $rootScope.sendConfirmationLetter) {
 				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN') {
 					showResendConfirmationFlag = true;
 				}
@@ -874,7 +881,7 @@ sntRover.controller('reservationActionsController', [
 			if (new TZIDate(reservationMainData.arrivalDate) < new TZIDate($rootScope.businessDate)) {
 				reservationMainData.arrivalDate = $rootScope.businessDate; // Note: that if arrival date is in the past, only select from business date onwards for booking and availability request.
 			}
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
+			$state.go(roomAndRatesState, {
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
 				fromState: $state.current.name,

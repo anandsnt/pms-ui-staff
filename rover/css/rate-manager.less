@@ -18,6 +18,14 @@
   .iScrollIndicator{
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
   }
+
+  .calendar-rate-table {
+    width: ~"-webkit-calc(100% - 240px)";
+    width: ~"-moz-calc(100% - 240px)";
+    width: ~"calc(100% - 240px)";
+    position: relative;
+  }
+
   #roomTypeViewCalendar{
    // margin-left:22%;
 
@@ -370,6 +378,7 @@
 
     .iScrollHorizontalScrollbar {
       top: auto !important;
+      bottom: 0;
     }
   }
   #rate-manager-not-configured {
@@ -380,7 +389,7 @@
     text-align: center;
 
     & > span {
-      background-image: url(/assets/rate-manager/ratemanager-not-configed.png);
+      background-image: url(/assets/cssimg/rate-manager/ratemanager-not-configed.png);
       background-repeat: no-repeat;
       background-position: center center;
       margin-top: -5%;
@@ -444,7 +453,6 @@
     .first-row {
       height: 71px !important;
       text-align: right;
-      padding: 20px;
       vertical-align: middle;  
       >div{
           >span{
@@ -843,7 +851,7 @@ thead tr th {
           /*CICO-8633*/
           width: 80%; //70%;
           margin: auto;
-          background: url('/assets/texture.png') repeat scroll 0 0 #fcfcfc;
+          background: url('cssimg/texture.png') repeat scroll 0 0 #fcfcfc;
           box-shadow: 0 0 3px rgba(0,0,0,0.1);
           border-radius: 3px;
 
@@ -1222,13 +1230,13 @@ thead tr th {
       background-color: #a65fba;
     }
     &.icon-cross {
-      background-image: url(/assets/rate-manager/close.png);
+      background-image: url(/assets/cssimg/rate-manager/close.png);
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 12px;
     }
     &.icon-block {
-      background-image: url(/assets/rate-manager/cross.png);
+      background-image: url(/assets/cssimg/rate-manager/cross.png);
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 12px;
@@ -1245,7 +1253,7 @@ thead tr th {
 
 
  .icons.right-arrow-copy{
-    background-image: url("/assets/admin/admin-icons.png");
+    background-image: url("/assets/cssimg/admin/admin-icons.png");
     background-repeat: no-repeat;
     border: 0 none;
     display: block;
@@ -1733,7 +1741,7 @@ padding-top: 80px;
 
 .company-card-results{
   position: fixed;
-  width: 380px;
+  width: 410px;
   overflow-y: hidden;
   left: 246px; /*200px;*/
   .search-results{
@@ -1758,17 +1766,32 @@ padding-top: 80px;
     display: block;
     float: left;
     margin: 3px 8px 0px 5px;
-    background-image: url(/assets/app/app-icons.png);
+    background-image: @icons;
     background-repeat: no-repeat;
 
   }
   .company-card {
+      background-image: @icons;
       background-color: #566083;
-      background-position: 8px -3656px;
+      background-position: 8px -3513px;
+
+      /* @2x Icons ***/
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 120px;
+        background-position: 10px -3511px;
+      }
   }
   .travel-agent { 
       background-color: #80546d;
       background-position: 8px -3574px;
+      
+      /* @2x Icons ***/
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 120px;
+        background-position: 8px -3631px;
+      }      
   }
 
   img{

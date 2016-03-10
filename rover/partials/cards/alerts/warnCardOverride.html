@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <div class="modal-content alert">
         <button id="modal-close" type="button" ng-click="closeDialog()" class="modal-close"><span class="icons icon-close invert"></span></button>
         <span class="icons icon-popup-alert"></span>
@@ -12,10 +12,10 @@
         </span>
 
         <div class="actions">
-            <button id="cancel-action" ng-show="ngDialogData.card.type==='GROUP'" type="button" class="button green" ng-click="closeDialog();selectGroup(ngDialogData.card)">
+            <button id="cancel-action" ng-show="ngDialogData.card.type==='GROUP'" type="button" class="button green" ng-click="selectGroup(ngDialogData.card)">
             	Link Group
             </button>
-            <button id="cancel-action" ng-hide="ngDialogData.card.type==='GROUP'" type="button" class="button green" ng-click="closeDialog();selectAllotment(ngDialogData.card)">
+            <button id="cancel-action" ng-hide="ngDialogData.card.type==='GROUP'" type="button" class="button green" ng-click="selectAllotment(ngDialogData.card)">
             	Link Allotment
             </button>
             <button type="button" class="button blank" ng-click="closeDialog();">

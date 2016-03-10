@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
 	<div class="modal-content form new-worksheet">
 		<button class="modal-close" id="modal-close" ng-click="closeDialog()" type="button"><span class="icons icon-close invert"></span></button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>

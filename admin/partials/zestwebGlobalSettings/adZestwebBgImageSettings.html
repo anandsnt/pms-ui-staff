@@ -1,0 +1,83 @@
+<!-- Collapse View -->
+<div ng-hide="selectedMenu ==='bgimage'" ng-click="$emit('changeMenu','bgimage')" class="cursor_pointer">
+    <em class="rate_step_title">Background Image</em>&nbsp;<span class="italic_text">Setup</span>
+    <div style="float:right"><img src="/assets/cssimg/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+<div ng-show="selectedMenu ==='bgimage'">
+    <form class="form zest-web-settins-form float">
+        <div class="form-title full-width">
+            <h3><span>Background Image setup</span></h3>
+        </div>
+        <div class="form-subtitle-title margin-bottom-50">
+            <h6><span translate="">ZESTWEB_SETTINGS_INSTRUCTION</span></h6>
+        </div>
+        <fieldset class="holder left">
+            <!-- main bg image for large screen -->
+            <div class="entry full-width">
+                <label for="hotel-logo">Large Screen background image </label>
+                <div class="file-upload with-preview">
+                    <span class="input" ng-bind="stripAndDisplay(globalSettings.main_bg.ld_image)"></span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isImageAvailable(globalSettings.main_bg.ld_image)" ng-click="globalSettings.main_bg.ld_image = ''"></a>
+                    <input type="file" ng-model="globalSettings.main_bg.ld_image" accept="image/*" app-filereader />
+                    <button type="button" class="button brand-colors">
+                        Choose file
+                    </button>
+                </div>
+                <span class="file-preview"> <img src="{{globalSettings.main_bg.ld_image}}" alt="" height="112" width="auto"> </span>
+            </div>
+            <!-- main bg image for small screen -->
+            <div class="entry full-width">
+                <label for="hotel-logo">Small Screen background image </label>
+                <div class="file-upload with-preview">
+                    <span class="input" ng-bind="stripAndDisplay(globalSettings.main_bg.sd_image)"></span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isImageAvailable(globalSettings.main_bg.sd_image)" ng-click="globalSettings.main_bg.sd_image = ''"></a>
+                    <input type="file" ng-model="globalSettings.main_bg.sd_image" accept="image/*" app-filereader />
+                    <button type="button" class="button brand-colors">
+                        Choose file
+                    </button>
+                </div>
+                <span class="file-preview"> <img src="{{globalSettings.main_bg.sd_image}}" alt="" height="112" width="auto"> </span>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <!-- header bg image -->
+            <div class="entry full-width">
+                <label for="hotel-logo">Header background image </label>
+                <div class="file-upload with-preview">
+                    <span class="input" ng-bind="stripAndDisplay(globalSettings.header_bg.sd_image)"></span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isImageAvailable(globalSettings.header_bg.image)" ng-click="globalSettings.header_bg.image = ''"></a>
+                    <input type="file" ng-model="globalSettings.header_bg.image" accept="image/*" app-filereader />
+                    <button type="button" class="button brand-colors">
+                        Choose file
+                    </button>
+                </div>
+                <span class="file-preview"> <img src="{{globalSettings.header_bg.image}}" alt="" height="112" width="auto"> </span>
+            </div>
+            <!-- button bg image -->
+            <div class="entry full-width">
+                <label for="hotel-logo"> Template button background image </label>
+                <div class="file-upload with-preview">
+                    <span class="input" ng-bind="stripAndDisplay(globalSettings.button.image)"></span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isImageAvailable(globalSettings.button.image)" ng-click="globalSettings.button.image = ''"></a>
+                    <input type="file" ng-model="globalSettings.button.image" accept="image/*" app-filereader />
+                    <button type="button" class="button brand-colors">
+                        Choose file
+                    </button>
+                </div>
+                <span class="file-preview"> <img src="{{globalSettings.button.image}}" alt="" height="112" width="auto"> </span>
+            </div>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                CANCEL
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding blue" ng-click="previewClicked()">
+                PREVIEW
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+    </form>
+</div>

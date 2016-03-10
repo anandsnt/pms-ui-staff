@@ -1,4 +1,4 @@
-sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams',
+angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams',
   function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams) {
 
     BaseCtrl.call(this, $scope);
@@ -158,7 +158,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
-      if (!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) {
+      if ((!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
         $scope.saveContactInfo(true);
       } else {
         $scope.saveContactInfo();
@@ -188,5 +188,27 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
     };
     $scope.$on('CONTACTINFOLOADED', refreshContactsScroll);
     $scope.$on('REFRESHLIKESSCROLL', refreshContactsScroll);
+
+    var successCallBackForLanguagesFetch = function(data) {
+      $scope.$emit('hideLoader');
+      $scope.languageData = data;
+    };
+
+    /**
+     * Fetch the guest languages list and settings
+     * @return {undefined}
+     */
+    var fetchGuestLanguages = function() {
+      // call api
+      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+        successCallBackForLanguagesFetch);
+    };
+
+    var init = function() {
+      // Fetch languages
+      fetchGuestLanguages();
+    };
+
+    init();
   }
 ]);

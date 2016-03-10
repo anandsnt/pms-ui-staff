@@ -151,7 +151,14 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// fetch post types
 			var ptCallback = function(data) {
-				$scope.postTypes = data;
+				// CICO-23575 - Disable all posting types apart from First Night for Hourly.
+				if($rootScope.isHourlyRatesEnabled){
+					$scope.postTypes = [data[2]];
+				}
+				else{
+					$scope.postTypes = data;
+				}
+				
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback, '', 'NONE');
@@ -193,6 +200,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.singleAddon            = {};
 			$scope.singleAddon.activated  = true;
 
+			// CICO-23575 - Disable all posting types apart from First Night for Hourly.
+			if($rootScope.isHourlyRatesEnabled){
+				$scope.singleAddon.post_type_id = 2;
+			}
+				
 			// today should be business date, currently not avaliable
 			var today = tzIndependentDate();
             var weekAfter = today.setDate(today.getDate() + 7);
@@ -266,6 +278,10 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.$emit('hideLoader');
 
 				$scope.singleAddon = data;
+				// CICO-23575 - Disable all posting types apart from First Night for Hourly.
+				if($rootScope.isHourlyRatesEnabled){
+					$scope.singleAddon.post_type_id = 2;
+				}
 				manipulateChargeCodeForChargeGroups();
 
 				// Display currency with two decimals
@@ -429,12 +445,27 @@ admin.controller('ADRatesAddonsCtrl', [
 			manipulateChargeCodeForChargeGroups();
 		};
 
+		var updateBestSellerOption = function(){
+			if(!!$scope.singleAddon.rate_code_only){
+				$scope.singleAddon.bestseller = false;
+			}
+		}
+
+		$scope.bestsellerChanged = function(){
+			// CICO-21783 'BestSeller' and 'Rate Only' are mutually exclusive
+			if($scope.singleAddon.bestseller){
+				$scope.singleAddon.rate_code_only = false;
+			}
+		}
+
 		$scope.reservationOnlyChanged = function(){
 			$scope.singleAddon.rate_code_only = $scope.singleAddon.is_reservation_only? false : $scope.singleAddon.is_reservation_only;
+			updateBestSellerOption();
 		};
 
 		$scope.rateOnlyChanged = function(){
 			$scope.singleAddon.is_reservation_only = $scope.singleAddon.rate_code_only ? false : $scope.singleAddon.is_reservation_only;
+			updateBestSellerOption();
 		};
 		$scope.sortByName = function(){
 		if($scope.currentClickedAddon === -1) {

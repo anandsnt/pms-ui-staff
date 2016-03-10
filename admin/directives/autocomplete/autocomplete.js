@@ -46,7 +46,8 @@
     /**
      * auto complete directive function
      */
-    var autoCompleteDirective = function(highlightFilter) {
+
+    admin.directive('autoComplete', ['highlightFilter', function(highlightFilter) {
         highlightFilter_ = highlightFilter;
         return {
             restrict: 'A',
@@ -57,7 +58,5 @@
             },
             link    : autoCompleteLinkFn
         };
-    };
-
-    admin.directive('autoComplete', ['highlightFilter', autoCompleteDirective]);
+    }]);
 }());

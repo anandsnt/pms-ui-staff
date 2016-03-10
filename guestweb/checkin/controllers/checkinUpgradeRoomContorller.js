@@ -41,7 +41,11 @@
   $scope.upgradeClicked = function(upgradeID,roomNumber){
 
     $scope.isFetching          = true;
-    var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber};
+      var upgradeSelected = _.find($scope.slides, function(slide) {
+          return slide.upsell_amount_id === upgradeID;
+      });
+      var upgradeRoomTypeId = upgradeSelected.upgrade_room_type_id;
+      var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber,'upgrade_room_type_id':upgradeRoomTypeId};
     checkinRoomUpgradeService.post(data).then(function(response) {
 
       $scope.isFetching     = false;
@@ -82,12 +86,12 @@ var dependencies = [
 checkinUpgradeRoomController
 ];
 
-snt.controller('checkinUpgradeRoomController', dependencies);
+sntGuestWeb.controller('checkinUpgradeRoomController', dependencies);
 })();
 
   // Setup directive to compile html
 
-  snt.directive("description", function ($compile) {
+  sntGuestWeb.directive("description", function ($compile) {
     function createList(template) {
       templ = template;
       return templ;
@@ -106,7 +110,7 @@ snt.controller('checkinUpgradeRoomController', dependencies);
 
   // Setup directive to handle image not found case
 
-  snt.directive('errSrc', function() {
+  sntGuestWeb.directive('errSrc', function() {
     return {
       link: function(scope, element, attrs) {
         element.bind('error', function() {

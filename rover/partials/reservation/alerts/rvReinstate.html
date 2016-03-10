@@ -1,4 +1,4 @@
-<div id="modal" ng-class="{'modal-show': modalOpened}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <div class="modal-content confirmation" ng-if="ngDialogData.isAvailable">
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog();"><span class="icons icon-close invert"></span></button>
         <span class="h2 message">Reinstate reservation for {{$parent.$parent.$parent.data.guest_details.first_name}} {{$parent.$parent.$parent.data.guest_details.last_name}}?</span>

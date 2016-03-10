@@ -1,4 +1,4 @@
-snt.controller('resetPasswordController', ['$rootScope','$location','$state','$scope', 'resetPasswordService', '$modal', function($rootScope,$location,$state,$scope, resetPasswordService, $modal) {
+sntGuestWeb.controller('resetPasswordController', ['$rootScope','$location','$state','$scope', 'resetPasswordService', '$modal', function($rootScope,$location,$state,$scope, resetPasswordService, $modal) {
 
 
 	$scope.pageValid = true;
@@ -8,7 +8,7 @@ snt.controller('resetPasswordController', ['$rootScope','$location','$state','$s
     $scope.data.confirm_password = "";
     $scope.isPasswordReset = false;
 
-    // $scope.hotelLogo = "/assets/img/Yotel/yotel-logo.png"
+    // $scope.hotelLogo = "/assets/guestweb/img/Yotel/yotel-logo.png"
 
     //setup options for modal
 	$scope.opts = {

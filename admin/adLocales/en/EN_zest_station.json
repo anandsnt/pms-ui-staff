@@ -1,6 +1,11 @@
 
 
-"ZESTSTATION_TITLE": "Zest Station Settings",
+"ZESTSTATION_TITLE" : "Zest Station Settings",
+"ZESTSTATION_TITLE_CHECKIN":"Zest Station Check In",
+"ZESTSTATION_TITLE_CHECKOUT":"Zest Station Check Out",
+"ZESTSTATION_COLORS_AND_GRAPHICS":"Colors And Graphics",
+"ZESTSTATION_PICKUPKEYS" : "Pick Up Keys",
+"STATION_BACK":"Back to Station",
 "ZESTSTATION_BACK": "Back to Zest",
 "COLOR_SEC_LABEL": "Color details",
         
@@ -13,11 +18,46 @@
 "HEADER_ICONS_COLOR_PRESSED": "Header Icons Color (Pressed)",
 
 "GUEST_BILL_DELIVERY":"Guest bill delivery options",
-"EMAIL":"Email",
+"EMAIL_UPDATE_ZS":"Update Email",
 "PRINT":"Print",
+
+
+
+"STATION_LANGUAGE_SUPPORT":"Language Support",
+"STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
+"STATION_LANGUAGE_ENGLISH":"English",
+"STATION_LANGUAGE_FRENCH":"Français",
+"STATION_LANGUAGE_SPANISH":"Español",
+"STATION_LANGUAGE_GERMAN":"Deutsch",
+"STATION_LANGUAGE_ITALIAN":"Italiano",
+
+
+
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
-"CHECKIN":"Check In"
+"CHECKIN":"Check In",
+"REG_CARD_TEXT":"Registration Card Text",
+"REG_CARD":"Registration Card",
+"ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
+"ENFORCE_DEPOSIT":"Enforce Deposit",
+"QR_SCANNER":"QR Scanner",
+"PUK_AUTH":"Authentication",
+"REG_CARD_DELIVERY":"Registration card delivery options",
+
+
+
+
+"NO_AVAIL_ROOM_MSG":"No Available Rooms Message",
+"KEY_PRINT_SUCCESS_MSG":"Key and Print Success Message",
+"KEY_SUCCESS_PRINT_FAIL_MSG":"Key Success / Print Fail Message",
+"KEY_FAIL_PRINT_SUCCESS":"Key Fail / Print Success Message",
+"KEY_AND_PRINT_FAIL_MSG":"Keys and Print Fail Message",
+"CHECKIN_WAIT_MSG":"Check In Wait Message"
+
+
+
+
+
         
         

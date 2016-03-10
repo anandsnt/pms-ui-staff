@@ -31,14 +31,14 @@
 								'postal_code':'',
 								'state':'',
 								'city':'',
-								'street1':'',
+								'street':'',
 								'street2':'',
 								'birthday':'',
-								'country_id':''
+								'country':''
 							  };
 
 		
-		for(year=1900;year<=new Date().getFullYear();year++){
+		for(year=new Date().getFullYear();year>=1900;year--){
 			$scope.years.push(year);
 		};
 		for(month=1;month<=12;month++){
@@ -74,6 +74,11 @@
 			$rootScope.netWorkError = true;
 			$scope.isLoading = false;
 		});
+
+
+		$scope.yearOrMonthChanged = function(){
+			$scope.guestDetails.day = "";
+		};
 		
 	
 		var getDataToSave = function(){
@@ -90,21 +95,26 @@
             else{
             	delete data["birthday"];
             };
-            
 			return data;
 		};
 		
-		$scope.opts = {
-			backdrop: true,
-			backdropClick: true,
-			templateUrl: '/assets/checkin/partials/guestDetailsErrorModal.html',
-			controller: ModalInstanceCtrl
-		};
+		
+		$scope.errorOpts = {
+	      backdrop: true,
+	      backdropClick: true,
+	      templateUrl: '/assets/preCheckin/partials/preCheckinErrorModal.html',
+	      controller: ccVerificationModalCtrl,
+	      resolve: {
+	        errorMessage:function(){
+	          return "Please provide all the required information";
+	        }
+	      }
+	    };
 
 		//post guest details
 		$scope.postGuestDetails = function(){
 
-			if($scope.guestDetails.country_id  && $scope.guestDetails.street1 && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
+			if($scope.guestDetails.country  && $scope.guestDetails.street && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ){
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
 				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
@@ -127,7 +137,7 @@
 				});
 			}
 			else{
-				$modal.open($scope.opts);
+				$modal.open($scope.errorOpts);
 			};
 		};		
 	}
@@ -138,5 +148,5 @@ var dependencies = [
 guestDetailsController
 ];
 
-snt.controller('guestDetailsController', dependencies);
+sntGuestWeb.controller('guestDetailsController', dependencies);
 })();

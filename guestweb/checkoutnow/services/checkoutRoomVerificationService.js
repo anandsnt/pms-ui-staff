@@ -26,5 +26,5 @@ var dependencies = [
 checkoutRoomVerificationService
 ];
 
-snt.factory('checkoutRoomVerificationService', dependencies);
+sntGuestWeb.factory('checkoutRoomVerificationService', dependencies);
 })();

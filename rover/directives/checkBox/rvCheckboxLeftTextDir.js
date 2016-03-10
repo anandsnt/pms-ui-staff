@@ -16,7 +16,7 @@ sntRover.directive('rvCheckboxtextLeft', function($timeout) {
             width: '@'
 	    },
 
-    	templateUrl: '../../assets/directives/checkBox/rvCheckboxLeftText.html'
+    	templateUrl: '/assets/directives/checkBox/rvCheckboxLeftText.html'
     };
 
 });

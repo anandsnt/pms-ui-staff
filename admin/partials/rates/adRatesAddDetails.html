@@ -1,7 +1,7 @@
 <!-- Header Collapse View -->
 <div ng-hide="rateMenu ==='Details'" ng-click="$emit('changeMenu','Details')" class="cursor_pointer">
     <em class="rate_step_title">Rate</em>&nbsp;<span class="italic_text">Details</span>
-    <div class="rate_additional_details_pointers"><img src="/assets/arrow-down.png">
+    <div class="rate_additional_details_pointers"><img src="/assets/cssimg/arrow-down.png">
     </div>
 </div>
 <!-- Expanded View -->
@@ -21,7 +21,7 @@
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
                     <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types" ng-change="onChangeRateType()"> 
-                        <option value="" disabled>Select Rate Type</option>
+                        <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
                     </select>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="entry margin">
                 <label>Charge code <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
+                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes" ng-change="onChangeChargeCode()">
                         <option value="">Select Charge Code</option>
                     </select>
                 </div>
@@ -44,7 +44,7 @@
                 <div class=" select-col col1-2 disabled-bg">
                     <ad-textbox label="Tax" inputtype="text" value="rateData.tax_inclusive_or_exclusive" readonly='yes' styleclass="col1-2" label="" placeholder="" style=" width: 100px;"></ad-textbox>
                 </div>
-                <label style=" padding-left: 113px;">currency <strong>*</strong> </label>
+                <label style=" padding-left: 113px;">currency</label>
                 <div class="select select-col col1-2 " style="float: right;">
                     <select class="placeholder" disabled="disabled" class="styled">
                         <option selected>{{currencySymbol}}</option>

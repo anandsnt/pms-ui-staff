@@ -3,6 +3,21 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/admin/settings/menu_items.json';
+		//var url = "ui/show?json_input=zestweb_v2/menuItem.json&format=json";
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+
+		ADBaseWebSrv.getJSON(url).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
+
+	this.fetchDashboardConfig = function(){
+		var deferred = $q.defer();
+		var url = '/admin/dashboard.json';
 
 
 		var fetchSuccess = function(data){
@@ -12,7 +27,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 			deferred.reject(data);
 		};
 
-		ADBaseWebSrv.getJSON(url).then(fetchSuccess, fetchFailed);
+		ADBaseWebSrvV2.getJSON(url).then(fetchSuccess, fetchFailed);
 		return deferred.promise;
 	};
 

@@ -7,7 +7,6 @@ admin.controller('ADFloorsListCtrl',
         '$anchorScroll',
         '$timeout',
         '$location',
-        'adTransactionCenterSrv',
     function(
         $scope,
         $state,
@@ -16,8 +15,7 @@ admin.controller('ADFloorsListCtrl',
         $filter,
         $anchorScroll,
         $timeout,
-        $location,
-        adTransactionCenterSrv){
+        $location){
 
 	BaseCtrl.call(this, $scope);
 
@@ -115,14 +113,8 @@ admin.controller('ADFloorsListCtrl',
          $scope.listFloorTypes();
     });
 
-    $scope.toggleAssignFloors = function(){
-        if(adTransactionCenterSrv.isTransactionRunning('SELECT_ROOMS_IN_ASSIGN_FLOORS')){
-            $scope.$broadcast('CONFIRM_USER_ACTION', {
-                userAction : "MANAGE_FLOORS"
-            });
-        }else{            
-            $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
-        }
+    $scope.toggleAssignFloors = function(){           
+        $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
     }
 
 	initializeMe();

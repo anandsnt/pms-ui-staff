@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
 <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
     <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
     <fieldset id="charge-options" class="actions">

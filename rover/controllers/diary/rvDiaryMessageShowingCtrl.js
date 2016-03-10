@@ -8,8 +8,9 @@ sntRover.controller('RVDiaryMessageShowingCtrl', ['$scope',
 
     	$scope.closeDialog = function(){
             //to add stjepan's popup showing animation
-            $rootScope.modalOpened = false;
+            $rootScope.modalClosing = true;
             $timeout(function(){
+                $rootScope.modalClosing = false;
                 ngDialog.close();
             }, 300);
     		if(callBack){

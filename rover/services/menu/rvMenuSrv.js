@@ -1,4 +1,4 @@
-sntRover.service('rvMenuSrv',
+angular.module('sntRover').service('rvMenuSrv',
 	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
 	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
 
@@ -55,6 +55,15 @@ sntRover.service('rvMenuSrv',
     */
     var isAutoBussinessDateChangeEnabled = function() {
     	return RVHotelDetailsSrv.hotelDetails.is_auto_change_bussiness_date;
+    };
+
+    /**
+     * Decide whether the task management submenu is to be shown in housekeeping menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowTaskManagementInHKMenu = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
     };
 
 	/**
@@ -153,7 +162,7 @@ sntRover.service('rvMenuSrv',
 		            action: 'rover.diary',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
-		        }, {
+		        },  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
 		            actionPopup: true,
@@ -171,7 +180,11 @@ sntRover.service('rvMenuSrv',
 	                action: "",
 	                actionPopup: true,
 	                menuIndex: "endOfDay"
-            	}]
+            	},{
+                    title: "MENU_ACTIONS_MANAGER",
+                    action: "rover.actionsManager",
+                    menuIndex: "actionManager"
+                }]
 		    }, {
 		        title: "MENU_GROUPS",
 		        //hidden: true,
@@ -242,7 +255,8 @@ sntRover.service('rvMenuSrv',
 		        }, {
 		            title: "MENU_TASK_MANAGEMENT",
 		            action: "rover.workManagement.start",
-		            menuIndex: "workManagement"
+		            menuIndex: "workManagement",
+		            hidden: !shouldShowTaskManagementInHKMenu()
 
 		        }, {
 		            title: "MENU_MAINTAENANCE",
@@ -280,7 +294,7 @@ sntRover.service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
-
+        
 		return processMenuList (menuList);
 	};
 
@@ -486,11 +500,6 @@ sntRover.service('rvMenuSrv',
 
 			//dont wanted to show on hourly enabled hotels
 			case 'menuGroups':
-				returnValue = !isHourlyRateOn();
-				break;
-
-			//we will show accounts on non hourly mode
-			case 'accounts':
 				returnValue = !isHourlyRateOn();
 				break;
 

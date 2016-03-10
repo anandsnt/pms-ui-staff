@@ -107,11 +107,11 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
 
             // destroy the the instance when the $scope is destroyed
             scope.$on('$destroy', function() {
-                if ( !!scope.$parent.myScroll[scroll_key] ) {
+                if ( scope.$parent.hasOwnProperty('myScroll') && !!scope.$parent.myScroll[scroll_key] ) {
                     scope.$parent.myScroll[scroll_key].destroy();
                     delete scope.$parent.myScroll[scroll_key];
                 };
             });
-    }
+        }
     };
 });

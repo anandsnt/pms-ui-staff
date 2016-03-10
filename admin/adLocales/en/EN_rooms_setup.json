@@ -3,6 +3,7 @@
 
 "ROOM_KEY_DELIVERY_SETUP":"Room Key Delivery Setup",
 "ZEST":"Zest",
+"STATION": "Station",
 "CHECKINS":"check in's",
 "DELIVER_QR_CODE_FOR_ROOM_KEY":"Deliver QR code for room key via email",
 "DELIVER_QR_CODE_TO_GUESTZEST_APP":"Deliver QR code to GuestZest App on Guests Smartphone",
@@ -54,7 +55,20 @@
 "OTHER_SETTINGS" : "Other settings",
 "AUTHENTICATION_KEY_TYPE" : "Authentication key types",
 "ROOM ASSIGNMENT HIGHEST TO LOWEST":"Room assignment highest to lowest",
-"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
+"CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
+"ENABLE_AUTO_CHECKIN" : "Room Ready Auto Check-In",
+"OFFER_MOBILEKEY_LABEL" : "Offer Option to use Mobile Phone Key",
+"MOBILE_KEY_SETTINGS_TITLE" : "Mobile app key availability and minimum requirements",
+"IOS_LABEL" : "IOS",
+"ANDROID_LABEL" : "ANDROID",
+"ENABLE_MOBILE_KEY_LABEL" : "ENABLE MOBILE KEY",
+"MIN_IOS_VERSION_LABEL" : "MINIMUM IOS VERSION",
+"MIN_ANDROID_VERSION_LABEL" : "MINIMUM ANDROID VERSION",
+"MIN_VERSION_LABEL" : "minimum version",
+"EXCLUDED_VERSION_LABEL" : "EXCLUDED OS VERSIONS",
+"MAINTENANCE_REASON_CODE_PLACEHOLDER" : "Maintenance Reason"
+
+
 
 
 

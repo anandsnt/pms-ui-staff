@@ -110,7 +110,18 @@
     "ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION_PARTIALLY_OKEY": "Some reservations don't meet auto assign room criteria",
     "ALLOTMENT_AUTO_ROOM_ASSIGN_FAILED_IN_PROCESSING": "Sorry, Allotment auto room assignment has failed for some reason. Please retry after closing this",
     "INSUFFICIENT_INV_ALLOTMENT_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Allotment, please review Allotment Room Block",
-    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again"   
+    "ROOM_TYPE_NOT_CONFIGURED_IN_ALLOTMENT":"Room type is not configured in Allotment, please review and try again",
+    "DISCARD_CHANGES": "Discard Changes",
+    "APPLY_TO_HELD": "Apply to Held Room Counts",
+    "UPDATE_CONTRACT": "Update Contract",
+    "UPDATE_CURRENT": "Update Current",
+    "APPLY_TO_CONTRACT": "Apply To Held Count To Contract",
+    "CONTRACT": "Contract",
+    "CURRENT_STATUS": "Current Status",
+    "RELEASE_DATES": "Release Dates",
+    "GRID_VIEW_LABEL": "Grid View",
+    "ALLOTMENT_NEXT_SET": "Next 14 Days",
+    "GO_TO_DATE": "Go To Date"
 
 
 
@@ -137,6 +148,13 @@
 "REMOVE_CHARGE":"Remove charge",
 "SPLIT_CHARGE":"Split charge",
 "SPLITTING_FOR":"Splitting for",
+"DATE_RANGE": "Date Range",
+"FROM_DATE": "From",
+"TO_DATE": "To",
+"PAYMENT": "Payment",
+"NEW_PAYMENT": "+ New Payment Method",
+"CREDIT_LIMIT": "Credit Limit",
+"REFERENCE_NUMBER": "Reference Number",
 "ENTITY":"Entity",
 "NUMBER":"Number",
 "ROUTE_TO_BILL":"Route to Bill #",
@@ -163,7 +181,8 @@
 "DETAILS": "Details",
 "SAVE_ROUTE": "Save Route",
 "SAVE": "Save",
-"CANCEL": "Cancel"
+"CANCEL": "Cancel",
+"NO_DEBIT_ALLOWED" : "NO DEBIT ALLOWED"
 ,"APPROVED": "Approved",
 "DATE": "Date",
 "TIME": "Time",
@@ -224,7 +243,7 @@
 
 
 	
-,    
+,
     "COMMISSION" : "Commission",
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
@@ -234,9 +253,34 @@
     "SELECT_CHARGE_CODE" : "Select Charge Code",
     "CHARGE_CODE" : "Charge Code",
     "ON" : "On",
-    "OFF" : "Off"
-    
-   
+    "OFF" : "Off",
+    "COMMISSION_START_DATE" : "Start Date",
+    "COMMISSION_CLEAR_QUERY" : "Clear query",
+    "COMMISSION_END_DATE" : "End Date",
+    "COMMISSION_COMMISSIONABLE" : "Commissionable",
+    "COMMISSION_NON_COMMISSIONABLE" : "Non-Commissionable",
+    "COMMISSION_PAID_STATUS" : "Paid Status",
+    "COMMISSION_SET_STATUS" : "Set Status",
+    "COMMISSION_UNPAID" : "Unpaid",
+    "COMMISSION_PAID" : "Paid",
+    "COMMISSION_STATUS" : "Status",
+    "COMMISSION_PREPAID" : "Prepaid",
+    "COMMISSION_UPDATE" : "Update",
+    "COMMISSION_TOTEL_REVENUE" : "Total Revenue",
+    "COMMISSION_TO_DATE" : "Commission To Date",
+    "COMMISSION_SELECT" : "Select",
+    "COMMISSION_SET_PAID_STATUS" : "Set Paid Status",
+    "COMMISSION_REVENUE" : "Revenue",
+    "COMMISSION_NEXT" : "NEXT",
+    "COMMISSION_PREVIOUS" : "PREVIOUS",
+    "COMMISSION_ITEMS" : "items",
+    "COMMISSION_SHOWING" : "Showing",
+    "COMMISSIONS" : "Commissions",
+    "COMMISSION_ALL" : "All",
+    "COMMISSION_Tax" : "Tax"
+
+
+
 
 ,    
     "ALL": "All",
@@ -256,6 +300,7 @@
     "MENU_CREATE_RESERVATION" : "Create Reservation",
     "MENU_ROOM_ASSIGNMENT":"Room Assignment",
     "MENU_POST_CHARGES":"Post Charges",
+    "MENU_ACTIONS_MANAGER":"Actions Manager",
     "MENU_CASHIER":"Cashier",
     "MENU_END_OF_DAY":"End of Day",
     "MENU_CONVERSATIONS":"Conversations",
@@ -301,7 +346,7 @@
     "WEBSOCKET_CONNECTION_ERROR":"Could not connect to the card handler service. The card swipe facility will not be available for this session."
 
 ,
-	
+
 	"CONTRACTED_NIGHTS": "Contracted Nights",
 	"COPY_VALUES": "Copy values",
 	"COMPANY": "Company",
@@ -310,7 +355,7 @@
     "CONTRACTS": "Contracts",
     "RESERVATIONS": "Reservations",
     "FIND_CARDS":"FIND CARDS",
-    
+
     "COMAPNY_INFO": "Company Info",
     "COUNTRY": "Country",
     "SELECT_COUNTRY": "Select country",
@@ -319,7 +364,7 @@
     "PREVIEW_NOT_AVAILABLE": "Preview not available",
     "EXTENDED_COMPANY_DETAILS": "Extended Company Details",
     "PRIMARY_CONTACT_DETAILS": "Primary Contact Details",
-    
+
     "SELECT_CONTRACT": "Select contract",
     "NEW_CONTRACT": "New Contract",
     "SAVE_CONTRACT": "Save Contract",
@@ -339,7 +384,7 @@
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
     "AVERAGE_RATE": "Average Rate",
-    
+
 	"COMPANY_CARD": "Company Card",
 	"TA_CARD": "Travel Agent Card",
 	"CREATE_NEW": "Create New",
@@ -369,6 +414,7 @@
     "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
     "TA_SAVE_PROMPT" : "Please save Travel Agent Card first",
     "ADD_BILLLING_INFORMATION" : "Add Billing Information",
+    "BILLLING_INFORMATION" : "Billing Information",
     "BILLING_INFORMATION" : "Billing information",
     "ROUTES_DEFINED" : "routes defined",
     "ACCOUNTS_RECIEVABLE_NUMBER" : "Accounts Receivable Number",
@@ -402,7 +448,9 @@
     "SAVE": "Save",
     "CANCEL": "Cancel",
     "COMPANY_CARD_DETACH_BILLING_INFO_WARNING": "Removing card may update Billing and Rate Information",
-    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity."
+    "COMPANY_CARD_DETACH_TRANSACTION_EXIST_ERROR": "Charges have been routed to the Company / Travel Agent account, please adjust Billing Information prior to removing entity.",
+    "PAYMENT_TERMS" : "Payment Due (Days)",
+    "TAX_ID" : "Tax ID"
 ,    
     
     "GREETING_MORNING": "Good Morning",
@@ -550,6 +598,7 @@
 	
 	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
+	"SEARCH_BY_ROOM_NO": "Search by Room No.",
 	"FILTER_ROOMS": "Filter rooms",
 	"CLEAR_QUERY": "Clear query",
 	"CLEAR": "Clear",
@@ -631,7 +680,7 @@
 	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
 
 
-,	
+,
 
 	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Dept. / House",
 	"ALL_DEPARTMENTS":"All Departments",
@@ -682,7 +731,8 @@
 	"OPENING" : "Opening",
 	"DEBIT" : "Debit",
 	"CREDIT" : "Credit",
-	"CLOSING" : "Closing",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"CLOSING" : "Closing",
+	"CHARGE_DESCRIPTION" : "Charge Description",    "PRINT_ROOM_KEY" : "Print Room Key",
     "PRINT_NEW_ROOM_KEY" : "Print New Key(s)",
     "PRINT_DUPLICATE_ROOM_KEY" : "Duplicate Key(s)",
     "WILL_NOT_VALIDATE_PREVIOUS" : " Will Not ",
@@ -923,7 +973,8 @@
     "CONFIRM_RESERVATION"   : "Confirm Reservation",
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
     "RESERVATION_CANCELLED" : "Reservation cancelled",
-    "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured"
+    "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
+    "CORPORATE_LABEL" : "CONTRACT"
 
 
 ,    
@@ -1189,6 +1240,7 @@
     "ROOM_NO":"Room No.",
     "TAX_NO":"Tax No.",
     "INVOICE_NO":"Invoice No.",
+    "REFERENCE_NO": "Reference Number",
     "INVOICE_DATE":"Invoice date",
     "DATE_OF_CHARGE":"Date of Charge",
     "CHARGE_DESC":"Charge description",
@@ -1201,8 +1253,20 @@
     "TOTAL_INCL_TAX":"Total Incl Tax",
     "UPDATE":"Update",
     "NOT_DEFINED": "Not Defined",
-    "DONT_PRINT_RATE" : "Don't Print Rate"
+    "DONT_PRINT_RATE" : "Don't Print Rate",
 
+    "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded"
+
+,"ADD_NEW_WORKSTATION" : "Add New Workstation",
+"WORKSTATION_NAME" : "Workstation Name",
+"WORKSTATION_NAME_PLACEHOLDER" : "Enter Workstation Name",
+"WORKSTATION_ID" : "Workstation ID",
+"WORKSTATION_ID_PLACEHOLDER" : "Enter Workstation ID",
+"EMV_TERMINAL" : "EMV Terminal",
+"KEY_ENCODER" : "Key Encoder",
+"ADD_TERMINAL" : "Add terminal",
+"TERMINAL_DEFAULT_OPTION" : "Select a Terminal",
+"KEY_ENCODER_DEFAULT_OPTION" : "Select an Encoder"
 ,
 
 

@@ -1,5 +1,5 @@
-<div role="dialog" id="modal" class="modal-show"><form name="new-hlp" ng-click="setPosition()" method="post" id="new-hlp" class="modal-content form new-content" action="index.html">
-	<button type="button" id="modal-close" ng-click = "cancel()" class="modal-close">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}"><form name="new-hlp" ng-click="setPosition()" method="post" id="new-hlp" class="modal-content form new-content" action="index.html">
+	<button type="button" id="modal-close" click-touch = "cancel()" class="modal-close">
 		<span class="icons icon-close invert"></span>
 	</button>
 	<strong class="h2 message" translate>NEW_HOTEL_LOYALTY_PROGRAM</strong>
@@ -30,8 +30,8 @@
 			<input type="text" ng-model="userMembershipNumber" name="code" id="ff-code">
 		</div>
 		<div class="actions float">
-			<button type="button" id="cancel" class="button blank modal-close" ng-click="cancel()" translate>CANCEL</button>
-			<button type="button" id="save" class="button green modal-close" ng-click="save()" translate>ADD</button>
+			<button type="button" id="cancel" class="button blank modal-close" click-touch="cancel()" translate>CANCEL</button>
+			<button type="button" id="save" class="button green modal-close" click-touch="save()" translate>ADD</button>
 		</div>
 		<input type="hidden" id="newhlp_id">
 	</form>

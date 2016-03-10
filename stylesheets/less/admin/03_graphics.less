@@ -91,6 +91,10 @@
             background-position: 13px -1501px;
 
         }
+
+        &.icon-copy-down { background-position: 2px -1600px; }
+        &.icon-copy-both { background-position: 2px -1650px; }
+        &.icon-copy-up { background-position: 2px -1700px; }
     }
 
     .status {
@@ -571,6 +575,16 @@
         &.guest-alert {
             background-position: 0 -2680px;
             .square(20px);
+        }
+
+        &.icon-save { 
+            background-position: 0 -3280px;
+            .square(20px); 
+        }   
+
+        @media @highdpi {
+            background-image: @iconsApp2x;
+            background-size: 120px;
         }
     }
 

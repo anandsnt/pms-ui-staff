@@ -22,7 +22,7 @@ var DPHeadPanel = React.createClass({
 		for(i = 0, j = this.props.headerTop.length; i < j; i++) {
 			topRowCells.push(
 				DPthCell({
-					'colspan' : this.props.colspan,
+					'colspan' : this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
 					'data'    : this.props.headerTop[i]
 				})
 			);
@@ -52,7 +52,7 @@ var DPtdCell = React.createClass({
 	render: function() {
 		var tag;
 
-		if ( this.props.isLastRow ) {
+		if ( this.props.isLastRow || this.props.isBold ) {
 			tag = 'strong';
 		} else if ( this.props.isAvail ) {
 			tag = 'em';
@@ -81,7 +81,8 @@ var DPBodyRow = React.createClass({
 					'isAvail'   : this.props.rowData[i]['isAvail'],
 					'isRev'     : this.props.rowData[i]['isRev'],
 					'className' : this.props.rowData[i]['cls'],
-					'data'      : this.props.rowData[i]['value']
+					'data'      : this.props.rowData[i]['value'],
+					'isBold'    : this.props.rowData[i]['isRateType']
 				})
 			);
 		};
@@ -100,7 +101,7 @@ var DPBodyPanel = React.createClass({
 			rows.push(
 				DPBodyRow({
 					'rowData'   : this.props.reportData[i],
-					'isLastRow' : 1 == j - i
+					'isLastRow' : this.props.isLastRowSum && 1 == j - i
 				})
 			);
 		};
@@ -115,12 +116,14 @@ var DPContent = React.createClass({
 				'className' : 'statistics-reports',
 			},
 			DPHeadPanel({
-				'colspan'    : this.props.colspan,
-				'headerTop'  : this.props.headerTop,
-				'headerBot'  : this.props.headerBot
+				'colspan'    	: this.props.colspan,
+				'headerTop'  	: this.props.headerTop,
+				'headerBot'  	: this.props.headerBot,
+				'colspanArray'  : this.props.colspanArray
 			}),
 			DPBodyPanel({
-				'reportData' : this.props.reportData
+				'reportData' : this.props.reportData,
+				'isLastRowSum' : this.props.isLastRowSum
 			})
 		);
 	},

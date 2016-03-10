@@ -42,16 +42,16 @@
                 
                 <!-- Allotment tabs navigation -->
                 <ul id="allotment-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li  ng-click="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
+                    <li  click-touch="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
                         <a id="summary" translate>ALLOTMENT_SUMMARY</a>
                     </li>
-                    <li class="with-filters" ng-click="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}">
+                    <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}">
                         <a translate>ALLOTMENT_DETAILS</a>
                     </li>
-                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" ng-click="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}">
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}">
                         <a translate>ALLOTMENT_RESERVATIONS</a>
                     </li>
-                    <li ng-click="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}">
+                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}">
                         <a translate>ALLOTMENT_ACTIVITY</a>
                     </li>
                 </ul>

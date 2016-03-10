@@ -124,6 +124,15 @@ admin.controller('ADKeyEncoderCtrl',['$scope', '$state', 'ADRatesSrv', 'ADKeyEnc
 		$scope.invokeApi(ADKeyEncoderSrv.updateEncoderStatus, data, postSuccess);
 	};
 
+	$scope.deleteEncoder = function(index,id){
+		var deleteEncoderSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.data.splice(index, 1);
+			$scope.currentClickedElement = -1;
+		};
+		$scope.invokeApi(ADKeyEncoderSrv.deleteEncoder, id, deleteEncoderSuccess);
+	};
+
 
 
 	/****************************************************************************************/

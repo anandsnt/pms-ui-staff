@@ -10,7 +10,12 @@ angular.module('accountsModule', [])
             url: '/accounts',
             abstract: true,
             templateUrl: '/assets/partials/accounts/rvAccountsRoot.html',
-            controller: 'rvAccountsRootCtrl'
+            controller: 'rvAccountsRootCtrl',
+            resolve: {               
+                accountsAssets: function(jsMappings, mappingList) {
+                    return jsMappings.fetchAssets(['rover.accounts', 'directives']);
+                }
+            }
         });
 
         //company card details
@@ -20,8 +25,8 @@ angular.module('accountsModule', [])
             controller: 'rvAccountsSearchCtrl',
             resolve: {
                 //to tackle from coming admin app to rover
-                initialAccountsListing: ['rvAccountsSrv',
-                    function(rvAccountsSrv) {
+                initialAccountsListing: ['rvAccountsSrv', 'accountsAssets',
+                    function(rvAccountsSrv, accountsAssets) {
                         //as per CICO-13899, initially we are looking for groups which has from & to date equal
                         // to business date
                         var params = {
@@ -38,7 +43,7 @@ angular.module('accountsModule', [])
 
         //group summary : CICO-6096
         $stateProvider.state('rover.accounts.config', {
-            url: '/account/:id/:activeTab/:isFromArTransactions',
+            url: '/account/:id/:activeTab/:isFromArTransactions/:isFromCards',
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
             controller: 'rvAccountsConfigurationCtrl',
             onEnter: ['$stateParams', function($stateParams) {
@@ -50,8 +55,8 @@ angular.module('accountsModule', [])
                 }
             }],
             resolve: {
-                accountData: ['rvAccountsConfigurationSrv', '$stateParams',
-                    function(rvAccountsConfigurationSrv, $stateParams){
+                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets',
+                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets){
                         var params = {
                             accountId: $stateParams.id
                         };

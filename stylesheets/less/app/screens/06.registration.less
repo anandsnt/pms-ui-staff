@@ -104,6 +104,25 @@
 
                             img { .size(auto, 40px); }
                         }
+
+                        &.error {
+                            position: relative;
+                            padding-left: 20px;
+
+                            &:after {
+                                content: "!";
+                                position: absolute;
+                                top: 5px;
+                                left: 5px;
+                                font-size: 12px;
+                                line-height: 14px;
+                                text-align: center;
+                                color: @white;
+                                background: @red;
+                                .square(14px);
+                                #border-radius > .rounded(14px);
+                            }
+                        }
                     }
 
                     &.new-bill {
@@ -874,7 +893,9 @@
 
     /* Complete registration */
     .complete-registration {
-        margin-top: 10px;
+        margin-top: 20px;
+        padding-top: 20px;
+        .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
         h2 { margin-bottom: 10px; }
 
@@ -885,7 +906,9 @@
 
             .checkbox,
             a {
-                line-height: 30px;
+                font-size: 14px;
+                line-height: 20px;
+                text-transform: uppercase;
                 .pull-left;
                 .show;
             }
@@ -893,9 +916,13 @@
             a { margin-left: 5px; }
 
             .checkbox {
-                .icon-checkbox { top: 5px; }
+                .icon-checkbox { 
+                    top: 0;
+                    left: 0; 
+                }
 
-                &.single { margin-top: 10px; }
+                &.single { margin: 15px 0 0 0; }
+                
                 &:last-child { clear: both; }
             }
         }
@@ -910,10 +937,7 @@
                 width: 100%;
                 .show;
 
-                &.blank { 
-                    margin-top: 10px;
-                    line-height: 40px; 
-                }
+                &.blank { line-height: 40px; }            
             }
         }
     }

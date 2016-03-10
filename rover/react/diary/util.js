@@ -188,15 +188,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 		return;
 	};
-
-	Date.prototype.stdTimezoneOffset = function() {
-	    var jan = new Date(this.getFullYear(), 0, 1);
-	    var jul = new Date(this.getFullYear(), 6, 1);
-	    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-	};
-
 	
-
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Sunday',
 					  'Monday',

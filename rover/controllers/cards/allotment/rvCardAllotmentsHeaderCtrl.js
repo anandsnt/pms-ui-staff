@@ -1,4 +1,4 @@
-sntRover.controller('rvCardAllotmentsHeaderCtrl', ['$scope', function($scope){
+angular.module('sntRover').controller('rvCardAllotmentsHeaderCtrl', ['$scope', function($scope){
 	BaseCtrl.call(this, $scope);
 	
     /**

@@ -1,4 +1,4 @@
-sntRover.service('RVreportsSubSrv', [
+angular.module('sntRover').service('RVreportsSubSrv', [
 	'$q',
 	'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
@@ -90,7 +90,7 @@ sntRover.service('RVreportsSubSrv', [
 		service.fetchReportDetails = function(params) {
 			return callApi({
 				// no name here since we dont want to cache it in the store ever
-				method : 'getJSON',
+				method : 'postJSON',
 				url    : '/api/reports/' + params.id + '/submit',
 				params : _.omit(params, 'id')
 			});
@@ -176,11 +176,17 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchComTaGrp = function(query) {
+		service.fetchComTaGrp = function(query, exclude_groups) {
+			var urlPrams = '?query=' + query;
+
+			if (exclude_groups) {
+				urlPrams += '&exclude_groups=true';
+			};
+
 			return callApi({
 				// no name here since we dont want to cache it in the store ever
 				method : 'getJSON',
-				url    : 'api/reports/search_by_company_agent_group?query=' + query,
+				url    : 'api/reports/search_by_company_agent_group' + urlPrams,
 				resKey : 'results'
 			});
 		};
@@ -214,6 +220,44 @@ sntRover.service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchRateTypesAndRateList = function(params) {
+			return callApi({
+				name   : 'rateTypeAndRateList',
+				method : 'getJSON',
+				url    : '/api/rates/active',
+				resKey : 'rates',
+                params : {
+                    include_custom_rates: true //This service is used ONLY for the Daily Production Rate Report Filters & hence this param is added to the request
+                }
+			});
+		};
+
+		service.fetchRateCode = function(params) {
+			return callApi({
+				name   : 'rateCodeList',
+				method : 'getJSON',
+				url    : '/api/rates/codes',
+				resKey : 'rate_codes',
+			});
+		};
+
+		service.fetchRoomTypeList = function(params) {
+			return callApi({
+				name   : 'roomTypeList',
+				method : 'getJSON',
+				url    : '/api/room_types.json?is_exclude_pseudo=true',
+				resKey : 'results'
+			});
+		};
+
+		service.fetchRestrictionList = function() {
+			return callApi({
+				name   : 'restrictionList',
+				method : 'getJSON',
+				url    : '/api/restriction_types?is_activated=true',
+				resKey : 'results'
+			});			
+		};
 		return service;
 	}
 ]);

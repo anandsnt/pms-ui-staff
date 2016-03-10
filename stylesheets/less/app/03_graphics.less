@@ -103,10 +103,33 @@
 			&.late-check-out { background-position: 6px -1901px; }
 		}
 
+		&.no-image { background-image: none; }
+
 		/* @2x Icons ***/
 		@media @highdpi {
 			background-image: @icons2x;
 			background-size: 120px;
+		}
+	}
+	
+/* Icons before Text 			==================================*/
+	.icon-before-text {
+		position: relative;
+
+		&:before {
+			display:inline-block;
+			vertical-align: middle;
+			background-image: @icons;
+			background-repeat: no-repeat;
+			border: 0;
+			content:'';
+			margin-right:.5em;
+		}
+
+		&.icon-ok-10:before{
+			background-color: transparent;
+			background-position: 0 -5860px;
+			.square(14px);
 		}
 	}
 
@@ -231,8 +254,10 @@
 			&.icon-gc-location { background-position: 10px -269px; }
 			&.icon-gc-phone { background-position: 10px -308px; }
 			&.icon-gc-email { background-position: 10px -345px; }
-			&.icon-gc-company { background-position: 10px -2588px; background-size: 90px; }
-			&.icon-gc-ta { background-position: 10px -2675px; background-size: 90px; }
+			&.icon-gc-company { background-position: 5px -3512px; }
+			&.icon-gc-ta { background-position: 5px -3632px; }
+
+			&.icon-notes { background-position: 0 -8980px; }
 
 			&.icon-queued { 
 				background-position: 0px -4179px;
@@ -290,6 +315,8 @@
 			}
 
 			&.icon-time {
+				background-position: 0 -8918px;
+				
 				&.time-in { background-position: 10px -4050px; }
 				&.time-out { background-position: 10px -4110px; }
 			}
@@ -426,6 +453,11 @@
 				.square(14px);
 			}
 
+			&.icon-ok-20 {
+				background-position: 0 -8860px;
+				.square(20px);
+			}
+
 			&.icon-ok-10 {
 				background-color: transparent;
 				background-position: 0 -5860px;
@@ -529,6 +561,7 @@
 		&.icon-rate { background-position: 0 -390px;}
 		&.icon-group { background-position: 0 -420px;}
 		&.icon-balance { background-position: 0 -450px; }
+		&.icon-cards { background-position: 0 -480px; }
 
 		@media @highdpi {
 			background-image: @iconReports2x;

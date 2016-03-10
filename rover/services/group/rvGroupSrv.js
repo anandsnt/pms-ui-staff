@@ -1,4 +1,4 @@
-sntRover.service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
+angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 	function($q, rvBaseWebSrvV2) {
 
 		//some default values
@@ -48,6 +48,11 @@ sntRover.service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
 				'per_page': params.per_page,
 				'page': params.page
 			};
+
+            // Groups that are not deducted from inventory are exculded from card searches in Reservation module
+            if (params.is_take_from_inventory){
+                data.is_take_from_inventory = true;
+            }
 
 			rvBaseWebSrvV2.getJSON(url, data).then(
 				function(data) {

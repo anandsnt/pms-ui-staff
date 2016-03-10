@@ -26,9 +26,10 @@
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
 			$scope.DailogeState.sendConfirmatonMailTo = typeof $scope.$parent.DailogeState!== 'undefined' ? $scope.$parent.DailogeState.sendConfirmatonMailTo : "";
 			$scope.DailogeState.isCancelled = false;
-			$scope.ngDialogData.penalty = $filter("number")($scope.ngDialogData.penalty, 2);
+			
 			if ($scope.ngDialogData.penalty > 0) {
 				$scope.$emit("UPDATE_CANCEL_RESERVATION_PENALTY_FLAG", true);
+				$scope.ngDialogData.penalty = parseFloat($scope.ngDialogData.penalty).toFixed(2);
 			};
 
 			$scope.setScroller('cardsList', {

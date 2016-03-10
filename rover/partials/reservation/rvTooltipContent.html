@@ -1,4 +1,8 @@
-<div class="tooltip" ng-class="{'has-restrictions' : object.event.toolTipData.restrictions.length > 0}">
+<div class="tooltip" ng-class="{'has-restrictions' : object.event.toolTipData.restrictions.length > 0, 
+                                 'position-left' : object.event.toolTipPos == 'left',
+                                 'position-right' : object.event.toolTipPos == 'right',
+                                 'position-center' : object.event.toolTipPos == 'center'
+                              }">
    <!-- Details, only show those that apply -->
    <ul class="details">
       <li><span class="label">Rate</span><strong>{{object.event.toolTipData.rate_name}}</strong></li>

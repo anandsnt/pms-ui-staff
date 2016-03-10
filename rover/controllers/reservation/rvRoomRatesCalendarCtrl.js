@@ -143,7 +143,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 			    return typeof room_rate !== "undefined" ? "" : "undefined";
 			}else if($scope.stateVariables.selectedRate !== ""){
 				var rate = _.findWhere(dailyData.rates, {id:$scope.stateVariables.selectedRate});
-				if(typeof rate !== undefined &&  _.reduce(rate.room_rates, function(a, b){
+				if(rate &&  _.reduce(rate.room_rates, function(a, b){
 					return b.availability > 0 ? a.concat(b) : a;
 				}, []).length > 0 )
                     return "";
@@ -282,7 +282,8 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				editable 	: false,
 				title 		: title == "" || title == 'undefined'? bestRateData.bestAvailableRate.toString() : title,
 				toolTipData : bestRateData,
-				currencySymbol : $scope.currencySymbol
+				currencySymbol : $scope.currencySymbol,
+				currentCalendar : ''
 			};
 
 			return eventData;
@@ -326,9 +327,11 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				eventData = formEventData(dailyData);
 
 				if (isProcessingLeftSideCalendar(dailyData)) {
+					eventData.currentCalendar = "left";
 					calendarData.left.push(eventData);
 				} 
 				else if (isProcessingRightSideCalendar(dailyData)) {
+					eventData.currentCalendar = "right";
 					calendarData.right.push(eventData);
 				}
 			});

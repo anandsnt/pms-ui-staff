@@ -22,7 +22,7 @@
 
 /* 3. IMAGES
 ==========================================================*/
-	@background: 			@backgroundColor url("../../../../../assets/css/themes/zoku/background.png") repeat;
+	@background: 			@backgroundColor url("/assets/zest_station/css/themes/zoku/background.png") repeat;
 	@backgroundSize: 		1024px;
 
 	@headerIconsColor: 		darken(@white, 40);
@@ -35,20 +35,11 @@
 		&.icon-no-print { stroke: @white; }
 	}
         section,#main{
-            background-image: url('../../../../../assets/css/themes/zoku/background.png');
+            background-image: url('/assets/zest_station/css/themes/zoku/background.png');
             background-size: 75% !important;
             color:@textColor;
         }
         
-/* Admin Button */
-        .bottom-right {
-            position:absolute;
-            right: 0;
-            bottom: 0;
-        }
-        .invis{
-            opacity: .1;
-        }
 /*  Date Picker  to resolve issue with prev/next buttons*/
 #picker > div > div > a{
     text-indent: 0px;
@@ -65,4 +56,14 @@
     background-image: @brandColor !important;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@brandColor), to(@brandColor)) !important;
     background-image: -webkit-linear-gradient(top, @brandColor, @brandColor) !important;
+}
+.zoku-style{
+    background-color:#707070 !important;
+    color: white !important;
+}
+.re-centered{
+    color: white !important;
+}
+.size-up{
+    width:75%;
 }
