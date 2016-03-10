@@ -746,10 +746,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				name: $scope.accountConfigData.summary.posting_account_name,
 				logo: "GROUP_DEFAULT"
 			});
-	    	$scope.$emit('showLoader'); 
+	    	$scope.$emit('showLoader');
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
-            	$scope.$emit('hideLoader'); 
+            	$scope.$emit('hideLoader');
 			    ngDialog.open({
 			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 			        controller: 'rvBillingInformationPopupCtrl',
@@ -1299,6 +1299,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			//since we are recieving two ouside click event on tapping outside, we wanted to check and act
 			$scope.isUpdateInProgress = false;
 		};
+		//CICO-23143
+		$scope.$on("SET_ACTIONS_COUNT", function(event, value){
+			if(value === "new"){
+				$scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) + parseInt(1);
+				$scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) + parseInt(1);
+			} else if(value === "complete"){
+				$scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+			}
+		});
 
 		/**
 		 * [isInStaycardScreen description]
@@ -1351,4 +1360,5 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			$scope.computeSegment();
 		}();
 	}
+
 ]);

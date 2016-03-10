@@ -350,6 +350,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     }
                 }
                 $scope.fetchActionsList();
+                $scope.$emit("SET_ACTIONS_COUNT", "new");
                 $scope.refreshScroller("rvActionListScroller");
             };
             var onFailure = function(data){
@@ -935,6 +936,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     },900);
                 }
                 $scope.openingPopup = false;
+
             };
             var onFailure = function(data){
                 $scope.$emit('hideLoader');
@@ -1240,6 +1242,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     $scope.actionSelected = 'selected';
                 }
                 $scope.isRefreshing = false;
+                $scope.$emit("SET_ACTIONS_COUNT", "complete");
+
             };
             var onFailure = function(data){
                 if (data[0]){
