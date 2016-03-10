@@ -650,7 +650,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			};
 			options.successCallBack = defered.resolve;
 			options.failureCallBack = defered.reject;
-			$scope.callAPI(rvGroupActionsSrv.fetchTasks, options);
+			$scope.callAPI(rvGroupActionsSrv.getActionsTasksList, options);
 			return defered.promise;
 		};
 
