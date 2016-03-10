@@ -54,11 +54,15 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.groupId = $scope.groupConfigData.summary.group_id;
             }
             $scope.populateTimeFieldValue();
-            $scope.setScroller("rvActionListScroller");
+            $scope.setScroller("rvActionListScroller", {
+                click: true,
+                preventDefault: false
+            });
 
             $scope.setUpData();
 
-            $scope.fetchActionsList();
+            $scope.fetchDepartments();
+            fetchActionListSuccessCallBack($scope.ngDialogData);
         };
         $scope.lastSavedDescription = '';
         $scope.updateActionDescription = function(description_old, description_new){
@@ -877,72 +881,74 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             } else return false;
         };
 
+        var fetchActionListSuccessCallBack = function (data) {
+            $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+
+            var list = data.data;
+            var matchObj;
+            for (var x in list){
+                if (list[x].assigned_to !== null){
+                    list[x].assigned = true;
+                } else {
+                    list[x].assigned = false;
+                }
+                if (typeof list[x].time_due === typeof 'string'){
+                    matchObj = getTimeObj(list[x].time_due);
+                    list[x].due_at_time = matchObj;
+
+                } else {
+                    list[x].due_at_time = $scope.timeFieldValue[0];
+                }
+                if (typeof list[x].due_at === typeof 'string'){
+                    list[x].due_at_date = getFormattedDate(list[x].due_at, 'due_at_date');
+                    list[x].hasDate = true;
+                } else {
+                    list[x].hasDate = false;
+                }
+
+                if (list[x].action_status === "COMPLETED"){
+                    list[x].isCompleted = true;
+                    list[x].date_completed = getFormattedDate(list[x].completed_at, 'date_completed');
+                    list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
+                }
+
+                if (list[x].created_at){
+                    list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
+                    list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
+                }
+
+            }
+            $scope.actions = list;
+            $scope.actions.totalCount = list.length;
+            if (list.length === 0) {
+                $scope.actionSelected = 'none';
+            }
+            $scope.setActionsHeaderInfo();
+
+            setTimeout(function(){
+                if ($scope.actions[0]){
+                    $scope.selectAction($scope.actions[0]);
+                }
+                $scope.$apply();
+            },100);
+            if ($scope.openingPopup){
+                setTimeout(function(){
+                    $scope.initPopup();
+                },900);
+            }
+            $scope.openingPopup = false;
+        };
+
+        var fetchActionListFailureCallBack = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.setActionsHeaderInfo();
+        };
+
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
-            var onSuccess = function(data){
-                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
-
-                var list = data.data;
-                var matchObj;
-                for (var x in list){
-                    if (list[x].assigned_to !== null){
-                        list[x].assigned = true;
-                    } else {
-                        list[x].assigned = false;
-                    }
-                    if (typeof list[x].time_due === typeof 'string'){
-                        matchObj = getTimeObj(list[x].time_due);
-                        list[x].due_at_time = matchObj;
-
-                    } else {
-                        list[x].due_at_time = $scope.timeFieldValue[0];
-                    }
-                    if (typeof list[x].due_at === typeof 'string'){
-                        list[x].due_at_date = getFormattedDate(list[x].due_at, 'due_at_date');
-                        list[x].hasDate = true;
-                    } else {
-                        list[x].hasDate = false;
-                    }
-
-                    if (list[x].action_status === "COMPLETED"){
-                        list[x].isCompleted = true;
-                        list[x].date_completed = getFormattedDate(list[x].completed_at, 'date_completed');
-                        list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
-                    }
-
-                    if (list[x].created_at){
-                        list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
-                        list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
-                    }
-
-                }
-                $scope.actions = list;
-                $scope.actions.totalCount = list.length;
-                if (list.length === 0) {
-                    $scope.actionSelected = 'none';
-                }
-                $scope.setActionsHeaderInfo();
-
-                setTimeout(function(){
-                    if ($scope.actions[0]){
-                        $scope.selectAction($scope.actions[0]);
-                    }
-                    $scope.$apply();
-                },100);
-                if ($scope.openingPopup){
-                    setTimeout(function(){
-                        $scope.initPopup();
-                    },900);
-                }
-                $scope.openingPopup = false;
-            };
-            var onFailure = function(data){
-                $scope.$emit('hideLoader');
-                $scope.setActionsHeaderInfo();
-            };
 
             var data = {id:$scope.groupConfigData.summary.group_id};
-            $scope.invokeApi(rvGroupActionsSrv.getActionsTasksList, data, onSuccess, onFailure);
+            $scope.invokeApi(rvGroupActionsSrv.getActionsTasksList, data, fetchActionListSuccessCallBack, fetchActionListFailureCallBack);
         };
 
         var getTimeFromDateStr = function(d, via){

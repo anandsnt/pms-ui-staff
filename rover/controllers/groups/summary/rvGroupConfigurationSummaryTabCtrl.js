@@ -636,13 +636,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		};
 
 		var successCallBackForFetchGroupActions = function(data) {
-			//TODO open popup
 			ngDialog.open({
 				template: '/assets/partials/groups/summary/rvGroupActions.html',
 				controller: 'rvGroupActionsCtrl',
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false,
+				data: JSON.stringify(data),
 				preCloseCallback: function () {
 					$scope.$emit("FETCH_SUMMARY");
 				}
@@ -654,16 +654,16 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		};
 
 		var fetchGroupActions = function () {
-			var defered = $q.defer(),
+			var deferred = $q.defer(),
 				options = {};
 
 			options.params = {
 				id: $scope.groupConfigData.summary.group_id
 			};
-			options.successCallBack = defered.resolve;
-			options.failureCallBack = defered.reject;
+			options.successCallBack = deferred.resolve;
+			options.failureCallBack = deferred.reject;
 			$scope.callAPI(rvGroupActionsSrv.getActionsTasksList, options);
-			return defered.promise;
+			return deferred.promise;
 		};
 
 		/**
