@@ -6,13 +6,19 @@
 		</div>
 		<div id="restictionsList" class="scrollable"  ng-iscroll ng-iscroll-delay="1000">
 			<ul class="wrapper">
+                <!-- Add class selected when clicked,
+                     Add class overlay if its not available for the user to change
+                     Add class value-not-inserted if the restriciton can be edited but there is no value -->
 				<li class="restriction-type"
-                    ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView),'overlay': (restrictionType.isOnRate == true || hasRestrictionPermissions == false || getRestriction(restrictionType, 'is_on_rate') == true)}" 
+                    ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView),'overlay': ( restrictionType.isOnRate == true || hasRestrictionPermissions == false || getRestriction(restrictionType, 'is_on_rate') == true), 'value-not-inserted': (restrictionType.days === '' && restrictionType.hasEdit ) }" 
 					ng-repeat="restrictionType in data.restrictionTypes"
 					ng-hide="(restrictionType.hideOnHourly == true && data.isHourly) || 
-                                         (!data.isHourly && !data.id && restrictionType.hideOnHourly == true && data.isHourly != false)">
+                                         (!data.isHourly && !data.id && restrictionType.hideOnHourly == true && data.isHourly != false)"
+                                         ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index, restrictionType)"
+                    >
                 		
             		<!-- add class .toggable if on click we need to insert some data or click a button example. Mixed -->
+                    <!-- on click only opens the middle screen, it does not toggle the button -->
             		<div ng-hide="restrictionType.description === 'Has Restrictions'" 
 						 class="restriction-left"
 						 ng-class="{'toggable': (restrictionType.hasEdit || restricitonType.isMixed)}">
@@ -25,24 +31,25 @@
                         <span ng-show="restrictionType.hasEdit" class="icons icon-double-arrow rotate-right"></span>
                               
                     </div>
-                    <div class="restriction-right"
-                            ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index, restrictionType)">
+                    <!-- on click toggles the button -->
+                    <!-- can be toggled only if when the user can change the value and when there are days inserted if the restricitonType has edit -->
+                    <div class="restriction-right" >
                           	
                             
-                        	<!-- Show if the restriction is mixed -->
-                            <div ng-show="restrictionType.isMixed" class="mixed-button">
-                                Mixed
-                            </div> 
-                        	
-                        	<!-- Show if it is not mixed -->
-                        	<!-- Add class .on if the restriciton is enabled && not disabled -->
-                        	<!-- add class .disabled if the restriction is editable but no days inserted -->
-                            <div ng-show="!restrictionType.isMixed" class="switch-button " ng-class="{'on': restrictionType.isRestrictionEnabled, 'disabled':(restrictionType.hasEdit && restrictionType.days ==='')}">
-                                <span class="switch-icon"></span>
-                                <!-- add checked if the restriction is enabled && not disabled -->
-                                <!-- add disabled if the restriction is editable but no days inserted -->
-                                <input type="checkbox" ng-checked="restrictionType.isRestrictionEnabled" ng-disabled="restrictionType.hasEdit && restrictionType.days ===''" value=""/>
-                            </div>
+                    	<!-- Show if the restriction is mixed -->
+                        <div ng-show="restrictionType.isMixed" class="mixed-button">
+                            Mixed
+                        </div> 
+                    	
+                    	<!-- Show if it is not mixed -->
+                    	<!-- Add class .on if the restriciton is enabled && not disabled -->
+                    	<!-- add class .disabled if the restriction is editable but no days inserted -->
+                        <div ng-show="!restrictionType.isMixed" class="switch-button " ng-class="{'on': restrictionType.isRestrictionEnabled, 'disabled':(restrictionType.hasEdit && restrictionType.days ==='')}">
+                            <span class="switch-icon"></span>
+                            <!-- add checked if the restriction is enabled && not disabled -->
+                            <!-- add disabled if the restriction is editable but no days inserted -->
+                            <input type="checkbox" ng-checked="restrictionType.isRestrictionEnabled" ng-disabled="restrictionType.hasEdit && restrictionType.days ===''" value=""/>
+                        </div>
                                
                     </div> 
 			</li>

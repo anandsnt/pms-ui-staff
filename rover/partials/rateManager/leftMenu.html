@@ -58,12 +58,13 @@
                     	<!-- add Class .checked to label and icon, add attribute checked='checked' on input
 							when checked, otherwise remove all that
                     	 -->
+                    	 <!-- this will toggle ratesRoomsToggle to == 'RATES' -->
                         <label class="checkbox radio inline checked">
                             <span class="icon-form icon-radio checked" ng-class="{'checked':currentFilterData.is_checked_all_rates}"></span>
                             <input name="show" value="rates" type="radio" ng-change="clickedAllRates()" ng-model="currentFilterData.is_checked_all_rates"  />
                             ALL RATES
                         </label>
-
+                        <!-- this will toggle ratesRoomsToggle to != 'RATES' -->
                         <label class="checkbox radio inline ">
                             <span class="icon-form icon-radio " ></span>
                             <input name="show" value="rooms" type="radio" />

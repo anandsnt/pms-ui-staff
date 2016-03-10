@@ -5377,6 +5377,8 @@
                 }
                 .footer {
                     .float;
+                    position: relative;
+                    z-index: 999;
                     .calc-height( 100, 554 );
 
                     .actions {
@@ -5395,6 +5397,7 @@
 
                 .modal-body {
                     .float;
+                    overflow: hidden;
                     .calc-height( 100, 192 );
                     h3 {
                         text-align: center;
@@ -5471,6 +5474,14 @@
                                 .restriction-name,
                                 .restriction-icon,
                                 .restriction-right {
+                                    opacity: 0.2;
+                                }
+                            }
+
+                            &.value-not-inserted {
+                                .restriction-name,
+                                .restriction-icon,
+                                .restriction-right {
                                     opacity: 0.4;
                                 }
                             }
@@ -5501,6 +5512,7 @@
                         
                                 .mixed-button {
                                     font-size: 6px;
+                                    margin-top: 5px;
                                     line-height: 12px;
                                     text-shadow: none;
                                     text-align: center;
@@ -5702,6 +5714,10 @@
                                 .h2 {
                                     font-size:18px;
                                 }
+                            }
+                            .button {
+                                width:auto;
+                                display:inline-block;
                             }
                         }
                         .apply-all-button {
