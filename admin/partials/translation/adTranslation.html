@@ -1,0 +1,110 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div>
+        <header class="content-title float">
+            <h2> Translations </h2>
+            <div class="entry right-float">
+                <span class="search-text">SELECT LANGUAGE</span>
+                <div class="filters">
+                    <div class="filter select">
+                        <div class="entry">
+                            <div class="select">
+                                <select ng-model="languages.default_locale_id" name="locale" id="locale" class="placeholder">
+                                    <option ng-model="locale.id" ng-repeat="locale in languages.locales" value="{{locale.id}}" ng-selected="locale.id==languages.default_locale_id"> {{locale.description}} </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section class="content-scroll">
+
+            <div id="sections" class="cms-grid">
+                <div class="grid-options">
+                    <div class="entry filter">
+                        <label translate>MENU_OPTION</label>
+                        <div class="select">
+                            <select ng-model="filter.menuOption" name="menu-option" id="menu-option" class="placeholder">
+                                    <option ng-model="menuOption.id" ng-repeat="menuOption in menuDetails.menu_options" value="{{menuOption.id}}" ng-selected="menuOption.id==filter.menuOption"> {{menuOption.name}} </option>
+                                </select>
+                        </div>
+                    </div>
+                    <div class="entry filter">
+                        <label translate>ITEM</label>
+                        <div class="select">
+                            <select ng-model="filter.item" name="item" id="item" class="placeholder">
+                                    <option ng-model="item.id" ng-repeat="item in items" value="{{item.id}}" ng-selected="item.id==filter.item"> {{item.name}} </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry search">
+                        <label translate>SEARCH</label>
+                        <div class="holder">
+                            <button class="icons icon-search ng-scope" translate="" name="submit" type="submit">SEARCH</button>
+                            <input class="query ng-pristine ng-valid" placeholder="Search by Label" ng-model="searchText" id="structure-search" autocomplete="off" type="search">
+                        </div>
+                    </div>
+                </div>
+
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+
+
+
+            <div id="new-form-holder"></div>
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
+                <tbody>
+                    <tr ng-repeat="translation in $translations" ng-class = "{'inactive': !rate.status}">
+                        <td data-title="'Label'" sortable="'rate'" header-class="width-25" ng-hide="currentClickedElement == $index">
+                            {{translation.name}}
+                        </td>
+
+                        <td data-title="'Translation'"  sortable="'based_on'" header-class="width-20" >
+                            <ad-textbox value="translation.value" inputtype="access-url" name="value" id="value" label="" styleclass="full-width"></ad-textbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <!--end -->
+
+        <!--Custom pagination footer goes here-->
+        <script type="text/ng-template" id="custom/pager">
+            <div class = "pager">
+                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                <span ng-show="totalCount==0">Showing 0 items</span>
+                <ul class="ng-cloak">
+                    <li ng-repeat="page in pages"
+                        ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                        ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+
+                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <!--end-->
+
+        <div class="actions float">
+            <button type="button" ng-click ="back()" class="button blank">
+                Cancel
+            </button>
+            <button type="button" ng-click="clickedSave()" class="button green">
+                Save Changes
+            </button>
+            <button type="button" ui-sref="admin.users({id:id})" ng-if="isAdminSnt && isEdit" class="button green">
+                User Setup
+            </button>
+        </div>
+    </div>
+</section>
+
+<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">

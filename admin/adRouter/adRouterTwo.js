@@ -576,7 +576,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 		$stateProvider.state('admin.translations', {
-			templateUrl: '/assets/partials/translations/adTranslation.html',
+			templateUrl: '/assets/partials/translation/adTranslation.html',
 			controller: 'ADTranslationCtrl',
 			url : '/translation',
 			resolve : {
@@ -584,7 +584,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 					return ADTranslationSrv.getGuestLanguages();
 				},
 				menuDetails : function(ADTranslationSrv) {
-					return ADTranslationSrv.fetchInvoiceSettings();
+					return ADTranslationSrv.getMenuOptionDetails();
 				}
 			}
 		});
