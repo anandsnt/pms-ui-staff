@@ -1,7 +1,7 @@
 angular.module('rateManagerModule', [])
     .config(function($stateProvider, $urlRouterProvider, $translateProvider){
         $stateProvider.state('rover.newRateManager', {
-            url: '/todo/',
+            url: '/ratemanager/',
             templateUrl: '/assets/partials/rateManager_/rvRateManagerRoot.html',
             controller: 'rvRateManagerCtrl_',
             resolve: {

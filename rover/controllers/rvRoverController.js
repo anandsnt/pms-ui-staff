@@ -459,8 +459,8 @@ sntRover.controller('roverController',
     //(bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
     var routeChange = function(event, newURL) {
-      //event.preventDefault();
-      //return;
+      event.preventDefault();
+      return;
     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
