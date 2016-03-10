@@ -152,7 +152,7 @@ module.exports = function(gulp, $, options) {
 				fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
 			}
 		};
-		console.log(fileList);
+
 		return gulp.src(fileList, {base: '.'})
 			.pipe($.babel())
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));

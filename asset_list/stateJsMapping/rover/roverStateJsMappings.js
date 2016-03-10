@@ -62,6 +62,10 @@ module.exports = {
 				filename: roverJsListRoot + 'reactJsAssetList.js',
 				babelify: false
 			},
+			'redux.files': {
+				filename: roverJsListRoot + 'reduxJsAssetList.js',
+				babelify: false
+			},
 			'highcharts': {
 				filename: roverJsListRoot + 'highchartsJsAssetList.js',
 				babelify: false
