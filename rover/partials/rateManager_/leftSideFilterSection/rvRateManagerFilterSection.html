@@ -152,21 +152,21 @@
 
             </div>
         </div>
-        <div class="company-card-results ng-hide" ng-hide="companyCardResults.length === 0 || companySearchText === ''"
-             style="height: 42px; top: 0px">
-            <div class="search-results" iscroll="nameOnCard" ng-iscroll-delay="100">
-                <ul id="search-list">
-                    <!-- ngRepeat: row in companyCardResults -->
-                </ul>
-            </div>
+    </div>
+    <div class="company-card-results ng-hide" ng-hide="companyCardResults.length === 0 || companySearchText === ''"
+         style="height: 42px; top: 0px">
+        <div class="search-results" iscroll="nameOnCard" ng-iscroll-delay="100">
+            <ul id="search-list">
+                
+            </ul>
         </div>
-        <div class="entry action-filter">
-            <div class="actions float" style="position:absolute; bottom: 0px;">
-                <button class="button green" type="button" ng-click="onClickShowRates()"
-                        ng-disabled="toggleShowRates()"
-                        ng-class="{ grey: toggleShowRates() }" style="">Show Rates
-                </button>
-            </div>
+    </div>
+    <div class="entry action-filter">
+        <div class="actions float">
+            <button class="button green" type="button" ng-click="onClickShowRates()"
+                    ng-disabled="toggleShowRates()"
+                    ng-class="{ grey: toggleShowRates() }" style="">Show Rates
+            </button>
         </div>
     </div>
 </div>

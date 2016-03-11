@@ -1,6 +1,6 @@
-<div id="modal" class="rm-calendar-popup modal-show">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <form ng-cloak method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form date-range-update">
-        <button id="modal-close" class="modal-close" type="button" ng-click="cancelClicked()">
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()">
             <span class="icons icon-close invert"></span>
         </button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -15,7 +15,7 @@
             <div ui-date="toDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd"></div>
         </fieldset>
         <div class="actions">
-            <button type="button" class="button blank" ng-click="cancelClicked()">Cancel</button>
+            <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
             <button class="button green"
                     ng-click="updateClicked()"
                     type="button"
