@@ -308,8 +308,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		// To contract delete API call
-		$scope.deleteContractConfirmed = function() {
+		$scope.deleteContractConfirmed = function(event) {
 
+			event.stopPropagation();
 			var deleteContractSuccessCallback = function() {
 				$scope.errorMessage = "";
 				$scope.$emit('hideLoader');
