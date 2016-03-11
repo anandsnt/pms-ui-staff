@@ -30,7 +30,8 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
                                             "reg_card_text":$scope.zestSettings.reg_card_text,
                                             "enforce_deposit":$scope.zestSettings.enforce_deposit,
                                             "check_in_message_texts" : $scope.zestSettings.check_in_message_texts,
-                                            "show_room_number":$scope.zestSettings.show_room_number
+                                            "show_room_number":$scope.zestSettings.show_room_number,
+                                            "checkin_screen":$scope.zestSettings.checkin_screen
                                         }
 
                              };

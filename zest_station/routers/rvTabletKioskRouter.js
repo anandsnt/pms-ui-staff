@@ -209,7 +209,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_reservation', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
-             templateUrl: '/assets/partials/kiosk/specific/find-reservation.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsFindReservation.html',
          });
          
          
