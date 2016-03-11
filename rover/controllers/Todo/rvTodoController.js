@@ -8,8 +8,8 @@ angular.module('sntRover').controller('rvTodoController', ['$scope', function($s
     };
 
     let store = configureStore(initialState);
-
-    ReactDOM.render(
+    const {render} = ReactDOM; 
+    render(
         <ReactRedux.Provider store={store}>
             <App />
         </ReactRedux.Provider>,

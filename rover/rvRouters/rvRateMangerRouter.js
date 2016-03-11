@@ -21,7 +21,7 @@ angular.module('rateManagerModule', [])
                     return RateMngrCalendarSrv.fetchSortOptions();
                 },
                 rates: function(RMFilterOptionsSrv, rateMgrAssets) {
-                    return RMFilterOptionsSrv.fetchRates();
+                    return RMFilterOptionsSrv.fetchAllRates();
                 },
                 rateTypes: function(RMFilterOptionsSrv, rateMgrAssets) {
                     return RMFilterOptionsSrv.fetchRateTypes();

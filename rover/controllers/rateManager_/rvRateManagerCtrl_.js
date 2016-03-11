@@ -50,9 +50,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         setHeadingAndTitle( 'RATE_MANAGER_TITLE' );
 
         initializeDataModel();
-
-        //we have to open the filter on the left side
-        $scope.rateManagerDataModel.filterOptions.isVisible = true;
     })();
 
 }]);

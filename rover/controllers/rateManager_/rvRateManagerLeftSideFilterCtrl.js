@@ -45,9 +45,20 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
      * @param  {[type]} tab [description]
      * @return {[type]}     [description]
      */
-    $scope.switchTab = (tab) => { 
+    $scope.switchTabAndCorrespondingActions = (tab) => { 
         $scope.rateManagerDataModel.filterOptions.viewTypeSelection.chosenTab = tab;
         refreshScroller();
+
+        if (tab === 'SHOW_ALL') {
+            let viewSelection = $scope.rateManagerDataModel.filterOptions.viewTypeSelection,
+                selectedRateTypes = viewSelection.selectedRateTypes,
+                selectedRates = viewSelection.selectedRates;
+
+            //if coming back to show all tab after clearing the all selection from other tab, we have to set default value
+            if(!selectedRateTypes.length && !selectedRates.length && !viewSelection.showAllRates && !viewSelection.showAllRoomTypes) {
+                $scope.rateManagerDataModel.filterOptions.viewTypeSelection.showAllRates = true;
+            }
+        }
     };
 
     /**
@@ -97,6 +108,153 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
     };
 
     /**
+     * on choosing the rate type from list, we will be adding to selected list
+     */
+    $scope.rateTypeSelected = () => {
+        if ($scope.selectedRateTypeID.trim !== '') {
+            let rateTypeList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.rateTypes,
+                
+                selectedRateTypeList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes,
+
+                conditionToTest = { id: parseInt( $scope.selectedRateTypeID ) },
+
+                selectedRateType = _.findWhere( rateTypeList , conditionToTest), 
+                
+                alreadyExistInSelectedRateTypeList = (_.findIndex( selectedRateTypeList, conditionToTest ) > -1 );
+
+            if( !!selectedRateType && !alreadyExistInSelectedRateTypeList) {
+                $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes.push( selectedRateType );
+
+                //adding the elements will change the height
+                refreshScroller();
+            }
+
+            clearAllRatesAndAllRoomTypes();
+        }
+    };
+
+    /**
+     * to delete
+     * @param  {LongInteger} rateTypeID [selected rate type's id to delete]
+     */
+    $scope.deleteSelectedRateType = (rateTypeID) => {
+        var indexToDelete = _.findIndex( $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes , { id: parseInt( rateTypeID ) });
+        $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes.splice(indexToDelete, 1);
+        
+        //deleting the node will change the height
+        refreshScroller();
+    };
+
+    /**
+     * to remove all selected rate type in one take
+     */
+    $scope.deleteAllSelectedRateTypes = () => {
+        $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes = [];
+
+        //deleting the nodes will change the height
+        refreshScroller();
+    };
+
+    /**
+     * utility function to clean the ALL RATES/ALL ROOM TYPE radio box
+     */
+    var clearAllRatesAndAllRoomTypes = () => {
+        Object.assign($scope.rateManagerDataModel.filterOptions.viewTypeSelection, {
+            showAllRates: false,
+            showAllRoomTypes: false
+        });
+    };
+
+    /**
+     * on choosing the rate from list, we will be adding to selected list
+     */
+    $scope.rateSelected = () => {
+        if ($scope.selectedRateID.trim !== '') {
+            let rateList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.rates,
+                
+                selectedRateList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates,
+
+                conditionToTest = { id: parseInt( $scope.selectedRateID ) },
+
+                selectedRate = _.findWhere( rateList , conditionToTest), 
+                
+                alreadyExistInSelectedRateList = (_.findIndex( selectedRateList, conditionToTest ) > -1 );
+
+            if( !!selectedRate && !alreadyExistInSelectedRateList) {
+                $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates.push( selectedRate );
+
+                //adding the elements will change the height
+                refreshScroller();
+            }
+
+            clearAllRatesAndAllRoomTypes();
+        }
+    };
+
+    /**
+     * to delete
+     * @param  {LongInteger} rateID [selected rate's id to delete]
+     */
+    $scope.deleteSelectedRate = (rateID) => {
+        var indexToDelete = _.findIndex( $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates , { id: parseInt( rateID ) });
+        $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates.splice(indexToDelete, 1);
+
+        //deleting the node will change the height
+        refreshScroller();    
+    };
+
+    /**
+     * to remove all selected rates in one take
+     */
+    $scope.deleteAllSelectedRates = () => {
+        $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates = [];
+        
+        //deleting the nodes will change the height
+        refreshScroller();
+    };
+
+    /**
+     * we will show the rates conditionalyy
+     * @param  {Object} rate Object
+     * @return {Boolean}
+     */
+    $scope.shouldShowRate = (rate) => {
+        //if "'Select Rate Type' choosed from Rate type down choosed"
+        if($scope.selectedRateTypeID === '') {
+            return true;
+        }
+
+        var selectedRateTypeIDs = _.pluck($scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes, "id");
+        return ( selectedRateTypeIDs.indexOf( rate.rate_type.id ) > -1 );
+    };
+
+    /**
+     * on tapping the ALL RATES radio box
+     */
+    $scope.changedAllRatesSelection = () => {
+        if ($scope.rateManagerDataModel.filterOptions.viewTypeSelection.showAllRates) {
+            $scope.rateManagerDataModel.filterOptions.viewTypeSelection.showAllRoomTypes = false;
+        }
+
+        //we will clear out all selected from other tab
+        $scope.deleteAllSelectedRates();
+        $scope.deleteAllSelectedRateTypes();
+    };
+
+    /**
+     * on tapping the ALL ROOM TYPES radio box
+     */
+    $scope.changedAllRoomTypes = () => {
+        if ($scope.rateManagerDataModel.filterOptions.viewTypeSelection.showAllRoomTypes) {
+            $scope.rateManagerDataModel.filterOptions.viewTypeSelection.showAllRates = false;
+        }
+
+        //we will clear out all selected from other tab
+        $scope.deleteAllSelectedRates();
+        $scope.deleteAllSelectedRateTypes();
+    };
+
+    /**
      * inorder to show the two month calendar on tapping the date range button
      */
     $scope.showCalendar = () => {
@@ -113,10 +271,22 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         });
     };
 
+    /**
+     * data model for UI will be initialized from here
+     */
     var initializeDataModelForMe = () => {
         $scope.selectedDateRange = '';
 
         $scope.orderByValueMappings = rvRateManagerOrderByConstants;
+
+        //we have to open the filter on the left side 
+        $scope.rateManagerDataModel.filterOptions.isVisible = true;
+
+        //ng-model for rate type selection
+        $scope.selectedRateTypeID = '';
+
+        //ng-model for rate selection
+        $scope.selectedRateID = '';
     };
 
     /**

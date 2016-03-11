@@ -15,7 +15,7 @@
 
                     <div class="entry has-datepicker">
                         <label for="rmDateRange">DATE RANGE</label>
-                        <input id="rmDateRange" placeholder="select Date Range" readonly="" maxlength="8" value="{{selectedDateRange}}" class="hasDatepicker">
+                        <input id="rmDateRange" placeholder="Select Date Range" readonly="" maxlength="8" value="{{selectedDateRange}}" class="hasDatepicker">
                         <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
                     </div>
 
@@ -66,9 +66,9 @@
 
                     <!-- ADD Class .active on clicked item, remove otherwise -->
                     <ul class="tabs-nav">
-                        <li><a href="#radioShowContainer" ng-click="switchTab('SHOW_ALL')" ng-class="{'active': rateManagerDataModel.filterOptions.viewTypeSelection.chosenTab ==='SHOW_ALL'}">Show All</a></li>
+                        <li><a href="#radioShowContainer" ng-click="switchTabAndCorrespondingActions('SHOW_ALL')" ng-class="{'active': rateManagerDataModel.filterOptions.viewTypeSelection.chosenTab ==='SHOW_ALL'}">Show All</a></li>
                         
-                        <li><a href="#select-rate" ng-click="switchTab('SELECT_RATE')" ng-class="{'active': rateManagerDataModel.filterOptions.viewTypeSelection.chosenTab ==='SELECT_RATE'}" >Select Rate</a></li>
+                        <li><a href="#select-rate" ng-click="switchTabAndCorrespondingActions('SELECT_RATE')" ng-class="{'active': rateManagerDataModel.filterOptions.viewTypeSelection.chosenTab ==='SELECT_RATE'}" >Select Rate</a></li>
                     </ul>
 
                     <!-- Active tab has class .active -->
@@ -77,17 +77,19 @@
                         <!-- add Class .checked to label and icon, add attribute checked='checked' on input
                             when checked, otherwise remove all that
                          -->
-                        <label class="checkbox radio inline checked">
-                            <span class="icon-form icon-radio checked"
-                                  ng-class="{'checked':currentFilterData.is_checked_all_rates}"></span>
-                            <input name="show" value="rates" type="radio" ng-change="clickedAllRates()"
-                                   ng-model="currentFilterData.is_checked_all_rates" class="ng-pristine ng-valid">
+                        <label class="checkbox radio inline" ng-class="{'checked': rateManagerDataModel.filterOptions.viewTypeSelection.showAllRates}">
+                            <span class="icon-form icon-radio"
+                                  ng-class="{'checked': rateManagerDataModel.filterOptions.viewTypeSelection.showAllRates}"></span>
+                            <input name="show" value="rates" type="radio" ng-change="changedAllRatesSelection()"
+                                   ng-model="rateManagerDataModel.filterOptions.viewTypeSelection.showAllRates">
                             ALL RATES
                         </label>
 
-                        <label class="checkbox radio inline ">
-                            <span class="icon-form icon-radio "></span>
-                            <input name="show" value="rooms" type="radio">
+                        <label class="checkbox radio inline " 
+                            ng-class="{'checked': rateManagerDataModel.filterOptions.viewTypeSelection.showAllRoomTypes}">
+                            <span class="icon-form icon-radio " 
+                                ng-class="{'checked': rateManagerDataModel.filterOptions.viewTypeSelection.showAllRoomTypes}"></span>
+                            <input name="show" ng-change="changedAllRoomTypes()" value="rooms" type="radio" ng-model="rateManagerDataModel.filterOptions.viewTypeSelection.showAllRoomTypes">
                             ALL ROOM TYPES
                         </label>
                     </div>
@@ -98,29 +100,31 @@
                         
                         <div class="entry">
                             <div class="select">
-                                <select iscroll-stop-propagation id="rmRateType" name="rate-type">
+                                <select ng-change="rateTypeSelected()" ng-model="selectedRateTypeID" iscroll-stop-propagation id="rmRateType" name="rate-type">
                                     <option class="placeholder" value="">Select Rate Type</option>
-                                    <option ng-repeat="rateType in rateManagerDataModel.filterOptions.viewTypeSelection.rateTypes"
-                                        value="{{rateType.id}}"
-                                    >{{rateType.name}}</option>
+                                    <option ng-repeat="rateType in rateManagerDataModel.filterOptions.viewTypeSelection.rateTypes" value="{{rateType.id}}">
+                                        {{rateType.name}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
 
-                        
-						<span class="deleteall">
-							<a ng-click="deleteSelectedRateType('ALL')"
-                               ng-show="currentFilterData.rate_type_selected_list.length > 1" class="ng-hide">
+                        <div class="rates-box" ng-repeat="rateType in rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes">
+                            <span class="rate-data">{{rateType.name}}</span>
+                            <span ng-click="deleteSelectedRateType(rateType.id)" class="icons delete_small"> &nbsp;</span>
+                        </div>
+
+                        <span class="deleteall" ng-show="rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes.length > 2">
+                            <a ng-click="deleteAllSelectedRateTypes()">
                                 CLEAR ALL RATE TYPES
                             </a>
-						</span>
+                        </span>
 
                         <div class="entry">
                             <div id="rmCurrentFilterData" class="select">
-                                <select iscroll-stop-propagation="" id="rmRate">
+                                <select iscroll-stop-propagation ng-model="selectedRateID" id="rmRate" ng-change="rateSelected()">
                                     <option class="placeholder" value="">Select Rate</option>
-                                    <!-- ngRepeat: rate in currentFilterData.rates | filter:removeExpiredRates -->
-                                    <option ng-repeat="rate in rateManagerDataModel.filterOptions.viewTypeSelection.rates"
+                                    <option ng-show="shouldShowRate(rate)" ng-repeat="rate in rateManagerDataModel.filterOptions.viewTypeSelection.rates"
                                         value="{{rate.id}}" >
                                         {{rate.name}}
                                     </option>
@@ -128,14 +132,16 @@
                             </div>
                         </div>
 
-                        <!-- ngRepeat: rates in currentFilterData.rates_selected_list -->
-						<span class="deleteall">
-							<a ng-click="deleteRate('ALL')" ng-show="currentFilterData.rates_selected_list.length > 2"
-                               class="ng-hide">
+                        <div class="rates-box" ng-repeat="rate in rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates">
+                            <span class="rate-data">{{rate.name}}</span>
+                            <span ng-click="deleteSelectedRate(rate.id)" class="icons delete_small"> &nbsp;</span>
+                        </div>
+
+                        <span class="deleteall" ng-show="rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates.length > 2">
+                            <a ng-click="deleteAllSelectedRates()">
                                 CLEAR ALL RATES
                             </a>
-						</span>
-
+                        </span>
                     </div>
 
                     <hr>
