@@ -232,6 +232,7 @@ angular.module('reportsModule')
 
             // if filter value is either of these, must include when report submit
             if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
+                selected = true;
                 report['hasGeneralOptions']['title'] = filter.description;
             };
 
@@ -368,6 +369,17 @@ angular.module('reportsModule')
 
             // create DS for options combo box
             __setData(report, 'hasShow', {
+                type         : 'FAUX_SELECT',
+                show         : false,
+                selectAll    : true,
+                defaultTitle : 'Select Options',
+                allTitle     : 'Both',
+                title        : 'Both',
+                data         : []
+            });
+
+            // create DS for options combo box
+            __setData(report, 'hasChargeTypes', {
                 type         : 'FAUX_SELECT',
                 show         : false,
                 selectAll    : true,
