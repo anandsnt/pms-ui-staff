@@ -2,9 +2,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     '$scope',
     '$filter',
     'rvRateManagerDataModelSrv',
+    'rateMgrSelectedOrderPrefrnce',
+    'rateMgrOrderValues',
+    'rateTypes',
+    'rates',
     function($scope,
              $filter,
-             rvRateManagerDataModelSrv) {
+             rvRateManagerDataModelSrv,
+             rateMgrSelectedOrderPrefrnce,
+             rateMgrOrderValues,
+             rateTypes,
+             rates) { 
 
     BaseCtrl.call(this, $scope);
 
@@ -25,6 +33,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var initializeDataModel = () => {
         $scope.rateManagerDataModel = rvRateManagerDataModelSrv.getDataModel();
+
+        //filling the sort options & preferred one from the admin
+        $scope.rateManagerDataModel.filterOptions.orderBy.selectedValue = rateMgrSelectedOrderPrefrnce.id;
+        $scope.rateManagerDataModel.filterOptions.orderBy.values = rateMgrOrderValues;
+
+        //filling the rate & rate types
+        $scope.rateManagerDataModel.filterOptions.viewTypeSelection.rateTypes = rateTypes;
+        $scope.rateManagerDataModel.filterOptions.viewTypeSelection.rates = rates.results;
     };
 
     /**

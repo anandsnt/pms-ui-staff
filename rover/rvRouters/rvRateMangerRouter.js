@@ -13,6 +13,18 @@ angular.module('rateManagerModule', [])
                 },
                 rateMgrAssets: function (jsMappings, reduxAssets) {
                     return jsMappings.fetchAssets(['rover.newRateManager']);
+                },
+                rateMgrSelectedOrderPrefrnce: function(RateMngrCalendarSrv, rateMgrAssets) {
+                    return RateMngrCalendarSrv.fetchSortPreferences();
+                },
+                rateMgrOrderValues: function(RateMngrCalendarSrv, rateMgrAssets) {
+                    return RateMngrCalendarSrv.fetchSortOptions();
+                },
+                rates: function(RMFilterOptionsSrv, rateMgrAssets) {
+                    return RMFilterOptionsSrv.fetchRates();
+                },
+                rateTypes: function(RMFilterOptionsSrv, rateMgrAssets) {
+                    return RMFilterOptionsSrv.fetchRateTypes();
                 }
             }
         });

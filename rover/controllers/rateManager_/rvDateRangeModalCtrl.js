@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('rvDateRangeModalCtrl',
-    ['$scope', 'ngDialog', '$filter', 'dateFilter', '$rootScope','rvUtilSrv',
-        function($scope, ngDialog, $filter, dateFilter, $rootScope, util ) {
+    ['$scope', 'ngDialog', '$filter', 'dateFilter', '$rootScope','rvUtilSrv', 'rvTwoMonthCalendarEventConstants',
+        function($scope, ngDialog, $filter, dateFilter, $rootScope, util, rvTwoMonthCalendarEventConstants ) {
             'use strict';
 
             /**
@@ -11,7 +11,7 @@ angular.module('sntRover').controller('rvDateRangeModalCtrl',
                     fromDate: $scope.fromDate,
                     toDate: $scope.toDate
                 };
-                $scope.$emit("TWO_MONTH_CALENDAR_DATE_UPDATED", updatedData);
+                $scope.$emit( rvTwoMonthCalendarEventConstants.TWO_MONTH_CALENDAR_DATE_UPDATED, updatedData );
                 ngDialog.close();
             };
 

@@ -1,9 +1,7 @@
 sntRover.service('rvRateManagerDataModelSrv', [
     'rvRateManagerZoomLevelConstants',
-    'rvRateManagerOrderByConstants',
     'rvRateManagerGroupByConstants',
     function(rvRateManagerZoomLevelConstants,
-             rvRateManagerOrderByConstants,
              rvRateManagerGroupByConstants) {
 
     this.getDataModel = () => (
@@ -22,16 +20,18 @@ sntRover.service('rvRateManagerDataModelSrv', [
                 },
 
                 orderBy: {
-                    selectedValue: 'ALPHABETICAL', //default value
-                    values: rvRateManagerOrderByConstants
+                    selectedValue: null, //will be assigning to the preferred from the admin
+                    values: [], //will be filled from API once we get to the view
                 },
 
                 groupBy: {
-                    selectedValue: null, //default value
+                    selectedValue: '', //default value
                     values: rvRateManagerGroupByConstants
                 },
 
                 viewTypeSelection: {
+                    chosenTab: 'SHOW_ALL', //list of values applicable: 'SHOW_ALL', 'SELECT_RATE'
+
                     showAllRates: true,
                     showAllRoomTypes: false,
 

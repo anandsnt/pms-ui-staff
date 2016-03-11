@@ -33,7 +33,7 @@ angular.module('sntRover').service('rvPermissionSrv',
 	* will return true or false
 	*/
 	this.getPermissionValue = function (permissionString) {
-		var permission = _.find (roverPermissions, {code: permissionString});
+		var permission = _.findWhere (roverPermissions, {code: permissionString});
 		if (permission) {
 			return permission.value;
 		}

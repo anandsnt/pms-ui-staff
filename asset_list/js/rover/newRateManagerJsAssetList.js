@@ -7,6 +7,7 @@ module.exports = {
                     roverRoot + "react/todo/**/*.js",
                     roverRoot + "redux/todo/**/*.js",
                     roverRoot + "constants/rateManager/**/*.js",
+                    roverRoot + "constants/eventConstants/rvTwoMonthCalendarEventConstants.js",
                     roverRoot + "services/rateManager/**/*.js",
                     roverRoot + "controllers/rateManager_/**/*.js"
                 ]

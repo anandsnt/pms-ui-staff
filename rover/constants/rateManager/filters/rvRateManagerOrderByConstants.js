@@ -1,14 +1,5 @@
-sntRover.constant('rvRateManagerOrderByConstants', [
-    {
-        text: 'Lowest Rate',
-        value: 'LOWEST_RATE'
-    },
-    {
-        text: 'Highest Rate',
-        value: 'HIGHEST_RATE'
-    },
-    {
-        text: 'Alphabetical',
-        value: 'ALPHABETICAL'
-    }
-]);
+sntRover.constant('rvRateManagerOrderByConstants', {
+    'LOW_TO_HIGH'   : 'Lowest Rate',
+    'HIGH_TO_LOW'   : 'Highest Rate',
+    'ALPHABETICAL'  : 'Alphabetical'
+});
