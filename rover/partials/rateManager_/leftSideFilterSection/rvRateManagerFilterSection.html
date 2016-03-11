@@ -1,5 +1,8 @@
-<div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options slide_right"
-     ng-click="hideCompanyCardSearchResults()">
+<div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options"
+     ng-click="hideCompanyCardSearchResults()" 
+     ng-class="{'slide_right': rateManagerDataModel.filterOptions.isVisible,
+                'slide_left': !rateManagerDataModel.filterOptions.isVisible}" >
+
     <a class="leftMenuHandle" ng-click="toggleFilterOption()"></a>
     <div class="filter-padding">
         <div class="fixed-container">
