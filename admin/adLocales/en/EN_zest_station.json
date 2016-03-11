@@ -44,9 +44,11 @@
 "QR_SCANNER":"QR Scanner",
 "PUK_AUTH":"Authentication",
 "REG_CARD_DELIVERY":"Registration card delivery options",
-
-
-
+"SECOND_AUTHENTICATION":"Second Authentication",
+"DEPARTURE_DATE":"Departure Date",
+"EMAIL":"Email",
+"CONFIRMATION":"Confirmation",
+"AUTH_NO_OF_NIGHTS":"Number of Nights",
 
 "NO_AVAIL_ROOM_MSG":"No Available Rooms Message",
 "KEY_PRINT_SUCCESS_MSG":"Key and Print Success Message",

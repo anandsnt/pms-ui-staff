@@ -25,11 +25,32 @@
                 </div>
                  <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            <fieldset class="holder left">
+            <fieldset class="holder left ">
+                <div class="form-title full-width">
+                    <h3><span translate>REG_CARD</span> </h3>
+                </div>
+                <div class="entry full-width">
+                    <label translate>
+                        REG_CARD_TEXT
+                    </label>
+                    <textarea class="full-width terms_height" type="" ng-model="zestSettings.reg_card_text"></textarea>
+                </div>
+            </fieldset>
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.show_room_number" label="{{'ON_SCREEN_ROOM_NUMBER'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>SECOND_AUTHENTICATION</span> </h3>
+                </div>
+                <ad-checkbox is-checked="zestSettings.checkin_screen.athentication_settings.departure_date" label="{{ 'DEPARTURE_DATE' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.checkin_screen.athentication_settings.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.checkin_screen.athentication_settings.confirmation" label="{{ 'CONFIRMATION' | translate}}" ></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.checkin_screen.athentication_settings.number_of_nights" label="{{ 'AUTH_NO_OF_NIGHTS' | translate}}" ></ad-checkbox>
+
             </fieldset>
 
                
@@ -76,18 +97,6 @@
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.not_available_message"  name = "zest-web" id = "zest-web" label = "" placeholder = "{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width" ></ad-textbox>
             </fieldset>
-
-           <fieldset class="holder right ">
-                <div class="form-title full-width">
-                    <h3><span translate>REG_CARD</span> </h3>
-                </div>
-                <div class="entry full-width">
-                    <label translate>
-                    REG_CARD_TEXT
-                    </label>
-                    <textarea class="full-width terms_height" type="" ng-model="zestSettings.reg_card_text"></textarea>
-                </div>
-           </fieldset>
 
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
