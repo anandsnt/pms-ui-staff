@@ -1,4 +1,4 @@
-angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', function ($q, BaseWebSrvV2) {
+angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', function ($q, BaseWebSrvV2) {
 
     var self = this,
         filterState = null;
@@ -9,7 +9,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
 
     this.getTasksCount = function (data) {
         var deferred = $q.defer();
-        var url = "/api/reservations/" + data.id + '.json';
+        var url = "/api/groups/" + data.id;
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
@@ -20,7 +20,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
     };
     this.getActionsTasksList = function (data) {
         var deferred = $q.defer();
-        var url = "/api/action_tasks?associated_id=" + data.id + '&associated_type=Reservation';
+        var url = "/api/action_tasks?associated_id=" + data.id + '&associated_type=Group';
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
@@ -177,23 +177,12 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
         return deferred.promise;
     };
 
-    this.getActionDetails = function (actionId) {
+    this.getActionDetails = function(actionId){
         var deferred = $q.defer(),
-            url = "api/action_tasks/" + actionId;
+            url = "api/action_tasks/"+actionId;
 
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
-        }, function (data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
-
-    this.fetchCurrentTime = function () {
-        var deferred = $q.defer();
-        var url = '/api/hotel_current_time';
-        BaseWebSrvV2.getJSON(url).then(function (data) {
-            deferred.resolve(data.hotel_time.hh + ":" + data.hotel_time.mm);
         }, function (data) {
             deferred.reject(data);
         });
@@ -212,17 +201,21 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
         }
     }
 
-    self.setFilterState = function (params) {
+    self.setFilterState = function(params){
         filterState = angular.copy(params);
     };
 
-    self.getFilterState = function (params) {
+    self.getFilterState = function(params){
         return filterState;
     };
 
-    self.clearFilterState = function (params) {
+    self.clearFilterState = function(params){
         filterState = null;
     };
+
+
+
+
 
 
 }]);
