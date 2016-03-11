@@ -886,12 +886,14 @@ sntZestStation.controller('zsRootCtrl', [
             };
             
             $scope.$watchCollection(function(){
-                return $state.current.name;
-            }, function(){
-                var current = $state.current.name;
                 if ($scope.inChromeApp){
                     initScreenKeyboardListener();
                 }
+                
+                return $state.current.name;
+            }, function(){
+                var current = $state.current.name;
+               
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }

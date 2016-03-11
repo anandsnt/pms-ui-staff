@@ -11,7 +11,9 @@
 
 
 function initScreenKeyboardListener(){
-$('input:visible').not( document.getElementById( "datepicker" ) ).focus(function() {
+    var elSelector = 'input:visible';
+    var bound = false;
+    var focusHandler = function(){
     //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
   
@@ -205,39 +207,16 @@ $('input:visible').not( document.getElementById( "datepicker" ) ).focus(function
     });
 
 
-  $('#icon').click(function() {
-    var kb = $('[type="text"]').getkeyboard();
-    // typeIn( text, delay, callback );
-    
-  });
+    $('#icon').click(function() {
+      var kb = $('[type="text"]').getkeyboard();
+      // typeIn( text, delay, callback );
 
-      
-      
-      
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}).blur(function() {
+    });
+};
+    var blurHandler = function(){
     //close virtual keyboard
-    
-});
-
-
-}
+        $(elSelector).unbind( "focus", focusHandler);
+    };
+    $(elSelector).not( document.getElementById( "datepicker" ) ).focus(focusHandler).blur(blurHandler);
+    }
 
