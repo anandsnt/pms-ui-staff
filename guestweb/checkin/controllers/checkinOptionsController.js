@@ -19,6 +19,7 @@
 		var early_checkin_charge = "";
 		var checkin_time = "";
 		var roomAssignedFromZestWeb = false;
+		var reservation_in_early_checkin_window = false;
 
 
 		var init = function() {
@@ -39,6 +40,7 @@
 				is_donot_move_room_marked = response.is_donot_move_room_marked;
 				early_checkin_charge = response.early_checkin_charge;
 				checkin_time = response.checkin_time;
+				reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
 				// if user is not arriving today
 				if (!response.guest_arriving_today) {
 					$state.go('checkinArrival');
@@ -53,7 +55,7 @@
 		}();
 
 		var navigateToNextScreen = function() {
-			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_in_early_checkin_window)) {
+			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_in_early_checkin_window) || !reservation_in_early_checkin_window) {
 				// earlycheckin turened off or is out of early checkin window
 				$state.go('checkinKeys');
 			} else if (early_checkin_switch_on && reservation_in_early_checkin_window) {
