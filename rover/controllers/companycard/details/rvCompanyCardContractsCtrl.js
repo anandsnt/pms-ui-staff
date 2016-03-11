@@ -179,16 +179,16 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 		var fetchContractsListSuccessCallback = function(data) {
 			$scope.contractList = data;
-			checkContractListEmpty();
-			$scope.contractList.contractSelected = data.contract_selected;
-			if ($scope.contractList.contractSelected) {
-				$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails, {
-					"account_id": $stateParams.id,
-					"contract_id": $scope.contractList.contractSelected
-				}, fetchContractsDetailsSuccessCallback, fetchFailureCallback);
-			}
+			
+			
+			setTimeout(function() {
+				$scope.contractList.contractSelected = data.contract_selected;
+				$scope.$emit('hideLoader');
+				checkContractListEmpty();
+				$scope.$apply();
+			}, 1000);
 			$scope.errorMessage = "";
-			$scope.$emit('hideLoader');
+			
 		};
 		var fetchContractsDetailsFailureCallback = function(data) {
 			$scope.$emit('hideLoader');
