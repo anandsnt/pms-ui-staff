@@ -8,9 +8,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
         return params;
 
     };
-    var getLabelTranslations = function() {
-        var params = getRequestParams();
-        var onFetchSuccess = function(data) {
+    var onFetchSuccess = function(data) {
                 $scope.data = data;
                 $scope.$emit('hideLoader');
 
@@ -39,6 +37,8 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
                 $scope.data = [];
                 $scope.$emit('hideLoader');
             };
+    var getLabelTranslations = function() {
+        var params = getRequestParams();        
         $scope.invokeApi(ADTranslationSrv.getLabelTranslationForLocale, params, onFetchSuccess, onFetchFailure);
     };
 
@@ -60,6 +60,28 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
         $scope.invokeApi(ADTranslationSrv.saveLabelTranslationForLocale, request, onSaveSuccess, onSaveFailure);
     };
 
+    $scope.onLocaleChange = function() {
+        getLabelTranslations();
+    };
+
+    $scope.onMenuOptionChange = function() {
+        getLabelTranslations();
+    };
+
+    $scope.onItemChange = function() {
+        getLabelTranslations();
+    };
+
+    $scope.searchEntered = function() {
+        var params = {};
+        params.locale_id = $scope.filter.locale;
+        params.option_item_id = $scope.filter.item;
+        params.query = $scope.filter.searchText;               
+
+        $scope.invokeApi(ADTranslationSrv.searchLabelTranslationForLocale, params, onFetchSuccess, onFetchFailure);
+
+    };
+
 
     var init = function() {
         $scope.languages = availableLanguages;
@@ -67,9 +89,10 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
         $scope.filter = {
             locale : $scope.languages.default_locale_id,
             menuOption : $scope.menuDetails.menu_options[0].id,
-            item : $scope.menuDetails.menu_options[0].option_items[0].id
+            item : $scope.menuDetails.menu_options[0].option_items[0].id,
+            searchText : ""
         };
-        $scope.searchTxt = "";
+        
         $scope.items = $scope.menuDetails.menu_options[0].option_items;
         $scope.data = [];
         getLabelTranslations();

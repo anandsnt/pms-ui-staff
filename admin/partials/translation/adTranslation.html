@@ -8,7 +8,7 @@
                     <div class="filter select">
                         <div class="entry">
                             <div class="select">
-                                <select ng-model="filter.locale" name="locale" id="locale" class="placeholder">
+                                <select ng-model="filter.locale" name="locale" id="locale" class="placeholder" ng-change="onLocaleChange()">
                                     <option ng-model="locale.id" ng-repeat="locale in languages.locales" value="{{locale.id}}" ng-selected="locale.id==filter.locale"> {{locale.description}} </option>
                                 </select>
                             </div>
@@ -24,7 +24,7 @@
                     <div class="entry filter">
                         <label translate>MENU_OPTION</label>
                         <div class="select">
-                            <select ng-model="filter.menuOption" name="menu-option" id="menu-option" class="placeholder">
+                            <select ng-model="filter.menuOption" name="menu-option" id="menu-option" class="placeholder" ng-change="onMenuOptionChange()">
                                     <option ng-model="menuOption.id" ng-repeat="menuOption in menuDetails.menu_options" value="{{menuOption.id}}" ng-selected="menuOption.id==filter.menuOption"> {{menuOption.name}} </option>
                                 </select>
                         </div>
@@ -32,7 +32,7 @@
                     <div class="entry filter">
                         <label translate>ITEM</label>
                         <div class="select">
-                            <select ng-model="filter.item" name="item" id="item" class="placeholder">
+                            <select ng-model="filter.item" name="item" id="item" class="placeholder" ng-change="onItemChange()">
                                     <option ng-model="item.id" ng-repeat="item in items" value="{{item.id}}" ng-selected="item.id==filter.item"> {{item.name}} </option>
                             </select>
                         </div>
@@ -41,7 +41,8 @@
                         <label translate>SEARCH</label>
                         <div class="holder">
                             <button class="icons icon-search ng-scope" translate="" name="submit" type="submit">SEARCH</button>
-                            <input class="query ng-pristine ng-valid" placeholder="Search by Label" ng-model="searchText" id="structure-search" autocomplete="off" type="search">
+                            <input class="query ng-pristine ng-valid" placeholder="Search by Label" ng-model="filter.searchText" id="structure-search" autocomplete="off" type="search" ng-change="searchEntered()">
+                            <!-- <input placeholder="Search by Label" autocomplete="off" type="text" ad-delay-textbox ng-model="filter.searchText" delay="1000" function-to-fire="searchEntered" id="structure-search"/> -->
                         </div>
                     </div>
                 </div>
@@ -50,27 +51,27 @@
             <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
 
-
-
-            <div id="new-form-holder"></div>
-            <!--ng-table component -->
+            
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
                 <tbody>
                     <tr ng-repeat="translation in $data">
-                        <td data-title="'Label'" sortable="'name'" header-class="width-25" >
+                        <td data-title="'Label'" sortable="'name'" header-class="half-width-title" >
                             {{translation.name}}
                         </td>
 
-                        <td data-title="'Translation'"  sortable="'based_on'" header-class="width-20" >
-                            <ad-textbox value="translation.value" inputtype="access-url" name="value" id="value" label="" styleclass="full-width"></ad-textbox>
+                        <td data-title="'Translation'"  sortable="'based_on'" header-class="half-width-title" >
+                            <input type="text" id="value"  ng-model="translation.value" value="{{translation.value}}" class="full-width-input"/>
+                            <!-- <ad-textbox value="translation.value" inputtype="access-url" name="value" id="value" label="" styleclass="full-width"></ad-textbox> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+
         </section>
         <!--end -->
-
-        <div class="actions float center">
+        
+        <div class="actions float" id="translation-actions">
             <button type="button" ng-click ="back()" class="button blank">
                 Cancel
             </button>
@@ -78,7 +79,8 @@
                 Save Changes
             </button>
         </div>
+       
+        
     </div>
 </section>
 
-<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
