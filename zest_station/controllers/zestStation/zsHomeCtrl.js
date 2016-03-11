@@ -3,8 +3,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$rootScope',
 	'$state',
 	'zsModeConstants',
-	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
-	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
+	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv','$window',
+	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv,$window) {
 
             /*
              * This is the main controller for the Home Screen + Admin Popup
@@ -81,6 +81,11 @@ sntZestStation.controller('zsHomeCtrl', [
         setTimeout(function(){
             $rootScope.$broadcast('REFRESH_SETTINGS',{'restart': true,'from_cancel': true});
         },500);
+    };
+
+    //to logout
+    $scope.logOutApplication = function(){
+        $window.location.href = '/logout'; 
     };
 
     $scope.updateSettings = function(value){
