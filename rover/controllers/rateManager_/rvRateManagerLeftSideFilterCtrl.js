@@ -9,13 +9,15 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
     '$rootScope',
     'rvRateManagerOrderByConstants',
     'rvTwoMonthCalendarEventConstants',
+    'RMFilterOptionsSrv',
     function($scope,
              $filter,
              ngDialog,
              util,
              $rootScope,
              rvRateManagerOrderByConstants,
-             rvTwoMonthCalendarEventConstants) {
+             rvTwoMonthCalendarEventConstants,
+             RMFilterOptionsSrv) {
 
       BaseCtrl.call(this, $scope);
 
@@ -76,16 +78,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
-       * when we click the set button
-       */
-      $scope.$on(rvTwoMonthCalendarEventConstants.TWO_MONTH_CALENDAR_DATE_UPDATED, function(event, data) {
-        $scope.rateManagerDataModel.filterOptions.dateRange.from = data.fromDate;
-        $scope.rateManagerDataModel.filterOptions.dateRange.to = data.toDate;
-
-        $scope.selectedDateRange = formatDateForUI(data.fromDate) + ' to ' + formatDateForUI(data.toDate);
-      });
-
-      /**
        * we want to display date in what format set from hotel admin
        * @param {String/DateObject}
        * @return {String}
@@ -114,13 +106,13 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         if ($scope.selectedRateTypeID.trim !== '') {
           let rateTypeList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.rateTypes,
 
-                selectedRateTypeList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes,
+            selectedRateTypeList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes,
 
-              conditionToTest = {id: parseInt($scope.selectedRateTypeID)},
+            conditionToTest = {id: parseInt($scope.selectedRateTypeID)},
 
-              selectedRateType = _.findWhere(rateTypeList , conditionToTest),
+            selectedRateType = _.findWhere(rateTypeList , conditionToTest),
 
-                alreadyExistInSelectedRateTypeList = (_.findIndex(selectedRateTypeList, conditionToTest) > -1);
+            alreadyExistInSelectedRateTypeList = (_.findIndex(selectedRateTypeList, conditionToTest) > -1);
 
           if (!!selectedRateType && !alreadyExistInSelectedRateTypeList) {
             $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRateTypes.push(selectedRateType);
@@ -172,13 +164,13 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         if ($scope.selectedRateID.trim !== '') {
           let rateList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.rates,
 
-                selectedRateList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates,
+            selectedRateList = $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates,
 
-              conditionToTest = {id: parseInt($scope.selectedRateID)},
+            conditionToTest = {id: parseInt($scope.selectedRateID)},
 
-              selectedRate = _.findWhere(rateList , conditionToTest),
+            selectedRate = _.findWhere(rateList , conditionToTest),
 
-                alreadyExistInSelectedRateList = (_.findIndex(selectedRateList, conditionToTest) > -1);
+            alreadyExistInSelectedRateList = (_.findIndex(selectedRateList, conditionToTest) > -1);
 
           if (!!selectedRate && !alreadyExistInSelectedRateList) {
             $scope.rateManagerDataModel.filterOptions.viewTypeSelection.selectedRates.push(selectedRate);
@@ -255,10 +247,19 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * when we click the set button from calendar popup, we will get this popup
+       */
+      $scope.$on(rvTwoMonthCalendarEventConstants.TWO_MONTH_CALENDAR_DATE_UPDATED, function(event, data) {
+        $scope.rateManagerDataModel.filterOptions.dateRange.from = data.fromDate;
+        $scope.rateManagerDataModel.filterOptions.dateRange.to = data.toDate;
+
+        $scope.selectedDateRange = formatDateForUI(data.fromDate) + ' to ' + formatDateForUI(data.toDate);
+      });
+
+      /**
        * inorder to show the two month calendar on tapping the date range button
        */
       $scope.showCalendar = () => {
-
         ngDialog.open({
           template: '/assets/partials/rateManager_/dateRangeModal/rvDateRangeModal.html',
           controller: 'rvDateRangeModalCtrl',
@@ -269,6 +270,64 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
             toDate: util.getFirstDayOfNextMonth($rootScope.businessDate)
           }
         });
+      };
+
+      /**
+       * on choosing the card from search result
+       */
+      $scope.cardSelected = (event, ui) => {
+        var selectedCards = $scope.rateManagerDataModel.filterOptions.selectedCards,
+            selectedCardIDs = _.pluck(selectedCards, "id");
+
+        if (!selectedCards.length) {
+            $scope.rateManagerDataModel.filterOptions.selectedCards.push(ui.item);
+        }
+        else if (selectedCardIDs.indexOf(ui.item.id) < 0) {
+            $scope.rateManagerDataModel.filterOptions.selectedCards.push(ui.item);
+        }
+        runDigestCycle();
+
+        //we're adding nodes
+        refreshScroller();
+
+        //scrolling to bottom
+        var scroller = $scope.getScroller('filter_details');
+        setTimeout(function(){
+          scroller.scrollTo(0, scroller.maxScrollY, 1000);
+        }, 350);
+      };
+
+      /**
+       * to delete
+       * @param  {LongInteger} rateTypeID [selected rate type's id to delete]
+       */
+      $scope.deleteSelectedCard = (cardID) => {
+        var indexToDelete = _.findIndex($scope.rateManagerDataModel.filterOptions.selectedCards , {id: parseInt(cardID)});
+        $scope.rateManagerDataModel.filterOptions.selectedCards.splice(indexToDelete, 1);
+
+        //deleting the node will change the height
+        refreshScroller();
+      };
+
+      /**
+       * to remove all selected card in one take
+       */
+      $scope.deleteAllSelectedCards = () => {
+        $scope.rateManagerDataModel.filterOptions.selectedCards = [];
+
+        //deleting the nodes will change the height
+        refreshScroller();
+      };
+
+      /**
+       * to run angular digest loop,
+       * will check if it is not running
+       * return - None
+       */
+      var runDigestCycle = () => {
+        if (!$scope.$$phase) {
+          $scope.$digest();
+        }
       };
 
       /**
@@ -287,6 +346,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
         //ng-model for rate selection
         $scope.selectedRateID = '';
+
+        //card search area
+        $scope.cardSearchResults = [];
+        $scope.cardSearchText = '';
       };
 
       /**

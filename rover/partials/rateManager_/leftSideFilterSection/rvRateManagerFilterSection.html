@@ -1,7 +1,6 @@
 <div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options"
      ng-click="hideCompanyCardSearchResults()" 
-     ng-class="{'slide_right': rateManagerDataModel.filterOptions.isVisible,
-                'slide_left': !rateManagerDataModel.filterOptions.isVisible}" >
+     ng-class="{'slide_right': rateManagerDataModel.filterOptions.isVisible, 'slide_left': !rateManagerDataModel.filterOptions.isVisible}" >
 
     <a class="leftMenuHandle" ng-click="toggleFilterOption()"></a>
     <div class="filter-padding">
@@ -150,23 +149,26 @@
                         <label for="company-card" class="search-text">NAME CARD, IATA # OR CORPORATE ID</label>
                         <span type="submit" name="submit" class="icons icon-search1"></span>
                         <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off"
-                               ng-model="companySearchText" ng-keyup="companySearchTextEntered()"
-                               class="ng-pristine ng-valid">
+                               ng-model="cardSearchText" rv-cc-ta-auto-complete select-handler="cardSelected">
                     </div>
-                </div>
 
-
+                    <div class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in rateManagerDataModel.filterOptions.selectedCards">
+                        <span class="rate-data">{{card.account_name}}</span>
+                        <span ng-click="deleteSelectedCard(card.id)" class="icons delete_small"> &nbsp;</span>
+                    </div>
+                    
+                    <div class="entry">
+                        <span class="deleteall" ng-show="rateManagerDataModel.filterOptions.selectedCards.length > 2">
+                            <a ng-click="deleteAllSelectedCards()">
+                                CLEAR ALL CARDS
+                            </a>
+                        </span>  
+                    </div>                                    
+                </div> 
             </div>
         </div>
     </div>
-    <div class="company-card-results ng-hide" ng-hide="companyCardResults.length === 0 || companySearchText === ''"
-         style="height: 42px; top: 0px">
-        <div class="search-results" iscroll="nameOnCard" ng-iscroll-delay="100">
-            <ul id="search-list">
-                
-            </ul>
-        </div>
-    </div>
+
     <div class="entry action-filter">
         <div class="actions float">
             <button class="button green" type="button" ng-click="onClickShowRates()"

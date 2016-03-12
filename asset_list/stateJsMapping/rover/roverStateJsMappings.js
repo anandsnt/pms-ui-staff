@@ -60,7 +60,7 @@ module.exports = {
 			},
 			'directives': {
 				filename: roverJsListRoot + 'directivesJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'react.files': {
 				filename: roverJsListRoot + 'reactJsAssetList.js',

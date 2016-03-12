@@ -3,7 +3,7 @@ angular.module('rateManagerModule', [])
         $stateProvider.state('rover.newRateManager', {
             url: '/ratemanager/',
             templateUrl: '/assets/partials/rateManager_/rvRateManagerRoot.html',
-            controller: 'rvRateManagerCtrl_',
+            controller: 'rvRateManagerCtrl_', 
             resolve: {
                 reactAssets: function (jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['react.files', 'directives'], ['react']);
