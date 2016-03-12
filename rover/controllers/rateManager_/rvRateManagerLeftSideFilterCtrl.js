@@ -320,6 +320,14 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * @return {Boolean}
+       */
+      $scope.shouldDisableShowRateButton = () => {
+        var dateRange = $scope.rateManagerDataModel.filterOptions.dateRange;
+        return !dateRange.from || !dateRange.to;
+      };
+
+      /**
        * to run angular digest loop,
        * will check if it is not running
        * return - None

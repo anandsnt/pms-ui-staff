@@ -156,7 +156,7 @@
                         <span class="rate-data">{{card.account_name}}</span>
                         <span ng-click="deleteSelectedCard(card.id)" class="icons delete_small"> &nbsp;</span>
                     </div>
-                    
+
                     <div class="entry">
                         <span class="deleteall" ng-show="rateManagerDataModel.filterOptions.selectedCards.length > 2">
                             <a ng-click="deleteAllSelectedCards()">
@@ -171,9 +171,9 @@
 
     <div class="entry action-filter">
         <div class="actions float">
-            <button class="button green" type="button" ng-click="onClickShowRates()"
-                    ng-disabled="toggleShowRates()"
-                    ng-class="{ grey: toggleShowRates() }" style="">Show Rates
+            <button class="button" type="button" ng-click="onClickShowRates()"
+                    ng-disabled="shouldDisableShowRateButton()"
+                    ng-class="{ 'grey': shouldDisableShowRateButton(), 'green': !shouldDisableShowRateButton() }" style="">Show Rates
             </button>
         </div>
     </div>
