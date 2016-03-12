@@ -23,19 +23,19 @@ function initScreenKeyboardListener(){
       //layout: 'qwerty',
       layout: 'default',
       customLayout: {
-        'default': [
-                '1 2 3 4 5 6 7 8 9 0 _',
+        'shift': [
+                '1 2 3 4 5 6 7 8 9 0',
                 'q w e r t y u i o p {bksp}',
                 'a s d f g h j k l @',
-                '{s} z x c v b n m . - {s}',
-                ' shift {space} _ - .com'
+                'z x c v b n m .',
+                ' {space} _ - .com'
         ],
-        'shift': [
-                '1 2 3 4 5 6 7 8 9 0 _',
+        'default': [//zest station on screen is always caps,default to this
+                '1 2 3 4 5 6 7 8 9 0',
                 'Q W E R T Y U I O P {bksp}',
                 'A S D F G H J K L @',
-                '{s} Z X C V B N M . - {s}',
-                ' shift {space} _ - .com'
+                'Z X C V B N M .',
+                ' {space} _ - .com'
         ],
         'meta1': [
           '{default} 0 '
@@ -75,7 +75,7 @@ function initScreenKeyboardListener(){
         'alt': 'AltGr:Alternate Graphemes',
         // Left arrow (same as &larr;)
         'b': '\u2190:Backspace',
-        'bksp': 'Bksp:Backspace',
+        'bksp': '\u232B:Backspace',
         // big X, close/cancel
         'c': '\u2716:Cancel (Esc)',
         'cancel': 'Cancel:Cancel (Esc)',
