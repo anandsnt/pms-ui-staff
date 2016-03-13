@@ -7,8 +7,7 @@ sntRover.service('rvRateManagerDataModelSrv', [
     this.getDataModel = () => (
         {
             filterOptions: {
-                isVisible: false,
-
+                
                 dateRange: {
                     from: null,
                     to: null
