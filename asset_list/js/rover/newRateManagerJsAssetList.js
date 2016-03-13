@@ -4,8 +4,7 @@ module.exports = {
             assets = {
                 minifiedFiles: [],
                 nonMinifiedFiles: [
-                    roverRoot + "react/todo/**/*.js",
-                    roverRoot + "redux/todo/**/*.js",
+                    roverRoot + "react/rateManager/**/*.js",
                     roverRoot + "constants/rateManager/**/*.js",
                     roverRoot + "constants/eventConstants/rvTwoMonthCalendarEventConstants.js",
                     roverRoot + "services/rateManager/**/*.js",

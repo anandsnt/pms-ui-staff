@@ -6,13 +6,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'rateMgrOrderValues',
     'rateTypes',
     'rates',
+    '$rootScope',
     function($scope,
              $filter,
              rvRateManagerDataModelSrv,
              rateMgrSelectedOrderPrefrnce,
              rateMgrOrderValues,
              rateTypes,
-             rates) { 
+             rates,
+             $rootScope) { 
 
     BaseCtrl.call(this, $scope);
 
@@ -44,12 +46,29 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
+     * to have animation while opening & closing
+     */
+    $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+        setTimeout(function(){
+          $dialog.addClass('modal-show');
+        },100);
+    });
+
+    /**
      * initialisation function
      */
     (() => {
         setHeadingAndTitle( 'RATE_MANAGER_TITLE' );
 
         initializeDataModel();
+
+        const {render} = ReactDOM; 
+        render(
+            <RateManagerRoot/>,
+            document.querySelector('#rate-manager .content')
+        );
+
+
     })();
 
 }]);
