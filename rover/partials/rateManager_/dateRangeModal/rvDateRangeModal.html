@@ -7,12 +7,12 @@
         <span class="message h2">Date Range Update</span>
 
         <fieldset id="fromDatePicker" class="holder left">
-            <strong class="h3">From <span>{{fromDate| date:'MMMM dd, y'}}</span></strong>
-            <div ui-date="fromDateOptions" ng-model="fromDate" ui-date-format="yy-mm-dd"></div>
+            <strong class="h3">From <span>{{fromDate| date:dateFormat}}</span></strong>
+            <div ui-date="fromDateOptions" ng-model="fromDate"></div>
         </fieldset>
         <fieldset id="toDatePicker" class="holder right">
-            <strong class="h3">To <span>{{toDate | date:'MMMM dd, y'}}</span></strong>
-            <div ui-date="toDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd"></div>
+            <strong class="h3">To <span>{{toDate | date:dateFormat}}</span></strong>
+            <div ui-date="toDateOptions" ng-model="toDate"></div>
         </fieldset>
         <div class="actions">
             <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
