@@ -1178,12 +1178,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
                         $scope.reservationData.status = $scope.reservationData.reservations[0].status;
                         $scope.viewState.reservationStatus.number = $scope.reservationData.reservations[0].id;
+                        $scope.reservationData.is_custom_text_per_reservation = $scope.reservationData.reservations[0].is_custom_text_per_reservation;
                     } else {
                         $scope.reservationData.reservationId = data.id;
                         $scope.reservationData.confirmNum = data.confirm_no;
                         $scope.reservationData.rooms[0].confirm_no = data.confirm_no;
                         $scope.reservationData.status = data.status;
                         $scope.viewState.reservationStatus.number = data.id;
+                        $scope.reservationData.is_custom_text_per_reservation = data.is_custom_text_per_reservation;
                     }
                     /*
                      * TO DO:ends here
