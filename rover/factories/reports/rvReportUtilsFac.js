@@ -190,6 +190,11 @@ angular.module('reportsModule')
             'SHOW_TRAVEL_AGENT': true
         };
 
+        var __chargeTypeFilterNames = {
+            SHOW_DELETED_CHARGES: true,
+            SHOW_ADJUSTMENTS: true
+        }
+
         /**
          * Create a DS representing the found filter into the general options DS
          * @param {Object} report The ith report object
@@ -290,6 +295,14 @@ angular.module('reportsModule')
 
         var __pushShowData = function(report, filter) {
             report['hasShow']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : true
+            });
+        };
+
+        var __pushChargeTypeData = function(report, filter) {
+            report['hasChargeTypes']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : true
@@ -519,6 +532,10 @@ angular.module('reportsModule')
                 if ( __showFilterNames[filter.value] ) {
                     __pushShowData( report, filter );
                 };
+
+                if ( __chargeTypeFilterNames[filter.value] ) {
+                    __pushChargeTypeData( report, filter );
+                };
             });
         };
 
@@ -611,7 +628,7 @@ angular.module('reportsModule')
                         .then( fillRestrictionList );
                 }
 
-                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
+                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) || ('SHOW_CHARGE_CODES' == filter.value && ! filter.filled) ) {
 
                     // fetch charge groups
                     requested++;
@@ -950,6 +967,8 @@ angular.module('reportsModule')
                     var title,
                         selected;
 
+                    var foundCCC;
+
                 _.each(reportList, function(report) {
 
                     if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
@@ -987,7 +1006,7 @@ angular.module('reportsModule')
                         });
                     };
 
-                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
 
                     if ( !!foundCC ) {
                         foundCC['filled'] = true;
@@ -1264,6 +1283,24 @@ angular.module('reportsModule')
                 report['sort_fields'][5] = null;
                 report['sort_fields'][6] = null;
                 report['sort_fields'][7] = revenue;
+                report['sort_fields'][8] = null;
+                report['sort_fields'][9] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                var chargeCode = angular.copy( _.find(report['sort_fields'], { 'value': 'CHARGE_CODE' }) ),
+                    date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) );
+
+                report['sort_fields'][0] = chargeCode;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = null;
+                report['sort_fields'][5] = date;
+                report['sort_fields'][6] = null;
+                report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
             };

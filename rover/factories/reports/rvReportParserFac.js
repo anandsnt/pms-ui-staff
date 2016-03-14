@@ -49,6 +49,17 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
             }
 
+            // otherwise a super parser for reports that can be grouped by
+            else if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                if ( !!options['groupedByKey'] ) {
+
+                } else {
+                    
+                }
+
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
+            }
+
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
@@ -59,6 +70,65 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+
+        function $_parseFinTransAdjustReport ( reportName, apiResponse, options ) {
+            var returnAry  = [],
+                adjustments = [],
+                deletedCharges = [];
+
+            var i, j;
+
+            var processAry = function(source, type) {
+                var k, l;
+
+                var makeCopy, totalAmout;
+
+                for ( k = 0, l = source.length; k < l; k++ ) {
+                    makeCopy   = angular.copy( source[k] );
+                    totalAmout = 0;
+
+                    totalAmout += makeCopy.amount;
+
+                    if ( 0 === k ) {
+                        angular.extend(makeCopy, {
+                            isReport     : true,
+                            rowspan      : l + 1,
+                            amount_class : type === 'adjustments' ? 'purple' : 'red'
+                        });
+                        returnAry.push( makeCopy );
+                    } else {
+                        angular.extend(makeCopy, {
+                            isReport     : true,
+                            amount_class : type === 'adjustments' ? 'purple' : 'red'
+                        });
+                        returnAry.push( makeCopy );
+                    }
+                }
+
+                returnAry.push({
+                    isReportSubTotal : true,
+                    break_class      : 'row-break',
+                    amount_class     : type === 'adjustments' ? 'purple' : 'red',
+                    total_amount     : totalAmout
+                });
+            };
+
+            if ( ! apiResponse.length ) {
+                return [];
+            };
+
+            for ( i = 0, j = source.length; i < j; i++ ) {
+                adjustments = apiResponse[i]['adjustments'],
+                deletedCharges = apiResponse[i]['deleted_charges'];
+
+                processAry(adjustments, 'adjustments');
+                processAry(deletedCharges, 'deletedCharges');
+            };
+
+            console.log( returnAry );
+
+            return returnAry;
+        }
 
 
         function $_parseDailyProduction ( reportName, apiResponse, options, resultTotalRow ) {

@@ -915,7 +915,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': []
+					'guestOrAccount': [],
+					'chargeTypes': []
 				};
 			};
 
@@ -1247,6 +1248,20 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.show.push( each.description );
+						};
+					};
+				});
+			};
+
+			// generate params for selected shows
+			if ( report['hasChargeTypes']['data'].length ) {
+				_.each(report['hasChargeTypes']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.chargeTypes.push( each.description );
 						};
 					};
 				});
