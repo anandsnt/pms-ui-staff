@@ -51,13 +51,11 @@ sntRover.factory('RVReportParserFac', [
 
             // otherwise a super parser for reports that can be grouped by
             else if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
-                if ( !!options['groupedByKey'] ) {
-
+                if ( options['groupedByKey'] === 'USER' ) {
+                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseFinTransAdjustReport( reportName, apiResponse, options );
                 } else {
-                    
+                    return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
                 }
-
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
             }
 
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
@@ -69,7 +67,75 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+        /**
+         * The normal API reponse (result) is a single array object entry
+         * with two keys 'adjustments' and 'deleted_charges'. Both these
+         * keys have a array of values. Each value representing an adjustment
+         * or deleted charge respectively.
+         *
+         * The purpose of this function to filter the API reponse based on 
+         * created_id. So we are gonna modify the API reponse array to an object
+         * with keys for "created_id_by" and value an object with 'adjustments' and 'deleted_charges'
+         * So under each created_id_by all 'adjustments' and 'deleted_charges' associated.
+         */
+        function $_preParseFinTransAdjustReport(reportName, apiResponse, options) {
+            var returnObj  = {},
+                adjustments = [],
+                deletedCharges = [];
 
+            var groupByIdAdjustments = {},
+                groupByIdDeleteCharges = {};
+
+            var i, j, key, idBy;
+
+            var fillEntries = function(source, toKey) {
+                for (key in source) {
+                    if ( ! source.hasOwnProperty(key) ) {
+                        continue;
+                    };
+
+                    for ( i = 0, j = source[key].length; i < j; i++ ) {
+                        idBy = source[key].created_by + '__' + source[key].created_id;
+
+                        if ( ! returnObj.hasOwnProperty(idBy) ) {
+                            returnObj[idBy] = {
+                                'adjustments': [],
+                                'deleted_charges': []
+                            };
+                        };
+
+                        returnObj[idBy][toKey].push( source[key] );
+                    }
+                };
+            }
+
+            if ( ! apiResponse.length ) {
+                return [];
+            };
+
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
+                adjustments = apiResponse[i]['adjustments'],
+                deletedCharges = apiResponse[i]['deleted_charges'];
+
+                groupByIdAdjustments = _.groupBy( adjustments, 'created_id' );
+                groupByIdDeleteCharges = _.groupBy( deletedCharges, 'created_id' );
+            };
+
+            fillEntries( groupByIdAdjustments, 'adjustments' );
+            fillEntries( groupByIdDeleteCharges, 'deleted_charges' );
+
+            for (key in returnObj) {
+                if ( ! returnObj.hasOwnProperty(key) ) {
+                    continue;
+                };
+
+                returnObj[key] = $_parseFinTransAdjustReport(reportName, returnObj[key], options);
+            };
+
+            console.log( returnObj );
+
+            return returnObj;
+        };
 
         function $_parseFinTransAdjustReport ( reportName, apiResponse, options ) {
             var returnAry  = [],
@@ -117,7 +183,7 @@ sntRover.factory('RVReportParserFac', [
                 return [];
             };
 
-            for ( i = 0, j = source.length; i < j; i++ ) {
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
                 adjustments = apiResponse[i]['adjustments'],
                 deletedCharges = apiResponse[i]['deleted_charges'];
 
