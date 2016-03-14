@@ -4,6 +4,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         //-------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
+                $scope.$emit("updateRoverLeftMenu", "actionManager");
                 var heading = 'Actions Manager';
                 $scope.setScroller("rvActionListScroller", {
                     scrollbars: true,

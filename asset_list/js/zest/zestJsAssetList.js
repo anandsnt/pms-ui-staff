@@ -20,6 +20,10 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
 				jsLibRoot + 'signature/**/*.js',
+                                
+                                //jquery virtual keyboard files
+				jsLibRoot + 'stationKeyboard/*.js',
+                                
                 jsLibRoot + 'fullcalender/**/*.js'
 			],
 			nonMinifiedFiles: [
