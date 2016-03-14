@@ -64,6 +64,21 @@
 
                     </div>
                 </div>
+
+                <div class="entry full-width">
+                    <label for="item-icon" > <span translate>ITEM_ICON_LABEL</span> </label>
+                    <div class="file-upload with-preview small-preview">
+                        <span class="input">{{iconFileName}}</span>
+                        <a id="deleteLogo" class="icons icon-delete large-icon delete_item ng-scope" ng-if="data.icon !== ''" ng-click="deleteIcon()"></a>
+                        <input type="file" name="item-icon" ng-model = "data.icon" file-name-key="iconFileName" app-filereader id="item-icon" />
+                        <button type="button" ng-if="data.icon != null && data.icon != ''" class="button brand-colors" translate>REPLACE_ICON_LABEL</button>
+                        <button type="button" ng-if="data.icon == null || data.icon == ''" class="button brand-colors" translate>ADD_ICON_LABEL</button>
+                    </div>
+                    <span class="file-preview small-preview">
+                        <img src="{{data.icon}}" alt="" />
+                    </span>
+                </div>
+
                 <div class="entry full-width" ng-hide="data.page_template=='SCREEN'">
                     <label for="item-image"><span translate>ITEM_IMAGE_LABEL</span><span translate>IMAGE_SPEC</span></label>
                     <div class="file-upload with-preview large-preview cms-item-image-picker">
