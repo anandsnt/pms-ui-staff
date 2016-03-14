@@ -178,15 +178,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		var fetchContractsListSuccessCallback = function(data) {
-			$scope.contractList = data;
-			
-			
-			setTimeout(function() {
-				$scope.contractList.contractSelected = data.contract_selected;
-				$scope.$emit('hideLoader');
-				checkContractListEmpty();
-				$scope.$apply();
-			}, 1000);
+			$scope.contractList = data;			
+			$scope.contractList.contractSelected = data.contract_selected;
+			$scope.$emit('hideLoader');
+			checkContractListEmpty();
 			$scope.errorMessage = "";
 			
 		};
@@ -313,6 +308,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			event.stopPropagation();
 			var deleteContractSuccessCallback = function() {
 				$scope.errorMessage = "";
+				$scope.contractList.current_contracts = [];
+				$scope.contractList.future_contracts = [];
+				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
 
