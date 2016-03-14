@@ -20,11 +20,21 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
 				jsLibRoot + 'signature/**/*.js',
-                                
+                                jsLibRoot + 'fullcalender/**/*.js',
                                 //jquery virtual keyboard files
-				//jsLibRoot + 'stationKeyboard/*.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-all.min.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-altkeyspopup.min.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-caret.min.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-extender.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-mobile.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-navigation.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-previewkeyset.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-scramble.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-typing.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js'
                                 
-                jsLibRoot + 'fullcalender/**/*.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',
@@ -48,7 +58,10 @@ module.exports = {
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',
 				zestRoot + 'routers/**/*.js',
-				zestRoot + 'constants/**/*.js'
+				zestRoot + 'constants/**/*.js',
+                                //jquery virtual keyboard files
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.js',
+				jsLibRoot + 'stationKeyboard/onScreenKeyboardListener.js'
 			]
 		};		
 		
