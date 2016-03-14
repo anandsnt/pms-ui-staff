@@ -1,5 +1,5 @@
-sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout) {
+sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout', 'rvPermissionSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
@@ -16,7 +16,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.autoCompleteState = {};
 		var contractInfo = {};
 		var ratesList = [];
-		$scope.isShowDelete = false;
+		$scope.isDeleteAllowed = false;
 
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -25,6 +25,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 
 		$scope.setScroller('cardContractsScroll');
+
+		$scope.hasPermisionToDeleteContract = function() {
+			return rvPermissionSrv.getPermissionValue ('DELETE_CONTRACT');
+		};
+
 
 		var refreshScroller = function() {
 			$timeout(function() {
@@ -123,7 +128,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
-			$scope.isShowDelete = data.is_delete_allowed;
+			$scope.isDeleteAllowed = data.is_delete_allowed;
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
 			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
@@ -170,7 +175,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			if ($scope.contractList.current_contracts.length === 0 && $scope.contractList.future_contracts.length === 0 && $scope.contractList.history_contracts.length === 0) {
 				$scope.hasOverlay = true;
-				$scope.isShowDelete = false;
+				$scope.isDeleteAllowed = false;
 				$scope.contractData = {};
 			} else {
 				$scope.hasOverlay = false;
