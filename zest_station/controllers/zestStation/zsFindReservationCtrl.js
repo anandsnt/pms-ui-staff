@@ -438,6 +438,17 @@ sntZestStation.controller('zsFindReservationCtrl', [
           
           
         };
+        $scope.showSeparator=function(param){
+            var setting = $scope.zestStationData.checkin_screen.authentication_settings;
+           // console.log($scope.zestStationData.checkin_screen.authentication_settings[param]);
+            if(param=='departure_date'){
+                return setting.departure_date&&( setting.number_of_nights ||setting.email || setting.confirmation);
+            }else if(param=='number_of_nights'){
+                return setting.number_of_nights &&(setting.email || setting.confirmation);
+            }else{
+                return setting.email&& setting.confirmation;
+            }
+        }
 
 	/**
 	 * [initializeMe description]
