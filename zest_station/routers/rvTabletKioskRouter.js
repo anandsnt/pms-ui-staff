@@ -33,6 +33,16 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
                 }
             }
         });
+        $stateProvider.state('zest_station.collect_nationality', {
+            url         : '/collect_nationality/:guestId',
+            templateUrl : '/assets/partials/kiosk/specific/zsCollectNationality.html',
+            controller  : 'zsCollectNationalityCtrl',
+            resolve: {
+                countryList: function(zsHotelDetailsSrv){
+                    return zsHotelDetailsSrv.fetchCountryList();
+                }
+            }
+        });
 
         $stateProvider.state('zest_station.home-admin', {
             url         : '/home/:isadmin',

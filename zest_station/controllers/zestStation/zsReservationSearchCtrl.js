@@ -486,7 +486,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             // $state.go('zest_station.review_bill',{"res_id":r.id});
         }
         else{
-            $state.go('zest_station.reservation_details');
+            var primaryGuest = _.find(r.guest_details, function(guest_detail) {
+                return guest_detail.is_primary === true
+            });
+            $scope.zestStationData.check_in_collect_nationality ? $state.go('zest_station.collect_nationality',{'guestId':primaryGuest.id}) : $state.go('zest_station.reservation_details');
         }
 
     };

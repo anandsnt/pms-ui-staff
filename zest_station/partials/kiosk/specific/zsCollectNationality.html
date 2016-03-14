@@ -1,0 +1,13 @@
+<section id="main" role="main">
+    <div id="content">
+        <h1>Nationality</h1>
+        <!-- <h3>Subheading text here</h3> -->
+        <form method="post" class="form">
+            <div class="entry select">
+                <select ng-options="country.id as country.value for country in countryList" ng-model="nationalityId" ng-change="saveNationality()">
+                    <option style="display:none" value="" class=""></option>
+                </select>
+            </div>
+        </form>
+    </div>
+</section>
