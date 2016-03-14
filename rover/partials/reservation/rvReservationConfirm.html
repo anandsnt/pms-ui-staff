@@ -142,9 +142,9 @@
                         </div>
 
                         <div class="entry full-width break-top hidden">
-                            <label for="email-language">Guest Language</label>
+                            <label for="email-language" translate>GUEST_LANGUAGE</label>
                             <div class="select">
-                                <option value="">Select Language</option>
+                                <option value="" translate>SELECT_LANGUAGE</option>
                                 <option value="{lang}" selected>{lang}</option>
                                 ... repeat
                             </div>
@@ -162,17 +162,17 @@
                             <label for="custom-text" class="checkbox inline" ng-class="{ 'checked':reservationData.enable_confirmation_custom_text }">
                                 <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.enable_confirmation_custom_text }"></span>
                                 <input id="custom-text" value="{value}" type="checkbox" ng-click="enableConfirmationCustomText();"/>
-                                Confirmation Custom Text
+                                {{ 'CONF_CUSTOM_TEXT' | translate }}
                             </label>
                         </div>
                         
                         <div class="entry full-width" ng-show="reservationData.enable_confirmation_custom_text">
-                            <label for="email-title">Title</label>
+                            <label for="email-title" translate>TITLE</label>
                             <input id="email-title" ng-model="reservationData.confirmation_custom_title" type="text" />
                         </div>
 
                         <div class="entry full-width" ng-show="reservationData.enable_confirmation_custom_text">
-                            <label for="email-text">Text</label>
+                            <label for="email-text" translate>TEXT</label>
                             <textarea id="email-text" ng-model="reservationData.confirmation_custom_text" rows="3"></textarea>
                         </div>
 

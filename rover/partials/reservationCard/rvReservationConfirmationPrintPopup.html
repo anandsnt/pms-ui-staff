@@ -15,37 +15,37 @@
 
         <div class="holder">
             <div class="entry margin hidden">
-                <label for="email-language">Guest Language</label>
+                <label for="email-language" translate>GUEST_LANGUAGE</label>
                 <div class="select">
                     <select id="email-language">
-                        <option value="">Select Language</option>
+                        <option value="" translate>SELECT_LANGUAGE</option>
                         <option value="{lang}" selected>{lang}</option>
                         ... repeat
                     </select>
                 </div>
             </div>
             <div class="entry" ng-show="reservationData.reservation_card.is_custom_text_per_reservation">
-                <label for="custom-text">Confirmation Custom Text</label>
+                <label for="custom-text" translate>CONF_CUSTOM_TEXT</label>
                 <div class="switch-button" ng-class="{ 'on' : ngData.enable_confirmation_custom_text }">
                     <input ng-click="enableConfirmationCustomText();" id="custom-text" value="{value}" type="checkbox" />
                     <label class="data-off">
-                        <span class="value">No</span>
-                        <span class="switch-icon">Yes</span>
+                        <span class="value" translate>NO</span>
+                        <span class="switch-icon" translate>YES</span>
                     </label>
                     <label class="data-on">
-                        <span class="switch-icon">No</span>
-                        <span class="value">Yes</span>
+                        <span class="switch-icon" translate>NO</span>
+                        <span class="value" translate>YES</span>
                     </label>
                 </div>
             </div>
         </div>
      
         <div class="entry full-width" ng-show="ngData.enable_confirmation_custom_text">
-            <label for="email-title">Title</label>
+            <label for="email-title" translate>TITLE</label>
             <input ng-model="ngData.confirmation_custom_title" id="email-title" value="" type="text" />
         </div>
         <div class="entry full-width" ng-show="ngData.enable_confirmation_custom_text">
-            <label for="email-text">Text</label>
+            <label for="email-text" translate>TEXT</label>
             <textarea ng-model="ngData.confirmation_custom_text" id="email-text" rows="2"></textarea>
         </div>
 
