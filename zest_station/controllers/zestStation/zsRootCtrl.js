@@ -880,8 +880,21 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.closePopup();
             };
             
+            $scope.pressEsc = function() {
+                $('body').trigger({
+                    type: 'keyup',
+                    which: 27 // Escape key
+                });
+            };
+            $scope.inputFocus = function(){
+                setTimeout(function(){
+                    if (angular.element($(".start-focused"))[0]){
+                            angular.element($(".start-focused"))[0].focus();
+                        }
+                },1000);
+            };
             $scope.$watchCollection(function(){
-                if ($scope.inChromeApp){
+                if ($scope.inChromeApp && $scope.theme === 'yotel'){
                     initScreenKeyboardListener();
                 }
                 
