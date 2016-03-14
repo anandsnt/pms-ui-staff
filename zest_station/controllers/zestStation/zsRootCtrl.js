@@ -704,35 +704,11 @@ sntZestStation.controller('zsRootCtrl', [
 
 
         $scope.selectLanguage = function(language){
-            // console.log(code);
-            
-            // if (lang === null || lang === 'null'){
-            //     $scope.showLanguagePopup = false;
-            //     $scope.timeOut = false;
-            //     return;
-            // } else {
-            //     $scope.selectedLanguage = lang;
-            //     $scope.langflag = icon;
-            // }
-            // $scope.showLanguagePopup = false;
-            // $scope.timeOut = false;
-            // setTimeout(function(){
-            //    $scope.loadTranslations($scope.theme); 
-            // },5);
-
-             //call Zest station settings API
-            // var options = {
-            //     params:         {"lang_code":lang_code},
-            //     successCallBack:    function(response){
-            //         $scope.showLanguagePopup = false;
-                    // $translateProvider.translations(lang_code,response);
-                    $scope.selectedLanguage = language.language;
-                    $scope.langflag = language.info.flag;
-                    $translate.use(language.info.code);
-                    $scope.showLanguagePopup = false;
-            //     }
-            // };
-            // !!language ? $scope.callAPI(zsHotelDetailsSrv.fetchTranslationData, options) : '';
+            $scope.selectedLanguage = language.language;//set language name
+            $scope.langflag = language.info.flag;// set language icon
+            $translate.use(language.info.code); //set translations
+            $scope.showLanguagePopup = false; // set popup flag
+            $scope.timeOut = false; // set popup flag
         };
         
             $scope.idleTimerSettings = {};
