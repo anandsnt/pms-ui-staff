@@ -118,6 +118,10 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     case "email":
                         $state.go('zest_station.find_by_email');
                         break;
+                    case "NoOfNights":
+                        $state.go('zest_station.find_by_no_of_nights');
+                        break;
+
                     case "last":
                         if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                             $state.lastAt = 're-enter-last';
@@ -195,6 +199,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
 
         $scope.findByDate = function(){
             $state.go('zest_station.find_by_date');
+        };
+        $scope.findByNoOfNights = function(){
+            $state.go('zest_station.find_by_no_of_nights');
         };
         $scope.findByEmail = function(){
             $state.go('zest_station.find_by_email');
@@ -389,6 +396,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             }
             $scope.input.last = $state.input.last;
             $scope.input.date = $state.input.date;
+            $scope.input.NoOfNights = $state.input.NoOfNights;
             $scope.input.email = $state.input.email;
             $scope.input.confirmation = $state.input.confirmation;
             $scope.lastAt = $state.lastAt;
@@ -435,7 +443,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	 * [initializeMe description]
 	 */
 	var initializeMe = function() {
-                    //show back button
+            //show back button
             $scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
 
             //show close button
