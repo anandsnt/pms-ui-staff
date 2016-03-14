@@ -11,6 +11,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
     'rvTwoMonthCalendarEventConstants',
     'rvRateManagerZoomLevelConstants',
     'rvRateManagerGroupByConstants',
+    'rvRateManagerEventConstants',
     'RMFilterOptionsSrv',
     'RateMngrCalendarSrv',
     '$q',
@@ -23,6 +24,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
              rvTwoMonthCalendarEventConstants,
              rvRateManagerZoomLevelConstants,
              rvRateManagerGroupByConstants,
+             rvRateManagerEventConstants,
              RMFilterOptionsSrv,
              RateMngrCalendarSrv,
              $q) {
@@ -57,13 +59,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       var formatDateForUI = (date_) => {
         return $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
-      };
-
-      /**
-       * This method handles on-click of the SHOW RATES BUTTON
-       */
-      $scope.clickedOnShowRates = () => {
-
       };
 
       /**
@@ -417,6 +412,32 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         //Fire
         $q.all(promises)
           .then(successFetchOfFillAndSetRateRateTypesAndSortOptions, failedToFillAndSetRateRateTypesAndSortOptions);
+      };
+
+      /**
+       * This method handles on-click of the SHOW RATES BUTTON
+       */
+      $scope.clickedOnShowRates = () => {
+        var valuesChoosed = {
+          fromDate: $scope.fromDate,
+          toDate: $scope.toDate,
+
+          zoomLevel: $scope.selectedZoomLevelValue,
+
+          orderBy: $scope.orderBySelectedValue,
+
+          groupBy: $scope.groupBySelectedValue,
+
+          showAllRates: $scope.showAllRates,
+          showAllRoomTypes: $scope.showAllRoomTypes,
+
+          selectedRateTypes: $scope.selectedRateTypes,
+          selectedRates: $scope.selectedRates,
+
+          selectedCards: $scope.selectedCards
+        };
+
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, valuesChoosed);
       };
 
       /**

@@ -7,6 +7,7 @@ module.exports = {
                   roverRoot + 'react/rateManager/**/*.js',
                   roverRoot + 'constants/rateManager/**/*.js',
                   roverRoot + 'constants/eventConstants/rvTwoMonthCalendarEventConstants.js',
+                  roverRoot + 'constants/eventConstants/rvRateManagerEventConstants.js',
                   roverRoot + 'services/rateManager/**/*.js',
                   roverRoot + 'services/rateManager_/**/*.js',
                   roverRoot + 'controllers/rateManager_/**/*.js'
