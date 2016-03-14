@@ -53,7 +53,8 @@
 "KEY_SUCCESS_PRINT_FAIL_MSG":"Key Success / Print Fail Message",
 "KEY_FAIL_PRINT_SUCCESS":"Key Fail / Print Success Message",
 "KEY_AND_PRINT_FAIL_MSG":"Keys and Print Fail Message",
-"CHECKIN_WAIT_MSG":"Check In Wait Message"
+"CHECKIN_WAIT_MSG":"Check In Wait Message",
+"COLLECT_USER_NATIONALITY":"Collect Guest Nationality"
 
 
 
