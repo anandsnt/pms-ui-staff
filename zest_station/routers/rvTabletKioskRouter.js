@@ -18,13 +18,28 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             //fetch language files in the starting itself
             //so as to speeden the process laterwards
             fetchTranslations: function(zsHotelDetailsSrv) {
-                $translateProvider.translations('en', zsHotelDetailsSrv.fetchTranslationData('en'));
-                $translateProvider.translations('fr', zsHotelDetailsSrv.fetchTranslationData('fr'));
-                $translateProvider.translations('cl', zsHotelDetailsSrv.fetchTranslationData('cl'));
-                $translateProvider.translations('de', zsHotelDetailsSrv.fetchTranslationData('de'));
-                $translateProvider.translations('es', zsHotelDetailsSrv.fetchTranslationData('es'));
-                $translateProvider.translations('it', zsHotelDetailsSrv.fetchTranslationData('it'));
-                $translateProvider.translations('nl', zsHotelDetailsSrv.fetchTranslationData('nl'));
+
+                    zsHotelDetailsSrv.fetchTranslationData('en').then(function(translations) {
+                        $translateProvider.translations('en', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('fr').then(function(translations) {
+                        $translateProvider.translations('fr', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('es').then(function(translations) {
+                        $translateProvider.translations('es', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('de').then(function(translations) {
+                        $translateProvider.translations('de', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('cl').then(function(translations) {
+                        $translateProvider.translations('cl', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('it').then(function(translations) {
+                        $translateProvider.translations('it', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('nl').then(function(translations) {
+                        $translateProvider.translations('nl', translations);
+                    });
             }
         }
     });
