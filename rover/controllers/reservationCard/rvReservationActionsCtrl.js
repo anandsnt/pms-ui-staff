@@ -775,6 +775,9 @@ sntRover.controller('reservationActionsController', [
 
 			$scope.ngData.sendConfirmatonMailTo = '';
 			$scope.ngData.enable_confirmation_custom_text = false;
+			$scope.ngData.enable_confirmation_custom_text = "";
+			$scope.ngData.confirmation_custom_title = "";
+			
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
 				controller: 'reservationActionsController',
