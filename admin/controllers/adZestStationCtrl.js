@@ -35,10 +35,6 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
         };
-        var saveFailed = function(response) {
-            $scope.errorMessage = 'Failed';
-            $scope.$emit('hideLoader');
-        };
         setUpTranslationFilesStatus();
         var dataToSend = {
             'kiosk': {
@@ -48,7 +44,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             }
 
         };
-        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
+        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
     $scope.init = function() {
         $scope.fetchSettings();
