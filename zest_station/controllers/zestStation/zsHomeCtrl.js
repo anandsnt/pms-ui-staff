@@ -537,6 +537,11 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     $scope.init = function(){
+        if ($scope.inChromeApp){
+            $scope.pressEsc();
+        }
+        $scope.inputFocus();
+        
         $scope.setScreenIcon('bed');//needed for initial view, other icons set from rootCtrl
         $scope.resetFlags();
         var current = $state.current.name;
