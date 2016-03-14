@@ -174,58 +174,8 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.language = null;
         
-        $scope.langInfo = [//in our admin/API, these are saved in english, we will keep reference here if needed
-            {
-                'language':'Castellano',
-                'info' :{
-                    'prefix':'',
-                    'flag':'flag-ca',
-                    'name':'Castellano'//using name as an english reference (which is in the api call)
-                }
-            },{
-                'language':'Deutsche',
-                'info' :{
-                    'prefix':'',
-                    'flag':'flag-de',
-                    'name':'German'
-                }
-            },{
-                'language':'English',
-                'info' :{
-                    'prefix':'EN',
-                    'flag':'flag-gb',
-                    'name':'English'
-                }
-            },{
-                'language':'Español',
-                'info' :{
-                    'prefix':'ES',
-                    'flag':'flag-es',
-                    'name':'Spanish'
-                }
-            },{
-                'language':'Français',
-                'info' :{
-                    'prefix':'FR',
-                    'flag':'flag-fr',
-                    'name':'French'
-                }
-            },{
-                'language':'Italiano',
-                'info' :{
-                    'prefix':'',
-                    'flag':'flag-it',
-                    'name':'Italian'
-                }
-            },{
-                'language':'Nederlands',
-                'info' :{
-                    'prefix':'NL',
-                    'flag':'flag-nl',
-                    'name':'Netherlands'
-                }
-            }
-        ];
+        $scope.langInfo = returnLanguageList();
+
         $scope.getLangPrefix = function(lang){
             for (var i in $scope.langInfo){
                 if ($scope.langInfo[i].language === lang){
@@ -750,7 +700,7 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.selectedLanguage = 'English';
         $scope.langflag = 'flag-gb';
-        $scope.selectLanguage = function(lang, icon){
+        $scope.selectLanguage = function(lang, icon,,code){
             
             if (lang === null || lang === 'null'){
                 $scope.showLanguagePopup = false;
