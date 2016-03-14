@@ -147,36 +147,48 @@ sntRover.factory('RVReportParserFac', [
             var processAry = function(source, type) {
                 var k, l;
 
-                var makeCopy, totalAmout;
+                var makeCopy, amt, totalAmount = 0;
 
                 for ( k = 0, l = source.length; k < l; k++ ) {
-                    makeCopy   = angular.copy( source[k] );
-                    totalAmout = 0;
+                    makeCopy = angular.copy( source[k] );
 
-                    totalAmout += makeCopy.amount;
+                    amt = parseInt(makeCopy.amount);
+                    amt = isNaN(amt) ? 0 : amt;
+                    totalAmount += amt;
 
                     if ( 0 === k ) {
                         angular.extend(makeCopy, {
                             isReport     : true,
                             rowspan      : l + 1,
-                            amount_class : type === 'adjustments' ? 'purple' : 'red'
+                            charge_type  : type,
+                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date  : makeCopy.posted.substring(0, 10),
+                            posted_time  : makeCopy.posted.substring(11),
+                            modified_date  : makeCopy.modified.substring(0, 10),
+                            modified_time  : makeCopy.modified.substring(11)
                         });
                         returnAry.push( makeCopy );
                     } else {
                         angular.extend(makeCopy, {
                             isReport     : true,
-                            amount_class : type === 'adjustments' ? 'purple' : 'red'
+                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date  : makeCopy.posted.substring(0, 10),
+                            posted_time  : makeCopy.posted.substring(11),
+                            modified_date  : makeCopy.modified.substring(0, 10),
+                            modified_time  : makeCopy.modified.substring(11)
                         });
                         returnAry.push( makeCopy );
                     }
-                }
 
-                returnAry.push({
-                    isReportSubTotal : true,
-                    break_class      : 'row-break',
-                    amount_class     : type === 'adjustments' ? 'purple' : 'red',
-                    total_amount     : totalAmout
-                });
+                    if ( 1 === l - k ) {
+                        returnAry.push({
+                            isReportSubTotal : true,
+                            break_class      : 'row-break',
+                            amount_class     : type === 'Adjustments' ? 'purple' : 'red',
+                            total_amount     : totalAmount
+                        });
+                    };
+                }
             };
 
             if ( ! apiResponse.length ) {
@@ -187,8 +199,8 @@ sntRover.factory('RVReportParserFac', [
                 adjustments = apiResponse[i]['adjustments'],
                 deletedCharges = apiResponse[i]['deleted_charges'];
 
-                processAry(adjustments, 'adjustments');
-                processAry(deletedCharges, 'deletedCharges');
+                processAry(adjustments, 'Adjustments');
+                processAry(deletedCharges, 'Deleted Charges');
             };
 
             console.log( returnAry );

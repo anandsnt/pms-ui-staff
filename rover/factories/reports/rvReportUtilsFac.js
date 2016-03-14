@@ -1293,8 +1293,8 @@ angular.module('reportsModule')
                 var chargeCode = angular.copy( _.find(report['sort_fields'], { 'value': 'CHARGE_CODE' }) ),
                     date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) );
 
-                report['sort_fields'][0] = chargeCode;
-                report['sort_fields'][1] = null;
+                report['sort_fields'][0] = null;
+                report['sort_fields'][1] = chargeCode;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = null;
