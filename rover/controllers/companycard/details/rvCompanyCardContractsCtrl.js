@@ -1,5 +1,5 @@
-sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout) {
+sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout', 'rvPermissionSrv',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
@@ -16,6 +16,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.autoCompleteState = {};
 		var contractInfo = {};
 		var ratesList = [];
+		$scope.isDeleteAllowed = false;
 
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -24,6 +25,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 
 		$scope.setScroller('cardContractsScroll');
+
+		$scope.hasPermisionToDeleteContract = function() {
+			return rvPermissionSrv.getPermissionValue ('DELETE_CONTRACT');
+		};
+
 
 		var refreshScroller = function() {
 			$timeout(function() {
@@ -122,6 +128,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
+			$scope.isDeleteAllowed = data.is_delete_allowed;
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
 			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
@@ -168,6 +175,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			if ($scope.contractList.current_contracts.length === 0 && $scope.contractList.future_contracts.length === 0 && $scope.contractList.history_contracts.length === 0) {
 				$scope.hasOverlay = true;
+				$scope.isDeleteAllowed = false;
 				$scope.contractData = {};
 			} else {
 				$scope.hasOverlay = false;
@@ -175,16 +183,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		var fetchContractsListSuccessCallback = function(data) {
-			$scope.contractList = data;
-			checkContractListEmpty();
+			$scope.contractList = data;			
 			$scope.contractList.contractSelected = data.contract_selected;
-			if ($scope.contractList.contractSelected) {
-				$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails, {
-					"account_id": $stateParams.id,
-					"contract_id": $scope.contractList.contractSelected
-				}, fetchContractsDetailsSuccessCallback, fetchFailureCallback);
-			}
+			$scope.$emit('hideLoader');
+			checkContractListEmpty();
 			$scope.errorMessage = "";
+			
 		};
 		var fetchContractsDetailsFailureCallback = function(data) {
 			$scope.$emit('hideLoader');
@@ -248,16 +252,23 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);		
 
-		if ($stateParams.id !== "add") {
-			$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
-				"account_id": $stateParams.id
-			}, fetchContractsListSuccessCallback, fetchFailureCallback);
-		} else {
-			$scope.contractList.isAddMode = true;
-			$scope.$emit('hideLoader');
-		}
+			
+		$scope.fetchContractsList = function () {
+
+			if ($stateParams.id !== "add") {
+				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
+					"account_id": $stateParams.id
+				}, fetchContractsListSuccessCallback, fetchFailureCallback);
+			} else {
+				$scope.contractList.isAddMode = true;
+				$scope.$emit('hideLoader');
+			}
+		};
+
+		$scope.fetchContractsList();
+
 		/*
 		 * Function to handle data change in 'Contract List'.
 		 */
@@ -281,6 +292,47 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 		});
 
+		// Delete Contarct button action
+		// Shows conformation popup 
+		$scope.deleteContract = function() {
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyCardContractDeleteConfirmationPopup.html',
+				className: 'ngdialog-theme-default1',
+				scope: $scope
+			});
+		};
+
+		// To close popup 
+		$scope.closePopup = function () {
+			ngDialog.close();
+		};
+
+		// To contract delete API call
+		$scope.deleteContractConfirmed = function(event) {
+
+			event.stopPropagation();
+			var deleteContractSuccessCallback = function() {
+				$scope.errorMessage = "";
+				$scope.contractList.current_contracts = [];
+				$scope.contractList.future_contracts = [];
+				$scope.contractList.history_contracts = [];
+				$scope.$emit('hideLoader');
+				$scope.fetchContractsList();
+
+			};
+
+			var deleteContractFailureCallback = function(errorMessage){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			};
+
+			ngDialog.close();
+			$scope.invokeApi(RVCompanyCardSrv.deleteContract,  {
+					"account_id": $stateParams.id,
+					"contract_id": $scope.contractList.contractSelected
+				}, deleteContractSuccessCallback, deleteContractFailureCallback);
+		};
+ 
 		// To popup contract start date
 		$scope.contractStart = function() {
 			ngDialog.open({
