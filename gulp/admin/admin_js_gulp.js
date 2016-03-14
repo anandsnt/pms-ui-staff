@@ -94,6 +94,7 @@ module.exports = function(gulp, $, options){
 		var glob 	= require('glob-all'),
 			fileList = adminJSMappingList.minifiedFiles.concat(adminJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
+		fileList = fileList.concat('asset_list/js/admin/**/*.js');
 		return gulp.watch(fileList, function(callback){
 			return runSequence('build-admin-js-dev', 'copy-admin-base-html');
 		});
