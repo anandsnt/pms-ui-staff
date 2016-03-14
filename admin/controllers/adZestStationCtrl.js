@@ -21,12 +21,12 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     var setUpTranslationFilesStatus = function() {
         zestLanguageDataCopy = angular.copy($scope.zestSettings.zest_lang);
-        zestLanguageDataCopy.english_translations_exists = checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file);
-        zestLanguageDataCopy.french_translations_exists = checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file);
-        zestLanguageDataCopy.spanish_translations_exists = checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file);
-        zestLanguageDataCopy.german_translations_exists = checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file);
-        zestLanguageDataCopy.italian_translations_exists = checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file);
-        zestLanguageDataCopy.castellano_translations_exists = checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file);
+        checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : "";
+        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file)  ? zestLanguageDataCopy.french_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : "" ;
+        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file)  ? zestLanguageDataCopy.german_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : "";
     };
 
     $scope.saveSettings = function() {
