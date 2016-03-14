@@ -22,7 +22,7 @@ module.exports = {
 				jsLibRoot + 'signature/**/*.js',
                                 
                                 //jquery virtual keyboard files
-				jsLibRoot + 'stationKeyboard/*.js',
+				//jsLibRoot + 'stationKeyboard/*.js',
                                 
                 jsLibRoot + 'fullcalender/**/*.js'
 			],
