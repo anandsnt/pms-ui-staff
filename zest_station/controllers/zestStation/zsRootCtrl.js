@@ -8,7 +8,12 @@ sntZestStation.controller('zsRootCtrl', [
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
         $scope.oosKey = 'snt_zs_workstation.in_oos';
+        $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
+        
+        $scope.inChromeApp = (window.innerHeight == screen.height && window.chrome);
+        
+        
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -876,9 +881,14 @@ sntZestStation.controller('zsRootCtrl', [
             };
             
             $scope.$watchCollection(function(){
+                if ($scope.inChromeApp){
+                    initScreenKeyboardListener();
+                }
+                
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
+               
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }

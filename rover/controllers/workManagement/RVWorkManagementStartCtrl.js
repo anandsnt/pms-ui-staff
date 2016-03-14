@@ -30,6 +30,23 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     $scope.$emit('hideLoader');
                     $scope.workStats = wmStatistics;
                     $scope.refreshScroller('work_management');
+
+                    _.each($scope.workStats.work_types, function(type) {
+                        if ( type.total_rooms_completed < type.total_rooms_assigned ) {
+                            type.css_class = 'red';
+                        } else {
+                            type.css_class = 'green';
+                        };
+
+                        _.each(type.tasks, function(task) {
+                            if ( task.total_rooms_completed < task.total_rooms_assigned ) {
+                                task.css_class = 'red';
+                            } else {
+                                task.css_class = 'green';
+                            };
+                        });
+                    });
+
                 },
                 onFetchFailure = function(errorMessage) {
                     $scope.errorMessage = "";
