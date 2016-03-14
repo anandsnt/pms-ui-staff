@@ -71,7 +71,10 @@
 	"BY_FIRST_LAST_NAME" : "By First and Last name",
 	"BY_CUSTOM_TEXT" : "Custom Text",
 	"CUSTOM_SALUTATION" : "Custom Salutation",
-	"INCLUDE_TITLE" : "Include Title"
+	"INCLUDE_TITLE" : "Include Title",
+	"DEFAULT_GUEST_BILL" : "Default Guest Bill",
+	"DEFAULT_ACCOUNT_BILL" : "Default Account Bill",
+	"SELECT_ACCOUNT_BILL" : "Select Account Bill"
 
 
 

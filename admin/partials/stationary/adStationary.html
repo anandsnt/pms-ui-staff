@@ -49,9 +49,9 @@
                     </div>
                 </section>
                 <section class="holder right">
-                    
+
                     <ad-textbox styleclass="full-width" value="data.confirmation_email_subject" label="{{'CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-                    
+
                     <!-- 4.Check box to 'Display Add-Ons'-->
                     <ad-checkbox is-checked="data.display_addons" label="{{ 'DISPLAY_ADD_ONS' | translate}}" div-class="full-width"></ad-checkbox>
                     <!-- 5.Check box to 'Display Total Stay Cost'-->
@@ -127,11 +127,20 @@
                 </div>
 
                 <div class="entry full-width">
-                    <label for="guest-bill-template" translate>GUEST_BILL_TEMPLATE </label>
+                    <label for="guest-bill-template" translate>DEFAULT_GUEST_BILL</label>
                     <div class="select">
-                        <select ng-model="data.selected_guest_bill_template" name="guest-bill-template" class="placeholder">
+                        <select ng-model="data.default_guest_bill" name="guest-bill-template" class="placeholder">
                             <option value="" translate> SELECT_GUEST_BILL </option>
-                            <option ng-repeat="item in data.guest_bill_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill_template">{{item.name}}</option>
+                            <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.default_guest_bill">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry full-width">
+                    <label for="account-bill-template" translate>DEFAULT_ACCOUNT_BILL</label>
+                    <div class="select">
+                        <select ng-model="data.default_account_bill" name="account-bill-template" class="placeholder">
+                            <option value="" translate> SELECT_ACCOUNT_BILL </option>
+                            <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.default_account_bill">{{item.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -139,9 +148,9 @@
                 <ad-textbox styleclass="full-width" value="data.guest_bill_email_subject" label="{{'GUEST_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
 
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.guest_bill_email_body" label="{{'GUEST_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                
+
                 <ad-textbox styleclass="full-width" value="data.company_ta_bill_subject" label="{{'CARDS_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-                
+
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.company_ta_bill_body" label="{{'CARDS_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
 
                 <div class="entry full-width">
@@ -191,7 +200,7 @@
             </fieldset>
 
             <!-- Customize salutation Section -->
-            
+
             <fieldset class="holder left">
                 <div class="form-title">
                     <h3>
@@ -202,26 +211,26 @@
                 <div class="entry full-width">
                     <label for="item-type"><span translate>GUEST_SALUTATION_TYPES</span></label>
                     <div class="boxes">
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}"> 
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}">
                             <span class="icon-form icon-radio " ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}"></span>
                             <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_name" value="FIRST_NAME" />
-                            <span translate>BY_FIRST_NAME</span> 
+                            <span translate>BY_FIRST_NAME</span>
                         </label>
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}"> 
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}">
                             <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}"></span>
                             <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_last_name" value="LAST_NAME" />
-                            <span translate>BY_LAST_NAME</span> 
+                            <span translate>BY_LAST_NAME</span>
                         </label>
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='BOTH'}"> 
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='BOTH'}">
                             <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='BOTH'}"></span>
                             <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_last_name" value="BOTH" />
-                           <span translate>BY_FIRST_LAST_NAME</span> 
+                           <span translate>BY_FIRST_LAST_NAME</span>
                         </label>
 
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}"> 
+                        <label class="radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}">
                             <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}"></span>
                             <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_custom_text" value="CUSTOM" />
-                           <span translate>BY_CUSTOM_TEXT</span> 
+                           <span translate>BY_CUSTOM_TEXT</span>
                         </label>
 
                         <div class="entry" ng-show="data.salutation_by =='CUSTOM'">
