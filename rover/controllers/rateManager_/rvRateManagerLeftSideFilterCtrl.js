@@ -120,6 +120,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * utility mehtod to scroll to a node element
        * @param {node} [cssSelector]
        */
       var scrollTo = (cssSelector) => {

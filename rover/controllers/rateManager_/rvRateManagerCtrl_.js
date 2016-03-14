@@ -36,7 +36,29 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object}
        */
       var onfetchDailyRatesSuccess = (response) => {
-        console.log(response);
+        var results = response.results,
+            dates = _.pluck(results, 'date'),
+            rates = results[0].rates,
+            restrictionList = [],
+            dateRateSet = null;
+
+        results = _.object(dates, results);
+
+        //we have lots of alternative ways to form the data model, but we're choosing the bad way since
+        //other ways may mess up in the future with data ordering
+        //may be this will result in running 365000 times
+        rates = rates.map(function(rate) {
+          rate.restrictionList = [];
+
+          dates.map(function(date) {
+            dateRateSet = _.findWhere(results[date].rates, {id: rate.id});
+            rate.restrictionList.push(dateRateSet.restrictions);
+          });
+
+          return _.omit(rate, 'restrictions');
+        });
+
+        renderReact(rates, 'RATE_VIEW');
       };
 
       /**
@@ -55,7 +77,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * when the daily rates success
        * @param  {Object}
        */
-      var fetchRoomTypeAndRestrictions = (response) => {
+      var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
         console.log(response);
       };
 
@@ -66,9 +88,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var fetchRoomTypeAndRestrictions = (params) => {
         var options = {
           params: params,
-          onSuccess: fetchRoomTypeAndRestrictions
+          onSuccess: onFetchRoomTypeAndRestrictionsSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchAllRoomTypesInfo, options);
+      };
+
+      /**
+       * utility method for converting date object into api formated 'string' format
+       * @param  {Object} date
+       * @return {String}
+       */
+      var formatDateForAPI = function(date) {
+        return $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI);
       };
 
       /**
@@ -78,8 +109,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
         var params = {
-          from_date: newFilterValues.fromDate,
-          to_date: newFilterValues.toDate,
+          from_date: formatDateForAPI(newFilterValues.fromDate),
+          to_date: formatDateForAPI(newFilterValues.toDate),
           order_id: newFilterValues.orderBySelectedValue
         };
 
@@ -116,17 +147,25 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       });
 
       /**
+       * [description]
+       * @param  {[type]} props [description]
+       * @param  {String} type  [description]
+       * @return {[type]}       [description]
+       */
+      var renderReact = (data = null, type = 'NOT_CONFIGURED') => {
+        const {render} = ReactDOM;
+        render(
+            <RateManagerRoot data = {data} type = {type}/>,
+            document.querySelector('#rate-manager .content')
+        );
+      };
+
+      /**
        * initialisation function
        */
       (() => {
         setHeadingAndTitle('RATE_MANAGER_TITLE');
-
-        const {render} = ReactDOM;
-        render(
-            <RateManagerRoot/>,
-            document.querySelector('#rate-manager .content')
-        );
-
+        renderReact();
       })();
 
     }]);
