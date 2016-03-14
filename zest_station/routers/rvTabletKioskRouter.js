@@ -220,6 +220,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/generic/input-date.html'
          });
 
+    $stateProvider.state('zest_station.find_by_no_of_nights', {
+        url: '/find_reservation',
+        controller: 'zsFindByNoOfNightsCtrl',
+        templateUrl: '/assets/partials/kiosk/generic/zsFindByNoOfNights.html'
+    });
          // //check-in [ find-by-email ]
          $stateProvider.state('zest_station.find_by_email', {
              url: '/find_reservation', 
@@ -278,7 +283,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_reservation_no_match', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
-             templateUrl: '/assets/partials/kiosk/specific/no-match.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsNoMatch.html',
          });
 
           // //check-in [ admin-popup ]
