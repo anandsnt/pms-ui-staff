@@ -72,7 +72,7 @@ module.exports = {
 										  checkoutNowPartials+'Eden_resorts/*.html',checkoutNowPartials+'*.html',
 										  checkoutNowlaterPartials+'*.html',
 										  checkinPartials+'Eden_resorts/*.html',checkinPartials+"*.html",
-										  precheckinPartials+'Eden_resorts/*.html', precheckinPartials+'*.html',
+										  precheckinPartials+'Eden/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
 			'guestweb_fulton' 		:[landingPartials + 'Fulton/*.html',
 										  checkoutNowPartials+'Fulton/*.html',checkoutNowPartials+'*.html',
@@ -201,7 +201,21 @@ module.exports = {
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+			'guestweb_terranea'		: [ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+
+			'guestweb_naples_grande'		:[ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
 										precheckinPartials+'*.html']
+
 		}
 	}
 }

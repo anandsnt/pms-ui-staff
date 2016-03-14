@@ -54,7 +54,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
             }
             $scope.populateTimeFieldValue();
-            $scope.setScroller("rvActionListScroller");
+            $scope.setScroller("rvActionListScroller", {
+                scrollbars: true,
+                preventDefault: false,
+                fadeScrollbars: true,
+                click: true
+            });
 
            //initially use the count from the staycard init request for reservation details
            var setActionsCount = function(){
@@ -382,21 +387,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
 
             if ($scope.newAction.date_due){
-                var splitChar = $scope.newAction.date_due[2];
                 var dateObj = $scope.newAction.dueDateObj;
-                var coreTime, hours, mins;
-                     coreTime = $scope.newAction.time_due.core_time;
-                        hours = parseInt(coreTime[0]+''+coreTime[1]);
-                        mins = parseInt(coreTime[2]+''+coreTime[3]);
+                params['due_at'] = $filter('date')(dateObj, $rootScope.dateFormatForAPI) +
+                    ($scope.newAction.time_due ? "T" + $scope.newAction.time_due + ":00" : "");
 
-                dateObj.setHours(parseInt(hours));
-                //verify this is the correct hours to set using core_time
-                dateObj.setMinutes(parseInt(mins));
-                dateObj.setSeconds(0);
-                var dueAtStr = dateObj.toISOString();
-                var dueAtNoTimeZone = dueAtStr.split('.');
-                params['due_at'] = dueAtNoTimeZone[0];
-                //params['time_due'] = dateObj.valueOf();
             }
 
             $scope.invokeApi(rvActionTasksSrv.postNewAction, params, onSuccess, onFailure);
@@ -425,7 +419,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
-                $scope.newAction.time_due = $scope.timeFieldValue[0];
+                $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");
             }
         };
 
@@ -492,28 +486,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             };
             $scope.lastSelectedItemId = $scope.selectedAction.id;
             if (typeof $scope.selectedAction.due_at_date === typeof 'string' || typeof $scope.selectedAction.due_at_date === typeof 12345){
-                var coreTime, hours, mins;
-                     coreTime = $scope.selectedAction.due_at_time.core_time;
-                        hours = parseInt(coreTime[0]+''+coreTime[1]);
-                        mins = parseInt(coreTime[2]+''+coreTime[3]);
-
-                //have to convert the date format string to read properly
-                var splitChar = $scope.selectedAction.due_at_date[2];
                 var dateObj = $scope.selectedAction.dueDateObj || new tzIndependentDate($scope.selectedAction.due_at_str);
-
-                dateObj.setHours(parseInt(hours));
-                //verify this is the correct hours to set using core_time
-                dateObj.setMinutes(parseInt(mins));
-                dateObj.setSeconds(0);
-
-               // params['time_due'] = saveDate.valueOf()+"";
-                var dueAtStr = dateObj.toISOString();
-                var dueAtNoTimeZone = dueAtStr.split('.');
-                params['due_at'] = dueAtNoTimeZone[0];
-
+                params['due_at'] = $filter('date')(dateObj, $rootScope.dateFormatForAPI) +
+                    ($scope.selectedAction.due_at_time ? "T" + $scope.selectedAction.due_at_time + ":00" : "");
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
             }
-
         };
 
         $scope.getBasicDateInMilli = function(d, charToSplit){
@@ -685,7 +662,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.refreshActionList = function(del, selected){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+                $scope.hotel_time = data.business_date_time;
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
@@ -697,14 +674,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     } else {
                         list[x].assigned = false;
                     }
-                    if (typeof list[x].time_due === typeof 'string'){
-                        matchObj = getTimeObj(list[x].time_due);
-                        list[x].due_at_time = matchObj;
-                    } else {
-                        list[x].due_at_time = $scope.timeFieldValue[0];
-                    }
+
+                    list[x].due_at_time = list[x].time_due ? $filter('date')(list[x].due_at_str, "HH:mm") : "00:00";
+
                     if (typeof list[x].due_at === typeof 'string'){
-                        list[x].due_at_date = getFormattedDate(list[x].due_at);
+                        list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
                         list[x].hasDate = true;
                     } else {
                         list[x].hasDate = false;
@@ -839,13 +813,6 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             } return false;
         };
         
-        $scope.convertMilTime = function(milStr){
-          //converts "16:10:00" into "04:10 PM"
-            var str = milStr.split(' ');
-            var strArray = str[1].split(':');
-            var hour = strArray[0], min = strArray[1];
-            return getFormattedTime(hour+''+min);
-        };
         $scope.capped = function(str){
             if (str){
                 var s = str.toLowerCase();
@@ -890,7 +857,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+                $scope.hotel_time = data.business_date_time;
 
                 var list = data.data;
                 var matchObj;
@@ -900,15 +867,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     } else {
                         list[x].assigned = false;
                     }
-                    if (typeof list[x].time_due === typeof 'string'){
-                        matchObj = getTimeObj(list[x].time_due);
-                        list[x].due_at_time = matchObj;
 
-                    } else {
-                        list[x].due_at_time = $scope.timeFieldValue[0];
-                    }
+                    list[x].due_at_time = list[x].time_due ? $filter('date')(list[x].due_at_str, "HH:mm") : "00:00";
+
                     if (typeof list[x].due_at === typeof 'string'){
-                        list[x].due_at_date = getFormattedDate(list[x].due_at, 'due_at_date');
+                        list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
                         list[x].hasDate = true;
                     } else {
                         list[x].hasDate = false;

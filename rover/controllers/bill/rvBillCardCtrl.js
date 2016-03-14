@@ -2192,11 +2192,22 @@ sntRover.controller('RVbillCardController',
 		scrollToTop();
 
 		var sucessCallback = function(data) {
+			
 			$scope.isPrintRegistrationCard = true;
 
 			$scope.$emit('hideLoader');
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
+
+			// CICO-25012 - checking for signature dispaly on Reg'n Card PRINT
+			if( $scope.reservationBillData.signature_details.is_signed === "true" ){
+				$scope.printRegCardData.signature_url = $scope.reservationBillData.signature_details.signed_image;
+			}
+			else{
+				var canvasElement 	= angular.element( document.querySelector('canvas.jSignature'))[0],
+					signatureURL 	= (!!canvasElement) ? canvasElement.toDataURL() : '';
+				$scope.printRegCardData.signature_url = signatureURL;
+			}
 
 			// CICO-9569 to solve the hotel logo issue
 			$("header .logo").addClass('logo-hide');

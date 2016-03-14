@@ -381,6 +381,27 @@
         }
 
         &.find-user { width: auto; }
+
+        &.find-guest{
+            li{
+              height: 50px;
+            }
+            img {
+                 position: absolute;
+                 .square(30px);
+                 #border-radius > .rounded();
+            }
+            .name{
+              font-size: 18px;
+            }
+            .room{
+                 font-size: 14px;
+                 float: right;
+                 margin-right: 10px;
+                 text-transform: uppercase;
+                 color:@grey3
+            }
+         }
     }
 
     .ui-helper-hidden-accessible { .hide; }
@@ -1337,9 +1358,133 @@
                 }
             }
 
+            /* Card Authorization */
             &.card-authorize {
-                width: 320px;
+                .size(580px, 920px);
+                padding:0;
 
+                .content-left,
+                .content-right {
+                    position: relative;
+                    overflow: hidden;
+                    height: 100%;
+                    .pull-left;
+
+                    .iScrollVerticalScrollbar .iScrollIndicator {
+                        background-color: rgba(0,0,0,0.1);
+                    }
+                }
+                .content-left {
+                    width:60%;
+                    padding: 45px 0px 20px 20px;
+                    background: rgba(0,0,0,.05);
+                }
+                .content-right {
+                    width:40%;
+                    position: relative;
+                    padding: 45px 20px 20px 20px;
+                    .box-shadow(0 -2px 2px rgba(0,0,0,.3));
+
+                    label {
+                        text-transform: uppercase;
+                    }
+                }
+
+                .manual_auth {
+                    .float;
+                    > label {
+                        .pull-left;
+                        width:50%;
+                        margin:0;
+                    }
+
+                    > input {
+                        .pull-right;
+                        width:50%;
+                    }
+                }
+
+                .authorization-bills {
+                    background-color:rgba( 0,0,0,0.1);
+                    margin-bottom:20px;
+                    max-height:80px;
+                    overflow: hidden;
+                    position: relative;
+                    .wrapper {
+                        padding:10px 20px;
+                    }
+                     table {
+                        margin:0;
+                        width:100%;
+                     }
+
+                     td {
+                        vertical-align: middle;
+                        padding:0;
+                        line-height: 30px;
+                        text-align: right;
+                        color:@grey3;
+                        text-transform: uppercase;
+                        /* BILL # width*/
+                        &:first-child {
+                            width:45px;
+                        }
+                        /* BALANCE width */
+                        &:nth-child(3) {
+                            width:100px;
+                        }
+
+                        &:nth-child(2){
+                            text-align: left;
+                        }
+                         
+                     }
+                    .value {
+                        padding-left:5px;
+                        color:@black;
+                        font-weight: 600;
+                        &.red {
+                            color:@red;
+                        }
+                        &.green{
+                            color:@green;
+                        }
+                    }
+                }
+
+                .credit-cards {
+                    position: relative;
+                    z-index:1;
+                    overflow: hidden;
+                    .calc-height(100, 60 );
+                }
+
+                .block-item {
+                    height:50px;
+                    line-height: 50px;
+                    padding:0 10px;
+                    margin-bottom: 10px;
+                    .calc-width( 100, 20 );
+                    .clickable();
+
+                    &.item-active {
+                        width:100%;
+                        .background(@white);
+                    }
+
+                    .card-logo {
+                        margin-right:10px;
+                    }
+
+                    .number {
+                        width:85px;
+                    }
+                    .code {
+                        width:120px;
+                    }
+
+
+                }
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
@@ -4229,11 +4374,13 @@
 
                     h1 {
                         font-weight: 700;
+                        line-height: 30px;
                         clear: none;
                     }
 
                     strong { 
                         font-weight: 600;
+                        line-height: 20px;
                         .h4; 
                     }
 
@@ -4296,10 +4443,18 @@
             &.staycard-actions {
 
                 .modal-header {
+
+                    h1,
+                    strong {
+                        .calc-width(100, 420);
+                        .nowrap();
+                    }
+                    
                     .dates {
                         position: absolute;
                         top: 23px;
-                        left: 220px;
+                        right: 200px;
+                        width: 200px;
 
                         .date { 
                             line-height: 20px; 
@@ -4319,7 +4474,30 @@
                     .size(460px, 920px);
 
                     .content-left {
-                        .scrollable { height: 100%;}
+                        .scrollable { 
+                            height: 100%;
+
+                            &.with-pagination { .calc-height(100, 60); }
+                        }
+                            
+                        .search-pagination {
+                            position: relative;
+                            padding: 10px;
+                            background: @grey2 @darkTexture repeat;
+
+                            p {
+                                font-size: 14px;
+                                margin-right: 10px;
+                                .pull-left;
+                            }
+
+                            .button {
+                                font-size: 14px;
+                                line-height: 40px;
+                                width: 90px;
+                                .pull-right;
+                            }
+                        }
                     }
 
                     .content-right {
@@ -4441,7 +4619,13 @@
             &.actions-form {
                 width: 420px;
 
-                label { margin-bottom: 0; }
+                label {
+                  margin-bottom: 0;
+                  .char-count{
+                    color: @green;
+                    &.full{ color: @red; }
+                  }
+                }
 
                 .entry:not(.full-width) {
                     .calc-width(50, 10);

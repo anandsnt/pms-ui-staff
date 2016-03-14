@@ -11,10 +11,6 @@
                 </li>
 
             </ul>
-            <div id="actions">
-                <button type="button" class="button prev" click-touch="addAGuest()" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>{{'ADD_BTN' |translate}}</button>
-                <button type="button" class="button next" click-touch="goToNext()">{{'NEXT_BTN' |translate}}</button>
-            </div>
         </div>
         <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
     </section>

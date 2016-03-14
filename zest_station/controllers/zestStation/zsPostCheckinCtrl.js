@@ -189,8 +189,12 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.initErrorScreen = function(){
                 $scope.at = 'error';
+                
+                if($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== ""){//speak to staff override message
+                    $scope.subHeadingText = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
+                }
+                
                 $scope.headingText = 'BROKE_HEADER';
-                $scope.subHeadingText = 'BROKE_HEADER_SUB';
                 $scope.modalBtn1 = 'DONE_BTN';
         };
         $scope.initRoomErrorScreen = function(){
@@ -198,6 +202,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = 'TALK_TO_STAFF';
                 $scope.subHeadingText = 'ROOM_NOT_AVAIL_MSG';
                 $scope.modalBtn1 = 'DONE_BTN';
+                
+            if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === "" ){
+                console.info('TALK_TO_STAFF...');
+                $scope.messageOverride = false;
+                $scope.headingText = 'TALK_TO_STAFF';
+            } else {
+                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1)
+                $scope.messageOverride = true;//need to turn off translate 
+                $scope.headingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
+            }
+            
         };
         $scope.initKeyErrorScreen = function(){
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
@@ -374,8 +389,11 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.room_error'){
                 $scope.initRoomErrorScreen();
-            } else if (current === 'zest_station.last_confirm'){
+               // $scope.initRoomErrorScreen();
                 
+            } else if (current === 'zest_station.last_confirm'){
+                //As part of CICO-24944 ,Customized subheading text for yotel
+                $scope.updateSubHeadingTextForLastConfirmPage();
                 if (($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled) && !$state.fromPrintSuccess){
                     $scope.headingText = "EMAIL_SENT_MSG";
                     $scope.subHeadingText = $scope.getLastInputEmail();
@@ -384,15 +402,15 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                         $scope.headingText = "END_THANKS";
                         $scope.subHeadingText = '';
                     } else if ($scope.theme === 'fontainebleau'){
-                        $scope.headingText = "SEE_YOU";
+                        $scope.headingText = "END_THANKS";
                         $scope.subHeadingText = '';
-                        
+                    } else {
+                        $scope.headingText = 'END_THANKS';
                     }
                 }
                 $scope.at = 'last_confirm';   
                 $scope.modalBtn1 = '';
                 $scope.modalBtn2 = 'Exit';
-                
                 hideNavButtons();
                 
             } else if (current === 'zest_station.error'){
@@ -403,8 +421,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 
             } else if (current === 'zest_station.invalid_email_retry'){
                 $scope.at = 'invalid-email';
-                $scope.headingText = 'OOPS_TEXT';
-                $scope.subHeadingText = 'INVALID_EMAIL_ENTERED';
+                
+                $scope.headingText = 'EMAIL_ERR_HEADER';//INVALID_EMAIL_ENTERED
+                $scope.subHeadingText = 'EMAIL_ERR_HEADER_SUB';//INVALID_EMAIL_ENTERED SUB
                 if ($state.from === 'card-swipe'){
                     $scope.from = 'card-swipe';
                 }
@@ -427,10 +446,26 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
             
         };
+        $scope.updateSubHeadingTextForLastConfirmPage = function(){
+            if($state.selectedReservation.printSuccess == true){
+                if($state.selectedReservation.keySuccess)
+                {
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_success_message;
+                }else{
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_success_message;
+                }
+            }else{
+                if($state.selectedReservation.keySuccess)
+                {
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_fail_message;
+                }else{
+                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_fail_message;
+                }
+            };
+        }
         $scope.initPrintRegistration = function(){
             $scope.printRegistrationCard();
         };
-        
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
@@ -446,6 +481,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.onPrintSuccess = function(success){
             $state.fromPrintSuccess = true;
+            $state.selectedReservation.printSuccess = true;
             $state.go('zest_station.last_confirm');
             $scope.$emit('hideLoader');
         };
@@ -544,8 +580,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 
 		//show close button
 		$scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
-                
-                $scope.init();
+        $scope.init();
 	}();
         
         

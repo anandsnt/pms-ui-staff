@@ -43,7 +43,8 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
-		var paymentMapSuccess = function(){
+		var paymentMapSuccess = function(data){
+			
 			$scope.$emit('hideLoader');
 			ngDialog.close();
 
@@ -68,6 +69,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 
 				$scope.dataToPaymentList.reservation_card.payment_details.is_swiped = isSwiped ;
 				$scope.dataToPaymentList.reservation_card.payment_details.auth_color_code = colorCode;
+				$scope.dataToPaymentList.reservation_card.payment_details.id = data.id;
 			}
 		};
 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);

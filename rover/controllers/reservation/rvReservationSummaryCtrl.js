@@ -778,14 +778,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             });
         };
 
-
         $scope.confirmReservation = function(skipAPICall) {
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
                 return;
             }
-            var postData = $scope.computeReservationDataforUpdate(false, true);
+            var postData = $scope.computeReservationDataforUpdate(true, true);
             postData.payment_type = {};
             angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
                 if (value.value === $scope.reservationData.paymentType.type.value) {
@@ -825,8 +824,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
-        $scope.clickedContinueButton = function() {
-
+        var onSavePaymentMethodSuccess = function(){
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
@@ -888,6 +886,64 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 //
 
             }
+        };
+
+        var savePayment = function(callback){
+            var promises = [];
+            $scope.$emit('showLoader');
+
+            var updateSuccess = function(data) {
+                $scope.$emit('hideLoader');
+                callback();
+            };
+
+            var updateFailure = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = data;
+            };
+
+            var postData = {
+                payment_type : {}
+            };
+
+            if ($scope.reservationData.paymentType.type.value !== null) {
+                angular.forEach($scope.reservationData.paymentMethods, function(item) {
+                    if ($scope.reservationData.paymentType.type.value === item.value) {
+                        if ($scope.reservationData.paymentType.type.value === "CC") {
+                            postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+                        } else {
+                            postData.payment_type.type_id = item.id;
+                        }
+                    }
+                });
+                postData.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+                $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
+                postData.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+            }
+
+            $scope.errorMessage = [];
+
+            if (typeof index === 'undefined') {
+                // TO HANDLE OVERRIDE ALL SCENARIO
+                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                    promises.push(RVReservationSummarySrv.updateReservation(postData));
+                });
+            } else {
+                postData.reservationId = reservationId;
+                promises.push(RVReservationSummarySrv.updateReservation(postData));
+            }
+            $q.all(promises).then(updateSuccess, updateFailure);
+        };
+
+        $scope.onPayDepositLater = function(){
+            savePayment($scope.confirmReservation);
+        };
+
+
+        // Save the payment information initially and then proceed with the demographics check!
+        $scope.clickedContinueButton = function() {
+            savePayment(onSavePaymentMethodSuccess);
         };
 
         $scope.proceedCreatingReservation = function() {
@@ -1304,6 +1360,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.errorMessage = data;
             };
 
+            var postData = {
+                'reservation_type_id': parseInt($scope.demographics.reservationType),
+                'source_id': parseInt($scope.demographics.source),
+                'market_segment_id': parseInt($scope.demographics.market),
+                'booking_origin_id': parseInt($scope.demographics.origin),
+                'segment_id': parseInt($scope.demographics.segment)
+            };
+
             $scope.errorMessage = [];
 
             if (typeof index === 'undefined') {
@@ -1311,14 +1375,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                     room.demographics = angular.copy($scope.demographics);
                     $scope.reservationData.demographics = angular.copy($scope.demographics);
-                    var postData = $scope.computeReservationDataforUpdate(false, true, currentRoomIndex);
                     postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
                     promises.push(RVReservationSummarySrv.updateReservation(postData));
                 });
             } else {
                 $scope.reservationData.rooms[index].demographics = angular.copy($scope.demographics);
                 $scope.reservationData.demographics = angular.copy($scope.demographics);
-                var postData = $scope.computeReservationDataforUpdate(false, true, index);
                 postData.reservationId = reservationId;
                 promises.push(RVReservationSummarySrv.updateReservation(postData));
             }
@@ -1367,61 +1429,48 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         };
 
 
-        $scope.isDemographicsFormValid = function(assertValidation) {
+        var validateDemographicsData = function(demographicsData){
             var isValid = true;
+            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
+                isValid = demographicsData.reservationType !== "";
+            }
+            if ($scope.otherData.marketsEnabled && $scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
+                isValid = demographicsData.market !== "";
+            }
+            if ($scope.otherData.sourcesEnabled && $scope.otherData.sourceIsForced && $scope.otherData.sources.length > 0 && isValid) {
+                isValid = demographicsData.source !== "";
+            }
+            if ($scope.otherData.originsEnabled && $scope.otherData.originIsForced && $scope.otherData.origins.length > 0 && isValid) {
+                isValid = demographicsData.origin !== "";
+            }
+            if ($scope.otherData.segmentsEnabled && $scope.otherData.segmentsIsForced && $scope.otherData.segments.length > 0 && isValid) {
+                isValid = demographicsData.segment !== "";
+            }
+            return isValid;
+        };
+
+        $scope.isDemographicsFormValid = function(assertValidation) {
+            var isValid = true,
+                demographicsData;
             if (assertValidation) {
                 if ($scope.otherData.reservationTypeIsForced || $scope.otherData.marketIsForced || $scope.otherData.sourceIsForced || $scope.otherData.originIsForced) {
-                    _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    _.each($scope.reservationData.rooms, function(room) {
                         if (!room.demographics) {
                             isValid = false;
                         } else {
-                            var demographicsData = room.demographics;
-
-                            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
-
-                            if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
-                                isValid = demographicsData.reservationType !== "";
-                            }
-                            if ($scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
-                                isValid = demographicsData.market !== "";
-                            }
-                            if ($scope.otherData.sourceIsForced && $scope.otherData.sources.length > 0 && isValid) {
-                                isValid = demographicsData.source !== "";
-                            }
-                            if ($scope.otherData.originIsForced && $scope.otherData.origins.length > 0 && isValid) {
-                                isValid = demographicsData.origin !== "";
-                            }
-                            if ($scope.otherData.segmentsIsForced && $scope.otherData.segments.length > 0 && isValid) {
-                                isValid = demographicsData.segment !== "";
-                            }
+                            demographicsData = room.demographics;
+                            isValid = validateDemographicsData(demographicsData);
                         }
                     });
                 }
             } else {
-                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-
-                    var demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
-
-                    // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
-
-
-                    if ($scope.otherData.reservationTypeIsForced) {
-                        isValid = demographicsData.reservationType !== "";
-                    }
-                    if ($scope.otherData.marketIsForced && isValid) {
-                        isValid = demographicsData.market !== "";
-                    }
-                    if ($scope.otherData.sourceIsForced && isValid) {
-                        isValid = demographicsData.source !== "";
-                    }
-                    if ($scope.otherData.originIsForced && isValid) {
-                        isValid = demographicsData.origin !== "";
-                    }
-                    if ($scope.otherData.segmentsIsForced && isValid) {
-                        isValid = demographicsData.segment !== "";
-                    }
+                _.each($scope.reservationData.rooms, function(room) {
+                    demographicsData = $scope.demographics || room.demographics || $scope.reservationData.demographics;
+                    isValid = validateDemographicsData(demographicsData);
                 });
             }
+
             return isValid;
         };
 

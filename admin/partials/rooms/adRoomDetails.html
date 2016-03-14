@@ -1,5 +1,5 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()"><!-- Edit Room -->
-	<div >
+	<div>
 		<div class="data-holder">
 			<header class="content-title float">
 				<h2>
@@ -11,7 +11,7 @@
 				</h2>
 				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">{{ 'BACK_TO_ROOMS' | translate }}</a>
 			</header>
-			<section class="content-scroll">
+			<section class="content-scroll" id="room-detail-content">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="edit-room" id="edit-room" data-room-id="{{data.room_id}}" class="form float">
 				<fieldset class="holder left">
@@ -23,13 +23,36 @@
 					</div>
 
 				<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}"required="" maxlength=10>
-				</ad-textbox>	
+				</ad-textbox>
 
-				<ad-textbox value="data.max_occupancy" name="max-occupancy" id="max-occupancy" label="Max Occupancy " placeholder="Enter Max Occupancy" required=""></ad-textbox>	
+				<ad-textbox value="data.max_occupancy" name="max-occupancy" id="max-occupancy" label="Max Occupancy " placeholder="Enter Max Occupancy" required=""></ad-textbox>
 
 				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'SELECT_FLOOR' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='data.selected_floor'></ad-dropdown>
 
-				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
+
+
+				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
+
+				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
+					<label for="select-option1">
+						{{'ROOM_NUMBERS' |translate}}
+					</label>
+					<div class="boxes">
+						<div class="room-no-box" ng-repeat="number in data.suite_rooms">
+							<input type="text"  name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="box" ng-model="number.room_number">
+
+							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
+								<a class="icons icon-delete" ></a>
+							</div>
+						</div>
+						<div>
+							<label data-type="newspaper" class="add-new-checkbox inline" ng-click="showNewRoomNumber()" style="width: 24% !important; top: 20px; margin-bottom: 30px; ">
+								<span class="icons icon-add"></span>
+								{{'ADD_ROOM' | translate}}
+							</label>
+						</div>
+					</div>
+				</div>
 
 				<div class="entry full-width">
 					<label for="room-picture">
@@ -45,10 +68,10 @@
 					</span>
 				</div>
 				<div ng-hide="isStandAlone">
-					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>	
-					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>	
-					<ad-checkbox is-checked="data.is_exclude_from_manual_checkin" label="{{ 'EXCLUDE_FROM_MANUAL_CHECK_IN' | translate}}" div-class="full-width" ></ad-checkbox>	
-					<ad-checkbox is-checked="data.is_exclude_from_auto_checkin" label="{{ 'EXCLUDE_FROM_AUTO_CHECK_IN' | translate}}" div-class="full-width"></ad-checkbox>	
+					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
+					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
+					<ad-checkbox is-checked="data.is_exclude_from_manual_checkin" label="{{ 'EXCLUDE_FROM_MANUAL_CHECK_IN' | translate}}" div-class="full-width" ></ad-checkbox>
+					<ad-checkbox is-checked="data.is_exclude_from_auto_checkin" label="{{ 'EXCLUDE_FROM_AUTO_CHECK_IN' | translate}}" div-class="full-width"></ad-checkbox>
 					<ad-checkbox is-checked="data.is_exclude_from_housekeeping" label="{{ 'EXCLUDE_FROM_HOUSEKEEPING' | translate}}" div-class="full-width"></ad-checkbox>
 				</div>
 			</fieldset>
@@ -89,7 +112,7 @@
 								<em class="status" ng-if="'dropdown' == like.type || 'radio' == like.type"><span>Choose a like</span></em>
 								<em class="status" ng-if="'dropdown' != like.type && 'radio' != like.type"><span>Choose any likes</span></em>
 							</div>
-							
+
 							<div ng-if="'dropdown' == like.type" class="entry full-width">
 								<div class="select">
 									<select ng-model="like.selected" ng-options="option.value as option.name for option in like.options" iscroll-stop-propagation>
@@ -115,7 +138,7 @@
 							</div>
 						</fieldset>
 					</div>
-										
+
 				</div>
 			</fieldset>
 			<div class="actions float">
@@ -125,7 +148,5 @@
 		</form>
 		</section>
 	</div>
-
-
 </div>
 </section>

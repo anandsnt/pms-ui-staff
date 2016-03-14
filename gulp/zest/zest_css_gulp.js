@@ -129,7 +129,7 @@ module.exports = function(gulp, $, options) {
 		        .pipe($.minifyCSS({keepSpecialComments : 0, advanced: false, aggressiveMerging: false, mediaMerging: false}).on('error', options.silentErrorShowing))
 		        .on('end', function(){
 		        	extendedMappings[theme] = [URL_APPENDER + "/zest_station/css/" + fileName ];
-		        	console.log ('Guestweb Theme CSS - mapping-generation-ended: ' + fileName);
+		        	console.log ('ZestStation Theme CSS - mapping-generation-ended: ' + fileName);
 		        })
 		        .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 		});

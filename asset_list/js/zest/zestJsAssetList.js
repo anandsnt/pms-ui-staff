@@ -20,6 +20,10 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
 				jsLibRoot + 'signature/**/*.js',
+                                
+                                //jquery virtual keyboard files
+				//jsLibRoot + 'stationKeyboard/*.js',
+                                
                 jsLibRoot + 'fullcalender/**/*.js'
 			],
 			nonMinifiedFiles: [
@@ -39,6 +43,7 @@ module.exports = {
 				jsLibRoot + 'date.js',
 				'rover/rvSntApp.js',
 				zestRoot + 'zsApp.js',
+				zestRoot + 'rvMLIOperations.js',
 				zestRoot + 'controllers/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',
