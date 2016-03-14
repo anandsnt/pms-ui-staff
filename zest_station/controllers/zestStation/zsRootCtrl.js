@@ -3,7 +3,7 @@ sntZestStation.controller('zsRootCtrl', [
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
 	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv, cssMappings, zestStationSettings) {
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -138,7 +138,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
                 }
             };
-            $scope.callAPI(hotelDetailsSrv.fetchHotelSettings, options);
+            $scope.callAPI(zsHotelDetailsSrv.fetchHotelSettings, options);
             
             var theme = null;
             /*
@@ -174,7 +174,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.language = null;
         
-        $scope.langInfo = returnLanguageList();
+        $scope.langInfo = zsUtilitySrv.returnLanguageList();
 
         $scope.getLangPrefix = function(lang){
             for (var i in $scope.langInfo){
@@ -306,7 +306,7 @@ sntZestStation.controller('zsRootCtrl', [
             link = $scope.getThemeLink(theme);
             logo = $scope.getLogoSvg(theme);
             if (link){
-                hotelDetailsSrv.data.theme = theme.toLowerCase();
+                zsHotelDetailsSrv.data.theme = theme.toLowerCase();
                 $state.theme = theme.toLowerCase();
               //  $('head').append('<link rel="stylesheet" type="text/css" href="'+link+'">');
                 $('#logo').append(logo);
@@ -700,21 +700,39 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.selectedLanguage = 'English';
         $scope.langflag = 'flag-gb';
-        $scope.selectLanguage = function(lang, icon,,code){
+
+
+
+        $scope.selectLanguage = function(language){
+            // console.log(code);
             
-            if (lang === null || lang === 'null'){
-                $scope.showLanguagePopup = false;
-                $scope.timeOut = false;
-                return;
-            } else {
-                $scope.selectedLanguage = lang;
-                $scope.langflag = icon;
-            }
-            $scope.showLanguagePopup = false;
-            $scope.timeOut = false;
-            setTimeout(function(){
-               $scope.loadTranslations($scope.theme); 
-            },5);
+            // if (lang === null || lang === 'null'){
+            //     $scope.showLanguagePopup = false;
+            //     $scope.timeOut = false;
+            //     return;
+            // } else {
+            //     $scope.selectedLanguage = lang;
+            //     $scope.langflag = icon;
+            // }
+            // $scope.showLanguagePopup = false;
+            // $scope.timeOut = false;
+            // setTimeout(function(){
+            //    $scope.loadTranslations($scope.theme); 
+            // },5);
+
+             //call Zest station settings API
+            // var options = {
+            //     params:         {"lang_code":lang_code},
+            //     successCallBack:    function(response){
+            //         $scope.showLanguagePopup = false;
+                    // $translateProvider.translations(lang_code,response);
+                    $scope.selectedLanguage = language.language;
+                    $scope.langflag = language.info.flag;
+                    $translate.use(language.info.code);
+                    $scope.showLanguagePopup = false;
+            //     }
+            // };
+            // !!language ? $scope.callAPI(zsHotelDetailsSrv.fetchTranslationData, options) : '';
         };
         
             $scope.idleTimerSettings = {};
@@ -907,7 +925,7 @@ sntZestStation.controller('zsRootCtrl', [
         
         //$scope.zestStationData.pickup_qr_scan = true;//fake it till ya make it
              
-        _.extend(hotelDetailsSrv.data, zestStationSettings);
+        _.extend(zsHotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
         $scope.setupIdleTimer();
         $scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
