@@ -33,6 +33,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.departmentSelect = {};
         $scope.departmentSelect.selected;
 
+        $scope.timeSelectorList = rvUtilSrv.getListForTimeSelector (15, 12);
 
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
@@ -419,7 +420,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
-                $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");
+                $scope.newAction.time_due = rvActionTasksSrv.roundToNextQuarter(parseInt($filter('date')($scope.hotel_time, "HH"),10),
+                    parseInt($filter('date')($scope.hotel_time, "mm"),10));
             }
         };
 

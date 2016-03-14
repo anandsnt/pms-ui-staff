@@ -189,17 +189,25 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
         return deferred.promise;
     };
 
+    this.roundToNextQuarter = function(hours,minutes){
+        var roundedHours =  (minutes > 45 ? ++hours % 24 : hours).toString(),
+            roundedMins = ((((minutes + 14) / 15 | 0) * 15) % 60).toString();
+
+        return (roundedHours.length === 2 ? roundedHours : "0" + roundedHours ) +
+            ":" +
+            (roundedMins.length === 2 ? roundedMins : "0" + roundedMins);
+    }
+
     this.fetchCurrentTime = function () {
         var deferred = $q.defer();
         var url = '/api/hotel_current_time';
         BaseWebSrvV2.getJSON(url).then(function (data) {
-            deferred.resolve(data.hotel_time.hh + ":" + data.hotel_time.mm);
+            deferred.resolve(self.roundToNextQuarter(parseInt(data.hotel_time.hh,10), parseInt(data.hotel_time.mm,10)));
         }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
     };
-
 
     //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
