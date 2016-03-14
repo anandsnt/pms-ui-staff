@@ -2,10 +2,12 @@ module.exports = {
   getList : function() {
     var roverRoot = 'rover/',
             assets = {
-              minifiedFiles: [],
+              minifiedFiles: [
+              ],
               nonMinifiedFiles: [
                   roverRoot + 'react/rateManager/**/*.js',
                   roverRoot + 'constants/rateManager/**/*.js',
+                  roverRoot + 'redux/rateManager/**/*.js',
                   roverRoot + 'constants/eventConstants/rvTwoMonthCalendarEventConstants.js',
                   roverRoot + 'constants/eventConstants/rvRateManagerEventConstants.js',
                   roverRoot + 'services/rateManager/**/*.js',

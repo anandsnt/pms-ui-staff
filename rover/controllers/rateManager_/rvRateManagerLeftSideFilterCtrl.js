@@ -62,6 +62,13 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * to close filter section from somewhere
+       */
+      $scope.$on(rvRateManagerEventConstants.CLOSE_FILTER_SECTION, function(event) {
+        $scope.isFilterVisible = false; 
+      });
+
+      /**
        * on choosing the rate type from list, we will be adding to selected list
        */
       $scope.rateTypeSelected = () => {

@@ -58,7 +58,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           return _.omit(rate, 'restrictions');
         });
 
-        renderReact(rates, 'RATE_VIEW');
+        //closing the left side filter section
+        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
+
+        store.dispatch({
+          type: 'RATE_VIEW_CHANGED'
+        });
       };
 
       /**
@@ -146,16 +151,26 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         runDigestCycle();
       });
 
+      var initialState = {
+        mode: 'NOT_CONFIGURED'
+      };
+      
+      const store = configureStore(initialState)
+
+      const {render} = ReactDOM;
+      const {Provider} = ReactRedux;
+
       /**
        * [description]
        * @param  {[type]} props [description]
        * @param  {String} type  [description]
        * @return {[type]}       [description]
        */
-      var renderReact = (data = null, type = 'NOT_CONFIGURED') => {
-        const {render} = ReactDOM;
+      var renderCalendarView = () => {
         render(
-            <RateManagerRoot data = {data} type = {type}/>,
+            <Provider store={store} >
+              <RateManagerRoot/>
+            </Provider>,
             document.querySelector('#rate-manager .content')
         );
       };
@@ -165,7 +180,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       (() => {
         setHeadingAndTitle('RATE_MANAGER_TITLE');
-        renderReact();
+
+        renderCalendarView();
       })();
 
     }]);
