@@ -2082,27 +2082,28 @@ sntRover.controller('RVbillCardController',
 /*----------- edit/remove/split ends here ---------------*/
 
 
-	$scope.clickedEmail = function(){
-
-		var data = {
-				"reservation_id" : $scope.reservationBillData.reservation_id,
-				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
-		};
+	$scope.clickedEmail = function(data){
+		$scope.closeDialog();
 		var sendEmailSuccessCallback = function(successData){
 			$scope.$emit('hideLoader');
-			$scope.errorMessage = "";
+			$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+			$scope.status = "success";
+			$scope.showEmailSentStatusPopup();
 		};
 		var sendEmailFailureCallback = function(errorData){
 			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorData;
+			$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+			$scope.status = "alert";
+			$scope.showEmailSentStatusPopup();
 		};
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	};
 
 
 	//print bill
-	$scope.clickedPrint = function(){
-		printBill();
+	$scope.clickedPrint = function(requestData){
+		$scope.closeDialog();
+		printBill(requestData);
 		scrollToTop();
 	};
 
@@ -2123,11 +2124,11 @@ sntRover.controller('RVbillCardController',
 	};
 
 	// print the page
-	var printBill = function() {
-		var data = {
+	var printBill = function(data) {
+		/*var data = {
 				"reservation_id" : $scope.reservationBillData.reservation_id,
 				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
-		};
+		};*/
 		var printDataFetchSuccess = function(successData){
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
@@ -2458,13 +2459,28 @@ sntRover.controller('RVbillCardController',
         $scope.errorMessage = data;
     });
 
-    $scope.showFormatBillPopup = function() {
+    $scope.showFormatBillPopup = function(billNo) {
+    	$scope.billNo = billNo;
     	ngDialog.open({
-	    		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
-	    		controller: 'rvBillFormatPopupCtrl',
-	    		className: '',
-	    		scope: $scope
+    		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
+    		controller: 'rvBillFormatPopupCtrl',
+    		className: '',
+    		scope: $scope
     	});
     };
+
+    $scope.showEmailSentStatusPopup = function(status) {
+    	ngDialog.open({
+    		template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+    		className: '',
+    		scope: $scope
+    	});
+    };
+
+    $scope.closeDialog = function() {
+        ngDialog.close();
+    };
+
+
 
 }]);
