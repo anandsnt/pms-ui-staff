@@ -236,7 +236,8 @@
     "ADMIN_STATION_PRINTER": "Select Printer",
     "QR_SCAN_FAILED_HEADING" :"Sorry",
     "QR_SCAN_FAILED_SUB_TEXT": "The QR scanning failed",
-    "SEARCH_BY_NAME" : "Search by name"
+    "SEARCH" : "Search",
+    "BY_NAME":"by name"
 
  
    

@@ -11,15 +11,16 @@
                     </button>
                     {{'RETRY' |translate}}
                 </li>
-                <li class="break">
+                <li class="break" ng-show="zestStationData.pickup_qr_scan_fail_over">
                     <span>Or</span>
                 </li>
-                <li>
+                <li ng-show="zestStationData.pickup_qr_scan_fail_over">
                     <button type="button" class="button option" touch-press='quitQRScanMode()'>
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    {{'SEARCH_BY_NAME' |translate}}
+                    {{'SEARCH' |translate}}
+                    <span>{{'BY_NAME' |translate}}</span>
                 </li>
                 <li class="break">
                     <span>Or</span>

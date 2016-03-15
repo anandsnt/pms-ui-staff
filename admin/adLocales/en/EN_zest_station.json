@@ -57,7 +57,8 @@
 "KEY_FAIL_PRINT_SUCCESS":"Key Fail / Print Success Message",
 "KEY_AND_PRINT_FAIL_MSG":"Keys and Print Fail Message",
 "CHECKIN_WAIT_MSG":"Check In Wait Message",
-"COLLECT_USER_NATIONALITY":"Collect Guest Nationality"
+"COLLECT_USER_NATIONALITY":"Collect Guest Nationality",
+"QR_FAIL_OVER":"QR Failover"
 
 
 
