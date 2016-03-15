@@ -7,6 +7,5 @@ let finalCreateStore = Redux.compose(
 )(Redux.createStore);
 
 var configureStore = function(initialState = {todos: []}) {
-    return finalCreateStore(reducer, initialState);
+    return finalCreateStore(todoApp, initialState);
 };
-

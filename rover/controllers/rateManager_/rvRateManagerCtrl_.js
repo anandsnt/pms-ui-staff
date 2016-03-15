@@ -38,7 +38,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var onfetchDailyRatesSuccess = (response) => {
         var results = response.results,
             dates = _.pluck(results, 'date'),
-            rates = results[0].rates,
+            ratesWithRestrictions = results[0].rates,
             restrictionList = [],
             dateRateSet = null;
 
@@ -47,7 +47,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //we have lots of alternative ways to form the data model, but we're choosing the bad way since
         //other ways may mess up in the future with data ordering
         //may be this will result in running 365000 times
-        rates = rates.map(function(rate) {
+        ratesWithRestrictions = ratesWithRestrictions.map(function(rate) {
           rate.restrictionList = [];
 
           dates.map(function(date) {
@@ -62,7 +62,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
 
         store.dispatch({
-          type: 'RATE_VIEW_CHANGED'
+          type: 'RATE_VIEW_CHANGED',
+          ratesAndRestrictions: ratesWithRestrictions
         });
       };
 

@@ -1,5 +1,5 @@
 const rateManagerActions = {
-	rateViewChanged (data) {
+	rateViewChanged (ratesAndRestrictions) {
 		return {
 			mode: 'RATE_VIEW_CHANGED'
 		}

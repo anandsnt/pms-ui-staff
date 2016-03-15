@@ -7,5 +7,5 @@ let finalCreateStore = compose(
 )(createStore);
 
 const configureStore = (initialState = { 'mode': 'NOT_CONFIGURED' }) => {
-	return finalCreateStore (rateManagerRootReducer, initialState);
+	return finalCreateStore(rateManagerRootReducer, initialState);
 }

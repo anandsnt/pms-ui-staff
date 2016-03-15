@@ -1,18 +1,40 @@
 angular.module('sntRover').controller('rvTodoController', ['$scope', function($scope) {
-    var initialState = {
-        todos: [{
-            id: 0,
-            completed: false,
-            text: 'Initial todo for demo purpose'
-        }]
+    const {Provider} = ReactRedux;
+    const render = () => {
+        ReactDOM.render(
+        	<Provider store={store}>
+            	<TodoApp/>
+            </Provider>,
+            document.getElementById('todo-starting-point')
+        );
     };
+    render();
 
-    let store = configureStore(initialState);
-    const {render} = ReactDOM; 
-    render(
-        <ReactRedux.Provider store={store}>
-            <App />
-        </ReactRedux.Provider>,
-        document.getElementById('todo-starting-point')
-    );
+
+//     console.log('initial state');
+// console.log(store.getState());
+// console.log('-------------');
+
+// console.log(store.dispatch({
+//     type: 'ADD_TODO',
+//     id: 1,
+//     text: 'Go shopping'
+// }));
+
+// console.log('Current state');
+// console.log(store.getState());
+// console.log('-------------');
+
+// console.log(store.dispatch({
+//     type: 'TOGGLE_TODO',
+//     id: 1
+// }));
+
+// console.log('Current state');
+// console.log(store.getState());
+// console.log('-------------');
+
+    
+
+    
 }]);

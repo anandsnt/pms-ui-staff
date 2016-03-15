@@ -1,10 +1,10 @@
 const RateManagerCalendarLeftSideListing = () => ( 
-	<div className='pinnedLeft'>
+	<div className='pinnedLeft scrollable'>
 		<table className='rate-calendar'>
 			<thead>
 				<tr>
 	                <th className='cell'>
-	                    <button className='button rm-buttonOpenClose grey'> 
+	                    <button className='button rm-buttonOpenClose green'> 
 	                        Open All
 	                    </button>
 	                    

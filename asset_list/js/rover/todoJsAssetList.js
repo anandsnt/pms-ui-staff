@@ -4,8 +4,9 @@ module.exports = {
             assets = {
                 minifiedFiles: [],
                 nonMinifiedFiles: [
-                    roverRoot + "react/todo/**/*.js",
+                    
                     roverRoot + "redux/todo/**/*.js",
+                    roverRoot + "react/todo/**/*.js",
                     roverRoot + "controllers/Todo/**/*.js"
                 ]
             };
