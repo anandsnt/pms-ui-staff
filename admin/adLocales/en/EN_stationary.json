@@ -51,6 +51,7 @@
 	"PRINT_CANCELLATION_LETTER": "Print Cancellation Letter",
 	"PRINT_CONFIRMATION_LETTER": "Print Confirmation Letter",
 	"SEND_CONFIRMATION_LETTER": "Send Confirmation Letter",
+	"CUSTOM_TEXT_PER_RESERVATION" : "Custom Text per Reservation",
 
 	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
 	"CONFIRMATION_EMAIL_SUBJECT": "Confirmation Email Subject",
