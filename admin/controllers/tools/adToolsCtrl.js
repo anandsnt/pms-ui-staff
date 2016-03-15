@@ -25,24 +25,24 @@ admin.controller('ADToolsCtrl',
     };
     //To list tools
     $scope.listTools();
-  //  /*
-  //   * To render edit department screen
-  //   * @param {index} index of selected department
-  //   * @param {id} id of the department
-  //   */
-  //   $scope.editDepartments = function(index, id)    {
-  //       $scope.departmentData={};
-  //       $scope.currentClickedElement = index;
-  //       $scope.isAddMode = false;
-  //       var successCallbackRender = function(data){
-  //           $scope.departmentData = data;
-  //           $scope.$emit('hideLoader');
-  //       };
-  //       var data = {"id":id };
-  //       $scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);
-  //   };
    /*
-    * Render add department screen
+    * To render edit department screen
+    * @param {index} index of selected department
+    * @param {id} id of the department
+    */
+    $scope.editDepartments = function(index, id)    {
+        $scope.toolsData={};
+        $scope.currentClickedElement = index;
+        $scope.isAddMode = false;
+        var successCallbackRender = function(data){
+            $scope.toolsData = data;
+            $scope.$emit('hideLoader');
+        };
+        var data = {"id":id };
+        $scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);
+    };
+   /*
+    * Render add screen
     */
     $scope.addNew = function()  {
         $scope.toolsData={};
@@ -53,25 +53,23 @@ admin.controller('ADToolsCtrl',
             $anchorScroll();
         });
     };
-  //  /*
-  //   * To get the template of edit screen
-  //   * @param {int} index of the selected department
-  //   * @param {string} id of the department
-  //   */
-  //   $scope.getTemplateUrl = function(index, id){
-  //       if(typeof index === "undefined" || typeof id === "undefined") {
-  //           return "";
-  //       }
-  //       if($scope.currentClickedElement === index){
-  //               return "/assets/partials/departments/adDepartmentsEdit.html";
-  //       }
-  //   };
+   /*
+    * To get the template of edit screen
+    * @param {int} index of the selected tool
+    * @param {string} id of the tool
+    */
+    $scope.getTemplateUrl = function(index, id){
+        if(typeof index === "undefined" || typeof id === "undefined") {
+            return "";
+        }
+        if($scope.currentClickedElement === index){
+                return "/assets/partials/departments/adToolsAdd.html";
+        }
+    };
   /*
    * To save/update tools details
    */
    $scope.saveTools = function(){
-    console.log("------");
-    console.log($scope.toolsData)
         var successCallbackSave = function(data){
             $scope.$emit('hideLoader');
             if($scope.isAddMode){
@@ -89,24 +87,21 @@ admin.controller('ADToolsCtrl',
             $scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.toolsData , successCallbackSave);
         }
     };
-  //  /*
-  //   * To handle click event
-  //   */
-  //   $scope.clickCancel = function(){
-  //       $scope.currentClickedElement = -1;
-  //   };
-  //  /*
-  //   * To delete department
-  //   * @param {int} index of the selected department
-  //   * @param {string} id of the selected department
-  //   */
-  //   $scope.deleteDepartment = function(index, id){
-  //       var successCallbackDelete = function(data){
-  //           $scope.$emit('hideLoader');
-  //           $scope.data.departments.splice(index, 1);
-  //           $scope.currentClickedElement = -1;
-  //       };
-  //       $scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
-  //   };
+   /*
+    * To handle click event
+    */
+    $scope.clickCancel = function(){
+        $scope.currentClickedElement = -1;
+    };
+   /*
+    * To update auto sync from list
+    * @param {obj} object of selected invetory    */
+    $scope.onToggleAutoSync = function(inventory){
+        var successCallbackUpdateInventory = function(data){
+            $scope.$emit('hideLoader');
+            $scope.currentClickedElement = -1;
+        };
+        $scope.invokeApi(ADToolsSrv.updateTool, inventory , successCallbackUpdateInventory);
+    };
 }]);
 
