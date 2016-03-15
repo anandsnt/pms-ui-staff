@@ -14,14 +14,13 @@
         </div>
 
         <div class="holder">
-            <div class="entry margin hidden">
+            <div class="entry margin">
                 <label for="email-language" translate>GUEST_LANGUAGE</label>
-                <div class="select" ng-model="ngData.selected_language_code">
-                    <select id="email-language">
+                <div class="select">
+                    <select id="email-language" ng-model="ngData.languageData.selected_language_code">
                         <option value="" translate>SELECT_LANGUAGE</option>
                         <option value="{{item.code}}" ng-repeat="item in ngData.languageData.languages"
-                                ng-selected="item.id === ngData.languageData.selected_langauge_id"
-                                ng-if="item.id === ngData.languageData.selected_langauge_id">{{item.language}}</option>
+                                ng-selected="item.code === ngData.languageData.selected_language_code">{{item.language}}</option>
                     </select>
                 </div>
             </div>

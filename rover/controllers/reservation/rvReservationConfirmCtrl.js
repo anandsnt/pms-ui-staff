@@ -64,8 +64,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	     * @return {undefined}
 	     */
 	    var fetchGuestLanguages = function() {
+	    	var params = { 'reservation_id': $scope.reservationData.reservationId };
 	      	// call api
-	      	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {}, successCallBackForLanguagesFetch);
+	      	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, successCallBackForLanguagesFetch);
 	    };
 		$scope.init = function() {
 			$scope.heading = 'Reservations';
@@ -290,7 +291,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				postData.enable_confirmation_custom_text = $scope.reservationData.enable_confirmation_custom_text;
 				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
 				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
-				postData.locale = $scope.reservationData.selected_language_code;
+				postData.locale = $scope.reservationData.languageData.selected_language_code;
 				if ($scope.reservationData.isHourly) {
 					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 				} else {

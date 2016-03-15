@@ -143,11 +143,12 @@
 
                         <div class="entry full-width break-top">
                             <label for="email-language" translate>GUEST_LANGUAGE</label>
-                            <div class="select" ng-model="reservationData.selected_language_code">
-                                <option value="" translate>SELECT_LANGUAGE</option>
-                                <option value="{{item.code}}" ng-repeat="item in reservationData.languageData.languages"
-                                ng-selected="item.id === reservationData.languageData.selected_langauge_id"
-                                ng-if="item.id === reservationData.languageData.selected_langauge_id">{{item.language}}</option>
+                            <div class="select">
+                                <select id="email-language" ng-model="reservationData.languageData.selected_language_code">
+                                    <option value="" translate>SELECT_LANGUAGE</option>
+                                    <option value="{{item.code}}" ng-repeat="item in reservationData.languageData.languages"
+                                        ng-selected="item.code === reservationData.languageData.selected_language_code">{{item.language}}</option>
+                                </select>
                             </div>
                         </div>
 
