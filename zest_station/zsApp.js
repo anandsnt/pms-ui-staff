@@ -23,10 +23,10 @@ var sntZestStation = angular.module('sntZestStation',[
 sntZestStation.config(function ($httpProvider, $translateProvider) {
     $httpProvider.interceptors.push('sharedHttpInterceptor');
 		$translateProvider.useStaticFilesLoader({
-		  prefix: '/assets/zest_station/zsLocales/en/',
+		  prefix: '/assets/zest_station/zsLocales/',
 		  suffix: '.json'
 		});
-		$translateProvider.fallbackLanguage('EN_snt');
+		//$translateProvider.fallbackLanguage('EN_snt');
 });
 
 sntZestStation.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
