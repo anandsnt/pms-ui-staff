@@ -38,7 +38,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
                 $scope.$emit('hideLoader');
             };
     var getLabelTranslations = function() {
-        var params = getRequestParams();        
+        var params = getRequestParams();
         $scope.invokeApi(ADTranslationSrv.getLabelTranslationForLocale, params, onFetchSuccess, onFetchFailure);
     };
 
@@ -76,10 +76,14 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
         var params = {};
         params.locale_id = $scope.filter.locale;
         params.option_item_id = $scope.filter.item;
-        params.query = $scope.filter.searchText;               
+        params.query = $scope.filter.searchText;
 
         $scope.invokeApi(ADTranslationSrv.searchLabelTranslationForLocale, params, onFetchSuccess, onFetchFailure);
 
+    };
+
+    $scope.onTranslationChange = function(index, value) {
+        $scope.data[index].value = value;
     };
 
 
@@ -92,7 +96,7 @@ admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslat
             item : $scope.menuDetails.menu_options[0].option_items[0].id,
             searchText : ""
         };
-        
+
         $scope.items = $scope.menuDetails.menu_options[0].option_items;
         $scope.data = [];
         getLabelTranslations();

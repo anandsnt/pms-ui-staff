@@ -55,13 +55,13 @@
 
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
                 <tbody>
-                    <tr ng-repeat="translation in $data">
+                    <tr ng-repeat="translation in data">
                         <td data-title="'Label'" sortable="'name'" header-class="half-width-title" >
                             {{translation.name}}
                         </td>
 
                         <td data-title="'Translation'"  sortable="'based_on'" header-class="half-width-title" >
-                            <input type="text" id="value"  ng-model="translation.value" value="{{translation.value}}" class="full-width-input"/>
+                            <input type="text" id="value"  ng-model="translation.value"  class="full-width-input" ng-change="onTranslationChange($index,translation.value)"/>
                             <!-- <ad-textbox value="translation.value" inputtype="access-url" name="value" id="value" label="" styleclass="full-width"></ad-textbox> -->
                         </td>
                     </tr>
