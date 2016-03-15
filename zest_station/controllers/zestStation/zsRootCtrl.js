@@ -299,6 +299,7 @@ sntZestStation.controller('zsRootCtrl', [
                         close: $scope.iconsPath+'/close.svg',
                         qr: $scope.iconsPath+'/key.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
+                        logo: $scope.iconsPath+'/print_logo.svg',
                     }
                 };
             }

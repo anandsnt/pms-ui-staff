@@ -74,6 +74,20 @@
     "REGISTRATION_READY_HEADER": "Your registration is ready.",
     "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
     
+    
+    
+    "REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL": "",
+    "REGISTRATION_READY_PRINT_ROOM_NO": "Your Cabin Number is",
+    "REGISTRATION_READY_PRINT_DEPART_DATE": "Date of departure : ",
+    "REGISTRATION_READY_PRINT_STD_CHECKOUT": "Our standard check out is ",
+    "REGISTRATION_READY_PRINT_MSG_1": "YOTEL is 100% non-smoking. Includin all of our public spaces. There is a fee of $250 if you choose to smoke. An expensive cigarette! ",
+    "REGISTRATION_READY_PRINT_MSG_2": "Complementary coffee and muffins on FOUR between 7am and 10am (10.30 weekends).  Complementary tea/coffee/water station on FOUR (24/7).",
+    "REGISTRATION_READY_PRINT_MSG_3": "Our concierge team on FOUR can assist you with many services including theater tickets, sightseeing tours, transportation to and from local airports, resaurant reservations, florists, and more.",
+    "REGISTRATION_READY_PRINT_FOOTER": "NOW TAKE THE ELEVATORS TO 'FOUR'",
+    
+    
+    
+    
     "SWIPE_ERR_HEADER": "An Error Occurred",
     
     "EMAIL_SENT_MSG": "The e-mail has been delivered.",

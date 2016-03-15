@@ -11,6 +11,7 @@
 
 
 function initScreenKeyboardListener(){
+    return;//disabling in pms-dev until fixing some issues
     var elSelector = 'input:visible';
     var bound = false;
     var focusHandler = function(){
