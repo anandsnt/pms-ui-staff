@@ -116,11 +116,6 @@ sntRover.controller('RVroomAssignmentController',[
 		var allAllowedRooms = [];
 		allAllowedRooms = angular.copy($scope.allRooms);
 
-		angular.forEach(roomUpgrades.upsell_data, function(value, key) {
-			value.room_number = value.upgrade_room_number
-			allAllowedRooms.push(value)
-		});
-
 		$scope.searchText = $scope.searchText.toUpperCase();
 
 

@@ -31,6 +31,12 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                     angular.element("#ui-datepicker-overlay").remove();
                 }
             };
+
+            $scope.callAPI(rvActionTasksSrv.fetchCurrentTime,{
+                successCallBack:function(response){
+                    $scope.newAction.dueTime = response;
+                }
+            });
         };
 
         $scope.saveNewAction = function () {
