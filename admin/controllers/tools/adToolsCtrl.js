@@ -17,7 +17,7 @@ admin.controller('ADToolsCtrl',
     $scope.listTools = function(){
         var successCallbackFetch = function(data){
             $scope.$emit('hideLoader');
-            $scope.data = data;
+            $scope.sync_inventories = data.sync_inventories;
             $scope.currentClickedElement = -1;
             $scope.isAddMode = false;
         };
@@ -30,7 +30,7 @@ admin.controller('ADToolsCtrl',
     * @param {index} index of selected department
     * @param {id} id of the department
     */
-    $scope.editDepartments = function(index, id)    {
+    $scope.editTools = function(index, id)    {
         $scope.toolsData={};
         $scope.currentClickedElement = index;
         $scope.isAddMode = false;
@@ -39,7 +39,7 @@ admin.controller('ADToolsCtrl',
             $scope.$emit('hideLoader');
         };
         var data = {"id":id };
-        $scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);
+        $scope.invokeApi(ADToolsSrv.getToolsDetails, data , successCallbackRender);
     };
    /*
     * Render add screen
@@ -63,7 +63,7 @@ admin.controller('ADToolsCtrl',
             return "";
         }
         if($scope.currentClickedElement === index){
-                return "/assets/partials/departments/adToolsAdd.html";
+                return "/assets/partials/tools/adToolsAdd.html";
         }
     };
   /*
@@ -72,19 +72,14 @@ admin.controller('ADToolsCtrl',
    $scope.saveTools = function(){
         var successCallbackSave = function(data){
             $scope.$emit('hideLoader');
-            if($scope.isAddMode){
-                // To add new data to scope
-                $scope.data.tools.push(data);
-            } else {
-                //To update data with new value
-                $scope.data.tools[parseInt($scope.currentClickedElement)].name = $scope.departmentData.name;
-            }
             $scope.currentClickedElement = -1;
+            $scope.listTools();
+
         };
         if($scope.isAddMode){
             $scope.invokeApi(ADToolsSrv.saveTools, $scope.toolsData , successCallbackSave);
         } else {
-            $scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.toolsData , successCallbackSave);
+            $scope.invokeApi(ADToolsSrv.updateTool, $scope.toolsData , successCallbackSave);
         }
     };
    /*
@@ -96,11 +91,12 @@ admin.controller('ADToolsCtrl',
    /*
     * To update auto sync from list
     * @param {obj} object of selected invetory    */
-    $scope.onToggleAutoSync = function(inventory){
+    $scope.onToggleAutoSync = function(index, inventory){
         var successCallbackUpdateInventory = function(data){
+            //$scope.sync_inventories[index].is_auto_sync = !$scope.sync_inventories[index].is_auto_sync;
             $scope.$emit('hideLoader');
-            $scope.currentClickedElement = -1;
         };
+        inventory.is_auto_sync = !inventory.is_auto_sync;
         $scope.invokeApi(ADToolsSrv.updateTool, inventory , successCallbackUpdateInventory);
     };
 }]);
