@@ -19,6 +19,16 @@ var sntZestStation = angular.module('sntZestStation',[
 		'clickTouch']);
 
 
+//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+sntZestStation.config(function ($httpProvider, $translateProvider) {
+    $httpProvider.interceptors.push('sharedHttpInterceptor');
+		$translateProvider.useStaticFilesLoader({
+		  prefix: '/assets/zest_station/zsLocales/en/',
+		  suffix: '.json'
+		});
+		$translateProvider.fallbackLanguage('EN_snt');
+});
+
 sntZestStation.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;

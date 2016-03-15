@@ -13,7 +13,7 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.inChromeApp = (window.innerHeight == screen.height && window.chrome);
         
-        
+    $translate.use('EN_snt');  
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
