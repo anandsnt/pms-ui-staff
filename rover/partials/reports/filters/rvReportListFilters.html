@@ -237,7 +237,7 @@
 
 <div class="filter" ng-if="item.hasUserFilter">
     <label>Employees</label>
-    <div multi-select custom-template="workmanagement" input-model="item.userList" button-label="full_name" item-label="full_name"  max-labels="0" tick-property="selected" scroller="multiSelectWorkSheet" output-model="item.chosenUsers"></div>
+    <div multi-select custom-template="workmanagement" input-model="item.userList" button-label="full_name" item-label="full_name"  max-labels="0" tick-property="selected" scroller="reportUserFilterScroll" output-model="item.chosenUsers"></div>
 </div>
 
 <div class="options long-list" ng-if="item.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">

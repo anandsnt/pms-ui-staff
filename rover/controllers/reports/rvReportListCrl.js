@@ -19,6 +19,7 @@ sntRover.controller('RVReportListCrl', [
         $scope.setScroller(LIST_ISCROLL_ATTR, {
             preventDefault: false
         });
+        $scope.setScroller('reportUserFilterScroll');
 
         /**
          * inorder to refresh after list rendering
@@ -125,6 +126,8 @@ sntRover.controller('RVReportListCrl', [
                         });
                     };
                 });
+
+                $scope.refreshScroller('reportUserFilterScroll');
             };
 
             var callback = function() {
