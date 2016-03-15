@@ -237,8 +237,9 @@
     "QR_SCAN_FAILED_HEADING" :"Sorry",
     "QR_SCAN_FAILED_SUB_TEXT": "The QR scanning failed",
     "SEARCH" : "Search",
-    "BY_NAME":"by name"
+    "BY_NAME":"by name",
 
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
  
-   
+
 }

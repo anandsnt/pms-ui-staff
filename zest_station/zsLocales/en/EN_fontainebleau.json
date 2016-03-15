@@ -240,6 +240,9 @@
     "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
     "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
     "ADMIN_WORKSTATION": "Work Station",
-    "ADMIN_STATION_PRINTER": "Select Printer"
+    "ADMIN_STATION_PRINTER": "Select Printer",
+    
+    
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
     
 }
