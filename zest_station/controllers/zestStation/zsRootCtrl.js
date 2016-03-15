@@ -736,6 +736,12 @@ sntZestStation.controller('zsRootCtrl', [
             }
 
         };
+        $scope.openExternalWebPage = function(){
+            $scope.showExternalWebPage =true;
+        };
+        $scope.closeExternalWebPage = function(){
+            $scope.showExternalWebPage =false;
+        }
         
         $scope.languageSelect = function(){
             $scope.showLanguagePopup = true;

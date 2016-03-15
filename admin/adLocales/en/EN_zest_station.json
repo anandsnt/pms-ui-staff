@@ -30,9 +30,9 @@
 "STATION_LANGUAGE_SPANISH":"Español",
 "STATION_LANGUAGE_GERMAN":"Deutsch",
 "STATION_LANGUAGE_ITALIAN":"Italiano",
-
-
-
+"ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
+"BOOKING_URL":"Booking Engine URL",
+"BUTTON_LABEL":"Button Label",
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
