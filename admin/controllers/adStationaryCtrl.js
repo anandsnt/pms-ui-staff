@@ -35,6 +35,9 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 					name: 'asc' // initial sorting
 				}
 			});
+			$scope.data.default_guest_bill = !$scope.data.default_guest_bill ? "" : $scope.data.default_guest_bill;
+			$scope.data.default_account_bill = !$scope.data.default_account_bill ? "" : $scope.data.default_account_bill;
+
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
 		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);

@@ -11,6 +11,7 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
             };
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
         };
+
         $scope.saveSettings = function(){
             var saveSuccess = function(){
                 $scope.successMessage = 'Success';
