@@ -7,7 +7,6 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
         $scope.fetchSettings = function(){
             var fetchSuccess = function(data){
                 $scope.zestSettings = data;
-                console.log($scope.zestSettings);
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
