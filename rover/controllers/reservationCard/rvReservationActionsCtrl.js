@@ -777,7 +777,23 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.enable_confirmation_custom_text = false;
 			$scope.ngData.enable_confirmation_custom_text = "";
 			$scope.ngData.confirmation_custom_title = "";
-			
+
+			var successCallBackForLanguagesFetch = function(data) {
+		      	$scope.$emit('hideLoader');
+		      	$scope.ngData.languageData = data;
+		    };
+
+		    /**
+		     * Fetch the guest languages list and settings
+		     * @return {undefined}
+		     */
+		    var fetchGuestLanguages = function() {
+		      	// call api
+		      	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {}, successCallBackForLanguagesFetch);
+		    };
+
+		    fetchGuestLanguages();
+
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
 				controller: 'reservationActionsController',
@@ -815,7 +831,8 @@ sntRover.controller('reservationActionsController', [
 				"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.ngData.sendConfirmatonMailTo],
 				"enable_confirmation_custom_text" : $scope.ngData.enable_confirmation_custom_text,
 				"confirmation_custom_title" : $scope.ngData.confirmation_custom_title,
-				"confirmation_custom_text" : $scope.ngData.confirmation_custom_text
+				"confirmation_custom_text" : $scope.ngData.confirmation_custom_text,
+				"locale" : $scope.ngData.selected_language_code
 			};
 			var reservationId = $scope.reservationData.reservation_card.reservation_id;
 

@@ -16,15 +16,17 @@
         <div class="holder">
             <div class="entry margin hidden">
                 <label for="email-language" translate>GUEST_LANGUAGE</label>
-                <div class="select">
+                <div class="select" ng-model="ngData.selected_language_code">
                     <select id="email-language">
                         <option value="" translate>SELECT_LANGUAGE</option>
-                        <option value="{lang}" selected>{lang}</option>
-                        ... repeat
+                        <option value="{{item.code}}" ng-repeat="item in ngData.languageData.languages"
+                                ng-selected="item.id === ngData.languageData.selected_langauge_id"
+                                ng-if="item.id === ngData.languageData.selected_langauge_id">{{item.language}}</option>
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-show="reservationData.reservation_card.is_custom_text_per_reservation">
+
+            <div class="entry" ng-show="ngData.reservation_card.is_custom_text_per_reservation">
                 <label for="custom-text" translate>CONF_CUSTOM_TEXT</label>
                 <div class="switch-button" ng-class="{ 'on' : ngData.enable_confirmation_custom_text }">
                     <input ng-click="enableConfirmationCustomText();" id="custom-text" value="{value}" type="checkbox" />
