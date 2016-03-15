@@ -7,7 +7,7 @@
             <div class="entry input" click-touch="showDatePicker()">
                 <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
                 <div ng-include="icons.url.date"></div>
-                <input id="datepicker"  placeholder="" class="hasDatepicker" ng-model="input.date" readonly >
+                <input id="datepicker"  placeholder="" class="hasDatepicker start-focused" ng-model="input.date" readonly >
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="goToNext()" ng-class="{'overlay grey': !input.date}">{{'FIND_BY_DATE_NEXT' |translate}}</button>
