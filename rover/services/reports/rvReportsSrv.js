@@ -93,12 +93,8 @@ angular.module('sntRover').service('RVreportsSrv', [
 				hasFilter = checkUserFilters( data );
 
 			var shallWeResolve = function() {
-				var filters  = _.keys( hasFilter ).length,
-					payloads = _.keys( payload ).length;
-
-				// since payload will have two additional keys
-				// 'reportsResponse' and 'codeSettings'
-				if ( payloads - filters === 1 ) {
+				var payloadCount = _.keys( payload ).length;
+				if ( payloadCount === 3 ) {
 
 					// save it to $vault
 					service.payloadCache = angular.copy( payload );

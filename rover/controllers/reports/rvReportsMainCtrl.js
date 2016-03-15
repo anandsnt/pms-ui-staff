@@ -40,8 +40,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.reportCount = payload.reportsResponse.total_count;
 
 		$scope.codeSettings   = payload.codeSettings;
-		$scope.activeUserList = payload.activeUserList;
 
+		$scope.activeUserList = payload.activeUserList;
+		_.each($scope.activeUserList, function(each) {
+		    each.selected = true;
+		});
 
 		$scope.showReportDetails = false;
 
