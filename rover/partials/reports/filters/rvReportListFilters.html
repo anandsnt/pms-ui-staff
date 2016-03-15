@@ -236,9 +236,8 @@
 </div>
 
 <div class="filter" ng-if="item.hasUserFilter">
-    <label>User</label>
-    <input class="icons icon-search" auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-user" ng-focus="returnItem(item)">
-    <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
+    <label>Employees</label>
+    <div multi-select custom-template="workmanagement" input-model="item.userList" button-label="full_name" item-label="full_name"  max-labels="0" tick-property="selected" scroller="multiSelectWorkSheet" output-model="item.chosenUsers"></div>
 </div>
 
 <div class="options long-list" ng-if="item.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">
