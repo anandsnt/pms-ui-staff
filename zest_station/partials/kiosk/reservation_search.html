@@ -2,7 +2,7 @@
 <ng-include src="'/assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match' && at !== 'input-qr-code'"></ng-include>
 
 <!-- reservation list view -->
-<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match'" click-touch="resetTime()">
+<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match' || mode === 'single-reservation'" click-touch="resetTime()">
     <div id="content" ng-show="shouldShowSearchResults()">
         <h1>{{'RES_SRCH_SEL' |translate}}</h1>
         <div id="labels">

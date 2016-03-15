@@ -86,8 +86,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     $state.go('zest_station.find_reservation_no_match');
                 }
             } else if ($scope.reservations.length === 1 && !$scope.fetchingList){
+                $scope.mode = "single-reservation";
                 $scope.selectReservation($scope.reservations[0]);
-            } {
+            }
+            else {
                 $scope.mode = "reservations-list";
             }
     };
