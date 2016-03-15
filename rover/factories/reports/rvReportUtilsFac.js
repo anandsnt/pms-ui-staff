@@ -333,9 +333,6 @@ angular.module('reportsModule')
          */
         factory.processFilters = function ( report, data ) {
 
-            // pre-process charge groups and charge codes
-            var processedCGCC = {};
-
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -404,16 +401,6 @@ angular.module('reportsModule')
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
-
-                if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
-                    if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
-                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
-                    } else {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, '' );
-                    };
-                };
 
                 if(filter.value === 'RATE_TYPE') {
                     report['hasRateTypeFilter'] = filter;
@@ -1080,6 +1067,11 @@ angular.module('reportsModule')
             // remove the value for 'BLANK'
             if ( report['group_fields'] && report['group_fields'].length ) {
                 report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
+            };
+
+            // patch 
+            if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                report['groupByOptions'] = undefined;
             };
         };
 

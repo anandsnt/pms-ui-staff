@@ -8,6 +8,12 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
+            if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
+
+                // return _.isEmpty(apiResponse) ? apiResponse : $_preParseFinTransAdjustReport( reportName, apiResponse, options );
+            }
+
             if ( reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options, resultTotalRow );
             }
@@ -49,16 +55,6 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
             }
 
-            // otherwise a super parser for reports that can be grouped by
-            else if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
-                if ( options['groupedByKey'] === 'USER' ) {
-                    console.log( 'hey ho' );
-                    return _.isEmpty(apiResponse) ? apiResponse : $_preParseFinTransAdjustReport( reportName, apiResponse, options );
-                } else {
-                    return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
-                }
-            }
-
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
@@ -90,13 +86,15 @@ sntRover.factory('RVReportParserFac', [
             var i, j, key, idBy;
 
             var fillEntries = function(source, toKey) {
+                console.log( source );
+
                 for (key in source) {
                     if ( ! source.hasOwnProperty(key) ) {
                         continue;
                     };
 
                     for ( i = 0, j = source[key].length; i < j; i++ ) {
-                        idBy = source[key].created_by + '__' + source[key].created_id;
+                        idBy = source[key].created_by + '__' + source[key].creator_id;
 
                         if ( ! returnObj.hasOwnProperty(idBy) ) {
                             returnObj[idBy] = {
@@ -108,7 +106,15 @@ sntRover.factory('RVReportParserFac', [
                         returnObj[idBy][toKey].push( source[key] );
                     }
                 };
-            }
+            };
+
+            var fillMissingIds = function(ary) {
+                for ( i = 0, j = ary.length; i < j; i++ ) {
+                    if ( ary[i]['creator_id'] === null ) {
+                        ary[i]['creator_id'] = 'UNDEF';
+                    }
+                };
+            };
 
             if ( ! apiResponse.length ) {
                 return [];
@@ -118,8 +124,13 @@ sntRover.factory('RVReportParserFac', [
                 adjustments = apiResponse[i]['adjustments'],
                 deletedCharges = apiResponse[i]['deleted_charges'];
 
-                groupByIdAdjustments = _.groupBy( adjustments, 'created_id' );
-                groupByIdDeleteCharges = _.groupBy( deletedCharges, 'created_id' );
+                fillMissingIds(adjustments);
+                fillMissingIds(deletedCharges);
+
+                groupByIdAdjustments = _.groupBy( adjustments, 'creator_id' );
+                groupByIdDeleteCharges = _.groupBy( deletedCharges, 'creator_id' );
+
+                console.log( groupByIdAdjustments );
             };
 
             fillEntries( groupByIdAdjustments, 'adjustments' );
