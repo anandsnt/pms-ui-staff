@@ -39,7 +39,12 @@
         <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
         <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
             <label for="due-time">Time Due</label>
-            <input id="due-time" type="time" ng-model="newAction.time_due" placeholder="HH:mm:ss" required/>
+            <select id="due-time" ng-model="newAction.time_due">
+                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
+                        ng-selected="newAction.time_due === timeSelector.value">
+                    {{timeSelector.text}}
+                </option>
+            </select>
         </div>
         <div class="entry full-width">
             <label for="notes">
