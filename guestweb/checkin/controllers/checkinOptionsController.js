@@ -9,7 +9,7 @@
 		$rootScope.checkinOptionShown = true;
 		//set default values
 		var early_checkin_switch_on = false;
-		var reservation_in_early_checkin_window = false;
+		var reservation_has_early_checkin = false;// check if reservation matches criteria 
 		var early_checkin_offer_id = "";
 		var offer_eci_bypass = false;
 		var eci_upsell_limit_reached = false;
@@ -19,6 +19,7 @@
 		var early_checkin_charge = "";
 		var checkin_time = "";
 		var roomAssignedFromZestWeb = false;
+		var reservation_is_in_early_checkin_window = false;//check if its inside early checkin window
 
 
 		var init = function() {
@@ -30,7 +31,7 @@
 			checkinNowService.fetchEarlyCheckinData(params).then(function(response) {
 				//set variables based on the response
 				early_checkin_switch_on = response.early_checkin_on;
-				reservation_in_early_checkin_window = response.early_checkin_available;
+				reservation_has_early_checkin = response.early_checkin_available;
 				early_checkin_offer_id = response.early_checkin_offer_id
 				offer_eci_bypass = response.offer_eci_bypass;
 				eci_upsell_limit_reached = response.eci_upsell_limit_reached;
@@ -39,6 +40,7 @@
 				is_donot_move_room_marked = response.is_donot_move_room_marked;
 				early_checkin_charge = response.early_checkin_charge;
 				checkin_time = response.checkin_time;
+				reservation_is_in_early_checkin_window = response.reservation_in_early_checkin_window;
 				// if user is not arriving today
 				if (!response.guest_arriving_today) {
 					$state.go('checkinArrival');
@@ -53,10 +55,10 @@
 		}();
 
 		var navigateToNextScreen = function() {
-			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_in_early_checkin_window)) {
+			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_has_early_checkin) || !reservation_is_in_early_checkin_window) {
 				// earlycheckin turened off or is out of early checkin window
 				$state.go('checkinKeys');
-			} else if (early_checkin_switch_on && reservation_in_early_checkin_window) {
+			} else if (early_checkin_switch_on && reservation_has_early_checkin) {
 				if (offer_eci_bypass) {
 					// Early checkin byepass
 					//$state.go('earlyCheckinReady');
@@ -95,7 +97,11 @@
 					navigateToNextScreen();
 				} else {
 					$scope.isLoading = false;
-					$state.go("roomAssignFailed");
+					if (!early_checkin_switch_on || !reservation_has_early_checkin || !reservation_is_in_early_checkin_window) {
+						$state.go('eciOffroomAssignFailed');
+					} else {
+						$state.go("roomAssignFailed");
+					}
 				}
 			}, function() {
 				$scope.isLoading = false;
@@ -113,7 +119,11 @@
 				navigateToNextScreen();
 			} else if (is_room_already_assigned && !is_room_ready) {
 				// oops!.room not ready and cannot assign new room
-				$state.go('roomNotReady');
+				if (!early_checkin_switch_on || !reservation_has_early_checkin || !reservation_is_in_early_checkin_window) {
+					$state.go('eciOffRoomNotReady');
+				} else {
+					$state.go('roomNotReady');
+				}
 			} else {
 				return;
 			}
