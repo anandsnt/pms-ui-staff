@@ -61,5 +61,15 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2','zsBaseWebSrv','$q'
 		return deferred.promise;
 	};
 
+	this.fetchTranslationData = function(lang_code){
+		var deferred = $q.defer();
+		var url =  '/api/locales/'+lang_code+'.json';
+		ZSBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
         
 }]);
