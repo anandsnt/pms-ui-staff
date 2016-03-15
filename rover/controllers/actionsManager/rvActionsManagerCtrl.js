@@ -148,6 +148,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         $scope._actionCompleted = "COMPLETED";
 
+        $scope.timeSelectorList = rvUtilSrv.getListForTimeSelector (15, 12);
+
         $scope.filterOptions = {
             showFilters: false,
             selectedDay: $rootScope.businessDate,
