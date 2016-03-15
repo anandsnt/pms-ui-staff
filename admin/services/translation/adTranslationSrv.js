@@ -61,19 +61,4 @@ admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
         return deferred.promise;
     };
 
-   /*
-    * Search label translation for a given locale
-    * @param {object} search params
-    * @return {array} of labels matching the search text
-    */
-    this.searchLabelTranslationForLocale = function(request){
-        var deferred = $q.defer();
-        var url ='/admin/translations/search';
-        ADBaseWebSrvV2.postJSON(url, request).then(function(data) {
-            deferred.resolve(data);
-        },function(data){
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
 }]);

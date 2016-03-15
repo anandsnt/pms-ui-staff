@@ -63,7 +63,10 @@
 	"BY_FIRST_LAST_NAME" : "By First and Last name",
 	"BY_CUSTOM_TEXT" : "Custom Text",
 	"CUSTOM_SALUTATION" : "Custom Salutation",
-	"INCLUDE_TITLE" : "Include Title"
+	"INCLUDE_TITLE" : "Include Title",
+	"TRANSLATIONS_SAVED_SUCCESSFULLY" : "Translations saved successfully",
+	"MENU_OPTION" : "Menu Option",
+	"ITEM" : "Item"
 
 
 
