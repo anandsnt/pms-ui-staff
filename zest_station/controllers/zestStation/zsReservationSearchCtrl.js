@@ -142,6 +142,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             if ($state.lastAt === 'find-by-email'){
                 params.email = $state.input.email;
             }
+            if ($state.lastAt === 'find-by-no-of-nights'){
+                params.no_of_nights = $state.input.NoOfNights;
+            }
             if ($state.lastAt === 'find-by-date'){
                  params.departure_date  = $state.input.date;
             }

@@ -219,7 +219,8 @@
     "CHECK_IN_SELECT_EMAIL_SUB": "Used to make Reservation",
     "CHECK_IN_SELECT_CONF": "Confirmation",
     "CHECK_IN_SELECT_CONF_SUB": "Number",
-
+    "CHECK_IN_NO_OF_NIGHTS":"No of Nights",
+    "TYPE_NO_OF_NIGHTS":"Enter Number of Nights",
      "CHECK_IN_SELECT_NIGHTS": "Number",
      "CHECK_IN_SELECT_NIGHTS_SUB": "of Nights",
     
