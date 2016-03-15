@@ -170,7 +170,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var renderCalendarView = () => {
         render(
             <Provider store={store} >
-              <RateManagerRoot/>
+              <RateManagerRootComponent/>
             </Provider>,
             document.querySelector('#rate-manager .content')
         );
