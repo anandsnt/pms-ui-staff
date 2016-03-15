@@ -583,7 +583,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		$scope.watchEmailUpdate = function(){
        		$rootScope.$broadcast('guest_email_updated', $scope.reservationData.guest.email);
    		};
-
+   		// To enable/disable the confirmation title-text fields from UI.
    		$scope.enableConfirmationCustomText = function(){
    			$scope.reservationData.enable_confirmation_custom_text = !$scope.reservationData.enable_confirmation_custom_text;
    			$scope.refreshScroller('paymentInfo');

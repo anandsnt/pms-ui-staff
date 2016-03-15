@@ -1009,7 +1009,7 @@ sntRover.controller('reservationActionsController', [
                     }
                 };
                 $scope.initAdvQueCheck();
-
+        // To enable/disable the confirmation title-text fields from UI.
         $scope.enableConfirmationCustomText = function(){
    			$scope.ngData.enable_confirmation_custom_text = !$scope.ngData.enable_confirmation_custom_text;
    		};
