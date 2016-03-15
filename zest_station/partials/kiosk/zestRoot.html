@@ -17,7 +17,7 @@
         <div id="languages">
             
             <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" 
-                    touch-press="selectLanguage('{{language.language}}','{{language.info.flag}}')" 
+                    touch-press="selectLanguage(language)" 
                     type="button" class="button with-icon" 
                     ng-class=" {'active':selectedLanguage==='{{language.language}}' }">
                 <i class="icons icon-flag {{language.info.flag}}"></i>
