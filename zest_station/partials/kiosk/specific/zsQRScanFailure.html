@@ -1,0 +1,37 @@
+<div id="content" ng-show="qrCodeScanFailed">
+     <h1 style="padding-top: 23px;">{{'QR_SCAN_FAILED_HEADING' |translate}}</h1>
+        <h2>{{'QR_SCAN_FAILED_SUB_TEXT' |translate}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" 
+                            class="button option" 
+                            touch-press='scanQRCode()'>
+                        <div ng-include="icons.url.qr"></div>
+                    </button>
+                    {{'RETRY' |translate}}
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='quitQRScanMode()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'SEARCH_BY_NAME' |translate}}
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'RES_SRCH_TALK' |translate}}
+                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                </li>
+            </ul>
+        </nav>
+</div>

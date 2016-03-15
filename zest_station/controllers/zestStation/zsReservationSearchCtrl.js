@@ -4,8 +4,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     'zsModeConstants',
     'zsEventConstants',
     'zsTabletSrv','zsCheckoutSrv',
-    '$stateParams', 'zsHotelDetailsSrv',
-    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv) {
+    '$stateParams', 'zsHotelDetailsSrv','$timeout',
+    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout) {
 
     BaseCtrl.call(this, $scope);
 
@@ -449,7 +449,22 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         return params;
     };
     
+    $scope.scanQRCode = function(){
+        $scope.qrCodeScanFailed = false;
+        var onFailure = function(){
+             $scope.qrCodeScanFailed = true;
+        };
+        var onSuccess  = function(){
 
+        };
+        //this is just simulation
+        //handling failure case only now.
+        $scope.$emit('showLoader');
+        $timeout(function() {
+            $scope.$emit('hideLoader');
+            onFailure();
+        }, 2000);
+    };
 
     /**
      * [fetchNextReservationList description]
@@ -499,15 +514,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 
     };
 
-    $scope.initPuk = function(){
-            $scope.mode = "pickup-mode";
-            if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page
-                $scope.setScreenIcon('key');
-                $scope.at = 'input-qr-code';
-                $scope.headingText = "QR_LOOKUP_HEADER";
-                $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
-                    
-            } else {
+
+    //non QR code actions
+    var normalPickupKeyActions = function(){
                 $scope.at = 'input-last';
                 $scope.headingText = "TYPE_LAST";
                 
@@ -522,13 +531,24 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     $scope.input.inputTextValue = $state.input.room;
                     $scope.at = 're-input-room';
                 }
-        }
-            
-            
-            
-            
-            
+    };
 
+    $scope.quitQRScanMode = function(){
+        normalPickupKeyActions();
+    };
+
+    $scope.initPuk = function(){
+
+        $scope.mode = "pickup-mode";
+        if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page
+            $scope.setScreenIcon('key');
+            $scope.at = 'input-qr-code';
+            $scope.headingText = "QR_LOOKUP_HEADER";
+            $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
+                
+        } else {
+            normalPickupKeyActions();
+        };
     };
     $scope.initCheckout = function(){
         if ($state.lastAt === 'review_bill'){

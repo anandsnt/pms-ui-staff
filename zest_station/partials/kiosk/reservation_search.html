@@ -1,6 +1,5 @@
 <!-- search mode -->
 <ng-include src="'/assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match' && at !== 'input-qr-code'"></ng-include>
-
 <!-- reservation list view -->
 <section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match' || mode === 'single-reservation'" click-touch="resetTime()">
     <div id="content" ng-show="shouldShowSearchResults()">
@@ -9,8 +8,8 @@
             <span class="label">{{'RES_SRCH_NAME' |translate}}</span>
             <span class="label">{{'RES_SRCH_CHK_OUT_ROOM' |translate}}</span>
         </div>
-        
-        <ul id="selection"> <!-- Show no more than 3 results per page -->
+        <ul id="selection">
+            <!-- Show no more than 3 results per page -->
             <li ng-repeat="reservation in reservations">
                 <div class="details" touch-press="selectReservation(reservation)">
                     <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
@@ -23,9 +22,8 @@
             </li>
         </ul>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>
-
 <!-- no match -->
 <section id="main" class="centered" role="main" ng-show='mode === "no-match"' click-touch='resetTime()'>
     <div id="content">
@@ -37,7 +35,6 @@
                     <button type="button" class="button option" touch-press='reEnterLastName(reservationParams.last_name)'>
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
-                        
                     </button>
                     {{'RES_SRCH_RE_ENTER_LAST' |translate}}
                     <span>"{{reservationParams.last_name}}"</span>
@@ -67,30 +64,24 @@
             </ul>
         </nav>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>
-
-
-
 <section id="main" class="centered" role="main" ng-show='at === "input-qr-code"' click-touch='resetTime()'>
-    <div id="content">
+    <div id="content" ng-hide="qrCodeScanFailed">
         <h1 style="padding-top: 23px;">{{'QR_LOOKUP_HEADER' |translate}}</h1>
         <h2>{{'QR_LOOKUP_SUB_HEADER' |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" 
-                            class="button option" 
-                            touch-press='scanQRCode()'>
+                    <button type="button" class="button option" touch-press='scanQRCode()'>
                         <div ng-include="icons.url.qr"></div>
-                        
                     </button>
                 </li>
-                
-                
             </ul>
-        <h1>{{'QR_LOOKUP_BUTTON_TEXT' |translate}}</h1>
+            <h1>{{'QR_LOOKUP_BUTTON_TEXT' |translate}}</h1>
         </nav>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+    <div ng-include="'/assets/partials/kiosk/specific/zsQRScanFailure.html'">
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>
