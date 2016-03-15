@@ -141,7 +141,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_34: false,
 			item_35: false,
 			item_36: false,
-			item_37: false
+			item_37: false,
+			item_38: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1691,7 +1692,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.results         = response.results || [];
 				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || false;
-				$scope.reportGroupedBy = response.group_by || '';
+				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
+				// $scope.reportGroupedBy = response.group_by || '';
+
+				console.log( $scope.reportGroupedBy );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;

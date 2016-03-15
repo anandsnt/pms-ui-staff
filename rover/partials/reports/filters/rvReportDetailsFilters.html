@@ -749,6 +749,24 @@
             </div>
         </div>
 
+        <!-- item_38: Show options -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasChargeTypes.data.length" ng-class="{ 'active': filterItemsToggle.item_38 }" ng-click="toggleFilterItems('item_38')">
+            <span class="title">Show</span>
+        </a>
+        <div class="settings-content" ng-if="chosenReport.hasChargeTypes.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_38 }">
+            <div class="faux-select-options">
+                <label class="checkbox" ng-show="chosenReport.hasChargeTypes.data.length > 1">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasChargeTypes.selectAll }"></span>
+                        <input type="checkbox" ng-model="chosenReport.hasChargeTypes.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasChargeTypes, true)" name="room-filters"> Both
+                </label>
+                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasChargeTypes.data.length > 1 && chosenReport.hasChargeTypes.selectAll) }">
+                    <label class="checkbox" ng-repeat="ct in chosenReport.hasChargeTypes.data">
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : ct.selected }"></span>
+                        <input type="checkbox" ng-model="ct.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasChargeTypes)" name="room-filters"> {{ ct.description }}
+                    </label>
+                </div>
+            </div>
+        </div>
 
     </div>
 

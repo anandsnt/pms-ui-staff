@@ -52,6 +52,7 @@ sntRover.factory('RVReportParserFac', [
             // otherwise a super parser for reports that can be grouped by
             else if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 if ( options['groupedByKey'] === 'USER' ) {
+                    console.log( 'hey ho' );
                     return _.isEmpty(apiResponse) ? apiResponse : $_preParseFinTransAdjustReport( reportName, apiResponse, options );
                 } else {
                     return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
