@@ -135,4 +135,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/serviceproviderdetails/:action/:id'
 		});
 
+		$stateProvider.state('admin.syncInventory', {
+			templateUrl: '/assets/partials/tools/adTools.html',
+			controller: 'ADToolsCtrl',
+			url : '/adTools'
+		});
+
 });
