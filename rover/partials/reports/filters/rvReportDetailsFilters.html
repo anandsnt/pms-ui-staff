@@ -309,7 +309,7 @@
                 <div class="nested-options">
                     <label class="checkbox" ng-repeat="user in chosenReport.userList">
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : user.selected }"></span>
-                        <input type="checkbox" ng-model="user.selected" name="room-filters"> {{ user.full_name }}
+                        <input type="checkbox" ng-model="user.selected" name="room-filters"> {{ user.full_name || user.email }}
                     </label>
                 </div>
             </div>
