@@ -920,7 +920,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addons'       : [],
 					'reservationStatus' : [],
 					'guestOrAccount': [],
-					'chargeTypes': []
+					'chargeTypes': [],
+					'users': []
 				};
 			};
 
@@ -1131,24 +1132,25 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include user ids
-			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
-				key         = reportParams['USER_IDS'];
-				params[key] = [];
-				/**/
-				_.each(report.chosenUsers, function(user) {
-					params[key].push( user );
-				});
-				/**/
-				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['users'] = [];
-					_.each(report.chosenUsers, function (id) {
-						var _user = _.find($scope.activeUserList, function (each) {
-							return each.id === id;
-						});
-						if ( !! _user ) {
-							$scope.appliedFilter['users'].push( _user.full_name );
+			if (report.hasUserFilter && report.userList.length) {
+				selected = _.where( report.userList, { selected: true } );
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['USER_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(user) {
+						params[key].push( user.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.users.push( user.full_name || user.email );
 						};
 					});
+
+					// in case if all markets are selected
+					if ( changeAppliedFilter && report.userList.length === selected.length ) {
+						$scope.appliedFilter.users = ['All Users'];
+					};
 				};
 			};
 

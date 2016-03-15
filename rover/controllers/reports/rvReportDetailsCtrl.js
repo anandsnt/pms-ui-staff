@@ -459,8 +459,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
 
-			console.log(  $scope.$parent.results );
-
 
 			// a very different parent template / row template / content template for certain reports
 			// otherwise they all will share the same template

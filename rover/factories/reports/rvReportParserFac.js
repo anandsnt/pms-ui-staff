@@ -86,8 +86,6 @@ sntRover.factory('RVReportParserFac', [
             var i, j, key, idBy;
 
             var fillEntries = function(source, toKey) {
-                console.log( source );
-
                 for (key in source) {
                     if ( ! source.hasOwnProperty(key) ) {
                         continue;
@@ -129,8 +127,6 @@ sntRover.factory('RVReportParserFac', [
 
                 groupByIdAdjustments = _.groupBy( adjustments, 'creator_id' );
                 groupByIdDeleteCharges = _.groupBy( deletedCharges, 'creator_id' );
-
-                console.log( groupByIdAdjustments );
             };
 
             fillEntries( groupByIdAdjustments, 'adjustments' );
@@ -156,6 +152,11 @@ sntRover.factory('RVReportParserFac', [
 
             var i, j;
 
+            var getRemarksAry = function(remark) {
+                var ary = remark.split('<br />');
+                return _.reject(ary, function(i){ return i === '' || i === ' ' });
+            };
+
             var processAry = function(source, type) {
                 var k, l;
 
@@ -168,6 +169,8 @@ sntRover.factory('RVReportParserFac', [
                     amt = isNaN(amt) ? 0 : amt;
                     totalAmount += amt;
 
+                    console.log( makeCopy.remark.split('<br />') );
+
                     if ( 0 === k ) {
                         angular.extend(makeCopy, {
                             isReport     : true,
@@ -177,7 +180,8 @@ sntRover.factory('RVReportParserFac', [
                             posted_date  : makeCopy.posted.substring(0, 10),
                             posted_time  : makeCopy.posted.substring(11),
                             modified_date  : makeCopy.modified.substring(0, 10),
-                            modified_time  : makeCopy.modified.substring(11)
+                            modified_time  : makeCopy.modified.substring(11),
+                            remarkAry    : getRemarksAry( makeCopy.remark )
                         });
                         returnAry.push( makeCopy );
                     } else {
@@ -187,7 +191,8 @@ sntRover.factory('RVReportParserFac', [
                             posted_date  : makeCopy.posted.substring(0, 10),
                             posted_time  : makeCopy.posted.substring(11),
                             modified_date  : makeCopy.modified.substring(0, 10),
-                            modified_time  : makeCopy.modified.substring(11)
+                            modified_time  : makeCopy.modified.substring(11),
+                            remarkAry    : getRemarksAry( makeCopy.remark )
                         });
                         returnAry.push( makeCopy );
                     }
