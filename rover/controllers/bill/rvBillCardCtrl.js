@@ -2125,10 +2125,6 @@ sntRover.controller('RVbillCardController',
 
 	// print the page
 	var printBill = function(data) {
-		/*var data = {
-				"reservation_id" : $scope.reservationBillData.reservation_id,
-				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
-		};*/
 		var printDataFetchSuccess = function(successData){
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
