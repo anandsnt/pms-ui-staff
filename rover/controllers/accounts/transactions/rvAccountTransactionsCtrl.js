@@ -839,7 +839,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}
 		});
 
-
+		/*
+		* Opens the popup which have the option to choose the bill layout while print/email
+		*/
 		$scope.showFormatBillPopup = function(billNo) {
 			$scope.billNo = billNo;
 	    	ngDialog.open({
@@ -850,6 +852,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    	});
     	};
 
+    	/*
+		*  Shows the popup to show the email send status
+		*/
     	$scope.showEmailSentStatusPopup = function(status) {
 	    	ngDialog.open({
 	    		template: '/assets/partials/popups/rvEmailSentStatusPopup.html',

@@ -31,6 +31,7 @@ angular.module('reportsModule')
         'GROUP_BY_USER'       : 'group_by_user',
         'GROUP_BY_GROUP_NAME' : 'group_by_group_name',
         'ADDON_GROUP_BY'      : 'group_field',
+        'CHARGE_TYPE'         : 'group_by_charge_type',
 
         'USER_IDS'               : 'user_ids',
         'MARKET_IDS'             : 'market_ids',

@@ -546,16 +546,27 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.$emit('hideLoader');
             $scope.errorMessage = "";
         };
+        $scope.getTermsPrintable = function(terms){
+          sntZestStation.filter('unsafe', function($sce) {
+                return function(terms) {
+                    return $sce.trustAsHtml(terms);
+                };
+            });  
+        };
         $scope.fetchRegistrationPrintView = function(){
             var fetchPrintViewCompleted = function(data){
                 $scope.$emit('hideLoader');
                 // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
+                console.log($scope.printRegCardData);
+                $scope.printRegCardData.terms_conditions_html = $scope.getTermsPrintable($scope.printRegCardData.terms_conditions);
+                $scope.printRegCardData.standardCheckout = '12:00 PM';
+                console.info('as : ',$scope)
                 $scope.setupPrintView();
                 $scope.initPrintRegistration();
             };
-            //var id = $scope.selectedReservation.id;
-            var id = 1339926;
+            var id = $scope.selectedReservation.id; 
+            //var id = 1339880;//debugging
             $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
         };
         $scope.clickedPrint = function(){

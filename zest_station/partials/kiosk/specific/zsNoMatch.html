@@ -25,6 +25,14 @@
                     {{'NO_MATCH_RE_LAST' |translate}}
                     <span>"{{input.email}}"</span>
                 </li>
+                <li ng-show="lastAt === 'find-by-no-of-nights'||lastAt === 'no-match'">
+                    <button type="button" class="button option" touch-press='reEnter("NoOfNights")'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'NO_MATCH_RE_LAST' |translate}}
+                    <span>"{{input.NoOfNights}}"</span>
+                </li>
                 <li ng-show="lastAt === 'find-by-confirmation'">
                     <button type="button" class="button option" touch-press='reEnter("confirmation")'>
                         <!--div ng-include="'/assets/zest_station/css/icons/confirmation.svg'"></div-->
