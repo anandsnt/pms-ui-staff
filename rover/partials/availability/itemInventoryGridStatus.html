@@ -27,5 +27,25 @@
 				</tr>
 			</tbody>
 		</table>
+
+
+		<table class="dates-grid">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
+			</colgroup>
+			<tbody>
+				<tr>
+					<th scope="row">{Item Name}</th>
+					<!-- Repeat for {X} days -->
+					<td>
+						<div class="inner"> <!-- Add class "disabled" if restricted. Otherwise, add "unavailable" if value <= 0, add class "warning" if value >0 and <= 3 -->
+							{value or N/A for restricted}
+						</div>
+					</td>
+				</tr>
+				... repeat for Inventory Items
+			</tbody>
+		</table>
 	</div>
 </div>
