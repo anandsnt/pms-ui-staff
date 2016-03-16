@@ -47,7 +47,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                         if (self.houseAvailability && !self.isGroupReservation) {
                             if (self.houseAvailability[result.date] < 1) {
                                 result.restrictions.push({
-                                    type_id: 99,
+                                    restriction_type_id: 99,
                                     days: null
                                 });
                             }
@@ -57,7 +57,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                         if (self.promotionValidity !== null) {
                             if (!self.promotionValidity[result.date]) {
                                 result.restrictions.push({
-                                    type_id: 98,
+                                    restriction_type_id: 98,
                                     days: null
                                 });
                             }
@@ -69,7 +69,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
                         _.each(result.restrictions, function(restriction) {
                             if (!_.findWhere(summary, {
-                                    type_id: restriction.type_id,
+                                    restriction_type_id: restriction.type_id,
                                     days: restriction.days
                                 })) {
                                 summary.push(restriction);

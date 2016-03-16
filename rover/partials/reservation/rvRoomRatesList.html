@@ -122,8 +122,8 @@
                                     <span class="restricted" ng-if="rate.numRestrictions > 1">
                                         MULTIPLE RESTRICTIONS APPLY
                                     </span>
-                                    <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.restriction.type_id].key]}}" ng-if="rate.numRestrictions == 1">
-                                         {{restrictionsMapping[rate.restriction.type_id].value}}{{rate.restriction.days || rate.restriction.days == 0? rate.restriction.days +' DAYS' : ''}}
+                                    <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.restriction.restricion_type_id].key]}}" ng-if="rate.numRestrictions == 1">
+                                         {{restrictionsMapping[rate.restriction.restriction_type_id].value}}{{rate.restriction.days || rate.restriction.days == 0? rate.restriction.days +' DAYS' : ''}}
                                     </span>
                                 </h3>
                                 <div class="price" ng-if="!rate.isSuppressed">
@@ -192,13 +192,13 @@
                                 </table>
                                 <!-- If multiple restrictions apply: -->
                                 <ul ng-if="!stateCheck.stayDatesMode && rate.restrictions.length > 1" class="restrictions">
-                                    <li ng-repeat="restriction in rate.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.type_id].key]">
-                                        {{restrictionsMapping[restriction.type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
+                                    <li ng-repeat="restriction in rate.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                                        {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
                                     </li>
                                 </ul>
                                 <ul ng-if="stateCheck.stayDatesMode && rate.dates[stateCheck.dateModeActiveDate].restrictions.length > 1" class="restrictions">
-                                    <li ng-repeat="restriction in rate.dates[stateCheck.dateModeActiveDate].restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.type_id].key]">
-                                        {{restrictionsMapping[restriction.type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
+                                    <li ng-repeat="restriction in rate.dates[stateCheck.dateModeActiveDate].restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                                        {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
                                     </li>
                                 </ul>
                             </div>
@@ -208,7 +208,7 @@
                 <li class="break" ng-show="stateCheck.showLessRooms && stateCheck.selectedRoomType == -1 &&stateCheck.maxRoomsToShow > 2" ng-click="showAllRooms()"> <span translate>RESV_SEE_MORE_ROOMS</span>
                 </li>
             </ul>
-            <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'RATE'">
+            <ul class="rooms-and-rates wrapper" ng-hide="true">
                 <li class="is-rate" ng-repeat="rate in display.rateFirstGrid" ng-hide="rate.isHidden" ng-class="{'closed': rate.selectedRoom.numRestrictions > 0}">
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="viewRateBreakUp(rate)">
                         <div class="data">
@@ -222,8 +222,8 @@
                             <span class="restricted" ng-if="rate.selectedRoom.numRestrictions > 1">
                                 MULTIPLE RESTRICTIONS APPLY
                             </span>
-                            <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.selectedRoom.restriction.type_id].key]}}" ng-if="rate.selectedRoom.numRestrictions == 1">
-                                {{restrictionsMapping[rate.selectedRoom.restriction.type_id].value}}{{rate.selectedRoom.restriction.days || rate.selectedRoom.restriction.days == 0? rate.selectedRoom.restriction.days +' DAYS' : ''}}
+                            <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.selectedRoom.restriction.restriction_type_id].key]}}" ng-if="rate.selectedRoom.numRestrictions == 1">
+                                {{restrictionsMapping[rate.selectedRoom.restriction.restriction_type_id].value}}{{rate.selectedRoom.restriction.days || rate.selectedRoom.restriction.days == 0? rate.selectedRoom.restriction.days +' DAYS' : ''}}
                             </span>
                         </div>
                         <div class="book-rate">
@@ -319,13 +319,13 @@
                         </table>
                         <!-- If multiple restrictions apply: -->
                         <ul ng-if="!stateCheck.stayDatesMode && rate.selectedRoom.restrictions.length > 1" class="restrictions">
-                            <li ng-repeat="restriction in rate.selectedRoom.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.type_id].key]">
-                                {{restrictionsMapping[restriction.type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
+                            <li ng-repeat="restriction in rate.selectedRoom.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                                {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
                             </li>
                         </ul>
                         <ul ng-if="stateCheck.stayDatesMode && rate.selectedRoom.dates[stateCheck.dateModeActiveDate].restrictions.length > 1" class="restrictions">
-                            <li ng-repeat="restriction in rate.selectedRoom.dates[stateCheck.dateModeActiveDate].restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.type_id].key]">
-                                {{restrictionsMapping[restriction.type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
+                            <li ng-repeat="restriction in rate.selectedRoom.dates[stateCheck.dateModeActiveDate].restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                                {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
                             </li>
                         </ul>
                     </ul>

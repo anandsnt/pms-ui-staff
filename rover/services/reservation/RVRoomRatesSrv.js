@@ -5,7 +5,12 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
 
         //--------------------------------------------------------------------------------------------------------------
         // A. Private Methods
-        var fetchRoomTypeADRs = function(params) {
+
+
+        //--------------------------------------------------------------------------------------------------------------
+        // B. Private Methods
+
+        service.fetchRoomTypeADRs = function(params) {
             var deferred = $q.defer(),
                 url = "/api/availability/room_type_adrs";
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
@@ -16,8 +21,6 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             return deferred.promise;
         };
 
-        //--------------------------------------------------------------------------------------------------------------
-        // B. Private Methods
 
         service.fetchRateADRs = function(params) {
             var deferred = $q.defer(),
@@ -40,7 +43,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                     data = response;
                 }));
             } else {
-                promises.push(fetchRoomTypeADRs(params).then(function(response) {
+                promises.push(service.fetchRoomTypeADRs(params).then(function(response) {
                     data = response;
                 }));
             }
@@ -53,7 +56,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
 
             return deferred.promise;
         };
-        
+
         //--------------------------------------------------------------------------------------------------------------
         // C. Cache
     }
