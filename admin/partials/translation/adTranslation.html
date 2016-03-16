@@ -9,7 +9,7 @@
                         <div class="entry">
                             <div class="select">
                                 <select ng-model="filter.locale" name="locale" id="locale" class="placeholder" ng-change="onLocaleChange()">
-                                    <option ng-model="locale.id" ng-repeat="locale in languages.locales" value="{{locale.id}}" ng-selected="locale.id==filter.locale"> {{locale.description}} </option>
+                                    <option ng-model="locale.value" ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==filter.locale"> {{locale.description}} </option>
                                 </select>
                             </div>
                         </div>
