@@ -18,7 +18,8 @@ angular.module('reportsModule')
                         'DAILY_PRODUCTION_ROOM_TYPE'   : ['canRemoveDate', 'hasOneYearLimit'],
                         'DAILY_PRODUCTION_DEMO'        : ['hasOneYearLimit'],
                         'DAILY_PRODUCTION_RATE'        : ['hasOneYearLimit'],
-                        'RATE_RESTRICTION_REPORT'      : ['hasOneMonthLimit']
+                        'RATE_RESTRICTION_REPORT'      : ['hasOneMonthLimit'],
+                        'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT' : ['hasUserFilter']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key){ return value === report['title'] });

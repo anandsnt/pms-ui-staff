@@ -170,8 +170,25 @@
 	        }
 	    }
         }
-	
         
+        .page-print{
+            margin-top: -120px;
+            text-align:left !important;
+            padding-left: 3%;
+            padding-right: 3%;
+            >p.terms,strong.footer{
+                text-align:center !important;
+            }
+        }
+        
+	.yotel-logo{
+            position: fixed;
+            right: 5%;
+            height: 35% !important;
+            width: 35% !important;
+            //width="239.3px" height="64.8px" 
+            //viewBox: "0 0 239.3 64.8";
+        }
         
         /////////////////////
         //keyboard
@@ -186,9 +203,9 @@
             font-size:14px;
             text-align:center;
             padding:4px;
-            width:auto;
+            width:100%;
             height:auto;
-            left:calc(100%, 40px)!important;
+            left:calc(80%, 20px)!important;
             top:auto;
             bottom:0;
             position:fixed;
@@ -199,8 +216,9 @@
         .ui-keyboard-has-focus{z-index:16001}
         .ui-keyboard-button{
             border:1px solid #404040;
-            padding:0 .8em;
-            margin:1px;
+            padding:0 2.5em;
+            margin:2px;
+            margin-top: 5px;
             min-width:5em;
             height:5em;
             line-height:3em;
@@ -223,11 +241,13 @@
             font-family: vag,sans-serif;
             box-shadow: inset 0 0 0 6px #dededc;
             &[data-action="bksp"]>span{
+                font-family: Segoe UI Symbol;
                 font-size: 1.8em !important;
                 position: inherit !important;
                 top: auto;
                 left: auto;
             }
+            
         }
         .ui-keyboard-button:not([disabled]):hover{
             background:@brandColor;
@@ -236,10 +256,21 @@
             background-image:linear-gradient(-90deg,@brandColor 0,@background 100%)
         }
         .ui-keyboard-button:not([disabled]):active{
-            background:#ddd;
-            background-image:-webkit-linear-gradient(-90deg,@background  0,#5f5f5f 100%);
-            background-image:linear-gradient(-90deg,@background  0,#5f5f5f 100%)
+            background:@textColor;
+            color:@textColor;
+            //background:#ddd;
+            background-image:-webkit-linear-gradient(-90deg,@brandColor  0,@brandColor 100%);
+            background-image:linear-gradient(-90deg,@brandColor  0,@brandColor 100%)
         }
+        .ui-keyboard-button&&.ui-state-hover{//for touch devices
+            background:@textColor;
+            color:@textColor;
+            //background:#ddd;
+            background-image:-webkit-linear-gradient(-90deg,@brandColor  0,@brandColor 100%);
+            background-image:linear-gradient(-90deg,@brandColor  0,@brandColor 100%)
+        
+        }
+        
         .ui-keyboard-button span{
             display:block;width:100%;
             font-size:1.6em;text-align:center

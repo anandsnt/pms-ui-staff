@@ -26,11 +26,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 		$scope.setScroller('cardContractsScroll');
 
-		$scope.hasPermisionToDeleteContract = function() {
-			return rvPermissionSrv.getPermissionValue ('DELETE_CONTRACT');
-		};
-
-
 		var refreshScroller = function() {
 			$timeout(function() {
 				if ($scope.myScroll && $scope.myScroll['cardContractsScroll']) {
@@ -44,6 +39,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.$on("refreshContractsScroll", refreshScroller);
 
 		/**** Scroll related code ends here. ****/
+
+		$scope.hasPermisionToDeleteContract = function() {
+			return rvPermissionSrv.getPermissionValue ('DELETE_CONTRACT');
+		};
 
 
 		var clientWidth = $(window).width();
@@ -289,7 +288,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					}
 				});
 			}
-
 		});
 
 		// Delete Contarct button action

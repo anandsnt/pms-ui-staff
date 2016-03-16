@@ -1,4 +1,5 @@
-angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', function ($q, BaseWebSrvV2) {
+angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'rvUtilSrv',
+    function ($q, BaseWebSrvV2, rvUtilSrv) {
 
     var self = this,
         filterState = null;
@@ -193,13 +194,12 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', fu
         var deferred = $q.defer();
         var url = '/api/hotel_current_time';
         BaseWebSrvV2.getJSON(url).then(function (data) {
-            deferred.resolve(data.hotel_time.hh + ":" + data.hotel_time.mm);
+            deferred.resolve(rvUtilSrv.roundToNextQuarter(parseInt(data.hotel_time.hh,10), parseInt(data.hotel_time.mm,10)));
         }, function (data) {
             deferred.reject(data);
         });
         return deferred.promise;
     };
-
 
     //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 

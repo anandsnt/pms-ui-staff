@@ -34,6 +34,7 @@ angular.module('reportsModule')
                         'GUEST_BALANCE_REPORT'         : 'icon-report icon-balance',
                         'RATE_RESTRICTION_REPORT'      : 'icon-report icon-rate',
                         'COMPANY_TA_TOP_PRODUCERS'     : 'icon-report icon-cards',
+                        'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'icon-report icon-rate',
                         /* default class name */
                         'DEFAULT'                      : 'icon-report'
                     };

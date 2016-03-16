@@ -11,9 +11,11 @@
 
 
 function initScreenKeyboardListener(){
+    return;//disabling in pms-dev until fixing some issues
     var elSelector = 'input:visible';
     var bound = false;
     var focusHandler = function(){
+        keyboardUp = true;
     //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
   
@@ -26,14 +28,14 @@ function initScreenKeyboardListener(){
         'shift': [
                 '1 2 3 4 5 6 7 8 9 0',
                 'q w e r t y u i o p {bksp}',
-                'a s d f g h j k l @',
+                "a s d f g h j k l ' @",
                 'z x c v b n m .',
                 ' {space} _ - .com'
         ],
         'default': [//zest station on screen is always caps,default to this
                 '1 2 3 4 5 6 7 8 9 0',
                 'Q W E R T Y U I O P {bksp}',
-                'A S D F G H J K L @',
+                "A S D F G H J K L ' @",
                 'Z X C V B N M .',
                 ' {space} _ - .com'
         ],
@@ -76,6 +78,8 @@ function initScreenKeyboardListener(){
         // Left arrow (same as &larr;)
         'b': '\u2190:Backspace',
         'bksp': '\u232B:Backspace',
+        //'bksp': '\u2421:Backspace',
+        //'bksp': '\u2421:Backspace',
         // big X, close/cancel
         'c': '\u2716:Cancel (Esc)',
         'cancel': 'Cancel:Cancel (Esc)',
@@ -135,7 +139,7 @@ function initScreenKeyboardListener(){
       },
 
       autoAccept: true,
-      autoAcceptOnEsc: false,
+      autoAcceptOnEsc: true,
       lockInput: false,
       restrictInput: false,
       restrictInclude: '', // e.g. 'a b foo \ud83d\ude38'
@@ -191,8 +195,9 @@ function initScreenKeyboardListener(){
       accepted: function(e, keyboard, el) {},
       canceled: function(e, keyboard, el) {},
       restricted: function(e, keyboard, el) {},
-      hidden: function(e, keyboard, el) {},
-
+      hidden: function(event, keyboard, el){
+        keyboard.destroy();
+       },
       switchInput: function(keyboard, goToNext, isAccepted) {},
 
       validate: function(keyboard, value, isClosing) {
@@ -214,9 +219,10 @@ function initScreenKeyboardListener(){
     });
 };
     var blurHandler = function(){
+        keyboardUp = false;
     //close virtual keyboard
         $(elSelector).unbind( "focus", focusHandler);
     };
-    $(elSelector).not( document.getElementById( "datepicker" ) ).focus(focusHandler).blur(blurHandler);
+    $(elSelector).not( document.getElementById( "datepicker" ) ).not( document.getElementById( "input" ) ).focus(focusHandler).blur(blurHandler);
     }
 
