@@ -399,9 +399,9 @@ angular.module('reportsModule')
                 data         : []
             });
 
-            if ( report.hasUserFilter ) {
-                report.userList = angular.copy( data.activeUserList );
-            };
+            // if ( report.hasUserFilter ) {
+            //     report.userList = angular.copy( data.activeUserList );
+            // };
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {

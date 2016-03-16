@@ -297,18 +297,12 @@
 
 
         <!-- item_08: Users -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasUserFilter && chosenReport.userList.length" ng-class="{'active': filterItemsToggle.item_08}" ng-click="toggleFilterItems('item_08')">
-            <span class="title">Users</span>
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasUserFilter" ng-class="{'active': filterItemsToggle.item_08}" ng-click="toggleFilterItems('item_08')">
+            <span class="title">Employees</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasUserFilter && chosenReport.userList.length" ng-class="{ 'hidden': !filterItemsToggle.item_08 }">
-            <div class="faux-select-options">
-                <div class="nested-options">
-                    <label class="checkbox" ng-repeat="user in chosenReport.userList">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : user.selected }"></span>
-                        <input type="checkbox" ng-model="user.selected" name="room-filters"> {{ user.full_name || user.email }}
-                    </label>
-                </div>
-            </div>
+        <div class="settings-content" ng-if="chosenReport.hasUserFilter" ng-class="{'hidden': !filterItemsToggle.item_08}">
+            <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-user" ng-focus="returnItem(chosenReport)">
+            <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
         </div>
 
 

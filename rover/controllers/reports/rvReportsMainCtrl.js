@@ -41,10 +41,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.codeSettings   = payload.codeSettings;
 
-		$scope.activeUserList = payload.activeUserList;
-		_.each($scope.activeUserList, function(each) {
-		    each.selected = true;
-		});
+		// $scope.activeUserList = payload.activeUserList;
+		// _.each($scope.activeUserList, function(each) {
+		//     each.selected = true;
+		// });
 
 		$scope.showReportDetails = false;
 
@@ -1132,25 +1132,24 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include user ids
-			if (report.hasUserFilter && report.userList.length) {
-				selected = _.where( report.userList, { selected: true } );
-
-				if ( selected.length > 0 ) {
-					key         = reportParams['USER_IDS'];
-					params[key] = [];
-					/**/
-					_.each(selected, function(user) {
-						params[key].push( user.id );
-						/**/
-						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.users.push( user.full_name || user.email );
+			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
+				key         = reportParams['USER_IDS'];
+				params[key] = [];
+				/**/
+				_.each(report.chosenUsers, function(user) {
+					params[key].push( user );
+				});
+				/**/
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['users'] = [];
+					_.each(report.chosenUsers, function (id) {
+						var _user = _.find($scope.activeUserList, function (each) {
+							return each.id === id;
+						});
+						if ( !! _user ) {
+							$scope.appliedFilter['users'].push( _user.full_name );
 						};
 					});
-
-					// in case if all markets are selected
-					if ( changeAppliedFilter && report.userList.length === selected.length ) {
-						$scope.appliedFilter.users = ['All Users'];
-					};
 				};
 			};
 
@@ -1800,10 +1799,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						var entry = {},
 							found;
 
+						$scope.activeUserList = data;
+
 						activeUserAutoCompleteObj = [];
 						$.map(data, function(user) {
 							entry = {
-								label: user.email,
+								label: user.full_name || user.email,
 								value: user.id,
 							};
 							activeUserAutoCompleteObj.push(entry);
