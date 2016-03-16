@@ -27,6 +27,22 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.navToPrev = function() {
 			$scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
 		};
+		
+		var actionSuccesCallback = function(cmd,msg,response){
+			console.log(response);
+			console.log(cmd);
+			console.log(msg);
+
+			if(cmd === 'cmd_insert_key_card'){
+				$scope.zestStationData.keyCardInserted =  true;
+			}
+		};
+		var openedCallback = function(){
+			console.log("opened");
+			 $scope.socketOperator.InsertKeyCard();
+		};
+		
+		$scope.socketOperator.connectWebSocket(openedCallback,actionSuccesCallback);
 
 	}
 ]);
