@@ -44,9 +44,16 @@ sntZestStation.controller('zsHomeCtrl', [
             $state.lastAt = 'home';
             $state.isPickupKeys = false;
             $state.mode = zsModeConstants.CHECKOUT_MODE;
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.CHECKOUT_MODE
-            });
+
+
+            if(!$scope.zestStationData.checkout_keycard_lookup){
+                $state.go('zest_station.reservation_search', {
+                    mode: zsModeConstants.CHECKOUT_MODE
+                });
+            }
+            else{
+                alert("nhny");
+            };
 	};
 
 	/**

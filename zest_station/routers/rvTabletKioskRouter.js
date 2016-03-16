@@ -309,6 +309,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/specific/signature-time-out.html'
          });
-         
+
+        //check-in [ reservation credit card sign Time Out]
+         $stateProvider.state('zest_station.checkout_key_card_look_up', {
+             url: '/zest_station', 
+             controller: 'zsCheckoutKeyCardLookUpCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/zsCheckOutKeyCardLookUp.html'
+         });
 
     }]);
