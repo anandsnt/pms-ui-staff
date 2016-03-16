@@ -52,7 +52,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 });
             }
             else{
-                $state.go('zest_station.checkout_key_card_look_up');
+                $state.go('zest_station.checkout_options');
             };
 	};
 

@@ -1,4 +1,4 @@
-sntZestStation.controller('zsCheckoutKeyCardLookUpCtrl', [
+sntZestStation.controller('zsCheckOutOptionsCtrl', [
 	'$scope',
 	'$state',
 	'zsEventConstants',
@@ -41,7 +41,7 @@ sntZestStation.controller('zsCheckoutKeyCardLookUpCtrl', [
 
 
 		$scope.captureKey = function() {
-
+			$state.go('zest_station.checkout_key_card_look_up');
 		};
 
 	}
