@@ -15,7 +15,7 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody>
+			<!-- <tbody>
 				<tr ng-repeat="addon in data.addons track by $index">
 					<th class="heading" scope="row" ng-bind="addon.name"></th>
 					<td ng-repeat="date in addon.availability_details track by $index">
@@ -25,9 +25,8 @@
 						</div>
 					</td>
 				</tr>
-			</tbody>
+			</tbody> -->
 		</table>
-
 
 		<table class="dates-grid">
 			<colgroup>
@@ -35,16 +34,14 @@
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
-				<tr>
-					<th scope="row">{Item Name}</th>
+				<tr ng-repeat="addon in data.addons track by $index">
+					<th scope="row" ng-bind="addon.name"></th>
 					<!-- Repeat for {X} days -->
-					<td>
-						<div class="inner"> <!-- Add class "disabled" if restricted. Otherwise, add "unavailable" if value <= 0, add class "warning" if value >0 and <= 3 -->
-							{value or N/A for restricted}
-						</div>
+					<td ng-repeat="date in addon.availability_details track by $index">
+						<div class="inner" ng-if="date.availability !== null" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : (date.availability <= 3) }"></div>
+						<div ng-if="date.availability === null" class="inner disabled">N/A</div>
 					</td>
 				</tr>
-				... repeat for Inventory Items
 			</tbody>
 		</table>
 	</div>
