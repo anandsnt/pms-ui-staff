@@ -57,6 +57,7 @@ module.exports = {
 				zestRoot + 'controllers/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',
+				zestRoot + 'filters/*.js',
 				zestRoot + 'routers/**/*.js',
 				zestRoot + 'constants/**/*.js',
                                 //jquery virtual keyboard files

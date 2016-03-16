@@ -1,20 +1,40 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 10);
 
     $scope.data = {};
     var zestLanguageDataCopy = {};
-
-
-    $scope.fetchSettings = function() {
-        var fetchSuccess = function(data) {
+    $scope.fetchSettings = function () {
+        var fetchSuccess = function (data) {
             $scope.zestSettings = data;
             $scope.$emit('hideLoader');
+
+            if (!$scope.zestSettings.zest_lang) {
+                $scope.zestSettings.zest_lang = {}
+            };
+            if (!$scope.zestSettings.zest_lang.English) {
+                $scope.zestSettings.zest_lang.English = false
+            };
+            if (!$scope.zestSettings.zest_lang.French) {
+                $scope.zestSettings.zest_lang.French = false
+            };
+            if (!$scope.zestSettings.zest_lang.Spanish) {
+                $scope.zestSettings.zest_lang.Spanish = false
+            };
+            if (!$scope.zestSettings.zest_lang.German) {
+                $scope.zestSettings.zest_lang.German = false
+            };
+            if (!$scope.zestSettings.zest_lang.Italian) {
+                $scope.zestSettings.zest_lang.Italian = false
+            };
+            if (!$scope.zestSettings.zest_lang.enabled) {
+                $scope.zestSettings.zest_lang.enabled = false
+            };
 
         };
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
-
     var checkIfFileWasAdded = function(file){
         return (!!file && file.length > 0) ? true : false;
     };
@@ -47,6 +67,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
     $scope.init = function() {
+
         $scope.fetchSettings();
     };
 
