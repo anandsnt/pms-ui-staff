@@ -7,12 +7,6 @@
         <!-- Show when email button clicked -->
         <div id="status" class="notice" ng-class="{'success':ngData.successMessage, 'error':ngData.failureMessage }" ng-show="ngData.successMessage || ngData.failureMessage">{{ngData.successMessage}}{{ngData.failureMessage}}</div>
 
-        <!-- Show only if no email in guest card -->
-        <div class="entry full-width" ng-if="!isEmailAttached()" >
-            <label for="guest-email" translate>EMAIL</label>
-            <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="ngData.sendConfirmatonMailTo"/>
-        </div>
-
         <div class="holder">
             <div class="entry margin">
                 <label for="email-language" translate>GUEST_LANGUAGE</label>
@@ -50,6 +44,12 @@
             <textarea ng-model="ngData.confirmation_custom_text" id="email-text" rows="2"></textarea>
         </div>
 
+        <!-- Show only if no email in guest card -->
+        <div class="entry full-width" ng-if="!isEmailAttached()" >
+            <label for="guest-email" translate>EMAIL</label>
+            <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="ngData.sendConfirmatonMailTo"/>
+        </div>
+        
         <div class="actions">
             <button type="button" class="button with-icon Grey" ng-show ="sendConfirmationLetter && (!ngData.sendConfirmatonMailTo&&!isEmailAttached())">
              <!-- Grey when no email, otherwise blue -->
