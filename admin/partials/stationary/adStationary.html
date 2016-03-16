@@ -16,7 +16,14 @@
                     </h3>
                 </div>
                 <section class="holder left">
-
+                    <div class="entry full-width">
+                        <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                        <div class="select">
+                            <select ng-model="locale" name="locale" class="placeholder" ng-change="onLocaleChange()">
+                                <option ng-model="locale.value" ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+                            </select>
+                        </div>
+                    </div>
                     <ad-toggle-button div-class="hidden" label="{{ 'PRINT_CONFIRMATION_LETTER' | translate }}" is-checked="data.print_confirmation_letter"></ad-toggle-button>
 
                     <ad-toggle-button label="{{ 'SEND_CONFIRMATION_LETTER' | translate }}" is-checked="data.send_confirmation_letter"></ad-toggle-button>
