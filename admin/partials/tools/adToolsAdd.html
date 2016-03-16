@@ -9,21 +9,21 @@
                 <fieldset class="holder left float">
 
 
-                    <div class="entry">
+                    <div class="entry full-width">
                         <label> {{'AVAILABILITY_AUTO_SYNC' | translate}}</label>
                         <div class="switch-button single" ng-class="{ on : toolsData.is_auto_sync}" ng-click="toolsData.is_auto_sync = !toolsData.is_auto_sync">
                             <input type="checkbox" value="{{toolsData.is_auto_sync}}" >
                             <span class="switch-icon"></span>
                         </div>
-                    </div>
-
-                    <ad-textbox inputtype="text" value="toolsData.hotel_code"
+                        <ad-textbox inputtype="text" value="toolsData.hotel_code"
                     label = "{{'HOTEL_CODE' | translate}}" placeholder = "{{'HOTEL_CODE' | translate}}"
                     styleclass="full-width" required="yes"></ad-textbox>
+                        <label> {{'EMAILS_SEPERATED_BY' | translate}}</label>
+                        <textarea class="full-width" id="terms_and_conditions" type="" ng-model="toolsData.emails"></textarea>
+                    </div>
 
-                    <ad-textbox inputtype="text" value="toolsData.emails"
-                    label = "{{'EMAILS' | translate}}" placeholder = "{{'EMAILS' | translate}}"
-                    styleclass="full-width" required="yes"></ad-textbox>
+
+
                 </fieldset>
                 <div class="actions float">
                     <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
