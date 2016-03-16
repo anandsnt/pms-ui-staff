@@ -135,7 +135,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/serviceproviderdetails/:action/:id'
 		});
 
-		$stateProvider.state('admin.syncInventory', {
+		$stateProvider.state('admin.autoSyncInventory', {
 			templateUrl: '/assets/partials/tools/adTools.html',
 			controller: 'ADToolsCtrl',
 			url : '/adTools'
