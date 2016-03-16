@@ -138,18 +138,16 @@
                 <div class="entry full-width">
                     <label for="guest-bill-template" translate>DEFAULT_GUEST_BILL</label>
                     <div class="select">
-                        <select ng-model="data.default_guest_bill" name="guest-bill-template" class="placeholder">
-                            <option value="" translate> SELECT_GUEST_BILL </option>
-                            <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.default_guest_bill">{{item.name}}</option>
+                        <select ng-model="data.selected_guest_bill" name="guest-bill-template" class="placeholder">
+                            <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="entry full-width">
                     <label for="account-bill-template" translate>DEFAULT_ACCOUNT_BILL</label>
                     <div class="select">
-                        <select ng-model="data.default_account_bill" name="account-bill-template" class="placeholder">
-                            <option value="" translate> SELECT_ACCOUNT_BILL </option>
-                            <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.default_account_bill">{{item.name}}</option>
+                        <select ng-model="data.selected_account_bill" name="account-bill-template" class="placeholder">
+                            <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_account_bill">{{item.name}}</option>
                         </select>
                     </div>
                 </div>
