@@ -5,7 +5,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
     */
     this.fetch = function(){
         var deferred = $q.defer();
-        var url = '/admin/sync_inventories';
+        var url = '/admin/auto_sync_inventories';
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         },function(data){
@@ -16,7 +16,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
 
     this.saveTools = function(data){
         var deferred = $q.defer();
-        var url = '/admin/sync_inventories';
+        var url = '/admin/auto_sync_inventories';
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
         },function(data){
@@ -27,7 +27,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
 
     this.updateTool = function(data){
         var deferred = $q.defer();
-        var url = '/admin/sync_inventories/'+data.id;
+        var url = '/admin/auto_sync_inventories/'+data.id;
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
         },function(data){
@@ -39,7 +39,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
 
     this.getToolsDetails = function(data){
         var deferred = $q.defer();
-        var url = '/admin/sync_inventories/'+data.id;
+        var url = '/admin/auto_sync_inventories/'+data.id;
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         },function(data){
