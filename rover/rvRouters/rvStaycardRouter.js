@@ -81,7 +81,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.room-rates', {
-            url: '/room-rates/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id',
+            url: '/room-rates/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id/:room_type_id',
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
             onEnter: function($stateParams) {
@@ -102,6 +102,9 @@ angular.module('stayCardModule', [])
                 }
                 if (!$stateParams.promotion_code) {
                     $stateParams.promotion_code = null;
+                }
+                if(!$stateParams.room_type_id){
+                    $stateParams.room_type_id = "";
                 }
             },
             resolve: {
@@ -126,7 +129,8 @@ angular.module('stayCardModule', [])
                         promotion_code: $stateParams.promotion_code,
                         adults: $stateParams.adults,
                         children: $stateParams.children,
-                        promotion_id: $stateParams.promotion_id
+                        promotion_id: $stateParams.promotion_id,
+                        room_type_id: $stateParams.room_type_id
                     })
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {

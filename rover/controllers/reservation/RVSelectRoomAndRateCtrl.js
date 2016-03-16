@@ -163,12 +163,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: 1,
 					children: 1,
-					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates
+					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
 					payLoad['restrictions_on_date'] = $scope.stateCheck.dateModeActiveDate;
-				};
+				}
+				
+				if(!!$scope.stateCheck.preferredType){
+					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
+				}
 
 				$scope.invokeApi(RVRoomRatesSrv.fetchRoomTypeADRs, payLoad, function(rates) {
 					$scope.stateCheck.baseInfo = rates;
@@ -1573,8 +1577,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			for (roomIndex = $scope.stateCheck.roomDetails.firstIndex; roomIndex <= $scope.stateCheck.roomDetails.lastIndex; roomIndex++) {
 				ROOMS[roomIndex].roomTypeId = roomType;
 			}
-			groupByRoomTypes();
-			groupByRates();
+			fetchRoomTypesList();
 			resetRates();
 		};
 
