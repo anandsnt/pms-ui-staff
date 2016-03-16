@@ -1,5 +1,10 @@
 sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog){
 
+    BaseCtrl.call(this, $scope);
+
+    /*
+    *  Get the request params for bill settings info
+    */
     var getBillSettingsInfoRequestParams = function() {
         var params = {};
         if($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
@@ -23,6 +28,10 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
         return params;
 
     };
+
+    /*
+    *  Fetches the bill settings info for the guest/account bills
+    */
     var fetchBillSettingsInfo = function() {
         var params = getBillSettingsInfoRequestParams();
         var onBillSettingsInfoFetchSuccess = function(response) {
@@ -32,6 +41,9 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo,params,onBillSettingsInfoFetchSuccess);
     };
 
+    /*
+    *  Get the request params for the email and print bill request
+    */
     var getPrintEmailRequestParams = function() {
         var params = {};
 
@@ -52,12 +64,18 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
         return params;
     };
 
+    /*
+    *  Function which get invoked when the print btn from bill format popup is clicked
+    */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
     };
 
+    /*
+    *  Function which get invoked when the email btn from bill format popup is clicked
+    */
     $scope.emailBill = function() {
         var emailRequest = getPrintEmailRequestParams();
         emailRequest.bill_layout = $scope.data.default_bill_settings;
@@ -65,10 +83,9 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
         $scope.clickedEmail(emailRequest);
     };
 
-    $scope.closeDialog = function() {
-        ngDialog.close();
-    };
-
+    /*
+    *  Initialize the controller
+    */
     var init = function() {
         $scope.data = {};
         fetchBillSettingsInfo();

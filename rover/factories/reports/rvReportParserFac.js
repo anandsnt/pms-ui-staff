@@ -169,8 +169,6 @@ sntRover.factory('RVReportParserFac', [
                     amt = isNaN(amt) ? 0 : amt;
                     totalAmount += amt;
 
-                    console.log( makeCopy.remark.split('<br />') );
-
                     if ( 0 === k ) {
                         angular.extend(makeCopy, {
                             isReport     : true,
@@ -219,8 +217,6 @@ sntRover.factory('RVReportParserFac', [
                 processAry(adjustments, 'Adjustments');
                 processAry(deletedCharges, 'Deleted Charges');
             };
-
-            console.log( returnAry );
 
             return returnAry;
         }
