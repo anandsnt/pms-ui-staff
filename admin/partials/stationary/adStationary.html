@@ -20,7 +20,7 @@
                         <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
                         <div class="select">
                             <select ng-model="locale" name="locale" class="placeholder" ng-change="onLocaleChange()">
-                                <option ng-model="locale.value" ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+                                <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
                             </select>
                         </div>
                     </div>

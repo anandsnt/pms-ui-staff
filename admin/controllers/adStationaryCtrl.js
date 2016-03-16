@@ -42,7 +42,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
-		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
+		$scope.invokeApi(ADStationarySrv.fetch, params, successCallbackOfFetch);
 	};
 
 	$scope.init = function() {
@@ -80,6 +80,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
+		postingData.locale = $scope.locale;
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
@@ -150,6 +151,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.onLocaleChange = function() {
 		var params = {};
 		params.locale = $scope.locale;
+		fetchStationary(params);
 	}
 
 }]);
