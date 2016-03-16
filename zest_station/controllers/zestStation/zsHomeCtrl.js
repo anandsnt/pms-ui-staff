@@ -52,7 +52,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 });
             }
             else{
-                alert("nhny");
+                $state.go('zest_station.checkout_key_card_look_up');
             };
 	};
 

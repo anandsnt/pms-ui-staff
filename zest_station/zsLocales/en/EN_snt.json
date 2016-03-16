@@ -240,7 +240,10 @@
     "SEARCH" : "Search",
     "BY_NAME":"by name",
 
-    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS",
+    "FIND_YOUR_BILL_SUMMARY":"Find Your Bill Summary",
+    "USE_KEY_CARD":"Use Keycard",
+    "ENTER_NAME":"Enter Name"
  
 
 }
