@@ -61,8 +61,8 @@
         <div>
             <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper"></ul>
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'ROOM_TYPE'">
-                <li ng-repeat="room in display.roomFirstGrid track by $index" ng-init="isVisibleRoom = (stateCheck.selectedRoomType == room.id)">
-                    <a class="has-arrow toggle" ng-class="{active: isVisibleRoom}" ng-click="isVisibleRoom = !isVisibleRoom; refreshScroll()">
+                <li ng-repeat="room in display.roomFirstGrid track by $index">
+                    <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed}" ng-click="showRatesList(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
                             <span class="recommended" ng-show="display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
@@ -90,7 +90,7 @@
                                 <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                         </div>
-                        <div class="book-rate" ng-if="!isVisibleRoom">
+                        <div class="book-rate" ng-if="room.isCollapsed">
                             <h4 ng-hide="room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
                             <h4 ng-show="room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4>
                             <div class="price" ng-if="!room.defaultRate.isSuppressed">
@@ -109,7 +109,7 @@
                         </div>
                     </a>
                     <!-- Rates list -->
-                    <ul class="rates" ng-class="{active: isVisibleRoom}" ng-if="isVisibleRoom">
+                    <ul class="rates" ng-class="{active: !room.isCollapsed}" ng-if="!room.isCollapsed">
                         <li ng-repeat="rate in room.ratesArray" ng-class="{'closed': rate.numRestrictions > 0}">
                             <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(rate);">
                                 <h3>

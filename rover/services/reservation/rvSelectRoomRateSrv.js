@@ -24,7 +24,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
         self.getRestrictions = function(params) {
             var deferred = $q.defer();
-            var url = '/api/availability/restrictions';
+            var url = '/api/availability/rate_details';
             // Generate a dummy response in case of custom rates
             if (params.rate_id && params.rate_id.toString().match(/_CUSTOM_/)) {
                 var restrictions = {};
@@ -38,6 +38,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
             } else {
                 RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
                     var restrictions = {},
+                        amounts = {},
                         summary = [];
 
                     _.each(data.results, function(result) {
@@ -63,6 +64,9 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                         }
 
                         restrictions[result.date] = result.restrictions;
+
+                        amounts[result.date] = result.amount;
+
                         _.each(result.restrictions, function(restriction) {
                             if (!_.findWhere(summary, {
                                     type_id: restriction.type_id,
@@ -75,7 +79,8 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
                     deferred.resolve({
                         summary: summary,
-                        dates: restrictions
+                        dates: restrictions,
+                        amounts: amounts
                     });
 
                 }, function(data) {

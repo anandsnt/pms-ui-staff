@@ -115,8 +115,8 @@ angular.module('stayCardModule', [])
                         is_active: true
                     });
                 },
-                rates: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) {
-                    return RVReservationBaseSearchSrv.fetchRates({
+                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets) {
+                    return RVRoomRatesSrv.fetchRatesInitial({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date,
                         company_id: $stateParams.company_id,

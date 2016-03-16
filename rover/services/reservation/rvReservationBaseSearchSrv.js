@@ -24,6 +24,20 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 
+
+        //This method returns the default view chosen in the Admin/Reservation/Reservation Settings
+        this.getRoomRatesDefaultView = function(){
+            var view = "ROOM_TYPE";
+            if (that.reservation.settings && that.reservation.settings.default_rate_display_name){
+                if (that.reservation.settings.default_rate_display_name === 'Recommended') {
+                    view = "RECOMMENDED";
+                } else if (that.reservation.settings.default_rate_display_name === 'By Rate') {
+                    view = "RATE";
+                }
+            }
+            return view;
+        };
+
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
 
