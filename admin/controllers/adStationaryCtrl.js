@@ -47,7 +47,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 	$scope.init = function() {
 		$scope.languages = availableGuestLanguages;
-		$scope.locale = $scope.languages.default_locale_id;
+		$scope.locale = $scope.languages.default_locale;
 		var params = {};
 		fetchStationary(params);
 	};
