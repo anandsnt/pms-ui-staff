@@ -13,7 +13,7 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.inChromeApp = (window.innerHeight == screen.height && window.chrome);
         
-        
+    $translate.use('EN_snt');  
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -249,6 +249,7 @@ sntZestStation.controller('zsRootCtrl', [
                         close: $scope.iconsPath+'/close.svg',
                         qr: $scope.iconsPath+'/key.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
+                        logo: $scope.iconsPath+'/print_logo.svg',
                     }
                 };
             }

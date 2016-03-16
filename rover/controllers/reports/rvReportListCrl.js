@@ -19,6 +19,7 @@ sntRover.controller('RVReportListCrl', [
         $scope.setScroller(LIST_ISCROLL_ATTR, {
             preventDefault: false
         });
+        $scope.setScroller('reportUserFilterScroll');
 
         /**
          * inorder to refresh after list rendering
@@ -64,7 +65,8 @@ sntRover.controller('RVReportListCrl', [
                     'chargeNAddonGroups' : $scope.$parent.chargeNAddonGroups,
                     'chargeCodes'      : $scope.$parent.chargeCodes,
                     'addons'           : $scope.$parent.addons,
-                    'reservationStatus': $scope.$parent.reservationStatus
+                    'reservationStatus': $scope.$parent.reservationStatus,
+                    'activeUserList'   : $scope.$parent.activeUserList
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report
@@ -124,6 +126,8 @@ sntRover.controller('RVReportListCrl', [
                         });
                     };
                 });
+
+                $scope.refreshScroller('reportUserFilterScroll');
             };
 
             var callback = function() {

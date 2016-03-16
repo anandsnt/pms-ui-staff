@@ -61,6 +61,17 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2','zsBaseWebSrv','$q'
 		return deferred.promise;
 	};
 
+	this.fetchCountryList = function(){
+		var deferred = $q.defer(),
+		url = '/ui/country_list.json';
+		zsBaseWebSrv.getJSON(url).then(function (data) {
+		deferred.resolve(data);
+		}, function (data) {
+		deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 	this.fetchTranslationData = function(lang_code){
 		var deferred = $q.defer();
 		var url =  '/api/locales/'+lang_code+'.json';
@@ -71,5 +82,5 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2','zsBaseWebSrv','$q'
 		});
 		return deferred.promise;
 	};
-        
+
 }]);

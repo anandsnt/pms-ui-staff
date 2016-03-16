@@ -181,13 +181,15 @@
 			Charge Codes: <span>{{ appliedFilter.chargeCode.join(', ') }}</span>
 		</div>
 
-
+		<!-- chosen charge codes -->
+		<div ng-if="appliedFilter.chargeTypes.length">
+			Charge Types: <span>{{ appliedFilter.chargeTypes.join(', ') }}</span>
+		</div>
 
 		<!-- chosen charge codes -->
 		<div ng-if="appliedFilter.guestOrAccount.length">
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
-
 
 
 		<!-- chosen charge codes -->

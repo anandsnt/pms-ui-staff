@@ -24,11 +24,7 @@ admin.controller('ADZestStationPickUpKeysCtrl',['$scope','$rootScope', '$state',
                 $scope.$emit('hideLoader');
             };
             var dataToSend = {
-                'kiosk':
-                    {
-                        "pickup_qr_scan":$scope.zestSettings.pickup_qr_scan
-                    }
-
+                'kiosk':$scope.zestSettings
             };
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };
