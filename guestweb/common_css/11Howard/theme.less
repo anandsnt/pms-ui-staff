@@ -1,9 +1,18 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
+@font-face {
+  font-family: 'Europa Grotesque Regular';
+  src: url('/assets/type/EuropaGrotesque-Light.eot');
+  src: url('/assets/type/EuropaGrotesque-Light.eot?#iefix') format('embedded-opentype'), url('/assets/type/EuropaGrotesque-Light.woff') format('woff'), url('/assets/type/EuropaGrotesque-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
 @import "../style.less";
 
 body{
     background-color:#FFF;
+    font-family:Europa Grotesque Regular;
 }
 
 .back-text{
@@ -16,6 +25,7 @@ a,a:hover,.main-text,
 }
 .sub-main-text{
     color:#444444;
+    font-size:18px !important;
 }
 .header-bar{
     background:#FFF;
@@ -33,6 +43,9 @@ a,a:hover,.main-text,
 }
 .view-bill{
     color:#000000;
+}
+.sub-text{
+  font-size:15px;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
     color: #151413 !important;
