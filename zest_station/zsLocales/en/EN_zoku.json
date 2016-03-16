@@ -219,7 +219,8 @@
     "CHECK_IN_SELECT_EMAIL_SUB": "Used to make Reservation",
     "CHECK_IN_SELECT_CONF": "Confirmation",
     "CHECK_IN_SELECT_CONF_SUB": "Number",
-
+    "CHECK_IN_NO_OF_NIGHTS":"No of Nights",
+    "TYPE_NO_OF_NIGHTS":"Enter Number of Nights",
      "CHECK_IN_SELECT_NIGHTS": "Number",
      "CHECK_IN_SELECT_NIGHTS_SUB": "of Nights",
     
@@ -230,7 +231,10 @@
     "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
     "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
     "ADMIN_WORKSTATION": "Work Station",
-    "ADMIN_STATION_PRINTER": "Select Printer"
+    "ADMIN_STATION_PRINTER": "Select Printer",
+    
+    
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
     
     
 }

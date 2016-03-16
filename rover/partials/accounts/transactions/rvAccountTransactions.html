@@ -112,14 +112,11 @@
                                 <span class="value">{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</span>
                             </li>
                             <li class="break">
-                                <button type="button" class="button with-icon only-icon blue" click-touch="mailInvoice(billData.bill_number)">
-                                    <span class="icons icon-email"></span>
-                                    {{'EMAIL' |translate}}
+                                <button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number)">
+                                    <span class="icons icon-invoice"></span>
+                                    {{'INVOICE' |translate}}
                                 </button>
-                                <button data-action="print-bill" data-print="account-bill1-invoice" type="button" class="button with-icon only-icon blue" click-touch="printInvoice(billData.bill_number)">
-                                    <span class="icons icon-print"></span>
-                                    {{'PRINT' |translate}}
-                                </button>
+
                             </li>
                             <li>
                                 <span class="title" translate>BALANCE</span>

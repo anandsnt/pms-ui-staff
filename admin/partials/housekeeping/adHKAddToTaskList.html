@@ -53,12 +53,33 @@
 			    </div>
 			</div>
 			<div class="entry full-width">
-			    <label for="item-type">Fo status <strong>*</strong></label>
+			    <label for="item-type">Fo status </label>
 			    <div class="boxes">
 			        <label class="checkbox inline" ng-repeat="item in foStatusList" style="width: 46% !important">
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.front_office_status_ids[$index]}"></span>
 			            <input type="checkbox" ng-model="eachTaskList.front_office_status_ids[$index]">
 			            {{ item.description }}
+			        </label>
+			    </div>
+			</div>
+
+			<div class="entry full-width">
+			    <label for="item-type">Room status</label>
+			    <div class="boxes">
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_clean}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_clean">
+			            Clean
+			        </label>
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_dirty}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_dirty">
+			            Dirty
+			        </label>
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_pickup}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_pickup">
+			            Pickup
 			        </label>
 			    </div>
 			</div>

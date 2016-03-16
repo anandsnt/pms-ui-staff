@@ -469,6 +469,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+		$( 'body' ).append( "<style>@page { margin: 0px; }</style>" );
 	};
 
 	// add the print orientation after printing
@@ -487,6 +488,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
 
 	$scope.printRegistrationCard = function() {
+            if ($scope.theme === 'yotel'){
+                //$scope.setPrintYotelPrinter();
+            };
                 $scope.isPrintRegistrationCard = true;
 
                 $scope.$emit('hideLoader');
@@ -495,6 +499,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 // CICO-9569 to solve the hotel logo issue
                 $("header .logo").addClass('logo-hide');
                 $("header .h2").addClass('text-hide');
+                
+                $('.popup').hide();//hide timeout elements
+                $('.invis').hide();//hide timeout elements
+                $('#popup-overlay').hide();//hide timeout elements
 
                 // add the orientation
                 addPrintOrientation();
@@ -519,7 +527,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 */
                setTimeout(function() {
                     $scope.isPrintRegistrationCard = false;
-
+                            
                             // CICO-9569 to solve the hotel logo issue
                             $("header .logo").removeClass('logo-hide');
                             $("header .h2").addClass('text-hide');
@@ -538,15 +546,27 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.$emit('hideLoader');
             $scope.errorMessage = "";
         };
+        $scope.getTermsPrintable = function(terms){
+          sntZestStation.filter('unsafe', function($sce) {
+                return function(terms) {
+                    return $sce.trustAsHtml(terms);
+                };
+            });  
+        };
         $scope.fetchRegistrationPrintView = function(){
             var fetchPrintViewCompleted = function(data){
                 $scope.$emit('hideLoader');
                 // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
+                console.log($scope.printRegCardData);
+                $scope.printRegCardData.terms_conditions_html = $scope.getTermsPrintable($scope.printRegCardData.terms_conditions);
+                $scope.printRegCardData.standardCheckout = '12:00 PM';
+                console.info('as : ',$scope)
                 $scope.setupPrintView();
                 $scope.initPrintRegistration();
             };
-            var id = $scope.selectedReservation.id;
+            var id = $scope.selectedReservation.id; 
+            //var id = 1339880;//debugging
             $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
         };
         $scope.clickedPrint = function(){

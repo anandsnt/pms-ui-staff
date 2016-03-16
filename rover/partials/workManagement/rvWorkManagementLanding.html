@@ -40,16 +40,16 @@
                 <li>Total Hours<span>{{workType.total_hours}}</span></li>
                 <li>Total Staff<span>{{workType.total_staff}}</span></li>
                 <li>Total Rooms<span>{{workType.total_rooms}}</span></li>
-                <li>Assigned<span>{{workType.total_rooms_assigned}}</span></li>
-                <li>Completed<span>{{workType.total_rooms_completed}}</span></li>
+                <li>Assigned<span class="{{ workType.css_class }}">{{workType.total_rooms_assigned}}</span></li>
+                <li>Completed<span class="{{ workType.css_class }}">{{workType.total_rooms_completed}}</span></li>
             </ul>
             <!-- use this for all other work types shown on screen:-->
             <ul ng-if="!$first">
                 <li><span>{{workType.total_hours}}</span></li>
                 <li><span>{{workType.total_staff}}</span></li>
                 <li><span>{{workType.total_rooms}}</span></li>
-                <li><span>{{workType.total_rooms_assigned}}</span></li>
-                <li><span>{{workType.total_rooms_completed}}</span></li>
+                <li><span class="{{ workType.css_class }}">{{workType.total_rooms_assigned}}</span></li>
+                <li><span class="{{ workType.css_class }}">{{workType.total_rooms_completed}}</span></li>
             </ul>
 
         </div>
@@ -61,8 +61,8 @@
                     <li><span>{{ task.total_hours }}</span></li>
                     <li><span>{{ task.total_staff }}</span></li>
                     <li><span>{{ task.total_rooms }}</span></li>
-                    <li><span>{{ task.total_rooms_assigned }}</span></li>
-                    <li><span>{{ task.total_rooms_completed }}</span></li>
+                    <li><span class="{{ task.css_class }}">{{ task.total_rooms_assigned }}</span></li>
+                    <li><span class="{{ task.css_class }}">{{ task.total_rooms_completed }}</span></li>
                 </ul>
             </div>
         </div>

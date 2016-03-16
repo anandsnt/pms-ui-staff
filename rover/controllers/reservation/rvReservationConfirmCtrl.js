@@ -69,6 +69,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.setScroller('reservationSummary');
 			$scope.setScroller('paymentInfo');
 			checkAllRoomsAreReady();
+			$scope.reservationData.enable_confirmation_custom_text = false;
 		};
 
 		/*
@@ -272,7 +273,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					updateBackButton();
 					$scope.$emit('hideLoader');
 				};
-
+				//CICO-23139
+				postData.enable_confirmation_custom_text = $scope.reservationData.enable_confirmation_custom_text;
+				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
+				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
 				if ($scope.reservationData.isHourly) {
 					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 				} else {
@@ -578,6 +582,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		$scope.watchEmailUpdate = function(){
        		$rootScope.$broadcast('guest_email_updated', $scope.reservationData.guest.email);
+   		};
+   		// To enable/disable the confirmation title-text fields from UI.
+   		$scope.enableConfirmationCustomText = function(){
+   			$scope.reservationData.enable_confirmation_custom_text = !$scope.reservationData.enable_confirmation_custom_text;
+   			$scope.refreshScroller('paymentInfo');
    		};
 	}
 ]);

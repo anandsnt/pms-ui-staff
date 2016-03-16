@@ -4,8 +4,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     'zsModeConstants',
     'zsEventConstants',
     'zsTabletSrv','zsCheckoutSrv',
-    '$stateParams', 'zsHotelDetailsSrv',
-    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv) {
+    '$stateParams', 'zsHotelDetailsSrv','$timeout',
+    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout) {
 
     BaseCtrl.call(this, $scope);
 
@@ -86,8 +86,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     $state.go('zest_station.find_reservation_no_match');
                 }
             } else if ($scope.reservations.length === 1 && !$scope.fetchingList){
+                $scope.mode = "single-reservation";
                 $scope.selectReservation($scope.reservations[0]);
-            } {
+            }
+            else {
                 $scope.mode = "reservations-list";
             }
     };
@@ -141,6 +143,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             };
             if ($state.lastAt === 'find-by-email'){
                 params.email = $state.input.email;
+            }
+            if ($state.lastAt === 'find-by-no-of-nights'){
+                params.no_of_nights = $state.input.NoOfNights;
             }
             if ($state.lastAt === 'find-by-date'){
                  params.departure_date  = $state.input.date;
@@ -444,7 +449,22 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         return params;
     };
     
+    $scope.scanQRCode = function(){
+        $scope.qrCodeScanFailed = false;
+        var onFailure = function(){
+             $scope.qrCodeScanFailed = true;
+        };
+        var onSuccess  = function(){
 
+        };
+        //this is just simulation
+        //handling failure case only now.
+        $scope.$emit('showLoader');
+        $timeout(function() {
+            $scope.$emit('hideLoader');
+            onFailure();
+        }, 2000);
+    };
 
     /**
      * [fetchNextReservationList description]
@@ -486,20 +506,17 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             // $state.go('zest_station.review_bill',{"res_id":r.id});
         }
         else{
-            $state.go('zest_station.reservation_details');
+            var primaryGuest = _.find(r.guest_details, function(guest_detail) {
+                return guest_detail.is_primary === true
+            });
+            $scope.zestStationData.check_in_collect_nationality ? $state.go('zest_station.collect_nationality',{'guestId':primaryGuest.id}) : $state.go('zest_station.reservation_details');
         }
 
     };
 
-    $scope.initPuk = function(){
-            $scope.mode = "pickup-mode";
-            if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page
-                $scope.setScreenIcon('key');
-                $scope.at = 'input-qr-code';
-                $scope.headingText = "QR_LOOKUP_HEADER";
-                $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
-                    
-            } else {
+
+    //non QR code actions
+    var normalPickupKeyActions = function(){
                 $scope.at = 'input-last';
                 $scope.headingText = "TYPE_LAST";
                 
@@ -514,13 +531,24 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     $scope.input.inputTextValue = $state.input.room;
                     $scope.at = 're-input-room';
                 }
-        }
-            
-            
-            
-            
-            
+    };
 
+    $scope.quitQRScanMode = function(){
+        normalPickupKeyActions();
+    };
+
+    $scope.initPuk = function(){
+
+        $scope.mode = "pickup-mode";
+        if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page
+            $scope.setScreenIcon('key');
+            $scope.at = 'input-qr-code';
+            $scope.headingText = "QR_LOOKUP_HEADER";
+            $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
+                
+        } else {
+            normalPickupKeyActions();
+        };
     };
     $scope.initCheckout = function(){
         if ($state.lastAt === 'review_bill'){
