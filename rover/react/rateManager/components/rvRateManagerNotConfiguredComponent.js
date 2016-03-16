@@ -1,6 +1,6 @@
 const RateManagerNotConfiguredComponent = ({ shouldShow }) => {
 	if ( !shouldShow ) {
-		return <span style={{display:'none'}}/>; /* TODO: check alternative ways */
+		return 	false;
 	}
 	
 	return (

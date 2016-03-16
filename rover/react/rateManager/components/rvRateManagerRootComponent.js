@@ -1,8 +1,9 @@
-const {createClass} = React;
+const { Component } = React;
+const { findDOMNode } = ReactDOM;
 
-
-const RateManagerRootComponent = () => {
-    return (<div className='calendar'>
+const RateManagerRootComponent = () => (		
+	<div className='calendar'>
 		<RateManagerNotConfiguredContainer/>
-	</div>);
-};
+		<RateManagerGridViewRootContainer/>
+	</div>
+);
