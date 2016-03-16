@@ -31,13 +31,13 @@ this.keyLookUpOperations = function() {
     this.InsertKeyCard = function() { //use key for checkout takes key in
         ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
-    this.connect = function(openedCallback, actionSuccesCallback) {
+    this.connect = function(socketOpenedSuccessCallback,socketOpenedFailureCallback,actionSuccesCallback) {
         console.log("connect");
         ws = new WebSocket("wss://localhost:4649/CCSwipeService");
         //Triggers when websocket connection is established.
         ws.onopen = function() {
-            openedCallback();
             console.info(wsConfig['connected_alert']);
+            socketOpenedSuccessCallback();
         };
 
         // Triggers when there is a message from websocket server.
@@ -45,24 +45,23 @@ this.keyLookUpOperations = function() {
             var response = evt.data;
             if (response) {
                 response = JSON.parse(response);
-                var cmd = response.Command,
-                    msg = response.Message;
-                actionSuccesCallback(cmd, msg, response);
+                actionSuccesCallback(response);
             }
         };
         // Triggers when the server is down.
         ws.onclose = function() {
             // websocket is closed.
             console.warn('[::: WebSocket Closed :::]');
+            socketOpenedFailureCallback();
         };
         return ws;
     };
 
-    this.connectWebSocket = function(openedCallback, actionSuccesCallback) {
+    this.connectWebSocket = function(socketOpenedSuccessCallback,socketOpenedFailureCallback, actionSuccesCallback) {
         console.info('--> Connecting WebSocket...');
         setTimeout(function() {
                 console.info('[:: Connecting ... .. .  ::]');
-                that.connect(openedCallback, actionSuccesCallback);
+                that.connect(socketOpenedSuccessCallback,socketOpenedFailureCallback, actionSuccesCallback);
             },
             wsConfig['connect_delay']);
     };
