@@ -95,4 +95,16 @@ sntZestStation.service('zsCheckoutSrv',
                     return deferred.promise;
                 };
 
+
+                this.fetchReservationFromUId = function(params){
+                    var deferred = $q.defer();
+                    var url = '/api/reservations/find_by_key_uid';
+                    zsBaseWebSrv.postJSON(url,params).then(function (data) {
+                        deferred.resolve(data);
+                    }, function (data) {
+                        deferred.reject(data);
+                    });
+                    return deferred.promise;
+                };
+
  }]);
