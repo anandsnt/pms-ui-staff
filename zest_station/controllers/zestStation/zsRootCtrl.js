@@ -687,6 +687,14 @@ sntZestStation.controller('zsRootCtrl', [
             }
 
         };
+        $scope.openExternalWebPage = function(){
+            $scope.showExternalWebPage =true;
+            $scope.zestStationData.home_screen.booking_pop_up.booking_engine_url;
+        };
+
+        $scope.closeExternalWebPage = function(){
+            $scope.showExternalWebPage =false;
+        }
         
         $scope.languageSelect = function(){
             $scope.showLanguagePopup = true;
@@ -936,11 +944,5 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	}();
-        
-        
-        
-        
-        
-        
-        
 }]);
+
