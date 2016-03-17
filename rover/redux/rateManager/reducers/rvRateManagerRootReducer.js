@@ -4,6 +4,7 @@ const rateManagerRootReducer = (state, action) => (
 		mode: rateManagerModeReducer(state.mode, action),
 		zoomLevel: rateManagerZoomLevelReducer(state.zoomLevel, action),
 		dates: rateManagerDatesReducer(state.dates, action),
-		action: rateManagerActionReducer(state.action, action)
+		action: rateManagerActionReducer(state.action, action),
+		businessDate: rateManagerBusinessDateReducer(state.businessDate, action)
 	}
 );

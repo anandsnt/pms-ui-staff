@@ -1,4 +1,4 @@
-let convertDateDataForRateViewHeader = (dates) => {
+let convertDateDataForRateViewHeader = (dates, businessDate) => {
 	var headerDateData = [],
 		copiedDate = null,
 		copiedDateComponents = null,
@@ -14,7 +14,7 @@ let convertDateDataForRateViewHeader = (dates) => {
 		
 		day = copiedDateComponents.day.toString();
 		isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0 );
-		isPastDate = false; //TODO: change with by comparing business date
+		isPastDate = copiedDate < businessDate;
 
 		headerConditionalClass = isWeekEnd ? 'weekend_day' : '';
 		cellConditionalClass = isWeekEnd ? 'weekend_day' : '';
@@ -38,7 +38,7 @@ let convertDateDataForRateViewHeader = (dates) => {
 const rateManagerRateDatesReducer= (state = [], action) => {
   switch (action.type) {
     case 'RATE_VIEW_CHANGED':
-    	return convertDateDataForRateViewHeader(action.dates);
+    	return convertDateDataForRateViewHeader(action.dates, action.businessDate);
   	default:
   		return state;    	
   }	

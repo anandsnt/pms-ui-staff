@@ -76,7 +76,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           data: [...ratesWithRestrictions],
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
-          businessDate: $rootScope.businessDate
+          businessDate: tzIndependentDate($rootScope.businessDate)
         });
       };
 
