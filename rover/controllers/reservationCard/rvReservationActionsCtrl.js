@@ -779,10 +779,18 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.enable_confirmation_custom_text = false;
 			$scope.ngData.enable_confirmation_custom_text = "";
 			$scope.ngData.confirmation_custom_title = "";
-
+			$scope.ngData.languageData = {};
+			
 			var successCallBackForLanguagesFetch = function(data) {
 		      	$scope.$emit('hideLoader');
 		      	$scope.ngData.languageData = data;
+
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
+					className: '',
+					scope: $scope,
+					closeByDocument: true
+				});
 		    };
 
 		    /**
@@ -796,13 +804,6 @@ sntRover.controller('reservationActionsController', [
 		    };
 
 		    fetchGuestLanguages();
-
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
-				className: '',
-				scope: $scope,
-				closeByDocument: true
-			});
 		};
 
 		$scope.showConfirmation = function(reservationStatus) {
