@@ -35,7 +35,7 @@ this.webSocketOperations = function() {
         try {
             ws = new WebSocket("wss://localhost:4649/CCSwipeService");
         } catch (e) {
-            console.log(e)
+            console.error(e)
             socketOpenedFailureCallback();
         }
 

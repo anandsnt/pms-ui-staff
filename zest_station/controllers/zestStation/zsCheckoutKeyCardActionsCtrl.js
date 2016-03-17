@@ -29,30 +29,20 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.navToPrev = function() {
 			$scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
 		};
-
-		
-		/** 
-		* reservation search failed actions starts here
-		* */
-		$scope.retrySearch =  function(){
-			$scope.reservationSearchFailed = false;
-			$scope.socketOperator.InsertKeyCard();
+		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			} else {
+				return;
+			}
 		};
 
-		$scope.talkToStaff = function(){
-			$state.go('zest_station.talk_to_staff');
-		};
 
-		$scope.searchByName = function(){
-			$state.lastAt = 'home';
-			$state.isPickupKeys = false;
-			$state.mode = zsModeConstants.CHECKOUT_MODE;
-			$state.go('zest_station.reservation_search', {
-				mode: zsModeConstants.CHECKOUT_MODE
-			});
-		};
-		// reservation search failed actions ends here
-	
 		var findReservationSuccess = function(data) {
 			if (data.reservation_id === null) {
 				$scope.socketOperator.EjectKeyCard();
@@ -63,16 +53,17 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 
 		var ejectCard = function() {
-			console.log("card ejection failed")
+			console.info("card ejection failed")
 			$scope.socketOperator.EjectKeyCard();
 		};
 
-		var goToRetryPage = function(){
+		var goToRetryPage = function() {
 			$scope.reservationSearchFailed = true;
+			ejectCard();
+			runDigestCycle();
 		};
 
 		var findReservationFailed = function() {
-			ejectCard();
 			goToRetryPage();
 		};
 		var findReservation = function(uid) {
@@ -95,7 +86,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				msg = response.Message;
 
 			// to delete after QA pass
-			console.info("uid="+response.UID);
+			console.info("uid=" + response.UID);
 			console.info(cmd);
 			console.info(msg);
 
@@ -110,14 +101,40 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			};
 		};
 		var socketOpenedFailureCallback = function() {
-			ejectCard();
 			goToRetryPage();
 		};
 		var socketOpenedSuccessCallback = function() {
 			$scope.socketOperator.InsertKeyCard();
 		};
 
-		$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+		var init = function(){
+			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+		}();
+
+
+
+		/** 
+		 * reservation search failed actions starts here
+		 * */
+		$scope.retrySearch = function() {
+			$scope.reservationSearchFailed = false;
+			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+			runDigestCycle();
+		};
+
+		$scope.talkToStaff = function() {
+			$state.go('zest_station.talk_to_staff');
+		};
+
+		$scope.searchByName = function() {
+			$state.lastAt = 'home';
+			$state.isPickupKeys = false;
+			$state.mode = zsModeConstants.CHECKOUT_MODE;
+			$state.go('zest_station.reservation_search', {
+				mode: zsModeConstants.CHECKOUT_MODE
+			});
+		};
+		// reservation search failed actions ends here
 
 	}
 ]);
