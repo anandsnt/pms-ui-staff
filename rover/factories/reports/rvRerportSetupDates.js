@@ -84,6 +84,10 @@ angular.module('reportsModule')
                             'fromDate': undefined,
                             'untilDate': undefined
                         },
+                        'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': {
+                            'fromDate': getDates.businessDate,
+                            'untilDate': getDates.businessDate
+                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,

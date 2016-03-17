@@ -488,9 +488,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
 
 	$scope.printRegistrationCard = function() {
-            if ($scope.theme === 'yotel'){
-                //$scope.setPrintYotelPrinter();
-            };
                 $scope.isPrintRegistrationCard = true;
 
                 $scope.$emit('hideLoader');
@@ -546,16 +543,27 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.$emit('hideLoader');
             $scope.errorMessage = "";
         };
+        $scope.getTermsPrintable = function(terms){
+          sntZestStation.filter('unsafe', function($sce) {
+                return function(terms) {
+                    return $sce.trustAsHtml(terms);
+                };
+            });  
+        };
+        $scope.currentDateTime;
         $scope.fetchRegistrationPrintView = function(){
+            
             var fetchPrintViewCompleted = function(data){
+                var d = new Date();
+                $scope.currentDateTime = d.getTime();
                 $scope.$emit('hideLoader');
                 // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
+                $scope.printRegCardData.terms_conditions_html = $scope.getTermsPrintable($scope.printRegCardData.terms_conditions);
                 $scope.setupPrintView();
                 $scope.initPrintRegistration();
             };
-            //var id = $scope.selectedReservation.id;
-            var id = 1339926;
+            var id = $scope.selectedReservation.id; 
             $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
         };
         $scope.clickedPrint = function(){

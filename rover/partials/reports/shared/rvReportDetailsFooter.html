@@ -87,7 +87,7 @@
 
 		<!-- chosen user nanmes -->
 		<div ng-if="appliedFilter.users.length">
-			Users: <span>{{ appliedFilter.users.join(', ') }}</span>
+			Users: <span>{{ appliedFilter.users.length }}</span>
 		</div>
 
 
@@ -181,13 +181,15 @@
 			Charge Codes: <span>{{ appliedFilter.chargeCode.join(', ') }}</span>
 		</div>
 
-
+		<!-- chosen charge codes -->
+		<div ng-if="appliedFilter.chargeTypes.length">
+			Charge Types: <span>{{ appliedFilter.chargeTypes.join(', ') }}</span>
+		</div>
 
 		<!-- chosen charge codes -->
 		<div ng-if="appliedFilter.guestOrAccount.length">
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
-
 
 
 		<!-- chosen charge codes -->
