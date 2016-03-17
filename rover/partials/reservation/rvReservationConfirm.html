@@ -141,13 +141,14 @@
                             <input name="email" id="email" ng-model="otherData.additionalEmail" type="email" />
                         </div>
 
-                        <div class="entry full-width break-top">
+                        <div class="entry full-width break-top" ng-show="reservationData.languageData.show_language_field">
                             <label for="email-language" translate>GUEST_LANGUAGE</label>
                             <div class="select">
                                 <select id="email-language" ng-model="reservationData.languageData.selected_language_code">
                                     <option value="" translate>SELECT_LANGUAGE</option>
                                     <option value="{{item.code}}" ng-repeat="item in reservationData.languageData.languages"
-                                        ng-selected="item.code === reservationData.languageData.selected_language_code">{{item.language}}</option>
+                                        ng-selected="item.code === reservationData.languageData.selected_language_code"
+                                        ng-if="item.is_show_on_guest_card">{{item.language}}</option>
                                 </select>
                             </div>
                         </div>
