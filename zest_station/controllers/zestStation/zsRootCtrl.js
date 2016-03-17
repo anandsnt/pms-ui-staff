@@ -689,7 +689,6 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.openExternalWebPage = function(){
             $scope.showExternalWebPage =true;
-            $scope.zestStationData.home_screen.booking_pop_up.booking_engine_url;
         };
 
         $scope.closeExternalWebPage = function(){
