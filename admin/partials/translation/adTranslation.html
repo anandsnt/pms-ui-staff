@@ -7,7 +7,7 @@
                 <div class="filters">
                     <div class="filter select">
                         <div class="entry">
-                            <div class="select">
+                            <div class="select translation-language-select">
                                 <select ng-model="filter.locale" name="locale"  class="placeholder-translation" ng-change="onLocaleChange()">
                                     <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==filter.locale"> {{locale.description}} </option>
                                 </select>
