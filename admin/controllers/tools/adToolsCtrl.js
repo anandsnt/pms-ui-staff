@@ -17,7 +17,7 @@ admin.controller('ADToolsCtrl',
     $scope.listTools = function(){
         var successCallbackFetch = function(data){
             $scope.$emit('hideLoader');
-            $scope.sync_inventories = data.sync_inventories;
+            $scope.auto_sync_inventories = data.auto_sync_inventories;
             $scope.currentClickedElement = -1;
             $scope.isAddMode = false;
         };
@@ -93,7 +93,6 @@ admin.controller('ADToolsCtrl',
     * @param {obj} object of selected invetory    */
     $scope.onToggleAutoSync = function(index, inventory){
         var successCallbackUpdateInventory = function(data){
-            //$scope.sync_inventories[index].is_auto_sync = !$scope.sync_inventories[index].is_auto_sync;
             $scope.$emit('hideLoader');
         };
         inventory.is_auto_sync = !inventory.is_auto_sync;
