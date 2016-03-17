@@ -1175,7 +1175,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.initRefresh(del);
 
             var onSuccess = function(){
-                $scope.actions.totalCount--;
+                if (del === 'delete') {
+                    $scope.actions.totalCount--;
+                }
                 $scope.lastSelectedItemId = params.action_task.id;
                 $scope.refreshActionList(del, selected);
 
