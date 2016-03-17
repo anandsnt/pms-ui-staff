@@ -47,6 +47,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			if (data.reservation_id === null) {
 				$scope.socketOperator.EjectKeyCard();
 			} else {
+				$scope.zestStationData.keyCardInserted = true;
 				$scope.zestStationData.reservationData = data;
 				$state.go('zest_station.review_bill');
 			}
@@ -66,6 +67,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var findReservationFailed = function() {
 			goToRetryPage();
 		};
+		
 		var findReservation = function(uid) {
 			var options = {
 				params: {
@@ -77,11 +79,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
 
-
-
 		var actionSuccesCallback = function(response) {
-
-
 			var cmd = response.Command,
 				msg = response.Message;
 
@@ -91,9 +89,11 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			console.info(msg);
 
 			if (response.Command === 'cmd_insert_key_card') {
-				$scope.zestStationData.keyCardInserted = true;
+				//check if the UID is valid
+				//if so find reservation using that
 				(typeof response.UID !== "undefined" && response.UID !== null) ? findReservation(response.UID): findReservationFailed();
 			} else if (response.Command === 'cmd_eject_key_card') {
+				//ejectkey card callback
 				if (response.ResponseCode === 19) {
 					// key ejection failed
 					$state.go('zest_station.error_page');
@@ -110,8 +110,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var init = function(){
 			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
 		}();
-
-
 
 		/** 
 		 * reservation search failed actions starts here
