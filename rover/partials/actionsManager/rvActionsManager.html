@@ -157,9 +157,15 @@
                 </div>
                 <div class="entry action-info time">
                     <label for="due-time">Time Due</label>
-                    <input id="due-time" type="time" ng-model="selectedAction.dueTime" placeholder="HH:mm:ss" required
-                           rv-delay-textbox delay="1000" function-to-fire="updateAction"
-                           ng-disabled="selectedAction.action_status === _actionCompleted"/>
+                    <div class="select">
+                        <select id="due-time" ng-model="selectedAction.dueTime" ng-change="updateAction()"
+                                ng-disabled="selectedAction.action_status === _actionCompleted">
+                            <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
+                                    ng-selected="selectedAction.dueTime === timeSelector.value">
+                                {{timeSelector.text}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <!-- If action completed, show this as well: -->
                 <div class="notice" ng-if="selectedAction.action_status === _actionCompleted">

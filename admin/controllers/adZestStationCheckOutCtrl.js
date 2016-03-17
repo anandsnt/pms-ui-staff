@@ -21,13 +21,7 @@ admin.controller('ADZestStationCheckOutCtrl',['$scope','$rootScope', '$state','$
                 $scope.$emit('hideLoader');
             };
             var dataToSend = {
-                                'kiosk':
-                                        {
-                                            "guest_bill":$scope.zestSettings.guest_bill,
-                                            "check_out_message_texts" :$scope.zestSettings.check_out_message_texts
-
-                                        }
-
+                                'kiosk':$scope.zestSettings
                              };
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };

@@ -1,0 +1,26 @@
+<div class="room page-print" ng-show="theme === 'yotel'">
+        <section id="registration-card" class="page-print">
+        
+         <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{business_date}}</span>
+            <div class="logo">
+                <div ng-include="icons.url.logo"></div>
+            </div>
+
+            <!--div class="room"-->
+                <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span><strong>{{printRegCardData.room_number}}</strong>
+                
+            <!--/div-->
+
+            <span>{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{printRegCardData.dep_date}}</span>
+            <span>{{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{printRegCardData.standardCheckout}}</span>
+
+            <span>{{'REGISTRATION_READY_PRINT_MSG_1' | translate}}</span>
+            <span>{{'REGISTRATION_READY_PRINT_MSG_2' | translate}}</span>
+            <span>{{'REGISTRATION_READY_PRINT_MSG_3' | translate}}</span>
+
+            <strong class='footer'>{{'REGISTRATION_READY_PRINT_FOOTER' | translate}}</strong>
+            <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
+            <p class="terms">{{printRegCardData.terms_conditions_html}}</p>
+
+        </section>
+    </div>

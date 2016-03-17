@@ -214,11 +214,13 @@
     
     "CHECK_IN_SELECT_HEADER": "Next, type in one of the following",
     "CHECK_IN_SELECT_DATE": "Departure Date",
+    "CHECK_IN_NO_OF_NIGHTS":"Number",
+    "CHECK_IN_NO_OF_NIGHTS_SUB":"of Nights",
     "CHECK_IN_SELECT_EMAIL": "E-mail",
     "CHECK_IN_SELECT_EMAIL_SUB": "Used to make Reservation",
     "CHECK_IN_SELECT_CONF": "Confirmation",
     "CHECK_IN_SELECT_CONF_SUB": "Number",
-
+    "TYPE_NO_OF_NIGHTS":"Enter Number of Nights",
      "CHECK_IN_SELECT_NIGHTS": "Number",
      "CHECK_IN_SELECT_NIGHTS_SUB": "of Nights",
     
@@ -232,7 +234,21 @@
     "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
     "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
     "ADMIN_WORKSTATION": "Work Station",
-    "ADMIN_STATION_PRINTER": "Select Printer"
+    "ADMIN_STATION_PRINTER": "Select Printer",
+    "QR_SCAN_FAILED_HEADING" :"Sorry",
+    "QR_SCAN_FAILED_SUB_TEXT": "The QR scanning failed",
+    "SEARCH" : "Search",
+    "BY_NAME":"by name",
+
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS",
+    "FIND_YOUR_BILL_SUMMARY":"Find Your Bill Summary",
+    "USE_KEY_CARD":"Use Keycard",
+    "ENTER_NAME":"Enter Name",
+    "INSERT_KEY_CARD_FOR_CHECKOUT":"Please insert your key card in the \"Check-Out Key\" slot below",
+    "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the \"Extra Keys\" slot",
+    "KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING":"Sorry",
+    "KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT": "The keycard lookup has failed",
+    "INSERT_KEY_CARD":"Insert card"
  
-   
+
 }

@@ -15,7 +15,7 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody>
+			<!-- <tbody>
 				<tr ng-repeat="addon in data.addons track by $index">
 					<th class="heading" scope="row" ng-bind="addon.name"></th>
 					<td ng-repeat="date in addon.availability_details track by $index">
@@ -23,6 +23,23 @@
 						</div>
 						<div ng-if="date.availability === null" class="inner disabled">N/A
 						</div>
+					</td>
+				</tr>
+			</tbody> -->
+		</table>
+
+		<table class="dates-grid">
+			<colgroup>
+				<col>
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
+			</colgroup>
+			<tbody>
+				<tr ng-repeat="addon in data.addons track by $index">
+					<th scope="row" ng-bind="addon.name"></th>
+					<!-- Repeat for {X} days -->
+					<td ng-repeat="date in addon.availability_details track by $index">
+						<div class="inner" ng-if="date.availability !== null" ng-bind="date.availability" ng-class="{ 'unavailable' : date.availability <= 0, 'warning' : (date.availability <= 3) }"></div>
+						<div ng-if="date.availability === null" class="inner disabled">N/A</div>
 					</td>
 				</tr>
 			</tbody>

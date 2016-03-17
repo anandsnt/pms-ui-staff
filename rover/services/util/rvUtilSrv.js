@@ -245,4 +245,21 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
         		return navigator.userAgent.match(/Android/i);
     		}
 		};
+
+        /**
+         * This method returns the next time quarter to the input hours and minutes
+         * in hh:mm format
+         * @param hours INTEGER
+         * @param minutes INTEGER
+         * @returns {string}
+         */
+        this.roundToNextQuarter = function(hours,minutes){
+                var roundedHours =  (minutes > 45 ? ++hours % 24 : hours).toString(),
+                    roundedMins = ((((minutes + 14) / 15 | 0) * 15) % 60).toString();
+
+                return (roundedHours.length === 2 ? roundedHours : "0" + roundedHours ) +
+                    ":" +
+                    (roundedMins.length === 2 ? roundedMins : "0" + roundedMins);
+            };
+
 }]);

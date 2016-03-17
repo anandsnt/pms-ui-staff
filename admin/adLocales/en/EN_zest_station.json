@@ -1,6 +1,4 @@
-
-
-"ZESTSTATION_TITLE" : "Zest Station Settings",
+"ZESTSTATION_TITLE":"Zest Station Settings",
 "ZESTSTATION_TITLE_CHECKIN":"Zest Station Check In",
 "ZESTSTATION_TITLE_CHECKOUT":"Zest Station Check Out",
 "ZESTSTATION_COLORS_AND_GRAPHICS":"Colors And Graphics",
@@ -30,9 +28,10 @@
 "STATION_LANGUAGE_SPANISH":"Español",
 "STATION_LANGUAGE_GERMAN":"Deutsch",
 "STATION_LANGUAGE_ITALIAN":"Italiano",
-
-
-
+"STATION_LANGUAGE_CASTELLONA":"Castellano",
+"ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
+"BOOKING_URL":"Booking Engine URL",
+"BUTTON_LABEL":"Button Label",
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
@@ -44,17 +43,21 @@
 "QR_SCANNER":"QR Scanner",
 "PUK_AUTH":"Authentication",
 "REG_CARD_DELIVERY":"Registration card delivery options",
-
-
-
+"SECOND_AUTHENTICATION":"Second Authentication",
+"DEPARTURE_DATE":"Departure Date",
+"EMAIL":"Email",
+"CONFIRMATION":"Confirmation",
+"AUTH_NO_OF_NIGHTS":"Number of Nights",
 
 "NO_AVAIL_ROOM_MSG":"No Available Rooms Message",
 "KEY_PRINT_SUCCESS_MSG":"Key and Print Success Message",
 "KEY_SUCCESS_PRINT_FAIL_MSG":"Key Success / Print Fail Message",
 "KEY_FAIL_PRINT_SUCCESS":"Key Fail / Print Success Message",
 "KEY_AND_PRINT_FAIL_MSG":"Keys and Print Fail Message",
-"CHECKIN_WAIT_MSG":"Check In Wait Message"
-
+"CHECKIN_WAIT_MSG":"Check In Wait Message",
+"COLLECT_USER_NATIONALITY":"Collect Guest Nationality",
+"QR_FAIL_OVER":"QR Failover",
+"KEY_CARD_LOOK_UP":"Keycard Lookup"
 
 
 
