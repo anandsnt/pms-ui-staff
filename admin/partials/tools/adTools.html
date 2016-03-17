@@ -3,7 +3,7 @@
     <div data-view="HotelDepartmentsView" class="inline-edit">
         <header class="content-title float">
             <h2 translate> Tools </h2>
-            <span class="count"> ({{sync_inventories.length}}) </span>
+            <span class="count"> ({{auto_sync_inventories.length}}) </span>
             <a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
 
         </header>
@@ -13,7 +13,7 @@
             <div id="new-form-holder"></div>
             <table id="brands" class="grid">
                 <tbody>
-                    <tr ng-repeat="tool in sync_inventories" ng-class="{'edit-data': currentClickedElement == $index}">
+                    <tr ng-repeat="tool in auto_sync_inventories" ng-class="{'edit-data': currentClickedElement == $index}">
                         <td ng-click="editTools($index,tool.id)" ng-hide="currentClickedElement == $index" >
                             <a data-item="3" data-colspan="2" class="edit-data-inline">{{tool.hotel_code}} </a>
                         </td>
