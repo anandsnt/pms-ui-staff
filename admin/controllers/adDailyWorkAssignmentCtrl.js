@@ -428,10 +428,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.updateIndividualTimes = function() {
 			_.each($scope.roomTypesList, function(room) {
-				if ($scope.eachTaskList.rooms_task_completion[room.id].hours === '' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '00') {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].hours === '' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '00' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '0') {
 					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;
 				}
-				if ($scope.eachTaskList.rooms_task_completion[room.id].mins === '' || $scope.eachTaskList.rooms_task_completion[room.id].mins === '00') {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].mins === '' || $scope.eachTaskList.rooms_task_completion[room.id].mins === '00' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '0') {
 					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
 				}
 			});
