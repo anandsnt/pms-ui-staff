@@ -1719,7 +1719,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
 				// $scope.reportGroupedBy = response.group_by || '';
 
-				console.log( $scope.reportGroupedBy );
+				console.log( $scope.results );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;
