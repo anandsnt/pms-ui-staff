@@ -46,7 +46,6 @@ admin.controller('ADToolsCtrl',
     */
     $scope.addNew = function()  {
         $scope.toolsData={};
-        $scope.toolsData.is_auto_sync = false;
         $scope.currentClickedElement = "new";
         $scope.isAddMode = true;
         $timeout(function() {

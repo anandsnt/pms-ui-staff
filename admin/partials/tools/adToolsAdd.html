@@ -6,25 +6,17 @@
                     <h3 translate><span></span> ADD </h3>
                     <em class="status" > {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
                 </div>
+                
                 <fieldset class="holder left float">
 
 
                     <div class="entry full-width">
-                        <label> {{'AVAILABILITY_AUTO_SYNC' | translate}}</label>
-                        <div class="switch-button single" ng-class="{ on : toolsData.is_auto_sync}" ng-click="toolsData.is_auto_sync = !toolsData.is_auto_sync">
-                            <input type="checkbox" value="{{toolsData.is_auto_sync}}" >
-                            <span class="switch-icon"></span>
-                        </div>
-                        <ad-textbox inputtype="text" value="toolsData.hotel_code"
-                    label = "{{'HOTEL_CODE' | translate}}" placeholder = "{{'HOTEL_CODE' | translate}}"
-                    styleclass="full-width" required="yes"></ad-textbox>
+                        <ad-textbox inputtype="text" value="toolsData.hotel_code" label = "{{'HOTEL_CODE' | translate}}" placeholder = "{{'HOTEL_CODE' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
                         <label> {{'EMAILS_SEPERATED_BY' | translate}}</label>
                         <textarea class="full-width" id="terms_and_conditions" type="" ng-model="toolsData.emails"></textarea>
                     </div>
-
-
-
                 </fieldset>
+
                 <div class="actions float">
                     <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()" translate>
                         CANCEL
