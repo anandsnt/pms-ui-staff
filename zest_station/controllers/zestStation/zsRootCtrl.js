@@ -927,7 +927,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
-        $scope.socketOperator = new keyLookUpOperations();
+        $scope.socketOperator = new webSocketOperations();
         $scope.zestStationData.keyCardInserted =  false;
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
         $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;

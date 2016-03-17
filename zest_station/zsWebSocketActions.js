@@ -1,4 +1,4 @@
-this.keyLookUpOperations = function() {
+this.webSocketOperations = function() {
     var that = this;
     var wsConfig = {
         "swipeService": "wss://localhost:4649/CCSwipeService",
