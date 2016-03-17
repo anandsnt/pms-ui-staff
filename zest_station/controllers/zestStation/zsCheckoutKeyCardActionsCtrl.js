@@ -6,11 +6,12 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	'$stateParams',
 	'$sce', 'zsTabletSrv',
 	'zsCheckoutSrv',
-	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv,zsCheckoutSrv) {
+	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv, zsCheckoutSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+		$scope.reservationSearchFailed = false;
 		sntZestStation.filter('unsafe', function($sce) {
 			return function(val) {
 				return $sce.trustAsHtml(val);
@@ -29,78 +30,94 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			$scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
 		};
 
-		var findReservationSuccess = function(data) {
-			if(data.reservation_id === null){
-				$scope.socketOperator.EjectKeyCard();
-			}
-			console.log(data);
-			//to delete
-			// var data = {
-			// 	"reservation_id": 1339907,
-			// 	"email": "resheil@stayntouch.com",
-			// 	"guest_detail_id": 473901,
-			// 	"has_cc": false,
-			// 	"first_name": "Resheil",
-			// 	"last_name": "M555",
-			// 	"days_of_stay": 121,
-			// 	"is_checked_out": false
-			// };
-			//to delete
-			// $scope.zestStationData.reservationData = data;
-			// $state.go('zest_station.review_bill');
+		
+		/** 
+		* reservation search failed actions starts here
+		* */
+		$scope.retrySearch =  function(){
+			$scope.reservationSearchFailed = false;
+			$scope.socketOperator.InsertKeyCard();
 		};
 
-		var ejectCard = function(){
-			console.log("failed")
+		$scope.talkToStaff = function(){
+			$state.go('zest_station.talk_to_staff');
+		};
+
+		$scope.searchByName = function(){
+			$state.lastAt = 'home';
+			$state.isPickupKeys = false;
+			$state.mode = zsModeConstants.CHECKOUT_MODE;
+			$state.go('zest_station.reservation_search', {
+				mode: zsModeConstants.CHECKOUT_MODE
+			});
+		};
+		// reservation search failed actions ends here
+	
+		var findReservationSuccess = function(data) {
+			if (data.reservation_id === null) {
+				$scope.socketOperator.EjectKeyCard();
+			} else {
+				$scope.zestStationData.reservationData = data;
+				$state.go('zest_station.review_bill');
+			}
+		};
+
+		var ejectCard = function() {
+			console.log("card ejection failed")
 			$scope.socketOperator.EjectKeyCard();
 		};
 
-		var findReservationFailed = function(){
+		var goToRetryPage = function(){
+			$scope.reservationSearchFailed = true;
+		};
+
+		var findReservationFailed = function() {
 			ejectCard();
-			//handle retry / continue by name / see staff
+			goToRetryPage();
 		};
-		var findReservation = function(uid)
-		{
-			 var options = {
-                    params            : {'uid':uid},
-                    successCallBack   : findReservationSuccess,
-                    failureCallBack   : findReservationFailed
-            };
-            $scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
+		var findReservation = function(uid) {
+			var options = {
+				params: {
+					'uid': uid
+				},
+				successCallBack: findReservationSuccess,
+				failureCallBack: findReservationFailed
+			};
+			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
-		
+
 
 
 		var actionSuccesCallback = function(response) {
-			console.log(response.UID);
 
-                var cmd = response.Command,
-                    msg = response.Message;
-			console.log(cmd);
-			console.log(msg);
+
+			var cmd = response.Command,
+				msg = response.Message;
+
+			// to delete after QA pass
+			console.info("uid="+response.UID);
+			console.info(cmd);
+			console.info(msg);
 
 			if (response.Command === 'cmd_insert_key_card') {
 				$scope.zestStationData.keyCardInserted = true;
-				(typeof response.UID !== "undefined" && response.UID !== null) ? findReservation(response.UID):findReservationFailed() ;
-			}
-			else if(response.Command === 'cmd_eject_key_card'){
-				console.log(response);
-				if(response.ResponseCode === 19){
+				(typeof response.UID !== "undefined" && response.UID !== null) ? findReservation(response.UID): findReservationFailed();
+			} else if (response.Command === 'cmd_eject_key_card') {
+				if (response.ResponseCode === 19) {
 					// key ejection failed
 					$state.go('zest_station.error_page');
 				}
 			};
 		};
-		var socketOpenedFailureCallback = function(){
-			console.log("failed");
-			$scope.socketOperator.InsertKeyCard();
-		}
+		var socketOpenedFailureCallback = function() {
+			ejectCard();
+			goToRetryPage();
+		};
 		var socketOpenedSuccessCallback = function() {
-			console.log("opened");
 			$scope.socketOperator.InsertKeyCard();
 		};
 
-		$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback,socketOpenedFailureCallback, actionSuccesCallback);
+		$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
 
 	}
 ]);

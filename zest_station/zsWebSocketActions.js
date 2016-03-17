@@ -31,9 +31,14 @@ this.keyLookUpOperations = function() {
     this.InsertKeyCard = function() { //use key for checkout takes key in
         ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
-    this.connect = function(socketOpenedSuccessCallback,socketOpenedFailureCallback,actionSuccesCallback) {
-        console.log("connect");
-        ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+    this.connect = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
+        try {
+            ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+        } catch (e) {
+            console.log(e)
+            socketOpenedFailureCallback();
+        }
+
         //Triggers when websocket connection is established.
         ws.onopen = function() {
             console.info(wsConfig['connected_alert']);
@@ -57,11 +62,11 @@ this.keyLookUpOperations = function() {
         return ws;
     };
 
-    this.connectWebSocket = function(socketOpenedSuccessCallback,socketOpenedFailureCallback, actionSuccesCallback) {
+    this.connectWebSocket = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
         console.info('--> Connecting WebSocket...');
         setTimeout(function() {
                 console.info('[:: Connecting ... .. .  ::]');
-                that.connect(socketOpenedSuccessCallback,socketOpenedFailureCallback, actionSuccesCallback);
+                that.connect(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
             },
             wsConfig['connect_delay']);
     };

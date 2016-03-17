@@ -245,7 +245,9 @@
     "USE_KEY_CARD":"Use Keycard",
     "ENTER_NAME":"Enter Name",
     "INSERT_KEY_CARD_FOR_CHECKOUT":"Please insert your key card in the \"Check-Out Key\" slot below",
-    "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the \"Extra Keys\" slot"
+    "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the \"Extra Keys\" slot",
+    "KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING":"Sorry",
+    "KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT": "The keycard lookup has failed"
  
 
 }
