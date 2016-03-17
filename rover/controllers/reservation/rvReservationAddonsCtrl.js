@@ -43,7 +43,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             company_id: $scope.reservationData.company.id,
                             travel_agent_id: $scope.reservationData.travelAgent.id,
                             fromState: 'rover.reservation.staycard.mainCard.addons',
-                            group_id: $scope.reservationData.group.id
+                            group_id: $scope.reservationData.group.id,
+                            room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                            adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                            children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
+
                         }
                     };
                 }
@@ -85,9 +89,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     var saveData = {
                         reservationId: $scope.reservationData.reservationId,
                         room_types: [{
-                            id: $scope.reservationData.rooms[0].roomTypeId ,
+                            id: $scope.reservationData.rooms[0].roomTypeId,
                             num_rooms: 1,
-                            addons: _.filter($scope.addonsData.existingAddons,function(addon){return !addon.is_rate_addon})
+                            addons: _.filter($scope.addonsData.existingAddons, function(addon) {
+                                return !addon.is_rate_addon
+                            })
                         }]
                     }
 
@@ -172,7 +178,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     var currentRate = parseInt($scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId, 10);
                     _.each(data.results, function(item) {
                         if (!!item) {
-                            if(!item.allow_rate_exclusion || (item.allow_rate_exclusion && _.indexOf(item.excluded_rate_ids, currentRate) < 0)){
+                            if (!item.allow_rate_exclusion || (item.allow_rate_exclusion && _.indexOf(item.excluded_rate_ids, currentRate) < 0)) {
                                 $scope.addons.push(RVReservationPackageSrv.parseAddonItem(item));
                             }
                         }
@@ -220,7 +226,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     'is_active': true,
                     'is_not_rate_only': true,
                     'rate_id': $scope.reservationData.rooms[$scope.roomDetails.firstIndex].rateId,
-                    'no_pagination' : true //Added for CICO-25066
+                    'no_pagination': true //Added for CICO-25066
                 }, successCallBackFetchAddons);
             },
             insertAddon = function(addon, addonQty) {
@@ -259,7 +265,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         amount_type: addon.amountType.description,
                         post_type: addon.postType.description,
                         charge_full_weeks_only: addon.chargefullweeksonly,
-                        posting_frequency : addon.postType.frequency
+                        posting_frequency: addon.postType.frequency
                     });
                     $scope.existingAddonsLength = $scope.addonsData.existingAddons.length;
 
@@ -275,8 +281,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amountType: addon.amountType,
                             postType: addon.postType,
                             taxDetail: addon.taxes,
-                            chargefullweeksonly:addon.chargefullweeksonly,
-                            is_rate_addon : addon.is_rate_addon
+                            chargefullweeksonly: addon.chargefullweeksonly,
+                            is_rate_addon: addon.is_rate_addon
                         });
                     }
                 }
@@ -334,7 +340,10 @@ sntRover.controller('RVReservationAddonsCtrl', [
                     company_id: null,
                     travel_agent_id: null,
                     fromState: 'rover.reservation.staycard.mainCard.addons',
-                    group_id: $scope.reservationData.group.id
+                    group_id: $scope.reservationData.group.id,
+                    room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                    adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                    children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
                 });
             }
         };
@@ -440,7 +449,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                 var paramDict = {
                     'addon_id': addon.id,
                     'from_date': $scope.reservationData.arrivalDate,
-                    'to_date':  $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
+                    'to_date': $filter('date')(adjustedQueryEndDate, 'yyyy-MM-dd'),
                 }
                 $scope.invokeApi(RVReservationAddonsSrv.checkInventory, paramDict, successCallBackInventoryCheck);
             }
@@ -514,7 +523,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             amount_type: item.amount_type.value,
                             post_type: item.post_type.value,
                             is_inclusive: item.is_inclusive,
-                            is_rate_addon : item.is_rate_addon
+                            is_rate_addon: item.is_rate_addon
                         };
 
                         $scope.addonsData.existingAddons.push(addonsData);
@@ -572,13 +581,13 @@ sntRover.controller('RVReservationAddonsCtrl', [
         };
 
         //Get addon count
-        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
-           if(!postingRythm) {
-                if(postType ==='Every Week' || postType ==='WEEKLY') {
+        $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
+            if (!postingRythm) {
+                if (postType === 'Every Week' || postType === 'WEEKLY') {
                     postingRythm = 7;
-                } else if (postType === 'Entire Stay' ||  postType ==='STAY') {
+                } else if (postType === 'Entire Stay' || postType === 'STAY') {
                     postingRythm = 1;
-                } else if (postType === 'First Night' || postType ==='NIGHT') {
+                } else if (postType === 'First Night' || postType === 'NIGHT') {
                     postingRythm = 0;
                 }
             }

@@ -41,7 +41,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80,
 			guestOptionsIsEditable: false,
 			exhaustedAddons: [],
-			showLessRooms: true,
+			showLessRooms: !$stateParams.room_type_id,
 			maxRoomsToShow: 0,
 			selectedRoomType: -1,
 			addonLookUp: {}
@@ -197,13 +197,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 
 				$scope.invokeApi(RVRoomRatesSrv.fetchRoomTypeADRs, payLoad, function(response) {
-					if(append){
-						$scope.stateCheck.baseInfo.roomTypes = $scope.stateCheck.baseInfo.roomTypes.concat(response.results);	
-					}else{
-						$scope.stateCheck.baseInfo.totalCount = response.total_count;	
+					if (append) {
+						$scope.stateCheck.baseInfo.roomTypes = $scope.stateCheck.baseInfo.roomTypes.concat(response.results);
+					} else {
+						$scope.stateCheck.baseInfo.totalCount = response.total_count;
 						$scope.stateCheck.baseInfo.roomTypes = response.results;
 					}
-					
+
 					$scope.stateCheck.addonLookUp = RVReservationStateService.getAddonAmounts(rateAddons,
 						ARRIVAL_DATE,
 						DEPARTURE_DATE,
@@ -304,6 +304,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.display.roomFirstGrid = [];
 				$scope.stateCheck.lookUp = {};
 
+				if (!$scope.stateCheck.preferredType) {
+					$scope.stateCheck.selectedRoomType = -1;
+				}
+
 				var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 				_.each($scope.stateCheck.baseInfo.roomTypes, function(roomType) {
 					var roomTypeInfo = {
@@ -317,7 +321,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							id: roomType.rate_id,
 							adr: roomType.adr,
 							dates: datesInitial,
-							hasRestrictions: roomType.first_restriction !== null
+							hasRestrictions: roomType.first_restriction !== null,
+							totalAmount: 0.0,
+							isSuppressed: !!$scope.reservationData.ratesMeta[roomType.rate_id].is_suppress_rate_on,
+							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member,
+							restriction: roomType.first_restriction,
+							forRoomType: roomType.id
 						},
 						rates = {};
 
@@ -721,7 +730,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if (!$scope.stateCheck.showLessRooms && this.y === this.maxScrollY) {
 							if ($scope.stateCheck.baseInfo.totalCount > $scope.display.roomFirstGrid.length) {
 								$scope.stateCheck.pagination.roomType.page++;
-								fetchRoomTypesList(true);// The param tells the method to append the response to the existing list
+								fetchRoomTypesList(true); // The param tells the method to append the response to the existing list
 							}
 						}
 					});
@@ -1197,125 +1206,130 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- COMPUTE TAX AND DAY BREAKUP
-		$scope.viewRateBreakUp = function(rate, updateOnly) {
+		var computeDetails = function(rate, cb) {
+			RVSelectRoomRateSrv.houseAvailability = $scope.stateCheck.house;
+			RVSelectRoomRateSrv.isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
 
-			var toggle = function() {
-					rate.showDays = !rate.showDays;
-					$scope.refreshScroll();
-				},
-				computeDetails = function() {
-					RVSelectRoomRateSrv.houseAvailability = $scope.stateCheck.house;
-					RVSelectRoomRateSrv.isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id;
+			if ($scope.reservationData.code && //------------------------------------------------------------------- Place INVALID PROMO to be set IFF 
+				$scope.reservationData.code.id && //---------------------------------------------------------------- a) A promotion has been entered [AND]
+				!_.reduce($scope.stateCheck.promotionValidity, function(a, b) { //---------------------------------  b) The entered promo has expired [AND]
+					return a && b
+				}) &&
+				_.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) { //------  c) rate is linked to the promo
+				RVSelectRoomRateSrv.promotionValidity = $scope.stateCheck.promotionValidity;
+			} else {
+				RVSelectRoomRateSrv.promotionValidity = null; //---------------------------------------------------  ELSE set this as NULL
+			}
 
-					if ($scope.reservationData.code && //------------------------------------------------------------------- Place INVALID PROMO to be set IFF 
-						$scope.reservationData.code.id && //---------------------------------------------------------------- a) A promotion has been entered [AND]
-						!_.reduce($scope.stateCheck.promotionValidity, function(a, b) { //---------------------------------  b) The entered promo has expired [AND]
-							return a && b
-						}) &&
-						_.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) { //------  c) rate is linked to the promo
-						RVSelectRoomRateSrv.promotionValidity = $scope.stateCheck.promotionValidity;
-					} else {
-						RVSelectRoomRateSrv.promotionValidity = null; //---------------------------------------------------  ELSE set this as NULL
-					}
+			$scope.invokeApi(RVSelectRoomRateSrv.getRestrictions, {
+				from_date: ARRIVAL_DATE,
+				to_date: DEPARTURE_DATE,
+				rate_id: rate.id,
+				room_type_id: $scope.stateCheck.activeView === "RATE" ? rate.selectedRoom.id : rate.forRoomType,
+				adults: 1,
+				children: 0
+			}, function(restrictions) {
 
-					$scope.invokeApi(RVSelectRoomRateSrv.getRestrictions, {
-						from_date: ARRIVAL_DATE,
-						to_date: DEPARTURE_DATE,
-						rate_id: rate.id,
-						room_type_id: $scope.stateCheck.activeView === "RATE" ? rate.selectedRoom.id : rate.forRoomType,
-						adults: 1,
-						children: 0
-					}, function(restrictions) {
+				$scope.$emit('hideLoader');
 
-						$scope.$emit('hideLoader');
+				var datesArray = rate.dates;
 
-						var datesArray = rate.dates;
+				rate.total = 0.0;
+				if ($scope.stateCheck.activeView === "RATE") {
+					datesArray = rate.selectedRoom.dates;
+					rate.selectedRoom.total = 0.0;
+				}
 
-						rate.total = 0.0;
-						if ($scope.stateCheck.activeView === "RATE") {
-							datesArray = rate.selectedRoom.dates;
-							rate.selectedRoom.total = 0.0;
-						}
+				var stayTax = {
+					excl: {}
+				};
 
-						var stayTax = {
-							excl: {}
-						};
-
-						var updateStayTaxes = function(stayTaxDayInfo) {
-							_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
-								if (stayTax.excl[taxId] === undefined) {
-									stayTax.excl[taxId] = parseFloat(taxAmount);
-								} else {
-									stayTax.excl[taxId] = _.max([stayTax.excl[taxId], parseFloat(taxAmount)]);
-								}
-							});
-						};
-
-						_.each(datesArray, function(dayInfo, date) {
-
-							dayInfo.amount = restrictions.amounts[date];
-
-							var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
-									date,
-									rate.id,
-									ROOMS[$scope.activeRoom].stayDates[date].guests.adults,
-									ROOMS[$scope.activeRoom].stayDates[date].guests.children,
-									ARRIVAL_DATE,
-									DEPARTURE_DATE,
-									$scope.activeRoom,
-									$scope.reservationData.ratesMeta[rate.id].taxes,
-									dayInfo.amount),
-								dayTotal = dayInfo.amount + taxAddonInfo.addon + parseFloat(taxAddonInfo.tax.excl);
-
-							_.extend(dayInfo, {
-								addon: taxAddonInfo.addon,
-								inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
-								tax: taxAddonInfo.tax,
-								total: dayTotal,
-								restrictions: restrictions.dates[date]
-							});
-
-							updateStayTaxes(taxAddonInfo.stayTax);
-
-							if ($scope.stateCheck.activeView === "RATE") {
-								rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(dayTotal);
-							} else {
-								rate.total = parseFloat(rate.total) + parseFloat(dayTotal);
-							}
-						});
-
-						var totalStayTaxes = 0.0;
-						_.each(stayTax.excl, function(tax) {
-							totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
-						});
-
-
-						if ($scope.stateCheck.activeView === "RATE") {
-							rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(totalStayTaxes);
-							rate.selectedRoom.restrictions = restrictions.summary;
+				var updateStayTaxes = function(stayTaxDayInfo) {
+					_.each(stayTaxDayInfo.excl, function(taxAmount, taxId) {
+						if (stayTax.excl[taxId] === undefined) {
+							stayTax.excl[taxId] = parseFloat(taxAmount);
 						} else {
-							rate.total = parseFloat(rate.total) + parseFloat(totalStayTaxes);
-							rate.restrictions = restrictions.summary;
+							stayTax.excl[taxId] = _.max([stayTax.excl[taxId], parseFloat(taxAmount)]);
 						}
-
-						$scope.refreshScroll();
-
 					});
 				};
 
+				_.each(datesArray, function(dayInfo, date) {
+
+					dayInfo.amount = restrictions.amounts[date];
+
+					var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
+							date,
+							rate.id,
+							ROOMS[$scope.activeRoom].stayDates[date].guests.adults,
+							ROOMS[$scope.activeRoom].stayDates[date].guests.children,
+							ARRIVAL_DATE,
+							DEPARTURE_DATE,
+							$scope.activeRoom,
+							$scope.reservationData.ratesMeta[rate.id].taxes,
+							dayInfo.amount),
+						dayTotal = dayInfo.amount + taxAddonInfo.addon + parseFloat(taxAddonInfo.tax.excl);
+
+					_.extend(dayInfo, {
+						addon: taxAddonInfo.addon,
+						inclusiveAddonsExist: taxAddonInfo.inclusiveAddonsExist,
+						tax: taxAddonInfo.tax,
+						total: dayTotal,
+						restrictions: restrictions.dates[date]
+					});
+
+					updateStayTaxes(taxAddonInfo.stayTax);
+
+					if ($scope.stateCheck.activeView === "RATE") {
+						rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(dayTotal);
+					} else {
+						rate.total = parseFloat(rate.total) + parseFloat(dayTotal);
+					}
+				});
+
+				var totalStayTaxes = 0.0;
+				_.each(stayTax.excl, function(tax) {
+					totalStayTaxes = parseFloat(totalStayTaxes) + parseFloat(tax);
+				});
+
+
+				if ($scope.stateCheck.activeView === "RATE") {
+					rate.selectedRoom.total = parseFloat(rate.selectedRoom.total) + parseFloat(totalStayTaxes);
+					rate.selectedRoom.restrictions = restrictions.summary;
+				} else {
+					rate.total = parseFloat(rate.total) + parseFloat(totalStayTaxes);
+					rate.restrictions = restrictions.summary;
+				}
+
+				cb && cb();
+
+				$scope.refreshScroll();
+
+			});
+		};
+
+
+		$scope.viewRateBreakUp = function(rate, updateOnly) {
+
+			var toggle = function() {
+				rate.showDays = !rate.showDays;
+				$scope.refreshScroll();
+			};
+
 			if (updateOnly) {
-				computeDetails();
+				computeDetails(rate);
 				return;
 			}
+
 			if (!rate.showDays && $scope.stateCheck.taxInfo === null) {
 				fetchTaxRateAddonMeta(function() {
-					computeDetails();
+					computeDetails(rate);
 					$timeout(toggle, 300);
 				});
 			} else {
 				if (!rate.showDays) {
 					// TODO: Do this IFF this hasn't been done before
-					computeDetails();
+					computeDetails(rate);
 				}
 				$timeout(toggle, 300);
 			}
@@ -1390,7 +1404,17 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			// Load Meta Data on the first call to this method if it hasn't been loaded yet
 			if ($scope.stateCheck.taxInfo === null) {
 				fetchTaxRateAddonMeta(function() {
-					$scope.handleBooking(roomId, rateId, event, flags)
+					var roomType = _.find($scope.display.roomFirstGrid, {
+							id: roomId
+						}),
+						rate = _.find(roomType.ratesArray, {
+							id: rateId
+						});
+
+					computeDetails(rate, function() {
+						$scope.handleBooking(roomId, rateId, event, flags);
+					});
+
 				});
 			} else {
 
@@ -1594,7 +1618,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.showAllRooms = function() {
 			$scope.stateCheck.showLessRooms = false;
 			$scope.refreshScroll();
-			$scope.display.roomFirstGrid = [];
 			$scope.stateCheck.pagination.roomType.page = 1;
 			fetchRoomTypesList();
 		};
