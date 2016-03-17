@@ -3,7 +3,6 @@ let convertDateDataForRateViewHeader = (dates) => {
 		copiedDate = null,
 		copiedDateComponents = null,
 		day = null,
-		totalWeekIndexes = 6,
 		isWeekEnd = false,
 		isPastDate = false,
 		headerConditionalClass = '',
@@ -14,7 +13,7 @@ let convertDateDataForRateViewHeader = (dates) => {
 		copiedDateComponents = copiedDate.toComponents().date; //refer util.js in diary folder
 		
 		day = copiedDateComponents.day.toString();
-		isWeekEnd = ((totalWeekIndexes - copiedDate.getDay()) <= 1);
+		isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0 );
 		isPastDate = false; //TODO: change with by comparing business date
 
 		headerConditionalClass = isWeekEnd ? 'weekend_day' : '';

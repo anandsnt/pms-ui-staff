@@ -1,7 +1,7 @@
-const rateManagerListReducer = (state = [], action) => {
+const rateManagerListReducer = (state, action) => {
   switch (action.type) {
     case 'RATE_VIEW_CHANGED':
-    	return rateManagerRateListReducer(state, action);
+    	return rateManagerRateListReducer(state, action)
   	default:
   		return state;    	
   }	

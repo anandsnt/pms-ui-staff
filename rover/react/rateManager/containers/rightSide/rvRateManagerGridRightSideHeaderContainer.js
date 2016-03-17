@@ -6,5 +6,16 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
   };
 };
 
+const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (dispatch) => {
+  return {
+  	refreshScrollers: () => {
+        dispatch({
+            type: 'REFRESH_SCROLLERS'
+        });
+    }     
+  }
+};
+
 const RateManagerGridRightSideHeaderContainer = 
-	connect(mapStateToRateManagerGridRightSideHeaderContainerProps)(RateManagerGridRightSideHeaderComponent);
+	connect(mapStateToRateManagerGridRightSideHeaderContainerProps, mapDispatchToRateManagerGridRightSideHeaderContainerProps)
+	(RateManagerGridRightSideHeaderComponent);

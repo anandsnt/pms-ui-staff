@@ -1,19 +1,16 @@
-const { Component, createClass } = React
+const { createClass } = React
 
 const RateManagerGridViewRootComponent = createClass ({
 	componentDidMount() {
 		this.commonIScrollOptions = {
-				probeType: 2,
-				scrollbars: false,
-				interactiveScrollbars: true,
-				scrollX: false,
-				scrollY: true,
-				bounce: false,
-				momentum: false,
-				preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
-				mouseWheel: true,
-				useTransition: true
-			};
+			probeType: 2,
+			scrollbars: false,
+			scrollX: false,
+			scrollY: true,
+			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
+			mouseWheel: true,
+			useTransition: true
+		};
 
 		this.leftScrollableElement = this.rightScrollableElement = null;
 		this.leftScroller = this.rightScroller = null;
@@ -49,8 +46,13 @@ const RateManagerGridViewRootComponent = createClass ({
 	},
 
 	refreshScrollers() {
-		this.rightScroller.refresh();
-		this.leftScroller.refresh();
+		var rightScroller = this.rightScroller,
+			leftScroller = this.leftScroller;
+		setTimeout(() => {
+			rightScroller.refresh();
+			leftScroller.refresh();
+		}, 0);	
+
 	},
 
 	componentDidUpdate() {
@@ -59,7 +61,6 @@ const RateManagerGridViewRootComponent = createClass ({
 	},
 
 	render() {
-
 		if(!this.props.shouldShow) {
 			return false;
 		}
@@ -74,10 +75,6 @@ const RateManagerGridViewRootComponent = createClass ({
 	}
 });
 
-
-// const RateManagerGridViewRootComponent = ({ zoomLevel }) => (
-
-// );
 
 const { PropTypes } = React;
 

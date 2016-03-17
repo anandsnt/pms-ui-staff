@@ -3,7 +3,6 @@ const rateManagerModeReducer = (state, action) => {
     case 'RATE_VIEW_CHANGED':
      	return 'RATE_VIEW';
   	default:
-  		return 'NOT_CONFIGURED';
-  }	
-	
+  		return state;
+  }
 }

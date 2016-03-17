@@ -3,6 +3,6 @@ const rateManagerZoomLevelReducer = (state, action) => {
     case 'RATE_VIEW_CHANGED':
      	return action.zoomLevel;
   	default:
-  		return '3';
+  		return state;
   }
 }
