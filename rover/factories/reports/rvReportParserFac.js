@@ -10,8 +10,6 @@ sntRover.factory('RVReportParserFac', [
 
             if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
-
-                // return _.isEmpty(apiResponse) ? apiResponse : $_preParseFinTransAdjustReport( reportName, apiResponse, options );
             }
 
             if ( reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
@@ -51,9 +49,9 @@ sntRover.factory('RVReportParserFac', [
             }
 
             // otherwise a super parser for reports that can be grouped by
-            else if ( !!options['groupedByKey'] ) {
-                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
-            }
+            // else if ( !!options['groupedByKey'] ) {
+            //     return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
+            // }
 
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
@@ -375,18 +373,6 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_isForGenericReports( name ) {
-            return ( name === reportNames['ARRIVAL'] ||
-                    name === reportNames['IN_HOUSE_GUEST'] ||
-                    name === reportNames['CANCELLATION_NO_SHOW'] ||
-                    name === reportNames['DEPARTURE'] ||
-                    name === reportNames['LOGIN_AND_OUT_ACTIVITY'] ||
-                    name === reportNames['RESERVATIONS_BY_USER'] ) ? true : false;
-        };
-
-
-
-
 
 
         function $_parseDataToInfo ( reportName, apiResponse, options ) {
@@ -437,7 +423,20 @@ sntRover.factory('RVReportParserFac', [
                 return check;
             };
 
-            if ( $_isForGenericReports(reportName) ) {
+            var isForGenericReports = function(name) {
+                var hash = {
+                    ARRIVAL: true,
+                    IN_HOUSE_GUEST: true,
+                    CANCELLATION_NO_SHOW: true,
+                    DEPARTURE: true,
+                    LOGIN_AND_OUT_ACTIVITY: true,
+                    RESERVATIONS_BY_USER: true
+                }
+
+                return hash[name] ? true : false;
+            };
+
+            if ( isForGenericReports(reportName) ) {
                 for (i = 0, j = apiResponse.length; i < j; i++) {
                     makeCopy   = angular.copy( apiResponse[i] );
                     customData = [];
@@ -537,11 +536,8 @@ sntRover.factory('RVReportParserFac', [
                         returnAry.push( customData[m] );
                     };
                 };
-
-                // dont remove yet
             } else {
                 returnAry = apiResponse;
-                // dont remove yet
             };
 
             return returnAry;

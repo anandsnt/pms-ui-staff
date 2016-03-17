@@ -19,7 +19,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
-			results          = mainCtrlScope.results,
+			results          = [],
 			addonGrpHash = {},
 			addonHash    = {},
 			addonGroups,
@@ -169,10 +169,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			var success = function (data) {
 				$scope.$emit( 'hideLoader' );
 				eachDate.reservations = data;
+				refreshScroll();
  			};
 
  			var error = function (data) {
 				$scope.$emit( 'hideLoader' );
+				refreshScroll();
  			};
 
  			_.extend(params, {
@@ -200,6 +202,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		function setup () {
  			addonGroups  = mainCtrlScope.addonGroups || $scope.chosenReport.hasAddonGroups.data;
  			addons       = mainCtrlScope.addons ||  $scope.chosenReport.hasAddons.data;
+ 			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
 
