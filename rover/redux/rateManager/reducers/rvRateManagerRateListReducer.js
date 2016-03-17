@@ -1,5 +1,3 @@
-
-
 let convertRatesData = (rates) => {
 	return rates.map( (rate) => {
 		rate.greyedOut = rate.based_on_rate_id;
@@ -15,7 +13,7 @@ let convertRatesData = (rates) => {
 
 const rateManagerRateListReducer = (state, action) => {
   switch (action.type) {
-    case 'RATE_VIEW_CHANGED':
+    case RM_RX_CONST.RATE_VIEW_CHANGED:
      	return convertRatesData(action.data);
   	default:
   		return state;

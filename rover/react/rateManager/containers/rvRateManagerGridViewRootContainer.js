@@ -2,9 +2,9 @@ const {connect} = ReactRedux;
 
 const mapStateToRateManagerGridViewRootComponentProps = (state) => {
   return {
-    shouldShow: (state.mode !== 'NOT_CONFIGURED'),
+    shouldShow: (state.mode !== RM_RX_CONST.NOT_CONFIGURED_MODE),
     zoomLevel: state.zoomLevel,
-    refreshScroller: state.action === 'REFRESH_SCROLLERS'
+    refreshScroller: (state.action === RM_RX_CONST.REFRESH_SCROLLERS)
   }
 };
 

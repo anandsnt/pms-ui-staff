@@ -11,22 +11,22 @@ const RateManagerRestrictionTypes = {
 		description: 'Closed',
 		defaultText: ''
 	},
-	'CLOSED_TO_ARRIVAL': {
+	'CLOSED_ARRIVAL': {
 		className: 'restriction-icon bg-red icon-block',
 		description: 'Closed to Arrival',
 		defaultText: ''
 	},
-	'CLOSED_TO_DEPARTURE': {
+	'CLOSED_DEPARTURE': {
 		className: 'restriction-icon bg-red icon-cross',
 		description: 'Closed to Departure',
 		defaultText: ''
 	},
-	'MIN_LENGTH_OF_STAY': {
+	'MIN_STAY_LENGTH': {
 		className: 'restriction-icon bg-blue',
 		description: 'Min Length of Stay',
 		defaultText: ''
 	},
-	'MAX_LENGTH_OF_STAY': {
+	'MAX_STAY_LENGTH': {
 		className: 'restriction-icon',
 		description: 'Max Length of Stay',
 		defaultText: ''
@@ -36,12 +36,12 @@ const RateManagerRestrictionTypes = {
 		description: 'Min Stay Through',
 		defaultText: ''
 	},
-	'MIN_ADVANCE_BOOKING': {
+	'MIN_ADV_BOOKING': {
 		className: 'restriction-icon bg-green',
 		description: 'Min Advance Booking',
 		defaultText: ''
 	},
-	'MAX_ADVANCE_BOOKING': {
+	'MAX_ADV_BOOKING': {
 		className: 'restriction-icon',
 		description: 'Max Advance Booking',
 		defaultText: ''

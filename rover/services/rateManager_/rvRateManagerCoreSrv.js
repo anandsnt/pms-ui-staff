@@ -28,6 +28,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         var service = this;
 
+        this.activeRates = null;
+
         service.fetchMultipleRateInfo = function (params) {
             var url = '/api/daily_rates/';
             var deferred = $q.defer();
@@ -72,7 +74,18 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };        
 
-        service.fetchRatesAndDailyRates = function (params) {
+        service.fetchRestrictionTypes = function() {
+            var url = '/api/restriction_types';
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data.results);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchRatesAndDailyRates = function (params, ) {
             var promises = [],
                 rates = [],
                 dailyRateAndRestrictions = [],

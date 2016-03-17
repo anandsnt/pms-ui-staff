@@ -37,7 +37,7 @@ let convertDateDataForRateViewHeader = (dates, businessDate) => {
 
 const rateManagerRateDatesReducer= (state = [], action) => {
   switch (action.type) {
-    case 'RATE_VIEW_CHANGED':
+    case RM_RX_CONST.RATE_VIEW_CHANGED:
     	return convertDateDataForRateViewHeader(action.dates, action.businessDate);
   	default:
   		return state;    	

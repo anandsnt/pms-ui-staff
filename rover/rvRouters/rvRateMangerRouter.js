@@ -13,6 +13,9 @@ angular.module('rateManagerModule', [])
           },
           rateMgrAssets: function(jsMappings, reduxAssets) {
             return jsMappings.fetchAssets(['rover.newRateManager']);
+          },
+          restrictionTypes: function(rateMgrAssets, rvRateManagerCoreSrv) {
+            return rvRateManagerCoreSrv.fetchRestrictionTypes();
           }
         }
       });

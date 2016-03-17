@@ -4,11 +4,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     '$rootScope',
     'rvRateManagerCoreSrv',
     'rvRateManagerEventConstants',
+    'restrictionTypes',
     function($scope,
              $filter,
              $rootScope,
              rvRateManagerCoreSrv,
-             rvRateManagerEventConstants) {
+             rvRateManagerEventConstants,
+             restrictionTypes) {
 
       BaseCtrl.call(this, $scope);
 
@@ -72,11 +74,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
 
         store.dispatch({
-          type: 'RATE_VIEW_CHANGED',
+          type: RM_RX_CONST.RATE_VIEW_CHANGED,
           data: [...ratesWithRestrictions],
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
-          businessDate: tzIndependentDate($rootScope.businessDate)
+          businessDate: tzIndependentDate($rootScope.businessDate),
+          restrictionTypes
         });
       };
 
@@ -170,7 +173,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       });
 
       var initialState = {
-        mode: 'NOT_CONFIGURED'
+        mode: RM_RX_CONST.NOT_CONFIGURED_MODE
       };
       
       const store = configureStore(initialState)

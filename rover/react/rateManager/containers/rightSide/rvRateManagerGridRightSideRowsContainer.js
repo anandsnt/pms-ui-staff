@@ -10,7 +10,7 @@ const mapDispatchToRateManagerGridRightSideRowsContainerProps = (dispatch) => {
   return {
   	refreshScrollers: () => {
         dispatch({
-            type: 'REFRESH_SCROLLERS'
+            type: RM_RX_CONST.REFRESH_SCROLLERS
         });
     }     
   }

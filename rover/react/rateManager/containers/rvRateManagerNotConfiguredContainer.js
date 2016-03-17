@@ -2,7 +2,7 @@ const {connect} = ReactRedux;
 
 const mapStateToRateManagerNotConfiguredComponentProps = (state) => {
   return {
-    shouldShow: (state.mode === 'NOT_CONFIGURED')
+    shouldShow: (state.mode === RM_RX_CONST.NOT_CONFIGURED_MODE)
   }
 };
 

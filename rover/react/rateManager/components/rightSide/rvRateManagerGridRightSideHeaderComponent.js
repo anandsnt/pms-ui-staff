@@ -1,4 +1,5 @@
 const {createClass} = React
+const {findDOMNode} = ReactDOM
 
 const RateManagerGridRightSideHeaderComponent = createClass({
 

@@ -1,7 +1,7 @@
 const rateManagerActionReducer = (state, action) => {
   switch (action.type) {
-    case 'REFRESH_SCROLLERS':
-     	return 'REFRESH_SCROLLERS';
+    case RM_RX_CONST.REFRESH_SCROLLERS:
+     	return RM_RX_CONST.REFRESH_SCROLLERS;
   	default:
   		return '';
   }

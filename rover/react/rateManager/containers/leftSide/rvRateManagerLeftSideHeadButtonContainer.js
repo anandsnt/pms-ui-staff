@@ -1,30 +1,30 @@
 const {connect} = ReactRedux;
 
-const mapStateToRateManagerLeftSideHeadButtonContainerProps = (state) => {
+const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
   return {
-    openAllClass: 'green',
-    closeAllClass: 'red'
+    openAllClass: 'green', //TODO: check the logic from actula cntl and change
+    closeAllClass: 'red' //TODO: check the logic from actula cntl and change
   }
 };
 
-const mapDispatchToRateManagerLeftSideHeadButtonContainerProps = (dispatch) => {
+const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (dispatch) => {
   return {
         onOpenAllClick: (e) => {
         	e.preventDefault();
             dispatch({
-                type: 'CLICKED_ON_OPEN_ALL_BUTTON'
+                type: RM_RX_CONST.OPEN_ALL
             });
         },
         onCloseAllClick: (e) => {
         	e.preventDefault();
             dispatch({
-                type: 'CLICKED_ON_CLOSE_ALL_BUTTON'
+                type: RM_RX_CONST.CLOSE_ALL
             });
         }        
   }
 };
 
-const RateManagerLeftSideHeadButtonContainer = connect(
-  mapStateToRateManagerLeftSideHeadButtonContainerProps, 
-  mapDispatchToRateManagerLeftSideHeadButtonContainerProps
-)(RateManagerLeftSideHeadButtonComponent);
+const RateManagerGridLeftSideHeadButtonContainer = connect(
+  mapStateToRateManagerGridLeftSideHeadButtonContainerProps, 
+  mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps
+)(RateManagerGridLeftSideHeadButtonComponent);

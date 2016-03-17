@@ -1,4 +1,4 @@
-const RateManagerLeftSideHeadButtonComponent = ({ 
+const RateManagerGridLeftSideHeadButtonComponent = ({ 
 	openAllClass, 
 	closeAllClass, 
 	onOpenAllClick,
