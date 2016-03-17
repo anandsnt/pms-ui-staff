@@ -822,11 +822,27 @@ sntZestStation.controller('zsRootCtrl', [
             };
             
             
-            $scope.isFromChromeApp = function(){
-                console.log(chrome.app);
-                console.log(localStorage);
-                return true;
+            
+            $scope.setupChromeAppListener = function(){
+                // The ID of the extension we want to talk to.
+                var editorExtensionId = "pbnaoggobpaanmddgenkfnicmpfhpijd";
+                // Make a simple request:
+                chrome.runtime.sendMessage(editorExtensionId, {getTargetData: true},
+                  function(response) {
+                      console.info('response: ',response.targetData);
+                    if (targetInRange(response.targetData))
+                      chrome.runtime.sendMessage(editorExtensionId, {activateLasers: true});
+                  });
+
+                // Start a long-running conversation:
+                var port = chrome.runtime.connect(editorExtensionId);
+                port.postMessage("you in chrome?");
             };
+            
+            
+            
+            
+            
             $scope.getPromptTime = function(){
                 if ($scope.idle_max>$scope.idle_prompt){
                     return $scope.idle_max-$scope.idle_prompt;
