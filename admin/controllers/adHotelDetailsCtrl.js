@@ -22,6 +22,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	};
 	$scope.isHotelChainReadonly =  false;
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
+	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
 	//pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
@@ -101,6 +102,11 @@ admin.controller('ADHotelDetailsCtrl', [
 			if($scope.data.check_out_time.primetime === "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
 				$scope.data.check_out_time.primetime = "AM";
 				$scope.data.check_out_primetime = "AM";
+			}
+
+			//CICO-24330 -Make the chain non-editable once its saved
+			if(!!$scope.data.hotel_chain) {
+				$scope.isHotelChainReadonly = true;
 			}
 
 			setDropdownDefaults();

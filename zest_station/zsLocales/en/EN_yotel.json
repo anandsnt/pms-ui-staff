@@ -39,8 +39,9 @@
     "ERR_PAGE_SUB": "Please find a Staff Member to help you.",
     
     
-    
-    "NO_MATCH_HEADER": "Please reach out to a Staff Member.",
+    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+    "TERMS_CONDITIONS_ACCEPT":"I Agree",
+    "TERMS_CONDITIONS_CANCEL":"Cancel",
     
     
     
@@ -73,10 +74,25 @@
     "REGISTRATION_READY_HEADER": "Your registration is ready.",
     "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
     
+    
+    
+    "REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL": "",
+    "REGISTRATION_READY_PRINT_ROOM_NO": "YOUR CABIN NUMBER IS",
+    "REGISTRATION_READY_PRINT_DEPART_DATE": "Date of departure : ",
+    "REGISTRATION_READY_PRINT_STD_CHECKOUT": "Our standard check out is ",
+    "REGISTRATION_READY_PRINT_MSG_1": "YOTEL is 100% non-smoking. Including all of our public spaces. There is a fee of $250 if you choose to smoke. An expensive cigarette! ",
+    "REGISTRATION_READY_PRINT_MSG_2": "Complementary coffee and muffins on FOUR between 7am and 10am (10.30 weekends).  Complementary tea/coffee/water station on FOUR (24/7).",
+    "REGISTRATION_READY_PRINT_MSG_3": "Our concierge team on FOUR can assist you with many services including theater tickets, sightseeing tours, transportation to and from local airports, restaurant reservations, florists, and more.",
+    "REGISTRATION_READY_PRINT_FOOTER": "NOW TAKE THE ELEVATORS TO \"FOUR\"",
+    
+    
+    
+    
     "SWIPE_ERR_HEADER": "An Error Occurred",
     
     "EMAIL_SENT_MSG": "The e-mail has been delivered.",
     "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
+    "EMAIL_BILL_NOT_SENT_MSG": "A copy of your bill could not be delivered to your e-mail. Please see a staff member.",
     "DAY_NIGHTS": "Nights",
     "ADDTL_RESIDENTS": "Additional Guests",
     
@@ -145,7 +161,7 @@
    "BILL_DEP":"Deposits",
    "BILL_BAL":"Balance due",
    "BILL_QUEST":"Questions?",
-   "BILL_SUB_QUESTION":"Tap “X” and see a Staff Member.",
+   "BILL_SUB_QUESTION":"Tap “Cancel” and see a Staff Member.",
    "BILL_NEXT":"Next",
    "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
@@ -185,7 +201,7 @@
    "RES_SRCH_TALK":"Talk",
    "RES_NEXT":"Next",
    "RES_Q":"Questions?",
-   "RES_Q_SUB":"Tap “X” and see a Staff Member.",
+   "RES_Q_SUB":"Tap “Cancel” and see a Staff Member.",
    "RES_SRCH_TALK_SUB":"To a Staff Member ",
     
     
@@ -215,6 +231,9 @@
     
     "CHECK_IN_SELECT_HEADER": "Next, type in one of the following",
     "CHECK_IN_SELECT_DATE": "Departure Date",
+    "CHECK_IN_NO_OF_NIGHTS":"Number",
+    "CHECK_IN_NO_OF_NIGHTS_SUB":"of Nights",
+    "TYPE_NO_OF_NIGHTS":"Enter Number of Nights",
     "CHECK_IN_SELECT_EMAIL": "E-mail",
     "CHECK_IN_SELECT_EMAIL_SUB": "Used to make Reservation",
     "CHECK_IN_SELECT_CONF": "Confirmation",
@@ -235,7 +254,8 @@
     "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
     "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
     "ADMIN_WORKSTATION": "Work Station",
-    "ADMIN_STATION_PRINTER": "Select Printer"
+    "ADMIN_STATION_PRINTER": "Select Printer",
  
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
    
 }

@@ -282,7 +282,13 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "",
 		            menuIndex: "commisions"
 		        }]
-		    }, {
+            }, {
+                title: "MENU_ACTIONS_MANAGER",
+                action: "rover.actionsManager",
+                menuIndex: "actionManager",
+                iconClass: "icon-actions",
+                submenu: []
+            },{
 		        title: "MENU_REPORTS",
 		        action: "rover.reports",
 		        menuIndex: "reports",
@@ -290,35 +296,6 @@ angular.module('sntRover').service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
-
-                try {//wrapping in try catch to ensure nothing is affected should this fail
-                    var item,  isPmsDev = false;
-                    if (window && window.location && window.location.href){
-                        if (window.location.href.indexOf('pms-dev.stay') !== -1){
-                            isPmsDev = true;
-                        }
-                    }
-                    if (isPmsDev){
-                        if (typeof menuList === typeof []){
-                            for (var x in menuList){
-                                item = menuList[x];
-                                if (item.menuIndex === 'front_desk'){
-                                    console.info('showing actions mgr in dev only at this time, release in sprint 42');
-                                    if (typeof menuList[x].submenu === typeof []){
-                                        menuList[x].submenu.push({
-                                            title: "MENU_ACTIONS_MANAGER",
-                                            action: "rover.actionsManager",
-                                            menuIndex: "actionManager"
-                                        });
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (err){
-                    console.warn(err);
-                }
 
 		return processMenuList (menuList);
 	};

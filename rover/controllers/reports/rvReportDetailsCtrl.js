@@ -45,13 +45,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
 		// ref to parents for filter item toggles
-		$scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
-		$scope.toggleFilterItems = function(item) {
-			if ( item ) {
-				$scope.$parent.toggleFilterItems(item);
-			};
-			refreshSidebarScroll();
-		};
+		// $scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
+		// $scope.toggleFilterItems = function(item) {
+		// 	if ( item ) {
+		// 		$scope.$parent.toggleFilterItems(item);
+		// 	};
+		// 	refreshSidebarScroll();
+		// };
 
 
 		// common methods to do things after fetch report
@@ -177,6 +177,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isBalanceReport = true;
 					break;
 
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.hasPagination = false;
+					break;
+
 				default:
 					break;
 			};
@@ -293,6 +297,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
 					$scope.leftColSpan = 4;
 					$scope.rightColSpan = 6;
+					break;
+
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 5;
 					break;
 
 				default:
@@ -542,6 +551,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
 					break;
 
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportMain.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -621,6 +636,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// COMPANY_TA_TOP_PRODUCERS report row
 				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
 					template = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducersRow.html';
+					break;
+
+				// FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT report row
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					template = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportRow.html';
 					break;
 
 				// Default report row
@@ -746,7 +766,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		// refetch the report while sorting with..
 		// Note: we are resetting page to page #1
-		$scope.sortResultBy = function(sortBy) {
+		$scope.sortResultBy = function(sortBy, report) {
 			if ( !sortBy ) {
 				return;
 			};
@@ -764,7 +784,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 			});
 
 			// select sort_dir for clicked item
-			sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
+			// **
+			// $#@$@#$@# Super Creepy business logic forced to be here in UI :(
+			if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] && sortBy['value'] === 'ROOM_NIGHTS' ) {
+				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === true) ? false : true;
+			} else {
+				sortBy.sortDir = (sortBy.sortDir === undefined || sortBy.sortDir === false) ? true : false;
+			};
 
 			$scope.chosenReport.chosenSortBy = sortBy.value;
 
@@ -932,48 +958,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === false;
 		};
 
-		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
-			$_pageNo = 1;
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			findBackNames();
-			calPagination();
-			refreshScroll();
-		});
-
-		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			findBackNames();
-			calPagination();
-			refreshScroll();
-		});
-
-		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			calPagination();
-			refreshScroll();
-		});
-
-		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
-			$scope.errorMessage = [];
-			/**/
-			afterFetch();
-			findBackNames();
-			printReport();
-		});
-
-		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
-			$scope.errorMessage = $scope.$parent.errorMessage;
-			/**/
-			afterFetch();
-			calPagination();
-			refreshScroll();
-		});
 
 		/**
 	     * function to get reservation class against reservation status
@@ -1023,12 +1007,61 @@ sntRover.controller('RVReportDetailsCtrl', [
 	        return class_;
 	    };
 
+
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
+			$_pageNo = 1;
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			findBackNames();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			findBackNames();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function() {
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function() {
+			$scope.errorMessage = [];
+			/**/
+			afterFetch();
+			findBackNames();
+			printReport();
+		});
+
+		var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function() {
+			$scope.errorMessage = $scope.$parent.errorMessage;
+			/**/
+			afterFetch();
+			calPagination();
+			refreshScroll();
+		});
+
+		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
+			refreshSidebarScroll();
+		});
+
 		// removing event listners when scope is destroyed
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
+		$scope.$on( '$destroy', refreshSidebarScroll );
     }
 
 ]);

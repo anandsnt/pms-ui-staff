@@ -44,6 +44,10 @@
     "ERR_PAGE_SUB": "Please visit the Front Desk for assistance.",
     
     
+    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+    "TERMS_CONDITIONS_ACCEPT":"I Agree",
+    "TERMS_CONDITIONS_CANCEL":"Cancel",
+    
         "QR_LOOKUP_HEADER": "To Pick Up Your Keys...",
         "QR_LOOKUP_SUB_HEADER": "Scan The QR Code You Received.",
         "QR_LOOKUP_BUTTON_TEXT": "Scanner To The Right",
@@ -217,6 +221,9 @@
     "CHECK_IN_SELECT_HEADER": "Next, type in one of the following",
     "CHECK_IN_SELECT_DATE": "Departure Date",
     "CHECK_IN_SELECT_EMAIL": "E-mail",
+    "CHECK_IN_NO_OF_NIGHTS":"Number",
+    "CHECK_IN_NO_OF_NIGHTS_SUB":"of Nights",
+    "TYPE_NO_OF_NIGHTS":"Enter Number of Nights",
     "CHECK_IN_SELECT_EMAIL_SUB": "Used to make Reservation",
     "CHECK_IN_SELECT_CONF": "Confirmation",
     "CHECK_IN_SELECT_CONF_SUB": "Number",
@@ -234,6 +241,9 @@
     "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
     "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
     "ADMIN_WORKSTATION": "Work Station",
-    "ADMIN_STATION_PRINTER": "Select Printer"
+    "ADMIN_STATION_PRINTER": "Select Printer",
+    
+    
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
     
 }

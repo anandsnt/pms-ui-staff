@@ -1,5 +1,5 @@
-    
-    
+
+
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper",
     "DELETE_WAKEUP_CALL": "Delete wake-up call",
@@ -11,7 +11,7 @@
     "SELECT_WAKEUP_TIME": "Select wake-up time",
     "WAKE_UP_HEADER":"Wake up",
     "NOT_SET":"Not Set",
-    
+
     "VIEW_STAY_CARD":"View Stay Card",
     "SEARCH": "Search",
     "ROOM_KEY_EMAILED": "Room Key Emailed",
@@ -58,4 +58,6 @@
     "PENALTY_WARNING_MSG1":"Deposit of",
     "PENALTY_WARNING_MSG2":"will not be refunded",
     "RESEND_CONFIRMATION" : "Resend Confirmation",
-    "CONFIRMATION":"Confirmation"
+    "CONFIRMATION":"Confirmation",
+    "EMAIL_SENT_SUCCESSFULLY" : "Email sent successfully",
+    "EMAIL_SEND_FAILED" : "Email send failed"
