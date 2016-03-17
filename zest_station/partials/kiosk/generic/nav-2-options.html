@@ -148,25 +148,29 @@
             <div class="logo">
                 <div ng-include="icons.url.logo"></div>
             </div>
-
-         <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
-            <!--div class="room"-->
-                <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span><strong class="large_txt">{{printRegCardData.room_number}}</strong>
+            
+            <div class="content">
+                <!-- business date/time -->
+                <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
+                <br><br><br>
                 
-            <!--/div-->
+                <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span>
+                <br><br>
+                    <strong class="large_txt">{{printRegCardData.room_number}}</strong>
+                <br><br>
 
-            <span>{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{printRegCardData.dep_date}}
-                <br>
-            {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}}</span>
+                <span>
+                    {{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}
+                <br>    
+                    {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}}
+                </span>
+                <br><br>
 
-            <span>{{'REGISTRATION_READY_PRINT_MSG_1' | translate}}</span>
-            <span>{{'REGISTRATION_READY_PRINT_MSG_2' | translate}}</span>
-            <span>{{'REGISTRATION_READY_PRINT_MSG_3' | translate}}</span>
+                <span class="reg_text">{{printRegCardData.reg_card_text}}</span>
+                <br><br>
 
-            <strong class='footer large_txt'>{{'REGISTRATION_READY_PRINT_FOOTER' | translate}}</strong>
-            <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
-            <p class="terms">{{printRegCardData.reg_card_text}}</p>
-
+                <strong class='footer large_txt'>{{'REGISTRATION_READY_PRINT_FOOTER' | translate}}</strong>
+            </div>
         </section>
     </div>
      
