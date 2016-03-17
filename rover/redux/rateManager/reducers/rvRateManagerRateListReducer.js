@@ -13,7 +13,7 @@ let convertRatesData = (rates) => {
 	});
 };
 
-const rateManagerRateReducer = (state, action) => {
+const rateManagerRateListReducer = (state, action) => {
   switch (action.type) {
     case 'RATE_VIEW_CHANGED':
      	return convertRatesData(action.data);

@@ -74,7 +74,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         store.dispatch({
           type: 'RATE_VIEW_CHANGED',
           data: [...ratesWithRestrictions],
-
+          dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel
         });
       };
@@ -183,7 +183,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {String} type  [description]
        * @return {[type]}       [description]
        */
-      var renderCalendarView = () => {
+      var renderGridView = () => {
         render(
             <Provider store={store} >
               <RateManagerRootComponent/>
@@ -198,7 +198,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       (() => {
         setHeadingAndTitle('RATE_MANAGER_TITLE');
 
-        renderCalendarView();
+        renderGridView();
       })();
 
     }]);
