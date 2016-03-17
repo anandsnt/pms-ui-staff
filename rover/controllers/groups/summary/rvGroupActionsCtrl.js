@@ -33,6 +33,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.departmentSelect = {};
         $scope.departmentSelect.selected;
 
+        $scope.timeSelectorList = rvUtilSrv.getListForTimeSelector (15, 12);
 
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
@@ -409,7 +410,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
-                $scope.newAction.time_due = $scope.timeFieldValue[0];
+                $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");
+                $scope.newAction.time_due = rvUtilSrv.roundToNextQuarter(parseInt($filter('date')($scope.hotel_time, "HH"),10),
+                    parseInt($filter('date')($scope.hotel_time, "mm"),10));
             }
         };
 
@@ -653,7 +656,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.refreshActionList = function(del, selected){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+                $scope.hotel_time = data.business_date_time;
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
@@ -804,13 +807,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             } return false;
         };
 
-        $scope.convertMilTime = function(milStr){
-            //converts "16:10:00" into "04:10 PM"
-            var str = milStr.split(' ');
-            var strArray = str[1].split(':');
-            var hour = strArray[0], min = strArray[1];
-            return getFormattedTime(hour+''+min);
-        };
         $scope.capped = function(str){
             if (str){
                 var s = str.toLowerCase();
@@ -853,7 +849,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         var fetchActionListSuccessCallBack = function (data) {
-            $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+            $scope.hotel_time = data.business_date_time;
 
             var list = data.data;
             var matchObj;
@@ -1207,6 +1203,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         $scope.reassignAction = function(){
+            var assignedTo = $scope.selectedAction.assigned_to.id + '',
+                department = _.findWhere($scope.departments, { value: assignedTo });
+            $scope.departmentSelect.selected = department;
             $scope.actionSelected = 'assign';
         };
 
