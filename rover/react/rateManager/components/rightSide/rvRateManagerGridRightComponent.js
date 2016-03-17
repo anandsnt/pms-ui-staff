@@ -22,7 +22,8 @@ const RateManagerCalendarRightSideComponent = createClass({
 			<div id="rateViewCalendar" className='calendar-rate-table scrollable'>
 				<div className='wrapper'>
 					<table className='rate-calendar'>
-						<RateManagerGridRightSideHeaderContainer/>		
+						<RateManagerGridRightSideHeaderContainer/>
+						<RateManagerGridRightSideRowsContainer/>	
 					</table>
 				</div>
 			</div>

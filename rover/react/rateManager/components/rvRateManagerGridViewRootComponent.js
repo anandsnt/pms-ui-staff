@@ -21,6 +21,7 @@ const RateManagerGridViewRootComponent = createClass ({
 	setScrollers() {
 		this.setLeftScroller();
 		this.setRightScroller();
+		this.setScrollerSync();
 	},
 
 	setLeftScroller() {
@@ -42,6 +43,17 @@ const RateManagerGridViewRootComponent = createClass ({
 				scrollX: true,
 				scrollbars: 'custom'
 			});
+		}
+	},
+
+	setScrollerSync() {
+		if(this.rightScroller && this.leftScroller) {
+			this.leftScroller.on('scroll', () => {
+				this.rightScroller.scrollTo(this.rightScroller.x, this.leftScroller.y)
+			});
+			this.rightScroller.on('scroll', () => {
+				this.leftScroller.scrollTo(this.leftScroller.x, this.rightScroller.y)
+			});			 
 		}
 	},
 
