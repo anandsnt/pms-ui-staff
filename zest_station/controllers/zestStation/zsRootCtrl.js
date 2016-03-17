@@ -11,7 +11,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
         
-        $scope.inChromeApp = (window.innerHeight == screen.height && window.chrome);
         
     $translate.use('EN_snt');  
 	/**
@@ -777,36 +776,18 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.timeOut = false;
                 //$scope.zestStationData.popup = false;
             };
-            
-            
-            
-            $scope.setupChromeAppListener = function(){
-                // The ID of the extension we want to talk to.
-                var editorExtensionId = "pbnaoggobpaanmddgenkfnicmpfhpijd";
-                // Make a simple request:
-                chrome.runtime.sendMessage(editorExtensionId, {getTargetData: true},
-                  function(response) {
-                      console.info('response: ',response.targetData);
-                    if (targetInRange(response.targetData))
-                      chrome.runtime.sendMessage(editorExtensionId, {activateLasers: true});
-                  });
-
-                // Start a long-running conversation:
-                var port = chrome.runtime.connect(editorExtensionId);
-                port.postMessage("you in chrome?");
+            $scope.onChromeAppResponse = function(response){
+                if (response.isChromeApp){
+                    $scope.inChromeApp = true;
+                }
             };
-            
-            
-            
-            
-            
+            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse);
             $scope.getPromptTime = function(){
                 if ($scope.idle_max>$scope.idle_prompt){
                     return $scope.idle_max-$scope.idle_prompt;
                 } else return -1;
             };
             $scope.startIdleCounter = function(){
-                //console.info('isFromChromeApp: ', $scope.isFromChromeApp());
                 var time = $scope.idle_max, promptTime = $scope.getPromptTime();
                 
                     var timer = time, minutes, seconds;

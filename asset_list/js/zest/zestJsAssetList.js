@@ -55,6 +55,7 @@ module.exports = {
 				zestRoot + 'zsApp.js',
 				zestRoot + 'rvMLIOperations.js',
 				zestRoot + 'zsWebSocketActions.js',
+				zestRoot + 'zsChromeAppActions.js',
 				zestRoot + 'controllers/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',
