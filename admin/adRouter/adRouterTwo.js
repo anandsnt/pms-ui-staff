@@ -512,7 +512,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',
-			url : '/stationary'
+			url : '/stationary',
+			resolve : {
+				availableGuestLanguages : function(ADTranslationSrv) {
+					return ADTranslationSrv.getGuestLanguages();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.languages', {
