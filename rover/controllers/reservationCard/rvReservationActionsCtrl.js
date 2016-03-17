@@ -265,10 +265,15 @@ sntRover.controller('reservationActionsController', [
                 };
                 
                 $scope.goToRoomAssignment = function(){
+                	//check if roomupgrade is available
+                	var reservationStatus = reservationData.reservation_card.reservation_status
+                	var isUpgradeAvaiable = $scope.upsellNeeded() && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
+
                     $state.go("rover.reservation.staycard.roomassignment", {
                             "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                             "room_type": $scope.reservationData.reservation_card.room_type_code,
-                            "clickedButton": "checkinButton"
+                            "clickedButton": "checkinButton",
+                            "upgrade_available" : isUpgradeAvaiable
                     });
                 };
                 $scope.goToBillCard = function(){
