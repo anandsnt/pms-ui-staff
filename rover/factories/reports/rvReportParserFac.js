@@ -49,9 +49,9 @@ sntRover.factory('RVReportParserFac', [
             }
 
             // otherwise a super parser for reports that can be grouped by
-            // else if ( !!options['groupedByKey'] ) {
-            //     return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
-            // }
+            else if ( reportName === reportNames['RESERVATIONS_BY_USER'] && !!options['groupedByKey'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
+            }
 
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
@@ -423,17 +423,17 @@ sntRover.factory('RVReportParserFac', [
                 return check;
             };
 
-            var isForGenericReports = function(name) {
-                var hash = {
-                    ARRIVAL: true,
-                    IN_HOUSE_GUEST: true,
-                    CANCELLATION_NO_SHOW: true,
-                    DEPARTURE: true,
-                    LOGIN_AND_OUT_ACTIVITY: true,
-                    RESERVATIONS_BY_USER: true
-                }
+            var isForGenericReports = function(reportName) {
+                var allowNames = [
+                    'ARRIVAL',
+                    'IN_HOUSE_GUEST',
+                    'CANCELLATION_NO_SHOW',
+                    'DEPARTURE',
+                    'LOGIN_AND_OUT_ACTIVITY',
+                    'RESERVATIONS_BY_USER'
+                ];
 
-                return hash[name] ? true : false;
+                return !! _.find(allowNames, function(name) { return reportName == reportNames[name] });
             };
 
             if ( isForGenericReports(reportName) ) {
