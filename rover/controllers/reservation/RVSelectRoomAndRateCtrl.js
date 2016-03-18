@@ -1,6 +1,6 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'sortOrder', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', 'rateAddons', '$filter', 'RVRoomRatesSrv',
-	function($rootScope, $scope, sortOrder, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, rateAddons, $filter, RVRoomRatesSrv) {
+	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', 'rateAddons', '$filter', 'RVRoomRatesSrv',
+	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, rateAddons, $filter, RVRoomRatesSrv) {
 
 		$scope.stateCheck = {
 			pagination: {
@@ -13,7 +13,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					page: 1
 				}
 			},
-			sortOrder: sortOrder.value,
 			house: house, //house availability
 			baseInfo: {
 				roomTypes: rates.results,
@@ -149,7 +148,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					roomType.rates = rates;
 					$scope.stateCheck.lookUp[roomType.id] = roomType;
 				});
-				console.log("$scope.stateCheck.lookUp", $scope.stateCheck.lookUp);
 			},
 			setLookUp = function(roomTypeId, rateId, key, value) {
 				if (!$scope.stateCheck.lookUp[roomTypeId]) {
@@ -162,7 +160,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 
 				$scope.stateCheck.lookUp[roomTypeId].rates[rateId][key] = value;
-
 			},
 			fetchRoomTypesList = function(append) {
 				var occupancies = _.pluck(ROOMS[$scope.activeRoom].stayDates, "guests");
@@ -308,8 +305,51 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.selectedRoomType = -1;
 				}
 
-				var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
+				var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE),
+					isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1 : $scope.getLeastHouseAvailability() < 1,
+					isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
+					isPromoInvalid = $scope.reservationData.code &&
+					$scope.reservationData.code.id &&
+					!_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
+						return a && b;
+					});
+
 				_.each($scope.stateCheck.baseInfo.roomTypes, function(roomType) {
+
+					roomType.restriction_count = 0;
+					if (roomType.multiple_restrictions) {
+						roomType.restriction_count = 2;
+					} else if (roomType.first_restriction !== null) {
+						roomType.restriction_count = 1;
+					}
+
+					if (!$scope.reservationData.ratesMeta[roomType.rate_id]) {
+						// -- Note: This should optimally come inside this condition only if a group/allotment is added in the Room & Rates screen. Else this would have been done in initialization itself.
+						updateMetaInfoWithCustomRates();
+					}
+
+					if (!isGroupReservation && isHouseFull && (!roomType.first_restriction || roomType.first_restriction.type_id != 99)) {
+						roomType.restriction_count = roomType.restriction_count ? roomType.restriction_count + 1 : 1;
+						if (roomType.restriction_count === 1) {
+							roomType.first_restriction = {
+								restriction_type_id: 99,
+								days: null
+							}
+						}
+					}
+
+					if (isPromoInvalid && (!roomType.first_restriction || roomType.first_restriction.type_id != 98)) {
+						if (_.indexOf($scope.reservationData.ratesMeta[currentRate].linked_promotion_ids, $scope.reservationData.code.id) > -1) {
+							roomType.restriction_count = roomType.restriction_count ? roomType.restriction_count + 1 : 1;
+							if (roomType.restriction_count === 1) {
+								roomType.first_restriction = {
+									restriction_type_id: 98,
+									days: null
+								}
+							}
+						}
+					}
+
 					var roomTypeInfo = {
 							isCollapsed: $scope.stateCheck.selectedRoomType != roomType.id,
 							name: $scope.reservationData.roomsMeta[roomType.id].name,
@@ -319,14 +359,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						},
 						rateInfo = {
 							id: roomType.rate_id,
+							name: $scope.reservationData.ratesMeta[roomType.rate_id].name,
 							adr: roomType.adr,
 							dates: datesInitial,
-							hasRestrictions: roomType.first_restriction !== null,
+							restriction: roomType.first_restriction,
+							numRestrictions: roomType.restriction_count || 0,
+							forRoomType: roomType.id,
+							showDays: false,
 							totalAmount: 0.0,
 							isSuppressed: !!$scope.reservationData.ratesMeta[roomType.rate_id].is_suppress_rate_on,
-							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member,
-							restriction: roomType.first_restriction,
-							forRoomType: roomType.id
+							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[roomType.rate_id].is_member,
+							isPromotion: !isPromoInvalid &&
+								_.indexOf($scope.reservationData.ratesMeta[roomType.rate_id].linked_promotion_ids, $scope.reservationData.code.id) > -1
 						},
 						rates = {};
 
@@ -719,7 +763,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			initScrollers = function() {
 				$scope.setScroller('room_types', {
 					preventDefault: false,
-					probeType: 2
+					probeType: 3
 				});
 				$scope.setScroller('stayDates', {
 					scrollX: true,
@@ -727,7 +771,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 				$timeout(function() {
 					getScrollerObject('room_types').on('scroll', function() {
-						if (!$scope.stateCheck.showLessRooms && this.y === this.maxScrollY) {
+						if (!$scope.stateCheck.showLessRooms && Math.abs(this.y - this.maxScrollY) < Math.abs(this.maxScrollY / 3)) {
 							if ($scope.stateCheck.baseInfo.totalCount > $scope.display.roomFirstGrid.length) {
 								$scope.stateCheck.pagination.roomType.page++;
 								fetchRoomTypesList(true); // The param tells the method to append the response to the existing list
@@ -1084,13 +1128,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			if (!$scope.stateCheck.stayDatesMode) {
-				if ($scope.stateCheck.lookUp[roomId].rates[rateId].hasRestrictions) {
+				if ($scope.stateCheck.lookUp[roomId].rates[rateId].numRestrictions > 0) {
 					return 'brand-colors'
 				} else {
 					return 'green'
 				}
 			} else { //Staydates mode
-				if ($scope.stateCheck.lookUp[roomId].rates[rateId].hasRestrictions) {
+				if ($scope.stateCheck.lookUp[roomId].rates[rateId].numRestrictions > 0) {
 					return 'white brand-text'
 				} else {
 					return 'white green-text'
@@ -1668,6 +1712,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					room.ratesArray = [];
 					_.each(response.results, function(rate) {
 
+						rate.restriction_count = 0;
+					if (rate.multiple_restrictions) {
+						rate.restriction_count = 2;
+					} else if (rate.first_restriction !== null) {
+						rate.restriction_count = 1;
+					}
+
+						if (!$scope.reservationData.ratesMeta[rate.id]) {
+							// -- Note: This should optimally come inside this condition only if a group/allotment is added in the Room & Rates screen. Else this would have been done in initialization itself.
+							updateMetaInfoWithCustomRates();
+						}
+
 						if (!isGroupReservation &&
 							isHouseFull &&
 							(!rate.first_restriction || rate.first_restriction.type_id != 99)) {
@@ -1694,16 +1750,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						}
 
 						var rateInfo = {
-							name: $scope.reservationData.ratesMeta[rate.id].name,
 							id: rate.id,
+							name: $scope.reservationData.ratesMeta[rate.id].name,
 							adr: rate.adr,
 							dates: datesInitial,
+							totalAmount: 0.0,
 							restriction: rate.first_restriction,
+							numRestrictions: rate.restriction_count || 0,
 							forRoomType: rate.room_type_id,
 							showDays: false,
-							hasRestrictions: rate.first_restriction !== null,
-							numRestrictions: rate.restriction_count,
-							restriction: rate.first_restriction
+							isSuppressed: !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
+							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member,
+							isPromotion: !isPromoInvalid &&
+								_.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1
 						}
 						_.extend(rateInfo.dates[$scope.reservationData.arrivalDate], {
 							availability: rate.availability

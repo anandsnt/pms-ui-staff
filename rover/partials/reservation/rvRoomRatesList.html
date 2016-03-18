@@ -122,7 +122,7 @@
                                     <span class="restricted" ng-if="rate.numRestrictions > 1">
                                         MULTIPLE RESTRICTIONS APPLY
                                     </span>
-                                    <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.restriction.restricion_type_id].key]}}" ng-if="rate.numRestrictions == 1">
+                                    <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.restriction.restriction_type_id].key]}}" ng-if="rate.numRestrictions == 1">
                                          {{restrictionsMapping[rate.restriction.restriction_type_id].value}}{{rate.restriction.days || rate.restriction.days == 0? rate.restriction.days +' DAYS' : ''}}
                                     </span>
                                 </h3>

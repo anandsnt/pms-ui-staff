@@ -108,9 +108,6 @@ angular.module('stayCardModule', [])
                 }
             },
             resolve: {
-                sortOrder: function(RVReservationBaseSearchSrv, staycardJsAssets) {
-                    return RVReservationBaseSearchSrv.fetchSortPreferences();
-                },
                 areReservationAddonsAvailable: function(RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { //CICO-16874
                     return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
                         from_date: $stateParams.from_date,
