@@ -28,7 +28,8 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
             // Generate a dummy response in case of custom rates
             if (params.rate_id && params.rate_id.toString().match(/_CUSTOM_/)) {
                 var restrictions = {};
-                for (ms = new tzIndependentDate(params.from_date) * 1, last = new tzIndependentDate(params.to_date) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                for (ms = new tzIndependentDate(params.from_date) * 1, last = new tzIndependentDate(params.to_date) *
+                    1; ms <= last; ms += (24 * 3600 * 1000)) {
                     restrictions[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = [];
                 }
                 deferred.resolve({
@@ -69,9 +70,9 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
                         _.each(result.restrictions, function(restriction) {
                             if (!_.findWhere(summary, {
-                                    restriction_type_id: restriction.type_id,
-                                    days: restriction.days
-                                })) {
+                                restriction_type_id: restriction.type_id,
+                                days: restriction.days
+                            })) {
                                 summary.push(restriction);
                             }
                         });

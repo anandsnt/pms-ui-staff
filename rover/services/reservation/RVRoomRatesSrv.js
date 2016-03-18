@@ -5,17 +5,49 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
 
         //--------------------------------------------------------------------------------------------------------------
         // A. Private Methods
+        var getInitialRoomTypeWithUpSell = function(params) {
+            var deferred = $q.defer();
+            service.fetchRoomTypeADRs(params, true).then(function(response) {
+                if (response.results.length > 0) {
+                    var levelOfBestRoom = RVReservationBaseSearchSrv.getRoomTypeLevel(response.results[0].id);
+                    if (levelOfBestRoom > 0 && levelOfBestRoom < 3) {
+                        var baseResults = response;
+                        // Get the best room from the next level; If not found; stick to the original set of two
+                        service.fetchRoomTypeADRs(params, false, levelOfBestRoom + 1).then(function(response) {
+                            if (response.results > 0) {
+                                baseResults.results[2] = response.results[1];
+                            }
+                            deferred.resolve(baseResults);
+                        }, function(err) {
+                            deferred.reject(err);
+                        })
+                    } else {
+                        deferred.resolve(response);
+                    }
+                } else {
+                    deferred.resolve(response);
+                }
 
+            }, function(er) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
 
         //--------------------------------------------------------------------------------------------------------------
         // B. Private Methods
 
-        service.fetchRoomTypeADRs = function(params, isInitial) {
+        service.fetchRoomTypeADRs = function(params, isInitial, level) {
             var deferred = $q.defer(),
                 url = "/api/availability/room_type_adrs";
-            if(isInitial){
+            if (isInitial) {
                 params.per_page = 2;
                 params.page = 1;
+            }
+            if (level) {
+                params.per_page = 1;
+                params.page = 1;
+                params.level = level;
             }
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 deferred.resolve(response);
@@ -47,7 +79,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                     data = response;
                 }));
             } else {
-                promises.push(service.fetchRoomTypeADRs(params, true).then(function(response) {
+                promises.push(getInitialRoomTypeWithUpSell(params, true).then(function(response) {
                     data = response;
                 }));
             }
