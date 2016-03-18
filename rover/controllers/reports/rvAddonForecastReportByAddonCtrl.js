@@ -29,7 +29,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 		var refreshScroll = function(scrollUp) {
 			$scope.refreshScroller('addon-forecast-report-scroll');
-			if ( !!scrollUp ) {
+			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty('addon-forecast-report-scroll') ) {
 				$scope.$parent.myScroll['addon-forecast-report-scroll'].scrollTo(0, 0, 100);
 			};
 		};
@@ -288,13 +288,20 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		var init = function() {
  			setup();
  			setScroller();
+ 			/**/
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
  		}
 
  		init();	
 
  		var reInit = function() {
  			setup();
- 			refreshScroll('scrollUp');
+ 			/**/
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
  		}
 
 
