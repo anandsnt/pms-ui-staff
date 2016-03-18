@@ -4,8 +4,10 @@ this.chromeApp = function(onMessageCallback) {
         //only init these if using chrome, this is for the chromeapp virtual keyboard
         that.onChromeAppMsgResponse = function(response){
             onMessageCallback(response);
-            if (response.isChromeApp){
-                this.inChromeApp = true;
+            if (response){
+                if (response.isChromeApp){
+                    this.inChromeApp = true;
+                }
             }
         };
         that.setupChromeAppListener = function(){

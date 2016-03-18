@@ -198,11 +198,9 @@ sntZestStation.controller('zsRootCtrl', [
         };
         
         $scope.loadTranslations = function(theme){
-            console.info('loading languages')
             if ($scope.language) {
                 var langPrefix = $scope.getActiveLangPrefix();
                 
-                console.info('using: ',langPrefix+theme.toLowerCase());
               $translate.use(langPrefix+theme.toLowerCase());
             //  $translate.fallbackLanguage('EN');
               /* For reason unclear, the fallback translation does not trigger
@@ -777,8 +775,10 @@ sntZestStation.controller('zsRootCtrl', [
                 //$scope.zestStationData.popup = false;
             };
             $scope.onChromeAppResponse = function(response){
-                if (response.isChromeApp){
-                    $scope.inChromeApp = true;
+                if (response){
+                    if (response.isChromeApp){
+                        $scope.inChromeApp = true;
+                    }
                 }
             };
             $scope.chromeApp = new chromeApp($scope.onChromeAppResponse);
@@ -842,15 +842,15 @@ sntZestStation.controller('zsRootCtrl', [
                         }
                 },1000);
             };
+            
             $scope.$watchCollection(function(){
-                if ($scope.inChromeApp && $scope.theme === 'yotel'){
-                    initScreenKeyboardListener();
-                }
-                
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
-               
+                if ($scope.inChromeApp && $scope.theme === 'yotel'){
+                    $scope.keyboard = new initScreenKeyboardListener();
+                }
+                
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }
@@ -902,7 +902,6 @@ sntZestStation.controller('zsRootCtrl', [
                     supported.push(allLangs[i]);
                 }
             }
-            console.info('supported languages: ',supported)
             $scope.supportedLangs = supported;
         };
         
