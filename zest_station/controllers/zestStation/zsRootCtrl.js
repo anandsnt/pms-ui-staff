@@ -200,8 +200,15 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.loadTranslations = function(theme){
             if ($scope.language) {
                 var langPrefix = $scope.getActiveLangPrefix();
-                
-              $translate.use(langPrefix+theme.toLowerCase());
+            if($scope.zestStationData.zest_lang.english_translations_file_updated){
+                console.info('using: uploaded english translations');
+                $translate.use('en');
+            }
+            else{
+                console.info('using: ',langPrefix+theme.toLowerCase());
+                $translate.use(langPrefix+theme.toLowerCase());
+            }
+             
             //  $translate.fallbackLanguage('EN');
               /* For reason unclear, the fallback translation does not trigger
                * unless a translation is requested explicitly, for second screen
@@ -212,7 +219,13 @@ sntZestStation.controller('zsRootCtrl', [
                 $translate('NA');
               }, 1000); //Word around.
             } else {
-              $translate.use('EN_snt');
+                if($scope.zestStationData.zest_lang.english_translations_file_updated){
+                    console.info('using: uploaded english translations');
+                    $translate.use('en');
+                }
+                else{
+                    $translate.use('EN_snt');
+                }
             };
         };
         $scope.setScreenIcon = function(name){
