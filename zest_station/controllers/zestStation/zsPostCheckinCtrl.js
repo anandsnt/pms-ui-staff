@@ -204,11 +204,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.modalBtn1 = 'DONE_BTN';
                 
             if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === "" ){
-                console.info('TALK_TO_STAFF...');
                 $scope.messageOverride = false;
                 $scope.headingText = 'TALK_TO_STAFF';
             } else {
-                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1)
                 $scope.messageOverride = true;//need to turn off translate 
                 $scope.headingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
             }
@@ -488,9 +486,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
 
 	$scope.printRegistrationCard = function() {
-            if ($scope.theme === 'yotel'){
-                //$scope.setPrintYotelPrinter();
-            };
                 $scope.isPrintRegistrationCard = true;
 
                 $scope.$emit('hideLoader');
@@ -553,20 +548,26 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 };
             });  
         };
+        $scope.currentDateTime;
         $scope.fetchRegistrationPrintView = function(){
+            
             var fetchPrintViewCompleted = function(data){
+                var d = new Date();
+                $scope.currentDateTime = d.getTime();
                 $scope.$emit('hideLoader');
                 // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
-                console.log($scope.printRegCardData);
+                $scope.departDate = $scope.printRegCardData.dep_date;
+                console.info($scope.departDate)
+                var dep = $scope.departDate.split('-');
+                var dY = dep[2],dM=(dep[1]-1),dD=dep[0];
+                var depart = new Date(dY,dM,dD);
+                $scope.departDate = depart.getTime();
                 $scope.printRegCardData.terms_conditions_html = $scope.getTermsPrintable($scope.printRegCardData.terms_conditions);
-                $scope.printRegCardData.standardCheckout = '12:00 PM';
-                console.info('as : ',$scope)
                 $scope.setupPrintView();
                 $scope.initPrintRegistration();
             };
             var id = $scope.selectedReservation.id; 
-            //var id = 1339880;//debugging
             $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
         };
         $scope.clickedPrint = function(){

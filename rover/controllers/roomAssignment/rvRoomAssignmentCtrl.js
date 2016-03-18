@@ -40,7 +40,7 @@ sntRover.controller('RVroomAssignmentController',[
 				},
 			3000);
 	$timeout(function() {
-    	$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
+    	roomUpgrades.length ===0 ? "":$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
 

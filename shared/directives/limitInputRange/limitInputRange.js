@@ -27,6 +27,8 @@ angular
                 processIt,
                 debounced;
 
+            var hasBlured = false;
+
             options = scope.$eval( attrs.limitInputRange );
 
             if ( options.hasOwnProperty('from') && typeof options.from !== 'number' ) {
@@ -71,14 +73,24 @@ angular
                 scope.$digest();
 
                 scope[options.callback] && scope[options.callback]();
+                scope[options.onBlur] && hasBlured && scope[options.onBlur]();
             };
 
-            debounced = _.debounce(processIt, 500);
+            debounced = _.debounce(processIt, 1000);
 
             angular.element(elem).on('keyup', debounced);
 
+            angular.element(elem).on('blur', function() {
+                hasBlured = true;
+            });
+            angular.element(elem).on('focus', function() {
+                hasBlured = false;
+            });
+
             scope.$on('$destroy', function() {
                 angular.element(elem).off('keyup');
+                angular.element(elem).off('blur');
+                angular.element(elem).off('focus');
             });
         }
     };
