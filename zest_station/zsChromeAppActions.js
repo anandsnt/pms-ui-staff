@@ -1,6 +1,6 @@
 this.chromeApp = function(onMessageCallback) {
     var that = this;
-    if (chrome && chrome.runtime){
+    if (typeof chrome !== "undefined" && typeof chrome.runtime !=="undefined"){
         //only init these if using chrome, this is for the chromeapp virtual keyboard
         that.onChromeAppMsgResponse = function(response){
             onMessageCallback(response);
