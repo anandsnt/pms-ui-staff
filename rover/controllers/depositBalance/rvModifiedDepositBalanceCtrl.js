@@ -365,7 +365,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
 		$scope.cardValues = tokenDetails;
-	    var cardExpiry = "";
+	    var cardExfpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	//To render the selected card data
@@ -390,10 +390,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.shouldCardAvailable 			 = true;
 			$scope.isAddToGuestCardVisible 			 = true;
 
+
 			//To render the selected card data
 			$scope.depositBalanceMakePaymentData.card_code = getSixCreditCardType($scope.cardValues.tokenDetails.card_type).toLowerCase();
 			 $scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.tokenDetails.token_no.substr($scope.cardValues.tokenDetails.token_no.length - 4);;
-
+			 checkReferencetextAvailableForCC();
 		     var dataToApiToAddNewCard = {
 		          	"token" : $scope.cardValues.tokenDetails.token_no,
 		          	"card_name" :$scope.passData.details.firstName+" "+$scope.passData.details.lastName,
@@ -679,6 +680,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.paymentId = data.id;
 		$scope.shouldCardAvailable 				 = true;
 		$scope.isAddToGuestCardVisible 			 = true;
+		//CICO-25882 - Fixing the issue of make payment btn not visible
+		refreshPaymentScroll();
 	};
 
 	$scope.closeDepositModal = function () {
