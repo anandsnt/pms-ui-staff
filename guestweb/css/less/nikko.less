@@ -26,6 +26,9 @@ body{
 .jumbotron .container.backgroundbg{
 	.no-border;
 }
+.input-label-small{
+	font-size:18px;
+}
 .jumbotron .container.backgroundbg,.jumbotron#check-in-out{
 	width: @fullWidth;
 	.container-fluid{
@@ -600,6 +603,9 @@ body{
 
 
 @media (max-width: 480px) {
+  .padding-8{
+      padding:0 8%;
+  }
   .checkin{
     background: url(/assets/guestweb/img/Nikko/checkin-white-icon-small.png)   80% 30%  no-repeat  #513d4f !important;
     span{
@@ -608,6 +614,9 @@ body{
   }
   .backbtn{
   display:none;
+  }
+  .input-label-small{
+	font-size:13px;
   }
 }
 
@@ -645,6 +654,10 @@ body{
 }
 .black-text{
 	color: #000 !important;
+	font-weight: initial !important;
+}
+.brown-text{
+	color: #333 !important;
 	font-weight: initial !important;
 }
 .red-border{
