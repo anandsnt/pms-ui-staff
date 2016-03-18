@@ -28,6 +28,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         var service = this;
 
+        this.activeRates = null;
+
         service.fetchMultipleRateInfo = function (params) {
             var url = '/api/daily_rates/';
             var deferred = $q.defer();
@@ -61,6 +63,50 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
+        service.fetchRates = function () {
+            var url = '/api/rates/detailed';
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };        
+
+        service.fetchRestrictionTypes = function() {
+            var url = '/api/restriction_types';
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data.results);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchRatesAndDailyRates = function (params, ) {
+            var promises = [],
+                rates = [],
+                dailyRateAndRestrictions = [],
+                deferred = $q.defer();
+
+            promises.push(service.fetchMultipleRateInfo(params).then(function(data) {
+                dailyRateAndRestrictions = data.results;
+            }));
+            promises.push(service.fetchRates().then(function(data) {
+                rates = data.results;
+            }));
+
+            $q.all(promises).then(function(data) {
+                deferred.resolve({
+                    rates,
+                    dailyRateAndRestrictions
+                });
+            });
+
+            return deferred.promise;
+        }; 
 
     }
 ]);

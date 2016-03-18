@@ -44,9 +44,16 @@ sntZestStation.controller('zsHomeCtrl', [
             $state.lastAt = 'home';
             $state.isPickupKeys = false;
             $state.mode = zsModeConstants.CHECKOUT_MODE;
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.CHECKOUT_MODE
-            });
+
+
+            if(!$scope.zestStationData.checkout_keycard_lookup){
+                $state.go('zest_station.reservation_search', {
+                    mode: zsModeConstants.CHECKOUT_MODE
+                });
+            }
+            else{
+                $state.go('zest_station.checkout_options');
+            };
 	};
 
 	/**
@@ -537,6 +544,11 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     $scope.init = function(){
+        if ($scope.inChromeApp){
+            $scope.pressEsc();
+        }
+        $scope.inputFocus();
+        
         $scope.setScreenIcon('bed');//needed for initial view, other icons set from rootCtrl
         $scope.resetFlags();
         var current = $state.current.name;

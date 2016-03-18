@@ -1,8 +1,6 @@
-const {createClass} = React;
-
-
-const RateManagerRootComponent = () => {
-    return (<div className='calendar'>
+const RateManagerRootComponent = () => (		
+	<div className='calendar'>
 		<RateManagerNotConfiguredContainer/>
-	</div>);
-};
+		<RateManagerGridViewRootContainer/>
+	</div>
+);

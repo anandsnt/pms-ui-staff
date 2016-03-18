@@ -1,0 +1,13 @@
+const RM_RX_CONST = {
+	RATE_VIEW_CHANGED: 'RM_Rate_View_Changed',
+	NOT_CONFIGURED_MODE: 'RM_Not_Configured_Mode',
+	REFRESH_SCROLLERS: 'RM_Refresh_Scrollers',
+	RATE_VIEW_MODE: 'RM_Rate_View',
+	ROOM_TYPE_VIEW_MODE: 'RM_Room_Type_View',
+	OPEN_ALL: 'RM_Open_All_Button_Clicked',
+	CLOSE_ALL: 'RM_Close_All_Button_Clicked',
+	VIEW_MODE_TEXT_MAPPINGS: {
+		RM_Rate_View: 'All Rates',
+  		RM_Room_Type_View: 'All Room Types'
+	}
+};

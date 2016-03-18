@@ -4,13 +4,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     '$rootScope',
     'rvRateManagerCoreSrv',
     'rvRateManagerEventConstants',
+    'restrictionTypes',
     function($scope,
              $filter,
              $rootScope,
              rvRateManagerCoreSrv,
-             rvRateManagerEventConstants) {
+             rvRateManagerEventConstants,
+             restrictionTypes) {
 
       BaseCtrl.call(this, $scope);
+
+      /**
+       * to keep track of last filter choosed
+       * will be using in setting zoom level or coming back from graph view to this
+       */
+      var lastSelectedFilterValues = null;
 
       /**
        * to set the heading and title
@@ -36,22 +44,26 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object}
        */
       var onfetchDailyRatesSuccess = (response) => {
-        var results = response.results,
-            dates = _.pluck(results, 'date'),
-            ratesWithRestrictions = results[0].rates,
-            restrictionList = [],
+        var rateRestrictions = response.dailyRateAndRestrictions,
+            rates = response.rates,
+            dates = _.pluck(rateRestrictions, 'date'),
+            rateIDs = _.pluck(response.rates, 'id'),
+            ratesWithRestrictions = rateRestrictions[0].rates,
+            rateObjectBasedOnID = {},
             dateRateSet = null;
 
-        results = _.object(dates, results);
-
-        //we have lots of alternative ways to form the data model, but we're choosing the bad way since
-        //other ways may mess up in the future with data ordering
+        rateRestrictions = _.object(dates, rateRestrictions);
+        rateObjectBasedOnID = _.object(rateIDs, response.rates);
+        
+        //we have lots of alternative ways, those depends on javascript array order
+        //which is buggy from browser to browser, so choosing this bad way
         //may be this will result in running 365000 times
         ratesWithRestrictions = ratesWithRestrictions.map(function(rate) {
           rate.restrictionList = [];
-
+          //rate.name = rateObjectBasedOnID[rate.id].name;
+          rate = _.extend(rate, _.omit(rateObjectBasedOnID[rate.id], 'id'));
           dates.map(function(date) {
-            dateRateSet = _.findWhere(results[date].rates, {id: rate.id});
+            dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
             rate.restrictionList.push(dateRateSet.restrictions);
           });
 
@@ -62,8 +74,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
 
         store.dispatch({
-          type: 'RATE_VIEW_CHANGED',
-          ratesAndRestrictions: ratesWithRestrictions
+          type: RM_RX_CONST.RATE_VIEW_CHANGED,
+          data: [...ratesWithRestrictions],
+          dates,
+          zoomLevel: lastSelectedFilterValues.zoomLevel,
+          businessDate: tzIndependentDate($rootScope.businessDate),
+          restrictionTypes
         });
       };
 
@@ -76,7 +92,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           params: params,
           onSuccess: onfetchDailyRatesSuccess
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchMultipleRateInfo, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
       };
 
       /**
@@ -114,6 +130,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object} newFilterValues)
        */
       $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
+
+        //Storing for further reference
+        lastSelectedFilterValues = { ...newFilterValues }; //ES7
+
         var params = {
           from_date: formatDateForAPI(newFilterValues.fromDate),
           to_date: formatDateForAPI(newFilterValues.toDate),
@@ -153,7 +173,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       });
 
       var initialState = {
-        mode: 'NOT_CONFIGURED'
+        mode: RM_RX_CONST.NOT_CONFIGURED_MODE
       };
       
       const store = configureStore(initialState)
@@ -167,7 +187,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {String} type  [description]
        * @return {[type]}       [description]
        */
-      var renderCalendarView = () => {
+      var renderGridView = () => {
         render(
             <Provider store={store} >
               <RateManagerRootComponent/>
@@ -182,7 +202,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       (() => {
         setHeadingAndTitle('RATE_MANAGER_TITLE');
 
-        renderCalendarView();
+        renderGridView();
       })();
 
     }]);

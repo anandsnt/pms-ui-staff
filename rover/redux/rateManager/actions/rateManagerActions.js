@@ -1,7 +1,7 @@
 const rateManagerActions = {
 	rateViewChanged (ratesAndRestrictions) {
 		return {
-			mode: 'RATE_VIEW_CHANGED'
+			mode: RM_RX_CONST.RATE_VIEW_CHANGED
 		}
 	}
 };

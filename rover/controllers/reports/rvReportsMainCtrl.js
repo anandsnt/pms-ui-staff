@@ -39,9 +39,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.reportList  = payload.reportsResponse.results;
 		$scope.reportCount = payload.reportsResponse.total_count;
 
-		$scope.codeSettings = payload.codeSettings;
-		$scope.addons       = payload.addons;
+		$scope.codeSettings   = payload.codeSettings;
 
+		// $scope.activeUserList = payload.activeUserList;
+		// _.each($scope.activeUserList, function(each) {
+		//     each.selected = true;
+		// });
 
 		$scope.showReportDetails = false;
 
@@ -50,10 +53,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		// RESTRICT to ONLY desktop
 		$scope.hideExportOption = !!sntapp.cordovaLoaded || util.checkDevice.any();
 
-		var addonsCount = 0;
-		_.each ($scope.addons, function (each) {
-			addonsCount += each.list_of_addons.length;
-		});
+		// var addonsCount = 0;
+		// _.each ($scope.addons, function (each) {
+		// 	addonsCount += each.list_of_addons.length;
+		// });
 
 		// ctrls created for a specific reports, e.g: OccRev, may require
 		// to show a modal for user to modify the report for print.
@@ -141,7 +144,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_34: false,
 			item_35: false,
 			item_36: false,
-			item_37: false
+			item_37: false,
+			item_38: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -786,35 +790,35 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 
 		// show the no.of addons selected
-		$scope.getNoOfSelectedAddons = function (reportItem, fauxDS) {
-			var selectedItems = [],
-			    count = 0;
+		// $scope.getNoOfSelectedAddons = function (reportItem, fauxDS) {
+		// 	var selectedItems = [],
+		// 	    count = 0;
 
-			_.each (fauxDS.data, function (each) {
-				var selectedAddons = _.where(each.list_of_addons, { selected: true });
-				selectedItems.push(selectedAddons);
-				count += selectedAddons.length;
-			});
+		// 	_.each (fauxDS.data, function (each) {
+		// 		var selectedAddons = _.where(each.list_of_addons, { selected: true });
+		// 		selectedItems.push(selectedAddons);
+		// 		count += selectedAddons.length;
+		// 	});
 
-			if ( count === 0 ) {
-                fauxDS.title = fauxDS.defaultTitle;
-            }
-            else if ( count === 1 ) {
-            	_.each (selectedItems, function (each) {
-            		_.each (each, function (addon) {
-            			if (addon.selected == true) {
-            				fauxDS.title = addon.addon_name;
-            			}
-            		});
-            	});
-            }
-            else if ( count == addonsCount ) {
-            	fauxDS.title = "All Selected";
-            }
-            else {
-            	fauxDS.title = count + ' Selected';
-            }
-		};
+		// 	if ( count === 0 ) {
+  //               fauxDS.title = fauxDS.defaultTitle;
+  //           }
+  //           else if ( count === 1 ) {
+  //           	_.each (selectedItems, function (each) {
+  //           		_.each (each, function (addon) {
+  //           			if (addon.selected == true) {
+  //           				fauxDS.title = addon.addon_name;
+  //           			}
+  //           		});
+  //           	});
+  //           }
+  //           else if ( count == addonsCount ) {
+  //           	fauxDS.title = "All Selected";
+  //           }
+  //           else {
+  //           	fauxDS.title = count + ' Selected';
+  //           }
+		// };
 
 		$scope.toggleAddons = function () {
             $scope.isVisible = $scope.isVisible ? false : true;
@@ -915,7 +919,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': []
+					'guestOrAccount': [],
+					'chargeTypes': [],
+					'users': []
 				};
 			};
 
@@ -1127,23 +1133,33 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
-				key         = reportParams['USER_IDS'];
-				params[key] = [];
+				selected = [];
 				/**/
-				_.each(report.chosenUsers, function(user) {
-					params[key].push( user );
+				_.each(report.chosenUsers, function (id) {
+					var user = _.find($scope.activeUserList, function (each) {
+						return each.id === id;
+					});
+					if ( !! user ) {
+						selected.push( user );
+					};
 				});
 				/**/
-				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['users'] = [];
-					_.each(report.chosenUsers, function (id) {
-						var _user = _.find($scope.activeUserList, function (each) {
-							return each.id === id;
-						});
-						if ( !! _user ) {
-							$scope.appliedFilter['users'].push( _user.full_name );
+				if ( selected.length > 0 ) {
+					key         = reportParams['USER_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(user) {
+						params[key].push( user.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.users.push( user.full_name );
 						};
 					});
+
+					// in case if all sources are selected
+					if ( changeAppliedFilter && selected.length > 1 ) {
+						$scope.appliedFilter.users = ['Multiple'];
+					};
 				};
 			};
 
@@ -1182,7 +1198,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					key = reportParams['GROUP_BY_USER'];
 				} else if ( 'GROUP_NAME' === report.chosenGroupBy ) {
 					key = reportParams['GROUP_BY_GROUP_NAME'];
-				};
+				} else if ( 'CHARGE_TYPE' === report.chosenGroupBy ) {
+					key = reportParams['GROUP_BY_CHARGE_TYPE'];
+				}
 
 				/**/
 				if ( !! key ) {
@@ -1250,6 +1268,25 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						};
 					};
 				});
+			};
+
+			// generate params for selected shows
+			if ( report['hasChargeTypes']['data'].length ) {
+				_.each(report['hasChargeTypes']['data'], function(each) {
+					if ( each.selected ) {
+						key         = each.paramKey;
+						params[key] = true;
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.chargeTypes.push( each.description );
+						};
+					};
+				});
+
+				// in case if all types are selected
+				if ( changeAppliedFilter && report['hasChargeTypes']['selectAll'] ) {
+					$scope.appliedFilter.chargeTypes = ['Both'];
+				};
 			};
 
 			// generate params for selected exclusions
@@ -1571,7 +1608,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					    continue;
 					};
 
-					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
+					if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_charge_type' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
 						continue;
 					} else if ( params[key] !== $scope.oldParams[key] ) {
 						report.chosenGroupBy = 'BLANK';
@@ -1585,6 +1622,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( params.hasOwnProperty('group_by_group_name') ) {
 							params['group_by_group_name'] = undefined;
+						};
+						if ( params.hasOwnProperty('group_by_charge_type') ) {
+							params['group_by_charge_type'] = undefined;
 						};
 						/**/
 						if ( changeAppliedFilter ) {
@@ -1676,7 +1716,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.results         = response.results || [];
 				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || false;
-				$scope.reportGroupedBy = response.group_by || '';
+				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
+				// $scope.reportGroupedBy = response.group_by || '';
+
+				console.log( $scope.results );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;
@@ -1771,10 +1814,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						var entry = {},
 							found;
 
+						$scope.activeUserList = data;
+
 						activeUserAutoCompleteObj = [];
 						$.map(data, function(user) {
 							entry = {
-								label: user.email,
+								label: user.full_name || user.email,
 								value: user.id,
 							};
 							activeUserAutoCompleteObj.push(entry);
