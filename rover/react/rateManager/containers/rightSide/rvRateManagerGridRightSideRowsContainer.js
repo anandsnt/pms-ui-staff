@@ -2,7 +2,8 @@ const {connect} = ReactRedux;
 
 const mapStateToRateManagerGridRightSideRowsContainerProps = (state) => {
   return {
-    list: state.list
+    list: state.list,
+    mode: state.mode
   };
 };
 

@@ -6,6 +6,7 @@ const RM_RX_CONST = {
 	ROOM_TYPE_VIEW_MODE: 'RM_Room_Type_View',
 	OPEN_ALL: 'RM_Open_All_Button_Clicked',
 	CLOSE_ALL: 'RM_Close_All_Button_Clicked',
+	MAX_RESTRICTION_IN_COLUMN: 4,
 	VIEW_MODE_TEXT_MAPPINGS: {
 		RM_Rate_View: 'All Rates',
   		RM_Room_Type_View: 'All Room Types'

@@ -60,8 +60,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //may be this will result in running 365000 times
         ratesWithRestrictions = ratesWithRestrictions.map(function(rate) {
           rate.restrictionList = [];
-          //rate.name = rateObjectBasedOnID[rate.id].name;
+          
           rate = _.extend(rate, _.omit(rateObjectBasedOnID[rate.id], 'id'));
+          
           dates.map(function(date) {
             dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
             rate.restrictionList.push(dateRateSet.restrictions);
@@ -72,7 +73,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
-
+        console.log('Strted: ', new Date().getTime());
         store.dispatch({
           type: RM_RX_CONST.RATE_VIEW_CHANGED,
           data: [...ratesWithRestrictions],

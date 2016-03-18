@@ -16,6 +16,7 @@ const RateManagerGridViewRootComponent = createClass ({
 		this.leftScroller = this.rightScroller = null;
 
 		this.setScrollers();
+		console.log('ended: ', new Date().getTime());
 	},
 
 	setScrollers() {
@@ -70,6 +71,7 @@ const RateManagerGridViewRootComponent = createClass ({
 	componentDidUpdate() {
 		this.setScrollers();
 		this.refreshScrollers();
+		console.log('ended: ', new Date().getTime());
 	},
 
 	render() {

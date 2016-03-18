@@ -18,20 +18,8 @@ const RateManagerGridRightSideRowsComponent = createClass({
 		tableParentElement.style.width = tableElement.offsetWidth + 'px';
 	},
 	render() {
-		return (
-			<tbody>
-			{this.props.list.map((rateData) =>
-				<tr>
-					{rateData.restrictionList.map((eachDayRestrictions) =>
-						<td className='cell'>
-							<div className='cell-container'>
-								<div className='cell-content'></div>
-							</div>
-						</td>
-					)}		
-				</tr>
-			)}
-			</tbody>
-		)
+		if(this.props.mode === RM_RX_CONST.RATE_VIEW_MODE){
+			return <RateManagerGridRightSideRestrictionRowsContainer/>
+		}
 	}
 });
