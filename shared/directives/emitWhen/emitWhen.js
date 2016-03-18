@@ -22,7 +22,7 @@
 
 angular
 .module('emitWhen', [])
-.directive('emitWhen', function() {
+.directive('emitWhen', ['$timeout', function($timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -30,9 +30,11 @@ angular
                 event = params.event,
                 condition = params.condition;
 
-            if(condition){
-                scope.$emit(event);
+            if( condition ) {
+                $timeout(function() {
+                    scope.$emit(event);
+                })
             }
         }
     }
-});
+}]);
