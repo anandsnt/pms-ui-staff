@@ -10,7 +10,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 	'$filter',
 	'$timeout',
 	'ngDialog',
-	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
+	'$interval',
+	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog, $interval) {
 		
 		BaseCtrl.call(this, $scope);
 
@@ -43,6 +44,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			});
 		};
 
+		var refreshTimer = undefined;
+
 	
 
 
@@ -73,7 +76,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				item.hidden = !item.hidden;
 			};
 
-			$scope.refreshScroller( 'addon-forecast-report-scroll' );
+			if ( !! refreshTimer ) {
+				$interval.cancel(refreshTimer);
+				refreshTimer = undefined;
+			}
+
+			refreshScroll();
 		};
 
 		var resClassNames = {
@@ -289,9 +297,10 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			setup();
  			setScroller();
  			/**/
- 			$timeout(function() {
+ 			refreshScroll('scrollUp');
+ 			refreshTimer = $interval(function() {
  				refreshScroll('scrollUp');
- 			});
+ 			}, 1000);
  		}
 
  		init();	
