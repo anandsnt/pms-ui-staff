@@ -1162,12 +1162,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					params[key] = true;
 					/**/
 					if ( changeAppliedFilter ) {
-						$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' ).replace( '_', ' ' );
+						$scope.appliedFilter['groupBy'] = key.replace( 'group_by_', '' ).replace( '_', ' ' );
 					};
 				};
 
 				// patch
-				if ( 'ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy ) {
+				if ( report.title === reportNames['ADDON_FORECAST'] && ('ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy) ) {
 					key = reportParams['ADDON_GROUP_BY'];
 					params[key] = report.chosenGroupBy;
 					/**/
