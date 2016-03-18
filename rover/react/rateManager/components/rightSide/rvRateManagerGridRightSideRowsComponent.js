@@ -4,6 +4,7 @@ const RateManagerGridRightSideRowsComponent = createClass({
 
 	componentDidMount() {
 		this.setWidth();
+		//this.props.refreshScrollers();
 	},
 
 	componentDidUpdate() {

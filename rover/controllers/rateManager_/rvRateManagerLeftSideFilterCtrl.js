@@ -377,7 +377,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * @param {array} data
        */
       var successCallBackOfRatesFetch = (data) => {
-        $scope.rates = data.results;
+        $scope.rates = _.sortBy(data.results, 'name');
       };
 
       /**
@@ -385,7 +385,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * @param {array} data
        */
       var successCallBackOfRateTypeFetch = (data) => {
-        $scope.rateTypes = data;
+        $scope.rateTypes = _.sortBy(data, 'name');
       };
 
       /**

@@ -5,11 +5,12 @@ const RateManagerGridRightSideHeaderComponent = createClass({
 
 	componentDidMount() {
 		this.setWidth();
+		//this.props.refreshScrollers();
 	},
 
 	componentDidUpdate() {
 		this.setWidth();
-		this.props.refreshScrollers();
+		//this.props.refreshScrollers();
 	},
 
 	setWidth() {
