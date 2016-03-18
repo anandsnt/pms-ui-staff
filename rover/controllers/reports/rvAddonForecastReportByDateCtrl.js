@@ -282,16 +282,23 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		var init = function() {
-			setup();
-			setScroller();
-		}
+ 			setup();
+ 			setScroller();
+ 			/**/
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
+ 		}
 
-		init();	
+ 		init();	
 
-		var reInit = function() {
-			setup();
-			refreshScroll('scrollUp');
-		}
+ 		var reInit = function() {
+ 			setup();
+ 			/**/
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
+ 		}
 
 
 		// re-render must be initiated before for taks like printing.
