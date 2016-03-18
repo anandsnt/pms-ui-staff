@@ -1,19 +1,21 @@
 /* Rate Manager - Left sidebar        ==============================*/
 @media not print {
 
-  #rate-manager  {
-    position: relative;
-    height:100%;
+  #rate-manager{
+    position: relative; /*Old Rate Manager*/
+        height:100%; /*Old Rate Manager*/
+    
+    
 
     .filter-options{
       position: absolute;
-      top: 60px;
+      top: 60px; /*Old Rate Manager*/
       left: 0px;
       padding-right: 25px;
       z-index: 1040;
       width: 30px;
-       
-      .calc-height(100, 60);
+      .calc-height(100, 60); /*Old Rate Manager*/
+      
       .transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
       .show;
       
@@ -40,24 +42,23 @@
       }
 
       .leftMenuHandle {
-        cursor: e-resize !important;
-        height: 50px;
-        width: 25px;
-        top: 20px;
-        right: 0;
-        position: absolute;
-        z-index: 90;
-        background-image: @icons, @rcardTexture1;
+          cursor: e-resize !important;
+          height: 50px;
+          width: 25px;
+          top: 20px;
+          right: 0;
+          position: absolute;
+          z-index: 90;
+          background-image: @icons, @rcardTexture1;
 
-        @media @highdpi {
-          background-image: @icons2x, @rcardTexture1;
-          background-size: 120px, 40px;
-        }
-
-        background-repeat: no-repeat, repeat;
-        background-position: 5px -3807px, 0 0;
-        .box-shadow(1px 1px 1px rgba(0,0,0,.1));
-        #border-radius > .right(5px);
+                            @media @highdpi {
+                            background-image: @icons2x, @rcardTexture1;
+                            background-size: 120px, 40px;
+                             }
+          background-repeat: no-repeat, repeat;
+          background-position: 5px -3807px, 0 0;
+         .box-shadow(1px 1px 1px rgba(0,0,0,.1));
+                       #border-radius > .right(5px);
       }
 
       .half-border {
@@ -344,10 +345,12 @@
         display:block;
         text-align: center;
         margin-bottom:10px;
+        cursor: pointer;
 
         a {
-          color:@grey3;
+          color:@grey3; /*OLD Rate Manager*/
         }
+ 
       }
 
       .rates-box {
@@ -373,9 +376,6 @@
 
         &.first {
           margin-top:-10px;
-          &.last {
-            margin-bottom:10px;
-          }
         }
 
         &.dark {
@@ -407,7 +407,8 @@
           display:block;
         }
       }
-      .filter-padding{
+      .filter-padding,
+      .filter-container {
         background: @rcardTexture1;
         .box-shadow(1px 0 1px rgba(0,0,0,.2));
         .calc-height(100,80);
@@ -546,15 +547,21 @@
 
       }
     }
-    .content {
+    .rate-manager-content {
       top:140px; /* Header + Topbar*/
-      .calc-height(100, 140);
-    }
-    .calendar {
       height:100%;
+    }
+    .content { /*Old Rate Manager*/
+          top:140px; /* Header + Topbar*/
+          .calc-height(100, 140);
+     }
+
+    .calendar {
+      height:100%; /*Old Rate Manager*/
 
       .calendar-wraper {
         height:100%;
+        width:100%;
         overflow:hidden;
         position: relative;
     
@@ -582,8 +589,9 @@
               td {
                 position: relative;
                 text-align: right;
+                padding-top:10px;
               }
-
+               
               .name {
 
                 &.bolder {
@@ -604,6 +612,7 @@
                   text-transform: capitalize;
                 }
 
+
                 .base-rate-indicator {
                   position: absolute;
                   left:10px;
@@ -621,7 +630,7 @@
               .icons {
                 position: absolute;
                 right:0;
-                top:0;
+                top:10px;
                 bottom:0;
                 margin:auto;
                 .size(40px, 40px);
@@ -633,16 +642,22 @@
                 }
               }
 
-              &.expandedFirstRow {
-                height:227px;
+              &.expandedFirstRow, /*Old Rate Manager*/
+              &.expanded-row {
+                height:247px;
 
                 td {
-                  padding-top:15px;
+                  padding-top:30px;
                   vertical-align: top;
                 }
 
+                .name {
+                  color:@orange;
+                  font-weight: 600;
+                }
+
                 .icons {
-                  top:8px;
+                  top:20px;
                   bottom:auto;
                   right: -1px;
                    
@@ -681,7 +696,7 @@
             width:70px;
             height:35px;
             line-height: 35px;
-            margin:0 5px 20px 5px;
+            margin:0 5px 15px 5px;
             &:first-child {
               margin-left:20px;
             }
@@ -699,6 +714,17 @@
           position: absolute;
           top:0;
           left:190px;
+
+          .icon-report {
+            width: 16px;
+            height: 16px;
+            background-size: 15px;
+            
+            &.icon-upsell {
+              background-position: 0 -14px;
+            }
+    
+          }
 
           .iScrollHorizontalScrollbar {
             bottom:15px;
@@ -742,20 +768,34 @@
             }
             
             td {
-              .cell-content {
 
-                &.exp {
-                  
+              .expanded-cell {
+                .cell-content {
                   .restriction_holder { 
-                    height:41px;
+                    height: 41px;
                     .calc-padding-left( 100, 110 );
                   }
 
                   .room-type-price {
-                    height: 44px;
-                  }
+                                    height: 44px;
+                            }
                 }
               }
+
+              .cell-content { /*OLD Rate Manager*/
+
+                            &.exp {
+                              
+                              .restriction_holder { 
+                                height:41px;
+                                .calc-padding-left( 100, 110 );
+                              }
+
+                              .room-type-price {
+                                height: 44px;
+                              }
+                            }
+                        }
             }
           }
 
@@ -769,45 +809,41 @@
               width:210px;
                
             }
-            
-            .restriction_holder {
 
-              .icons-in-row {
-                position: relative;
-                height:20px;
+            .restriction_holder.icons-in-row {
+              position: relative;
+              height:20px;
 
-                .restriction-icon {
-                  margin:0;
-                  position: absolute;
+              .restriction-icon {
+                margin:0;
+                position: absolute;
 
-                  &:first-child {
-                    top:-12px;
-                    right:0;
-                  }
+                &:first-child {
+                  top:-12px;
+                  right:0;
+                }
 
-                  &:nth-child(2){
-                    right:0;
-                    bottom:-12px;
-                  }
+                &:nth-child(2){
+                  right:0;
+                  bottom:-12px;
+                }
 
-                  &:nth-child(3) {
-                    top:-12px;
-                    right:25px;
-                  }
+                &:nth-child(3) {
+                  top:-12px;
+                  right:25px;
+                }
 
-                  &:nth-child(4){
-                    right:25px;
-                    bottom:-12px;
-                  }
+                &:nth-child(4){
+                  right:25px;
+                  bottom:-12px;
                 }
               }
             }
 
             td {
-              .cell-content {
-
-                &.exp {
-                  
+            
+              .expanded-cell {
+                .cell-content {
                   .restriction_holder { 
                     height:41px;
                     .calc-padding-left( 100, 110 );
@@ -815,11 +851,28 @@
                   }
 
                   .room-type-price {
-                    height: 44px;
+                    height:44px;
                      span { font-size:21px; }
                   }
                 }
               }
+
+              .cell-content { /*Old Rate Manager*/
+
+                            &.exp {
+                              
+                              .restriction_holder { 
+                                height:41px;
+                                .calc-padding-left( 100, 110 );
+
+                              }
+
+                              .room-type-price {
+                                height: 44px;
+                                 span { font-size:21px; }
+                              }
+                            }
+                        }
             }
           }
         }
@@ -870,13 +923,13 @@
 
 
             td {
-              .cell-content {
+            
 
-                &.exp {
-                  
+              .expanded-cell {
+                .cell-content {
                   .restriction_holder { 
-                    height:41px;
                     .calc-padding-left( 100, 110 );
+                    height:41px;
                   }
 
                   .room-type-price {
@@ -889,14 +942,36 @@
                   }
                 }
               }
+
+              .cell-content { /*OLD Rate Manager*/
+
+                            &.exp {
+                              
+                              .restriction_holder { 
+                                height:41px;
+                                .calc-padding-left( 100, 110 );
+                              }
+
+                              .room-type-price {
+                                height:68px;
+                                 span { 
+                                  display: block; 
+                                  width:100%;
+                                  height:24px;
+                                 }
+                              }
+                            }
+                        }
             }
 
           }
 
 
           .pinnedLeft {
-            .cell.rate.expandedFirstRow {
-              height:323px;
+            .cell.rate.expandedFirstRow, /*Old Rate Manager */
+            .cell.rate.expanded-row
+             {
+              height:343px;
             }
           }
         }
@@ -921,10 +996,31 @@
             td {
               .cell-content {
                 padding:15px;
-                &.exp {
+
+                &.exp { /*OLD Rate Manager*/
                   
-                  .restriction_holder { 
-                    height:41px;
+                                .restriction_holder { 
+                                  height:41px;
+                                  .calc-padding-left( 100, 110 );
+                                }
+
+                                .room-type-price {
+                                  height:68px;
+                                   span { 
+                                    font-size:21px;
+                                    display: block; 
+                                    width:100%;
+                                    height:24px;
+                                   }
+                                }
+                          }
+
+              }
+
+              .expanded-cell {
+                .cell-content {
+                  .restriction_holder {
+                    height: 41px; 
                     .calc-padding-left( 100, 110 );
                   }
 
@@ -945,8 +1041,9 @@
           }
 
           .pinnedLeft {
-            .cell.rate.expandedFirstRow {
-              height:323px;
+            .cell.rate.expandedFirstRow, /*Old Rate Manager */
+            .cell.rate.expanded-row {
+              height:343px;
             }
           }
         }
@@ -969,11 +1066,32 @@
             td {
               .cell-content {
                 padding:15px 10px;
-                &.exp {
+
+                 &.exp { /*OLD RATE MANAGER*/
                   
+                                .restriction_holder {
+                                  padding:10px;
+                                  height: 41px;
+                                }
+
+                                .room-type-price {
+                                  height:58px;
+                                  padding:5px 10px;
+                                   span { 
+                                    display: block; 
+                                    width:100%;
+                                    font-size:14px;
+                                   }
+                                }
+                          }
+                
+              }
+
+              .expanded-cell {
+                .cell-content {
                   .restriction_holder {
-                    padding:10px;
                     height: 41px;
+                    padding:10px;
                   }
 
                   .room-type-price {
@@ -992,8 +1110,9 @@
           }
           
           .pinnedLeft {
-            .cell.rate.expandedFirstRow {
-              height:283px;
+            .cell.rate.expandedFirstRow, /*Old Rate Manager */
+            .cell.rate.expanded-row {
+              height:303px;
             }
           }
 
@@ -1011,7 +1130,17 @@
 
       .rate-calendar {
         margin-bottom:0;
-
+        .last {
+          td {
+             
+            .cell-container {
+              height:70px;
+              padding-bottom:10px;
+            }
+             
+          }
+           
+        }
         td,th{
 
           .date-header,
@@ -1020,15 +1149,22 @@
             width:265px;
             height:60px;
             background-color: rgba(0, 0, 0, 0.05);
-
-            &.exp {
+            
+            &.exp, /*Old Rate Manager*/
+            &.expanded-cell {
               height:auto;
+            }
+
+            &.weekend_day {
+              background-color: rgba(0,0,0,0.025);
             }
           }
 
+
+
           .date-header{
-            padding:10px 10px 5px 10px;
-            height:65px;
+            padding:10px 10px 0px 10px;
+            height:60px;
             span {
               background-color:@gcard;
               color:white;
@@ -1063,7 +1199,7 @@
                
 
             }
-            padding:5px 10px;
+            padding:10px 10px 0 10px;
 
             .cell-content {
               background-color:@white;
@@ -1076,8 +1212,19 @@
 
               &.isHistory-cell-content {
                 cursor: default;
+                opacity:0.5;
               }
-              &.exp {
+              
+            }
+
+            &.expanded-cell {
+              padding:10px;
+              background-color: rgba(0, 0, 0, 0.1);
+              border-top:10px solid #e6e6e6;
+              &.weekend_day {
+                border-top-color:#eaeaea;
+              }
+              .cell-content {
                 padding:0;
 
                 .restriction_holder {
@@ -1090,7 +1237,7 @@
                   .float;
                   .restriction-icon { 
                     position: static;
-                    margin-right:5px;
+                    margin-right:0px;
                     top:auto;
                     right:auto;
                     bottom:auto;
@@ -1113,11 +1260,66 @@
                     color:@black;
                     .pull-right;
 
-                    &.hasOverride-label {
+                    &.hasOverride-label, /* OLD Rate Manager*/
+                    &.has-override {
                       color: @orange;
                     }
+
+                    &.icon-report {
+                      .pull-left;
+                    }
+
+                    &.gray {
+                      color:@grey3;
+                    }
                   }
+
+
                 }
+
+                &.exp { /*Old Rate Manager*/
+                              padding:0;
+
+                              .restriction_holder {
+                                padding:10px 15px 10px 15px;
+                                width:100%;
+                                float:none;
+                                height:auto;
+                                display:block;
+                                position: relative;
+                                .float;
+                                .restriction-icon { 
+                                  position: static;
+                                  margin-right:0px;
+                                  top:auto;
+                                  right:auto;
+                                  bottom:auto;
+
+                                  &:last-child {
+                                    margin-right:0;
+                                  }
+                                }
+                              }
+
+                              .room-type-price {
+                                padding:10px 15px;
+                                font-size:12px;
+                                text-transform: uppercase;
+                                color:@grey3;
+                                .float;
+                                span {
+                                  font-size:24px;
+                                  font-weight: 300;
+                                  color:@black;
+                                  .pull-right;
+
+                                  &.hasOverride-label, /*OLD Rate Manager*/
+                                  &.has-override {
+                                    color: @orange;
+                                  }
+                                }
+                              }
+                            }
               }
             }
           }
@@ -1131,9 +1333,18 @@
           font-size:24px;
           font-weight: 300;
           line-height: 20px;
+
+          .icon-report {
+            margin-top:-2px;
+          }
+
+          &.gray {
+            color:@grey3;
+          }
         }
 
-        .hasOverride-label {
+        .hasOverride-label, /*Old Rate MAnager*/
+        .has-override {
           color:@orange;
         }
 
@@ -1149,11 +1360,18 @@
           }
         }
 
-        .exp {
+        .exp, /*Old Rate Manager*/
+        .expanded-cell {
           .restriction_holder {
             display:block;
             width:100%;
             border-bottom:1px solid #dcdcdc;
+
+            .restriction-icon {
+              &:last-child {
+                margin-right: inherit;
+              }
+            }
           }
         }
        
@@ -1190,7 +1408,7 @@
     }
 
     .restriction-legends {
-      padding: 15px 25px;
+      padding: 10px 25px;
       text-transform: uppercase;
       font-size: 12px;
       height: 50px;
@@ -1235,4 +1453,5 @@
     }
 
   }
-} 
+
+}
