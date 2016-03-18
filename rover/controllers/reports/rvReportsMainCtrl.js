@@ -893,7 +893,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'addonGroups'  : [],
 					'addons'       : [],
 					'reservationStatus' : [],
-					'guestOrAccount': []
+					'guestOrAccount': [],
+					'users': []
 				};
 			};
 
@@ -1100,23 +1101,33 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
-				key         = reportParams['USER_IDS'];
-				params[key] = [];
+				selected = [];
 				/**/
-				_.each(report.chosenUsers, function(user) {
-					params[key].push( user );
+				_.each(report.chosenUsers, function (id) {
+					var user = _.find($scope.activeUserList, function (each) {
+						return each.id === id;
+					});
+					if ( !! user ) {
+						selected.push( user );
+					};
 				});
 				/**/
-				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['users'] = [];
-					_.each(report.chosenUsers, function (id) {
-						var _user = _.find($scope.activeUserList, function (each) {
-							return each.id === id;
-						});
-						if ( !! _user ) {
-							$scope.appliedFilter['users'].push( _user.full_name );
+				if ( selected.length > 0 ) {
+					key         = reportParams['USER_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(user) {
+						params[key].push( user.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.users.push( user.full_name || user.email );
 						};
 					});
+
+					// in case if all employees are selected
+					if ( changeAppliedFilter && $scope.activeUserList.length === selected.length ) {
+						$scope.appliedFilter.markets = ['All Employees'];
+					};
 				};
 			};
 
@@ -1690,10 +1701,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						var entry = {},
 							found;
 
+						$scope.activeUserList = data;
+
 						activeUserAutoCompleteObj = [];
 						$.map(data, function(user) {
 							entry = {
-								label: user.email,
+								label: user.full_name || user.email,
 								value: user.id,
 							};
 							activeUserAutoCompleteObj.push(entry);
@@ -1724,8 +1737,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
-					var match = _.find(uiValues, function(email) {
-						return email === user.label;
+					var match = _.find(uiValues, function(label) {
+						return label === user.label;
 					});
 
 					if (!!match) {
@@ -1744,8 +1757,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
-					var match = _.find(uiValues, function(email) {
-						return email === user.label;
+					var match = _.find(uiValues, function(label) {
+						return label === user.label;
 					});
 
 					if (!!match) {
