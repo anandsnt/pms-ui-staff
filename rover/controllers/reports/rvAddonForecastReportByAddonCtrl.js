@@ -19,7 +19,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
-			results          = mainCtrlScope.results,
+			results          = [],
 			addonGrpHash = {},
 			addonHash    = {},
 			addonGroups,
@@ -27,16 +27,21 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 
 
-		var SCROLL_NAME = 'addon-forecast-report-scroll';
 		var refreshScroll = function(scrollUp) {
-			if ( !! mainCtrlScope.myScroll.hasOwnProperty(SCROLL_NAME) ) {
-				$scope.refreshScroller( SCROLL_NAME );
-				if ( !!scrollUp ) {
-					mainCtrlScope.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
-				};
+			$scope.refreshScroller('addon-forecast-report-scroll');
+			if ( !!scrollUp ) {
+				$scope.$parent.myScroll['addon-forecast-report-scroll'].scrollTo(0, 0, 100);
 			};
 		};
-		$scope.setScroller( SCROLL_NAME, { preventDefault: false } );
+
+		var setScroller = function() {
+			$scope.setScroller('addon-forecast-report-scroll', {
+				tap: true,
+				preventDefault: false,
+				scrollX: false,
+				scrollY: true
+			});
+		};
 
 	
 
@@ -164,10 +169,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			var success = function (data) {
 				$scope.$emit( 'hideLoader' );
 				eachDate.reservations = data;
+				refreshScroll();
  			};
 
  			var error = function (data) {
 				$scope.$emit( 'hideLoader' );
+				refreshScroll();
  			};
 
  			_.extend(params, {
@@ -192,9 +199,10 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
  		};
 
- 		function init () {
+ 		function setup () {
  			addonGroups  = mainCtrlScope.addonGroups || $scope.chosenReport.hasAddonGroups.data;
  			addons       = mainCtrlScope.addons ||  $scope.chosenReport.hasAddons.data;
+ 			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
 
@@ -275,20 +283,27 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			$scope.modifiedResults = angular.copy( results );
 
  			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
-
- 			// refresh scroll
- 			$timeout( refreshScroll.bind(null, 'scrollUp'), 300 );
  		};
 
- 		init();
+ 		var init = function() {
+ 			setup();
+ 			setScroller();
+ 		}
+
+ 		init();	
+
+ 		var reInit = function() {
+ 			setup();
+ 			refreshScroll('scrollUp');
+ 		}
 
 
  		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms
-		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], init );
-		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], init );
-		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
-		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
+		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], reInit );
+		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
+		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
+		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
 
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
