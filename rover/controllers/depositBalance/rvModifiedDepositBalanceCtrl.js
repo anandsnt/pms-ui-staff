@@ -365,7 +365,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
 		$scope.cardValues = tokenDetails;
-	    var cardExfpiry = "";
+	    var cardExpiry = "";
 	    if(!$scope.cardValues.tokenDetails.isSixPayment){
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	//To render the selected card data
