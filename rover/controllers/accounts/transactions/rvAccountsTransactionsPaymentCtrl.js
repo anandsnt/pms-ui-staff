@@ -544,7 +544,8 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 					"bill_number": $scope.renderData.billNumberSelected,
 					"payment_type": $scope.saveData.paymentType,
 					"amount": $scope.renderData.defaultPaymentAmount,
-					"payment_method_id": ($scope.saveData.paymentType === 'CC') ? $scope.saveData.payment_type_id : null
+					"payment_method_id": ($scope.saveData.paymentType === 'CC') ? $scope.saveData.payment_type_id : null,
+					"reference_text" : $scope.renderData.referanceText
 					},
 				"bill_id": $scope.billsArray[$scope.renderData.billNumberSelected-1].bill_id
 			};
