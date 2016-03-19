@@ -5,12 +5,15 @@ const RateManagerGridRightSideRestrictionRowsComponent = createClass({
 
 	componentDidMount() {
 		this.setWidth();
-		//this.props.refreshScrollers();
 	},
 
 	componentDidUpdate() {
 		this.setWidth();
-		console.log('sfds');
+		this.props.refreshScrollers();
+	},
+
+	shouldComponentUpdate(nextProp, nextState) {
+		return !(nextProp.action === RM_RX_CONST.REFRESH_SCROLLERS);
 	},
 
 	setWidth() {
@@ -21,7 +24,8 @@ const RateManagerGridRightSideRestrictionRowsComponent = createClass({
 	},
 
 	render() {
-		if(this.props.mode !== RM_RX_CONST.RATE_VIEW_MODE) {
+		if(this.props.mode !== RM_RX_CONST.RATE_VIEW_MODE 
+			&& this.props.mode !== RM_RX_CONST.ROOM_TYPE_VIEW_MODE ) {
 			return false;
 		}
 		return (

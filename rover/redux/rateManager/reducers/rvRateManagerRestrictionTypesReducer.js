@@ -15,8 +15,6 @@ const rateManagerRestrictionTypesReducer = (state, action) => {
 
   switch (action.type) {
     case RM_RX_CONST.RATE_VIEW_CHANGED:
-     	return getValidRestrictionTypes(action.restrictionTypes);
-    
     case RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED:
       return getValidRestrictionTypes(action.restrictionTypes);
          
