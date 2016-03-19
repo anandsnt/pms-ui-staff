@@ -58,17 +58,26 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //we have lots of alternative ways, those depends on javascript array order
         //which is buggy from browser to browser, so choosing this bad way
         //may be this will result in running 365000 times
-        ratesWithRestrictions = ratesWithRestrictions.map(function(rate) {
+        ratesWithRestrictions = ratesWithRestrictions.map((rate) => {
           rate.restrictionList = [];
+
+          rate = {...rate, ...rateObjectBasedOnID[rate.id]};
           
-          rate = _.extend(rate, _.omit(rateObjectBasedOnID[rate.id], 'id'));
-          
-          dates.map(function(date) {
-            dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
+          dates.map((date) => {
+            dateRateSet = _.findWhere(rateRestrictions[date].rates, { id: rate.id });
             rate.restrictionList.push(dateRateSet.restrictions);
           });
 
           return _.omit(rate, 'restrictions');
+        });
+
+        //for the first row with common restrictions among the rates
+        //for now there will not be any id, we have to use certain things to identify (later) TODO
+        
+        ratesWithRestrictions.unshift({
+          restrictionList: dates.map((date) => {
+            return rateRestrictions[date].all_rate_restrictions;
+          })
         });
 
         //closing the left side filter section
@@ -101,7 +110,53 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object}
        */
       var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
-        console.log(response);
+        var roomTypeRestrictions = response.roomTypeAndRestrictions,
+            roomTypes = response.roomTypes,
+            dates = _.pluck(roomTypeRestrictions, 'date'),
+            roomTypeIDs = _.pluck(roomTypes, 'id'),
+            roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
+            roomTypeObjectBasedOnID = {},
+            dateRoomTypeSet = null;
+
+        roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
+        roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
+        
+        //we have lots of alternative ways, those depends on javascript array order
+        //which is buggy from browser to browser, so choosing this bad way
+        //may be this will result in running 365000 times
+        roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
+          roomType.restrictionList = [];
+
+          roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
+          
+          dates.map((date) => {
+            dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, { id: roomType.id });
+            roomType.restrictionList.push(dateRoomTypeSet.restrictions);
+          });
+
+          return _.omit(roomType, 'restrictions');
+        });
+
+        //for the first row with common restrictions among the rates
+        //for now there will not be any id, we have to use certain things to identify (later) TODO
+        
+        roomTypeWithRestrictions.unshift({
+          restrictionList: dates.map((date) => {
+            return roomTypeRestrictions[date].all_room_type_restrictions;
+          })
+        });
+
+        //closing the left side filter section
+        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
+        console.log('Strted: ', new Date().getTime());
+        store.dispatch({
+          type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
+          data: [...roomTypeWithRestrictions],
+          dates,
+          zoomLevel: lastSelectedFilterValues.zoomLevel,
+          businessDate: tzIndependentDate($rootScope.businessDate),
+          restrictionTypes
+        });
       };
 
       /**
@@ -113,7 +168,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           params: params,
           onSuccess: onFetchRoomTypeAndRestrictionsSuccess
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchAllRoomTypesInfo, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
       };
 
       /**
@@ -168,7 +223,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object} event
        * @param  {array} errorMessage
        */
-      $scope.$on('showErrorMessage', function(event, errorMessage) {
+      $scope.$on('showErrorMessage', (event, errorMessage) => {
         $scope.errorMessage = errorMessage;
         runDigestCycle();
       });

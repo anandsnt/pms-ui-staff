@@ -1,22 +1,10 @@
 const {connect} = ReactRedux;
 
 const mapStateToRateManagerGridRightSideRowsContainerProps = (state) => {
-  return {
-    list: state.list,
-    mode: state.mode
-  };
-};
-
-const mapDispatchToRateManagerGridRightSideRowsContainerProps = (dispatch) => {
-  return {
-  	refreshScrollers: () => {
-        dispatch({
-            type: RM_RX_CONST.REFRESH_SCROLLERS
-        });
-    }     
-  }
+    return {
+        mode: state.mode
+    };
 };
 
 const RateManagerGridRightSideRowsContainer = 
-	connect(mapStateToRateManagerGridRightSideRowsContainerProps, mapDispatchToRateManagerGridRightSideRowsContainerProps)
-	(RateManagerGridRightSideRowsComponent);
+	connect(mapStateToRateManagerGridRightSideRowsContainerProps)(RateManagerGridRightSideRowsComponent);

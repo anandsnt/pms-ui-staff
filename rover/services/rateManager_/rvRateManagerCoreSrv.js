@@ -85,7 +85,42 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
-        service.fetchRatesAndDailyRates = function (params, ) {
+        service.fetchRoomTypes = () => {
+            var url = '/api/room_types.json?exclude_pseudo=true';
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data.results);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchRatesAndRoomTypes = function (params) {
+            var promises = [],
+                roomTypes = [],
+                roomTypeAndRestrictions = [],
+                deferred = $q.defer();
+
+            promises.push(service.fetchAllRoomTypesInfo(params).then(function(data) {
+                roomTypeAndRestrictions = data.results;
+            }));
+            promises.push(service.fetchRoomTypes().then(function(data) {
+                roomTypes = data;
+            }));
+
+            $q.all(promises).then(function(data) {
+                deferred.resolve({
+                    roomTypes,
+                    roomTypeAndRestrictions
+                });
+            });
+
+            return deferred.promise;
+        };
+
+
+        service.fetchRatesAndDailyRates = function (params) {
             var promises = [],
                 rates = [],
                 dailyRateAndRestrictions = [],

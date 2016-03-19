@@ -1,7 +1,10 @@
 const RM_RX_CONST = {
 	RATE_VIEW_CHANGED: 'RM_Rate_View_Changed',
+	ROOM_TYPE_VIEW_CHANGED: 'RM_Room_Type_View_Changed',
 	NOT_CONFIGURED_MODE: 'RM_Not_Configured_Mode',
 	REFRESH_SCROLLERS: 'RM_Refresh_Scrollers',
+	SCROLLER_REFRESHED: 'RM_Refresh_Scroller_done',
+	REFRESH_SCROLLERS_ACTION: 'RM_ACT_Refresh_Scrollers',
 	RATE_VIEW_MODE: 'RM_Rate_View',
 	ROOM_TYPE_VIEW_MODE: 'RM_Room_Type_View',
 	OPEN_ALL: 'RM_Open_All_Button_Clicked',

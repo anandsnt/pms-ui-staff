@@ -1,12 +1,13 @@
 const {createClass} = React
 
-const RateManagerCalendarRightSideComponent = createClass({
+const RateManagerGridRightSideComponent = createClass({
 
 	componentDidMount() {
 		this.setWidth();
 	},
 
 	componentDidUpdate() {
+		console.log('RateManagerGridRightSideComponent update');
 		this.setWidth();
 	},
 

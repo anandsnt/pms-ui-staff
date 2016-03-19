@@ -461,7 +461,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedDateRange = '';
 
         //zoom level configs
-        $scope.selectedZoomLevelValue = '3'; //default value
+        $scope.selectedZoomLevelValue = '7'; //default value
         $scope.zoomLevelValues = rvRateManagerZoomLevelConstants;
 
         //order by values

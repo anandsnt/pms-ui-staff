@@ -1,4 +1,5 @@
 const RateManagerGridLeftRowsComponent = ({ list }) => (
+	
 	<tbody>
 		<RateManagerGridLeftFirstRowContainer/>
 		{

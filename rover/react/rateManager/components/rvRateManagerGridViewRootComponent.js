@@ -82,7 +82,7 @@ const RateManagerGridViewRootComponent = createClass ({
 		return (
 			<div className={'calendar-wraper zoom-level-' + this.props.zoomLevel}>
 				<RateManagerGridLeftSideComponent/>
-				<RateManagerCalendarRightSideComponent/>
+				<RateManagerGridRightSideComponent/>
 				<RateManagerBottomRestrictionListContainer/>
 			</div>
 		);		
