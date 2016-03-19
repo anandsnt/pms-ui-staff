@@ -18,7 +18,7 @@
                 <li class="revenue">Revenue</li>
             </ul>
 
-            <div ng-repeat="(key1, item1) in modifiedResults">
+            <div ng-repeat="(key1, item1) in modifiedResults" emit-when="{event: 'ALL_RENDERED', condition: $last}">
                 <!-- Level 1 - Date -->
                 <a ng-if="item1.hasData" href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addons.length }" ng-click="toggleSub(item1)">
                     <strong>{{ getAddonGrpName(key1) }}</strong>
