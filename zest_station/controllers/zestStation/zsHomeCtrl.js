@@ -85,6 +85,15 @@ sntZestStation.controller('zsHomeCtrl', [
 
     //to logout
     $scope.logOutApplication = function(){
+        if (typeof chrome !== "undefined"){
+            var chromeAppId = "akcdigddlniehmanmpegoldlkamgmood"; // chrome app id 
+            //minimize the chrome app on loging out
+            chrome.runtime.sendMessage(chromeAppId,"zest-station-logout");
+            console.info("login out from chrome");
+        }
+        else{
+             console.info("login out");
+        };
         $window.location.href = '/logout'; 
     };
 
