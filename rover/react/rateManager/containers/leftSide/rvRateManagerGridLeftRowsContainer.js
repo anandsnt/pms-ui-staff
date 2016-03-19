@@ -6,13 +6,16 @@ const {connect} = ReactRedux;
  * @return {array}
  */
 let convertRatesDataForLeftListing = (rates) => {
-	return rates.map((rate) => {
-		rate.greyedOut = rate.based_on_rate_id;
-		rate.iconClassBeforeText = !rate.based_on_rate_id ? 'base-rate-indicator': '';
+	return rates.map((rate, index) => {
+		rate.trClassName = ('cell rate ' + (((index + 1) === rates.length) ? 'last' : ''));
+		rate.tdClassName = 'first-row force-align';
+		rate.leftSpanClassName = 'name ' + (rate.based_on_rate_id ? 'gray' : 'base-rate');
 		rate.showIconBeforeText = !rate.based_on_rate_id;
+		rate.iconClassBeforeText = !rate.based_on_rate_id ? 'base-rate-indicator': '';
 		rate.textInIconArea = !rate.based_on_rate_id ? 'B' : '';
-		rate.showArrowIcon = true;
-		rate.arrowDirection = 'right';
+		rate.leftSpanText = rate.name;
+		rate.showRightSpan = true;
+		rate.rightSpanClassName = 'icons icon-double-arrow rotate-right';
 		return rate;
 	});
 };
@@ -23,13 +26,14 @@ let convertRatesDataForLeftListing = (rates) => {
  * @return {array}
  */
 let convertRoomTypesDataForLeftListing = (roomTypes) => {
-	return roomTypes.map((roomType) => {
-		roomType.greyedOut = false;
-		roomType.iconClassBeforeText = '';
+	return roomTypes.map((roomType, index) => {
+		roomType.trClassName = ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : ''));
+		roomType.tdClassName = 'first-row force-align';
+		roomType.leftSpanClassName = 'name ';
 		roomType.showIconBeforeText = false;
 		roomType.textInIconArea = '';
-		roomType.showArrowIcon = false;
-		roomType.arrowDirection = '';
+		roomType.leftSpanText = roomType.name;
+		roomType.showRightSpan = false;
 		return roomType;
 	});
 };

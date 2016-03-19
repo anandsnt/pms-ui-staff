@@ -31,7 +31,7 @@ const RateManagerGridRightSideRestrictionRowsComponent = createClass({
 		return (
 			<tbody>
 				{this.props.restrictionRows.map((rateData, rowIndex) => 
-					<tr key={'key-' + rowIndex}>
+					<tr key={'key-' + rowIndex} className={( (rowIndex + 1) === (this.props.restrictionRows.length) ? 'last' : '' ) }>
 						{rateData.restrictionList.map((eachDayRestrictions, colIndex) => 
 							<td key={'key-' + colIndex} className='cell'>
 								<div className='cell-container'>

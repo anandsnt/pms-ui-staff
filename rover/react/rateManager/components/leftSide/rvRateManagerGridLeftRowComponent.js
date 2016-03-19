@@ -1,27 +1,28 @@
 const RateManagerGridLeftRowComponent = ({
-	id,
+	trClassName,
+	tdClassName,
 	onClick,
-	greyedOut,
-	iconClassBeforeText,
+	id,	
+	leftSpanClassName,
 	showIconBeforeText,
+	iconClassBeforeText,
 	textInIconArea,
-	text,
-	showArrowIcon,
-	arrowDirection
+	leftSpanText,
+	showRightSpan,
+	rightSpanClassName
 }) => (
-	<tr className='cell rate'>
-		<td className='first-row force-align'>
+	<tr className={trClassName}>
+		<td className={tdClassName}>
 			<a onClick={() => onClick(id) }>
-				<span className={ 'name ' + (greyedOut ? 'gray' : '')}>
-					<span className={iconClassBeforeText} style={{display: showIconBeforeText ? 'inline' : 'none'}}>
-						{textInIconArea}
-					</span>
-
-					{text}
-
+				<span className={leftSpanClassName}>
+					{
+						showIconBeforeText ? (<span className={iconClassBeforeText}> {textInIconArea} </span>) : ''
+					}
+					{leftSpanText}
 				</span>
-				<span style={{display: showArrowIcon ? 'inline' : 'none'}} 
-					className={'icons icon-double-arrow rotate-' + arrowDirection}/>
+				{
+					showRightSpan ? (<span className={rightSpanClassName}/>) : ''
+				}
 			</a>
 		</td>
 	</tr>
