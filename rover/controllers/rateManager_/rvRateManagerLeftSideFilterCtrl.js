@@ -113,7 +113,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteAllSelectedRateTypes = () => {
         $scope.selectedRateTypes = [];
-
+        $scope.selectedRateTypeID = '';
         //deleting the nodes will change the height
         refreshScroller();
       };
@@ -180,7 +180,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteAllSelectedRates = () => {
         $scope.selectedRates = [];
-
+        $scope.selectedRateID = '';
         //deleting the nodes will change the height
         refreshScroller();
       };
@@ -319,7 +319,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteAllSelectedCards = () => {
         $scope.selectedCards = [];
-
+        $scope.cardSearchText = '';
         //deleting the nodes will change the height
         refreshScroller();
       };
