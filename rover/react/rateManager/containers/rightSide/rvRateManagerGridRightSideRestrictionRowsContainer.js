@@ -62,7 +62,7 @@ const mapDispatchToRateManagerGridRightSideRestrictionRowsContainerProps = (disp
   }
 };
 
-const RateManagerGridRightSideRestrictionRowsContainer = 
+const RateManagerGridRightSideRowsRestrictionContainer = 
 	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps, 
         mapDispatchToRateManagerGridRightSideRestrictionRowsContainerProps)
-	(RateManagerGridRightSideRestrictionRowsComponent);
+	(RateManagerGridRightSideRowsRestrictionComponent);

@@ -38,6 +38,25 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
 	});
 };
 
+/**
+ * to convert the single rate's room type data coming from reducers to props
+ * @param  {array} room types
+ * @return {array}
+ */
+let convertSingleRateRoomTypesDataForLeftListing = (roomTypes) => {
+	return roomTypes.map((roomType, index) => {
+		roomType.trClassName = ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : ''));
+		roomType.tdClassName = 'first-row force-align';
+		roomType.leftSpanClassName = 'name ';
+		roomType.showIconBeforeText = false;
+		roomType.textInIconArea = '';
+		roomType.leftSpanText = roomType.name;
+		roomType.showRightSpan = true;
+		roomType.rightSpanClassName = 'icons icon-double-arrow rotate-down';
+		return roomType;
+	});
+};
+
 const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
 		let actualRateList = state.list.slice(1, state.list.length); //first index contains all restrcition for all rates
@@ -45,10 +64,16 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 			list: convertRatesDataForLeftListing(actualRateList)
 		};
 	}
-	if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
 		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
 		return {
 			list: convertRoomTypesDataForLeftListing(actualRoomTypeList)
+		};
+	}
+	else if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
+		return {
+			list: convertSingleRateRoomTypesDataForLeftListing(actualRoomTypeList)
 		};
 	}	
 };

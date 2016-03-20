@@ -85,7 +85,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         console.log('Strted: ', new Date().getTime());
         store.dispatch({
           type: RM_RX_CONST.RATE_VIEW_CHANGED,
-          data: [...ratesWithRestrictions],
+          rateRestrictionData: [...ratesWithRestrictions],
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
@@ -95,9 +95,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
       /**
        * to fetch the daily rates
-       * @param  {Object} params
+       * @param  {Object} filter values
        */
-      var fetchDailyRates = (params) => {
+      var fetchDailyRates = (filterValues) => {
+        var params = {
+          from_date: formatDateForAPI(filterValues.fromDate),
+          to_date: formatDateForAPI(filterValues.toDate),
+          order_id: filterValues.orderBySelectedValue,
+          name_card_ids: filterValues.selectedCards,
+          group_by: filterValues.groupBySelectedValue                 
+        };
         var options = {
           params: params,
           onSuccess: onfetchDailyRatesSuccess
@@ -151,7 +158,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         console.log('Strted: ', new Date().getTime());
         store.dispatch({
           type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
-          data: [...roomTypeWithRestrictions],
+          roomTypeRestrictionData: [...roomTypeWithRestrictions],
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
@@ -161,9 +168,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
       /**
        * to fetch the room type & it's restrcitions
-       * @param  {Object} params
+       * @param  {Object} filterValues
        */
-      var fetchRoomTypeAndRestrictions = (params) => {
+      var fetchRoomTypeAndRestrictions = (filterValues) => {
+        var params = {
+          from_date: formatDateForAPI(filterValues.fromDate),
+          to_date: formatDateForAPI(filterValues.toDate),
+          order_id: filterValues.orderBySelectedValue               
+        };        
         var options = {
           params: params,
           onSuccess: onFetchRoomTypeAndRestrictionsSuccess
@@ -172,13 +184,85 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       };
 
       /**
+       * when single rate details api call success
+       * @param  {Object} response
+       */
+      var onFetchSingleRateDetailsAndRestrictions = (response) => {
+        var roomTypeRestrictions = response.roomTypeAndRestrictions,
+            roomTypes = response.roomTypes,
+            dates = _.pluck(roomTypeRestrictions, 'date'),
+            roomTypeIDs = _.pluck(roomTypes, 'id'),
+            roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
+            roomTypeObjectBasedOnID = {},
+            dateRoomTypeSet = null;
+
+        roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
+        roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
+        
+        //we have lots of alternative ways, those depends on javascript array order
+        //which is buggy from browser to browser, so choosing this bad way
+        //may be this will result in running 365000 times
+        roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
+          roomType.restrictionList = [];
+
+          roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
+          
+          dates.map((date) => {
+            dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, { id: roomType.id });
+            roomType.restrictionList.push(dateRoomTypeSet.restrictions);
+          });
+
+          return _.omit(roomType, 'restrictions');
+        });
+
+        //for the first row with common restrictions among the rates
+        //for now there will not be any id, we have to use certain things to identify (later) TODO
+        
+        roomTypeWithRestrictions.unshift({
+          restrictionList: dates.map((date) => {
+            return roomTypeRestrictions[date].rate_restrictions;
+          })
+        });
+
+        //closing the left side filter section
+        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
+
+        store.dispatch({
+          type: RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
+          singleRateRestrictionData: [...roomTypeWithRestrictions],
+          dates,
+          zoomLevel: lastSelectedFilterValues.zoomLevel,
+          businessDate: tzIndependentDate($rootScope.businessDate),
+          restrictionTypes
+        });        
+      };
+
+      /**
+       * to fetch the single rate details 
+       * @param  {Object} filterValues
+       */
+      var fetchSingleRateDetailsAndRestrictions = (filterValues) => {
+        var params = {
+          from_date: formatDateForAPI(filterValues.fromDate),
+          to_date: formatDateForAPI(filterValues.toDate),
+          order_id: filterValues.orderBySelectedValue,
+          rate_id: filterValues.selectedRates[0].id          
+        };        
+        var options = {
+          params: params,
+          onSuccess: onFetchSingleRateDetailsAndRestrictions
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);        
+      };
+
+      /**
        * utility method for converting date object into api formated 'string' format
        * @param  {Object} date
        * @return {String}
        */
-      var formatDateForAPI = function(date) {
-        return $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI);
-      };
+      var formatDateForAPI = (date) => (
+        $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI)
+      );
 
       /**
        * to update results
@@ -186,26 +270,34 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object} newFilterValues)
        */
       $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
-
         //Storing for further reference
         lastSelectedFilterValues = { ...newFilterValues }; //ES7
-
-        var params = {
-          from_date: formatDateForAPI(newFilterValues.fromDate),
-          to_date: formatDateForAPI(newFilterValues.toDate),
-          order_id: newFilterValues.orderBySelectedValue
-        };
-
+        
         if (newFilterValues.showAllRates) {
-          params.name_card_ids = newFilterValues.selectedCards;
-          params.group_by = newFilterValues.groupBySelectedValue;
-
           //calling the api
-          fetchDailyRates(params);
-
-        } else if (newFilterValues.showAllRoomTypes) {
-          fetchRoomTypeAndRestrictions(params);
+          fetchDailyRates(newFilterValues);
         }
+        else if (newFilterValues.showAllRoomTypes) {
+          fetchRoomTypeAndRestrictions(newFilterValues);
+        }
+        else { 
+          /* 
+            In this case we have two modes (single rate view & multiple rates view)
+            -------------------
+            single rate view
+            -------------------
+            if we choose single rate, this mode will become active. In this mode,
+            we will be getting room type view with it's rate amount 
+            (we can view all occupancy amount by clicking on the expand button) & 
+            restriction list against each room type
+          */
+          
+          //single rate view
+          if(newFilterValues.selectedRates.length === 1)  {
+            fetchSingleRateDetailsAndRestrictions(newFilterValues)
+          }
+        }
+
       });
 
       /**
