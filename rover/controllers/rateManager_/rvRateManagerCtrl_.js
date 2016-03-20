@@ -103,8 +103,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           to_date: formatDateForAPI(filterValues.toDate),
           order_id: filterValues.orderBySelectedValue,
           name_card_ids: filterValues.selectedCards,
-          group_by: filterValues.groupBySelectedValue                 
+          group_by: filterValues.groupBySelectedValue                
         };
+
+        if(filterValues.selectedRateTypes.length) {
+          params["rate_type_ids[]"] = _.pluck(filterValues.selectedRateTypes, 'id');
+        }
+
+        if(filterValues.selectedRates.length) {
+          params["rate_ids[]"] = _.pluck(filterValues.selectedRates, 'id');
+        }
+
         var options = {
           params: params,
           onSuccess: onfetchDailyRatesSuccess
@@ -290,11 +299,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             we will be getting room type view with it's rate amount 
             (we can view all occupancy amount by clicking on the expand button) & 
             restriction list against each room type
+            -------------------
+            multiple rate view
+            -------------------
+            if we choose multiple rate or multiple rate type,
+            the very same mode newFilterValues.showAllRates (check the lines above) will become active
           */
           
           //single rate view
-          if(newFilterValues.selectedRates.length === 1)  {
+          if(newFilterValues.selectedRates.length === 1 && !newFilterValues.selectedRateTypes.length)  {
             fetchSingleRateDetailsAndRestrictions(newFilterValues)
+          }
+          else if(newFilterValues.selectedRates.length > 1 || newFilterValues.selectedRateTypes.length > 0) {
+            //calling the api
+            fetchDailyRates(newFilterValues);
           }
         }
 
