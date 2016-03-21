@@ -777,7 +777,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             
             $scope.timeOut = false;
-            $scope.closePopup = function(){q
+            $scope.closePopup = function(){
                 //ngDialog.hide();
                 $scope.timeOut = false;
                 //$scope.zestStationData.popup = false;
