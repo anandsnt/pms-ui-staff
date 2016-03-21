@@ -120,6 +120,12 @@
                 <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url"  name = "zest-web" id = "zest-web" label="{{'BOOKING_URL'| translate}}" placeholder = "" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
                 <ad-textbox value="zestSettings.home_screen.booking_pop_up.button_label"  name = "zest-web" id = "zest-web" label="{{'BUTTON_LABEL'| translate}}" placeholder = "" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
             </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>CHROME_APP_ID</span> </h3>
+                </div>
+                <ad-textbox value="zestSettings.chrome_app_id"  name = "zest-web" id = "zest-web" label="{{'CHROME_APP_ID'| translate}}" placeholder = "" styleclass="full-width"></ad-textbox>
+            </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
