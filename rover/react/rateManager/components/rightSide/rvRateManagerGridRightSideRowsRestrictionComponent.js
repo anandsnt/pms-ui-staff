@@ -1,31 +1,25 @@
-const _RateManagerGridRightSideRowsRestrictionComponent = ({ mode, restrictionRows }) => {
-	if(mode !== RM_RX_CONST.RATE_VIEW_MODE 
-		&& mode !== RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
-		return false
-	}
-	return (
-		<tbody>
-			{restrictionRows.map((rateData, rowIndex) => 
-				<tr key={'key-' + rowIndex}
-					className={((rowIndex + 1) === (restrictionRows.length) ? 'last' : '')}>
-						
-						{rateData.restrictionList.map((eachDayRestrictions, colIndex) =>
-						 	<RateManagerGridRightSideCellComponent key={'key-' + colIndex}>
-								{eachDayRestrictions.map((restriction, restrictionIndex) => 
-									<RateManagerRestrictionIconComponent
-										key={'key-' + restrictionIndex}
-										className={'' + restriction.className}
-										text={restriction.days}/>
-								)}
-							</RateManagerGridRightSideCellComponent>
-						)}
+const RateManagerGridRightSideRowsRestrictionComponent = ({ mode, restrictionRows, dateList }) => (
+	<tbody>
+		{restrictionRows.map((rateData, rowIndex) => 
+			<tr key={'key-' + rowIndex}
+				className={((rowIndex + 1) === (restrictionRows.length) ? 'last' : '')}>
+					
+					{rateData.restrictionList.map((eachDayRestrictions, colIndex) =>
+					 	<td key={'key-' + colIndex} className='cell'>
+							<div className={'cell-container ' + (dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
+								<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
+									{eachDayRestrictions.map((restriction, restrictionIndex) => 
+										<RateManagerRestrictionIconComponent
+											key={'key-' + restrictionIndex}
+											className={'' + restriction.className}
+											text={restriction.days}/>
+									)}
+								</div>
+							</div>
+						</td>
+					)}
 
-				</tr>
-			)}
-		</tbody>
-	);
-};
-
-//mixins
-const RateManagerGridRightSideRowsRestrictionComponent = 
-	RateManagerGridRightSideRowsCommonComponent(_RateManagerGridRightSideRowsRestrictionComponent);
+			</tr>
+		)}
+	</tbody>
+);

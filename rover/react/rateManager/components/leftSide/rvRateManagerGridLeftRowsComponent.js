@@ -1,9 +1,9 @@
-const RateManagerGridLeftRowsComponent = ({ list }) => (
+const RateManagerGridLeftRowsComponent = ({ leftListingData }) => (
 	
 	<tbody>
 		<RateManagerGridLeftFirstRowContainer/>
 		{
-			list.map((item, index) => 
+			leftListingData.map((item, index) => 
 				<RateManagerGridLeftRowComponent
 					key = {item.id}
 					id = {item.id}

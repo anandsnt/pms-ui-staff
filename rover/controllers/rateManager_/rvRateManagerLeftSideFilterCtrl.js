@@ -104,6 +104,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         var indexToDelete = _.findIndex($scope.selectedRateTypes , {id: parseInt(rateTypeID)});
         $scope.selectedRateTypes.splice(indexToDelete, 1);
 
+        $scope.selectedRateTypeID = '';
+        
         //deleting the node will change the height
         refreshScroller();
       };
@@ -171,6 +173,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         var indexToDelete = _.findIndex($scope.selectedRates , {id: parseInt(rateID)});
         $scope.selectedRates.splice(indexToDelete, 1);
 
+        $scope.selectedRateID = '';
+
         //deleting the node will change the height
         refreshScroller();
       };
@@ -181,6 +185,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedRates = () => {
         $scope.selectedRates = [];
         $scope.selectedRateID = '';
+        
         //deleting the nodes will change the height
         refreshScroller();
       };
@@ -309,6 +314,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteSelectedCard = (cardID) => {
         var indexToDelete = _.findIndex($scope.selectedCards , {id: parseInt(cardID)});
         $scope.selectedCards.splice(indexToDelete, 1);
+
+        $scope.cardSearchText = '';
 
         //deleting the node will change the height
         refreshScroller();

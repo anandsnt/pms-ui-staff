@@ -1,6 +1,36 @@
 const {connect} = ReactRedux;
 
 /**
+ * we need date related information in restriction list view(like is week end or past date..)
+ * @param  {array} dateList
+ * @param  {Object} businessDate
+ * @return {array}
+ */
+let convertDateListForRestrictionView = (dateList, businessDate) => {
+    //we will compute date related information first and will use this information in
+    //the view component
+    var newDateList = [],
+        copiedDate = null,
+        copiedDateComponents =  null,
+        isWeekEnd = false,
+        isPastDate = false;
+
+    dateList.map(date => {
+        copiedDate = tzIndependentDate(date);
+        copiedDateComponents = copiedDate.toComponents().date; //refer util.js in diary folder
+        isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0);
+        isPastDate = copiedDate < businessDate;
+        newDateList.push({
+            date: copiedDate,
+            isWeekEnd,
+            isPastDate
+        });
+    });
+
+    return newDateList;
+};
+
+/**
  * convert data coming from reducer to props for restriction only displaying
  * @param  {array} listingData 
  * @param  {array} restrictionTypes
@@ -21,7 +51,7 @@ let convertDataForRestrictionListing = (listingData, restrictionTypes) => {
     restrictionForMoreThanMaxAllowed.days = restrictionForMoreThanMaxAllowed.defaultText;
 
     listingData = listingData.map((data) => {
-        data.restrictionList = data.restrictionList.map((dayRestrictionList) => {
+        data.restrictionList = data.restrictionList.map((dayRestrictionList, index) => {
             //If we cross max restriction allowed in a single column, we will replace with single restriction
             if(dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
                 return [{ ...restrictionForMoreThanMaxAllowed }];
@@ -38,31 +68,14 @@ let convertDataForRestrictionListing = (listingData, restrictionTypes) => {
 };
 
 const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) => {
-    var restrictionRows = [];
-    if(state.mode === RM_RX_CONST.RATE_VIEW_MODE 
-        || state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
-        restrictionRows = convertDataForRestrictionListing(state.list, state.restrictionTypes);
-    }
-    if(restrictionRows.length > 0) {
-        return {
-            restrictionRows,
-            mode: state.mode,
-            action: state.action
-        };
-    }
-};
-
-const mapDispatchToRateManagerGridRightSideRestrictionRowsContainerProps = (dispatch) => {
-  return {
-  	refreshScrollers: () => {
-        dispatch({
-            type: RM_RX_CONST.REFRESH_SCROLLERS
-        });
-    }     
-  }
+    var restrictionRows = convertDataForRestrictionListing(state.list, state.restrictionTypes);
+    return {
+        restrictionRows,
+        mode: state.mode,
+        dateList: convertDateListForRestrictionView(state.dates, state.businessDate)
+    };
 };
 
 const RateManagerGridRightSideRowsRestrictionContainer = 
-	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps, 
-        mapDispatchToRateManagerGridRightSideRestrictionRowsContainerProps)
+	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps)
 	(RateManagerGridRightSideRowsRestrictionComponent);
