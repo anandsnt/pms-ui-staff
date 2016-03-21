@@ -288,7 +288,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
                     var onResponseSuccess;
                         options.is_kiosk = true;
+                        
                     if (!$scope.remoteEncoding){
+                        options.uid = null;//for sankyo key card encoding
                         onResponseSuccess = $scope.printLocalKey;
                     } else {
                         onResponseSuccess = $scope.successMakeKey;
