@@ -5,21 +5,23 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.stateCheck = {
 			pagination: {
 				roomType: {
-					perPage: 20,
+					perPage: 15,
 					page: 1,
 					ratesList: {
-						perPage: 3
+						perPage: 15
 					}
 				},
 				rate: {
-					perPage: 20,
+					perPage: 15,
 					page: 1
 				}
 			},
 			house: house, //house availability
 			baseInfo: {
-				roomTypes: rates.results,
-				totalCount: rates.total_count
+				roomTypes: [],
+				totalCount: rates.total_count,
+				rates: [],
+				maxAvblRates: rates.total_count
 			},
 			activeMode: $stateParams.view && $stateParams.view === "CALENDAR" ? "CALENDAR" : "ROOM_RATE",
 			activeView: "", // RECOMMENDED, ROOM_TYPE and RATE
@@ -226,45 +228,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.$emit('hideLoader');
 				});
 			},
-			fetchRates = function() {
-				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, "guests");
-				if (occupancies.length > 1) {
-					// No need to send last day's occupancy to the rate's API 
-					occupancies.splice(-1, 1)
-				}
-
-				var payLoad = {
-					from_date: ARRIVAL_DATE,
-					to_date: DEPARTURE_DATE,
-					company_id: $scope.reservationData.company.id,
-					travel_agent_id: $scope.reservationData.travelAgent.id,
-					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
-					promotion_code: $scope.reservationData.searchPromoCode,
-					promotion_id: $scope.reservationData.promotionId,
-					override_restrictions: $scope.stateCheck.showClosedRates,
-					'adults[]': _.pluck(occupancies, "adults"),
-					'children[]': _.pluck(occupancies, "children"),
-					'include_expired_promotions': !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates
-				};
-
-				if ($scope.stateCheck.stayDatesMode) {
-					var dayOccupancy = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[$scope.stateCheck.dateModeActiveDate].guests;
-					payLoad['restrictions_on_date'] = $scope.stateCheck.dateModeActiveDate;
-					payLoad.adults = dayOccupancy.adults;
-					payLoad.children = dayOccupancy.children;
-				};
-
-				$scope.invokeApi(RVReservationBaseSearchSrv.fetchRates, payLoad, function(rates) {
-					$scope.stateCheck.baseInfo = rates;
-					$scope.stateCheck.addonLookUp = RVReservationStateService.getAddonAmounts(rateAddons,
-						ARRIVAL_DATE,
-						DEPARTURE_DATE,
-						ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
-					groupByRoomTypes();
-					groupByRates();
-					$scope.$emit('hideLoader');
-				});
-			},
 			hasContractedRate = function(rates) {
 				var hasRate = false;
 				_.each(rates, function(rate) {
@@ -317,6 +280,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
+				} else if ($scope.stateCheck.activeView === "RATE") {
+					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
 				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
@@ -416,6 +381,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.display.roomFirstGrid.push(roomTypeInfo);
 				});
 				syncLookUp();
+				$scope.refreshScroll();
+			},
+			generateRatesGrid = function() {
+				$scope.display.rateFirstGrid = [];
+				console.log($scope.stateCheck.baseInfo.rates);
+				$scope.display.rateFirstGrid = $scope.stateCheck.baseInfo.rates;
 				$scope.refreshScroll();
 			},
 			groupByRates = function() {
@@ -574,17 +545,26 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 				$timeout(function() {
 					getScrollerObject('room_types').on('scroll', function() {
-						if (!$scope.stateCheck.showLessRooms &&
-							this.y < (scrollPosition - 30) &&
-							Math.abs(this.y - this.maxScrollY) < Math.abs(this.maxScrollY / 5)) {
-							if ($scope.stateCheck.baseInfo.totalCount > $scope.display.roomFirstGrid.length) {
-								$scope.stateCheck.pagination.roomType.page++;
+						var sc = $scope.stateCheck,
+							roomsCount = $scope.display.roomFirstGrid.length,
+							ratesCount = $scope.display.rateFirstGrid.length;
+						if (this.y < (scrollPosition - 30) && Math.abs(this.y - this.maxScrollY) < Math.abs(this.maxScrollY / 5)) {
+							if (!sc.showLessRooms &&
+								sc.activeView === "ROOM_TYPE" &&
+								sc.baseInfo.totalCount > roomsCount) {
+								sc.pagination.roomType.page++;
 								fetchRoomTypesList(true); // The param tells the method to append the response to the existing list
+							} else if (sc.activeView === "RATE" && sc.baseInfo.maxAvblRates > ratesCount) {
+								sc.pagination.rate.page++;
+								fetchRatesList(null, sc.pagination.rate.page, function(response){
+									$scope.display.rateFirstGrid = $scope.display.rateFirstGrid.concat(response.results);
+									$scope.refreshScroll();
+								});
 							}
 						}
 						scrollPosition = this.y;
 					});
-				}, 1000);
+				}, 3000);
 			},
 			setBackButton = function() {
 				// CICO-20270: to force selection of a rate after removing a card with contracted rate.
@@ -697,10 +677,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				setBackButton();
 
-				// groupByRoomTypes();
-				generateRoomTypeGrid();
-				// groupByRates();
-
+				if ($scope.stateCheck.activeView === "ROOM_RATE") {
+					$scope.stateCheck.baseInfo.roomTypes = rates.results;
+					generateRoomTypeGrid();
+				} else if ($scope.stateCheck.activeView === "RATE") {
+					$scope.stateCheck.baseInfo.rates = rates.results;
+					generateRatesGrid();
+				}
 				//--
 				initScrollers();
 				initEventListeners();
@@ -954,7 +937,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$timeout(function() {
 				$scope.refreshScroller('room_types');
 				$scope.$parent.myScroll['room_types'] && $scope.$parent.myScroll['room_types'].refresh();
-			}, 100);
+			}, 1000);
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PERMISSIONS

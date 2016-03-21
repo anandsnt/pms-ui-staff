@@ -50,14 +50,15 @@
             </select>
         </div>
     </div>
-    <div class="reservation-content rooms-and-rates-content no-content" ng-show="display.roomFirstGrid.length == 0">
+    <div class="reservation-content rooms-and-rates-content no-content" ng-show="display.roomFirstGrid.length == 0 && display.rateFirstGrid.length == 0">
         <div class="info">
             <span class="icon-no-content icon-room"></span>
             <strong class="h1" translate>NO_AVAILABILITY</strong>
             <span class="h2" translate>NO_ROOM_RATE_MSG</span>
         </div>
     </div>
-    <div class="reservation-content rooms-and-rates-content scrollable" ng-iscroll="room_types" ng-iscroll-delay="500" ng-show="display.roomFirstGrid.length > 0">
+    <div class="reservation-content rooms-and-rates-content scrollable" ng-iscroll="room_types" ng-iscroll-delay="500" 
+    ng-show="display.roomFirstGrid.length > 0 || display.rateFirstGrid.length > 0">
         <div>
             <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper"></ul>
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'ROOM_TYPE'">
@@ -203,16 +204,16 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="break" ng-show="room.ratesArray.length < room.totalRatesCount" ng-click="showRatesList(room, true)"> 
-                            <span>SHOW MORE RATES</span>
+                        <li class="break" ng-show="room.ratesArray.length < room.totalRatesCount" ng-click="showRatesList(room, true)">
+                            <span class="thin">SHOW MORE RATES</span>
                         </li>
                     </ul>
-                     
                 </li>
                 <li class="break" ng-show="stateCheck.showLessRooms && stateCheck.selectedRoomType == -1" ng-click="showAllRooms()"> <span translate>RESV_SEE_MORE_ROOMS</span>
                 </li>
             </ul>
-            <ul class="rooms-and-rates wrapper" ng-hide="true">
+            <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'RATE'">
+                <ng-include src="'/assets/partials/reservation/rvRoomRatesRateView.html'"></ng-include>
             </ul>
         </div>
     </div>
