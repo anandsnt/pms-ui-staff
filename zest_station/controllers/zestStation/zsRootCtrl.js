@@ -912,7 +912,13 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $scope.supportedLangs = supported;
         };
-        
+    var maximizeScreen = function(){
+        var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+        console.info("chrome app id"+chromeAppId);
+        //minimize the chrome app on loging out
+        (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-login"):"";
+        console.info("starting in from chrome");
+    } ;
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -930,6 +936,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        (typeof chrome !== "undefined") ? maximizeScreen():"";
         $scope.socketOperator = new webSocketOperations();
         $scope.zestStationData.keyCardInserted =  false;
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
