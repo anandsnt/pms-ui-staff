@@ -1191,12 +1191,16 @@
                 background: @grey1;
 
                 &.error {
-                    color: #fff0f0;
-                    font-style: italic;
                     background: lighten(@red, 40);
                     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15))
                 }
             }
+        }
+
+        &.has-notification {
+            .content-scroll {
+                .calc-height(100, 240);
+            }  
         }
     }
 
