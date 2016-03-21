@@ -53,11 +53,13 @@
 		var fetchGuestDetails = function(){
 			$scope.isLoading = true;
 			guestDetailsService.getGuestDetails().then(function(response) {
-				$scope.isLoading          = false;
-				$scope.guestDetails       = response;
-				$scope.guestDetails.day   = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
-				$scope.guestDetails.month = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
-				$scope.guestDetails.year  = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
+				$scope.isLoading         	 = false;
+				$scope.guestDetails       	 = response;
+				$scope.guestDetails.street   = response.street1;
+				$scope.guestDetails.country	 = response.country_id;
+				$scope.guestDetails.day   	 = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
+				$scope.guestDetails.month 	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
+				$scope.guestDetails.year  	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
 			},function(){
 				$rootScope.netWorkError   = true;
 				$scope.isLoading          = false;
