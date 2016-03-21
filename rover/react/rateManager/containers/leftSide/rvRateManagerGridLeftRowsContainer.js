@@ -50,22 +50,26 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
 /**
  * to convert the single rate's room type data coming from reducers to props
  * @param  {array} room types
+ * @param {array} expandedRows [array containing index of row to expand]
  * @return {array}
  */
-let convertSingleRateRoomTypesDataForLeftListing = (roomTypes) => {
+let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => {
 	var roomTypesToReturn = [];
 	roomTypes.map((roomType, index) => {
 		roomTypesToReturn.push({
 			...roomType,
-			trClassName: ('cell rate expandedFirstRow' + (((index + 1) === roomTypes.length) ? 'last' : '')),
+			trClassName: (
+				'cell rate' + 
+				(((index + 1) === roomTypes.length) ? ' last' : '') + 
+				(expandedRows.indexOf(index) > -1 ? ' expandedFirstRow': '')
+				),
 			tdClassName: 'first-row force-align',
 			leftSpanClassName: 'name ',
 			showIconBeforeText: false,
 			textInIconArea: '',
 			leftSpanText: roomType.name,
 			showRightSpan: true,
-			rightSpanClassName: 'icons icon-double-arrow rotate-down',
-			expanded: false
+			rightSpanClassName: 'icons icon-double-arrow rotate-down'
 		})
 	});
 	return roomTypesToReturn;
@@ -87,18 +91,30 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	else if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
 		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
 		return {
-			leftListingData: convertSingleRateRoomTypesDataForLeftListing(actualRoomTypeList)
+			leftListingData: convertSingleRateRoomTypesDataForLeftListing(actualRoomTypeList, state.expandedRows),
+			onItemClickActionType: RM_RX_CONST.TOGGLE_EXPAND_COLLAPSE_ROW 
 		};
 	}	
 };
 
-const mapDispatchToRateManagerGridLeftRowsContainerProps = (dispatch) => {
+const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatchProps, ownProps) => {
+	const { dispatch } = dispatchProps;
 	return {
-		  
+		onItemClick:(e, index) => {
+		    dispatch({
+		        type: stateProps.onItemClickActionType,
+		        payLoad: {
+		        	index: index
+		        }
+		    });				
+		},
+		leftListingData: stateProps.leftListingData
 	}
 };
 
 const RateManagerGridLeftRowsContainer = connect(
-  mapStateToRateManagerGridLeftRowsContainerProps, 
+  mapStateToRateManagerGridLeftRowsContainerProps,
+  null,
   mapDispatchToRateManagerGridLeftRowsContainerProps
 )(RateManagerGridLeftRowsComponent);
+

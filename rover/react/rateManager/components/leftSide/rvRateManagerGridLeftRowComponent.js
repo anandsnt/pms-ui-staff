@@ -2,7 +2,7 @@ const RateManagerGridLeftRowComponent = ({
 	trClassName,
 	tdClassName,
 	onClick,
-	id,	
+	index,	
 	leftSpanClassName,
 	showIconBeforeText,
 	iconClassBeforeText,
@@ -13,7 +13,7 @@ const RateManagerGridLeftRowComponent = ({
 }) => (
 	<tr className={trClassName}>
 		<td className={tdClassName}>
-			<a onClick={() => onClick(id) }>
+			<a onClick={(e) => onClick(e, index) }>
 				<span className={leftSpanClassName}>
 					{
 						showIconBeforeText ? (<span className={iconClassBeforeText}> {textInIconArea} </span>) : ''

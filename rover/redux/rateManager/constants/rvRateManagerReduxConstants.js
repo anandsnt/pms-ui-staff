@@ -11,6 +11,7 @@ const RM_RX_CONST = {
 	SINGLE_RATE_EXPANDABLE_VIEW_MODE: 'RM_Single_Rate_Expandable_View',
 	OPEN_ALL: 'RM_Open_All_Button_Clicked',
 	CLOSE_ALL: 'RM_Close_All_Button_Clicked',
+	TOGGLE_EXPAND_COLLAPSE_ROW: 'RM_Toggle_Expand_collapse_row',
 	MAX_RESTRICTION_IN_COLUMN: 4,
 	VIEW_MODE_TEXT_MAPPINGS: {
 		RM_Rate_View: 'All Rates',

@@ -1,4 +1,4 @@
-const RateManagerGridLeftRowsComponent = ({ leftListingData }) => (
+const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItemClickActionType }) => (
 	
 	<tbody>
 		<RateManagerGridLeftFirstRowContainer/>
@@ -6,10 +6,10 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData }) => (
 			leftListingData.map((item, index) => 
 				<RateManagerGridLeftRowComponent
 					key = {item.id}
-					id = {item.id}
+					index = {index}
 					trClassName = {item.trClassName}
 					tdClassName = {item.tdClassName}
-					onClick = {(e) => { console.log('asdasda'); }}
+					onClick = {(e, index) => { onItemClick(e, index); }}
 					leftSpanClassName = {item.leftSpanClassName}
 					showIconBeforeText = {item.showIconBeforeText}
 					iconClassBeforeText = {item.iconClassBeforeText}

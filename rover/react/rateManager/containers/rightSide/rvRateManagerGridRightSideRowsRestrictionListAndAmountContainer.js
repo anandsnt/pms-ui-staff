@@ -34,9 +34,10 @@ let convertDateListForRestrictionAndAmountView = (dateList, businessDate) => {
  * convert data coming from reducer to props for restriction only displaying
  * @param  {array} listingData 
  * @param  {array} restrictionTypes
+ * @param  {array} expandedRows [array containing index of row to expand]
  * @return {array}
  */
-let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes) => {
+let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes, expandedRows) => {
 
     //adding the css class and all stuff for restriction types
     restrictionTypes = restrictionTypes.map((restrictionType) => ({
@@ -50,10 +51,10 @@ let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes) => 
     var restrictionForMoreThanMaxAllowed = RateManagerRestrictionTypes['MORE_RESTRICTIONS'];
     restrictionForMoreThanMaxAllowed.days = restrictionForMoreThanMaxAllowed.defaultText;
     var listingDataToReturn = [];
-    listingData.map((data) => {
+    listingData.map((data, index) => {
         listingDataToReturn.push({
             ...data,
-            expanded: true,
+            expanded: (expandedRows.indexOf(index - 1) > -1),
             restrictionList: data.restrictionList.map((dayRestrictionList) => {
                 //If we cross max restriction allowed in a single column, we will replace with single restriction
                 if(dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
@@ -72,7 +73,7 @@ let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes) => 
 
 const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerProps = (state) => {
     var roomTypeRowsData = [];
-    roomTypeRowsData = applyRestrictionLogicForSingleRateView(state.list, state.restrictionTypes);
+    roomTypeRowsData = applyRestrictionLogicForSingleRateView(state.list, state.restrictionTypes, state.expandedRows);
     return {
         roomTypeRowsData,
         mode: state.mode,

@@ -7,7 +7,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			scrollbars: false,
 			scrollX: false,
 			scrollY: true,
-			preventDefaultException: { className: /(^|\s)(occupied|available|reserved)(\s|$)/ },
+			click: true,
 			mouseWheel: true,
 			useTransition: true
 		};
