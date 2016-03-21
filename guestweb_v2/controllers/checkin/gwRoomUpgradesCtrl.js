@@ -24,7 +24,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			$scope.upgradeOptions = response;
 			$scope.isUpgradesFetching = false;
 		};
-		var onnUpgradeFetchFailure = function(response) {
+		var onUpgradeFetchFailure = function(response) {
 			//to do - continue process - no fatal error
 		};
 
@@ -33,7 +33,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				'reservation_id': GwWebSrv.zestwebData.reservationID
 			},
 			successCallBack: onUpgradeFetchSuccess,
-			failureCallBack: onnUpgradeFetchFailure
+			failureCallBack: onUpgradeFetchFailure
 		};
 		$scope.callAPI(GwCheckinSrv.fetchRoomUpgradesDetails, options);
 
@@ -50,13 +50,13 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			var onUpgradeSuccess = function() {
 				//to do - continue process 
 			};
-			var onnUpgradeFailure = function() {
+			var onUpgradeFailure = function() {
 				//to do - continue process - no fatal error
 			};
 			var options = {
 				params: params,
 				successCallBack: onUpgradeSuccess,
-				failureCallBack: onnUpgradeFailure
+				failureCallBack: onUpgradeFailure
 			};
 			$scope.callAPI(GwCheckinSrv.upgradeRoom, options);
 		};
