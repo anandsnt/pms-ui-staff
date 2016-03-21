@@ -39,5 +39,35 @@ sntGuestWeb.service('GwCheckinSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2','GwWebS
 		return deferred.promise;
 	};
 
+	/**
+	 * to fetch room upgrades
+	 * @return data
+	 */
+
+	this.fetchRoomUpgradesDetails = function(params) {
+		var deferred = $q.defer();
+		var url = '/guest_web/upgrade_options.json';
+		GWBaseWebSrv.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	 * to upgrade room
+	 * @return {undefined}
+	 */
+	this.upgradeRoom = function(params) {
+		var deferred = $q.defer();
+		var url = '/guest_web/upgrade_room.json';
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 	
 }]);

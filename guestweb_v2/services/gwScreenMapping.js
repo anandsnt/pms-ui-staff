@@ -37,5 +37,9 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	},{
 		"value": "RESERVATION_DETAILS",
 		"id" : "ZS-11"
+	},
+	{
+		"value": "ROOM_UPGRADES",
+		"id"  : "ZS-12"
 	}];
 }]);

@@ -19,7 +19,7 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 		$scope.checkInButtonClicked = function() {
 			//to do : show terms and conditions
 			if ( GwWebSrv.zestwebData.upgradesAvailable) {
-				$state.go('checkinUpgrade');
+				$state.go('roomUpgrade');
 			} else {
 				$state.go('termsAndConditions');
 			};

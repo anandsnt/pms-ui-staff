@@ -14,6 +14,13 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 			pageTitle:'Details - Check-in'
 		}
+	 }).state('roomUpgrade', {
+	 	url: '/roomUpgrade',
+	 	templateUrl: '/assets/partials/checkin/gwRoomUpgrades.html',
+	 	controller : 'gwRoomUpgradeController',
+	    data: {
+	    	pageTitle: 'Room - Upgrade'
+	    }
 	 });
 
 	//    //room and cc verification 
