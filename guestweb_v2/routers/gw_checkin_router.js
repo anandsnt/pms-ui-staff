@@ -21,6 +21,11 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	    data: {
 	    	pageTitle: 'Room - Upgrade'
 	    }
+	 }).state('etaUpdation', {
+	 	url: '/etaUpdation',
+	 	templateUrl: '/assets/partials/checkin/gwArrivalTime.html',
+	 	controller : 'etaUpdationController',
+	    title: 'ETA Updation'
 	 });
 
 	//    //room and cc verification 

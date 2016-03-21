@@ -1,5 +1,5 @@
 /**
- * Checkout final Controller
+ * Checkin - Reservation details Controller
  */
 sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv',
 	function($scope, $state, $controller, GwWebSrv,GwCheckinSrv) {

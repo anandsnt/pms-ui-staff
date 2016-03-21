@@ -41,5 +41,9 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	{
 		"value": "ROOM_UPGRADES",
 		"id"  : "ZS-12"
+	},
+	{
+		"value":"ETA_UPDATION",
+		"id" : "zs-13"
 	}];
 }]);
