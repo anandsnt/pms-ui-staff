@@ -50,6 +50,13 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 params.level = level;
             }
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                if (!!params.allotment_id || !!params.group_id) {
+                    _.each(response.results, function(roomType) {
+                        if (roomType.rate_id === null) {
+                            roomType.rate_id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                        }
+                    });
+                }
                 deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);
@@ -57,11 +64,17 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             return deferred.promise;
         };
 
-
         service.fetchRateADRs = function(params) {
             var deferred = $q.defer(),
                 url = "/api/availability/rate_adrs";
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                if (!!params.allotment_id || !!params.group_id) {
+                    _.each(response.results, function(rate) {
+                        if (rate.id === null) {
+                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                        }
+                    });
+                }
                 deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);

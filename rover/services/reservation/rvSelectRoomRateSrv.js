@@ -22,72 +22,61 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
         self.promotionValidity;
         self.isGroupReservation;
 
-        self.getRestrictions = function(params) {
+        self.getRateDetails = function(params) {
             var deferred = $q.defer();
             var url = '/api/availability/rate_details';
-            // Generate a dummy response in case of custom rates
-            if (params.rate_id && params.rate_id.toString().match(/_CUSTOM_/)) {
-                var restrictions = {};
-                for (ms = new tzIndependentDate(params.from_date) * 1, last = new tzIndependentDate(params.to_date) *
-                    1; ms <= last; ms += (24 * 3600 * 1000)) {
-                    restrictions[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = [];
-                }
+
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                var restrictions = {},
+                    amounts = {},
+                    summary = [];
+
+                _.each(data.results, function(result) {
+                    //---------------------------------------------Add HOUSE_FULL to the restrictions array
+                    //CICO-24923 Not needed in case of group bookings
+                    if (self.houseAvailability && !self.isGroupReservation) {
+                        if (self.houseAvailability[result.date] < 1) {
+                            result.restrictions.push({
+                                restriction_type_id: 99,
+                                days: null
+                            });
+                        }
+                    }
+
+                    //--------------------------------------------- INVALID PROMO
+                    if (self.promotionValidity !== null) {
+                        if (!self.promotionValidity[result.date]) {
+                            result.restrictions.push({
+                                restriction_type_id: 98,
+                                days: null
+                            });
+                        }
+                    }
+
+                    restrictions[result.date] = result.restrictions;
+
+                    amounts[result.date] = result.amount;
+
+                    _.each(result.restrictions, function(restriction) {
+                        if (!_.findWhere(summary, {
+                            restriction_type_id: restriction.type_id,
+                            days: restriction.days
+                        })) {
+                            summary.push(restriction);
+                        }
+                    });
+                });
+
                 deferred.resolve({
-                    summary: [],
-                    dates: restrictions
+                    summary: summary,
+                    dates: restrictions,
+                    amounts: amounts
                 });
-            } else {
-                RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
-                    var restrictions = {},
-                        amounts = {},
-                        summary = [];
 
-                    _.each(data.results, function(result) {
-                        //---------------------------------------------Add HOUSE_FULL to the restrictions array
-                        //CICO-24923 Not needed in case of group bookings
-                        if (self.houseAvailability && !self.isGroupReservation) {
-                            if (self.houseAvailability[result.date] < 1) {
-                                result.restrictions.push({
-                                    restriction_type_id: 99,
-                                    days: null
-                                });
-                            }
-                        }
+            }, function(data) {
+                deferred.reject(data);
+            });
 
-                        //--------------------------------------------- INVALID PROMO
-                        if (self.promotionValidity !== null) {
-                            if (!self.promotionValidity[result.date]) {
-                                result.restrictions.push({
-                                    restriction_type_id: 98,
-                                    days: null
-                                });
-                            }
-                        }
-
-                        restrictions[result.date] = result.restrictions;
-
-                        amounts[result.date] = result.amount;
-
-                        _.each(result.restrictions, function(restriction) {
-                            if (!_.findWhere(summary, {
-                                restriction_type_id: restriction.type_id,
-                                days: restriction.days
-                            })) {
-                                summary.push(restriction);
-                            }
-                        });
-                    });
-
-                    deferred.resolve({
-                        summary: summary,
-                        dates: restrictions,
-                        amounts: amounts
-                    });
-
-                }, function(data) {
-                    deferred.reject(data);
-                });
-            }
             return deferred.promise;
         };
     }
