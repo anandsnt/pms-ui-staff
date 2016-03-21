@@ -6,7 +6,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			pagination: {
 				roomType: {
 					perPage: 20,
-					page: 1
+					page: 1,
+					ratesList: {
+						perPage: 3
+					}
 				},
 				rate: {
 					perPage: 20,
@@ -286,10 +289,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.ratesMeta[customRate.id] = customRate;
 				};
 			},
-			fetchRatesList = function(roomTypeId, cb) {
+			fetchRatesList = function(roomTypeId, page, cb) {
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, "guests");
 
 				var payLoad = {
+					page: page,
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
 					company_id: $scope.reservationData.company.id,
@@ -310,6 +314,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.adults = dayOccupancy.adults;
 					payLoad.children = dayOccupancy.children;
 				};
+
+				if ($scope.stateCheck.activeView === "ROOM_TYPE") {
+					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
+				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
 					params: payLoad,
@@ -1516,14 +1524,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			resetRates();
 		};
 
-		$scope.showRatesList = function(room) {
+		$scope.showRatesList = function(room, showMoreRates) {
 			var toggle = function() {
 				room.isCollapsed = !room.isCollapsed;
 				$scope.refreshScroll();
 			};
-			if (!room.totalRatesCount) {
+			if (!room.totalRatesCount || showMoreRates) {
 				// Need to get the rates list before making it visible
-				fetchRatesList(room.id, function(response) {
+				var pageToFetch = 1;
+				if (showMoreRates) {
+					pageToFetch = (room.ratesArray.length / $scope.stateCheck.pagination.roomType.ratesList.perPage) + 1;
+				}
+				fetchRatesList(room.id, pageToFetch, function(response) {
 					var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE),
 						isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] <
 						1 : $scope.getLeastHouseAvailability() < 1,
@@ -1535,7 +1547,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						});
 
 					room.totalRatesCount = response.total_count;
-					room.ratesArray = [];
+
+					if (!showMoreRates) {
+						room.ratesArray = [];
+					}
 					_.each(response.results, function(rate) {
 
 						rate.restriction_count = 0;
@@ -1602,7 +1617,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					syncLookUp();
 				});
 				room.defaultRate = room.ratesArray[0];
-				$timeout(toggle, 300);
+
+				if (!showMoreRates) {
+					$timeout(toggle, 300);
+				}
 			} else {
 				toggle();
 			}
