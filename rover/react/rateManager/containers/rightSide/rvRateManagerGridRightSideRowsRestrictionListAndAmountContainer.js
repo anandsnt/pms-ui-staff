@@ -36,7 +36,7 @@ let convertDateListForRestrictionAndAmountView = (dateList, businessDate) => {
  * @param  {array} restrictionTypes
  * @return {array}
  */
-let convertAmountAndRestrictionListing = (listingData, restrictionTypes) => {
+let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes) => {
 
     //adding the css class and all stuff for restriction types
     restrictionTypes = restrictionTypes.map((restrictionType) => ({
@@ -53,7 +53,7 @@ let convertAmountAndRestrictionListing = (listingData, restrictionTypes) => {
     listingData.map((data) => {
         listingDataToReturn.push({
             ...data,
-            expanded: false,
+            expanded: true,
             restrictionList: data.restrictionList.map((dayRestrictionList) => {
                 //If we cross max restriction allowed in a single column, we will replace with single restriction
                 if(dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
@@ -71,10 +71,10 @@ let convertAmountAndRestrictionListing = (listingData, restrictionTypes) => {
 };
 
 const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerProps = (state) => {
-    var amountAndRestrictions = [];
-    amountAndRestrictions = convertAmountAndRestrictionListing(state.list, state.restrictionTypes);
+    var roomTypeRowsData = [];
+    roomTypeRowsData = applyRestrictionLogicForSingleRateView(state.list, state.restrictionTypes);
     return {
-        amountAndRestrictions,
+        roomTypeRowsData,
         mode: state.mode,
         dateList: convertDateListForRestrictionAndAmountView(state.dates, state.businessDate)
     };

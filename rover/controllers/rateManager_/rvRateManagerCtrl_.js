@@ -212,15 +212,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //which is buggy from browser to browser, so choosing this bad way
         //may be this will result in running 365000 times
         roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
-          roomType.restrictionList = [];
-
           roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
+          roomType = _.pick(roomType, 'id', 'name', 'restrictions');
+          roomType.restrictionList = [];
+          roomType.rateDetails = [];
           
           dates.map((date) => {
             dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, { id: roomType.id });
             roomType.restrictionList.push(dateRoomTypeSet.restrictions);
+            roomType.rateDetails.push(_.omit(dateRoomTypeSet, 'restrictions', 'id', 'rateDetails', 'restrictionList'));
           });
-
           return _.omit(roomType, 'restrictions');
         });
 
@@ -228,6 +229,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //for now there will not be any id, we have to use certain things to identify (later) TODO
         
         roomTypeWithRestrictions.unshift({
+          rateDetails: [],
           restrictionList: dates.map((date) => {
             return roomTypeRestrictions[date].rate_restrictions;
           })
