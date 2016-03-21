@@ -119,8 +119,8 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 						//retrieve token for guest
 						zestwebData.primaryGuestId = reservation_data.primary_guest_id;
 						zestwebData.reservationID = reservation_data.reservation_id;
-						zestwebData.isPrecheckinOnly = (reservation_data.is_precheckin_only === "true" && reservation_data.reservation_status === 'RESERVED') ? true : false;
-						zestwebData.isAutoCheckinOn = (reservation_data.is_auto_checkin === "true") && zestwebData.isPrecheckinOnly;
+						zestwebData.isPrecheckinOnly = (response.is_precheckin_only === "true" && reservation_data.reservation_status === 'RESERVED') ? true : false;
+						zestwebData.isAutoCheckinOn = (response.is_auto_checkin === "true") && zestwebData.isPrecheckinOnly;
 						generateAuthToken(reservation_data);
 					};
 				};

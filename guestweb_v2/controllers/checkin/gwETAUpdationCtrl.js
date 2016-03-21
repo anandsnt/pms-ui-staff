@@ -12,5 +12,15 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}();
 
+			var onSuccess = function(){
+
+			};
+		
+			var options = {
+				params: {'reservation_id': GwWebSrv.zestwebData.reservationID},
+				successCallBack: onSuccess,
+			};
+			$scope.callAPI(GwCheckinSrv.fetchHotelTime, options);
+
 	}
 ]);

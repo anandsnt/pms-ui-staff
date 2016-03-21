@@ -69,5 +69,16 @@ sntGuestWeb.service('GwCheckinSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2','GwWebS
 		});
 		return deferred.promise;
 	};
+
+	this.fetchHotelTime = function(params) {
+		var deferred = $q.defer();
+		var url = '/guest_web/home/fetch_hotel_time.json';
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 	
 }]);
