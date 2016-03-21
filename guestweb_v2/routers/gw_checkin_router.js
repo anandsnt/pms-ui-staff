@@ -25,7 +25,16 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	url: '/etaUpdation',
 	 	templateUrl: '/assets/partials/checkin/gwArrivalTime.html',
 	 	controller : 'etaUpdationController',
-	    title: 'ETA Updation'
+	    data: {
+	    	pageTitle:'ETA Updation'
+	    }
+	 }).state('termsAndConditions', {
+	 	url: '/termsAndConditions',
+	 	templateUrl: '/assets/partials/checkin/gwTermsAndConditions.html',
+	 	controller : 'gwTermsAndConditionsController',
+	    data: {
+	    	pageTitle: 'Terms & Conditions'
+	    }
 	 });
 
 	//    //room and cc verification 

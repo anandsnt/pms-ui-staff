@@ -62,12 +62,16 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
     "title": "",
     "description": ""
   };
-  screen_id = _.find(screen_mappings, function(mapping) {
-    return mapping.value === identifier
-  }).id;
-  screen_details = _.find(cms_data, function(cms_item) {
-    return cms_item.screen_id === screen_id
+  // refer GwScreenMappingSrv for screen_mappings
+  selected_screen_details = _.find(screen_mappings, function(mapping) {
+    return mapping.value === identifier;
   });
+  screen_id = !!selected_screen_details ? selected_screen_details.id : "";
+  // cms_data is set from hotel admin
+  screen_details = _.find(cms_data, function(cms_item) {
+    return cms_item.screen_id === screen_id;
+  });
+  //rename the varaiables for easy usage
   if(typeof screen_details !== "undefined"){
     screen_details.title = screen_details.screen_title;
     screen_details.description = screen_details.item_description;
