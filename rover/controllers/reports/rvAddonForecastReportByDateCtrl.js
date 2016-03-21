@@ -10,7 +10,8 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 	'$filter',
 	'$timeout',
 	'ngDialog',
-	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
+	'$interval',
+	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog, $interval) {
 		
 		BaseCtrl.call(this, $scope);
 
@@ -24,22 +25,24 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			addons;
 
 
+		var SCROLL_NAME  = 'addon-forecast-report-scroll';
 
 		var refreshScroll = function(scrollUp) {
-			$scope.refreshScroller('addon-forecast-report-scroll');
-			if ( !!scrollUp ) {
-				$scope.$parent.myScroll['addon-forecast-report-scroll'].scrollTo(0, 0, 100);
+			$scope.refreshScroller(SCROLL_NAME);
+			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
+				$scope.$parent.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
 			};
 		};
 
 		var setScroller = function() {
-			$scope.setScroller('addon-forecast-report-scroll', {
+			$scope.setScroller(SCROLL_NAME, {
 				tap: true,
 				preventDefault: false,
 				scrollX: false,
 				scrollY: true
 			});
 		};
+
 
 
 
@@ -66,6 +69,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			} else {
 				item.hidden = !item.hidden;
 			};
+			
 			refreshScroll();
 		};
 
@@ -285,9 +289,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  			setup();
  			setScroller();
  			/**/
- 			$timeout(function() {
- 				refreshScroll('scrollUp');
- 			});
+ 			refreshScroll('scrollUp');
  		}
 
  		init();	
@@ -307,11 +309,13 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
 		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
 		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
+		var allRendered       = $scope.$on('ALL_RENDERED', function() { $timeout( refreshScroll, 1000 ); });
 
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportPageChanged );
+		$scope.$on( '$destroy', allRendered );
 
  		
 

@@ -1152,13 +1152,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( user.id );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.users.push( user.full_name );
+							$scope.appliedFilter.users.push( user.full_name || user.email );
 						};
 					});
 
-					// in case if all sources are selected
-					if ( changeAppliedFilter && selected.length > 1 ) {
-						$scope.appliedFilter.users = ['Multiple'];
+					// in case if all employees are selected
+					if ( changeAppliedFilter && $scope.activeUserList.length === selected.length ) {
+						$scope.appliedFilter.markets = ['All Employees'];
 					};
 				};
 			};
@@ -1850,8 +1850,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
-					var match = _.find(uiValues, function(email) {
-						return email === user.label;
+					var match = _.find(uiValues, function(label) {
+						return label === user.label;
 					});
 
 					if (!!match) {
@@ -1870,8 +1870,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
-					var match = _.find(uiValues, function(email) {
-						return email === user.label;
+					var match = _.find(uiValues, function(label) {
+						return label === user.label;
 					});
 
 					if (!!match) {

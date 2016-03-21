@@ -286,7 +286,7 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasCicoFilter" ng-class="{'hidden': !filterItemsToggle.item_07}">
             <div class="select">
-                <select ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
+                <select ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions" iscroll-stop-propagation>
                     <option value="">Transaction Type</option>
                 </select>
             </div>
@@ -527,7 +527,7 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
             <div class="select">
-                <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)">
+                <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)" iscroll-stop-propagation>
                     <option value="">Group By</option>
                 </select>
             </div>
