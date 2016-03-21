@@ -521,6 +521,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 return;
             }
 
+            //clear previos error message
+            $scope.errorMessage = "";
+
             //re-initializing date pickers as there is to update from other tab & come back here
             setDatePickerOptions();
 
