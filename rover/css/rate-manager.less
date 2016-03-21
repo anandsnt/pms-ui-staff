@@ -616,7 +616,7 @@
                 .base-rate-indicator {
                   position: absolute;
                   left:10px;
-                  top:0px;
+                  top:2px;
                   width: 20px;
                   height:20px;
                   background:@blueStart;
@@ -784,18 +784,18 @@
 
               .cell-content { /*OLD Rate Manager*/
 
-                            &.exp {
-                              
-                              .restriction_holder { 
-                                height:41px;
-                                .calc-padding-left( 100, 110 );
-                              }
+                &.exp {
+                  
+                  .restriction_holder { 
+                    height:41px;
+                    .calc-padding-left( 100, 110 );
+                  }
 
-                              .room-type-price {
-                                height: 44px;
-                              }
-                            }
-                        }
+                  .room-type-price {
+                    height: 44px;
+                  }
+                }
+              }
             }
           }
 
@@ -852,27 +852,27 @@
 
                   .room-type-price {
                     height:44px;
-                     span { font-size:21px; }
+                     .room-type-price-value { font-size:21px; }
                   }
                 }
               }
 
               .cell-content { /*Old Rate Manager*/
 
-                            &.exp {
-                              
-                              .restriction_holder { 
-                                height:41px;
-                                .calc-padding-left( 100, 110 );
+                &.exp {
+                  
+                  .restriction_holder { 
+                    height:41px;
+                    .calc-padding-left( 100, 110 );
 
-                              }
+                  }
 
-                              .room-type-price {
-                                height: 44px;
-                                 span { font-size:21px; }
-                              }
-                            }
-                        }
+                  .room-type-price {
+                    height: 44px;
+                     .room-type-price-value { font-size:21px; }
+                  }
+                }
+              }
             }
           }
         }
@@ -934,7 +934,7 @@
 
                   .room-type-price {
                     height:68px;
-                     span { 
+                     .room-type-price-value { 
                       display: block; 
                       width:100%;
                       height:24px;
@@ -945,23 +945,23 @@
 
               .cell-content { /*OLD Rate Manager*/
 
-                            &.exp {
-                              
-                              .restriction_holder { 
-                                height:41px;
-                                .calc-padding-left( 100, 110 );
-                              }
+                &.exp {
+                  
+                  .restriction_holder { 
+                    height:41px;
+                    .calc-padding-left( 100, 110 );
+                  }
 
-                              .room-type-price {
-                                height:68px;
-                                 span { 
-                                  display: block; 
-                                  width:100%;
-                                  height:24px;
-                                 }
-                              }
-                            }
-                        }
+                  .room-type-price {
+                    height:68px;
+                     .room-type-price-value { 
+                      display: block; 
+                      width:100%;
+                      height:24px;
+                     }
+                  }
+                }
+              }
             }
 
           }
@@ -999,21 +999,21 @@
 
                 &.exp { /*OLD Rate Manager*/
                   
-                                .restriction_holder { 
-                                  height:41px;
-                                  .calc-padding-left( 100, 110 );
-                                }
+                  .restriction_holder { 
+                    height:41px;
+                    .calc-padding-left( 100, 110 );
+                  }
 
-                                .room-type-price {
-                                  height:68px;
-                                   span { 
-                                    font-size:21px;
-                                    display: block; 
-                                    width:100%;
-                                    height:24px;
-                                   }
-                                }
-                          }
+                  .room-type-price {
+                    height:68px;
+                     .room-type-price-value { 
+                      font-size:21px;
+                      display: block; 
+                      width:100%;
+                      height:24px;
+                     }
+                  }
+                }
 
               }
 
@@ -1026,7 +1026,7 @@
 
                   .room-type-price {
                     height:68px;
-                     span { 
+                     .room-type-price-value { 
                       font-size:21px;
                       display: block; 
                       width:100%;
@@ -1067,23 +1067,23 @@
               .cell-content {
                 padding:15px 10px;
 
-                 &.exp { /*OLD RATE MANAGER*/
+                &.exp { /*OLD RATE MANAGER*/
                   
-                                .restriction_holder {
-                                  padding:10px;
-                                  height: 41px;
-                                }
+                  .restriction_holder {
+                    padding:10px;
+                    height: 41px;
+                  }
 
-                                .room-type-price {
-                                  height:58px;
-                                  padding:5px 10px;
-                                   span { 
-                                    display: block; 
-                                    width:100%;
-                                    font-size:14px;
-                                   }
-                                }
-                          }
+                  .room-type-price {
+                    height:58px;
+                    padding:5px 10px;
+                     .room-type-price-value { 
+                      display: block; 
+                      width:100%;
+                      font-size:14px;
+                     }
+                  }
+                }
                 
               }
 
@@ -1097,7 +1097,7 @@
                   .room-type-price {
                     height:58px;
                     padding:5px 10px;
-                     span { 
+                     .room-type-price-value { 
                       display: block; 
                       width:100%;
                       font-size:14px;
@@ -1254,7 +1254,8 @@
                   text-transform: uppercase;
                   color:@grey3;
                   .float;
-                  span {
+
+                  .room-type-price-value {
                     font-size:24px;
                     font-weight: 300;
                     color:@black;
@@ -1278,48 +1279,49 @@
                 }
 
                 &.exp { /*Old Rate Manager*/
-                              padding:0;
+                  padding:0;
 
-                              .restriction_holder {
-                                padding:10px 15px 10px 15px;
-                                width:100%;
-                                float:none;
-                                height:auto;
-                                display:block;
-                                position: relative;
-                                .float;
-                                .restriction-icon { 
-                                  position: static;
-                                  margin-right:0px;
-                                  top:auto;
-                                  right:auto;
-                                  bottom:auto;
+                  .restriction_holder {
+                    padding:10px 15px 10px 15px;
+                    width:100%;
+                    float:none;
+                    height:auto;
+                    display:block;
+                    position: relative;
+                    .float;
+                    .restriction-icon { 
+                      position: static;
+                      margin-right:0px;
+                      top:auto;
+                      right:auto;
+                      bottom:auto;
 
-                                  &:last-child {
-                                    margin-right:0;
-                                  }
-                                }
-                              }
+                      &:last-child {
+                        margin-right:0;
+                      }
+                    }
+                  }
 
-                              .room-type-price {
-                                padding:10px 15px;
-                                font-size:12px;
-                                text-transform: uppercase;
-                                color:@grey3;
-                                .float;
-                                span {
-                                  font-size:24px;
-                                  font-weight: 300;
-                                  color:@black;
-                                  .pull-right;
+                  .room-type-price {
+                    padding:10px 15px;
+                    font-size:12px;
+                    text-transform: uppercase;
+                    color:@grey3;
+                    .float;
 
-                                  &.hasOverride-label, /*OLD Rate Manager*/
-                                  &.has-override {
-                                    color: @orange;
-                                  }
-                                }
-                              }
-                            }
+                    .room-type-price-value {
+                      font-size:24px;
+                      font-weight: 300;
+                      color:@black;
+                      .pull-right;
+
+                      &.hasOverride-label, /*OLD Rate Manager*/
+                      &.has-override {
+                        color: @orange;
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -1454,4 +1456,5 @@
 
   }
 
+  
 }
