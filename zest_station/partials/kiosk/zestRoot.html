@@ -18,9 +18,9 @@
     </div>
 </div>
 
-<div class="popup" ng-class="{'open':showLanguagePopup,'ng-hide':!showLanguagePopup}">
+<div class="popup" ng-class="{'open':showLanguagePopup}">
     <div class="popup-content">
-        <i class="close-popup" data-action="popup" touch-press="selectLanguage('null')"></i>
+        <i class="close-popup" data-action="popup" touch-press="closeLangPopUp()"></i>
         <h2 class="nocaps">Select Language</h2>
         <div id="languages">
             <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" 
