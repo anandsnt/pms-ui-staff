@@ -57,7 +57,7 @@ let convertSingleRateRoomTypesDataForLeftListing = (roomTypes) => {
 	roomTypes.map((roomType, index) => {
 		roomTypesToReturn.push({
 			...roomType,
-			trClassName: ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : '')),
+			trClassName: ('cell rate expandedFirstRow' + (((index + 1) === roomTypes.length) ? 'last' : '')),
 			tdClassName: 'first-row force-align',
 			leftSpanClassName: 'name ',
 			showIconBeforeText: false,
@@ -93,7 +93,8 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 };
 
 const mapDispatchToRateManagerGridLeftRowsContainerProps = (dispatch) => {
-	return {      
+	return {
+		  
 	}
 };
 
