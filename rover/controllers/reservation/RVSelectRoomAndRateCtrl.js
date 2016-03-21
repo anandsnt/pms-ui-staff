@@ -195,6 +195,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad['restrictions_on_date'] = $scope.stateCheck.dateModeActiveDate;
 					payLoad.adults = dayOccupancy.adults;
 					payLoad.children = dayOccupancy.children;
+					if($scope.stateCheck.rateSelected.oneDay){
+						payLoad.room_type_id = $scope.stateCheck.preferredType;
+						payLoad.per_page = 1;
+						payLoad.page = 1;
+					}
 				}
 
 				if (!!$scope.stateCheck.preferredType) {
@@ -540,6 +545,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// reset value, else rate selection will get bypassed
 				// check $scope.handleBooking method
 				$scope.stateCheck.rateSelected.oneDay = false;
+				$scope.stateCheck.stayDates = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 			},
 			navigateOut = function() {
 				if ($scope.viewState.identifier !== "REINSTATE" &&
@@ -1007,7 +1013,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[selectedDate];
-			fetchRatesList();
+			fetchRoomTypesList();
 		};
 
 
@@ -1048,7 +1054,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					});
 				}
 			};
-			fetchRates();
+			fetchRoomTypesList();
 		};
 
 
@@ -1185,8 +1191,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.handleNoEdit = function(event, roomId, rateId) {
 			event.stopPropagation();
 			ROOMS[$scope.stateCheck.roomDetails.firstIndex].rateName = $scope.reservationData.ratesMeta[rateId].name;
-			$scope.reservationData.rateDetails[$scope.activeRoom] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId]
-				.dates);
+			$scope.reservationData.rateDetails[$scope.activeRoom] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 			if (!$scope.stateCheck.stayDatesMode) {
 				navigateOut();
 			}
@@ -1221,8 +1226,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						$scope.reservationData.demographics.market = ROOMS[roomIndex].demographics.market;
 					}
 
-					$scope.reservationData.rateDetails[roomIndex] = angular.copy($scope.stateCheck.lookUp[ROOMS[roomIndex].roomTypeId]
-						.rates[ROOMS[firstIndexOfRoomType].stayDates[ARRIVAL_DATE].rate.id].dates);
+					$scope.reservationData.rateDetails[roomIndex] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 
 					if ($stateParams.fromState === "rover.reservation.staycard.reservationcard.reservationdetails" || $stateParams.fromState ===
 						"STAY_CARD") {
@@ -1321,7 +1325,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							currentRoom.rateId.push(rateId);
 							currentRoom.stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
 							currentRoom.roomTypeName = $scope.reservationData.roomsMeta[roomId].name;
-							$scope.reservationData.rateDetails[i] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
+							$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 						}
 					}
 
@@ -1381,9 +1385,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rateTotal: rateInfo.totalAmount
 						});
 
-						$scope.reservationData.rateDetails[i] = angular.copy($scope.stateCheck.lookUp[roomId].rates[rateId].dates);
-
 						populateStayDates(rateId, roomId, i);
+
+						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 
 						ROOMS[i].demographics.market = $scope.reservationData.ratesMeta[rateId].market_segment_id === null ? "" : $scope
 							.reservationData.ratesMeta[rateId].market_segment_id;

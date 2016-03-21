@@ -349,7 +349,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // -- Calculate the rate amount for the Room for that rate for that day --
                             // --------------------------------------------------------------------------------//
                             { // STEP ONE -- rate computation block
-                                var roomAmount = todaysMetaData.amount,
+                                var roomAmount = todaysMetaData.rateDetails.actual_amount,
                                     roomAmountRounded = Number(roomAmount.toFixed(2));
                                 if (reset) { // -- in case of rate changes reset the modified rate amount as well
                                     stay.rateDetails.actual_amount = $filter('number')(roomAmount, 2);
