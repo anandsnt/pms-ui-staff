@@ -138,8 +138,6 @@ sntRover.factory('RVReportParserFac', [
                 returnObj[key] = $_parseFinTransAdjustReport(reportName, returnObj[key], options);
             };
 
-            console.log( returnObj );
-
             return returnObj;
         };
 
@@ -856,8 +854,6 @@ sntRover.factory('RVReportParserFac', [
                 //     returnAry.push( customData );
                 };
             };
-
-            console.log(returnAry);
 
             return returnAry;
         };
