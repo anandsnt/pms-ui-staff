@@ -33,8 +33,6 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
 				$scope.$parent.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
 			};
-
-			console.log( 'refreshScroll' );
 		};
 
 		var setScroller = function() {

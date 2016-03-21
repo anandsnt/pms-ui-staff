@@ -28,7 +28,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 
 
-		var SCROLL_NAME  = 'addon-forecast-report-scroll';
+		var SCROLL_NAME  = 'addon-forecast-report-scroll',
+			timer;
 
 		var refreshScroll = function(scrollUp) {
 			$scope.refreshScroller(SCROLL_NAME);
@@ -39,12 +40,35 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 		var setScroller = function() {
 			$scope.setScroller(SCROLL_NAME, {
+				probeType: 3,
 				tap: true,
 				preventDefault: false,
 				scrollX: false,
 				scrollY: true
 			});
 		};
+
+		var clearTimer = function() {
+			if ( !! timer ) {
+				$interval.cancel(timer);
+				timer = undefined;
+			}
+		}
+
+		var setScrollListner = function() {
+			if ( $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
+				refreshScroll();
+
+				timer = $interval(refreshScroll, 1000);
+
+				$scope.$parent.myScroll[SCROLL_NAME].on('scroll', function() {
+					clearTimer();
+					$scope.$parent.myScroll[SCROLL_NAME].off( 'scroll' );
+				});
+			} else {
+				$timeout(setScrollListner, 1000);
+			}
+		}
 
 	
 
@@ -292,7 +316,9 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			setup();
  			setScroller();
  			/**/
- 			refreshScroll('scrollUp');
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
  		}
 
  		init();	
@@ -306,19 +332,21 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		}
 
 
- 		// re-render must be initiated before for taks like printing.
+		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms
 		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], reInit );
 		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
 		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
 		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
-		var allRendered       = $scope.$on('ALL_RENDERED', function() { $timeout( refreshScroll, 1000 ); });
+		var allRendered       = $scope.$on( 'ALL_RENDERED', setScrollListner );
 
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportPageChanged );
+
 		$scope.$on( '$destroy', allRendered );
+		$scope.$on( '$destroy', clearTimer );
 
 
 
