@@ -13,12 +13,18 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		}();
 
 		$scope.termsAndConditions = GwWebSrv.zestwebData.termsAndConditions;
+		console.log(GwWebSrv.zestwebData.isAutoCheckinOn)
 
 		$scope.agreeClicked = function(){
-
+			if(GwWebSrv.zestwebData.isAutoCheckinOn){
+		      $state.go('etaUpdation');
+		    }
+		    else{
+		       //$state.go('');
+		    };
 		};
 		$scope.cancelClicked = function(){
-
+			//to do
 		};
 
 	}
