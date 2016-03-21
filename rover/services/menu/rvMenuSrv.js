@@ -180,11 +180,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	                action: "",
 	                actionPopup: true,
 	                menuIndex: "endOfDay"
-            	},{
-                    title: "MENU_ACTIONS_MANAGER",
-                    action: "rover.actionsManager",
-                    menuIndex: "actionManager"
-                }]
+            	}]
 		    }, {
 		        title: "MENU_GROUPS",
 		        //hidden: true,
@@ -286,7 +282,13 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "",
 		            menuIndex: "commisions"
 		        }]
-		    }, {
+            }, {
+                title: "MENU_ACTIONS_MANAGER",
+                action: "rover.actionsManager",
+                menuIndex: "actionManager",
+                iconClass: "icon-actions",
+                submenu: []
+            },{
 		        title: "MENU_REPORTS",
 		        action: "rover.reports",
 		        menuIndex: "reports",
@@ -294,7 +296,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        submenu: []
 		    }
 		];
-        
+
 		return processMenuList (menuList);
 	};
 

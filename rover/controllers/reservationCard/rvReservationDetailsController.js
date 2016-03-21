@@ -13,7 +13,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			};
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		
+
 
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
@@ -241,13 +241,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		//$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
-			
-			// CICO-25774 : Enabled Guest button on Stay Card for Group reservations
-			
-			// // CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
-			// if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
-			// 	return false;
-			// };
+
 
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
@@ -327,7 +321,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		$scope.reservationDetails.allotment.id = reservationDetails.reservation_card.allotment_id || '';
 
 		angular.copy(reservationListData, $scope.reservationListData);
-		 //Reset to firstTab in case in case of coming into staycard from the create reservation screens 
+		 //Reset to firstTab in case in case of coming into staycard from the create reservation screens
          //after creating multiple reservations
         $scope.viewState.currentTab = 0;
 
@@ -422,51 +416,51 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                  $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG',function(evt, val){
                      $scope.isDepositBalanceScreenOpened = val;
                  });
-                 
+
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.isDepositBalanceScreenOpened) {
 				swipedCardData.swipeFrom = "depositBalance";
-                                
-                                
+
+
 			} else if ($scope.isCancelReservationPenaltyOpened) {
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
-                                
-                                
-                                
+
+
+
 			} else if ($scope.isStayCardDepositScreenOpened) {
 				swipedCardData.swipeFrom = "stayCardDeposit";
-                                
-                                
-                                
+
+
+
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
-                                
-                                
-                                
+
+
+
 			} else {
 				swipedCardData.swipeFrom = "stayCard";
 			}
                         if (swipedCardData.swipeFrom !== 'guestCard'){
                             $scope.$emit('isFromGuestCardFalse');
                         }
-                        
-                        
-                        
-                        
+
+
+
+
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-                        
+
 			var tokenizeSuccessCallback = function(tokenValue) {
 				$scope.$emit('hideLoader');
 				swipedCardData.token = tokenValue;
-                                
+
 				$scope.showAddNewPaymentModel(swipedCardData);
                                 $scope.swippedCard = true;
                                 if (swipedCardData.swipeFrom !== 'guestCard'){
                                     $scope.$emit('isFromGuestCardFalse');
                                 }
 			};
-                        
+
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 		});
 
@@ -646,7 +640,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		$scope.updateRoomRate = function() {
 			$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, $scope.reservationData.reservation_card.reservation_id, function(response) {
-					
+
 				$scope.$emit('hideLoader');
 
 				var roomData = $scope.$parent.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
@@ -760,31 +754,31 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
-				if (swipedCardDataToRender.swipeFrom !== "depositBalance" && 
-                                        swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" && 
+				if (swipedCardDataToRender.swipeFrom !== "depositBalance" &&
+                                        swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" &&
                                         swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
                                         console.info('doing open pmt window with pass data')
 					$scope.openPaymentDialogModal(passData, paymentData);
-                                        
-                                        
+
+
 				} else if (swipedCardDataToRender.swipeFrom === "stayCardDeposit") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
-                                        
-                                        
-                                        
+
+
+
 				} else if (swipedCardDataToRender.swipeFrom === "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
-                                        
-                                        
-                                        
-                                        
+
+
+
+
 				} else {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
-                                        
-                                        
-                                        
-                                        
-                                        
+
+
+
+
+
 				}
 			} else {
 				passData.details.swipedDataToRenderInScreen = {};
@@ -960,7 +954,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 
 		$scope.changeStayDates = function(flags) {
 
-			if (!flags || !flags.skipAddonCheck) {				
+			if (!flags || !flags.skipAddonCheck) {
 				if (!!$scope.responseValidation.new_stay_dates && $scope.responseValidation.new_stay_dates.length > 0 &&
 					$scope.responseValidation.addons_to_overbook && $scope.responseValidation.addons_to_overbook.length > 0) {
 					alertAddonOverbooking(true);
@@ -1085,7 +1079,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 				$scope.authData.billData = data.bill_data;
-				
+
 				if( $scope.authData.billData.length > 0 ){
 					// Show Multiple Credit card auth popup
 					ngDialog.open({
@@ -1133,7 +1127,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				'bill_no' 		: selectedCardData.number,
 				'bill_balance'	: selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
 			};
-			
+
 			$scope.authData.selectedCardDetails = selectedCardDetails;
 
 			_.each($scope.authData.billData, function( card ) {
@@ -1227,11 +1221,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                 $scope.activeWakeUp = data.active;
             }
         });
-       
+
             $scope.updateGiftCardNumber = function(n){
                 $rootScope.$broadcast('GIFTCARD_DETAILS',n);
             };
-       
+
             $scope.giftCardAmountAvailable = false;
             $scope.giftCardAvailableBalance = 0;
             $scope.$on('giftCardAvailableBalance',function(e, giftCardData){
@@ -1244,7 +1238,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
                     if (len >= 8 && len <= 22){
                         //then go check the balance of the card
                         $('[name=card-number]').keydown(function(){
-                            clearTimeout($scope.timer); 
+                            clearTimeout($scope.timer);
                             $scope.updateGiftCardNumber(n);
                             $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
                         });
@@ -1277,5 +1271,5 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
      });
 
      $scope.$on( '$destroy', unbindChildContentModListener );
-        
+
 }]);

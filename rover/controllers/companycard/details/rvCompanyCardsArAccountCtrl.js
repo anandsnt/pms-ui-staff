@@ -25,7 +25,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.$on('setgenerateNewAutoAr', function(e, bool) {
 			$scope.$parent.generateNewAutoAr = bool;
-			if( !$scope.arAccountDetails.is_auto_assign_ar_numbers ) {
+			if( !$scope.arAccountDetails.is_auto_assign_ar_numbers && bool ) {
 				updateArAccount(true);
 			}
 		});

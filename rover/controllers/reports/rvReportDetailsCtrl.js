@@ -177,6 +177,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isBalanceReport = true;
 					break;
 
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.hasPagination = false;
+					break;
+
 				default:
 					break;
 			};
@@ -293,6 +297,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
 					$scope.leftColSpan = 4;
 					$scope.rightColSpan = 6;
+					break;
+
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 5;
 					break;
 
 				default:
@@ -542,6 +551,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
 					break;
 
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportMain.html';
+					break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -621,6 +636,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// COMPANY_TA_TOP_PRODUCERS report row
 				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
 					template = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducersRow.html';
+					break;
+
+				// FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT report row
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					template = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportRow.html';
 					break;
 
 				// Default report row

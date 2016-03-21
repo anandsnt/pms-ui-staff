@@ -204,11 +204,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.modalBtn1 = 'DONE_BTN';
                 
             if($scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1 === "" ){
-                console.info('TALK_TO_STAFF...');
                 $scope.messageOverride = false;
                 $scope.headingText = 'TALK_TO_STAFF';
             } else {
-                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1)
                 $scope.messageOverride = true;//need to turn off translate 
                 $scope.headingText = $scope.zestStationData.check_in_message_texts.speak_to_crew_mod_message1;
             }
@@ -469,6 +467,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	// add the print orientation before printing
 	var addPrintOrientation = function() {
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+		$( 'body' ).append( "<style>@page { margin: 0px; }</style>" );
 	};
 
 	// add the print orientation after printing
@@ -495,6 +494,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 // CICO-9569 to solve the hotel logo issue
                 $("header .logo").addClass('logo-hide');
                 $("header .h2").addClass('text-hide');
+                
+                $('.popup').hide();//hide timeout elements
+                $('.invis').hide();//hide timeout elements
+                $('#popup-overlay').hide();//hide timeout elements
 
                 // add the orientation
                 addPrintOrientation();
@@ -519,7 +522,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 */
                setTimeout(function() {
                     $scope.isPrintRegistrationCard = false;
-
+                            
                             // CICO-9569 to solve the hotel logo issue
                             $("header .logo").removeClass('logo-hide');
                             $("header .h2").addClass('text-hide');
@@ -538,15 +541,33 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.$emit('hideLoader');
             $scope.errorMessage = "";
         };
+        $scope.getTermsPrintable = function(terms){
+          sntZestStation.filter('unsafe', function($sce) {
+                return function(terms) {
+                    return $sce.trustAsHtml(terms);
+                };
+            });  
+        };
+        $scope.currentDateTime;
         $scope.fetchRegistrationPrintView = function(){
+            
             var fetchPrintViewCompleted = function(data){
+                var d = new Date();
+                $scope.currentDateTime = d.getTime();
                 $scope.$emit('hideLoader');
                 // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
+                $scope.departDate = $scope.printRegCardData.dep_date;
+                console.info($scope.departDate)
+                var dep = $scope.departDate.split('-');
+                var dY = dep[2],dM=(dep[1]-1),dD=dep[0];
+                var depart = new Date(dY,dM,dD);
+                $scope.departDate = depart.getTime();
+                $scope.printRegCardData.terms_conditions_html = $scope.getTermsPrintable($scope.printRegCardData.terms_conditions);
                 $scope.setupPrintView();
                 $scope.initPrintRegistration();
             };
-            var id = $scope.selectedReservation.id;
+            var id = $scope.selectedReservation.id; 
             $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
         };
         $scope.clickedPrint = function(){

@@ -92,6 +92,33 @@
                         </div>
                     </div>
                 </fieldset>
+
+                <fieldset class="holder right holder_margin">
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'ZEST_PRECHECKIN_ALERT_TO_ALL_ARRIVALS' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.zest_precheckin_alert_time_hour">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.zest_precheckin_alert_time_min">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.zest_precheckin_alert_primetime">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
                 </fieldset>
                 <fieldset class="holder left holder_margin" ng-show="checkinData.is_precheckin_only">
                     <div id="options" class="entry" ng-hide="hideAddOption">

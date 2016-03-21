@@ -1155,6 +1155,119 @@
         }
     }
 
+/* Translations             ==============================*/
+    #translations {
+        .content-title {
+            .filters {
+                span { 
+                    font-size: 14px;
+                    line-height: 40px;
+                    text-transform: uppercase;
+                    margin-right: 10px;
+                    .pull-left; 
+                }
+
+                select { min-width: 120px; }
+            }
+        }
+
+        .content-scroll {
+            margin: 10px 0;
+            clear: both;
+            .calc-height(100, 200);
+        }
+
+        .grid {
+            th,
+            td { 
+                padding-right: 10px;
+
+                &:first-child { width: 40%; }
+                &:last-child { width: 60%; }
+            }
+
+            input {
+                width: 100%;
+                background: @grey1;
+
+                &.error {
+                    background: lighten(@red, 40);
+                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15))
+                }
+            }
+        }
+
+        &.has-notification {
+            .content-scroll {
+                .calc-height(100, 240);
+            }  
+        }
+    }
+
+    #translation-filters {
+        height: 110px;
+        padding-top: 50px;
+
+        .error-message, 
+        .notice, 
+        .success_message {
+            margin: 0 0 10px 0;
+            width: 100%;
+        }
+
+        .grid-options {
+            .float;
+
+            .entry {
+                margin-right: 20px;
+                .pull-left;
+
+                label {
+                    font-size: 14px;
+                    line-height: 20px;
+                    text-transform: uppercase;
+                    margin: 0;
+                    color: @grey3;
+                    .show;
+                }
+
+                .holder {
+                    position: relative;
+                    .pull-left;
+
+                    .icon-search {
+                        position: absolute;
+                        top: 13px;
+                        left: 10px;
+                    }
+
+                    .query { padding-left: 30px; }
+                }
+
+                .select { 
+                    min-width: 200px;
+                    .pull-left; 
+                }
+                
+                &.search { 
+                    margin-right: 0;
+                    .pull-right; 
+                }
+            }
+        }
+    }
+
+    #translation-actions {
+        margin-top: 20px;
+        padding: 20px 0;
+        text-align: center;
+        border-top: 1px solid rgba(0,0,0,.1);
+        .size(80px, 100%);
+        .show;
+    }
+
+
+
 // To align text to center with margin
 .align-text-center{
   margin-top: 10px;

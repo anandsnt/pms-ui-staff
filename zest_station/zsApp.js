@@ -26,7 +26,7 @@ sntZestStation.config(function ($httpProvider, $translateProvider) {
 		  prefix: '/assets/zest_station/zsLocales/',
 		  suffix: '.json'
 		});
-		$translateProvider.fallbackLanguage('EN_snt');
+		//$translateProvider.fallbackLanguage('EN_snt');
 });
 
 sntZestStation.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {

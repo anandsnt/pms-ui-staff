@@ -40,7 +40,7 @@ sntRover.controller('RVroomAssignmentController',[
 				},
 			3000);
 	$timeout(function() {
-    	$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
+    	roomUpgrades.length ===0 ? "":$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
 
@@ -115,11 +115,6 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.searchRoom = function(){
 		var allAllowedRooms = [];
 		allAllowedRooms = angular.copy($scope.allRooms);
-
-		angular.forEach(roomUpgrades.upsell_data, function(value, key) {
-			value.room_number = value.upgrade_room_number
-			allAllowedRooms.push(value)
-		});
 
 		$scope.searchText = $scope.searchText.toUpperCase();
 

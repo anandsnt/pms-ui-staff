@@ -8,10 +8,14 @@
 	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
 
 	$scope.pageValid = false;
+	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ){
 		$state.go('checkinCcVerification');
+	}
+	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL")){
+		$state.go('emailAddition',{'isFrom':'checkinNow'});// if user has not attached an email
 	}
 	else if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');

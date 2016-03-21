@@ -3,8 +3,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$rootScope',
 	'$state',
 	'zsModeConstants',
-	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
-	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
+	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv','$window',
+	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv,$window) {
 
             /*
              * This is the main controller for the Home Screen + Admin Popup
@@ -44,9 +44,16 @@ sntZestStation.controller('zsHomeCtrl', [
             $state.lastAt = 'home';
             $state.isPickupKeys = false;
             $state.mode = zsModeConstants.CHECKOUT_MODE;
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.CHECKOUT_MODE
-            });
+
+
+            if(!$scope.zestStationData.checkout_keycard_lookup){
+                $state.go('zest_station.reservation_search', {
+                    mode: zsModeConstants.CHECKOUT_MODE
+                });
+            }
+            else{
+                $state.go('zest_station.checkout_options');
+            };
 	};
 
 	/**
@@ -81,6 +88,21 @@ sntZestStation.controller('zsHomeCtrl', [
         setTimeout(function(){
             $rootScope.$broadcast('REFRESH_SETTINGS',{'restart': true,'from_cancel': true});
         },500);
+    };
+
+    //to logout
+    $scope.logOutApplication = function(){
+        if (typeof chrome !== "undefined"){
+            var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+            console.info("chrome app id"+chromeAppId);
+            //minimize the chrome app on loging out
+            (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-logout"):"";
+            console.info("login out from chrome");
+        }
+        else{
+             console.info("login out");
+        };
+        $window.location.href = '/logout'; 
     };
 
     $scope.updateSettings = function(value){
@@ -537,6 +559,11 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     $scope.init = function(){
+        if ($scope.inChromeApp){
+            $scope.pressEsc();
+        }
+        $scope.inputFocus();
+        
         $scope.setScreenIcon('bed');//needed for initial view, other icons set from rootCtrl
         $scope.resetFlags();
         var current = $state.current.name;

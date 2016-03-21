@@ -105,6 +105,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
 
         $scope.init = function(r){
+            //$scope.inputFocus();
             var current=$state.current.name;
             $scope.selectedReservation = $state.selectedReservation;
             if (current === 'zest_station.add_remove_guests'){

@@ -4,6 +4,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         //-------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function () {
+                $scope.$emit("updateRoverLeftMenu", "actionManager");
                 var heading = 'Actions Manager';
                 $scope.setScroller("rvActionListScroller", {
                     scrollbars: true,
@@ -147,6 +148,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         $scope._actionCompleted = "COMPLETED";
 
+        $scope.timeSelectorList = rvUtilSrv.getListForTimeSelector (15, 12);
+
         $scope.filterOptions = {
             showFilters: false,
             selectedDay: $rootScope.businessDate,
@@ -247,7 +250,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 reservation_id: $scope.selectedAction.reservation_id,
                 assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
-                ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : ""),
+                ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
             }
 
             if ($scope.selectedAction.action_status === $scope._actionCompleted) {
