@@ -28,7 +28,8 @@ var sntRover = angular.module('sntRover',[
 		'iscrollStopPropagation',
 		'ngClassWithoutAnimation',
 		'clickTouch',
-		'oc.lazyLoad']);
+		'oc.lazyLoad',
+		'emitWhen']);
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 sntRover.config(function ($httpProvider) {
