@@ -6,6 +6,7 @@ module.exports = {
 			servicesRoot 	= 'rover/services/',
 			assetsForScreen = {
 				minifiedFiles: [
+                         jsLibRoot + 'angular-multi-select.js'
 				],
 				nonMinifiedFiles: [
 

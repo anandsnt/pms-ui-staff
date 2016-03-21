@@ -51,7 +51,7 @@
                         <!-- Add class "visible" when date is selected -->
                         <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                     </button>
-                    <input id="rooming-date-from" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="fromDate" ui-date="fromDateOptions" value="{{fromDate|date:dateFormat}}" />
+                    <input id="rooming-date-from" ng-model="fromDate" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="fromDate" ui-date="fromDateOptions" value="{{fromDate|date:dateFormat}}" />
                 </div>
                 <div class="has-datepicker">
                     <label for="rooming-date-to" translate>TO</label>
@@ -59,7 +59,7 @@
                         <!-- Add class "visible" when date is selected -->
                         <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                     </button>
-                    <input id="rooming-date-to" type="text" class="range-datepicker red" readonly ui-date="toDateOptions" value="{{toDate|date:dateFormat}}" rv-clear-text-box listen-this="toDate" />
+                    <input id="rooming-date-to" ng-model="toDate" type="text" class="range-datepicker red" readonly ui-date="toDateOptions" value="{{toDate|date:dateFormat}}" rv-clear-text-box listen-this="toDate" />
                 </div>
             </div>
             <div class="entry action">

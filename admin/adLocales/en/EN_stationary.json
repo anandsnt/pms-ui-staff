@@ -51,6 +51,7 @@
 	"PRINT_CANCELLATION_LETTER": "Print Cancellation Letter",
 	"PRINT_CONFIRMATION_LETTER": "Print Confirmation Letter",
 	"SEND_CONFIRMATION_LETTER": "Send Confirmation Letter",
+	"CUSTOM_TEXT_PER_RESERVATION" : "Custom Text per Reservation",
 
 	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
 	"CONFIRMATION_EMAIL_SUBJECT": "Confirmation Email Subject",
@@ -71,7 +72,14 @@
 	"BY_FIRST_LAST_NAME" : "By First and Last name",
 	"BY_CUSTOM_TEXT" : "Custom Text",
 	"CUSTOM_SALUTATION" : "Custom Salutation",
-	"INCLUDE_TITLE" : "Include Title"
+	"INCLUDE_TITLE" : "Include Title",
+	"TRANSLATIONS_SAVED_SUCCESSFULLY" : "Translations saved successfully",
+	"MENU_OPTION" : "Menu Option",
+	"ITEM" : "Item",
+	"DEFAULT_GUEST_BILL" : "Default Guest Bill",
+	"DEFAULT_ACCOUNT_BILL" : "Default Account Bill",
+	"SELECT_ACCOUNT_BILL" : "Select Account Bill"
+
 
 
 

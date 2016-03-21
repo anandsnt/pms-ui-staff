@@ -24,6 +24,12 @@
                 </div>
                 <ad-textbox value="zestSettings.check_out_message_texts.check_out_print_wait_screen_message"  name = "zest-web" id = "zest-web" label = "" placeholder = "{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width" ></ad-textbox>
             </fieldset>
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span translate>KEY_CARD_LOOK_UP</span> </h3>
+                </div>
+                 <ad-toggle-button is-checked="zestSettings.checkout_keycard_lookup" label="{{'KEY_CARD_LOOK_UP'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>    
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

@@ -3,12 +3,16 @@ sntZestStation.controller('zsRootCtrl', [
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
 	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv, cssMappings, zestStationSettings) {
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
         $scope.oosKey = 'snt_zs_workstation.in_oos';
+        $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
+        
+        
+    $translate.use('EN_snt');  
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -96,8 +100,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.oos');
             }
 	});
-            
-        
+
 	$scope.$on (zsEventConstants.OOS_OFF, function(event) {
            if ($state.is_oos){
                 $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -109,10 +112,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.home');
             }
 	});
-            
-        
-            
-            
+
         $scope.setOOSInBrowser = function(t){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
@@ -138,7 +138,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
                 }
             };
-            $scope.callAPI(hotelDetailsSrv.fetchHotelSettings, options);
+            $scope.callAPI(zsHotelDetailsSrv.fetchHotelSettings, options);
             
             var theme = null;
             /*
@@ -166,66 +166,10 @@ sntZestStation.controller('zsRootCtrl', [
                 
                 $scope.setThemeByName(theme);
             }
-            
             $scope.language = theme;
-            
             $scope.loadTranslations(theme);
             $scope.$emit('hideLoader');
         };
-        $scope.language = null;
-        
-        $scope.langInfo = [//in our admin/API, these are saved in english, we will keep reference here if needed
-            {
-                'language':'Castellano',
-                'info' :{
-                    'prefix':'',
-                    'flag':'flag-ca',
-                    'name':'Castellano'//using name as an english reference (which is in the api call)
-                }
-            },{
-                'language':'Deutsche',
-                'info' :{
-                    'prefix':'',
-                    'flag':'flag-de',
-                    'name':'German'
-                }
-            },{
-                'language':'English',
-                'info' :{
-                    'prefix':'EN',
-                    'flag':'flag-gb',
-                    'name':'English'
-                }
-            },{
-                'language':'Español',
-                'info' :{
-                    'prefix':'ES',
-                    'flag':'flag-es',
-                    'name':'Spanish'
-                }
-            },{
-                'language':'Français',
-                'info' :{
-                    'prefix':'FR',
-                    'flag':'flag-fr',
-                    'name':'French'
-                }
-            },{
-                'language':'Italiano',
-                'info' :{
-                    'prefix':'',
-                    'flag':'flag-it',
-                    'name':'Italian'
-                }
-            },{
-                'language':'Nederlands',
-                'info' :{
-                    'prefix':'NL',
-                    'flag':'flag-nl',
-                    'name':'Netherlands'
-                }
-            }
-        ];
         $scope.getLangPrefix = function(lang){
             for (var i in $scope.langInfo){
                 if ($scope.langInfo[i].language === lang){
@@ -244,12 +188,17 @@ sntZestStation.controller('zsRootCtrl', [
         };
         
         $scope.loadTranslations = function(theme){
-            console.info('loading languages')
             if ($scope.language) {
                 var langPrefix = $scope.getActiveLangPrefix();
-                
+            if($scope.zestStationData.zest_lang.english_translations_file_updated){
+                console.info('using: uploaded english translations');
+                $translate.use('en');
+            }
+            else{
                 console.info('using: ',langPrefix+theme.toLowerCase());
-              $translate.use(langPrefix+theme.toLowerCase());
+                $translate.use(langPrefix+theme.toLowerCase());
+            }
+             
             //  $translate.fallbackLanguage('EN');
               /* For reason unclear, the fallback translation does not trigger
                * unless a translation is requested explicitly, for second screen
@@ -260,7 +209,13 @@ sntZestStation.controller('zsRootCtrl', [
                 $translate('NA');
               }, 1000); //Word around.
             } else {
-              $translate.use('EN_snt');
+                if($scope.zestStationData.zest_lang.english_translations_file_updated){
+                    console.info('using: uploaded english translations');
+                    $translate.use('en');
+                }
+                else{
+                    $translate.use('EN_snt');
+                }
             };
         };
         $scope.setScreenIcon = function(name){
@@ -294,6 +249,7 @@ sntZestStation.controller('zsRootCtrl', [
                         close: $scope.iconsPath+'/close.svg',
                         qr: $scope.iconsPath+'/key.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
+                        logo: $scope.iconsPath+'/print_logo.svg',
                     }
                 };
             }
@@ -356,7 +312,7 @@ sntZestStation.controller('zsRootCtrl', [
             link = $scope.getThemeLink(theme);
             logo = $scope.getLogoSvg(theme);
             if (link){
-                hotelDetailsSrv.data.theme = theme.toLowerCase();
+                zsHotelDetailsSrv.data.theme = theme.toLowerCase();
                 $state.theme = theme.toLowerCase();
               //  $('head').append('<link rel="stylesheet" type="text/css" href="'+link+'">');
                 $('#logo').append(logo);
@@ -731,13 +687,18 @@ sntZestStation.controller('zsRootCtrl', [
             }
 
         };
+        $scope.openExternalWebPage = function(){
+            $scope.showExternalWebPage =true;
+        };
+
+        $scope.closeExternalWebPage = function(){
+            $scope.showExternalWebPage =false;
+        }
         
         $scope.languageSelect = function(){
             $scope.showLanguagePopup = true;
             $scope.timeOut = true;
         };
-        
-        $scope.supportedLangs = [];
         $scope.isSupported = function(lang){
             var langs = $scope.supportedLangs;
             for (var i in langs){
@@ -747,25 +708,26 @@ sntZestStation.controller('zsRootCtrl', [
             }
             return false;
         };
-        
-        $scope.selectedLanguage = 'English';
-        $scope.langflag = 'flag-gb';
-        $scope.selectLanguage = function(lang, icon){
-            
-            if (lang === null || lang === 'null'){
-                $scope.showLanguagePopup = false;
-                $scope.timeOut = false;
-                return;
-            } else {
-                $scope.selectedLanguage = lang;
-                $scope.langflag = icon;
-            }
+        var intLanguageSettings = function(){
+            $scope.selectedLanguage = 'English';
+            $scope.langflag = 'flag-gb';
+            $scope.language = null;
+            $scope.langInfo = zsUtilitySrv.returnLanguageList();
+        };
+
+        $scope.selectLanguage = function(language){
+            $scope.selectedLanguage = language.language;//set language name
+            $scope.langflag = language.info.flag;// set language icon
+            $translate.use(language.info.code); //set translations
+            $scope.showLanguagePopup = false; // set popup flag
+            $scope.timeOut = false; // set popup flag
+        };
+
+        $scope.closeLangPopUp = function()
+        {
             $scope.showLanguagePopup = false;
             $scope.timeOut = false;
-            setTimeout(function(){
-               $scope.loadTranslations($scope.theme); 
-            },5);
-        };
+        }
         
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
@@ -814,26 +776,26 @@ sntZestStation.controller('zsRootCtrl', [
                 }   
             };
             
-                $scope.timeOut = false;
-            $scope.closePopup = function(){
+            $scope.timeOut = false;
+            $scope.closePopup = function(){q
                 //ngDialog.hide();
                 $scope.timeOut = false;
                 //$scope.zestStationData.popup = false;
             };
-            
-            
-            $scope.isFromChromeApp = function(){
-                console.log(chrome.app);
-                console.log(localStorage);
-                return true;
+            $scope.onChromeAppResponse = function(response){
+                if (response){
+                    if (response.isChromeApp){
+                        $scope.inChromeApp = true;
+                    }
+                }
             };
+            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse);
             $scope.getPromptTime = function(){
                 if ($scope.idle_max>$scope.idle_prompt){
                     return $scope.idle_max-$scope.idle_prompt;
                 } else return -1;
             };
             $scope.startIdleCounter = function(){
-                //console.info('isFromChromeApp: ', $scope.isFromChromeApp());
                 var time = $scope.idle_max, promptTime = $scope.getPromptTime();
                 
                     var timer = time, minutes, seconds;
@@ -875,10 +837,28 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.closePopup();
             };
             
+            $scope.pressEsc = function() {
+                $('body').trigger({
+                    type: 'keyup',
+                    which: 27 // Escape key
+                });
+            };
+            $scope.inputFocus = function(){
+                setTimeout(function(){
+                    if (angular.element($(".start-focused"))[0]){
+                            angular.element($(".start-focused"))[0].focus();
+                        }
+                },1000);
+            };
+            
             $scope.$watchCollection(function(){
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
+                if ($scope.inChromeApp && $scope.theme === 'yotel'){
+                    $scope.keyboard = new initScreenKeyboardListener();
+                }
+                
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }
@@ -930,7 +910,6 @@ sntZestStation.controller('zsRootCtrl', [
                     supported.push(allLangs[i]);
                 }
             }
-            console.info('supported languages: ',supported)
             $scope.supportedLangs = supported;
         };
         
@@ -951,28 +930,24 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
-        
+        $scope.socketOperator = new webSocketOperations();
+        $scope.zestStationData.keyCardInserted =  false;
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
         $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;
         
         //$scope.zestStationData.pickup_qr_scan = true;//fake it till ya make it
              
-        _.extend(hotelDetailsSrv.data, zestStationSettings);
+        _.extend(zsHotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
         $scope.setupIdleTimer();
         $scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
         $scope.fetchHotelSettings();
         $scope.getWorkStation();
         $scope.getHotelStationTheme();
+        intLanguageSettings();
         //set print and email options set from hotel settings > Zest > zest station
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	}();
-        
-        
-        
-        
-        
-        
-        
 }]);
+
