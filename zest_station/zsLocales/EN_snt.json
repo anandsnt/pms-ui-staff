@@ -239,7 +239,26 @@
     "SEARCH" : "Search",
     "BY_NAME":"by name",
 
-    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS",
+    "FIND_YOUR_BILL_SUMMARY":"Find Your Bill Summary",
+    "USE_KEY_CARD":"Use Keycard",
+    "ENTER_NAME":"Enter Name",
+    
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS",
+    "FIND_YOUR_BILL_SUMMARY":"Find Your Bill Summary",
+    "USE_KEY_CARD":"Use Keycard",
+    "ENTER_NAME":"Enter Name",
+    "INSERT_KEY_CARD_FOR_CHECKOUT":"Please insert your key card in the \"Check-Out Key\" slot below",
+    "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the \"Extra Keys\" slot",
+    "KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING":"Sorry",
+    "KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT": "The keycard lookup has failed",
+    "INSERT_KEY_CARD":"Insert card",
+    "QR_SCAN_RETRY":"Retry QR scan",
+    "QR_SCAN_FAILED_SEARCH":"Reservation Search",
+    "QR_SCAN_FAILED_BY_NAME":"by name"
+
+
+
  
 
 }

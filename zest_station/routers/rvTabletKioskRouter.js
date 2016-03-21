@@ -350,6 +350,21 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/specific/signature-time-out.html'
          });
-         
+
+        //check-out[ reservation checkout options]
+         $stateProvider.state('zest_station.checkout_options', {
+             url: '/zest_station', 
+             controller: 'zsCheckOutOptionsCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/zsCheckOutOptions.html'
+         });
+
+        //check-out[ reservation checkout option key card look up]
+         $stateProvider.state('zest_station.checkout_key_card_look_up', {
+             url: '/zest_station', 
+             controller: 'zsCheckoutKeyCardActionsCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/zsCheckoutKeyCardActions.html'
+         });
+
+
 
     }]);

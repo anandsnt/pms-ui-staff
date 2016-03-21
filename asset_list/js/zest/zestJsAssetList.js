@@ -54,6 +54,9 @@ module.exports = {
 				'rover/rvSntApp.js',
 				zestRoot + 'zsApp.js',
 				zestRoot + 'rvMLIOperations.js',
+				zestRoot + 'zsWebSocketActions.js',
+				zestRoot + 'zsChromeAppActions.js',
+				zestRoot + 'zsVirtualKeyboard.js',
 				zestRoot + 'controllers/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',
@@ -61,8 +64,6 @@ module.exports = {
 				zestRoot + 'routers/**/*.js',
 				zestRoot + 'constants/**/*.js',
                                 //jquery virtual keyboard files
-				//jsLibRoot + 'stationKeyboard/jquery.keyboard.js',
-				jsLibRoot + 'stationKeyboard/onScreenKeyboardListener.js'
 			]
 		};		
 		

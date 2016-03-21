@@ -136,9 +136,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.is_checkin_now_on = checkinNowisAvailable();
 		$rootScope.checkin_now_text = 
-		(reservationAndhotelData.zest_checkin_now_text !== null && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
+		(reservationAndhotelData.zest_checkin_now_text !== null && typeof reservationAndhotelData.zest_checkin_now_text !== "undefined" && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
 		$rootScope.checkin_later_text = 
-		(reservationAndhotelData.zest_checkin_later_text !== null && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
+		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
