@@ -1133,23 +1133,33 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// include user ids
 			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
-				key         = reportParams['USER_IDS'];
-				params[key] = [];
+				selected = [];
 				/**/
-				_.each(report.chosenUsers, function(user) {
-					params[key].push( user );
+				_.each(report.chosenUsers, function (id) {
+					var user = _.find($scope.activeUserList, function (each) {
+						return each.id === id;
+					});
+					if ( !! user ) {
+						selected.push( user );
+					};
 				});
 				/**/
-				if ( changeAppliedFilter ) {
-					$scope.appliedFilter['users'] = [];
-					_.each(report.chosenUsers, function (id) {
-						var _user = _.find($scope.activeUserList, function (each) {
-							return each.id === id;
-						});
-						if ( !! _user ) {
-							$scope.appliedFilter['users'].push( _user.full_name );
+				if ( selected.length > 0 ) {
+					key         = reportParams['USER_IDS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(user) {
+						params[key].push( user.id );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.users.push( user.full_name );
 						};
 					});
+
+					// in case if all sources are selected
+					if ( changeAppliedFilter && selected.length > 1 ) {
+						$scope.appliedFilter.users = ['Multiple'];
+					};
 				};
 			};
 
@@ -1272,6 +1282,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						};
 					};
 				});
+
+				// in case if all types are selected
+				if ( changeAppliedFilter && report['hasChargeTypes']['selectAll'] ) {
+					$scope.appliedFilter.chargeTypes = ['Both'];
+				};
 			};
 
 			// generate params for selected exclusions
@@ -1704,7 +1719,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
 				// $scope.reportGroupedBy = response.group_by || '';
 
-				console.log( $scope.reportGroupedBy );
+				console.log( $scope.results );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;

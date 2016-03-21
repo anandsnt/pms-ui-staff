@@ -1,4 +1,4 @@
-admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParams', function($scope, ADStationarySrv, ngTableParams) {
+admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParams', 'availableGuestLanguages', function($scope, ADStationarySrv, ngTableParams, availableGuestLanguages) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
@@ -9,8 +9,10 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		location_image: ""
 	};
 
-	$scope.init = function() {
-
+	/*
+	* Fetches the stationary items
+	*/
+	var fetchStationary = function(params) {
 		var successCallbackOfFetch = function(data) {
 			$scope.$emit('hideLoader');
 			data.email_logo_type = data.email_logo_type || '';
@@ -40,7 +42,14 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
-		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
+		$scope.invokeApi(ADStationarySrv.fetch, params, successCallbackOfFetch);
+	};
+
+	$scope.init = function() {
+		$scope.languages = availableGuestLanguages;
+		$scope.locale = $scope.languages.default_locale;
+		var params = {};
+		fetchStationary(params);
 	};
 
 	$scope.init();
@@ -71,6 +80,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
+		postingData.locale = $scope.locale;
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
@@ -134,5 +144,14 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	$scope.onUpdateSocialLink = function() {
 		$scope.currentSocialLink = false;
 	};
+
+	/*
+	* Get invoked when the locale is changed
+	*/
+	$scope.onLocaleChange = function() {
+		var params = {};
+		params.locale = $scope.locale;
+		fetchStationary(params);
+	}
 
 }]);

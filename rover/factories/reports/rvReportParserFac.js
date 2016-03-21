@@ -10,8 +10,6 @@ sntRover.factory('RVReportParserFac', [
 
             if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
-
-                // return _.isEmpty(apiResponse) ? apiResponse : $_preParseFinTransAdjustReport( reportName, apiResponse, options );
             }
 
             if ( reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
@@ -51,7 +49,7 @@ sntRover.factory('RVReportParserFac', [
             }
 
             // otherwise a super parser for reports that can be grouped by
-            else if ( !!options['groupedByKey'] ) {
+            else if ( reportName === reportNames['RESERVATIONS_BY_USER'] && !!options['groupedByKey'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
             }
 
@@ -169,8 +167,6 @@ sntRover.factory('RVReportParserFac', [
                     amt = isNaN(amt) ? 0 : amt;
                     totalAmount += amt;
 
-                    console.log( makeCopy.remark.split('<br />') );
-
                     if ( 0 === k ) {
                         angular.extend(makeCopy, {
                             isReport     : true,
@@ -219,8 +215,6 @@ sntRover.factory('RVReportParserFac', [
                 processAry(adjustments, 'Adjustments');
                 processAry(deletedCharges, 'Deleted Charges');
             };
-
-            console.log( returnAry );
 
             return returnAry;
         }
@@ -379,18 +373,6 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_isForGenericReports( name ) {
-            return ( name === reportNames['ARRIVAL'] ||
-                    name === reportNames['IN_HOUSE_GUEST'] ||
-                    name === reportNames['CANCELLATION_NO_SHOW'] ||
-                    name === reportNames['DEPARTURE'] ||
-                    name === reportNames['LOGIN_AND_OUT_ACTIVITY'] ||
-                    name === reportNames['RESERVATIONS_BY_USER'] ) ? true : false;
-        };
-
-
-
-
 
 
         function $_parseDataToInfo ( reportName, apiResponse, options ) {
@@ -441,7 +423,20 @@ sntRover.factory('RVReportParserFac', [
                 return check;
             };
 
-            if ( $_isForGenericReports(reportName) ) {
+            var isForGenericReports = function(reportName) {
+                var allowNames = [
+                    'ARRIVAL',
+                    'IN_HOUSE_GUEST',
+                    'CANCELLATION_NO_SHOW',
+                    'DEPARTURE',
+                    'LOGIN_AND_OUT_ACTIVITY',
+                    'RESERVATIONS_BY_USER'
+                ];
+
+                return !! _.find(allowNames, function(name) { return reportName == reportNames[name] });
+            };
+
+            if ( isForGenericReports(reportName) ) {
                 for (i = 0, j = apiResponse.length; i < j; i++) {
                     makeCopy   = angular.copy( apiResponse[i] );
                     customData = [];
@@ -541,11 +536,8 @@ sntRover.factory('RVReportParserFac', [
                         returnAry.push( customData[m] );
                     };
                 };
-
-                // dont remove yet
             } else {
                 returnAry = apiResponse;
-                // dont remove yet
             };
 
             return returnAry;
