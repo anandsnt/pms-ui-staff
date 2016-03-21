@@ -24,7 +24,8 @@ module.exports = {
 				guestwebroot + 'routers/gw_checkout_router.js',
 				guestwebroot + 'scripts/angular-pickdate.js',
 				guestwebroot + 'services/*.js',
-				guestwebroot + 'controllers/**/*.js'
+				guestwebroot + 'controllers/**/*.js',
+				guestwebroot + 'directives/**/*.js'
 			]	
 		};
 		return guestwebJSassets;

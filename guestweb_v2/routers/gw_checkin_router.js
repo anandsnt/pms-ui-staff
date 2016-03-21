@@ -24,7 +24,7 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 }).state('etaUpdation', {
 	 	url: '/etaUpdation',
 	 	templateUrl: '/assets/partials/checkin/gwArrivalTime.html',
-	 	controller : 'etaUpdationController',
+	 	controller : 'gwETAUpdationController',
 	    data: {
 	    	pageTitle:'ETA Updation'
 	    }
