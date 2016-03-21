@@ -1,19 +1,29 @@
 <!-- main section starts here -->
-<div class="container">
+<div class="container zero-side-mobile-padding">
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing section-container">
-            <p class="main-text">To complete Check-in,</p>
-            <p class="sub-main-text">Please read and agree to the following:</p>
-            <p class="sub-main-text" ng-bind-html="termsAndConditions"></p>
+        <div class="col-md-10 top-spacing">
+            <!-- default main text -->
+            <p class="main-text" ng-if="!screenCMSDetails.title">To complete Check-in,</p>
+            <!-- CMS main text -->
+            <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Please read and agree to the following:</p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
+            <!-- terms and conditions -->
+            <div class="terms-and-conditions">
+                <p class="sub-main-text" ng-bind-html="termsAndConditions"></p>
+            </div>
         </div>
-        <div class="col-md-2">
-            <div class="vertical-line">&nbsp;</div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row  dual-buttons">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <a class="btn btn-template" ng-click="agreeClicked()">Agree</a>
+            <a class="btn btn-template mob-margin-top-5 grey-btn pull-right" ng-click="cancelClicked()">Cancel</a>
         </div>
-        <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
-            <a class="btn btn-template margin-top-10" ng-click="nextButtonClicked()">Continue</a>
-        </div>
-        <div class="col-md-1">
-        </div>
+        <div class="col-md-1"></div>
     </div>
 </div>

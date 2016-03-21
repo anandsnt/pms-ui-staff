@@ -43,7 +43,11 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 		"id"  : "ZS-12"
 	},
 	{
-		"value":"ETA_UPDATION",
+		"value": "ETA_UPDATION",
 		"id" : "zs-13"
+	},
+	{
+		"value": "TERMS_AND_CONDITIONS",
+		"id": "zs-14"
 	}];
 }]);

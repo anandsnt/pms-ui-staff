@@ -14,5 +14,12 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 
 		$scope.termsAndConditions = GwWebSrv.zestwebData.termsAndConditions;
 
+		$scope.agreeClicked = function(){
+
+		};
+		$scope.cancelClicked = function(){
+
+		};
+
 	}
 ]);
