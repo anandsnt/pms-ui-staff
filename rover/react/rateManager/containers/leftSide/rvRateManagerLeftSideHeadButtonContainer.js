@@ -28,12 +28,17 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         mode: state.mode,
         fromDate: state.dates[0],
         toDate: state.dates[state.dates.length - 1],
-        closedRestriction: _.findWhere(state.restrictionTypes, {value:'CLOSED'})
+        closedRestriction: _.findWhere(state.restrictionTypes, { value:'CLOSED' })
     };
 
     if(state.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
         propsToReturn.openAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
         propsToReturn.closeAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
+    }
+    if(state.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+        //propsToReturn.openAllCallbackForRateView = state.callBacksFromAngular.openAllRestrictionsForRateView;
+        propsToReturn.closeAllCallbackForRateView = state.callBacksFromAngular.closeAllRestrictionsForRateView;
+        propsToReturn.rate_ids = _.pluck(state.list.slice(1), 'id'); //first row will be having any id, just for all restrictions
     }
 
     return propsToReturn;
@@ -57,6 +62,20 @@ const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps
             };
             stateProps.openAllCallbackForSingleRateView(params);
         }
+        else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+            let params = {
+                rate_ids: stateProps.rate_ids,
+                details: [{
+                    from_date: stateProps.fromDate,
+                    to_date: stateProps.toDate,
+                    restrictions: [{
+                        action: 'remove',
+                        restriction_type_id: stateProps.closedRestriction.id
+                    }]
+                }]
+            };
+            stateProps.openAllCallbackForRateView(params);
+        } 
     },
     onCloseAllClick: (e) => {
     	e.preventDefault();
@@ -73,7 +92,21 @@ const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps
                 }]
             };
             stateProps.closeAllCallbackForSingleRateView(params);
-        }        
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+            let params = {
+                rate_ids: stateProps.rate_ids,
+                details: [{
+                    from_date: stateProps.fromDate,
+                    to_date: stateProps.toDate,
+                    restrictions: [{
+                        action: 'add',
+                        restriction_type_id: stateProps.closedRestriction.id
+                    }]
+                }]
+            };
+            stateProps.closeAllCallbackForRateView(params);
+        }       
     },
     ...stateProps      
   }

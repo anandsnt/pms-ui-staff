@@ -234,7 +234,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * when close all restrcition we need to refresh the view
        * @param  {Object} response [api response]
        */
-      var onCloseAllRestrictionsSuccess = response => {
+      var onCloseAllRestrictionsForSingleRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
       };
 
@@ -246,7 +246,47 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
         var options = {
           params: params,
-          onSuccess: onCloseAllRestrictionsSuccess
+          onSuccess: onCloseAllRestrictionsForSingleRateViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);        
+      };
+
+      /**
+       * when close all restrcition we need to refresh the view
+       * @param  {Object} response [api response]
+       */
+      var onCloseAllRestrictionsForRateViewSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+      };
+
+      /**
+       * react callback to close all restriction
+       * @param  {Object} params
+       */
+      var closeAllRestrictionsForRateView = (params) => {
+        var options = {
+          params: params,
+          onSuccess: onCloseAllRestrictionsForRateViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);        
+      };
+
+      /**
+       * when open all restrcition we need to refresh the view
+       * @param  {Object} response [api response]
+       */
+      var onOpenAllRestrictionsForRateViewSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+      };
+
+      /**
+       * react callback to open all restriction
+       * @param  {Object} params
+       */
+      var openAllRestrictionsForRateView = (params) => {
+        var options = {
+          params: params,
+          onSuccess: onCloseAllRestrictionsForRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);        
       };
@@ -259,7 +299,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         return {
           singleRateViewCallback: fetchSingleRateDetailsFromReact,
           openAllCallbackForSingleRateView: openAllRestrictionsForSingleRateView,
-          closeAllCallbackForSingleRateView: closeAllRestrictionsForSingleRateView
+          closeAllCallbackForSingleRateView: closeAllRestrictionsForSingleRateView,
+          closeAllRestrictionsForRateView: closeAllRestrictionsForRateView,
+          openAllRestrictionsForRateView: openAllRestrictionsForRateView
         }
       };
 
