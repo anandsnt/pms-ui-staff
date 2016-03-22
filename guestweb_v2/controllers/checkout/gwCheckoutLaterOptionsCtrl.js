@@ -4,7 +4,6 @@
 sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckoutSrv',
 	function($scope, $state, $controller, GwWebSrv, GwCheckoutSrv) {
 
-		//TODO : remove unwanted injections like $timeout
 		$controller('BaseController', {
 			$scope: $scope
 		});
