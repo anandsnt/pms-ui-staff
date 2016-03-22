@@ -52,6 +52,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             rateObjectBasedOnID = {},
             dateRateSet = null;
 
+        //for topbar
+        $scope.fromDate = dates[0];
+        $scope.toDate = dates[dates.length - 1];
+        $scope.showTopBar = true;
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues.selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues.selectedRates, 'name');
+
         rateRestrictions = _.object(dates, rateRestrictions);
         rateObjectBasedOnID = _.object(rateIDs, response.rates);
         
@@ -135,6 +142,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             roomTypeObjectBasedOnID = {},
             dateRoomTypeSet = null;
 
+        //topbar
+        $scope.fromDate = dates[0];
+        $scope.toDate = dates[dates.length - 1];
+        $scope.showTopBar = true;
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues.selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues.selectedRates, 'name');
+
         roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
         roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
         
@@ -216,6 +230,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
             roomTypeObjectBasedOnID = {},
             dateRoomTypeSet = null;
+
+        //topbar
+        $scope.fromDate = dates[0];
+        $scope.toDate = dates[dates.length - 1];
+        $scope.showTopBar = true;
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues.selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues.selectedRates, 'name');
 
         roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
         roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
@@ -364,10 +385,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       const {Provider} = ReactRedux;
 
       /**
-       * [description]
-       * @param  {[type]} props [description]
-       * @param  {String} type  [description]
-       * @return {[type]}       [description]
+       * to render the grid view
        */
       var renderGridView = () => {
         render(
@@ -379,11 +397,27 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       };
 
       /**
+       * to initialize data model for rate manager
+       */
+      var initializeDataModel = () => {
+        //for top bar
+        $scope.showTopBar = false;
+        $scope.showBackButton = false;
+        $scope.selectedCardNames = [];
+        $scope.selectedRateNames = [];
+        $scope.fromDate = null;
+        $scope.toDate = null;
+
+        //mode
+        $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
+      };
+
+      /**
        * initialisation function
        */
       (() => {
         setHeadingAndTitle('RATE_MANAGER_TITLE');
-
+        initializeDataModel();
         renderGridView();
       })();
 
