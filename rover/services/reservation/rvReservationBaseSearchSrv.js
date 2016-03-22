@@ -38,6 +38,17 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return view;
         };
 
+        this.getRoomTypeLevel = function(roomTypeId) {
+            var level = -1;
+            if(!!that.reservation.roomTypes){
+                var roomTypeDetails = _.find(that.reservation.roomTypes,{
+                    id: roomTypeId
+                });
+                level = roomTypeDetails.level;
+            }
+            return level;
+        }
+
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
 
