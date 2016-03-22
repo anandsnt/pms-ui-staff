@@ -80,5 +80,16 @@ sntGuestWeb.service('GwCheckinSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2','GwWebS
 		});
 		return deferred.promise;
 	};
+
+	this.updateReservationDetails = function(params){
+		var deferred = $q.defer();
+		var url = '/api/reservations/'+params.reservation_id+'/update_stay_details';
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 	
 }]);
