@@ -500,6 +500,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
 
 
     $scope.selectReservation = function(r){
+        console.log('Select:: ',r);
         //pass reservation as a state param
         $state.selectedReservation = r;
         if($scope.isInCheckoutMode()){
@@ -538,6 +539,11 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
 
     $scope.initPuk = function(){
+        console.log($state);
+        if ($state.current.name === 'zest_station.reservation_search_qrcode'){
+            $scope.selectReservation($state.qr_code);
+            return;
+        }
 
         $scope.mode = "pickup-mode";
         if ($scope.zestStationData.pickup_qr_scan || $scope.selectedLanguage === 'Italiano'){//using italian to debug qr code page

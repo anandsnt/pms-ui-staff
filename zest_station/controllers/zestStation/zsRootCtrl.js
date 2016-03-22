@@ -782,14 +782,21 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.timeOut = false;
                 //$scope.zestStationData.popup = false;
             };
+            $scope.initQRCodeFindReservation = function(reservation_id){
+                $state.qr_code = reservation_id;
+                $state.go('zest_station.reservation_search_qrcode');
+            };
             $scope.onChromeAppResponse = function(response){
+                console.log(response);
                 if (response){
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
+                    } else if (response.qr_code){
+                        $scope.initQRCodeFindReservation(response.reservation_id);
                     }
                 }
             };
-            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse);
+            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id);
             $scope.getPromptTime = function(){
                 if ($scope.idle_max>$scope.idle_prompt){
                     return $scope.idle_max-$scope.idle_prompt;
