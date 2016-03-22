@@ -475,14 +475,24 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
          * dispense second key (2 of 2)
          */
 
+
+        $scope.saveUIDToReservation = function(){
+            
+        };
+         
         $scope.initSankyoCmd = function(cmd, msg){//should only init this if a dispense was called...
             console.info('[:: WebSocket Received Message from CMD ('+cmd+') ::]');
             console.info('---> "' +msg+ '"');
+
+            if (cmd === 'cnd_dispense_key_card'){
+                $scope.saveUIDToReservation(msg);//msg is the uid of the card, which needs to be saved to the reservation
+            };
 
             switch ($scope.makeKeyParam()){
                 case 'one':
                     console.info('handle one');
                     $scope.input.madeKey = 1;
+                    
                     $scope.goToKeySuccess();
                     break;
 
