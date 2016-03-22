@@ -3,8 +3,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$rootScope',
 	'$state',
 	'zsModeConstants',
-	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv',
-	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv) {
+	'zsEventConstants','$stateParams','ngDialog','zsTabletSrv','$window',
+	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants,$stateParams,ngDialog,zsTabletSrv,$window) {
 
             /*
              * This is the main controller for the Home Screen + Admin Popup
@@ -88,6 +88,21 @@ sntZestStation.controller('zsHomeCtrl', [
         setTimeout(function(){
             $rootScope.$broadcast('REFRESH_SETTINGS',{'restart': true,'from_cancel': true});
         },500);
+    };
+
+    //to logout
+    $scope.logOutApplication = function(){
+        if (typeof chrome !== "undefined"){
+            var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+            console.info("chrome app id"+chromeAppId);
+            //minimize the chrome app on loging out
+            (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-logout"):"";
+            console.info("login out from chrome");
+        }
+        else{
+             console.info("login out");
+        };
+        $window.location.href = '/logout'; 
     };
 
     $scope.updateSettings = function(value){

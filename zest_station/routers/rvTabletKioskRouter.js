@@ -94,6 +94,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl : '/assets/partials/kiosk/reservation_search.html',
             controller  : 'zsReservationSearchCtrl'
         });
+        $stateProvider.state('zest_station.reservation_search_qrcode', {
+            url         : '/reservation_search/:mode',
+            templateUrl : '/assets/partials/kiosk/reservation_search.html',
+            controller  : 'zsReservationSearchCtrl'
+        });
 
         $stateProvider.state('zest_station.speak_to_staff', {
             url         : '/speak_to_staff',

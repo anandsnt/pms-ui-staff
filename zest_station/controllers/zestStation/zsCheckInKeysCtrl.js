@@ -288,7 +288,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
                     var onResponseSuccess;
                         options.is_kiosk = true;
+                        
                     if (!$scope.remoteEncoding){
+                        options.uid = null;//for sankyo key card encoding
                         onResponseSuccess = $scope.printLocalKey;
                     } else {
                         onResponseSuccess = $scope.successMakeKey;
@@ -298,11 +300,42 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     if ($state.simkey){
                         onResponseSuccess({});
                     } else {
-                        $scope.callAPI(zsTabletSrv.encodeKey, {
+                        
+                        var onSuccessGetToken = function(response){
+                            console.info('got token callback',arguments);
+                            
+                            
+                          //  options.access_token = response.station_access_token;
+                            options.consumer_key="85a59b343f11949b3b204708039d781e";
+                            //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
+                            
+                            var printAPI = {
+                                "consumer_key":"85a59b343f11949b3b204708039d781e",
+                                "access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
+                                "is_additional":false,
+                                "is_kiosk":true,
+                                "key":1,
+                                "reservation_id":options.reservation_id,
+                                "uid":null
+                            };
+                            
+                            $scope.callAPI(zsTabletSrv.encodeKey, {
+                                params: printAPI,
+                                'successCallBack':onResponseSuccess,
+                                'failureCallBack':$scope.emitKeyError
+                            });
+                            
+                        };
+                        
+                        $scope.callAPI(zsTabletSrv.getAccessToken, {
                             params: options,
-                            'successCallBack':onResponseSuccess,
+                            'successCallBack':onSuccessGetToken,
                             'failureCallBack':$scope.emitKeyError
                         });
+                        
+                        
+                        
+                        
                     }
                 },2000);
 
