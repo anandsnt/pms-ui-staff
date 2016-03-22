@@ -989,8 +989,14 @@
 
             .rate-single {
               font-size:16px;
-              width:80px;
+              width:auto;
               display:block;
+
+              .icon-report.icon-upsell {
+                background-position: 0 -7px;
+                background-size:10px;
+                height:10px;
+              }
             }
             
             td {
@@ -1059,8 +1065,14 @@
 
             .rate-single {
               font-size:14px;
-              width:60px;
+              width:auto;
               display:block;
+
+              .icon-report.icon-upsell {
+                background-position: 0 -7px;
+                background-size:10px;
+                height:10px;
+              }
             }
             
             td {
@@ -1331,13 +1343,16 @@
 
         .rate-single {
           .pull-left;
-          width:100px;
+          width:auto;
+          position: relative;
           font-size:24px;
           font-weight: 300;
           line-height: 20px;
 
           .icon-report {
-            margin-top:-2px;
+            position: absolute;
+            right:-16px;
+            top:0;
           }
 
           &.gray {
