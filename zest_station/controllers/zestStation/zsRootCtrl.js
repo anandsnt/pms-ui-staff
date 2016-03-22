@@ -931,7 +931,7 @@ sntZestStation.controller('zsRootCtrl', [
         var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
         console.info("chrome app id [ "+chromeAppId+' ]');
         //minimize the chrome app on loging out
-        (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"initQRCodeScan"):"";
+        new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
         console.info("::Starting QR Code Scanner::");
     } ;
 	/**
