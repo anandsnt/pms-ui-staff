@@ -11,6 +11,7 @@ admin.controller('ADToolsCtrl',
     BaseCtrl.call(this, $scope);
     $scope.toolsData = {};
     $scope.isAddMode = false;
+    $scope.addEditHeading = "";
    /*
     * To fetch list of tools
     */
@@ -34,6 +35,7 @@ admin.controller('ADToolsCtrl',
         $scope.toolsData={};
         $scope.currentClickedElement = index;
         $scope.isAddMode = false;
+        $scope.addEditHeading = "Edit";
         var successCallbackRender = function(data){
             $scope.toolsData = data;
             $scope.$emit('hideLoader');
@@ -48,6 +50,7 @@ admin.controller('ADToolsCtrl',
         $scope.toolsData={};
         $scope.currentClickedElement = "new";
         $scope.isAddMode = true;
+        $scope.addEditHeading = "Add";
         $timeout(function() {
             $location.hash('new-form-holder');
             $anchorScroll();
@@ -87,6 +90,7 @@ admin.controller('ADToolsCtrl',
     */
     $scope.clickCancel = function(){
         $scope.currentClickedElement = -1;
+        $scope.addEditHeading = "";
     };
    /*
     * To update auto sync from list
