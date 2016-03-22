@@ -17,26 +17,63 @@ const whetherAllRestrictionContainClosed = (restrictions, restrictionTypes) => {
 };
 
 const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
-  var allRestrictionsContainClose = whetherAllRestrictionContainClosed(
+    var allRestrictionsContainClose = whetherAllRestrictionContainClosed(
       state.list[0].restrictionList, state.restrictionTypes);
-  return {
-    openAllClass: allRestrictionsContainClose ? 'green': '',
-    closeAllClass: !allRestrictionsContainClose ? 'red': '',
-    openAllEnabled: allRestrictionsContainClose,
-    closeAllEnabled: !allRestrictionsContainClose,
-    mode: state.mode,
-    closeAllCallback: state.callBacksFromAngular.closeAllCallback
-  }
+
+    var propsToReturn = {
+        openAllClass: allRestrictionsContainClose ? 'green': '',
+        closeAllClass: !allRestrictionsContainClose ? 'red': '',
+        openAllEnabled: allRestrictionsContainClose,
+        closeAllEnabled: !allRestrictionsContainClose,
+        mode: state.mode,
+        fromDate: state.dates[0],
+        toDate: state.dates[state.dates.length - 1],
+        closedRestriction: _.findWhere(state.restrictionTypes, {value:'CLOSED'})
+    };
+
+    if(state.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+        propsToReturn.openAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
+        propsToReturn.closeAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
+    }
+
+    return propsToReturn;
 };
 
 const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps, dispatchProps, ownProps) => {
   return {
     onOpenAllClick: (e) => {
     	e.preventDefault();
-
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            let params = {
+                //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
+                details: [{
+                    from_date: stateProps.fromDate,
+                    to_date: stateProps.toDate,
+                    restrictions: [{
+                        action: 'remove',
+                        restriction_type_id: stateProps.closedRestriction.id
+                    }]
+                }]
+            };
+            stateProps.openAllCallbackForSingleRateView(params);
+        }
     },
     onCloseAllClick: (e) => {
     	e.preventDefault();
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            let params = {
+                //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
+                details: [{
+                    from_date: stateProps.fromDate,
+                    to_date: stateProps.toDate,
+                    restrictions: [{
+                        action: 'add',
+                        restriction_type_id: stateProps.closedRestriction.id
+                    }]
+                }]
+            };
+            stateProps.closeAllCallbackForSingleRateView(params);
+        }        
     },
     ...stateProps      
   }

@@ -210,12 +210,56 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       };
 
       /**
+       * when open all restrcition we need to refresh the view
+       * @param  {Object} response [api response]
+       */
+      var onOpenAllRestrictionsSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+      };
+
+      /**
+       * react callback to open all restriction
+       * @param  {Object} params
+       */
+      var openAllRestrictionsForSingleRateView = (params) => {
+        params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+        var options = {
+          params: params,
+          onSuccess: onOpenAllRestrictionsSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);        
+      };
+
+      /**
+       * when close all restrcition we need to refresh the view
+       * @param  {Object} response [api response]
+       */
+      var onCloseAllRestrictionsSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+      };
+
+      /**
+       * react callback to close all restriction
+       * @param  {Object} params
+       */
+      var closeAllRestrictionsForSingleRateView = (params) => {
+        params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+        var options = {
+          params: params,
+          onSuccess: onCloseAllRestrictionsSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);        
+      };
+
+      /**
        * utility method to pass callbacks from
        * @return {Object} with callbacks
        */
       var getTheCallbacksFromAngularToReact = () => {
         return {
-          singleRateViewCallback: fetchSingleRateDetailsFromReact
+          singleRateViewCallback: fetchSingleRateDetailsFromReact,
+          openAllCallbackForSingleRateView: openAllRestrictionsForSingleRateView,
+          closeAllCallbackForSingleRateView: closeAllRestrictionsForSingleRateView
         }
       };
 
@@ -299,7 +343,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var fetchSingleRateDetailsFromReact = (filterValues) => {
         lastSelectedFilterValues.push({
           ...lastSelectedFilterValues[activeFilterIndex],
-          ...filterValues
+          ...filterValues,
+          showAllRates: false,
+          showAllRoomTypes: false,
+          selectedRateTypes: [],
+          fromLeftFilter: false
         });
 
         activeFilterIndex = activeFilterIndex + 1;
@@ -345,8 +393,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
         //Storing for further reference
-        lastSelectedFilterValues = [{ ...newFilterValues }]; //ES7
-        activeFilterIndex = 0;
+        if( _.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter){
+          lastSelectedFilterValues = [{ ...newFilterValues }]; //ES7
+          activeFilterIndex = 0;
+        }
         
         if (newFilterValues.showAllRates) {
           //calling the api
@@ -419,7 +469,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var renderGridView = () => {
         render(
-            <Provider store={store} >
+            <Provider store={store}>
               <RateManagerRootComponent/>
             </Provider>,
             document.querySelector('#rate-manager .content')
