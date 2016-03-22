@@ -224,8 +224,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var lastName = guestData.guest_details[0].last_name;
             $scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
             
-            setTimeout(function(){///on slow networks this iframe may be an issue, we can attempt to do some re-try actions looking for the .src of the iframe
-                                    //need more testing on this (simulated slow networks)
+            setTimeout(function(){
+                /////on slow networks this iframe may be an issue, we can attempt to do some re-try actions looking for the .src of the iframe
+                    //need more testing on this (simulated slow networks)
                     var iFrame = {};
                     iFrame.src = document.getElementById('sixIframe').src;
                     iFrame.src = $scope.iFrameUrl;
@@ -840,9 +841,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     data.is_emv_request = true;
                     data.payment_type = "CC";
                 } else {
+                    
+                    data.amount = $state.selectedReservation.reservation_details.balance;
                     data.reservation_id = $state.selectedReservation.id;
                     data.guest_id = $state.selectedReservation.guest_details[0].id;
-                    console.info('data.guest_id: ',data.guest_id)
                     //data.add_to_guest_card = true;
                     //data.guest_id = $state.selectedReservation.guest_details[0].id;
                     data.is_emv_request = true;

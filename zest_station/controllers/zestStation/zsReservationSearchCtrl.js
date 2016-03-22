@@ -539,6 +539,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.initPuk = function(){
         console.log($state);
         if ($state.current.name === 'zest_station.reservation_search_qrcode'){
+            console.log('select reservation: ',$state.qr_code);
             $scope.selectReservation($state.qr_code);
             return;
         }
