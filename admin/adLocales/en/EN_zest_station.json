@@ -57,7 +57,8 @@
 "CHECKIN_WAIT_MSG":"Check In Wait Message",
 "COLLECT_USER_NATIONALITY":"Collect Guest Nationality",
 "QR_FAIL_OVER":"QR Failover",
-"KEY_CARD_LOOK_UP":"Keycard Lookup"
+"KEY_CARD_LOOK_UP":"Keycard Lookup",
+"CHROME_APP_ID":"Chrome App ID"
 
 
 

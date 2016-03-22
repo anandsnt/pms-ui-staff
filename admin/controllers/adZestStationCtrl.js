@@ -35,12 +35,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         };
         setUpTranslationFilesStatus();
         var dataToSend = {
-            'kiosk': {
-                "home_screen": $scope.zestSettings.home_screen,
-                "zest_station_message_texts": $scope.zestSettings.zest_station_message_texts,
-                "zest_lang": zestLanguageDataCopy
-            }
-
+            'kiosk': $scope.zestSettings
         };
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };

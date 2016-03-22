@@ -1191,33 +1191,31 @@
                 background: @grey1;
 
                 &.error {
-                    color: #fff0f0;
-                    font-style: italic;
                     background: lighten(@red, 40);
                     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15))
                 }
             }
         }
+
+        &.has-notification {
+            .content-scroll {
+                .calc-height(100, 240);
+            }  
+        }
     }
 
     #translation-filters {
-        position: relative;
         height: 110px;
         padding-top: 50px;
 
         .error-message, 
         .notice, 
         .success_message {
-            position: absolute;
-            top: 60px;
-            left: 0;
-            margin: 0;
+            margin: 0 0 10px 0;
             width: 100%;
-            z-index: 999;
         }
 
         .grid-options {
-            z-index: 1;
             .float;
 
             .entry {
@@ -1267,7 +1265,6 @@
         .size(80px, 100%);
         .show;
     }
-
 
 
 
