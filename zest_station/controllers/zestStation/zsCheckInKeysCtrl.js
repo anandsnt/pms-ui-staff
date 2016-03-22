@@ -478,6 +478,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         $scope.saveUIDToReservation = function(uid){
                 var onResponse = function(){
+                    $scope.$emit("hideLoader");
                     console.log(arguments);
                 };
              $scope.callAPI(zsTabletSrv.saveUIDtoRes, {
