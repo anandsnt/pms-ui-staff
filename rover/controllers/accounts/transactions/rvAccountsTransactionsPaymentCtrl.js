@@ -64,7 +64,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 			$scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
 		};
 		init();
-                
+
 
 		/**
 		 * to run angular digest loop,
@@ -248,7 +248,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
             if (len >= 8 && len <= 22){
                 //then go check the balance of the cardd
                 $('[name=card-number]').keydown(function(){
-                    clearTimeout($scope.timer); 
+                    clearTimeout($scope.timer);
                     $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
                 });
             } else {
@@ -276,9 +276,9 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
        }
     };
 
-                
-                
-                
+
+
+
 		$scope.changePaymentType = function(){
                     console.log(arguments);
 			if($scope.saveData.paymentType === "CC" && $scope.paymentGateway !== 'sixpayments'){
@@ -680,5 +680,15 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl',	[
 		 		}, 200);
 		 	}
 		};
+		//CICO-25885 Fix
+		$scope.changeOnsiteCallIn = function () {
+			$scope.showCCPage = ($scope.isManual) ? true :false;
+		};
+
+	 	//CICO-25885 Fix - Function to trigger from sixpayment partial
+	    $scope.$on('changeOnsiteCallIn', function(event){
+	        $scope.isManual =  !$scope.isManual;
+	        $scope.changeOnsiteCallIn();
+	    });
 
 }]);

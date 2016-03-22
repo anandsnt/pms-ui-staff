@@ -782,14 +782,22 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.timeOut = false;
                 //$scope.zestStationData.popup = false;
             };
+            $scope.initQRCodeFindReservation = function(reservation_id){
+                $state.qr_code = reservation_id;
+                $state.go('zest_station.reservation_search_qrcode');
+            };
             $scope.onChromeAppResponse = function(response){
+                console.info('Zest Station got message from Chrome App:: ',response);
+                console.log(response);
                 if (response){
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
+                    } else if (response.qr_code){
+                        $scope.initQRCodeFindReservation(response.reservation_id);
                     }
                 }
             };
-            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse);
+            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id);
             $scope.getPromptTime = function(){
                 if ($scope.idle_max>$scope.idle_prompt){
                     return $scope.idle_max-$scope.idle_prompt;
@@ -912,7 +920,22 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $scope.supportedLangs = supported;
         };
-        
+    var maximizeScreen = function(){
+        var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+        console.info("chrome app id [ "+chromeAppId+' ]');
+        //minimize the chrome app on loging out
+        (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-login"):"";
+        console.info("starting in from chrome");
+    } ;
+    $scope.initChromeAppQRCodeScanner = function(){
+        if ($scope.inChromeApp){
+            var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+            console.info("chrome app id [ "+chromeAppId+' ]');
+            //minimize the chrome app on loging out
+            new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
+            console.info("::Starting QR Code Scanner::");
+        }
+    } ;
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -930,6 +953,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        (typeof chrome !== "undefined") ? maximizeScreen():"";
         $scope.socketOperator = new webSocketOperations();
         $scope.zestStationData.keyCardInserted =  false;
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
