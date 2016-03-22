@@ -304,14 +304,13 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         var onSuccessGetToken = function(response){
                             console.info('got token callback',arguments);
                             
-                            
                           //  options.access_token = response.station_access_token;
-                            options.consumer_key="85a59b343f11949b3b204708039d781e";
+                          //  options.consumer_key="85a59b343f11949b3b204708039d781e";
                             //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
                             
                             var printAPI = {
-                                "consumer_key":"85a59b343f11949b3b204708039d781e",
-                                "access_token":response.station_access_token,
+                               // "consumer_key":"85a59b343f11949b3b204708039d781e",
+                               // "access_token":response.station_access_token,
                                 "is_additional":false,
                                 "is_kiosk":true,
                                 "key":1,
@@ -327,11 +326,14 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             
                         };
                         
+                        onSuccessGetToken();
+                        /*
                         $scope.callAPI(zsTabletSrv.getAccessToken, {
                             params: options,
                             'successCallBack':onSuccessGetToken,
                             'failureCallBack':$scope.emitKeyError
                         });
+                        */
                         
                         
                         
@@ -364,7 +366,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.DispenseKey = function() {//write to key after successful encodeKey call
                     console.info('dispense called : [',$state.keyDispenseUID,']');
                     $state.keyDispenseUID = $scope.dispenseKeyData;
-                    $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$state.keyDispenseUID+"\"}");
+                    $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"25CC2CDA31A70E87AF3731961096C90CA0\"}");
                 };
                  $scope.EjectKeyCard = function() {//reject key on failure
                     $scope.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
