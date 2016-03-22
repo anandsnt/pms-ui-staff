@@ -31,9 +31,16 @@
             </div>
         </div>
         <ul>
-            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: stateCheck.activeView =='RECOMMENDED'}" ng-click="stateCheck.activeView='RECOMMENDED';refreshScroll()">{{'RESV_RECOMMENDED'|translate}}</li>
-            <li ng-class="{active: stateCheck.activeView == 'ROOM_TYPE'}" ng-click="stateCheck.activeView='ROOM_TYPE'; refreshScroll()">{{'RESV_ROOM'|translate}}</li>
-            <li ng-class="{active: stateCheck.activeView == 'RATE'}" ng-click="stateCheck.activeView= 'RATE';refreshScroll()">{{'RESV_RATE'|translate}}</li>
+            <li ng-class="{active: stateCheck.activeView == 'RECOMMENDED'}" ng-click="setActiveView('RECOMMENDED')"
+                ng-show="otherData.recommendedRateDisplay">
+                {{'RESV_RECOMMENDED'|translate}}
+            </li>
+            <li ng-class="{active: stateCheck.activeView == 'ROOM_TYPE'}" ng-click="setActiveView('ROOM_TYPE')">
+                {{'RESV_ROOM'|translate}}
+            </li>
+            <li ng-class="{active: stateCheck.activeView == 'RATE'}" ng-click="setActiveView('RATE')">
+                {{'RESV_RATE'|translate}}
+            </li>
         </ul>
         <div class="find-rates" ng-show="stateCheck.activeView == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
