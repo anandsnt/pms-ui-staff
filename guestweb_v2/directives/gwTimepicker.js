@@ -6,7 +6,7 @@ sntGuestWeb.directive('timePicker', function() {
         link: function(scope, element, attrs) {
             scope.timings = 
                ['12:00 am', '12:15 am', '12:30 am','12:45 am', '01:00 am', '01:15 am',
-                '01:30 am', '01:45 am', '02:00 am',',02:15 am', '02:30 am', '02:45 am',
+                '01:30 am', '01:45 am', '02:00 am','02:15 am', '02:30 am', '02:45 am',
                 '03:00 am', '03:15 am', '03:30 am', '03:45 am', '04:00 am', '04:15 am',
                 '04:30 am', '04:45 am', '05:00 am', '05:15 am', '05:30 am', '05:45 am',
                 '06:00 am', '06:15 am', '06:30 am', '06:45 am', '07:00 am', '07:15 am', 
