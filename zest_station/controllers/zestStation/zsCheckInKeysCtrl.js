@@ -476,8 +476,18 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
          */
 
 
-        $scope.saveUIDToReservation = function(){
-            
+        $scope.saveUIDToReservation = function(uid){
+                var onResponse = function(){
+                    console.log(arguments);
+                };
+             $scope.callAPI(zsTabletSrv.saveUIDtoRes, {
+                params: {
+                    reservation_id: $state.selectedReservation.id,
+                    uid: uid
+                },
+                'successCallBack':onResponse,
+                'failureCallBack':onResponse
+            });
         };
          
         $scope.initSankyoCmd = function(cmd, msg){//should only init this if a dispense was called...

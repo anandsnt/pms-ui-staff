@@ -72,6 +72,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             });
             return deferred.promise;
         };
+        this.saveUIDtoRes = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/update_key_uid';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
         this.validate = function(params) {
             var deferred = $q.defer(),
                 url = 'api/users/check_if_admin';
