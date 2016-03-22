@@ -89,7 +89,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
-          restrictionTypes
+          restrictionTypes,
+          callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });
       };
 
@@ -171,7 +172,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
-          restrictionTypes
+          restrictionTypes,
+          callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });
       };
 
@@ -190,6 +192,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           onSuccess: onFetchRoomTypeAndRestrictionsSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
+      };
+
+      /**
+       * utility method to pass callbacks from
+       * @return {Object} with callbacks
+       */
+      var getTheCallbacksFromAngularToReact = () => {
+        return {
+          singleRateViewCallback: fetchSingleRateDetailsAndRestrictions
+        }
       };
 
       /**
@@ -244,7 +256,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           dates,
           zoomLevel: lastSelectedFilterValues.zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
-          restrictionTypes
+          restrictionTypes,
+          callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });        
       };
 
@@ -312,6 +325,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           if(newFilterValues.selectedRates.length === 1 && !newFilterValues.selectedRateTypes.length)  {
             fetchSingleRateDetailsAndRestrictions(newFilterValues)
           }
+          //multiple rate view
           else if(newFilterValues.selectedRates.length > 1 || newFilterValues.selectedRateTypes.length > 0) {
             //calling the api
             fetchDailyRates(newFilterValues);

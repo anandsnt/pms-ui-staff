@@ -8,7 +8,7 @@ const rateManagerExpandedRowsReducer = (state, action) => {
     	return []; 
     case RM_RX_CONST.TOGGLE_EXPAND_COLLAPSE_ROW:
       let indexToDelete = state.indexOf(action.payLoad.index);
-      if((indexToDelete) === -1) {
+      if(indexToDelete === -1) {
         return [
           ...state,
           action.payLoad.index

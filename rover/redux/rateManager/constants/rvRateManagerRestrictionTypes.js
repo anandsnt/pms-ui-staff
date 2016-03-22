@@ -18,7 +18,7 @@ const RateManagerRestrictionTypes = {
 		'defaultText': ''
 	},
 	'CLOSED_DEPARTURE': {
-		'className': 'restriction-icon bg-red icon-cross',
+		'className': 'restriction-icon bg-red',
 		'description': 'Closed to Departure',
 		'defaultText': ''
 	},

@@ -4,11 +4,13 @@ const { findDOMNode } = ReactDOM
 const RateManagerGridRightSideRowsComponent = createClass({
 	componentDidMount() {
 		this.setWidth();
+		this.props.hideLoader();
 	},
 
 	componentDidUpdate() {
 		this.setWidth();
 		this.props.refreshScrollers();
+		this.props.hideLoader();
 	},
 
 	shouldComponentUpdate(nextProp, nextState) {

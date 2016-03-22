@@ -11,15 +11,9 @@ const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (dispatch) 
   return {
         onOpenAllClick: (e) => {
         	e.preventDefault();
-            dispatch({
-                type: RM_RX_CONST.OPEN_ALL
-            });
         },
         onCloseAllClick: (e) => {
         	e.preventDefault();
-            dispatch({
-                type: RM_RX_CONST.CLOSE_ALL
-            });
         }        
   }
 };

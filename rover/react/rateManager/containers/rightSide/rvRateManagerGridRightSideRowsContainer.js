@@ -15,7 +15,12 @@ const mapDispatchToRateManagerGridRightSideRowsContainerProps = (dispatch) => {
         dispatch({
             type: RM_RX_CONST.REFRESH_SCROLLERS
         });
-    }
+    },
+    hideLoader: () => {
+        dispatch({
+            type: RM_RX_CONST.ACT_HIDE_ACTIVITY_INDICATOR
+        });
+    }    
   }
 };
 
