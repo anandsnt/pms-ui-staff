@@ -1,0 +1,25 @@
+
+<section id="main" role="main">
+    <div id="content">
+        <h1 translate>FIND_YOUR_BILL_SUMMARY</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="captureKey()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    {{'USE_KEY_CARD' | translate}}
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press="searchByName()">
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                     {{'ENTER_NAME' | translate}}
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

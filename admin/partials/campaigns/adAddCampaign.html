@@ -78,10 +78,22 @@
 		                </label>
 
 		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='PRE_CHECKIN'}"></span>
+		                    <input name="audience" id="audience-users" type="radio" value="PRE_CHECKIN" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		                    <span translate>PRE_CHECKIN</span>
+		                </label>
+
+		                <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='ON_CHECKIN'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="ON_CHECKIN" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>ON_CHECKIN</span>
 		                </label>  
+
+		                <label class="radio">
+		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='ROOM_READY'}"></span>
+		                    <input name="audience" id="audience-users" type="radio" value="ROOM_READY" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
+		                    <span translate>ROOM_READY</span>
+		                </label>
                         
 
 		                <label class="radio">
@@ -289,6 +301,14 @@
 	            </label>
 	        </div>
 
+	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'PRE_CHECKIN'}">
+	            <label class="radio large">
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'PRE_CHECKIN'}"></span>
+	                <input name="delivery" id="delivery-onetime" value="PRE_CHECKIN" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
+	                {{'PRE_CHECKIN'|translate}}
+	            </label>
+	        </div>
+
 	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'ON_CHECKIN'}">
 	            <label class="radio large">
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'ON_CHECKIN'}"></span>
@@ -304,6 +324,14 @@
                                 </select>
                         </div>
                 </div>
+	        </div>
+
+	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'ROOM_READY'}">
+	            <label class="radio large">
+	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'ROOM_READY'}"></span>
+	                <input name="delivery" id="delivery-onetime" value="ROOM_READY" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
+	                {{'ROOM_READY'|translate}}
+	            </label>
 	        </div>
 
 	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'EXTERNAL_CHECKOUT'}">

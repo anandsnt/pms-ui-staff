@@ -7,7 +7,10 @@ sntRover.controller('RVReportListCrl', [
     'RVReportUtilsFac',
     'RVReportMsgsConst',
     '$timeout',
-    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout) {
+    'RVReportApplyIconClass',
+    'RVReportApplyFlags',
+    'RVReportSetupDates',
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags, setupDates) {
 
         BaseCtrl.call(this, $scope);
 
@@ -16,6 +19,7 @@ sntRover.controller('RVReportListCrl', [
         $scope.setScroller(LIST_ISCROLL_ATTR, {
             preventDefault: false
         });
+        $scope.setScroller('reportUserFilterScroll');
 
         /**
          * inorder to refresh after list rendering
@@ -35,15 +39,20 @@ sntRover.controller('RVReportListCrl', [
         var postProcess = function(report) {
             for (var i = 0, j = report.length; i < j; i++) {
 
-                // add icon class to this report
-                reportUtils.applyIconClass( report[i] );
+                // apply icon class based on the report name
+                applyIconClass.init( report[i] );
 
-                // add required flags this report
-                reportUtils.applyFlags( report[i] );
+                // apply certain flags based on the report name
+                applyFlags.init( report[i] );
 
                 // add users filter for needed reports
                 // unfortunately this is not sent from server
                 reportUtils.addIncludeUserFilter( report[i] );
+
+                setupDates.init( report[i] );
+                _.each(report[i]['filters'], function(filter) {
+                    setupDates.execFilter( report[i], filter );
+                });
 
                 // to process the filters for this report
                 reportUtils.processFilters(report[i], {
@@ -56,7 +65,8 @@ sntRover.controller('RVReportListCrl', [
                     'chargeNAddonGroups' : $scope.$parent.chargeNAddonGroups,
                     'chargeCodes'      : $scope.$parent.chargeCodes,
                     'addons'           : $scope.$parent.addons,
-                    'reservationStatus': $scope.$parent.reservationStatus
+                    'reservationStatus': $scope.$parent.reservationStatus,
+                    'activeUserList'   : $scope.$parent.activeUserList
                 });
 
                 // to reorder & map the sort_by to report details columns - for this report
@@ -68,7 +78,7 @@ sntRover.controller('RVReportListCrl', [
                 reportUtils.processSortBy( report[i] );
 
                 // to assign inital date values for this report
-                reportUtils.initDateValues( report[i] );
+                // reportUtils.initDateValues( report[i] );
 
                 // to process the group by for this report
                 reportUtils.processGroupBy( report[i] );
@@ -116,6 +126,8 @@ sntRover.controller('RVReportListCrl', [
                         });
                     };
                 });
+
+                $scope.refreshScroller('reportUserFilterScroll');
             };
 
             var callback = function() {

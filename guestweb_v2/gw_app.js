@@ -42,20 +42,18 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'reservationAndhotelData', 'screenMappings', 'zestWebGlobalSettings', 'GwWebSrv',
-    function($scope, $rootScope, $state, $controller, reservationAndhotelData, screenMappings, zestWebGlobalSettings, GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'zestWebGlobalSettings', 'GwWebSrv',
+    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, zestWebGlobalSettings, GwWebSrv) {
 
         $controller('BaseController', {
             $scope: $scope
         });
-        var reservationAndhotelDetails = reservationAndhotelData.generalDetails;
+        var reservationAndhotelDetails = zestwebData;
         //There will be a keyword for each screen which has to be mapped with screen id
         // this is fetched and saved in service for future usage
         GwWebSrv.setScreenList(screenMappings);
-        // This will save the available screen details set in hotel amdin
-        GwWebSrv.setCMSdata(reservationAndhotelData.screenDataFromCMS);
         //save the data for future usage
-        GwWebSrv.setReservationAndHotelData(reservationAndhotelData);
+        GwWebSrv.setzestwebData(zestwebData);
         //override styles if styles are set in hotel admin
         !!reservationAndhotelDetails.zest_web ? overrideStylesWithCMSdata(reservationAndhotelDetails.zest_web) :'';
         //set static items

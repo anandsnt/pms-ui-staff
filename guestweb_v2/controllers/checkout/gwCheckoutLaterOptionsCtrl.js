@@ -8,7 +8,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		$controller('BaseController', {
 			$scope: $scope
 		});
-
+		//to do:CC
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LATER_OPTIONS";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -17,15 +17,41 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 				$scope.isOperationCompleted = true;
 			};
 			var options = {
-				params: {},
+				params: {
+					'reservation_id': GwWebSrv.zestwebData.reservationID
+				},
 				successCallBack: onSuccess
 			};
 			$scope.callAPI(GwCheckoutSrv.fetchLateCheckoutOptions, options);
 		}();
 
 
-		$scope.gotToNextStep = function() {
-			$state.go('checkOutLaterFinal');
+		$scope.gotToNextStep = function(option) {
+			var onSuccess = function(response) {
+				if (!GwWebSrv.zestwebData.isCCOnFile && GwWebSrv.zestwebData.isMLI) {
+					$state.go('ccVerification', {
+						'fee': option.amount,
+						'message': "Late check-out fee",
+						'isFromCheckoutNow': false
+					});
+				} else {
+					$state.go('checkOutLaterFinal', {
+						time: option.time,
+						ap: option.ap,
+						amount: option.amount
+					});
+				};
+
+			};
+			var options = {
+				params: {
+					'reservation_id': GwWebSrv.zestwebData.reservationID,
+					'late_checkout_offer_id': option.id
+				},
+				//'is_cc_attached_from_guest_web':false};
+				successCallBack: onSuccess
+			};
+			$scope.callAPI(GwCheckoutSrv.updateReservationWithNewCheckoutOptions, options);
 		};
 	}
 ]);

@@ -1,0 +1,10 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+
+    <form method="post" action="" id="action-new" class="modal-content form actions-form">
+        <button class="modal-close" ng-click="closeDialog()" id="modal-close" type="button"><span
+                class="icons icon-close invert"></span>
+        </button>
+
+        <section ng-include="'/assets/partials/actionsManager/rvAddAction.html'"></section>
+    </form>
+</div>
