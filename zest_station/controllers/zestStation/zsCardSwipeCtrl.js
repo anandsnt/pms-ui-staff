@@ -778,30 +778,30 @@ sntZestStation.controller('zsCardSwipeCtrl', [
          */
         
         $scope.setInitSwipeSettings = function(){
-                if (!$scope.enable_remote_encoding){
-                    $scope.initWsSwipe();
+                
 
-                } else {
                     if ($scope.zestStationData.payment_gateway !== "sixpayments") {
                 /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
                  * desktopSwipeEnabled flag is true
                  */
-
-                    if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
-                        console.log('init desktop swipe, any device');
-                        initiateDesktopCardReader();
+                    if (!$scope.enable_remote_encoding){
+                        $scope.initWsSwipe();
                     } else {
-                        console.log('init reader')
-                      //Time out is to call set Browser
-                          setTimeout(function() {
-                            $scope.initiateCardReader();
-                          }, 2000);
+                        if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
+                            console.log('init desktop swipe, any device');
+                            initiateDesktopCardReader();
+                        } else {
+                            console.log('init reader');
+                          //Time out is to call set Browser
+                              setTimeout(function() {
+                                $scope.initiateCardReader();
+                              }, 2000);
+                          }
                       }
                     } else {
                         console.warn('refresh iframe with: ',$state.selectedReservation);
                         $scope.refreshIframeWithGuestData($state.selectedReservation);
                     }
-                }
         };
         $scope.fetchDoorLockSettings = function(){
             var onResponse = function(response){
