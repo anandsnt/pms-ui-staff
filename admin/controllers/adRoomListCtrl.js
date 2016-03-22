@@ -17,6 +17,7 @@ admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$fil
 			$scope.totalCount = parseInt(data.total_count);
 			$scope.totalPage = Math.ceil($scope.totalCount/$scope.displyCount);
 			$scope.numberOfRoomsConfigured = data.number_of_rooms_configured;
+			$scope.totalNumberOfConfigurableRooms = data.total_number_of_rooms;
 			$scope.is_add_available = data.is_add_available;
 			$scope.data = data.rooms;
 
