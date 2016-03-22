@@ -482,7 +482,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
              $scope.callAPI(zsTabletSrv.saveUIDtoRes, {
                 params: {
-                    reservation_id: $state.selectedReservation.id,
+                    reservation_id: $scope.selectedReservation.reservation_id,
                     uid: uid
                 },
                 'successCallBack':onResponse,
