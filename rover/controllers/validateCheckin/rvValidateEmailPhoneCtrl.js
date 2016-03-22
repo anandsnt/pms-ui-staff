@@ -114,7 +114,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
         };
 
         $scope.goToRoomAssignment = function(){
-            var reservationStatus = $scope.reservationData.reservation_card.reservation_status
+            var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
             var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && 
                                     (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
             $state.go("rover.reservation.staycard.roomassignment", {
