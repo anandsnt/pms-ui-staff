@@ -23,22 +23,27 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
     openAllClass: allRestrictionsContainClose ? 'green': '',
     closeAllClass: !allRestrictionsContainClose ? 'red': '',
     openAllEnabled: allRestrictionsContainClose,
-    closeAllEnabled: !allRestrictionsContainClose
+    closeAllEnabled: !allRestrictionsContainClose,
+    mode: state.mode,
+    closeAllCallback: state.callBacksFromAngular.closeAllCallback
   }
 };
 
-const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (dispatch) => {
+const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps, dispatchProps, ownProps) => {
   return {
     onOpenAllClick: (e) => {
     	e.preventDefault();
+
     },
     onCloseAllClick: (e) => {
     	e.preventDefault();
-    }        
+    },
+    ...stateProps      
   }
 };
 
 const RateManagerGridLeftSideHeadButtonContainer = connect(
-  mapStateToRateManagerGridLeftSideHeadButtonContainerProps, 
+  mapStateToRateManagerGridLeftSideHeadButtonContainerProps,
+  null,
   mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps
 )(RateManagerGridLeftSideHeadButtonComponent);

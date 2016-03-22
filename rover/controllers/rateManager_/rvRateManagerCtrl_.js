@@ -18,7 +18,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * to keep track of last filter choosed
        * will be using in setting zoom level or coming back from graph view to this
        */
-      var lastSelectedFilterValues = null;
+      var lastSelectedFilterValues = [],
+        activeFilterIndex = 0;
 
       /**
        * to set the heading and title
@@ -56,8 +57,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.fromDate = dates[0];
         $scope.toDate = dates[dates.length - 1];
         $scope.showTopBar = true;
-        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues.selectedCards, 'account_name');
-        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues.selectedRates, 'name');
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
         rateRestrictions = _.object(dates, rateRestrictions);
         rateObjectBasedOnID = _.object(rateIDs, response.rates);
@@ -94,7 +95,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           type: RM_RX_CONST.RATE_VIEW_CHANGED,
           rateRestrictionData: [...ratesWithRestrictions],
           dates,
-          zoomLevel: lastSelectedFilterValues.zoomLevel,
+          zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
           restrictionTypes,
           callbacksFromAngular: getTheCallbacksFromAngularToReact(),
@@ -146,8 +147,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.fromDate = dates[0];
         $scope.toDate = dates[dates.length - 1];
         $scope.showTopBar = true;
-        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues.selectedCards, 'account_name');
-        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues.selectedRates, 'name');
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
         roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
         roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
@@ -184,7 +185,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
           roomTypeRestrictionData: [...roomTypeWithRestrictions],
           dates,
-          zoomLevel: lastSelectedFilterValues.zoomLevel,
+          zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
           restrictionTypes,
           callbacksFromAngular: getTheCallbacksFromAngularToReact(),
@@ -214,7 +215,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var getTheCallbacksFromAngularToReact = () => {
         return {
-          singleRateViewCallback: fetchSingleRateDetailsAndRestrictions
+          singleRateViewCallback: fetchSingleRateDetailsFromReact
         }
       };
 
@@ -235,8 +236,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.fromDate = dates[0];
         $scope.toDate = dates[dates.length - 1];
         $scope.showTopBar = true;
-        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues.selectedCards, 'account_name');
-        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues.selectedRates, 'name');
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
         roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
         roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
@@ -275,11 +276,39 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           type: RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
           singleRateRestrictionData: [...roomTypeWithRestrictions],
           dates,
-          zoomLevel: lastSelectedFilterValues.zoomLevel,
+          zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
           businessDate: tzIndependentDate($rootScope.businessDate),
           restrictionTypes,
           callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });        
+      };
+
+      /**
+       * on taping the back button from the top bar (NOT from the HEADER)
+       */
+      $scope.clickedOnBackButton = () => {
+        activeFilterIndex = activeFilterIndex - 1;
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.showBackButton = false;
+      };
+
+      /**
+       * callback from react, when clicked on rate
+       * @param  {Object} filterValues
+       */
+      var fetchSingleRateDetailsFromReact = (filterValues) => {
+        lastSelectedFilterValues.push({
+          ...lastSelectedFilterValues[activeFilterIndex],
+          ...filterValues
+        });
+
+        activeFilterIndex = activeFilterIndex + 1;
+
+        $scope.selectedRateNames = lastSelectedFilterValues[activeFilterIndex].selectedRates;
+        
+        $scope.showBackButton = true;
+
+        fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
       };
 
       /**
@@ -316,7 +345,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
         //Storing for further reference
-        lastSelectedFilterValues = { ...newFilterValues }; //ES7
+        lastSelectedFilterValues = [{ ...newFilterValues }]; //ES7
+        activeFilterIndex = 0;
         
         if (newFilterValues.showAllRates) {
           //calling the api

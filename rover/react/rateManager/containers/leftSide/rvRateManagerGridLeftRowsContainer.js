@@ -10,6 +10,7 @@ let convertRatesDataForLeftListing = (rates) => {
 	rates.map((rate, index) => {
 		ratesToReturn.push({
 			id: rate.id,
+			name: rate.name,
 			trClassName: ('cell rate ' + (((index + 1) === rates.length) ? 'last' : '')),
 			tdClassName: 'first-row force-align',
 			leftSpanClassName: 'name ' + (rate.based_on_rate_id ? 'gray' : 'base-rate'),
@@ -116,10 +117,11 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 		    	});
 			}
 			else if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE) {
+				let clickedRate = stateProps.leftListingData[index];
 				stateProps.callBackForSingleRateFetch({
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,
-					selectedRates: [{id: stateProps.leftListingData[index].id}]
+					selectedRates: [{id: clickedRate.id, name: clickedRate.name}]
 				})
 			}				
 		},
