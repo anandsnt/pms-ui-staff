@@ -13,11 +13,15 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         that.setupChromeAppListener = function(){
             // The ID of the extension we want to talk to.
             // Make a simple request:
-            chrome.runtime.sendMessage(chromeAppId, {fromZestStation: true},this.onChromeAppMsgResponse);
+            if(chromeAppId) {
+                chrome.runtime.sendMessage(chromeAppId, {fromZestStation: true}, this.onChromeAppMsgResponse);
+            }
             
         };
         that.fetchQRCode = function(){
-          chrome.runtime.sendMessage(chromeAppId, "initQRCodeScan",this.onChromeAppMsgResponse);  
+            if(chromeAppId) {
+                chrome.runtime.sendMessage(chromeAppId, "initQRCodeScan", this.onChromeAppMsgResponse);
+            }
         };
         if (fetchQRCode){
             that.fetchQRCode();
