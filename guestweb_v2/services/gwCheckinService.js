@@ -91,5 +91,19 @@ sntGuestWeb.service('GwCheckinSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2','GwWebS
 		});
 		return deferred.promise;
 	};
+
+	this.completeAutoCheckin = function(params){
+		var deferred = $q.defer();
+		var url = '/api/reservations/'+params.reservation_id+'/pre_checkin';
+		var data = {};
+		data.application = (typeof GwWebSrv.zestwebData.application !=="undefined") ? GwWebSrv.zestwebData.application : "";
+		data.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !=="undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+		GWBaseWebSrv.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 	
 }]);

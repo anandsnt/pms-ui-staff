@@ -8,8 +8,8 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			$scope: $scope
 		});
 		//to delete
-		// $rootScope.accessToken = "e78a8786c11ce4ecd9ae2a7c452e2911";
-		// GwWebSrv.zestwebData.reservationID = "1339909"
+		$rootScope.accessToken = "e78a8786c11ce4ecd9ae2a7c452e2911";
+		GwWebSrv.zestwebData.reservationID = "1339909"
 		//to delete
 		//
 		var init = function() {
@@ -79,7 +79,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 						}
 						//$state.go('laterArrival',stateParams);
 					} else {
-						$state.go('preCheckinStatus');
+						$state.go('autoCheckinFinal');
 					};
 
 				};

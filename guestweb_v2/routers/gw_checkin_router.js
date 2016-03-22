@@ -35,7 +35,15 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	    data: {
 	    	pageTitle: 'Terms & Conditions'
 	    }
+	 }).state('autoCheckinFinal', {
+		url: '/autoCheckinFinal',
+		templateUrl: '/assets/partials/checkin/gwAutoCheckinFinal.html',
+		controller : 'gwAutoCheckinController',
+		data: {
+	    	pageTitle: 'Status - Pre Check-In'
+	    }
 	 });
+
 
 	//    //room and cc verification 
 

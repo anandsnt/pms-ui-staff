@@ -49,5 +49,8 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	{
 		"value": "TERMS_AND_CONDITIONS",
 		"id": "zs-14"
+	},{
+		"value" : "AUTO_CHECKIN_FINAL",
+		"id" : "zs-15"
 	}];
 }]);
