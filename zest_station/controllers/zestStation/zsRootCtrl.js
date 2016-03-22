@@ -928,11 +928,13 @@ sntZestStation.controller('zsRootCtrl', [
         console.info("starting in from chrome");
     } ;
     $scope.initChromeAppQRCodeScanner = function(){
-        var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
-        console.info("chrome app id [ "+chromeAppId+' ]');
-        //minimize the chrome app on loging out
-        new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
-        console.info("::Starting QR Code Scanner::");
+        if ($scope.inChromeApp){
+            var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+            console.info("chrome app id [ "+chromeAppId+' ]');
+            //minimize the chrome app on loging out
+            new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
+            console.info("::Starting QR Code Scanner::");
+        }
     } ;
 	/**
 	 * [initializeMe description]
