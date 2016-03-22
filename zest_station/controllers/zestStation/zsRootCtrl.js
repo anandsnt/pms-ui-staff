@@ -787,6 +787,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.reservation_search_qrcode');
             };
             $scope.onChromeAppResponse = function(response){
+                console.info('Zest Station got message from Chrome App:: ',response);
                 console.log(response);
                 if (response){
                     if (response.isChromeApp){
@@ -921,10 +922,17 @@ sntZestStation.controller('zsRootCtrl', [
         };
     var maximizeScreen = function(){
         var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
-        console.info("chrome app id"+chromeAppId);
+        console.info("chrome app id [ "+chromeAppId+' ]');
         //minimize the chrome app on loging out
         (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-login"):"";
         console.info("starting in from chrome");
+    } ;
+    $scope.initChromeAppQRCodeScanner = function(){
+        var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+        console.info("chrome app id [ "+chromeAppId+' ]');
+        //minimize the chrome app on loging out
+        (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"initQRCodeScan"):"";
+        console.info("::Starting QR Code Scanner::");
     } ;
 	/**
 	 * [initializeMe description]

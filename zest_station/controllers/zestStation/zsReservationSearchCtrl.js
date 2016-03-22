@@ -459,11 +459,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         };
         //this is just simulation
         //handling failure case only now.
-        $scope.$emit('showLoader');
-        $timeout(function() {
-            $scope.$emit('hideLoader');
-            onFailure();
-        }, 2000);
+        
+        $scope.initChromeAppQRCodeScanner();
+        
     };
 
     /**
