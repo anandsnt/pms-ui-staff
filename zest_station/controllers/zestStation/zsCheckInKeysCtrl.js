@@ -494,7 +494,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             console.info('[:: WebSocket Received Message from CMD ('+cmd+') ::]');
             console.info('---> "' +msg+ '"');
 
-            if (cmd === 'cnd_dispense_key_card'){
+            if (cmd === 'cmd_dispense_key_card'){
                 $scope.saveUIDToReservation(msg);//msg is the uid of the card, which needs to be saved to the reservation
             };
 
