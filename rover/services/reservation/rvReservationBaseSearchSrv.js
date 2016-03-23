@@ -430,7 +430,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 var houseAvailbility = {};
                 _.each(response.results, function(availability) {
-                    houseAvailbility[availability.date] = availability.house.availability;
+                    houseAvailbility[availability.date] = availability.availability;
                 })
                 deferred.resolve(houseAvailbility);
             }, function(data) {
