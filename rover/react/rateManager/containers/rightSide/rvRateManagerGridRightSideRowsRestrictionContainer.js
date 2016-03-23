@@ -76,6 +76,25 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
     };
 };
 
+const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProps, dispatchProps, ownProps) => {
+    var onTdClick = () => {};
+    switch(stateProps.mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+            onTdClick = (e, rowIndex, colIndex) => {
+                
+            };
+            break;
+        default:
+            break;
+    };
+
+    return {
+        onTdClick
+    };
+}
+
 const RateManagerGridRightSideRowsRestrictionContainer = 
-	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps)
+	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps,
+        null,
+        mapDispatchToRateManagerGridRightSideRowsRestrictionContainer)
 	(RateManagerGridRightSideRowsRestrictionComponent);

@@ -33,11 +33,11 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         closedRestriction: _.findWhere(state.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE })
     };
 
-    if(state.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+    if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
         propsToReturn.openAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
         propsToReturn.closeAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
     }
-    else if(state.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+    else if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
         propsToReturn.openAllCallbackForRateView = state.callBacksFromAngular.openAllRestrictionsForRateView;
         propsToReturn.closeAllCallbackForRateView = state.callBacksFromAngular.closeAllRestrictionsForRateView;
         propsToReturn.rate_ids = _.pluck(state.list.slice(1), 'id'); //first row will be having any id, just for all restrictions

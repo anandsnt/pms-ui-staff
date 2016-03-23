@@ -5,12 +5,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'rvRateManagerCoreSrv',
     'rvRateManagerEventConstants',
     'restrictionTypes',
+    'ngDialog',
     function($scope,
              $filter,
              $rootScope,
              rvRateManagerCoreSrv,
              rvRateManagerEventConstants,
-             restrictionTypes) {
+             restrictionTypes,
+             ngDialog) {
 
       BaseCtrl.call(this, $scope);
 
@@ -388,6 +390,31 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           closeAllRestrictionsForRoomTypeView,
           openAllRestrictionsForRoomTypeView     
         }
+      };
+
+      /**
+       * on api call success against rate cell click
+       * @param  {Object} response
+       */
+      var onFetchRestrictionDetailsForSingleRateCell = (response) => {
+        
+      };
+
+      /**
+       * callback from react when clicked on a cell in rate view
+       */
+      var clickedOnRateViewCell = ({rateIDs, date}) => {
+        //calling the API to get the details
+        var params = {
+          rate_ids: rateIDs,
+          from_date: date,
+          to_date: date
+        };
+        var options = {
+          params: params,
+          onSuccess: onFetchRestrictionDetailsForSingleRateCell
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
       };
 
       /**
