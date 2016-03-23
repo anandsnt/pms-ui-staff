@@ -6,7 +6,7 @@ const {connect} = ReactRedux;
  * @return {Boolean}
  */
 const whetherAllRestrictionContainClosed = (restrictions, restrictionTypes) => {
-  var closedRestriction = _.findWhere(restrictionTypes, { value : "CLOSED" }),
+  var closedRestriction = _.findWhere(restrictionTypes, { value : RM_RX_CONST.CLOSED_RESTRICTION_VALUE }),
     closedRestrictionsCount = 0;
   
   restrictions.map(eachDayRestrictionList => {
@@ -28,7 +28,7 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         mode: state.mode,
         fromDate: state.dates[0],
         toDate: state.dates[state.dates.length - 1],
-        closedRestriction: _.findWhere(state.restrictionTypes, { value:'CLOSED' })
+        closedRestriction: _.findWhere(state.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE })
     };
 
     if(state.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
