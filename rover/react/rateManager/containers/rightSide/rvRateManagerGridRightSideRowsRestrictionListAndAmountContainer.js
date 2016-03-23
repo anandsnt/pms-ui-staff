@@ -78,7 +78,8 @@ const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerPro
     return {
         roomTypeRowsData,
         mode: state.mode,
-        dateList: convertDateListForRestrictionAndAmountView(state.dates, state.businessDate)
+        dateList: convertDateListForRestrictionAndAmountView(state.dates, state.businessDate),
+        onTdClick: state.callBacksFromAngular.clickedOnRateViewCell
     };
     
 };

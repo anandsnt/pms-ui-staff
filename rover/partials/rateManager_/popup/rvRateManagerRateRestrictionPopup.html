@@ -1,0 +1,23 @@
+<div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+	<form class="modal-content form">
+	    <div class="modal-container">
+	    	<h1>No, not there yet :) Sorry..</h1>
+			<div class="footer">
+	            <div class="actions">
+	                <button ng-click="closeDialog()" class="button blank" type="button">
+	                    Cancel
+	                </button>
+	                <!-- remove class .hide if there is any override and rate is not a child or any other rule is applied. Please do review rules for overrides
+	                    -->
+	                <button class="button purple hide" ng-hide="true" type="button">
+	                    Clear Rate Overrides
+	                </button>
+	            
+	                <button class="button green hide" ng-hide="true" type="button">
+	                    Set
+	                </button>
+	            </div>
+	        </div>
+	    </div>
+	</form>
+</div>

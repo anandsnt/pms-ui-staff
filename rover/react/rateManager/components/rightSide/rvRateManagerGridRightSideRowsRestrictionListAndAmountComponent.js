@@ -1,10 +1,10 @@
-const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ mode, roomTypeRowsData, dateList  }) => (
+const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdClick, mode, roomTypeRowsData, dateList  }) => (
 	<tbody>
 		{roomTypeRowsData.map((rowData, rowIndex) => 
 			<tr key={'key-' + rowIndex}
 				className={((rowIndex + 1) === (roomTypeRowsData.length) ? 'last' : '')}>
 					{rowData.restrictionList.map((eachDayRestrictionData, colIndex) =>
-						<td key={'key-' + colIndex} className='cell'>
+						<td key={'key-' + colIndex} onClick={(e) => onTdClick(e, rowIndex, colIndex)} className='cell'>
 							<div className={'cell-container' + (dateList[colIndex].isWeekEnd ? ' weekend_day': '') + (rowData.expanded ? ' expanded-cell' : '')}>
 						 			{rowIndex === 0 ? 
 						 				(

@@ -388,8 +388,26 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           closeAllRestrictionsForRateView,
           openAllRestrictionsForRateView,
           closeAllRestrictionsForRoomTypeView,
-          openAllRestrictionsForRoomTypeView     
+          openAllRestrictionsForRoomTypeView,
+          clickedOnRateViewCell   
         }
+      };
+
+    $scope.closeDialog = function() {
+
+      $rootScope.modalClosing = true;
+      setTimeout(function() {
+        ngDialog.close();
+        $rootScope.modalClosing = false;
+      }, 300);
+    };
+
+      var showRateRestrictionPopup = () => {
+        // ngDialog.open({
+        //   template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
+        //   scope: $scope,
+        //   className: 'ngdialog-theme-default',
+        // });
       };
 
       /**
@@ -403,7 +421,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       /**
        * callback from react when clicked on a cell in rate view
        */
-      var clickedOnRateViewCell = ({rateIDs, date}) => {
+      var clickedOnRateViewCell = () => {
+        return showRateRestrictionPopup();//{rateIDs, date}
         //calling the API to get the details
         var params = {
           rate_ids: rateIDs,
