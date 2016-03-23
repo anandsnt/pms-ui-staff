@@ -239,7 +239,7 @@
         }
       }
       
-      .company-card-results {
+      .rate-manager-card {
         position: absolute;
         .show;
         top:auto;
@@ -265,7 +265,7 @@
           z-index: -1; /* Stay behind the results*/
 
         }
-        .search-results { 
+        .rate-manager-card-search-results { 
           padding:0;
           position:relative;
           max-height: 240px;
@@ -284,6 +284,32 @@
             border-bottom-color: transparent;
           }
           cursor: pointer;
+          position:relative;
+
+          a {
+            min-height: 30px;
+            display: block;
+            width:100%;
+            padding-left: 40px; 
+            line-height: 30px;
+            color: @black;
+            font-size: 16px;
+            font-weight: 600;
+
+            .ui-match {
+              color: @orange;
+            }
+
+            .icons,
+            img {
+              position: absolute;
+              left: 10px;
+              top: 0;
+              bottom: 0;
+              margin: auto 0;
+
+            }
+          }
         }
         .icons,
         img {
@@ -616,7 +642,7 @@
                 .base-rate-indicator {
                   position: absolute;
                   left:10px;
-                  top:2px;
+                  top:0px;
                   width: 20px;
                   height:20px;
                   background:@blueStart;
@@ -934,11 +960,14 @@
 
                   .room-type-price {
                     height:68px;
-                     .room-type-price-value { 
+
+                    .room-type-price-name {
                       display: block; 
                       width:100%;
+                    }
+                    .room-type-price-value { 
                       height:24px;
-                     }
+                    }
                   }
                 }
               }
@@ -954,9 +983,11 @@
 
                   .room-type-price {
                     height:68px;
-                     .room-type-price-value { 
+                     .room-type-price-name {
                       display: block; 
                       width:100%;
+                     }
+                     .room-type-price-value { 
                       height:24px;
                      }
                   }
@@ -1012,10 +1043,13 @@
 
                   .room-type-price {
                     height:68px;
-                     .room-type-price-value { 
-                      font-size:21px;
+                     
+                     .room-type-price-name {
                       display: block; 
                       width:100%;
+                     }
+                     .room-type-price-value { 
+                      font-size:21px;
                       height:24px;
                      }
                   }
@@ -1032,10 +1066,13 @@
 
                   .room-type-price {
                     height:68px;
-                     .room-type-price-value { 
-                      font-size:21px;
+
+                     .room-type-price-name {
                       display: block; 
                       width:100%;
+                     }
+                     .room-type-price-value { 
+                      font-size:21px;
                       height:24px;
                      }
                   }
@@ -1089,9 +1126,11 @@
                   .room-type-price {
                     height:58px;
                     padding:5px 10px;
-                     .room-type-price-value { 
+                     .room-type-price-name {
                       display: block; 
                       width:100%;
+                     }
+                     .room-type-price-value { 
                       font-size:14px;
                      }
                   }
@@ -1109,10 +1148,23 @@
                   .room-type-price {
                     height:58px;
                     padding:5px 10px;
-                     .room-type-price-value { 
+                    .room-type-price-name {
                       display: block; 
                       width:100%;
+                     }
+                     .room-type-price-value { 
                       font-size:14px;
+
+                      &.has-override {
+                        padding-right: 10px;
+                      }
+                      .icon-report.icon-upsell {
+                        background-position: 0 -7px;
+                        top:2px;
+                        background-size:10px;
+                        height:10px;
+                        width:10px;
+                      }
                      }
                   }
                 }
@@ -1272,14 +1324,19 @@
                     font-weight: 300;
                     color:@black;
                     .pull-right;
+                    width:auto;
+                    position:relative;
 
                     &.hasOverride-label, /* OLD Rate Manager*/
                     &.has-override {
                       color: @orange;
+                      padding-right:16px;
                     }
 
-                    &.icon-report {
-                      .pull-left;
+                    .icon-report {
+                      position: absolute;
+                      top:0;
+                      right: 0px;
                     }
 
                     &.gray {
