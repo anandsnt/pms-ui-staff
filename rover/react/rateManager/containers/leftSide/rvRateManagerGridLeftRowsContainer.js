@@ -12,7 +12,7 @@ let convertRatesDataForLeftListing = (rates) => {
 			id: rate.id,
 			name: rate.name,
 			trClassName: ('cell rate ' + (((index + 1) === rates.length) ? 'last' : '')),
-			tdClassName: 'first-row force-align',
+			tdClassName: '',
 			leftSpanClassName: 'name ' + (rate.based_on_rate_id ? 'gray' : 'base-rate'),
 			showIconBeforeText: !rate.based_on_rate_id,
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
@@ -37,7 +37,7 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
 		roomTypesToReturn.push({
 			...roomType,
 			trClassName: ('cell rate ' + (((index + 1) === roomTypes.length) ? 'last' : '')),
-			tdClassName: 'first-row force-align',
+			tdClassName: '',
 			leftSpanClassName: 'name ',
 			showIconBeforeText: false,
 			textInIconArea: '',
@@ -56,22 +56,23 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
  * @return {array}
  */
 let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => {
-	var roomTypesToReturn = [];
+	var roomTypesToReturn = [], isExpandedRow = false;
 	roomTypes.map((roomType, index) => {
+		isExpandedRow = expandedRows.indexOf(index) > -1;
 		roomTypesToReturn.push({
 			...roomType,
 			trClassName: (
 				'cell rate' + 
 				(((index + 1) === roomTypes.length) ? ' last' : '') + 
-				(expandedRows.indexOf(index) > -1 ? ' expandedFirstRow': '')
+				( isExpandedRow ? ' expanded-row': '')
 				),
-			tdClassName: 'first-row force-align',
+			tdClassName: '',
 			leftSpanClassName: 'name ',
 			showIconBeforeText: false,
 			textInIconArea: '',
 			leftSpanText: roomType.name,
 			showRightSpan: true,
-			rightSpanClassName: 'icons icon-double-arrow rotate-down'
+			rightSpanClassName: 'icons icon-double-arrow' + (isExpandedRow ? ' rotate-up': ' rotate-down')
 		})
 	});
 	return roomTypesToReturn;
