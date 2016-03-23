@@ -72,8 +72,9 @@ let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes, exp
 };
 
 const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerProps = (state) => {
-    var roomTypeRowsData = [];
-    roomTypeRowsData = applyRestrictionLogicForSingleRateView(state.list, state.restrictionTypes, state.expandedRows);
+    var shouldFormRowsData = state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE,
+    roomTypeRowsData = shouldFormRowsData ? 
+        applyRestrictionLogicForSingleRateView(state.list, state.restrictionTypes, state.expandedRows) : [];
     return {
         roomTypeRowsData,
         mode: state.mode,
