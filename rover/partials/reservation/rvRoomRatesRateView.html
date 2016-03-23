@@ -128,7 +128,7 @@
                 </ul>
             </div>
         </li>
-        <li class="break" ng-show="stateCheck.showLessRooms && stateCheck.selectedRoomType == -1">
+        <li class="break" ng-show="rate.rooms.length < rate.totalRoomsCount" ng-click="showRoomsList(rate, true)">
             <span class="thin" translate>RESV_SEE_MORE_ROOMS</span>
         </li>
     </ul>

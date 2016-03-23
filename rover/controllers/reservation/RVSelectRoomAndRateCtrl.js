@@ -13,7 +13,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				},
 				rate: {
 					perPage: 15,
-					page: 1
+					page: 1,
+					roomsList: {
+						perPage: 3
+					}
 				}
 			},
 			house: house, //house availability
@@ -143,7 +146,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				});
 				return allSelected;
 			},
-			getRoomsADR = function(cb, forRate) {
+			getRoomsADR = function(cb, forRate, page) {
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, 'guests');
 				if (occupancies.length > 1) {
 					// No need to send last day's occupancy to the rate's API
@@ -162,8 +165,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
-					per_page: $scope.stateCheck.pagination.roomType.perPage,
-					page: $scope.stateCheck.pagination.roomType.page
+					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
+					page: page
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
@@ -324,7 +327,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 
 				_.each($scope.stateCheck.baseInfo.roomTypes, function(roomType) {
-					var proccesedRestrictions = processRestrictions(roomType.first_restriction, roomType.multiple_restrictions);
+					var proccesedRestrictions = processRestrictions(roomType.first_restriction, roomType.multiple_restrictions),
+					 	datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 
 					if (!$scope.reservationData.ratesMeta[roomType.rate_id]) {
 						// -- Note: This should optimally come inside this condition only if a group/allotment is added in the Room & Rates screen. Else this would have been done in initialization itself.
@@ -1534,35 +1538,41 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		$scope.showRoomsList = function(rate, append) {
-			if (!rate.isCollapsed) {
+			if (!rate.isCollapsed && !append) {
 				rate.isCollapsed = true;
 			} else {
+				var pageToFetch;
 				if (!rate.hasRoomsList || !append) {
 					rate.rooms = [];
+					pageToFetch = 1;
+				}else{
+					pageToFetch = (rate.rooms.length / $scope.stateCheck.pagination.rate.roomsList.perPage) + 1;
 				}
 				getRoomsADR(function(response) {
+					rate.totalRoomsCount = response.total_count;
+
 					_.each(response.results, function(room) {
-
-						var proccesedRestrictions = processRestrictions(room.first_restriction, room.multiple_restrictions);
-
-						var roomInfo = {
-							id: room.id,
-							name: $scope.reservationData.roomsMeta[room.id].name,
-							availability: room.availability,
-							showDays: false,
-							adr: room.adr,
-							forRate: rate.id,
-							numRestrictions: proccesedRestrictions.restrictionCount || 0,
-							restriction: proccesedRestrictions.firstRestriction,
-							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id)
-						};
+						var proccesedRestrictions = processRestrictions(room.first_restriction, room.multiple_restrictions),
+							roomInfo = {
+								id: room.id,
+								name: $scope.reservationData.roomsMeta[room.id].name,
+								availability: room.availability,
+								showDays: false,
+								adr: room.adr,
+								forRate: rate.id,
+								numRestrictions: proccesedRestrictions.restrictionCount || 0,
+								restriction: proccesedRestrictions.firstRestriction,
+								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id)
+							};
 						rate.rooms.push(roomInfo);
 						$timeout(function() {
-							rate.isCollapsed = false;
+							if(!append){
+								rate.isCollapsed = false;
+							}//else keep it open just refresh the scroll
 							$scope.refreshScroll();
-						}, 300);
+						}, 100);
 					});
-				}, rate.id);
+				}, rate.id, pageToFetch);
 			}
 		};
 
