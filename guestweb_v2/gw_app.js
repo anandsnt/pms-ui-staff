@@ -70,8 +70,10 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         else if(reservationAndhotelDetails.is_zest_checkin === "true"){
             $state.go('externalCheckinVerification'); //external checkin URL
         }
-        else if(reservationAndhotelDetails.is_checkin ==="false" && reservationAndhotelDetails.access_token.length >0){
+        else if(reservationAndhotelDetails.is_checkin === "false" && reservationAndhotelDetails.access_token.length >0){
             $state.go('checkoutRoomVerification');
+        }else if(reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length >0){
+            $state.go('checkinLanding');
         }
     }
 ]);

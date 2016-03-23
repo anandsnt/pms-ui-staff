@@ -42,6 +42,13 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 		data: {
 	    	pageTitle: 'Status - Pre Check-In'
 	    }
+	 }).state('checkinLanding', {
+	 	url: '/checkinLanding',
+	 	templateUrl: '/assets/partials/checkin/gwCheckin.html',
+	 	controller : 'GWCheckinLandingCtrlController',
+	 	data: {
+	 		title: 'Check-in'
+	 	}
 	 });
 
 
