@@ -78,7 +78,8 @@
 	"ITEM" : "Item",
 	"DEFAULT_GUEST_BILL" : "Default Guest Bill",
 	"DEFAULT_ACCOUNT_BILL" : "Default Account Bill",
-	"SELECT_ACCOUNT_BILL" : "Select Account Bill"
+	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
+	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print"
 
 
 
