@@ -111,6 +111,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//$rootscope.keyDeliveryByText  = true;
 
 		$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
+		$rootScope.enforceDeposit = !!reservationAndhotelData.zestweb_enforce_deposit ? true : false;
 
 		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
