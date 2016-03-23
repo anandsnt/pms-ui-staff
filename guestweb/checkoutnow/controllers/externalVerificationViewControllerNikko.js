@@ -97,10 +97,10 @@
 var dependencies = [
 '$scope',
 'externalVerificationService','$rootScope','$state','dateFilter','$filter','$modal',
-externalVerificationViewController
+externalVerificationViewControllerNikko
 ];
 
-sntGuestWeb.controller('externalVerificationViewController', dependencies);
+sntGuestWeb.controller('externalVerificationViewControllerNikko', dependencies);
 })();
 
 sntGuestWeb.controller('verificationErrorController', ['$scope', function($scope) {
