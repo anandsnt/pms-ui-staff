@@ -46,9 +46,35 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             });
             return deferred.promise;
         };
+        this.getAccessToken = function(params) {
+            /*params:
+             * reservation_id
+             * application || web
+             */
+            var deferred = $q.defer(),
+                url = '/guest_web/get_station_guest_auth_token';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
         this.encodeKey = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/reservation/print_key';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.saveUIDtoRes = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/update_key_uid';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);

@@ -3,16 +3,17 @@
             <!-- Edit Department -->
             <form class="form inline-form float">
                 <div class="form-title">
-                    <h3 translate><span></span> ADD </h3>
+                    <h3 translate><span></span> {{addEditHeading}} </h3>
                     <em class="status" > {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
                 </div>
-                
+
                 <fieldset class="holder left float">
 
 
                     <div class="entry full-width">
                         <ad-textbox inputtype="text" value="toolsData.hotel_code" label = "{{'HOTEL_CODE' | translate}}" placeholder = "{{'HOTEL_CODE' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
-                        <label> {{'EMAILS_SEPERATED_BY' | translate}}</label>
+                        <label> {{'EMAILS_SEPERATED_BY' | translate}} <strong>*</strong></label>
+
                         <textarea class="full-width" id="terms_and_conditions" type="" ng-model="toolsData.emails"></textarea>
                     </div>
                 </fieldset>

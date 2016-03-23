@@ -9,7 +9,7 @@
                             touch-press='scanQRCode()'>
                         <div ng-include="icons.url.qr"></div>
                     </button>
-                    {{'RETRY' |translate}}
+                    {{'QR_SCAN_RETRY' |translate}}
                 </li>
                 <li class="break" ng-show="zestStationData.pickup_qr_scan_fail_over">
                     <span translate>OR_TEXT</span>
@@ -19,8 +19,8 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    {{'SEARCH' |translate}}
-                    <span>{{'BY_NAME' |translate}}</span>
+                    {{'QR_SCAN_FAILED_SEARCH' |translate}}
+                    <span>{{'QR_SCAN_FAILED_BY_NAME' |translate}}</span>
                 </li>
                 <li class="break">
                     <span translate>OR_TEXT</span>
