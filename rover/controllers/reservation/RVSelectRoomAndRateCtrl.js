@@ -15,7 +15,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					perPage: 15,
 					page: 1,
 					roomsList: {
-						perPage: 3
+						perPage: 15
 					}
 				}
 			},
@@ -486,7 +486,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						var sc = $scope.stateCheck,
 							roomsCount = $scope.display.roomFirstGrid.length,
 							ratesCount = $scope.display.rateFirstGrid.length;
-						if (this.y < (scrollPosition - 30) && Math.abs(this.y - this.maxScrollY) < Math.abs(this.maxScrollY / 5)) {
+						if (this.y < (scrollPosition - 10) && Math.abs(this.y - this.maxScrollY) < Math.abs(this.maxScrollY / 4)) {
 							if (!sc.showLessRooms &&
 								sc.activeView === 'ROOM_TYPE' &&
 								sc.baseInfo.totalCount > roomsCount) {
@@ -1550,7 +1550,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				getRoomsADR(function(response) {
 					rate.totalRoomsCount = response.total_count;
-
+					rate.hasRoomsList = true;
 					_.each(response.results, function(room) {
 						var proccesedRestrictions = processRestrictions(room.first_restriction, room.multiple_restrictions),
 							roomInfo = {
