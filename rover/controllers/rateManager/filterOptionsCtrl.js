@@ -222,14 +222,18 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             $scope.cmpCardSearchDivHgt = 250;
             var totalHeight = 42;
             $scope.arrowPosFromTop = $('#company-card').offset().top;
-            var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
+            var popOverBottomPosFromTop = $('#company-card').offset().top - 20;
             if ($scope.companyCardResults.length === 0) {
                 $scope.cmpCardSearchDivHgt = totalHeight;
             } else {
                 $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
             }
-            $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
-
+            if( $scope.cmpCardSearchDivHgt > 250 ){
+                $scope.cmpCardSearchDivHgt = 250;
+            }
+            var halfOfInputHeight = $('#company-card').height() / 2;
+            $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt - halfOfInputHeight;
+           
             setTimeout(function() {
                 $scope.$parent.myScroll['nameOnCard'].refresh();
             }, 300);

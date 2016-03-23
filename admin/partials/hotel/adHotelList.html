@@ -5,7 +5,7 @@
 			<header class="content-title float">
 				<h2>Hotels</h2>
 				<span class="count">({{data.hotels.length}})</span>
-				<a ui-sref="admin.snthoteldetails({action:'add'})" class="action add">Add new</a>
+				<a ui-sref="admin.snthoteldetails({action:'add'})" class="action add" ng-show="isSntAdmin && !isServiceProvider">Add new</a>
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>

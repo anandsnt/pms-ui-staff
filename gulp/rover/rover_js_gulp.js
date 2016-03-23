@@ -66,12 +66,17 @@ module.exports = function(gulp, $, options) {
 
 		var tasks = Object.keys(stateMappingList).map(function(state, index){
 			console.log ('rover JS mapping-generation-started: ' + state);
-			var mappingList  		= require(stateMappingList[state]).getList(),
+			var mappingList  		= require(stateMappingList[state].filename).getList(),
 				nonMinifiedFiles 	= mappingList.nonMinifiedFiles,
 				minifiedFiles 		= mappingList.minifiedFiles,
 				fileName 			= state.replace(/\./g, "-")+".min.js";
 
-			var nonMinifiedStream = gulp.src(nonMinifiedFiles)
+			var nonMinifiedStream = gulp.src(nonMinifiedFiles);
+			if (stateMappingList[state].babelify) {
+				nonMinifiedStream = nonMinifiedStream.pipe($.babel());
+			}
+
+			nonMinifiedStream = nonMinifiedStream
 					.pipe($.jsvalidate())
 					.on('error', onError)
 			        .pipe($.concat(fileName))
@@ -81,9 +86,9 @@ module.exports = function(gulp, $, options) {
 			        .pipe($.uglify({compress:true, output: {
 			        	space_colon: false
 			        }}))
-			        .on('error', onError),
+			        .on('error', onError);
 
-			    minifiedStream = gulp.src(minifiedFiles)
+			var minifiedStream = gulp.src(minifiedFiles)
 			    	.pipe($.jsvalidate())
 					.on('error', onError)
 			    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
@@ -117,8 +122,8 @@ module.exports = function(gulp, $, options) {
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 		
 		for (state in stateMappingList){
-			delete require.cache[require.resolve(stateMappingList[state])];
-			combinedList 	= require(stateMappingList[state]).getList();
+			delete require.cache[require.resolve(stateMappingList[state].filename)];
+			combinedList 	= require(stateMappingList[state].filename).getList();
 			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
 			extendedMappings[state] = glob.sync(fileList).map(function(e){
 				return "/assets/" + e;
@@ -136,10 +141,29 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
-	gulp.task('build-rover-js-dev', ['rover-generate-mapping-list-dev', 'copy-cordova-assets'], function(){
+	gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev', 'copy-cordova-assets'], function(){
+		delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
+		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
+		var fileList = [];
+		for (state in stateMappingList) {
+			delete require.cache[require.resolve(stateMappingList[state].filename)];
+			var combinedList = require(stateMappingList[state].filename).getList();
+			if (stateMappingList[state].babelify) {
+				fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
+			}
+		};
+
+		return gulp.src(fileList, {base: '.'})
+			.pipe($.babel())
+			.on('error', options.silentErrorShowing)
+			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+
+	});
+
+	gulp.task('build-rover-js-dev', ['rover-babelify-dev'], function(){
 		//since extendedMappings contains /assets/ and that is not a valid before gulp.src
 		var dashboardFiles = extendedMappings['rover.dashboard']
-			.map(function(e){  
+			.map(function(e){
 				e = e.replace("/assets/", "");
 				return e;
 			});
@@ -165,9 +189,10 @@ module.exports = function(gulp, $, options) {
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 
 		for (state in stateMappingList){
-			combinedList 	= require(stateMappingList[state]).getList();
+			delete require.cache[require.resolve(stateMappingList[state].filename)];
+			combinedList 	= require(stateMappingList[state].filename).getList();
 			fileList 		= combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles);
-			paths 			= paths.concat(glob.sync(fileList));
+			paths 			= paths.concat(fileList);
 		}
 		paths = paths.concat('asset_list/js/rover/**/*.js', 'asset_list/stateJsMapping/rover/**/*.js');
 		gulp.watch(paths, function(callback){
@@ -180,6 +205,7 @@ module.exports = function(gulp, $, options) {
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
+
 	gulp.task('rover-copy-js-files', function(){
 		var fileList = [];
 		
@@ -187,8 +213,8 @@ module.exports = function(gulp, $, options) {
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 
 		for (state in stateMappingList){
-			delete require.cache[require.resolve(stateMappingList[state])];
-			combinedList 	= require(stateMappingList[state]).getList();
+			delete require.cache[require.resolve(stateMappingList[state].filename)];
+			combinedList = require(stateMappingList[state].filename).getList();
 			fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
 		}
 		fileList = fileList.concat('shared/cordova.js');

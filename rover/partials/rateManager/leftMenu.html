@@ -1,8 +1,9 @@
 <div id="rateManagerLeftPanel" ng-controller="RMFilterOptionsCtrl" class="filter-options {{currentLeftMenuClass}}" ng-click="hideCompanyCardSearchResults()">
+	<a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>	
 	<div class= "filter-padding"> 	
 		<div class="fixed-container" >
 			<h3>FILTER OPTIONS</h3>
-			<a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>	
+			
 
 			<div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px;">
 
@@ -33,8 +34,104 @@
 						</div>
 					</div>
 
+					<div class="entry">
+                        <label for="rmGroup" >GROUP BY</label>
+                        <div class="select">
+                            <select iscroll-stop-propagation id="rmGroup" name="group-order"  >
+                                <option value="">Select Group Order</option>
+                                <option value="1">Rate Type</option>
+                                <option value="2">Hierarchy (Parent/Child)</option>
+                            </select>
+                        </div>
+                    </div>
+
 					<hr/>
 
+					<!-- ADD Class .active on clicked item, remove otherwise -->
+					<ul class="tabs-nav">
+                        <li><a href="#radioShowContainer" class="active">Show All</a></li>
+                        <li><a href="#select-rate" >Select Rate</a></li>
+                    </ul>
+
+                    <!-- Active tab has class .active -->
+                    <div id="radioShowContainer" class="tab show-rate-or-room"  ng-class="{'active':currentFilterData.is_checked_all_rates}">
+                    	<!-- add Class .checked to label and icon, add attribute checked='checked' on input
+							when checked, otherwise remove all that
+                    	 -->
+                    	 <!-- this will toggle ratesRoomsToggle to == 'RATES' -->
+                        <label class="checkbox radio inline checked">
+                            <span class="icon-form icon-radio checked" ng-class="{'checked':currentFilterData.is_checked_all_rates}"></span>
+                            <input name="show" value="rates" type="radio" ng-change="clickedAllRates()" ng-model="currentFilterData.is_checked_all_rates"  />
+                            ALL RATES
+                        </label>
+                        <!-- this will toggle ratesRoomsToggle to != 'RATES' -->
+                        <label class="checkbox radio inline ">
+                            <span class="icon-form icon-radio " ></span>
+                            <input name="show" value="rooms" type="radio" />
+                            ALL ROOM TYPES
+                        </label>
+                    </div>
+
+                    <!-- Add class .active if clicked on tab 'Select Rate' -->
+                    <div id="select-rate" class="tab" ng-class="{'active':!currentFilterData.is_checked_all_rates}">
+                        <div class="entry">
+                            <div class="select">
+                                <select iscroll-stop-propagation id="rmRateType" name="rate-type" ng-model="currentFilterData.rate_type_selected" ng-change="refreshFilterScroll(); selFirst()">
+                                    <option class="placeholder" value="">Select Rate Type</option> 
+                                   	<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rates-box" ng-repeat="rate_type in currentFilterData.rate_type_selected_list">
+							<span class="rate-data">{{rate_type.name}}</span>
+							<span ng-click="deleteSelectedRateType(rate_type.id)" class="icons delete_small"> &nbsp;</span>
+							<br clear="all">
+						</div>
+						<span class = "deleteall">
+							<a ng-click="deleteSelectedRateType('ALL')" ng-show="currentFilterData.rate_type_selected_list.length > 1">
+								CLEAR ALL RATE TYPES
+							</a>
+						</span>
+
+						<div class="entry">
+                            <div id="rmCurrentFilterData" class="select" >
+                                <select iscroll-stop-propagation id="rmRate" ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll(); selFirst()">
+                                    <option class="placeholder" value="">Select Rate</option>
+                                     <option ng-repeat="rate in currentFilterData.rates | filter:removeExpiredRates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
+                                </select>
+                            </div>
+                        </div>
+ 
+                        <div class="rates-box" ng-repeat="rates in currentFilterData.rates_selected_list">
+							<span class="rate-data">{{rates.name}}</span>
+							<span ng-click="deleteRate(rates.id)" class="icons delete_small"> &nbsp;</span>
+							<br clear="all">
+						</div>
+						<span class="deleteall">
+							<a ng-click="deleteRate('ALL')" ng-show="currentFilterData.rates_selected_list.length > 2">
+								CLEAR ALL RATES
+							</a>
+						</span> 
+                      
+					</div>
+
+					<hr/>
+
+					<div id="accountsHolder" class="entry entry-company-card">
+                        <label for="company-card" class="search-text" >NAME CARD, IATA # OR CORPORATE ID</label>
+                        <span type="submit" name="submit" class="icons icon-search1"></span>
+                        <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off"  ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+                    </div>
+
+                    <!-- if company add class .dark, if travel agent add class .purple -->
+                    <div class="rates-box dark" ng-repeat="name_card in currentFilterData.name_cards">
+						<span class="rate-data">{{name_card.account_name}}</span>
+						<span ng-click="deleteCards(name_card.id)" class="icons delete_small"> &nbsp;</span>
+						<br clear="all">
+					</div>
+
+					<!-- OLD OLD OLD
 					<div class="entry radio-check">
 						<label class="checkbox">
 							<span class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
@@ -91,7 +188,8 @@
 						<a ng-click="deleteRate('ALL')" ng-show="currentFilterData.rates_selected_list.length > 2">
 							CLEAR ALL RATES
 						</a>
-					</span>
+					</span> 
+					OLD OLD OLD 
 
 					<hr/>
 
@@ -104,7 +202,7 @@
 						<span class="rate-data">{{name_card.account_name}}</span>
 						<span ng-click="deleteCards(name_card.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
 						<br clear="all">
-					</div>
+					</div>-->
 
 
 				</div>
@@ -113,7 +211,7 @@
 
 			
 
-			<!-- Company Card Results / content -->
+			<!-- Company Card Results / content 
 			<div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100" >
 				<div class="search-results">
 					<ul id="search-list">
@@ -126,12 +224,24 @@
 					</ul>
 				</div>
 				<span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>
-			</div>
+			</div>-->
 
 
 
 		</div>
 	</div>
+	<div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px">
+        <div class="search-results" iscroll="nameOnCard" ng-iscroll-delay="100" >
+            <ul id="search-list">
+               <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row, $event)">
+					<div class="icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
+					<div class="icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
+					<img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
+					<h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
+				</li>
+            </ul>  
+        </div>
+    </div>
 	<div class="entry action-filter">
 		<div class="actions float">
 			<button class="button green" type="button" ng-click="showRatesBtnClicked()" ng-disabled="toggleShowRates()" ng-class="{ grey: toggleShowRates() }" disabled="disabled">Show Rates</button>

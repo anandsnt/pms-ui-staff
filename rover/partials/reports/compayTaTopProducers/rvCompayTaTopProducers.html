@@ -1,0 +1,45 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<!-- Report content -->
+<div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
+    <div class="wrapper">
+        <table class="production-reports">
+            <thead>
+                <tr class="top-row">
+                    <th></th>
+                    <th colspan="3"><span>Reservations</span></th>
+                    <th colspan="3"><span>Room Nights</span></th>
+                    <th colspan="3"><span>Revenue</span></th>
+                </tr>
+                <tr class="bottom-row">
+                    <th ng-repeat="item in subHeaders track by $index">
+                        <span ng-if="!!chosenReport.sortByOptions[$index]" class="sort" ng-class="{'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                            {{ item }}
+                        </span>
+                        <em ng-if="!chosenReport.sortByOptions[$index]">{{ item }}</em>
+                    </th>
+                </tr>
+            </thead>
+            
+            <!-- Reports table footer -->
+            <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
+
+            <!-- Reports table content -->
+            <tbody ng-include="parsedApiTemplate()"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+    <!-- removed buttons since they include +300ms delay on touch pads -->
+    <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+    <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+</div>

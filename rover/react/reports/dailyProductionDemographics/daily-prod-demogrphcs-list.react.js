@@ -7,8 +7,8 @@ var DailyProductionListDemographics = React.createClass({
   		className: 'main-heading action-row'
 	},
 
-	DailyProductionRevenueToggle({header: this.props.header, toggleRevenue: this.props.toggleRevenue}),
-	DailyProductionAvailabilityToggle({header: this.props.header, toggleAvailability: this.props.toggleAvailability})),
+	React.createElement( DailyProductionRevenueToggle, { header: this.props.header, toggleRevenue: this.props.toggleRevenue }),
+	React.createElement( DailyProductionAvailabilityToggle, { header: this.props.header, toggleAvailability: this.props.toggleAvailability })),
 
 	_.map(this.props.data, function(row, index) {
 	  var listItem = React.DOM.em({}, row.displayLabel);

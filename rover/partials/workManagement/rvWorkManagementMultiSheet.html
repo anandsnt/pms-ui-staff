@@ -167,7 +167,8 @@
                                 ng-class="{ 'completed-task': task.is_completed}"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
                                 jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()' }"
-                                data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}">
+                                data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}"
+                                emit-when="{event: 'ALL_RENDER_COMPLETE', condition: ($parent.$parent.$last && $parent.$last && $last)}">
                                 <div class="info">
                                     <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out'">DUE OUT</span>
                                     <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Day use / Due out'">DUE OUT</span>

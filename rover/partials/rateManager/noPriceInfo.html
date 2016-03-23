@@ -1,0 +1,27 @@
+<div id="pricesContainer">
+	<div class="scrollable">
+		<div class="restriction_text" >
+			<h3>
+				PRICES
+			</h3>
+			<!-- Different text on different setting, read the ng-if-->
+			<em ng-if="ratesRoomsToggle !== 'RATES'">Prices for this room type</em>
+			<em ng-if="ratesRoomsToggle === 'RATES'">Prices for all room types</em>
+		</div>
+		<div  class="no-content">
+            <div class="info">
+                <span class="icon-no-content icon-rates"></span>
+               <!-- Different text on different setting, read the ng-if-->
+                <strong class="h1" ng-if="ratesRoomsToggle !== 'RATES'">No Rate</strong>
+                <strong class="h1" ng-if="ratesRoomsToggle === 'RATES'">Select a Rate</strong>
+                <!-- Different text on different setting, read the ng-if, 'data.name' is the name of the selected Room type-->
+                <span class="h2" ng-if="ratesRoomsToggle !== 'RATES'">
+                	Please select at least one rate to show prices for <strong>{{data.name}}</strong>
+                </span>
+                <span class="h2" ng-if="ratesRoomsToggle === 'RATES'">
+                	Prices can be viewed only for specific rates
+                </span>
+            </div>
+        </div>
+	</div>
+</div>

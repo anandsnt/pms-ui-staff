@@ -1,6 +1,8 @@
+
 <!-- Popup -->
-<div id="popup" class="open"> <!-- Remove class "open" to hide popup content -->
-    <div id="popup-content" >
+<div class="popup open"> <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        
         <table class='admin-table' id="popup-content" >
                 <tr>
                     <h2 class="nocaps header" style='margin-top:5%'><span>{{'ADMIN_TITLE' |translate}}</span></h2>
@@ -21,7 +23,7 @@
 
                 <tr class='v-middle'>
                     <td><label class='admin-item-label'>{{'ADMIN_TIME_OUT' |translate}}</label></td>
-                    <td><input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.max'  class='admin-input admin-input'/></td>
+                    <td><input touch-press type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.max'  class='admin-input admin-input'/></td>
                 </tr>
 
                 <tr class='admin-item v-middle'>
@@ -29,7 +31,7 @@
                         <label class='admin-item-label'>{{'ADMIN_TIME_POP' |translate}}</label>
                     </td>
                     <td>
-                        <input touch-press type="number" min='0' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input admin-input'/>
+                        <input touch-press type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input admin-input'/>
                     </td>
                 </tr>
                 
@@ -69,14 +71,21 @@
                         <label class='admin-item-label'>{{'ADMIN_STATION_PRINTER' |translate}}</label>
                     </td>
                     <td>
-                        <button ng-show='printerName===""' type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
-                            Select
-                        </button>
-                        <button ng-show='printerName!==""' type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
-                            {{printerName}}
+                        <button type='button' class='button green admin-input' ng-class='{"overlay":ipad===false}' style='float:right;' touch-press='openPrinterMenu()'>
+                            {{zestStationData.printerLabel}}
                         </button>
                     </td>
                 </tr>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                  <tr class='admin-item ng-hide v-middle'>
                     <td>
@@ -94,12 +103,19 @@
                         <button type="button" class="button admin-input" touch-press='cancelAdminSettings()'><span>{{'ADMIN_CANCEL' |translate}}</span></button>
                     </td>
                     <td class='save-actions' style="padding-bottom: 15px">
-                        <button type="button" class="button admin-input" touch-press='saveAdminSettings()'><span>{{'ADMIN_SAVE' |translate}}</span></button>
+                        <button type="button" class="button admin-input" touch-press='saveSettings()'><span>{{'ADMIN_SAVE' |translate}}</span></button>
                     </td>
                 </tr>
 
-            </table>      
+            </table>    
+        
+        
+        
     </div>
 </div>
+<div id="popup-overlay" class='open'></div> <!-- Remove class "open" to hide popup overlay -->
 
-<div id="popup-overlay" class="open"></div> <!-- Remove class "open" to hide popup overlay -->
+
+
+
+

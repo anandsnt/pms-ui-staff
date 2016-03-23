@@ -1,9 +1,10 @@
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()">
 	<form class="modal-content new-card" name="message-reminder" id="message-reminder">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<span class="h2 message" translate>DELETE_AR_ACCOUNT</span>
 		<div class="actions">
 			<button class="button red" type="button" ng-click="deleteARAccountConfirmed($event)" translate>DELETE</button>
-			            <button class="button blank" type="button" ng-click="clikedDiscardDeleteAr()" translate>CANCEL</button>
+			<button class="button blank" type="button" ng-click="clikedDiscardDeleteAr()" translate>CANCEL</button>
 		</div>
 	</form>
 </div>

@@ -30,20 +30,25 @@
         <div class="entry action-info time" ng-class="{'overlay': !selectedAction.hasDate || selectedAction.date_completed}"  ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)">
             <label for="selected-due-time">Time Due</label>
             <div class="select">
-                <select id="selected-due-time" ng-model="selectedAction.due_at_time" ng-options="time.value for time in timeFieldValue" ng-change="onTimeChange()">
-                </select>
-            </div>
+              <select id="selected-due-time" ng-model="selectedAction.due_at_time" ng-change="onTimeChange()">
+                <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
+                        ng-selected="selectedAction.due_at_time === timeSelector.value">
+                    {{timeSelector.text}}
+                </option>
+            </select>
+          </div>
         </div>
     </div>
 
     <div class="notice" ng-hide="!selectedAction.date_completed || (!isStandAlone && !isTrace(selectedAction.action_task_type))">
         <span>Completed By</span>
-        {{selectedAction.completed_by.name}} {{selectedAction.date_completed}} &#8226; {{selectedAction.time_completed}}
+        {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
+        {{selectedAction.completed_at | date: "hh:mm a"}}
     </div> 
 
     <div class="detail-actions col-2" ng-hide="(!isStandAlone && isRequest(selectedAction.action_task_type)) || selectedAction.date_completed" ng-class="{'margin-bottom:-30px':isActionManager}">
         <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
-        <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-Assign</button> <!-- Change text to "Reassign" for assigned action -->
+        <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Reassign</button> <!-- Change text to "Reassign" for assigned action -->
         <button ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
         <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" type="button" class="button white green-text centered-action-btn" ng-click="completeAction('delete', selectedAction)">Delete</button>
     </div>
