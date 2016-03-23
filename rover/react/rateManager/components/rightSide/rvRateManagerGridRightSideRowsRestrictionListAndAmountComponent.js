@@ -35,28 +35,36 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ mode, r
 													</div>
 
 													<div className="room-type-price">
-														Single
+														<span className="room-type-price-name">
+															Single
+														</span>
 														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].single_overridden ? ' has-override':'')}>
 									 						{rowData.rateDetails[colIndex].single}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].single_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>
 													<div className="room-type-price">
-														Double
+														<span className="room-type-price-name">
+															Double
+														</span>
 														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].double_overridden ? ' has-override':'')}>
 									 						{rowData.rateDetails[colIndex].double}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].double_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>											
 													<div className="room-type-price">
-														Extra Adult
+														<span className="room-type-price-name">
+															Extra Adult
+														</span>
 														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].extra_adult_overridden ? ' has-override':'')}>
 									 						{rowData.rateDetails[colIndex].extra_adult}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].extra_adult_overridden ? '':' hidden')}/>
 									 					</span>
 													</div>
 													<div className="room-type-price">
-														Child
+														<span className="room-type-price-name">
+															Child
+														</span>
 														<span className={'room-type-price-value' + (rowData.rateDetails[colIndex].child_overridden ? ' has-override':'')}>
 									 						{rowData.rateDetails[colIndex].child}
 									 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].child_overridden ? '':' hidden')}/>
