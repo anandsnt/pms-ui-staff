@@ -5,7 +5,7 @@ const {connect} = ReactRedux;
  * @param  {array} restrictions [array of array of restrictions]
  * @return {Boolean}
  */
-const whetherAllRestrictionContainClosed = (restrictions, restrictionTypes) => {
+const getCloseRestrictionCountForTopHeader = (restrictions, restrictionTypes) => {
   var closedRestriction = _.findWhere(restrictionTypes, { value : RM_RX_CONST.CLOSED_RESTRICTION_VALUE }),
     closedRestrictionsCount = 0;
   
@@ -13,18 +13,20 @@ const whetherAllRestrictionContainClosed = (restrictions, restrictionTypes) => {
     closedRestrictionsCount = _.findWhere(eachDayRestrictionList, {restriction_type_id: closedRestriction.id}) ?
       ++closedRestrictionsCount : closedRestrictionsCount;
   });
-  return (closedRestrictionsCount === restrictions.length);
+  return (closedRestrictionsCount);
 };
 
 const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
-    var allRestrictionsContainClose = whetherAllRestrictionContainClosed(
-      state.list[0].restrictionList, state.restrictionTypes);
+    var closedRestrictionsCount = getCloseRestrictionCountForTopHeader( state.list[0].restrictionList,
+        state.restrictionTypes),
+        openAllEnabled = closedRestrictionsCount > 0,
+        closeAllEnabled = closedRestrictionsCount < state.list[0].restrictionList.length;
 
     var propsToReturn = {
-        openAllClass: allRestrictionsContainClose ? 'green': '',
-        closeAllClass: !allRestrictionsContainClose ? 'red': '',
-        openAllEnabled: allRestrictionsContainClose,
-        closeAllEnabled: !allRestrictionsContainClose,
+        openAllClass: openAllEnabled ? 'green': '',
+        closeAllClass: closeAllEnabled ? 'red': '',
+        openAllEnabled,
+        closeAllEnabled,
         mode: state.mode,
         fromDate: state.dates[0],
         toDate: state.dates[state.dates.length - 1],
