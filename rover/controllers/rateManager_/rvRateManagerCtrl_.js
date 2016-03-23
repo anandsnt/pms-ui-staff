@@ -403,11 +403,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
       var showRateRestrictionPopup = () => {
-        // ngDialog.open({
-        //   template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
-        //   scope: $scope,
-        //   className: 'ngdialog-theme-default',
-        // });
+        ngDialog.open({
+          template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
+          scope: $scope,
+          className: 'ngdialog-theme-default',
+        });
       };
 
       /**
@@ -421,8 +421,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       /**
        * callback from react when clicked on a cell in rate view
        */
-      var clickedOnRateViewCell = () => {
-        return showRateRestrictionPopup();//{rateIDs, date}
+      var clickedOnRateViewCell = ({rateIDs, date}) => {
         //calling the API to get the details
         var params = {
           rate_ids: rateIDs,

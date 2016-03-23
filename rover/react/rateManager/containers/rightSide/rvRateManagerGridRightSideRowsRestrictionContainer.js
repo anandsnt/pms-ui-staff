@@ -68,13 +68,24 @@ let convertDataForRestrictionListing = (listingData, restrictionTypes) => {
 };
 
 const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) => {
-    var restrictionRows = convertDataForRestrictionListing(state.list, state.restrictionTypes);
-    return {
+    var restrictionRows = convertDataForRestrictionListing(state.list, state.restrictionTypes),
+        propsToReturn = {};
+
+    propsToReturn = {
         restrictionRows,
         mode: state.mode,
         dateList: convertDateListForRestrictionView(state.dates, state.businessDate),
-        clickedOnRateCellOnRateView: state.callBacksFromAngular.clickedOnRateViewCell
+        dates: state.dates
     };
+    switch(state.mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+            propsToReturn.clickedOnRateCellOnRateView = state.callBacksFromAngular.clickedOnRateViewCell;
+
+            break;
+        default:
+            break;
+    }
+    return propsToReturn;
 };
 
 const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProps, dispatchProps, ownProps) => {
@@ -82,7 +93,20 @@ const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProp
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {
-                return stateProps.clickedOnRateCellOnRateView();
+                var date = stateProps.dates[colIndex],
+                    rateIDs = [];
+                console.log(stateProps);
+                if(rowIndex === 0) {
+                    rateIDs = _.pluck(stateProps.restrictionRows.slice(1), 'id');
+                }
+                else if(rowIndex > 0) {
+                    rateIDs = [stateProps.restrictionRows[rowIndex].id];
+                }
+
+                return stateProps.clickedOnRateCellOnRateView({
+                    rateIDs,
+                    date
+                });
             };
             break;
         case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
