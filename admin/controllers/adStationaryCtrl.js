@@ -1,4 +1,10 @@
-admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParams', 'availableGuestLanguages', function($scope, ADStationarySrv, ngTableParams, availableGuestLanguages) {
+admin.controller('ADStationaryCtrl',
+	['$scope',
+	'ADStationarySrv',
+	'ngTableParams',
+	'availableGuestLanguages',
+	'availableHoldStatus',
+	function($scope, ADStationarySrv, ngTableParams, availableGuestLanguages, availableHoldStatus) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
@@ -47,6 +53,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 	$scope.init = function() {
 		$scope.languages = availableGuestLanguages;
+		$scope.holdStatusList = availableHoldStatus.data.hold_status;
 		$scope.locale = $scope.languages.default_locale;
 		var params = {};
 		fetchStationary(params);
@@ -68,19 +75,28 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	// Save changes button actions.
 	$scope.clickedSave = function() {
 
-		var filterKeys = ["guest_bill_template", "hotel_logo"];
+		var filterKeys = ["guest_bill_template", "hotel_logo", "groupholdstatus", "group_confirmation_header", "group_confirmation_footer"];
 		if ($scope.data.hotel_picture === $scope.memento.hotel_picture) {
 			filterKeys.push('hotel_picture');
 		}
 		if ($scope.data.location_image === $scope.memento.location_image) {
 			filterKeys.push('location_image');
 		}
+		//CICO-26524
+		$scope.data.group_confirmation_data = [];
+		var groupConfirmationData = {};
+		groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
+		groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
+		groupConfirmationData.confirmation_email_footer = $scope.data.group_confirmation_footer;
+		$scope.data.group_confirmation_data.push(groupConfirmationData);
 		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
 		postingData.locale = $scope.locale;
+
+
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
