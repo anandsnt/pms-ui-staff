@@ -72,10 +72,36 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
     return {
         restrictionRows,
         mode: state.mode,
-        dateList: convertDateListForRestrictionView(state.dates, state.businessDate)
+        dateList: convertDateListForRestrictionView(state.dates, state.businessDate),
+        clickedOnRateCellOnRateView: state.callBacksFromAngular.clickedOnRateViewCell
     };
 };
 
+const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProps, dispatchProps, ownProps) => {
+    var onTdClick = () => {};
+    switch(stateProps.mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+            onTdClick = (e, rowIndex, colIndex) => {
+                return stateProps.clickedOnRateCellOnRateView();
+            };
+            break;
+        case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
+            onTdClick = (e, rowIndex, colIndex) => {
+                return stateProps.clickedOnRateCellOnRateView();
+            };
+            break;                        
+        default:
+            break;
+    };
+
+    return {
+        onTdClick,
+        ...stateProps
+    };
+}
+
 const RateManagerGridRightSideRowsRestrictionContainer = 
-	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps)
+	connect(mapStateToRateManagerGridRightSideRestrictionRowsContainerProps,
+        null,
+        mapDispatchToRateManagerGridRightSideRowsRestrictionContainer)
 	(RateManagerGridRightSideRowsRestrictionComponent);

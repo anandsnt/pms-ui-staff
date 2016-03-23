@@ -120,7 +120,8 @@
     		delay  : 600,
     		minLength: 2,
         select : $scope.selectHandler ? $scope.selectHandler : autoCompleteSelectHandler,
-        position : $scope.position ? Object.assign(defaultPosition, $scope.position) : defaultPosition
+        position : $scope.position ? Object.assign(defaultPosition, $scope.position) : defaultPosition,
+        appendTo: $scope.appendTo ? $scope.appendTo : 'body'
 			};
 
       $(autocompleteEl).autocomplete($scope.autocompleteOptions).data('ui-autocomplete')._renderItem = renderItem;
@@ -139,7 +140,8 @@
       scope : {
         ngModel : '=ngModel',
         selectHandler: '=selectHandler',
-        position: '@position'
+        position: '@position',
+        appendTo: '@appendTo'
       },
       link : linkFn
     };

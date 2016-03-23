@@ -5,12 +5,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'rvRateManagerCoreSrv',
     'rvRateManagerEventConstants',
     'restrictionTypes',
+    'ngDialog',
     function($scope,
              $filter,
              $rootScope,
              rvRateManagerCoreSrv,
              rvRateManagerEventConstants,
-             restrictionTypes) {
+             restrictionTypes,
+             ngDialog) {
 
       BaseCtrl.call(this, $scope);
 
@@ -386,8 +388,52 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           closeAllRestrictionsForRateView,
           openAllRestrictionsForRateView,
           closeAllRestrictionsForRoomTypeView,
-          openAllRestrictionsForRoomTypeView     
+          openAllRestrictionsForRoomTypeView,
+          clickedOnRateViewCell   
         }
+      };
+
+    $scope.closeDialog = function() {
+
+      $rootScope.modalClosing = true;
+      setTimeout(function() {
+        ngDialog.close();
+        $rootScope.modalClosing = false;
+      }, 300);
+    };
+
+      var showRateRestrictionPopup = () => {
+        // ngDialog.open({
+        //   template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
+        //   scope: $scope,
+        //   className: 'ngdialog-theme-default',
+        // });
+      };
+
+      /**
+       * on api call success against rate cell click
+       * @param  {Object} response
+       */
+      var onFetchRestrictionDetailsForSingleRateCell = (response) => {
+        
+      };
+
+      /**
+       * callback from react when clicked on a cell in rate view
+       */
+      var clickedOnRateViewCell = () => {
+        return showRateRestrictionPopup();//{rateIDs, date}
+        //calling the API to get the details
+        var params = {
+          rate_ids: rateIDs,
+          from_date: date,
+          to_date: date
+        };
+        var options = {
+          params: params,
+          onSuccess: onFetchRestrictionDetailsForSingleRateCell
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
       };
 
       /**
