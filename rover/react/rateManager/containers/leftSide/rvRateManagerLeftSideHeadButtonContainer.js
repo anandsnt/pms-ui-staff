@@ -48,64 +48,43 @@ const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps
   return {
     onOpenAllClick: (e) => {
     	e.preventDefault();
-        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
-            let params = {
-                //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
-                details: [{
-                    from_date: stateProps.fromDate,
-                    to_date: stateProps.toDate,
-                    restrictions: [{
-                        action: 'remove',
-                        restriction_type_id: stateProps.closedRestriction.id
-                    }]
+        let paramsForOpeningRestriction = {
+            details: [{
+                from_date: stateProps.fromDate,
+                to_date: stateProps.toDate,
+                restrictions: [{
+                    action: 'remove',
+                    restriction_type_id: stateProps.closedRestriction.id
                 }]
-            };
-            stateProps.openAllCallbackForSingleRateView(params);
+            }]
+        };
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
+            stateProps.openAllCallbackForSingleRateView(paramsForOpeningRestriction);
         }
         else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
-            let params = {
-                rate_ids: stateProps.rate_ids,
-                details: [{
-                    from_date: stateProps.fromDate,
-                    to_date: stateProps.toDate,
-                    restrictions: [{
-                        action: 'remove',
-                        restriction_type_id: stateProps.closedRestriction.id
-                    }]
-                }]
-            };
-            stateProps.openAllCallbackForRateView(params);
+            paramsForOpeningRestriction.rate_ids =  stateProps.rate_ids;
+            stateProps.openAllCallbackForRateView(paramsForOpeningRestriction);
         } 
     },
     onCloseAllClick: (e) => {
     	e.preventDefault();
-        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
-            let params = {
-                //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
-                details: [{
-                    from_date: stateProps.fromDate,
-                    to_date: stateProps.toDate,
-                    restrictions: [{
-                        action: 'add',
-                        restriction_type_id: stateProps.closedRestriction.id
-                    }]
+        let paramsForClosingRestriction = {
+            details: [{
+                from_date: stateProps.fromDate,
+                to_date: stateProps.toDate,
+                restrictions: [{
+                    action: 'add',
+                    restriction_type_id: stateProps.closedRestriction.id
                 }]
-            };
-            stateProps.closeAllCallbackForSingleRateView(params);
+            }]
+        };        
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            stateProps.closeAllCallbackForSingleRateView(paramsForClosingRestriction);
         }
         else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
-            let params = {
-                rate_ids: stateProps.rate_ids,
-                details: [{
-                    from_date: stateProps.fromDate,
-                    to_date: stateProps.toDate,
-                    restrictions: [{
-                        action: 'add',
-                        restriction_type_id: stateProps.closedRestriction.id
-                    }]
-                }]
-            };
-            stateProps.closeAllCallbackForRateView(params);
+            paramsForClosingRestriction.rate_ids = stateProps.rate_ids;
+            stateProps.closeAllCallbackForRateView(paramsForClosingRestriction);
         }       
     },
     ...stateProps      
