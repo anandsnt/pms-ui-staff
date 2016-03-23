@@ -38,6 +38,8 @@ admin.controller('ADStationaryCtrl',
 			});
 
 			$scope.data = data;
+			$scope.data.groupholdstatus = data.group_hold_status_data[0].hold_status_id;
+			$scope.showConfirmationHeaderFooterBasedOnHoldStatus();
 			$scope.itemList = new ngTableParams({
 				page: 1, // show first page
 				count: $scope.data.social_network_links.length, // count per page - Need to change when on pagination implemntation
@@ -110,7 +112,7 @@ admin.controller('ADStationaryCtrl',
 	});
 
 	/**
-	 *   To watch hotel location image 
+	 *   To watch hotel location image
 	 */
 	$scope.$watch(function() {
 		return $scope.data.location_image;
@@ -122,7 +124,7 @@ admin.controller('ADStationaryCtrl',
 	});
 
 	/**
-	 *   To watch group location image 
+	 *   To watch group location image
 	 */
 	$scope.$watch(function() {
 		return $scope.data.group_location_image;
@@ -186,5 +188,18 @@ admin.controller('ADStationaryCtrl',
 		params.locale = $scope.locale;
 		fetchStationary(params);
 	}
+
+	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function(){
+		//If not set for any status - then empty
+		$scope.data.group_confirmation_header = "";
+		$scope.data.group_confirmation_footer = "";
+		angular.forEach($scope.data.group_hold_status_data, function(value, key) {
+
+	     	if(value.hold_status_id == $scope.data.groupholdstatus){
+	     		$scope.data.group_confirmation_header = value.confirmation_email_header;
+		        $scope.data.group_confirmation_footer = value.confirmation_email_footer;
+	     	}
+	    });
+	};
 
 }]);
