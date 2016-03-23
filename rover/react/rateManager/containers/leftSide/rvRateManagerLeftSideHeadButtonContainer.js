@@ -35,10 +35,14 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
         propsToReturn.openAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
         propsToReturn.closeAllCallbackForSingleRateView = state.callBacksFromAngular.openAllCallbackForSingleRateView;
     }
-    if(state.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
-        //propsToReturn.openAllCallbackForRateView = state.callBacksFromAngular.openAllRestrictionsForRateView;
+    else if(state.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+        propsToReturn.openAllCallbackForRateView = state.callBacksFromAngular.openAllRestrictionsForRateView;
         propsToReturn.closeAllCallbackForRateView = state.callBacksFromAngular.closeAllRestrictionsForRateView;
         propsToReturn.rate_ids = _.pluck(state.list.slice(1), 'id'); //first row will be having any id, just for all restrictions
+    }
+    else if(state.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+        propsToReturn.openAllCallbackForRoomTypeView = state.callBacksFromAngular.openAllRestrictionsForRoomTypeView;
+        propsToReturn.closeAllCallbackForRoomTypeView = state.callBacksFromAngular.closeAllRestrictionsForRoomTypeView;
     }
 
     return propsToReturn;
@@ -62,10 +66,13 @@ const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps
             //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
             stateProps.openAllCallbackForSingleRateView(paramsForOpeningRestriction);
         }
+        else if(stateProps.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+            stateProps.openAllCallbackForRoomTypeView(paramsForOpeningRestriction);
+        }        
         else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
             paramsForOpeningRestriction.rate_ids =  stateProps.rate_ids;
             stateProps.openAllCallbackForRateView(paramsForOpeningRestriction);
-        } 
+        }
     },
     onCloseAllClick: (e) => {
     	e.preventDefault();
@@ -82,6 +89,9 @@ const mapDispatchToRateManagerGridLeftSideHeadButtonContainerProps = (stateProps
         if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
             stateProps.closeAllCallbackForSingleRateView(paramsForClosingRestriction);
         }
+        else if(stateProps.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+            stateProps.closeAllCallbackForRoomTypeView(paramsForClosingRestriction);
+        }         
         else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
             paramsForClosingRestriction.rate_ids = stateProps.rate_ids;
             stateProps.closeAllCallbackForRateView(paramsForClosingRestriction);
