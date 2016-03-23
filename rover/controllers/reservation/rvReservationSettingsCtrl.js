@@ -22,21 +22,6 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
         };
 
-        window.setButtonsClickable = function() {
-            $("#sidebar-nights button").css({
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                'z-index': '99',
-                cursor: 'pointer',
-                width: '100%',
-                height: '100%',
-                border: '1px solid red',
-                background: 'rgba(125,251,015,0.6)'
-            });
-        };
-
-
 
         $scope.refreshScroll = function() {
             $scope.refreshScroller('reservation-settings');
@@ -84,6 +69,9 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             if (roomNumber === 0) {
                 $scope.reservationData.stayDays = [];
             }
+            // Empty the stayDates array before populating it again CICO-25848
+            $scope.reservationData.rooms[roomNumber].stayDates = {};
+
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                 if (roomNumber === 0) {
                     $scope.reservationData.stayDays.push({

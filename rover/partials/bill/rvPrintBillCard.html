@@ -3,7 +3,7 @@
     <img ng-src="{{printData.hotel_logo}}" alt="" />
 </div>
 <table class="guest-info">
-    <tbody>
+    <tbody ng-if="!printData.is_from_cards">
         <tr>
             <th translate>GUEST_FULL_NAME</th>
             <th translate>ARRIVAL_DATE</th>
@@ -40,6 +40,59 @@
             <td>{{printData.tax_number}}</td>
             <td ng-if="printData.reference_number">{{printData.reference_number}}</td>
         </tr>
+    </tbody>
+
+    <tbody ng-if="printData.is_from_cards">
+        <tr>
+            <th ng-if="printData.card_details.type ==='COMPANY'" colspan="2" translate>COMAPNY_NAME</th>
+            <th ng-if="printData.card_details.type ==='TRAVELAGENT'" colspan="2" translate>TA_NAME</th>
+            <th ng-if="printData.card_details.type ==='COMPANY'"  translate>CORP_ID</th>
+            <th ng-if="printData.card_details.type ==='TRAVELAGENT'" translate>IATA_NO</th>
+            <th translate>INVOICE_NO</th>
+        </tr>
+        <tr>
+            <td colspan="2" >{{printData.card_details.name}}</td>
+            <td ng-if="printData.card_details.type ==='COMPANY'" >{{printData.card_details.corporate_id}}</td>
+            <td ng-if="printData.card_details.type ==='TRAVELAGENT'" >{{printData.card_details.iata_no}}</td>
+            <td>{{printData.invoice_number}}</td>
+        </tr>
+        <tr>
+            <th translate>CITY</th>
+            <th translate>STATE</th>
+            <th translate>POSTAL_CODE</th>
+            <th translate>COUNTRY</th>
+        </tr>
+        <tr>
+            <td>{{printData.card_details.city}}</td>
+            <td>{{printData.card_details.state}}</td>
+            <td>{{printData.card_details.postal_code}}</td>
+            <td>{{printData.card_details.country}}</td>
+        </tr>
+        <tr>
+            <th translate>CONFIRMATION_NO</th>
+            <th translate>ROOM_NO</th>
+            <th translate>TAX_NO</th>
+            <th translate ng-if="printData.reference_number">REFERENCE_NO</th>
+        </tr>
+        <tr>
+            <td>{{printData.confirmation_number}}</td>
+            <td>{{printData.room_number}}</td>
+            <td>{{printData.tax_number}}</td>
+            <td ng-if="printData.reference_number">{{printData.reference_number}}</td>
+        </tr>
+        <tr>
+            <th translate>GUEST_FULL_NAME</th>
+            <th translate>ARRIVAL_DATE</th>
+            <th translate>DEPARTURE_DATE</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
+            <td>{{printData.arrival_date | date:dateFormat}}</td>
+            <td>{{printData.departure_date | date:dateFormat}}</td>
+            <td></td>
+        </tr>
+        
     </tbody>
 </table>
 <div class="invoice-header">

@@ -36,6 +36,18 @@
 		animation: rotation .8s linear @duration;
 	}
 
+	.scale3d(@x, @y, @z) {
+		-webkit-transform: scale3d(@x, @y, @z);
+		-ms-transform: scale3d(@x, @y, @z);
+		transform: scale3d(@x, @y, @z);
+	}
+
+	.translate3d(@x, @y, @z) {
+		-webkit-transform: translate3d(@x, @y, @z);
+		-ms-transform: translate3d(@x, @y, @z);
+		transform: translate3d(@x, @y, @z);
+	}
+
 	@-webkit-keyframes rotation {
 		0% { -webkit-transform: rotate(0deg); }
 		50% { -webkit-transform: rotate(180deg); }

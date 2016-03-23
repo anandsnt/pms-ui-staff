@@ -1,7 +1,7 @@
 <!-- Report content -->
     <div id="report-content" class="report-content grid scrollable" ng-controller="RVAddonForecastReportByAddonCtrl" ng-iscroll="addon-forecast-report-scroll">
 
-        <div ng-hide="hasResults" class="report-content no-content">
+        <div ng-if="!hasResults" class="report-content no-content">
             <div class="info">
                 <span class="icon-no-content icon-reports"></span>
                 <strong class="h1">No reports found</strong>
@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div ng-show="hasResults" class="wrapper">
+        <div ng-if="hasResults" class="wrapper">
             <ul class="grid-header dates">
                 <li class="guests"></li>
                 <li class="guests"></li>

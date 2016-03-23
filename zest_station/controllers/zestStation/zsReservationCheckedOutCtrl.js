@@ -90,6 +90,10 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 
 
     var checkOutSuccess = function() {
+      //if key card was inserted we need to capture that
+      if($scope.zestStationData.keyCardInserted){
+        $scope.socketOperator.CaptureKeyCard();
+      };
       sendBill();
     };
     $scope.toCheckoutFinal = function() {
@@ -105,6 +109,14 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       setTimeout(function() {
         $state.go('zest_station.reservation_checked_out');
       }, 50);
+    };
+    //the callback for failure case
+    $scope.failureCallBack = function(){
+      //if key card was inserted we need to eject that
+      if($scope.zestStationData.keyCardInserted){
+        $scope.socketOperator.EjectKeyCard();
+      };
+      $state.go('zest_station.error_page');
     };
 
     var checkOutGuest = function() {
