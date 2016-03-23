@@ -1,11 +1,11 @@
-const RateManagerGridRightSideRowsRestrictionComponent = ({ mode, restrictionRows, dateList }) => (
+const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, restrictionRows, dateList }) => (
 	<tbody>
 		{restrictionRows.map((rateData, rowIndex) => 
 			<tr key={'key-' + rowIndex}
 				className={((rowIndex + 1) === (restrictionRows.length) ? 'last' : '')}>
 					
 					{rateData.restrictionList.map((eachDayRestrictions, colIndex) =>
-					 	<td key={'key-' + colIndex} className='cell'>
+					 	<td onClick={(e) => onTdClick(e, rowIndex, colIndex)} key={'key-' + colIndex} className='cell'>
 							<div className={'cell-container ' + (dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
 								<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
 									{eachDayRestrictions.map((restriction, restrictionIndex) => 
