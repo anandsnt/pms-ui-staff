@@ -443,7 +443,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'promotion_code': $scope.reservationData.searchPromoCode,
                         'promotion_id': $scope.reservationData.promotionId,
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
-                        'children': $scope.reservationData.tabs[0]['numChildren']
+                        'children': $scope.reservationData.tabs[0]['numChildren'],
+                        'room_type_id':$scope.reservationData.tabs[0].roomTypeId
                     });
                 }
             }
