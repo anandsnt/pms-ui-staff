@@ -88,11 +88,13 @@ admin.controller('ADStationaryCtrl',
 		}
 		//CICO-26524
 		$scope.data.group_hold_status_data = [];
-		var groupConfirmationData = {};
-		groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
-		groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
-		groupConfirmationData.confirmation_email_footer = $scope.data.group_confirmation_footer;
-		$scope.data.group_hold_status_data.push(groupConfirmationData);
+		if($scope.data.groupholdstatus !== ""){
+			var groupConfirmationData = {};
+			groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
+			groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
+			groupConfirmationData.confirmation_email_footer = $scope.data.group_confirmation_footer;
+			$scope.data.group_hold_status_data.push(groupConfirmationData);
+		}
 		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {

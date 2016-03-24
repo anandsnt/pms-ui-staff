@@ -297,13 +297,13 @@
                     <div class="select">
                         <select ng-model="data.groupholdstatus" name="email-hotel-logo" class="placeholder" ng-change="showConfirmationHeaderFooterBasedOnHoldStatus()">
                             <option value="" translate> SELECT_HOLD_STATUS </option>
-                            <option ng-repeat="item in holdStatusList" value="{{item.id}}" >{{item.name}}</option>
+                            <option ng-repeat="item in holdStatusList" value="{{item.id}}">{{item.name}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="entry full-width">
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_header" label="{{'CONFIRMATION_HEADER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_HEADER_TEXT_PLACE_HOLDER' | translate }}"></ad-textarea>
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_footer" label="{{'CONFIRMATION_FOOTER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER' | translate }}"></ad-textarea>
+                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_header" label="{{'CONFIRMATION_HEADER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_HEADER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
+                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_footer" label="{{'CONFIRMATION_FOOTER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
                      <label translate>LOCATION_IMAGE</label>
                         <div class="file-upload with-preview">
                             <span class="input">{{group_location_image_file}}</span>
