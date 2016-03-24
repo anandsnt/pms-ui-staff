@@ -64,5 +64,8 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	},{
 		"value" : "EARLY_CHECKIN_FINAL",
 		"id"	: "zs-19"
+	},{
+		"value" : "ETA_LATE_UPDATION",
+		"id"	: "zs-20"
 	}];
 }]);

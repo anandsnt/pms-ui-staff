@@ -70,6 +70,13 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 	 		title: 'Early Check-in'
 	 	}
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/partials/checkin/gwLateArrivalTime.html',
+	 	controller : 'gwLateETAUpdationController',
+	    data: {
+	 		title: 'Early Check-in'
+	 	}
 	 });
 
 	//    //room and cc verification 
