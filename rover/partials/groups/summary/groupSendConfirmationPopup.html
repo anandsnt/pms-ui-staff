@@ -1,0 +1,54 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+	<div class="modal-content form send-confirmation extended">
+		<button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()" >
+			<span class="icons icon-close invert"></span>
+		</button>
+	    	
+	    <strong class="h2 message">Send Confirmation</strong>
+		
+		<fieldset class="content-left">
+			<div class="entry full-width">
+				<label>Contact Email</label>
+		    	<input type="text" value="{group email}" readonly/>
+			</div>
+
+			<div class="entry full-width">
+				<!-- add class .checked if checked-->
+				<label class="checkbox">
+					<!-- add class .checked if checked-->
+					<span class="icon-form icon-checkbox"></span>
+					<!-- add attribute checked="checked" if checked-->
+					<input type="checkbox" value="" />
+					Include rooming list
+				</label>
+			</div>
+
+			<div class="entry full-width salutation">
+				<label for="salutation">
+					Salutation
+	            </label>
+	            <!-- add class .on when it is on -->
+	            <!-- add class .extended to .modal-content when it is on -->
+	            <div class="switch-button on">
+	                <span class="switch-icon"></span>
+	                <!-- add attribute checked="checked" if it is switched-->
+	                <input id="salutation" type="checkbox" value="{value}">
+	            </div>
+			</div>
+
+			
+		</fieldset>
+
+		<fieldset class="content-right">
+	    	<div class="entry full-width">
+	    		<label>Personal salutation</label>
+				<textarea placeholder="Insert a personal salutation"/>
+			</div>
+		</fieldset>
+		
+		<div class="actions">
+			<button type="button" class="button green">Send</a>
+			<button type="button" id="cancel" class="button blank" ng-click="closeDialog()">Cancel</button> 
+		</div>
+	</div>
+</div>

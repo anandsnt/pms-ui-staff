@@ -756,6 +756,30 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			});
 		};
 
+		/*
+		 * Send Confirmation popup handler
+		 * @return undefined 
+		 */
+		$scope.openSendConfirmationPopup = function () {
+
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group first"];
+				return;
+			}
+
+			ngDialog.open({
+				template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
+				className: '',
+				scope: $scope,
+				// closeByDocument: false,
+				// closeByEscape: false,
+				// preCloseCallback: function() {
+				// 	$scope.groupSummaryData.isDemographicsPopupOpen = false;
+				// }
+			});
+		}; 
+
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.groupConfigData.summary.posting_account_billing_info = true;
 		});
