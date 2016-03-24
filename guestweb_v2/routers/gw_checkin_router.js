@@ -56,8 +56,21 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 	 		title: 'Check-in'
 	 	}
+	 }).state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinOptions.html',
+	 	controller : 'GWEarlyCheckinOptionsController',
+	 	data: {
+	 		title: 'Early Check-in'
+	 	}
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:charge',
+	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinFinal.html',
+	 	controller : 'GWEarlyCheckinFinalController',
+	 	data: {
+	 		title: 'Early Check-in'
+	 	}
 	 });
-
 
 	//    //room and cc verification 
 

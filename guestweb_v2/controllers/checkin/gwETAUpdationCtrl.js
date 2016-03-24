@@ -64,14 +64,14 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 					"reservation_id": GwWebSrv.zestwebData.reservationID
 				};
 				var updateReservationDetailsSuccess = function(response){
-					console.log(response);
+
 					if (response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined" && !response.bypass_early_checkin) {
 						var stateParams = {
 							'time': response.checkin_time,
 							'charge': response.early_checkin_charge,
 							'id': response.early_checkin_offer_id
 						};
-						//$state.go('earlyCheckinOptions',stateParams);
+						$state.go('earlyCheckinOptions',stateParams);
 					} else if (response.early_checkin_on && !response.early_checkin_available && !response.bypass_early_checkin) {
 						var stateParams = {
 							'time': response.checkin_time,

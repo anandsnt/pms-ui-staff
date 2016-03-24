@@ -55,5 +55,14 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	},{
 		"value":"CHECKIN_LANDING",
 		"id" : "zs-16"
+	},{
+		"value": "EXTERNAL_CHECKIN_OFF",
+		"id"  : "zs-17"
+	},{
+		"value" : "EARLY_CHECKIN_OPTIONS",
+		"id" : "zs-18"
+	},{
+		"value" : "EARLY_CHECKIN_FINAL",
+		"id"	: "zs-19"
 	}];
 }]);

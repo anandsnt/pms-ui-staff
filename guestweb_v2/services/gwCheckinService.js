@@ -117,4 +117,15 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
+	this.applyEarlyCheckin = function(params){
+		var deferred = $q.defer();
+		var url = '/api/reservations/apply_early_checkin_offer';
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 }]);
