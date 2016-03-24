@@ -235,10 +235,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
 				}
 
-				if ($scope.stateCheck.activeView === "RATE") {
-					payLoad.order_id = 1;
-				}
-
 				$scope.invokeApi(RVRoomRatesSrv.fetchRoomTypeADRs, payLoad, function(response) {
 					if (append) {
 						$scope.stateCheck.baseInfo.roomTypes = $scope.stateCheck.baseInfo.roomTypes.concat(response.results);
@@ -311,7 +307,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
 				} else if ($scope.stateCheck.activeView === 'RATE') {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
-					payLoad.order_id = 1;
+					payLoad.order = "ALPHABETICAL";
 				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
@@ -495,6 +491,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							} else if (sc.activeView === 'RATE' && sc.baseInfo.maxAvblRates > ratesCount) {
 								sc.pagination.rate.page++;
 								fetchRatesList(null, null, sc.pagination.rate.page, function(response) {
+									$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 									generateRatesGrid(response.results, true);
 									$scope.refreshScroll();
 								});
