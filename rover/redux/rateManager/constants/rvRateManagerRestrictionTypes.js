@@ -10,46 +10,55 @@ const RateManagerRestrictionTypes = {
 	'CLOSED': {
 		'className': 'restriction-icon bg-red icon-cross',
 		'description': 'Closed',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': false
 	},
 	'CLOSED_ARRIVAL': {
 		'className': 'restriction-icon bg-red icon-block',
 		'description': 'Closed to Arrival',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': false
 	},
 	'CLOSED_DEPARTURE': {
 		'className': 'restriction-icon bg-red',
 		'description': 'Closed to Departure',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': false
 	},
 	'MIN_STAY_LENGTH': {
 		'className': 'restriction-icon bg-blue',
 		'description': 'Min Length of Stay',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': true
 	},
 	'MAX_STAY_LENGTH': {
 		'className': 'restriction-icon',
 		'description': 'Max Length of Stay',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': true
 	},
 	'MIN_STAY_THROUGH': {
 		'className': 'restriction-icon bg-violet',
 		'description': 'Min Stay Through',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': true
 	},
 	'MIN_ADV_BOOKING': {
 		'className': 'restriction-icon bg-green',
 		'description': 'Min Advance Booking',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': true
 	},
 	'MAX_ADV_BOOKING': {
 		'className': 'restriction-icon',
 		'description': 'Max Advance Booking',
-		'defaultText': ''
+		'defaultText': '',
+		'hasInputField': true
 	},
 	'MORE_RESTRICTIONS': {
 		'className': 'restriction-icon bg-drk R',
 		'description': RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN + ' or more Restrictions',
-		'defaultText': 'R'
+		'defaultText': 'R',
+		'hasInputField': true
 	}		
 };

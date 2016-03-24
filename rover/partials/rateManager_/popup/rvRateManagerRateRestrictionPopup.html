@@ -7,8 +7,62 @@
 	            	<em>{{headerBottomLeftLabel}}</em>
 	            	<em class="rate-name">{{headerBottomRightLabel}}</em>
 	            </div>
+	            <div class="modal-header-right">
+	                <!-- Remove class .hidden when there is a notice-->
+	                <div class="notice" ng-class="{'hidden': headerNoticeOnRight.trim() === ''}">
+	                    {{headerNoticeOnRight}}
+	                </div>
+            	</div>
 	        </div>
+	        <div class="modal-body">
+	        	<div class="content-left">
+                    <div class="restriction-list" >
+					    <div class="restriction_text" >
+					        <h3>
+					            RESTRICTIONS
+					        </h3>
+					    </div>
+					    <div class="scrollable" ng-iscroll="scroller-restriction-list">
+					        <ul class="wrapper">
+					        	<li class="restriction-type" 
+					        		ng-repeat="restriction in restrictionList"
+					        		ng-class="{'value-not-inserted': restriction.hasInputField}">
+					        		
+					        		<div class="restriction-left">
+						        		<span ng-class="restriction.className">
+						        			<!--TODO: add value here -->
+						        		</span>
+						        		<span class="restriction-name">{{restriction.description}}</span>
 
+						        		<!-- Display this if the restriction is editable -->
+						        		<span class="icons icon-double-arrow rotate-right" ng-if="restriction.hasInputField">
+						        			
+						        		</span>
+						        	</div>
+
+						        	<div class="restriction-right" ng-show="false">
+
+					                    <!-- Show this when the restriction is mixed -->
+					                    <div class="mixed-button" ng-if="false">
+					                        Mixed
+					                    </div>
+					                    <!-- Show this when the restriction is NOT mixed -->
+					                    <!-- Add class .on when restriction is ON, remove otherwise-->
+					                    <!-- Add class .disabled if the restriction is editable and has no value, remove otherwise -->
+					                    <div class="switch-button">
+					                        <span class="switch-icon"></span>
+					                        <!-- Add attribute checked="checked" when the restriction is ON, remove otherwise -->
+					                        <!-- Add attribute disabled="disabled" when restriction is editable and has no value, remove otherwise -->
+					                        <input type="checkbox"/>
+					                    </div>
+					                         
+					                </div>
+					        	</li>
+					    	</ul>
+					    </div>					    
+             		</div>
+            	</div>
+	        </div>
 			<div class="footer">
 	            <div class="actions">
 	                <button class="button blank" type="button" ng-click="closeDialog()">

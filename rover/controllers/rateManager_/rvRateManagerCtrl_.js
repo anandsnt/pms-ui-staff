@@ -7,14 +7,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'restrictionTypes',
     'rvRateManagerPopUpConstants',
     'ngDialog',
-    function($scope,
+    ($scope,
              $filter,
              $rootScope,
              rvRateManagerCoreSrv,
              rvRateManagerEventConstants,
              restrictionTypes,
              rvRateManagerPopUpConstants,
-             ngDialog) {
+             ngDialog) => {
 
       BaseCtrl.call(this, $scope);
 
@@ -395,15 +395,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         }
       };
 
-    $scope.closeDialog = function() {
-
-      $rootScope.modalClosing = true;
-      setTimeout(function() {
-        ngDialog.close();
-        $rootScope.modalClosing = false;
-      }, 300);
-    };
-
       var showRateRestrictionPopup = (data) => {
         ngDialog.open({
           template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
@@ -427,7 +418,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var data = {
           rates,
           mode:successCallBackParameters.mode,
-          restrictionData
+          restrictionData,
+          restrictionTypes
         };
         showRateRestrictionPopup(data);
       };

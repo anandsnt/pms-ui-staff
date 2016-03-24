@@ -149,8 +149,7 @@
                     <div id="accountsHolder" class="entry entry-company-card">
                         <label for="company-card" class="search-text">NAME CARD, IATA # OR CORPORATE ID</label>
                         <span type="submit" name="submit" class="icons icon-search1"></span>
-                        <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off"
-                               ng-model="cardSearchText" rv-cc-ta-auto-complete select-handler="cardSelected">
+                        <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="cardSearchText"  rv-cc-ta-auto-complete select-handler="cardSelected">
                     </div>
 
                     <div id='rm-selected-card-list' class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in selectedCards">

@@ -6,9 +6,10 @@ const convertRestrictionsIntoProps = (restrictionTypes) => {
 	
 	_restrictionTypes = restrictionTypes.map((restrictionType) => {
 		restrictionTypeConstObj = RateManagerRestrictionTypes[restrictionType.value];
-		restrictionType.className = restrictionTypeConstObj.className;
-		restrictionType.defaultText = restrictionTypeConstObj.defaultText;
-		return restrictionType;
+		return {
+			...restrictionType,
+			...restrictionTypeConstObj
+		};
 	});
 
 	//'more restrictions' will not be in API, it is adding from the UI
@@ -16,9 +17,7 @@ const convertRestrictionsIntoProps = (restrictionTypes) => {
 	restrictionTypeConstObj = RateManagerRestrictionTypes['MORE_RESTRICTIONS'];
 
 	_restrictionTypes.push({
-		className : restrictionTypeConstObj.className,
-		defaultText : restrictionTypeConstObj.defaultText,
-		description : restrictionTypeConstObj.description
+		...restrictionTypeConstObj
 	});
 
 	return _restrictionTypes;
