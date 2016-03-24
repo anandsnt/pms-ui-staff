@@ -339,7 +339,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 			  		if(cardType.toUpperCase() === paymentType.cardcode)
 					{
 						$scope.feeData.feesInfo = paymentType.charge_code.fees_information;
-						setupFeeData();
+						$scope.setupFeeData();
 					}
 
 				});
