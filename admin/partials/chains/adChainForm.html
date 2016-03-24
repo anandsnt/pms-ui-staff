@@ -68,7 +68,15 @@
 					Customer Email Server Settings
 				</h3>
 			</div>
-			<fieldset class="holder left float">
+                    <div>
+                        <label style="vertical-align: super;" class="switch-label">ACTIVE</label>
+                        <div class="switch-button single" 
+                             ng-class="{ on: editData.smtp_active }" ng-click="editData.smtp_active = !editData.smtp_active">
+                            <input type="checkbox">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+			<fieldset class="holder left float">  
 				<ad-textbox value="editData.smtp_address"   label = "Address" placeholder = "Enter Email Server Address"  styleclass="full-width"></ad-textbox>
 				<ad-textbox value="editData.smtp_port"      label = "Port" placeholder = "Enter Port"  styleclass="full-width"></ad-textbox>
 			</fieldset>
@@ -76,6 +84,7 @@
                                 <ad-textbox value="editData.smtp_username"   label = "Server Username" placeholder = "Enter Username"  styleclass="full-width"></ad-textbox>
 				<ad-textbox value="editData.smtp_password"   label = "Server Password" placeholder = "Enter Password"  styleclass="full-width" inputtype="password"></ad-textbox>
 			</fieldset>
+
                     
                     
 			<div class="form-title">
