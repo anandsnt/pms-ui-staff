@@ -5,6 +5,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'rvRateManagerCoreSrv',
     'rvRateManagerEventConstants',
     'restrictionTypes',
+    'rvRateManagerPopUpConstants',
     'ngDialog',
     function($scope,
              $filter,
@@ -12,6 +13,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              rvRateManagerCoreSrv,
              rvRateManagerEventConstants,
              restrictionTypes,
+             rvRateManagerPopUpConstants,
              ngDialog) {
 
       BaseCtrl.call(this, $scope);
@@ -402,20 +404,32 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       }, 300);
     };
 
-      var showRateRestrictionPopup = () => {
+      var showRateRestrictionPopup = (data) => {
         ngDialog.open({
           template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
           scope: $scope,
           className: 'ngdialog-theme-default',
+          data: data,
+          controller: 'rvRateManagerRestrictionAndAmountPopupCtrl'
         });
       };
 
       /**
        * on api call success against rate cell click
        * @param  {Object} response
+       * @param  {Object} successCallBackParameters
        */
-      var onFetchRestrictionDetailsForSingleRateCell = (response) => {
+      var onFetchRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
+        var restrictionData = response.dailyRateAndRestrictions,
+            rateIDs = successCallBackParameters.rateIDs,
+            rates = response.rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false));
         
+        var data = {
+          rates,
+          mode:successCallBackParameters.mode,
+          restrictionData
+        };
+        showRateRestrictionPopup(data);
       };
 
       /**
@@ -424,13 +438,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var clickedOnRateViewCell = ({rateIDs, date}) => {
         //calling the API to get the details
         var params = {
-          rate_ids: rateIDs,
+          'rate_ids[]': rateIDs,
           from_date: date,
           to_date: date
         };
         var options = {
-          params: params,
-          onSuccess: onFetchRestrictionDetailsForSingleRateCell
+          params,
+          onSuccess: onFetchRestrictionDetailsForRateCell,
+          successCallBackParameters: {
+            rateIDs,
+            mode: rateIDs.length > 1 ? rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE :
+              rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE
+          }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
       };

@@ -1,23 +1,30 @@
 <div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-	<form class="modal-content form">
+	<div class="rate-manager-modal modal-content">
 	    <div class="modal-container">
-	    	<h1>No, not there yet :) Sorry..</h1>
+	        <div class="modal-header">
+	            <div class="modal-header-left">
+	            	<h2>{{header}}</h2>
+	            	<em>{{headerBottomLeftLabel}}</em>
+	            	<em class="rate-name">{{headerBottomRightLabel}}</em>
+	            </div>
+	        </div>
+
 			<div class="footer">
 	            <div class="actions">
-	                <button ng-click="closeDialog()" class="button blank" type="button">
+	                <button class="button blank" type="button" ng-click="closeDialog()">
 	                    Cancel
 	                </button>
 	                <!-- remove class .hide if there is any override and rate is not a child or any other rule is applied. Please do review rules for overrides
 	                    -->
-	                <button class="button purple hide" ng-hide="true" type="button">
+	                <button class="button purple" ng-hide="true" type="button">
 	                    Clear Rate Overrides
 	                </button>
 	            
-	                <button class="button green hide" ng-hide="true" type="button">
+	                <button class="button green" ng-hide="true" type="button">
 	                    Set
 	                </button>
 	            </div>
-	        </div>
+        	</div>
 	    </div>
-	</form>
+	</div>
 </div>
