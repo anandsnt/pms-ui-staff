@@ -180,6 +180,7 @@
 				that.zestwebData.userEmail = zestwebData.primary_guest_email;
 				that.zestwebData.keyDeliveryByEmail = true;
 				//that.zestwebData.keyDeliveryByText  = true;
+				that.zestwebData.zestCheckinNoServiceMsg = zestwebData.zest_checkin_no_service_msg;
 
 				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
 

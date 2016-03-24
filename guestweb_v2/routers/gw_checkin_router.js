@@ -49,6 +49,13 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 	 		title: 'Check-in'
 	 	}
+	 }).state('externalCheckoutVerificationTurnedOff',{
+	 	url: '/externalCheckoutVerificationTurnedOff',
+	 	templateUrl: '/assets/partials/checkin/gwExternalCheckoutVerificationTurnedOff.html',
+	 	controller : 'GWExternalCheckoutVerificationTurnedOffController',
+	 	data: {
+	 		title: 'Check-in'
+	 	}
 	 });
 
 
