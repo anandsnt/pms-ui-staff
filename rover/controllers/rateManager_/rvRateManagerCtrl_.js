@@ -113,7 +113,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           from_date: formatDateForAPI(filterValues.fromDate),
           to_date: formatDateForAPI(filterValues.toDate),
           order_id: filterValues.orderBySelectedValue,
-          name_card_ids: filterValues.selectedCards,
+          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
           group_by: filterValues.groupBySelectedValue                
         };
 
@@ -202,7 +202,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var params = {
           from_date: formatDateForAPI(filterValues.fromDate),
           to_date: formatDateForAPI(filterValues.toDate),
-          order_id: filterValues.orderBySelectedValue               
+          order_id: filterValues.orderBySelectedValue,
+          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id')             
         };        
         var options = {
           params: params,
@@ -541,7 +542,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           from_date: formatDateForAPI(filterValues.fromDate),
           to_date: formatDateForAPI(filterValues.toDate),
           order_id: filterValues.orderBySelectedValue,
-          rate_id: filterValues.selectedRates[0].id          
+          rate_id: filterValues.selectedRates[0].id,
+          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id')        
         };        
         var options = {
           params: params,
