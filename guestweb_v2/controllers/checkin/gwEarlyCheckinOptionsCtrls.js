@@ -1,7 +1,7 @@
 /**
  * Checkin - early checkin options
  */
-sntGuestWeb.controller('GWEarlyCheckinOptionsController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv', 'GwCheckinSrv',
+sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv', 'GwCheckinSrv',
 	function($scope, $state, $stateParams, $controller, GwWebSrv, GwCheckinSrv) {
 
 		$controller('BaseController', {

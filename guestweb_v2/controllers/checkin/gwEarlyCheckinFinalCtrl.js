@@ -1,7 +1,7 @@
 /**
  * Checkin - early checkin final
  */
-sntGuestWeb.controller('GWEarlyCheckinFinalController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv', 'GwCheckinSrv',
+sntGuestWeb.controller('gwEarlyCheckinFinalController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv', 'GwCheckinSrv',
 	function($scope, $state, $stateParams, $controller, GwWebSrv, GwCheckinSrv) {
 
 		$controller('BaseController', {

@@ -1,7 +1,7 @@
 /**
  *	This is used when users invokes guestweb from the mail received.
  **/
-sntGuestWeb.controller('GWCheckinLandingCtrlController', ['$scope', '$state', '$controller', 'GwCheckinSrv', 'GwWebSrv', '$filter', '$rootScope', '$modal',
+sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$controller', 'GwCheckinSrv', 'GwWebSrv', '$filter', '$rootScope', '$modal',
 	function($scope, $state, $controller, GwCheckinSrv, GwWebSrv, $filter, $rootScope, $modal) {
 
 		$controller('BaseController', {

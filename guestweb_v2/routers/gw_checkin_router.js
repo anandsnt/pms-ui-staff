@@ -45,28 +45,28 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 }).state('checkinLanding', {
 	 	url: '/checkinLanding',
 	 	templateUrl: '/assets/partials/checkin/gwCheckin.html',
-	 	controller : 'GWCheckinLandingCtrlController',
+	 	controller : 'gwCheckinLandingCtrlController',
 	 	data: {
 	 		title: 'Check-in'
 	 	}
 	 }).state('externalCheckoutVerificationTurnedOff',{
 	 	url: '/externalCheckoutVerificationTurnedOff',
 	 	templateUrl: '/assets/partials/checkin/gwExternalCheckoutVerificationTurnedOff.html',
-	 	controller : 'GWExternalCheckoutVerificationTurnedOffController',
+	 	controller : 'gwExternalCheckoutVerificationTurnedOffController',
 	 	data: {
 	 		title: 'Check-in'
 	 	}
 	 }).state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
 	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinOptions.html',
-	 	controller : 'GWEarlyCheckinOptionsController',
+	 	controller : 'gwEarlyCheckinOptionsController',
 	 	data: {
 	 		title: 'Early Check-in'
 	 	}
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:charge',
 	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinFinal.html',
-	 	controller : 'GWEarlyCheckinFinalController',
+	 	controller : 'gwEarlyCheckinFinalController',
 	 	data: {
 	 		title: 'Early Check-in'
 	 	}
