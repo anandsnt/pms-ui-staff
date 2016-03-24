@@ -1,8 +1,6 @@
-const {createStore} = Redux;
-const {applyMiddleware} = Redux;
-const {compose} = Redux;
+const {createStore, applyMiddleware, compose} = Redux;
 
-let finalCreateStore = compose(
+const finalCreateStore = compose(
     applyMiddleware(ReduxThunk.default, reduxLogger()),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);

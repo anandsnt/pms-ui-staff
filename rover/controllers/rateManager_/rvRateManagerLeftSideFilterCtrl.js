@@ -197,7 +197,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.shouldShowRate = (rate) => {
         //if "'Select Rate Type' choosed from Rate type down choosed"
-        if ($scope.selectedRateTypeID === '') {
+        if ($scope.selectedRateTypeID === '' && !$scope.selectedRateTypes.length) {
           return true;
         }
 

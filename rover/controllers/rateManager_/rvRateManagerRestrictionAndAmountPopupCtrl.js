@@ -21,16 +21,49 @@ angular.module('sntRover')
 		};
 
 		/**
+		 * to get restriction displaying logic based upon the restriction listing
+		 * @param  {Object} restriction
+		 * @param  {array} individualRateRestrictionList
+		 * @return {Object}
+		 */
+		var getDisplayingParamsForRestricion = (restriction, individualRateRestrictionList) => {
+			var restrictionFoundInCommon = _.findWhere(dialogData.restrictionData[0].all_rate_restrictions, 
+					{restriction_type_id: restriction.id}),
+				foundInRestrictionList = false;
+			
+			if(restrictionFoundInCommon) {
+				return {
+					status: 'ON',
+					value: restrictionFoundInCommon.days
+				};
+			}
+			for(let i = 0; i < individualRateRestrictionList.length; i++ ) {
+    			if(_.findWhere(individualRateRestrictionList[i], { restriction_type_id: restriction.id })) {
+    				return {
+    					status: 'MIXED',
+    					value: '??'
+    				};
+    			}
+    		}
+    		return {
+    			status: 'OFF',
+    			value: ''
+    		};
+		};
+
+		/**
 		 * to get the active and class and other configrtion added restriction list
 		 * @return {array}
 		 */
-		var getRestrictionList = () =>
-			getValidRestrictionTypes(dialogData.restrictionTypes)
+		var getRestrictionList = () => {
+			var individualRateRestrictionList = _.pluck(dialogData.restrictionData[0].rates, 'restrictions');
+			return getValidRestrictionTypes(dialogData.restrictionTypes)
 				.map(restrictionType => ({
 					...restrictionType,
-					...(RateManagerRestrictionTypes[restrictionType.value] ? RateManagerRestrictionTypes[restrictionType.value] : {})
+					...(RateManagerRestrictionTypes[restrictionType.value] ? RateManagerRestrictionTypes[restrictionType.value] : {}),
+					...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList)
 				}));
-
+		}
 
 		/**
 		 * initialization stuffs
