@@ -4,8 +4,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     'zsModeConstants',
     'zsEventConstants',
     'zsTabletSrv','zsCheckoutSrv',
-    '$stateParams', 'zsHotelDetailsSrv','$timeout',
-    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout) {
+    '$stateParams', 'zsHotelDetailsSrv','$timeout', 'zestStationSettings',
+    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout, zestStationSettings) {
 
     BaseCtrl.call(this, $scope);
 
@@ -461,8 +461,31 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         //handling failure case only now.
         
         $scope.initChromeAppQRCodeScanner();
-        
     };
+    
+        $scope.initChromeAppQRCodeScanner = function(){
+            console.log('$scope.inChromeApp: ',$scope.inChromeApp);
+            if ($scope.inChromeApp){
+                var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+                //minimize the chrome app on loging out
+                new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
+                console.info("::Starting QR Code Scanner::"); 
+            }
+        };
+
+        $scope.initQRCodeFindReservation = function(reservation_id){
+            console.log('QR Code Scanned, found reservation: ',reservation_id);
+            $state.qr_code = reservation_id;
+            $state.go('zest_station.reservation_search_qrcode');
+        };
+    
+        $scope.onChromeAppResponse = function(response){
+            console.info('Zest Station got message from Chrome App:: ',response);
+            console.log(response);
+            if (response){
+                $scope.initQRCodeFindReservation(response);
+            }
+        };
 
     /**
      * [fetchNextReservationList description]
