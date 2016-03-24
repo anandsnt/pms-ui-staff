@@ -64,13 +64,13 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         $rootScope.uiViewDOMloaded = true;
         $scope.$emit('hideLoader');
         //conditional page navigations
-        if(reservationAndhotelDetails.checkin_url_verification === "true" && reservationAndhotelDetails.is_zest_checkin === "false"){
-            $state.go('externalCheckoutVerificationTurnedOff'); //external checkout URL
-        }
-        else if (reservationAndhotelDetails.is_external_verification === "true") {
+        if (reservationAndhotelDetails.is_external_verification === "true") {
             $state.go('externalCheckoutVerification'); //external checkout URL
         }
-        else if(reservationAndhotelDetails.is_zest_checkin === "true"){
+        else if(reservationAndhotelDetails.checkin_url_verification === "true" && reservationAndhotelDetails.is_zest_checkin === "false"){
+            $state.go('externalCheckInTurnedOff'); //external checkin URL off
+        }
+        else if(reservationAndhotelDetails.checkin_url_verification === "true" &&  reservationAndhotelDetails.is_zest_checkin === "true"){
             $state.go('externalCheckinVerification'); //external checkin URL
         }
         else if(reservationAndhotelDetails.is_checkin === "false" && reservationAndhotelDetails.access_token.length >0){
