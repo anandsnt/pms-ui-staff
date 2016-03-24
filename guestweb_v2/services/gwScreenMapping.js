@@ -49,5 +49,23 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	{
 		"value": "TERMS_AND_CONDITIONS",
 		"id": "zs-14"
+	},{
+		"value" : "AUTO_CHECKIN_FINAL",
+		"id" : "zs-15"
+	},{
+		"value":"CHECKIN_LANDING",
+		"id" : "zs-16"
+	},{
+		"value": "EXTERNAL_CHECKIN_OFF",
+		"id"  : "zs-17"
+	},{
+		"value" : "EARLY_CHECKIN_OPTIONS",
+		"id" : "zs-18"
+	},{
+		"value" : "EARLY_CHECKIN_FINAL",
+		"id"	: "zs-19"
+	},{
+		"value" : "ETA_LATE_UPDATION",
+		"id"	: "zs-20"
 	}];
 }]);

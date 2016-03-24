@@ -5,13 +5,20 @@
         <div class="col-md-1"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing section-container">
-            <p ng-if="!isPrecheckinOnly" class="main-text">Ready to Check-in ?</p>
-            <p ng-if="isPrecheckinOnly" class="main-text">Start Pre Check-in </p>
-            <p class="sub-main-text">
+            <!-- default main text -->
+            <p ng-if="!isPrecheckinOnly && !screenCMSDetails.title" class="main-text">Ready to Check-in ?</p>
+            <!-- default main text -->
+            <p ng-if="isPrecheckinOnly && !screenCMSDetails.title" class="main-text">Start Pre Check-in </p>
+             <!-- CMS main text -->
+            <p ng-if="screenCMSDetails.title" class="main-text" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">
                 To provide you with a
                 <strong class="reservation-details">secure check-in </strong> process, please confirm the following
                 <strong class="reservation-details">reservation details:</strong>
             </p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
         </div>
         <div class="col-md-2 top-spacing">
             <div class="vertical-line">&nbsp;</div>
@@ -34,7 +41,7 @@
     </div>
 </div>
 <!-- calendar view -->
-<div class="date-picker-bg" ng-show="isCalender">
+<div class="date-picker-bg" ng-show="calendarView">
     <div class="date-picker-wrap">
         <div class="col-xs-12 date-picker-header">
             <div class="col-xs-2 calendar-selection" ng-click="closeCalender()">
