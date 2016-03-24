@@ -103,7 +103,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
 
-			    
+
 
 				$timeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
@@ -408,6 +408,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		$scope.payAmount = function(){
+			$scope.passData = getPassData();
 			ngDialog.open({
 	      		template:'/assets/partials/companyCard/rvArTransactionsPayCredits.html',
 		        controller: 'RVArTransactionsPayCreditsController',
@@ -463,6 +464,21 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    $scope.reloadARTransactionListing = function() {
 	    	fetchData();
 	    };
+
+	    /*
+		* Data object to pass to the credit pay controller
+		*/
+	    var getPassData = function() {
+			var passData = {
+				"account_id": $scope.contactInformation.id,
+				"is_swiped": false,
+				"details": {
+					"firstName": "",
+					"lastName": ""
+				}
+			};
+			return passData;
+		};
 
 
 
