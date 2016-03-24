@@ -8,7 +8,6 @@ sntGuestWeb.controller('GWExternalCheckoutVerificationTurnedOffController', ['$s
 			var screenIdentifier = "EXTERNAL_CHECKIN_OFF";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.zestCheckinNoServiceMsg = GwWebSrv.zestwebData.zestCheckinNoServiceMsg;
-			console.log($scope.zestCheckinNoServiceMsg)
 		}();
 
 	}
