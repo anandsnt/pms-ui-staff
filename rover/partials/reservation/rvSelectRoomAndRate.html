@@ -9,7 +9,6 @@
             </li>
         </ul>
         <div class="switch-button on" ng-click="toggleCalendar()">
-            <!-- CICO-15042 we will be disabling calendar switch for now -->
             <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" checked />
             <label class="data-off">
                 <span class="value">Rooms &amp; Rates</span>
@@ -43,7 +42,7 @@
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
                     <span ng-if="!reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.stayDates[stayday.date].amount">
                         {{currencySymbol}}
-                        {{stateCheck.stayDates[stayday.date].amount}}
+                        {{stateCheck.stayDates[stayday.date].amount | number : 0}}
                     </span>
                     <span ng-if="reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.lookUp[stateCheck.preferredType].rates[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].dates[stayday.date].amount ">
                         SR

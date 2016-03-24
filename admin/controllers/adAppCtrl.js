@@ -163,7 +163,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					title: "MENU_REV_MAN",
 					action: "",
 					iconClass: "icon-revenue",
-					submenu: [{
+					submenu: [
+					{
+						title: "New Rate Manager",
+						action: "staff#/staff/ratemanager/",
+						menuIndex: "newRateManager"
+					},
+					{
 						title: "MENU_RATE_MANAGER",
 						action: "staff#/staff/rateManager",
 						menuIndex: "rateManager"
