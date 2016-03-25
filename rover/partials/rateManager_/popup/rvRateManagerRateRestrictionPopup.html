@@ -25,12 +25,11 @@
 					    <div class="scrollable" ng-iscroll="scroller-restriction-list">
 					        <ul class="wrapper">
 					        	<li class="restriction-type" 
-					        		ng-repeat="restriction in restrictionList"
-					        		ng-class="{'value-not-inserted': restriction.hasInputField}">
+					        		ng-repeat="restriction in restrictionList">
 					        		
 					        		<div class="restriction-left">
 						        		<span ng-class="restriction.className">
-						        			<!--TODO: add value here -->
+						        			{{restriction.value}}
 						        		</span>
 						        		<span class="restriction-name">{{restriction.description}}</span>
 
@@ -40,20 +39,21 @@
 						        		</span>
 						        	</div>
 
-						        	<div class="restriction-right" ng-show="false">
+						        	<div class="restriction-right" >
 
 					                    <!-- Show this when the restriction is mixed -->
-					                    <div class="mixed-button" ng-if="false">
-					                        Mixed
+					                    <div class="mixed-button" ng-if="restriction.status === 'VARIED'">
+					                        Varied
 					                    </div>
 					                    <!-- Show this when the restriction is NOT mixed -->
 					                    <!-- Add class .on when restriction is ON, remove otherwise-->
 					                    <!-- Add class .disabled if the restriction is editable and has no value, remove otherwise -->
-					                    <div class="switch-button">
+					                    <div class="switch-button" ng-class="{'on': restriction.status === 'ON'}"
+					                    	ng-if="restriction.status !== 'VARIED'">
 					                        <span class="switch-icon"></span>
 					                        <!-- Add attribute checked="checked" when the restriction is ON, remove otherwise -->
 					                        <!-- Add attribute disabled="disabled" when restriction is editable and has no value, remove otherwise -->
-					                        <input type="checkbox"/>
+					                        <input type="checkbox" ng-checked="restriction.status === 'ON'"/>
 					                    </div>
 					                         
 					                </div>
@@ -61,6 +61,27 @@
 					    	</ul>
 					    </div>					    
              		</div>
+            	</div>
+            	<div class="content-middle">
+            		<div class="">
+						<div class="restriction_text" >
+						    <h3>
+						        PRICES
+						    </h3>
+						    <!-- Display if we are viewing Rates -->
+						    <em>Prices for all room types</em>
+						</div>
+						<div class="prices-container scrollable">
+						    <div class="wrapper">
+						    
+						        <div class="price-info" ng-repeat="roomType in roomTypeAndPrices">
+						            <span class='name'>{{roomtype.name}}</span>
+						            <span class="price">{{roomType.single}}</span>
+						        </div>
+						        
+						    </div>
+						</div>            			
+            		</div>
             	</div>
 	        </div>
 			<div class="footer">

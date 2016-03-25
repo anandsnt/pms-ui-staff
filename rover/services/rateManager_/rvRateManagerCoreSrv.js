@@ -153,7 +153,6 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
-
         service.fetchRatesAndDailyRates = function (params) {
             var promises = [],
                 rates = [],
@@ -163,9 +162,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             promises.push(service.fetchMultipleRateInfo(params).then((data) => {
                 dailyRateAndRestrictions = data.results;
             }));
-            promises.push(service.fetchRates().then((data) => {
-                rates = data.results;
-            }));
+
+            if (params.fetchRates) {
+                promises.push(service.fetchRates().then((data) => {
+                    rates = data.results;
+                }));
+            }
 
             $q.all(promises).then((data) => {
                 deferred.resolve({

@@ -7,14 +7,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'restrictionTypes',
     'rvRateManagerPopUpConstants',
     'ngDialog',
-    ($scope,
+    function($scope,
              $filter,
              $rootScope,
              rvRateManagerCoreSrv,
              rvRateManagerEventConstants,
              restrictionTypes,
              rvRateManagerPopUpConstants,
-             ngDialog) => {
+             ngDialog) {
 
       BaseCtrl.call(this, $scope);
 
@@ -24,6 +24,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var lastSelectedFilterValues = [],
         activeFilterIndex = 0;
+
+      var cachedRateList = [], cachedRoomTypeList = [];
 
       /**
        * to set the heading and title
@@ -50,12 +52,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var onfetchDailyRatesSuccess = (response) => {
         var rateRestrictions = response.dailyRateAndRestrictions,
-            rates = response.rates,
+            rates = !cachedRateList.length ? response.rates : cachedRateList,
             dates = _.pluck(rateRestrictions, 'date'),
             rateIDs = _.pluck(response.rates, 'id'),
             ratesWithRestrictions = rateRestrictions[0].rates,
             rateObjectBasedOnID = {},
             dateRateSet = null;
+
+        //rateList now cached, we will not fetch that again
+        cachedRateList = rates;
 
         //for topbar
         $scope.fromDate = dates[0];
@@ -116,7 +121,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           to_date: formatDateForAPI(filterValues.toDate),
           order_id: filterValues.orderBySelectedValue,
           'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
-          group_by: filterValues.groupBySelectedValue                
+          group_by: filterValues.groupBySelectedValue,
+          fetchRates: !cachedRateList.length
         };
 
         if(filterValues.selectedRateTypes.length) {
@@ -426,9 +432,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       };
 
       /**
-       * callback from react when clicked on a cell in rate view
+       * [description]
+       * @param  {[type]} rateIDs [description]
+       * @param  {[type]} date    [description]
+       * @return {[type]}         [description]
        */
-      var clickedOnRateViewCell = ({rateIDs, date}) => {
+      var fetchMultipleRateRestrictionsModeDetails = (rateIDs, date) => {
         //calling the API to get the details
         var params = {
           'rate_ids[]': rateIDs,
@@ -440,11 +449,61 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           onSuccess: onFetchRestrictionDetailsForRateCell,
           successCallBackParameters: {
             rateIDs,
-            mode: rateIDs.length > 1 ? rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE :
-              rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE
+            mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE
           }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
+      };
+
+      /**
+       * [description]
+       * @param  {[type]} response                  [description]
+       * @param  {[type]} successCallBackParameters [description]
+       * @return {[type]}                           [description]
+       */
+      var onFetchSingleRateRestrictionModeDetails = (response, successCallBackParameters) => {
+        var restrictionData = response.roomTypeAndRestrictions,
+            roomTypesAndPrices = response.roomTypeAndRestrictions[0].room_types.map(roomType => 
+              ({...roomType, 
+                ..._.findWhere(response.roomTypes, { id: roomType.id })
+              }));
+
+        var data = {
+          roomTypesAndPrices,
+          mode: successCallBackParameters.mode,
+          rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
+          restrictionData,
+          restrictionTypes
+        };
+        showRateRestrictionPopup(data);
+      };
+
+      /**
+       * [description]
+       * @param  {[type]} options.rateID [description]
+       * @param  {[type]} options.date   [description]
+       * @return {[type]}                [description]
+       */
+      var fetchSingleRateRestrictionModeDetails = (rateID, date) => {
+        var params = {
+          from_date: date,
+          to_date: date,
+          rate_id: rateID
+        };
+        var options = {
+          params,
+          onSuccess: onFetchSingleRateRestrictionModeDetails,
+          successCallBackParameters: { rateID, mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE }
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
+      };
+
+      /**
+       * callback from react when clicked on a cell in rate view
+       */
+      var clickedOnRateViewCell = ({rateIDs, date}) => {
+        return rateIDs.length > 1 ? fetchMultipleRateRestrictionsModeDetails(rateIDs, date): 
+          fetchSingleRateRestrictionModeDetails(rateIDs[0], date);
       };
 
       /**
