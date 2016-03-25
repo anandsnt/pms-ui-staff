@@ -473,20 +473,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             }
         };
 
-        $scope.initQRCodeFindReservation = function(reservation_id){
-            console.log('QR Code Scanned, found reservation: ',reservation_id);
-            $state.qr_code = reservation_id;
-            $state.go('zest_station.reservation_search_qrcode');
-        };
-    
-        $scope.onChromeAppResponse = function(response){
-            console.info('Zest Station got message from Chrome App:: ',response);
-            console.log(response);
-            if (response){
-                $scope.initQRCodeFindReservation(response);
-            }
-        };
-
     /**
      * [fetchNextReservationList description]
      * @return {[type]} [description]
@@ -529,7 +515,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         }
         else{
             var primaryGuest = _.find(r.guest_details, function(guest_detail) {
-                return guest_detail.is_primary === true
+                return guest_detail.is_primary === true;
             });
             $scope.zestStationData.check_in_collect_nationality ? $state.go('zest_station.collect_nationality',{'guestId':primaryGuest.id}) : $state.go('zest_station.reservation_details');
         }
@@ -563,7 +549,17 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         console.log($state);
         if ($state.current.name === 'zest_station.reservation_search_qrcode'){
             console.log('select reservation: ',$state.qr_code);
-            $scope.selectReservation($state.qr_code);
+            var reservation_id = $state.qr_code;
+            var onSuccessFetchReservation = function(response){
+                console.log(response);
+                $scope.selectReservation(response.data);
+            };
+            
+            $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
+                'id': reservation_id,
+                'by_reservation_id': true
+            }, onSuccessFetchReservation);
+            
             return;
         }
 

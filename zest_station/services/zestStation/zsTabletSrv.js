@@ -159,8 +159,14 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
 
 
         this.fetchReservationDetails = function(param) {
-            var deferred = $q.defer(),
-                url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
+            var url;
+            if (param.by_reservation_id){
+                 url = '/staff/staycards/reservation_details.json?reservation_id=' + param.id;
+            } else {
+                 url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
+            }
+            var deferred = $q.defer();
+                
 
 
             zsBaseWebSrv.getJSON(url).then(function(data) {

@@ -792,6 +792,7 @@ sntZestStation.controller('zsRootCtrl', [
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
                     } else if (response.qr_code){
+                        console.log('init find reservation for : ',response.reservation_id);
                         $scope.initQRCodeFindReservation(response.reservation_id);
                     }
                 }
@@ -935,6 +936,7 @@ sntZestStation.controller('zsRootCtrl', [
             console.info("::Starting QR Code Scanner::"); 
         }
     };
+    
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
