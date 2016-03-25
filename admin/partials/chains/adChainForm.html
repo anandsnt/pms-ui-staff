@@ -76,6 +76,14 @@
                             <span class="switch-icon"></span>
                         </div>
                     </div>
+            <div>
+                <label style="vertical-align: super;" class="switch-label">Enable STARTTLS</label>
+                <div class="switch-button single"
+                     ng-class="{ on: editData.smtp_enable_starttls }" ng-click="editData.smtp_enable_starttls = !editData.smtp_enable_starttls">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
 			<fieldset class="holder left float">  
 				<ad-textbox value="editData.smtp_address"   label = "Address" placeholder = "Enter Email Server Address"  styleclass="full-width"></ad-textbox>
 				<ad-textbox value="editData.smtp_port"      label = "Port" placeholder = "Enter Port"  styleclass="full-width"></ad-textbox>
