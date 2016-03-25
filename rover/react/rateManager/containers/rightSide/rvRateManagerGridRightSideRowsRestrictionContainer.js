@@ -95,7 +95,7 @@ const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProp
             onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     rateIDs = [];
-                console.log(stateProps);
+
                 if(rowIndex === 0) {
                     rateIDs = _.pluck(stateProps.restrictionRows.slice(1), 'id');
                 }

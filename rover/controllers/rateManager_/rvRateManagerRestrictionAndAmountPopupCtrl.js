@@ -14,7 +14,7 @@ angular.module('sntRover')
         /**
          * to set the scrollers in the ui
          */
-        var setScroller = () => {
+        const setScroller = () => {
             $scope.setScroller('scroller-restriction-list');
             $scope.setScroller('room-type-price-listing');
         };
@@ -22,7 +22,7 @@ angular.module('sntRover')
         /**
          * utility methd to refresh all scrollers
          */
-        var refreshScroller = () => {
+        const refreshScroller = () => {
             $scope.refreshScroller('scroller-restriction-list');
             $scope.refreshScroller('room-type-price-listing');
         };
@@ -50,8 +50,8 @@ angular.module('sntRover')
          * @param  {array} individualRateRestrictionList
          * @return {Object}
          */
-        var getDisplayingParamsForRestricion = (restriction, individualRateRestrictionList, commonRestrictions) => {
-            var restrictionFoundInCommon = _.findWhere(commonRestrictions, 
+        const getDisplayingParamsForRestricion = (restriction, individualRateRestrictionList, commonRestrictions) => {
+            const restrictionFoundInCommon = _.findWhere(commonRestrictions, 
                     {restriction_type_id: restriction.id}),
                 foundInRestrictionList = false;
             
@@ -80,8 +80,8 @@ angular.module('sntRover')
          * to get the active and class and other configrtion added restriction list
          * @return {array}
          */
-        var getRestrictionListForMultipleRateViewMode = () => {
-            var dialogData = $scope.ngDialogData,
+        const getRestrictionListForMultipleRateViewMode = () => {
+            const dialogData = $scope.ngDialogData,
                 restrictionData = dialogData.restrictionData[0];
             return getRestrictionListForRateView(dialogData.restrictionTypes,
                     restrictionData.rates,
@@ -92,12 +92,12 @@ angular.module('sntRover')
          * to get the active and class and other configrtion added restriction list
          * @return {array}
          */
-        var getRestrictionListForRateView = (restrictionTypes, restrictionSource, commonRestricitonSource) => {
-            var individualRateRestrictionList = _.pluck(restrictionSource, 'restrictions');
+        const getRestrictionListForRateView = (restrictionTypes, restrictionSource, commonRestricitonSource) => {
+            const individualRateRestrictionList = _.pluck(restrictionSource, 'restrictions');
             return getValidRestrictionTypes(restrictionTypes)
                 .map(restrictionType => ({
                     ...restrictionType,
-                    ...(RateManagerRestrictionTypes[restrictionType.value] ? RateManagerRestrictionTypes[restrictionType.value] : {}),
+                    ...RateManagerRestrictionTypes[restrictionType.value],
                     ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource)
                 }));
         };
@@ -106,7 +106,7 @@ angular.module('sntRover')
          * to get the active and class and other configrtion added restriction list
          * @return {array}
          */
-        var getRestrictionListForSingleRateViewMode = () => {
+        const getRestrictionListForSingleRateViewMode = () => {
             var dialogData = $scope.ngDialogData,
                 restrictionData = dialogData.restrictionData[0];
             return getRestrictionListForRateView(dialogData.restrictionTypes,
@@ -114,6 +114,10 @@ angular.module('sntRover')
                     restrictionData.rate_restrictions);
         }
 
+        const setDatePicker = () => {
+            
+        };
+        
         /**
          * initialization stuffs
          */
@@ -124,6 +128,8 @@ angular.module('sntRover')
             $scope.roomTypeAndPrices = [];
 
             $scope.contentMiddleMode = '';
+
+            $scope.untilDate = '';
 
             $scope.weekDayRepeatSelection = [{
                 weekDay: 'mon',
@@ -188,7 +194,7 @@ angular.module('sntRover')
                 dafault:
                     break;
             }
-            
+
             setScroller();
         })();
 }]);
