@@ -439,7 +439,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
           zoomLevel: $scope.selectedZoomLevelValue,
 
-          orderBy: $scope.orderBySelectedValue,
+          orderID: $scope.orderBySelectedValue,
 
           groupBy: $scope.groupBySelectedValue,
 

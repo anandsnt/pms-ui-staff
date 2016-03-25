@@ -53,8 +53,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var onfetchDailyRatesSuccess = (response) => {
         var rateRestrictions = response.dailyRateAndRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
+
             dates = _.pluck(rateRestrictions, 'date'),
-            rateIDs = _.pluck(response.rates, 'id'),
+            rateIDs = _.pluck(rates, 'id'),
             ratesWithRestrictions = rateRestrictions[0].rates,
             rateObjectBasedOnID = {},
             dateRateSet = null;
@@ -70,7 +71,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
         rateRestrictions = _.object(dates, rateRestrictions);
-        rateObjectBasedOnID = _.object(rateIDs, response.rates);
+        rateObjectBasedOnID = _.object(rateIDs, cachedRateList);
         
         //we have lots of alternative ways, those depends on javascript array order
         //which is buggy from browser to browser, so choosing this bad way
@@ -119,7 +120,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var params = {
           from_date: formatDateForAPI(filterValues.fromDate),
           to_date: formatDateForAPI(filterValues.toDate),
-          order_id: filterValues.orderBySelectedValue,
+          order_id: filterValues.orderID,
           'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
           group_by: filterValues.groupBySelectedValue,
           fetchRates: !cachedRateList.length

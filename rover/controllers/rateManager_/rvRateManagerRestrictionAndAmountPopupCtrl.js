@@ -10,14 +10,39 @@ angular.module('sntRover')
             $filter) {
 
         BaseCtrl.call(this, $scope);
-
-
+        
         /**
          * to set the scrollers in the ui
          */
         var setScroller = () => {
             $scope.setScroller('scroller-restriction-list');
+            $scope.setScroller('room-type-price-listing', {scrollbars: true});
         };
+
+        /**
+         * utility methd to refresh all scrollers
+         */
+        var refreshScroller = () => {
+            $scope.refreshScroller('scroller-restriction-list');
+            $scope.refreshScroller('room-type-price-listing');
+        };
+
+        /**
+         * when clicked on week day select all button
+         */
+        $scope.clickedOnWeekDaySelectAllButton = () => $scope.weekDayRepeatSelection.forEach(weekDay => weekDay.selected = true);
+        
+        /**
+         * when clicked on week day select none button
+         */
+        $scope.clickedOnWeekDaySelectNoneButton = () => $scope.weekDayRepeatSelection.forEach(weekDay => weekDay.selected = false);
+
+        /**
+         * to show select none/select all for week days selection
+         * @return {Boolean}
+         */
+        $scope.showSelectNoneForWeekDaySelection = () =>
+            _.where($scope.weekDayRepeatSelection, {selected: true}).length === $scope.weekDayRepeatSelection.length;
 
         /**
          * to get restriction displaying logic based upon the restriction listing
@@ -87,6 +112,37 @@ angular.module('sntRover')
 
             $scope.roomTypeAndPrices = [];
 
+            $scope.contentMiddleMode = '';
+
+            $scope.weekDayRepeatSelection = [{
+                weekDay: 'MON',
+                selected: false
+            },
+            {
+                weekDay: 'TUE',
+                selected: false
+            },
+            {
+                weekDay: 'WED',
+                selected: false
+            },
+            {
+                weekDay: 'THU',
+                selected: false
+            },
+            {
+                weekDay: 'FRI',
+                selected: false
+            },
+            {
+                weekDay: 'SAT',
+                selected: false
+            },
+            {
+                weekDay: 'SUN',
+                selected: false
+            }];
+
             switch($scope.ngDialogData.mode) {
                 //when we click a restriciton cell on rate view mode
                 case rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
@@ -100,6 +156,8 @@ angular.module('sntRover')
                     $scope.restrictionList = getRestrictionListForSingleRateViewMode();
 
                     $scope.roomTypeAndPrices = $scope.ngDialogData.roomTypesAndPrices;
+
+                    $scope.contentMiddleMode = 'ROOM_TYPE_PRICE_LISTING';
                     
                     break;
                 

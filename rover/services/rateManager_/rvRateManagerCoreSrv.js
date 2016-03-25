@@ -159,7 +159,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 dailyRateAndRestrictions = [],
                 deferred = $q.defer();
 
-            promises.push(service.fetchMultipleRateInfo(params).then((data) => {
+            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates')).then((data) => {
                 dailyRateAndRestrictions = data.results;
             }));
 

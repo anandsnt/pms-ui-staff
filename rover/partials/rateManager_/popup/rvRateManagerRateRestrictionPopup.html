@@ -62,8 +62,8 @@
 					    </div>					    
              		</div>
             	</div>
-            	<div class="content-middle">
-            		<div class="">
+            	<div class="content-middle" ng-show="contentMiddleMode !== ''">
+            		<div ng-show="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'">
 						<div class="restriction_text" >
 						    <h3>
 						        PRICES
@@ -71,11 +71,11 @@
 						    <!-- Display if we are viewing Rates -->
 						    <em>Prices for all room types</em>
 						</div>
-						<div class="prices-container scrollable">
+						<div class="prices-container scrollable" ng-iscroll="room-type-price-listing">
 						    <div class="wrapper">
 						    
 						        <div class="price-info" ng-repeat="roomType in roomTypeAndPrices">
-						            <span class='name'>{{roomtype.name}}</span>
+						            <span class='name'>{{roomType.name}}</span>
 						            <span class="price">{{roomType.single}}</span>
 						        </div>
 						        
@@ -83,7 +83,54 @@
 						</div>            			
             		</div>
             	</div>
+            	<div class="content-right">
+	                <h3>Apply to Dates</h3>
+		            
+		            <!-- Add class .checked when checked-->
+		            <label class="checkbox" ng-class="{'checked': applyRestrictionsToDates}">
+		                <!-- add class .checked when checked -->
+		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyRestrictionsToDates}"></span>
+		                <!-- add attribute 'checked="checked"' when checked-->
+		                <input name="apply-restriction-to-dates" id="apply-restriction-to-dates" 
+		                	ng-model="applyRestrictionsToDates" type="checkbox"/>
+		                Apply Restrictions
+		            </label>
+
+	                <h4>For every</h4>
+	                <div class="list_week_days">
+	                    <!-- Add class .checked when checked-->
+	                    <label class="checkbox" ng-class="{'checked': weekDay.selected}"
+	                    	ng-repeat="weekDay in weekDayRepeatSelection">
+	                        <!-- Add class .checked when checked-->
+	                        <span class="icon-form icon-checkbox" ng-class="{'checked': weekDay.selected}"></span>
+	                        <!-- add attribute 'checked="checked"' when checked-->
+	                        <input  ng-model="weekDay.selected" value="restrictions" type="checkbox"/>
+	                         {{weekDay.weekDay}}
+	                    </label>
+	                    
+	                    <!-- 'ButtonText':
+	                        - 'Select All' - when some day is not selected
+	                        - 'Select None' - when all days are selected
+	                    -->
+	                    <button ng-click="clickedOnWeekDaySelectAllButton()" 
+	                    	ng-show="!showSelectNoneForWeekDaySelection()">
+	                        Select All
+	                    </button>
+	                    <button ng-show="showSelectNoneForWeekDaySelection()"
+	                    	ng-click="clickedOnWeekDaySelectNoneButton()">
+	                        Select None
+	                    </button>	                    
+	                </div>
+
+	                <h4>Until</h4>
+	                <div class="has-datepicker">
+	                    <input placeholder="Select Date Range" readonly="" maxlength="8" class="hasDatepicker" name="">
+	                    <button type="button" class="ui-datepicker-trigger">...</button>
+	                </div>
+
+	            </div>
 	        </div>
+
 			<div class="footer">
 	            <div class="actions">
 	                <button class="button blank" type="button" ng-click="closeDialog()">
