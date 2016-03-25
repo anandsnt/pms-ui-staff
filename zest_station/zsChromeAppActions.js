@@ -21,33 +21,47 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         };
         
         
+        that.cancelNextMsg = false;
         that.listenerForQRCodeResponse = function(response){
+            console.log(':: listenerForQRCodeResponse ::',response);
             var msg = {
                 listening: true,
-                attempt: (this.qrAttempt+1)
+                attempt: (that.qrAttempt+1)
             };
             console.log('msg from ChromeApp:', response);
             
             if (!response.qr_code){
                 setTimeout(function(){
                     console.log('sending listening response obj for QR code...');
-                    chrome.runtime.sendMessage(chromeAppId, msg, this.listenerForQRCodeResponse);
+                    if (!that.cancelNextMsg){
+                        chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+                    } else {
+                        console.log('should stop sending messages to chrome app now :)');
+                    }
+                    
                 },2000);
             } else {
+                that.cancelNextMsg = true;
                 console.log('GOT QR CODE BACK FROM CHROMEAPP !!! : ',response.reservation_id);
+                msg.listening = false;
+                onMessageCallback({
+                    qr_code: true,
+                    reservation_id: response.reservation_id
+                });
+                
+                chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             }
             
             
             //this.onChromeAppMsgResponse();
         };
+        
+        that.qrAttempt = 0;
         that.fetchQRCode = function(){ 
             var msg = 'initQRCodeScan';
-            this.qrAttempt = 0;
-            console.log('listening for scan...');
-            chrome.runtime.sendMessage(chromeAppId, msg, this.listenerForQRCodeResponse);
+            console.log('listening for scan...on app id: [ '+chromeAppId+' ]');
+            chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             console.log('SENDING message: ',msg);
-            
-            
             /*
             var port = chrome.runtime.connect(chromeAppId,{name: "qrcode"});
             port.onMessage.addListener(function(msg) {
