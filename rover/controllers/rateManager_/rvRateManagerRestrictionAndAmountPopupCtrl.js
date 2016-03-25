@@ -126,31 +126,31 @@ angular.module('sntRover')
             $scope.contentMiddleMode = '';
 
             $scope.weekDayRepeatSelection = [{
-                weekDay: 'MON',
+                weekDay: 'mon',
                 selected: false
             },
             {
-                weekDay: 'TUE',
+                weekDay: 'tue',
                 selected: false
             },
             {
-                weekDay: 'WED',
+                weekDay: 'wed',
                 selected: false
             },
             {
-                weekDay: 'THU',
+                weekDay: 'thu',
                 selected: false
             },
             {
-                weekDay: 'FRI',
+                weekDay: 'fri',
                 selected: false
             },
             {
-                weekDay: 'SAT',
+                weekDay: 'sat',
                 selected: false
             },
             {
-                weekDay: 'SUN',
+                weekDay: 'sun',
                 selected: false
             }];
 
@@ -184,9 +184,11 @@ angular.module('sntRover')
                     $scope.restrictionList = getRestrictionListForMultipleRateViewMode();
 
                     break;
+                
                 dafault:
                     break;
             }
+            
             setScroller();
         })();
 }]);

@@ -27,6 +27,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
       var cachedRateList = [], cachedRoomTypeList = [];
 
+      var initialState = {
+        mode: RM_RX_CONST.NOT_CONFIGURED_MODE
+      };
+      
+      const store = configureStore(initialState)
+
+      const {render} = ReactDOM;
+      const {Provider} = ReactRedux;
+
       /**
        * to set the heading and title
        * @param {String} nonTranslatedTitle
@@ -638,9 +647,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object} date
        * @return {String}
        */
-      var formatDateForAPI = (date) => (
-        $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI)
-      );
+      var formatDateForAPI = (date) => $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI);
 
       /**
        * to update results
@@ -711,26 +718,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         runDigestCycle();
       });
 
-      var initialState = {
-        mode: RM_RX_CONST.NOT_CONFIGURED_MODE
-      };
-      
-      const store = configureStore(initialState)
-
-      const {render} = ReactDOM;
-      const {Provider} = ReactRedux;
-
       /**
        * to render the grid view
        */
-      var renderGridView = () => {
-        render(
-            <Provider store={store}>
-              <RateManagerRootComponent/>
-            </Provider>,
-            document.querySelector('#rate-manager .rate-manager-content')
-        );
-      };
+      var renderGridView = () => render(
+        <Provider store={store}>
+          <RateManagerRootComponent/>
+        </Provider>,
+        document.querySelector('#rate-manager .rate-manager-content')
+      );
 
       /**
        * to initialize data model for rate manager
