@@ -161,7 +161,7 @@ sntRover.factory('RVReportParserFac', [
                 for ( k = 0, l = source.length; k < l; k++ ) {
                     makeCopy = angular.copy( source[k] );
 
-                    amt = parseInt(makeCopy.amount);
+                    amt = parseFloat(makeCopy.amount);
                     amt = isNaN(amt) ? 0 : amt;
                     totalAmount += amt;
 

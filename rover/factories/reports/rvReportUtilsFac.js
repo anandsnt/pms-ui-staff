@@ -333,6 +333,14 @@ angular.module('reportsModule')
          */
         factory.processFilters = function ( report, data ) {
 
+            if ( report.hasUserFilter ) {
+                report.empList = {
+                    selectAll: true,
+                    hasSearch: true,
+                    data: angular.copy( data.activeUserList )
+                }
+            };
+
             // create DS for options combo box
             __setData(report, 'hasGeneralOptions', {
                 type         : 'FAUX_SELECT',
@@ -398,10 +406,6 @@ angular.module('reportsModule')
                 title        : 'Both',
                 data         : []
             });
-
-            // if ( report.hasUserFilter ) {
-            //     report.userList = angular.copy( data.activeUserList );
-            // };
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
