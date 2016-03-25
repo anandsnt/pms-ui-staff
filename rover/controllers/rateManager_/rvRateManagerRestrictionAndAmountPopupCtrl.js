@@ -62,10 +62,11 @@ angular.module('sntRover')
                 };
             }
             for(let i = 0; i < individualRateRestrictionList.length; i++ ) {
-                if(_.findWhere(individualRateRestrictionList[i], { restriction_type_id: restriction.id })) {
+                let correspondingRestriction = _.findWhere(individualRateRestrictionList[i], { restriction_type_id: restriction.id });
+                if(correspondingRestriction) {
                     return {
                         status: 'VARIED',
-                        value: '??'
+                        value: RateManagerRestrictionTypes[restriction.value].hasInputField ? '??' : ''
                     };
                 }
             }
@@ -80,27 +81,37 @@ angular.module('sntRover')
          * @return {array}
          */
         var getRestrictionListForMultipleRateViewMode = () => {
-            var individualRateRestrictionList = _.pluck($scope.ngDialogData.restrictionData[0].rates, 'restrictions');
-            return getValidRestrictionTypes($scope.ngDialogData.restrictionTypes)
-                .map(restrictionType => ({
-                    ...restrictionType,
-                    ...(RateManagerRestrictionTypes[restrictionType.value] ? RateManagerRestrictionTypes[restrictionType.value] : {}),
-                    ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, $scope.ngDialogData.restrictionData[0].all_rate_restrictions)
-                }));
+            var dialogData = $scope.ngDialogData,
+                restrictionData = dialogData.restrictionData[0];
+            return getRestrictionListForRateView(dialogData.restrictionTypes,
+                    restrictionData.rates,
+                    restrictionData.all_rate_restrictions);
         }
 
         /**
          * to get the active and class and other configrtion added restriction list
          * @return {array}
          */
-        var getRestrictionListForSingleRateViewMode = () => {
-            var individualRateRestrictionList = _.pluck($scope.ngDialogData.restrictionData[0].room_types, 'restrictions');
-            return getValidRestrictionTypes($scope.ngDialogData.restrictionTypes)
+        var getRestrictionListForRateView = (restrictionTypes, restrictionSource, commonRestricitonSource) => {
+            var individualRateRestrictionList = _.pluck(restrictionSource, 'restrictions');
+            return getValidRestrictionTypes(restrictionTypes)
                 .map(restrictionType => ({
                     ...restrictionType,
                     ...(RateManagerRestrictionTypes[restrictionType.value] ? RateManagerRestrictionTypes[restrictionType.value] : {}),
-                    ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, $scope.ngDialogData.restrictionData[0].rate_restrictions)
+                    ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource)
                 }));
+        };
+
+        /**
+         * to get the active and class and other configrtion added restriction list
+         * @return {array}
+         */
+        var getRestrictionListForSingleRateViewMode = () => {
+            var dialogData = $scope.ngDialogData,
+                restrictionData = dialogData.restrictionData[0];
+            return getRestrictionListForRateView(dialogData.restrictionTypes,
+                    restrictionData.room_types,
+                    restrictionData.rate_restrictions);
         }
 
         /**
