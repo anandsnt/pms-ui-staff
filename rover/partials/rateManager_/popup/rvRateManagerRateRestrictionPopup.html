@@ -124,8 +124,11 @@
 
 	                <h4>Until</h4>
 	                <div class="has-datepicker">
-	                    <input placeholder="Select Date Range" readonly="" maxlength="8" class="hasDatepicker" name="">
-	                    <button type="button" class="ui-datepicker-trigger">...</button>
+	                    <button class="clear-query" ng-class="{'visible': !isEmpty(untilDate.toString())}" ng-click="clearUntilDate()">
+	                        <!-- Add class "visible" when date is selected -->
+	                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+	                    </button>
+	                    <!-- <input placeholder="Select Date Range" type="text" class="hasDatepicker" readonly rv-clear-text-box listen-this="untilDate" ui-date="datePickerOptions" value="{{untilDate|date:dateFormat}}" /> -->
 	                </div>
 
 	            </div>
