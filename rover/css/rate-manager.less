@@ -1033,6 +1033,47 @@
                 height:10px;
               }
             }
+
+            .restriction_holder.icons-in-row {
+              position: relative;
+              height:20px;
+
+              .restriction-icon {
+                width:16px;
+                height:16px;
+                margin:0;
+                position: absolute;
+                font-size:11px;
+                line-height: 16px;
+                
+                &.icon-cross {
+                  background-position: 3px -7837px
+                }
+
+                &.icon-block {
+                  background-position: 3px -7897px;
+                }
+                &:first-child {
+                  top:-8px;
+                  right:0;
+                }
+
+                &:nth-child(2){
+                  right:0;
+                  bottom:-8px;
+                }
+
+                &:nth-child(3) {
+                  top:-8px;
+                  right:20px;
+                }
+
+                &:nth-child(4){
+                  right:20px;
+                  bottom:-8px;
+                }
+              }
+            }
             
             td {
               .cell-content {
@@ -1122,6 +1163,47 @@
                 background-position: 0 -7px;
                 background-size:10px;
                 height:10px;
+              }
+            }
+
+            .restriction_holder.icons-in-row {
+              position: relative;
+              height:20px;
+
+              .restriction-icon {
+                width:16px;
+                height:16px;
+                margin:0;
+                position: absolute;
+                font-size:11px;
+                line-height: 16px;
+                
+                &.icon-cross {
+                  background-position: 3px -7837px
+                }
+
+                &.icon-block {
+                  background-position: 3px -7897px;
+                }
+                &:first-child {
+                  top:-8px;
+                  right:0;
+                }
+
+                &:nth-child(2){
+                  right:0;
+                  bottom:-8px;
+                }
+
+                &:nth-child(3) {
+                  top:-8px;
+                  right:18px;
+                }
+
+                &:nth-child(4){
+                  right:18px;
+                  bottom:-8px;
+                }
               }
             }
             
@@ -1531,14 +1613,13 @@
 
     &.rate-manager-new {
       position: absolute;
-
       .calc-height(100, 60);
 
       .filter-options{
         top:0;
         height:100%;
         max-height:100%;
-        overflow:hidden;
+        overflow: hidden;
       }
 
       .calendar {
@@ -1547,7 +1628,7 @@
 
       
     }
-
+ 
   }
 
   
