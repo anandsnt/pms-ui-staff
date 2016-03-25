@@ -97,7 +97,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.fetchRoomTypes = () => {
-            var url = '/api/room_types.json?exclude_pseudo=true';
+            var url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true';
             var deferred = $q.defer();
             BaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data.results);
