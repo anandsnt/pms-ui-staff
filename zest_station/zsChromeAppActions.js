@@ -21,6 +21,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         };
         
         
+        that.cancelNextMsg = false;
         that.listenerForQRCodeResponse = function(response){
             console.log(':: listenerForQRCodeResponse ::',response);
             var msg = {
@@ -32,14 +33,23 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
             if (!response.qr_code){
                 setTimeout(function(){
                     console.log('sending listening response obj for QR code...');
-                    chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+                    if (!that.cancelNextMsg){
+                        chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+                    } else {
+                        console.log('should stop sending messages to chrome app now :)');
+                    }
+                    
                 },2000);
             } else {
+                that.cancelNextMsg = true;
                 console.log('GOT QR CODE BACK FROM CHROMEAPP !!! : ',response.reservation_id);
+                msg.listening = false;
                 onMessageCallback({
                     qr_code: true,
                     reservation_id: response.reservation_id
                 });
+                
+                chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             }
             
             
