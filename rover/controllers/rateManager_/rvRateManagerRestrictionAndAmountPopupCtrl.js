@@ -10,13 +10,13 @@ angular.module('sntRover')
             $filter) {
 
         BaseCtrl.call(this, $scope);
-        
+
         /**
          * to set the scrollers in the ui
          */
         var setScroller = () => {
             $scope.setScroller('scroller-restriction-list');
-            $scope.setScroller('room-type-price-listing', {scrollbars: true});
+            $scope.setScroller('room-type-price-listing');
         };
 
         /**

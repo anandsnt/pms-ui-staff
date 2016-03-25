@@ -53,7 +53,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
       var onfetchDailyRatesSuccess = (response) => {
         var rateRestrictions = response.dailyRateAndRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
-
             dates = _.pluck(rateRestrictions, 'date'),
             rateIDs = _.pluck(rates, 'id'),
             ratesWithRestrictions = rateRestrictions[0].rates,
@@ -147,12 +146,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
         var roomTypeRestrictions = response.roomTypeAndRestrictions,
-            roomTypes = response.roomTypes,
+            roomTypes = !cachedRoomTypeList.length ? response.roomTypes: cachedRoomTypeList,
             dates = _.pluck(roomTypeRestrictions, 'date'),
             roomTypeIDs = _.pluck(roomTypes, 'id'),
             roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
             roomTypeObjectBasedOnID = {},
             dateRoomTypeSet = null;
+
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
 
         //topbar
         $scope.fromDate = dates[0];
@@ -212,7 +214,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           from_date: formatDateForAPI(filterValues.fromDate),
           to_date: formatDateForAPI(filterValues.toDate),
           order_id: filterValues.orderBySelectedValue,
-          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id')             
+          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
+          fetchRoomTypes: !cachedRoomTypeList.length           
         };        
         var options = {
           params: params,
@@ -464,10 +467,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var onFetchSingleRateRestrictionModeDetails = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
+            roomTypes = !cachedRoomTypeList.length ? response.roomTypes: cachedRoomTypeList,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0].room_types.map(roomType => 
               ({...roomType, 
-                ..._.findWhere(response.roomTypes, { id: roomType.id })
+                ..._.findWhere(roomTypes, { id: roomType.id })
               }));
+        
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
 
         var data = {
           roomTypesAndPrices,
@@ -489,7 +496,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var params = {
           from_date: date,
           to_date: date,
-          rate_id: rateID
+          rate_id: rateID,
+          fetchRoomTypes: !cachedRoomTypeList.length
         };
         var options = {
           params,
@@ -513,12 +521,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var onFetchSingleRateDetailsAndRestrictions = (response) => {
         var roomTypeRestrictions = response.roomTypeAndRestrictions,
-            roomTypes = response.roomTypes,
+            roomTypes = !cachedRoomTypeList.length ? response.roomTypes: cachedRoomTypeList,
             dates = _.pluck(roomTypeRestrictions, 'date'),
             roomTypeIDs = _.pluck(roomTypes, 'id'),
             roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
             roomTypeObjectBasedOnID = {},
             dateRoomTypeSet = null;
+
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
 
         //topbar
         $scope.fromDate = dates[0];
