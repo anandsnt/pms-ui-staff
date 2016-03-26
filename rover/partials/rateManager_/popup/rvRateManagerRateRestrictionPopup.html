@@ -25,7 +25,9 @@
 					    <div class="scrollable" ng-iscroll="scroller-restriction-list">
 					        <ul class="wrapper">
 					        	<li class="restriction-type" 
-					        		ng-repeat="restriction in restrictionList">
+					        		ng-repeat="restriction in restrictionList"  
+					        		ng-click="changeRestrictionStatus(restriction)" 
+					        		ng-class="{'selected': restriction.selected}">
 					        		
 					        		<div class="restriction-left">
 						        		<span ng-class="restriction.className">
@@ -39,7 +41,7 @@
 						        		</span>
 						        	</div>
 
-						        	<div class="restriction-right" >
+						        	<div class="restriction-right">
 
 					                    <!-- Show this when the restriction is mixed -->
 					                    <div class="mixed-button" ng-if="restriction.status === 'VARIED'">
@@ -81,6 +83,30 @@
 						        
 						    </div>
 						</div>            			
+            		</div>
+
+            		<div ng-show="contentMiddleMode === 'RESTRICTION_EDITING'">
+	            		<div class="restriction_text">
+						    <h3>{{restrictionForShowingTheDetails.description}}</h3>
+						    <em>Adjust restriction for all room types</em>
+						    <div class="mixed_restrictions notice" ng-show="restrictionForShowingTheDetails.status==='VARIED'">
+						        This overrides all 
+						        <strong class='restriction-description'>
+						        	{{restrictionForShowingTheDetails.description}}
+						        </strong>
+						        restrictions for the selected room type(s) and date range.
+						    </div>
+						    <div class="inputlabel" for="restictionCount" ng-show="restrictionForShowingTheDetails.hasInputField">
+						        <label for="restictionCount"> {{restrictionForShowingTheDetails.description}} </label>
+						        <input id="restictionCount" ng-model="restrictionForShowingTheDetails.value"/>
+						    </div>
+
+						    <div class="cancellationbuttonwrap">
+						        <button class="button green" type="button" ng-click="clickedOnSetButton()">Set</button>
+						        <button class="button red" type="button" ng-click="clickedOnRemoveButton()">Remove</button>
+						        <button class="button blank cancel" type="button" ng-click="">Cancel</button>
+						    </div>
+						</div>
             		</div>
             	</div>
             	<div class="content-right">
@@ -124,11 +150,7 @@
 
 	                <h4>Until</h4>
 	                <div class="has-datepicker">
-	                    <button class="clear-query" ng-class="{'visible': !isEmpty(untilDate.toString())}" ng-click="clearUntilDate()">
-	                        <!-- Add class "visible" when date is selected -->
-	                        <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
-	                    </button>
-	                    <!-- <input placeholder="Select Date Range" type="text" class="hasDatepicker" readonly rv-clear-text-box listen-this="untilDate" ui-date="datePickerOptions" value="{{untilDate|date:dateFormat}}" /> -->
+	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="untilDate" ui-date="datePickerOptions" value="{{untilDate|date:dateFormat}}" />
 	                </div>
 
 	            </div>

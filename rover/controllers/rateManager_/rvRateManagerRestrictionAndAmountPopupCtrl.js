@@ -55,6 +55,76 @@ angular.module('sntRover')
         };
 
         /**
+         * to unselect the selected restriction
+         */
+        const deSelectAllRestriction = () => $scope.restrictionList.forEach(restriction => restriction.selected = false);
+
+        /**
+         * to goto default middle pane
+         */
+        const gotoDefaultMiddlePaneMode = () => {
+            switch($scope.ngDialogData.mode) {
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
+                    $scope.contentMiddleMode = 'ROOM_TYPE_PRICE_LISTING';
+                    break;
+                
+                case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
+                    //initializeMultipleRateRestrictionMode();
+                    break;
+                
+                dafault:
+                    break;
+            }
+        };
+
+        /**
+         * on tapping the set button from restriction edit pane
+         */
+        $scope.clickedOnSetButton = () => {
+            var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
+            restriction.value = $scope.restrictionForShowingTheDetails.value;
+            restriction.status = 'ON';
+            deSelectAllRestriction();
+            gotoDefaultMiddlePaneMode();
+        };
+
+        /**
+         * on tapping the remove button from restriction edit pane
+         */
+        $scope.clickedOnRemoveButton = () => {
+            var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
+            restriction.value = null;
+            restriction.status = 'OFF';
+            deSelectAllRestriction();
+            gotoDefaultMiddlePaneMode();
+        };
+
+        /**
+         * on tapping the switch button of restriction
+         * @param  {Object} restriction
+         */
+        $scope.changeRestrictionStatus = (restriction) => {
+            if (restriction.status === 'ON' && !restriction.hasInputField) {
+                restriction.status = 'OFF';
+                restriction.edited = true; //will be using while calling the api ;)
+                return;
+            }
+            else if (restriction.status === 'OFF' && !restriction.hasInputField) {
+                restriction.status = 'ON';
+                restriction.edited = true; //will be using while calling the api ;)
+                return;
+            }
+            else {
+                $scope.contentMiddleMode = 'RESTRICTION_EDITING';
+                //deselecting the previous ones
+                deSelectAllRestriction();
+                restriction.selected = true;
+                $scope.restrictionForShowingTheDetails = util.deepCopy(restriction);
+                return;
+            }
+        };
+
+        /**
          * to get restriction displaying logic based upon the restriction listing
          * @param  {Object} restriction
          * @param  {array} individualRateRestrictionList
@@ -106,7 +176,8 @@ angular.module('sntRover')
                 .map(restrictionType => ({
                     ...restrictionType,
                     ...RateManagerRestrictionTypes[restrictionType.value],
-                    ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource)
+                    ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource),
+                    edited : false
                 }));
         };
 
@@ -169,7 +240,9 @@ angular.module('sntRover')
 
             $scope.restrictionList =  [];
 
-            $scope.contentMiddleMode = '';
+            $scope.contentMiddleMode = ''; //values possible: 'ROOM_TYPE_PRICE_LISTING', 'RESTRICTION_EDITING'
+
+            $scope.modeConstants = rvRateManagerPopUpConstants;
 
             $scope.weekDayRepeatSelection = [{
                 weekDay: 'mon',
@@ -239,14 +312,14 @@ angular.module('sntRover')
         const initializeModeBasedValues = () => {
             switch($scope.ngDialogData.mode) {
                 //when we click a restriciton cell on rate view mode
-                case rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
                     
                     initializeSingleRateRestrictionMode();
                     
                     break;
                 
                 //when we click a header restriciton cell on rate view mode
-                case rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
+                case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
                     
                     initializeMultipleRateRestrictionMode();
 
