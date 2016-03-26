@@ -5,11 +5,17 @@ angular.module('sntRover')
         'rvRateManagerPopUpConstants',
         'rvUtilSrv',
         '$filter',
+        'rvRateManagerCoreSrv',
+        'rvRateManagerEventConstants',
+        '$timeout',
         function($scope,
             $rootScope,
             rvRateManagerPopUpConstants,
             util,
-            $filter) {
+            $filter,
+            rvRateManagerCoreSrv,
+            rvRateManagerEventConstants,
+            $timeout) {
 
         BaseCtrl.call(this, $scope);
 
@@ -39,6 +45,13 @@ angular.module('sntRover')
             _.where($scope.weekDayRepeatSelection, {selected: true}).length === $scope.weekDayRepeatSelection.length;
 
         /**
+        * utility method for converting date object into api formated 'string' format
+        * @param  {Object} date
+        * @return {String}
+        */
+        var formatDateForAPI = (date) => $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI);
+
+        /**
          * to set the scrollers in the ui
          */
         const setScroller = () => {
@@ -58,6 +71,24 @@ angular.module('sntRover')
          * to unselect the selected restriction
          */
         const deSelectAllRestriction = () => $scope.restrictionList.forEach(restriction => restriction.selected = false);
+        
+        /**
+         * to run angular digest loop,
+         * will check if it is not running
+         */
+        const runDigestCycle = () => {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
+
+        /**
+         * Function to clear from until Date
+         */
+        $scope.clearUntilDate = () => {
+            $scope.untilDate = '';
+            runDigestCycle();
+        };
 
         /**
          * to goto default middle pane
@@ -80,9 +111,10 @@ angular.module('sntRover')
         /**
          * on tapping the set button from restriction edit pane
          */
-        $scope.clickedOnSetButton = () => {
+        $scope.clickedOnRestrictionSetButton = () => {
             var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
             restriction.value = $scope.restrictionForShowingTheDetails.value;
+            restriction.edited = true;
             restriction.status = 'ON';
             deSelectAllRestriction();
             gotoDefaultMiddlePaneMode();
@@ -91,12 +123,71 @@ angular.module('sntRover')
         /**
          * on tapping the remove button from restriction edit pane
          */
-        $scope.clickedOnRemoveButton = () => {
+        $scope.clickedOnRestrictionRemoveButton = () => {
             var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
             restriction.value = null;
+            restriction.edited = true;
             restriction.status = 'OFF';
             deSelectAllRestriction();
             gotoDefaultMiddlePaneMode();
+        };
+
+        /**
+         * [description]
+         * @return {[type]} [description]
+         */
+        var getEditedRestrictionsForAPI = () => {
+            var editedRestrictions = _.where($scope.restrictionList, {edited:true});
+            return editedRestrictions.map(restriction => ({
+                action: restriction.status === 'ON' ? 'add' : 'remove',
+                restriction_type_id: restriction.id,
+                days: restriction.value
+            }))
+        };
+
+        /**
+         * [description]
+         * @return {[type]} [description]
+         */
+        var callSingleRateRestrictionUpdateAPI = () => {
+            var params = {};
+            params.rate_id = $scope.ngDialogData.rate.id;
+            params.details = [];
+            params.details.push({
+                from_date: formatDateForAPI($scope.ngDialogData.restrictionData[0].date),
+                to_date: formatDateForAPI($scope.ngDialogData.restrictionData[0].date),
+                restrictions: getEditedRestrictionsForAPI()
+            });
+            const options = {
+                params,
+                onSuccess: onUpdateSingleRateRestrictionData
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
+        };
+
+        /**
+         * on tapping the set button
+         */
+        $scope.clickedOnSetButton = () => {
+            switch($scope.ngDialogData.mode) {
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
+                    callSingleRateRestrictionUpdateAPI();
+
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        /**
+         * when the single restriciton update api call is success
+         * @param  {Object} result
+         */
+        const onUpdateSingleRateRestrictionData = (result) => {  
+            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+            $timeout(function(){
+                $scope.closeDialog();
+            }, 700);
         };
 
         /**
@@ -192,24 +283,6 @@ angular.module('sntRover')
                     restrictionData.room_types,
                     restrictionData.rate_restrictions);
         }
-
-        /**
-         * to run angular digest loop,
-         * will check if it is not running
-         */
-        const runDigestCycle = () => {
-            if (!$scope.$$phase) {
-                $scope.$digest();
-            }
-        };
-
-        /**
-         * Function to clear from until Date
-         */
-        $scope.clearUntilDate = () => {
-            $scope.untilDate = '';
-            runDigestCycle();
-        };
 
         /**
          * to set the date picker
