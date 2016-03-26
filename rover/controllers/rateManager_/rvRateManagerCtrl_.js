@@ -7,6 +7,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'restrictionTypes',
     'rvRateManagerPopUpConstants',
     'ngDialog',
+    '$timeout',
     function($scope,
              $filter,
              $rootScope,
@@ -14,7 +15,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              rvRateManagerEventConstants,
              restrictionTypes,
              rvRateManagerPopUpConstants,
-             ngDialog) {
+             ngDialog,
+             $timeout) {
 
       BaseCtrl.call(this, $scope);
 
@@ -57,7 +59,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * to reload the present mode
      */
     $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, function(event, data){
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     });
 
       /**
@@ -436,8 +438,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        */
       var onFetchRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
+            rates = !cachedRateList.length ? response.rates : cachedRateList,
             rateIDs = successCallBackParameters.rateIDs,
-            rates = response.rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false));
+            rates = rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false));
+
+        //caching the rate list
+        cachedRateList = rates;
 
         var data = {
           rates,

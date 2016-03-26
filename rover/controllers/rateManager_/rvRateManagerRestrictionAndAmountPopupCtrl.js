@@ -7,15 +7,13 @@ angular.module('sntRover')
         '$filter',
         'rvRateManagerCoreSrv',
         'rvRateManagerEventConstants',
-        '$timeout',
         function($scope,
             $rootScope,
             rvRateManagerPopUpConstants,
             util,
             $filter,
             rvRateManagerCoreSrv,
-            rvRateManagerEventConstants,
-            $timeout) {
+            rvRateManagerEventConstants) {
 
         BaseCtrl.call(this, $scope);
 
@@ -111,8 +109,16 @@ angular.module('sntRover')
         /**
          * on tapping the set button from restriction edit pane
          */
-        $scope.clickedOnRestrictionSetButton = () => {
+        $scope.clickedOnRestrictionSetButton = (event) => {
+            event.stopPropagation();
             var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
+            
+            if($scope.restrictionForShowingTheDetails.hasInputField && 
+                !util.isNumeric($scope.restrictionForShowingTheDetails.value)) {
+                $scope.errorMessage = ['Please enter a number'];
+                return;
+            }
+
             restriction.value = $scope.restrictionForShowingTheDetails.value;
             restriction.edited = true;
             restriction.status = 'ON';
@@ -149,18 +155,35 @@ angular.module('sntRover')
          * [description]
          * @return {[type]} [description]
          */
-        var callSingleRateRestrictionUpdateAPI = () => {
-            var params = {};
-            params.rate_id = $scope.ngDialogData.rate.id;
+        var callRateRestrictionUpdateAPI = () => {
+            var params = {},
+                mode = $scope.ngDialogData.mode;
+            if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
+                params.rate_id = $scope.ngDialogData.rate.id;
+            }
+            else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
+                params.rate_ids = _.pluck($scope.ngDialogData.rates, 'id');
+            }
             params.details = [];
             params.details.push({
                 from_date: formatDateForAPI($scope.ngDialogData.restrictionData[0].date),
                 to_date: formatDateForAPI($scope.ngDialogData.restrictionData[0].date),
                 restrictions: getEditedRestrictionsForAPI()
             });
+
+            if($scope.applyRestrictionsToDates) {
+                if($scope.untilDate === '') {
+                    $scope.errorMessage = ['Please choose until date'];
+                    return;
+                }
+                params.details[0].to_date = formatDateForAPI($scope.untilDate);
+                params.details[0].weekdays = {};
+                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
+                    .map(weekDay => params.details[0].weekdays[weekDay.weekDay] = weekDay.selected);
+            }
             const options = {
                 params,
-                onSuccess: onUpdateSingleRateRestrictionData
+                onSuccess: onUpdateRateRestrictionData
             };
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
@@ -168,26 +191,24 @@ angular.module('sntRover')
         /**
          * on tapping the set button
          */
-        $scope.clickedOnSetButton = () => {
+        $scope.clickedOnSetButton = (event) => {
+            event.stopPropagation();
             switch($scope.ngDialogData.mode) {
                 case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
-                    callSingleRateRestrictionUpdateAPI();
-
-                    break;
+                case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
+                    return callRateRestrictionUpdateAPI();
                 default:
                     break;
             }
         };
 
         /**
-         * when the single restriciton update api call is success
+         * when the  restriciton update api call is success
          * @param  {Object} result
          */
-        const onUpdateSingleRateRestrictionData = (result) => {  
+        const onUpdateRateRestrictionData = (result) => {  
             $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-            $timeout(function(){
-                $scope.closeDialog();
-            }, 700);
+            $scope.closeDialog();
         };
 
         /**
@@ -291,7 +312,10 @@ angular.module('sntRover')
             $scope.datePickerOptions = {
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,
-                minDate: new tzIndependentDate($rootScope.businessDate)
+                minDate: new tzIndependentDate($scope.ngDialogData.restrictionData[0].date),
+                onSelect:function(date, datePickerObj) {
+                    $scope.untilDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+                }
             };
 
             $scope.untilDate = '';

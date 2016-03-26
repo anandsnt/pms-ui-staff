@@ -1,5 +1,5 @@
 <div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-	<div class="rate-manager-modal modal-content">
+	<div class="rate-manager-modal modal-content" ng-click="clearErrorMessage()">
 	    <div class="modal-container">
 	        <div class="modal-header">
 	            <div class="modal-header-left">
@@ -14,6 +14,7 @@
 	                </div>
             	</div>
 	        </div>
+	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <div class="modal-body">
 	        	<div class="content-left">
                     <div class="restriction-list" >
@@ -64,7 +65,7 @@
 					    </div>					    
              		</div>
             	</div>
-            	<div class="content-middle" ng-show="contentMiddleMode !== ''">
+            	<div class="content-middle"> <!--ng-show="contentMiddleMode !== ''" -->
             		<div ng-show="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'">
 						<div class="restriction_text" >
 						    <h3>
@@ -102,7 +103,7 @@
 						    </div>
 
 						    <div class="cancellationbuttonwrap">
-						        <button class="button green" type="button" ng-click="clickedOnRestrictionSetButton()">Set</button>
+						        <button class="button green" type="button" ng-click="clickedOnRestrictionSetButton($event)">Set</button>
 						        <button class="button red" type="button" ng-click="clickedOnRestrictionRemoveButton()">Remove</button>
 						        <button class="button blank cancel" type="button" ng-click="">Cancel</button>
 						    </div>
@@ -167,7 +168,7 @@
 	                    Clear Rate Overrides
 	                </button>
 	            
-	                <button class="button green" ng-click="clickedOnSetButton()" type="button">
+	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button">
 	                    Set
 	                </button>
 	            </div>
