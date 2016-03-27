@@ -58,13 +58,6 @@ angular.module('sntRover')
         const formatDateForAPI = (date) => formatDate(date, $rootScope.dateFormatForAPI);
 
         /**
-        * utility method for converting date object into ui formated 'string' format
-        * @param  {Object} date
-        * @return {String}
-        */
-        const formatDateForUI = (date) => formatDate(date, $rootScope.dateFormat);
-
-        /**
         * utility method for converting date object into a top header formated 'string'
         * @param  {Object} date
         * @return {String}
@@ -120,9 +113,11 @@ angular.module('sntRover')
                     break;
                 
                 case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
-                    //initializeMultipleRateRestrictionMode();
+                case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
+                case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
+                    $scope.contentMiddleMode = '';
                     break;
-                
+                                
                 dafault:
                     break;
             }
@@ -221,9 +216,6 @@ angular.module('sntRover')
             if(mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
-            // else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
-            //     params.rate_ids = _.pluck($scope.ngDialogData.rates, 'id');
-            // }
 
             params.details = [];
             params.details.push({
@@ -260,6 +252,7 @@ angular.module('sntRover')
                     return callRateRestrictionUpdateAPI();
 
                 case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
+                case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
                     return callRoomTypeRestrictionUpdateAPI();
 
                 default:
@@ -421,8 +414,7 @@ angular.module('sntRover')
 
             $scope.header = dialogData.rate.name;
             
-            $scope.headerBottomLeftLabel = $filter('date')(new tzIndependentDate(dialogData.restrictionData[0].date), 
-                $rootScope.dateFormat);
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.restrictionData[0].date);
 
             $scope.headerBottomRightLabel = 'All Room types';
 
@@ -463,7 +455,7 @@ angular.module('sntRover')
                 restrictionData = dialogData.restrictionData[0];
             $scope.header = dialogData.roomType.name;
             
-            $scope.headerBottomLeftLabel = formatDateForUI(dialogData.restrictionData[0].date);
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.restrictionData[0].date);
 
             $scope.headerBottomRightLabel = '';
 
@@ -475,6 +467,25 @@ angular.module('sntRover')
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
             $scope.contentMiddleMode = '';
+        };
+
+        /**
+         * to initialize the multiple room type restriction mode
+         */
+        const initializeMultipleRoomTypeRestrictionMode = () => {
+            var dialogData = $scope.ngDialogData,
+                restrictionData = dialogData.restrictionData[0];
+
+            $scope.headerBottomLeftLabel = 'All Room types';
+                    
+            $scope.header = formatDateForTopHeader(dialogData.restrictionData[0].date);
+
+            $scope.headerBottomRightLabel = '';
+
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    restrictionData.room_types,
+                    restrictionData.all_room_type_restrictions);
         };
 
         /**
@@ -495,6 +506,10 @@ angular.module('sntRover')
                 //when we click a restriciton cell on room type view mode
                 case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
                     initializeSingleRoomTypeRestrictionMode();
+                    break;
+
+                case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
+                    initializeMultipleRoomTypeRestrictionMode();
                     break;
 
                 dafault:

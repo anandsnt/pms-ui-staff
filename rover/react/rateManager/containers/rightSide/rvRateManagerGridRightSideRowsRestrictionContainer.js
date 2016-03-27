@@ -85,7 +85,7 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
         case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
             propsToReturn.clickedOnRoomTypeViewCell = state.callBacksFromAngular.clickedOnRoomTypeViewCell;
             break;
-                      
+
         default:
             break;
     }
@@ -119,10 +119,7 @@ const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProp
                 var date = stateProps.dates[colIndex],
                     roomTypeIDs = [];
 
-                if(rowIndex === 0) {
-                    roomTypeIDs = _.pluck(stateProps.restrictionRows.slice(1), 'id');
-                }
-                else if(rowIndex > 0) {
+                if(rowIndex > 0) {
                     roomTypeIDs = [stateProps.restrictionRows[rowIndex].id];
                 }                
                 return stateProps.clickedOnRoomTypeViewCell({

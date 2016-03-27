@@ -531,7 +531,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
     };
 
-
     /**
      * callback from react when clicked on a cell in rate view
      */
@@ -546,7 +545,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response
      */
     var onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess = (response, successCallBackParameters) => {
-        console.log(response);
         var restrictionData = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0]
@@ -592,11 +590,54 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
+    * on api call success against header room type cell click
+    * @param  {Object} response
+    */
+    var onfetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess = (response) => {
+        var restrictionData = response.roomTypeAndRestrictions,
+            roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+            roomTypesAndPrices = response.roomTypeAndRestrictions[0]
+                .room_types.map(roomType =>
+                    ({
+                        ...roomType,
+                        ..._.findWhere(roomTypes, {id: roomType.id})
+                    }));
+
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
+
+        var data = {
+            roomTypesAndPrices,
+            mode: rvRateManagerPopUpConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE,
+            restrictionData,
+            restrictionTypes
+        };
+        showRateRestrictionPopup(data);
+    };
+
+    /**
+    * to fetch a day room type common restriction details
+    */
+    var fetchMultipleRoomTypeRestrictionsDetailsForPopup = (date) => {
+        //calling the API to get the details
+        var params = {
+            from_date: date,
+            to_date: date,
+            fetchRoomTypes: !cachedRoomTypeList.length
+        };
+        var options = {
+            params,
+            onSuccess: onfetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
+    };
+
+    /**
      * callback from react when clicked on a cell in roomtype view
      */
     var clickedOnRoomTypeViewCell = ({roomTypeIDs, date}) => {
-        return roomTypeIDs.length > 1 ? 
-            fetchMultipleRoomTypeRestrictionsDetailsForPopup(roomTypeIDs, date) :
+        return roomTypeIDs.length === 0 ? 
+            fetchMultipleRoomTypeRestrictionsDetailsForPopup(date) :
             fetchSingleRoomTypeRestrictionDetailsForPopup(roomTypeIDs[0], date);
     };
 
@@ -680,18 +721,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showBackButton = false;
     };
 
-      /**
-       * callback from react, when clicked on rate
-       * @param  {Object} filterValues
-       */
-      var fetchSingleRateDetailsFromReact = (filterValues) => {
+    /**
+     * callback from react, when clicked on rate
+     * @param  {Object} filterValues
+     */
+    var fetchSingleRateDetailsFromReact = (filterValues) => {
         lastSelectedFilterValues.push({
-          ...lastSelectedFilterValues[activeFilterIndex],
-          ...filterValues,
-          showAllRates: false,
-          showAllRoomTypes: false,
-          selectedRateTypes: [],
-          fromLeftFilter: false
+            ...lastSelectedFilterValues[activeFilterIndex],
+            ...filterValues,
+            showAllRates: false,
+            showAllRoomTypes: false,
+            selectedRateTypes: [],
+            fromLeftFilter: false
         });
 
         activeFilterIndex = activeFilterIndex + 1;
@@ -701,7 +742,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showBackButton = true;
 
         fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
     /**
      * to fetch the single rate details
@@ -772,49 +813,50 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
       });
 
-      /**
-       * to run angular digest loop,
-       * will check if it is not running
-       */
-      var runDigestCycle = () => {
+    /**
+     * to run angular digest loop,
+     * will check if it is not running
+     */
+    var runDigestCycle = () => {
         if (!$scope.$$phase) {
-          $scope.$digest();
+            $scope.$digest();
         }
-      };
+    };
 
-      /**
-       * to catch the error messages emitting from child controllerss
-       * @param  {Object} event
-       * @param  {array} errorMessage
-       */
-      $scope.$on('showErrorMessage', (event, errorMessage) => {
+    /**
+     * to catch the error messages emitting from child controllerss
+     * @param  {Object} event
+     * @param  {array} errorMessage
+     */
+    $scope.$on('showErrorMessage', (event, errorMessage) => {
         $scope.errorMessage = errorMessage;
         runDigestCycle();
-      });
+    });
 
-      var initialState = {
+    var initialState = {
         mode: RM_RX_CONST.NOT_CONFIGURED_MODE
-      };
+    };
 
-      const store = configureStore(initialState);
+    const store = configureStore(initialState);
 
-      const {render} = ReactDOM;
-      const {Provider} = ReactRedux;
+    const {render} = ReactDOM;
+    const {Provider} = ReactRedux;
 
-      /**
-       * to render the grid view
-       */
-      var renderGridView = () => render(
+    /**
+     * to render the grid view
+     */
+    var renderGridView = () => render(
         <Provider store={store}>
-          <RateManagerRootComponent/>
+            <RateManagerRootComponent/>
         </Provider>,
         document.querySelector('#rate-manager .rate-manager-content')
-      );
+    );
 
-      /**
-       * to initialize data model for rate manager
-       */
-      var initializeDataModel = () => {
+
+    /**
+     * to initialize data model for rate manager
+     */
+    var initializeDataModel = () => {
         //for top bar
         $scope.showTopBar = false;
         $scope.showBackButton = false;
@@ -825,15 +867,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //mode
         $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
-      };
+    };
 
-      /**
-       * initialisation function
-       */
-      (() => {
+    /**
+     * initialisation function
+     */
+    (() => {
         setHeadingAndTitle('RATE_MANAGER_TITLE');
         initializeDataModel();
         renderGridView();
-      })();
+    })();
 
     }]);
