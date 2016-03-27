@@ -46,7 +46,9 @@ sntRover
                     return new Date(new Date(arrival_ms).setHours(start,0,0));
                 },
                 toShijuBugEndDate: function(end) {
-                    return new Date(new Date(x_right).setHours(end, 0, 0));
+                    var startDate_ = new Date(new Date(arrival_ms).setHours(0,0,0)),
+                        endDate_ = new Date(new Date(startDate_).setHours(startDate_.getHours() + end, 0, 0));
+                    return endDate_;
                 },
                 toStartDate: function() {
                     return new Date(new Date(x_left).setHours(0, 0, 0));
