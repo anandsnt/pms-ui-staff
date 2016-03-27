@@ -50,7 +50,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * to have animation while opening & closing
      */
     $rootScope.$on('ngDialog.opened', (e, $dialog) => {
-        setTimeout(function() {
+        setTimeout(() => {
           $dialog.addClass('modal-show');
         },100);
     });
@@ -58,7 +58,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     /**
      * to reload the present mode
      */
-    $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, function(event, data){
+    $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, (event, data) => {
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     });
 
@@ -223,24 +223,24 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             });
         };
 
-      /**
-       * to fetch the room type & it's restrcitions
-       * @param  {Object} filterValues
-       */
-      var fetchRoomTypeAndRestrictions = (filterValues) => {
+    /**
+     * to fetch the room type & it's restrcitions
+     * @param  {Object} filterValues
+     */
+    var fetchRoomTypeAndRestrictions = (filterValues) => {
         var params = {
-          from_date: formatDateForAPI(filterValues.fromDate),
-          to_date: formatDateForAPI(filterValues.toDate),
-          order_id: filterValues.orderBySelectedValue,
-          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
-          fetchRoomTypes: !cachedRoomTypeList.length
+            from_date: formatDateForAPI(filterValues.fromDate),
+            to_date: formatDateForAPI(filterValues.toDate),
+            order_id: filterValues.orderBySelectedValue,
+            'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
+            fetchRoomTypes: !cachedRoomTypeList.length
         };
         var options = {
-          params: params,
-          onSuccess: onFetchRoomTypeAndRestrictionsSuccess
+            params: params,
+            onSuccess: onFetchRoomTypeAndRestrictionsSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
-      };
+    };
 
       /**
        * when open all restrcition we need to refresh the view
@@ -417,7 +417,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
           openAllRestrictionsForRateView,
           closeAllRestrictionsForRoomTypeView,
           openAllRestrictionsForRoomTypeView,
-          clickedOnRateViewCell
+          clickedOnRateViewCell,
+          clickedOnRoomTypeViewCell
         };
       };
 
@@ -436,7 +437,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {Object} response
        * @param  {Object} successCallBackParameters
        */
-      var onFetchRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
+      var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
             rateIDs = successCallBackParameters.rateIDs,
@@ -460,7 +461,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {[type]} date    [description]
        * @return {[type]}         [description]
        */
-      var fetchMultipleRateRestrictionsModeDetails = (rateIDs, date) => {
+      var fetchMultipleRateRestrictionsDetailsForPopup = (rateIDs, date) => {
         //calling the API to get the details
         var params = {
           'rate_ids[]': rateIDs,
@@ -469,7 +470,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
         var options = {
           params,
-          onSuccess: onFetchRestrictionDetailsForRateCell,
+          onSuccess: onFetchMultipleRateRestrictionDetailsForRateCell,
           successCallBackParameters: {
             rateIDs,
             mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE
@@ -484,61 +485,126 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
        * @param  {[type]} successCallBackParameters [description]
        * @return {[type]}                           [description]
        */
-      var onFetchSingleRateRestrictionModeDetails = (response, successCallBackParameters) => {
+    var onFetchSingleRateRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
-            roomTypesAndPrices = response.roomTypeAndRestrictions[0].room_types.map(roomType =>
-              ({...roomType,
-                ..._.findWhere(roomTypes, {id: roomType.id})
-              }));
+            roomTypesAndPrices = response.roomTypeAndRestrictions[0]
+                .room_types.map(roomType =>
+                    ({
+                        ...roomType,
+                        ..._.findWhere(roomTypes, {id: roomType.id})
+                    }));
 
         //roomTypeList is now cached, we will not fetch that again
         cachedRoomTypeList = roomTypes;
 
         var data = {
-          roomTypesAndPrices,
-          mode: successCallBackParameters.mode,
-          rate: _.findWhere(cachedRateList, {id: successCallBackParameters.rateID}),
-          restrictionData,
-          restrictionTypes
+            roomTypesAndPrices,
+            mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE,
+            rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
+            restrictionData,
+            restrictionTypes
         };
         showRateRestrictionPopup(data);
-      };
+    };
 
-      /**
-       * [description]
-       * @param  {[type]} options.rateID [description]
-       * @param  {[type]} options.date   [description]
-       * @return {[type]}                [description]
-       */
-      var fetchSingleRateRestrictionModeDetails = (rateID, date) => {
+    /**
+    * [description]
+    * @param  {[type]} options.rateID [description]
+    * @param  {[type]} options.date   [description]
+    * @return {[type]}                [description]
+    */
+    var fetchSingleRateRestrictionModeDetailsForPopup = (rateID, date) => {
         var params = {
-          from_date: date,
-          to_date: date,
-          rate_id: rateID,
-          fetchRoomTypes: !cachedRoomTypeList.length
+            from_date: date,
+            to_date: date,
+            rate_id: rateID,
+            fetchRoomTypes: !cachedRoomTypeList.length
         };
         var options = {
-          params,
-          onSuccess: onFetchSingleRateRestrictionModeDetails,
-          successCallBackParameters: {rateID, mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE}
+            params,
+            onSuccess: onFetchSingleRateRestrictionModeDetailsForPopup,
+            successCallBackParameters: {
+                rateID
+            }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
-      };
+    };
 
-      /**
-       * callback from react when clicked on a cell in rate view
-       */
-      var clickedOnRateViewCell = ({rateIDs, date}) => {
-        return rateIDs.length > 1 ? fetchMultipleRateRestrictionsModeDetails(rateIDs, date) :
-          fetchSingleRateRestrictionModeDetails(rateIDs[0], date);
-      };
 
-      /**
-       * when single rate details api call success
-       * @param  {Object} response
-       */
-      var onFetchSingleRateDetailsAndRestrictions = (response) => {
+    /**
+     * callback from react when clicked on a cell in rate view
+     */
+    var clickedOnRateViewCell = ({rateIDs, date}) => {
+        return rateIDs.length > 1 ?
+            fetchMultipleRateRestrictionsDetailsForPopup(rateIDs, date) :
+            fetchSingleRateRestrictionModeDetailsForPopup(rateIDs[0], date);
+    };
+
+    /**
+     * when api call for fetching the room type restriction details's popup
+     * @param  {Object} response
+     */
+    var onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess = (response, successCallBackParameters) => {
+        console.log(response);
+        var restrictionData = response.roomTypeAndRestrictions,
+            roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+            roomTypesAndPrices = response.roomTypeAndRestrictions[0]
+                .room_types.map(roomType =>
+                    ({
+                        ...roomType,
+                        ..._.findWhere(roomTypes, {id: roomType.id})
+                    }));
+
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
+
+        var data = {
+            roomTypesAndPrices,
+            mode: rvRateManagerPopUpConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE,
+            roomType: _.findWhere(cachedRoomTypeList, { id: successCallBackParameters.roomTypeID }),
+            restrictionData,
+            restrictionTypes
+        };
+        showRateRestrictionPopup(data);
+    };
+
+    /**
+     * to fetch the restriction data for 
+     * @param  {Integer} roomTypeID
+     * @param  {String} date          
+     */
+    var fetchSingleRoomTypeRestrictionDetailsForPopup = (roomTypeID, date) => {
+        var params = {
+            from_date: date,
+            to_date: date,
+            room_type_id: roomTypeID,
+            fetchRoomTypes: !cachedRoomTypeList.length
+        };
+        var options = {
+            params: params,
+            onSuccess: onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess,
+            successCallBackParameters: {
+                roomTypeID
+            }
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
+    };
+
+    /**
+     * callback from react when clicked on a cell in roomtype view
+     */
+    var clickedOnRoomTypeViewCell = ({roomTypeIDs, date}) => {
+        return roomTypeIDs.length > 1 ? 
+            fetchMultipleRoomTypeRestrictionsDetailsForPopup(roomTypeIDs, date) :
+            fetchSingleRoomTypeRestrictionDetailsForPopup(roomTypeIDs[0], date);
+    };
+
+    /**
+     * when single rate details api call success
+     * @param  {Object} response
+     */
+    var onFetchSingleRateDetailsAndRestrictions = (response) => {
         var roomTypeRestrictions = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             dates = _.pluck(roomTypeRestrictions, 'date'),
@@ -564,51 +630,55 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //which is buggy from browser to browser, so choosing this bad way
         //may be this will result in running 365000 times
         roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
-          roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
-          roomType = _.pick(roomType, 'id', 'name', 'restrictions');
-          roomType.restrictionList = [];
-          roomType.rateDetails = [];
+            roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
+            roomType = _.pick(roomType, 'id', 'name', 'restrictions');
+            roomType.restrictionList = [];
+            roomType.rateDetails = [];
 
-          dates.map((date) => {
-            dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, {id: roomType.id});
-            roomType.restrictionList.push(dateRoomTypeSet.restrictions);
-            roomType.rateDetails.push(_.omit(dateRoomTypeSet, 'restrictions', 'id', 'rateDetails', 'restrictionList'));
-          });
-          return _.omit(roomType, 'restrictions');
+            dates.map((date) => {
+                dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, {id: roomType.id});
+                roomType.restrictionList.push(dateRoomTypeSet.restrictions);
+                roomType.rateDetails.push(_.omit(dateRoomTypeSet, 
+                        'restrictions',
+                        'id',
+                        'rateDetails',
+                        'restrictionList'));
+            });
+            return _.omit(roomType, 'restrictions');
         });
 
         //for the first row with common restrictions among the rates
         //for now there will not be any id, we have to use certain things to identify (later) TODO
 
         roomTypeWithRestrictions.unshift({
-          rateDetails: [],
-          restrictionList: dates.map((date) => {
-            return roomTypeRestrictions[date].rate_restrictions;
-          })
+            rateDetails: [],
+            restrictionList: dates.map((date) => {
+                return roomTypeRestrictions[date].rate_restrictions;
+            })
         });
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
 
         store.dispatch({
-          type: RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
-          singleRateRestrictionData: [...roomTypeWithRestrictions],
-          dates,
-          zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
-          businessDate: tzIndependentDate($rootScope.businessDate),
-          restrictionTypes,
-          callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+            type: RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
+            singleRateRestrictionData: [...roomTypeWithRestrictions],
+            dates,
+            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
+            businessDate: tzIndependentDate($rootScope.businessDate),
+            restrictionTypes,
+            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });
       };
 
-      /**
-       * on taping the back button from the top bar (NOT from the HEADER)
-       */
-      $scope.clickedOnBackButton = () => {
+    /**
+     * on taping the back button from the top bar (NOT from the HEADER)
+     */
+    $scope.clickedOnBackButton = () => {
         activeFilterIndex = activeFilterIndex - 1;
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         $scope.showBackButton = false;
-      };
+    };
 
       /**
        * callback from react, when clicked on rate
@@ -633,44 +703,47 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
       };
 
-      /**
-       * to fetch the single rate details
-       * @param  {Object} filterValues
-       */
-      var fetchSingleRateDetailsAndRestrictions = (filterValues) => {
+    /**
+     * to fetch the single rate details
+     * @param  {Object} filterValues
+     */
+    var fetchSingleRateDetailsAndRestrictions = (filterValues) => {
         var params = {
-          from_date: formatDateForAPI(filterValues.fromDate),
-          to_date: formatDateForAPI(filterValues.toDate),
-          order_id: filterValues.orderBySelectedValue,
-          rate_id: filterValues.selectedRates[0].id,
-          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id')
+            from_date: formatDateForAPI(filterValues.fromDate),
+            to_date: formatDateForAPI(filterValues.toDate),
+            order_id: filterValues.orderBySelectedValue,
+            rate_id: filterValues.selectedRates[0].id,
+            'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
+            fetchRoomTypes: !cachedRoomTypeList.length
         };
         var options = {
-          params: params,
-          onSuccess: onFetchSingleRateDetailsAndRestrictions
+            params: params,
+            onSuccess: onFetchSingleRateDetailsAndRestrictions
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
-      };
+    };
 
-      /**
-       * to update results
-       * @param  {Object} event
-       * @param  {Object} newFilterValues)
-       */
-      $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
+    /**
+     * to update results
+     * @param  {Object} event
+     * @param  {Object} newFilterValues)
+     */
+    $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
         //Storing for further reference
         if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
-          lastSelectedFilterValues = [{...newFilterValues}]; //ES7
-          activeFilterIndex = 0;
+            lastSelectedFilterValues = [{...newFilterValues}]; //ES7
+            activeFilterIndex = 0;
         }
 
         if (newFilterValues.showAllRates) {
-          //calling the api
-          fetchDailyRates(newFilterValues);
-        } else if (newFilterValues.showAllRoomTypes) {
-          fetchRoomTypeAndRestrictions(newFilterValues);
-        } else {
-          /*
+            //calling the api
+            fetchDailyRates(newFilterValues);
+        } 
+        else if (newFilterValues.showAllRoomTypes) {
+            fetchRoomTypeAndRestrictions(newFilterValues);
+        } 
+        else {
+            /*
             In this case we have two modes (single rate view & multiple rates view)
             -------------------
             single rate view
@@ -684,17 +757,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             -------------------
             if we choose multiple rate or multiple rate type,
             the very same mode newFilterValues.showAllRates (check the lines above) will become active
-          */
+            */
 
-          //single rate view
-          if (newFilterValues.selectedRates.length === 1 && !newFilterValues.selectedRateTypes.length)  {
-            fetchSingleRateDetailsAndRestrictions(newFilterValues);
-          }
-          //multiple rate view
-          else if (newFilterValues.selectedRates.length > 1 || newFilterValues.selectedRateTypes.length > 0) {
-            //calling the api
-            fetchDailyRates(newFilterValues);
-          }
+            //single rate view
+            if (newFilterValues.selectedRates.length === 1 && !newFilterValues.selectedRateTypes.length)  {
+                fetchSingleRateDetailsAndRestrictions(newFilterValues);
+            }
+            //multiple rate view
+            else if (newFilterValues.selectedRates.length > 1 || newFilterValues.selectedRateTypes.length > 0) {
+                //calling the api
+                fetchDailyRates(newFilterValues);
+            }
         }
 
       });

@@ -42,12 +42,34 @@ angular.module('sntRover')
         $scope.showSelectNoneForWeekDaySelection = () =>
             _.where($scope.weekDayRepeatSelection, {selected: true}).length === $scope.weekDayRepeatSelection.length;
 
+
         /**
         * utility method for converting date object into api formated 'string' format
         * @param  {Object} date
         * @return {String}
         */
-        var formatDateForAPI = (date) => $filter('date')(new tzIndependentDate(date), $rootScope.dateFormatForAPI);
+        const formatDate = (date, format) => $filter('date')(new tzIndependentDate(date), format);        
+        
+        /**
+        * utility method for converting date object into api formated 'string' format
+        * @param  {Object} date
+        * @return {String}
+        */
+        const formatDateForAPI = (date) => formatDate(date, $rootScope.dateFormatForAPI);
+
+        /**
+        * utility method for converting date object into ui formated 'string' format
+        * @param  {Object} date
+        * @return {String}
+        */
+        const formatDateForUI = (date) => formatDate(date, $rootScope.dateFormat);
+
+        /**
+        * utility method for converting date object into a top header formated 'string'
+        * @param  {Object} date
+        * @return {String}
+        */
+        const formatDateForTopHeader = (date) => formatDate(date, 'EEEE, MMMM yy');
 
         /**
          * to set the scrollers in the ui
@@ -152,8 +174,7 @@ angular.module('sntRover')
         };
 
         /**
-         * [description]
-         * @return {[type]} [description]
+         * to update restriction rate
          */
         var callRateRestrictionUpdateAPI = () => {
             var params = {},
@@ -189,6 +210,46 @@ angular.module('sntRover')
         };
 
         /**
+         * [description]
+         * @return {[type]} [description]
+         */
+        var callRoomTypeRestrictionUpdateAPI = () => {
+            var params = {},
+                dialogData = $scope.ngDialogData,
+                mode = dialogData.mode;
+
+            if(mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
+                params.room_type_id = dialogData.roomType.id;
+            }
+            // else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
+            //     params.rate_ids = _.pluck($scope.ngDialogData.rates, 'id');
+            // }
+
+            params.details = [];
+            params.details.push({
+                from_date: formatDateForAPI(dialogData.restrictionData[0].date),
+                to_date: formatDateForAPI(dialogData.restrictionData[0].date),
+                restrictions: getEditedRestrictionsForAPI()
+            });
+
+            if($scope.applyRestrictionsToDates) {
+                if($scope.untilDate === '') {
+                    $scope.errorMessage = ['Please choose until date'];
+                    return;
+                }
+                params.details[0].to_date = formatDateForAPI($scope.untilDate);
+                params.details[0].weekdays = {};
+                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
+                    .map(weekDay => params.details[0].weekdays[weekDay.weekDay] = weekDay.selected);
+            }
+            const options = {
+                params,
+                onSuccess: onUpdateRateRestrictionData
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
+        };
+
+        /**
          * on tapping the set button
          */
         $scope.clickedOnSetButton = (event) => {
@@ -197,6 +258,10 @@ angular.module('sntRover')
                 case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
                 case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
                     return callRateRestrictionUpdateAPI();
+
+                case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
+                    return callRoomTypeRestrictionUpdateAPI();
+
                 default:
                     break;
             }
@@ -270,40 +335,16 @@ angular.module('sntRover')
          * to get the active and class and other configrtion added restriction list
          * @return {array}
          */
-        const getRestrictionListForMultipleRateViewMode = () => {
-            const dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0];
-            return getRestrictionListForRateView(dialogData.restrictionTypes,
-                    restrictionData.rates,
-                    restrictionData.all_rate_restrictions);
-        }
-
-        /**
-         * to get the active and class and other configrtion added restriction list
-         * @return {array}
-         */
         const getRestrictionListForRateView = (restrictionTypes, restrictionSource, commonRestricitonSource) => {
             const individualRateRestrictionList = _.pluck(restrictionSource, 'restrictions');
             return getValidRestrictionTypes(restrictionTypes)
-                .map(restrictionType => ({
-                    ...restrictionType,
-                    ...RateManagerRestrictionTypes[restrictionType.value],
-                    ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource),
-                    edited : false
-                }));
+                    .map(restrictionType => ({
+                        ...restrictionType,
+                        ...RateManagerRestrictionTypes[restrictionType.value],
+                        ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource),
+                        edited : false
+                    }));
         };
-
-        /**
-         * to get the active and class and other configrtion added restriction list
-         * @return {array}
-         */
-        const getRestrictionListForSingleRateViewMode = () => {
-            const dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0];
-            return getRestrictionListForRateView(dialogData.restrictionTypes,
-                    restrictionData.room_types,
-                    restrictionData.rate_restrictions);
-        }
 
         /**
          * to set the date picker
@@ -375,32 +416,65 @@ angular.module('sntRover')
          * to initialize the variabes on RM_SINGLE_RATE_RESTRICTION_MODE
          */
         const initializeSingleRateRestrictionMode = () => {
-            $scope.header = $scope.ngDialogData.rate.name;
+            var dialogData = $scope.ngDialogData,
+                restrictionData = dialogData.restrictionData[0];
+
+            $scope.header = dialogData.rate.name;
             
-            $scope.headerBottomLeftLabel = $filter('date')(new tzIndependentDate($scope.ngDialogData.restrictionData[0].date), 
+            $scope.headerBottomLeftLabel = $filter('date')(new tzIndependentDate(dialogData.restrictionData[0].date), 
                 $rootScope.dateFormat);
 
             $scope.headerBottomRightLabel = 'All Room types';
 
-            $scope.restrictionList = getRestrictionListForSingleRateViewMode();
+            $scope.restrictionList = getRestrictionListForRateView(dialogData.restrictionTypes,
+                    restrictionData.room_types,
+                    restrictionData.rate_restrictions);
 
-            $scope.roomTypeAndPrices = $scope.ngDialogData.roomTypesAndPrices;
+            $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
             $scope.contentMiddleMode = 'ROOM_TYPE_PRICE_LISTING';
         };
+
 
         /**
          * to initialize the multiple rate restriction mode
          */
         const initializeMultipleRateRestrictionMode = () => {
+            var dialogData = $scope.ngDialogData,
+                restrictionData = dialogData.restrictionData[0];
+
             $scope.headerBottomLeftLabel = 'All Rates';
                     
-            $scope.header = $filter('date')(new tzIndependentDate($scope.ngDialogData.restrictionData[0].date), 
-                'EEEE, MMMM yy');
+            $scope.header = formatDateForTopHeader(dialogData.restrictionData[0].date);
 
             $scope.headerBottomRightLabel = '';
 
-            $scope.restrictionList = getRestrictionListForMultipleRateViewMode();
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    restrictionData.rates,
+                    restrictionData.all_rate_restrictions);
+        };
+
+        /**
+         * to initialize the variabes on RM_SINGLE_ROOMTYPE_RESTRICTION_MODE
+         */
+        const initializeSingleRoomTypeRestrictionMode = () => {
+            var dialogData = $scope.ngDialogData,
+                restrictionData = dialogData.restrictionData[0];
+            $scope.header = dialogData.roomType.name;
+            
+            $scope.headerBottomLeftLabel = formatDateForUI(dialogData.restrictionData[0].date);
+
+            $scope.headerBottomRightLabel = '';
+
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    restrictionData.room_types,
+                    restrictionData.all_room_type_restrictions);
+
+            $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
+
+            $scope.contentMiddleMode = '';
         };
 
         /**
@@ -410,18 +484,19 @@ angular.module('sntRover')
             switch($scope.ngDialogData.mode) {
                 //when we click a restriciton cell on rate view mode
                 case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
-                    
                     initializeSingleRateRestrictionMode();
-                    
                     break;
                 
                 //when we click a header restriciton cell on rate view mode
                 case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
-                    
                     initializeMultipleRateRestrictionMode();
-
                     break;
-                
+
+                //when we click a restriciton cell on room type view mode
+                case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
+                    initializeSingleRoomTypeRestrictionMode();
+                    break;
+
                 dafault:
                     break;
             }

@@ -105,10 +105,9 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 };
 
 const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatchProps, ownProps) => {
-	const { dispatch } = dispatchProps;
 	return {
 		onItemClick:(e, index) => {
-			let dispatchPayLoad = null;
+			let { dispatch } = dispatchProps;
 			if (stateProps.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
 				dispatch({
 			        type: RM_RX_CONST.TOGGLE_EXPAND_COLLAPSE_ROW,
