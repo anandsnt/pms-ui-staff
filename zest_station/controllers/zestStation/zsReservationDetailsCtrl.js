@@ -228,6 +228,20 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 
                
             };
+            $scope.getRateTypeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURLY_RATE';
+                }else{
+                    return 'AVG_DAILY';
+                }
+            };
+            $scope.getModeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURS';
+                }else{
+                    return 'DAY_NIGHTS';
+                }
+            };
             
             $scope.initRoomError = function(){
                 $state.go('zest_station.room_error');  

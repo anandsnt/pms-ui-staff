@@ -4,7 +4,7 @@
         <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
         <nav id="options" role="nav">
             <ul role="menu">
-                <li ng-show ="zestStationData.checkin_screen.authentication_settings.departure_date">
+                <li ng-show ="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
                     <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
                         <div ng-include="icons.url.moon"></div>
@@ -14,7 +14,7 @@
                 <li class="break" ng-show ="showSeparator('departure_date')">
                     <span translate>OR_TEXT</span>
                 </li>
-                <li ng-show ="zestStationData.checkin_screen.authentication_settings.number_of_nights">
+                <li ng-show ="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
                     <button type="button" class="button option" touch-press='findByNoOfNights(); resetTime();'>
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
                         <div ng-include="icons.url.moon"></div>
