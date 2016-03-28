@@ -274,7 +274,6 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 /* Parameterize default format dates into API formatted strings */
                 function dateRange(start_date, end_date, room_type_id, rate_type) {
-                    console.log(end_date);
                     var s_comp = start_date.toComponents(),
                         e_comp = end_date.toComponents(),
                         params =  {
@@ -594,10 +593,10 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         end_date.setHours(0,0,0);
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
-                                InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(48))),
+                                InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),
-                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(48))), //time.toStartDate(), time.toEndDate())),
-                                AvailabilityCount.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(48)))])
+                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
+                                AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
                                           Maintenance,
@@ -670,7 +669,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),
                             Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), //time.toStartDate(), time.toEndDate())),
-                            AvailabilityCount.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23)))])
+                            AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
                                 //if there is any reservation transfter initiated from one day to another
                                 if(__this.isReservationMovingFromOneDateToAnother) {
