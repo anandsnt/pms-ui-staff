@@ -138,8 +138,6 @@ sntRover.factory('RVReportParserFac', [
                 returnObj[key] = $_parseFinTransAdjustReport(reportName, returnObj[key], options);
             };
 
-            console.log( returnObj );
-
             return returnObj;
         };
 
@@ -163,7 +161,7 @@ sntRover.factory('RVReportParserFac', [
                 for ( k = 0, l = source.length; k < l; k++ ) {
                     makeCopy = angular.copy( source[k] );
 
-                    amt = parseInt(makeCopy.amount);
+                    amt = parseFloat(makeCopy.amount);
                     amt = isNaN(amt) ? 0 : amt;
                     totalAmount += amt;
 
@@ -548,72 +546,22 @@ sntRover.factory('RVReportParserFac', [
 
 
         function $_parseDataToSubArrays ( reportName, apiResponse, options ) {
-            /****
-            * OUR AIM: is to transform the api response to this format
-            * [
-            *   [{}, {}, {}, {}],
-            *   [{}, {}, {}, {}],
-            *   [{}, {}, {}, {}],
-            * ]
-            * lets call the outer array as 'endArray' and inner arrays as 'interMedArray'
-            * the secondary parser will parse each inner array and will show up as multiple
-            * tables on the UI
-            **/
-
             var returnObj         = {};
-            var interMedArray     = [];
             var groupByKey        = options['groupedByKey'];
-            var currentGroupByVal = '';
-            var makeCopy          = {};
 
             var i, j;
 
-            // loop through the api response
             for (i = 0, j = apiResponse.length; i < j; i++) {
-
-                // make a copy of the ith object
-                makeCopy = angular.copy( apiResponse[i] );
-
-                // catching cases where the value is "" due to old data
-                if ( makeCopy[groupByKey] === '' ) {
-                    makeCopy[groupByKey] = 'UNDEFINED';
-                };
-
-                // if the group by key value has changed
-                if ( makeCopy[groupByKey] !== currentGroupByVal ) {
-
-                    // insert the intermediate array to the returnObj
-                    if ( interMedArray.length ) {
-                        returnObj[currentGroupByVal] = angular.copy(interMedArray);
-                    };
-
-                    // save the new value
-                    currentGroupByVal = makeCopy[groupByKey];
-
-                    // init a new intermediate array and start filling from that
-                    interMedArray = [];
-                    interMedArray.push( makeCopy );
-                } else {
-
-                    // the group by key value has not changed yet
-                    // keep pushing into the current intermediate array
-                    interMedArray.push( makeCopy );
+                if ( apiResponse[i][groupByKey] === '' ) {
+                    apiResponse[i][groupByKey] = 'N/A';
                 };
             };
 
-            // if all the 'groupByKey' values are the same
-            // no entries had been inserted into 'returnObj'
-            // if so, let push them here
-            if ( _.size(returnObj) === 0 ) {
-                currentGroupByVal = makeCopy[groupByKey];
-                returnObj[currentGroupByVal] = angular.copy(interMedArray);
-            };
-
+            var returnObj = _.groupBy( apiResponse, groupByKey );
 
             _.each(returnObj, function (value, key, list) {
                 returnObj[key] = angular.copy( $_parseDataToInfo(reportName, value, options) );
             });
-
 
             return returnObj;
         };
@@ -856,8 +804,6 @@ sntRover.factory('RVReportParserFac', [
                 //     returnAry.push( customData );
                 };
             };
-
-            console.log(returnAry);
 
             return returnAry;
         };

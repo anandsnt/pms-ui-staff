@@ -105,7 +105,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 
 
         $scope.init = function(r){
-            $scope.inputFocus();
+            //$scope.inputFocus();
             var current=$state.current.name;
             $scope.selectedReservation = $state.selectedReservation;
             if (current === 'zest_station.add_remove_guests'){
@@ -123,9 +123,13 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
                 //fetch the idle timer settings
                 $scope.currencySymbol = $scope.zestStationData.currencySymbol;
-
+                
+                var conf = $scope.selectedReservation.confirmation_number;
+                if ($state.qr_code){
+                    conf = $scope.selectedReservation.confirmation_num;
+                }
                 $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
-                    'id': $scope.selectedReservation.confirmation_number
+                    'id': conf
                 }, $scope.onSuccessFetchReservationDetails);
             }
             
@@ -223,6 +227,20 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 
                 
                
+            };
+            $scope.getRateTypeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURLY_RATE';
+                }else{
+                    return 'AVG_DAILY';
+                }
+            };
+            $scope.getModeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURS';
+                }else{
+                    return 'DAY_NIGHTS';
+                }
             };
             
             $scope.initRoomError = function(){

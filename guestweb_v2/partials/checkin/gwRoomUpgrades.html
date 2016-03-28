@@ -1,44 +1,50 @@
 <!-- main section starts here -->
 <div class="container-fluid">
-    <div class="row" ng-hide="isFetching">
+    <div class="row" ng-hide="isUpgradesFetching">
         <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing mob-margin-top--1">
-            <p class="main-text mob-margin-bottom-3">Upgrade your room?</p>
-            <p class="sub-main-text mob-margin-bottom-3">Browse upgrades or continue below:</p>
+        <div class="col-md-4 top-spacing mob-margin-top-1">
+            <!-- default main text -->
+            <p class="main-text mob-margin-bottom-3" ng-if="!screenCMSDetails.title">Upgrade your room?</p>
+            <!-- CMS main text -->
+            <p class="main-text mob-margin-bottom-3" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+             <!-- default sub  text -->
+            <p class="sub-main-text mob-margin-bottom-3" ng-if="!screenCMSDetails.description">Browse upgrades or continue below:</p>
+             <!-- CMS sub  text -->
+            <p class="sub-main-text mob-margin-bottom-3" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
         </div>
         <div class="col-md-2">
             <div class="vertical-line vertical-line-long">&nbsp;</div>
         </div>
-        <div class="col-md-4 top-spacing carousal-container mob-margin-top--1">
+        <div class="col-md-4 top-spacing carousal-container mob-margin-top-1">
             <div class="section-container">
                 <div class="carousel-view">
                     <carousel>
-                        <slide ng-repeat="slide in slides" active="slide.active">
+                        <slide ng-repeat="upgradeOption in upgradeOptions" active="upgradeOption.active">
                             <div class="center-align">
-                                <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb_v2/img/image_not_available.png" style="height:200px;width:100%;" />
+                                <img ng-src="returnUpgradeRoomImage(upgradeOption.room_type_image)" err-Src="/assets/guestweb_v2/img/image_not_available.png" class="room-image" />
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
                                 <div class="col-xs-9 room-info mob-paddding-top-5">
                                     <p class="room-name mob-margin-bottom-3">
-                                        {{slide.upgrade_room_type_name}}
+                                        {{upgradeOption.upgrade_room_type_name}}
                                     </p>
                                     <div class="row">
                                         <span class="rate-info">
-                                           {{currencySymbol}}{{slide.upsell_amount | number:2 }}
-                                       </span>
+                                            {{currencySymbol}}{{upgradeOption.upsell_amount | number:2 }}
+                                        </span>
                                         <p class="rate-desc">
                                             EXTRA
                                             <br>PER NIGHT
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-xs-3 upgrades-btn mob-paddding-top-5" ng-click="upgradeClicked(slide.upsell_amount_id,slide.upgrade_room_number)">
+                                <div class="col-xs-3 upgrades-btn mob-paddding-top-5" ng-click="upgradeClicked(upgradeOption)">
                                     <div class="upgrade-icon"></div>
                                     <p class="center-align mob-margin-top-3">SELECT THIS
                                         <br /> UPGRADE</p>
                                 </div>
                                 <div class="col-xs-12 room-info">
-                                    <description template="{{slide.upgrade_room_description}}" class="description-details left-align">
+                                    <description template="{{upgradeOption.upgrade_room_description}}" class="description-details left-align">
                                     </description>
                                 </div>
                             </div>
@@ -55,4 +61,4 @@
         <div class="col-md-1">
         </div>
     </div>
-</div>
+    </di

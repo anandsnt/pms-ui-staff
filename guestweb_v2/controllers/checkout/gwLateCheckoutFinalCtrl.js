@@ -10,10 +10,11 @@ sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope',
 			amount: $stateParams.amount,
 			ap: $stateParams.ap
 		};
-		//TODO : remove unwanted injections like $timeout
+
 		$controller('BaseController', {
 			$scope: $scope
 		});
+
 		var init = function() {
 			var screenIdentifier = "LATE_CHECKOUT_FINAL";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
@@ -23,6 +24,7 @@ sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope',
 		}();
 
 		$scope.$emit('showLoader');
+		// for a better transition from previous screen add small timeout
 		$timeout(function() {
 			$scope.$emit('hideLoader');
 			$scope.isOperationCompleted = true;

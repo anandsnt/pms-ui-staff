@@ -4,6 +4,35 @@ angular.module('reportsModule')
         function(reportNames) {
         	var factory = {};
 
+            var options = {
+                'ARRIVAL': [{
+                    uuid: 100,
+                    title: 'Option(s)',
+                    defaultValue: 'Select Option',
+                    allValue: 'All Selected', 
+                    actualFilter: undefined,
+                    matchFilters: [
+                        'DUE_IN_ARRIVALS',
+                        'INCLUDE_CANCELLED',
+                        'INCLUDE_NO_SHOW',
+                        'INCLUDE_NOTES',
+                        'SHOW_GUESTS',
+                        'VIP_ONLY'
+                    ],
+                    initialSelected: [
+                        'DUE_IN_ARRIVALS'
+                    ],
+                    data: []
+                }, {
+                    uuid: 101,
+                    title: 'Gurantee(s)',
+                    defaultValue: 'Select Gurantees',
+                    allValue: 'All Selected',
+                    actualFilter: 'INCLUDE_GUARANTEE_TYPE',
+                    allSelected: true
+                }]
+            };
+
         	var configs = {
         		hasShowOptions: {
         			SHOW_COMPANY: true,

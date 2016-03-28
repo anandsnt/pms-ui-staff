@@ -46,9 +46,35 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             });
             return deferred.promise;
         };
+        this.getAccessToken = function(params) {
+            /*params:
+             * reservation_id
+             * application || web
+             */
+            var deferred = $q.defer(),
+                url = '/guest_web/get_station_guest_auth_token';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
         this.encodeKey = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/reservation/print_key';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.saveUIDtoRes = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/update_key_uid';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -133,10 +159,14 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
 
 
         this.fetchReservationDetails = function(param) {
-            var deferred = $q.defer(),
-                url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
-
-
+            var url;
+            if (param.by_reservation_id){
+                 url = '/staff/staycards/reservation_details.json?reservation_id=' + param.id;
+            } else {
+                 url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
+            }
+            var deferred = $q.defer();
+            
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -274,6 +304,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
         this.fetchRegistrationCardPrintData = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+        this.fetchGuestDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + params.id + '/reservations_guest_details';
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

@@ -125,7 +125,8 @@
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
-            <div class="employee" ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
+            <div class="employee"
+                ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
                         {{employee.display_name}}

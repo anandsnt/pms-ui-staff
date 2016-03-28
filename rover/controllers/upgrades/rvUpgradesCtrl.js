@@ -79,7 +79,10 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 			$scope.invokeApi(RVUpgradesSrv.getAllUpgrades, params, successCallbackgetAllUpgrades, errorCallbackgetAllUpgrades);
 
 		};
-		$scope.getAllUpgrades();
+		//check if roomupgrade is available
+		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+        var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
+		isUpgradeAvaiable ? $scope.getAllUpgrades() :"";
 		/**
 		 * function to check occupancy for the reservation
 		 */
