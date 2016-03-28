@@ -82,16 +82,29 @@
 		return deferred.promise;
 		
 	};
+
+	var fetchDepositDetails = function(){
+		var deferred = $q.defer();
+		var url = 'guest_web/reservations/'+$rootScope.reservationID+'/deposit_details';
+		$http.get(url).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
 	
 
 	return {
-	responseData: responseData,
-	postGuestDetails : postGuestDetails,
-	getGuestDetails:getGuestDetails,
-	fetchCountryList:fetchCountryList,
-	postGuestBirthDate:postGuestBirthDate,
-	fetchCountryCode:fetchCountryCode,
-	fetchHotelTime:fetchHotelTime
+	responseData		: responseData,
+	postGuestDetails 	: postGuestDetails,
+	getGuestDetails		: getGuestDetails,
+	fetchCountryList	: fetchCountryList,
+	postGuestBirthDate	: postGuestBirthDate,
+	fetchCountryCode	: fetchCountryCode,
+	fetchHotelTime 		: fetchHotelTime,
+	fetchDepositDetails	: fetchDepositDetails
 	}
 };
 

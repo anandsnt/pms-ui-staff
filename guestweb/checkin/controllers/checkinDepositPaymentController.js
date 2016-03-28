@@ -86,8 +86,17 @@
 		};
 
 		$scope.isLoading = true;
-		onDepositFetchSuccess();
+		
+
+		guestDetailsService.fetchDepositDetails().then(function(response) {
+			onDepositFetchSuccess();
+		}, function() {
+			$rootScope.netWorkError = true;
+			$scope.isLoading = false;
+		});
 		//check if reservation has deposit else got to precheckin
+		//
+		
 
 	};
 
