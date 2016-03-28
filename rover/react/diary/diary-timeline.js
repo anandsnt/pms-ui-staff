@@ -52,8 +52,8 @@ var Timeline = React.createClass({
 		})();
 
 		var today = props.filter.arrival_date,
-			clone = new tzIndependentDate( today.valueOf() ),
-			tmrow = new tzIndependentDate( clone.setDate(clone.getDate() + 1) ),
+			clone = new Date( today.valueOf() ),
+			tmrow = new Date( clone.setDate(clone.getDate() + 1) ),
 			todayShortDate,
 			tmrowShortDate,
 			spanClass,
