@@ -178,8 +178,8 @@
         
     <thead>
         <tr>
-            <th class="text-align-left">TAX DESCRIPTION</th>
-            <th>GROSS</th>
+            <th class="text-align-left" translate>TAX_DESCRIPTION</th>
+            <th translate>GROSS</th>
             <th class="align-right" translate>NET</th>
             <th class="align-right" translate>TAX</th>
         </tr>
@@ -197,7 +197,7 @@
 
     <tfoot>
         <tr>
-            <td class="text-align-left"><strong>TOTAL</strong></td>
+            <td class="text-align-left"><strong translate>TOTAL</strong></td>
             <td ><strong>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}</strong></td>
             <td class="align-right"><strong>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}</strong></td>
             <td class="align-right"><strong>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}</strong></td>
