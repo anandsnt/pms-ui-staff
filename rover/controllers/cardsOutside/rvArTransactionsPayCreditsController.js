@@ -258,7 +258,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 		_.each($scope.renderData.paymentTypes, function(value) {
 			  if(value.name !== "CC" 	&& value.name === $scope.saveData.paymentType){
 					$scope.feeData.feesInfo = value.charge_code.fees_information;
-					setupFeeData();
+					$scope.setupFeeData();
 			  };
 		});
 	};
