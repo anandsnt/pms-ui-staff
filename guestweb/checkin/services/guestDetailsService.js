@@ -85,7 +85,7 @@
 
 	var fetchDepositDetails = function(){
 		var deferred = $q.defer();
-		var url = 'guest_web/reservations/'+$rootScope.reservationID+'/deposit_details';
+		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/deposit_details';
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
