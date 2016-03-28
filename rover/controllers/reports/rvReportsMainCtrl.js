@@ -1705,9 +1705,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || false;
 				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
-				// $scope.reportGroupedBy = response.group_by || '';
-
-				console.log( $scope.results );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;
