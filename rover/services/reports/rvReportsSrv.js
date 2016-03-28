@@ -94,7 +94,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
-				if ( payloadCount === 2 ) {
+				if ( payloadCount === 3 ) {
 
 					// save it to $vault
 					service.payloadCache = angular.copy( payload );
@@ -122,10 +122,10 @@ angular.module('sntRover').service('RVreportsSrv', [
 				.then( success.bind(null, 'codeSettings'), failed.bind(null, 'codeSettings', {}) );
 
 			// fetch active users & add to payload
-			// if ( hasFilter['ACTIVE_USERS'] ) {
-			// 	subSrv.fetchActiveUsers()
-			// 		.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
-			// };
+			if ( hasFilter['ACTIVE_USERS'] ) {
+				subSrv.fetchActiveUsers()
+					.then( success.bind(null, 'activeUserList'), failed.bind(null, 'activeUserList', []) );
+			};
 		};
 
 		/**
