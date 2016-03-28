@@ -22,6 +22,12 @@
                 <!-- Existing / new CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P -->
               <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>
 
+               <!-- Card Input type - output only if Six Payments and payment type is CC -->
+                <!-- Use only for Six Payments -->
+                <div class="entry" ng-show="paymentGateway === 'sixpayments' && saveData.paymentType ==='CC' && !showCCPage">
+                        <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
+                </div>
+
               <!-- Selected card - Show when card is selected/added-->
             <div id="selected-card" class="entry full-width" ng-show="showSelectedCreditCardButton()" ng-click="showCardAddmode()">
                 <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
@@ -68,4 +74,10 @@
              </div>
         </div>
     </form>
+    <div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
+        <div class="centeralign alert-box">
+            WAITING FOR PAYMENT COMPLETION
+        </div>
+        <div class="waiting-payment">&nbsp;</div>
+    </div>
 </div>

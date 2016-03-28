@@ -6,12 +6,13 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 	$scope.saveData = {'paymentType':''};
 	$scope.renderData = {};
 	$scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.amount_owing;
-    var bill_id = $scope.contactInformation.account_details.bill_id;
+    var bill_id = $scope.arTransactionDetails.company_or_ta_bill_id;
     //Added for CICO-26730
     $scope.cardsList =[];
     var isSixPayment  = false;
 	var tokenDetails  = {};
 	var cardDetails   = {};
+	$scope.addmode = ($scope.cardsList.length > 0) ? false : true;
 	/*
 	* if no payment type is selected disable payment button
 	*/
@@ -41,6 +42,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 			}
 		}
 		return isShowFees;
+
 	};
 
 	$scope.calculateFee = function(){
@@ -209,6 +211,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 					"bill_number": 1,
 					"payment_type": $scope.saveData.paymentType,
 					"amount": $scope.renderData.defaultPaymentAmount,
+					"payment_method_id" : $scope.saveData.payment_type_id
 				},
 				"bill_id":bill_id
 			};
@@ -224,7 +227,22 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 			if($scope.referenceTextAvailable){
 				dataToSrv.data_to_pass.reference_text = $scope.renderData.referanceText;
 			};
-			$scope.invokeApi(rvAccountTransactionsSrv.submitPaymentOnBill, dataToSrv, successPayment, failedPayment);
+
+			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC"){
+				dataToSrv.data_to_pass.is_emv_request = true;
+				$scope.shouldShowWaiting = true;
+				//Six payment SWIPE actions
+				rvAccountTransactionsSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
+					$scope.shouldShowWaiting = false;
+					successPayment(response);
+				},function(error){
+					$scope.errorMessage = error;
+					$scope.shouldShowWaiting = false;
+				});
+			} else {
+				$scope.invokeApi(rvAccountTransactionsSrv.submitPaymentOnBill, dataToSrv, successPayment, failedPayment);
+			}
+
 		}
 	};
 
@@ -374,4 +392,27 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 		//call utils fn
 		$scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes,$scope.defaultPaymentTypeCard);
 	};
+
+	//Added for CICO-26730
+	$scope.changeOnsiteCallIn = function () {
+		$scope.showCCPage = ($scope.isManual) ? true :false;
+	};
+
+ 	//Added for CICO-26730
+    $scope.$on('changeOnsiteCallIn', function(event){
+        $scope.isManual =  !$scope.isManual;
+        $scope.changeOnsiteCallIn();
+    });
+
+    /**
+	 * to run angular digest loop,
+	 * will check if it is not running
+	 * return - None
+	 */
+	var runDigestCycle = function() {
+		if (!$scope.$$phase) {
+			$scope.$digest();
+		}
+	};
+
 }]);
