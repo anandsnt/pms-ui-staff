@@ -1,72 +1,46 @@
 /**
  * Checkin - ETA updation ctrl
  */
-sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv','$rootScope',
-	function($scope, $state, $controller, GwWebSrv,GwCheckinSrv,$rootScope) {
+sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope','$modal',
+	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv, $rootScope,$modal) {
 
-		$controller('BaseController', {
+		$controller('gwETABaseController', {
 			$scope: $scope
 		});
-
+		//to delete
 		$rootScope.accessToken = "e78a8786c11ce4ecd9ae2a7c452e2911";
-
-		GwWebSrv.zestwebData.reservationID ="1339909"
+		GwWebSrv.zestwebData.reservationID = "1339909"
+		//to delete
+		//
 		var init = function() {
 			var screenIdentifier = "ETA_UPDATION";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-			$scope.timings = returnTimeArray();
+			$scope.timings = returnTimeArray();//utils function
+			$scope.arrivalTime = "";
+			$scope.comment ="";
 		}();
 
-			var onSuccess = function(response){
-				var hoteTime ="11:47:14 AM";
-				hotelTimeHour =  hoteTime.slice(0, 2);
-				hotelTimeMinute =  hoteTime.slice(3, 5);
-				hotelPrimeTime = hoteTime.slice(-2).toLowerCase();
-				console.log(hotelPrimeTime)
+		var fetchHotelTimeSuccess = function(response) {
+			if (response.guest_arriving_today) {
+				//need to restrict ETA selection based on the hotel's time
+				var hotelTime = response.hote_time;
+				var hotelTimeLimitInTimeIndex = getIndexOfSelectedTime(hotelTime);//utils function
+				// check with Jeff if we need this
+				//$scope.timings = (hotelTimeLimit === "12:00 am") ? []: $scope.timings;
+				//remove all times prior to hotels time
+				$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
+			} else {
+				return;
+			}
+		};
 
-				hotelTimeMinuteLimit = "00";
-				if(hotelTimeMinute === "00" || hotelTimeMinute < 15){
-					hotelTimeMinuteLimit = "15";
-				}
-				else if(hotelTimeMinute >= 15 && hotelTimeMinute < 30){
-					hotelTimeMinuteLimit = "30";
-				}
-				else if(hotelTimeMinute >= 30 && hotelTimeMinute < 45){
-					hotelTimeMinuteLimit = "45";
-				}
-				else{
-					hotelTimeHour = parseInt(hotelTimeHour)+1;
-					hotelTimeHour = (hotelTimeHour < 10) ? ("0"+hotelTimeHour) : hotelTimeHour;
-					hotelTimeMinuteLimit = "00";
-				}
-				
-				var switchAMPM = function(){
-					(hotelPrimeTime === "pm") ? "am" : "pm";
-				};
-				(hotelTimeHour === 12 && hotelTimeMinuteLimit === "00")? switchAMPM() : "";
-				
-								
-				console.log(hotelPrimeTime)
-				hotelTimeLimit = hotelTimeHour+":"+hotelTimeMinuteLimit+" "+hotelPrimeTime;
-
-				  var hotelTimeLimitInTimeIndex = _.findIndex($scope.timings, function(time) {
-				    return time === hotelTimeLimit;
-				  });
-				  console.log(hotelTimeLimit)
-				//   console.log($scope.timings.length);
-				//   console.log($scope.timings.length -1);
-				//   console.log(hotelTimeLimitInTimeIndex);
-				// console.log($scope.timings);
-				$scope.timings.splice(0,hotelTimeLimitInTimeIndex);
-				console.log($scope.timings);
-
-			};
-		
-			var options = {
-				params: {'reservation_id': GwWebSrv.zestwebData.reservationID},
-				successCallBack: onSuccess,
-			};
-			$scope.callAPI(GwCheckinSrv.fetchHotelTime, options);
+		var options = {
+			params: {
+				'reservation_id': GwWebSrv.zestwebData.reservationID
+			},
+			successCallBack: fetchHotelTimeSuccess,
+		};
+		$scope.callAPI(GwCheckinSrv.fetchHotelTime, options);
 
 	}
 ]);

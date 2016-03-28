@@ -23,12 +23,15 @@ a,a:hover,.main-text,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
     color:#1A1A1A;
 }
+.main-text{
+  font-size:35px;
+}
 .res-date{
-  font-size:20px !important;
+  font-size:23px !important;
 }
 .sub-main-text{
-    color:#444444;
-    font-size:21px !important;
+    color:#000;
+    font-size:25px !important;
     span,strong{
        font-weight:300;
     }
@@ -49,7 +52,7 @@ a,a:hover,.main-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: #444444 !important;
+    color: #000 !important;
 }
 .view-bill{
     color:#000000;
@@ -64,13 +67,17 @@ p.sub-text{
   font-style:normal;
 }
 .time{
-  font-size:30px;
+  font-size: 35px;
+  line-height: 1;
+}
+.ap,.for{
+  font-size:21px;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
     color: #151413 !important;
 }
 .query-text{
-  font-size:16px;
+  font-size:19px;
 }
 .btn,.btn:hover{
     background:#222222;
@@ -117,25 +124,31 @@ p.sub-text{
     color:#BA7A55;
 }
 .select-style select,.modal-dialog p,.room-error-button{
-  font-size:16px !important;
+  font-size:19px !important;
 }
 .calendar-done-text{
   margin-left:0px;
 }
 .terms-sub{
-  font-size:18px;
+  font-size:20px;
 }
 .terms-desc{
-  font-size:16px;
+  font-size:19px;
 }
 .grey-terms-button,.green-button{
-    font-size:16px;
+    font-size:19px;
 }
 .accept-charges, .checkout-btn{
-  font-size:33px;
+  font-size:35px;
 }
 .show-bill-wrap{
-  font-size:18px;
+  font-size:20px;
+}
+.caps-text{
+  text-transform: uppercase;
+}
+.amount{
+  font-size:30px;
 }
 
 /*----------------- date picker -------------------------*/
@@ -228,9 +241,19 @@ p.sub-text{
 }
 @media (max-width: 480px) {
    .footer-text{
-      font-size:21px;
+      font-size:25px;
    }
    .res-details-heading,.footer-sub-text{
-      font-size:16px !important;
+      font-size:19px !important;
+   }
+   .next-line:before {
+       content: 'hiddentext'; 
+       font-size:0; display:block;
+        line-height:0; 
    }
 }
+@media (max-width: 350px){
+  .sub-main-text{
+     font-size:21px !important;
+  }
+} 

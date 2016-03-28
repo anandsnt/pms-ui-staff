@@ -35,6 +35,48 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	    data: {
 	    	pageTitle: 'Terms & Conditions'
 	    }
+	 }).state('autoCheckinFinal', {
+		url: '/autoCheckinFinal',
+		templateUrl: '/assets/partials/checkin/gwAutoCheckinFinal.html',
+		controller : 'gwAutoCheckinController',
+		data: {
+	    	pageTitle: 'Status - Pre Check-In'
+	    }
+	 }).state('checkinLanding', {
+	 	url: '/checkinLanding',
+	 	templateUrl: '/assets/partials/checkin/gwCheckin.html',
+	 	controller : 'gwCheckinLandingCtrlController',
+	 	data: {
+	 		title: 'Check-in'
+	 	}
+	 }).state('externalCheckInTurnedOff',{
+	 	url: '/externalCheckInTurnedOff',
+	 	templateUrl: '/assets/partials/checkin/gwExternalCheckInTurnedOff.html',
+	 	controller : 'gwExternalCheckInTurnedOffController',
+	 	data: {
+	 		title: 'Check-in'
+	 	}
+	 }).state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinOptions.html',
+	 	controller : 'gwEarlyCheckinOptionsController',
+	 	data: {
+	 		title: 'Early Check-in'
+	 	}
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:charge',
+	 	templateUrl: '/assets/partials/checkin/gwEarlyCheckinFinal.html',
+	 	controller : 'gwEarlyCheckinFinalController',
+	 	data: {
+	 		title: 'Early Check-in'
+	 	}
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/partials/checkin/gwLateArrivalTime.html',
+	 	controller : 'gwLateETAUpdationController',
+	    data: {
+	 		title: 'Early Check-in'
+	 	}
 	 });
 
 	//    //room and cc verification 

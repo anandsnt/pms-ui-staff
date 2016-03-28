@@ -123,9 +123,13 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
                 //fetch the idle timer settings
                 $scope.currencySymbol = $scope.zestStationData.currencySymbol;
-
+                
+                var conf = $scope.selectedReservation.confirmation_number;
+                if ($state.qr_code){
+                    conf = $scope.selectedReservation.confirmation_num;
+                }
                 $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
-                    'id': $scope.selectedReservation.confirmation_number
+                    'id': conf
                 }, $scope.onSuccessFetchReservationDetails);
             }
             

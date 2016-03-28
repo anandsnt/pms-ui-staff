@@ -30,7 +30,7 @@
             <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
 
             <div class="report-header" ng-show="showReportHeader">
-                <div ng-if="hasReportTotals" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
+                <div ng-show="hasReportTotals && !hasNoResults" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
 
                 <div class="actions">
                     <div class="select" ng-if="HIDE_THIS_FEATURE">
