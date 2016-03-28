@@ -975,11 +975,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 		init();
 
-
-		var callback = function() {
+		var callRefreshScroll = function() {
 			refreshScrollers();
 		};
-		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callback );
+		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callRefreshScroll );
 		$scope.$on( '$destroy', handler );
 	}
 ]);

@@ -895,6 +895,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
 
+                setTimeout(refreshScroller, 300);
                 setTimeout(function(){
                     if ($scope.actions[0]){
                        $scope.selectAction($scope.actions[0]);
