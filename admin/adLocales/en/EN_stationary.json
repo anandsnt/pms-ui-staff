@@ -2,6 +2,8 @@
 
 	"STATIONARY":"Stationary",
 	"CUSTOMIZE":"Customize",
+	"CONFIRMATION": "Confirmation",
+	"GUEST": "Guest" ,
 	"GUEST_BILL_TITLE": "Guest Bill",
 	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
 	"HOTEL_LOGO":"Hotel Logo",
@@ -90,7 +92,9 @@
 	"CONFIRMATION_FOOTER_TEXT": "Confirmation Footer Text",
 	"CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER": "Enter Confirmation Footer Text",
 	"LOCATION_URL_PLACE_HOLDER": "Enter Location URL",
-	"LOCATION_URL_LABEL_PLACE_HOLDER": "Enter Location URL Label"
+	"LOCATION_URL_LABEL_PLACE_HOLDER": "Enter Location URL Label",
+
+	"GROUP": "Group"
 
 
 

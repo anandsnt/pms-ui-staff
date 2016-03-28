@@ -9,9 +9,7 @@ admin.controller('ADStationaryCtrl',
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
 	$scope.fileName = "Choose File....";
-	$scope.groupFileName = "Choose File....";
 	$scope.location_image_file = $scope.fileName;
-	$scope.group_location_image_file = $scope.groupFileName;
 	$scope.memento = {
 		hotel_picture: "",
 		location_image: ""
@@ -114,7 +112,7 @@ admin.controller('ADStationaryCtrl',
 	});
 
 	/**
-	 *   To watch hotel location image
+	 *   To watch location image
 	 */
 	$scope.$watch(function() {
 		return $scope.data.location_image;
@@ -125,17 +123,6 @@ admin.controller('ADStationaryCtrl',
 		$scope.location_image_file = $scope.fileName;
 	});
 
-	/**
-	 *   To watch group location image
-	 */
-	$scope.$watch(function() {
-		return $scope.data.group_location_image;
-	}, function(logo) {
-		if (logo === 'false') {
-			$scope.groupFileName = "Choose File....";
-		}
-		$scope.group_location_image_file = $scope.groupFileName;
-	});
 	/**
 	 *   To handle show hide status for the logo delete button
 	 */
