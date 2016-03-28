@@ -76,7 +76,7 @@ angular.module('sntRover')
         /**
          * utility methd to refresh all scrollers
          */
-        $scope.refreshScrollers = () => {
+        const refreshScroller = () => {
             $scope.refreshScroller('scroller-restriction-list');
             $scope.refreshScroller('room-type-price-listing');
             $scope.refreshScroller('room-type-price-editing');
@@ -119,10 +119,42 @@ angular.module('sntRover')
                 case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
                     $scope.contentMiddleMode = '';
                     break;
-                                
+                
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                    initializeSingleRateRestrictionAndAmountMiddlePane();
+                    break;
+
                 dafault:
                     break;
             }
+        };
+
+        /**
+         * [description]
+         * @param  {[type]} key [description]
+         * @return {[type]}     [description]
+         */
+        $scope.priceStartedToCustomize = (key) => {
+            switch($scope.ngDialogData.mode) {
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                    if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
+                        $scope.priceDetails[key] = $scope.priceDetailsCopy[key];
+                    }
+                    else {
+                        $scope.priceDetails[key + '_changing_value'] = '';
+                    }
+                    refreshScroller();
+                    break;
+            }
+        };
+
+        /**
+         * [description]
+         * @return {[type]} [description]
+         */
+        $scope.clickedOnCancelRestrictionEditingButton = () => {
+            deSelectAllRestriction();
+            gotoDefaultMiddlePaneMode();
         };
 
         /**
@@ -161,7 +193,7 @@ angular.module('sntRover')
          * [description]
          * @return {[type]} [description]
          */
-        var getEditedRestrictionsForAPI = () => {
+        const getEditedRestrictionsForAPI = () => {
             var editedRestrictions = _.where($scope.restrictionList, {edited:true});
             return editedRestrictions.map(restriction => ({
                 action: restriction.status === 'ON' ? 'add' : 'remove',
@@ -173,10 +205,11 @@ angular.module('sntRover')
         /**
          * to update restriction rate
          */
-        var callRateRestrictionUpdateAPI = () => {
+        const callRateRestrictionUpdateAPI = () => {
             var params = {},
                 dialogData = $scope.ngDialogData,
-                mode = dialogData.mode;
+                mode = dialogData.mode,
+                restrictionToApply = [];
 
             if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
                 params.rate_id = dialogData.rate.id;
@@ -185,11 +218,13 @@ angular.module('sntRover')
                 params.rate_ids = _.pluck(dialogData.rates, 'id');
             }
 
+            restrictionToApply = getEditedRestrictionsForAPI();
+
             params.details = [];
             params.details.push({
                 from_date: formatDateForAPI(dialogData.date),
                 to_date: formatDateForAPI(dialogData.date),
-                restrictions: getEditedRestrictionsForAPI()
+                restrictions: restrictionToApply
             });
 
             if($scope.applyRestrictionsToDates) {
@@ -200,8 +235,8 @@ angular.module('sntRover')
                 params.details.push({
                     from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
                     to_date: formatDateForAPI($scope.untilDate),
-                    restrictions: getEditedRestrictionsForAPI()
-                })
+                    restrictions: restrictionToApply
+                });
                 params.details[1].weekdays = {};
                 $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
                     .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
@@ -217,20 +252,23 @@ angular.module('sntRover')
          * [description]
          * @return {[type]} [description]
          */
-        var callRoomTypeRestrictionUpdateAPI = () => {
+        const callRoomTypeRestrictionUpdateAPI = () => {
             var params = {},
                 dialogData = $scope.ngDialogData,
-                mode = dialogData.mode;
+                mode = dialogData.mode,
+                restrictionToApply = [];
 
             if(mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
 
+            restrictionToApply = getEditedRestrictionsForAPI();
+
             params.details = [];
             params.details.push({
                 from_date: formatDateForAPI(dialogData.date),
                 to_date: formatDateForAPI(dialogData.date),
-                restrictions: getEditedRestrictionsForAPI()
+                restrictions: restrictionToApply
             });
 
             if($scope.applyRestrictionsToDates) {
@@ -238,10 +276,14 @@ angular.module('sntRover')
                     $scope.errorMessage = ['Please choose until date'];
                     return;
                 }
-                params.details[0].to_date = formatDateForAPI($scope.untilDate);
-                params.details[0].weekdays = {};
+                params.details.push({
+                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
+                    to_date: formatDateForAPI($scope.untilDate),
+                    restrictions: restrictionToApply
+                });
+                params.details[1].weekdays = {};
                 $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
-                    .map(weekDay => params.details[0].weekdays[weekDay.weekDay] = weekDay.selected);
+                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
             }
             const options = {
                 params,
@@ -249,6 +291,67 @@ angular.module('sntRover')
             };
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
+
+        /**
+         * [description]
+         * @return {[type]} [description]
+         */
+        const callRateRoomTypeRestrictionAndAmountUpdateAPI = () => {
+            var params = {},
+                dialogData = $scope.ngDialogData,
+                mode = dialogData.mode,
+                restrictionToApply = [];
+
+            if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE) {
+                params.room_type_id = dialogData.roomType.id;
+            }
+
+            restrictionToApply = getEditedRestrictionsForAPI();
+
+            params.details = [];
+            params.details.push({
+                from_date: formatDateForAPI(dialogData.date),
+                to_date: formatDateForAPI(dialogData.date),
+                restrictions: restrictionToApply
+            });
+
+            if($scope.applyRestrictionsToDates) {
+                if($scope.untilDate === '') {
+                    $scope.errorMessage = ['Please choose until date'];
+                    return;
+                }
+                params.details.push({
+                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
+                    to_date: formatDateForAPI($scope.untilDate),
+                    restrictions: restrictionToApply
+                });
+                params.details[1].weekdays = {};
+                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
+                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
+            }
+
+            if($scope.applyPriceToDates) {
+                if($scope.untilDate === '') {
+                    $scope.errorMessage = ['Please choose until date'];
+                    return;
+                }
+                params.details.push({
+                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
+                    to_date: formatDateForAPI($scope.untilDate)
+                });
+                params.details[params.details.length - 1].weekdays = {};
+                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
+                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
+            }
+
+
+            const options = {
+                params,
+                onSuccess: onUpdateRateRestrictionData
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
+        };
+
 
         /**
          * on tapping the set button
@@ -264,6 +367,9 @@ angular.module('sntRover')
                 case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
                     return callRoomTypeRestrictionUpdateAPI();
 
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                    return callRateRoomTypeRestrictionAndAmountUpdateAPI();
+                
                 default:
                     break;
             }
@@ -383,6 +489,10 @@ angular.module('sntRover')
             $scope.contentMiddleMode = ''; //values possible: 'ROOM_TYPE_PRICE_LISTING', 'RESTRICTION_EDITING'
 
             $scope.modeConstants = rvRateManagerPopUpConstants;
+
+            $scope.applyRestrictionsToDates = false;
+
+            $scope.applyPriceToDates = false;
 
             $scope.weekDayRepeatSelection = [{
                 weekDay: 'mon',
@@ -505,6 +615,41 @@ angular.module('sntRover')
             }
         };
 
+        const initializeSingleRateRestrictionAndAmountMiddlePane = () => {
+            var dialogData = $scope.ngDialogData,
+                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
+            
+            if(dialogData.rate.is_hourly) {
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+            }
+            else {
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
+                $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
+                
+                $scope.priceDetails.single_amount_operator = '+';
+                $scope.priceDetails.single_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.single_changing_value = '';
+
+                $scope.priceDetails.double_amount_operator = '+';
+                $scope.priceDetails.double_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.double_changing_value = '';
+
+                $scope.priceDetails.child_amount_operator = '+';
+                $scope.priceDetails.child_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.child_changing_value = '';
+
+                $scope.priceDetails.extra_adult_amount_operator = '+';
+                $scope.priceDetails.extra_adult_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.extra_adult_changing_value = '';
+
+                $scope.priceDetailsCopy = {...$scope.priceDetails};
+            }
+
+            if(dialogData.rate.based_on_rate_id) {
+               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+            }
+        };
+
         /**
          * [description]
          * @return {[type]} [description]
@@ -513,7 +658,6 @@ angular.module('sntRover')
             var dialogData = $scope.ngDialogData,
                 roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
 
-            console.log(dialogData);
             $scope.header = dialogData.roomType.name;
 
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
@@ -529,19 +673,7 @@ angular.module('sntRover')
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
             }            
 
-
-            if(dialogData.rate.is_hourly) {
-                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
-            }
-            else {
-                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
-                $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
-                $scope.priceDetailsCopy = {...roomTypePricesAndRestrictions.room_types[0]};
-            }
-
-            if(dialogData.rate.based_on_rate_id) {
-               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
-            }
+            initializeSingleRateRestrictionAndAmountMiddlePane();
         };
 
 

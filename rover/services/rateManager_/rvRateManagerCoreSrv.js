@@ -31,7 +31,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.activeRates = null;
 
         service.fetchMultipleRateInfo = function (params) {
-            var url = '/api/daily_rates/';
+            var url = '/api/daily_rates';
             var deferred = $q.defer();
             BaseWebSrvV2.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
@@ -64,7 +64,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.fetchRates = function () {
-            var url = '/api/rates/detailed';
+            var url = '/api/rates/minimal';
             var deferred = $q.defer();
             BaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
