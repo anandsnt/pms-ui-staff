@@ -95,7 +95,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 $stateProvider.state('externalVerification', {
 	 	url: '/externalVerification',
 	 	templateUrl: '/assets/checkoutnow/partials/Nikko/externalVerification.html',
-	 	controller : 'externalVerificationViewControllerNikko',
+	 	controller : 'externalVerificationViewController',
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
