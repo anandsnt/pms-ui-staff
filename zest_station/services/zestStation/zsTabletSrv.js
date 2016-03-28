@@ -159,10 +159,14 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
 
 
         this.fetchReservationDetails = function(param) {
-            var deferred = $q.defer(),
-                url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
-
-
+            var url;
+            if (param.by_reservation_id){
+                 url = '/staff/staycards/reservation_details.json?reservation_id=' + param.id;
+            } else {
+                 url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
+            }
+            var deferred = $q.defer();
+            
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -300,6 +304,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
         this.fetchRegistrationCardPrintData = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+        this.fetchGuestDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + params.id + '/reservations_guest_details';
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
