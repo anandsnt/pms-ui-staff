@@ -184,7 +184,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				if ($scope.stateCheck.activeView === "RATE") {
 					payLoad.order = "LOW_TO_HIGH";
-				} else if($scope.stateCheck.activeView === "ROOM_RATE"){
+				} else if ($scope.stateCheck.activeView === "ROOM_RATE") {
 					payLoad.order = "ROOM_LEVEL"
 				}
 
@@ -243,7 +243,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
 				}
 
-				if($scope.stateCheck.activeView === "ROOM_RATE"){
+				if ($scope.stateCheck.activeView === "ROOM_RATE") {
 					payLoad.order = "ROOM_LEVEL"
 				}
 
@@ -888,7 +888,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.restrictIfOverbook = function(roomId, rateId) {
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-				
+
+
+			if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
+				// CICO-26707 Skip house avbl check for group/allotment reservations
+				canOverbookHouse = true;
+				//CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+				if ($scope.getLeastAvailability(roomId, rateId) < 1) {
+					return false;
+				}
+				//CICO-24923 TEMPORARY
+			}
+
 			if (canOverbookHouse && canOverbookRoomType) {
 				//CICO-17948
 				//check actual hotel availability with permissions
@@ -902,6 +913,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			if (!canOverbookRoomType && $scope.getLeastAvailability(roomId, rateId) < 1) {
 				return true;
 			}
+
+			// Default
+			return false;
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- RESTRICTIONS
@@ -1745,13 +1759,27 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENERS
+		// reset Page
+		var reInitialize = function() {
+			$scope.stateCheck.pagination.roomType.page = 1;
+			$scope.stateCheck.pagination.rate.page = 1;
+
+			if ($scope.stateCheck.activeView === "RATE") {
+				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+					generateRatesGrid(response.results);
+					$scope.refreshScroll();
+				});
+			} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
+				fetchRoomTypesList();
+			}
+		}
 		var initEventListeners = function() {
 			$scope.$on('SIDE_BAR_OCCUPANCY_UPDATE', function() {
-				fetchRates();
+				reInitialize();
 			});
 
 			$scope.$on('TABS_MODIFIED', function() {
-				fetchRates();
+				reInitialize();
 			});
 
 			$scope.$on('resetGuestTab', function() {
@@ -1765,7 +1793,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							hlp: data.hotelLoyaltyProgram
 						};
 						if ($scope.reservationData.member.isSelected && isMembershipValid()) {
-							fetchRates();
+							reInitialize();
 						} else if ($scope.reservationData.member.isSelected) {
 							ngDialog.open({
 								template: '/assets/partials/reservation/alerts/rvNotMemberPopup.html',
@@ -1782,7 +1810,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.$on('cardChanged', function(event, cardIds) {
 				$scope.reservationData.company.id = cardIds.companyCard;
 				$scope.reservationData.travelAgent.id = cardIds.travelAgent;
-				fetchRates();
+				reInitialize();
 				// Call the availability API and rerun the init method
 			});
 			// 	CICO-7792 END
