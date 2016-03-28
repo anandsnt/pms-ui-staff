@@ -35,6 +35,11 @@
 			$scope.screenDetailsNoPaymentMethodMessage = screenCMSDetails4;
 		};
 
+	    var payment_method_id = "";
+		var payment_method_used = "";
+		var deposit_amount = "";
+		var card_type ="";
+
 
 		//payment success
 		var onSucess = function() {
@@ -57,7 +62,28 @@
 		//payment action
 		$scope.payNow = function() {
 			$scope.isLoading = true;
-			onSucess();
+
+			var params = {
+				"bill_number": 1,
+				"payment_type": payment_method_used,
+				"amount": deposit_amount,
+				"payment_type_id": payment_method_id
+			};
+			(payment_method_used === "CC")? params.credit_card_type = card_type : "";
+
+			//submit payment
+			guestDetailsService.submitPayment(params).then(function(response) {
+				$scope.isLoading = false;
+				if(response.status === "success"){
+					onSucess(response);
+				}
+				else{
+					$rootScope.netWorkError = true;
+				}
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
 		};
 		$scope.cancelActions = function() {
 			if ($rootScope.isExternalCheckin) {
@@ -66,13 +92,22 @@
 				$state.go('checkinConfirmation');
 			};
 		};
-
+	
 		var onDepositFetchSuccess = function(response) {
 			$scope.isLoading = false; 
-			if (true) {
+			if (!!response.deposit_policy && parseInt(response.deposit_amount, 10) > 0) {
 				checkForAdminMessageSetup();
-				payment_method = "CC";
-				$scope.noPaymentMethod = !!payment_method ? false :true;
+				if(!!response.payment_method_used){
+					$scope.noPaymentMethod = false;
+					payment_method_used = response.payment_method_used;
+					payment_method_id = response.payment_method_id;
+					deposit_amount = response.deposit_amount;
+					card_type = !!response.card_type ? response.card_type.toUpperCase() :"";
+					$scope.depositAmount = response.currency_symbol+response.deposit_amount;
+				}
+				else{
+					$scope.noPaymentMethod = true;
+				}
 			} else {
 				//no deposit to pay
 				$rootScope.skipDeposit = true;
@@ -87,17 +122,14 @@
 
 		$scope.isLoading = true;
 		
-
+		//check if reservation has deposit else got to precheckin
 		guestDetailsService.fetchDepositDetails().then(function(response) {
-			onDepositFetchSuccess();
+			onDepositFetchSuccess(response);
 		}, function() {
 			$rootScope.netWorkError = true;
 			$scope.isLoading = false;
 		});
-		//check if reservation has deposit else got to precheckin
-		//
 		
-
 	};
 
 	var dependencies = [

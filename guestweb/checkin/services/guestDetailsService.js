@@ -94,6 +94,19 @@
 		});
 		return deferred.promise;
 	};
+
+	var submitPayment = function(data){
+		var deferred = $q.defer();
+		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/submit_payment';
+		$http.post(url,data).success(function(response) {
+			this.responseData = response;
+			deferred.resolve(this.responseData);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
 	
 
 	return {
@@ -104,7 +117,8 @@
 	postGuestBirthDate	: postGuestBirthDate,
 	fetchCountryCode	: fetchCountryCode,
 	fetchHotelTime 		: fetchHotelTime,
-	fetchDepositDetails	: fetchDepositDetails
+	fetchDepositDetails	: fetchDepositDetails,
+	submitPayment 		: submitPayment
 	}
 };
 
