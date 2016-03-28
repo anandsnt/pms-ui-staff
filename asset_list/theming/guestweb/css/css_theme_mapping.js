@@ -37,7 +37,8 @@ module.exports = {
 			'guestweb_11Howard':[ themeCSSRoot + 'guestweb_11Howard.css'],
 			'guestweb_excalibur':[ themeCSSRoot + 'guestweb_excalibur.css'],
 			'guestweb_naples_grande':[ themeCSSRoot + 'guestweb_naples_grande.css'],
-			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css']
+			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css'],
+			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css']
 		}
 	}
 }
