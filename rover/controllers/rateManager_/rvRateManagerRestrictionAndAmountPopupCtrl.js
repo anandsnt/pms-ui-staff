@@ -173,17 +173,20 @@ angular.module('sntRover')
          */
         var callRateRestrictionUpdateAPI = () => {
             var params = {},
-                mode = $scope.ngDialogData.mode;
+                dialogData = $scope.ngDialogData,
+                mode = dialogData.mode;
+
             if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
-                params.rate_id = $scope.ngDialogData.rate.id;
+                params.rate_id = dialogData.rate.id;
             }
             else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
-                params.rate_ids = _.pluck($scope.ngDialogData.rates, 'id');
+                params.rate_ids = _.pluck(dialogData.rates, 'id');
             }
+
             params.details = [];
             params.details.push({
-                from_date: formatDateForAPI($scope.ngDialogData.restrictionData[0].date),
-                to_date: formatDateForAPI($scope.ngDialogData.restrictionData[0].date),
+                from_date: formatDateForAPI(dialogData.date),
+                to_date: formatDateForAPI(dialogData.date),
                 restrictions: getEditedRestrictionsForAPI()
             });
 
@@ -192,10 +195,14 @@ angular.module('sntRover')
                     $scope.errorMessage = ['Please choose until date'];
                     return;
                 }
-                params.details[0].to_date = formatDateForAPI($scope.untilDate);
-                params.details[0].weekdays = {};
+                params.details.push({
+                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
+                    to_date: formatDateForAPI($scope.untilDate),
+                    restrictions: getEditedRestrictionsForAPI()
+                })
+                params.details[1].weekdays = {};
                 $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
-                    .map(weekDay => params.details[0].weekdays[weekDay.weekDay] = weekDay.selected);
+                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
             }
             const options = {
                 params,
@@ -219,8 +226,8 @@ angular.module('sntRover')
 
             params.details = [];
             params.details.push({
-                from_date: formatDateForAPI(dialogData.restrictionData[0].date),
-                to_date: formatDateForAPI(dialogData.restrictionData[0].date),
+                from_date: formatDateForAPI(dialogData.date),
+                to_date: formatDateForAPI(dialogData.date),
                 restrictions: getEditedRestrictionsForAPI()
             });
 
@@ -346,7 +353,7 @@ angular.module('sntRover')
             $scope.datePickerOptions = {
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,
-                minDate: new tzIndependentDate($scope.ngDialogData.restrictionData[0].date),
+                minDate: tzIndependentDate(util.addOneDay(tzIndependentDate($scope.ngDialogData.date))),
                 onSelect:function(date, datePickerObj) {
                     $scope.untilDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
                 }
@@ -414,7 +421,7 @@ angular.module('sntRover')
 
             $scope.header = dialogData.rate.name;
             
-            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.restrictionData[0].date);
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = 'All Room types';
 
@@ -437,7 +444,7 @@ angular.module('sntRover')
 
             $scope.headerBottomLeftLabel = 'All Rates';
                     
-            $scope.header = formatDateForTopHeader(dialogData.restrictionData[0].date);
+            $scope.header = formatDateForTopHeader(tzIndependentDate(dialogData.date));
 
             $scope.headerBottomRightLabel = '';
 
@@ -459,7 +466,7 @@ angular.module('sntRover')
                 restrictionData = dialogData.restrictionData[0];
             $scope.header = dialogData.roomType.name;
             
-            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.restrictionData[0].date);
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = '';
 
@@ -482,7 +489,7 @@ angular.module('sntRover')
 
             $scope.headerBottomLeftLabel = 'All Room types';
                     
-            $scope.header = formatDateForTopHeader(dialogData.restrictionData[0].date);
+            $scope.header = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = '';
 

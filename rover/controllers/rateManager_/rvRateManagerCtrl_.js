@@ -422,22 +422,26 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
       };
 
-      var showRateRestrictionPopup = (data) => {
+    /**
+     * to show the restriction popup
+     * @param  {Oject} data
+     */
+    var showRateRestrictionPopup = (data) => {
         ngDialog.open({
-          template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default',
-          data: data,
-          controller: 'rvRateManagerRestrictionAndAmountPopupCtrl'
+            template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
+            scope: $scope,
+            className: 'ngdialog-theme-default',
+            data: data,
+            controller: 'rvRateManagerRestrictionAndAmountPopupCtrl'
         });
-      };
+    };
 
-      /**
-       * on api call success against rate cell click
-       * @param  {Object} response
-       * @param  {Object} successCallBackParameters
-       */
-      var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
+    /**
+     * on api call success against rate cell click
+     * @param  {Object} response
+     * @param  {Object} successCallBackParameters
+     */
+    var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
             rateIDs = successCallBackParameters.rateIDs,
@@ -447,44 +451,45 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRateList = rates;
 
         var data = {
-          rates,
-          mode: successCallBackParameters.mode,
-          restrictionData,
-          restrictionTypes
+            rates,
+            mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE,
+            restrictionData,
+            restrictionTypes,
+            date: successCallBackParameters.date
         };
         showRateRestrictionPopup(data);
-      };
+    };
 
-      /**
-       * [description]
-       * @param  {[type]} rateIDs [description]
-       * @param  {[type]} date    [description]
-       * @return {[type]}         [description]
-       */
-      var fetchMultipleRateRestrictionsDetailsForPopup = (rateIDs, date) => {
+    /**
+     * [description]
+     * @param  {[type]} rateIDs [description]
+     * @param  {[type]} date    [description]
+     * @return {[type]}         [description]
+     */
+    var fetchMultipleRateRestrictionsDetailsForPopup = (rateIDs, date) => {
         //calling the API to get the details
         var params = {
-          'rate_ids[]': rateIDs,
-          from_date: date,
-          to_date: date
+            'rate_ids[]': rateIDs,
+            from_date: date,
+            to_date: date
         };
         var options = {
-          params,
-          onSuccess: onFetchMultipleRateRestrictionDetailsForRateCell,
-          successCallBackParameters: {
-            rateIDs,
-            mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE
-          }
+            params,
+            onSuccess: onFetchMultipleRateRestrictionDetailsForRateCell,
+            successCallBackParameters: {
+                rateIDs,
+                date
+            }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
-      };
+    };
 
-      /**
-       * [description]
-       * @param  {[type]} response                  [description]
-       * @param  {[type]} successCallBackParameters [description]
-       * @return {[type]}                           [description]
-       */
+    /**
+     * [description]
+     * @param  {[type]} response                  [description]
+     * @param  {[type]} successCallBackParameters [description]
+     * @return {[type]}                           [description]
+     */
     var onFetchSingleRateRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
@@ -503,7 +508,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE,
             rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
             restrictionData,
-            restrictionTypes
+            restrictionTypes,
+            date: successCallBackParameters.date
         };
         showRateRestrictionPopup(data);
     };
@@ -525,7 +531,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params,
             onSuccess: onFetchSingleRateRestrictionModeDetailsForPopup,
             successCallBackParameters: {
-                rateID
+                rateID,
+                date
             }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
@@ -562,7 +569,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             mode: rvRateManagerPopUpConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE,
             roomType: _.findWhere(cachedRoomTypeList, { id: successCallBackParameters.roomTypeID }),
             restrictionData,
-            restrictionTypes
+            restrictionTypes,
+            date: successCallBackParameters.date
         };
         showRateRestrictionPopup(data);
     };
@@ -583,7 +591,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params: params,
             onSuccess: onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess,
             successCallBackParameters: {
-                roomTypeID
+                roomTypeID,
+                date
             }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
@@ -593,7 +602,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     * on api call success against header room type cell click
     * @param  {Object} response
     */
-    var onfetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess = (response) => {
+    var onfetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0]
@@ -610,7 +619,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             roomTypesAndPrices,
             mode: rvRateManagerPopUpConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE,
             restrictionData,
-            restrictionTypes
+            restrictionTypes,
+            date: successCallBackParameters.date
         };
         showRateRestrictionPopup(data);
     };
@@ -627,7 +637,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
         var options = {
             params,
-            onSuccess: onfetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess
+            onSuccess: onfetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess,
+            successCallBackParameters: {
+                date
+            }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
     };
