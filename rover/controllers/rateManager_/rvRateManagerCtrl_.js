@@ -404,23 +404,24 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
       };
 
-      /**
-       * utility method to pass callbacks from
-       * @return {Object} with callbacks
-       */
-      var getTheCallbacksFromAngularToReact = () => {
+    /**
+     * utility method to pass callbacks from
+     * @return {Object} with callbacks
+     */
+    var getTheCallbacksFromAngularToReact = () => {
         return {
-          singleRateViewCallback: fetchSingleRateDetailsFromReact,
-          openAllCallbackForSingleRateView: openAllRestrictionsForSingleRateView,
-          closeAllCallbackForSingleRateView: closeAllRestrictionsForSingleRateView,
-          closeAllRestrictionsForRateView,
-          openAllRestrictionsForRateView,
-          closeAllRestrictionsForRoomTypeView,
-          openAllRestrictionsForRoomTypeView,
-          clickedOnRateViewCell,
-          clickedOnRoomTypeViewCell
+            singleRateViewCallback: fetchSingleRateDetailsFromReact,
+            openAllCallbackForSingleRateView: openAllRestrictionsForSingleRateView,
+            closeAllCallbackForSingleRateView: closeAllRestrictionsForSingleRateView,
+            closeAllRestrictionsForRateView,
+            openAllRestrictionsForRateView,
+            closeAllRestrictionsForRoomTypeView,
+            openAllRestrictionsForRoomTypeView,
+            clickedOnRateViewCell,
+            clickedOnRoomTypeViewCell,
+            clickedOnRoomTypeAndAmountCell
         };
-      };
+    };
 
     /**
      * to show the restriction popup
@@ -525,7 +526,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: date,
             to_date: date,
             rate_id: rateID,
-            fetchRoomTypes: !cachedRoomTypeList.length
+            fetchRoomTypes: !cachedRoomTypeList.length,
+            fetchRates: !cachedRateList.length
         };
         var options = {
             params,
@@ -655,6 +657,72 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
+     * when api call for fetching the room type restriction details's popup
+     * @param  {Object} response
+     */
+    var onFetchSingleRoomTypeRestrictionAndAmountDetailsForPopupSuccess = (response, successCallBackParameters) => {
+        var roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+            rates = !cachedRateList.length ? response.rates : cachedRateList,
+            roomTypePricesAndRestrictions = response.roomTypeAndRestrictions[0];
+
+
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
+
+        //rateList is now cached
+        cachedRateList = rates;
+
+        var data = {
+            roomTypePricesAndRestrictions,
+            mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE,
+            roomType: _.findWhere(cachedRoomTypeList, { id: successCallBackParameters.roomTypeID }),
+            rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
+            restrictionTypes,
+            date: successCallBackParameters.date
+        };
+        showRateRestrictionPopup(data);
+    };
+
+    /**
+     * to fetch the restriction data for 
+     * @param  {Integer} roomTypeID
+     * @param  {String} date          
+     */
+    var fetchSingleRoomTypeRestrictionAndAmountDetailsForPopup = (rateID, roomTypeID, date) => {
+        var params = {
+            from_date: date,
+            to_date: date,
+            room_type_id: roomTypeID,
+            rate_id: rateID,
+            fetchRoomTypes: !cachedRoomTypeList.length,
+            fetchRates: !cachedRateList.length
+        };
+        var options = {
+            params: params,
+            onSuccess: onFetchSingleRoomTypeRestrictionAndAmountDetailsForPopupSuccess,
+            successCallBackParameters: {
+                roomTypeID,
+                date,
+                rateID
+            }
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
+    };
+
+    /**
+     * [description]
+     * @param  {[type]} options.roomTypeIDs [description]
+     * @param  {[type]} options.date        [description]
+     * @return {[type]}                     [description]
+     */
+    const clickedOnRoomTypeAndAmountCell = ({ roomTypeIDs, date }) => {
+        var rateID = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+        return roomTypeIDs.length === 0 ? 
+            fetchMultipleRoomTypeRestrictionsDetailsForPopup(date) :
+            fetchSingleRoomTypeRestrictionAndAmountDetailsForPopup(rateID, roomTypeIDs[0], date); 
+    };
+
+    /**
      * when single rate details api call success
      * @param  {Object} response
      */
@@ -768,7 +836,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             order_id: filterValues.orderBySelectedValue,
             rate_id: filterValues.selectedRates[0].id,
             'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
-            fetchRoomTypes: !cachedRoomTypeList.length
+            fetchRoomTypes: !cachedRoomTypeList.length,
+            fetchRates: !cachedRateList.length
         };
         var options = {
             params: params,

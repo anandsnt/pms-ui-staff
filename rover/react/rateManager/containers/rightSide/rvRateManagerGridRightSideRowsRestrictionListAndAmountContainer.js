@@ -79,11 +79,41 @@ const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerPro
         roomTypeRowsData,
         mode: state.mode,
         dateList: convertDateListForRestrictionAndAmountView(state.dates, state.businessDate),
-        onTdClick: state.callBacksFromAngular.clickedOnRateViewCell
+        dates: state.dates,
+        clickedOnRoomTypeAndAmountCell: state.callBacksFromAngular.clickedOnRoomTypeAndAmountCell
     };
-    
 };
 
+const mapDispatchToRateManagerGridRightSideRowsRestrictionListAndAmountContainerContainer = (stateProps, dispatchProps, ownProps) => {
+    var onTdClick = () => {};
+    switch(stateProps.mode) {
+        case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
+            onTdClick = (e, rowIndex, colIndex) => {
+                var date = stateProps.dates[colIndex],
+                    roomTypeIDs = [];
+
+                if(rowIndex === 0) {
+                    roomTypeIDs = _.pluck(stateProps.roomTypeRowsData.slice(1), 'id');
+                }
+                else if(rowIndex > 0) {
+                    roomTypeIDs = [stateProps.roomTypeRowsData[rowIndex].id];
+                }
+
+                return stateProps.clickedOnRoomTypeAndAmountCell({
+                    roomTypeIDs,
+                    date
+                });
+            };
+            break;
+    }
+
+    return {
+        onTdClick,
+        ...stateProps
+    };    
+};
 const RateManagerGridRightSideRowsRestrictionListAndAmountContainer = 
-	connect(mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerProps)
+	connect(mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerProps,
+        null,
+        mapDispatchToRateManagerGridRightSideRowsRestrictionListAndAmountContainerContainer)
 	(RateManagerGridRightSideRowsRestrictionListAndAmountComponent);

@@ -123,6 +123,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         service.fetchSingleRateDetailsAndRoomTypes = (params) => {
             var promises = [],
                 roomTypes = [],
+                rates = [],
                 roomTypeAndRestrictions = [],
                 deferred = $q.defer();
 
@@ -134,11 +135,17 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     roomTypes = data;
                 }));
             }
+            if (params.fetchRates) {
+                promises.push(service.fetchRates().then((data) => {
+                    rates = data.results;
+                }));
+            }
 
             $q.all(promises).then((data) => {
                 deferred.resolve({
                     roomTypes,
-                    roomTypeAndRestrictions
+                    roomTypeAndRestrictions,
+                    rates
                 });
             });
 

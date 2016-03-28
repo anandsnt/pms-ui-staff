@@ -70,14 +70,16 @@ angular.module('sntRover')
         const setScroller = () => {
             $scope.setScroller('scroller-restriction-list');
             $scope.setScroller('room-type-price-listing');
+            $scope.setScroller('room-type-price-editing');
         };
 
         /**
          * utility methd to refresh all scrollers
          */
-        const refreshScroller = () => {
+        $scope.refreshScrollers = () => {
             $scope.refreshScroller('scroller-restriction-list');
             $scope.refreshScroller('room-type-price-listing');
+            $scope.refreshScroller('room-type-price-editing');
         };
 
         /**
@@ -486,10 +488,10 @@ angular.module('sntRover')
         const initializeMultipleRoomTypeRestrictionMode = () => {
             var dialogData = $scope.ngDialogData,
                 restrictionData = dialogData.restrictionData[0];
-
-            $scope.headerBottomLeftLabel = 'All Room types';
                     
             $scope.header = formatDateForTopHeader(dialogData.date);
+
+            $scope.headerBottomLeftLabel = 'All Room types';
 
             $scope.headerBottomRightLabel = '';
 
@@ -502,6 +504,46 @@ angular.module('sntRover')
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
             }
         };
+
+        /**
+         * [description]
+         * @return {[type]} [description]
+         */
+        const initializeSingleRateRestrictionAndAmountMode = () => {
+            var dialogData = $scope.ngDialogData,
+                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
+
+            console.log(dialogData);
+            $scope.header = dialogData.roomType.name;
+
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
+
+            $scope.headerBottomRightLabel = dialogData.rate.name;
+
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    roomTypePricesAndRestrictions.room_types,
+                    roomTypePricesAndRestrictions.rate_restrictions);
+            
+            if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
+                $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
+            }            
+
+
+            if(dialogData.rate.is_hourly) {
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+            }
+            else {
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
+                $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
+                $scope.priceDetailsCopy = {...roomTypePricesAndRestrictions.room_types[0]};
+            }
+
+            if(dialogData.rate.based_on_rate_id) {
+               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+            }
+        };
+
 
         /**
          * to initialize Mode based values
@@ -525,6 +567,10 @@ angular.module('sntRover')
 
                 case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
                     initializeMultipleRoomTypeRestrictionMode();
+                    break;
+
+                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                    initializeSingleRateRestrictionAndAmountMode();
                     break;
 
                 dafault:
