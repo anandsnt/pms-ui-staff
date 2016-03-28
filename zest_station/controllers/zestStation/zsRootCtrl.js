@@ -191,11 +191,11 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.language) {
                 var langPrefix = $scope.getActiveLangPrefix();
             if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                console.info('using: uploaded english translations');
+                //console.info('using: uploaded english translations');
                 $translate.use('en');
             }
             else{
-                console.info('using: ',langPrefix+theme.toLowerCase());
+                //console.info('using: ',langPrefix+theme.toLowerCase());
                 $translate.use(langPrefix+theme.toLowerCase());
             }
              
@@ -247,7 +247,7 @@ sntZestStation.controller('zsRootCtrl', [
                         moon: $scope.iconsPath+'/moon.svg',
                         back: $scope.iconsPath+'/back.svg',
                         close: $scope.iconsPath+'/close.svg',
-                        qr: $scope.iconsPath+'/key.svg',
+                        qr: $scope.iconsPath+'/qr-scan.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                         logo: $scope.iconsPath+'/print_logo.svg',
                     }
@@ -787,12 +787,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.reservation_search_qrcode');
             };
             $scope.onChromeAppResponse = function(response){
-                console.info('Zest Station got message from Chrome App:: ',response);
-                console.log(response);
+                console.info('RECEIVED app msg',response);
                 if (response){
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
                     } else if (response.qr_code){
+                        console.log('init find reservation for : ',response.reservation_id);
                         $scope.initQRCodeFindReservation(response.reservation_id);
                     }
                 }
@@ -933,9 +933,10 @@ sntZestStation.controller('zsRootCtrl', [
             console.info("chrome app id [ "+chromeAppId+' ]');
             //minimize the chrome app on loging out
             new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
-            console.info("::Starting QR Code Scanner::");
+            console.info("::Starting QR Code Scanner::"); 
         }
-    } ;
+    };
+    
 	/**
 	 * [initializeMe description]
 	 * @return {[type]} [description]
