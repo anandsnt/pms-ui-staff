@@ -78,11 +78,11 @@
 					onSucess(response);
 				}
 				else{
-					$rootScope.netWorkError = true;
+					onFailure();
 				}
 			}, function() {
-				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
+				onFailure();
 			});
 		};
 		$scope.cancelActions = function() {
