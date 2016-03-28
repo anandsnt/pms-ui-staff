@@ -445,6 +445,10 @@ angular.module('sntRover')
                     dialogData.restrictionTypes,
                     restrictionData.rates,
                     restrictionData.all_rate_restrictions);
+            
+            if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
+                $scope.headerNoticeOnRight = 'Restrictions vary across Rates!';
+            }            
         };
 
         /**
@@ -486,6 +490,10 @@ angular.module('sntRover')
                     dialogData.restrictionTypes,
                     restrictionData.room_types,
                     restrictionData.all_room_type_restrictions);
+            
+            if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
+                $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
+            }
         };
 
         /**
