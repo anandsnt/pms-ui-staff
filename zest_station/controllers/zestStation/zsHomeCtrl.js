@@ -547,18 +547,8 @@ sntZestStation.controller('zsHomeCtrl', [
         };
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     $scope.init = function(){
+        $state.qr_code = null;
         if ($scope.inChromeApp){
             $scope.pressEsc();
         }

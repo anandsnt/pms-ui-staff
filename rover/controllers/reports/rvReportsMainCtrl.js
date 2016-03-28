@@ -41,10 +41,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.codeSettings   = payload.codeSettings;
 
-		// $scope.activeUserList = payload.activeUserList;
-		// _.each($scope.activeUserList, function(each) {
-		//     each.selected = true;
-		// });
+		$scope.activeUserList = payload.activeUserList;
 
 		$scope.showReportDetails = false;
 
@@ -1132,18 +1129,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include user ids
-			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
-				selected = [];
-				/**/
-				_.each(report.chosenUsers, function (id) {
-					var user = _.find($scope.activeUserList, function (each) {
-						return each.id === id;
-					});
-					if ( !! user ) {
-						selected.push( user );
-					};
-				});
-				/**/
+			if (report.hasUserFilter && report.empList.data.length) {
+				selected = _.where( report.empList.data, { selected: true } );
+
 				if ( selected.length > 0 ) {
 					key         = reportParams['USER_IDS'];
 					params[key] = [];
@@ -1156,9 +1144,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						};
 					});
 
-					// in case if all employees are selected
-					if ( changeAppliedFilter && $scope.activeUserList.length === selected.length ) {
-						$scope.appliedFilter.markets = ['All Employees'];
+					// in case if all users are selected
+					if ( changeAppliedFilter && report.empList.data.length === selected.length ) {
+						$scope.appliedFilter.users = ['All Users'];
 					};
 				};
 			};
@@ -1717,9 +1705,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || false;
 				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
-				// $scope.reportGroupedBy = response.group_by || '';
-
-				console.log( $scope.results );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;

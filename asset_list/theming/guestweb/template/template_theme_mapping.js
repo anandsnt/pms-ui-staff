@@ -70,7 +70,7 @@ module.exports = {
 										  sharedHtml],
 			'guestweb_eden' 		:[landingPartials + 'Eden_resorts/*.html',
 										  checkoutNowPartials+'Eden_resorts/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'*.html',
+										  checkoutNowlaterPartials+'Eden_resorts/*.html',
 										  checkinPartials+'Eden_resorts/*.html',checkinPartials+"*.html",
 										  precheckinPartials+'Eden/*.html', precheckinPartials+'*.html',
 										  sharedHtml],

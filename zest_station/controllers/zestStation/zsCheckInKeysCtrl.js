@@ -23,8 +23,22 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             var current=$state.current.name;
+            console.log('back from: ',current);
+            console.log('pickup keys      : ',$scope.isPickupKeys);
+            console.log('pickup keys state: ',$state.isPickupKeys);
+            
+            if ($state.isPickupKeys && $state.qr_code){
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                $state.lastAt = 'home';
+                $state.isPickupKeys = true;
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
+                $state.go('zest_station.reservation_search', {
+                    mode: zsModeConstants.PICKUP_KEY_MODE
+                });
+            }
+            
             if (current === 'zest_station.check_in_keys'){
-                $state.go ('zest_station.card_sign')
+                $state.go ('zest_station.card_sign');
             }
             //$state.go ('zest_station.home');//go back to reservation search results
 	});
@@ -556,6 +570,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.initKeySuccess();
 
             } else if (view === 'zest_station.pickup_keys'){
+                
+                
+                
                 console.info('at : ',view);
                 $stateParams.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $scope.at = 'select-keys-after-checkin';

@@ -271,7 +271,8 @@
                         {{'REGISTRATION_COMMUNICATION' | translate}}
                     </h3>
                 </div>
-                <div class="entry full-width">
+                <ad-toggle-button label="{{ 'SHOW_REGISTRATION_CARD_PRINT' | translate }}" is-checked="data.is_show_registration_card_button"></ad-toggle-button>
+                <div class="entry full-width" ng-show="data.is_show_registration_card_button">
                     <label translate>REGISTRATION_TEMPLATE</label>
                     <div class="select">
                         <select ng-model="data.selected_guest_registration_template" name="guest-bill-template" class="placeholder">
@@ -280,7 +281,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry full-width">
+                <div class="entry full-width" ng-show="data.is_show_registration_card_button">
                     <ad-toggle-button label="{{'SHOW_VEHICLE_INFORMATION'| translate}} " is-checked="data.show_vehicle_information"></ad-toggle-button>
                 </div>
             </fieldset>
