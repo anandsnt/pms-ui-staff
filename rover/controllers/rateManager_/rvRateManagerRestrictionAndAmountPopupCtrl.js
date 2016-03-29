@@ -18,6 +18,10 @@ angular.module('sntRover')
         BaseCtrl.call(this, $scope);
 
         /**
+         * IF YOU ARE HERE to DEBUG and NEW to here, start from initialization function in the bottom
+         */
+        
+        /**
          * util function to check whether a string is empty
          * we are assigning it as util's isEmpty function since it is using in html
          * @param {String/Object}
@@ -69,8 +73,8 @@ angular.module('sntRover')
          * @return {Boolean}
          */
         $scope.shouldShowApplyPriceCheckbox = () => 
-            [$scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE].indexOf($scope.ngDialogData.mode) > -1 && 
-            ['SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'].indexOf($scope.contentMiddleMode) > -1 ;
+            [$scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE].indexOf($scope.ngDialogData.mode) > -1 && 
+            ['SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'].indexOf($scope.contentMiddleMode) > -1 ;
         
         /**
          * to set the scrollers in the ui
@@ -128,7 +132,7 @@ angular.module('sntRover')
                     $scope.contentMiddleMode = '';
                     break;
                 
-                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                     initializeSingleRateRestrictionAndAmountMiddlePane();
                     break;
 
@@ -144,7 +148,7 @@ angular.module('sntRover')
          */
         $scope.priceStartedToCustomize = (key) => {
             switch($scope.ngDialogData.mode) {
-                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                     if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
                         $scope.priceDetails[key] = $scope.priceDetailsCopy[key];
                     }
@@ -154,6 +158,21 @@ angular.module('sntRover')
                     refreshScroller();
                     break;
             }
+        };
+
+        /**
+         * [description]
+         * @param  {[type]} clickedAgainstKey [description]
+         * @return {[type]}                   [description]
+         */
+        $scope.clickedOnApplyToAllOccupancies = (clickedAgainstKey) => {
+            _.without(['single', 'double', 'extra_adult', 'child'], clickedAgainstKey).map(key => {
+                $scope.priceDetails[key + '_changing_value'] = $scope.priceDetails[clickedAgainstKey + '_changing_value'];
+                $scope.priceDetails[key + '_amount_operator'] = $scope.priceDetails[clickedAgainstKey + '_amount_operator'];
+                $scope.priceDetails[key + '_amount_perc_cur_symbol'] = $scope.priceDetails[clickedAgainstKey + '_amount_perc_cur_symbol'];
+            });
+            //height will change with showing apply to all restrictin button showing
+            refreshScroller();
         };
 
         /**
@@ -226,7 +245,7 @@ angular.module('sntRover')
 
             if($scope.applyRestrictionsToDates) {
                 if($scope.untilDate === '') {
-                    $scope.errorMessage = ['Please choose until date'];
+                    //$scope.errorMessage = ['Please choose until date'];
                     return;
                 }
                 params.details.push({
@@ -292,7 +311,7 @@ angular.module('sntRover')
 
             if($scope.applyPriceToDates) {
                 if($scope.untilDate === '') {
-                    $scope.errorMessage = ['Please choose until date'];
+                    //$scope.errorMessage = ['Please choose until date'];
                     return;
                 }
                 params.details.push({
@@ -401,7 +420,7 @@ angular.module('sntRover')
                 restrictionToApply = [];
 
             params.rate_id = dialogData.rate.id;
-            if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE) {
+            if(mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
 
@@ -437,7 +456,8 @@ angular.module('sntRover')
                 case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
                     return callRoomTypeRestrictionUpdateAPI();
 
-                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
+                case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
+                case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                     return callRateRoomTypeRestrictionAndAmountUpdateAPI();
                 
                 default:
@@ -691,10 +711,10 @@ angular.module('sntRover')
                 roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
             
             if(dialogData.rate.is_hourly) {
-                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+                $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
             }
             else {
-                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
+                $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
                 
                 //some defult values used in templates
@@ -727,7 +747,7 @@ angular.module('sntRover')
          * [description]
          * @return {[type]} [description]
          */
-        const initializeSingleRateRestrictionAndAmountMode = () => {
+        const initializeSingleRateSingleRoomTypeRestrictionAndAmountMode = () => {
             var dialogData = $scope.ngDialogData,
                 roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
 
@@ -750,17 +770,80 @@ angular.module('sntRover')
 
             //if overriden, we need to notify in header (if it is not a child rate)
             if(!dialogData.rate.based_on_rate_id){
+                let headerToAdd = '';
+                
                 ['child_overridden', 'double_overridden', 'extra_adult_overridden', 'single_overridden']
                     .map(key => {
                         if($scope.priceDetails[key]) {
-                            $scope.headerNoticeOnRight = (!$scope.headerNoticeOnRight) ? 
-                                'Rate Amounts marked with * are edited!' :  
-                                $scope.headerNoticeOnRight + ', Rate Amounts marked with * are edited!';
+                            headerToAdd = 'Rate Amounts marked with * are edited!';
                         }
                     });
+
+                if(headerToAdd !== '') {
+                   $scope.headerNoticeOnRight = (!$scope.headerNoticeOnRight) ? headerToAdd :
+                                $scope.headerNoticeOnRight + ', ' + headerToAdd; 
+                }
             }
         };
 
+        const initializeSingleRateMultipleRoomTypeRestrictionAndAmountMiddlePane = () => {
+            var dialogData = $scope.ngDialogData,
+                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
+            
+            if(dialogData.rate.is_hourly) {
+                $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+            }
+            else {
+                $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
+                $scope.priceDetails = {};
+                
+                //some defult values used in templates
+                $scope.priceDetails.single_amount_operator = '+';
+                $scope.priceDetails.single_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.single_changing_value = '';
+
+                $scope.priceDetails.double_amount_operator = '+';
+                $scope.priceDetails.double_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.double_changing_value = '';
+
+                $scope.priceDetails.child_amount_operator = '+';
+                $scope.priceDetails.child_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.child_changing_value = '';
+
+                $scope.priceDetails.extra_adult_amount_operator = '+';
+                $scope.priceDetails.extra_adult_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.extra_adult_changing_value = '';
+
+                $scope.priceDetailsCopy = {...$scope.priceDetails};
+            }
+
+            if(dialogData.rate.based_on_rate_id) {
+               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+               $scope.parentRateName = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id}).name;
+            }
+        };
+
+        const initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode = () => {
+            var dialogData = $scope.ngDialogData,
+                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
+
+            $scope.header = formatDateForTopHeader(dialogData.date);
+
+            $scope.headerBottomLeftLabel = 'All room types';
+
+            $scope.headerBottomRightLabel = dialogData.rate.name;
+
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    roomTypePricesAndRestrictions.room_types,
+                    roomTypePricesAndRestrictions.rate_restrictions);
+            
+            if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
+                $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
+            }         
+
+            initializeSingleRateMultipleRoomTypeRestrictionAndAmountMiddlePane();
+        };
 
         /**
          * to initialize Mode based values
@@ -786,8 +869,12 @@ angular.module('sntRover')
                     initializeMultipleRoomTypeRestrictionMode();
                     break;
 
-                case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE:
-                    initializeSingleRateRestrictionAndAmountMode();
+                case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
+                    initializeSingleRateSingleRoomTypeRestrictionAndAmountMode();
+                    break;
+
+                case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
+                    initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode();
                     break;
 
                 dafault:

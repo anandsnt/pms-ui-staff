@@ -92,13 +92,9 @@ const mapDispatchToRateManagerGridRightSideRowsRestrictionListAndAmountContainer
                 var date = stateProps.dates[colIndex],
                     roomTypeIDs = [];
 
-                if(rowIndex === 0) {
-                    roomTypeIDs = _.pluck(stateProps.roomTypeRowsData.slice(1), 'id');
-                }
-                else if(rowIndex > 0) {
+                if(rowIndex > 0) {
                     roomTypeIDs = [stateProps.roomTypeRowsData[rowIndex].id];
                 }
-
                 return stateProps.clickedOnRoomTypeAndAmountCell({
                     roomTypeIDs,
                     date

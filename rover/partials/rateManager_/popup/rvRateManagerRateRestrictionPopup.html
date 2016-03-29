@@ -66,7 +66,7 @@
              		</div>
             	</div>
             	<div class="content-middle"> <!--ng-show="contentMiddleMode !== ''" -->
-            		<div ng-show="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'">
+            		<div ng-if="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'">
 						<div class="restriction_text" >
 						    <h3>
 						        PRICES
@@ -86,7 +86,7 @@
 						</div>            			
             		</div>
 
-            		<div ng-show="contentMiddleMode === 'RESTRICTION_EDITING'">
+            		<div ng-if="contentMiddleMode === 'RESTRICTION_EDITING'">
 	            		<div class="restriction_text">
 						    <h3>{{restrictionForShowingTheDetails.description}}</h3>
 						    <em>Adjust restriction for all room types</em>
@@ -110,7 +110,7 @@
 						</div>
             		</div>
 
-					<div class="no-content" ng-show="contentMiddleMode === 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE'">
+					<div class="no-content" ng-if="contentMiddleMode === 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE'">
 					    <div class="info">
 					        <span class="icon-no-content icon-rates"></span>
 					        <strong class="h1">Can't adjust price for child rate</strong>
@@ -123,9 +123,157 @@
 					        </button> 
 					    </div>
 					</div>
-            		<div id="" ng-if="contentMiddleMode === 'SINGLE_RATE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'">
+            		<div id="" ng-if="contentMiddleMode === 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'">
             		</div>
-            		<div id="restrictionPriceContainer" ng-show="contentMiddleMode === 'SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'" 
+            		<div id="restrictionPriceContainer" ng-if="contentMiddleMode === 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'" 
+            			class="price-div">
+					    <div class="restriction_text" >
+					        <h3>Adjust Price </h3>
+					        <em>Adjust price for all room type</em>
+					        <section class="price-field-container scrollable" ng-iscroll="room-type-price-editing">
+							    <div class="wrapper">
+
+							        <div class="price-fields">
+							            
+							            <label>
+							                SINGLE
+							            </label>							          
+							            
+							            <span class="entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.single_amount_operator">
+							                    <option value="+">+</option>
+							                    <option value="-">-</option>
+							                </select> 
+							            </span>
+
+							            <span class="extra_amount entry">
+							                <!-- if is disable ng-change="refreshScrollers()"d add attribute 'disabled="disabled"'-->
+							                <input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value">
+							            </span>
+							            
+							            <!-- add class .disabled if is disabled -->
+							            <span class="select_amount_diff entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.single_amount_perc_cur_symbol">
+							                    <option value="%">%</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
+							                </select> 
+							            </span>
+							            <br clear="all">
+
+							            <!-- remove class .hidden if price has changed-->
+							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.single_changing_value.trim() === ''}">
+							                <button ng-click="clickedOnApplyToAllOccupancies('single')" class="button blue apply-all-button">Apply to all occupancies</button>
+							            </div>
+							        </div>
+
+							        <div class="price-fields">
+							            <!-- Add class .has-override if has override -->
+							            <label >
+							                DOUBLE
+							            </label>   
+							           <span class="entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.double_amount_operator">
+							                    <option value="+">+</option>
+							                    <option value="-">-</option>
+							                </select> 
+							            </span>
+
+							            <span class="extra_amount entry">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <input type="text" ng-change="priceStartedToCustomize('double')" ng-model="priceDetails.double_changing_value">
+							            </span>
+
+							            <!-- add class .disabled if is disabled -->
+							            <span class="select_amount_diff entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.double_amount_perc_cur_symbol">
+							                    <option value="%">%</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
+							                </select> 
+							            </span>
+							            
+							        
+							            <br clear="all">
+
+							            <!-- remove class .hidden if price has changed-->
+							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.double_changing_value.trim() === ''}">
+							                <button ng-click="clickedOnApplyToAllOccupancies('double')" class="button blue apply-all-button">Apply to all occupancies</button>
+							            </div>
+							        </div>
+
+							        <div class="price-fields">
+							            <label ng-class="{'has-override': priceDetails.child_overridden}">
+							                CHILD
+							            </label>   
+							           <span class="entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.child_amount_operator">
+							                    <option value="+">+</option>
+							                    <option value="-">-</option>
+							                </select> 
+							            </span>
+
+							            <span class="extra_amount entry">
+							                <!-- if is disable d add attribute 'disabled="disabled"'-->
+							                <input type="text" ng-change="priceStartedToCustomize('child')" ng-model="priceDetails.child_changing_value">
+							            </span>
+							            
+							            <!-- add class .disabled if is disabled -->
+							            <span class="select_amount_diff entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.child_amount_perc_cur_symbol">
+							                    <option value="%">%</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
+							                </select> 
+							            </span>
+							            <br clear="all">
+
+							            <!-- remove class .hidden if price has changed-->
+							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.child_changing_value.trim() === ''}">
+							                <button ng-click="clickedOnApplyToAllOccupancies('child')" class="button blue apply-all-button">Apply to all occupancies</button>
+							            </div>
+							        </div>
+
+							        <div class="price-fields">
+							            <label>
+							                EXTRA ADULT
+							            </label>   
+							           <span class="entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.extra_adult_amount_operator">
+							                    <option value="+">+</option>
+							                    <option value="-">-</option>
+							                </select> 
+							            </span>
+
+							            <span class="extra_amount entry">
+							                <!-- if is disable d add attribute 'disabled="disabled"'-->
+							                <input type="text" ng-change="priceStartedToCustomize('extra_adult')" ng-model="priceDetails.extra_adult_changing_value">
+							            </span>
+							            
+							            <!-- add class .disabled if is disabled -->
+							            <span class="select_amount_diff entry select">
+							                <!-- if is disabled add attribute 'disabled="disabled"'-->
+							                <select ng-model="priceDetails.extra_adult_amount_perc_cur_symbol">
+							                    <option value="%">%</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
+							                </select> 
+							            </span>
+							            <br clear="all">
+
+							            <!-- remove class .hidden if price has changed-->
+							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.extra_adult_changing_value.trim() === ''}">
+							                <button ng-click="clickedOnApplyToAllOccupancies('extra_adult')" class="button blue apply-all-button">Apply to all occupancies</button>
+							            </div>
+							        </div>							        
+							    </div>
+							</section>
+					    </div>
+					</div>            		
+            		<div id="restrictionPriceContainer" ng-if="contentMiddleMode === 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'" 
             			class="price-div">
 					    <div class="restriction_text" >
 					        <h3>Adjust Price </h3>
@@ -177,7 +325,7 @@
 
 							            <!-- remove class .hidden if price has changed-->
 							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.single_changing_value.trim() === ''}">
-							                <button class="button blue apply-all-button">Apply to all occupancies</button>
+							                <button ng-click="clickedOnApplyToAllOccupancies('single')" class="button blue apply-all-button">Apply to all occupancies</button>
 							            </div>
 							        </div>
 
@@ -220,14 +368,13 @@
 							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
 							                </select> 
 							            </span>
-
 							            
 							        
 							            <br clear="all">
 
 							            <!-- remove class .hidden if price has changed-->
 							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.double_changing_value.trim() === ''}">
-							                <button class="button blue apply-all-button">Apply to all occupancies</button>
+							                <button ng-click="clickedOnApplyToAllOccupancies('double')" class="button blue apply-all-button">Apply to all occupancies</button>
 							            </div>
 							        </div>
 
@@ -275,7 +422,7 @@
 
 							            <!-- remove class .hidden if price has changed-->
 							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.child_changing_value.trim() === ''}">
-							                <button class="button blue apply-all-button">Apply to all occupancies</button>
+							                <button ng-click="clickedOnApplyToAllOccupancies('child')" class="button blue apply-all-button">Apply to all occupancies</button>
 							            </div>
 							        </div>
 
@@ -323,7 +470,7 @@
 
 							            <!-- remove class .hidden if price has changed-->
 							            <div class="apply-all-div" ng-class="{'hidden': priceDetails.extra_adult_changing_value.trim() === ''}">
-							                <button class="button blue apply-all-button">Apply to all occupancies</button>
+							                <button ng-click="clickedOnApplyToAllOccupancies('extra_adult')" class="button blue apply-all-button">Apply to all occupancies</button>
 							            </div>
 							        </div>							        
 							    </div>
