@@ -25,7 +25,9 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 		};
 	};
 	$scope.handleCloseDialog = function(){
+		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
+
 	};
 	/*
 	* Fee setup starts here
@@ -414,5 +416,34 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 			$scope.$digest();
 		}
 	};
+
+	/*
+	* Success call back of MLI swipe - from cards ctrl
+	*/
+	$scope.$on("SHOW_SWIPED_DATA_ON_PAY_SCREEN", function(e, swipedCardDataToRender){
+		//set variables to display the add mode
+		$scope.showCCPage  = true;
+        $scope.swippedCard = true;
+		$scope.addmode  = true;
+		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+	});
+
+
+	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
+
+		$scope.swipedCardDataToSave = swipedCardDataToSave;
+		var data 			= swipedCardDataToSave;
+		data.payment_credit_type = swipedCardDataToSave.cardType;
+		data.credit_card = swipedCardDataToSave.cardType;
+		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";
+	    $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
+			successCallBack: successNewPayment,
+			params: {
+				"bill_id": bill_id,
+				"data_to_pass":data
+			}
+		});
+
+	});
 
 }]);
