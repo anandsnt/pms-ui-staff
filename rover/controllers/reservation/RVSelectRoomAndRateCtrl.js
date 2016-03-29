@@ -1106,7 +1106,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							$scope.activeRoom,
 							$scope.reservationData.ratesMeta[payLoad.rate_id].taxes,
 							dayInfo.amount),
-						dayTotal = dayInfo.amount + taxAddonInfo.addon + parseFloat(taxAddonInfo.tax.excl);
+						// CICO-27226 Round day-wise totals 
+						dayTotal = Number(parseFloat(dayInfo.amount).toFixed(2)) +
+						Number(parseFloat(taxAddonInfo.addon).toFixed(2)) +
+						Number(parseFloat(taxAddonInfo.tax.excl).toFixed(2));
 
 					_.extend(dayInfo, {
 						addon: taxAddonInfo.addon,
@@ -1634,7 +1637,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							restriction: proccesedRestrictions.firstRestriction,
 							numRestrictions: proccesedRestrictions.restrictionCount || 0,
 							forRoomType: rate.room_type_id,
-							buttonClass: getBookButtonStyle(processRestrictions.restrictionCount || 0, rate.id),
+							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id),
 							showDays: false,
 							isGroupRate: !!$scope.reservationData.group.id,
 							isAllotmentRate: !!$scope.reservationData.allotment.id,
