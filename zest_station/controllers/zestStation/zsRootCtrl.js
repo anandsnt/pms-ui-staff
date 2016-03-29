@@ -982,6 +982,7 @@ sntZestStation.controller('zsRootCtrl', [
         intLanguageSettings();
         //set print and email options set from hotel settings > Zest > zest station
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
+        $scope.zestStationData.auto_print = $scope.zestStationData.registration_card.auto_print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
 	}();
 }]);
