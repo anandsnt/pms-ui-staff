@@ -53,7 +53,7 @@
                     </strong>
                 </span>
             </div>
-            <div class="entry full-width reference" ng-show="referenceTextAvailable && !depositPaidSuccesFully">
+            <div class="entry full-width reference" ng-show="!showCCPage &&referenceTextAvailable && !depositPaidSuccesFully">
                 <label for="reference">Reference</label>
                 <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
             </div>
