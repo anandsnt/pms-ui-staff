@@ -59,10 +59,3 @@
     <!-- <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div> -->
     <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'/assets/partials/reservation/rvRoomRatesCalendar.html'"></div>
 </section>
-<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
-    <li ng-repeat="rate in filteredRates" class="ui-menu-item" role="presentation">
-        <a class="ui-corner-all" tabindex="-1" ng-click="selectRate(rate)">
-            <span ng-bind-html="rate.name |highlight:stateCheck.rateFilterText:false"></span>
-        </a>
-    </li>
-</ul>

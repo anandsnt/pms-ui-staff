@@ -353,6 +353,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, roomType.rate_id),
 							showDays: false,
 							totalAmount: 0.0,
+							isCorporate: !!$scope.reservationData.ratesMeta[roomType.rate_id].account_id,
 							isGroupRate: !!$scope.reservationData.group.id,
 							isSuppressed: !!$scope.reservationData.ratesMeta[roomType.rate_id].is_suppress_rate_on,
 							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[roomType.rate_id].is_member,
@@ -388,6 +389,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id),
 							isGroupRate: !!$scope.reservationData.group.id,
 							isAllotmentRate: !!$scope.reservationData.allotment.id,
+							isCorporate: !!$scope.reservationData.ratesMeta[rate.id].account_id,
 							isSuppressed: !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
 							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member,
 							isPromotion: _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1
@@ -926,6 +928,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.rate.page = 1;
 
 			if ($scope.stateCheck.activeView === "RATE") {
+				// Reset search
+				$scope.stateCheck.rateFilterText = "";
 				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
@@ -1634,6 +1638,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							showDays: false,
 							isGroupRate: !!$scope.reservationData.group.id,
 							isAllotmentRate: !!$scope.reservationData.allotment.id,
+							isCorporate: !!$scope.reservationData.ratesMeta[rate.id].account_id,
 							isSuppressed: !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
 							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member,
 							isPromotion: !proccesedRestrictions.isPromoInvalid &&
@@ -1659,6 +1664,46 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- RATE TAB
+		///
+
+
+		$scope.rateAutoCompleteOptions = {
+			delay: 500,
+			minLength: 0,
+			position: {
+				my: "right top",
+				at: "right bottom",
+				of: "input#find-rates",
+				collision: 'fit'
+			},
+			source: function(request, response) {
+				var re = new RegExp(request.term, 'gi'),
+					filteredRates = $($scope.reservationData.ratesMeta).filter(function() {
+						return this.name.match(re);
+					}),
+					results = [];
+
+				_.each(filteredRates, function(rate) {
+					results.push({
+						label: rate.name,
+						value: rate.name,
+						id: rate.id
+					});
+				});
+				response(results);
+			},
+			select: function(event, ui) {
+				
+				// Reset Pagination
+				$scope.stateCheck.pagination.rate.page = 1;
+				// Populate with the selected
+				fetchRatesList(null, ui.item.id, 1, function(response) {
+					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
+					generateRatesGrid(response.results);
+					$scope.refreshScroll();
+				});
+			}
+		};
 
 		$scope.changeSelectedRoom = function(rate) {
 			rate.selectedRoom = _.find(rate.rooms, {
