@@ -69,6 +69,24 @@ angular.module('sntRover')
         const formatDateForTopHeader = (date) => formatDate(date, 'EEEE, dd MMMM yy');
 
         /**
+         * list of price key used in tmeplates & controller
+         * @type {Array}
+         */
+        const priceKeys = ['single', 'double', 'extra_adult', 'child'];
+
+        /**
+         * list of price overriding keys used in tmeplates & controller
+         * @type {Array}
+         */
+        const priceOverridingKeys = ['child_overridden', 'double_overridden', 'extra_adult_overridden', 'single_overridden'];
+
+        /**
+         * week days, we use this to create default selection value
+         * @type {Array}
+         */
+        const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+        /**
          * function to decide whether to show the applied price restriction checkbox
          * @return {Boolean}
          */
@@ -135,7 +153,7 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
-                    $scope.contentMiddleMode = '';
+                    $scope.contentMiddleMode = 'MULTIPLE_ROOM_TYPE_CHOOSE_RATE';
                     break;
                 
                 case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
@@ -172,7 +190,7 @@ angular.module('sntRover')
          * @return {[type]}                   [description]
          */
         $scope.clickedOnApplyToAllOccupancies = (clickedAgainstKey) => {
-            _.without(['single', 'double', 'extra_adult', 'child'], clickedAgainstKey).map(key => {
+            _.without(priceKeys, clickedAgainstKey).map(key => {
                 $scope.priceDetails[key + '_changing_value'] = $scope.priceDetails[clickedAgainstKey + '_changing_value'];
                 $scope.priceDetails[key + '_amount_operator'] = $scope.priceDetails[clickedAgainstKey + '_amount_operator'];
                 $scope.priceDetails[key + '_amount_perc_cur_symbol'] = $scope.priceDetails[clickedAgainstKey + '_amount_perc_cur_symbol'];
@@ -304,7 +322,7 @@ angular.module('sntRover')
                 to_date: formatDateForAPI(dialogData.date)
             });
             const index = params.details.length - 1;
-            ['single', 'double', 'extra_adult', 'child'].map( key => addAmountParamForAPI(key, params.details[index]));
+            priceKeys.map( key => addAmountParamForAPI(key, params.details[index]));
         };
 
         /**
@@ -326,7 +344,7 @@ angular.module('sntRover')
                 });
                 let index = params.details.length - 1;
 
-                ['single', 'double', 'extra_adult', 'child'].map( key => addAmountParamForAPI(key, params.details[index]));
+                priceKeys.map( key => addAmountParamForAPI(key, params.details[index]));
 
                 params.details[index].weekdays = {};
                 $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
@@ -568,60 +586,6 @@ angular.module('sntRover')
         };
 
         /**
-         * to initialize the data model
-         */
-        const initializeDataModels = () => {
-            $scope.header = '';
-            
-            $scope.headerBottomLeftLabel = '';
-            
-            $scope.headerBottomRightLabel = '';
-            
-            $scope.headerNoticeOnRight = '';
-
-            $scope.roomTypeAndPrices = [];
-
-            $scope.restrictionList =  [];
-
-            $scope.contentMiddleMode = ''; //values possible: 'ROOM_TYPE_PRICE_LISTING', 'RESTRICTION_EDITING'
-
-            $scope.modeConstants = rvRateManagerPopUpConstants;
-
-            $scope.applyRestrictionsToDates = false;
-
-            $scope.applyPriceToDates = false;
-
-            $scope.weekDayRepeatSelection = [{
-                weekDay: 'mon',
-                selected: false
-            },
-            {
-                weekDay: 'tue',
-                selected: false
-            },
-            {
-                weekDay: 'wed',
-                selected: false
-            },
-            {
-                weekDay: 'thu',
-                selected: false
-            },
-            {
-                weekDay: 'fri',
-                selected: false
-            },
-            {
-                weekDay: 'sat',
-                selected: false
-            },
-            {
-                weekDay: 'sun',
-                selected: false
-            }];
-        };
-
-        /**
          * to initialize the variabes on RM_SINGLE_RATE_RESTRICTION_MODE
          */
         const initializeSingleRateRestrictionMode = () => {
@@ -712,6 +676,8 @@ angular.module('sntRover')
             if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
             }
+
+            $scope.contentMiddleMode = 'MULTIPLE_ROOM_TYPE_CHOOSE_RATE';
         };
 
         const initializeSingleRateRestrictionAndAmountMiddlePane = () => {
@@ -723,30 +689,13 @@ angular.module('sntRover')
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
                 
                 //some defult values used in templates
-                $scope.priceDetails.single_amount_operator = '+';
-                $scope.priceDetails.single_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.single_changing_value = '';                
+                setDefaultPriceAdjustValues('single', $scope.priceDetails);           
             }
             else {
                 $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
-                
-                //some defult values used in templates
-                $scope.priceDetails.single_amount_operator = '+';
-                $scope.priceDetails.single_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.single_changing_value = '';
 
-                $scope.priceDetails.double_amount_operator = '+';
-                $scope.priceDetails.double_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.double_changing_value = '';
-
-                $scope.priceDetails.child_amount_operator = '+';
-                $scope.priceDetails.child_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.child_changing_value = '';
-
-                $scope.priceDetails.extra_adult_amount_operator = '+';
-                $scope.priceDetails.extra_adult_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.extra_adult_changing_value = '';
+                priceKeys.map(priceKey => setDefaultPriceAdjustValues(priceKey, $scope.priceDetails));
 
                 $scope.priceDetailsCopy = {...$scope.priceDetails};
             }
@@ -786,7 +735,7 @@ angular.module('sntRover')
             if(!dialogData.rate.based_on_rate_id){
                 let headerToAdd = '';
                 
-                ['child_overridden', 'double_overridden', 'extra_adult_overridden', 'single_overridden']
+                priceOverridingKeys
                     .map(key => {
                         if($scope.priceDetails[key]) {
                             headerToAdd = 'Rate Amounts marked with * are edited!';
@@ -800,6 +749,22 @@ angular.module('sntRover')
             }
         };
 
+        /**
+         * utility method to set the default 
+         * @param  {string} key
+         * @param  {Object} priceDetails
+         * will modify the price details passing
+         */
+        const setDefaultPriceAdjustValues = (key, priceDetails) => {
+            //check the templates pls, you will get there, these are the model &it's values used in templates
+            priceDetails[key + '_amount_operator'] = '+';
+            priceDetails[key + '_amount_perc_cur_symbol'] = '%';
+            priceDetails[key + '_changing_value'] =  '';
+        };
+
+        /**
+         * to initialize the MIDDLE panel of single rate's expandable view's multiple room type
+         */
         const initializeSingleRateMultipleRoomTypeRestrictionAndAmountMiddlePane = () => {
             var dialogData = $scope.ngDialogData,
                 roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
@@ -811,22 +776,8 @@ angular.module('sntRover')
                 $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
                 $scope.priceDetails = {};
                 
-                //some defult values used in templates
-                $scope.priceDetails.single_amount_operator = '+';
-                $scope.priceDetails.single_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.single_changing_value = '';
-
-                $scope.priceDetails.double_amount_operator = '+';
-                $scope.priceDetails.double_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.double_changing_value = '';
-
-                $scope.priceDetails.child_amount_operator = '+';
-                $scope.priceDetails.child_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.child_changing_value = '';
-
-                $scope.priceDetails.extra_adult_amount_operator = '+';
-                $scope.priceDetails.extra_adult_amount_perc_cur_symbol = '%';
-                $scope.priceDetails.extra_adult_changing_value = '';
+                //forming the default model key value pairs used in templates
+                priceKeys.map(priceKey => setDefaultPriceAdjustValues(priceKey, $scope.priceDetails));
 
                 $scope.priceDetailsCopy = {...$scope.priceDetails};
             }
@@ -837,6 +788,12 @@ angular.module('sntRover')
             }
         };
 
+        /**
+         * AMOUNT & RESTRICTION SHOWING GRID - top header
+         * ie., single rate's expandable view's top header
+         * when clicked on top row of the grid (all room types)
+         * this function used to initialize the popup on that mode
+         */
         const initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode = () => {
             var dialogData = $scope.ngDialogData,
                 roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
@@ -895,6 +852,37 @@ angular.module('sntRover')
                     break;
             }
         };
+
+        /**
+         * to initialize the data model
+         */
+        const initializeDataModels = () => {
+            $scope.header = '';
+            
+            $scope.headerBottomLeftLabel = '';
+            
+            $scope.headerBottomRightLabel = '';
+            
+            $scope.headerNoticeOnRight = '';
+
+            $scope.roomTypeAndPrices = [];
+
+            $scope.restrictionList =  [];
+
+            $scope.contentMiddleMode = ''; //values possible: 'ROOM_TYPE_PRICE_LISTING', 'RESTRICTION_EDITING'
+
+            $scope.modeConstants = rvRateManagerPopUpConstants;
+
+            $scope.applyRestrictionsToDates = false;
+
+            $scope.applyPriceToDates = false;
+
+            $scope.weekDayRepeatSelection = weekDays.map(weekDay => ({
+                weekDay: weekDay,
+                selected: false
+            }));
+        };
+
 
         /**
          * initialization stuffs
