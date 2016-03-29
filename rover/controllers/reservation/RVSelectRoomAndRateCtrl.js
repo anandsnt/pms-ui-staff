@@ -931,7 +931,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                 canOverbookHouse = true;
                 //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
                 if($scope.getLeastAvailability(roomId, rateId) < 1){
-                	return false;
+                	return true;
 				}
 				//CICO-24923 TEMPORARY
             }
