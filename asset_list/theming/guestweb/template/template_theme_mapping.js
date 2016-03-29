@@ -15,7 +15,7 @@ module.exports = {
 		return {
 			'guestweb_row' 			:[landingPartials + 'Row_nyc/*.html',
 										  checkoutNowPartials+'Row_nyc/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'*.html',
+										  checkoutNowlaterPartials+'*.html',checkoutNowlaterPartials+'Row_nyc/*.html',
 										  checkinPartials+'Row_nyc/*.html',checkinPartials+"*.html",
 										  precheckinPartials+'Row_nyc/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
