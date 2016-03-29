@@ -677,6 +677,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE,
             roomType: _.findWhere(cachedRoomTypeList, { id: successCallBackParameters.roomTypeID }),
             rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
+            rates: cachedRateList,
             restrictionTypes,
             date: successCallBackParameters.date
         };

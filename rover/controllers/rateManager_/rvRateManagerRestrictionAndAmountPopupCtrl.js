@@ -68,8 +68,9 @@ angular.module('sntRover')
          * function to decide whether to show the applied price restriction checkbox
          * @return {Boolean}
          */
-        $scope.shouldShowApplyPriceCheckbox = () => [$scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE]
-            .indexOf($scope.ngDialogData.mode) > -1;
+        $scope.shouldShowApplyPriceCheckbox = () => 
+            [$scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE].indexOf($scope.ngDialogData.mode) > -1 && 
+            ['SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'].indexOf($scope.contentMiddleMode) > -1 ;
         
         /**
          * to set the scrollers in the ui
@@ -399,6 +400,7 @@ angular.module('sntRover')
                 mode = dialogData.mode,
                 restrictionToApply = [];
 
+            params.rate_id = dialogData.rate.id;
             if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
@@ -717,6 +719,7 @@ angular.module('sntRover')
 
             if(dialogData.rate.based_on_rate_id) {
                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+               $scope.parentRateName = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id}).name;
             }
         };
 
