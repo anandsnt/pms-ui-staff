@@ -741,9 +741,21 @@ angular.module('sntRover')
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
-            }            
+            }         
 
             initializeSingleRateRestrictionAndAmountMiddlePane();
+
+            //if overriden, we need to notify in header (if it is not a child rate)
+            if(!dialogData.rate.based_on_rate_id){
+                ['child_overridden', 'double_overridden', 'extra_adult_overridden', 'single_overridden']
+                    .map(key => {
+                        if($scope.priceDetails[key]) {
+                            $scope.headerNoticeOnRight = (!$scope.headerNoticeOnRight) ? 
+                                'Rate Amounts marked with * are edited!' :  
+                                $scope.headerNoticeOnRight + ', Rate Amounts marked with * are edited!';
+                        }
+                    });
+            }
         };
 
 
