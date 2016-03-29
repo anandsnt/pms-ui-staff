@@ -259,6 +259,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
             $scope.showAllRates = true;
           }
         }
+        scrollTo('.tabs-nav');
       };
 
       /**

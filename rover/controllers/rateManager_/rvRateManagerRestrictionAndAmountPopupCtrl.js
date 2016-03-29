@@ -65,6 +65,13 @@ angular.module('sntRover')
         const formatDateForTopHeader = (date) => formatDate(date, 'EEEE, MMMM yy');
 
         /**
+         * function to decide whether to show the applied price restriction checkbox
+         * @return {Boolean}
+         */
+        $scope.shouldShowApplyPriceCheckbox = () => [$scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_AMOUNT_MODE]
+            .indexOf($scope.ngDialogData.mode) > -1;
+        
+        /**
          * to set the scrollers in the ui
          */
         const setScroller = () => {
@@ -202,6 +209,126 @@ angular.module('sntRover')
             }))
         };
 
+
+        /**
+         * utility method to form api param as it is same acroos apis's
+         * modifiy the params's details
+         * @param  {Object} params
+         */
+        const formRestrictionParamDetailForWeekDaysForAPI = (params) => {
+            var dialogData = $scope.ngDialogData,
+                editedRestrictions = getEditedRestrictionsForAPI();
+            
+            if(!editedRestrictions.length) {
+                return false;
+            }
+
+            if($scope.applyRestrictionsToDates) {
+                if($scope.untilDate === '') {
+                    $scope.errorMessage = ['Please choose until date'];
+                    return;
+                }
+                params.details.push({
+                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
+                    to_date: formatDateForAPI($scope.untilDate),
+                    restrictions: editedRestrictions
+                });
+                let index = params.details.length - 1;
+                params.details[index].weekdays = {};
+                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
+                    .map(weekDay => params.details[index].weekdays[weekDay.weekDay] = weekDay.selected);
+            }           
+        };
+
+        /**
+         * utility method to form day restriction param to api
+         * modifiy the params's details
+         * @param  {Object} params
+         */
+        const formDayRestrictionParamsForAPI = (params) => {
+            var dialogData = $scope.ngDialogData,
+                editedRestrictions = getEditedRestrictionsForAPI();
+            
+            if(!editedRestrictions.length) {
+                return;
+            }
+
+            params.details.push({
+                from_date: formatDateForAPI(dialogData.date),
+                to_date: formatDateForAPI(dialogData.date),
+                restrictions: editedRestrictions
+            });
+        };
+
+
+        /**
+         * utility method to form day amount param to api
+         * modifiy the params's details
+         * @param  {Object} params
+         */
+        const formDayAmountParamsForAPI = (params) => {
+            var dialogData = $scope.ngDialogData;
+            
+            if(_.isEqual($scope.priceDetails, $scope.priceDetailsCopy)) {
+                return;
+            }
+
+            params.details.push({
+                from_date: formatDateForAPI(dialogData.date),
+                to_date: formatDateForAPI(dialogData.date)
+            });
+            const index = params.details.length - 1;
+            ['single', 'double', 'extra_adult', 'child'].map( key => addAmountParamForAPI(key, params.details[index]));
+        };
+
+        /**
+         * utility method to form weekday amount param to api
+         * modifiy the params's details
+         * @param  {Object} params
+         */
+        const formWeekDaysAmountParamsForAPI = (params) => {
+            var dialogData = $scope.ngDialogData;
+
+            if($scope.applyPriceToDates) {
+                if($scope.untilDate === '') {
+                    $scope.errorMessage = ['Please choose until date'];
+                    return;
+                }
+                params.details.push({
+                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
+                    to_date: formatDateForAPI($scope.untilDate)
+                });
+                let index = params.details.length - 1;
+
+                ['single', 'double', 'extra_adult', 'child'].map( key => addAmountParamForAPI(key, params.details[index]));
+
+                params.details[index].weekdays = {};
+                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
+                    .map(weekDay => params.details[index].weekdays[weekDay.weekDay] = weekDay.selected);
+            }
+        };
+
+        /**
+         * utility method to form day amount param to api
+         * modifiy the params's details
+         * @param  {Object} params
+         */
+        const addAmountParamForAPI = (key, paramDetail) => {
+            if($scope.priceDetails[key] !== $scope.priceDetailsCopy[key]) {
+                paramDetail[key] = {
+                    type: 'amount_new',
+                    value: parseFloat($scope.priceDetails[key])
+                };
+            }
+            else {
+                if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
+                    paramDetail[key] = {
+                        type: $scope.priceDetails[key + '_amount_perc_cur_symbol'] === '%' ? 'percent_diff' : 'amount_diff',
+                        value: parseFloat($scope.priceDetails[key + '_amount_operator'] + $scope.priceDetails[key + '_changing_value'])
+                    };
+                }                     
+            }
+        };
         /**
          * to update restriction rate
          */
@@ -221,26 +348,11 @@ angular.module('sntRover')
             restrictionToApply = getEditedRestrictionsForAPI();
 
             params.details = [];
-            params.details.push({
-                from_date: formatDateForAPI(dialogData.date),
-                to_date: formatDateForAPI(dialogData.date),
-                restrictions: restrictionToApply
-            });
+            
+            formDayRestrictionParamsForAPI(params);
 
-            if($scope.applyRestrictionsToDates) {
-                if($scope.untilDate === '') {
-                    $scope.errorMessage = ['Please choose until date'];
-                    return;
-                }
-                params.details.push({
-                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
-                    to_date: formatDateForAPI($scope.untilDate),
-                    restrictions: restrictionToApply
-                });
-                params.details[1].weekdays = {};
-                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
-                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
-            }
+            formRestrictionParamDetailForWeekDaysForAPI(params);
+
             const options = {
                 params,
                 onSuccess: onUpdateRateRestrictionData
@@ -265,26 +377,11 @@ angular.module('sntRover')
             restrictionToApply = getEditedRestrictionsForAPI();
 
             params.details = [];
-            params.details.push({
-                from_date: formatDateForAPI(dialogData.date),
-                to_date: formatDateForAPI(dialogData.date),
-                restrictions: restrictionToApply
-            });
+            
+            formDayRestrictionParamsForAPI(params);
 
-            if($scope.applyRestrictionsToDates) {
-                if($scope.untilDate === '') {
-                    $scope.errorMessage = ['Please choose until date'];
-                    return;
-                }
-                params.details.push({
-                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
-                    to_date: formatDateForAPI($scope.untilDate),
-                    restrictions: restrictionToApply
-                });
-                params.details[1].weekdays = {};
-                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
-                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
-            }
+            formRestrictionParamDetailForWeekDaysForAPI(params);
+
             const options = {
                 params,
                 onSuccess: onUpdateRateRestrictionData
@@ -306,44 +403,15 @@ angular.module('sntRover')
                 params.room_type_id = dialogData.roomType.id;
             }
 
-            restrictionToApply = getEditedRestrictionsForAPI();
-
             params.details = [];
-            params.details.push({
-                from_date: formatDateForAPI(dialogData.date),
-                to_date: formatDateForAPI(dialogData.date),
-                restrictions: restrictionToApply
-            });
+            
+            formDayRestrictionParamsForAPI(params);
 
-            if($scope.applyRestrictionsToDates) {
-                if($scope.untilDate === '') {
-                    $scope.errorMessage = ['Please choose until date'];
-                    return;
-                }
-                params.details.push({
-                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
-                    to_date: formatDateForAPI($scope.untilDate),
-                    restrictions: restrictionToApply
-                });
-                params.details[1].weekdays = {};
-                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
-                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
-            }
+            formRestrictionParamDetailForWeekDaysForAPI(params);
 
-            if($scope.applyPriceToDates) {
-                if($scope.untilDate === '') {
-                    $scope.errorMessage = ['Please choose until date'];
-                    return;
-                }
-                params.details.push({
-                    from_date: formatDateForAPI(util.addOneDay(tzIndependentDate(dialogData.date))),
-                    to_date: formatDateForAPI($scope.untilDate)
-                });
-                params.details[params.details.length - 1].weekdays = {};
-                $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
-                    .map(weekDay => params.details[1].weekdays[weekDay.weekDay] = weekDay.selected);
-            }
+            formDayAmountParamsForAPI(params);
 
+            formWeekDaysAmountParamsForAPI(params);
 
             const options = {
                 params,
@@ -462,6 +530,7 @@ angular.module('sntRover')
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,
                 minDate: tzIndependentDate(util.addOneDay(tzIndependentDate($scope.ngDialogData.date))),
+                defaultDate: tzIndependentDate(util.addOneDay(tzIndependentDate($scope.ngDialogData.date))),
                 onSelect:function(date, datePickerObj) {
                     $scope.untilDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
                 }
@@ -626,6 +695,7 @@ angular.module('sntRover')
                 $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
                 
+                //some defult values used in templates
                 $scope.priceDetails.single_amount_operator = '+';
                 $scope.priceDetails.single_amount_perc_cur_symbol = '%';
                 $scope.priceDetails.single_changing_value = '';

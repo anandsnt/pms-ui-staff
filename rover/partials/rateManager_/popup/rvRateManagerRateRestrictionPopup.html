@@ -157,7 +157,7 @@
 							                <!-- if is disabled add attribute 'disabled="disabled"'-->
 							                <select ng-model="priceDetails.single_amount_perc_cur_symbol">
 							                    <option value="%">%</option>
-							                    <option value="$">$</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
 							                </select> 
 							            </span>
 							            <br clear="all">
@@ -204,7 +204,7 @@
 							                <!-- if is disabled add attribute 'disabled="disabled"'-->
 							                <select ng-model="priceDetails.double_amount_perc_cur_symbol">
 							                    <option value="%">%</option>
-							                    <option value="$">$</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
 							                </select> 
 							            </span>
 
@@ -255,7 +255,7 @@
 							                <!-- if is disabled add attribute 'disabled="disabled"'-->
 							                <select ng-model="priceDetails.child_amount_perc_cur_symbol">
 							                    <option value="%">%</option>
-							                    <option value="$">$</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
 							                </select> 
 							            </span>
 							            <br clear="all">
@@ -303,7 +303,7 @@
 							                <!-- if is disabled add attribute 'disabled="disabled"'-->
 							                <select ng-model="priceDetails.extra_adult_amount_perc_cur_symbol">
 							                    <option value="%">%</option>
-							                    <option value="$">$</option>
+							                    <option value="{{currencySymbol}}">{{currencySymbol}}</option>
 							                </select> 
 							            </span>
 							            <br clear="all">
@@ -322,7 +322,7 @@
 	                <h3>Repeat on Dates</h3>
 
 		            <!-- Add class .checked when checked-->
-		            <label class="checkbox" ng-class="{'checked': applyPriceToDates}">
+		            <label class="checkbox" ng-show="shouldShowApplyPriceCheckbox()" ng-class="{'checked': applyPriceToDates}">
 		                <!-- add class .checked when checked -->
 		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyPriceToDates}"></span>
 		                <!-- add attribute 'checked="checked"' when checked-->
