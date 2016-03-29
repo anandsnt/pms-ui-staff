@@ -47,7 +47,6 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 		};
 
 		var clearTimer = function() {
-			console.log(timer);
 			if ( !! timer ) {
 				$interval.cancel(timer);
 				timer = undefined;
@@ -60,11 +59,9 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 
 				if ( ! timer ) {
 					timer = $interval(refreshScroll, 1000);
-					console.log('timer set');
 				}
 
 				$scope.$parent.myScroll[SCROLL_NAME].on('scroll', function() {
-					console.log('scroll called');
 					clearTimer();
 				});
 			} else {
