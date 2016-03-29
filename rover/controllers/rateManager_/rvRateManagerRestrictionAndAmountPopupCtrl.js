@@ -155,9 +155,9 @@ angular.module('sntRover')
                     else {
                         $scope.priceDetails[key + '_changing_value'] = '';
                     }
-                    refreshScroller();
                     break;
             }
+            refreshScroller();
         };
 
         /**
@@ -671,7 +671,7 @@ angular.module('sntRover')
             
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
-            $scope.headerBottomRightLabel = '';
+            $scope.headerBottomRightLabel = 'All Rates';
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -694,7 +694,7 @@ angular.module('sntRover')
 
             $scope.headerBottomLeftLabel = 'All Room types';
 
-            $scope.headerBottomRightLabel = '';
+            $scope.headerBottomRightLabel = 'All Rates';
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -712,6 +712,12 @@ angular.module('sntRover')
             
             if(dialogData.rate.is_hourly) {
                 $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+                $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
+                
+                //some defult values used in templates
+                $scope.priceDetails.single_amount_operator = '+';
+                $scope.priceDetails.single_amount_perc_cur_symbol = '%';
+                $scope.priceDetails.single_changing_value = '';                
             }
             else {
                 $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
