@@ -242,6 +242,13 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     return 'DAY_NIGHTS';
                 }
             };
+            $scope.getTotalNightsOrHours = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return $scope.selectedReservation.total_hours;
+                }else{
+                    return $scope.selectedReservation.total_nights;
+                }
+            }
             
             $scope.initRoomError = function(){
                 $state.go('zest_station.room_error');  
