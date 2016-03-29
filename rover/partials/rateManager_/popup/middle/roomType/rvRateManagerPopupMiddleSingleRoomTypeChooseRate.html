@@ -1,0 +1,30 @@
+<div class="scrollable">
+    <div class="restriction_text" >
+        <h3>
+            Prices
+        </h3>
+        <!-- 'Text' :
+        	- If we are viewing rates in Rate_View: 'Prices for all room types',
+        	- If we are viewing rooms in Rate_View: 'Prices for this room type'
+        -->
+        <em>Prices for this room type</em>
+    </div>
+
+    <div class="no-content">
+         <div class="info">
+            <span class="icon-no-content icon-rates"></span>
+           	
+           	<!-- 'Text_1':
+           		- If we are viewing rates in Rate_View: 'Select a Rate'
+           		- If we are viewing rooms in Rate_View: 'No Rate'
+           	-->
+            <strong class="h1" ng-hide="true"></strong>
+            <!-- 'Text_2':
+           		- If we are viewing rates in Rate_View: 'Prices can be viewed only for specific rates'
+           		- If we are viewing rooms in Rate_View: 'Please select at lease one rate to show prices for <strong>ROOM_TYPE_NAME</strong>'
+           	-->
+            <span class="h2">Please select one rate to show prices for <strong>{{header}}</strong></span>
+        </div>
+    </div>
+       
+</div>

@@ -66,7 +66,7 @@ angular.module('sntRover')
         * @param  {Object} date
         * @return {String}
         */
-        const formatDateForTopHeader = (date) => formatDate(date, 'EEEE, MMMM yy');
+        const formatDateForTopHeader = (date) => formatDate(date, 'EEEE, dd MMMM yy');
 
         /**
          * function to decide whether to show the applied price restriction checkbox
@@ -126,8 +126,14 @@ angular.module('sntRover')
                     $scope.contentMiddleMode = 'ROOM_TYPE_PRICE_LISTING';
                     break;
                 
-                case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
                 case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
+                    $scope.contentMiddleMode = 'SINGLE_ROOM_TYPE_CHOOSE_RATE';
+                    break;
+
+                case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
+                    $scope.contentMiddleMode = 'MULTIPLE_RATE_CHOOSE_RATE';
+                    break;
+
                 case $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE:
                     $scope.contentMiddleMode = '';
                     break;
@@ -658,7 +664,9 @@ angular.module('sntRover')
             
             if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Rates!';
-            }            
+            }
+
+            $scope.contentMiddleMode = 'MULTIPLE_RATE_CHOOSE_RATE';          
         };
 
         /**
@@ -671,7 +679,7 @@ angular.module('sntRover')
             
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
-            $scope.headerBottomRightLabel = 'All Rates';
+            $scope.headerBottomRightLabel = '';
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -680,7 +688,7 @@ angular.module('sntRover')
 
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
-            $scope.contentMiddleMode = '';
+            $scope.contentMiddleMode = 'SINGLE_ROOM_TYPE_CHOOSE_RATE';
         };
 
         /**

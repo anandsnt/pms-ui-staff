@@ -18,32 +18,40 @@
 	        <div class="modal-body">
 	        	<div class="content-left">
                     <span 
-                    rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupLeftRestrictionList.html">
+                    rv-include-template="/assets/partials/rateManager_/popup/left/rvRateManagerPopupLeftRestrictionList.html">
             		</span>
             	</div>
             	<div class="content-middle"> <!--ng-show="contentMiddleMode !== ''" -->
             		<span ng-if="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'"
-            			rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupMiddleRoomTypePriceListing.html">
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleRoomTypePriceListing.html">
+            		</span>
+            		
+            		<span ng-if="contentMiddleMode === 'SINGLE_ROOM_TYPE_CHOOSE_RATE'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleSingleRoomTypeChooseRate.html">
+            		</span>
+
+            		<span ng-if="contentMiddleMode === 'MULTIPLE_RATE_CHOOSE_RATE'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleAllRatesSelectRate.html">
             		</span>
 
             		<span ng-if="contentMiddleMode === 'RESTRICTION_EDITING'"
-            			rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupMiddleRestrictionEditing.html">
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rvRateManagerPopupMiddleRestrictionEditing.html">
             		</span>
 
             		<span ng-if="contentMiddleMode === 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE'"
-            			rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupMiddleSingleRateRoomTypeChildRate.html">
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateRoomTypeChildRate.html">
             		</span>
 
 					<span ng-if="contentMiddleMode === 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'"
-						rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupMiddleSingleRateSingleRoomTypeHourlyAmount.html">
+						rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateSingleRoomTypeHourlyAmount.html">
 					</span>
 
 					<span ng-if="contentMiddleMode === 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'"
-            			rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupMiddleSingleRateMultipleRoomTypeNightlyAmount.html">
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateMultipleRoomTypeNightlyAmount.html">
             		</span>
 
             		<span ng-if="contentMiddleMode === 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'"
-            			rv-include-template="/assets/partials/rateManager_/popup/rvRateManagerPopupMiddleSingleRateSingleRoomTypeNightlyAmount.html">
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateSingleRoomTypeNightlyAmount.html">
             		</span>
             	</div>
             	<div class="content-right">
