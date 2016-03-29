@@ -2,6 +2,8 @@
 
 	"STATIONARY":"Stationary",
 	"CUSTOMIZE":"Customize",
+	"CONFIRMATION": "Confirmation",
+	"GUEST": "Guest" ,
 	"GUEST_BILL_TITLE": "Guest Bill",
 	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
 	"HOTEL_LOGO":"Hotel Logo",
@@ -79,6 +81,21 @@
 	"DEFAULT_GUEST_BILL" : "Default Guest Bill",
 	"DEFAULT_ACCOUNT_BILL" : "Default Account Bill",
 	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
+
+	"SELECT LANGUAGE": "Select Language",
+	"GROUP_CONFIRMATION": "Group Confirmation",
+	"HOLD_STATUS": "Hold Status",
+	"SELECT_HOLD_STATUS": "Select Hold Status",
+	"GROUP_CONFIRMATION_EMAIL_SUBJECT": "Confirmation Email Subject",
+	"CONFIRMATION_HEADER_TEXT": "Confirmation Header Text",
+	"CONFIRMATION_HEADER_TEXT_PLACE_HOLDER": "Enter Confirmation Header Text",
+	"CONFIRMATION_FOOTER_TEXT": "Confirmation Footer Text",
+	"CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER": "Enter Confirmation Footer Text",
+	"LOCATION_URL_PLACE_HOLDER": "Enter Location URL",
+	"LOCATION_URL_LABEL_PLACE_HOLDER": "Enter Location URL Label",
+
+	"GROUP": "Group",
+
 	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print"
 
 
