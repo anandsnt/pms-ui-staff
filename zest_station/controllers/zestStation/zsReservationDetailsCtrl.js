@@ -42,6 +42,9 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 } else if ($state.lastAt === 'find-by-date'){
                     $state.go('zest_station.find_by_date');
                     
+                }else if ($state.lastAt === 'find-by-no-of-nights'){
+                    $state.go('zest_station.find_by_no_of_nights');
+                    
                 }
             }
             //$state.go ('zest_station.home');//go back to reservation search results

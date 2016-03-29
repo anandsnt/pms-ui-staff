@@ -787,7 +787,6 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.reservation_search_qrcode');
             };
             $scope.onChromeAppResponse = function(response){
-                console.info('RECEIVED app msg',response);
                 if (response){
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
@@ -847,10 +846,10 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.initVirtualKeyboard = function(){
                 console.log('init virtual keyboard');
                   if ($scope.inChromeApp && $scope.theme === 'yotel'){
-                setTimeout(function(){
-                    new initScreenKeyboardListener();
-                    $scope.inputFocus();//tries to bring up the keyboard so user doesnt need to click on input field
-                },100);
+                    setTimeout(function(){
+                        new initScreenKeyboardListener();
+                        $scope.inputFocus();//tries to bring up the keyboard so user doesnt need to click on input field
+                    },100);
                 }
             };
             $scope.pressEsc = function() {
