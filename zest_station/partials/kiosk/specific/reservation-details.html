@@ -19,7 +19,7 @@
                         <button type="button" class="button" touch-press="addRemoveGuests()" ng-hide="isInCheckoutMode()">{{'ADD_REMOVE_GUESTS' |translate}} </button>
                     </div>
                     <ul id="rate" class="reservation-details">
-                        <li >{{getModeText()|translate}}<span>{{selectedReservation.total_nights}}</span></li>
+                        <li >{{getModeText()|translate}}<span>{{getTotalNightsOrHours()}}</span></li>
                         <li ng-hide="is_rates_suppressed" >{{getRateTypeText() |translate}}<span>{{currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span></li>
                         
                         <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
