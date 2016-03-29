@@ -59,9 +59,13 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			if ( $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
 				refreshScroll();
 
-				timer = $interval(refreshScroll, 1000);
+				if ( ! timer ) {
+					timer = $interval(refreshScroll, 1000);
+				}
 
-				$scope.$parent.myScroll[SCROLL_NAME].on('scroll', clearTimer);
+				$scope.$parent.myScroll[SCROLL_NAME].on('scroll', function() {
+					clearTimer();
+				});
 			} else {
 				$timeout(setScrollListner, 1000);
 			}
