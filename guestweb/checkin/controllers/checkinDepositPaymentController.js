@@ -74,12 +74,7 @@
 			//submit payment
 			guestDetailsService.submitPayment(params).then(function(response) {
 				$scope.isLoading = false;
-				if(response.status === "success"){
-					onSucess(response);
-				}
-				else{
-					onFailure();
-				}
+				onSucess(response);
 			}, function() {
 				$scope.isLoading = false;
 				onFailure();
