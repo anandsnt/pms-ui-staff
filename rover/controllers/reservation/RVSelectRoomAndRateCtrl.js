@@ -1637,7 +1637,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							restriction: proccesedRestrictions.firstRestriction,
 							numRestrictions: proccesedRestrictions.restrictionCount || 0,
 							forRoomType: rate.room_type_id,
-							buttonClass: getBookButtonStyle(processRestrictions.restrictionCount || 0, rate.id),
+							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id),
 							showDays: false,
 							isGroupRate: !!$scope.reservationData.group.id,
 							isAllotmentRate: !!$scope.reservationData.allotment.id,
