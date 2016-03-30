@@ -59,7 +59,8 @@
 "QR_FAIL_OVER":"QR Failover",
 "KEY_CARD_LOOK_UP":"Keycard Lookup",
 "CHROME_APP_ID":"Chrome App ID",
-"STATION_PRINTER_OPTIONS" : "Station Printer Options"
+"STATION_PRINTER_OPTIONS" : "Station Printer Options",
+"OWS_GUEST_MESSAGES" : "OWS Guest Messages"
 
 
 
