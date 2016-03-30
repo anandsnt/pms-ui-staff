@@ -14,127 +14,15 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     };
     refreshArOverviewScroll();
 
-    /// Need to remove accounts
-    var accounts = [{
-        "account_name": "StayNTouch",
-        "ar_number": "47343",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 1,
-        "aging_date": "2016-03-24",
-        "aging_days": 0,
-        "current_balance": -2.0,
-        "type":"COMPANY"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "555",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 1,
-        "aging_date": "2016-03-24",
-        "aging_days": 0,
-        "current_balance": 0.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },,{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    },{
-        "account_name": "StayNTouch",
-        "ar_number": "1456",
-        "account_number": "123",
-        "city": "City",
-        "state": "State",
-        "open_bill": 5,
-        "aging_date": "2016-03-24",
-        "aging_days": 12,
-        "current_balance": 2.0,
-        "type":"TRAVELAGENT"
-    }];
     /*
      *   Method to initialize the AR Overview Data set.
      */  
     var fetchArOverviewData = function(){
         var successCallBackFetchAccountsReceivables = function(data){
+
             $scope.arOverviewData = {};
             $scope.arOverviewData = data;
-            $scope.arOverviewData.accounts = accounts;///need to remove
-            $scope.arOverviewData.total_result = 10;///need to remove
+
             $scope.errorMessage = "";
             refreshArOverviewScroll();
             $scope.$emit('hideLoader');
@@ -149,7 +37,6 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             'ageing_days'   : $scope.filterData.ageingDays,
             'sort_by'       : $scope.filterData.sortBy
         };
-        console.log(params);
         $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
     };
 
@@ -161,14 +48,15 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         'searchQuery'   : '',
         'minAmount'     : '',
         'sortBy'        : 'NAME_ASC',
-        'ageingDays'    : '30',
+        'ageingDays'    : '',
         
         'ageingDaysList':
         [
-            {   'value' : '30'  },
-            {   'value' : '60'  },
-            {   'value' : '90'  },
-            {   'value' : '120' }
+            {   'value' : ''    ,   'name'  : ''    },
+            {   'value' : '30'  ,   'name'  : '30'  },
+            {   'value' : '60'  ,   'name'  : '60'  },
+            {   'value' : '90'  ,   'name'  : '90'  },
+            {   'value' : '120' ,   'name'  : '120' }
         ],
         'sortList'      :
         [
@@ -181,6 +69,10 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 
     // Filter block starts here ..
     $scope.changedSearchQuery = function(){
+
+        $scope.filterData.minAmount     = "";
+        $scope.filterData.ageingDays    = "";
+        
         if($scope.filterData.searchQuery.length > 2 ){
             fetchArOverviewData();
         }
