@@ -82,16 +82,43 @@
 		return deferred.promise;
 		
 	};
+
+	var fetchDepositDetails = function(){
+		var deferred = $q.defer();
+		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/deposit_details';
+		$http.get(url).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
+	var submitPayment = function(data){
+		var deferred = $q.defer();
+		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/submit_payment';
+		$http.post(url,data).success(function(response) {
+			this.responseData = response;
+			deferred.resolve(this.responseData);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
 	
 
 	return {
-	responseData: responseData,
-	postGuestDetails : postGuestDetails,
-	getGuestDetails:getGuestDetails,
-	fetchCountryList:fetchCountryList,
-	postGuestBirthDate:postGuestBirthDate,
-	fetchCountryCode:fetchCountryCode,
-	fetchHotelTime:fetchHotelTime
+	responseData		: responseData,
+	postGuestDetails 	: postGuestDetails,
+	getGuestDetails		: getGuestDetails,
+	fetchCountryList	: fetchCountryList,
+	postGuestBirthDate	: postGuestBirthDate,
+	fetchCountryCode	: fetchCountryCode,
+	fetchHotelTime 		: fetchHotelTime,
+	fetchDepositDetails	: fetchDepositDetails,
+	submitPayment 		: submitPayment
 	}
 };
 

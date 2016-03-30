@@ -961,6 +961,17 @@ sntZestStation.controller('zsRootCtrl', [
             console.info("::Starting QR Code Scanner::"); 
         }
     };
+
+    var setPrinterOptions = function(){
+         if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+            //add startac styles
+            applyStarTacStyles();//zsUtils function
+         }
+         else{
+            //RECEIPT and AIR_PRINT
+            applyPrintMargin();//zsUtils function
+         };
+    };
     
 	/**
 	 * [initializeMe description]
@@ -979,6 +990,8 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        //based upon admin settings set printer css styles
+        setPrinterOptions();
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         $scope.socketOperator = new webSocketOperations();
         $scope.zestStationData.keyCardInserted =  false;
