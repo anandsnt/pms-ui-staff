@@ -145,7 +145,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('emailVerification', {
     	url: '/emailVerification',
-	 	templateUrl: '/assets/zest/partials/zoku/emailVerificationStatus.html',
+	 	templateUrl: '/assets/zest/partials/zoku/emailVerificationStatusNew.html',
 	 	controller : 'emailVerificationStatusController',
 	 	title: 'Email Verification'
 	});
