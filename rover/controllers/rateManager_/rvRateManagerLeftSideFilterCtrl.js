@@ -93,7 +93,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         }
 
         clearAllRatesAndAllRoomTypes();
-
+        $scope.deleteAllSelectedCards();
       };
 
       /**
@@ -162,6 +162,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           }
 
           clearAllRatesAndAllRoomTypes();
+          $scope.deleteAllSelectedCards();
         }
       };
 
@@ -229,6 +230,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         //we will clear out all selected from other tab
         $scope.deleteAllSelectedRates();
         $scope.deleteAllSelectedRateTypes();
+        $scope.deleteAllSelectedCards();
       };
 
       /**
@@ -289,20 +291,34 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       };
 
       /**
+       * utility method to clear all selection from tabs
+       */
+      const clearAllRatesAllRoomTypesAllRateTypesAllRates = () => {
+        clearAllRatesAndAllRoomTypes();
+        $scope.deleteAllSelectedRateTypes();
+        $scope.deleteAllSelectedRates();
+      }
+
+      /**
        * on choosing the card from search result
        */
       $scope.cardSelected = (event, ui) => {
         if (!$scope.selectedCards.length) {
           $scope.selectedCards.push(ui.item);
-
         } 
         else {
           let selectedCardIDs = _.pluck($scope.selectedCards, 'id');
           if (selectedCardIDs.indexOf(ui.item.id) < 0) {
             $scope.selectedCards.push(ui.item);
           }
-          
         }
+
+        clearAllRatesAllRoomTypesAllRateTypesAllRates();
+        
+        $scope.showAllRates = true;
+        
+        $scope.chosenTab = 'SHOW_ALL';
+
         runDigestCycle();
 
         //we're adding nodes
