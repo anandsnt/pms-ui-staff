@@ -1528,6 +1528,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+            $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };
 

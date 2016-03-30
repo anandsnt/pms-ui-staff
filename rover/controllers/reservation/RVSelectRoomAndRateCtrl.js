@@ -1809,6 +1809,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENERS
 		// reset Page
 		var reInitialize = function() {
+			$scope.stateCheck.roomDetails = getCurrentRoomDetails();
+			
 			$scope.stateCheck.pagination.roomType.page = 1;
 			$scope.stateCheck.pagination.rate.page = 1;
 
