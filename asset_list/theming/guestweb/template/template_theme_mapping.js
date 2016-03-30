@@ -15,7 +15,7 @@ module.exports = {
 		return {
 			'guestweb_row' 			:[landingPartials + 'Row_nyc/*.html',
 										  checkoutNowPartials+'Row_nyc/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'*.html',
+										  checkoutNowlaterPartials+'*.html',checkoutNowlaterPartials+'Row_nyc/*.html',
 										  checkinPartials+'Row_nyc/*.html',checkinPartials+"*.html",
 										  precheckinPartials+'Row_nyc/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
@@ -210,6 +210,12 @@ module.exports = {
 										precheckinPartials+'*.html'],
 
 			'guestweb_naples_grande'		:[ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+			'guestweb_time_hotel'		 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',

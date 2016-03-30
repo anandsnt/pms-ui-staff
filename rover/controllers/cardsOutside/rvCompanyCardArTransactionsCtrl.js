@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -9,6 +9,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		var init = function(){
 			$scope.arTransactionDetails = {};
 			$scope.arTransactionDetails.ar_transactions = [];
+			$scope.paymentModalOpened = false;
 			fetchData();
 		};
 
@@ -103,7 +104,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
 
-			    
+
 
 				$timeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
@@ -408,12 +409,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		$scope.payAmount = function(){
+			$scope.passData = getPassData();
 			ngDialog.open({
 	      		template:'/assets/partials/companyCard/rvArTransactionsPayCredits.html',
 		        controller: 'RVArTransactionsPayCreditsController',
 		        className: '',
 		        scope: $scope
 	      	});
+	      	$scope.paymentModalOpened = true;
 		};
 
 		$scope.getTimeConverted = function(time){
@@ -464,6 +467,56 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    	fetchData();
 	    };
 
+	    /*
+		* Data object to pass to the credit pay controller
+		*/
+	    var getPassData = function() {
+			var passData = {
+				"account_id": $scope.contactInformation.id,
+				"is_swiped": false,
+				"details": {
+					"firstName": "",
+					"lastName": ""
+				}
+			};
+			return passData;
+		};
+
+		/*
+		 *	MLI SWIPE actions
+		 */
+		var processSwipedData = function(swipedCardData) {
+
+			var passData = getPassData();
+			var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+
+		};
+
+		/*
+		 * Handle swipe action
+		 */
+
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			if ($scope.paymentModalOpened) {
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue) {
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+			} else {
+				return;
+			};
+		});
+
+		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+			$scope.paymentModalOpened = false;
+		});
 
 
 }]);

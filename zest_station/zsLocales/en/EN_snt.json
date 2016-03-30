@@ -22,6 +22,8 @@
     "RESIDENTS": "guest(s)",
     "ADD_REMOVE_GUESTS": "Add / Remove Guests",
    "AVG_DAILY": "Average Daily Rate",
+   "HOURLY_RATE":"Hourly Rate",
+   "HOURS":"Hours",
    "INCLUDED": "INCLUDED",
    "ADDTL_GUESTS_HEADING": "Additional Guests",
     "ENTER_LAST": "Enter the Guest’s Last Name",
