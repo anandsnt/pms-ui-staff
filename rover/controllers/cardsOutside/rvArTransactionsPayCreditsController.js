@@ -446,4 +446,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 
 	});
 
+	/**
+	 * MLI error - from cards ctrl
+	 */
+	$scope.$on("MLI_ERROR", function(e,data){
+	 	$scope.errorMessage = data;
+	});
+
 }]);
