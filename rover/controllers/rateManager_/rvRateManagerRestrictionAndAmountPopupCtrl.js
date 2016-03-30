@@ -91,8 +91,17 @@ angular.module('sntRover')
          * @return {Boolean}
          */
         $scope.shouldShowApplyPriceCheckbox = () => 
-            [$scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE].indexOf($scope.ngDialogData.mode) > -1 && 
-            ['SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'].indexOf($scope.contentMiddleMode) > -1 ;
+            [
+                $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE,
+                $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE
+            ]
+            .indexOf($scope.ngDialogData.mode) > -1 && 
+            [   
+                'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
+                'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT',
+                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'
+            ]
+            .indexOf($scope.contentMiddleMode) > -1 ;
         
         /**
          * to set the scrollers in the ui
@@ -689,7 +698,9 @@ angular.module('sntRover')
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
                 
                 //some defult values used in templates
-                setDefaultPriceAdjustValues('single', $scope.priceDetails);           
+                setDefaultPriceAdjustValues('single', $scope.priceDetails);
+
+                $scope.priceDetailsCopy = {...$scope.priceDetails};         
             }
             else {
                 $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
@@ -771,6 +782,13 @@ angular.module('sntRover')
             
             if(dialogData.rate.is_hourly) {
                 $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+                
+                $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
+                
+                //some defult values used in templates
+                setDefaultPriceAdjustValues('single', $scope.priceDetails);
+
+                $scope.priceDetailsCopy = {...$scope.priceDetails};                 
             }
             else {
                 $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
