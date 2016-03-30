@@ -1,10 +1,13 @@
-sntRover.controller('RVAccountsReceivablesController', ['$scope','$stateParams', '$filter', 'RVAccountsReceivablesSrv', function($scope, $stateParams, $filter, RVAccountsReceivablesSrv ) {
+sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVAccountsReceivablesSrv', function($scope, $rootScope, $stateParams, $filter, RVAccountsReceivablesSrv ) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_ACCOUNTS_RECEIVABLES'));
 	$scope.setTitle($filter('translate')('MENU_ACCOUNTS_RECEIVABLES'));
 
+    /**
+     * Setting up scroller with refresh options..
+     */
     $scope.setScroller('arOverViewScroll', {});
     var refreshArOverviewScroll = function(){
         setTimeout(function(){$scope.refreshScroller('arOverViewScroll');}, 500);
@@ -126,7 +129,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope','$stateParams',
     /*
      *   Method to initialize the AR Overview Data set.
      */  
-    var initArOverviewData = function(){
+    var fetchArOverviewData = function(){
         var successCallBackFetchAccountsReceivables = function(data){
             $scope.arOverviewData = {};
             $scope.arOverviewData = data;
@@ -139,50 +142,80 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope','$stateParams',
         };
 
         var params = {
-            'query'     : $scope.filterData.searchQuery,
-            'page'      : $scope.page,
-            'per_page'  : $scope.filterData.perPage,
-            'min_amount': $scope.filterData.minAmount,
-            'aging_days': $scope.filterData.ageingDays,
-            'sort_by'   : $scope.filterData.sortBy
+            'query'         : $scope.filterData.searchQuery,
+            'page'          : $scope.filterData.page,
+            'per_page'      : $scope.filterData.perPage,
+            'min_amount'    : $scope.filterData.minAmount,
+            'ageing_days'   : $scope.filterData.ageingDays,
+            'sort_by'       : $scope.filterData.sortBy
         };
-
+        console.log(params);
         $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
     };
 
+    // Setting filter data set for pagination and filter options..
     $scope.filterData = {
-        'perPage'       : 50,
+
+        'page'          : 1,
+        'perPage'       : '50',
         'searchQuery'   : '',
-        'ageingDays'    : 30,
         'minAmount'     : '',
+        'sortBy'        : 'NAME_ASC',
+        'ageingDays'    : '30',
+        
         'ageingDaysList':
         [
-            {   'value' : '30' },
-            {   'value' : '60' },
-            {   'value' : '90' },
-            {   'value' : '120'}
+            {   'value' : '30'  },
+            {   'value' : '60'  },
+            {   'value' : '90'  },
+            {   'value' : '120' }
         ],
         'sortList'      :
         [
-            {   'value' : 'NAME_ASC'    ,'name':  'NAME ASC'   },
-            {   'value' : 'NAME_DESC'   ,'name':  'NAME DESC'  },
-            {   'value' : 'AMOUNT_ASC'  ,'name':  'AMOUNT ASC' },
-            {   'value' : 'AMOUNT_DESC' ,'name':  'AMOUNT DESC'}
+            {   'value' : 'NAME_ASC'    ,   'name':  'NAME ASC'   },
+            {   'value' : 'NAME_DESC'   ,   'name':  'NAME DESC'  },
+            {   'value' : 'AMOUNT_ASC'  ,   'name':  'AMOUNT ASC' },
+            {   'value' : 'AMOUNT_DESC' ,   'name':  'AMOUNT DESC'}
         ]
     };
 
+    // Filter block starts here ..
+    $scope.changedSearchQuery = function(){
+        if($scope.filterData.searchQuery.length > 2 ){
+            fetchArOverviewData();
+        }
+    };
+
+    $scope.clearSearchQuery = function(){
+        $scope.filterData.searchQuery = '';
+    };
+
+    $scope.changedMinAmount = function(){
+        fetchArOverviewData();
+    };
+
+    $scope.changedSortBy = function(){
+        fetchArOverviewData();
+    };
+
+    $scope.changedAgeingDays = function(){
+        fetchArOverviewData();
+    };
+    // Filter block ends here ..
+
+    // Pagination block starts here ..
     $scope.loadNextSet = function() {
-        $scope.page++;
+        $scope.filterData.page++;
         $scope.nextAction = true;
         $scope.prevAction = false;
-        initArOverviewData();
+        fetchArOverviewData();
     };
 
     $scope.loadPrevSet = function() {
-        $scope.page--;
+        $scope.filterData.page--;
         $scope.nextAction = false;
         $scope.prevAction = true;
-        initArOverviewData();
+        fetchArOverviewData();
     };
 
     $scope.isNextButtonDisabled = function() {
@@ -195,22 +228,21 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope','$stateParams',
 
     $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
-        if ($scope.page === 1) {
+        if ($scope.filterData.page === 1) {
             isDisabled = true;
         }
         return isDisabled;
     };
 
     var initPaginationParams = function() {
-        $scope.page = 1;
+        $scope.filterData.page = 1;
         $scope.start = 1;
         $scope.end = $scope.start + $scope.arOverviewData.accounts.length - 1;
         $scope.nextAction = false;
         $scope.prevAction = false;
     };
+    // Pagination block ends here ..
 
-    initArOverviewData();
-
-    
+    fetchArOverviewData();
 
 }]);

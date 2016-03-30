@@ -3,29 +3,29 @@
     <!-- Search form -->
     <form method="get" action="" name="accounts-receivables-search-form" id="accounts-receivables-search-form" class="search-form has-options three-options" role="search">
         <div class="entry search">
-            <button id="accounts-receivables-clear-query" class="clear-query">
+            <button ng-click="clearSearchQuery()" id="accounts-receivables-clear-query" class="clear-query">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
-            <input name="accounts-receivables-query" id="accounts-receivables-query" class="query" placeholder="Search by AR Account Name or Number, IATA Number, Corporate ID or City" type="search" autocomplete="off" >
+            <input name="accounts-receivables-query" ng-model="filterData.searchQuery" ng-change="changedSearchQuery()" id="accounts-receivables-query" class="query" placeholder="Search by AR Account Name or Number, IATA Number, Corporate ID or City" type="search" autocomplete="off" >
         </div>
         <div class="entry options">
             <div class="input with-label">
                 <label for="min-amount">Min. Amount ($)</label>
-                <input ng-model="filterData.minAmount" type="text">
+                <input ng-model="filterData.minAmount" ng-change="changedMinAmount()" type="text">
             </div>
 
             <div class="select with-label larger-select">
                 <label for="sort-by">Sort By</label>
-                <select ng-model="filterData.sortBy" id="sort-by">
+                <select ng-model="filterData.sortBy" ng-change="changedSortBy()" id="sort-by">
                     <option ng-repeat="item in filterData.sortList" value="{{item.value}}">{{item.name}}</option>
                 </select>
             </div>
 
             <div class="select with-label">
                 <label for="ageing-days">Ageing Days</label>
-                <select ng-model="filterData.ageingDays" id="ageing-days">
-                    <option ng-repeat="item in filterData.ageingDaysList" value="{{item.value}}"></option>
+                <select ng-model="filterData.ageingDays" ng-change="changedAgeingDays()" id="ageing-days">
+                    <option ng-repeat="item in filterData.ageingDaysList" value="{{item.value}}">{{item.value}}</option>
                 </select>
             </div>
         </div>
