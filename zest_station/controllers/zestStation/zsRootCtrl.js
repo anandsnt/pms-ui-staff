@@ -322,6 +322,8 @@ sntZestStation.controller('zsRootCtrl', [
             setTimeout(function(){
                 $('body').css('display', 'block');
             },50);
+            //based upon admin settings set printer css styles
+            setPrinterOptions();
         };
         
         $scope.getHotelStationTheme = function(){
@@ -963,9 +965,16 @@ sntZestStation.controller('zsRootCtrl', [
     };
 
     var setPrinterOptions = function(){
+        // alert($scope.zestStationData.zest_printer_option)
          if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
             //add startac styles
-            applyStarTacStyles();//zsUtils function
+            if($scope.theme === 'yotel'){
+                 applyStylesForYotelStarTac();//zsUtils function
+            }
+            else{
+                applyStarTacStyles();//zsUtils function
+            }
+           
          }
          else{
             //RECEIPT and AIR_PRINT
@@ -990,8 +999,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
-        //based upon admin settings set printer css styles
-        setPrinterOptions();
+        
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         $scope.socketOperator = new webSocketOperations();
         $scope.zestStationData.keyCardInserted =  false;
