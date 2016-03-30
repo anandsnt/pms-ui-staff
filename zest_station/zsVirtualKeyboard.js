@@ -223,7 +223,6 @@ this.initScreenKeyboardListener = function(closeHandler){
         
         $(this.elSelector)
                 .not( document.getElementById( "datepicker" ) )
-                .not( document.getElementById( "input" ) )
                     .focus(this.focusHandler).blur(this.blurHandler);
         
         return that;

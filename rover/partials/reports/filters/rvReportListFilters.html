@@ -235,11 +235,11 @@
     </div>
 </div>
 
-<div class="filter" ng-if="item.hasUserFilter">
-    <label>Employees</label>
-    <input class="icons icon-search" auto-complete auto-options="listUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="item.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-user" ng-focus="returnItem(item)">
-    <select multiple class="hidden" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
+
+<div class="options employees" ng-if="item.hasUserFilter && item.empList.data.length">
+    <multi-option-selection label="Employees" data="item.empList.data" options="{hasSearch: true, selectAll: true, key: 'full_name', altKey: 'email'}"></multi-option-selection>
 </div>
+
 
 <div class="options long-list" ng-if="item.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">
     <label for="report-options">Option(s)</label>

@@ -764,7 +764,7 @@ sntRover.controller('RVbillCardController',
 	 		if(!$scope.paymentModalSwipeHappened && swipedCardData !== undefined){
 	 			$scope.isSwipeHappenedDuringCheckin = true;
 	 			swipedTrackDataForCheckin = swipedCardData;
-	 			passData.details.isClickedCheckin = true;
+	 			if(!$scope.putInQueue) passData.details.isClickedCheckin = true;
 	 		}
 	 	}
 

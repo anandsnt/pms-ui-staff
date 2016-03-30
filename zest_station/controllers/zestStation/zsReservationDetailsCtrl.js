@@ -123,9 +123,13 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
                 //fetch the idle timer settings
                 $scope.currencySymbol = $scope.zestStationData.currencySymbol;
-
+                
+                var conf = $scope.selectedReservation.confirmation_number;
+                if ($state.qr_code){
+                    conf = $scope.selectedReservation.confirmation_num;
+                }
                 $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
-                    'id': $scope.selectedReservation.confirmation_number
+                    'id': conf
                 }, $scope.onSuccessFetchReservationDetails);
             }
             
@@ -224,6 +228,27 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 
                
             };
+            $scope.getRateTypeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURLY_RATE';
+                }else{
+                    return 'AVG_DAILY';
+                }
+            };
+            $scope.getModeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURS';
+                }else{
+                    return 'DAY_NIGHTS';
+                }
+            };
+            $scope.getTotalNightsOrHours = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return $scope.selectedReservation.total_hours;
+                }else{
+                    return $scope.selectedReservation.total_nights;
+                }
+            }
             
             $scope.initRoomError = function(){
                 $state.go('zest_station.room_error');  
@@ -260,6 +285,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     nites = parseInt(info.total_nights);
                     $scope.selectedReservation.total_nights = nites;
+                    $scope.selectedReservation.total_hours = info.no_of_hours;
                     avgDailyRate = parseFloat(info.avg_daily_rate).toFixed(2);
                     
                     deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);

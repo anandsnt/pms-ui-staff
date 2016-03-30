@@ -47,11 +47,13 @@ sntZestStation.controller('zsHomeCtrl', [
 
 
             if(!$scope.zestStationData.checkout_keycard_lookup){
+                $scope.initVirtualKeyboard();
                 $state.go('zest_station.reservation_search', {
                     mode: zsModeConstants.CHECKOUT_MODE
                 });
             }
             else{
+                $scope.initVirtualKeyboard();
                 $state.go('zest_station.checkout_options');
             };
 	};
@@ -547,18 +549,8 @@ sntZestStation.controller('zsHomeCtrl', [
         };
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     $scope.init = function(){
+        $state.qr_code = null;
         if ($scope.inChromeApp){
             $scope.pressEsc();
         }
