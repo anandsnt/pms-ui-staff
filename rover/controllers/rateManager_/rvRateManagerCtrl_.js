@@ -62,11 +62,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     });
 
-      /**
-       * when the daily rates success
-       * @param  {Object}
-       */
-      var onfetchDailyRatesSuccess = (response) => {
+    /**
+     * handle method to porcess the response for 'All Rates mode'
+     * @param  {Object} response
+     */
+    var processForAllRates = (response) => {
         var rateRestrictions = response.dailyRateAndRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
             dates = _.pluck(rateRestrictions, 'date'),
@@ -92,69 +92,107 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //which is buggy from browser to browser, so choosing this bad way
         //may be this will result in running 365000 times
         ratesWithRestrictions = ratesWithRestrictions.map((rate) => {
-          rate.restrictionList = [];
+            rate.restrictionList = [];
 
-          rate = {...rate, ...rateObjectBasedOnID[rate.id]};
+            rate = {...rate, ...rateObjectBasedOnID[rate.id]};
 
-          dates.map((date) => {
+            dates.map((date) => {
             dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
-            rate.restrictionList.push(dateRateSet.restrictions);
-          });
+                rate.restrictionList.push(dateRateSet.restrictions);
+            });
 
-          return _.omit(rate, 'restrictions');
+            return _.omit(rate, 'restrictions');
         });
 
         //for the first row with common restrictions among the rates
         //for now there will not be any id, we have to use certain things to identify (later) TODO
 
         ratesWithRestrictions.unshift({
-          restrictionList: dates.map((date) => {
-            return rateRestrictions[date].all_rate_restrictions;
-          })
+            restrictionList: dates.map((date) => {
+                return rateRestrictions[date].all_rate_restrictions;
+            })
         });
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
         console.log('Strted: ', new Date().getTime());
         store.dispatch({
-          type: RM_RX_CONST.RATE_VIEW_CHANGED,
-          rateRestrictionData: [...ratesWithRestrictions],
-          dates,
-          zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
-          businessDate: tzIndependentDate($rootScope.businessDate),
-          restrictionTypes,
-          callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+            type: RM_RX_CONST.RATE_VIEW_CHANGED,
+            rateRestrictionData: [...ratesWithRestrictions],
+            dates,
+            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
+            businessDate: tzIndependentDate($rootScope.businessDate),
+            restrictionTypes,
+            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });
-      };
+    };
 
-      /**
-       * to fetch the daily rates
-       * @param  {Object} filter values
-       */
-      var fetchDailyRates = (filterValues) => {
+    /**
+    * when the daily rates success
+    * @param  {Object}
+    * @param  {Object}
+    */
+    var onFetchDailyRatesSuccess = (response, successCallBackParameters) => {
+        /* 
+            TWO CASES, from filter if we choose
+            1. select all rates & NO company/travel agent card attached
+                will redirect to normal all rate's view
+            2. select all rates & company/travel agent card attached
+                if the response has more than one rate, will redirect to all rates view
+                if the response has only one rate, will redirect to single rate's expandable view
+        */
+        if(!successCallBackParameters.selectedCards.length){
+            return processForAllRates(response);   
+        }
+        else if (successCallBackParameters.selectedCards.length) {
+            let numberOfRates = response.dailyRateAndRestrictions[0].rates.length;
+            if(numberOfRates === 1) {
+                let rates = !cachedRateList.length ? response.rates : cachedRateList;
+                
+                //rateList now cached, we will not fetch that again
+                cachedRateList = rates;     
+                
+                lastSelectedFilterValues[activeFilterIndex].selectedRates = _.where(rates, { id:response.dailyRateAndRestrictions[0].rates[0].id });
+
+                fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
+            }
+            else{
+                return processForAllRates(response);
+            }
+        }
+    };
+
+    /**
+    * to fetch the daily rates
+    * @param  {Object} filter values
+    */
+    var fetchDailyRates = (filterValues) => {
         var params = {
-          from_date: formatDateForAPI(filterValues.fromDate),
-          to_date: formatDateForAPI(filterValues.toDate),
-          order_id: filterValues.orderID,
-          'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
-          group_by: filterValues.groupBySelectedValue,
-          fetchRates: !cachedRateList.length
+            from_date: formatDateForAPI(filterValues.fromDate),
+            to_date: formatDateForAPI(filterValues.toDate),
+            order_id: filterValues.orderID,
+            'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
+            group_by: filterValues.groupBySelectedValue,
+            fetchRates: !cachedRateList.length
         };
 
         if (filterValues.selectedRateTypes.length) {
-          params['rate_type_ids[]'] = _.pluck(filterValues.selectedRateTypes, 'id');
+            params['rate_type_ids[]'] = _.pluck(filterValues.selectedRateTypes, 'id');
         }
 
         if (filterValues.selectedRates.length) {
-          params['rate_ids[]'] = _.pluck(filterValues.selectedRates, 'id');
+            params['rate_ids[]'] = _.pluck(filterValues.selectedRates, 'id');
         }
 
         var options = {
-          params: params,
-          onSuccess: onfetchDailyRatesSuccess
+            params: params,
+            onSuccess: onFetchDailyRatesSuccess,
+            successCallBackParameters: {
+                selectedCards: filterValues.selectedCards
+            }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
-      };
+    };
 
       /**
        * when the daily rates success
@@ -1011,4 +1049,4 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         renderGridView();
     })();
 
-    }]);
+}]);
