@@ -48,6 +48,15 @@ a,a:hover,.main-text,
     background:#af030b;
     color:@white;
 }
+.dual-button{
+  font-size:35px;
+  font-weight:300;
+}
+.btn-template{
+  font-size:35px;
+  font-weight:300;
+  padding:4%;
+}
 .dark-button,.dark-button:hover{
     background: #af030b !important;
 }
@@ -68,7 +77,13 @@ a,a:hover,.main-text,
     text-decoration: underline;
     text-transform:none;
 }
-
+.strong-font{
+  font-weight:500;
+}
+.amount,.time{
+  font-size:30px;
+  line-height:1.2;
+}
 .down-arrow-button{
     background-image:url('/assets/guestweb/common_images/black/down_arrow.png'); 
 }
@@ -86,7 +101,6 @@ a,a:hover,.main-text,
 .upgrades-label{
     color:#BA7A55;
 }
-
 
 /*----------------- date picker -------------------------*/
 
@@ -153,10 +167,10 @@ a,a:hover,.main-text,
 }
 
 .date-picker-wrap {
-  background-color: #FAE9E0 !important;
+  background-color: gray !important;
 }
 .date-picker-bg {
-  background: rgba(0,0,0,0.5);
+  background: unset;
 }
 .horizontal-line-sep-mobile{
   border-top: 1px solid #9b9b9b;
@@ -165,14 +179,39 @@ a,a:hover,.main-text,
   color:black;
 }
 .date-text{
-  color:#AF653B;
+  color:#af030b;
 }
+.logo-image {
+        margin: 0%!important;
+        max-width: unset;
+    }
 @media (max-width: 990px) {
     .logo-image {
         margin: 9% auto 7%;
-        max-width: 150px;
+        max-width: unset;
     }
     .back-to-checkout{
         display:none;
     }
+}
+@media (max-width: 480px){
+  .main-text{
+    font-size:11vw;
+  }
+  .container{
+    width:100%;
+  }
+  .sub-main-text{
+     font-size:5.4vw !important;
+  }
+  .footer-text{
+     font-size:5.3vw;
+  }
+  .logo-image {
+     max-width:300px;
+  }
+  .dual-button{
+    font-size:32px;
+  }
+
 }
