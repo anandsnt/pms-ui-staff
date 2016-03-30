@@ -58,7 +58,9 @@
 "COLLECT_USER_NATIONALITY":"Collect Guest Nationality",
 "QR_FAIL_OVER":"QR Failover",
 "KEY_CARD_LOOK_UP":"Keycard Lookup",
-"CHROME_APP_ID":"Chrome App ID"
+"CHROME_APP_ID":"Chrome App ID",
+"STATION_PRINTER_OPTIONS" : "Station Printer Options"
+
 
 
 
