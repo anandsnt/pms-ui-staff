@@ -295,8 +295,8 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 console.log('inUpsellWindow: ',inUpsellWindow);
                 $scope.earlyCheckinOfferId = response.early_checkin_offer_id;
                 if (response.early_checkin_charge === null){
-                    $scope.selectedReservation.earlyCheckinCharge = '0';
-                    $scope.selectedReservation.earlyCheckinChargeSymbol = $scope.zestStationData.currencySymbol;
+                    console.warn('early check-in not available due to invalid charge criteria');
+                    $state.go('zest_station.early_checkin_unavailable');
                 } else {
                     $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
                 }
