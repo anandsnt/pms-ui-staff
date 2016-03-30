@@ -43,6 +43,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             if (isInitial) {
                 params.per_page = 2;
                 params.page = 1;
+                params.order = "ROOM_LEVEL";
             }
             if (level) {
                 params.per_page = 1;
