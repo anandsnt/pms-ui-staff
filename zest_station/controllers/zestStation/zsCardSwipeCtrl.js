@@ -330,7 +330,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     };
                     
                     $scope.useEmail = useEmail;
-                    if (useEmail !== '' && zsUtilitySrv.isValidEmail(useEmail)){
+                    if (useEmail !== '' && zsUtilitySrv.isValidEmail(useEmail)&&!$scope.selectedReservation.is_email_blacklisted){
                         return true;
                     } else {
                         return false;
