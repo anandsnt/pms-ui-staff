@@ -844,7 +844,15 @@ sntZestStation.controller('zsRootCtrl', [
                 }
                 $scope.closePopup();
             };
-            
+            $scope.initVirtualKeyboard = function(){
+                console.log('init virtual keyboard');
+                  if ($scope.inChromeApp && $scope.theme === 'yotel'){
+                setTimeout(function(){
+                    new initScreenKeyboardListener();
+                    $scope.inputFocus();//tries to bring up the keyboard so user doesnt need to click on input field
+                },100);
+                }
+            };
             $scope.pressEsc = function() {
                 $('body').trigger({
                     type: 'keyup',
@@ -853,10 +861,11 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.inputFocus = function(){
                 setTimeout(function(){
-                    if (angular.element($(".start-focused"))[0]){
-                            angular.element($(".start-focused"))[0].focus();
-                        }
-                },1000);
+                    var el = $("input:visible");
+                    if (angular.element(el[0])){
+                        angular.element(el[0]).focus();
+                    }
+                },200);
             };
             
             $scope.$watchCollection(function(){
@@ -864,7 +873,8 @@ sntZestStation.controller('zsRootCtrl', [
             }, function(){
                 var current = $state.current.name;
                 if ($scope.inChromeApp && $scope.theme === 'yotel'){
-                    $scope.keyboard = new initScreenKeyboardListener();
+                    new initScreenKeyboardListener();
+                    $scope.initVirtualKeyboard();
                 }
                 
                 if ($scope.theme === 'yotel'){

@@ -40,15 +40,13 @@ sntRover
                 x_offset: new Date(x_offset),
                 x_origin: new Date(x_origin),
                 x_0:  new Date(x_origin),
-                x_n: new Date(arrival_ms),
+                x_n: new Date(x_left),
                 x_p: new Date(x_right),
                 toShijuBugStartDate: function(start) {
-                    return new Date(new Date(arrival_ms).setHours(start,0,0));
+                    return new Date(new Date(x_left).setHours(start,0,0));
                 },
                 toShijuBugEndDate: function(end) {
-                    var startDate_ = new Date(new Date(arrival_ms).setHours(0,0,0)),
-                        endDate_ = new Date(new Date(startDate_).setHours(startDate_.getHours() + end, 0, 0));
-                    return endDate_;
+                    return new Date(new Date(x_right).setHours(end, 0, 0));
                 },
                 toStartDate: function() {
                     return new Date(new Date(x_left).setHours(0, 0, 0));
