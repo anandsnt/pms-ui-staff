@@ -292,12 +292,16 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * on choosing the card from search result
        */
       $scope.cardSelected = (event, ui) => {
-        var selectedCardIDs = _.pluck($scope.selectedCards, 'id');
-
         if (!$scope.selectedCards.length) {
           $scope.selectedCards.push(ui.item);
-        } else if (selectedCardIDs.indexOf(ui.item.id) < 0) {
-          $scope.selectedCards.push(ui.item);
+
+        } 
+        else {
+          let selectedCardIDs = _.pluck($scope.selectedCards, 'id');
+          if (selectedCardIDs.indexOf(ui.item.id) < 0) {
+            $scope.selectedCards.push(ui.item);
+          }
+          
         }
         runDigestCycle();
 

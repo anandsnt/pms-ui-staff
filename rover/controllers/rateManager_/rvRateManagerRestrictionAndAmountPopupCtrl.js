@@ -91,8 +91,17 @@ angular.module('sntRover')
          * @return {Boolean}
          */
         $scope.shouldShowApplyPriceCheckbox = () => 
-            [$scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE].indexOf($scope.ngDialogData.mode) > -1 && 
-            ['SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'].indexOf($scope.contentMiddleMode) > -1 ;
+            [
+                $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE,
+                $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE
+            ]
+            .indexOf($scope.ngDialogData.mode) > -1 && 
+            [   
+                'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
+                'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT',
+                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'
+            ]
+            .indexOf($scope.contentMiddleMode) > -1 ;
         
         /**
          * to set the scrollers in the ui
@@ -465,6 +474,27 @@ angular.module('sntRover')
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
 
+        /**
+         * on fetch rate details success (case when rate details not passed from controller/not found)
+         * @param  {[type]} rateDetails [description]
+         * @return {[type]}             [description]
+         */
+        const onFetchRateDetailsAndUpdateParentRateName = (rateDetails) => {
+            $scope.parentRateName = rateDetails.name;
+        };
+
+        /**
+         * to fetch missing rate name agains rate id
+         * will come into matter if we not able to find in the rate list passing from rate manager ctrl
+         * @param  {Integer} rate_id
+         */
+        const fetchRateDetailsAndUpdateParentRateName = (rate_id) => {
+            const options = {
+                params: { rate_id },
+                onSuccess: onFetchRateDetailsAndUpdateParentRateName
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.fetchRateDetails, options);            
+        };
 
         /**
          * on tapping the set button
@@ -689,7 +719,9 @@ angular.module('sntRover')
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
                 
                 //some defult values used in templates
-                setDefaultPriceAdjustValues('single', $scope.priceDetails);           
+                setDefaultPriceAdjustValues('single', $scope.priceDetails);
+
+                $scope.priceDetailsCopy = {...$scope.priceDetails};         
             }
             else {
                 $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
@@ -701,8 +733,15 @@ angular.module('sntRover')
             }
 
             if(dialogData.rate.based_on_rate_id) {
-               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
-               $scope.parentRateName = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id}).name;
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+
+                var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
+                if(parentRate) {
+                    $scope.parentRateName = parentRate.name;
+                }
+                else {
+                    fetchRateDetailsAndUpdateParentRateName(dialogData.rate.based_on_rate_id);
+                }
             }
         };
 
@@ -771,6 +810,13 @@ angular.module('sntRover')
             
             if(dialogData.rate.is_hourly) {
                 $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
+                
+                $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
+                
+                //some defult values used in templates
+                setDefaultPriceAdjustValues('single', $scope.priceDetails);
+
+                $scope.priceDetailsCopy = {...$scope.priceDetails};                 
             }
             else {
                 $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
@@ -783,8 +829,14 @@ angular.module('sntRover')
             }
 
             if(dialogData.rate.based_on_rate_id) {
-               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
-               $scope.parentRateName = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id}).name;
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+                var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
+                if(parentRate) {
+                    $scope.parentRateName = parentRate.name;
+                }
+                else {
+                    fetchRateDetailsAndUpdateParentRateName(dialogData.rate.based_on_rate_id);
+                }
             }
         };
 
