@@ -169,6 +169,10 @@ angular.module('sntRover')
                     initializeSingleRateRestrictionAndAmountMiddlePane();
                     break;
 
+                case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
+                    $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
+                    break;
+
                 dafault:
                     break;
             }
