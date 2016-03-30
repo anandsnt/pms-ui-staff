@@ -135,31 +135,24 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchDailyRatesSuccess = (response, successCallBackParameters) => {
         /* 
             TWO CASES, from filter if we choose
-            1. select all rates & NO company/travel agent card attached
-                will redirect to normal all rate's view
-            2. select all rates & company/travel agent card attached
-                if the response has more than one rate, will redirect to all rates view
-                if the response has only one rate, will redirect to single rate's expandable view
+            1. if the response has more than one rate, will redirect to all rates view
+            2. if the response has only one rate, will redirect to single rate's expandable view
         */
-        if(!successCallBackParameters.selectedCards.length){
-            return processForAllRates(response);   
-        }
-        else if (successCallBackParameters.selectedCards.length) {
-            let numberOfRates = response.dailyRateAndRestrictions[0].rates.length;
-            if(numberOfRates === 1) {
-                let rates = !cachedRateList.length ? response.rates : cachedRateList;
-                
-                //rateList now cached, we will not fetch that again
-                cachedRateList = rates;     
-                
-                lastSelectedFilterValues[activeFilterIndex].selectedRates = _.where(rates, { id:response.dailyRateAndRestrictions[0].rates[0].id });
+        var numberOfRates = response.dailyRateAndRestrictions[0].rates.length;
+        if(numberOfRates === 1) {
+            let rates = !cachedRateList.length ? response.rates : cachedRateList;
+            
+            //rateList now cached, we will not fetch that again
+            cachedRateList = rates;     
+            
+            lastSelectedFilterValues[activeFilterIndex].selectedRates = _.where(rates, { id:response.dailyRateAndRestrictions[0].rates[0].id });
 
-                fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
-            }
-            else{
-                return processForAllRates(response);
-            }
+            fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
         }
+        else{
+            return processForAllRates(response);
+        }
+        
     };
 
     /**

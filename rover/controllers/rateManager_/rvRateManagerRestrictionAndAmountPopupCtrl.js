@@ -601,7 +601,7 @@ angular.module('sntRover')
                         ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource),
                         edited : false
                     }));
-            console.log(_.where(restrictions, {status: 'ON'}));
+
             restrictions = restrictions.map(restriciton => {
                 if(restriciton.status === 'ON') {
                    restriciton.edited = true;
