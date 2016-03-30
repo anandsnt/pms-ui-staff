@@ -250,6 +250,7 @@ sntZestStation.controller('zsRootCtrl', [
                         qr: $scope.iconsPath+'/qr-scan.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                         logo: $scope.iconsPath+'/print_logo.svg',
+                        watch: $scope.iconsPath+'/watch.svg'
                     }
                 };
             }
@@ -893,6 +894,21 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.setScreenIconByState = function(name){
                switch(name){
                    //home screen handled from homeCtrl on init, others handled here
+                   case 'zest_station.early_checkin_unavailable':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.early_checkin_nav':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_confirmation':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_email':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_no_of_nights':
+                       $scope.setScreenIcon('checkin');
+                       break;
                    case 'zest_station.find_reservation':
                        $scope.setScreenIcon('checkin');
                        break;
