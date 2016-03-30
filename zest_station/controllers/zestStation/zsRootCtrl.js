@@ -948,11 +948,12 @@ sntZestStation.controller('zsRootCtrl', [
     };
 
     var setPrinterOptions = function(){
-         if ($scope.zestStationData.zest_printer_option === "3") {
+         if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
             //add startac styles
             applyStarTacStyles();//zsUtils function
          }
          else{
+            //RECEIPT and AIR_PRINT
             applyPrintMargin();//zsUtils function
          };
     };

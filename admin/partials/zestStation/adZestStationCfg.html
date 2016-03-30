@@ -133,9 +133,9 @@
                 </div>
                 <div id="options" class="entry">
                     <label translate>STATION_PRINTER_OPTIONS </label>
-                    <label class="radio" ng-repeat="printer in zestStationData.printer_options" ng-class="{'checked':zestSettings.zest_printer_option == printer.id}">
-                        <span class="icon-form icon-radio " ng-class="{'checked':zestSettings.zest_printer_option == printer.id}"></span>
-                        <input type="radio" value="{{printer.id}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
+                    <label class="radio" ng-repeat="printer in zestStationData.printer_options" ng-class="{'checked':zestSettings.zest_printer_option == printer.value}">
+                        <span class="icon-form icon-radio " ng-class="{'checked':zestSettings.zest_printer_option == printer.value}"></span>
+                        <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
                     </label>
                 </div>
             </fieldset>
