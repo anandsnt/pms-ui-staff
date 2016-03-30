@@ -138,7 +138,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	});
 	 $stateProvider.state('resetPassword', {
     	url: '/resetPassword',
-	 	templateUrl: '/assets/zest/partials/zoku/resetPassword.html',
+	 	templateUrl: '/assets/zest/partials/zoku/resetPasswordNew.html',
 	 	controller : 'resetPasswordController',
 	 	title: 'Reset Password'
 	});
