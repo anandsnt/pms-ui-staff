@@ -11,12 +11,12 @@
 		</div>
 		<div class="inputlabel" for="restictionCount" ng-show="restrictionForShowingTheDetails.hasInputField">
 			<label for="restictionCount"> {{restrictionForShowingTheDetails.description}} </label>
-			<input id="restictionCount" ng-model="restrictionForShowingTheDetails.value"/>
+			<input id="restictionCount" ng-model="restrictionForShowingTheDetails.value" ng-disabled="isPastDate"/>
 		</div>
 		<div class="cancellationbuttonwrap">
-			<button class="button green" type="button" ng-click="clickedOnRestrictionSetButton($event)">Set</button>
-			<button class="button red" type="button" ng-click="clickedOnRestrictionRemoveButton()">Remove</button>
-			<button class="button blank cancel" type="button" ng-click="clickedOnCancelRestrictionEditingButton()">Cancel</button>
+			<button class="button green" type="button" ng-click="clickedOnRestrictionSetButton($event)" ng-disabled="isPastDate" ng-class="{'grey' : isPastDate}">Set</button>
+			<button class="button red" type="button" ng-click="clickedOnRestrictionRemoveButton()" ng-disabled="isPastDate" ng-class="{'grey' : isPastDate}" >Remove</button>
+			<button class="button blank cancel" type="button" ng-click="clickedOnCancelRestrictionEditingButton()" ng-disabled="isPastDate" ng-class="{'grey' : isPastDate}" >Cancel</button>
 		</div>
 	</div>
 </div>

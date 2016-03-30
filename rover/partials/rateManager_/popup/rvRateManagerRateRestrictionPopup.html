@@ -71,7 +71,7 @@
 		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyPriceToDates}"></span>
 		                <!-- add attribute 'checked="checked"' when checked-->
 		                <input name="apply-price-to-dates" id="apply-price-to-dates" 
-		                	ng-model="applyPriceToDates" type="checkbox"/>
+		                	ng-model="applyPriceToDates" type="checkbox" ng-disabled="isPastDate"/>
 		                Apply Price
 		            </label>
 
@@ -81,7 +81,7 @@
 		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyRestrictionsToDates}"></span>
 		                <!-- add attribute 'checked="checked"' when checked-->
 		                <input name="apply-restriction-to-dates" id="apply-restriction-to-dates" 
-		                	ng-model="applyRestrictionsToDates" type="checkbox"/>
+		                	ng-model="applyRestrictionsToDates" type="checkbox" ng-disabled="isPastDate"/>
 		                Apply Restrictions
 		            </label>
 
@@ -93,7 +93,7 @@
 	                        <!-- Add class .checked when checked-->
 	                        <span class="icon-form icon-checkbox" ng-class="{'checked': weekDay.selected}"></span>
 	                        <!-- add attribute 'checked="checked"' when checked-->
-	                        <input  ng-model="weekDay.selected" value="restrictions" type="checkbox"/>
+	                        <input  ng-model="weekDay.selected" value="restrictions" type="checkbox" ng-disabled="isPastDate"/>
 	                         {{weekDay.weekDay}}
 	                    </label>
 	                    
@@ -102,18 +102,18 @@
 	                        - 'Select None' - when all days are selected
 	                    -->
 	                    <button ng-click="clickedOnWeekDaySelectAllButton()" 
-	                    	ng-show="!showSelectNoneForWeekDaySelection()">
+	                    	ng-show="!showSelectNoneForWeekDaySelection()" ng-disabled="isPastDate">
 	                        Select All
 	                    </button>
 	                    <button ng-show="showSelectNoneForWeekDaySelection()"
-	                    	ng-click="clickedOnWeekDaySelectNoneButton()">
+	                    	ng-click="clickedOnWeekDaySelectNoneButton()" ng-disabled="isPastDate">
 	                        Select None
 	                    </button>	                    
 	                </div>
 
 	                <h4>Until</h4>
 	                <div class="has-datepicker">
-	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="untilDate" ui-date="datePickerOptions" value="{{untilDate|date:dateFormat}}" />
+	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="untilDate" ui-date="datePickerOptions" value="{{untilDate|date:dateFormat}}" ng-disabled="isPastDate"/>
 	                </div>
 
 	            </div>
@@ -130,7 +130,9 @@
 	                    Clear Rate Overrides
 	                </button>
 	            
-	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button">
+	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button" 
+	                		ng-disabled="isPastDate"
+	                		ng-class="{'grey' : isPastDate}">
 	                    Set
 	                </button>
 	            </div>

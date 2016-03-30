@@ -909,6 +909,9 @@ angular.module('sntRover')
          * to initialize the data model
          */
         const initializeDataModels = () => {
+
+            $scope.isPastDate = new tzIndependentDate($scope.ngDialogData.date) < new tzIndependentDate($rootScope.businessDate);
+
             $scope.header = '';
             
             $scope.headerBottomLeftLabel = '';

@@ -13,20 +13,20 @@
 				
 				<span class="entry select">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.single_amount_operator">
+					<select ng-model="priceDetails.single_amount_operator" ng-disabled="isPastDate">
 						<option value="+">+</option>
 						<option value="-">-</option>
 					</select>
 				</span>
 				<span class="extra_amount entry">
 					<!-- if is disable ng-change="refreshScrollers()"d add attribute 'disabled="disabled"'-->
-					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value">
+					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value" ng-disabled="isPastDate">
 				</span>
 				
 				<!-- add class .disabled if is disabled -->
-				<span class="select_amount_diff entry select">
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.single_amount_perc_cur_symbol">
+					<select ng-model="priceDetails.single_amount_perc_cur_symbol" ng-disabled="isPastDate">
 						<option value="%">%</option>
 						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 					</select>
@@ -34,7 +34,10 @@
 				<br clear="all">
 				<!-- remove class .hidden if price has changed-->
 				<div class="apply-all-div" ng-class="{'hidden': priceDetails.single_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('single')" class="button blue apply-all-button">Apply to all occupancies</button>
+					<button ng-click="clickedOnApplyToAllOccupancies('single')" class="button blue apply-all-button" ng-class="{'grey': isPastDate}" 
+						ng-disabled="isPastDate">
+						Apply to all occupancies
+					</button>
 				</div>
 			</div>
 			<div class="price-fields">
@@ -44,7 +47,7 @@
 				</label>
 				<span class="entry select">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.double_amount_operator">
+					<select ng-model="priceDetails.double_amount_operator" ng-disabled="isPastDate">
 						<option value="+">+</option>
 						<option value="-">-</option>
 					</select>
@@ -54,9 +57,9 @@
 					<input type="text" ng-change="priceStartedToCustomize('double')" ng-model="priceDetails.double_changing_value">
 				</span>
 				<!-- add class .disabled if is disabled -->
-				<span class="select_amount_diff entry select">
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.double_amount_perc_cur_symbol">
+					<select ng-model="priceDetails.double_amount_perc_cur_symbol" ng-disabled="isPastDate">
 						<option value="%">%</option>
 						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 					</select>
@@ -66,7 +69,10 @@
 				<br clear="all">
 				<!-- remove class .hidden if price has changed-->
 				<div class="apply-all-div" ng-class="{'hidden': priceDetails.double_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('double')" class="button blue apply-all-button">Apply to all occupancies</button>
+					<button ng-click="clickedOnApplyToAllOccupancies('double')" class="button blue apply-all-button" ng-disabled="isPastDate"
+						ng-class="{'grey': isPastDate}">
+						Apply to all occupancies
+					</button>
 				</div>
 			</div>
 			<div class="price-fields">
@@ -75,20 +81,20 @@
 				</label>
 				<span class="entry select">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.child_amount_operator">
+					<select ng-model="priceDetails.child_amount_operator" ng-disabled="isPastDate">
 						<option value="+">+</option>
 						<option value="-">-</option>
 					</select>
 				</span>
 				<span class="extra_amount entry">
 					<!-- if is disable d add attribute 'disabled="disabled"'-->
-					<input type="text" ng-change="priceStartedToCustomize('child')" ng-model="priceDetails.child_changing_value">
+					<input type="text" ng-change="priceStartedToCustomize('child')" ng-model="priceDetails.child_changing_value" ng-disabled="isPastDate">
 				</span>
 				
 				<!-- add class .disabled if is disabled -->
-				<span class="select_amount_diff entry select">
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.child_amount_perc_cur_symbol">
+					<select ng-model="priceDetails.child_amount_perc_cur_symbol" ng-disabled="isPastDate">
 						<option value="%">%</option>
 						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 					</select>
@@ -96,7 +102,10 @@
 				<br clear="all">
 				<!-- remove class .hidden if price has changed-->
 				<div class="apply-all-div" ng-class="{'hidden': priceDetails.child_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('child')" class="button blue apply-all-button">Apply to all occupancies</button>
+					<button ng-click="clickedOnApplyToAllOccupancies('child')" class="button blue apply-all-button" ng-disabled="isPastDate"
+						ng-class="{'grey': isPastDate}">
+						Apply to all occupancies
+					</button>
 				</div>
 			</div>
 			<div class="price-fields">
@@ -105,20 +114,20 @@
 				</label>
 				<span class="entry select">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.extra_adult_amount_operator">
+					<select ng-model="priceDetails.extra_adult_amount_operator" ng-disabled="isPastDate">
 						<option value="+">+</option>
 						<option value="-">-</option>
 					</select>
 				</span>
 				<span class="extra_amount entry">
 					<!-- if is disable d add attribute 'disabled="disabled"'-->
-					<input type="text" ng-change="priceStartedToCustomize('extra_adult')" ng-model="priceDetails.extra_adult_changing_value">
+					<input type="text" ng-change="priceStartedToCustomize('extra_adult')" ng-model="priceDetails.extra_adult_changing_value" ng-disabled="isPastDate">
 				</span>
 				
 				<!-- add class .disabled if is disabled -->
-				<span class="select_amount_diff entry select">
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.extra_adult_amount_perc_cur_symbol">
+					<select ng-model="priceDetails.extra_adult_amount_perc_cur_symbol" ng-disabled="isPastDate">
 						<option value="%">%</option>
 						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 					</select>
@@ -126,7 +135,10 @@
 				<br clear="all">
 				<!-- remove class .hidden if price has changed-->
 				<div class="apply-all-div" ng-class="{'hidden': priceDetails.extra_adult_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('extra_adult')" class="button blue apply-all-button">Apply to all occupancies</button>
+					<button ng-click="clickedOnApplyToAllOccupancies('extra_adult')" class="button blue apply-all-button" ng-disabled="isPastDate"
+						ng-class="{'grey': isPastDate}">
+						Apply to all occupancies
+					</button>
 				</div>
 			</div>
 		</div>
