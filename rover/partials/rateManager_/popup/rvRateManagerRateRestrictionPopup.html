@@ -113,7 +113,13 @@
 
 	                <h4>Until</h4>
 	                <div class="has-datepicker">
-	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" readonly rv-clear-text-box listen-this="untilDate" ui-date="datePickerOptions" value="{{untilDate|date:dateFormat}}" ng-disabled="isPastDate"/>
+	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" 
+	                    	readonly 
+	                    	rv-clear-text-box 
+	                    	listen-this="untilDate" 
+	                    	ui-date="datePickerOptions" 
+	                    	value="{{untilDate|date:dateFormat}}" 
+	                    	ng-disabled="isPastDate"/>
 	                </div>
 
 	            </div>
@@ -126,7 +132,7 @@
 	                </button>
 	                <!-- remove class .hide if there is any override and rate is not a child or any other rule is applied. Please do review rules for overrides
 	                    -->
-	                <button class="button purple" ng-hide="true" type="button">
+	                <button class="button purple" ng-show="shouldShowClearOverrideButton()" ng-click="clickedOnClearOverrideButton()" type="button">
 	                    Clear Rate Overrides
 	                </button>
 	            

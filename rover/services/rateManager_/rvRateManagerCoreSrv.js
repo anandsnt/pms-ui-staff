@@ -118,6 +118,19 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
+        service.removeCustomRate = (params) => {
+            var url = '/api/daily_rates/remove_custom_rate',
+                deferred = $q.defer();
+
+            BaseWebSrvV2.postJSON(url, params)
+                .then(data => {
+                    deferred.resolve(data);
+                }, error => {
+                    deferred.reject(error);
+                });
+            return deferred.promise;
+        };
+        
         service.updateSingleRateRestrictionData = (params) => {
             var url = '/api/daily_rates/',
                 deferred = $q.defer();

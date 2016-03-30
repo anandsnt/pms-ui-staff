@@ -87,24 +87,6 @@ angular.module('sntRover')
         const weekDays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
         /**
-         * function to decide whether to show the applied price restriction checkbox
-         * @return {Boolean}
-         */
-        $scope.shouldShowApplyPriceCheckbox = () => 
-            [
-                $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE,
-                $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE
-            ]
-            .indexOf($scope.ngDialogData.mode) > -1 && 
-            [   
-                'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
-                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
-                'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT',
-                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'
-            ]
-            .indexOf($scope.contentMiddleMode) > -1 ;
-        
-        /**
          * to set the scrollers in the ui
          */
         const setScroller = () => {
@@ -143,6 +125,53 @@ angular.module('sntRover')
         $scope.clearUntilDate = () => {
             $scope.untilDate = '';
             runDigestCycle();
+        };
+
+        /**
+         * when the  restriciton update api call is success
+         * @param  {Object} result
+         */
+        const onUpdateRateRestrictionData = (result) => {  
+            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+            $scope.closeDialog();
+        };
+
+        /**
+         * function to decide whether to show the applied price restriction checkbox
+         * @return {Boolean}
+         */
+        $scope.shouldShowApplyPriceCheckbox = () => 
+            [
+                $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE,
+                $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE
+            ]
+            .indexOf($scope.ngDialogData.mode) > -1 && 
+            [   
+                'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
+                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
+                'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT',
+                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'
+            ]
+            .indexOf($scope.contentMiddleMode) > -1 ;
+        
+        /**
+         * to decide whether we need to show clear override button
+         * @return {Boolean}
+         */
+        $scope.shouldShowClearOverrideButton = () => {
+            var isThereAnyPriceOverride = false,
+                isInIntendedMode = false;
+
+            isInIntendedMode = [ $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE ]
+                .indexOf($scope.ngDialogData.mode) > -1;
+
+            priceOverridingKeys.map(key => {
+                if(_.has($scope.priceDetails, key) && $scope.priceDetails[key]) {
+                    isThereAnyPriceOverride = true;
+                }
+            });
+
+            return isInIntendedMode && isThereAnyPriceOverride;
         };
 
         /**
@@ -252,6 +281,33 @@ angular.module('sntRover')
             restriction.status = 'OFF';
             deSelectAllRestriction();
             gotoDefaultMiddlePaneMode();
+        };
+
+        /**
+         * the successcall back of clea ovveriding api
+         * @param  {Object} response
+         */
+        const onSuccessOfClickedOnClearOverrideButtonAPICall = (response) => {
+            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+            $scope.closeDialog();  
+        };
+
+        /**
+         * when clciked on remove overriding icon
+         */
+        $scope.clickedOnClearOverrideButton = () => {
+            var dialogData = $scope.ngDialogData;
+
+            var params = {
+                rate_id: dialogData.rate.id,
+                room_type_id: dialogData.roomType.id,
+                date: formatDateForAPI(dialogData.date)
+            }
+            var options = {
+                params,
+                onSuccess: onSuccessOfClickedOnClearOverrideButtonAPICall
+            }
+            $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
         };
 
         /**
@@ -522,15 +578,6 @@ angular.module('sntRover')
                 default:
                     break;
             }
-        };
-
-        /**
-         * when the  restriciton update api call is success
-         * @param  {Object} result
-         */
-        const onUpdateRateRestrictionData = (result) => {  
-            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-            $scope.closeDialog();
         };
 
         /**
