@@ -13,20 +13,20 @@
 				
 				<span class="entry select">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.single_amount_operator">
+					<select ng-model="priceDetails.single_amount_operator" ng-disabled="isPastDate">
 						<option value="+">+</option>
 						<option value="-">-</option>
 					</select>
 				</span>
 				<span class="extra_amount entry">
 					<!-- if is disable ng-change="refreshScrollers()"d add attribute 'disabled="disabled"'-->
-					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value">
+					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value" ng-disabled="isPastDate">
 				</span>
 				
 				<!-- add class .disabled if is disabled -->
 				<span class="select_amount_diff entry select">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
-					<select ng-model="priceDetails.single_amount_perc_cur_symbol">
+					<select ng-model="priceDetails.single_amount_perc_cur_symbol" ng-disabled="isPastDate">
 						<option value="%">%</option>
 						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 					</select>
