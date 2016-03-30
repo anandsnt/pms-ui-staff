@@ -72,19 +72,21 @@
                                 <span ng-if="account.type === 'COMPANY'" class="icons icon-guest-company">{{account.ar_number}}</span>
                                 <span class="icons icon-time confirmation">{{account.aging_date}}</span>
                             </div>
-                            <div class="info ageing-days">
-                                <strong>{{account.aging_days}}</strong>
-                                <span>Ageing Days</span>
-                            </div>
-                            <div class="info open-bills">
-                                <strong>{{account.open_bill}}</strong>
-                                <span>Open Bills</span>
-                            </div>
-                            <div class="info balance">
-                                <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
-                                    {{account.current_balance}}
-                                </strong>
-                                <span>Balance</span>
+                            <div class="info-holder">
+                                <div class="info ageing-days">
+                                    <strong>{{account.aging_days}}</strong>
+                                    <span>Ageing Days</span>
+                                </div>
+                                <div class="info open-bills">
+                                    <strong>{{account.open_bill}}</strong>
+                                    <span>Open Bills</span>
+                                </div>
+                                <div class="info balance">
+                                    <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
+                                        {{account.current_balance}}
+                                    </strong>
+                                    <span>Balance</span>
+                                </div>
                             </div>
                         </a>
                     </li>
