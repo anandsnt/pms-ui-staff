@@ -243,7 +243,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
 				}
 
-				if ($scope.stateCheck.activeView === "ROOM_RATE") {
+				if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					payLoad.order = "ROOM_LEVEL"
 				}
 
