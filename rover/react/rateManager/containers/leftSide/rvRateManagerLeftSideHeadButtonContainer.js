@@ -17,20 +17,36 @@ const getCloseRestrictionCountForTopHeader = (restrictions, restrictionTypes) =>
 };
 
 const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
-    var closedRestrictionsCount = getCloseRestrictionCountForTopHeader( state.list[0].restrictionList,
-        state.restrictionTypes),
-        openAllEnabled = closedRestrictionsCount > 0,
+    const closedRestriction = _.findWhere(state.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
+    
+    var closedRestrictionsCount = 0,
+        openAllEnabled = false,
+        closeAllEnabled = false,
+        showOpenAll = false,
+        showCloseAll = false;
+    
+    if(closedRestriction) {
+        closedRestrictionsCount = getCloseRestrictionCountForTopHeader( state.list[0].restrictionList,
+        state.restrictionTypes);
+        
+        openAllEnabled = closedRestrictionsCount > 0;
         closeAllEnabled = closedRestrictionsCount < state.list[0].restrictionList.length;
+
+        showOpenAll = true;
+        showCloseAll = true;
+    }
 
     var propsToReturn = {
         openAllClass: openAllEnabled ? 'green': '',
+        showOpenAll,
         closeAllClass: closeAllEnabled ? 'red': '',
+        showCloseAll,
         openAllEnabled,
         closeAllEnabled,
         mode: state.mode,
         fromDate: state.dates[0],
         toDate: state.dates[state.dates.length - 1],
-        closedRestriction: _.findWhere(state.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE })
+        closedRestriction
     };
 
     if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {

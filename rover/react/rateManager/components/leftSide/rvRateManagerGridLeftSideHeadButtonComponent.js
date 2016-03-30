@@ -4,19 +4,32 @@ const RateManagerGridLeftSideHeadButtonComponent = ({
 	openAllEnabled,
 	closeAllEnabled,
 	onOpenAllClick,
-	onCloseAllClick 
+	onCloseAllClick,
+	showOpenAll,
+	showCloseAll
 	}) => (
 	<thead>
 		<tr>
-	        <th className='cell'>        
-	            <button disabled={!openAllEnabled} onClick = {(e) => onOpenAllClick(e)} 
+	        <th className='cell'> 
+	         {
+	         	showOpenAll ? 
+	          
+	            (<button disabled={!openAllEnabled} onClick = {(e) => onOpenAllClick(e)} 
 	            	className={'button rm-buttonOpenClose ' + openAllClass}> 
 	                Open All
-	            </button>
-	            <button disabled={!closeAllEnabled} onClick = {(e) => onCloseAllClick(e)} 
+	            </button>)
+	            :
+	            ''
+	         }
+	         {
+	         	showOpenAll ? 
+	            (<button disabled={!closeAllEnabled} onClick = {(e) => onCloseAllClick(e)} 
 	            	className={'button rm-buttonOpenClose ' + closeAllClass}> 
 	                Close All
-	            </button>
+	            </button>)
+	            :
+	            ''
+	         }
 	        </th>
 	    </tr>
 	</thead>
