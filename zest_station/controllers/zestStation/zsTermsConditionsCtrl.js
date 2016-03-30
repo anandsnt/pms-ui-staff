@@ -68,12 +68,6 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 
 		var checkIfNeedToSkipCC = function(showDeposit){
 
-			var response =  {
-				"routing_setup_present" : false,
-				"balance_in_window1" : "56",
-				"no_of_bill_windows" : 2,
-				"paymenet_type" : "PP"
-			}
 			var checkIfCCToBeBypassed = function(response){
 				//1. If Routing is setup, bypass the credit card collection screen.
 				//2. If guest has $0 balance on Window 1 AND there are no other Bill Windows present, 
@@ -98,13 +92,13 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 				}
 				goToNextPage(showDeposit,$scope.zestStationData.byPassCC);
 			};
-			onSuccess(response);
-
-			// var options = {
-   //              params:         {},
-   //              successCallBack: 	onSuccess
-   //          };
-   //          $scope.callAPI(zsTabletSrv.fetchPaymentRoutingDetails, options);
+			var selectedReservation = $state.selectedReservation; //this was set somewhere else.this needs to be changed
+			//states are not to store varaiable, use service
+			var options = {
+                params:         {"reservation_id":selectedReservation.id},
+                successCallBack: 	onSuccess
+            };
+            $scope.callAPI(zsTabletSrv.fetchReservationBalanceDetails, options);
 		};
 
 		$scope.agreeTerms = function() {
