@@ -12,26 +12,20 @@
         <div class="entry options">
             <div class="input with-label">
                 <label for="min-amount">Min. Amount ($)</label>
-                <input type="text" value="{value}" id="min-amount">
+                <input ng-model="filterData.minAmount" type="text">
             </div>
 
             <div class="select with-label larger-select">
                 <label for="sort-by">Sort By</label>
-                <select id="sort-by">
-                    <option value="{name-asc}">NAME ASC</option>
-                    <option value="{name-desc}">NAME DESC</option>
-                    <option value="{amount-asc}">AMOUNT ASC</option>
-                    <option value="{amount-desc}">AMOUNT DESC</option>
+                <select ng-model="filterData.sortBy" id="sort-by">
+                    <option ng-repeat="item in filterData.sortList" value="{{item.value}}">{{item.name}}</option>
                 </select>
             </div>
 
             <div class="select with-label">
                 <label for="ageing-days">Ageing Days</label>
-                <select id="ageing-days">
-                    <option value="30">30</option>
-                    <option value="60">60</option>
-                    <option value="90">90</option>
-                    <option value="120">120</option>
+                <select ng-model="filterData.ageingDays" id="ageing-days">
+                    <option ng-repeat="item in filterData.ageingDaysList" value="{{item.value}}"></option>
                 </select>
             </div>
         </div>

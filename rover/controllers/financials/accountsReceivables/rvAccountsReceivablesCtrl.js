@@ -143,7 +143,8 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope','$stateParams',
             'page'      : $scope.page,
             'per_page'  : $scope.filterData.perPage,
             'min_amount': $scope.filterData.minAmount,
-            'aging_days': $scope.filterData.agingDays
+            'aging_days': $scope.filterData.ageingDays,
+            'sort_by'   : $scope.filterData.sortBy
         };
 
         $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
@@ -152,8 +153,22 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope','$stateParams',
     $scope.filterData = {
         'perPage'       : 50,
         'searchQuery'   : '',
-        'agingDays'     : 30,
-        'minAmount'     : ''
+        'ageingDays'    : 30,
+        'minAmount'     : '',
+        'ageingDaysList':
+        [
+            {   'value' : '30' },
+            {   'value' : '60' },
+            {   'value' : '90' },
+            {   'value' : '120'}
+        ],
+        'sortList'      :
+        [
+            {   'value' : 'NAME_ASC'    ,'name':  'NAME ASC'   },
+            {   'value' : 'NAME_DESC'   ,'name':  'NAME DESC'  },
+            {   'value' : 'AMOUNT_ASC'  ,'name':  'AMOUNT ASC' },
+            {   'value' : 'AMOUNT_DESC' ,'name':  'AMOUNT DESC'}
+        ]
     };
 
     $scope.loadNextSet = function() {
