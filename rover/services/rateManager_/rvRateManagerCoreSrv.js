@@ -96,6 +96,17 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
+        service.fetchRateDetails = (params) => {
+            var url = ' /api/rates/' + params.rate_id;
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         service.fetchRoomTypes = () => {
             var url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true';
             var deferred = $q.defer();

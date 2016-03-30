@@ -474,6 +474,27 @@ angular.module('sntRover')
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
 
+        /**
+         * on fetch rate details success (case when rate details not passed from controller/not found)
+         * @param  {[type]} rateDetails [description]
+         * @return {[type]}             [description]
+         */
+        const onFetchRateDetailsAndUpdateParentRateName = (rateDetails) => {
+            $scope.parentRateName = rateDetails.name;
+        };
+
+        /**
+         * to fetch missing rate name agains rate id
+         * will come into matter if we not able to find in the rate list passing from rate manager ctrl
+         * @param  {Integer} rate_id
+         */
+        const fetchRateDetailsAndUpdateParentRateName = (rate_id) => {
+            const options = {
+                params: { rate_id },
+                onSuccess: onFetchRateDetailsAndUpdateParentRateName
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.fetchRateDetails, options);            
+        };
 
         /**
          * on tapping the set button
@@ -712,8 +733,15 @@ angular.module('sntRover')
             }
 
             if(dialogData.rate.based_on_rate_id) {
-               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
-               $scope.parentRateName = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id}).name;
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+
+                var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
+                if(parentRate) {
+                    $scope.parentRateName = parentRate.name;
+                }
+                else {
+                    fetchRateDetailsAndUpdateParentRateName(dialogData.rate.based_on_rate_id);
+                }
             }
         };
 
@@ -801,8 +829,14 @@ angular.module('sntRover')
             }
 
             if(dialogData.rate.based_on_rate_id) {
-               $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
-               $scope.parentRateName = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id}).name;
+                $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
+                var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
+                if(parentRate) {
+                    $scope.parentRateName = parentRate.name;
+                }
+                else {
+                    fetchRateDetailsAndUpdateParentRateName(dialogData.rate.based_on_rate_id);
+                }
             }
         };
 
