@@ -98,6 +98,7 @@ angular.module('sntRover')
             .indexOf($scope.ngDialogData.mode) > -1 && 
             [   
                 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
+                'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT',
                 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT',
                 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'
             ]
@@ -170,7 +171,7 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
+                    initializeSingleRateMultipleRoomTypeRestrictionAndAmountMiddlePane();
                     break;
 
                 dafault:
@@ -593,13 +594,22 @@ angular.module('sntRover')
          */
         const getRestrictionListForRateView = (restrictionTypes, restrictionSource, commonRestricitonSource) => {
             const individualRateRestrictionList = _.pluck(restrictionSource, 'restrictions');
-            return getValidRestrictionTypes(restrictionTypes)
+            var restrictions = getValidRestrictionTypes(restrictionTypes)
                     .map(restrictionType => ({
                         ...restrictionType,
                         ...RateManagerRestrictionTypes[restrictionType.value],
                         ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource),
                         edited : false
                     }));
+            console.log(_.where(restrictions, {status: 'ON'}));
+            restrictions = restrictions.map(restriciton => {
+                if(restriciton.status === 'ON') {
+                   restriciton.edited = true;
+                }
+                return restriciton;
+            });
+
+            return restrictions;
         };
 
         /**
