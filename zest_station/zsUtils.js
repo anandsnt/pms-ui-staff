@@ -12,8 +12,7 @@ var applyStarTacStyles = function() {
 };
 
 var applyStylesForYotelStarTac = function(){
-	applyStarTacStyles();
-	var starTacStyles = '.page-print{margin-left:10px;}#registration-card .logo{width:120px !important} #registration-card .content{text-align:left;position:fixed;top:80px;width:330px;padding-left:0;padding-right:0;}.page-print > div.content{position:fixed;top:30px;text-align:left !important;padding-left:2%;padding-right:2%}.page-print > div.content > strong.footer{text-align:center !important}.page-print > div.content > strong.large_txt,.page-print > div.content span.large_txt{font-size:2em}.page-print > div.content span > strong.large_txt{font-size:2em}.page-print > div.content span{font-size:1.2em}.page-print > div.content span.reg_text{margin-top:-60px;white-space:pre-wrap}';
+	var starTacStyles = '.page-print{width:340px;}#registration-card{padding-top:1cm !important;padding-bottom:1cm !important;}.page-print{margin-left:4px;}#registration-card .logo{width:120px !important} #registration-card .content{text-align:left;position:fixed;top:1cm;bottom:2cm;width:340px;padding-left:0;padding-right:0;}.page-print > div.content{position:fixed;top:30px;text-align:left !important;padding-left:2%;padding-right:2%}.page-print > div.content > strong.footer{text-align:center !important}.page-print > div.content > strong.large_txt,.page-print > div.content span.large_txt{font-size:2em}.page-print > div.content span > strong.large_txt{font-size:2em}.page-print > div.content span{font-size:1.2em}.page-print > div.content span.reg_text{margin-top:-60px;white-space:pre-wrap}';
 	createStyleNodeWithString(starTacStyles);
 	 
 };
