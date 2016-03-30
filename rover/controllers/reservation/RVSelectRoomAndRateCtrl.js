@@ -872,6 +872,21 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						return 'white green-text';
 					}
 				}
+			}, // reset Page
+			reInitialize = function() {
+				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
+
+				$scope.stateCheck.pagination.roomType.page = 1;
+				$scope.stateCheck.pagination.rate.page = 1;
+
+				if ($scope.stateCheck.activeView === "RATE") {
+					fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+						generateRatesGrid(response.results);
+						$scope.refreshScroll();
+					});
+				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
+					fetchRoomTypesList();
+				}
 			};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ***************************
@@ -956,7 +971,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.refreshScroller('stayDates');
 			}, 150);
 
-			fetchRoomTypesList();
+			reInitialize();
 		};
 
 		$scope.showStayDateDetails = function(selectedDate) {
@@ -1696,7 +1711,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				response(results);
 			},
 			select: function(event, ui) {
-				
+
 				// Reset Pagination
 				$scope.stateCheck.pagination.rate.page = 1;
 				// Populate with the selected
@@ -1806,23 +1821,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$state.go('rover.reservation.search');
 		};
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENERS
-		// reset Page
-		var reInitialize = function() {
-			$scope.stateCheck.roomDetails = getCurrentRoomDetails();
-			
-			$scope.stateCheck.pagination.roomType.page = 1;
-			$scope.stateCheck.pagination.rate.page = 1;
-
-			if ($scope.stateCheck.activeView === "RATE") {
-				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
-					generateRatesGrid(response.results);
-					$scope.refreshScroll();
-				});
-			} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
-				fetchRoomTypesList();
-			}
-		}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENER
 		var initEventListeners = function() {
 			$scope.$on('SIDE_BAR_OCCUPANCY_UPDATE', function() {
 				reInitialize();
