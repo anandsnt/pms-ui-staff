@@ -60,8 +60,7 @@
                     </div>
                     <div class="row late-charge">
                     <span class="for">for</span><br/>
-                    <span class="amount" ng-hide="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
-                    <span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
+                    <span class="amount">{{currencySymbol}}{{charge.amount| number:0}}</span>
                 </div>
              </a>
             </div>
