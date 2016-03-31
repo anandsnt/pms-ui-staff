@@ -197,8 +197,10 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 */ 
 		$scope.checkIfGroupCustomRateChanged = function() {
 			if (isGroupCustomRateChanged()) {
-				ngDialog.close();
-				$scope.$emit("updateRate", $scope.selectedRoomTypeAndRates);
+				$scope.closeDialog();
+				$timeout(function(argument) {
+					$scope.confirmUpdateRatesWithPickedReservations($scope.selectedRoomTypeAndRates);
+				},700)
 			}
 			else {
 				var options = {
