@@ -24,9 +24,18 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             $scope.arOverviewData = data;
 
             $scope.errorMessage = "";
-            refreshArOverviewScroll();
             $scope.$emit('hideLoader');
-            initPaginationParams();
+
+            // Compute the start, end and total count parameters
+            if ($scope.nextAction) {
+                $scope.start = $scope.start + $scope.filterData.perPage;
+            }
+            if ($scope.prevAction) {
+                $scope.start = $scope.start - $scope.filterData.perPage;
+            }
+            $scope.end = $scope.start + $scope.arOverviewData.accounts.length - 1;
+
+            refreshArOverviewScroll();
         };
 
         var params = {
@@ -44,7 +53,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     $scope.filterData = {
 
         'page'          : 1,
-        'perPage'       : '50',
+        'perPage'       : 50,
         'searchQuery'   : '',
         'minAmount'     : '',
         'sortBy'        : 'NAME_ASC',
@@ -129,12 +138,15 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     var initPaginationParams = function() {
         $scope.filterData.page = 1;
         $scope.start = 1;
-        $scope.end = $scope.start + $scope.arOverviewData.accounts.length - 1;
+        $scope.end = $scope.filterData.perPage;
         $scope.nextAction = false;
         $scope.prevAction = false;
     };
-    // Pagination block ends here ..
 
+    initPaginationParams();
+
+    // Pagination block ends here ..
+    
     fetchArOverviewData();
 
 }]);

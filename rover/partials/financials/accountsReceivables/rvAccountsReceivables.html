@@ -48,7 +48,7 @@
                 </li>
                 <li class="unpaid-balance">
                     <span translate>UNPAID_BALANCE</span>
-                    <span class="amount red">{{arOverviewData.unpaid_balance}}</span>
+                    <span class="amount red">{{currencySymbol}}{{arOverviewData.unpaid_balance}}</span>
                 </li>
             </ul>
         </div>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="info balance">
                                     <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
-                                        {{account.current_balance}}
+                                        {{currencySymbol}}{{account.current_balance}}
                                     </strong>
                                     <span translate>BALANCE</span>
                                 </div>
