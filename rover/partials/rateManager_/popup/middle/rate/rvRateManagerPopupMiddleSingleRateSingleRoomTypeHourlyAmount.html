@@ -14,7 +14,7 @@
 				</label>
 				
 				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
-				<span class="price entry" ng-class="{'has-override': !!priceDetails.single_changing_value}">
+				<span class="price entry" ng-class="{'has-override': !!priceDetails.single_changing_value , 'is-overriden': priceDetails.single_overridden && !priceDetails.single_changing_value}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<input type="text" ng-model="priceDetails.single" ng-disabled="!!priceDetails.single_changing_value" ng-disabled="isPastDate">
 				</span>

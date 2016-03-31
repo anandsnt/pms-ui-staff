@@ -449,8 +449,7 @@ angular.module('sntRover')
         const callRateRestrictionUpdateAPI = () => {
             var params = {},
                 dialogData = $scope.ngDialogData,
-                mode = dialogData.mode,
-                restrictionToApply = [];
+                mode = dialogData.mode;
 
             if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
                 params.rate_id = dialogData.rate.id;
@@ -458,8 +457,6 @@ angular.module('sntRover')
             else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
                 params.rate_ids = _.pluck(dialogData.rates, 'id');
             }
-
-            restrictionToApply = getEditedRestrictionsForAPI();
 
             params.details = [];
             
@@ -481,14 +478,11 @@ angular.module('sntRover')
         const callRoomTypeRestrictionUpdateAPI = () => {
             var params = {},
                 dialogData = $scope.ngDialogData,
-                mode = dialogData.mode,
-                restrictionToApply = [];
+                mode = dialogData.mode;
 
             if(mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
-
-            restrictionToApply = getEditedRestrictionsForAPI();
 
             params.details = [];
             
@@ -510,8 +504,7 @@ angular.module('sntRover')
         const callRateRoomTypeRestrictionAndAmountUpdateAPI = () => {
             var params = {},
                 dialogData = $scope.ngDialogData,
-                mode = dialogData.mode,
-                restrictionToApply = [];
+                mode = dialogData.mode;
 
             params.rate_id = dialogData.rate.id;
             if(mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {

@@ -14,7 +14,8 @@
 				</label>
 				
 				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
-				<span class="price entry" ng-class="{'has-override': !!priceDetails.single_changing_value}">
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.single_changing_value, 'is-overriden': (priceDetails.single_overridden && !priceDetails.single_changing_value)}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<input type="text" ng-model="priceDetails.single" ng-disabled="isPastDate || !!priceDetails.single_changing_value">
 				</span>
@@ -62,7 +63,8 @@
 				</label>
 				
 				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
-				<span class="price entry" ng-class="{'has-override': !!priceDetails.double_changing_value}">
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.double_changing_value, 'is-overriden': priceDetails.double_overridden && !priceDetails.double_changing_value}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<input type="text"  ng-model="priceDetails.double" ng-disabled="isPastDate || !!priceDetails.double_changing_value">
 				</span>
@@ -109,7 +111,8 @@
 				</label>
 				
 				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
-				<span class="price entry" ng-class="{'has-override': !!priceDetails.child_changing_value}">
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.child_changing_value, 'is-overriden': priceDetails.child_overridden && !priceDetails.child_changing_value}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<input type="text" ng-disabled="isPastDate || !!priceDetails.child_changing_value" ng-model="priceDetails.child">
 				</span>
@@ -157,7 +160,8 @@
 				</label>
 				
 				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
-				<span class="price entry" ng-class="{'has-override': !!priceDetails.extra_adult_changing_value}">
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.extra_adult_changing_value, 'is-overriden': priceDetails.extra_adult_overridden && !priceDetails.extra_adult_changing_value}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<input type="text" ng-disabled="isPastDate || !!priceDetails.extra_adult_changing_value" ng-model="priceDetails.extra_adult">
 				</span>
