@@ -984,7 +984,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[selectedDate];
-			fetchRoomTypesList();
+			reInitialize();
 		};
 
 		$scope.toggleEditGuestOptions = function() {
