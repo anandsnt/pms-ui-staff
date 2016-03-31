@@ -312,6 +312,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.stateCheck.activeView === 'RATE') {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
 					payLoad.order = "ALPHABETICAL";
+					if(!!$scope.stateCheck.preferredType && !roomTypeId){
+						payLoad.room_type_id = $scope.stateCheck.preferredType;
+					}
 				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
