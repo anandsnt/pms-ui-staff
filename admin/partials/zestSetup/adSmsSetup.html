@@ -7,23 +7,22 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <!-- Add chain -->
-        <form class="form inline-form float">
-            <div class="entry inline-flex">
-                <div>
-                    <label class="switch-label">SMS Check-In Service
-                        <!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
-                </div>
-                <div class="switch-button single" ng-class="{ on: editData.sms_active }" ng-click="editData.sms_active = !editData.sms_active">
-                    <input type="checkbox">
-                    <span class="switch-icon"></span>
-                </div>
-            </div>
-            <fieldset style="margin-top:10px;" class="holder right float">
-                <ad-textbox value="editData.code" label="SMS Code" placeholder="" required="yes" styleclass="full-width overlay"></ad-textbox>
-            </fieldset>
-            <!--  OPT-IN  -->
-            <div class="form-title">
-                <h3><span></span>
+		<form class="form inline-form float">
+                    <div class="entry inline-flex" >
+                        <div><label class="switch-label">SMS Check-In Service<!-- - <span ng-show="editData.sms_active"> Active </span><span ng-show="!editData.sms_active">Inactive</span--></label>
+                        </div><div class="switch-button single" ng-class="{ on: editData.sms_active }" ng-click="editData.sms_active = !editData.sms_active">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
+                    
+                    
+                    <fieldset style="margin-top:10px;" class="holder right float">
+                        <ad-textbox value="editData.sms_code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width overlay"></ad-textbox>
+                    </fieldset>
+                                        
+                    <!--  OPT-IN  -->
+			<div class="form-title"><h3><span></span>
                             Opt-In
                         </h3></div>
             <fieldset style="margin-top:10px;" class="holder right float">
