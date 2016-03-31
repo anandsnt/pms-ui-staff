@@ -12,7 +12,7 @@
                 <table class="grid datatable table" template-pagination="nil" ng-table="tableParams">
                     <tbody>
                         <tr data-hotel-id="{{serviceProvider.id}}" ng-repeat="serviceProvider in $data">
-                            <td data-title="'Name'" sortable="'name'" header-class="width-40" ng-class="{'overlay' : isSntAdmin && isServiceProvider}">
+                            <td data-title="'Name'" sortable="'name'" header-class="width-40" ng-class="{'overlay' : isSntAdmin && isServiceProvider && !serviceProvider.is_logged_in_user}">
                                 <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProvider.id})" class="title">
                                      <strong> {{serviceProvider.name}} </strong>
                                      <em> {{serviceProvider.country}}</em>
