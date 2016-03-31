@@ -268,17 +268,20 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * inorder to show the two month calendar on tapping the date range button
        */
       $scope.showCalendar = () => {
+        var maxRangeBetweenFromAndToDate = {
+          year: 1
+        };
+
         var dataForCalendar = {
           fromDate: new tzIndependentDate($rootScope.businessDate),
-          toDate: util.getFirstDayOfNextMonth($rootScope.businessDate)
+          toDate: util.getFirstDayOfNextMonth($rootScope.businessDate),
+          maxRange: maxRangeBetweenFromAndToDate
         };
 
         //if there is already two date choosed
         if ($scope.selectedDateRange !== '') {
-          dataForCalendar = {
-            fromDate: new tzIndependentDate($scope.fromDate),
-            toDate: new tzIndependentDate($scope.toDate),
-          };
+          dataForCalendar.fromDate = new tzIndependentDate($scope.fromDate);
+          dataForCalendar.toDate = new tzIndependentDate($scope.toDate);         
         }
 
         ngDialog.open({
