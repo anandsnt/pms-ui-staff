@@ -23,6 +23,9 @@
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL")){
 		$state.go('emailAddition',{'isFrom':'checkinLater'});// if user has not attached an email
 	}
+	else if($rootScope.enforceDeposit && !$rootScope.skipDeposit){
+		$state.go('depositPayment'); //checkin deposit collection
+	}
 	else{
 		//this page will be used again after email entry
 		// So once preckin is completed we store some details

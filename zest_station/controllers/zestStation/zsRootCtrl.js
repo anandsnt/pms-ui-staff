@@ -250,6 +250,7 @@ sntZestStation.controller('zsRootCtrl', [
                         qr: $scope.iconsPath+'/qr-scan.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                         logo: $scope.iconsPath+'/print_logo.svg',
+                        watch: $scope.iconsPath+'/watch.svg'
                     }
                 };
             }
@@ -321,6 +322,8 @@ sntZestStation.controller('zsRootCtrl', [
             setTimeout(function(){
                 $('body').css('display', 'block');
             },50);
+            //based upon admin settings set printer css styles
+            setPrinterOptions();
         };
         
         $scope.getHotelStationTheme = function(){
@@ -787,7 +790,6 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.reservation_search_qrcode');
             };
             $scope.onChromeAppResponse = function(response){
-                console.info('RECEIVED app msg',response);
                 if (response){
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
@@ -847,10 +849,10 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.initVirtualKeyboard = function(){
                 console.log('init virtual keyboard');
                   if ($scope.inChromeApp && $scope.theme === 'yotel'){
-                setTimeout(function(){
-                    new initScreenKeyboardListener();
-                    $scope.inputFocus();//tries to bring up the keyboard so user doesnt need to click on input field
-                },100);
+                    setTimeout(function(){
+                        new initScreenKeyboardListener();
+                        $scope.inputFocus();//tries to bring up the keyboard so user doesnt need to click on input field
+                    },100);
                 }
             };
             $scope.pressEsc = function() {
@@ -894,6 +896,21 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.setScreenIconByState = function(name){
                switch(name){
                    //home screen handled from homeCtrl on init, others handled here
+                   case 'zest_station.early_checkin_unavailable':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.early_checkin_nav':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_confirmation':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_email':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_no_of_nights':
+                       $scope.setScreenIcon('checkin');
+                       break;
                    case 'zest_station.find_reservation':
                        $scope.setScreenIcon('checkin');
                        break;
@@ -946,6 +963,24 @@ sntZestStation.controller('zsRootCtrl', [
             console.info("::Starting QR Code Scanner::"); 
         }
     };
+
+    var setPrinterOptions = function(){
+        // alert($scope.zestStationData.zest_printer_option)
+         if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+            //add startac styles
+            if($scope.theme === 'yotel'){
+                 applyStylesForYotelStarTac();//zsUtils function
+            }
+            else{
+                applyStarTacStyles();//zsUtils function
+            }
+           
+         }
+         else{
+            //RECEIPT and AIR_PRINT
+            applyPrintMargin();//zsUtils function
+         };
+    };
     
 	/**
 	 * [initializeMe description]
@@ -964,6 +999,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         $scope.socketOperator = new webSocketOperations();
         $scope.zestStationData.keyCardInserted =  false;
