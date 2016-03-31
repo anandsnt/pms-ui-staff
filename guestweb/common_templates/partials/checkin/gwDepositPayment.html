@@ -1,0 +1,86 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- deposit details -->
+    <div class="row" ng-hide="isLoading || netWorkError || paymentSuccess || paymentFailed || noPaymentMethod">
+        <div class="col-md-3"></div>
+        <div class="top-spacing section-container">
+            <div class="row">
+                <p class="main-text" ng-bind="screenDetails.title"></p>
+                <p class="sub-main-text" ng-bind="screenDetails.description"></p>
+                <p class="sub-main-text">DepositAmount:</p>
+                <p class="sub-main-text">{{depositAmount}}</p>
+            </div>
+            <div class="row">
+                <a class="btn btn-template early-checkin-button margin-top-10" ng-click="payNow()"> Pay {{depositAmount}}</a>
+                <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="cancelActions()">Cancel</a>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <!-- deposit payment failed -->
+    <div class="row" ng-show="paymentFailed">
+        <div class="col-md-3"></div>
+        <div class="top-spacing section-container">
+            <div class="row">
+                <p class="main-text" ng-bind="screenDetailsPaymentFailedMessage.title"></p>
+                <p class="sub-main-text" ng-bind="screenDetailsPaymentFailedMessage.description"></p>
+            </div>
+            <div class="row">
+                <a class="btn btn-template margin-top-10" ng-click="cancelActions()">Continue</a>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <!-- deposit payment success -->
+    <div class="row" ng-show="paymentSuccess">
+        <div class="col-md-3"></div>
+        <div class="top-spacing section-container">
+            <div class="row">
+                <p class="main-text" ng-bind="screenDetailsPaymentSuccesMessage.title"></p>
+                <p class="sub-main-text" ng-bind="screenDetailsPaymentSuccesMessage.description"></p>
+            </div>
+            <div class="row">
+                <a class="btn btn-template margin-top-10" ng-click="paymentSuccessContinueAction()">Continue</a>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <!-- deposit no payment method -->
+    <div class="row" ng-show="noPaymentMethod">
+        <div class="col-md-3"></div>
+        <div class="top-spacing section-container">
+            <div class="row">
+                <p class="main-text" ng-bind="screenDetailsNoPaymentMethodMessage.title"></p>
+                <p class="sub-main-text" ng-bind="screenDetailsNoPaymentMethodMessage.description"></p>
+            </div>
+            <div class="row">
+                <a class="btn btn-template margin-top-10" ng-click="cancelActions()">Continue</a>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>

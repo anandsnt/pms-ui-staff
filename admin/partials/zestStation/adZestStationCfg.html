@@ -35,7 +35,7 @@
                             <span class="input" ng-show="zestSettings.zest_lang.english_translations_file_updated">File Attached</span>
                             <span class="input" ng-show="!zestSettings.zest_lang.english_translations_file_updated">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
-                            <button type="button" class="button brand-colors" >
+                            <button type="button" class="button brand-colors">
                                 Attach file
                             </button>
                         </div>
@@ -117,14 +117,27 @@
                     <h3><span translate>ACTIVATE_BOOKING_ENGINE_POPUP</span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.home_screen.booking_pop_up.enable_pop_up" label="{{'ACTIVATE_BOOKING_ENGINE_POPUP'| translate}}" div-class="full-width"></ad-toggle-button>
-                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url"  name = "zest-web" id = "zest-web" label="{{'BOOKING_URL'| translate}}" placeholder = "" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
-                <ad-textbox value="zestSettings.home_screen.booking_pop_up.button_label"  name = "zest-web" id = "zest-web" label="{{'BUTTON_LABEL'| translate}}" placeholder = "" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
+                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
+                <ad-textbox value="zestSettings.home_screen.booking_pop_up.button_label" name="zest-web" id="zest-web" label="{{'BUTTON_LABEL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>CHROME_APP_ID</span> </h3>
                 </div>
-                <ad-textbox value="zestSettings.chrome_app_id"  name = "zest-web" id = "zest-web" label="{{'CHROME_APP_ID'| translate}}" placeholder = "" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="zestSettings.chrome_app_id" name="zest-web" id="zest-web" label="{{'CHROME_APP_ID'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <!-- printer options -->
+            <fieldset class="holder left holder_margin">
+                <div class="form-title full-width">
+                    <h3><span translate>STATION_PRINTER_OPTIONS</span> </h3>
+                </div>
+                <div id="options" class="entry">
+                    <label translate>STATION_PRINTER_OPTIONS </label>
+                    <label class="radio" ng-repeat="printer in zestStationData.printer_options" ng-class="{'checked':zestSettings.zest_printer_option == printer.value}">
+                        <span class="icon-form icon-radio " ng-class="{'checked':zestSettings.zest_printer_option == printer.value}"></span>
+                        <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
+                    </label>
+                </div>
             </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>

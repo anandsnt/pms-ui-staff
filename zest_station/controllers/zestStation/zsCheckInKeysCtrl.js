@@ -23,9 +23,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             var current=$state.current.name;
-            console.log('back from: ',current);
-            console.log('pickup keys      : ',$scope.isPickupKeys);
-            console.log('pickup keys state: ',$state.isPickupKeys);
             
             if ($state.isPickupKeys && $state.qr_code){
                 $state.mode = zsModeConstants.PICKUP_KEY_MODE;
