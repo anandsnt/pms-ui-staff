@@ -274,9 +274,9 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.financials.ccTransactions({ id : 'REVENUE'})",
 		            menuIndex: "ccTransactions"
 		        }, {
-		            title: "MENU_ACCOUNTING",
-		            action: "",
-		            menuIndex: "accounting"
+		            title: "MENU_ACCOUNTS_RECEIVABLES",
+		            action: "rover.financials.accountsReceivables",
+		            menuIndex: "accountsReceivables"
 		        }, {
 		            title: "MENU_COMMISIONS",
 		            action: "",
