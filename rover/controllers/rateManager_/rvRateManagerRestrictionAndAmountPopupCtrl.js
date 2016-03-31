@@ -656,11 +656,14 @@ angular.module('sntRover')
          * to set the date picker
          */
         const setDatePicker = () => {
+            var dialogData = $scope.ngDialogData;
+
             $scope.datePickerOptions = {
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,
-                minDate: tzIndependentDate(util.addOneDay(tzIndependentDate($scope.ngDialogData.date))),
-                defaultDate: tzIndependentDate(util.addOneDay(tzIndependentDate($scope.ngDialogData.date))),
+                minDate: tzIndependentDate(util.addOneDay(tzIndependentDate(dialogData.date))),
+                maxDate: tzIndependentDate(tzIndependentDate(dialogData.date).setFullYear(tzIndependentDate(dialogData.date).getFullYear() + 1)),
+                defaultDate: tzIndependentDate(util.addOneDay(tzIndependentDate(dialogData.date))),
                 onSelect:function(date, datePickerObj) {
                     $scope.untilDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
                 }
