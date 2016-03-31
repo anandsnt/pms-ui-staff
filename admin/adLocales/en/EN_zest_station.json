@@ -40,6 +40,7 @@
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
+"OFFER_EARLY_CHECKIN":"Offer Early Check-In",
 "QR_SCANNER":"QR Scanner",
 "PUK_AUTH":"Authentication",
 "REG_CARD_DELIVERY":"Registration card delivery options",
@@ -58,7 +59,9 @@
 "COLLECT_USER_NATIONALITY":"Collect Guest Nationality",
 "QR_FAIL_OVER":"QR Failover",
 "KEY_CARD_LOOK_UP":"Keycard Lookup",
-"CHROME_APP_ID":"Chrome App ID"
+"CHROME_APP_ID":"Chrome App ID",
+"STATION_PRINTER_OPTIONS" : "Station Printer Options"
+
 
 
 

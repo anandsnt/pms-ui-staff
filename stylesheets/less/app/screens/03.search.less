@@ -333,6 +333,37 @@
                         &.no-image { .calc-width(70, 80); }
                     }
 
+                    .card-data {
+                        .size(32px, 100%);
+                        .show();
+
+                        .card-logo {
+                            margin-right: 20px;
+                            .size(30px,60px);
+                            .pull-left;             
+
+                            img { .size(auto, 100%); }
+                        }
+
+                        .number,
+                        .date {
+                            font-size: 14px;
+                            line-height: 30px;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            margin: 0 20px 0 0;
+                            .pull-left;
+                        }
+
+                        .value {
+                            display: inline-block;
+                            font-size: 18px;
+                            line-height: 30px;
+                            color: @textColor;
+                            margin: 0 0 0 5px;
+                        }
+                    }
+
                     .amount {
                         font-size: 30px;
                         line-height: 40px;

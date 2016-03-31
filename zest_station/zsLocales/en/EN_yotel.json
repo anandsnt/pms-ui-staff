@@ -258,6 +258,27 @@
     "ADMIN_WORKSTATION": "Work Station",
     "ADMIN_STATION_PRINTER": "Select Printer",
  
-    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS"
+    "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS",
+    
+    
+    "EARLY_SUB_1":"Usual check in time is",
+    "EARLY_SUB_2":"We're happy to store your bags in the mean time",
+    "EARLY_SUB_3":"Please see a staff member for help",
+    "EARLY_HEADER":"You're a little early",
+    
+    "EARLY_AVAIL_HEADER":"You're a little early",
+    "EARLY_AVAIL_SUB_HEADER":"Our standard check in time is ",
+    "EARLY_AVAIL_SUB_HEADER_2":"Early check-in is available for a fee of ",
+    "EARLY_AVAIL_PURCHASE":"Check In Now",
+    "EARLY_AVAIL_PURCHASE_SUB":"Apply early check-in fee of",
+    "EARLY_AVAIL_PURCHASE_SUB_2":"to my bill.",
+    "EARLY_AVAIL_LATER":"Check In Later",
+    
+    
+    "EARLY_AVAIL_PURCHASED":"But your Early Check-In is available.",
+    "EARLY_AVAIL_PURCHASED_REALLY_EARLY":"Sorry, Your Early Check-In is not available yet.",
+    "EARLY_AVAIL_FREE":"But you are eligible for a FREE Early Check-in."
+    
+    
    
 }
