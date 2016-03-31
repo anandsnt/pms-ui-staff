@@ -35,6 +35,18 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             return deferred.promise;
         };
 
+        this.fetchUpsellDetails = function(reservation) {
+            var deferred = $q.defer(),
+                url = 'guest_web/reservations/'+reservation.id+'.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
         this.getDoorLockSettings = function() {
             var deferred = $q.defer(),
                 url = 'api/door_lock_interfaces.json';

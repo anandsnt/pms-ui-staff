@@ -1,39 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        {../_include/head.html}
-    </head>
-    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
-        
-        <!-- Header -->
-        {../_include/navigation.html}   
-        
-        <!-- Content -->
-        <section id="main" role="main">
-            <div id="content">
-                <h1>You're a little early</h1>
-                <h3>Our standard check in time is 3:00 PM. Early check-in is available for a fee of $50.</h3>
-                <nav id="options" role="nav">
-                    <ul role="menu">
-                        <li>
-                            <button type="button" class="button option">
-                                {../assets/icons/key.svg}
-                            </button>
-                            Check In Now
-                            <span>Apply early check-in fee of $50 to my bill.</span>
-                        </li>
-                        <li class="break">
-                            <span>Or</span>
-                        </li>
-                        <li>
-                            <button type="button" class="button option">
-                                {../assets/icons/watch.svg}
-                            </button>
-                            Check In Later
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </section>
-    </body>
-</html>
+<!-- Content -->
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{'EARLY_AVAIL_HEADER' | translate}}</h1>
+        <h3>{{'EARLY_AVAIL_SUB_HEADER' | translate}} {{standardCheckinTime}} {{ 'EARLY_AVAIL_SUB_HEADER_2' | translate }} {{selectedReservation.earlyCheckinChargeSymbol}}{{selectedReservation.earlyCheckinCharge}} </h3>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" click-touch="acceptEarlyCheckinOffer()">
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    {{'EARLY_AVAIL_PURCHASE' | translate}}
+                    <span>
+                        {{ 'EARLY_AVAIL_PURCHASE_SUB' | translate }} 
+                        {{selectedReservation.earlyCheckinChargeSymbol}}{{selectedReservation.earlyCheckinCharge}} 
+                        {{ 'EARLY_AVAIL_PURCHASE_SUB_2' | translate }}
+                    </span>
+                </li>
+                <li class="break">
+                    <span>{{ 'OR_TEXT' | translate }}</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" click-touch='checkinLater()'>
+                        <div ng-include="icons.url.watch"></div>
+                    </button>
+                    {{'EARLY_AVAIL_LATER' | translate}}
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
