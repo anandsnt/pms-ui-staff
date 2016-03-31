@@ -29,7 +29,6 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			timer;
 
 		var refreshScroll = function(scrollUp) {
-			console.log(scrollUp || 'simple');
 			$scope.refreshScroller(SCROLL_NAME);
 			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
 				$scope.$parent.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
