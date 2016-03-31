@@ -53,7 +53,7 @@
             </ul>
         </div>
         <!-- Add Scroll -->
-        <div class="accounts-ar-list scrollable" ng-class="{'no-pagination': arOverviewData.total_result >= filterData.perPage && arOverviewData.accounts.length > 0}" ng-iscroll='arOverViewScroll'>
+        <div class="accounts-ar-list scrollable" ng-class="{'no-pagination': !(arOverviewData.total_result >= filterData.perPage && arOverviewData.accounts.length > 0)}" ng-iscroll='arOverViewScroll'>
             <div class="wrapper" >
                 <ul class="search-results">
                     <li class="account-ar" ng-repeat="account in arOverviewData.accounts">
