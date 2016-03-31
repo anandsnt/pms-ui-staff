@@ -729,7 +729,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				to_date: $scope.confirmedCheckoutDate,
 				fromState: 'STAY_CARD',
 				company_id: $scope.reservationData.company.id,
-				travel_agent_id: $scope.reservationData.travelAgent.id
+				travel_agent_id: $scope.reservationData.travelAgent.id,
+				group_id: $scope.reservationData.group.id,
+                room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
 		}
 
