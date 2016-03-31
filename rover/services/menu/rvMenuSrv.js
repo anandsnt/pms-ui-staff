@@ -276,7 +276,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_ACCOUNTS_RECEIVABLES",
 		            action: "rover.financials.accountsReceivables",
-		            menuIndex: "accounting"
+		            menuIndex: "accountsReceivables"
 		        }, {
 		            title: "MENU_COMMISIONS",
 		            action: "",

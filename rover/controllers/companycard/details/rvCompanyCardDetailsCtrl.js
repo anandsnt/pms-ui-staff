@@ -227,13 +227,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-
 		};
-
-		//CICO-20567-Select default to AR Account Tab
-		/*if($stateParams.origin === 'AR_OVERVIEW'){
-			$scope.switchTabTo('', 'cc-ar-accounts');
-		}*/
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
@@ -320,9 +314,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			//taking a deep copy of copy of contact info. for handling save operation
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-			// 
+			
+			//CICO-20567-Select default to AR Transactions Tab
 			if($stateParams.origin === 'AR_OVERVIEW'){
-				$scope.switchTabTo('', 'cc-ar-accounts');
+				$scope.switchTabTo('', 'cc-ar-transactions');
 			}
 		};
 		/**

@@ -4,7 +4,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_ACCOUNTS_RECEIVABLES'));
 	$scope.setTitle($filter('translate')('MENU_ACCOUNTS_RECEIVABLES'));
-
+    $scope.$emit("updateRoverLeftMenu", "accountsReceivables");
     /**
      * Setting up scroller with refresh options..
      */
@@ -70,16 +70,16 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     // Filter block starts here ..
     $scope.changedSearchQuery = function(){
 
-        $scope.filterData.minAmount     = "";
-        $scope.filterData.ageingDays    = "";
-        
-        if($scope.filterData.searchQuery.length > 2 ){
+        if($scope.filterData.searchQuery.length > 2 || $scope.filterData.searchQuery === ""){
+            $scope.filterData.minAmount     = "";
+            $scope.filterData.ageingDays    = "";
             fetchArOverviewData();
         }
     };
 
     $scope.clearSearchQuery = function(){
         $scope.filterData.searchQuery = '';
+        fetchArOverviewData();
     };
 
     $scope.changedMinAmount = function(){
