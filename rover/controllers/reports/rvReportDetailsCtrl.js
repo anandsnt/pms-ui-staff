@@ -866,15 +866,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
 				case reportNames['RATE_ADJUSTMENTS_REPORT']:
 				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
-					orientation = 'landscape';
-					break;
 				case reportNames['GUEST_BALANCE_REPORT']:
+				case reportNames['ADDON_FORECAST']:
 					orientation = 'landscape';
 					break;
 
 				default:
-					orientation = 'portrait';
-					break;
+					// no op
 			}
 
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
@@ -918,7 +916,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		    // in background we need to keep the report with its original state
 		    $timeout(function() {
-		    	$rootScope.msgMe = 'Vijay';
 
 		    	// remove the orientation
 				removePrintOrientation();
