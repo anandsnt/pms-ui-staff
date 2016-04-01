@@ -116,12 +116,12 @@
                     </tbody>
                 </table>
                 <!-- If multiple restrictions apply: -->
-                <ul ng-if="!stateCheck.stayDatesMode && rate.restrictions.length > 1" class="restrictions">
-                    <li ng-repeat="restriction in rate.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                <ul ng-if="!stateCheck.stayDatesMode && room.restrictions.length > 1" class="restrictions">
+                    <li ng-repeat="restriction in room.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
                         {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
                     </li>
                 </ul>
-                <ul ng-if="stateCheck.stayDatesMode && rate.dates[stateCheck.dateModeActiveDate].restrictions.length > 1" class="restrictions">
+                <ul ng-if="stateCheck.stayDatesMode && room.dates[stateCheck.dateModeActiveDate].restrictions.length > 1" class="restrictions">
                     <li ng-repeat="restriction in rate.dates[stateCheck.dateModeActiveDate].restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
                         {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
                     </li>
