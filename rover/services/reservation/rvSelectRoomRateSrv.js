@@ -31,10 +31,10 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                     amounts = {},
                     summary = [];
 
-                _.each(data.results, function(result) {
+                _.each(data.results, function(result, index) {
                     //---------------------------------------------Add HOUSE_FULL to the restrictions array
                     //CICO-24923 Not needed in case of group bookings
-                    if (self.houseAvailability && !self.isGroupReservation) {
+                    if (self.houseAvailability && !self.isGroupReservation && (index === 0 || index < data.results.length - 1)) {
                         if (self.houseAvailability[result.date] < 1) {
                             result.restrictions.push({
                                 restriction_type_id: 99,
@@ -44,7 +44,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
                     }
 
                     //--------------------------------------------- INVALID PROMO
-                    if (self.promotionValidity !== null) {
+                    if (self.promotionValidity !== null && (index === 0 || index < data.results.length - 1)) {
                         if (!self.promotionValidity[result.date]) {
                             result.restrictions.push({
                                 restriction_type_id: 98,
@@ -59,7 +59,7 @@ sntRover.service('RVSelectRoomRateSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
 
                     _.each(result.restrictions, function(restriction) {
                         if (!_.findWhere(summary, {
-                            restriction_type_id: restriction.type_id,
+                            restriction_type_id: restriction.restriction_type_id,
                             days: restriction.days
                         })) {
                             summary.push(restriction);

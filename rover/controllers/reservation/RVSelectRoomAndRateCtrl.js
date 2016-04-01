@@ -312,7 +312,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.stateCheck.activeView === 'RATE') {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
 					payLoad.order = "ALPHABETICAL";
-					if(!!$scope.stateCheck.preferredType && !roomTypeId){
+					if (!!$scope.stateCheck.preferredType && !roomTypeId) {
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 					}
 				}
@@ -1534,12 +1534,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		var processRestrictions = function(firstRestriction, hasMultipleRestrictions, rateId) {
 
 			var restrictionCount = 0,
-				isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] <
-				1 : $scope.getLeastHouseAvailability() < 1,
+				isHouseFull = $scope.stateCheck.stayDatesMode ? ($scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1) : ($scope.getLeastHouseAvailability() < 1),
 				isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
-				isPromoInvalid = $scope.reservationData.code &&
-				$scope.reservationData.code.id &&
-				!_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
+				isPromoInvalid = $scope.reservationData.code && $scope.reservationData.code.id && !_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
 					return a && b;
 				});
 
@@ -1550,7 +1547,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			if (!isGroupReservation && isHouseFull && (!firstRestriction || firstRestriction.restriction_type_id != 99)) {
-				firstRestriction = firstRestriction ? firstRestriction + 1 : 1;
+				restrictionCount = restrictionCount ? restrictionCount + 1 : 1;
 				if (restrictionCount === 1) {
 					firstRestriction = {
 						restriction_type_id: 99,
