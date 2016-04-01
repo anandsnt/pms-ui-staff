@@ -5854,7 +5854,7 @@
 
                         label {
                             text-transform: uppercase;
-                            font-size: 12px;
+                            font-size: 14px;
                             display: block;
                             line-height: 20px;
                             margin-bottom: 0;
@@ -5919,14 +5919,13 @@
                             }
                         }
                         .price-fields {
-                            padding-bottom:10px;
-                            border-bottom:1px solid @grey2;
-                            .calc-width( 100, 10 );
-
-                            &.last-price-fields  {
-                                border-bottom-color:transparent;
-                            }
                             .float;
+
+                            &:not(:last-child){
+                                padding-bottom:10px;
+                                border-bottom:1px solid @grey2;
+                            }
+                            .calc-width( 100, 10 );
 
                             label {
                                 display:block;
