@@ -71,6 +71,24 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
         
         
         
+            
+            
+            $scope.assignRoomToReseravtion = function(){
+                 var reservation_id = $scope.selectedReservation.id;
+                        $scope.invokeApi(zsTabletSrv.assignGuestRoom, {
+                         'reservation_id':reservation_id
+                     }, $scope.roomAssignCallback, $scope.roomAssignCallback); 
+            };
+            $scope.roomAssignCallback = function(response){
+                $scope.$emit('hideLoader');
+                if (response.status && response.status === 'success'){
+                    $scope.selectedReservation.room = response.data.room_number;
+                    $scope.initTermsPage();
+                   
+                } else {
+                    $scope.initRoomError();
+                }
+            };
             $scope.roomIsAssigned = function(){
               if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
                   return true;
@@ -85,19 +103,10 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                     } else return false;
                 } else return false;
             };
-            $scope.goToTerms = function(){
-                if (!$scope.roomIsAssigned()){
-                    $scope.assignRoomToReseravtion();
-                } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
-                      $scope.initTermsPage();
-                } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
-                    $scope.initRoomError();
-                }
-            };
-        
         
         
         $scope.goToTerms = function(){
+            console.log('goToTerms');
             if (!$scope.roomIsAssigned()){
                 $scope.assignRoomToReseravtion();
             } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
