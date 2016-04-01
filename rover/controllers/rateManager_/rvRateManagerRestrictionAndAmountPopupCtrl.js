@@ -607,25 +607,30 @@ angular.module('sntRover')
         const getDisplayingParamsForRestricion = (restriction, individualRateRestrictionList, commonRestrictions) => {
             const restrictionFoundInCommon = _.findWhere(commonRestrictions, {restriction_type_id: restriction.id});
             
+            var returnable = {
+                status: 'OFF',
+                value: '',
+                isDisabled: $scope.isPastDate || (!!restrictionFoundInCommon && restrictionFoundInCommon.is_on_rate)
+            };
+
             if(restrictionFoundInCommon) {
                 return {
+                    ...returnable,
                     status: 'ON',
-                    value: restrictionFoundInCommon.days
+                    value: restrictionFoundInCommon.days,
                 };
             }
             for(let i = 0; i < individualRateRestrictionList.length; i++ ) {
                 let correspondingRestriction = _.findWhere(individualRateRestrictionList[i], { restriction_type_id: restriction.id });
                 if(correspondingRestriction) {
                     return {
+                        ...returnable,
                         status: 'VARIED',
                         value: RateManagerRestrictionTypes[restriction.value].hasInputField ? '??' : ''
                     };
                 }
             }
-            return {
-                status: 'OFF',
-                value: ''
-            };
+            return returnable;
         };
 
         /**
