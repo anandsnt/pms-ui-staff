@@ -326,7 +326,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         if (!$scope.remoteEncoding){
                             printAPI.uid = null;
                         } else {
-                            printAPI.encoder_id = $state.encoder;
+                            printAPI.key_encoder_id = $state.encoder;
                         }
 
 
