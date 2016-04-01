@@ -790,11 +790,11 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.reservation_search_qrcode');
             };
             $scope.onChromeAppResponse = function(response){
+                console.log('msg from ChromeApp: ',response);
                 if (response){
                     if (response.isChromeApp){
                         $scope.inChromeApp = true;
                     } else if (response.qr_code){
-                        console.log('init find reservation for : ',response.reservation_id);
                         $scope.initQRCodeFindReservation(response.reservation_id);
                     }
                 }
@@ -952,8 +952,7 @@ sntZestStation.controller('zsRootCtrl', [
         console.info("chrome app id [ "+chromeAppId+' ]');
         //minimize the chrome app on loging out
         (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-login"):"";
-        console.info("starting in from chrome");
-    } ;
+    };
     $scope.initChromeAppQRCodeScanner = function(){
         if ($scope.inChromeApp){
             var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
@@ -1027,6 +1026,10 @@ sntZestStation.controller('zsRootCtrl', [
         //set print and email options set from hotel settings > Zest > zest station
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
+        $scope.setScreenIcon('bed');
+        
 	}();
+        
+        
 }]);
 
