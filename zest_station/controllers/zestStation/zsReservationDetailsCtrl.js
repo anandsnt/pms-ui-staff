@@ -315,7 +315,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                        } else {
                            $state.is_early_prepaid = false;
                            if (inUpsellWindow){
-                                $state.go('zest_station.early_checkin_unavailable');
+                                $state.go('zest_station.early_checkin_prepaid');
                            }
                        }
                         
@@ -394,7 +394,15 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     console.log(response);
                     //debugging prepaid;
                     //response.offer_eci_bypass = true;
-                    response.is_early_prepaid = response.offer_eci_bypass;
+                    response.is_early_prepaid = false;
+                    
+                    if (response.offer_eci_bypass){
+                        if (response.early_checkin_charge !== null && response.early_checkin_offer_id !== null){
+                            response.is_early_prepaid = true;
+                        } else {
+                            response.is_early_prepaid = false;
+                        }
+                    }
                     
                     if (!$state.earlyCheckinPurchased &&
                         (
