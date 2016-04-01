@@ -23,7 +23,7 @@ var applyPrintMargin = function(){
 };
 
 var applyStylesForYotelReceipt = function(){
-	var starTacStyles = '.page-print{width:244px;}#registration-card{padding-top:1cm !important;padding-bottom:1cm !important;}.page-print{margin-left:6px;}#registration-card .logo{width:100px !important;top: 0.25cm;} #registration-card .content{text-align:left;position:fixed;top:1cm;bottom:2cm;width:244px;padding-left:1px;padding-right:1px;}.page-print > div.content{position:fixed;top:30px;text-align:left !important;padding-left:2%;padding-right:2%}.page-print > div.content > strong.footer{text-align:center !important}.page-print > div.content > strong.large_txt,.page-print > div.content span.large_txt{font-size:1.6em}.page-print > div.content span > strong.large_txt{font-size:1.5em}.page-print > div.content span{font-size:1.2em}.page-print > div.content span.reg_text{margin-top:-60px;white-space:pre-wrap}';
+	var starTacStyles = '.page-print{width:240px;}#registration-card{padding-top:1cm !important;padding-bottom:1cm !important;}.page-print{margin-left:6px;}#registration-card .logo{width:100px !important;top: 0.25cm;} #registration-card .content{text-align:left;position:fixed;top:1cm;bottom:2cm;width:240px;padding-left:1px;padding-right:1px;}.page-print > div.content{position:fixed;top:30px;text-align:left !important;padding-left:2%;padding-right:2%}.page-print > div.content > strong.footer{text-align:center !important}.page-print > div.content > strong.large_txt,.page-print > div.content span.large_txt{font-size:1.6em}.page-print > div.content span > strong.large_txt{font-size:1.5em}.page-print > div.content span{font-size:1.2em}.page-print > div.content span.reg_text{margin-top:-60px;white-space:pre-wrap}';
 	createStyleNodeWithString(starTacStyles);
 	 
 };
