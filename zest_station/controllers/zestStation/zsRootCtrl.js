@@ -975,6 +975,14 @@ sntZestStation.controller('zsRootCtrl', [
             }
            
          }
+         else if($scope.zestStationData.zest_printer_option === "RECEIPT"){
+            if($scope.theme === 'yotel'){
+               applyStylesForYotelReceipt();//zsUtils function
+            }
+            else{
+                //
+            }
+         }
          else{
             //RECEIPT and AIR_PRINT
             applyPrintMargin();//zsUtils function
