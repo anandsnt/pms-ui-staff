@@ -56,9 +56,9 @@
         <div class="accounts-ar-list scrollable" ng-class="{'no-pagination': !isShowPagination(),'no-accounts-ar-header':filterData.hideArHeader}" ng-iscroll='arOverViewScroll'>
             <div class="wrapper" >
                 <ul class="search-results">
-                    <li class="account-ar card" ng-repeat="account in arOverviewData.accounts" ui-sref="rover.companycarddetails({id:account.id, type: account.type,origin:'AR_OVERVIEW'})">
+                    <li class="account-ar" ng-repeat="account in arOverviewData.accounts" ui-sref="rover.companycarddetails({id:account.id, type: account.type,origin:'AR_OVERVIEW'})">
                         <a >
-                            <div class="guest-image account-image icons" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
+                            <div class="account-image icons" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
                             <div class="data">
                                 <h2>{{account.account_name}}</h2>
                                 <strong class="confirmation">{{account.ar_number}}</strong>
