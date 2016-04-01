@@ -21,7 +21,7 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
                 staycardJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments', 
+                    return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments',
                         'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 },
                 /**
@@ -202,7 +202,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards/:isOnlineRoomMove',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {
@@ -278,7 +278,7 @@ angular.module('stayCardModule', [])
                     else{
                         return [];
                     }
-                   
+
                 }
             }
         });
