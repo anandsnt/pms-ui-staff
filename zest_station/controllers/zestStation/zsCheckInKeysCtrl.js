@@ -372,9 +372,17 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     $scope.ws.send("{\"Command\" : \"cmd_device_uid\"}");
                 };
                 $scope.DispenseKey = function() {//write to key after successful encodeKey call
-                    console.info('dispense called : [',$state.keyDispenseUID,']');
+                    //console.info('dispense called : [',$state.keyDispenseUID,']');
                     $state.keyDispenseUID = $scope.dispenseKeyData;
-                    $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
+                    if ($scope.ws.readyState === 3){
+                        $scope.wsOpen = false;
+                    }
+                    if (!$scope.wsOpen){
+                        $scope.emitKeyError('Websocket is in State (Closed)');
+                    } else {
+                        $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
+                    }
+                    
                 };
                  $scope.EjectKeyCard = function() {//reject key on failure
                     $scope.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
