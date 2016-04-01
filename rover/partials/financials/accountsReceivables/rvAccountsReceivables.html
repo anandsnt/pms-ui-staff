@@ -61,11 +61,11 @@
                             <div class="guest-image account-image icons" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
                             <div class="data">
                                 <h2>{{account.account_name}}</h2>
-                                <strong class="confirmation">{{account.account_number}}</strong>
+                                <strong class="confirmation">{{account.ar_number}}</strong>
                                 <span class="icons icon-location" ng-hide="escapeNullStr(account.location)==''" >{{escapeNullStr(account.location)}}
                             </span>
-                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.ar_number)==''"  class="icons icon-guest-company">{{account.ar_number}}</span>
-                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.ar_number)==''"  class="icons icon-guest-travelagent">{{account.ar_number}}</span>
+                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-company">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-travelagent">{{account.account_number}}</span>
                                 <span ng-hide="escapeNullStr(account.ageing_date)==' '" class="icons icon-time confirmation">{{account.ageing_date}}</span>
                             </div>
                             <div class="info-holder">
