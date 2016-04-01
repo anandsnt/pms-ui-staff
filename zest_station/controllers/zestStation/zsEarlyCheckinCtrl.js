@@ -69,6 +69,34 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             $state.go('zest_station.early_checkin_unavailable');
         };
         
+        
+        
+            $scope.roomIsAssigned = function(){
+              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
+                  return true;
+              }
+              return false;
+            };
+            
+            $scope.roomIsReady = function(){
+                if ($scope.selectedReservation.reservation_details.data){
+                    if ($scope.selectedReservation.reservation_details.data.reservation_card.room_status === "READY"){
+                        return true;
+                    } else return false;
+                } else return false;
+            };
+            $scope.goToTerms = function(){
+                if (!$scope.roomIsAssigned()){
+                    $scope.assignRoomToReseravtion();
+                } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
+                      $scope.initTermsPage();
+                } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
+                    $scope.initRoomError();
+                }
+            };
+        
+        
+        
         $scope.goToTerms = function(){
             if (!$scope.roomIsAssigned()){
                 $scope.assignRoomToReseravtion();
