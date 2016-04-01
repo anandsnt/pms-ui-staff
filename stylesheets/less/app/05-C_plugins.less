@@ -5913,10 +5913,15 @@
                             position: relative;
                             max-height: 380px;
                             overflow: hidden;
+
+                            .iScrollVerticalScrollbar {
+                                right: 0;
+                            }
                         }
                         .price-fields {
                             padding-bottom:10px;
                             border-bottom:1px solid @grey2;
+                            .calc-width( 100, 10 );
 
                             &.last-price-fields  {
                                 border-bottom-color:transparent;
