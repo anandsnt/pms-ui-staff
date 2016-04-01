@@ -883,13 +883,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.stateCheck.pagination.rate.page = 1;
 
 				if ($scope.stateCheck.activeView === "RATE") {
+					$scope.stateCheck.rateFilterText = "";
 					fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+						$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 						generateRatesGrid(response.results);
 						$scope.refreshScroll();
 					});
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					fetchRoomTypesList();
 				}
+				scrollTop();
 			};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ***************************
@@ -902,6 +905,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.$parent && $scope.$parent.myScroll['room_types'] && $scope.$parent.myScroll['room_types'].refresh();
 			}, 700);
 		};
+
+		var scrollTop = function() {
+			$scope.$parent && $scope.$parent.myScroll['room_types'] && $scope.$parent.myScroll['room_types'].scrollTo(0,0);
+		};
+
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PERMISSIONS
 
@@ -1028,17 +1037,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.setActiveView = function(view) {
 			$scope.stateCheck.activeView = view;
-			if (view === 'ROOM_TYPE') {
-				fetchRoomTypesList();
-			} else if (view === 'RATE') {
-				$scope.stateCheck.rateFilterText = "";
-				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
-					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
-					generateRatesGrid(response.results);
-					$scope.refreshScroll();
-				});
-			}
-			$scope.refreshScroll();
+			reInitialize();
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- COMPUTE TAX AND DAY BREAKUP
