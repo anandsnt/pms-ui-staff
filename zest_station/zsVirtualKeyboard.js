@@ -9,11 +9,17 @@
  *  this code will need to be dropped in lieu of some other extension for onscreen keyboards
  */
 
-this.initScreenKeyboardListener = function(closeHandler){
+this.initScreenKeyboardListener = function(from){
     var that = this;
     this.elSelector = 'input:visible';
+    console.log('from: ',from);
+    if (from === 'login'){
+        this.fromLogin = true;
+        this.elSelector = 'input:visible';
+    }
     this.bound = false;
     this.focusHandler = function(){
+        console.info('focus')
         keyboardUp = true;
             //open virtual keyboard
             $.keyboard.language.love = $.extend($.keyboard.language.en);
@@ -216,14 +222,23 @@ this.initScreenKeyboardListener = function(closeHandler){
     
     
         this.blurHandler = function(){
+            console.log('blur')
             keyboardUp = false;
             $(this.elSelector).unbind( "focus", this.focusHandler);
        };
         
+        var el;
+        if (this.fromLogin){
+            el = $(this.elSelector);
+            
+            el.focus(this.focusHandler).blur(this.blurHandler);
+        } else {
+            el = $(this.elSelector);
+            el.not( document.getElementById( "datepicker" ) )
+                .focus(this.focusHandler).blur(this.blurHandler);
+        }
         
-        $(this.elSelector)
-                .not( document.getElementById( "datepicker" ) )
-                    .focus(this.focusHandler).blur(this.blurHandler);
+        console.log(el);
         
         return that;
 };
