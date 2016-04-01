@@ -159,6 +159,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 				$scope.creditCardTypes = item.values;
 			};
 		});
+		renderDefaultValues();
 		checkReferencetextAvailable();
 	};
 	var init = function(){
@@ -176,9 +177,10 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 		$scope.depositPaidSuccesFully = true;
 		$scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
         $scope.arTransactionDetails.available_credit = parseFloat(data.available_credit).toFixed(2);
+        $scope.depositPaidSuccesFully = true;
+		$scope.authorizedCode = data.authorization_code;
         //Reload the ar transaction listing after payment
         $scope.reloadARTransactionListing();
-		$scope.handleCloseDialog();
 	};
 	/*
 	* Failure call back of submitpayment
@@ -452,5 +454,18 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 	$scope.$on("MLI_ERROR", function(e,data){
 	 	$scope.errorMessage = data;
 	});
+
+	/*
+	* Invoke this method to show the refund amount on the button in the payment screen
+	*/
+	var renderDefaultValues = function(){
+		$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+		if($scope.renderData.defaultPaymentAmount < 0){
+				$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
+				$scope.shouldShowMakePaymentButton = false;
+		} else {
+				$scope.shouldShowMakePaymentButton = true;
+		};
+	};
 
 }]);

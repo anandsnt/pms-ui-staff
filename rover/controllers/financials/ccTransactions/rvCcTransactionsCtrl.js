@@ -4,7 +4,8 @@ sntRover.controller('RVccTransactionsController', ['$scope','$filter','$statePar
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_CC_TRANSACTIONS'));
 	$scope.setTitle($filter('translate')('MENU_CC_TRANSACTIONS'));
-
+    $scope.$emit("updateRoverLeftMenu", "ccTransactions");
+    
 	$scope.data = {};
     $scope.data.activeTab = $stateParams.id === '' ? 0 : $stateParams.id;
     $scope.data.transactionDate = $rootScope.businessDate;

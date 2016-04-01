@@ -38,7 +38,23 @@
                 }
             }
 
-            .guest-image { margin-right: 20px; }
+            .guest-image,
+            .account-image { margin-right: 20px; }
+
+            .account-image {
+                display:block;
+                .pull-left;
+                width:50px;
+                height:50px;
+
+                &.icon-company {
+                    background-color: @ccard;
+                }
+
+                &.icon-travel-agent {
+                    background-color: @tacard;
+                }
+            }
 
             .data {
                 .nowrap();
@@ -1231,6 +1247,67 @@
                     margin-top: 10px;
                     text-align: center;
                     width: 120px;
+                    color: @grey3;
+                    .pull-left;
+
+                    strong {
+                        font-size: 20px;
+                        line-height: 1em;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        color: @textColor;
+                        .show;
+
+                        &.green { color: @green; }
+                        &.red { color: @red; }
+                    }
+
+                    span {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+
+            /* Account ***/
+            &.account-ar {
+                    
+                .data {
+                    margin-right: 20px;
+                    .calc-width(100, 400);
+
+                    h2 {
+                        line-height: 24px;
+                        margin-bottom: 6px;
+                    }
+
+                    .confirmation,
+                    .icons {
+                        display: inline;
+                        line-height: 20px;
+                        height: 20px;
+                        overflow: hidden;
+                        margin-right: 20px;
+
+                        &:last-child { margin-right: 0; }
+                    }
+
+                    .icons {
+                        color: @grey3;
+                        padding-left: 20px;
+                    }
+
+                    .confirmation { color: @textColor; }
+                }
+
+                .info-holder {
+                    float: right;
+                }
+                
+                .info {
+                    margin-top: 5px;
+                    text-align: center;
+                    width: 100px;
                     color: @grey3;
                     .pull-left;
 

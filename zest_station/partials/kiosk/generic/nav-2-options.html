@@ -19,13 +19,13 @@
                 </li>
                 
                 <!-- deliver-registration -->
-                <li ng-show='at === "deliver-registration" && printEnabled'> 
+                <li ng-show='at === "deliver-registration" && printEnabled && !zestStationData.auto_print'> 
                     <button type="button" class="button option" touch-press='clickedPrint()'>
                         <div ng-include="icons.url.print"></div>
                     </button>
                     <span translate>PRINT_TEXT</span>
                 </li>
-                <li class="break" ng-show='at === "deliver-registration" && printEnabled && emailEnabled'>
+                <li class="break" ng-show='at === "deliver-registration" && printEnabled && emailEnabled && !zestStationData.auto_print'>
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show='at === "deliver-registration" && emailEnabled'> 
