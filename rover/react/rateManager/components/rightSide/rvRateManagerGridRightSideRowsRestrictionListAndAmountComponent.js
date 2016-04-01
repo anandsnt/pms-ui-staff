@@ -75,9 +75,34 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 								 			:
 								 			(
 							 					<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-								 					<span className={'rate-single' + (rowData.rateDetails[colIndex].single_overridden ? ' has-override':'')}>
+							 						
+								 					<span 
+								 						className=
+								 							{'rate-single' + 
+									 							(
+									 								(
+									 									rowData.rateDetails[colIndex].single_overridden ||
+									 									rowData.rateDetails[colIndex].child_overridden ||
+									 									rowData.rateDetails[colIndex].extra_adult_overridden ||
+									 									rowData.rateDetails[colIndex].double_overridden 
+									 								) ? 
+									 								' has-override': '' 
+									 							)
+								 							}
+								 						 >
 								 						{rowData.rateDetails[colIndex].single}
-								 						<span className={"icon-report icon-upsell" + (rowData.rateDetails[colIndex].single_overridden ? '':' hidden')}/>
+								 						<span className={
+								 							"icon-report icon-upsell" + 
+								 							(
+								 								(
+								 									rowData.rateDetails[colIndex].single_overridden ||
+								 									rowData.rateDetails[colIndex].child_overridden ||
+								 									rowData.rateDetails[colIndex].extra_adult_overridden ||
+								 									rowData.rateDetails[colIndex].double_overridden 
+								 								) ? 
+								 								'' :' hidden'
+								 							)
+								 						}/>
 								 					</span>
 								 					<div className="restriction_holder">
 													   {eachDayRestrictionData.map((restriction, restrictionIndex) => 
