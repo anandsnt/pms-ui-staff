@@ -323,6 +323,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $('head').append("<style id='print-orientation'>@page { size: portrait; }</style>");
     };
 
+    // add the print orientation after printing
+    var removePrintOrientation = function() {
+      $( '#print-orientation' ).remove();
+    };
+
     var fetchBillSuccess = function(response) {
       $scope.$emit(zsEventConstants.HIDE_LOADER);
       $scope.printData = response;
@@ -333,31 +338,52 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.handleBillPrint();
     };
 
-    $scope.handleBillPrint = function() {
-      try {
-        // this will show the popup with full bill
-        $timeout(function() {
-          /*
-           * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-           */
-          $window.print();
-          if (sntapp.cordovaLoaded) {
-            var printer = (sntZestStation.selectedPrinter);
-            cordova.exec(function(success) {
-              $scope.clickedNoThanks(true); //now checking for email update / send
-              //checkOutGuest();
-            }, function(error) {
-              $state.go('zest_station.error');
-            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-          };
-          $scope.printOpted = true;
-          // provide a delay for preview to appear 
+  $scope.handleBillPrint = function() {
+    $scope.$emit('hideLoader');
+    $scope.errorMessage = "";
 
-        }, 100);
-      } catch (e) {
+    // CICO-9569 to solve the hotel logo issue
+    $("header .logo").addClass('logo-hide');
+    $("header .h2").addClass('text-hide');
 
-      }
+    $('.popup').hide(); //hide timeout elements
+    $('.invis').hide(); //hide timeout elements
+    $('#popup-overlay').hide(); //hide timeout elements
+    try {
+      // this will show the popup with full bill
+      $timeout(function() {
+        /*
+         * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+         */
+        $window.print();
+        if (sntapp.cordovaLoaded) {
+          var printer = (sntZestStation.selectedPrinter);
+          cordova.exec(function(success) {
+            $scope.clickedNoThanks(true); //now checking for email update / send
+            //checkOutGuest();
+          }, function(error) {
+            $state.go('zest_station.error');
+          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+        };
+        $scope.printOpted = true;
+        // provide a delay for preview to appear 
+
+      }, 100);
+    } catch (e) {
+      console.info("something went wrong while attempting to print");
     };
+    setTimeout(function() {
+      $scope.isPrintRegistrationCard = false;
+
+      // CICO-9569 to solve the hotel logo issue
+      $("header .logo").removeClass('logo-hide');
+      $("header .h2").addClass('text-hide');
+
+      // remove the orientation after similar delay
+      removePrintOrientation();
+      $scope.clickedNoThanks(true); //now checking for email update / send
+    }, 100);
+  };
 
     $scope.fetchBillData = function() {
       var data = {

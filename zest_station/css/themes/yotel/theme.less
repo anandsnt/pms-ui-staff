@@ -170,6 +170,8 @@
 	        }
 	    }
         }
+        /* commenting out admin settings
+
         
         .page-print{
             >div.logo>div{
@@ -201,12 +203,11 @@
             }
             
         }
+        */
         
-	.yotel-logo{
+	   .yotel-logo{
             position: fixed;
-            right: 5%;
-            height: 35% !important;
-            width: 35% !important;
+    
             //width="239.3px" height="64.8px" 
             //viewBox: "0 0 239.3 64.8";
         }
@@ -216,6 +217,7 @@
         /////////////////////
         
         //dark theme (modified for yotel)
+        @charset "UTF-8";
         .ui-keyboard{
             font-size:14px;
             text-align:center;
@@ -236,7 +238,7 @@
         }
         
         .ui-keyboard-button{
-            border:1px solid #404040;
+            border:4px solid #dededc;
             padding:0 .8em;
             margin:1px;
             min-width:5em;
@@ -246,7 +248,7 @@
             font-weight: 500;
             font-style: bold;
             font-stretch: normal;
-            
+            font-family:'vag', sans-serif !important;
             color:@brandColor;
             text-align:center;
             border-radius:5px;
@@ -260,6 +262,12 @@
             -moz-user-focus:ignore
         }
         .ui-keyboard-button:not([disabled]):hover{
+            background:@brandColor;
+            color:@textColor;
+            background-image:-webkit-linear-gradient(-90deg,@brandColor 0,@background 100%);
+            background-image:linear-gradient(-90deg,@brandColor 0,@background 100%)
+        }
+        .ui-state-hover{
             background:@brandColor;
             color:@textColor;
             background-image:-webkit-linear-gradient(-90deg,@brandColor 0,@background 100%);
@@ -343,4 +351,7 @@
             opacity:.5
         }
         .ui-keyboard-overlay{position:absolute;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,.5)}.ui-keyboard-popup{display:inline-block;max-width:22em}.ui-keyboard-caret{background:#c00;width:1px;margin-top:3px}div.ui-keyboard-extender{margin-left:5px;margin-right:10px}button.ui-keyboard-extender span{width:.9em;height:.9em;display:inline-block;margin-bottom:3px;background-repeat:no-repeat;background-position:center center;background-size:contain;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgc3R5bGU9ImZpbGw6I2VlZSI+PGc+PHBhdGggc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6I2VlZSIgZD0iTSAwLjUsNC41IDE1LjUsNC41IDE1LjUsMTUuNSAwLjUsMTUuNSBaIj48L3BhdGg+PHJlY3Qgd2lkdGg9IjIiIGhlaWdodD0iMiIgeD0iMiIgeT0iNiI+PC9yZWN0PjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHg9IjUiIHk9IjYiPjwvcmVjdD48cmVjdCB3aWR0aD0iMiIgaGVpZ2h0PSIyIiB4PSI4IiB5PSI2Ij48L3JlY3Q+PHBhdGggZD0ibSAxMSw2IDMsMCAwLDUgLTIsMCAwLC0zIC0xLDAgeiI+PC9wYXRoPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHg9IjEyIiB5PSIxMiI+PC9yZWN0PjxyZWN0IHdpZHRoPSI2IiBoZWlnaHQ9IjIiIHg9IjUiIHk9IjEyIj48L3JlY3Q+PHJlY3Qgd2lkdGg9IjIiIGhlaWdodD0iMiIgeD0iOSIgeT0iOSI+PC9yZWN0PjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHg9IjYiIHk9IjkiPjwvcmVjdD48cmVjdCB3aWR0aD0iMiIgaGVpZ2h0PSIyIiB4PSIyIiB5PSIxMiI+PC9yZWN0PjxyZWN0IHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHg9IjIiIHk9IjkiPjwvcmVjdD48L2c+PC9zdmc+)}
-        
+        .ui-keyboard-button[data-action="bksp"]>.ui-keyboard-text {
+           font-size: 1.8em;
+           position: inherit;
+        }

@@ -7,7 +7,7 @@
                     translate>
                     START_DATE
                 </label>
-                <input id="room-block-start" class="range-datepicker" 
+                <input tabindex="-1" id="room-block-start" class="range-datepicker" 
                     placeholder="{{'SELECT_START_DATE'|translate}}" 
                     readonly 
                     ui-date="startDateOptions" 
@@ -19,7 +19,7 @@
                     translate>
                     END_DATE
                 </label>
-                <input id="room-block-end" class="range-datepicker" 
+                <input tabindex="-1" id="room-block-end" class="range-datepicker" 
                     placeholder="{{'SELECT_END_DATE'|translate}}" 
                     readonly 
                     ui-date="endDateOptions" 
@@ -44,7 +44,7 @@
                 ng-click="clickedOnMoveButton()">
                 Move Group
             </button>
-            <!-- When button pressed, disable due date input and replace "Move Group" button with: -->
+            <!-- When button pressed, disable due date input tabindex="-1" and replace "Move Group" button with: -->
             <button type="button" class="button blank"
                 ng-click="clickedOnCancelMoveButton()"
                 ng-show="changeDatesActions.isInCompleteMoveMode()">
@@ -59,13 +59,13 @@
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
-            <input id="group-total-rooms" value="{{getMaxOfBookedRooms()}}"  
+            <input tabindex="-1" id="group-total-rooms" value="{{getMaxOfBookedRooms()}}"  
                     ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
         </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_PICK_UP</label>
-            <input id="group-total-rooms"  ng-model="totalPickups" 
+            <input tabindex="-1" id="group-total-rooms"  ng-model="totalPickups" 
                 ng-readonly="shouldChangeTotalPickUpToReadOnly()" />
         </div>
         <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}">
@@ -204,10 +204,10 @@
                         </div>
                         <!-- Room Type -->
                         <div class="line">
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 value="{{getTotalBookedOfIndividualRoomType(dateData)}}"
                                 class="cell" disabled />                                
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 value="{{getTotalPickedUpOfIndividualRoomType(dateData)}}" class="cell" disabled />
                         </div>
                         <!-- Single -->
@@ -215,13 +215,13 @@
                         <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="groupConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
                             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
                                 ng-disabled="shouldDisableSingleEntryBox(dateData, roomType)"
                                 ng-model="dateData.single" class="cell" />                              
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
@@ -239,14 +239,14 @@
                         <!-- <div class="line hidden"> -->
                         <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="groupConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
                             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 ng-disabled="shouldDisableDoubleEntryBox(dateData, roomType)"
                                 function-to-fire="bookingDataChanging" 
                                 ng-model="dateData.double" class="cell" />
 
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
@@ -264,7 +264,7 @@
                         <!-- If L63 is clicked, generate option to add triple: -->
                         <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                         <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 ng-disabled="shouldDisableTripleEntryBox(dateData, roomType)"
@@ -272,7 +272,7 @@
                                 ng-model="dateData.triple" 
                                 class="cell"  />
 
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging"                                 
@@ -290,14 +290,14 @@
                         <!-- If L65 is clicked, generate option to add quadruple: -->
                         <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                         <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
                                 ng-disabled="shouldDisableQuadrupleEntryBox(dateData, roomType)"
                                 ng-model="dateData.quadruple" class="cell" />
 
-                            <input type="text" 
+                            <input tabindex="-1" type="text" 
                                 rv-delay-textbox 
                                 delay="100" 
                                 function-to-fire="bookingDataChanging" 
