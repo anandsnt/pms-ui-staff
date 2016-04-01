@@ -308,44 +308,45 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
                     
 
-                    if ($state.simkey){
-                        onResponseSuccess({});
-                    } else {
-                        
-                        var onSuccessGetToken = function(response){
-                            console.info('got token callback',arguments);
-                          //  options.access_token = response.station_access_token;
-                          //  options.consumer_key="85a59b343f11949b3b204708039d781e";
-                            //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
-                            
-                            var printAPI = {
-                               // "consumer_key":"85a59b343f11949b3b204708039d781e",
-                               // "access_token":response.station_access_token,
-                                "is_additional":false,
-                                "is_kiosk":true,
-                                "key":1,
-                                "reservation_id":options.reservation_id,
-                                "uid":null
-                            };
-                            
-                            $scope.callAPI(zsTabletSrv.encodeKey, {
-                                params: printAPI,
-                                'successCallBack':onResponseSuccess,
-                                'failureCallBack':$scope.emitKeyError
-                            });
-                            
+                    var onSuccessGetToken = function(response){
+                        console.info('got token callback',arguments);
+                      //  options.access_token = response.station_access_token;
+                      //  options.consumer_key="85a59b343f11949b3b204708039d781e";
+                        //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
+
+                        var printAPI = {
+                           // "consumer_key":"85a59b343f11949b3b204708039d781e",
+                           // "access_token":response.station_access_token,
+                            "is_additional":false,
+                            "is_kiosk":true,
+                            "key":1,
+                            "reservation_id":options.reservation_id
                         };
-                        
-                        $scope.callAPI(zsTabletSrv.getAccessToken, {
-                            params: options,
-                            'successCallBack':onSuccessGetToken,
+
+                        if (!$scope.remoteEncoding){
+                            printAPI.uid = null;
+                        } else {
+                            printAPI.encoder_id = $state.encoder;
+                        }
+
+
+                        $scope.callAPI(zsTabletSrv.encodeKey, {
+                            params: printAPI,
+                            'successCallBack':onResponseSuccess,
                             'failureCallBack':$scope.emitKeyError
                         });
+
+                    };
+
+                    $scope.callAPI(zsTabletSrv.getAccessToken, {
+                        params: options,
+                        'successCallBack':onSuccessGetToken,
+                        'failureCallBack':$scope.emitKeyError
+                    });
                         
                         
                         
                         
-                    }
                 },2000);
 
 
