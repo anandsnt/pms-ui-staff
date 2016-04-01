@@ -52,15 +52,20 @@
 				<!-- max guest counts ends here -->
 
 				<fieldset class="holder left" ng-if="isStandAlone">
-					<div class="entry full-width" >
+					<div class="entry" >
 						<label translate>CC AUTHORIZATION AT CHECK IN</label>
-						<div class="select select-col col1-2">
+						<div class="select select-col width80-percent" >
 							<select ng-model="reservationSettingsData.cc_authorization_at_checkin_name" class="styled">
 		                        	<option ng-selected="cc_authorization_at_checkin_value.value==reservationSettingsData.cc_authorization_at_checkin_name" ng-repeat="cc_authorization_at_checkin_value in reservationSettingsData.cc_authorization_at_checkin_values" value="{{cc_authorization_at_checkin_value.value}}">{{cc_authorization_at_checkin_value.value}}</option>
 		                    </select>
 	                    </div>
+	                </div>
+	                <div class="entry">
+	                    <label translate>MAX_NUMBER_OF_NIGHTS</label>
 	                    <div class=" select-col col1-2 ">
-							<ad-textbox value="reservationSettingsData.cc_authorization_at_checkin_nights" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "Max. nights per auth" style="  margin-top: 0; width: 200px;"></ad-textbox>
+	                        <input type="text"  placeholder="{{'PLACEHOLDER_MAX_NUMBER_OF_NIGHTS' | translate }}" name=""  class="col1-3"
+							ng-model="reservationSettingsData.cc_authorization_at_checkin_nights"style="margin-top: 0; width: 200px;"/> 
+							
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
@@ -86,15 +91,20 @@
 				</fieldset>
 
 				<fieldset class="holder right"  ng-if="isStandAlone">
-					<div class="entry full-width" >
+					<div class="entry" >
 						<label translate>CC_AUTHORIZATION_for_STAY_EXTENSIONS</label>
-						<div class="select select-col col1-2">
+						<div class="select select-col width80-percent " >
 							<select ng-model="reservationSettingsData.cc_authorization_for_stay_extension_name" class="styled">
 		                        	<option ng-selected="cc_authorization_for_stay_extension_value.value==reservationSettingsData.cc_authorization_for_stay_extension_name" ng-repeat="cc_authorization_for_stay_extension_value in reservationSettingsData.cc_authorization_at_checkin_values" value="{{cc_authorization_for_stay_extension_value.value}}">{{cc_authorization_for_stay_extension_value.value}}</option>
 		                    </select>
 	                    </div>
+	                </div>
+	                <div class="entry">
+	                	<label translate>MAX_NUMBER_OF_NIGHTS</label>
 	                    <div class=" select-col col1-2 ">
-							<ad-textbox value="reservationSettingsData.cc_authorization_for_stay_extension_nights" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "Max. nights per auth" style="  margin-top: 0; width: 200px;"></ad-textbox>
+	                    	<input type="text"  placeholder="{{'PLACEHOLDER_MAX_NUMBER_OF_NIGHTS' | translate }}" name=""  class="col1-3"
+							ng-model="reservationSettingsData.cc_authorization_for_stay_extension_nights" style="margin-top: 0; width: 200px;"/>
+							
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
@@ -120,15 +130,19 @@
 				</fieldset>
 
 				<fieldset class="holder left" ng-if="isStandAlone && !isHourlyRatesEnabled">
-					<div class="entry full-width" >
+					<div class="entry" >
 						<label translate>CC_TOPUP_AUTHORIZATION_RULE</label>
-						<div class="select select-col col1-2">
+						<div class="select select-col width80-percent" >
 							<select ng-model="reservationSettingsData.cc_authorization_at_eod_name" class="styled">
 		                        	<option ng-selected="cc_authorization_at_eod_value.value==reservationSettingsData.cc_authorization_at_eod_name" ng-repeat="cc_authorization_at_eod_value in reservationSettingsData.cc_authorization_at_eod_values" value="{{cc_authorization_at_eod_value.value}}">{{cc_authorization_at_eod_value.value}}</option>
 		                    </select>
 	                    </div>
+	                </div>
+	                <div class="entry">
+	                    <label translate>MAX_NUMBER_OF_NIGHTS</label>
 	                    <div class=" select-col col1-2 ">
-							<ad-textbox value="reservationSettingsData.cc_authorization_at_eod_nights" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "Max. nights per auth" style="  margin-top: 0; width: 200px;"></ad-textbox>
+	                        <input type="text"  placeholder="{{'PLACEHOLDER_MAX_NUMBER_OF_NIGHTS' | translate }}" name=""  class="col1-3"
+							ng-model="reservationSettingsData.cc_authorization_at_eod_nights" style="margin-top: 0; width: 200px;"/>							
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
