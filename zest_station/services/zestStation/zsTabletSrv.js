@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
-    function($http, $q, zsBaseWebSrv) {
+sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebSrv2',
+    function($http, $q, zsBaseWebSrv,zsBaseWebSrv2) {
         // fetch idle time settings
         this.fetchSettings = function() {
             var deferred = $q.defer(),
@@ -35,6 +35,18 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             return deferred.promise;
         };
 
+        this.fetchUpsellDetails = function(reservation) {
+            var deferred = $q.defer(),
+                url = 'guest_web/reservations/'+reservation.id+'.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
         this.getDoorLockSettings = function() {
             var deferred = $q.defer(),
                 url = 'api/door_lock_interfaces.json';
@@ -349,6 +361,21 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             });
             return deferred.promise;
         };
+
+        this.fetchReservationBalanceDetails = function(params){
+
+            var deferred = $q.defer();
+            url = 'zest_station/reservations/' + params.reservation_id;
+            var param = {
+                "nationality_id": params.nationality_id
+            }
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
 
     }
 ]);

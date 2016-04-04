@@ -212,7 +212,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
 		service.fetchAddonReservations = function(params) {
 			return callApi({
-				name   : 'addonReservations',
 				method : 'getJSON',
 				url    : '/api/reports/' + params.id + '/addon_reservations',
 				params : _.omit(params, 'id'),

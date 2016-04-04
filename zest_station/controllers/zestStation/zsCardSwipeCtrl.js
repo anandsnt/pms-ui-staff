@@ -243,6 +243,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 if (typeof url.hostname === typeof 'str'){
                     if (url.hostname.indexOf('pms-dev') !==-1 || 
                         url.hostname.indexOf('pms-release') !==-1 || 
+                        url.hostname.indexOf('192.168.1.218') !==-1 || 
                         url.hostname.indexOf('localhost') !==-1){
                         notProd = true;
                     }
@@ -330,7 +331,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     };
                     
                     $scope.useEmail = useEmail;
-                    if (useEmail !== '' && zsUtilitySrv.isValidEmail(useEmail)){
+                    if (useEmail !== '' && zsUtilitySrv.isValidEmail(useEmail)&&!$scope.selectedReservation.guest_details[0].is_email_blacklisted){
                         return true;
                     } else {
                         return false;

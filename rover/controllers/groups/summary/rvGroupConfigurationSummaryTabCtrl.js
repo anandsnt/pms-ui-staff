@@ -756,6 +756,55 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			});
 		};
 
+		/*
+		 * Send Confirmation popup handler
+		 * @return undefined 
+		 */
+		$scope.openSendConfirmationPopup = function () {
+
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group first"];
+				return;
+			}
+			$scope.ngData = {};
+			$scope.groupConfirmationData  = {
+				contact_email: $scope.groupConfigData.summary.contact_email,
+				is_salutation_enabled: false,
+				is_include_rooming_list: false,
+				personal_salutation: ""
+			};
+			ngDialog.open({
+				template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
+				className: '',
+				scope: $scope,
+			});
+		};
+
+		/*
+		 * Send Confirmation email API call
+		 * @return undefined 
+		 */
+		$scope.sendGroupConfirmation = function() {
+
+			var succesfullEmailCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.ngData.successMessage = data.message;
+				$scope.ngData.failureMessage = '';
+			};
+
+			var failureEmailCallback = function(error) {
+				$scope.$emit('hideLoader');
+				$scope.ngData.failureMessage = error[0];
+				$scope.ngData.successMessage = '';
+			};
+			var data = {
+				postData: $scope.groupConfirmationData,
+				groupId: $scope.groupSummaryMemento.group_id
+			};
+			$scope.invokeApi(rvGroupConfigurationSrv.sendGroupConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
+		};
+
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.groupConfigData.summary.posting_account_billing_info = true;
 		});
@@ -1283,7 +1332,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status),
 				computedSegment: false,
 				rates: [],
-				contractedRates: []
+				contractedRates: [],
 			};
 
 			$scope.changeDatesActions = {};

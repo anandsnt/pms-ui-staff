@@ -46,6 +46,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var title = $filter('translate')(nonTranslatedTitle);
         $scope.setTitle(title);
         $scope.heading = title;
+
+        //updating the left side menu
+        $scope.$emit("updateRoverLeftMenu", "rateManager");
     };
 
     /**
@@ -993,6 +996,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
             lastSelectedFilterValues = [{...newFilterValues}]; //ES7
             activeFilterIndex = 0;
+            $scope.showBackButton = false;
         }
 
         if (newFilterValues.showAllRates) {

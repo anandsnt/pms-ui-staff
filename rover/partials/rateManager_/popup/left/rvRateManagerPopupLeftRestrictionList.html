@@ -9,8 +9,7 @@
 			<li class="restriction-type"
 				ng-repeat="restriction in restrictionList"
 				ng-click="changeRestrictionStatus(restriction)"
-				ng-class="{'selected': restriction.selected, 'disabled': isPastDate}">
-				
+				ng-class="{'selected': restriction.selected, 'disabled': restriction.isDisabled}">
 				<div class="restriction-left">
 					<span ng-class="restriction.className">
 						{{restriction.value}}
@@ -34,7 +33,7 @@
 						<span class="switch-icon"></span>
 						<!-- Add attribute checked="checked" when the restriction is ON, remove otherwise -->
 						<!-- Add attribute disabled="disabled" when restriction is editable and has no value, remove otherwise -->
-						<input type="checkbox" ng-checked="restriction.status === 'ON'" ng-disabled="isPastDate"/>
+						<input type="checkbox" ng-checked="restriction.status === 'ON'" ng-disabled="restriction.isDisabled"/>
 					</div>
 					
 				</div>

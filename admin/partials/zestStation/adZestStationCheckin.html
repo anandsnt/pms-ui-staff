@@ -14,13 +14,15 @@
                 </div>
                 <ad-checkbox is-checked="zestSettings.registration_card.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.registration_card.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.registration_card.auto_print" label="{{ 'AUTO_PRINT' | translate}}"></ad-checkbox>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
-                    <h3><span translate>ENFORCE_DEPOSIT </span> </h3>
+                    <h3><span translate>OFFER_EARLY_CHECKIN</span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.offer_early_checkin" label="{{'OFFER_EARLY_CHECKIN'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+            
             <fieldset class="holder left ">
                 <div class="form-title full-width">
                     <h3><span translate>REG_CARD</span> </h3>
@@ -34,11 +36,18 @@
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
+                    <h3><span translate>ENFORCE_DEPOSIT </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+            
+            <fieldset class="holder right">
+                <div class="form-title full-width">
                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.show_room_number" label="{{'ON_SCREEN_ROOM_NUMBER'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>COLLECT_USER_NATIONALITY </span> </h3>
                 </div>
@@ -52,6 +61,12 @@
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.confirmation" label="{{ 'CONFIRMATION' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.number_of_nights" label="{{ 'AUTH_NO_OF_NIGHTS' | translate}}"></ad-checkbox>
+            </fieldset>
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>BYPASS_CC_FOR_PREPAID_RESERVATIOIN </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
             <!-- Message Overrides for Zest Station Check-in, these override the active locale -->
             <fieldset class="holder left">

@@ -1,6 +1,6 @@
 angular.module('rateManagerModule', [])
     .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
-      $stateProvider.state('rover.newRateManager', {
+      $stateProvider.state('rover.rateManager', {
         url: '/ratemanager/',
         templateUrl: '/assets/partials/rateManager_/rvRateManagerRoot.html',
         controller: 'rvRateManagerCtrl_',
@@ -12,7 +12,7 @@ angular.module('rateManagerModule', [])
             return jsMappings.fetchAssets(['redux.files']);
           },
           rateMgrAssets: function(jsMappings, reduxAssets) {
-            return jsMappings.fetchAssets(['rover.newRateManager']);
+            return jsMappings.fetchAssets(['rover.rateManager']);
           },
           restrictionTypes: function(rateMgrAssets, rvRateManagerCoreSrv) {
             return rvRateManagerCoreSrv.fetchRestrictionTypes();

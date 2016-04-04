@@ -47,11 +47,13 @@ sntZestStation.controller('zsHomeCtrl', [
 
 
             if(!$scope.zestStationData.checkout_keycard_lookup){
+                $scope.initVirtualKeyboard();
                 $state.go('zest_station.reservation_search', {
                     mode: zsModeConstants.CHECKOUT_MODE
                 });
             }
             else{
+                $scope.initVirtualKeyboard();
                 $state.go('zest_station.checkout_options');
             };
 	};
@@ -554,13 +556,11 @@ sntZestStation.controller('zsHomeCtrl', [
         }
         $scope.inputFocus();
         
-        $scope.setScreenIcon('bed');//needed for initial view, other icons set from rootCtrl
         $scope.resetFlags();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
            //do nothing
         } else if (current === 'zest_station.oos'){
-            $scope.setScreenIcon('settings');
             $scope.$emit('REFRESH_SETTINGS');
         } else {
             $scope.theme = $state.theme;

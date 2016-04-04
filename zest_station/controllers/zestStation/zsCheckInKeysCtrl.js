@@ -23,9 +23,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	 */
 	$scope.$on (zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             var current=$state.current.name;
-            console.log('back from: ',current);
-            console.log('pickup keys      : ',$scope.isPickupKeys);
-            console.log('pickup keys state: ',$state.isPickupKeys);
             
             if ($state.isPickupKeys && $state.qr_code){
                 $state.mode = zsModeConstants.PICKUP_KEY_MODE;
@@ -311,44 +308,45 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
                     
 
-                    if ($state.simkey){
-                        onResponseSuccess({});
-                    } else {
-                        
-                        var onSuccessGetToken = function(response){
-                            console.info('got token callback',arguments);
-                          //  options.access_token = response.station_access_token;
-                          //  options.consumer_key="85a59b343f11949b3b204708039d781e";
-                            //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
-                            
-                            var printAPI = {
-                               // "consumer_key":"85a59b343f11949b3b204708039d781e",
-                               // "access_token":response.station_access_token,
-                                "is_additional":false,
-                                "is_kiosk":true,
-                                "key":1,
-                                "reservation_id":options.reservation_id,
-                                "uid":null
-                            };
-                            
-                            $scope.callAPI(zsTabletSrv.encodeKey, {
-                                params: printAPI,
-                                'successCallBack':onResponseSuccess,
-                                'failureCallBack':$scope.emitKeyError
-                            });
-                            
+                    var onSuccessGetToken = function(response){
+                        console.info('got token callback',arguments);
+                      //  options.access_token = response.station_access_token;
+                      //  options.consumer_key="85a59b343f11949b3b204708039d781e";
+                        //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
+
+                        var printAPI = {
+                           // "consumer_key":"85a59b343f11949b3b204708039d781e",
+                           // "access_token":response.station_access_token,
+                            "is_additional":false,
+                            "is_kiosk":true,
+                            "key":1,
+                            "reservation_id":options.reservation_id
                         };
-                        
-                        $scope.callAPI(zsTabletSrv.getAccessToken, {
-                            params: options,
-                            'successCallBack':onSuccessGetToken,
+
+                        if (!$scope.remoteEncoding){
+                            printAPI.uid = null;
+                        } else {
+                            printAPI.key_encoder_id = $state.encoder;
+                        }
+
+
+                        $scope.callAPI(zsTabletSrv.encodeKey, {
+                            params: printAPI,
+                            'successCallBack':onResponseSuccess,
                             'failureCallBack':$scope.emitKeyError
                         });
+
+                    };
+
+                    $scope.callAPI(zsTabletSrv.getAccessToken, {
+                        params: options,
+                        'successCallBack':onSuccessGetToken,
+                        'failureCallBack':$scope.emitKeyError
+                    });
                         
                         
                         
                         
-                    }
                 },2000);
 
 
@@ -374,9 +372,17 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     $scope.ws.send("{\"Command\" : \"cmd_device_uid\"}");
                 };
                 $scope.DispenseKey = function() {//write to key after successful encodeKey call
-                    console.info('dispense called : [',$state.keyDispenseUID,']');
+                    //console.info('dispense called : [',$state.keyDispenseUID,']');
                     $state.keyDispenseUID = $scope.dispenseKeyData;
-                    $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
+                    if ($scope.ws.readyState === 3){
+                        $scope.wsOpen = false;
+                    }
+                    if (!$scope.wsOpen){
+                        $scope.emitKeyError('Websocket is in State (Closed)');
+                    } else {
+                        $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
+                    }
+                    
                 };
                  $scope.EjectKeyCard = function() {//reject key on failure
                     $scope.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");

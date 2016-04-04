@@ -517,6 +517,110 @@
                 }
             }
 
+            &.send-confirmation {
+                width:360px;
+                .float;
+
+                .actions {
+                    width:100%;
+                    clear: both;
+                    text-align: center;
+                    
+                    .button {
+                        display:inline-block;
+                        width:auto;
+                    } 
+                }
+
+                textarea {
+                    height:150px;
+                    max-height:150px;
+                }
+                
+                .salutation {
+
+                    .float;
+                    margin:20px 0;
+
+                    label {
+                        .pull-left;
+                        margin-right:20px;
+                        line-height: 30px;
+                    }
+
+                    .switch-button {
+                        .pull-left;
+                        line-height: 30px;
+                    }
+                }
+                .switch-button {
+                    width:75px;
+                    height:30px;
+                    
+                    .switch-icon {
+                        background-color: white;
+                        top: 2px;
+                        left: 2px;
+                        position: absolute;
+                        .gradient-with-image(@onOffLines, @grey1, @white);
+                        background-position: 50% 50%, 0 0;
+                        background-repeat: no-repeat, repeat;
+                        background-size: 10px, auto;
+                        .hide-text;
+                        .show;
+                        .square(26px);
+                        .transition;
+                        #border-radius > .rounded(26px);
+
+                        @media @highdpi {
+                            .gradient-with-image(@onOffLines2x, @grey1, @white);
+                            background-position: 50% 50%, 0 0;
+                            background-repeat: no-repeat, repeat;
+                            background-size: 10px, auto;
+                        
+                        }
+                    }
+
+                    &.on {
+                        .gradient(@greenStart, @greenEnd );
+
+                        .switch-icon {
+                            left:47px;
+                        }
+                    }
+                }
+
+                .content-left,
+                .content-right{
+                    .pull-left; 
+                    display:block;
+                    overflow: hidden;
+                }
+
+                .content-right {
+                    width:0;
+                    height:0;
+                }
+
+                .content-left {
+                    width:100%;
+                }
+
+                &.extended {
+                    width:720px;
+                    
+                    .content-left,
+                    .content-right {
+                        width:45%;
+                        height: auto;
+                    }
+
+                    .content-left {
+                        margin-right:10%;
+                    }
+                }
+            }
+
             /* New content modal window ***/
             &.new-content {
                 width: 320px;

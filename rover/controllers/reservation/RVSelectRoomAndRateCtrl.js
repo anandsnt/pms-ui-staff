@@ -312,7 +312,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.stateCheck.activeView === 'RATE') {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
 					payLoad.order = "ALPHABETICAL";
-					if(!!$scope.stateCheck.preferredType && !roomTypeId){
+					if (!!$scope.stateCheck.preferredType && !roomTypeId) {
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 					}
 				}
@@ -883,13 +883,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.stateCheck.pagination.rate.page = 1;
 
 				if ($scope.stateCheck.activeView === "RATE") {
+					$scope.stateCheck.rateFilterText = "";
 					fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+						$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 						generateRatesGrid(response.results);
 						$scope.refreshScroll();
 					});
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					fetchRoomTypesList();
 				}
+				scrollTop();
 			};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ***************************
@@ -903,6 +906,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}, 700);
 		};
 
+		var scrollTop = function() {
+			$scope.$parent && $scope.$parent.myScroll['room_types'] && $scope.$parent.myScroll['room_types'].scrollTo(0,0);
+		};
+
+
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PERMISSIONS
 
 		$scope.restrictIfOverbook = function(roomId, rateId) {
@@ -910,15 +919,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
 
-			if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
-				// CICO-26707 Skip house avbl check for group/allotment reservations
-				canOverbookHouse = true;
-				//CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
-				if ($scope.getLeastAvailability(roomId, rateId) < 1) {
-					return false;
+        if(!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
+        	  // CICO-26707 Skip house avbl check for group/allotment reservations
+            canOverbookHouse = true;
+            //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+            if($scope.getLeastAvailability(roomId, rateId) < 1){
+            	return true;
 				}
 				//CICO-24923 TEMPORARY
-			}
+      }
 
 			if (canOverbookHouse && canOverbookRoomType) {
 				//CICO-17948
@@ -1028,17 +1037,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.setActiveView = function(view) {
 			$scope.stateCheck.activeView = view;
-			if (view === 'ROOM_TYPE') {
-				fetchRoomTypesList();
-			} else if (view === 'RATE') {
-				$scope.stateCheck.rateFilterText = "";
-				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
-					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
-					generateRatesGrid(response.results);
-					$scope.refreshScroll();
-				});
-			}
-			$scope.refreshScroll();
+			reInitialize();
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- COMPUTE TAX AND DAY BREAKUP
@@ -1124,7 +1123,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							$scope.activeRoom,
 							$scope.reservationData.ratesMeta[payLoad.rate_id].taxes,
 							dayInfo.amount),
-						// CICO-27226 Round day-wise totals 
+						// CICO-27226 Round day-wise totals
 						dayTotal = Number(parseFloat(dayInfo.amount).toFixed(2)) +
 						Number(parseFloat(taxAddonInfo.addon).toFixed(2)) +
 						Number(parseFloat(taxAddonInfo.tax.excl).toFixed(2));
@@ -1534,12 +1533,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		var processRestrictions = function(firstRestriction, hasMultipleRestrictions, rateId) {
 
 			var restrictionCount = 0,
-				isHouseFull = $scope.stateCheck.stayDatesMode ? $scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] <
-				1 : $scope.getLeastHouseAvailability() < 1,
+				isHouseFull = $scope.stateCheck.stayDatesMode ? ($scope.stateCheck.house[$scope.stateCheck.dateModeActiveDate] < 1) : ($scope.getLeastHouseAvailability() < 1),
 				isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
-				isPromoInvalid = $scope.reservationData.code &&
-				$scope.reservationData.code.id &&
-				!_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
+				isPromoInvalid = $scope.reservationData.code && $scope.reservationData.code.id && !_.reduce($scope.stateCheck.promotionValidity, function(a, b) {
 					return a && b;
 				});
 
@@ -1550,7 +1546,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			if (!isGroupReservation && isHouseFull && (!firstRestriction || firstRestriction.restriction_type_id != 99)) {
-				firstRestriction = firstRestriction ? firstRestriction + 1 : 1;
+				restrictionCount = restrictionCount ? restrictionCount + 1 : 1;
 				if (restrictionCount === 1) {
 					firstRestriction = {
 						restriction_type_id: 99,
@@ -1803,6 +1799,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.activeRoom = tabIndex;
 			$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
 			$scope.viewState.currentTab = tabIndex;
+			reInitialize();
 		};
 
 		$scope.getTabTitle = function(tabIndex) {

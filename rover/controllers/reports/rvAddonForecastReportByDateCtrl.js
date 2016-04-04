@@ -56,10 +56,11 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			if ( $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
 				refreshScroll();
 
-				timer = $interval(refreshScroll, 1000);
+				if ( ! timer ) {
+					timer = $interval(refreshScroll, 1000);
+				}
 
 				$scope.$parent.myScroll[SCROLL_NAME].on('scroll', function() {
-					console.log('scroll called');
 					clearTimer();
 				});
 			} else {
@@ -199,7 +200,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
  				'addon_group_id' : addon.addonGroupId,
  				'addon_id'       : addon.addonId,
  				'page'           : addon.pageNo,
- 				'per_page'       : addon.perPage,
+ 				'per_page'       : addon.perPage
  			});
 
  			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
