@@ -57,7 +57,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 
 		var ejectCard = function() {
-			console.info("card ejection failed")
 			$scope.socketOperator.EjectKeyCard();
 		};
 
@@ -89,6 +88,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			console.info("uid=" + response.UID);
 			console.info(cmd);
 			console.info(msg);
+			console.info("response code:"+response.ResponseCode);
 
 			if (response.Command === 'cmd_insert_key_card') {
 				//check if the UID is valid
@@ -102,8 +102,15 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 						$state.go('zest_station.error_page');
 					}
 					else{
-						//do nothing
+						$scope.socketOperator.close();
+						console.info("closing socket");
 					}
+				}
+			}
+			else if( response.Command  === 'cmd_capture_key_card'){
+				if (response.ResponseCode === 0) {
+					$scope.socketOperator.close();
+					console.info("closing socket");
 				}
 			};
 		};

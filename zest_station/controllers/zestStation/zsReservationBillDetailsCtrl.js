@@ -133,6 +133,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         
         };
     };
+
+    $scope.alreadyCheckedOutActions = function(){
+        $state.go('zest_station.home');
+        $scope.socketOperator.EjectKeyCard();
+    };
         
 
     $scope.init = function(){
