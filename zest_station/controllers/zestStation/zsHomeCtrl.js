@@ -47,13 +47,11 @@ sntZestStation.controller('zsHomeCtrl', [
 
 
             if(!$scope.zestStationData.checkout_keycard_lookup){
-                $scope.initVirtualKeyboard();
                 $state.go('zest_station.reservation_search', {
                     mode: zsModeConstants.CHECKOUT_MODE
                 });
             }
             else{
-                $scope.initVirtualKeyboard();
                 $state.go('zest_station.checkout_options');
             };
 	};
@@ -554,7 +552,6 @@ sntZestStation.controller('zsHomeCtrl', [
         if ($scope.inChromeApp){
             $scope.pressEsc();
         }
-        $scope.inputFocus();
         
         $scope.resetFlags();
         var current = $state.current.name;

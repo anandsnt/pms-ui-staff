@@ -109,9 +109,22 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 		$scope.hasLoader = true;
  			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
 	 	}
-	 }
-
-
+	 };
+         
+        $scope.showOnScreenKeyboard = function(id) {
+           //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+            var isTouchDevice = 'ontouchstart' in document.documentElement;
+            var shouldShowKeyboard = chrome && window.innerWidth === screen.width && window.innerHeight === screen.height && (window.navigator.userAgent.indexOf('Win')) && isTouchDevice;
+            // shouldShowKeyboard = true;
+            if (shouldShowKeyboard){
+                 if (id){
+                     new initScreenKeyboardListener('login', id, true);
+                  }
+             } else {
+                 console.info('probably not in a chromeapp');
+             }
+        };
+        $scope.showOnScreenKeyboard();
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
