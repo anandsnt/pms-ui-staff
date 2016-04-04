@@ -555,6 +555,8 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.pressEsc();
         }
         $scope.inputFocus();
+        //for change into default language after 120sec
+        $scope.startLanguageCounter();
         
         $scope.resetFlags();
         var current = $state.current.name;
