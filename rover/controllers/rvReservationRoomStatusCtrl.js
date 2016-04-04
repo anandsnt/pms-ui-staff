@@ -238,8 +238,11 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		}
 
 	};
-    if($stateParams.isOnlineRoomMove == "false" && $scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)){
-        $scope.clickedIconKey();
+    if($stateParams.isOnlineRoomMove == "false" && $scope.showKeysButton($scope.reservationData.reservation_card.reservation_status) && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN"){
+        setTimeout(function(){
+            $scope.clickedIconKey();
+        }, 700)
+
     }
 
     $scope.$watch('reservationData.reservation_card.room_number',function(){
