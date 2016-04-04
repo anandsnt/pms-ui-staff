@@ -16,9 +16,16 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $state.from = $state.current.name;
                 $state.lastAt = 'review_bill';
             }
-            $state.go('zest_station.reservation_search', {
-                mode: zsModeConstants.CHECKOUT_MODE
-            });
+
+            if($scope.zestStationData.isKeyCardLookUp){
+                $state.go('zest_station.checkout_options');
+            }
+            else{
+                $state.go('zest_station.reservation_search', {
+                   mode: zsModeConstants.CHECKOUT_MODE
+                });
+            };
+            
 	});
 
     /* 

@@ -12,11 +12,13 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 		$scope.reservationSearchFailed = false;
+		$scope.zestStationData.isKeyCardLookUp = true;
 		sntZestStation.filter('unsafe', function($sce) {
 			return function(val) {
 				return $sce.trustAsHtml(val);
 			};
 		});
+
 		/**
 		 * when the back button clicked
 		 * @param  {[type]} event

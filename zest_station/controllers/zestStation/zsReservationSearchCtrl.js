@@ -15,7 +15,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         "room_no":""
     };
     $scope.input = {};
-
+    $scope.zestStationData.keyCardInserted =  false;
+    $scope.zestStationData.isKeyCardLookUp = false;
     /**
      * when the back button clicked
      * @param  {[type]} event
