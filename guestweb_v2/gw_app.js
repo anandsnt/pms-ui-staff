@@ -67,5 +67,16 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         if (reservationAndhotelDetails.is_external_verification === "true") {
             $state.go('externalCheckoutVerification'); //external checkout URL
         }
+        else if(reservationAndhotelDetails.checkin_url_verification === "true" && reservationAndhotelDetails.is_zest_checkin === "false"){
+            $state.go('externalCheckInTurnedOff'); //external checkin URL off
+        }
+        else if(reservationAndhotelDetails.checkin_url_verification === "true" &&  reservationAndhotelDetails.is_zest_checkin === "true"){
+            $state.go('externalCheckinVerification'); //external checkin URL
+        }
+        else if(reservationAndhotelDetails.is_checkin === "false" && reservationAndhotelDetails.access_token.length >0){
+            $state.go('checkoutRoomVerification');
+        }else if(reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length >0){
+            $state.go('checkinLanding');
+        }
     }
 ]);

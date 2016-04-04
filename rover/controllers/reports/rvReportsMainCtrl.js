@@ -41,10 +41,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.codeSettings   = payload.codeSettings;
 
-		// $scope.activeUserList = payload.activeUserList;
-		// _.each($scope.activeUserList, function(each) {
-		//     each.selected = true;
-		// });
+		$scope.activeUserList = payload.activeUserList;
 
 		$scope.showReportDetails = false;
 
@@ -1132,18 +1129,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include user ids
-			if (report.hasUserFilter && report.chosenUsers && report.chosenUsers.length) {
-				selected = [];
-				/**/
-				_.each(report.chosenUsers, function (id) {
-					var user = _.find($scope.activeUserList, function (each) {
-						return each.id === id;
-					});
-					if ( !! user ) {
-						selected.push( user );
-					};
-				});
-				/**/
+			if (report.hasUserFilter && report.empList.data.length) {
+				selected = _.where( report.empList.data, { selected: true } );
+
 				if ( selected.length > 0 ) {
 					key         = reportParams['USER_IDS'];
 					params[key] = [];
@@ -1152,13 +1140,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( user.id );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.users.push( user.full_name );
+							$scope.appliedFilter.users.push( user.full_name || user.email );
 						};
 					});
 
-					// in case if all sources are selected
-					if ( changeAppliedFilter && selected.length > 1 ) {
-						$scope.appliedFilter.users = ['Multiple'];
+					// in case if all users are selected
+					if ( changeAppliedFilter && report.empList.data.length === selected.length ) {
+						$scope.appliedFilter.users = ['All Users'];
 					};
 				};
 			};
@@ -1207,12 +1195,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					params[key] = true;
 					/**/
 					if ( changeAppliedFilter ) {
-						$scope.appliedFilter['groupBy'] = key.replace( 'GROUP_BY_', '' ).replace( '_', ' ' );
+						$scope.appliedFilter['groupBy'] = key.replace( 'group_by_', '' ).replace( '_', ' ' );
 					};
 				};
 
 				// patch
-				if ( 'ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy ) {
+				if ( report.title === reportNames['ADDON_FORECAST'] && ('ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy) ) {
 					key = reportParams['ADDON_GROUP_BY'];
 					params[key] = report.chosenGroupBy;
 					/**/
@@ -1717,9 +1705,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.resultsTotalRow = response.results_total_row || [];
 				$scope.summaryCounts   = response.summary_counts || false;
 				$scope.reportGroupedBy = response.group_by || chosenReport.chosenGroupBy || '';
-				// $scope.reportGroupedBy = response.group_by || '';
-
-				console.log( $scope.reportGroupedBy );
 
 				// track the total count
 				$scope.totalCount = response.total_count || 0;
@@ -1850,8 +1835,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
-					var match = _.find(uiValues, function(email) {
-						return email === user.label;
+					var match = _.find(uiValues, function(label) {
+						return label === user.label;
 					});
 
 					if (!!match) {
@@ -1870,8 +1855,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var modelVal = [];
 
 				_.each(activeUserAutoCompleteObj, function(user) {
-					var match = _.find(uiValues, function(email) {
-						return email === user.label;
+					var match = _.find(uiValues, function(label) {
+						return label === user.label;
 					});
 
 					if (!!match) {

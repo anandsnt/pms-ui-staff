@@ -8,13 +8,14 @@
         <div id="status" class="notice" ng-class="{'success':ngData.successMessage, 'error':ngData.failureMessage }" ng-show="ngData.successMessage || ngData.failureMessage">{{ngData.successMessage}}{{ngData.failureMessage}}</div>
 
         <div class="holder">
-            <div class="entry margin">
+            <div class="entry margin" ng-show="ngData.languageData.show_language_field">
                 <label for="email-language" translate>GUEST_LANGUAGE</label>
                 <div class="select">
                     <select id="email-language" ng-model="ngData.languageData.selected_language_code">
                         <option value="" translate>SELECT_LANGUAGE</option>
                         <option value="{{item.code}}" ng-repeat="item in ngData.languageData.languages"
-                                ng-selected="item.code === ngData.languageData.selected_language_code">{{item.language}}</option>
+                                ng-selected="item.code === ngData.languageData.selected_language_code"
+                                ng-if="item.is_show_on_guest_card">{{item.language}}</option>
                     </select>
                 </div>
             </div>

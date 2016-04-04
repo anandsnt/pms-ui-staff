@@ -888,6 +888,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             }
             $scope.setActionsHeaderInfo();
 
+            setTimeout(refreshScroller, 300);
             setTimeout(function(){
                 if ($scope.actions[0]){
                     $scope.selectAction($scope.actions[0]);
@@ -1175,7 +1176,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.initRefresh(del);
 
             var onSuccess = function(){
-                $scope.actions.totalCount--;
+                if (del === 'delete') {
+                    $scope.actions.totalCount--;
+                }
                 $scope.lastSelectedItemId = params.action_task.id;
                 $scope.refreshActionList(del, selected);
 

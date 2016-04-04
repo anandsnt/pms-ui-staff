@@ -1,0 +1,26 @@
+<!-- main section starts here -->
+<div class="container">
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading">
+        <div class="col-md-1"></div>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing no-side-padding">
+            <!-- default main text -->
+            <p class="main-text final-text" ng-if="!screenCMSDetails.title">Pre Check-in Complete</p>
+            <!-- CMS main text -->
+            <p class="main-text final-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+        </div>
+        <div class="horizontal-line-sep-mobile"></div>
+        <!-- right side -->
+        <div class="col-md-2">
+            <div class="vertical-line">&nbsp;</div>
+        </div>
+        <div class="col-md-3 top-spacing sm-no-top-spacing">
+            <p class="sub-main-text">{{displayText}}
+            </p>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+</div>

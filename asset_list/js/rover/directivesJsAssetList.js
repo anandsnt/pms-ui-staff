@@ -31,6 +31,7 @@ module.exports = {
                     'shared/directives/tooltip/qtipfc.js',// FOR ROOM & RATES CALENDAR
                     'shared/directives/emitWhen/emitWhen.js',
                     'shared/directives/limitInputRange/limitInputRange.js',
+                    'rover/directives/multiOptionSelection/multiOptionSelection.js',
 
                     jsLibRoot + 'fullcalender/**/*.js'
 				]

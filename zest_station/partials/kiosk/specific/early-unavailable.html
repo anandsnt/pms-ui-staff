@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        {../_include/head.html}
-    </head>
-    <body id="{hotel-id}"> <!-- hotel-id should be hotel name, like "zoku", "yotel" or "grand-hotel". We can then apply specific styles throughtout the entire app based on this id value -->
-        
-        <!-- Header -->
-        {../_include/navigation.html}   
-        
-        <!-- Content -->
-        <section id="main" role="main">
-            <div id="content">
-                <h1>You're a little early</h1>
-                <div id="message">
-                    <h2 class="nocaps">Usual check in time is 3:00 PM.</h2>
-                    <h3>We're happy to store your bags in the mean time. <br /> Please see a staff member for help.</h3>
-                    <button type="button" class="button">Done</button>
-                </div>
-            </div>
-        </section>
-    </body>
-</html>
+<!-- Content -->
+<section id="main" role="main">
+    <div id="content">
+        <h1>{{'EARLY_HEADER' | translate}}</h1>
+        <div id="message">
+            <h2 class="nocaps">{{'EARLY_SUB_1' | translate}} {{standardCheckinTime}}</h2>
+            <h3>{{'EARLY_SUB_2' | translate}}<br /> {{'EARLY_SUB_3' | translate}}</h3>
+            <button type="button" class="button" touch-press='goToHome()'>{{'DONE' |translate}}</button>
+        </div>
+    </div>
+</section>

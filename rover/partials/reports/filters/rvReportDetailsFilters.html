@@ -286,7 +286,7 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.hasCicoFilter" ng-class="{'hidden': !filterItemsToggle.item_07}">
             <div class="select">
-                <select ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
+                <select ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions" iscroll-stop-propagation>
                     <option value="">Transaction Type</option>
                 </select>
             </div>
@@ -297,12 +297,15 @@
 
 
         <!-- item_08: Users -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasUserFilter" ng-class="{'active': filterItemsToggle.item_08}" ng-click="toggleFilterItems('item_08')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'active': filterItemsToggle.item_08}" ng-click="toggleFilterItems('item_08')">
             <span class="title">Employees</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasUserFilter" ng-class="{'hidden': !filterItemsToggle.item_08}">
-            <input class="icons icon-search" auto-complete auto-options="detailsUserAutoCompleteOptions" data-card-type="" type="text" placeholder="Search by Email Id" value="" autocomplete="off" ng-model="chosenReport.uiChosenUsers" report-source="reportList" report-index="{{ $index }}" report-model="chosenUsers" ul-class="find-user" ng-focus="returnItem(chosenReport)">
-            <select multiple class="hidden" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in activeUserList"></select>
+        <div class="settings-content" ng-if="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'hidden': !filterItemsToggle.item_08}">
+            <label class="checkbox" ng-repeat="emp in chosenReport.empList.data" ng-class="{checked: emp.selected}">
+                <span class="icon-form icon-checkbox" ng-class="{checked: emp.selected}"></span>
+                <input type="checkbox" ng-model="emp.selected">
+                {{ emp.full_name || emp.email }}
+            </label>
         </div>
 
 
@@ -527,7 +530,7 @@
         </a>
         <div class="settings-content" ng-if="chosenReport.groupByOptions" ng-class="{'hidden': !filterItemsToggle.item_14}">
             <div class="select">
-                <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)">
+                <select ng-model="chosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in chosenReport.groupByOptions" ng-change="groupByChanged(chosenReport)" iscroll-stop-propagation>
                     <option value="">Group By</option>
                 </select>
             </div>

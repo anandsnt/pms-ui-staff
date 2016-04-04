@@ -516,6 +516,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve : {
 				availableGuestLanguages : function(ADTranslationSrv) {
 					return ADTranslationSrv.getGuestLanguages();
+				},
+				availableHoldStatus : function(ADHoldStatusSrv) {
+					return ADHoldStatusSrv.fetch();
 				}
 			}
 		});

@@ -252,7 +252,13 @@
     "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the \"Extra Keys\" slot",
     "KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING":"Sorry",
     "KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT": "The keycard lookup has failed",
-    "INSERT_KEY_CARD":"Insert card"
+    "INSERT_KEY_CARD":"Insert card",
+    "QR_SCAN_RETRY":"Retry QR scan",
+    "QR_SCAN_FAILED_SEARCH":"Reservation Search",
+    "QR_SCAN_FAILED_BY_NAME":"by name"
+
+
+
  
 
 }

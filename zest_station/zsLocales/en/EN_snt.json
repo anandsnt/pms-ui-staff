@@ -22,6 +22,8 @@
     "RESIDENTS": "guest(s)",
     "ADD_REMOVE_GUESTS": "Add / Remove Guests",
    "AVG_DAILY": "Average Daily Rate",
+   "HOURLY_RATE":"Hourly Rate",
+   "HOURS":"Hours",
    "INCLUDED": "INCLUDED",
    "ADDTL_GUESTS_HEADING": "Additional Guests",
     "ENTER_LAST": "Enter the Guest’s Last Name",
@@ -248,7 +250,29 @@
     "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the \"Extra Keys\" slot",
     "KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING":"Sorry",
     "KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT": "The keycard lookup has failed",
-    "INSERT_KEY_CARD":"Insert card"
+    "INSERT_KEY_CARD":"Insert card",
+    "QR_SCAN_RETRY":"Retry QR scan",
+    "QR_SCAN_FAILED_SEARCH":"Reservation Search",
+    "QR_SCAN_FAILED_BY_NAME":"by name",
  
 
+    
+    "EARLY_SUB_1":"Usual check in time is",
+    "EARLY_SUB_2":"We're happy to store your bags in the mean time",
+    "EARLY_SUB_3":"Please see a staff member for help",
+    "EARLY_HEADER":"You're a little early",
+    
+    "EARLY_AVAIL_HEADER":"You're a little early",
+    "EARLY_AVAIL_SUB_HEADER":"Our standard check in time is ",
+    "EARLY_AVAIL_SUB_HEADER_2":"Early check-in is available for a fee of ",
+    "EARLY_AVAIL_PURCHASE":"Check In Now",
+    "EARLY_AVAIL_PURCHASE_SUB":"Apply early check-in fee of",
+    "EARLY_AVAIL_PURCHASE_SUB_2":"to my bill.",
+    "EARLY_AVAIL_LATER":"Check In Later",
+    
+    
+    "EARLY_AVAIL_PURCHASED":"But your Early Check-In is available.",
+    "EARLY_AVAIL_PURCHASED_REALLY_EARLY":"Sorry, Your Early Check-In is not available yet.",
+    "EARLY_AVAIL_FREE":"But you are eligible for a FREE Early Check-in."
+    
 }

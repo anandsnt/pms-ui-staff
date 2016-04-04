@@ -21,7 +21,7 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
                 staycardJsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments', 
+                    return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments',
                         'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 },
                 /**
@@ -202,7 +202,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards/:isOnlineRoomMove',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {
@@ -249,7 +249,7 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.roomassignment', {
-            url: '/roomassignment/:reservation_id/:room_type/:clickedButton',
+            url: '/roomassignment/:reservation_id/:room_type/:clickedButton/:upgrade_available',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
@@ -269,9 +269,16 @@ angular.module('stayCardModule', [])
                     return RVRoomAssignmentSrv.getPreferences(params);
                 },
                 roomUpgrades: function(RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
-                    var params = {};
-                    params.reservation_id = $stateParams.reservation_id;
-                    return RVUpgradesSrv.getAllUpgrades(params);
+                    //check if roomupgrade is available
+                    if($stateParams.upgrade_available ==="true"){
+                        var params = {};
+                        params.reservation_id = $stateParams.reservation_id;
+                        return RVUpgradesSrv.getAllUpgrades(params);
+                    }
+                    else{
+                        return [];
+                    }
+
                 }
             }
         });

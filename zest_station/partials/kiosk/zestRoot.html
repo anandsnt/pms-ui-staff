@@ -4,7 +4,7 @@
 
 <div ng-include="'/assets/partials/rvTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
-<div class="popup iframe-popup" ng-class="{'open': showExternalWebPage }">
+<div class="popup iframe-popup open" ng-if="showExternalWebPage">
     <div class="popup-content iframe-content">
         <i class="close-popup" touch-press="closeExternalWebPage()"></i>
         <iframe src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock" ></iframe>
@@ -18,9 +18,9 @@
     </div>
 </div>
 
-<div class="popup" ng-class="{'open':showLanguagePopup,'ng-hide':!showLanguagePopup}">
+<div class="popup" ng-class="{'open':showLanguagePopup}">
     <div class="popup-content">
-        <i class="close-popup" data-action="popup" touch-press="selectLanguage('null')"></i>
+        <i class="close-popup" data-action="popup" touch-press="closeLangPopUp()"></i>
         <h2 class="nocaps">Select Language</h2>
         <div id="languages">
             <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" 

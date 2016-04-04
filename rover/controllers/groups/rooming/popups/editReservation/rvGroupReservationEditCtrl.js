@@ -285,7 +285,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
                 $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                     "id": reservation.id,
                     "confirmationId": reservation.confirm_no,
-                    "isrefresh": false
+                    "isrefresh": true
                 });
             }, 750);
         }

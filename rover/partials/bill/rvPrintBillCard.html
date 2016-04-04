@@ -95,6 +95,9 @@
         
     </tbody>
 </table>
+
+
+
 <div class="invoice-header">
     {{printData.custom_text_header}}
 </div>
@@ -136,7 +139,7 @@
                 <td>{{currencySymbol}}{{printData.net_amount}}</td>
             </tr>
 
-            <tr ng-repeat="item in printData.tax_details">
+            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
                 <td colspan="3">
                     {{item.description}}
                 </td>
@@ -171,6 +174,37 @@
 
     </table>
 </div>
+
+<table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
+    <thead>
+        <tr>
+            <th class="text-align-left" translate>TAX_DESCRIPTION</th>
+            <th translate>GROSS</th>
+            <th translate>NET</th>
+            <th translate>TAX</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="item in printData.extended_tax_breakdown.details">
+            <td class="text-align-left">{{ item.description }}</td>
+            <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ item.net_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ item.tax_amount | number: precisonTwo }}</td>
+        </tr>
+
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td class="text-align-left" translate>TOTAL</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}</td>
+        </tr>
+    </tfoot>           
+</table>
+
 <div class="invoice-footer">
     {{printData.custom_text_footer}}
 </div>

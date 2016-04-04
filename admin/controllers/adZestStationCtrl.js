@@ -5,11 +5,22 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.data = {};
     var zestLanguageDataCopy = {};
-    $scope.fetchSettings = function () {
-        var fetchSuccess = function (data) {
-            $scope.zestSettings = data;
-            $scope.$emit('hideLoader');
 
+
+    var fetchZestStationData =  function(){
+        
+         var fetchSuccess = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.zestStationData = data;
+        };
+        $scope.invokeApi(ADZestStationSrv.fetchZestStationData, {}, fetchSuccess);
+    };
+    
+    var fetchSettings = function () {
+        var fetchSuccess = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.zestSettings = data;
+            fetchZestStationData();
         };
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
@@ -35,18 +46,12 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         };
         setUpTranslationFilesStatus();
         var dataToSend = {
-            'kiosk': {
-                "home_screen": $scope.zestSettings.home_screen,
-                "zest_station_message_texts": $scope.zestSettings.zest_station_message_texts,
-                "zest_lang": zestLanguageDataCopy
-            }
-
+            'kiosk': $scope.zestSettings
         };
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
     $scope.init = function() {
-
-        $scope.fetchSettings();
+        fetchSettings();
     };
 
     $scope.init();

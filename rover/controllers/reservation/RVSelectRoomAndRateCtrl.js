@@ -925,12 +925,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
-            //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+            
             if(!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
-                canOverbookHouse = false;
-                canOverbookRoomType = false;
+            	// CICO-26707 Skip house avbl check for group/allotment reservations
+                canOverbookHouse = true;
+                //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+                if($scope.getLeastAvailability(roomId, rateId) < 1){
+                	return true;
+				}
+				//CICO-24923 TEMPORARY
             }
-            //CICO-24923 TEMPORARY
 
 			if (canOverbookHouse && canOverbookRoomType) {
 				//CICO-17948
@@ -945,6 +949,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			if (!canOverbookRoomType && $scope.getLeastAvailability(roomId, rateId) < 1) {
 				return true;
 			}
+
+			// Default
+			return false;
 		};
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- RESTRICTIONS

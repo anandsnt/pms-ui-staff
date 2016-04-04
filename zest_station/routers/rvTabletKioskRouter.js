@@ -94,6 +94,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl : '/assets/partials/kiosk/reservation_search.html',
             controller  : 'zsReservationSearchCtrl'
         });
+        $stateProvider.state('zest_station.reservation_search_qrcode', {
+            url         : '/reservation_search/:mode',
+            templateUrl : '/assets/partials/kiosk/reservation_search.html',
+            controller  : 'zsReservationSearchCtrl'
+        });
 
         $stateProvider.state('zest_station.speak_to_staff', {
             url         : '/speak_to_staff',
@@ -127,6 +132,37 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
             controller: 'zsReservationDetailsCtrl'
          });
+         
+         // //check-in [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_upsell', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
+            controller: 'zsEarlyCheckinCtrl'
+         });
+         
+         
+        // //early-check-in unavailable [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_unavailable', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/specific/early-unavailable.html',
+            controller: 'zsEarlyCheckinCtrl'
+         });
+        // //early-check-in unavailable [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_prepaid', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/specific/early-prepaid.html',
+            controller: 'zsEarlyCheckinCtrl'
+         });
+        // //early-check-in selection nav [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_nav', {
+            url        : '/reservation_details/:mode',
+            templateUrl: '/assets/partials/kiosk/specific/early-available.html',
+            controller: 'zsEarlyCheckinCtrl' 
+         });
+         
+         
+         
+         
         // //check-in [ reservation-details ]
          $stateProvider.state('zest_station.add_remove_guests', {
             url        : '/reservation_details/:mode',

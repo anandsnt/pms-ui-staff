@@ -112,11 +112,16 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
                 return true;
             } else return false;
         };
+
         $scope.goToRoomAssignment = function(){
+            var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+            var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && 
+                                    (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
             $state.go("rover.reservation.staycard.roomassignment", {
                 "reservation_id" : $scope.reservationData.reservation_card.reservation_id, 
                 "room_type": $scope.reservationData.reservation_card.room_type_code, 
-                "clickedButton": "checkinButton"
+                "clickedButton": "checkinButton",
+                "upgrade_available" : isUpgradeAvaiable
             });
         };
         $scope.goToUpgrades = function(){
