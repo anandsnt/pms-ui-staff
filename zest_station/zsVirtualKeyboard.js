@@ -9,19 +9,14 @@
  *  this code will need to be dropped in lieu of some other extension for onscreen keyboards
  */
 
-this.initScreenKeyboardListener = function(from){
+this.initScreenKeyboardListener = function(from, id, show){
     var that = this;
-    this.elSelector = 'input:visible';
-    console.log('from: ',from);
-    if (from === 'login'){
-        this.fromLogin = true;
-        this.elSelector = 'input:visible';
-    }
     this.bound = false;
-    
             //open virtual keyboard
             $.keyboard.language.love = $.extend($.keyboard.language.en);
-            $('#email').keyboard({
+            
+            var focused = $('#'+id);
+            $(focused).keyboard({
                 language: ['love'],
                 rtl: false,
                 //layout: 'qwerty',
@@ -31,14 +26,14 @@ this.initScreenKeyboardListener = function(from){
                           '1 2 3 4 5 6 7 8 9 0',
                           'q w e r t y u i o p {bksp}',
                           "a s d f g h j k l ' @",
-                          'z x c v b n m .',
+                          'z x c v b n m . +',
                           ' {space} _ - .com'
                   ],
                   'default': [//zest station on screen is always caps,default to this
                           '1 2 3 4 5 6 7 8 9 0',
                           'Q W E R T Y U I O P {bksp}',
                           "A S D F G H J K L ' @",
-                          'Z X C V B N M .',
+                          'Z X C V B N M . +',
                           ' {space} _ - .com'
                   ],
                   'meta1': [
@@ -60,7 +55,7 @@ this.initScreenKeyboardListener = function(from){
 
                 usePreview: false,
 
-                alwaysOpen: true,
+                alwaysOpen: false,
 
                 initialFocus: false,
                 noFocus: false,
@@ -146,7 +141,7 @@ this.initScreenKeyboardListener = function(from){
                 restrictInput: false,
                 restrictInclude: '', // e.g. 'a b foo \ud83d\ude38'
                 acceptValid: true,
-                cancelClose: true,
+                cancelClose: false,
                 tabNavigation: false,
                 enterNavigation: false,
                 enterMod: 'altKey',
@@ -166,6 +161,7 @@ this.initScreenKeyboardListener = function(from){
                 repeatRate: 20,
                 resetDefault: false,
                 openOn: 'focus',
+              //  closeOn: 'blur',
                 keyBinding: 'mousedown touchstart',
 
                 useWheel: true,
@@ -192,14 +188,17 @@ this.initScreenKeyboardListener = function(from){
                 initialized: function(e, keyboard, el) {},
                 beforeVisible: function(e, keyboard, el) {},
                 visible: function(e, keyboard, el) {},
-                change: function(e, keyboard, el) {},
-                beforeClose: function(e, keyboard, el, accepted) {},
-                accepted: function(e, keyboard, el) {},
+                change: function(e, keyboard, el) {
+                },
+                beforeClose: function(e, keyboard, el, accepted) {
+                },
+                accepted: function(e, keyboard, el) {
+                },
                 inactive: function(e, keyboard, el) {},
-                canceled: function(e, keyboard, el) {},
+                canceled: function(e, keyboard, el) {
+                },
                 restricted: function(e, keyboard, el) {},
                 hidden: function(event, keyboard, el){
-                  //keyboard.destroy();
                  },
                 switchInput: function(keyboard, goToNext, isAccepted) {},
 
@@ -217,18 +216,16 @@ this.initScreenKeyboardListener = function(from){
     
     
         this.focusHandler = function(){
-            keyboardUp = true;
-            console.log('keyboard UP');
-            $('#email').getkeyboard();
+            var focused = $('#'+id);
+            $(focused).getkeyboard();
         };
     
         this.blurHandler = function(){
-            console.log('keyboard DOWN');
-            keyboardUp = false;
-            $('#email').getkeyboard();
+            var focused = $('#'+id);
+            $(focused).getkeyboard().accept(true);
        };
-        
-        $('#email').focus(this.focusHandler).blur(this.blurHandler);
+        var focused = $('#'+id);
+        $(focused).focus(this.focusHandler).blur(this.blurHandler);
         
         return that;
 };
