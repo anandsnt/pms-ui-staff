@@ -78,6 +78,7 @@ sntRover
                 tableWidth: rateGridDefaults.DEFAULT_TABLE_WIDTH,
                 isIpad: navigator.userAgent.match(/iPad/i) != null
             };
+ 
 
             var title = $filter('translate')('RATE_MANAGER_TITLE');
 

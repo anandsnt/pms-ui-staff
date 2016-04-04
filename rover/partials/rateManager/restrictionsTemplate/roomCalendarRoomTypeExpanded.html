@@ -1,5 +1,9 @@
 <div>
-    <div>
+    <!-- ADD another Class '.icons-in-row' when:
+      Zoom Level === 4 && restriction number > 3
+      Zoom Level === 5 && restriction number > 2
+  -->
+    <div class="restriction_holder">
         <span ng-show="isRestrictTo(currentFilterData.zoom_level_selected, rate[date].restrictions) == 3 && rate[date].restrictions.length <= 3 && toggleRestrictionIconView() == true" 
               ng-repeat="restriction in rate[date].restrictions| limitTo: 3 track by $index" 
               class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}">
@@ -17,19 +21,19 @@
               class="restriction-icon right bg-drk"> R 
         </span>	
     </div>
-    <div>Single 
+    <div class="room-type-price">Single 
         <span ng-if ="rate[date].single === null">{{rate[date].single}}</span>
         <span ng-if ="rate[date].single !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'single') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].single| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'single') != 'false'" class='hasOverride-label'>*</text></span>
     </div>
-    <div>Double 
+    <div class="room-type-price">Double 
         <span ng-if ="rate[date].double === null">{{rate[date].double}}</span>
         <span ng-if ="rate[date].double !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'double') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].double| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'double') != 'false'" class='hasOverride-label'>*</text></span>
     </div>
-    <div>Extra Adult 
+    <div class="room-type-price">Extra Adult 
         <span ng-if ="rate[date].extra_adult === null">{{rate[date].extra_adult}}</span>
         <span ng-if ="rate[date].extra_adult !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'extra adult') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].extra_adult| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'extra adult') != 'false'" class='hasOverride-label'>*</text></span>
     </div>
-    <div>Child 
+    <div class="room-type-price">Child 
         <span ng-if ="rate[date].child === null">{{rate[date].child}}</span>
         <span ng-if ="rate[date].child !== null" ng-class="{'hasOverride-label': rateDateHasOverride(rate, date,'child') != 'false', 'gray' : calendarData.is_child == true}">{{rate[date].child| number : 2}}<text ng-if="rateDateHasOverride(rate, date,'child') != 'false'" class='hasOverride-label'>*</text></span>
     </div>

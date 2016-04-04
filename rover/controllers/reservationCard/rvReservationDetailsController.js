@@ -649,7 +649,10 @@ sntRover.controller('reservationDetailsController',
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
-				group_id: $scope.$parent.reservationData.group.id
+				group_id: $scope.$parent.reservationData.group.id,
+				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
 		}
 

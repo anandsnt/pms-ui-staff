@@ -2,6 +2,22 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 	function($rootScope, dateFilter, RVReservationStateService) {
 		var self = this;
 
+		self.getDatesModel = function(fromDate, toDate) {
+			var dates = {};
+			for (var d = [], ms = new tzIndependentDate(fromDate) * 1, last = new tzIndependentDate(toDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+				var currentDate = new tzIndependentDate(ms),
+					formattedCurrentDate = dateFilter(currentDate, 'yyyy-MM-dd');
+
+				// Skip the departure date if {#nights -gt 0} 
+				if (toDate === fromDate || ms < last) {
+					dates[formattedCurrentDate] = {
+						obj: currentDate
+					};
+				}
+			};
+			return dates;
+		};
+
 		self.getTabDataModel = function(count, roomTypes) {
 			var tabs = [],
 				limit = count || 1,
@@ -268,7 +284,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			// Sort Rates by Rate Name alphabetically
 			if (a.name.toLowerCase() < b.name.toLowerCase()) {
 				return -1;
-			} else if(a.name.toLowerCase() > b.name.toLowerCase()){
+			} else if (a.name.toLowerCase() > b.name.toLowerCase()) {
 				return 1;
 			}
 			return 0;

@@ -7,9 +7,9 @@ var GridRowItemDrag = React.createClass({
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 1);
 	},
 	componentWillUnmount: function() {
-  		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
-  	},
-  	isInProperDraggingCycle: false,
+		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
+	},
+	isInProperDraggingCycle: false,
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state, display = props.display;
 		this.isInProperDraggingCycle =  true;
@@ -30,21 +30,21 @@ var GridRowItemDrag = React.createClass({
 		this.startingRowNumber = Math.floor((e.pageY - props.iscroll.grid.y - props.viewport.element().offset().top)/ (display.row_height + display.row_height_margin));
 
 		this.setState({
-			mouse_down: true,
-			selected: true,
-			element: el.parent(),
-			origin_x: e.pageX,
-			origin_y: e.pageY,
-			offset_x: el.offset().left + props.iscroll.grid.x,
-			offset_y: el.offset().top + props.iscroll.grid.y,
-			element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
-			element_y: page_offset.top,
-			currentClickedCol: this.mouseClickedColOnStarting
-		},
-		function() {
-			props.iscroll.grid.disable();
-			props.iscroll.timeline.disable();
-		});
+				mouse_down: true,
+				selected: true,
+				element: el.parent(),
+				origin_x: e.pageX,
+				origin_y: e.pageY,
+				offset_x: el.offset().left + props.iscroll.grid.x,
+				offset_y: el.offset().top + props.iscroll.grid.y,
+				element_x: page_offset.left-props.display.x_0 - props.iscroll.grid.x,
+				element_y: page_offset.top,
+				currentClickedCol: this.mouseClickedColOnStarting
+			},
+			function() {
+				props.iscroll.grid.disable();
+				props.iscroll.timeline.disable();
+			});
 	},
 	__onMouseMove: function(e) {
 		e.stopPropagation();
@@ -68,7 +68,7 @@ var GridRowItemDrag = React.createClass({
 			scroller = props.iscroll.grid,
 			mouseMovingRowNumber = Math.floor(yCurPos / adj_height),
 			mouseMovingColNumber = Math.floor(Math.abs(scroller.x - (e.pageX - this.__roomListingAreaWidth)) / display.px_per_int);
-		
+
 		if(!props.edit.active && !props.edit.passive){
 			return;
 		}
@@ -101,97 +101,97 @@ var GridRowItemDrag = React.createClass({
 					props.__onDragStart(props.row_data, model);
 				});
 			}
-		} 
+		}
 
 		else if(state.dragging) {
 			model = (props.currentDragItem);
 
-	 		var xScPos = scroller.x,
-	 			yScPos = scroller.y,
-	 			width_of_res = this.getDOMNode().offsetWidth;
+			var xScPos = scroller.x,
+				yScPos = scroller.y,
+				width_of_res = this.getDOMNode().offsetWidth;
 
-            // dragging towards
-            // RIGHT
-            if ( mouseMovingColNumber -  this.mouseClickedColOnStarting > 0 ) {
-            	var reachingRightEdge = ( parseFloat(e.pageX) + Math.abs( scroller.maxScrollX ) / 4 ) > window.innerWidth;
-            		
-            	if ( reachingRightEdge ) {
-            		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
-            		var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
-            		xScPos = (xScPos - distanceMouseMoved);	
+			// dragging towards
+			// RIGHT
+			if ( mouseMovingColNumber -  this.mouseClickedColOnStarting > 0 ) {
+				var reachingRightEdge = ( parseFloat(e.pageX) + Math.abs( scroller.maxScrollX ) / 4 ) > window.innerWidth;
 
-            		if( xScPos < scroller.maxScrollX ) {
-            			xScPos = scroller.maxScrollX;
-            		}
-            	}
-            }
+				if ( reachingRightEdge ) {
+					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
+					xScPos = (xScPos - distanceMouseMoved);
 
-            // LEFT
-            else if ( mouseMovingColNumber -  this.mouseClickedColOnStarting < 0 ) {
-            	var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res) / 4 ) <= 0;
-            		
-            	if ( reachingLeftEdge ) {
-            		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
-            		var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
-            		xScPos = (xScPos - distanceMouseMoved);
+					if( xScPos < scroller.maxScrollX ) {
+						xScPos = scroller.maxScrollX;
+					}
+				}
+			}
 
-            		if( xScPos > 0) {
-            			xScPos = 0;
-            		}
-            	}
-            }
+			// LEFT
+			else if ( mouseMovingColNumber -  this.mouseClickedColOnStarting < 0 ) {
+				var reachingLeftEdge = (parseFloat(e.pageX) - parseFloat(width_of_res) - parseFloat(width_of_res) / 4 ) <= 0;
 
-            //TOP
-            if ( mouseMovingRowNumber -  this.startingRowNumber < 0 ) {
-            	var reachingTopEdge = (parseFloat(e.pageY) - 3 * adj_height ) <= props.viewport.element().offset().top;
-            	if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
-            		mouseMovingColNumber = this.mouseClickedColOnStarting;
-            	}
+				if ( reachingLeftEdge ) {
+					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
+					xScPos = (xScPos - distanceMouseMoved);
 
-            	if ( reachingTopEdge ) {
-            		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
-            		var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
-            		yScPos = (parseFloat(yScPos) - parseFloat(distanceMouseMoved));  
+					if( xScPos > 0) {
+						xScPos = 0;
+					}
+				}
+			}
 
-            		if(yScPos > 0) {
-            			yScPos = 0;
-            		}           		          		
-            	}
-            }
+			//TOP
+			if ( mouseMovingRowNumber -  this.startingRowNumber < 0 ) {
+				var reachingTopEdge = (parseFloat(e.pageY) - 3 * adj_height ) <= props.viewport.element().offset().top;
+				if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
+					mouseMovingColNumber = this.mouseClickedColOnStarting;
+				}
 
-            //BOTTOM
-            else if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
-            	var reachingBottomEdge = (parseFloat(e.pageY) + 3 * adj_height ) >= window.innerHeight;
-            	if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
-            		mouseMovingColNumber = this.mouseClickedColOnStarting;
-            	}
+				if ( reachingTopEdge ) {
+					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
+					yScPos = (parseFloat(yScPos) - parseFloat(distanceMouseMoved));
 
-            	if ( reachingBottomEdge ) {
-            		//based on where the reservation is going to plot, we have to calculate scroll position to scroll
-            		var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
-            		yScPos = ( parseFloat(yScPos) - parseFloat(distanceMouseMoved) ); 
+					if(yScPos > 0) {
+						yScPos = 0;
+					}
+				}
+			}
 
-            		if( yScPos < scroller.maxScrollY ) {
-            			yScPos = scroller.maxScrollY;
-            		}            		
-            	}
-            }
+			//BOTTOM
+			else if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
+				var reachingBottomEdge = (parseFloat(e.pageY) + 3 * adj_height ) >= window.innerHeight;
+				if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
+					mouseMovingColNumber = this.mouseClickedColOnStarting;
+				}
 
-            var newLeft = ((this.reservationTimeStartColNumber + mouseMovingColNumber - this.mouseClickedColOnStarting) * display.px_per_int),
-            	newTop = mouseMovingRowNumber * adj_height;
+				if ( reachingBottomEdge ) {
+					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
+					var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
+					yScPos = ( parseFloat(yScPos) - parseFloat(distanceMouseMoved) );
 
-            if(props.currentDragItem.reservation_status === 'inhouse' ) {
-                newLeft = (state.element_x / display.px_per_int).toFixed() * display.px_per_int;
-            }
-            else {
+					if( yScPos < scroller.maxScrollY ) {
+						yScPos = scroller.maxScrollY;
+					}
+				}
+			}
+
+			var newLeft = ((this.reservationTimeStartColNumber + mouseMovingColNumber - this.mouseClickedColOnStarting) * display.px_per_int),
+				newTop = mouseMovingRowNumber * adj_height;
+
+			if(props.currentDragItem.reservation_status === 'inhouse' ) {
+				newLeft = (state.element_x / display.px_per_int).toFixed() * display.px_per_int;
+			}
+			else {
 				var newArrival = ((((newLeft / px_per_ms) + x_origin) / fifteenMin).toFixed(0) * fifteenMin),
 					diff = newArrival - model.arrival;
 
-	            model.arrival = newArrival;
-	            model.departure = model.departure + diff;
-            }
+				model.arrival = newArrival;
+				model.departure = model.departure + diff;
+			}
 
-            if( this.isMounted() ) {
+			if( this.isMounted() ) {
 				this.setState({
 					currentClickedCol: mouseMovingColNumber,
 					currentResizeItem: model,
@@ -199,17 +199,17 @@ var GridRowItemDrag = React.createClass({
 					left: parseFloat( newLeft ),
 					top: newTop
 				}, function() {
-					
+
 					props.__onResizeCommand(model);
 
-		            if (scroller.maxScrollX <= xScPos && xScPos <= 0 &&
+					if (scroller.maxScrollX <= xScPos && xScPos <= 0 &&
 						scroller.maxScrollY <= yScPos && yScPos <= 0 ){
-		    			
-		    			scroller.scrollTo(xScPos, yScPos, 0);
+
+						scroller.scrollTo(xScPos, yScPos, 0);
 						scroller._scrollFn();
-		    		}					
+					}
 				});
-            }		
+			}
 		}
 	},
 	__onMouseUp: function(e) {
@@ -267,15 +267,15 @@ var GridRowItemDrag = React.createClass({
 		var id_meta = this.props.meta.occupancy.id;
 
 		if(!this.props.currentDragItem &&
-		   !this.state.currentDragItem &&
-		    nextProps.currentDragItem &&
-		    nextProps.currentDragItem[id_meta] === this.props.data[id_meta]) {
+			!this.state.currentDragItem &&
+			nextProps.currentDragItem &&
+			nextProps.currentDragItem[id_meta] === this.props.data[id_meta]) {
 
 			this.setState({
 				currentDragItem: nextProps.currentDragItem
 			});
 		} else if(this.props.currentDragItem &&
-				  !nextProps.currentDragItem) {
+			!nextProps.currentDragItem) {
 
 			this.setState({
 				currentDragItem: undefined
@@ -299,11 +299,11 @@ var GridRowItemDrag = React.createClass({
 	render: function() {
 		var props = this.props,
 			state = this.state,
-			style = {},
+			style = props.style,
 			x_origin = (props.display.x_n instanceof Date ? props.display.x_n.getTime() : props.display.x_n),
 			className = '';
 
-		if(state.dragging) { 		
+		if(state.dragging) {
 			style = {
 				position: 'fixed',
 				left: state.left,
@@ -315,12 +315,12 @@ var GridRowItemDrag = React.createClass({
 		}
 		this.__roomListingAreaWidth =  120;
 
-		return this.transferPropsTo(React.DOM.div({
-			style:       style,
-			className:   props.className + className,
-			children:    props.children
+		return (React.DOM.div({
+				style:       style,
+				className:   props.className + className,
+				children:    props.children
 
-		}
+			}
 		));
 	}
 });

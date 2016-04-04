@@ -1,20 +1,21 @@
 <span ng-controller="RateCalendarCtrl">
-	<div id="rate-manager-not-configured" ng-if = "!currentFilterData.filterConfigured">
-		 <span>
-		 	<span>Rate Manager not configured<span>Please select filter options to begin</span></span>
-	 	</span>
+	<div id="rate-manager-not-configured" class="no-content" ng-if = "!currentFilterData.filterConfigured">
+		<div class="info">
+            <span class="icon-no-content icon-rates"></span>
+    	    <strong class="h1">Rate Manager not configured</strong>
+    	    <span class="h2">Please select filter options to begin</span>
+        </div>
 	</div>
-	<div class="calendar-wraper">
-		<div ng-show = "currentFilterData.filterConfigured && calendarMode == 'RATE_VIEW'">
-		    <div style="width: 240px;overflow:hidden;max-height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="all-room-type-rate-left-scroller">
+	<div class="calendar-wraper zoom-level-{{currentFilterData.zoom_level_selected}}">
+		<div ng-show="currentFilterData.filterConfigured && calendarMode == 'RATE_VIEW'">
+		    <div class='scrollable pinnedLeft' ng-iscroll="all-room-type-rate-left-scroller">
 		    	<div class="wrapper">
-			        <table class='rate-calendar' style="width: 240px;">
+			        <table class='rate-calendar'>
 			            <thead>
 			                <tr>
-			                    <th class="cell" style="height: 53px; padding: 0 20 0 0;">
+			                    <th class="cell">
 			                        <button ng-click="openCloseAllRestrictions('remove')" 
 			                                class="button rm-buttonOpenClose"
-			                                style=" margin-left:50px;"
 			                                ng-class="{'green': anyRoomHasClosedRestriction, 'grey': !anyRoomHasClosedRestriction}" 
 			                                ng-disabled="!anyRoomHasClosedRestriction">
 			                            Open All
@@ -30,21 +31,21 @@
 			                <tr>
 			            </thead>
 			            <tbody>
-			                <td class="cell" style="padding: 20px; padding-right: 5px; overflow:visible;">
-			                    <div class="bolder buttonToggleContainer">
-			                        <button class="button rm-buttonToggle" ng-class="activeToggleButton == 'Rates' ? 'orange' : 'grey'" style="margin-bottom:4px; margin-top:-5px;" ng-click="toggleAllRates()">All Rates</button><br>
-			                    <button class="button rm-buttonToggle " ng-class="activeToggleButton == 'Rooms' ? 'orange' : 'grey'"  style="margin-bottom: -5px;" ng-click="toggleAllRooms()">All Rooms</button>
-			                    </div>
-
-			                </td>
-			                <tr class="cell"  ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
+			                <tr class="cell rate">
+			                	<td class="first-row force-align">
+			                		<span class="name bolder" ng-show="activeToggleButton == 'Rates'">All Rates</span>
+			                		<span class="name bolder" ng-show="activeToggleButton != 'Rates'">All Room Types</span>
+			                	</td>
+			                </tr>
+			                <tr class="cell rate"  ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading === false}" ng-show="calendarMode === 'RATE_VIEW'">
 			                    <td class="first-row force-align">
-			                        <div ng-click="goToRoomTypeCalendarView(rate)">
-			                            <span ng-class="{'gray': rateIsChild(rate) == true && ratesRoomsToggle !== 'ROOMS'}" title="{{rate.name}}">{{rate.name}}</span>
-			                            <span> 
-			                                <img src="/assets/cssimg/arrow-down.png" ng-hide="hideRoomsDownArrow"/>
+			                        <a title="{{rate.name}}" ng-click="goToRoomTypeCalendarView(rate)">
+			                            <span class="name" ng-class="{'gray': rateIsChild(rate) == true && ratesRoomsToggle !== 'ROOMS'}" title="{{rate.name}}">
+			                            	<span ng-show="rateIsChild(rate) != true" class="base-rate-indicator">B</span>
+			                            	{{rate.name}}
 			                            </span>
-			                        </div>
+			                            <span ng-hide="hideRoomsDownArrow" class="icons icon-double-arrow rotate-right"></span> 
+			                        </a>
 			                    </td>
 			                </tr>
 			            </tbody>
@@ -58,8 +59,7 @@
 			        <table class="rate-calendar">
 			            <thead>
 			                <tr class="cell">
-			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"
-			                        style="width:{{uiOptions.columnWidth}}px;" > 
+			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index"> 
 			                        <div ng-if="!isHistoryDate(date)" class="date-header" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" >
 			                            <span class="week-day">{{date| date:'EEEE'}}</span>
 			                            <span>{{date| date:'MMMM dd'}}</span>
@@ -110,20 +110,20 @@
 		    </div>
 		</div>
 		<div ng-show="currentFilterData.filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'">
-		    <div style="width: 240px;overflow:hidden;max-height:{{uiOptions.tableHeight}}px; position:relative;" class='scrollable pinnedLeft' ng-iscroll="room-type-details-left-scroller">
+		    <div class='pinnedLeft' ng-iscroll="room-type-details-left-scroller">
 		        <table class='rate-calendar'>
-		            <thead style="width:240px">
+		            <thead>
 		                <tr>
-		                    <th class="cell first-row actions"><!--  style="{width:th.width}" -->
+		                    <th class="cell"><!--  style="{width:th.width}" -->
 		                        <button ng-click="openCloseAllRestrictions('remove')" 	
-		                                class="button" 
+		                                class="button rm-buttonOpenClose" 
 		                                ng-class="{'green': anyRoomHasClosedRestriction,'grey': !anyRoomHasClosedRestriction}" 
 		                                ng-disabled="!anyRoomHasClosedRestriction"> 
 		                            Open All
 		                        </button>
 		                        
 		                        <button ng-click="openCloseAllRestrictions('add')" 
-		                                class="button" 
+		                                class="button rm-buttonOpenClose" 
 		                                ng-class="{'red': !calendarData.disableCloseAllBtn,'grey': calendarData.disableCloseAllBtn}" 
 		                                ng-disabled="calendarData.disableCloseAllBtn"> 
 		                            Close All
@@ -132,22 +132,19 @@
 		                </tr>
 		            </thead>
 		            <tbody>
-		                <tr ng-if="calendarData.data.length > 1">
-		                    <td class="first-row cell">
-		                        <span class="bolder">All room types</span>
-		                        <span>&nbsp;</span>
+                    	<tr class="cell rate" ng-if="calendarData.data.length > 1">
+			                <td class="first-row force-align">
+		                        <span class="name bolder" >All Room Types </span>
 		                    </td>
 		                </tr>
 
-		                <tr class="cell" style="height:67px" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'expandedFirstRow': currentExpandedRow === $index}" ng-class="{'last': $last}"> 
-		                    <td class="first-row force-align">    
-		                        <span ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
-		                        <span style="float:right" ng-hide="currentExpandedRow === $index || !!rate.is_hourly">
-		                            <img class="down" src="/assets/cssimg/arrow-down.png" ng-click="expandRow($index)">
-		                        </span>
-		                        <span style="float:right" ng-show="currentExpandedRow === $index && !rate.is_hourly">
-		                            <img class="up" src="/assets/cssimg/arrow-up.png" ng-click="expandRow($index)">
-		                        </span>
+		                <tr class="cell rate" ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'expandedFirstRow': currentExpandedRow === $index}" ng-class="{'last': $last}"> 
+		                    <td class="first-row force-align"> 
+		                    	<a  ng-click="expandRow($index)">  
+			                        <span class="name" ng-class="{'expanded': currentExpandedRow === $index}">{{rate.name}}</span>
+		                         	<span class="icons icon-double-arrow rotate-down" ng-hide="currentExpandedRow === $index || !!rate.is_hourly"></span>
+		                         	<span class="icons icon-double-arrow rotate-up" ng-show="currentExpandedRow === $index && !rate.is_hourly"></span>
+		                    	</a>
 		                    </td>
 		                </tr>
 		                
@@ -161,12 +158,12 @@
 			            <thead>
  			                <tr class="cell">
 			                    <th ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''" ng-repeat="date in calendarData.dates track by $index" 
-			                        style="width:{{uiOptions.columnWidth}}px;">
+			                        >
 			                        <div  ng-if="!isHistoryDate(date)" class="date-header" ng-class="{{isWeekend(date)}} ? 'weekend_day' : ''">
 			                            <span class="week-day">{{date| date:'EEEE'}}</span>
 			                            <span>{{date| date:'MMMM dd'}}</span>
 			                        </div>
-			                        <div ng-if="isHistoryDate(date)" class="date-header isHistory-cell-content" style="opacity:0.7;">
+			                        <div ng-if="isHistoryDate(date)" class="date-header isHistory-cell-content">
 			                            <span class="week-day">{{date| date:'EEEE'}}</span>
 			                            <span>{{date| date:'MMMM dd'}}</span>
 			                        </div>
