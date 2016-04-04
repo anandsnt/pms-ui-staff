@@ -345,10 +345,10 @@
 					</div>
 				</div>
 
-				<div class="entry is-pms-tokenized">
-					<label>new lable</label>
-					<div class="switch-button single" ng-class="{ on : data.enable_room_type_by_cl == true }" ng-click="data.enable_room_type_by_cl = !data.enable_room_type_by_cl">
-						<input type="checkbox" value="{{data.enable_room_type_by_cl}}">
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
+					<label>Override OWS Channel Validation</label>
+					<div class="switch-button single" ng-class="{ on : data.override_ows_channel_validation == true }" ng-click="data.override_ows_channel_validation = !data.override_ows_channel_validation">
+						<input type="checkbox" value="{{data.override_ows_channel_validation}}">
 						<span class="switch-icon"></span>
 					</div>
 				</div>
