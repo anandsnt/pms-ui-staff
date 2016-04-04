@@ -26,11 +26,7 @@ module.exports = {
 				filename: roverJsListRoot + 'reportsJsAssetList.js',
 				babelify: false
 			},
-			'rover.ratemanager': {
-				filename: roverJsListRoot + 'rateManagerJsAssetList.js',
-				babelify: false
-			},
-			'rover.newRateManager': {
+			'rover.rateManager': {
 				filename: roverJsListRoot + 'newRateManagerJsAssetList.js',
 				babelify: true
 			},

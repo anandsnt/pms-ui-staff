@@ -165,15 +165,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-revenue",
 					submenu: [
 					{
-						title: "New Rate Manager",
-						action: "staff#/staff/ratemanager/",
-						menuIndex: "newRateManager"
-					},
-					{
-						title: "MENU_RATE_MANAGER",
-						action: "staff#/staff/rateManager",
-						menuIndex: "rateManager"
-					}, {
+ 		            title: "MENU_RATE_MANAGER",
+		            action: "staff#/staff/ratemanager/",
+		            menuIndex: "rateManager"
+		        	}, 
+		        	{
 						title: "MENU_TA_CARDS",
 						action: "staff#/staff/cardsearch/",
 						menuIndex: "cards"

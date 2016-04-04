@@ -226,7 +226,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        menuIndex: "revenue-manager",
 		        submenu: [{
  		            title: "MENU_RATE_MANAGER",
-		            action: "rover.newRateManager",
+		            action: "rover.rateManager",
 		            menuIndex: "rateManager"
 		        }, {
 		            title: "MENU_TA_CARDS",
