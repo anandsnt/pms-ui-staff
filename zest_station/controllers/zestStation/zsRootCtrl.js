@@ -992,8 +992,50 @@ sntZestStation.controller('zsRootCtrl', [
             applyPrintMargin();//zsUtils function
          };
     };
-    
-	/**
+
+    /*
+    *  Websocket actions related to keycard lookup
+    *  starts here
+    */
+    var socketActions = function(response) {
+        var cmd = response.Command,
+            msg = response.Message;
+        // to delete after QA pass
+        console.info("Websocket:-> uid=" + response.UID);
+        console.info("Websocket:->"+cmd);
+        console.info("Websocket:->"+msg);
+        console.info("Websocket:-> response code:" + response.ResponseCode);
+
+        if (response.Command === 'cmd_insert_key_card') {
+            //check if the UID is valid
+            //if so find reservation using that
+            if (typeof response.UID !== "undefined" && response.UID !== null) {
+                $scope.$broadcast('UID_FETCH_SUCCESS',{"uid":response.UID});
+            } else {
+                $scope.$broadcast('UID_FETCH_FAILED');
+            };
+        } else if (response.Command === 'cmd_eject_key_card') {
+            //ejectkey card callback
+            if (response.ResponseCode === 19) {
+                // key ejection failed
+                if (!$scope.zestStationData.keyCaptureDone) {
+                    $state.go('zest_station.error_page');
+                };
+            }
+        } else if (response.Command === 'cmd_capture_key_card') {
+            if (response.ResponseCode === 0) {
+                //capture success
+            }
+        };
+    };
+    var socketOpenedFailed = function() {
+        console.info("Websocket:-> socket connection failed");
+    };
+    var socketOpenedSuccess = function() {
+        console.info("Websocket:-> socket connected");
+    };
+
+    /***
 	 * [initializeMe description]
 	 * @return {[type]} [description]
 	 */
@@ -1012,7 +1054,8 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData = zestStationSettings;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";
-        $scope.socketOperator = new webSocketOperations();
+        //create a websocket obj
+        $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
         $scope.zestStationData.keyCardInserted =  false;
         $scope.setSupportedLangList(zestStationSettings.zest_lang);
         $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;
