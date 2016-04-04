@@ -110,6 +110,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
 			$timeout(function() {
+				// there is some delay in actual socket operations
+				// even after the socket is being open
+				// so inorder to avoid a possible error because of
+				// wrong timing adding a buffer of 1.5 seconds
                 $scope.socketBeingConnected = false;//connection success
   			}, 1500);
 		};
