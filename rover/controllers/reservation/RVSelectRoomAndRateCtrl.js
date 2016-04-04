@@ -1799,6 +1799,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.activeRoom = tabIndex;
 			$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
 			$scope.viewState.currentTab = tabIndex;
+			reInitialize();
 		};
 
 		$scope.getTabTitle = function(tabIndex) {
