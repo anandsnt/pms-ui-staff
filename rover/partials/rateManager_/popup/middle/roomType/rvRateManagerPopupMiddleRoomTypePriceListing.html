@@ -1,0 +1,19 @@
+<div>
+	<div class="restriction_text" >
+		<h3>
+		PRICES
+		</h3>
+		<!-- Display if we are viewing Rates -->
+		<em>Prices for all room types</em>
+	</div>
+	<div class="prices-container scrollable" ng-iscroll="room-type-price-listing">
+		<div class="wrapper">
+			
+			<div class="price-info" ng-repeat="roomType in roomTypeAndPrices">
+				<span class='name'>{{roomType.name}}</span>
+				<span class="price">{{roomType.single}}</span>
+			</div>
+			
+		</div>
+	</div>
+</div>

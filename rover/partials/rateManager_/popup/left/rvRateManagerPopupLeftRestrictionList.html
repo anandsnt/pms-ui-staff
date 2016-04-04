@@ -1,0 +1,43 @@
+<div class="restriction-list" >
+	<div class="restriction_text" >
+		<h3>
+		RESTRICTIONS
+		</h3>
+	</div>
+	<div class="scrollable" ng-iscroll="scroller-restriction-list">
+		<ul class="wrapper">
+			<li class="restriction-type"
+				ng-repeat="restriction in restrictionList"
+				ng-click="changeRestrictionStatus(restriction)"
+				ng-class="{'selected': restriction.selected, 'disabled': restriction.isDisabled}">
+				<div class="restriction-left">
+					<span ng-class="restriction.className">
+						{{restriction.value}}
+					</span>
+					<span class="restriction-name">{{restriction.description}}</span>
+					<!-- Display this if the restriction is editable -->
+					<span class="icons icon-double-arrow rotate-right" ng-if="restriction.hasInputField">
+						
+					</span>
+				</div>
+				<div class="restriction-right">
+					<!-- Show this when the restriction is mixed -->
+					<div class="mixed-button" ng-if="restriction.status === 'VARIED'">
+						Varied
+					</div>
+					<!-- Show this when the restriction is NOT mixed -->
+					<!-- Add class .on when restriction is ON, remove otherwise-->
+					<!-- Add class .disabled if the restriction is editable and has no value, remove otherwise -->
+					<div class="switch-button" ng-class="{'on': restriction.status === 'ON', 'disabled' : input}"
+						ng-if="restriction.status !== 'VARIED'">
+						<span class="switch-icon"></span>
+						<!-- Add attribute checked="checked" when the restriction is ON, remove otherwise -->
+						<!-- Add attribute disabled="disabled" when restriction is editable and has no value, remove otherwise -->
+						<input type="checkbox" ng-checked="restriction.status === 'ON'" ng-disabled="restriction.isDisabled"/>
+					</div>
+					
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

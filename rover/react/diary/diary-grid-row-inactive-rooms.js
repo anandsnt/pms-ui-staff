@@ -17,7 +17,7 @@ var GridRowInactive = React.createClass({
 			spanClassName  = spanClassName + (isOutOfOrder ? ' ooo': ' oos'),
 			innerText 		= (isOutOfOrder ? 'OUT OF ORDER' : 'OUT OF SERVICE');
 
-		return this.transferPropsTo(React.DOM.div({
+		return (React.DOM.div({
 			className: divClassName,
 			style: {
 					display: 'block',
