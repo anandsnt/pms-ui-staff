@@ -67,6 +67,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response
      */
     var processForAllRates = (response) => {
+        console.log('Strted: ', new Date().getTime());
         var rateRestrictions = response.dailyRateAndRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
             dates = _.pluck(rateRestrictions, 'date'),
@@ -115,7 +116,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
-        console.log('Strted: ', new Date().getTime());
+        
         store.dispatch({
             type: RM_RX_CONST.RATE_VIEW_CHANGED,
             rateRestrictionData: [...ratesWithRestrictions],
@@ -128,13 +129,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
-    * when the daily rates success
-    * @param  {Object}
-    * @param  {Object}
-    */
+     * when the daily rates success
+     * @param  {Object}
+     * @param  {Object}
+     */
     var onFetchDailyRatesSuccess = (response, successCallBackParameters) => {
         /* 
-            TWO CASES, from filter if we choose
+            TWO CASES
             1. if the response has more than one rate, will redirect to all rates view
             2. if the response has only one rate, will redirect to single rate's expandable view
         */
@@ -156,9 +157,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
-    * to fetch the daily rates
-    * @param  {Object} filter values
-    */
+     * to fetch the daily rates
+     * @param  {Object} filter values
+     */
     var fetchDailyRates = (filterValues) => {
         var params = {
             from_date: formatDateForAPI(filterValues.fromDate),
@@ -187,72 +188,72 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
     };
 
-      /**
-       * when the daily rates success
-       * @param  {Object}
-       */
-        var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
-            var roomTypeRestrictions = response.roomTypeAndRestrictions,
-                roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
-                dates = _.pluck(roomTypeRestrictions, 'date'),
-                roomTypeIDs = _.pluck(roomTypes, 'id'),
-                roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
-                roomTypeObjectBasedOnID = {},
-                dateRoomTypeSet = null;
+    /**
+     * when the daily rates success
+     * @param  {Object}
+     */
+    var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
+        var roomTypeRestrictions = response.roomTypeAndRestrictions,
+            roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+            dates = _.pluck(roomTypeRestrictions, 'date'),
+            roomTypeIDs = _.pluck(roomTypes, 'id'),
+            roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
+            roomTypeObjectBasedOnID = {},
+            dateRoomTypeSet = null;
 
-            //roomTypeList is now cached, we will not fetch that again
-            cachedRoomTypeList = roomTypes;
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = roomTypes;
 
-            //topbar
-            $scope.fromDate = dates[0];
-            $scope.toDate = dates[dates.length - 1];
-            $scope.showTopBar = true;
-            $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
-            $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
+        //topbar
+        $scope.fromDate = dates[0];
+        $scope.toDate = dates[dates.length - 1];
+        $scope.showTopBar = true;
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
-            roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
-            roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
+        roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
+        roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
 
-            //we have lots of alternative ways, those depends on javascript array order
-            //which is buggy from browser to browser, so choosing this bad way
-            //may be this will result in running 365000 times
-            roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
-                roomType.restrictionList = [];
+        //we have lots of alternative ways, those depends on javascript array order
+        //which is buggy from browser to browser, so choosing this bad way
+        //may be this will result in running 365000 times
+        roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
+            roomType.restrictionList = [];
 
-                roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
+            roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
 
-                dates.map((date) => {
-                  dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, {id: roomType.id});
-                  roomType.restrictionList.push(dateRoomTypeSet.restrictions);
-                });
-
-                return _.omit(roomType, 'restrictions');
+            dates.map((date) => {
+                dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, {id: roomType.id});
+                roomType.restrictionList.push(dateRoomTypeSet.restrictions);
             });
 
-            //for the first row with common restrictions among the rates
-            //for now there will not be any id, we have to use certain things to identify (later) TODO
+            return _.omit(roomType, 'restrictions');
+        });
 
-            roomTypeWithRestrictions.unshift({
-              restrictionList: dates.map((date) => {
+        //for the first row with common restrictions among the rates
+        //for now there will not be any id, we have to use certain things to identify (later) TODO
+
+        roomTypeWithRestrictions.unshift({
+            restrictionList: dates.map((date) => {
                 return roomTypeRestrictions[date].all_room_type_restrictions;
-              })
-            });
+            })
+        });
 
-            //closing the left side filter section
-            $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
+        //closing the left side filter section
+        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
 
-            console.log('Strted: ', new Date().getTime());
+        console.log('Strted: ', new Date().getTime());
 
-            store.dispatch({
-              type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
-              roomTypeRestrictionData: [...roomTypeWithRestrictions],
-              dates,
-              zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
-              businessDate: tzIndependentDate($rootScope.businessDate),
-              restrictionTypes,
-              callbacksFromAngular: getTheCallbacksFromAngularToReact(),
-            });
-        };
+        store.dispatch({
+            type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
+            roomTypeRestrictionData: [...roomTypeWithRestrictions],
+            dates,
+            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
+            businessDate: tzIndependentDate($rootScope.businessDate),
+            restrictionTypes,
+            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+        });
+    };
 
     /**
      * to fetch the room type & it's restrcitions
@@ -273,167 +274,167 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
     };
 
-      /**
-       * when open all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onOpenAllRestrictionsSuccess = response => {
+    /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to open all restriction
-       * @param  {Object} params
-       */
-      var openAllRestrictionsForSingleRateView = (params) => {
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForSingleRateView = (params) => {
         params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
         var options = {
-          params: params,
-          onSuccess: onOpenAllRestrictionsSuccess
+            params: params,
+            onSuccess: onOpenAllRestrictionsSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when close all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onCloseAllRestrictionsForSingleRateViewSuccess = response => {
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForSingleRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to close all restriction
-       * @param  {Object} params
-       */
-      var closeAllRestrictionsForSingleRateView = (params) => {
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForSingleRateView = (params) => {
         params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
         var options = {
-          params: params,
-          onSuccess: onCloseAllRestrictionsForSingleRateViewSuccess
+            params: params,
+            onSuccess: onCloseAllRestrictionsForSingleRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when close all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onCloseAllRestrictionsForRateViewSuccess = response => {
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to close all restriction
-       * @param  {Object} params
-       */
-      var closeAllRestrictionsForRateView = (params) => {
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForRateView = (params) => {
         var options = {
-          params: params,
-          onSuccess: onCloseAllRestrictionsForRateViewSuccess
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when open all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onOpenAllRestrictionsForRateViewSuccess = response => {
+    /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsForRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to open all restriction
-       * @param  {Object} params
-       */
-      var openAllRestrictionsForRateView = (params) => {
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForRateView = (params) => {
         var options = {
-          params: params,
-          onSuccess: onCloseAllRestrictionsForRateViewSuccess
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when close all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onCloseAllRestrictionsForRateViewSuccess = response => {
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to close all restriction
-       * @param  {Object} params
-       */
-      var closeAllRestrictionsForRateView = (params) => {
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForRateView = (params) => {
         var options = {
-          params: params,
-          onSuccess: onCloseAllRestrictionsForRateViewSuccess
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when open all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onOpenAllRestrictionsForRateViewSuccess = response => {
+    /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsForRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to open all restriction
-       * @param  {Object} params
-       */
-      var openAllRestrictionsForRateView = (params) => {
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForRateView = (params) => {
         var options = {
-          params: params,
-          onSuccess: onCloseAllRestrictionsForRateViewSuccess
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when close all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onCloseAllRestrictionsForRoomTypeViewSuccess = response => {
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForRoomTypeViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to close all restriction
-       * @param  {Object} params
-       */
-      var closeAllRestrictionsForRoomTypeView = (params) => {
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForRoomTypeView = (params) => {
         var options = {
-          params: params,
-          onSuccess: onCloseAllRestrictionsForRoomTypeViewSuccess
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRoomTypeViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
-      /**
-       * when open all restrcition we need to refresh the view
-       * @param  {Object} response [api response]
-       */
-      var onOpenAllRestrictionsForRoomTypeViewSuccess = response => {
+    /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsForRoomTypeViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-      };
+    };
 
-      /**
-       * react callback to open all restriction
-       * @param  {Object} params
-       */
-      var openAllRestrictionsForRoomTypeView = (params) => {
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForRoomTypeView = (params) => {
         var options = {
-          params: params,
-          onSuccess: onOpenAllRestrictionsForRoomTypeViewSuccess
+            params: params,
+            onSuccess: onOpenAllRestrictionsForRoomTypeViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-      };
+    };
 
     /**
      * utility method to pass callbacks from
