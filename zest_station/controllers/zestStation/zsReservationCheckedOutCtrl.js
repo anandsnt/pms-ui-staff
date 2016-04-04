@@ -88,10 +88,12 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.callAPI(zsCheckoutSrv.sendBill, options);
     };
 
-
+    $scope.zestStationData.keyCaptureDone = false;
+    
     var checkOutSuccess = function() {
       //if key card was inserted we need to capture that
       if($scope.zestStationData.keyCardInserted){
+        $scope.zestStationData.keyCaptureDone = true;
         $scope.socketOperator.CaptureKeyCard();
       };
       sendBill();

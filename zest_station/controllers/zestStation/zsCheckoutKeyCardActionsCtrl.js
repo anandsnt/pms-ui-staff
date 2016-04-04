@@ -98,7 +98,12 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				//ejectkey card callback
 				if (response.ResponseCode === 19) {
 					// key ejection failed
-					$state.go('zest_station.error_page');
+					if(!$scope.zestStationData.keyCaptureDone){
+						$state.go('zest_station.error_page');
+					}
+					else{
+						//do nothing
+					}
 				}
 			};
 		};
