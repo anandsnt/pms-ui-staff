@@ -29,7 +29,7 @@ angular
             var params = scope.$eval(attrs.emitWhen),
                 event = params.event,
                 condition = params.condition;
-                
+
             if( condition ) {
                 $timeout(function() {
                     scope.$emit(event);
