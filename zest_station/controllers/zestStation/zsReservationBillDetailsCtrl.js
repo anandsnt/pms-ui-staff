@@ -18,6 +18,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
 
             if($scope.zestStationData.isKeyCardLookUp){
+                 //if key card was inserted we need to eject that
+                  if($scope.zestStationData.keyCardInserted){
+                    $scope.socketOperator.EjectKeyCard();
+                  };
                 $state.go('zest_station.checkout_options');
             }
             else{
@@ -27,6 +31,18 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
             
 	});
+
+    /**
+     * [clickedOnCloseButton description]
+     * @return {[type]} [description]
+     */
+    $scope.clickedOnCloseButton = function() {
+        //if key card was inserted we need to eject that
+        if($scope.zestStationData.keyCardInserted){
+            $scope.socketOperator.EjectKeyCard();
+        };
+        $state.go ('zest_station.home');
+    };
 
     /* 
     *  To setup scroll

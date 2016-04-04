@@ -5,14 +5,15 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	'zsModeConstants',
 	'$stateParams',
 	'$sce', 'zsTabletSrv',
-	'zsCheckoutSrv',
-	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv, zsCheckoutSrv) {
+	'zsCheckoutSrv','$timeout',
+	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv, zsCheckoutSrv,$timeout) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 		$scope.reservationSearchFailed = false;
 		$scope.zestStationData.isKeyCardLookUp = true;
+		$scope.socketBeingConnected = true;
 		sntZestStation.filter('unsafe', function($sce) {
 			return function(val) {
 				return $sce.trustAsHtml(val);
@@ -84,7 +85,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var actionSuccesCallback = function(response) {
 			var cmd = response.Command,
 				msg = response.Message;
-
 			// to delete after QA pass
 			console.info("uid=" + response.UID);
 			console.info(cmd);
@@ -108,9 +108,14 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var socketOpenedSuccessCallback = function() {
 			$scope.socketOperator.InsertKeyCard();
 		};
-
+		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
+			$timeout(function() {
+                $scope.socketBeingConnected = false;//connection success
+  			}, 1500);
+		};
 		var init = function(){
 			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+			setTimeOutFunctionToEnsureSocketIsOpened();
 		}();
 
 		/** 
@@ -119,6 +124,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.retrySearch = function() {
 			$scope.reservationSearchFailed = false;
 			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+			$scope.socketBeingConnected = true;
+			setTimeOutFunctionToEnsureSocketIsOpened();
 			runDigestCycle();
 		};
 
