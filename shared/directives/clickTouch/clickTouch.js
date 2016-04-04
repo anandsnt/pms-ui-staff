@@ -3,7 +3,6 @@ angular.module('clickTouch', []).directive('clickTouch', function($timeout, $par
         restrict: 'AE',
         link: function(scope, element, attrs, opt) {
             var eventShallPass = scope.$eval( attrs.eventShallPass );
-            console.log( eventShallPass );
 
             element.bind('touchstart click', function(event) {
                 try {
