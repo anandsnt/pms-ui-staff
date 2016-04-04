@@ -47,7 +47,6 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             $state.go ('zest_station.home');  
         };
         $scope.init = function(r){
-            //$scope.inputFocus();
             var current=$state.current.name;
             $scope.selectedReservation = $state.selectedReservation;
             

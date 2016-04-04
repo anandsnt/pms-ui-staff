@@ -692,8 +692,18 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.openExternalWebPage = function(){
             $scope.showExternalWebPage =true;
+            console.log('listenForInputBoxClick')
+            $scope.listenForInputBoxClick();
         };
-
+        $scope.listenForInputBoxClick = function(){
+            $('body').bind("click touchstart keyup keydown keypress", function(e) {
+                console.log(e)
+                window.parent.funcKey(e);
+              });
+            
+            
+            
+        };
         $scope.closeExternalWebPage = function(){
             $scope.showExternalWebPage =false;
         }
@@ -846,21 +856,46 @@ sntZestStation.controller('zsRootCtrl', [
                 }
                 $scope.closePopup();
             };
-            $scope.initVirtualKeyboard = function(){
-                console.log('init virtual keyboard');
-                  if ($scope.inChromeApp && $scope.theme === 'yotel'){
-                    setTimeout(function(){
-                        new initScreenKeyboardListener();
-                        $scope.inputFocus();//tries to bring up the keyboard so user doesnt need to click on input field
-                    },100);
-                }
+            
+            
+            $scope.showKeyboardOnInput = function(){
+                console.info('show keyboard?');
+                var frameBody = $("#booking_iframe").contents().find("body");
+                    frameBody.focus(function(){ 
+                        console.log('iframe focus')
+                    });
             };
+            
+            $scope.showOnScreenKeyboard = function(id) {
+               //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+                var isTouchDevice = 'ontouchstart' in document.documentElement;
+                var shouldShowKeyboard = chrome && 
+                                        window.innerWidth === screen.width && 
+                                        window.innerHeight === screen.height && 
+                                        (window.navigator.userAgent.indexOf('Win')!=-1) &&
+                                        $scope.inChromeApp && 
+                                        isTouchDevice &&
+                                        $scope.theme === 'yotel';
+                                
+                                
+                //shouldShowKeyboard = true;
+                if (shouldShowKeyboard){
+                     if (id){
+                         new initScreenKeyboardListener('station', id, true);
+                      }
+                 } else {
+                     console.info('probably not in a chromeapp');
+                 }
+            };
+            $scope.showOnScreenKeyboard();
+            
             $scope.pressEsc = function() {
                 $('body').trigger({
                     type: 'keyup',
                     which: 27 // Escape key
                 });
             };
+            
             $scope.inputFocus = function(){
                 setTimeout(function(){
                     var el = $("input:visible");
@@ -874,11 +909,6 @@ sntZestStation.controller('zsRootCtrl', [
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
-                if ($scope.inChromeApp && $scope.theme === 'yotel'){
-                    new initScreenKeyboardListener();
-                    $scope.initVirtualKeyboard();
-                }
-                
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }

@@ -22,19 +22,19 @@ this.initScreenKeyboardListener = function(from, id, show){
                 //layout: 'qwerty',
                 layout: 'default',
                 customLayout: {
-                  'shift': [
+                  'default': [
                           '1 2 3 4 5 6 7 8 9 0',
                           'q w e r t y u i o p {bksp}',
                           "a s d f g h j k l ' @",
                           'z x c v b n m . +',
-                          ' {space} _ - .com'
+                          '{shift} {space} _ - .com'
                   ],
-                  'default': [//zest station on screen is always caps,default to this
-                          '1 2 3 4 5 6 7 8 9 0',
+                  'shift': [//zest station on screen is always caps,default to this
+                          '! @ # $ % ^ & * ( )',
                           'Q W E R T Y U I O P {bksp}',
                           "A S D F G H J K L ' @",
                           'Z X C V B N M . +',
-                          ' {space} _ - .com'
+                          '{shift} {space} _ - .com'
                   ],
                   'meta1': [
                     '{default} 0 '
@@ -65,7 +65,8 @@ this.initScreenKeyboardListener = function(from, id, show){
                 display: {
                   'meta1': 'numpad', // Diamond
                   'meta2': '\u2665', // Heart
-
+                  'shift': 'Shift:Shift',
+                  
                   'numpad': '\u2665',
 
                   // check mark (accept)
@@ -74,7 +75,7 @@ this.initScreenKeyboardListener = function(from, id, show){
                   'alt': 'AltGr:Alternate Graphemes',
                   // Left arrow (same as &larr;)
                   'b': '\u2190:Backspace',
-                  'bksp': '\u232B:Backspace',
+                  'bksp': '\Del:Backspace',
                   //'bksp': '\u2421:Backspace',
                   //'bksp': '\u2421:Backspace',
                   // big X, close/cancel
@@ -100,7 +101,6 @@ this.initScreenKeyboardListener = function(from, id, show){
                   // thick hollow up arrow
                   's': '\u21e7:Shift',
 
-                  'shift': 'Shift:Shift',
                   // +/- sign for num pad
                   'sign': '\u00b1:Change Sign',
                   'space': '\u00a0:Space',
@@ -189,6 +189,7 @@ this.initScreenKeyboardListener = function(from, id, show){
                 beforeVisible: function(e, keyboard, el) {},
                 visible: function(e, keyboard, el) {},
                 change: function(e, keyboard, el) {
+                    //console.log($('#'+id).val());
                 },
                 beforeClose: function(e, keyboard, el, accepted) {
                 },
