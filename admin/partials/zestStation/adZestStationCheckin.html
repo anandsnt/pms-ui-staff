@@ -14,6 +14,7 @@
                 </div>
                 <ad-checkbox is-checked="zestSettings.registration_card.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.registration_card.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.registration_card.auto_print" label="{{ 'AUTO_PRINT' | translate}}"></ad-checkbox>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
@@ -60,6 +61,12 @@
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.email" label="{{ 'EMAIL' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.confirmation" label="{{ 'CONFIRMATION' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.number_of_nights" label="{{ 'AUTH_NO_OF_NIGHTS' | translate}}"></ad-checkbox>
+            </fieldset>
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>BYPASS_CC_FOR_PREPAID_RESERVATIOIN </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
             <!-- Message Overrides for Zest Station Check-in, these override the active locale -->
             <fieldset class="holder left">

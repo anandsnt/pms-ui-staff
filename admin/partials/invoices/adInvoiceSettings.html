@@ -14,6 +14,9 @@
 					<fieldset class="holder right">
 						<ad-textbox div-class="full-width" text-area-class="full-width" value="invoiceSettings.invoice_no_prefix" label = "{{'INVOICE_NO_PREFIX' | translate}}" placeholder = "{{'PLACEHOLDER_INVOICE_NO_PREFIX' | translate }}"></ad-textbox>
 					</fieldset>
+					<fieldset class="holder left">
+						<ad-toggle-button label="{{'EXT_TAX_BREAKDOWN' | translate}}" is-checked="invoiceSettings.has_enabled_extended_tax_breakdown"></ad-toggle-button>
+					</fieldset>
 
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>

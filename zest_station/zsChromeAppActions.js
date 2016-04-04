@@ -16,23 +16,23 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
             // The ID of the extension we want to talk to.
             // Make a simple request:
             if(chromeAppId) {
-                chrome.runtime.sendMessage(chromeAppId, {fromZestStation: true}, this.onChromeAppMsgResponse);
+                var msg = {fromZestStation: true};
+                console.log('msg to ChromeApp:',msg);
+                chrome.runtime.sendMessage(chromeAppId, msg, this.onChromeAppMsgResponse);
             }
         };
         
         
         that.cancelNextMsg = false;
         that.listenerForQRCodeResponse = function(response){
-            console.log(':: listenerForQRCodeResponse ::',response);
             var msg = {
                 listening: true,
-                attempt: (that.qrAttempt+1)
+                attempt: (this.qrAttempt+1)
             };
-            console.log('msg from ChromeApp:', response);
             
             if (!response.qr_code){
                 setTimeout(function(){
-                    console.log('sending listening response obj for QR code...');
+                    console.log('listening for QR code scan...');
                     if (!that.cancelNextMsg){
                         chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
                     } else {
@@ -59,7 +59,6 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         that.qrAttempt = 0;
         that.fetchQRCode = function(){ 
             var msg = 'initQRCodeScan';
-            console.log('listening for scan...on app id: [ '+chromeAppId+' ]');
             chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             console.log('SENDING message: ',msg);
             /*
