@@ -400,7 +400,7 @@
         
         
         
-        @charset: "UTF-8";//for use with 232b (delete to the left button)
+        //@charset: "UTF-8";//for use with 232b (delete to the left button)
         //default
         .ui-keyboard,
         .ui-keyboard-button{
