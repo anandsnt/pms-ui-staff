@@ -173,6 +173,28 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		};
 
 		/**
+		 * To send send group confirmation email
+		 * @return {Promise}
+		 */
+		this.sendGroupConfirmationEmail = function(params) {
+			var deferred = $q.defer(),
+			data = params.postData,
+			url = ' api/groups/'+params.groupId+'/group_email_confirmation';
+
+			rvBaseWebSrvV2.postJSON(url, data).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+
+
+		/**
 		 * Function to get Room type availablity as well as best availbale rate
 		 * @return {Promise} [will get the details]
 		 */

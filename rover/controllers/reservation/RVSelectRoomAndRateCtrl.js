@@ -919,15 +919,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
 
-			if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
-				// CICO-26707 Skip house avbl check for group/allotment reservations
-				canOverbookHouse = true;
-				//CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
-				if ($scope.getLeastAvailability(roomId, rateId) < 1) {
-					return false;
+        if(!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
+        	  // CICO-26707 Skip house avbl check for group/allotment reservations
+            canOverbookHouse = true;
+            //CICO-24923 TEMPORARY : Dont let overbooking of Groups from Room and Rates
+            if($scope.getLeastAvailability(roomId, rateId) < 1){
+            	return true;
 				}
 				//CICO-24923 TEMPORARY
-			}
+      }
 
 			if (canOverbookHouse && canOverbookRoomType) {
 				//CICO-17948
@@ -1123,7 +1123,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							$scope.activeRoom,
 							$scope.reservationData.ratesMeta[payLoad.rate_id].taxes,
 							dayInfo.amount),
-						// CICO-27226 Round day-wise totals 
+						// CICO-27226 Round day-wise totals
 						dayTotal = Number(parseFloat(dayInfo.amount).toFixed(2)) +
 						Number(parseFloat(taxAddonInfo.addon).toFixed(2)) +
 						Number(parseFloat(taxAddonInfo.tax.excl).toFixed(2));

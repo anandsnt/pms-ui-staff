@@ -1,0 +1,57 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+	<div class="modal-content form send-confirmation" ng-class="{'extended': groupConfirmationData.is_salutation_enabled}" >
+		<button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()" >
+			<span class="icons icon-close invert"></span>
+		</button>
+	    	
+	    <strong class="h2 message">Send Confirmation</strong>
+		
+		<!-- Show when email button clicked -->
+        <div id="status" class="notice" ng-class="{'success':ngData.successMessage, 'error':ngData.failureMessage }" ng-show="ngData.successMessage || ngData.failureMessage">{{ngData.successMessage}}{{ngData.failureMessage}}</div>
+
+		<fieldset class="content-left">
+			<div class="entry full-width">
+				<label>Contact Email</label>
+		    	<input type="text" value="{{groupConfirmationData.contact_email}}" readonly/>
+			</div>
+
+			<div class="entry full-width">
+				<!-- add class .checked if checked-->
+				<label class="checkbox" ng-class="{'checked': groupConfirmationData.is_include_rooming_list}">
+					<!-- add class .checked if checked-->
+					<span class="icon-form icon-checkbox" ng-class="{'checked': groupConfirmationData.is_include_rooming_list}"></span>
+					<!-- add attribute checked="checked" if checked-->
+					<input type="checkbox" ng-click="groupConfirmationData.is_include_rooming_list = !groupConfirmationData.is_include_rooming_list"ng-class="{'checked': groupConfirmationData.is_include_rooming_list}" value="" />
+					Include rooming list
+				</label>
+			</div>
+
+			<div class="entry full-width salutation">
+				<label for="salutation">
+					Salutation
+	            </label>
+	            <!-- add class .on when it is on -->
+	            <!-- add class .extended to .modal-content when it is on -->
+	            <div class="switch-button" ng-class="{'on': groupConfirmationData.is_salutation_enabled}">
+	                <span class="switch-icon"></span>
+	                <!-- add attribute checked="checked" if it is switched-->
+	                <input id="salutation" type="checkbox" ng-class="{'checked': groupConfirmationData.is_salutation_enabled}" ng-click="groupConfirmationData.is_salutation_enabled = !groupConfirmationData.is_salutation_enabled">
+	            </div>
+			</div>
+
+			
+		</fieldset>
+
+		<fieldset class="content-right" ng-show="groupConfirmationData.is_salutation_enabled">
+	    	<div class="entry full-width">
+	    		<label>Personal salutation</label>
+				<textarea placeholder="Insert a personal salutation" ng-model="groupConfirmationData.personal_salutation"/>
+			</div>
+		</fieldset>
+		
+		<div class="actions">
+			<button type="button" class="button" ng-click="sendGroupConfirmation()" ng-disabled="groupConfirmationData.contact_email == ''" ng-class="{'grey':groupConfirmationData.contact_email == '', 'green':groupConfirmationData.contact_email != '' }">Send</a>
+			<button type="button" id="cancel" class="button blank" ng-click="closeDialog()">Cancel</button> 
+		</div>
+	</div>
+</div>

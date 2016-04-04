@@ -363,6 +363,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.theme = $state.theme;
             $scope.emailEnabled = $scope.zestStationData.emailEnabled;
             $scope.printEnabled = $scope.zestStationData.printEnabled;
+            if ($scope.zestStationData.auto_print){
+                $scope.printEnabled = false;
+            }
             
             if (!$scope.input){
                 $scope.input = $state.input;
@@ -370,6 +373,13 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             
             
             if (current === 'zest_station.delivery_options'){
+                console.log('$scope.zestStationData.auto_print: ',$scope.zestStationData.auto_print);
+                if ($scope.zestStationData.auto_print){
+                    $scope.zestStationData.printEnabled = false;
+                    setTimeout(function(){
+                        $scope.clickedPrint();
+                    },3000);
+                };
                 $scope.setDeliveryParams();
                 if ($state.updatedEmail){
                     showNavButtons();
@@ -476,13 +486,21 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	};
 
         $scope.onPrintError = function(error){
-            $state.go('zest_station.error');
+            if (!$scope.zestStationData.auto_print){
+                $state.go('zest_station.error');
+            } else {
+                $state.selectedReservation.printSuccess = false;
+            }
         };
         $scope.onPrintSuccess = function(success){
-            $state.fromPrintSuccess = true;
-            $state.selectedReservation.printSuccess = true;
-            $state.go('zest_station.last_confirm');
-            $scope.$emit('hideLoader');
+            if (!$scope.zestStationData.auto_print){//when auto-printing do nothing, email success will take guest to next screen
+                $state.fromPrintSuccess = true;
+                $state.selectedReservation.printSuccess = true;
+                $state.go('zest_station.last_confirm');
+                $scope.$emit('hideLoader');
+            } else {
+                $state.selectedReservation.printSuccess = true;
+            }
         };
 
 	$scope.printRegistrationCard = function() {
@@ -558,7 +576,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 // print section - if its from device call cordova.
                 $scope.printRegCardData = data;
                 $scope.departDate = $scope.printRegCardData.dep_date;
-                console.info($scope.departDate)
                 var dep = $scope.departDate.split('-');
                 var dY = dep[2],dM=(dep[1]-1),dD=dep[0];
                 var depart = new Date(dY,dM,dD);
