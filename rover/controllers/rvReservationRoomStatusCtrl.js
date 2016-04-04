@@ -240,7 +240,18 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	};
     if($stateParams.isOnlineRoomMove == "false" && $scope.showKeysButton($scope.reservationData.reservation_card.reservation_status) && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN"){
         setTimeout(function(){
-            $scope.clickedIconKey();
+            var keySettings = $scope.reservationData.reservation_card.key_settings;
+            if(keySettings === "email"){
+                    ngDialog.open({
+                        template: '/assets/partials/keys/rvKeyEmailPopup.html',
+                        controller: 'RVKeyEmailPopupController',
+                        className: '',
+                        scope: $scope
+                    });
+            } else {
+                $scope.keyInitPopup();
+            }
+
         }, 700)
 
     }
