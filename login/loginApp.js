@@ -114,7 +114,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
         $scope.showOnScreenKeyboard = function(id) {
            //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
             var isTouchDevice = 'ontouchstart' in document.documentElement;
-            var shouldShowKeyboard = chrome && window.innerWidth === screen.width && window.innerHeight === screen.height && (window.navigator.userAgent.indexOf('Win')) && isTouchDevice;
+            var shouldShowKeyboard = typeof(chrome) && window.innerWidth === screen.width && window.innerHeight === screen.height && (window.navigator.userAgent.indexOf('Win')) && isTouchDevice;
             // shouldShowKeyboard = true;
             if (shouldShowKeyboard){
                  if (id){
