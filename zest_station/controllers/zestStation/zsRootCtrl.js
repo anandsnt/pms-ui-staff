@@ -879,7 +879,7 @@ sntZestStation.controller('zsRootCtrl', [
                                         $scope.theme === 'yotel';
                                 
                                 
-                shouldShowKeyboard = true;
+               // shouldShowKeyboard = true;
                 if (shouldShowKeyboard){
                      if (id){
                          new initScreenKeyboardListener('station', id, true);
