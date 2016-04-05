@@ -53,20 +53,23 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				if ($scope.owsMessages.length > 0) {
 					//popup in zeststation was implemented in other way, not using ngdialog
 					//open popup only if there are any OWS messages
-					$scope.owsMsgOpenPoup = $scope.owsMessages.length > 0 ? true : false;
+					$scope.owsMsgOpenPoup =  true;
 					//select first message
 					$scope.currentOwsMessage = $scope.owsMessages[0].message;
 					var selectedOwsMessageIndex = 0;
 					//on reaching last message, we need to show exit button
 					$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
+					//set page number
 					var setPageNumber = function() {
 						$scope.currentpageNumber = selectedOwsMessageIndex + 1;
 					};
-					setPageNumber();
-					showEmailButton();
 					var checkifItsLastOwsMsg = function() {
 						$scope.isLastOwsMsg = (selectedOwsMessageIndex + 1 === $scope.owsMessages.length) ? true : false;
 					};
+
+					setPageNumber();
+					showEmailButton();
+
 					//load next ows message
 					$scope.loadNextOwsMsg = function() {
 						selectedOwsMessageIndex++;
@@ -94,6 +97,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			};
 
 			var fetchOwsMessages = function() {
+				$scope.owsMsgOpenPoup =  false;
 				var options = {
 					params: {
 						"reservation_id": ""
