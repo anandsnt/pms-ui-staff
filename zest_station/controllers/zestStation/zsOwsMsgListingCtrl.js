@@ -55,7 +55,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
 				$scope.owsMsgOpenPoup = $scope.owsMessages.length > 0 ? true : false; //popup in zeststation was implemented in other way, not using ngdialog
 				var setPageNumber = function() {
-					$scope.currentMessageNumber = selectedOwsMessageIndex + 1 + " of " + $scope.owsMessages.length; //text to diplay the current msg number
+					$scope.currentpageNumber = selectedOwsMessageIndex + 1;
 				};
 				setPageNumber();
 				var checkifItsLastOwsMsg = function() {
