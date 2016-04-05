@@ -1,9 +1,18 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
+@font-face {
+  font-family: 'Europa Grotesque Regular';
+  src: url('/assets/type/EuropaGrotesque-Light.eot');
+  src: url('/assets/type/EuropaGrotesque-Light.eot?#iefix') format('embedded-opentype'), url('/assets/type/EuropaGrotesque-Light.woff') format('woff'), url('/assets/type/EuropaGrotesque-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
 @import "../style.less";
 
 body{
     background-color:#FFF;
+    font-family:Europa Grotesque Regular;
 }
 
 .back-text{
@@ -14,8 +23,22 @@ a,a:hover,.main-text,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
     color:#1A1A1A;
 }
+.main-text{
+  font-size:44px;
+}
+.res-date{
+  font-size:23px !important;
+}
 .sub-main-text{
-    color:#444444;
+    color:#000;
+    font-size:25px !important;
+    span,strong{
+       font-weight:300;
+    }
+}
+.dual-button{
+  font-size:40px;
+  line-height:0.9;
 }
 .header-bar{
     background:#FFF;
@@ -29,17 +52,37 @@ a,a:hover,.main-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: #444444 !important;
+    color: #000 !important;
 }
 .view-bill{
     color:#000000;
 }
+.sub-text{
+  font-size:21px;
+}
+p.sub-text{
+    margin-bottom:0px !important;
+  }
+.footer-text{
+  font-style:normal;
+}
+.time{
+  font-size: 35px;
+  line-height: 1;
+}
+.ap,.for{
+  font-size:21px;
+}
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
     color: #151413 !important;
+}
+.query-text{
+  font-size:19px;
 }
 .btn,.btn:hover{
     background:#222222;
     color:@white;
+
 }
 .dark-button,.dark-button:hover{
     background: #404040 !important;
@@ -60,6 +103,7 @@ a,a:hover,.main-text,
     color:black !important;
     text-decoration: underline;
     text-transform:none;
+    font-size:19px;
 }
 
 .down-arrow-button{
@@ -79,7 +123,40 @@ a,a:hover,.main-text,
 .upgrades-label{
     color:#BA7A55;
 }
-
+.select-style select,.modal-dialog p,.room-error-button{
+  font-size:19px !important;
+}
+.calendar-done-text{
+  margin-left:0px;
+}
+.terms-sub{
+  font-size:20px;
+}
+.terms-desc{
+  font-size:19px;
+}
+.grey-terms-button,.green-button{
+    font-size:19px;
+}
+.accept-charges, .checkout-btn{
+  font-size:35px;
+}
+.show-bill-wrap{
+  font-size:20px;
+}
+.caps-text{
+  text-transform: uppercase;
+}
+.amount{
+  font-size:35px;
+}
+.footer-text{
+      font-size:25px;
+}
+.btn-template{
+  font-size:35px;
+  line-height:1.2;
+}
 
 /*----------------- date picker -------------------------*/
 
@@ -168,4 +245,32 @@ a,a:hover,.main-text,
     .back-to-checkout{
         display:none;
     }
+}
+@media (max-width: 480px) {
+   .footer-text{
+      font-size:25px;
+   }
+   .res-details-heading,.footer-sub-text{
+      font-size:19px !important;
+   }
+   .next-line:before {
+       content: 'hiddentext'; 
+       font-size:0; display:block;
+        line-height:0; 
+   }
+   .main-text{
+       font-size:35px;
+   }
+   .container{
+      width:100%;
+   }
+   .sub-main-text{
+     font-size:7vw !important;
+  }
+  .main-text{
+     font-size:12vw;
+  }
+  .section-container{
+     padding-bottom:0px;
+  }
 }

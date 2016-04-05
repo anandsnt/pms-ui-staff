@@ -8,6 +8,10 @@ sntRover.factory('RVReportParserFac', [
 
         factory.parseAPI = function ( reportName, apiResponse, options, resultTotalRow ) {
 
+            if ( reportName === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseFinTransAdjustReport( reportName, apiResponse, options );
+            }
+
             if ( reportName === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDailyProduction( reportName, apiResponse, options, resultTotalRow );
             }
@@ -45,7 +49,7 @@ sntRover.factory('RVReportParserFac', [
             }
 
             // otherwise a super parser for reports that can be grouped by
-            else if ( !!options['groupedByKey'] ) {
+            else if ( reportName === reportNames['RESERVATIONS_BY_USER'] && !!options['groupedByKey'] ) {
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
             }
 
@@ -58,7 +62,160 @@ sntRover.factory('RVReportParserFac', [
 
 
 
+        /**
+         * The normal API reponse (result) is a single array object entry
+         * with two keys 'adjustments' and 'deleted_charges'. Both these
+         * keys have a array of values. Each value representing an adjustment
+         * or deleted charge respectively.
+         *
+         * The purpose of this function to filter the API reponse based on 
+         * created_id. So we are gonna modify the API reponse array to an object
+         * with keys for "created_id_by" and value an object with 'adjustments' and 'deleted_charges'
+         * So under each created_id_by all 'adjustments' and 'deleted_charges' associated.
+         */
+        function $_preParseFinTransAdjustReport(reportName, apiResponse, options) {
+            var returnObj  = {},
+                adjustments = [],
+                deletedCharges = [];
 
+            var groupByIdAdjustments = {},
+                groupByIdDeleteCharges = {};
+
+            var i, j, key, idBy;
+
+            var fillEntries = function(source, toKey) {
+                for (key in source) {
+                    if ( ! source.hasOwnProperty(key) ) {
+                        continue;
+                    };
+
+                    for ( i = 0, j = source[key].length; i < j; i++ ) {
+                        idBy = source[key].created_by + '__' + source[key].creator_id;
+
+                        if ( ! returnObj.hasOwnProperty(idBy) ) {
+                            returnObj[idBy] = {
+                                'adjustments': [],
+                                'deleted_charges': []
+                            };
+                        };
+
+                        returnObj[idBy][toKey].push( source[key] );
+                    }
+                };
+            };
+
+            var fillMissingIds = function(ary) {
+                for ( i = 0, j = ary.length; i < j; i++ ) {
+                    if ( ary[i]['creator_id'] === null ) {
+                        ary[i]['creator_id'] = 'UNDEF';
+                    }
+                };
+            };
+
+            if ( ! apiResponse.length ) {
+                return [];
+            };
+
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
+                adjustments = apiResponse[i]['adjustments'],
+                deletedCharges = apiResponse[i]['deleted_charges'];
+
+                fillMissingIds(adjustments);
+                fillMissingIds(deletedCharges);
+
+                groupByIdAdjustments = _.groupBy( adjustments, 'creator_id' );
+                groupByIdDeleteCharges = _.groupBy( deletedCharges, 'creator_id' );
+            };
+
+            fillEntries( groupByIdAdjustments, 'adjustments' );
+            fillEntries( groupByIdDeleteCharges, 'deleted_charges' );
+
+            for (key in returnObj) {
+                if ( ! returnObj.hasOwnProperty(key) ) {
+                    continue;
+                };
+
+                returnObj[key] = $_parseFinTransAdjustReport(reportName, returnObj[key], options);
+            };
+
+            return returnObj;
+        };
+
+        function $_parseFinTransAdjustReport ( reportName, apiResponse, options ) {
+            var returnAry  = [],
+                adjustments = [],
+                deletedCharges = [];
+
+            var i, j;
+
+            var getRemarksAry = function(remark) {
+                var ary = remark.split('<br />');
+                return _.reject(ary, function(i){ return i === '' || i === ' ' });
+            };
+
+            var processAry = function(source, type) {
+                var k, l;
+
+                var makeCopy, amt, totalAmount = 0;
+
+                for ( k = 0, l = source.length; k < l; k++ ) {
+                    makeCopy = angular.copy( source[k] );
+
+                    amt = parseInt(makeCopy.amount);
+                    amt = isNaN(amt) ? 0 : amt;
+                    totalAmount += amt;
+
+                    if ( 0 === k ) {
+                        angular.extend(makeCopy, {
+                            isReport     : true,
+                            rowspan      : l + 1,
+                            charge_type  : type,
+                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date  : makeCopy.posted.substring(0, 10),
+                            posted_time  : makeCopy.posted.substring(11),
+                            modified_date  : makeCopy.modified.substring(0, 10),
+                            modified_time  : makeCopy.modified.substring(11),
+                            remarkAry    : getRemarksAry( makeCopy.remark )
+                        });
+                        returnAry.push( makeCopy );
+                    } else {
+                        angular.extend(makeCopy, {
+                            isReport     : true,
+                            amount_class : type === 'Adjustments' ? 'purple' : 'red',
+                            posted_date  : makeCopy.posted.substring(0, 10),
+                            posted_time  : makeCopy.posted.substring(11),
+                            modified_date  : makeCopy.modified.substring(0, 10),
+                            modified_time  : makeCopy.modified.substring(11),
+                            remarkAry    : getRemarksAry( makeCopy.remark )
+                        });
+                        returnAry.push( makeCopy );
+                    }
+
+                    if ( 1 === l - k ) {
+                        returnAry.push({
+                            isReportSubTotal : true,
+                            break_class      : 'row-break',
+                            amount_class     : type === 'Adjustments' ? 'purple' : 'red',
+                            total_amount     : totalAmount
+                        });
+                    };
+                }
+            };
+
+            if ( ! apiResponse.length ) {
+                return [];
+            };
+
+            for ( i = 0, j = apiResponse.length; i < j; i++ ) {
+                adjustments = apiResponse[i]['adjustments'],
+                deletedCharges = apiResponse[i]['deleted_charges'];
+
+                processAry(adjustments, 'Adjustments');
+                processAry(deletedCharges, 'Deleted Charges');
+            };
+
+            return returnAry;
+        }
 
 
         function $_parseDailyProduction ( reportName, apiResponse, options, resultTotalRow ) {
@@ -214,18 +371,6 @@ sntRover.factory('RVReportParserFac', [
 
 
 
-        function $_isForGenericReports( name ) {
-            return ( name === reportNames['ARRIVAL'] ||
-                    name === reportNames['IN_HOUSE_GUEST'] ||
-                    name === reportNames['CANCELLATION_NO_SHOW'] ||
-                    name === reportNames['DEPARTURE'] ||
-                    name === reportNames['LOGIN_AND_OUT_ACTIVITY'] ||
-                    name === reportNames['RESERVATIONS_BY_USER'] ) ? true : false;
-        };
-
-
-
-
 
 
         function $_parseDataToInfo ( reportName, apiResponse, options ) {
@@ -276,7 +421,20 @@ sntRover.factory('RVReportParserFac', [
                 return check;
             };
 
-            if ( $_isForGenericReports(reportName) ) {
+            var isForGenericReports = function(reportName) {
+                var allowNames = [
+                    'ARRIVAL',
+                    'IN_HOUSE_GUEST',
+                    'CANCELLATION_NO_SHOW',
+                    'DEPARTURE',
+                    'LOGIN_AND_OUT_ACTIVITY',
+                    'RESERVATIONS_BY_USER'
+                ];
+
+                return !! _.find(allowNames, function(name) { return reportName == reportNames[name] });
+            };
+
+            if ( isForGenericReports(reportName) ) {
                 for (i = 0, j = apiResponse.length; i < j; i++) {
                     makeCopy   = angular.copy( apiResponse[i] );
                     customData = [];
@@ -376,11 +534,8 @@ sntRover.factory('RVReportParserFac', [
                         returnAry.push( customData[m] );
                     };
                 };
-
-                // dont remove yet
             } else {
                 returnAry = apiResponse;
-                // dont remove yet
             };
 
             return returnAry;
@@ -699,8 +854,6 @@ sntRover.factory('RVReportParserFac', [
                 //     returnAry.push( customData );
                 };
             };
-
-            console.log(returnAry);
 
             return returnAry;
         };
