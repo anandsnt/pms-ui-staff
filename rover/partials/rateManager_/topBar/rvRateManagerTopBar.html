@@ -30,7 +30,8 @@
         </li>
          
     </ul>
-    <ul class="display-mode">
+    <!-- CICO-27447 Temporarily Hiding Chart View -->
+    <ul class="display-mode" ng-if="false">
         
         <!-- remove .active if graph is active and not calendar -->
         <li ng-class="{'active': viewingScreen === 'RM_Grid_View'}">
