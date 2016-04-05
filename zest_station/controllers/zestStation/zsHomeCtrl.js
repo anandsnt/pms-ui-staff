@@ -548,6 +548,7 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     $scope.init = function(){
+        $state.earlyCheckinPurchased = false;
         $state.qr_code = null;
         //for change into default language after 120sec
         $scope.startLanguageCounter();
