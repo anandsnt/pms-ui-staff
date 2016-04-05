@@ -70,7 +70,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
+            $scope.$emit("hideLoader");
             $state.go('zest_station.key_success');
+            $scope.$emit("hideLoader");
         };
 
         $scope.makeKeys = function(n){

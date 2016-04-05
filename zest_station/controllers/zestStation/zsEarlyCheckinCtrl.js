@@ -236,7 +236,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
 
                 if (!$state.earlyCheckinPurchased &&
                     (
-                        $scope.earlyCheckinActiveForReservation(response) || 
+                        $scope.earlyCheckinActiveForReservation(response) && 
                         $scope.reservationIncludesEarlyCheckin(response))
                      ){
                         //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
