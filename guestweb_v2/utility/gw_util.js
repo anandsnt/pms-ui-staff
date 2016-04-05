@@ -96,11 +96,20 @@ var returnYears = function() {
 var returnYearsInReverseOrder = function(){
   var years = [];
   var startYear = new Date().getFullYear();
-  var endYear = parseInt(startYear) - 100;
+  var endYear = parseInt(startYear) - 150;
   for (year = startYear; year >= parseInt(endYear); year--) {
      years.push(year);
   };
   return years;
+};
+
+var returnSelectedMonth = function(month_to_check){
+  var months = returnMonthsArray();
+  var selectedMonth = {};
+  selectedMonth = _.find(months, function(month) {
+    return month.value === month_to_check;
+  });
+  return selectedMonth;
 };
 
 var returnMonthsArray = function() {

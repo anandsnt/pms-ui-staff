@@ -4,6 +4,8 @@
 sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv',
 	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv) {
 
+		console.log(GwCheckinSrv)
+
 		$controller('BaseController', {
 			$scope: $scope
 		});
@@ -13,48 +15,62 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 			$scope.years = returnYearsInReverseOrder();
 			$scope.months = returnMonthsArray();
 			$scope.guestDetails = {
-								'day':'',
-								'month':'',
-								'year':'',
-								'postal_code':'',
-								'state':'',
-								'city':'',
-								'street':'',
-								'street2':'',
-								'birthday':'',
-								'country':''
-							  };
+				'day': '',
+				'month': '',
+				'year': '',
+				'postal_code': '',
+				'state': '',
+				'city': '',
+				'street': '',
+				'street2': '',
+				'birthday': '',
+				'country': ''
+			};
 		}();
 
-		var guestDetailsFetchSuccess = function(response){
-			$scope.guestDetails       	 = response;
-			$scope.guestDetails.street   = response.street1;
-			$scope.guestDetails.country	 = response.country_id;
-			$scope.guestDetails.day   	 = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
-			$scope.guestDetails.month 	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
-			$scope.guestDetails.year  	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
+
+		var fetchGuestDetails = function() {
+			var guestDetailsFetchSuccess = function(response) {
+				$scope.guestDetails = response;
+				$scope.guestDetails.street = response.street1;
+				$scope.guestDetails.country = response.country_id;
+				//split the birthday string to be used in popup
+				$scope.guestDetails.day = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)) : "";
+				$scope.guestDetails.month = ($scope.guestDetails.birthday !== null) ? returnSelectedMonth($scope.guestDetails.birthday.substring(5, 7)).value : "";
+				$scope.guestDetails.year = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(0, 4)) : "";
+			};
+			var options = {
+				params: {
+					'reservation_id': GwWebSrv.zestwebData.reservationID
+				},
+				successCallBack: guestDetailsFetchSuccess
+			};
+			$scope.callAPI(GwCheckinSrv.getGuestDetails, options);
 		};
 
+		//fetch countrylist
+		var fetchCountryListSuccess = function(response) {
+			fetchGuestDetails();
+			$scope.countries = response;
+		};
 		var options = {
-			params: {
-				'reservation_id': GwWebSrv.zestwebData.reservationID
-			},
-			successCallBack: guestDetailsFetchSuccess,
+			successCallBack: fetchCountryListSuccess
 		};
-		$scope.callAPI(GwCheckinSrv.getGuestDetails, options);
-	
+		$scope.callAPI(GwCheckinSrv.fetchCountryList, options);
 
-		$scope.yearOrMonthChanged = function(){
-			if(!checkIfDateIsValid($scope.guestDetails.month,$scope.guestDetails.day,$scope.guestDetails.year)){
+		//watch if the day selected is valid, eg:- Feb 30 is invalid
+		//else unset the day selected
+		$scope.yearOrMonthChanged = function() {
+			if (!checkIfDateIsValid($scope.guestDetails.month, $scope.guestDetails.day, $scope.guestDetails.year)) {
 				$scope.guestDetails.day = "";
-			}else{
+			} else {
 				return;
 			}
 		};
-
+		//the PUT API expects some parameters, so need to convert in to that
 		var getDataToSave = function() {
 			var data = {};
-			var unwanted_keys = ["month", "year", "day"];
+			var unwanted_keys = ["month", "year", "day", "country_id", "street1"];
 			var newObject = JSON.parse(JSON.stringify($scope.guestDetails));
 			for (var i = 0; i < unwanted_keys.length; i++) {
 				delete newObject[unwanted_keys[i]];
@@ -66,6 +82,21 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				delete data["birthday"];
 			};
 			return data;
+		};
+
+		//save changes
+		$scope.postGuestDetails = function() {
+			var postGuestDetailsSuccess = function() {
+				$state.go('etaUpdation');
+			}
+			var options = {
+				params: {
+					'data': getDataToSave(),
+					'reservation_id': GwWebSrv.zestwebData.reservationID
+				},
+				successCallBack: postGuestDetailsSuccess
+			};
+			$scope.callAPI(GwCheckinSrv.postGuestDetails, options);
 		};
 
 

@@ -128,11 +128,11 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
-	var postGuestDetails = function(data) {
+	this.postGuestDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		var url = '/guest_web/guest_details/'+params.reservation_id+'.json';
 		params.application = (typeof GwWebSrv.zestwebData.application !=="undefined") ? GwWebSrv.zestwebData.application : "";
-		GWBaseWebSrv2.putJSON(url, params).then(function(data) {
+		GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -140,11 +140,22 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
-	var getGuestDetails = function() {
+	this.getGuestDetails = function(params) {
 
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		var url = '/guest_web/guest_details/'+params.reservation_id+'.json';
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.fetchCountryList = function(){
+		var deferred = $q.defer();
+		var url = '/ui/country_list';
+		GWBaseWebSrv2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
