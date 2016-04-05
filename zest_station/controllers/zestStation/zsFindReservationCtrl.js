@@ -407,7 +407,6 @@ sntZestStation.controller('zsFindReservationCtrl', [
 
 
         $scope.init = function(){  
-            $scope.inputFocus();
             if (!$scope.input){
                 $scope.input = {};
             }

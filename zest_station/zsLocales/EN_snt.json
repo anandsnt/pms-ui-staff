@@ -255,7 +255,9 @@
     "INSERT_KEY_CARD":"Insert card",
     "QR_SCAN_RETRY":"Retry QR scan",
     "QR_SCAN_FAILED_SEARCH":"Reservation Search",
-    "QR_SCAN_FAILED_BY_NAME":"by name"
+    "QR_SCAN_FAILED_BY_NAME":"by name",
+    "PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT":"Please wait",
+    "PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Insert the key card to the slot, only when you are instructed to"
 
 
 

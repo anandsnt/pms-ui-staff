@@ -240,9 +240,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             };
             // $scope.dateRange.id
-            $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {
+            var paramsToSend = {
                 "id": dateRangeId
-            }, fetchSetsInDateRangeSuccessCallback);
+            };
+
+            if($scope.rateData && $scope.rateData.based_on && !!$scope.rateData.based_on.id) {
+                paramsToSend.child_rate_id = $scope.rateData.id;
+            }
+            $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, paramsToSend, fetchSetsInDateRangeSuccessCallback);
         };
 
         //The Response from server may not have

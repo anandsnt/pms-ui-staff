@@ -47,7 +47,7 @@ var Grid = React.createClass({
 					}
 				},
 				_.map(this.props.data, function(row, idx) {
-					return GridRow({
+					return React.createElement( GridRow, {
 						key: 				row.key,
 						data: 				row,
 						row_number: 		idx,

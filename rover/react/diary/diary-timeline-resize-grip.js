@@ -12,7 +12,7 @@ var TimelineResizeGrip = React.createClass({
 		document.addEventListener(this.mouseLeavingEvent, this.__onMouseUp);
 		document.addEventListener(this.mouseMovingEvent, this.__onMouseMove);
 
-		page_offset = this.getDOMNode().getBoundingClientRect();
+		page_offset = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
 		this.setState({
 			mouse_down: true,
@@ -148,7 +148,7 @@ var TimelineResizeGrip = React.createClass({
 		this.__dbMouseMove = _.throttle(this.__onMouseMove, 10);
 	},
 	componentWillUnmount: function() {
-  		this.getDOMNode().removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
+  		ReactDOM.findDOMNode(this).removeEventListener(this.mouseStartingEvent, this.__onMouseDown);
   	},
 	componentDidMount: function(){
 		this.isTouchEnabled 	= 'ontouchstart' in window;
@@ -156,7 +156,7 @@ var TimelineResizeGrip = React.createClass({
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
 
-		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);
+		ReactDOM.findDOMNode(this).addEventListener(this.mouseStartingEvent, this.__onMouseDown);
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var model,
