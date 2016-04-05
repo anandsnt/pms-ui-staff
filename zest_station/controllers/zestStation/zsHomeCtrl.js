@@ -549,10 +549,6 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.init = function(){
         $state.qr_code = null;
-        if ($scope.inChromeApp){
-            $scope.pressEsc();
-        }
-        $scope.inputFocus();
         //for change into default language after 120sec
         $scope.startLanguageCounter();
         $scope.resetFlags();

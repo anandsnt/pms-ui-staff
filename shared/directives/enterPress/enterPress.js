@@ -5,12 +5,14 @@ angular.module('enterPress', []).directive('enterPress', function($timeout, $par
             element.bind("keydown keypress", function (event) {
                 if(event.which === 13) {
                     
-                    scope.$apply(function (){
-                        scope.$eval(attrs.enterPress);
-                    });
-                    //blur focus another object to drop keypad in touch devices 
-                    $(element).blur();
-                    event.preventDefault();
+                    setTimeout(function(){
+                        scope.$apply(function (){
+                            scope.$eval(attrs.enterPress);
+                        });
+                        //blur focus another object to drop keypad in touch devices 
+                        $(element).blur();
+                        event.preventDefault();
+                    },50);
                 }
             });
         }

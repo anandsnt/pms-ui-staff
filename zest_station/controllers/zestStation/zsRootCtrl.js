@@ -861,7 +861,6 @@ sntZestStation.controller('zsRootCtrl', [
             
             
             $scope.showKeyboardOnInput = function(){
-                console.info('show keyboard?');
                 var frameBody = $("#booking_iframe").contents().find("body");
                     frameBody.focus(function(){ 
                         console.log('iframe focus')
@@ -880,7 +879,7 @@ sntZestStation.controller('zsRootCtrl', [
                                         $scope.theme === 'yotel';
                                 
                                 
-                //shouldShowKeyboard = true;
+                shouldShowKeyboard = true;
                 if (shouldShowKeyboard){
                      if (id){
                          new initScreenKeyboardListener('station', id, true);
@@ -888,23 +887,6 @@ sntZestStation.controller('zsRootCtrl', [
                  } else {
                      console.info('probably not in a chromeapp');
                  }
-            };
-            $scope.showOnScreenKeyboard();
-            
-            $scope.pressEsc = function() {
-                $('body').trigger({
-                    type: 'keyup',
-                    which: 27 // Escape key
-                });
-            };
-            
-            $scope.inputFocus = function(){
-                setTimeout(function(){
-                    var el = $("input:visible");
-                    if (angular.element(el[0])){
-                        angular.element(el[0]).focus();
-                    }
-                },200);
             };
             
             $scope.$watchCollection(function(){
