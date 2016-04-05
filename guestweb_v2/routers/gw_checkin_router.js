@@ -77,60 +77,17 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	    data: {
 	 		title: 'Early Check-in'
 	 	}
+	 }).state('updateGuestDetails', {
+	 	url: '/updateGuestDetails',
+	 	templateUrl: '/assets/partials/checkin/gwGuestDetail.html',
+	 	controller : 'gwUpdateGuestDetailsController',
+	    data: {
+	 		title: 'Guest Details'
+	 	}
 	 });
 
-	//    //room and cc verification 
 
-	//  $stateProvider.state('checkoutRoomVerification', {
-	//  	url: '/checkoutRoomVerification',
-	//  	templateUrl: '/assets/common_templates/partials/checkout/gwRoomVerification.html',
-	//  	controller : 'checkoutRoomVerificationViewController',
-	//  	title: 'Room verification'
-	//  }).state('ccVerification', {
-	//  	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	//  	templateUrl: '/assets/common_templates/partials/checkout/gwCcEntry.html',
-	//  	controller : 'ccVerificationViewController',
-	//  	title: 'CC verification'
-	//  });
 
-	//    // checkout now states
-
-	// $stateProvider.state('checkoutBalance', {
-	//        url: '/checkoutBalance',
-	//        controller: 'checkOutBalanceController',
-	//       	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
-	//     title: 'Balance - Check-out Now'
-	//    })
-	//    .state('checkOutStatus', {
-	//        url: '/checkOutStatus',
-	//       	controller: 'checkOutStatusController',
-	//       	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
-	// 	title: 'Status - Check-out Now'
-	//    }).state('checkOutConfirmation', {
-	//        url: '/checkOutConfirmation',
-	//       	controller: 'checkOutConfirmationController',
-	//       	templateUrl:  '/assets/common_templates/partials/checkout/gwCheckout.html',
-	// 	title: 'Confirm - Check-out Now'
-	//    });
-
-	//    // late checkout states
-
-	//    $stateProvider.state('checkOutOptions', {
-	//    	url: '/checkOutOptions',
-	//  	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutoptions.html',
-	//  	controller: 'checkOutLandingController',
-	//  	title: 'Check-out'
-	//  }).state('checkOutLaterOptions', {
-	//  	url: '/checkOutLaterOptions',
-	// 	templateUrl: '/assets/common_templates/partials/checkout/gwLatecheckoutoptions.html',
-	//  	controller: 'checkOutLaterController',
-	// 	title: 'Check-out Later'
-	// }).state('checkOutLaterSuccess', {
-	// 	url: '/checkOutLaterOptions/:id',
-	// 	templateUrl: '/assets/common_templates/partials/checkout/gwLateCheckoutfinal.html',
-	// 	controller: 'checkOutLaterSuccessController',
-	// 	title: 'Status - Check-out Later'
-	//  });
 
 	// // checkin states
 
