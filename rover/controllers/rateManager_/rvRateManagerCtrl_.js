@@ -331,7 +331,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @return {[type]} [description]
      */
     const allRatesScrollReachedBottom = () => {
-        filterValues.allRate.currentPage++;
+        lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
+        lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
     };
 
@@ -1000,12 +1001,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         }
 
         if (newFilterValues.showAllRates) {
-
             if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
-                newFilterValues.allRate = {
-                    currentPage: 1;
-                }
+                let allRate = {
+                    currentPage: 1
+                };
+                lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
+                newFilterValues.allRate = allRate;
             }
+
             //calling the api
             fetchDailyRates(newFilterValues);
         } 

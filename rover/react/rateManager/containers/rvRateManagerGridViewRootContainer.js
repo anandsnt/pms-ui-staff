@@ -1,37 +1,38 @@
 const {connect} = ReactRedux;
 
-const mapStateToRateManagerGridViewRootComponentProps = (state) => ({
-    shouldShow: (state.mode !== RM_RX_CONST.NOT_CONFIGURED_MODE),
-    mode: state.mode,
-    zoomLevel: state.zoomLevel,
-    refreshScrollers: (state.action === RM_RX_CONST.REFRESH_SCROLLERS)
-});
+const mapStateToRateManagerGridViewRootComponentProps = (state) => {
+	var propsToReturn = {
+	    shouldShow: (state.mode !== RM_RX_CONST.NOT_CONFIGURED_MODE),
+	    mode: state.mode,
+	    zoomLevel: state.zoomLevel,
+	    refreshScrollers: (state.action === RM_RX_CONST.REFRESH_SCROLLERS)
+	};
+
+	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
+		propsToReturn.scrollReachedBottom = state.callBacksFromAngular.allRatesScrollReachedBottom;
+	}
+
+	return propsToReturn;
+};
 
 const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatchProps, ownProps) => {
-    var onTdClick = () => {};
+    var scrollReachedBottom = () => {};
     switch(stateProps.mode) {
-        case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
-            onTdClick = (e, rowIndex, colIndex) => {
-                var date = stateProps.dates[colIndex],
-                    roomTypeIDs = [];
-
-                if(rowIndex > 0) {
-                    roomTypeIDs = [stateProps.roomTypeRowsData[rowIndex].id];
-                }
-                return stateProps.clickedOnRoomTypeAndAmountCell({
-                    roomTypeIDs,
-                    date
-                });
+        case RM_RX_CONST.RATE_VIEW_MODE:
+            scrollReachedBottom = (e) => {
+                return stateProps.scrollReachedBottom();
             };
             break;
     }
 
     return {
-        onTdClick,
-        ...stateProps
+    	...stateProps,
+        scrollReachedBottom
     };    
 };
 
 const RateManagerGridViewRootContainer = connect(
-  mapStateToRateManagerGridViewRootComponentProps
+  mapStateToRateManagerGridViewRootComponentProps,
+  null,
+  mapDispatchToRateManagerGridViewRootComponentProps
 )(RateManagerGridViewRootComponent);

@@ -3,18 +3,17 @@ const { createClass } = React
 const RateManagerGridViewRootComponent = createClass ({
 	componentDidMount() {
 		this.commonIScrollOptions = {
-			probeType: 3,
+			probeType:3,
 			scrollbars: false,
 			scrollX: false,
 			scrollY: true,
 			click: true,
-			mouseWheel: true,
-			useTransition: true
+			mouseWheel: true
 		};
 
 		this.leftScrollableElement = this.rightScrollableElement = null;
 		this.leftScroller = this.rightScroller = null;
-
+		this.scrolling = false;
 		this.setScrollers();
 		console.log('ended: ', new Date().getTime());
 	},
@@ -31,6 +30,8 @@ const RateManagerGridViewRootComponent = createClass ({
 		}
 		if(this.props.shouldShow && !this.leftScroller) {
 			this.leftScroller = new IScroll(this.leftScrollableElement, this.commonIScrollOptions);
+			this.leftScroller.on('scrollStart', this.leftScrollerStarted);
+			this.leftScroller.on('scrollEnd', this.leftScrollingEnded);
 		}
 	},
 
@@ -44,17 +45,46 @@ const RateManagerGridViewRootComponent = createClass ({
 				scrollX: true,
 				scrollbars: 'custom'
 			});
+			this.rightScroller.on('scrollStart', this.rightScrollerStarted);
+			this.rightScroller.on('scrollEnd', this.rightScrollingEnded);
 		}
 	},
+
+	leftScrollingEnded() {
+		if(this.scrolling && 
+			Math.abs(this.leftScroller.maxScrollY) * 0.75 < Math.abs(this.leftScroller.y)) {
+
+			this.scrolling = false;
+			this.props.scrollReachedBottom();
+		}
+	},
+
+	leftScrollerStarted() {
+		this.scrolling = true;
+	},
+
+	rightScrollerStarted() {
+		this.scrolling = true;
+	},
+
+	rightScrollingEnded() {
+		if(this.scrolling && 
+			Math.abs(this.rightScroller.maxScrollY) * 0.75 < Math.abs(this.rightScroller.y)) {
+
+			this.scrolling = false;
+			this.props.scrollReachedBottom();
+		}
+	},
+
 
 	setScrollerSync() {
 		if(this.rightScroller && this.leftScroller) {
 			this.leftScroller.on('scroll', () => {
-				this.rightScroller.scrollTo(this.rightScroller.x, this.leftScroller.y)
+				this.rightScroller.scrollTo(this.rightScroller.x, this.leftScroller.y);
 			});
 			this.rightScroller.on('scroll', () => {
-				this.leftScroller.scrollTo(this.leftScroller.x, this.rightScroller.y)
-			});			 
+				this.leftScroller.scrollTo(this.leftScroller.x, this.rightScroller.y);
+			});
 		}
 	},
 
@@ -66,6 +96,10 @@ const RateManagerGridViewRootComponent = createClass ({
 			leftScroller.refresh();
 		}, 0);	
 
+	},
+
+	componentWillUnmount() {
+		console.log('hello');
 	},
 
 	componentDidUpdate() {
