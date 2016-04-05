@@ -1,4 +1,3 @@
-
 <!-- Popup -->
 <div id="popup" class="popup" ng-class="{'open':owsMsgOpenPoup}">
     <!-- Remove class "open" to hide popup content -->
@@ -16,9 +15,10 @@
                 <div ng-include="icons.url.print"></div>
                 <span>{{'PRINT' |translate}}</span>
             </button>
-            <button type="button" class="button with-icon" touch-press='emailOwsMsg()'>
+            <button type="button" class="button with-icon" touch-press='emailOwsMsg()' ng-show="showEmailButton">
                 <div ng-include="icons.url.email"></div>
-                <span>{{'EMAIL' |translate}}</span></button>
+                <span>{{'EMAIL' |translate}}</span>
+            </button>
         </div>
         <!-- If multiple messages, show: -->
         <div id="message-action">

@@ -8,8 +8,9 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		var printActions = function() {
+			//emit this to paretnt ctrl to show in print
 			$rootScope.currentOwsMessage = $scope.currentOwsMessage;
-			
+
 			setBeforePrintSetup();
 			// add the orientation
 			addPrintOrientation();
@@ -40,51 +41,67 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 		};
 
 		var init = function() {
-			//need to change to corresponding ctrler later
-			var onOwsMsgFetchSuccess = function() {
-				$scope.owsMessages = [{
-					"id": "1",
-					"message": "111going through the cites of the word in classical literature, discovery popular during the Renaissance. The first line of Lorem Ipsum,  comes from a line in section 1.10.32."
-				}, {
-					"id": "2",
-					"message": "22going through the cites of the word in classical literature"},{
-					"id": "3",
-					"message": "333going through the cites of the word in classical lite"}];
-				$scope.currentOwsMessage = $scope.owsMessages[0].message;
-				var selectedOwsMessageIndex = 0;
-				$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
-				$scope.owsMsgOpenPoup = $scope.owsMessages.length > 0 ? true : false; //popup in zeststation was implemented in other way, not using ngdialog
-				var setPageNumber = function() {
-					$scope.currentpageNumber = selectedOwsMessageIndex + 1;
-				};
-				setPageNumber();
-				var checkifItsLastOwsMsg = function() {
-					$scope.isLastOwsMsg = (selectedOwsMessageIndex + 1 === $scope.owsMessages.length) ? true : false;
-				};
 
-				$scope.loadNextOwsMsg = function() {
-					selectedOwsMessageIndex++;
+			var showEmailButton = function() {
+				//check if reservation had email id
+				//$scope.showEmailButton = ($scope.selectedReservation.guest_details[0].email !== '') ? true : false;
+				$scope.showEmailButton = true;
+			};
+
+			var onOwsMsgFetchSuccess = function(response) {
+				$scope.owsMessages = response;
+				if ($scope.owsMessages.length > 0) {
+					//popup in zeststation was implemented in other way, not using ngdialog
+					//open popup only if there are any OWS messages
+					$scope.owsMsgOpenPoup = $scope.owsMessages.length > 0 ? true : false;
+					//select first message
+					$scope.currentOwsMessage = $scope.owsMessages[0].message;
+					var selectedOwsMessageIndex = 0;
+					//on reaching last message, we need to show exit button
+					$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
+					var setPageNumber = function() {
+						$scope.currentpageNumber = selectedOwsMessageIndex + 1;
+					};
 					setPageNumber();
-					$scope.currentOwsMessage = $scope.owsMessages[selectedOwsMessageIndex].message;
-					checkifItsLastOwsMsg();
+					showEmailButton();
+					var checkifItsLastOwsMsg = function() {
+						$scope.isLastOwsMsg = (selectedOwsMessageIndex + 1 === $scope.owsMessages.length) ? true : false;
+					};
+					//load next ows message
+					$scope.loadNextOwsMsg = function() {
+						selectedOwsMessageIndex++;
+						setPageNumber();
+						$scope.currentOwsMessage = $scope.owsMessages[selectedOwsMessageIndex].message;
+						checkifItsLastOwsMsg();
+					};
+					//print action
+					$scope.printOwsMsg = function() {
+						printActions();
+					};
+					//email the message to the guest
+					$scope.emailOwsMsg = function() {
+
+					};
+
+					$scope.closePopup = function() {
+						$scope.owsMsgOpenPoup = false;
+
+					};
+				} else {
+					return;
 				};
 
-
-				$scope.printOwsMsg = function() {
-					printActions();
-				};
-				$scope.emailOwsMsg = function() {
-
-				};
-
-				$scope.closePopup = function() {
-					$scope.owsMsgOpenPoup = false;
-
-				};
-			}
+			};
 
 			var fetchOwsMessages = function() {
-				onOwsMsgFetchSuccess();
+				var options = {
+					params: {
+						"reservation_id": ""
+					},
+					successCallBack: onOwsMsgFetchSuccess
+				};
+				$scope.callAPI(zsTabletSrv.fetchOwsMessage, options);
+
 			}();
 
 		}();

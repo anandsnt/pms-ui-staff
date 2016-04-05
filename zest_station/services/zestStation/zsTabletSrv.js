@@ -375,6 +375,20 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+
+        this.fetchOwsMessage = function(params){
+
+            var deferred = $q.defer();
+            //url = 'zest_station/reservations/' + params.reservation_id;
+            var url = '/sample_json/zest_station/ows_msgs.json';
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         }
 
     }
