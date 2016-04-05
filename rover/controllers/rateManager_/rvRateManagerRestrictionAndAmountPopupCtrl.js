@@ -162,6 +162,11 @@ angular.module('sntRover')
             var isThereAnyPriceOverride = false,
                 isInIntendedMode = false;
 
+            // CICO-27469
+            if (!!$scope.ngDialogData.rate.based_on_rate_id){
+                return false;
+            }
+
             isInIntendedMode = [ $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE ]
                 .indexOf($scope.ngDialogData.mode) > -1;
 
@@ -171,7 +176,7 @@ angular.module('sntRover')
                 }
             });
 
-            return isInIntendedMode && isThereAnyPriceOverride && !$scope.ngDialogData.rate.based_on_rate_id;// CICO-27469
+            return isInIntendedMode && isThereAnyPriceOverride;
         };
 
         /**
