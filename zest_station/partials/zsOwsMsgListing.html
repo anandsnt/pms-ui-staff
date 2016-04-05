@@ -1,42 +1,32 @@
+
 <!-- Popup -->
-<div class="popup" ng-class="{'open':owsMsgOpenPoup}">
+<div id="popup" class="popup" ng-class="{'open':owsMsgOpenPoup}">
     <!-- Remove class "open" to hide popup content -->
-    <div class="popup-content">
-        <table class='admin-table' id="popup-content">
-            <tr>
-                <h2 class="nocaps header" style='margin-top:5%'><span>{{'OWS_MESSAGE_HEADER' |translate}}</span></h2>
-            </tr>
-            <tr class='v-middle'>
-                <td colspan="3">
-                    <div class="entry admin-item-label">
-                        {{currentOwsMessage}}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">&nbsp;></td>
-            </tr>
-            <tr class='v-middle'>
-                <td class='save-actions'>
-                    <button type="button" class="button admin-input" touch-press='printOwsMsg()'><span>{{'PRINT' |translate}}</span></button>
-                </td>
-                <td class='save-actions'>
-                    <button type="button" class="button admin-input" touch-press='emailOwsMsg()'><span>{{'EMAIL' |translate}}</span></button>
-                </td>
-                <td class='save-actions' ng-hide="isLastOwsMsg">
-                    <button type="button" class="button admin-input" touch-press='loadNextOwsMsg()'><span>{{'NEXT' |translate}}</span></button>
-                </td>
-                <td class='save-actions' ng-show="isLastOwsMsg">
-                    <button type="button" class="button admin-input" touch-press='closePopup()'><span>{{'EXIT' |translate}}</span></button>
-                </td>
-            </tr>
-            <tr class='v-middle'>
-                <td>
-                    <div class="entry admin-item-label ows-msg-number">
-                        {{currentMessageNumber}}
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <div class="popup-content message">
+        <!-- Add class "single-message" if there's only 1 message to show. Otherwise add class "message" -->
+        <h2 class="nocaps">{{'OWS_MESSAGE_HEADER' |translate}}</h2>
+        <div id="message-content">
+            <!-- Logo, for print only -->
+            <!-- 
+             <div class="logo">
+                <div ng-include="icons.url.logo"></div>
+            </div> -->
+            <h3> {{currentOwsMessage}}</h3>
+            <button type="button" data-action="print" class="button with-icon" touch-press='printOwsMsg()'>
+                <div ng-include="icons.url.print"></div>
+                <span>{{'PRINT' |translate}}</span>
+            </button>
+            <button type="button" class="button with-icon" touch-press='emailOwsMsg()'>
+                <div ng-include="icons.url.email"></div>
+                <span>{{'EMAIL' |translate}}</span></button>
+        </div>
+        <!-- If multiple messages, show: -->
+        <div id="message-action">
+            <p>Message <strong>{{currentMessageNumber}}</strong></p>
+            <button ng-show="!isLastOwsMsg" type="button with-icon" class="button" touch-press='loadNextOwsMsg()'>{{'NEXT' |translate}}</button>
+            <button ng-show="isLastOwsMsg" type="button with-icon" class="button admin-input" touch-press='closePopup()'><span>{{'EXIT' |translate}}</span></button>
+        </div>
     </div>
 </div>
+<div id="popup-overlay" class="" ng-class="{'open':owsMsgOpenPoup}"></div>
+<!-- Remove class "open" to hide popup overlay -->
