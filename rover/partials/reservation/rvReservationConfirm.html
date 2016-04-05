@@ -121,22 +121,20 @@
                     <p translate ng-show="!reservationStatus.confirmed && sendConfirmationLetter">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</p>
 
                     <span ng-show="!reservationStatus.confirmed && sendConfirmationLetter">
-                        <div class="entry full-width">
-                            <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
+                        <div class="entry radio-check">
                             <label class="checkbox inline">
                                 <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestPrimaryEmailChecked}"></span>
                                 <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestPrimaryEmailChecked"/>
-                                <span>&nbsp;</span>
+                                {{ 'GUEST_EMAIL_ADDRESS' | translate }}
                             </label>
                             <input name="email" id="email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()" ng-change="watchEmailUpdate()" type="email" />
                         </div>
 
-                        <div class="entry full-width">
-                            <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
+                        <div class="entry radio-check">
                             <label class="checkbox inline">
                                 <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestAdditionalEmailChecked}"></span>
                                 <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
-                                <span>&nbsp;</span>
+                                {{ 'ADDITIONAL_EMAIL_ADDRESS' | translate }}
                             </label>
                             <input name="email" id="email" ng-model="otherData.additionalEmail" type="email" />
                         </div>
