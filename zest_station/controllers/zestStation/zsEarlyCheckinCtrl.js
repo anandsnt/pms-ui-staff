@@ -47,7 +47,6 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             $state.go ('zest_station.home');  
         };
         $scope.init = function(r){
-            //$scope.inputFocus();
             var current=$state.current.name;
             $scope.selectedReservation = $state.selectedReservation;
             
@@ -69,7 +68,44 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             $state.go('zest_station.early_checkin_unavailable');
         };
         
+        
+        
+            
+            
+            $scope.assignRoomToReseravtion = function(){
+                 var reservation_id = $scope.selectedReservation.id;
+                        $scope.invokeApi(zsTabletSrv.assignGuestRoom, {
+                         'reservation_id':reservation_id
+                     }, $scope.roomAssignCallback, $scope.roomAssignCallback); 
+            };
+            $scope.roomAssignCallback = function(response){
+                $scope.$emit('hideLoader');
+                if (response.status && response.status === 'success'){
+                    $scope.selectedReservation.room = response.data.room_number;
+                    $scope.initTermsPage();
+                   
+                } else {
+                    $scope.initRoomError();
+                }
+            };
+            $scope.roomIsAssigned = function(){
+              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
+                  return true;
+              }
+              return false;
+            };
+            
+            $scope.roomIsReady = function(){
+                if ($scope.selectedReservation.reservation_details.data){
+                    if ($scope.selectedReservation.reservation_details.data.reservation_card.room_status === "READY"){
+                        return true;
+                    } else return false;
+                } else return false;
+            };
+        
+        
         $scope.goToTerms = function(){
+            console.log('goToTerms');
             if (!$scope.roomIsAssigned()){
                 $scope.assignRoomToReseravtion();
             } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
@@ -200,7 +236,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
 
                 if (!$state.earlyCheckinPurchased &&
                     (
-                        $scope.earlyCheckinActiveForReservation(response) || 
+                        $scope.earlyCheckinActiveForReservation(response) && 
                         $scope.reservationIncludesEarlyCheckin(response))
                      ){
                         //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json

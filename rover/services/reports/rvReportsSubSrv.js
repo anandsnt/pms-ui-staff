@@ -212,7 +212,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
 		service.fetchAddonReservations = function(params) {
 			return callApi({
-				name   : 'addonReservations',
 				method : 'getJSON',
 				url    : '/api/reports/' + params.id + '/addon_reservations',
 				params : _.omit(params, 'id'),
@@ -245,7 +244,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			return callApi({
 				name   : 'roomTypeList',
 				method : 'getJSON',
-				url    : '/api/room_types.json?is_exclude_pseudo=true',
+				url    : 'api/room_types?exclude_pseudo=true&exclude_suite=true',
 				resKey : 'results'
 			});
 		};

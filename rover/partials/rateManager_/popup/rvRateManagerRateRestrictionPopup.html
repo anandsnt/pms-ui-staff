@@ -1,0 +1,148 @@
+<div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+	<div class="rate-manager-modal modal-content" ng-click="clearErrorMessage()">
+	    <div class="modal-container">
+	        <div class="modal-header">
+	            <div class="modal-header-left">
+	            	<h2>{{header}}</h2>
+	            	<em>{{headerBottomLeftLabel}}</em>
+	            	<em class="rate-name">{{headerBottomRightLabel}}</em>
+	            </div>
+	            <div class="modal-header-right">
+	                <!-- Remove class .hidden when there is a notice-->
+	                <div class="notice" ng-class="{'hidden': headerNoticeOnRight.trim() === ''}">
+	                    {{headerNoticeOnRight}}
+	                </div>
+            	</div>
+	        </div>
+	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	        <div class="modal-body">
+	        	<div class="content-left">
+                    <span 
+                    rv-include-template="/assets/partials/rateManager_/popup/left/rvRateManagerPopupLeftRestrictionList.html">
+            		</span>
+            	</div>
+            	<div class="content-middle"> <!--ng-show="contentMiddleMode !== ''" -->
+            		<span ng-if="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleRoomTypePriceListing.html">
+            		</span>
+            		
+            		<span ng-if="contentMiddleMode === 'SINGLE_ROOM_TYPE_CHOOSE_RATE'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleSingleRoomTypeChooseRate.html">
+            		</span>
+
+            		<span ng-if="contentMiddleMode === 'MULTIPLE_RATE_CHOOSE_RATE'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleAllRatesSelectRate.html">
+            		</span>
+
+            		<span ng-if="contentMiddleMode === 'MULTIPLE_ROOM_TYPE_CHOOSE_RATE'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleMultipleRoomTypeChooseRate.html">
+            		</span>
+
+            		<span ng-if="contentMiddleMode === 'RESTRICTION_EDITING'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rvRateManagerPopupMiddleRestrictionEditing.html">
+            		</span>
+
+            		<span ng-if="contentMiddleMode === 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateRoomTypeChildRate.html">
+            		</span>
+
+					<span ng-if="contentMiddleMode === 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'"
+						rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateSingleRoomTypeHourlyAmount.html">
+					</span>
+
+					<span ng-if="contentMiddleMode === 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT'"
+						rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateMultipleRoomTypeHourlyAmount.html">
+					</span>
+
+					<span ng-if="contentMiddleMode === 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateMultipleRoomTypeNightlyAmount.html">
+            		</span>
+
+            		<span ng-if="contentMiddleMode === 'SINGLE_RATE_SINGLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT'"
+            			rv-include-template="/assets/partials/rateManager_/popup/middle/rate/rvRateManagerPopupMiddleSingleRateSingleRoomTypeNightlyAmount.html">
+            		</span>
+            	</div>
+            	<div class="content-right">
+	                <h3>Repeat on Dates</h3>
+
+		            <!-- Add class .checked when checked-->
+		            <label class="checkbox" ng-show="shouldShowApplyPriceCheckbox()" ng-class="{'checked': applyPriceToDates}">
+		                <!-- add class .checked when checked -->
+		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyPriceToDates}"></span>
+		                <!-- add attribute 'checked="checked"' when checked-->
+		                <input name="apply-price-to-dates" id="apply-price-to-dates" 
+		                	ng-model="applyPriceToDates" type="checkbox" ng-disabled="isPastDate"/>
+		                Apply Price
+		            </label>
+
+		            <!-- Add class .checked when checked-->
+		            <label class="checkbox" ng-class="{'checked': applyRestrictionsToDates}">
+		                <!-- add class .checked when checked -->
+		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyRestrictionsToDates}"></span>
+		                <!-- add attribute 'checked="checked"' when checked-->
+		                <input name="apply-restriction-to-dates" id="apply-restriction-to-dates" 
+		                	ng-model="applyRestrictionsToDates" type="checkbox" ng-disabled="isPastDate"/>
+		                Apply Restrictions
+		            </label>
+
+	                <h4>For every</h4>
+	                <div class="list_week_days">
+	                    <!-- Add class .checked when checked-->
+	                    <label class="checkbox" ng-class="{'checked': weekDay.selected}"
+	                    	ng-repeat="weekDay in weekDayRepeatSelection">
+	                        <!-- Add class .checked when checked-->
+	                        <span class="icon-form icon-checkbox" ng-class="{'checked': weekDay.selected}"></span>
+	                        <!-- add attribute 'checked="checked"' when checked-->
+	                        <input  ng-model="weekDay.selected" value="restrictions" type="checkbox" ng-disabled="isPastDate"/>
+	                         {{weekDay.weekDay}}
+	                    </label>
+	                    
+	                    <!-- 'ButtonText':
+	                        - 'Select All' - when some day is not selected
+	                        - 'Select None' - when all days are selected
+	                    -->
+	                    <button ng-click="clickedOnWeekDaySelectAllButton()" 
+	                    	ng-show="!showSelectNoneForWeekDaySelection()" ng-disabled="isPastDate">
+	                        Select All
+	                    </button>
+	                    <button ng-show="showSelectNoneForWeekDaySelection()"
+	                    	ng-click="clickedOnWeekDaySelectNoneButton()" ng-disabled="isPastDate">
+	                        Select None
+	                    </button>	                    
+	                </div>
+
+	                <h4>Until</h4>
+	                <div class="has-datepicker">
+	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" 
+	                    	readonly 
+	                    	rv-clear-text-box 
+	                    	listen-this="untilDate" 
+	                    	ui-date="datePickerOptions" 
+	                    	value="{{untilDate|date:dateFormat}}" 
+	                    	ng-disabled="isPastDate"/>
+	                </div>
+
+	            </div>
+	        </div>
+
+			<div class="footer">
+	            <div class="actions">
+	                <button class="button blank" type="button" ng-click="closeDialog()">
+	                    Cancel
+	                </button>
+	                <!-- remove class .hide if there is any override and rate is not a child or any other rule is applied. Please do review rules for overrides
+	                    -->
+	                <button class="button purple" ng-show="shouldShowClearOverrideButton()" ng-click="clickedOnClearOverrideButton()" type="button">
+	                    Clear Rate Overrides
+	                </button>
+	            
+	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button" 
+	                		ng-disabled="isPastDate"
+	                		ng-class="{'grey' : isPastDate}">
+	                    Set
+	                </button>
+	            </div>
+        	</div>
+	    </div>
+	</div>
+</div>

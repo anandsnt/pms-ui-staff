@@ -1,4 +1,28 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', 'RVCCAuthorizationSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv', 'RVReservationPackageSrv',
+sntRover.controller('reservationDetailsController',
+	['$scope',
+	'$rootScope',
+	'rvPermissionSrv',
+	'RVReservationCardSrv',
+	'RVCCAuthorizationSrv',
+	'$stateParams',
+	'reservationListData',
+	'reservationDetails',
+	'ngDialog',
+	'RVSaveWakeupTimeSrv',
+	'$filter',
+	'RVNewsPaperPreferenceSrv',
+	'RVLoyaltyProgramSrv',
+	'$state', 'RVSearchSrv',
+	'$vault',
+	'RVReservationSummarySrv',
+	'baseData',
+	'$timeout',
+	'paymentTypes',
+	'reseravationDepositData',
+	'dateFilter',
+	'RVReservationStateService',
+	'RVReservationBaseSearchSrv',
+	'RVReservationPackageSrv',
 	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
 		// pre setups for back button
 		var backTitle,
@@ -625,7 +649,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
-				group_id: $scope.$parent.reservationData.group.id
+				group_id: $scope.$parent.reservationData.group.id,
+				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
 		}
 

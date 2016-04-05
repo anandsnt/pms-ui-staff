@@ -23,21 +23,4 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
                 }
             }
         });
-        //Rate Manager
-        $stateProvider.state('rover.ratemanager', {
-            url: '/rateManager',
-            templateUrl: '/assets/partials/rateManager/dashboard.html',
-            controller  : 'RMDashboradCtrl',
-            resolve: {            
-                rateMangerAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.ratemanager', 'directives', 'highcharts'], ['highcharts-ng']);
-                },
-                sortOrder: function(RateMngrCalendarSrv, rateMangerAssets) {
-                    return RateMngrCalendarSrv.fetchSortPreferences();
-                },
-                sortOptions: function(RateMngrCalendarSrv, rateMangerAssets) {
-                    return RateMngrCalendarSrv.fetchSortOptions();
-                }
-            }
-        });
 });

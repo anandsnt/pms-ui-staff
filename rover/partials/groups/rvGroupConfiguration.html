@@ -34,22 +34,22 @@
             <div  id="group-card-content" class="card-tabs card-content">
                 <!-- Group tabs navigation -->
                 <ul id="group-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li  click-touch="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
+                    <li  click-touch="switchTabTo('SUMMARY')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'SUMMARY'}">
                         <a id="summary">Summary</a>
                     </li>
-                    <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
+                    <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
                         <a>Room Block Details</a>
                     </li>
-                    <li click-touch="switchTabTo('ACCOUNT')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
+                    <li click-touch="switchTabTo('ACCOUNT')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a id="AccountTab">Account</a>
                     </li>
-                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('ROOMING')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('ROOMING')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
                         <a>Rooming List</a>
                     </li>
-                    <li click-touch="switchTabTo('TRANSACTIONS')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
+                    <li click-touch="switchTabTo('TRANSACTIONS')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
                         <a>Transactions</a>
                     </li>
-                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
+                    <li click-touch="switchTabTo('ACTIVITY')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
                         <a>Activity Log</a>
                     </li>
                 </ul>

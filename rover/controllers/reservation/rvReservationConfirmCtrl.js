@@ -57,6 +57,12 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		var successCallBackForLanguagesFetch = function(data) {
 	      	$scope.$emit('hideLoader');
 	      	$scope.reservationData.languageData = data;
+	      	refreshPageScrollers();
+	    };
+
+	    var refreshPageScrollers = function() {
+	    	$scope.refreshScroller('paymentInfo');
+	    	$scope.refreshScroller('reservationSummary');
 	    };
 
 	    /**
@@ -84,6 +90,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			checkAllRoomsAreReady();
 			$scope.reservationData.enable_confirmation_custom_text = false;
 			fetchGuestLanguages();
+			// There are sections in the page that are hidden on load; Hence refreshing scrollers after a second
+			$timeout(refreshPageScrollers, 1000);
 		};
 
 		/*

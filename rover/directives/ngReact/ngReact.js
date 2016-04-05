@@ -1,1 +1,218 @@
-var NgReact=function(){var e=/\w+/g,t=/\(.*\)/g,r=/(<[^>]*>.*<\/[^>]*>)/g,n=/^[\w\s]+$/,a=[{attrName:"class",propName:"className",name:"className"},{attrName:"ng-click",propName:"onClick",name:"onClick",convertAttribute:function(r,n,a){if(r.onClick){var i=_.first(r.onClick.match(e)),o=_.first(r.onClick.match(t));o=o.substring(1,o.length-1),r.onClick=function(){n.$apply(function(){var e={};e[n.alias]=a,n[i](n.$eval(o,e))})}}}},{name:"id"},{name:"ng-bind",convertValue:function(e,t,r){if(e["ng-bind"]){var n={};return n[t.alias]=r,t.$eval(e["ng-bind"],n)}}}],i=function(e){var t={};return _.each(a,function(r){var n=_.findWhere(_.values(e.attributes),{localName:r.attrName||r.name});n&&(t[r.propName||r.name]=n.value)}),t},o=function(e,t,r){_.each(e,function(n,i){var o=_.findWhere(a,{propName:i});o&&o.convertAttribute&&o.convertAttribute(e,t,r)})},s=function(e,t,r){return _.compact(_.map(e,function(n,i){var o=_.findWhere(a,{name:i});return o&&o.convertValue?o.convertValue(e,t,r):void 0}))},c={reactUnit:React.createClass({render:function(){var e=this.props.data,t=this.props.scope,a=this.props.domEl,u=_.compact(_.map(a.children,function(r){return r.localName?c.reactUnit({data:e,scope:t,domEl:r}):void 0})),l=i(a);o(l,t,e);var p=s(l,t,e);return p.length&&a.localName||_.each(a.innerHTML.split(r),function(e){e.match(n)&&p.push(e)}),React.DOM[a.localName].apply(null,[l].concat(p,u))}}),reactRepeatUnit:React.createClass({render:function(){var e=this.props.data,t=this.props.scope,r=_.compact(_.map(this.props.transcludedDom,function(r){if(r.localName){var n=c.reactUnit({data:e,scope:t,domEl:r});return n}})),n=i(this.props.rootUnit);return o(n,t,e),React.DOM[this.props.rootUnit.localName].apply(null,[n].concat(s(n,t,e),r))}}),reactRepeat:React.createClass({render:function(){var e=this.props.rootUnit,t=this.props.scope,r=this.props.transcluded,n=_.map(t.data,function(n){return c.reactRepeatUnit({data:n,scope:t,transcludedDom:r,rootUnit:e})});return React.DOM[e.parentElement.localName].apply(null,[i(e.parentElement)].concat(n))}})};return c}();angular.module("ngReact",[]).directive("ngReactRepeat",["$timeout",function(e){return{restrict:"A",transclude:!0,replace:!0,controller:["$scope","$element","$attrs","$transclude",function(t,r,n,a){var i=n.ngReactRepeat.split(" in ");if(2!==i.length)throw Error('ngReactRepeat expected "alias in collection" format');t.alias=i[0];var o=r[0].offsetParent;a(function(n){t.$watchCollection(i[1],function(){e(function(){React.renderComponent(NgReact.reactRepeat({scope:t,transcluded:n,rootUnit:r[0]}),o)})},!0)})}]}}]).directive("ngReactComponent",["$timeout",function(e){return{restrict:"A",link:function(t,r,n){if(!n.ngReactComponent)throw Error("ngReactComponent expected attribute to be the name of a react component");var a=function(){e(function(){React.renderComponent(window[n.ngReactComponent]({scope:t}),r[0])})};n.data?t.$watchCollection(n.data,a,!0):a()}}}]);
+// # ngReact
+// ### Use React Components inside of your Angular applications
+//
+// Composed of
+// - reactComponent (generic directive for delegating off to React Components)
+// - reactDirective (factory for creating specific directives that correspond to reactComponent directives)
+
+
+(function (root, factory) {
+  if (typeof module !== 'undefined' && module.exports) {
+    // CommonJS
+    module.exports = factory(require('react'), require('react-dom'), require('angular'));
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['react', 'react-dom', 'angular'], function (react, reactDOM, angular) {
+      return (root.ngReact = factory(react, reactDOM, angular));
+    });
+  } else {
+    // Global Variables
+    root.ngReact = factory(root.React, root.ReactDOM, root.angular);
+  }
+}(this, function ngReact(React, ReactDOM, angular) {
+  'use strict';
+
+  // get a react component from name (components can be an angular injectable e.g. value, factory or
+  // available on window
+  function getReactComponent( name, $injector ) {
+    // if name is a function assume it is component and return it
+    if (angular.isFunction(name)) {
+      return name;
+    }
+
+    // a React component name must be specified
+    if (!name) {
+      throw new Error('ReactComponent name attribute must be specified');
+    }
+
+    // ensure the specified React component is accessible, and fail fast if it's not
+    var reactComponent;
+    try {
+      reactComponent = $injector.get(name);
+    } catch(e) { }
+
+    if (!reactComponent) {
+      try {
+        reactComponent = name.split('.').reduce(function(current, namePart) {
+          return current[namePart];
+        }, window);
+      } catch (e) { }
+    }
+
+    if (!reactComponent) {
+      throw Error('Cannot find react component ' + name);
+    }
+
+    return reactComponent;
+  }
+
+  // wraps a function with scope.$apply, if already applied just return
+  function applied(fn, scope) {
+    if (fn.wrappedInApply) {
+      return fn;
+    }
+    var wrapped = function() {
+      var args = arguments;
+      var phase = scope.$root.$$phase;
+        if (phase === "$apply" || phase === "$digest") {
+          return fn.apply(null, args);
+        } else {
+          return scope.$apply(function() {
+            return fn.apply( null, args );
+          });
+        }
+    };
+    wrapped.wrappedInApply = true;
+    return wrapped;
+  }
+
+  // wraps all functions on obj in scope.$apply
+  function applyFunctions(obj, scope) {
+    return Object.keys(obj || {}).reduce(function(prev, key) {
+      var value = obj[key];
+      // wrap functions in a function that ensures they are scope.$applied
+      // ensures that when function is called from a React component
+      // the Angular digest cycle is run
+      prev[key] = angular.isFunction(value) ? applied(value, scope) : value;
+      return prev;
+    }, {});
+  }
+
+  /**
+   *
+   * @param watchDepth (value of HTML watch-depth attribute)
+   * @param scope (angular scope)
+   *
+   * Uses the watchDepth attribute to determine how to watch props on scope.
+   * If watchDepth attribute is NOT reference or collection, watchDepth defaults to deep watching by value
+   */
+  function watchProps (watchDepth, scope, watchExpressions, listener){
+    if (watchDepth === 'collection' && angular.isFunction(scope.$watchCollection)) {
+      watchExpressions.forEach(function(expr){
+        scope.$watchCollection(expr, listener);
+      });
+    }
+    else if (watchDepth === 'reference') {
+      if (angular.isFunction(scope.$watchGroup)) {
+        scope.$watchGroup(watchExpressions, listener);
+      }
+      else {
+        watchExpressions.forEach(function(expr){
+          scope.$watch(expr, listener);
+        });
+      }
+    }
+    else {
+      //default watchDepth to value if not reference or collection
+      watchExpressions.forEach(function(expr){
+        scope.$watch(expr, listener, true);
+      });
+    }
+  }
+
+  // render React component, with scope[attrs.props] being passed in as the component props
+  function renderComponent(component, props, scope, elem) {
+    scope.$evalAsync(function() {
+    	console.log(props);
+      ReactDOM.render(React.createElement(component, props), elem[0]);
+    });
+  }
+
+  var reactComponent = function($injector) {
+    return {
+      restrict: 'E',
+      replace: true,
+      link: function(scope, elem, attrs) {
+        var reactComponent = getReactComponent(attrs.name, $injector);
+
+        var renderMyComponent = function() {
+          var scopeProps = scope.$eval(attrs.props ? attrs.props : {scope: scope});
+          var props = applyFunctions(scopeProps, scope);
+          if(!props){
+          	props = _.extend({}, {scope: scope});
+          }
+          props = _.extend({}, {scope: scope});
+          renderComponent(reactComponent, props, scope, elem);
+        };
+
+        // If there are props, re-render when they change
+        attrs.props ?
+            watchProps(attrs.watchDepth, scope, [attrs.props], renderMyComponent) :
+          renderMyComponent();
+
+        // cleanup when scope is destroyed
+        scope.$on('$destroy', function() {
+          if (!attrs.onScopeDestroy) {
+            ReactDOM.unmountComponentAtNode(elem[0]);
+          } else {
+            scope.$eval(attrs.onScopeDestroy, {
+              unmountComponent: ReactDOM.unmountComponentAtNode.bind(this, elem[0])
+            });
+          }
+        });
+      }
+    };
+  };
+
+
+  var reactDirective = function($injector) {
+    return function(reactComponentName, propNames, conf) {
+      var directive = {
+        restrict: 'E',
+        replace: true,
+        link: function(scope, elem, attrs) {
+          var reactComponent = getReactComponent(reactComponentName, $injector);
+
+          // if propNames is not defined, fall back to use the React component's propTypes if present
+          propNames = propNames || Object.keys(reactComponent.propTypes || {});
+
+          // for each of the properties, get their scope value and set it to scope.props
+          var renderMyComponent = function() {
+            var props = {};
+            propNames.forEach(function(propName) {
+              props[propName] = scope.$eval(attrs[propName]);
+            });
+            renderComponent(reactComponent, applyFunctions(props, scope), scope, elem);
+          };
+
+          // watch each property name and trigger an update whenever something changes,
+          // to update scope.props with new values
+          var propExpressions = propNames.map(function(k){
+            return attrs[k];
+          });
+
+          watchProps(attrs.watchDepth, scope, propExpressions, renderMyComponent);
+
+          renderMyComponent();
+
+          // cleanup when scope is destroyed
+          scope.$on('$destroy', function() {
+            if (!attrs.onScopeDestroy) {
+              ReactDOM.unmountComponentAtNode(elem[0]);
+            } else {
+              scope.$eval(attrs.onScopeDestroy, {
+                unmountComponent: ReactDOM.unmountComponentAtNode.bind(this, elem[0])
+              });
+            }
+          });
+        }
+      };
+      return angular.extend(directive, conf);
+    };
+  };
+
+  // create the end module without any dependencies, including reactComponent and reactDirective
+  return angular.module('react', [])
+    .directive('reactComponent', ['$injector', reactComponent])
+    .factory('reactDirective', ['$injector', reactDirective]);
+}));

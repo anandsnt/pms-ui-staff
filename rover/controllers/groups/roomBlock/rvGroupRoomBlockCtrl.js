@@ -1042,9 +1042,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/**
-		 * To open Room Block Pickedup Reservations Popup.
+		 * To open Room Block Pickedup Reservations Popup. Called from within the room and rates popup
 		 */
-		$scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
+		$scope.confirmUpdateRatesWithPickedReservations = function(selectedRoomTypeAndRates) {
 			roomsAndRatesSelected = selectedRoomTypeAndRates;
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupRoomBlockPickedupReservationsPopup.html',
@@ -1053,7 +1053,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		});
+		}
 
 		/**
 		 * To check whether inhouse reservations exists.

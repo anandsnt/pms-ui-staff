@@ -70,14 +70,13 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
+            $scope.$emit("hideLoader");
             $state.go('zest_station.key_success');
+            $scope.$emit("hideLoader");
         };
 
         $scope.makeKeys = function(n){
-            console.info('[called: make 1 key]');
             console.info('---: change screen to make_keys');
-            console.info('---: makeKeys = 1');
-            console.info('---: nextKey  = 1');
             $state.input.makeKeys = n;
             $state.input.madeKey = 0;
             $state.input.nextKey = 1;
