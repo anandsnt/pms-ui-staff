@@ -64,7 +64,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				$scope.guestDetails.day = "";
 			} else {
 				return;
-			}
+			};
 		};
 		// the PUT API expects some parameters, so need to convert in to that
 		var getDataToSave = function() {
