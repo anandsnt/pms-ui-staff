@@ -552,7 +552,9 @@ sntZestStation.controller('zsHomeCtrl', [
         if ($scope.inChromeApp){
             $scope.pressEsc();
         }
-        
+        $scope.inputFocus();
+        //for change into default language after 120sec
+        $scope.startLanguageCounter();
         $scope.resetFlags();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
