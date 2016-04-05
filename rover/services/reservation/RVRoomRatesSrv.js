@@ -69,12 +69,17 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             return deferred.promise;
         };
 
-        service.fetchRateADRs = function(params) {
+        service.fetchRateADRs = function(params, isInitial) {
             var deferred = $q.defer(),
                 url = "/api/availability/rate_adrs";
             //CICO-27146
             params.exclude_pseudo = true;
-            params.exclude_suite = true
+            params.exclude_suite = true;
+
+            if(isInitial){
+                params.per_page = 1000
+                params.page = 1
+            }
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 if (!!params.allotment_id || !!params.group_id) {
@@ -97,7 +102,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 deferred = $q.defer(),
                 data;
             if (defaultView === "RATE") {
-                promises.push(service.fetchRateADRs(params).then(function(response) {
+                promises.push(service.fetchRateADRs(params, true).then(function(response) {
                     data = response;
                 }));
             } else {
