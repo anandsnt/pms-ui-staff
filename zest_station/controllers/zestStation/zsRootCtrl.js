@@ -13,10 +13,10 @@ sntZestStation.controller('zsRootCtrl', [
     
 
     /**
-         * to run angular digest loop,
-         * will check if it is not running
-         * return - None
-         */
+     * to run angular digest loop,
+     * will check if it is not running
+     * return - None
+     */
     $scope.runDigestCycle = function() {
         if (!$scope.$$phase) {
             $scope.$digest();
