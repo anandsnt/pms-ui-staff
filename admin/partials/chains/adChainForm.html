@@ -86,19 +86,6 @@
             </div>
                     
                     
-                    <div>
-                          <label class="radio" ng-click="editData.smtp_delivery_method = 'smtp';">
-                                    <span class="icon-form icon-radio " ng-class="{'checked':editData.smtp_delivery_method === 'smtp'}"></span>
-                                    <input type="radio" ng-model="editData.smtp_delivery_method" value="radio" class="change-data" >
-                                    SMTP
-                            </label>
-                            <label class="radio" ng-click="editData.smtp_delivery_method = 'sendmail';">
-                                    <span class="icon-form icon-radio " ng-class="{'checked':editData.smtp_delivery_method === 'sendmail'}"></span>
-                                    <input type="radio" ng-model="editData.smtp_delivery_method" value="radio" class="change-data ">
-                                    SENDMAIL
-                            </label>
-                    </div>
-                    
                     
 			<fieldset class="holder left float">  
 				<ad-textbox value="editData.smtp_address"   label = "Address" placeholder = "Enter Email Server Address"  styleclass="full-width"></ad-textbox>
