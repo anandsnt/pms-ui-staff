@@ -23,8 +23,8 @@
         <!-- If multiple messages, show: -->
         <div id="message-action">
             <p>Message <strong>{{currentMessageNumber}}</strong></p>
-            <button ng-show="!isLastOwsMsg" type="button with-icon" class="button" touch-press='loadNextOwsMsg()'>{{'NEXT' |translate}}</button>
-            <button ng-show="isLastOwsMsg" type="button with-icon" class="button admin-input" touch-press='closePopup()'><span>{{'EXIT' |translate}}</span></button>
+            <button ng-show="!isLastOwsMsg" type="button" class="button" touch-press='loadNextOwsMsg()'>{{'NEXT' |translate}}</button>
+            <button ng-show="isLastOwsMsg" type="button" class="button admin-input" touch-press='closePopup()'><span>{{'EXIT' |translate}}</span></button>
         </div>
     </div>
 </div>
