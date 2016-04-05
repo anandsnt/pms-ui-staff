@@ -13,11 +13,10 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		}();
 
 		$scope.termsAndConditions = GwWebSrv.zestwebData.termsAndConditions;
-		console.log(GwWebSrv.zestwebData.isAutoCheckinOn)
 
 		$scope.agreeClicked = function(){
 			if(GwWebSrv.zestwebData.isAutoCheckinOn){
-			  if(GwWebSrv.zestwebData.guestAddressOn){
+			  if(GwWebSrv.zestwebData.guestPromptAddressOn){
 			  	$state.go('updateGuestDetails');
 			  }
 		      else{

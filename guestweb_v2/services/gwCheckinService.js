@@ -128,4 +128,28 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 		return deferred.promise;
 	};
 
+	var postGuestDetails = function(data) {
+		var deferred = $q.defer();
+		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		params.application = (typeof GwWebSrv.zestwebData.application !=="undefined") ? GwWebSrv.zestwebData.application : "";
+		GWBaseWebSrv2.putJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	var getGuestDetails = function() {
+
+		var deferred = $q.defer();
+		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 }]);

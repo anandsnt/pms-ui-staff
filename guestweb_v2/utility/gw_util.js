@@ -91,44 +91,54 @@ var returnYears = function() {
     years.push(year);
   };
   return years;
-}
+};
+
+var returnYearsInReverseOrder = function(){
+  var years = [];
+  var startYear = new Date().getFullYear();
+  var endYear = parseInt(startYear) - 100;
+  for (year = startYear; year >= parseInt(endYear); year--) {
+     years.push(year);
+  };
+  return years;
+};
 
 var returnMonthsArray = function() {
   return [{
-    'name': 'January',
+    'name': 'JAN',
     'value': '01'
   }, {
-    'name': 'February',
+    'name': 'FEB',
     'value': '02'
   }, {
-    'name': 'March',
+    'name': 'MAR',
     'value': '03'
   }, {
-    'name': 'April',
+    'name': 'APR',
     'value': '04'
   }, {
-    'name': 'May',
+    'name': 'MAY',
     'value': '05'
   }, {
-    'name': 'June',
+    'name': 'JUN',
     'value': '06'
   }, {
-    'name': 'July',
+    'name': 'JUL',
     'value': '07'
   }, {
-    'name': 'August',
+    'name': 'AUG',
     'value': '08'
   }, {
-    'name': 'September',
+    'name': 'SEP',
     'value': '09'
   }, {
-    'name': 'October',
+    'name': 'OCT',
     'value': '10'
   }, {
-    'name': 'November',
+    'name': 'NOV',
     'value': '11'
   }, {
-    'name': 'December',
+    'name': 'DEC',
     'value': '12'
   }];
 }
@@ -199,4 +209,20 @@ var getIndexOfSelectedTime = function(time) {
     return time === timeLimit;
   });
   return index;
-}
+};
+
+
+
+var checkIfDateIsValid = function(month,day,year){
+  var birthday = month+"/"+day+"/"+year;  
+  var comp = birthday.split('/');
+  var m = parseInt(comp[0], 10);
+  var d = parseInt(comp[1], 10);
+  var y = parseInt(comp[2], 10);
+  var date = new Date(y,m-1,d);
+  if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
+     return true
+  } else {
+     return false;
+  }
+};
