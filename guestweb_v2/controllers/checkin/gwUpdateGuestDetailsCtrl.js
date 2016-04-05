@@ -1,10 +1,9 @@
 /**
- * Checkin - Reservation details Controller
+ * Checkin - Update Guest details Controller
  */
 sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv',
 	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv) {
 
-		console.log(GwCheckinSrv)
 
 		$controller('BaseController', {
 			$scope: $scope
@@ -28,16 +27,16 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 			};
 		}();
 
-
+		// fetch the guest details
 		var fetchGuestDetails = function() {
 			var guestDetailsFetchSuccess = function(response) {
 				$scope.guestDetails = response;
 				$scope.guestDetails.street = response.street1;
 				$scope.guestDetails.country = response.country_id;
 				//split the birthday string to be used in popup
-				$scope.guestDetails.day = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)) : "";
-				$scope.guestDetails.month = ($scope.guestDetails.birthday !== null) ? returnSelectedMonth($scope.guestDetails.birthday.substring(5, 7)).value : "";
-				$scope.guestDetails.year = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(0, 4)) : "";
+				$scope.guestDetails.day = (response.birthday !== null) ? parseInt(response.birthday.substring(8, 10)) : "";
+				$scope.guestDetails.month = (response.birthday !== null) ? returnSelectedMonth(response.birthday.substring(5, 7)).value : "";
+				$scope.guestDetails.year = (response.birthday !== null) ? parseInt(response.birthday.substring(0, 4)) : "";
 			};
 			var options = {
 				params: {
@@ -48,7 +47,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 			$scope.callAPI(GwCheckinSrv.getGuestDetails, options);
 		};
 
-		//fetch countrylist
+		// fetch countrylist
 		var fetchCountryListSuccess = function(response) {
 			fetchGuestDetails();
 			$scope.countries = response;
@@ -58,8 +57,8 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 		};
 		$scope.callAPI(GwCheckinSrv.fetchCountryList, options);
 
-		//watch if the day selected is valid, eg:- Feb 30 is invalid
-		//else unset the day selected
+		// watch if the day selected is valid, eg:- Feb 30 is invalid
+		// else unset the day selected
 		$scope.yearOrMonthChanged = function() {
 			if (!checkIfDateIsValid($scope.guestDetails.month, $scope.guestDetails.day, $scope.guestDetails.year)) {
 				$scope.guestDetails.day = "";
@@ -67,7 +66,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				return;
 			}
 		};
-		//the PUT API expects some parameters, so need to convert in to that
+		// the PUT API expects some parameters, so need to convert in to that
 		var getDataToSave = function() {
 			var data = {};
 			var unwanted_keys = ["month", "year", "day", "country_id", "street1"];
