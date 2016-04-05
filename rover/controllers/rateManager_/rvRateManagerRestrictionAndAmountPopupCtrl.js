@@ -171,7 +171,7 @@ angular.module('sntRover')
                 }
             });
 
-            return isInIntendedMode && isThereAnyPriceOverride;
+            return isInIntendedMode && isThereAnyPriceOverride && !$scope.ngDialogData.rate.based_on_rate_id;// CICO-27469
         };
 
         /**
