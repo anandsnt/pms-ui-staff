@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -484,31 +484,27 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
         });
-        
-        
-        
+
+
+
         $scope.languageTimerReset = false;
+        var setDefaultLanguage= function(){
+            intLanguageSettings();
+            $translate.use($scope.langInfo.code);
+        };
+
+        var languageCounterCompleted = function(){
+            if($state.current.name ==="zest_station.home"){
+                setDefaultLanguage();
+            }
+        };
         $scope.startLanguageCounter = function(){
-            var time = 120;
-                var timer = time, minutes, seconds, timeInMilliSec = 1000;
-                var timerInt = setInterval(function () {
-                            minutes = parseInt(timer / 60, 10);
-                            seconds = parseInt(timer % 60, 10);
-                            minutes = minutes < 10 ? "0" + minutes : minutes;
-                            seconds = seconds < 10 ? "0" + seconds : seconds;
+            var time = 120, inMilliSec = 1000;
+            $scope.languageCounter = $timeout(languageCounterCompleted, time*inMilliSec);
+        };
 
-                            if (--timer < 0) {
-                                setTimeout(function(){
-                                    //fetch latest settings
-                                        if (!$scope.timeStopped){
-                                            $scope.handleSettingsTimeout();
-                                        }
-                                },timeInMilliSec);
-
-                                clearInterval(timerInt);
-                                return;
-                            }
-                }, timeInMilliSec);
+        $scope.stopLanguageCounter = function(){
+            $timeout.cancel($scope.languageCounter);
         };
         
         
@@ -713,6 +709,7 @@ sntZestStation.controller('zsRootCtrl', [
         }
         
         $scope.languageSelect = function(){
+            $scope.stopLanguageCounter();
             $scope.showLanguagePopup = true;
             $scope.timeOut = true;
         };
@@ -738,10 +735,11 @@ sntZestStation.controller('zsRootCtrl', [
             $translate.use(language.info.code); //set translations
             $scope.showLanguagePopup = false; // set popup flag
             $scope.timeOut = false; // set popup flag
+            $scope.startLanguageCounter();
         };
 
         $scope.closeLangPopUp = function()
-        {
+        {   $scope.startLanguageCounter();
             $scope.showLanguagePopup = false;
             $scope.timeOut = false;
         }
