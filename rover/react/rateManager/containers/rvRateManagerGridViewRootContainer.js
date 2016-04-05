@@ -10,24 +10,30 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
 
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
 		propsToReturn.scrollReachedBottom = state.callBacksFromAngular.allRatesScrollReachedBottom;
+        propsToReturn.scrollReachedTop = state.callBacksFromAngular.allRatesScrollReachedTop;
 	}
 
 	return propsToReturn;
 };
 
 const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatchProps, ownProps) => {
-    var scrollReachedBottom = () => {};
+    var scrollReachedBottom = () => {},
+        scrollReachedTop = () => {};
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             scrollReachedBottom = (e) => {
                 return stateProps.scrollReachedBottom();
+            };
+            scrollReachedTop = (e) => {
+                return stateProps.scrollReachedTop();
             };
             break;
     }
 
     return {
     	...stateProps,
-        scrollReachedBottom
+        scrollReachedBottom,
+        scrollReachedTop
     };    
 };
 

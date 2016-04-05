@@ -288,7 +288,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             clickedOnRateViewCell,
             clickedOnRoomTypeViewCell,
             clickedOnRoomTypeAndAmountCell,
-            allRatesScrollReachedBottom
+            allRatesScrollReachedBottom,
+            allRatesScrollReachedTop
         };
     };
 
@@ -325,6 +326,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.errorMessage = errorMessage;
         runDigestCycle();
     });
+
+    /**
+     * [description]
+     * @return {[type]} [description]
+     */
+    const allRatesScrollReachedTop = () => {
+
+        lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
+        if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0){
+           lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
+           return; 
+        }
+        lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+    };
 
     /**
      * [description]

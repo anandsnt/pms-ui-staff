@@ -52,10 +52,16 @@ const RateManagerGridViewRootComponent = createClass ({
 
 	leftScrollingEnded() {
 		if(this.scrolling && 
-			Math.abs(this.leftScroller.maxScrollY) * 0.75 < Math.abs(this.leftScroller.y)) {
+			Math.abs(this.leftScroller.maxScrollY) * 0.90 < Math.abs(this.leftScroller.y)) {
 
 			this.scrolling = false;
 			this.props.scrollReachedBottom();
+		}
+		if(this.scrolling && 
+			Math.abs(this.leftScroller.maxScrollY) * 0.10 > Math.abs(this.leftScroller.y)) {
+
+			this.scrolling = false;
+			this.props.scrollReachedTop();
 		}
 	},
 
@@ -74,6 +80,12 @@ const RateManagerGridViewRootComponent = createClass ({
 			this.scrolling = false;
 			this.props.scrollReachedBottom();
 		}
+		if(this.scrolling && 
+			Math.abs(this.rightScroller.maxScrollY) * 0.10 > Math.abs(this.rightScroller.y)) {
+
+			this.scrolling = false;
+			this.props.scrollReachedTop();
+		}		
 	},
 
 
@@ -96,10 +108,6 @@ const RateManagerGridViewRootComponent = createClass ({
 			leftScroller.refresh();
 		}, 0);	
 
-	},
-
-	componentWillUnmount() {
-		console.log('hello');
 	},
 
 	componentDidUpdate() {
