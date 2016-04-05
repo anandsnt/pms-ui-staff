@@ -204,10 +204,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             var promises = [],
                 rates = [],
                 dailyRateAndRestrictions = [],
-                deferred = $q.defer();
+                deferred = $q.defer(),
+                totalCount = 0;
 
             promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates')).then((data) => {
                 dailyRateAndRestrictions = data.results;
+                totalCount = data.total_count;
             }));
 
             if (params.fetchRates) {
@@ -219,7 +221,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             $q.all(promises).then((data) => {
                 deferred.resolve({
                     rates,
-                    dailyRateAndRestrictions
+                    dailyRateAndRestrictions,
+                    totalCount
                 });
             });
 

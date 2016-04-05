@@ -1,7 +1,7 @@
 const {createStore, applyMiddleware, compose} = Redux;
 
 const finalCreateStore = compose(
-    applyMiddleware(ReduxThunk.default, reduxLogger()),
+    applyMiddleware(ReduxThunk.default),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 

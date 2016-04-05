@@ -29,7 +29,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var lastSelectedFilterValues = [],
         activeFilterIndex = 0;
 
-    var cachedRateList = [], cachedRoomTypeList = [];
+    var cachedRateList = [], cachedRoomTypeList = [],
+        cachedRateAndRestrictionResponseData = [],
+        totalRatesCountForPagination = 0; //for pagination purpose
 
     /**
      * utility method for converting date object into api formated 'string' format
@@ -328,27 +330,47 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     });
 
     /**
-     * [description]
-     * @return {[type]} [description]
+     * react callback when scrolled to top
      */
     const allRatesScrollReachedTop = () => {
+        //we dont want the infinite scroller functionality in multiple rate selected view
+        if(lastSelectedFilterValues[activeFilterIndex].selectedRates.length > 1) {
+            return;
+        }
+
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.UP;
 
         lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
         if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0){
            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
-           return; 
+           return;
         }
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+        
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
     };
 
     /**
-     * [description]
-     * @return {[type]} [description]
+     * react callback when scrolled to bottom
      */
     const allRatesScrollReachedBottom = () => {
+        //we dont want the infinite scroller functionality in multiple rate selected view
+        if(lastSelectedFilterValues[activeFilterIndex].selectedRates.length > 1) {
+            return;
+        }
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.DOWN;
+
         lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
+        
+        if(Math.ceil(totalRatesCountForPagination / rvRateManagerPaginationConstants.allRate.ratePerPage) < 
+            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage) {
+            
+            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = Math.ceil(totalRatesCountForPagination / rvRateManagerPaginationConstants.allRate.ratePerPage);
+            return;
+        }
+
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+        
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
     };
 
@@ -446,10 +468,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         /* 
             TWO CASES
             1. if the response has more than one rate, will redirect to all rates view
-            2. if the response has only one rate, will redirect to single rate's expandable view
+            2. if the response has only one rate, will redirect to single rate's expandable view if the request got initiated from 'Left side filter'
         */
         var numberOfRates = response.dailyRateAndRestrictions[0].rates.length;
-        if(numberOfRates === 1) {
+        if(numberOfRates === 1 && 
+            _.has(lastSelectedFilterValues[activeFilterIndex], 'fromLeftFilter') && lastSelectedFilterValues[activeFilterIndex].fromLeftFilter) {
+            
             let rates = !cachedRateList.length ? response.rates : cachedRateList;
             
             //rateList now cached, we will not fetch that again
@@ -460,9 +484,127 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
         }
         else{
-            return processForAllRates(response);
+            let dates = _.pluck(response.dailyRateAndRestrictions, 'date');
+            cachedRateAndRestrictionResponseData.push({
+                fromDate: dates[0],
+                toDate: dates[dates.length - 1],
+                page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
+                response: response
+            });
+
+            //using this variable we will be limiting the api call
+            totalRatesCountForPagination = response.totalCount;
+
+            return handleAddingAllRateNewResponse(response);
         }
         
+    };
+
+    /**
+     * to fill the bottom with new response
+     * @param  {Array} newResponse
+     * @return {Array}             [description]
+     */
+    var fillBottomWithNewResponse = (newResponse) => {
+        var filterValues        = lastSelectedFilterValues[activeFilterIndex],
+            pagintionConst      = rvRateManagerPaginationConstants.allRate,
+            dataSetJustBeforeCurrentOne = _.findWhere(cachedRateAndRestrictionResponseData,
+                {
+                    fromDate    : formatDateForAPI(filterValues.fromDate),
+                    toDate      : formatDateForAPI(filterValues.toDate),
+                    page        : (filterValues.allRate.currentPage - 1)
+                });
+
+        //we will modify this with new response's rates
+        var dataSetToReturn = {
+            ...dataSetJustBeforeCurrentOne.response
+        };
+
+        var indexForPickingUp = pagintionConst.maxNumberOfRateRowsDisplay - pagintionConst.ratePerPage,
+            newResponseRateLength = newResponse.dailyRateAndRestrictions[0].rates.length,
+            slicedRates = [];
+
+        dataSetToReturn.dailyRateAndRestrictions = dataSetToReturn.dailyRateAndRestrictions
+            .map((dailyRateAndRestriction) => {
+                dailyRateAndRestriction = {...dailyRateAndRestriction};
+                
+                //if we have less data coming from the api side, usually end of the page.
+                if(newResponseRateLength < pagintionConst.ratePerPage) {
+                    indexForPickingUp = pagintionConst.ratePerPage - newResponseRateLength;
+                    slicedRates = dailyRateAndRestriction.rates.slice( 0, indexForPickingUp );
+                }
+                else {
+                    slicedRates = dailyRateAndRestriction.rates.slice( indexForPickingUp );
+                }
+
+                dailyRateAndRestriction.rates = [
+                    ...slicedRates,
+                    ..._.findWhere(newResponse.dailyRateAndRestrictions, { date: dailyRateAndRestriction.date }).rates
+                ]
+                return dailyRateAndRestriction;
+            });
+        
+        return dataSetToReturn;
+    };
+
+    /**
+     * to fill the top with new response
+     * @param  {Array} newResponse
+     * @return {Array}             [description]
+     */
+    var fillTopWithNewResponse = (newResponse) => {
+        var filterValues        = lastSelectedFilterValues[activeFilterIndex],
+            pagintionConst      = rvRateManagerPaginationConstants.allRate,
+            dataSetJustAfterCurrentOne = _.findWhere(cachedRateAndRestrictionResponseData,
+                {
+                    fromDate    : formatDateForAPI(filterValues.fromDate),
+                    toDate      : formatDateForAPI(filterValues.toDate),
+                    page        : (filterValues.allRate.currentPage + 1)
+                });
+
+        //we will modify this with new response's rates
+        var dataSetToReturn = {
+            ...dataSetJustAfterCurrentOne.response
+        };
+
+        var indexForPickingUp = pagintionConst.maxNumberOfRateRowsDisplay - pagintionConst.ratePerPage;
+
+        dataSetToReturn.dailyRateAndRestrictions = dataSetToReturn.dailyRateAndRestrictions
+            .map((dailyRateAndRestriction) => {
+                dailyRateAndRestriction = {...dailyRateAndRestriction}; //for fixing the issue of 
+                dailyRateAndRestriction.rates = [
+                    ..._.findWhere(newResponse.dailyRateAndRestrictions, { date: dailyRateAndRestriction.date }).rates,
+                    ...dailyRateAndRestriction.rates.slice( 0, indexForPickingUp )
+                ]
+                return dailyRateAndRestriction;
+            });
+        
+        return dataSetToReturn;
+    };
+
+    /**
+     * to handle the pagintion data
+     * will parse and form a data set from cachec response data and previous/next data response
+     * @param  {Object} dataFoundInCachedResponse
+     */
+    var handleAddingAllRateNewResponse = (cachedResponse) => {
+        var dataSetToReturn = [];
+
+        switch(lastSelectedFilterValues[activeFilterIndex].scrollDirection) {
+            
+            case rvRateManagerPaginationConstants.scroll.DOWN:
+                dataSetToReturn = fillBottomWithNewResponse(cachedResponse);
+                break;
+
+            case rvRateManagerPaginationConstants.scroll.UP:
+                dataSetToReturn = fillTopWithNewResponse(cachedResponse);
+                break;
+
+            case rvRateManagerPaginationConstants.scroll.STILL:
+                dataSetToReturn = cachedResponse;
+                break;                                 
+        }
+        processForAllRates(dataSetToReturn);
     };
 
     /**
@@ -470,6 +612,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} filter values
      */
     var fetchDailyRates = (filterValues) => {
+        var dataFoundInCachedResponse = _.findWhere(cachedRateAndRestrictionResponseData,
+            {
+                fromDate: formatDateForAPI(filterValues.fromDate),
+                toDate: formatDateForAPI(filterValues.toDate),
+                page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
+            });
+        
+        //if data already in cache
+        if(dataFoundInCachedResponse) {
+            return handleAddingAllRateNewResponse(dataFoundInCachedResponse.response)
+        }
+
         var params = {
             from_date: formatDateForAPI(filterValues.fromDate),
             to_date: formatDateForAPI(filterValues.toDate),
@@ -957,7 +1111,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             restrictionTypes,
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
         });
-      };
+    };
 
     /**
      * callback from react, when clicked on rate
@@ -1011,9 +1165,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
         //Storing for further reference
         if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
+            
+            //setting the current scroll position as STILL
+            newFilterValues.scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+
             lastSelectedFilterValues = [{...newFilterValues}]; //ES7
             activeFilterIndex = 0;
             $scope.showBackButton = false;
+            totalRatesCountForPagination = 0;
         }
 
         if (newFilterValues.showAllRates) {
@@ -1023,6 +1182,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 };
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
                 newFilterValues.allRate = allRate;
+                cachedRateAndRestrictionResponseData = [];
             }
 
             //calling the api
@@ -1055,6 +1215,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             //multiple rate view
             else if (newFilterValues.selectedRates.length > 1 || newFilterValues.selectedRateTypes.length > 0) {
                 //calling the api
+                var allRate = {
+                    currentPage: 1
+                };
+                lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
+                newFilterValues.allRate = allRate;
+                cachedRateAndRestrictionResponseData = [];
+                totalRatesCountForPagination = 0;
                 fetchDailyRates(newFilterValues);
             }
         }

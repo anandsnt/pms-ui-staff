@@ -75,7 +75,7 @@ const RateManagerGridViewRootComponent = createClass ({
 
 	rightScrollingEnded() {
 		if(this.scrolling && 
-			Math.abs(this.rightScroller.maxScrollY) * 0.75 < Math.abs(this.rightScroller.y)) {
+			Math.abs(this.rightScroller.maxScrollY) * 0.90 < Math.abs(this.rightScroller.y)) {
 
 			this.scrolling = false;
 			this.props.scrollReachedBottom();
