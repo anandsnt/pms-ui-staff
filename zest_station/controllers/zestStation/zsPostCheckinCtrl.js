@@ -295,6 +295,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
         };
         $scope.goToNext = function(){
+            $scope.hideKeyboardIfUp();
           /*  if ($state.from === 'email-delivery'){
                 
             } */

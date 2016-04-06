@@ -273,15 +273,14 @@ this.initScreenKeyboardListener = function(from, id, show){
             $(focused).getkeyboard();
         };
     
-        this.blurHandler = function(force){
+        this.blurHandler = function(){
             var focused = $('#'+id);
             $(focused).getkeyboard().accept(true);
        };
         var focused = $('#'+id);
         $(focused).focus(this.focusHandler).blur(this.blurHandler).keydown(function (e) {
             if (e.keyCode == 13) {//enter
-                console.log('enter')
-                that.blurHandler();
+              that.blurHandler();
             }
         });
 

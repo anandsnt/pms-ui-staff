@@ -4,6 +4,7 @@ angular.module('enterPress', []).directive('enterPress', function($timeout, $par
         link: function(scope, element, attrs, opt) {
             element.bind("keydown keypress", function (event) {
                 if(event.which === 13) {
+                    event.preventDefault();
                     
                     setTimeout(function(){
                         scope.$apply(function (){
