@@ -5,17 +5,17 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.stateCheck = {
 			pagination: {
 				roomType: {
-					perPage: 15,
+					perPage: 25,
 					page: 1,
 					ratesList: {
-						perPage: 15
+						perPage: 25
 					}
 				},
 				rate: {
-					perPage: 15,
+					perPage: 25,
 					page: 1,
 					roomsList: {
-						perPage: 15
+						perPage: 25
 					}
 				}
 			},

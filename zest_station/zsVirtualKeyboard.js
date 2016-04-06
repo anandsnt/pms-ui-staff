@@ -16,25 +16,49 @@ this.initScreenKeyboardListener = function(from, id, show){
             $.keyboard.language.love = $.extend($.keyboard.language.en);
             
             var focused = $('#'+id);
-            $(focused).keyboard({
+            var defaultLayout, shift, zestStationNonPasswordField;
+            isPasswordField = function(i){
+                if (i && i.indexOf('pass')!=-1){
+                    return true;
+                } else return false;
+            };
+            
+            if (from === 'login' || isPasswordField(id)){
+                defaultLayout = 'default';
+                shift = '{shift}';
+                zestStationNonPasswordField = false;
+            } else {
+                zestStationNonPasswordField = true;
+                defaultLayout = 'station_keyboard';
+                shift = '';
+            }
+            
+            var keyboardOptions = {
                 language: ['love'],
                 rtl: false,
                 //layout: 'qwerty',
-                layout: 'default',
+                layout: defaultLayout,
                 customLayout: {
                   'default': [
                           '1 2 3 4 5 6 7 8 9 0',
                           'q w e r t y u i o p {bksp}',
                           "a s d f g h j k l ' @",
                           'z x c v b n m . +',
-                          '{shift} {space} _ - .com'
+                          shift+' {space} _ - .com'
+                  ],
+                  'station_keyboard': [
+                          '1 2 3 4 5 6 7 8 9 0',
+                          'Q W E R T Y U I O P {bksp}',
+                          "A S D F G H J K L ' @",
+                          'Z X C V B N M . +',
+                          shift+' {space} _ - .com'
                   ],
                   'shift': [//zest station on screen is always caps,default to this
                           '! @ # $ % ^ & * ( )',
                           'Q W E R T Y U I O P {bksp}',
                           "A S D F G H J K L ' @",
                           'Z X C V B N M . +',
-                          '{shift} {space} _ - .com'
+                          shift+' {space} _ - .com'
                   ],
                   'meta1': [
                     '{default} 0 '
@@ -185,35 +209,63 @@ this.initScreenKeyboardListener = function(from, id, show){
                   }
                 },
 
-                initialized: function(e, keyboard, el) {},
-                beforeVisible: function(e, keyboard, el) {},
-                visible: function(e, keyboard, el) {},
+                initialized: function(e, keyboard, el) {
+                    
+                    console.log('initialized')
+                },
+                beforeVisible: function(e, keyboard, el) {
+                    
+                    console.log('beforeVisible')
+                },
+                visible: function(e, keyboard, el) {
+                    
+                    console.log('visible')
+                },
                 change: function(e, keyboard, el) {
+                    
+                    console.log('change')
                     //console.log($('#'+id).val());
                 },
                 beforeClose: function(e, keyboard, el, accepted) {
+                    console.log('beforeClose')
                 },
                 accepted: function(e, keyboard, el) {
+                    console.log('accepted')
                 },
                 inactive: function(e, keyboard, el) {},
                 canceled: function(e, keyboard, el) {
+                    console.log('canceled')
                 },
-                restricted: function(e, keyboard, el) {},
+                restricted: function(e, keyboard, el) {
+                    
+                    console.log('restricted')
+                },
                 hidden: function(event, keyboard, el){
+                    console.log('hidden')
                  },
-                switchInput: function(keyboard, goToNext, isAccepted) {},
+                switchInput: function(keyboard, goToNext, isAccepted) {
+                    console.log('switchInput')
+                },
 
                 validate: function(keyboard, value, isClosing) {
                   return true;
                 }
-            });
-            // activate the typing extension
-            /*
-            .addTyping({
-              showTyping: false,
-              delay: 250
-            });
-            */
+            };
+                    
+            
+            if (zestStationNonPasswordField){
+                keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
+            }
+            
+            $(focused).keyboard(keyboardOptions);
+    
+    
+    
+    
+    
+    
+    
+    
     
     
         this.focusHandler = function(){
@@ -221,12 +273,17 @@ this.initScreenKeyboardListener = function(from, id, show){
             $(focused).getkeyboard();
         };
     
-        this.blurHandler = function(){
+        this.blurHandler = function(force){
             var focused = $('#'+id);
             $(focused).getkeyboard().accept(true);
        };
         var focused = $('#'+id);
-        $(focused).focus(this.focusHandler).blur(this.blurHandler);
-        
+        $(focused).focus(this.focusHandler).blur(this.blurHandler).keydown(function (e) {
+            if (e.keyCode == 13) {//enter
+                console.log('enter')
+                that.blurHandler();
+            }
+        });
+
         return that;
 };

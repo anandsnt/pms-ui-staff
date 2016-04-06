@@ -101,7 +101,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
   			$scope.socketOperator.InsertKeyCard();
 		};
 		var init = function(){
-			//$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
 			setTimeOutFunctionToEnsureSocketIsOpened();
 		}();
 
@@ -110,7 +109,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * */
 		$scope.retrySearch = function() {
 			$scope.reservationSearchFailed = false;
-			//$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
 			$scope.socketBeingConnected = true;
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			runDigestCycle();

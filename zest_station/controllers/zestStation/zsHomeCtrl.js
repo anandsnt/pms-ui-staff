@@ -548,11 +548,9 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     $scope.init = function(){
+        $state.earlyCheckinPurchased = false;
+        $state.is_early_prepaid = false;
         $state.qr_code = null;
-        if ($scope.inChromeApp){
-            $scope.pressEsc();
-        }
-        $scope.inputFocus();
         //for change into default language after 120sec
         $scope.startLanguageCounter();
         $scope.resetFlags();

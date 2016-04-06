@@ -28,29 +28,6 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 		$scope.navToPrev = function() {
 			$scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
 		};
-		/**
-		 * [isInCheckinMode description]
-		 * @return {Boolean} [description]
-		 */
-		$scope.isInCheckinMode = function() {
-			return ($stateParams.mode === zsModeConstants.CHECKIN_MODE);
-		};
-
-		/**
-		 * [isInCheckinMode description]
-		 * @return {Boolean} [description]
-		 */
-		$scope.isInCheckoutMode = function() {
-			return ($stateParams.mode === zsModeConstants.CHECKOUT_MODE);
-		};
-
-		/**
-		 * [isInCheckinMode description]
-		 * @return {Boolean} [description]
-		 */
-		$scope.isInPickupKeyMode = function() {
-			return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
-		};
 
 		var goToNextPage =  function(showDeposit,byPassCC){
 			
