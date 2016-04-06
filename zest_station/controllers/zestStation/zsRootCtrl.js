@@ -191,37 +191,15 @@ sntZestStation.controller('zsRootCtrl', [
             return prefix.toLowerCase()+'/'+prefix+'_';
         };
         
-        $scope.loadTranslations = function(theme){
-            if ($scope.language) {
-                var langPrefix = $scope.getActiveLangPrefix();
+        $scope.loadTranslations = function(){
             if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                //console.info('using: uploaded english translations');
+                console.info('using: uploaded english translations');
                 $translate.use('en');
-            }
-            else{
-                //console.info('using: ',langPrefix+theme.toLowerCase());
-                $translate.use(langPrefix+theme.toLowerCase());
-            }
-             
-            //  $translate.fallbackLanguage('EN');
-              /* For reason unclear, the fallback translation does not trigger
-               * unless a translation is requested explicitly, for second screen
-               * onwards.
-               * TODO: Fix this bug in ng-translate and implement in this here.
-               */
-              setTimeout(function() {
-                $translate('NA');
-              }, 1000); //Word around.
-            } else {
-                if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                    console.info('using: uploaded english translations');
-                    $translate.use('en');
-                }
-                else{
-                    $translate.use('EN_snt');
-                }
+            } else{
+                $translate.use('EN_snt');
             };
         };
+        
         $scope.setScreenIcon = function(name){
             $scope.activeScreenIcon = name;
             if ($scope.icons && $scope.icons.url){
