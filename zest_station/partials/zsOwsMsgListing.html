@@ -23,8 +23,8 @@
         <!-- If multiple messages, show: -->
         <div id="message-action">
             <p>Message <strong>{{currentpageNumber}}</strong> of <strong>{{owsMessages.length}}</strong></p>
-            <button ng-show="!isLastOwsMsg" type="button" class="button" touch-press='loadNextOwsMsg()'>{{'NEXT' |translate}}</button>
-            <button ng-show="isLastOwsMsg" type="button" class="button exit-button" touch-press='closePopup()'><span>{{'EXIT' |translate}}</span></button>
+            <button ng-show="!isLastOwsMsg" type="button" class="button next" touch-press='loadNextOwsMsg()'>{{'NEXT' |translate}}</button>
+            <button ng-show="isLastOwsMsg" type="button" class="button" touch-press='closePopup()'><span>{{'DONE' |translate}}</span></button>
         </div>
     </div>
 </div>

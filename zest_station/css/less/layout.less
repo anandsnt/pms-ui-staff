@@ -938,29 +938,25 @@
             }
 
             .button {
-                position: relative;
                 color: @brandColor;
                 background: transparent;
                 margin-left: auto;
                 .box-shadow(none);
 
-                &:after {
-                    content: '';
-                    position: absolute;
-                    top: 26px;
-                    right: 10px;
-                    border-bottom: 6px solid transparent;
-                    border-top: 6px solid transparent;
-                    border-left: 6px solid @brandColor;
-                    .square(0);
-                    .show;
-                }
-            }
-            .exit-button{
-                 &:after {
-                    border-bottom: none;
-                    border-top: none;
-                    border-left: none;
+                &.next {
+                    position: relative;
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 26px;
+                        right: 10px;
+                        border-bottom: 6px solid transparent;
+                        border-top: 6px solid transparent;
+                        border-left: 6px solid @brandColor;
+                        .square(0);
+                        .show;
+                    }
                 }
             }
         }
