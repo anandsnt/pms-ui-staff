@@ -4,7 +4,7 @@
         <a ng-click="goBackToPreviousState()" class="action back" translate>STATION_BACK</a>
     </header>
     <section class="content-scroll">
-        <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <form class="form float">
             <!-- QR Code Scanning instead of Normal Pickup Key flow -->
@@ -15,6 +15,16 @@
                 <ad-toggle-button is-checked="zestSettings.pickup_qr_scan" label="{{'QR_SCANNER'| translate}}" div-class="full-width"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.pickup_qr_scan_fail_over" label="{{'QR_FAIL_OVER'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>PUK_QR </span> </h3>
+                </div>
+                <ad-toggle-button ng-click='zestSettings.qr_scanner_datalogic = false' is-checked="zestSettings.qr_scanner_samsotech" label="{{'QR_SCANNER_TYPE_SAM'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button ng-click='zestSettings.qr_scanner_samsotech = false' is-checked="zestSettings.qr_scanner_datalogic" label="{{'QR_SCANNER_TYPE_DATA'| translate}}" div-class="full-width"></ad-toggle-button>
+                
+            </fieldset>
+            
+            
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
