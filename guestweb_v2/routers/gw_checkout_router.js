@@ -64,5 +64,12 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 		data: {
 			pageTitle: 'Status - Check-out Later'
 		}
-	});
+	}).state('alreadyCheckedOut',{
+		url: '/alreadyCheckedOut',
+		templateUrl: '/assets/partials/checkout/gwAlreadyCheckedOut.html',
+		controller: 'gwAlreadyCheckedOutController',
+		data: {
+			pageTitle: 'Status - Check-out'
+		}
+	})
 }]);

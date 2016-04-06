@@ -107,7 +107,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 					}
 					//if reservation is aleady checkin
 					else if (reservation_data.is_checked_in === "true") {
-						$state.go('checkinSuccess'); // to be done
+						$state.go('alreadyCheckedIn');
 					}
 					//if reservation is early checkin
 					else if (reservation_data.is_too_early) {

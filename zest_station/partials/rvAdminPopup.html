@@ -26,7 +26,14 @@
                     <label class='admin-item-label'>{{'ADMIN_TIME_OUT' |translate}}</label>
                 </td>
                 <td>
-                    <input touch-press type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.max' class='admin-input admin-input' />
+                    <input touch-press 
+                           id="timeout_text"
+                           ng-focus="showOnScreenKeyboard('timeout_text')" ng-click="showOnScreenKeyboard('timeout_text')"
+                           type="number"
+                           min='1' 
+                           max='9999' 
+                           ng-model='zestStationData.idle_timer.max' 
+                           class='admin-input admin-input' />
                 </td>
             </tr>
             <tr class='admin-item v-middle'>
@@ -34,7 +41,15 @@
                     <label class='admin-item-label'>{{'ADMIN_TIME_POP' |translate}}</label>
                 </td>
                 <td>
-                    <input touch-press type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input admin-input' />
+                    <input 
+                        touch-press 
+                        id="prompt_text"
+                        ng-focus="showOnScreenKeyboard('prompt_text')" ng-click="showOnScreenKeyboard('prompt_text')"
+                        type="number"
+                        min='1'
+                        max='9999'
+                        ng-model='zestStationData.idle_timer.prompt' 
+                        class='admin-input admin-input' />
                 </td>
             </tr>
             <tr class='admin-item v-middle'>

@@ -6,6 +6,8 @@
         <form method="post" class="form" ng-hide='at === "checking_in_guest"' click-touch='resetTime()'>
             <div class="entry input">
                 <input type="text"
+                        id="nights_text"
+                        ng-focus="showOnScreenKeyboard('nights_text')" ng-click="showOnScreenKeyboard('nights_text')"
                        class="start-focused"
                        ng-keydown="resetTime()"
                        ng-model='input.inputTextValue'
