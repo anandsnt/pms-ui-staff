@@ -85,6 +85,7 @@ sntZestStation.controller('zsAdminCtrl', [
         
         $scope.adminLoginError = false;
 	$scope.goToNext  = function(){
+            $scope.hideKeyboardIfUp();
             if($scope.mode === "admin-name-mode"){
                 $scope.adminLoginError = false;
                 $scope.userName = angular.copy($scope.input.inputTextValue);
