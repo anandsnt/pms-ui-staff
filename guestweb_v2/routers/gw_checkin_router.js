@@ -84,6 +84,12 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	    data: {
 	 		title: 'Guest Details'
 	 	}
+	 }).state('alreadyCheckedIn', {
+	 	url: '/alreadyCheckedIn',
+	 	templateUrl: '/assets/partials/checkin/gwAlreadyCheckedIn.html',
+	 	 data: {
+	 		title:'Status - Check-in'
+	 	}
 	 });
 
 
