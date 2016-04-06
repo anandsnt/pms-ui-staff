@@ -86,7 +86,11 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 		//save changes
 		$scope.postGuestDetails = function() {
 			var postGuestDetailsSuccess = function() {
-				$state.go('etaUpdation');
+				if (GwWebSrv.zestwebData.isAutoCheckinOn) {
+					$state.go('etaUpdation');
+				} else {
+					$state.go('checkinFinal');
+				};
 			}
 			var options = {
 				params: {

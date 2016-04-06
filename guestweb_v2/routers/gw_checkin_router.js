@@ -91,7 +91,16 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 	 		title:'Status - Check-in'
 	 	}
+	 }).state('checkinFinal', {
+	 	url: '/checkinFinal',
+	 	templateUrl: '/assets/partials/checkin/gwCheckinFinal.html',
+	 	controller : 'gwCheckinFinalController',
+	 	data: {
+	 		title: 'Check-in: final'
+	 	}
 	 });
+
+	 
 
 
 
