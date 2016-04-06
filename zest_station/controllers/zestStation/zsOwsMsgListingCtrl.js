@@ -49,7 +49,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			};
 
 			var onOwsMsgFetchSuccess = function(response) {
-				$scope.owsMessages = response;
+				$scope.owsMessages = response.messages;
 				if ($scope.owsMessages.length > 0) {
 					//popup in zeststation was implemented in other way, not using ngdialog
 					//open popup only if there are any OWS messages
@@ -83,7 +83,13 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 					};
 					//email the message to the guest
 					$scope.emailOwsMsg = function() {
-
+						var options = {
+						params: {
+							"message_id" : $scope.owsMessages[selectedOwsMessageIndex].id,
+							"reservation_id": $state.selectedReservation.id // again a $state !...can't help it
+						}
+					};
+					$scope.callAPI(zsTabletSrv.sendOWSMsgAsMail, options);
 					};
 
 					$scope.closePopup = function() {
@@ -100,7 +106,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				$scope.owsMsgOpenPoup =  false;
 				var options = {
 					params: {
-						"reservation_id": ""
+						"reservation_id": $state.selectedReservation.id // again a $state !...can't help it
 					},
 					successCallBack: onOwsMsgFetchSuccess
 				};
