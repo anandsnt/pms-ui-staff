@@ -204,37 +204,15 @@ sntZestStation.controller('zsRootCtrl', [
             return prefix.toLowerCase()+'/'+prefix+'_';
         };
         
-        $scope.loadTranslations = function(theme){
-            if ($scope.language) {
-                var langPrefix = $scope.getActiveLangPrefix();
+        $scope.loadTranslations = function(){
             if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                //console.info('using: uploaded english translations');
+                console.info('using: uploaded english translations');
                 $translate.use('en');
-            }
-            else{
-                //console.info('using: ',langPrefix+theme.toLowerCase());
-                $translate.use(langPrefix+theme.toLowerCase());
-            }
-             
-            //  $translate.fallbackLanguage('EN');
-              /* For reason unclear, the fallback translation does not trigger
-               * unless a translation is requested explicitly, for second screen
-               * onwards.
-               * TODO: Fix this bug in ng-translate and implement in this here.
-               */
-              setTimeout(function() {
-                $translate('NA');
-              }, 1000); //Word around.
-            } else {
-                if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                    console.info('using: uploaded english translations');
-                    $translate.use('en');
-                }
-                else{
-                    $translate.use('EN_snt');
-                }
+            } else{
+                $translate.use('EN_snt');
             };
         };
+        
         $scope.setScreenIcon = function(name){
             $scope.activeScreenIcon = name;
             if ($scope.icons && $scope.icons.url){
@@ -874,7 +852,6 @@ sntZestStation.controller('zsRootCtrl', [
             
             
             $scope.showKeyboardOnInput = function(){
-                console.info('show keyboard?');
                 var frameBody = $("#booking_iframe").contents().find("body");
                     frameBody.focus(function(){ 
                         console.log('iframe focus')
@@ -885,13 +862,15 @@ sntZestStation.controller('zsRootCtrl', [
                //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in document.documentElement;
                 var shouldShowKeyboard = (typeof chrome) &&
+                                        window.innerWidth === screen.width && 
+                                        window.innerHeight === screen.height && 
                                         (window.navigator.userAgent.indexOf('Win')!=-1) &&
                                         $scope.inChromeApp && 
                                         isTouchDevice &&
                                         $scope.theme === 'yotel';
                                 
                                 
-                //shouldShowKeyboard = true;
+               // shouldShowKeyboard = true;
                 if (shouldShowKeyboard){
                      if (id){
                          new initScreenKeyboardListener('station', id, true);
@@ -899,23 +878,6 @@ sntZestStation.controller('zsRootCtrl', [
                  } else {
                      console.info('probably not in a chromeapp');
                  }
-            };
-            $scope.showOnScreenKeyboard();
-            
-            $scope.pressEsc = function() {
-                $('body').trigger({
-                    type: 'keyup',
-                    which: 27 // Escape key
-                });
-            };
-            
-            $scope.inputFocus = function(){
-                setTimeout(function(){
-                    var el = $("input:visible");
-                    if (angular.element(el[0])){
-                        angular.element(el[0]).focus();
-                    }
-                },200);
             };
             
             $scope.$watchCollection(function(){

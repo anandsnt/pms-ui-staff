@@ -111,20 +111,6 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	}
 	 };
          
-        $scope.showOnScreenKeyboard = function(id) {
-           //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-            var isTouchDevice = 'ontouchstart' in document.documentElement;
-            var shouldShowKeyboard = (typeof chrome) && (window.navigator.userAgent.indexOf('Win')!=-1) && isTouchDevice;
-            // shouldShowKeyboard = true;
-            if (shouldShowKeyboard){
-                 if (id){
-                     new initScreenKeyboardListener('login', id, true);
-                  }
-             } else {
-                 console.info('probably not in a chromeapp');
-             }
-        };
-        $scope.showOnScreenKeyboard();
 }]);
 /*
  * Reset Password Controller - First time login of snt admin

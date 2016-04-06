@@ -25,11 +25,11 @@
 
 		<div class="entry">
 			<label for="email">E-mail</label>
-			<input ng-focus="showOnScreenKeyboard('email')" ng-click="showOnScreenKeyboard('email')" id="email" name="email" ng-model="data.email" placeholder="Enter your e-mail address" type="email" value="" />
+			<input id="email" name="email" ng-model="data.email" placeholder="Enter your e-mail address" type="email" value="" />
 		</div>
 		<div class="entry">
 			<label for="password">Password </label>
-			<input ng-focus="showOnScreenKeyboard('password')"  ng-click="showOnScreenKeyboard('password')"  autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
+			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
 		</div>
 		<div class="action">
             <button type="submit" class="button green">Login</button>
