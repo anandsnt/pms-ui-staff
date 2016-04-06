@@ -26,7 +26,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.clickedOnCloseButton = function() {
         //if key card was inserted we need to eject that
-        if($scope.zestStationData.keyCardInserted){
+        if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
             $scope.socketOperator.EjectKeyCard();
         };
 		$state.go ('zest_station.home');
@@ -1001,8 +1001,8 @@ sntZestStation.controller('zsRootCtrl', [
             msg = response.Message;
         // to delete after QA pass
         console.info("Websocket:-> uid=" + response.UID);
-        console.info("Websocket:->"+cmd);
-        console.info("Websocket:->"+msg);
+        console.info("Websocket: Command ->"+cmd);
+        console.info("Websocket: msg ->"+msg);
         console.info("Websocket:-> response code:" + response.ResponseCode);
 
         if (response.Command === 'cmd_insert_key_card') {
@@ -1023,8 +1023,12 @@ sntZestStation.controller('zsRootCtrl', [
             }
         } else if (response.Command === 'cmd_capture_key_card') {
             if (response.ResponseCode === 0) {
-                //capture success
+                $scope.zestStationData.keyCaptureDone = true;
             }
+            else{
+                //capture failed
+                $state.go('zest_station.error_page');
+            };
         };
     };
     var socketOpenedFailed = function() {
