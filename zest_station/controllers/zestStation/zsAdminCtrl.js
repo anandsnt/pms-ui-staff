@@ -77,7 +77,6 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.headingText = 'Admin Username';
             $scope.passwordField = false;
             showNavButtons();
-            $scope.initVirtualKeyboard();
 	};
         
         $scope.goToAdminPrompt = function(){
@@ -93,8 +92,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.mode   = "admin-password-mode";
                 $scope.headingText = 'Admin Password';
                 $scope.passwordField = true;
-                
-                $scope.initVirtualKeyboard();
             }
             else{
                 $scope.adminLoginError = false;

@@ -1,4 +1,4 @@
-this.webSocketOperations = function() {
+this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
     var that = this;
     var wsConfig = {
         "swipeService": "wss://localhost:4649/CCSwipeService",
@@ -31,7 +31,7 @@ this.webSocketOperations = function() {
     this.InsertKeyCard = function() { //use key for checkout takes key in
         ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
-    this.connect = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
+    this.connect = function() {
         try {
             ws = new WebSocket("wss://localhost:4649/CCSwipeService");
         } catch (e) {
@@ -62,12 +62,10 @@ this.webSocketOperations = function() {
         return ws;
     };
 
-    this.connectWebSocket = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
-        console.info('--> Connecting WebSocket...');
-        setTimeout(function() {
-                console.info('[:: Connecting ... .. .  ::]');
-                that.connect(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
-            },
-            wsConfig['connect_delay']);
-    };
+    console.info('--> Connecting WebSocket...');
+    setTimeout(function() {
+        console.info('[:: Connecting ... .. .  ::]');
+        that.connect();
+    },
+    wsConfig['connect_delay']);
 }

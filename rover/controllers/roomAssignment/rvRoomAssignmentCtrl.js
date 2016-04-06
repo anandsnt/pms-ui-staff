@@ -27,7 +27,7 @@ sntRover.controller('RVroomAssignmentController',[
 	// do we need to call the the room assigning API with forcefully assign to true
 	// currently used for group reservation
 	var wanted_to_forcefully_assign = false;
-	var isOnlineRoomMove = false;
+	var isOnlineRoomMove = "";
 
 	var oldRoomType = '';
 	$scope.errorMessage = '';
@@ -342,8 +342,9 @@ sntRover.controller('RVroomAssignmentController',[
 		var dataToUpdate 		= {},
 			assignedRoom 		= $scope.assignedRoom,
 			selectedRoomType 	= $scope.selectedRoomType,
-			reservationData 	= $scope.reservationData.reservation_card,
-			isOnlineRoomMove    = data.online_room_move;
+			reservationData 	= $scope.reservationData.reservation_card;
+		isOnlineRoomMove    = data.is_online_move_allowed;
+		console.log("reached here"+ data.is_online_move_allowed + isOnlineRoomMove);
 
 		_.extend (dataToUpdate,
 		{
@@ -536,7 +537,6 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.backToStayCard = function(){
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num ,isrefresh: false, isOnlineRoomMove: isOnlineRoomMove});
-
 	};
 	/**
 	* function to show and hide the filters view

@@ -39,7 +39,10 @@ module.exports = {
 			'guestweb_naples_grande':[ themeCSSRoot + 'guestweb_naples_grande.css'],
 			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css'],
 			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css'],
-			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css']
+			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
+			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
+			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css']
+
 		}
 	}
 }

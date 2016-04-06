@@ -81,45 +81,15 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
 
-		var actionSuccesCallback = function(response) {
-			var cmd = response.Command,
-				msg = response.Message;
-			// to delete after QA pass
-			console.info("uid=" + response.UID);
-			console.info(cmd);
-			console.info(msg);
-			console.info("response code:"+response.ResponseCode);
 
-			if (response.Command === 'cmd_insert_key_card') {
-				//check if the UID is valid
-				//if so find reservation using that
-				(typeof response.UID !== "undefined" && response.UID !== null) ? findReservation(response.UID): findReservationFailed();
-			} else if (response.Command === 'cmd_eject_key_card') {
-				//ejectkey card callback
-				if (response.ResponseCode === 19) {
-					// key ejection failed
-					if(!$scope.zestStationData.keyCaptureDone){
-						$state.go('zest_station.error_page');
-					}
-					else{
-						$scope.socketOperator.close();
-						console.info("closing socket");
-					}
-				}
-			}
-			else if( response.Command  === 'cmd_capture_key_card'){
-				if (response.ResponseCode === 0) {
-					$scope.socketOperator.close();
-					console.info("closing socket");
-				}
-			};
-		};
-		var socketOpenedFailureCallback = function() {
-			goToRetryPage();
-		};
-		var socketOpenedSuccessCallback = function() {
-			$scope.socketOperator.InsertKeyCard();
-		};
+		$scope.$on('UID_FETCH_SUCCESS', function(event, data) {
+			findReservation(data.uid)
+		});
+
+		$scope.$on('UID_FETCH_FAILED',function(){
+			findReservationFailed();
+		});
+
 		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
 			$timeout(function() {
 				// there is some delay in actual socket operations
@@ -128,9 +98,9 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				// wrong timing adding a buffer of 1.5 seconds
                 $scope.socketBeingConnected = false;//connection success
   			}, 1500);
+  			$scope.socketOperator.InsertKeyCard();
 		};
 		var init = function(){
-			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
 			setTimeOutFunctionToEnsureSocketIsOpened();
 		}();
 
@@ -139,7 +109,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * */
 		$scope.retrySearch = function() {
 			$scope.reservationSearchFailed = false;
-			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
 			$scope.socketBeingConnected = true;
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			runDigestCycle();
