@@ -42,6 +42,7 @@ module.exports = {
 			'guestweb_terranea':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_time_hotel':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_porto_vista':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_chalet_view':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
