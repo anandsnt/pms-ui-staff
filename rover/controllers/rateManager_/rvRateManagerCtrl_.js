@@ -66,6 +66,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * to reload the present mode
      */
     $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, (event, data) => {
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+        if(lastSelectedFilterValues[activeFilterIndex].showAllRates) {
+            cachedRateAndRestrictionResponseData = [];
+        }
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     });
 
@@ -94,7 +98,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onOpenAllRestrictionsSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
     /**
@@ -115,7 +119,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onCloseAllRestrictionsForSingleRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
     /**
@@ -136,7 +140,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onCloseAllRestrictionsForRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
     /**
@@ -156,7 +160,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onOpenAllRestrictionsForRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
     /**
@@ -164,6 +168,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} params
      */
     var openAllRestrictionsForRateView = (params) => {
+        
+        
         var options = {
             params: params,
             onSuccess: onCloseAllRestrictionsForRateViewSuccess
@@ -176,7 +182,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onCloseAllRestrictionsForRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
     /**
@@ -196,7 +202,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onOpenAllRestrictionsForRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
     /**
@@ -278,7 +284,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * utility method to pass callbacks from
      * @return {Object} with callbacks
      */
-    var getTheCallbacksFromAngularToReact = () => {
+    const getTheCallbacksFromAngularToReact = () => {
         return {
             singleRateViewCallback: fetchSingleRateDetailsFromReact,
             openAllCallbackForSingleRateView: openAllRestrictionsForSingleRateView,
@@ -292,7 +298,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             clickedOnRoomTypeAndAmountCell,
             allRatesScrollReachedBottom,
             allRatesScrollReachedTop
-        };
+        }
     };
 
     /**
@@ -364,7 +370,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         
         if(Math.ceil(totalRatesCountForPagination / rvRateManagerPaginationConstants.allRate.ratePerPage) < 
             lastSelectedFilterValues[activeFilterIndex].allRate.currentPage) {
-            
+
             lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = Math.ceil(totalRatesCountForPagination / rvRateManagerPaginationConstants.allRate.ratePerPage);
             return;
         }
@@ -374,89 +380,95 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
     };
 
-    var initialState = {
-        mode: RM_RX_CONST.NOT_CONFIGURED_MODE
-    };
-
-    const store = configureStore(initialState);
-
-    const {render} = ReactDOM;
-    const {Provider} = ReactRedux;
-
-    /**
-     * to render the grid view
-     */
-    var renderGridView = () => render(
-        <Provider store={store}>
-            <RateManagerRootComponent/>
-        </Provider>,
-        document.querySelector('#rate-manager .rate-manager-content')
-    );
-
     /**
      * handle method to porcess the response for 'All Rates mode'
      * @param  {Object} response
      */
     var processForAllRates = (response) => {
-        console.log('Strted: ', new Date().getTime());
         var rateRestrictions = response.dailyRateAndRestrictions,
-            rates = !cachedRateList.length ? response.rates : cachedRateList,
-            dates = _.pluck(rateRestrictions, 'date'),
-            rateIDs = _.pluck(rates, 'id'),
-            ratesWithRestrictions = rateRestrictions[0].rates,
-            rateObjectBasedOnID = {},
-            dateRateSet = null;
+            commonRestrictions = response.commonRestrictions;
 
         //rateList now cached, we will not fetch that again
-        cachedRateList = rates;
+        cachedRateList = !cachedRateList.length ? response.rates : cachedRateList;
 
         //for topbar
+        var dates = _.pluck(rateRestrictions, 'date');
+        showAndformDataForTopBar(dates);
+
+        var ratesWithRestrictions = formRenderingDataModelForAllRates(dates, rateRestrictions, commonRestrictions, cachedRateList);
+        
+        updateAllRatesView(ratesWithRestrictions, dates);
+
+        //closing the left side filter section
+        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
+    };
+
+    /**
+     * to update all rates views
+     * @param  {array} ratesWithRestrictions
+     * @param  {array} dates
+     */
+    const updateAllRatesView = (ratesWithRestrictions, dates) => {
+        var reduxActionForAllRateView = {
+            type                : RM_RX_CONST.RATE_VIEW_CHANGED,
+            rateRestrictionData : [...ratesWithRestrictions],
+            zoomLevel           : lastSelectedFilterValues[activeFilterIndex].zoomLevel,
+            businessDate        : tzIndependentDate($rootScope.businessDate),
+            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+            dates,
+            restrictionTypes,
+        };
+
+        //dispatching to redux
+        store.dispatch(reduxActionForAllRateView);
+    };
+
+    /**
+     * to form the rendering data model (for react) against all rates
+     * @param  {array} dates
+     * @param  {array} rateRestrictions
+     * * @param  {array} commonRestrictions
+     * @param  {array} rates
+     * @return {array}
+     */
+    const formRenderingDataModelForAllRates = (dates, rateRestrictions, commonRestrictions, rates) => {
+        var dateRateSet = null,
+            rateRestrictionWithDateAsKey = _.object(dates, rateRestrictions),
+            rateIDs = _.pluck(rates, 'id'),
+            rateObjectBasedOnID = _.object(rateIDs, rates);
+
+        //rate & restrictions -> 2nd row onwards
+        var ratesWithRestrictions = rateRestrictions[0].rates.map((rate) => {
+            rate.restrictionList = [];
+            rate = {...rate, ...rateObjectBasedOnID[rate.id]};
+            dates.map((date) => {
+                    dateRateSet = _.findWhere(rateRestrictionWithDateAsKey[date].rates, { id: rate.id });
+                    rate.restrictionList.push(dateRateSet.restrictions);
+                }
+            );
+            return _.omit(rate, 'restrictions');
+        });
+
+        //forming the top row (All rates) with common restrictions
+        ratesWithRestrictions.unshift({
+            restrictionList: dates.map((date) => {
+                return _.findWhere(commonRestrictions, { date: date }).restrictions;
+            })
+        });
+
+        return ratesWithRestrictions;
+    };
+
+    /**
+     * to show & form the data required for topbar
+     * @param  {array} dates [description]
+     */
+    const showAndformDataForTopBar = (dates) => {
         $scope.fromDate = dates[0];
         $scope.toDate = dates[dates.length - 1];
         $scope.showTopBar = true;
         $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
         $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
-
-        rateRestrictions = _.object(dates, rateRestrictions);
-        rateObjectBasedOnID = _.object(rateIDs, cachedRateList);
-
-        //we have lots of alternative ways, those depends on javascript array order
-        //which is buggy from browser to browser, so choosing this bad way
-        //may be this will result in running 365000 times
-        ratesWithRestrictions = ratesWithRestrictions.map((rate) => {
-            rate.restrictionList = [];
-
-            rate = {...rate, ...rateObjectBasedOnID[rate.id]};
-
-            dates.map((date) => {
-            dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
-                rate.restrictionList.push(dateRateSet.restrictions);
-            });
-
-            return _.omit(rate, 'restrictions');
-        });
-
-        //for the first row with common restrictions among the rates
-        //for now there will not be any id, we have to use certain things to identify (later) TODO
-
-        ratesWithRestrictions.unshift({
-            restrictionList: dates.map((date) => {
-                return rateRestrictions[date].all_rate_restrictions;
-            })
-        });
-
-        //closing the left side filter section
-        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
-        
-        store.dispatch({
-            type: RM_RX_CONST.RATE_VIEW_CHANGED,
-            rateRestrictionData: [...ratesWithRestrictions],
-            dates,
-            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
-            businessDate: tzIndependentDate($rootScope.businessDate),
-            restrictionTypes,
-            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
-        });
     };
 
     /**
@@ -1157,6 +1169,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
     };
 
+
     /**
      * to update results
      * @param  {Object} event
@@ -1244,6 +1257,25 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //mode
         $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
     };
+
+    var initialState = {
+        mode: RM_RX_CONST.NOT_CONFIGURED_MODE
+    };
+
+    const store = configureStore(initialState);
+
+    const {render} = ReactDOM;
+    const {Provider} = ReactRedux;
+
+    /**
+     * to render the grid view
+     */
+    var renderGridView = () => render(
+        <Provider store={store}>
+            <RateManagerRootComponent/>
+        </Provider>,
+        document.querySelector('#rate-manager .rate-manager-content')
+    );
 
     /**
      * initialisation function
