@@ -44,8 +44,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			var showEmailButton = function() {
 				//check if reservation had email id
-				//$scope.showEmailButton = ($scope.selectedReservation.guest_details[0].email !== '') ? true : false;
-				$scope.showEmailButton = true;
+				$scope.showEmailButton = ($scope.selectedReservation.guest_details[0].email !== 'zak@stayntouch.com') ? true : false;
 			};
 
 			var onOwsMsgFetchSuccess = function(response) {
