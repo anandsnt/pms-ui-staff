@@ -164,7 +164,7 @@ angular.module('sntRover')
 
             // CICO-27469
             // Needn't show clear overrides button for child rates
-            if (!!$scope.ngDialogData.rate.based_on_rate_id){
+            if (!!$scope.ngDialogData.rate && !!$scope.ngDialogData.rate.based_on_rate_id){
                 return false;
             }
 
