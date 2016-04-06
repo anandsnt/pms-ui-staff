@@ -53,7 +53,7 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 		};
 
 		var goToNextPage =  function(showDeposit,byPassCC){
-			
+			$scope.hideKeyboardIfUp();
 			if (showDeposit) {
 				$state.go('zest_station.deposit_agree');//pay Deposit
 			}

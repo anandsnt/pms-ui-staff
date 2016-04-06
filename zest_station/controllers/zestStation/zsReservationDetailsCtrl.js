@@ -166,6 +166,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             $state.go('zest_station.add_guest_first');
         };
         $scope.goToNext = function(){
+            $scope.hideKeyboardIfUp();
             var current=$state.current.name;
             if (current === 'zest_station.add_guest_first'){
                 

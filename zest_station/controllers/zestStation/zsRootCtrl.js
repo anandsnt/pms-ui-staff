@@ -230,6 +230,7 @@ sntZestStation.controller('zsRootCtrl', [
                         back: $scope.iconsPath+'/back.svg',
                         close: $scope.iconsPath+'/close.svg',
                         qr: $scope.iconsPath+'/qr-scan.svg',
+                        qr_noarrow: $scope.iconsPath+'/qr-scan_noarrow.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                         logo: $scope.iconsPath+'/print_logo.svg',
                         watch: $scope.iconsPath+'/watch.svg'
@@ -844,8 +845,16 @@ sntZestStation.controller('zsRootCtrl', [
                         console.log('iframe focus')
                     });
             };
-            
+            $scope.hideKeyboardIfUp = function(){
+                var focused = $('#'+$scope.lastKeyboardId);
+                if ($(focused)){
+                    if ($(focused).getkeyboard()){
+                        $(focused).getkeyboard().accept(true);
+                    }
+                }
+            };
             $scope.showOnScreenKeyboard = function(id) {
+                $scope.lastKeyboardId = id;
                //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in document.documentElement;
                 var shouldShowKeyboard = (typeof chrome) &&
@@ -871,6 +880,8 @@ sntZestStation.controller('zsRootCtrl', [
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
+                
+                $scope.hideKeyboardIfUp();
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }

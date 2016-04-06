@@ -282,6 +282,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         
         $scope.goToNext = function(){
+            $scope.hideKeyboardIfUp();
             if ($scope.input.inputTextValue === ''){
                 return;
             }
