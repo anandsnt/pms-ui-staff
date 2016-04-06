@@ -318,6 +318,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 		$scope.onWorkTypeChanged = function() {
 			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
+			refreshView();
 		};
 
 		$scope.refreshSheet = function() {
@@ -682,14 +683,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 employee_ids: fetchHKStaffs.emp_ids
             };
 
-            if ($scope.multiSheetState.header.work_type_id) {
-            	_.extend(unassignedRoomsParam, {
-            		work_type_id: $scope.multiSheetState.header.work_type_id
-            	});
-            	_.extend(assignedRoomsParam, {
-            		work_type_id: $scope.multiSheetState.header.work_type_id
-            	});
-            }
             RVWorkManagementSrv.processedPayload(unassignedRoomsParam, assignedRoomsParam)
             	.then(fetchWorkSheetPayloadSuccess, fetchWorkSheetPayloadFailure);
 		};
