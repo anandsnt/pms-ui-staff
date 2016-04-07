@@ -102,7 +102,7 @@ sntZestStation.controller('zsHomeCtrl', [
         else{
              console.info("login out");
         };
-        $window.location.href = '/logout'; 
+        $window.location.href = '/station_logout'; 
     };
 
     $scope.updateSettings = function(value){

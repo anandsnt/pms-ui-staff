@@ -1500,7 +1500,8 @@ angular.module('reportsModule')
                 _mm   = '',
                 _step = 15;
 
-            var i = m = 0,
+            var i = 0,
+                m = 0,
                 h = -1;
 
             // 4 parts in each of 24 hours (00 -> 23)

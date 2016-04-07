@@ -33,6 +33,15 @@ this.initScreenKeyboardListener = function(from, id, show){
                 shift = '';
             }
             
+            var applyKeyboardInput = function(){
+                    if (from === 'login'){//fixes an issue where data values are not set from virtual keyboard
+                        if (angular.element($('#'+id)).scope()){
+                            angular.element($('#'+id)).scope().data[id] = $('#'+id).val();
+                        }
+                    }
+                };
+            
+            
             var keyboardOptions = {
                 language: ['love'],
                 rtl: false,
@@ -209,42 +218,31 @@ this.initScreenKeyboardListener = function(from, id, show){
                   }
                 },
 
+                
                 initialized: function(e, keyboard, el) {
-                    
-                    console.log('initialized')
                 },
                 beforeVisible: function(e, keyboard, el) {
-                    
-                    console.log('beforeVisible')
                 },
                 visible: function(e, keyboard, el) {
-                    
-                    console.log('visible')
                 },
                 change: function(e, keyboard, el) {
                     
-                    console.log('change')
-                    //console.log($('#'+id).val());
                 },
                 beforeClose: function(e, keyboard, el, accepted) {
-                    console.log('beforeClose')
+                    applyKeyboardInput();
                 },
                 accepted: function(e, keyboard, el) {
-                    console.log('accepted')
+                    applyKeyboardInput();
                 },
                 inactive: function(e, keyboard, el) {},
                 canceled: function(e, keyboard, el) {
-                    console.log('canceled')
+                    applyKeyboardInput();
                 },
                 restricted: function(e, keyboard, el) {
-                    
-                    console.log('restricted')
                 },
                 hidden: function(event, keyboard, el){
-                    console.log('hidden')
                  },
                 switchInput: function(keyboard, goToNext, isAccepted) {
-                    console.log('switchInput')
                 },
 
                 validate: function(keyboard, value, isClosing) {

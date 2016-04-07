@@ -285,13 +285,13 @@ table {
 
 /* Search                   ==============================*/
     .search-results {
+
         li {
             font-size: 8pt;
             line-height: 10px;
             margin: 0;
             padding: 4pt 0;
             text-transform: uppercase;
-            border-bottom: 1px solid @grey2;
             page-break-inside: avoid;
             page-break-after: auto;
 
@@ -306,13 +306,14 @@ table {
                 font-size: 10pt;
                 line-height: 10px;
                 font-weight: 600;
+                margin: 0;
                 .nowrap();
             }
 
             .guest-image,
             &.mobile-pagination { .hide; }
             
-            &:last-child { border-bottom: 0; }
+            &:not(last-child) { border-bottom: 1px solid @grey2; }
 
             /* AR Transactions ***/
             &.transaction {
@@ -481,17 +482,14 @@ table {
                      
             /* Rooms ***/
             &.room {
-                position: relative;
-                line-height: 10px;
-                border-bottom: 1px solid @grey2;
-
                 .check { .hide; }
 
-                .data {
+                .room-info {
                     width: 20%;
                     .pull-left;
 
                     h2 { 
+                        margin: 0;
                         &.out { color: @grey3; }
                     }
 
@@ -529,15 +527,21 @@ table {
                     .service-status {  color: @grey3; }
                 }
 
+                .guest-image,
+                .icon-queued,
+                .show-vacant { .pull-right; }
+
+                .guest-image {
+                    .show;
+                    .square(20px);
+                }
+
                 .show-vacant { 
                     text-align: right;
                     line-height: 20px; 
                     width: 10%;
-                    .pull-right;
                 }
-
-                .icon-queued { .pull-right; }
-            } 
+            }  
 
             /* Commisions ***/
             &.commision {
@@ -1892,6 +1896,10 @@ table {
 
                                 &:first-child { margin-left: 0; }
                                 &:last-child { margin-right: 0; }
+                            }
+
+                            &.accompany {
+                                white-space: normal;
                             }
                         }
                     }
