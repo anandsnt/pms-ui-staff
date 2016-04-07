@@ -3,9 +3,9 @@
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
             <span class="icons icon-close invert"></span>
         </button>
-
-        <span class="h2 message">Assign</span>
-
+ 
+        <span class="h2 message" ng-show="!selectedAction.assigned_to.name">Assign</span>
+        <span class="h2 message"ng-show="!!selectedAction.assigned_to.name">Re-Assign</span>
         <div class="entry full-width">
             <label for="department">Assign to Department</label>
             <div class="select">
@@ -21,8 +21,11 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="button grey" ng-class="{'brand-colors': selectedAction.department}" ng-click="updateAction()"
+            <button type="button" ng-show="!selectedAction.assigned_to.name" class="button grey" ng-class="{'brand-colors': selectedAction.department}" ng-click="updateAction()"
                     ng-disabled="!selectedAction.department">Assign
+            </button>
+            <button type="button" ng-show="!!selectedAction.assigned_to.name" class="button grey" ng-class="{'brand-colors': selectedAction.department}" ng-click="updateAction()"
+                    ng-disabled="!selectedAction.department">Re-Assign
             </button>
             <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
         </div>
