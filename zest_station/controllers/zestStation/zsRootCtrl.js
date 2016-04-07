@@ -10,7 +10,20 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.oosKey = 'snt_zs_workstation.in_oos';
         $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
-        
+    
+
+    /**
+     * to run angular digest loop,
+     * will check if it is not running
+     * return - None
+     */
+    $scope.runDigestCycle = function() {
+        if (!$scope.$$phase) {
+            $scope.$digest();
+        } else {
+            return;
+        }
+    };    
         
     $translate.use('EN_snt');  
 	/**
