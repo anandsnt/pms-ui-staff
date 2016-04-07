@@ -33,6 +33,15 @@ this.initScreenKeyboardListener = function(from, id, show){
                 shift = '';
             }
             
+            var applyKeyboardInput = function(){
+                    if (from === 'login'){//fixes an issue where data values are not set from virtual keyboard
+                        if (angular.element($('#'+id)).scope()){
+                            angular.element($('#'+id)).scope().data[id] = $('#'+id).val();
+                        }
+                    }
+                };
+            
+            
             var keyboardOptions = {
                 language: ['love'],
                 rtl: false,
@@ -209,6 +218,7 @@ this.initScreenKeyboardListener = function(from, id, show){
                   }
                 },
 
+                
                 initialized: function(e, keyboard, el) {
                 },
                 beforeVisible: function(e, keyboard, el) {
@@ -216,18 +226,17 @@ this.initScreenKeyboardListener = function(from, id, show){
                 visible: function(e, keyboard, el) {
                 },
                 change: function(e, keyboard, el) {
-                    if (from === 'login'){//fixes an issue where data values are not set from virtual keyboard
-                        if (angular.element($('#'+id)).scope()){
-                            angular.element($('#'+id)).scope().data[id] = $('#'+id).val();
-                        }
-                    }
+                    
                 },
                 beforeClose: function(e, keyboard, el, accepted) {
+                    applyKeyboardInput();
                 },
                 accepted: function(e, keyboard, el) {
+                    applyKeyboardInput();
                 },
                 inactive: function(e, keyboard, el) {},
                 canceled: function(e, keyboard, el) {
+                    applyKeyboardInput();
                 },
                 restricted: function(e, keyboard, el) {
                 },
