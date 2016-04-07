@@ -1155,7 +1155,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			if (!secondary.showDays) {
-				fetchTaxRateAddonMeta(secondary.rateId || secondary.forRate, function() {
+				fetchTaxRateAddonMeta(secondary.forRate || secondary.id, function() {
 					computeDetails(secondary, toggle);
 				});
 			} else {
