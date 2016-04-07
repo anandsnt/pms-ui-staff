@@ -1154,16 +1154,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				return;
 			}
 
-			if (!secondary.showDays) {
+			// NOTE: Total is computed and added to the secondary object ONLY on the first expansion
+			if (!secondary.showDays && !secondary.total) {
 				fetchTaxRateAddonMeta(secondary.forRate || secondary.id, function() {
 					computeDetails(secondary, toggle);
 				});
 			} else {
-				if (!secondary.showDays) {
-					computeDetails(secondary, toggle);
-				} else {
-					$timeout(toggle, 300);
-				}
+				$timeout(toggle, 300);
 			}
 		};
 
