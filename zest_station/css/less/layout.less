@@ -1011,17 +1011,23 @@
             
             
     }
-    #popup-overlay {
+   #popup-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
+        top: 100%;
+        left: 100%;
         background: rgba(0,0,0,0.5);
         z-index: 8000;
         opacity: 0;
+        .hide();
         .square(100%);
         .transition();
 
-        &.open { opacity: 1; }
+        &.open { 
+            opacity: 1;
+            top: 0;
+            left: 0;
+            .show();
+        }
     }
     
    
