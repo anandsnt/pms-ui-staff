@@ -46,11 +46,11 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
             });
             return deferred.promise;
         };
-        this.fetchUpsellSetup = function() {
+        this.updateReservationArrivalTime = function(params) {
             var deferred = $q.defer(),
-                url = 'api/early_checkin_setups/get_setup.json';
+                url = 'api/reservations/' + params.reservation_id + '/update_stay_details';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
