@@ -4,6 +4,6 @@
 		<strong ng-show = "required=='yes'">*</strong>
 	</label>
 
-	<input type="{{inputtype?inputtype:'text'}}" value="{{value}}" ng-model="value" placeholder="{{placeholder}}" id="{{id}}" name="{{name}}" ng-readonly="{{readonly=='yes'}}" ng-disabled="disabled" ng-maxlength="{{maxlength>0?maxlength:''}}" maxlength="{{maxlength>0?maxlength:''}}">
+	<input type="{{inputtype?inputtype:'text'}}" value="{{value}}" ng-model="value" placeholder="{{placeholder}}" id="{{id}}" name="{{name}}" ng-readonly="{{readonly=='yes'}}" ng-disabled="disabled" ng-maxlength="{{maxlength>0?maxlength:''}}" maxlength="{{maxlength>0?maxlength:''}}" autocomplete="off">
 
 </div>
