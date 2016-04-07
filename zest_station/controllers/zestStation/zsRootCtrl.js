@@ -1034,6 +1034,9 @@ sntZestStation.controller('zsRootCtrl', [
                     $state.go('zest_station.error_page');
                 };
             }
+            else{
+                $scope.zestStationData.keyCardInserted =  false;
+            }
         } else if (response.Command === 'cmd_capture_key_card') {
             if (response.ResponseCode === 0) {
                 $scope.zestStationData.keyCaptureDone = true;
