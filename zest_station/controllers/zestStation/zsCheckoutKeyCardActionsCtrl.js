@@ -103,7 +103,9 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			//check if websocket is opened, else open
 			//
 			console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
-			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET') : "";
+			//($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? 
+			//even if status says it open, it throwing error once key is written
+			$scope.$emit('CONNECT_WEBSOCKET');
 		}();
 
 		/** 
