@@ -13,6 +13,13 @@ login.config([
 			controller: 'loginCtrl',
 			title: 'Login'
 		});
+                
+		$stateProvider.state('stationlogin', {
+			url: '/stationlogin',
+			templateUrl: '/assets/partials/stationLogin.html',
+			controller: 'stationLoginCtrl',
+			title: 'Zest Station Login'
+		});
 		$stateProvider.state('resetpassword', {
 			url: '/reset/:token/:notifications',
 			templateUrl: '/assets/partials/reset.html',
