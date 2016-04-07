@@ -78,10 +78,8 @@
                                         <td class="guests">
                                             <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span>
                                         </td>
-                                        <td class="guests">
-                                            <span ng-repeat="guest in item4.accompanying_guests">
-                                                {{ guest }}<span ng-if="!$last">&#8226;</span>
-                                            </span>
+                                        <td class="guests accompany">
+                                            <span>{{ item4.accompanying_guests.join(', ') }}</span>
                                         </td>
                                         <td>
                                             {{ item4.price | currency:currencySymbol:2 }}
