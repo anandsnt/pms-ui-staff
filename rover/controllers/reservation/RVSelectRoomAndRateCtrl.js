@@ -729,7 +729,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			 * @param  {Function} callback [description]
 			 * @return {[type]}            [description]
 			 */
-			fetchTaxRateAddonMeta = function(callback) {
+			fetchTaxRateAddonMeta = function(rateId, callback) {
 				if (!callback) {
 					callback = function() {
 						console.log('No call back for tax and rate addon meta fetching');
@@ -738,11 +738,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				$scope.invokeApi(RVReservationBaseSearchSrv.fetchTaxRateAddonMeta, {
 					from_date: ARRIVAL_DATE,
-					to_date: DEPARTURE_DATE
+					to_date: DEPARTURE_DATE,
+					rate_id: rateId
 				}, function(response) {
 					$scope.stateCheck.taxInfo = true;
 					RVReservationStateService.metaData.taxDetails = angular.copy(response.taxInfo);
-					RVReservationStateService.metaData.rateAddons = angular.copy(response.rateAddons)
+					RVReservationStateService.updateRateAddonsMeta(response.rateAddons);
 					callback();
 					$scope.$emit('hideLoader');
 				});
@@ -1153,8 +1154,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				return;
 			}
 
-			if (!secondary.showDays && $scope.stateCheck.taxInfo === null) {
-				fetchTaxRateAddonMeta(function() {
+			if (!secondary.showDays) {
+				fetchTaxRateAddonMeta(secondary.rateId || secondary.forRate, function() {
 					computeDetails(secondary, toggle);
 				});
 			} else {
@@ -1264,7 +1265,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			// Load Meta Data on the first call to this method if it hasn't been loaded yet
 			if (!afterFetch) {
-				fetchTaxRateAddonMeta(function() {
+				fetchTaxRateAddonMeta(rateId, function() {
 					computeDetails(secondary, function() {
 						$scope.handleBooking(roomId, rateId, event, flags, true);
 					});
