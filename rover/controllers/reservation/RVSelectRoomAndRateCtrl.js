@@ -1,6 +1,6 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', 'rateAddons', '$filter', 'RVRoomRatesSrv',
-	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, rateAddons, $filter, RVRoomRatesSrv) {
+	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv',
+	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv) {
 
 		$scope.stateCheck = {
 			pagination: {
@@ -50,7 +50,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			showLessRooms: !$stateParams.room_type_id,
 			maxRoomsToShow: 0,
 			selectedRoomType: -1,
-			addonLookUp: {},
 			stayDates: {}
 		};
 
@@ -255,10 +254,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						$scope.stateCheck.baseInfo.roomTypes = response.results;
 					}
 
-					$scope.stateCheck.addonLookUp = RVReservationStateService.getAddonAmounts(rateAddons,
-						ARRIVAL_DATE,
-						DEPARTURE_DATE,
-						ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 					generateRoomTypeGrid();
 					$scope.stateCheck.showLessRooms = false;
 					$scope.$emit('hideLoader');
@@ -615,12 +610,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.activeView = 'ROOM_TYPE';
 				}
 
-				// Compute costs for the rate addons initially for each day
-				$scope.stateCheck.addonLookUp = RVReservationStateService.getAddonAmounts(rateAddons,
-					ARRIVAL_DATE,
-					DEPARTURE_DATE,
-					ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
-
 				if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
 					$scope.stateCheck.promotionValidity = evaluatePromotion();
 				}
@@ -747,13 +736,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					};
 				}
 
-				$scope.invokeApi(RVReservationBaseSearchSrv.fetchTaxInformation, {
+				$scope.invokeApi(RVReservationBaseSearchSrv.fetchTaxRateAddonMeta, {
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE
 				}, function(response) {
 					$scope.stateCheck.taxInfo = true;
-					RVReservationStateService.metaData.taxDetails = angular.copy(response);
-					RVReservationStateService.metaData.rateAddons = angular.copy(rateAddons); // the rate addons are resolved when we come inside this screen
+					RVReservationStateService.metaData.taxDetails = angular.copy(response.taxInfo);
+					RVReservationStateService.metaData.rateAddons = angular.copy(response.rateAddons)
 					callback();
 					$scope.$emit('hideLoader');
 				});

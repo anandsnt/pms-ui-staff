@@ -446,10 +446,10 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             that['meta'] = {};
 
             promises.push(that.fetchTaxInformation().then(function(response) {
-                that['meta']['tax-info'] = response;
+                that['meta']['taxInfo'] = response;
             }));
             promises.push(that.fetchAddonsForRates(params).then(function(response) {
-                that['meta']['rate-addons'] = response;
+                that['meta']['rateAddons'] = response;
             }));
 
             $q.all(promises).then(function() {
