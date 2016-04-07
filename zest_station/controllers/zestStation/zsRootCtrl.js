@@ -26,7 +26,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.clickedOnCloseButton = function() {
         //if key card was inserted we need to eject that
-        if($scope.zestStationData.keyCardInserted){
+        if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
             $scope.socketOperator.EjectKeyCard();
         };
 		$state.go ('zest_station.home');
@@ -230,6 +230,7 @@ sntZestStation.controller('zsRootCtrl', [
                         back: $scope.iconsPath+'/back.svg',
                         close: $scope.iconsPath+'/close.svg',
                         qr: $scope.iconsPath+'/qr-scan.svg',
+                        qr_noarrow: $scope.iconsPath+'/qr-scan_noarrow.svg',
                         createkey: $scope.iconsPath+'/create-key.svg',
                         logo: $scope.iconsPath+'/print_logo.svg',
                         watch: $scope.iconsPath+'/watch.svg'
@@ -844,8 +845,16 @@ sntZestStation.controller('zsRootCtrl', [
                         console.log('iframe focus')
                     });
             };
-            
+            $scope.hideKeyboardIfUp = function(){
+                var focused = $('#'+$scope.lastKeyboardId);
+                if ($(focused)){
+                    if ($(focused).getkeyboard()){
+                        $(focused).getkeyboard().accept(true);
+                    }
+                }
+            };
             $scope.showOnScreenKeyboard = function(id) {
+                $scope.lastKeyboardId = id;
                //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in document.documentElement;
                 var shouldShowKeyboard = (typeof chrome) &&
@@ -871,6 +880,8 @@ sntZestStation.controller('zsRootCtrl', [
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
+                
+                $scope.hideKeyboardIfUp();
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
                 }
@@ -990,8 +1001,8 @@ sntZestStation.controller('zsRootCtrl', [
             msg = response.Message;
         // to delete after QA pass
         console.info("Websocket:-> uid=" + response.UID);
-        console.info("Websocket:->"+cmd);
-        console.info("Websocket:->"+msg);
+        console.info("Websocket: Command ->"+cmd);
+        console.info("Websocket: msg ->"+msg);
         console.info("Websocket:-> response code:" + response.ResponseCode);
 
         if (response.Command === 'cmd_insert_key_card') {
@@ -1012,8 +1023,12 @@ sntZestStation.controller('zsRootCtrl', [
             }
         } else if (response.Command === 'cmd_capture_key_card') {
             if (response.ResponseCode === 0) {
-                //capture success
+                $scope.zestStationData.keyCaptureDone = true;
             }
+            else{
+                //capture failed
+                $state.go('zest_station.error_page');
+            };
         };
     };
     var socketOpenedFailed = function() {

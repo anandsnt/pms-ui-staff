@@ -236,6 +236,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     *   2.enter room number
     */
     $scope.goToNextForCheckout = function(){
+        $scope.hideKeyboardIfUp();
         /*
          * 1) Enter Last name (saves to state.input.last)
          * 2) Enter Room number (saves to state.input.room)
@@ -336,6 +337,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.fetchReservations(options);
     };
     $scope.goToNext =  function(){
+        $scope.hideKeyboardIfUp();
         if($scope.isInCheckoutMode()){//checkout
                 $scope.goToNextForCheckout();
 
@@ -436,18 +438,20 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
         
     $scope.setDueInOut = function(params){
-        if ($scope.isInCheckinMode()) {
-                params.due_in = true;
-        }
+        if (params){
+            if ($scope.isInCheckinMode()) {
+                    params.due_in = true;
+            }
 
-        else if ($scope.isInCheckoutMode()) {
-                params.due_in = true; // need to change to due_out
-        }
+            else if ($scope.isInCheckoutMode()) {
+                    params.due_in = true; // need to change to due_out
+            }
 
-        else if ($scope.isInPickupKeyMode()) {
-                params.due_in = true;
-        }
-        return params;
+            else if ($scope.isInPickupKeyMode()) {
+                    params.due_in = true;
+            }
+            return params;
+        };
     };
     
     $scope.scanQRCode = function(){

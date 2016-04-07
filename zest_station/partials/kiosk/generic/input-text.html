@@ -15,7 +15,8 @@
             <div class="entry input">
                 <input type="{{inputType}}" 
                     id="input_text"
-                    ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')"
+                    ng-focus="showOnScreenKeyboard('input_text')" 
+                    ng-click="showOnScreenKeyboard('input_text')"
                     ng-hide='passwordField' 
                     class="start-focused" 
                     ng-keydown="resetTime()" 
@@ -25,7 +26,8 @@
                     value="" touch-press />
                 <input type="password"      
                     id="password_text"
-                    ng-focus="showOnScreenKeyboard('password_text')" ng-click="showOnScreenKeyboard('password_text')"
+                    ng-focus="showOnScreenKeyboard('password_text')" 
+                    ng-click="showOnScreenKeyboard('password_text')"
                     ng-show='passwordField' 
                     class="start-focused" 
                     ng-keydown="resetTime()" 
