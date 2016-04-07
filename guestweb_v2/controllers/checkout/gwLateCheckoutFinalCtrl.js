@@ -1,27 +1,30 @@
 /**
  *	This Controller is for late checkout final page
  */
-sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope', '$state', '$controller', 'GwWebSrv', '$timeout', 'GwCheckoutSrv',
-	function($scope, $rootScope, $state, $controller, GwWebSrv, $timeout, GwCheckoutSrv) {
+sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope', '$state', '$stateParams', '$controller', 'GwWebSrv', '$timeout', 'GwCheckoutSrv',
+	function($scope, $rootScope, $state, $stateParams, $controller, GwWebSrv, $timeout, GwCheckoutSrv) {
 
 
 		$scope.lateCheckOut = {
-			"time": 12,
-			"ap": "AM",
-			"amount": 334
+			time: $stateParams.time,
+			amount: $stateParams.amount,
+			ap: $stateParams.ap
 		};
-		//TODO : remove unwanted injections like $timeout
+
 		$controller('BaseController', {
 			$scope: $scope
 		});
+
 		var init = function() {
 			var screenIdentifier = "LATE_CHECKOUT_FINAL";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-			$scope.screenCMSDetails.description = $scope.screenCMSDetails.description.replace("@checkout-time", $scope.lateCheckOut.time + $scope.lateCheckOut.ap);
-			$scope.screenCMSDetails.description = $scope.screenCMSDetails.description.replace("@amount", $rootScope.currencySymbol + $scope.lateCheckOut.amount.toString());
+			// replace the string @<what-ever> with corresponding scope variable
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@checkout-time", $scope.lateCheckOut.time + $scope.lateCheckOut.ap);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@amount", $rootScope.currencySymbol + $scope.lateCheckOut.amount.toString());
 		}();
 
 		$scope.$emit('showLoader');
+		// for a better transition from previous screen add small timeout
 		$timeout(function() {
 			$scope.$emit('hideLoader');
 			$scope.isOperationCompleted = true;

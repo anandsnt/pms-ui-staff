@@ -123,4 +123,22 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
 		});
 
+		$stateProvider.state('admin.serviceProviders', {
+			templateUrl: '/assets/partials/serviceProviders/adServiceProviderList.html',
+			controller: 'ADServiceProviderListCtrl',
+			url : '/serviceProviders'
+		});
+
+		$stateProvider.state('admin.sntserviceproviderdetails', {
+			templateUrl: '/assets/partials/serviceProviders/adServiceProviderDetails.html',
+			controller: 'ADServiceProviderDetailsCtrl',
+			url : '/serviceproviderdetails/:action/:id'
+		});
+
+		$stateProvider.state('admin.autoSyncInventory', {
+			templateUrl: '/assets/partials/tools/adTools.html',
+			controller: 'ADToolsCtrl',
+			url : '/adTools'
+		});
+
 });

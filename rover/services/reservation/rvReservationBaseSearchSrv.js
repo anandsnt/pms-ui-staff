@@ -24,6 +24,31 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
 
+
+        //This method returns the default view chosen in the Admin/Reservation/Reservation Settings
+        this.getRoomRatesDefaultView = function(){
+            var view = "ROOM_TYPE";
+            if (that.reservation.settings && that.reservation.settings.default_rate_display_name){
+                if (that.reservation.settings.default_rate_display_name === 'Recommended') {
+                    view = "RECOMMENDED";
+                } else if (that.reservation.settings.default_rate_display_name === 'By Rate') {
+                    view = "RATE";
+                }
+            }
+            return view;
+        };
+
+        this.getRoomTypeLevel = function(roomTypeId) {
+            var level = -1;
+            if(!!that.reservation.roomTypes){
+                var roomTypeDetails = _.find(that.reservation.roomTypes,{
+                    id: roomTypeId
+                });
+                level = roomTypeDetails.level;
+            }
+            return level;
+        }
+
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
 
@@ -39,7 +64,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             };
 
             that.fetchRoomTypes = function() {
-                var url = 'api/room_types.json?exclude_pseudo=true';
+                var url = 'api/room_types.json?exclude_pseudo=true&exclude_suite=true&per_page=100';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
                     that.fetchBussinessDate();
@@ -405,7 +430,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 var houseAvailbility = {};
                 _.each(response.results, function(availability) {
-                    houseAvailbility[availability.date] = availability.house.availability;
+                    houseAvailbility[availability.date] = availability.availability;
                 })
                 deferred.resolve(houseAvailbility);
             }, function(data) {

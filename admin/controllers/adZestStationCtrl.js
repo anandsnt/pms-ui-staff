@@ -1,92 +1,60 @@
-admin.controller('ADZestStationCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter){
-	BaseCtrl.call(this, $scope);
-	$scope.$emit("changedSelectedMenu", 1);
-        
-        $scope.data = {};
-        
-        $scope.updateField = function(field, value, old){
-            if (value !== old){
-                $scope.updateFieldColor(field, value);
-            }
-            if (typeof value === typeof 'string'){
-                if (value.indexOf('#')){//show has in field, but dont send when saving
-                    value = '#'+value;
-                }
-            } else {
-                value = '';
-            }
-            $scope.updateFieldColor(field, value);
-            $scope.data[field] = value;
-            
-        };
-        $scope.$watch('zestSettings.colors.text',function(value, old){$scope.updateField('text',value, old)});
-        $scope.$watch('zestSettings.colors.background',function(value, old){$scope.updateField('background',value, old)});
-        $scope.$watch('zestSettings.colors.button',function(value, old){$scope.updateField('button',value, old)});
-        $scope.$watch('zestSettings.colors.transparent',function(value, old){$scope.updateField('transparent',value, old)});
-        $scope.$watch('zestSettings.colors.input_field_background',function(value, old){$scope.updateField('input_field_background',value, old)});
-        $scope.$watch('zestSettings.colors.header_icons',function(value, old){$scope.updateField('header_icons',value, old)});
-        $scope.$watch('zestSettings.colors.header_icons_pressed',function(value, old){$scope.updateField('header_icons_pressed',value, old)});
-        
-        $scope.updateFieldColor = function(field_id){
-            //function to update color preview inline
-            $('#'+field_id+' > div > input').css('border-color', $scope.data[field_id]);
-        };
-        
-        $scope.fetchSettings = function(){
-            var fetchSuccess = function(data){
-                if (data.colors){
-                    $scope.data = data.colors;
-                }
-                $scope.zestSettings = data;
-                $scope.$emit('hideLoader');
-            };
-            $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
-        };
-        $scope.saveSettings = function(){
-            var saveSuccess = function(){
-                $scope.successMessage = 'Success';
-                $scope.$emit('hideLoader');
-            };
-            var saveFailed = function(response){
-                $scope.errorMessage = 'Failed';
-                $scope.$emit('hideLoader');
-            };
-            var hasTagsRemoved = function(str){
-                var regexp = new RegExp('#','g');
-                str = str.replace(regexp, '');
-                return str;
-            };
-            
-            var data = $scope.zestSettings.colors;
-            var colorData = {};
-             colorData.text = hasTagsRemoved(data.text);
-             colorData.background = hasTagsRemoved(data.background);
-             colorData.button = hasTagsRemoved(data.button);
-             colorData.transparent = hasTagsRemoved(data.transparent);
-             colorData.input_field_background = hasTagsRemoved(data.input_field_background);
-             colorData.header_icons = hasTagsRemoved(data.header_icons);
-             colorData.header_icons_pressed = hasTagsRemoved(data.header_icons_pressed);
-            var dataToSend = {
-                                'kiosk':
-                                        {
-                                            "colors":colorData,
-                                            "home_screen":$scope.zestSettings.home_screen,
-                                            "guest_bill":$scope.zestSettings.guest_bill,
-                                            "registration_card":$scope.zestSettings.registration_card,
-                                            "reg_card_text":$scope.zestSettings.reg_card_text,
-                                            "show_room_number":$scope.zestSettings.show_room_number,
-                                            "enforce_deposit":$scope.zestSettings.enforce_deposit
-                                        }
 
-                             };
-            $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
-        };
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+    BaseCtrl.call(this, $scope);
+    $scope.$emit("changedSelectedMenu", 10);
+
+    $scope.data = {};
+    var zestLanguageDataCopy = {};
+
+
+    var fetchZestStationData =  function(){
         
-        $scope.init = function(){
-            $scope.fetchSettings();
+         var fetchSuccess = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.zestStationData = data;
         };
-        
-        $scope.init();
+        $scope.invokeApi(ADZestStationSrv.fetchZestStationData, {}, fetchSuccess);
+    };
     
+    var fetchSettings = function () {
+        var fetchSuccess = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.zestSettings = data;
+            fetchZestStationData();
+        };
+        $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
+    };
+    var checkIfFileWasAdded = function(file){
+        return (!!file && file.length > 0) ? true : false;
+    };
+
+    var setUpTranslationFilesStatus = function() {
+        zestLanguageDataCopy = angular.copy($scope.zestSettings.zest_lang);
+        checkIfFileWasAdded(zestLanguageDataCopy.english_translations_file) ? zestLanguageDataCopy.english_translations_file_updated = true : "";
+        checkIfFileWasAdded(zestLanguageDataCopy.french_translations_file)  ? zestLanguageDataCopy.french_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.spanish_translations_file) ? zestLanguageDataCopy.spanish_translations_file_updated = true : "" ;
+        checkIfFileWasAdded(zestLanguageDataCopy.german_translations_file)  ? zestLanguageDataCopy.german_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.italian_translations_file) ? zestLanguageDataCopy.italian_translations_file_updated = true :"";
+        checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : "";
+    };
+
+    $scope.saveSettings = function() {
+        var saveSuccess = function() {
+            $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
+            $scope.successMessage = 'Success';
+            $scope.$emit('hideLoader');
+        };
+        setUpTranslationFilesStatus();
+        var dataToSend = {
+            'kiosk': $scope.zestSettings
+        };
+        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
+    };
+    $scope.init = function() {
+        fetchSettings();
+    };
+
+    $scope.init();
+
 
 }]);

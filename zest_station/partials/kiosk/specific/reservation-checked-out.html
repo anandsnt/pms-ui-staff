@@ -8,7 +8,9 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='printBill()'>
-                        <div ng-include="'/assets/zest_station/css/icons/print.svg'"></div>
+                        <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
+                        <div ng-include="icons.url.print"></div>
+                        
                     </button>
                     {{'PRINT_BILL' |translate}}
                 </li>
@@ -17,7 +19,8 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='clickedNoThanks()'>
-                        <div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div>
+                        <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
+                        <div ng-include="icons.url.noprint"></div>
                     </button>
                     {{'NO_THX' |translate}}
                 </li>
@@ -33,7 +36,14 @@
         <h1>{{'TYPE_EMAIL' |translate}}</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input class="start-focused" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
+                <input class="start-focused" 
+                    id="email_text"
+                    ng-focus="showOnScreenKeyboard('email_text')" ng-click="showOnScreenKeyboard('email_text')"
+                       type="text"
+                       ng-keydown="resetTime()" 
+                       ng-model="email" 
+                       placeholder=""
+                       enter-press="saveEmail()" value="" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' |translate}}</button>
@@ -49,7 +59,8 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reTypeEmail()'>
-                         <div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div>
+                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     {{'RE_TYPE' |translate}}
                     <span>{{email}}</span>
@@ -65,7 +76,7 @@
 <!-- Final view-->
 <section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
     <div id="content">
-        <h1>{{'SEE_YOU' |translate}}</h1>
+        <h1>{{'END_THANKS' |translate}}</h1>
         <h3 ng-show="emailOpted && !emailSkipped && !emailError">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
         <h3 ng-show="emailOpted && !emailSkipped && emailError">{{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
         <h3 ng-show="printOpted">{{'BILL_PRINTED_BELOW' |translate}}</h3>

@@ -118,38 +118,73 @@
                 <div class="reservation-completed">
                     <h2 ng-hide="viewState.identifier == 'UPDATED'" translate>RESERVATION_CREATED</h2>
                     <h2 ng-show="viewState.identifier == 'UPDATED'" translate>RESERVATION_CHANGED</h2>
-                    <label translate ng-show="!reservationStatus.confirmed && sendConfirmationLetter">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
-                    <div class="entry full-width" ng-show="!reservationStatus.confirmed && sendConfirmationLetter">
-                        
+                    <p translate ng-show="!reservationStatus.confirmed && sendConfirmationLetter">SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</p>
+
+                    <span ng-show="!reservationStatus.confirmed && sendConfirmationLetter">
                         <div class="entry radio-check">
+                            <label class="checkbox inline">
+                                <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestPrimaryEmailChecked}"></span>
+                                <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestPrimaryEmailChecked"/>
+                                {{ 'GUEST_EMAIL_ADDRESS' | translate }}
+                            </label>
+                            <input name="email" id="email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()" ng-change="watchEmailUpdate()" type="email" />
+                        </div>
+
+                        <div class="entry radio-check">
+                            <label class="checkbox inline">
+                                <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestAdditionalEmailChecked}"></span>
+                                <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
+                                {{ 'ADDITIONAL_EMAIL_ADDRESS' | translate }}
+                            </label>
+                            <input name="email" id="email" ng-model="otherData.additionalEmail" type="email" />
+                        </div>
+
+                        <div class="entry full-width break-top" ng-show="reservationData.languageData.show_language_field">
+                            <label for="email-language" translate>GUEST_LANGUAGE</label>
+                            <div class="select">
+                                <select id="email-language" ng-model="reservationData.languageData.selected_language_code">
+                                    <option value="" translate>SELECT_LANGUAGE</option>
+                                    <option value="{{item.code}}" ng-repeat="item in reservationData.languageData.languages"
+                                        ng-selected="item.code === reservationData.languageData.selected_language_code"
+                                        ng-if="item.is_show_on_guest_card">{{item.language}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="entry radio-check break-top">
                             <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationData.hide_rates }">
                                 <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.hide_rates }"></span>
                                 <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
-                                {{ 'DONT_PRINT_RATE' | translate }}
+                                    {{ 'DONT_PRINT_RATE' | translate }}
+                            </label>
+                        </div>
+
+                        <div class="entry radio-check break-bottom" ng-show="reservationData.is_custom_text_per_reservation">
+                            <label for="custom-text" class="checkbox inline" ng-class="{ 'checked':reservationData.enable_confirmation_custom_text }">
+                                <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationData.enable_confirmation_custom_text }"></span>
+                                <input id="custom-text" value="{value}" type="checkbox" ng-click="enableConfirmationCustomText();"/>
+                                {{ 'CONF_CUSTOM_TEXT' | translate }}
                             </label>
                         </div>
                         
-                        <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
-                        <label class="checkbox inline">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestPrimaryEmailChecked}"></span>
-                            <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestPrimaryEmailChecked"/>
-                            <span>&nbsp;</span>
-                        </label>
-                        <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()" ng-change="watchEmailUpdate()">
+                        <div class="entry full-width" ng-show="reservationData.enable_confirmation_custom_text">
+                            <label for="email-title" translate>TITLE</label>
+                            <input id="email-title" ng-model="reservationData.confirmation_custom_title" type="text" />
+                        </div>
 
-                        <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
-                        <label class="checkbox inline">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestAdditionalEmailChecked}"></span>
-                            <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
-                            <span>&nbsp;</span>
-                        </label>
-                        <input class="summary_email" ng-model="otherData.additionalEmail">  
+                        <div class="entry full-width" ng-show="reservationData.enable_confirmation_custom_text">
+                            <label for="email-text" translate>TEXT</label>
+                            <textarea id="email-text" ng-model="reservationData.confirmation_custom_text" rows="3"></textarea>
+                        </div>
 
-                    </div>
+                    </span>
+
                     <div class="actions"  ng-show="!reservationStatus.confirmed">
-                        <button type="button" class="button blue"
+                        <button type="button" class="button blue with-icon"
                             ng-click="sendConfirmationClicked(payment_info.email.$valid)"
-                            translate>CONFIRM_RESERVATION
+                            translate>
+                            <span class="icons icon-email"></span>
+                            {{ 'CONFIRM_RESERVATION' | translate }}
                         </button>
                         <button type="button" class="button blue with-icon"
                             ng-show="sendConfirmationLetter && printConfirmationLetter"

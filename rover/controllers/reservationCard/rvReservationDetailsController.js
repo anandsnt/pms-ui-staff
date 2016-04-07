@@ -1,5 +1,29 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rvPermissionSrv', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv', 'baseData', '$timeout', 'paymentTypes', 'reseravationDepositData', 'dateFilter', 'RVReservationStateService', 'RVReservationBaseSearchSrv', 'RVReservationPackageSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
+sntRover.controller('reservationDetailsController',
+	['$scope',
+	'$rootScope',
+	'rvPermissionSrv',
+	'RVReservationCardSrv',
+	'RVCCAuthorizationSrv',
+	'$stateParams',
+	'reservationListData',
+	'reservationDetails',
+	'ngDialog',
+	'RVSaveWakeupTimeSrv',
+	'$filter',
+	'RVNewsPaperPreferenceSrv',
+	'RVLoyaltyProgramSrv',
+	'$state', 'RVSearchSrv',
+	'$vault',
+	'RVReservationSummarySrv',
+	'baseData',
+	'$timeout',
+	'paymentTypes',
+	'reseravationDepositData',
+	'dateFilter',
+	'RVReservationStateService',
+	'RVReservationBaseSearchSrv',
+	'RVReservationPackageSrv',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -27,7 +51,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			setNavigationBookMark();
 		}
 
-		if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
+        if($scope.previousState.name === "rover.actionsManager"){
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'ACTIONS MANAGER',
+                name: 'rover.actionsManager',
+                param: {
+                    restore: true
+                }
+            };
+        }
+		else if ($scope.previousState.name === "rover.groups.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.groups.config') {
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
 			}
@@ -227,8 +261,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			}
 		);
 
-		$scope.shouldShowGuestDetails = false;
+	//  showing Guest button arrow as part of CICO-25774
+
+		//$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
+
 
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
@@ -612,7 +649,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
-				group_id: $scope.$parent.reservationData.group.id
+				group_id: $scope.$parent.reservationData.group.id,
+				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
 		}
 
@@ -1034,9 +1074,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 		});
 
 		// CICO-17067 PMS: Rover - Stay Card: Add manual authorization
+		// CICO-24426 - multiple authorizations
 		$scope.authData = {
-			'authAmount': '',
-			'manualCCAuthPermission': true
+
+			'authAmount'			: '0.00',
+			'manualCCAuthPermission': true,
+			'billData' 				: [],
+			'selectedCardDetails' 	: 		// To keep the selected/active card details.
+				{
+					'name' 			: '',	// card - name
+					'number'		: '',	// card - number
+					'payment_id'	: '',	// card - payment method id
+					'last_auth_date': '',	// card - last autheticated date
+					'bill_no' 		: '',	// bill - number
+					'bill_balance'	: ''	// bill - balance amount
+				}
 		};
 
 		// Flag for CC auth permission
@@ -1044,14 +1096,71 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			return rvPermissionSrv.getPermissionValue('MANUAL_CC_AUTH');
 		};
 
+		/**
+		* Method to show Authentication popup.
+		* Fetching cards data before showing the popup.
+		*/
 		$scope.showAuthAmountPopUp = function() {
-			$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
-			$scope.authData.authAmount = "";
-			ngDialog.open({
-				template: '/assets/partials/reservation/rvManualAuthorizationAddAmount.html',
-				className: '',
-				scope: $scope
+
+			var fetchCreditCardAuthInfoSuccess = function( data ){
+				$scope.$emit('hideLoader');
+				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
+				$scope.authData.billData = data.bill_data;
+
+				if( $scope.authData.billData.length > 0 ){
+					// Show Multiple Credit card auth popup
+					ngDialog.open({
+						template		: '/assets/partials/authorization/rvManualAuthorizationPopup.html',
+						className		: '',
+						closeByEscape 	: false,
+						closeByDocument : false,
+						scope 			: $scope
+					});
+					// Default to select the first CC as active one.
+					$scope.selectCCforAuth(0);
+					// Handle scroller
+					var scrollerOptions = { preventDefault: false };
+   				    $scope.setScroller('cardsList', scrollerOptions);
+   				    $scope.refreshScroller('cardsList');
+				}
+				else{
+					console.warn("There should be atleast one credit card needed");
+				}
+			};
+
+			var fetchCreditCardAuthInfoFaliure = function( errorMessage ){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			};
+
+			var data = {
+				"reservation_id":$scope.reservationData.reservation_card.reservation_id
+			};
+
+			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
+		};
+
+		/**
+		* Method to hanlde each credit card click.
+		* @param {int} index of the selected card
+		*/
+		$scope.selectCCforAuth = function( index ){
+			var selectedCardData = $scope.authData.billData[index];
+			var selectedCardDetails = {
+				'name' 			: selectedCardData.card_name,
+				'number' 		: selectedCardData.card_number,
+				'payment_id' 	: selectedCardData.payment_method_id,
+				'last_auth_date': selectedCardData.last_authorization.date ? selectedCardData.last_authorization.date : '',
+				'bill_no' 		: selectedCardData.number,
+				'bill_balance'	: selectedCardData.balance ? parseFloat(selectedCardData.balance).toFixed(2) : 0.00
+			};
+
+			$scope.authData.selectedCardDetails = selectedCardDetails;
+
+			_.each($scope.authData.billData, function( card ) {
+				card.active = false;
 			});
+			$scope.authData.billData[index].active = true;
 		};
 
 		var authInProgress = function() {
@@ -1094,11 +1203,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 				authFailure();
 			};
 
-			var data = {
-				"payment_method_id": $scope.reservationData.reservation_card.payment_details.id,
-				"amount": $scope.authData.authAmount
+			var postData = {
+				"payment_method_id"	: $scope.authData.selectedCardDetails.payment_id,
+				"amount"			: $scope.authData.authAmount
 			};
-			$scope.invokeApi(RVReservationCardSrv.manualAuthorization, data, onAuthorizationSuccess, onAuthorizationFaliure);
+			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+		};
+
+		// To handle close/cancel button click after success/declined of auth process.
+		$scope.cancelButtonClick = function(){
+			$scope.showAuthAmountPopUp();
 		};
 
 		// To handle authorize button click on 'auth amount popup' ..
@@ -1110,7 +1224,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'rv
 			setTimeout(function() {
 
 				ngDialog.open({
-					template: '/assets/partials/reservation/rvManualAuthorizationProcess.html',
+					template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
 					className: '',
 					closeByDocument: false,
 					scope: $scope

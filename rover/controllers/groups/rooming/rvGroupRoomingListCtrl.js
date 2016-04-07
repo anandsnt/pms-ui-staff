@@ -1775,6 +1775,19 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 },
                 sucessCallback = function(data) {
                     $scope.$emit('hideLoader');
+
+                    // CICO-21803: filter selected reservations for print
+                    var selectedForPrint = _($scope.selected_reservations).pluck('id'),
+                        totalSelected    = selectedForPrint.length;
+
+                    data.group_reservations = _.map(data.group_reservations, function (reservation) {
+                        reservation.print = true;
+                        if (totalSelected > 0 && selectedForPrint.indexOf(reservation.id) < 0) {
+                            reservation.print = false;
+                        }
+                        return reservation;
+                    });
+
                     $scope.printRegCardData = data;
                     $scope.errorMessage = "";
 

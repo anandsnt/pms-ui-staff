@@ -73,7 +73,7 @@
                 <td colspan="4">Net Amount</td>
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.net_amount | number:2}}</td>
             </tr>
-            <tr ng-repeat="tax in printData.bill_transactions_info.tax_info">
+            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
                 <td colspan="4">{{tax.location}}</td>
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
             </tr>
@@ -96,6 +96,37 @@
         </tbody>
     </table>
 </div>
+
+<table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
+    <thead>
+        <tr>
+            <th class="text-align-left" translate>TAX_DESCRIPTION</th>
+            <th translate>GROSS</th>
+            <th translate>NET</th>
+            <th translate>TAX</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="item in printData.extended_tax_breakdown.details">
+            <td class="text-align-left">{{ item.description }}</td>
+            <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ item.net_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ item.tax_amount | number: precisonTwo }}</td>
+        </tr>
+
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td class="text-align-left" translate>TOTAL</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}</strong></td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}</td>
+        </tr>
+    </tfoot>           
+</table>
+
 <div class="invoice-footer" ng-show="!!printData.custom_text_footer">
     <!-- Don't ouput if footer is not defined -->
     <!-- Footer text hidden for now as not applicable -->

@@ -68,7 +68,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
-		
+
 		$stateProvider.state('admin.roomclasses', {
 			templateUrl: '/assets/partials/roomClass/adRoomClassList.html',
 			controller: 'ADRoomClassListCtrl',
@@ -123,7 +123,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADReservationTypeListController',
 			url : '/reservationtypes'
 		});
-                
+
 		$stateProvider.state('admin.interfaceMessages', {
 			templateUrl: '/assets/partials/interfaces/adInterfaceMessages.html',
 			controller: 'adExternalInterfaceCtrl',
@@ -512,7 +512,21 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',
-			url : '/stationary'
+			url : '/stationary',
+			resolve : {
+				availableGuestLanguages : function(ADTranslationSrv) {
+					return ADTranslationSrv.getGuestLanguages();
+				},
+				availableHoldStatus : function(ADHoldStatusSrv) {
+					return ADHoldStatusSrv.fetch();
+				}
+			}
+		});
+
+		$stateProvider.state('admin.languages', {
+			templateUrl: '/assets/partials/languages/adLanguages.html',
+			controller: 'ADLanguagesCtrl',
+			url : '/languages'
 		});
 
 		$stateProvider.state('admin.analyticsSetup', {
@@ -526,11 +540,30 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'adZestAddonSetupCtrl',
 			url : '/zestAddonSetup'
 		});
-                
 		$stateProvider.state('admin.zestStationConfig', {
 			templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
 			controller: 'ADZestStationCtrl',
 			url : '/zestStationConfig'
+		});
+		$stateProvider.state('admin.ZestStationCheckin', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',
+			controller: 'ADZestStationCheckInCtrl',
+			url : '/zestStationCheckin'
+		});
+		$stateProvider.state('admin.ZestStationCheckout', {
+			templateUrl: '/assets/partials/zestStation/adZestStationCheckout.html',
+			controller: 'ADZestStationCheckOutCtrl',
+			url : '/zestStationCheckout'
+		});
+		$stateProvider.state('admin.ZestStationColorsGraphics', {
+			templateUrl: '/assets/partials/zestStation/adZestStationColorsAndGraphics.html',
+			controller: 'ADZestStationColorsAndGraphicsCtrl',
+			url : '/zestStationColorsAndGraphics'
+		});
+		$stateProvider.state('admin.ZestStationPickUpKeys', {
+			templateUrl: '/assets/partials/zestStation/adZestStationPickUpKeys.html',
+			controller: 'ADZestStationPickUpKeysCtrl',
+			url : '/zestStationPickUpKeys'
 		});
 
 		$stateProvider.state('admin.emailBlacklist', {
@@ -546,6 +579,20 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve : {
 				invoiceSettingsData : function(ADInvoiceSettingsSrv) {
 					return ADInvoiceSettingsSrv.fetchInvoiceSettings();
+				}
+			}
+		});
+
+		$stateProvider.state('admin.translations', {
+			templateUrl: '/assets/partials/translation/adTranslation.html',
+			controller: 'ADTranslationCtrl',
+			url : '/translation',
+			resolve : {
+				availableLanguages : function(ADTranslationSrv) {
+					return ADTranslationSrv.getGuestLanguages();
+				},
+				menuDetails : function(ADTranslationSrv) {
+					return ADTranslationSrv.getMenuOptionDetails();
 				}
 			}
 		});

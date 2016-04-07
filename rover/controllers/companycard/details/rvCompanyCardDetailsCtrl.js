@@ -77,6 +77,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("refreshComissionsScroll");
 			}
+			if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
 
 			$scope.currentSelectedTab = tabToSwitch;
 		};
@@ -88,7 +91,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        if($rootScope.previousState.controller ==="rvAllotmentConfigurationCtrl")
 	        {
 	            $scope.searchBackButtonCaption = $filter('translate')('ALLOTMENTS');
-	        }else{
+	        }
+	        else if($stateParams.origin === 'AR_OVERVIEW'){
+	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
+	        }
+	        else{
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
@@ -200,6 +207,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$rootScope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
 			}
+			if (tabToSwitch === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
@@ -217,7 +227,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
-
 		};
 
 		$scope.$on('ARNumberChanged', function(e, data) {
@@ -305,6 +314,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			//taking a deep copy of copy of contact info. for handling save operation
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+			
+			//CICO-20567-Select default to AR Transactions Tab
+			if($stateParams.origin === 'AR_OVERVIEW'){
+				$scope.switchTabTo('', 'cc-ar-transactions');
+			}
 		};
 		/**
 		 * successcall back of commssion detail

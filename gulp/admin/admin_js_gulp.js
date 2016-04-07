@@ -3,7 +3,8 @@ module.exports = function(gulp, $, options){
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-	    adminJSMappingList 		= require("../../asset_list/js/admin/adminJsAssetList").getList(),
+		adminJsAssetList 		= "../../asset_list/js/admin/adminJsAssetList",
+	    adminJSMappingList 		= require(adminJsAssetList).getList(),
 	    ADMIN_JS_COMBINED_FILE  = 'admin.js',
 	    ADMIN_JS_MANIFEST_FILE  = "admin_js_manifest.json",
 		ADMIN_TEMPLATE_ROOT     = options['ADMIN_TEMPLATE_ROOT'],
@@ -59,6 +60,10 @@ module.exports = function(gulp, $, options){
 
 	gulp.task('admin-generate-mapping-list-dev', ['admin-copy-js-files'], function(){
 		var glob 		= require('glob-all');
+
+		delete require.cache[require.resolve(adminJsAssetList)];
+		adminJSMappingList = require(adminJsAssetList).getList();
+
 		extendedMappings = adminJSMappingList.minifiedFiles.concat(adminJSMappingList.nonMinifiedFiles);
 		extendedMappings = glob.sync(extendedMappings).map(function(e){
 			return "/assets/" + e;
@@ -83,9 +88,13 @@ module.exports = function(gulp, $, options){
 	});
 
 	gulp.task('admin-watch-js-files', function(){
+		delete require.cache[require.resolve(adminJsAssetList)];
+		adminJSMappingList = require(adminJsAssetList).getList();
+
 		var glob 	= require('glob-all'),
 			fileList = adminJSMappingList.minifiedFiles.concat(adminJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
+		fileList = fileList.concat('asset_list/js/admin/**/*.js');
 		return gulp.watch(fileList, function(callback){
 			return runSequence('build-admin-js-dev', 'copy-admin-base-html');
 		});

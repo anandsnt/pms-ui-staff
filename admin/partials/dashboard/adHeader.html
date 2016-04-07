@@ -1,6 +1,6 @@
 <!-- Admin header -->
 <div id="admin-header" class="float" role="navigation">
-	
+
    <!-- Switch hotel dropdown : HOTEL ADMIN-->
    <!-- <div id="change-hotel" ng-show ="isHotelAdmin" class="{{hotelListOpen}}" ng-click="isHotelListOpen()" >
       <h1>{{data.current_hotel}}</h1>
@@ -11,46 +11,46 @@
          </dd>
       </dl>
    </div> -->
-   
+
    <!-- For SNT ADMIN header -->
   	<ul id="admin-menu" class="float" ng-hide ="isHotelAdmin" >
 		<li>
-			<a ui-sref="admin.snthoteldetails({action:'addfromSetup'})" class="icon-admin-menu icon-new-hotel ui-draggable">Add new hotel</a>
+			<a ui-sref="admin.snthoteldetails({action:'addfromSetup'})" class="icon-admin-menu icon-new-hotel ui-draggable" ng-show="isSntAdmin && !isServiceProvider">Add new hotel</a>
 		</li>
 		<li>
 			<a class="icon-admin-menu icon-clone-hotel ui-draggable">Clone hotel</a>
 		</li>
 	</ul>
-   
+
    <!-- Quick navigation -->
 
-   
-   <nav data-place="quickmenu" id="quick-menu" 
-         ng-class="{'has-items': bookMarks.length>0, 'dragging': isDragging==true}" 
-         role="navigation" data-drop="true" 
 
-         ng-model='bookMarks' 
-         jqyoui-droppable="{multiple:true, onDrop: 'onDropAtBookmarkArea'}" 
+   <nav data-place="quickmenu" id="quick-menu"
+         ng-class="{'has-items': bookMarks.length>0, 'dragging': isDragging==true}"
+         role="navigation" data-drop="true"
+
+         ng-model='bookMarks'
+         jqyoui-droppable="{multiple:true, onDrop: 'onDropAtBookmarkArea'}"
 
          data-jqyoui-options="{accept: '.icon-admin-menu'}"
-         style="overflow: visible !important;min-width:65%;"> 
+         style="overflow: visible !important;min-width:65%;">
 
-   	<a class="icon-admin-menu in-quick-menu {{bookmark.icon_class}}"  
+   	<a class="icon-admin-menu in-quick-menu {{bookmark.icon_class}}"
          style="display: block; width: {{bookmark.name.length*10+80}}px;"
 
-         ng-repeat="bookmark in bookMarks" 
-         data-drag="true" 
-         data-jqyoui-options="{revert: 'invalid'}" 
+         ng-repeat="bookmark in bookMarks"
+         data-drag="true"
+         data-jqyoui-options="{revert: 'invalid'}"
 
          jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}"
 
-         ng-model="bookMarks" 
+         ng-model="bookMarks"
          ng-hide="!bookmark.name" ng-click="clickedMenuItem($event, bookmark.state)">
 
 		    {{bookmark.name}}
-          
+
 	   </a>
 
-   </nav>	
-   
+   </nav>
+
 </div>

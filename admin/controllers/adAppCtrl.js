@@ -6,8 +6,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		//store basic details as rootscope variables
 		$rootScope.adminRole = adminDashboardConfigData.admin_role;
+		$rootScope.isServiceProvider = adminDashboardConfigData.is_service_provider;
 		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
 		$rootScope.isPmsConfigured = (adminDashboardConfigData.is_pms_configured === 'true') ? true : false;
+
+		$rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin' ? true : false;
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -160,11 +163,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					title: "MENU_REV_MAN",
 					action: "",
 					iconClass: "icon-revenue",
-					submenu: [{
-						title: "MENU_RATE_MANAGER",
-						action: "staff#/staff/rateManager",
-						menuIndex: "rateManager"
-					}, {
+					submenu: [
+					{
+ 		            title: "MENU_RATE_MANAGER",
+		            action: "staff#/staff/ratemanager/",
+		            menuIndex: "rateManager"
+		        	}, 
+		        	{
 						title: "MENU_TA_CARDS",
 						action: "staff#/staff/cardsearch/",
 						menuIndex: "cards"
@@ -201,13 +206,20 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_CC_TRANSACTIONS",
 						action: "staff#/staff/financials/ccTransactions/0"
 					}, {
-						title: "MENU_ACCOUNTING",
-						action: ""
+						title: "MENU_ACCOUNTS_RECEIVABLES",
+						action: "staff#/staff/financials/accountsReceivables"
 					}, {
 						title: "MENU_COMMISIONS",
 						action: ""
 					}]
 				}, {
+                        title: "MENU_ACTIONS_MANAGER",
+                        action: "staff#/staff/actions/",
+                        iconClass: "icon-actions",
+                        menuIndex: "actionManager",
+                        submenu: []
+
+                    },{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
 					menuIndex: "reports",

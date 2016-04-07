@@ -1,4 +1,10 @@
-admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParams', function($scope, ADStationarySrv, ngTableParams) {
+admin.controller('ADStationaryCtrl',
+	['$scope',
+	'ADStationarySrv',
+	'ngTableParams',
+	'availableGuestLanguages',
+	'availableHoldStatus',
+	function($scope, ADStationarySrv, ngTableParams, availableGuestLanguages, availableHoldStatus) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
@@ -9,8 +15,10 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		location_image: ""
 	};
 
-	$scope.init = function() {
-
+	/*
+	* Fetches the stationary items
+	*/
+	var fetchStationary = function(params) {
 		var successCallbackOfFetch = function(data) {
 			$scope.$emit('hideLoader');
 			data.email_logo_type = data.email_logo_type || '';
@@ -28,6 +36,8 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 			});
 
 			$scope.data = data;
+			$scope.data.groupholdstatus = data.group_hold_status_data[0].hold_status_id;
+			$scope.showConfirmationHeaderFooterBasedOnHoldStatus();
 			$scope.itemList = new ngTableParams({
 				page: 1, // show first page
 				count: $scope.data.social_network_links.length, // count per page - Need to change when on pagination implemntation
@@ -35,9 +45,20 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 					name: 'asc' // initial sorting
 				}
 			});
+			$scope.data.default_guest_bill = !$scope.data.default_guest_bill ? "" : $scope.data.default_guest_bill;
+			$scope.data.default_account_bill = !$scope.data.default_account_bill ? "" : $scope.data.default_account_bill;
+
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
-		$scope.invokeApi(ADStationarySrv.fetch, {}, successCallbackOfFetch);
+		$scope.invokeApi(ADStationarySrv.fetch, params, successCallbackOfFetch);
+	};
+
+	$scope.init = function() {
+		$scope.languages = availableGuestLanguages;
+		$scope.holdStatusList = availableHoldStatus.data.hold_status;
+		$scope.locale = $scope.languages.default_locale;
+		var params = {};
+		fetchStationary(params);
 	};
 
 	$scope.init();
@@ -56,18 +77,30 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 	// Save changes button actions.
 	$scope.clickedSave = function() {
 
-		var filterKeys = ["guest_bill_template", "hotel_logo"];
+		var filterKeys = ["guest_bill_template", "hotel_logo", "groupholdstatus", "group_confirmation_header", "group_confirmation_footer"];
 		if ($scope.data.hotel_picture === $scope.memento.hotel_picture) {
 			filterKeys.push('hotel_picture');
 		}
 		if ($scope.data.location_image === $scope.memento.location_image) {
 			filterKeys.push('location_image');
 		}
+		//CICO-26524
+		$scope.data.group_hold_status_data = [];
+		if($scope.data.groupholdstatus !== ""){
+			var groupConfirmationData = {};
+			groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
+			groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
+			groupConfirmationData.confirmation_email_footer = $scope.data.group_confirmation_footer;
+			$scope.data.group_hold_status_data.push(groupConfirmationData);
+		}
 		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
+		postingData.locale = $scope.locale;
+
+
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
 	};
 
@@ -78,6 +111,9 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		}
 	});
 
+	/**
+	 *   To watch location image
+	 */
 	$scope.$watch(function() {
 		return $scope.data.location_image;
 	}, function(logo) {
@@ -86,6 +122,7 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 		}
 		$scope.location_image_file = $scope.fileName;
 	});
+
 	/**
 	 *   To handle show hide status for the logo delete button
 	 */
@@ -130,6 +167,28 @@ admin.controller('ADStationaryCtrl', ['$scope', 'ADStationarySrv', 'ngTableParam
 
 	$scope.onUpdateSocialLink = function() {
 		$scope.currentSocialLink = false;
+	};
+
+	/*
+	* Get invoked when the locale is changed
+	*/
+	$scope.onLocaleChange = function() {
+		var params = {};
+		params.locale = $scope.locale;
+		fetchStationary(params);
+	}
+
+	$scope.showConfirmationHeaderFooterBasedOnHoldStatus = function(){
+		//If not set for any status - then empty
+		$scope.data.group_confirmation_header = "";
+		$scope.data.group_confirmation_footer = "";
+		angular.forEach($scope.data.group_hold_status_data, function(value, key) {
+
+	     	if(value.hold_status_id == $scope.data.groupholdstatus){
+	     		$scope.data.group_confirmation_header = value.confirmation_email_header;
+		        $scope.data.group_confirmation_footer = value.confirmation_email_footer;
+	     	}
+	    });
 	};
 
 }]);

@@ -176,11 +176,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			});
 		};
 
-		service.fetchComTaGrp = function(query) {
+		service.fetchComTaGrp = function(query, exclude_groups) {
+			var urlPrams = '?query=' + query;
+
+			if (exclude_groups) {
+				urlPrams += '&exclude_groups=true';
+			};
+
 			return callApi({
 				// no name here since we dont want to cache it in the store ever
 				method : 'getJSON',
-				url    : 'api/reports/search_by_company_agent_group?query=' + query,
+				url    : 'api/reports/search_by_company_agent_group' + urlPrams,
 				resKey : 'results'
 			});
 		};
@@ -206,7 +212,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
 		service.fetchAddonReservations = function(params) {
 			return callApi({
-				name   : 'addonReservations',
 				method : 'getJSON',
 				url    : '/api/reports/' + params.id + '/addon_reservations',
 				params : _.omit(params, 'id'),
@@ -239,7 +244,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			return callApi({
 				name   : 'roomTypeList',
 				method : 'getJSON',
-				url    : '/api/room_types.json?is_exclude_pseudo=true',
+				url    : 'api/room_types?exclude_pseudo=true&exclude_suite=true',
 				resKey : 'results'
 			});
 		};

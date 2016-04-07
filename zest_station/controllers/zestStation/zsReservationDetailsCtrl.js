@@ -4,11 +4,12 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
 	'zsModeConstants',
 	'zsEventConstants',
 	'zsTabletSrv',
+	'zsPaymentSrv',
 	'zsUtilitySrv',
 	'$stateParams',
 	'$sce',
 	'$timeout',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $timeout) {
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsPaymentSrv, zsUtilitySrv, $stateParams, $sce, $timeout) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -41,6 +42,9 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     
                 } else if ($state.lastAt === 'find-by-date'){
                     $state.go('zest_station.find_by_date');
+                    
+                }else if ($state.lastAt === 'find-by-no-of-nights'){
+                    $state.go('zest_station.find_by_no_of_nights');
                     
                 }
             }
@@ -103,10 +107,13 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             return parseFloat(amt).toFixed(2);
          };
 
-
+        $scope.goToHome = function(){
+            $state.go ('zest_station.home');  
+        };
         $scope.init = function(r){
             var current=$state.current.name;
             $scope.selectedReservation = $state.selectedReservation;
+            
             if (current === 'zest_station.add_remove_guests'){
                 $scope.setAddRemoveScreen();
                 
@@ -116,15 +123,19 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             }  else if (current === 'zest_station.add_guest_last'){
                 $scope.setAddGuestLast();
                 
-            } else {
+            }  else {
                 $scope.selectedReservation.reservation_details = {};
                 $scope.hotel_settings = $scope.zestStationData;
                 $scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
                 //fetch the idle timer settings
                 $scope.currencySymbol = $scope.zestStationData.currencySymbol;
-
+                
+                var conf = $scope.selectedReservation.confirmation_number;
+                if ($state.qr_code){
+                    conf = $scope.selectedReservation.confirmation_num;
+                }
                 $scope.invokeApi(zsTabletSrv.fetchReservationDetails, {
-                    'id': $scope.selectedReservation.confirmation_number
+                    'id': conf
                 }, $scope.onSuccessFetchReservationDetails);
             }
             
@@ -135,7 +146,6 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             }, 600);
             
         };
-        
         $scope.removeGuest = function(i){//where i is the index in $scope.selectedReservation.guest_details
             if ($state.selectedReservation.guest_details.length > 1){
                 var guests = [];
@@ -156,6 +166,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             $state.go('zest_station.add_guest_first');
         };
         $scope.goToNext = function(){
+            $scope.hideKeyboardIfUp();
             var current=$state.current.name;
             if (current === 'zest_station.add_guest_first'){
                 
@@ -196,37 +207,35 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
             };
         
         
-            $scope.roomIsAssigned = function(){
-              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
-                  return true;
-              }
-              return false;
-            };
-            
-            $scope.roomIsReady = function(){
-                if ($scope.selectedReservation.reservation_details.data){
-                    if ($scope.selectedReservation.reservation_details.data.reservation_card.room_status === "READY"){
-                        return true;
-                    } else return false;
-                } else return false;
-            };
-            $scope.goToTerms = function(){
-                
-                if (!$scope.roomIsAssigned()){
-                    $scope.assignRoomToReseravtion();
-                } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
-                      $scope.initTermsPage();
-                } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
-                    $scope.initRoomError();
+            $scope.getRateTypeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURLY_RATE';
+                }else{
+                    return 'AVG_DAILY';
                 }
-                
-                
-               
+            };
+            $scope.getModeText = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return 'HOURS';
+                }else{
+                    return 'DAY_NIGHTS';
+                }
+            };
+            $scope.getTotalNightsOrHours = function(){
+                if($scope.zestStationData.isHourlyRateOn){
+                    return $scope.selectedReservation.total_hours;
+                }else{
+                    return $scope.selectedReservation.total_nights;
+                }
             };
             
             $scope.initRoomError = function(){
                 $state.go('zest_station.room_error');  
             };
+            
+            
+            
+            
             
             $scope.assignRoomToReseravtion = function(){
                  var reservation_id = $scope.selectedReservation.id;
@@ -245,9 +254,38 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 }
             };
             
+            
+            
+            $scope.roomIsAssigned = function(){
+              if ($scope.selectedReservation.room && (parseInt($scope.selectedReservation.room) === 0 || parseInt($scope.selectedReservation.room) > 0)){
+                  return true;
+              }
+              return false;
+            };
+            
+            $scope.roomIsReady = function(){
+                if ($scope.selectedReservation.reservation_details.data){
+                    if ($scope.selectedReservation.reservation_details.data.reservation_card.room_status === "READY"){
+                        return true;
+                    } else return false;
+                } else return false;
+            };
+        
+        
+        $scope.goToTerms = function(){
+            console.log('goToTerms');
+            if (!$scope.roomIsAssigned()){
+                $scope.assignRoomToReseravtion();
+            } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
+                  $scope.initTermsPage();
+            } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
+                $scope.initRoomError();
+            }
+        };
+            
+            
             $scope.initTermsPage = function(){
-                $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
-                $state.go('zest_station.terms_conditions');
+                $state.go('zest_station.early_checkin_upsell');
             };
 
 
@@ -259,6 +297,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     var nites, avgDailyRate, packageRate, taxes, subtotal, deposits, balanceDue;
                     nites = parseInt(info.total_nights);
                     $scope.selectedReservation.total_nights = nites;
+                    $scope.selectedReservation.total_hours = info.no_of_hours;
                     avgDailyRate = parseFloat(info.avg_daily_rate).toFixed(2);
                     
                     deposits = parseFloat(info.deposit_attributes.deposit_paid).toFixed(2);

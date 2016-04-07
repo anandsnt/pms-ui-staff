@@ -118,6 +118,10 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     case "email":
                         $state.go('zest_station.find_by_email');
                         break;
+                    case "NoOfNights":
+                        $state.go('zest_station.find_by_no_of_nights');
+                        break;
+
                     case "last":
                         if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                             $state.lastAt = 're-enter-last';
@@ -195,6 +199,9 @@ sntZestStation.controller('zsFindReservationCtrl', [
 
         $scope.findByDate = function(){
             $state.go('zest_station.find_by_date');
+        };
+        $scope.findByNoOfNights = function(){
+            $state.go('zest_station.find_by_no_of_nights');
         };
         $scope.findByEmail = function(){
             $state.go('zest_station.find_by_email');
@@ -275,6 +282,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         
         $scope.goToNext = function(){
+            $scope.hideKeyboardIfUp();
             if ($scope.input.inputTextValue === ''){
                 return;
             }
@@ -307,7 +315,17 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         $scope.setCheckingGuestIn = function(){
             $scope.at = 'checking_in_guest';
-            $scope.headingText = 'WAIT_MOMENT';
+            console.info('$scope.zestStationData: ',$scope.zestStationData);//allow debugging code until S50+
+            
+            if($scope.zestStationData.check_in_message_texts.not_available_message === "" ){
+                console.info('wait...');
+                $scope.messageOverride = false;
+                $scope.headingText = 'WAIT_MOMENT';
+            } else{
+                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.not_available_message)
+                $scope.messageOverride = true;//need to turn off translate 
+                $scope.headingText = $scope.zestStationData.check_in_message_texts.not_available_message;
+            }
             $scope.subHeadingText = '';
             $scope.inputTextPlaceholder = '';
             $scope.hideNavBtns = true;
@@ -379,6 +397,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             }
             $scope.input.last = $state.input.last;
             $scope.input.date = $state.input.date;
+            $scope.input.NoOfNights = $state.input.NoOfNights;
             $scope.input.email = $state.input.email;
             $scope.input.confirmation = $state.input.confirmation;
             $scope.lastAt = $state.lastAt;
@@ -393,7 +412,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                 $scope.input = {};
             }
             var current = $state.current.name;
-          
+            console.info('current: ',current);
             switch(current){
                 case "zest_station.find_by_date":
                     $scope.setFindByDate();
@@ -420,12 +439,27 @@ sntZestStation.controller('zsFindReservationCtrl', [
           
           
         };
+        $scope.showSeparator=function(param){
+            var setting = $scope.zestStationData.checkin_screen.authentication_settings;
+            //Disabling number_of_nights and departure_date for hourly setting on
+            if($scope.zestStationData.isHourlyRateOn){
+                setting.number_of_nights = false;
+                setting.departure_date = false;
+            };
+            if(param=='departure_date'){
+                return setting.departure_date&&( setting.number_of_nights ||setting.email || setting.confirmation);
+            }else if(param=='number_of_nights'){
+                return setting.number_of_nights &&(setting.email || setting.confirmation);
+            }else{
+                return setting.email&& setting.confirmation;
+            }
+        }
 
 	/**
 	 * [initializeMe description]
 	 */
 	var initializeMe = function() {
-                    //show back button
+            //show back button
             $scope.$emit (zsEventConstants.SHOW_BACK_BUTTON);
 
             //show close button
