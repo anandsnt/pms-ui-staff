@@ -404,14 +404,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         };
 
         if (!!$scope.reservation) {
-            $scope.routingDateFromOptions = {       
-                dateFormat: 'dd-mm-yy',
+            $scope.routingDateFromOptions = {
+                dateFormat: $rootScope.jqDateFormat,
                 minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
                 maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
             };
 
-            $scope.routingDateToOptions = {       
-                dateFormat: 'dd-mm-yy',
+            $scope.routingDateToOptions = {
+                dateFormat: $rootScope.jqDateFormat,
                 minDate : tzIndependentDate($scope.reservation.reservation_card.arrival_date),
                 maxDate : tzIndependentDate($scope.reservation.reservation_card.departure_date)
             };
@@ -467,7 +467,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             $scope.$emit('hideLoader');
             $scope.$emit('BILLINGINFODELETED');
             $scope.closeDialog();
-            
+
         };
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');
@@ -513,7 +513,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         }
     };
 
-    
+
     init();
 
 }]);

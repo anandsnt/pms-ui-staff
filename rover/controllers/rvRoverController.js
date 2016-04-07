@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce) {
 
 
 
@@ -815,6 +815,16 @@ sntRover.controller('roverController',
              $window.location.reload();
           }, function() {
           });
+    };
+
+    /* 
+     *  CICO-27519 - Handle inline styles inside ng-bind-html directive.
+     *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
+     *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
+     *  REF   =>  https://docs.angularjs.org/api/ng/service/$sce
+     */
+    $rootScope.trustAsHtml = function(string) {
+        return $sce.trustAsHtml(string);
     };
 
 }]);
