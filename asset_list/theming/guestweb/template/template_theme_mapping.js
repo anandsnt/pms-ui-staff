@@ -215,7 +215,15 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
+
 			'guestweb_porto_vista'		 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+
+			'guestweb_time_hotel'		 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',

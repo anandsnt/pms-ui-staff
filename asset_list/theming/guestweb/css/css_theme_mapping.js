@@ -38,7 +38,8 @@ module.exports = {
 			'guestweb_excalibur':[ themeCSSRoot + 'guestweb_excalibur.css'],
 			'guestweb_naples_grande':[ themeCSSRoot + 'guestweb_naples_grande.css'],
 			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css'],
-			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css']
+			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
+			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css']
 		}
 	}
 }
