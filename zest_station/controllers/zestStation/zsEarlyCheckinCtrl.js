@@ -153,10 +153,25 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                             $state.go('zest_station.early_checkin_prepaid');
                        }
                    }
-
                 } else {
                     if (inUpsellWindow && is_room_ready && response.early_checkin_charge !== null){
                         $state.go('zest_station.early_checkin_nav');
+                    } else if (inUpsellWindow && is_room_ready && response.early_checkin_charge === null){
+                        //fetch the early checkin charge code so guest can check-in early after purchase
+                        var onSetupResponse = function(response){
+                            console.log('onSetupResponse: ',response);
+                            $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge_code;
+                            $state.go('zest_station.early_checkin_nav');
+                        };
+                        var onSetupFailureResponse = function(response){
+                            $scope.$emit('GENERAL_ERROR',response);
+                        };
+                         $scope.callAPI(zsTabletSrv.fetchUpsellSetup, {
+                            params: {},
+                            'successCallBack':onSetupResponse,
+                            'failureCallBack':onSetupFailureResponse
+                        });
+                        
                     } else {
                         $state.go('zest_station.early_checkin_unavailable');
                     }
@@ -221,12 +236,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
         };
         
         $scope.shouldGoToEarlyCheckInFlow = function(response){
-            
             console.log('===========');
-            console.log($scope.earlyCheckinActiveForReservation(response))
-            console.log($scope.reservationIncludesEarlyCheckin(response))
-            console.log('===========')
-            
+            console.log($scope.earlyCheckinActiveForReservation(response));
+            console.log($scope.reservationIncludesEarlyCheckin(response));
+            console.log('===========');
+            if (!response.reservation_in_early_checkin_window){
+                return false;
+            }
             
             if ($scope.earlyCheckinActiveForReservation(response) || 
                     $scope.reservationIncludesEarlyCheckin(response)){
