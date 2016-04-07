@@ -15,6 +15,13 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			// add the orientation
 			addPrintOrientation();
 
+			var onPrintSuccess = function(){
+				//do nothing for now
+			};
+			var onPrintError = function(){
+				//do nothing for now
+			};
+
 			/*
 			 *	======[ READY TO PRINT ]======
 			 */
@@ -22,8 +29,8 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				if (sntapp.cordovaLoaded) {
 					var printer = (sntZestStation.selectedPrinter);
 					cordova.exec(
-						$scope.onPrintSuccess(), //print complete, should go to final screen
-						$scope.onPrintError(), //if print error, inform guest there was an error
+						onPrintSuccess(), //print complete, should go to final screen
+						onPrintError(), //if print error, inform guest there was an error
 						'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
 				} else {
 					$window.print();
@@ -34,7 +41,6 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 			 */
 			setTimeout(function() {
-				$scope.owsMsgOpenPoup = false;
 				removePrintOrientation();
 				$scope.runDigestCycle();
 			}, 100);
