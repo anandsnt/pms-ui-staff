@@ -132,6 +132,9 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			$scope.contractData.contract_name = "";
 			$scope.isDeleteAllowed = data.is_delete_allowed;
 
+			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
+			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
+
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.contractData.account_type = $stateParams.type;
 			}

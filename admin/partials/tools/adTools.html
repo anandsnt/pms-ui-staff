@@ -1,0 +1,34 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+
+    <div data-view="HotelDepartmentsView" class="inline-edit">
+        <header class="content-title float">
+            <h2 translate> Tools </h2>
+            <span class="count"> ({{auto_sync_inventories.length}}) </span>
+            <a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
+
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/tools/adToolsAdd.html'"></div>
+            <div id="new-form-holder"></div>
+            <table id="brands" ng-table="tableParams" class="grid">
+                <tbody>
+                    <tr ng-repeat="tool in auto_sync_inventories" ng-class="{'edit-data': currentClickedElement == $index}">
+                        <td data-title="'Hotel Code'" header-class="half-width-title" ng-click="editTools($index,tool.id)" ng-hide="currentClickedElement == $index" >
+                            <a data-item="3" data-colspan="2" class="edit-data-inline">{{tool.hotel_code}} </a>
+                        </td>
+                        <td data-item="2" data-title="'Inventory Auto Sync'" class="full-width" header-class="half-width-title" ng-hide="currentClickedElement == $index">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: tool.is_auto_sync }">
+                                    <input type="checkbox" ng-click="onToggleAutoSync($index, tool)">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td colspan="2" ng-show="currentClickedElement == $index" ng-include="getTemplateUrl($index,tool.id)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>

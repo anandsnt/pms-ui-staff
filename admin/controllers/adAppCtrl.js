@@ -163,11 +163,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					title: "MENU_REV_MAN",
 					action: "",
 					iconClass: "icon-revenue",
-					submenu: [{
-						title: "MENU_RATE_MANAGER",
-						action: "staff#/staff/rateManager",
-						menuIndex: "rateManager"
-					}, {
+					submenu: [
+					{
+ 		            title: "MENU_RATE_MANAGER",
+		            action: "staff#/staff/ratemanager/",
+		            menuIndex: "rateManager"
+		        	}, 
+		        	{
 						title: "MENU_TA_CARDS",
 						action: "staff#/staff/cardsearch/",
 						menuIndex: "cards"
@@ -204,8 +206,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_CC_TRANSACTIONS",
 						action: "staff#/staff/financials/ccTransactions/0"
 					}, {
-						title: "MENU_ACCOUNTING",
-						action: ""
+						title: "MENU_ACCOUNTS_RECEIVABLES",
+						action: "staff#/staff/financials/accountsReceivables"
 					}, {
 						title: "MENU_COMMISIONS",
 						action: ""

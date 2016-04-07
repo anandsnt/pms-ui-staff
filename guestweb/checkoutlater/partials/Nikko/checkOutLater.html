@@ -67,7 +67,7 @@
 								<div class="row late-charge">
 									<span class="for">for</span><br/>
 									<span class="amount" ng-hide="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
-									<span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
+									<span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
 								</div>
 							</div>
 							</div>
@@ -76,7 +76,7 @@
 					</div>
 					<div class="row no-thanks-wrap">
 						<p class="centeralign no-thanks grey-text" ng-show="optionsAvailable">
-							<a class="no-thanks-text grey-text" ui-sref="checkOutOptions">no, thanks</a>
+							<a class="no-thanks-text grey-text" ui-sref="checkOutOptions">No, thanks.</a>
 						</p>
 				</div>
 				</div>

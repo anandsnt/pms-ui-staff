@@ -1,53 +1,48 @@
 <!--  Home -->
-<section id="main" class="centered kiosk" role="main" >
-	<div id="content">
-            
-            
-            
+<section id="main" class="centered kiosk" role="main">
 
-            <nav id="options" class="large-icons" role="nav">
-                    <ul role="menu">
-                            <li ng-if="zestStationData.home_screen.pickup_keys">
-                                    <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
-                                            <div ng-include="icons.url.key"></div>
-                                    </button>
-                                {{'PICKUP_KEY' |translate}}
+    <div id="content">
+        <nav id="options" class="large-icons" role="nav">
+            <ul role="menu">
+                <li ng-if="zestStationData.home_screen.pickup_keys">
+                    <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    {{'PICKUP_KEY' |translate}}
                             <span>
                                 {{'HOME_PUK_SUB' |translate}}
                             </span>
-                            </li>
-                            <li ng-if="zestStationData.home_screen.check_in">
-                                    <button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
-                                            <div ng-include="icons.url.checkin"></div>
-                                    </button>
+                </li>
+                <li ng-if="zestStationData.home_screen.check_in">
+                    <button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
+                        <div ng-include="icons.url.checkin"></div>
+                    </button>
 
-                            {{'CHECK_IN' |translate}}
+                    {{'CHECK_IN' |translate}}
 
-                            </li>
-                            <li ng-if="zestStationData.home_screen.check_out">
-                                    <button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
-                                            <div ng-include="icons.url.checkout"></div>
-                                    </button>
-                            {{'CHECK_OUT' |translate}}
+                </li>
+                <li ng-if="zestStationData.home_screen.check_out">
+                    <button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
+                        <div ng-include="icons.url.checkout"></div>
+                    </button>
+                    {{'CHECK_OUT' |translate}}
 
-                            </li>
-                    </ul>
-            </nav>
-            
-            
-            
-	</div>
-    
-            <div id="actions" class="align-center" ng-hide="!zestStationData.zest_lang.enabled">
-                <!-- Yotel Internet Booking Engine 
-                <button type="button" class="button">
-                    Yotel Internet Booking Engine
-                </button> -->
-                <button type="button" class="button with-icon" touch-press="languageSelect()">
-                    <i class="icons icon-flag {{langflag}}"></i>
-                    {{selectedLanguage}}
-                </button>
-            </div>
-    
-<span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="actions" class="align-center">
+        <button type="button" class="button" ng-show="zestStationData.home_screen.booking_pop_up.enable_pop_up"
+                touch-press="openExternalWebPage()">
+            {{zestStationData.home_screen.booking_pop_up.button_label}}
+        </button>
+        <button type="button" class="button with-icon" touch-press="languageSelect()"
+                ng-hide="!zestStationData.zest_lang.enabled">
+            <i class="icons icon-flag {{langflag}}"></i>
+            {{selectedLanguage}}
+        </button>
+    </div>
+
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>

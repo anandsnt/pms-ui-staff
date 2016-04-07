@@ -109,9 +109,8 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 		$scope.hasLoader = true;
  			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
 	 	}
-	 }
-
-
+	 };
+         
 }]);
 /*
  * Reset Password Controller - First time login of snt admin

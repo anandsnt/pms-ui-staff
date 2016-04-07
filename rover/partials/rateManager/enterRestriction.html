@@ -1,10 +1,9 @@
 <div id="mixedRestrictions" class="enter-restriction" ng-controller="MixedRestrictionsCtrl">
     <div ng-repeat="restrictionType in data.restrictionTypes">
         <div class="restriction_text" ng-if="restrictionType.hasEdit" ng-show="restrictionType.showEdit">
-            <h4>{{restrictionType.description}}</h4>
+            <h3>{{restrictionType.description}}</h3>
             <div class="inputlabel" for="restictionCount">
                 <label for="restictionCount"> {{restrictionType.description}} </label>
-                <br/>
                 <input id="restictionCount" type="number" ng-model="options.daysEntered"/>
             </div>
             <div class="cancellationbuttonwrap">
@@ -12,7 +11,7 @@
                         ng-class="{'grey' :!options.daysEntered && options.daysEntered!== 0}" type="button"
                         ng-click="updateRestrictionBtnClicked(restrictionType.id)"
                         ng-disabled="!options.daysEntered && options.daysEntered!== 0">
-                    Set Restriction
+                    Set
                 </button>
                 <button ng-show="restrictionType.showEdit" class="button blank cancel" type="button"
                         ng-click="cancelButtonClicked(restrictionType.id)">Cancel
@@ -21,4 +20,3 @@
         </div>
     </div>
 </div>
-

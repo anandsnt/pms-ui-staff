@@ -1,0 +1,22 @@
+<div>
+	<div class="restriction_text">
+		<h3>{{restrictionForShowingTheDetails.description}}</h3>
+		<em>Adjust restriction for all room types</em>
+		<div class="mixed_restrictions notice" ng-show="restrictionForShowingTheDetails.status==='VARIED'">
+			This overrides all
+			<strong class='restriction-description'>
+			{{restrictionForShowingTheDetails.description}}
+			</strong>
+			restrictions for the selected room type(s) and date range.
+		</div>
+		<div class="inputlabel" for="restictionCount" ng-show="restrictionForShowingTheDetails.hasInputField">
+			<label for="restictionCount"> {{restrictionForShowingTheDetails.description}} </label>
+			<input id="restictionCount" ng-model="restrictionForShowingTheDetails.value" ng-disabled="isPastDate"/>
+		</div>
+		<div class="cancellationbuttonwrap">
+			<button class="button green" type="button" ng-click="clickedOnRestrictionSetButton($event)" ng-disabled="isPastDate" ng-class="{'grey' : isPastDate}">Set</button>
+			<button class="button red" type="button" ng-click="clickedOnRestrictionRemoveButton()" ng-disabled="isPastDate" ng-class="{'grey' : isPastDate}" >Remove</button>
+			<button class="button blank cancel" type="button" ng-click="clickedOnCancelRestrictionEditingButton()" ng-disabled="isPastDate" ng-class="{'grey' : isPastDate}" >Cancel</button>
+		</div>
+	</div>
+</div>

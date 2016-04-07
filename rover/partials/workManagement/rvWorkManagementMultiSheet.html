@@ -73,11 +73,12 @@
             jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}"
             data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task'}">
             <div class="wrapper">
-                <ul class="worksheet-room sortable" ng-repeat="room in multiSheetState.unassignedFiltered" ng-hide="!room.show">
+                <ul class="worksheet-room sortable" ng-repeat="(roomIndex, room) in multiSheetState.unassignedFiltered" ng-hide="!room.show">
                     <li class="worksheet-task multi-sheet unassigned"
                         iscroll-stop-propagation
                         ng-repeat="task in room.room_tasks"
-                        id="unassigned-UA-{{ $parent.$index }}-{{ $index }}"
+                        ng-if="!(multiSheetState.header.work_type_id && task.work_type_id != multiSheetState.header.work_type_id)"
+                        id="unassigned-UA-{{ roomIndex }}-{{ $index }}"
                         data-drag = "{{multiSheetState.dndEnabled}}"
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
@@ -125,7 +126,8 @@
         ng-if="multiSheetState.selectedEmployees.length > 0"
         ng-iscroll="worksheetHorizontal"> <!-- Horizontal scroll here -->
         <div class="wrapper" style="width: {{getWidthForWorkSheetContent()}};">
-            <div class="employee" ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
+            <div class="employee"
+                ng-repeat="(empIndex, employee) in multiSheetState.selectedEmployees">
                 <div class="totals">
                     <h2><!--{First letter of First Name}.{Last Name} //TODO-->
                         {{employee.display_name}}
@@ -164,6 +166,7 @@
                                 id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation
                                 ng-repeat="task in room.room_tasks"
+                                ng-if="!(multiSheetState.header.work_type_id && task.work_type_id != multiSheetState.header.work_type_id)"
                                 ng-class="{ 'completed-task': task.is_completed}"
                                 data-drag = "{{multiSheetState.dndEnabled}}"
                                 jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()' }"

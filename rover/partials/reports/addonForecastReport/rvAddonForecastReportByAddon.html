@@ -1,7 +1,8 @@
+
 <!-- Report content -->
     <div id="report-content" class="report-content grid scrollable" ng-controller="RVAddonForecastReportByAddonCtrl" ng-iscroll="addon-forecast-report-scroll">
 
-        <div ng-hide="hasResults" class="report-content no-content">
+        <div ng-if="!hasResults" class="report-content no-content">
             <div class="info">
                 <span class="icon-no-content icon-reports"></span>
                 <strong class="h1">No reports found</strong>
@@ -9,15 +10,15 @@
             </div>
         </div>
 
-        <div ng-show="hasResults" class="wrapper">
+        <div ng-if="hasResults" class="wrapper">
             <ul class="grid-header dates">
-                <li class="guests"></li>
-                <li class="guests"></li>
+                <li class="guests">Booked</li>
+                <li class="guests">Remaining</li>
                 <li class="guests">Guests</li>
                 <li class="revenue">Revenue</li>
             </ul>
 
-            <div ng-repeat="(key1, item1) in modifiedResults">
+            <div ng-repeat="(key1, item1) in modifiedResults" emit-when="{event: 'ALL_RENDERED', condition: $last}">
                 <!-- Level 1 - Date -->
                 <a ng-if="item1.hasData" href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addons.length }" ng-click="toggleSub(item1)">
                     <strong>{{ getAddonGrpName(key1) }}</strong>
@@ -34,9 +35,9 @@
                     <div ng-if="item2Values.hasData" ng-repeat="item3 in item2Values.dates" ng-init="item3Values = getKeyValues(item3)" class="grid-content" ng-class="{ 'hidden': !openDate && !item2Values.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
                         <ul class="grid-header addons">
                             <li class="name">Add-On</li>
-                            <li>Booked </li>
-                            <li>Remaining </li>
-                            <li>Guests </li>
+                            <li> </li>
+                            <li> </li>
+                            <li> </li>
                             <li>Revenue</li>
                         </ul>
                         <!-- Level 3 - Add-On -->

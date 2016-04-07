@@ -36,9 +36,12 @@ module.exports = {
 			'guestweb_signature_at_mgm':[ themeCSSRoot + 'guestweb_signature_at_mgm.css'],
 			'guestweb_11Howard':[ themeCSSRoot + 'guestweb_11Howard.css'],
 			'guestweb_excalibur':[ themeCSSRoot + 'guestweb_excalibur.css'],
+			'guestweb_naples_grande':[ themeCSSRoot + 'guestweb_naples_grande.css'],
 			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css'],
-			'guestweb_naples_grande':[ themeCSSRoot + 'guestweb_naples_grande.css']
-
+			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css'],
+			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
+			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
+			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css']
 
 		}
 	}

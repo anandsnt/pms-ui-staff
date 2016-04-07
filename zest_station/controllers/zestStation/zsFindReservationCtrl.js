@@ -282,6 +282,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         
         $scope.goToNext = function(){
+            $scope.hideKeyboardIfUp();
             if ($scope.input.inputTextValue === ''){
                 return;
             }
@@ -407,7 +408,6 @@ sntZestStation.controller('zsFindReservationCtrl', [
 
 
         $scope.init = function(){  
-            $scope.inputFocus();
             if (!$scope.input){
                 $scope.input = {};
             }
@@ -441,7 +441,11 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         $scope.showSeparator=function(param){
             var setting = $scope.zestStationData.checkin_screen.authentication_settings;
-           // console.log($scope.zestStationData.checkin_screen.authentication_settings[param]);
+            //Disabling number_of_nights and departure_date for hourly setting on
+            if($scope.zestStationData.isHourlyRateOn){
+                setting.number_of_nights = false;
+                setting.departure_date = false;
+            };
             if(param=='departure_date'){
                 return setting.departure_date&&( setting.number_of_nights ||setting.email || setting.confirmation);
             }else if(param=='number_of_nights'){

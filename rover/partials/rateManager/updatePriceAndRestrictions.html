@@ -1,53 +1,65 @@
+
 <div id="modal" class="modal-show right-arrow">
-    <div class="rate-dialog-tag">
-        <div ng-controller="UpdatePriceAndRestrictionsCtrl" 
-             style="background: #DEDEDE;">
-            <div ng-cloak class="updatePriceAndRestrictionsContainer">
-                <div class="header">
-                    <div class="title-wrap">
+    <div class="modal-content rate-manager-modal" ng-controller="UpdatePriceAndRestrictionsCtrl">
+          <div class="modal-header">
+                    <div class="modal-header-left">
                         <h2 ng-show="!popupData.all_data_selected" ng-class="{'title-expanded': showExpandedView || (popupData.fromRoomTypeView && data.hasAmountConfigured)}">{{data.name}}</h2>
                         <em ng-show="!popupData.all_data_selected">{{popupData.selectedDate| date:'EEEE, MMMM dd'}}</em>
                         <!-- To show dates as bold for all room types and all rate types -->
                         <h2 ng-show="(popupData.fromRoomTypeView && popupData.all_data_selected) || (!popupData.fromRoomTypeView && popupData.all_data_selected)" class="h1">
-                        	{{popupData.selectedDate| date:'EEEE, MMMM dd'}}
-                    	</h2>
+                            {{popupData.selectedDate| date:'EEEE, MMMM dd'}}
+                        </h2>
                         <em ng-show="(popupData.fromRoomTypeView || ratesRoomsToggle !== 'RATES') && popupData.all_data_selected">All room types</em>
                         <em ng-show="!popupData.fromRoomTypeView && ratesRoomsToggle === 'RATES' && popupData.all_data_selected">All rates</em>
-                    </div>
-                    <div class="toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</div>
-                    <div style="clear: both;"></div>
-                </div>                
-                <div>
-                    <table>
-                        <tr>
-                            <td>
-                                <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
-                                </div>
-                            </td>
-                            <td ng-if="popupData.all_data_selected" ng-show="data.showEditView">
-                                <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
-                            </td>
-                            <td ng-show="data.showEditView && !popupData.all_data_selected">
-                                <div ng-include="'/assets/partials/rateManager/enterRestriction.html'"></div>
-                            </td>
-                            <td ng-show="popupData.fromRoomTypeView && !data.showEditView && data.hasAmountConfigured">
-                                <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
-                            </td>
-                            <td ng-show="showExpandedView">
-                                <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
-                            </td>
-                            <td ng-show="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
-                                <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
-                            </td>
-                        
-                            <td>
-                            </td>
-                        </tr>
-                    </table>
+                        <em class="rate-name" ng-show="ratesRoomsToggle === 'RATES' && !popupData.fromRoomTypeView ">All room types</em>
+                        <em class="rate-name no-rate-name" ng-show="!popupData.fromRoomTypeView && ratesRoomsToggle !== 'RATES'">No Rate Selected</em>
+                        <em class="rate-name" ng-show="popupData.fromRoomTypeView">{Rate Name}</em>
 
+
+                    </div>
+                    <div class="modal-header-right">
+
+                        <!-- Remove class .hidden if there is any notice-->
+                        <!-- Notice are when there is a mixed restriction or when the rates are edited -->
+                        <!-- 'Mixed Restrictions Applied' or 'Rate amounts marked with * are edited' , look on CICO-25391-->
+                        <div class="notice hidden">{Notice Text}</div>
+
+                    </div>
+                </div>                
+                <div class="modal-body">
+                    <div class="content-left">
+                        <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
+                                </div>
+                    </div>
+                    <div class="content-middle">
+                        <!-- show no price info if we are on rate view, all data is selected or a room type is selected -->
+                        <div ng-if="!popupData.fromRoomTypeView && (popupData.all_data_selected || ratesRoomsToggle !== 'RATES')" ng-hide="data.showEditView" >
+                              <div ng-include="'/assets/partials/rateManager/noPriceInfo.html'"></div>
+                        </div>
+                        
+                            <div ng-if="popupData.all_data_selected" ng-show="data.showEditView">
+                                <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
+                            </div>
+
+                            <div ng-show="data.showEditView && !popupData.all_data_selected">
+                                <div ng-include="'/assets/partials/rateManager/enterRestriction.html'"></div>
+                            </div>
+
+                            <div ng-show="popupData.fromRoomTypeView && !data.showEditView && data.hasAmountConfigured">
+                                <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
+                            </div>
+
+                            <div ng-show="!popupData.fromRoomTypeView && !popupData.all_data_selected">
+                                <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
+                            </div>
+
+                    </div>
+                    <div class="content-right">
+                        <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                    </div>
                 </div>
                 <div class="footer">
-                    <div class="actions float">
+                    <div class="actions">
                         <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
                             Cancel
                         </button>
@@ -59,7 +71,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
+           
+       
     </div>
 </div>

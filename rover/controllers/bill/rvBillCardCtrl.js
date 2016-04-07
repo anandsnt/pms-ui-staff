@@ -764,7 +764,7 @@ sntRover.controller('RVbillCardController',
 	 		if(!$scope.paymentModalSwipeHappened && swipedCardData !== undefined){
 	 			$scope.isSwipeHappenedDuringCheckin = true;
 	 			swipedTrackDataForCheckin = swipedCardData;
-	 			passData.details.isClickedCheckin = true;
+	 			if(!$scope.putInQueue) passData.details.isClickedCheckin = true;
 	 		}
 	 	}
 
@@ -1500,11 +1500,14 @@ sntRover.controller('RVbillCardController',
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
 		else if(($scope.reservationBillData.room_status === 'NOTREADY' || $scope.reservationBillData.fo_status === 'OCCUPIED') && !$rootScope.queuedCheckIn){
+			 var reservationStatus = $scope.reservationBillData.reservation_status
+	  		 var isUpgradeAvaiable = $scope.reservationBillData.is_upsell_available && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 			//TO DO:Go to room assignemt view
 			$state.go("rover.reservation.staycard.roomassignment", {
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"room_type": $scope.reservationBillData.room_type,
-				"clickedButton": "checkinButton"
+				"clickedButton": "checkinButton",
+				"upgrade_available" : isUpgradeAvaiable
 			});
 			return false;
 		}
@@ -2125,10 +2128,6 @@ sntRover.controller('RVbillCardController',
 
 	// print the page
 	var printBill = function(data) {
-		/*var data = {
-				"reservation_id" : $scope.reservationBillData.reservation_id,
-				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
-		};*/
 		var printDataFetchSuccess = function(successData){
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
