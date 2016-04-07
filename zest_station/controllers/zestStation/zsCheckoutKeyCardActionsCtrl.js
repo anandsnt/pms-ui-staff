@@ -102,6 +102,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 		var init = function(){
 			setTimeOutFunctionToEnsureSocketIsOpened();
+			//check if websocket is opened, else open
+			($scope.socketOperator.returnWebSocketObject().readyState !== 15) ? $scope.$emit('CONNECT_WEBSOCKET') : "";
 		}();
 
 		/** 

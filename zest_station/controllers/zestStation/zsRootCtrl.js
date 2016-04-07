@@ -1054,6 +1054,10 @@ sntZestStation.controller('zsRootCtrl', [
         console.info("Websocket:-> socket connected");
     };
 
+    $scope.$on('CONNECT_WEBSOCKET',function(){
+        $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+    });
+
     /***
 	 * [initializeMe description]
 	 * @return {[type]} [description]
