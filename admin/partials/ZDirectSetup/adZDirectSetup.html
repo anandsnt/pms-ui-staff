@@ -7,7 +7,7 @@
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <form class="form float">
+        <div class="form float">
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>ZDIRECT_SUB_TITLE</span></h3>
@@ -37,10 +37,10 @@
 
                 <br>
 
-                <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name"
+                <ad-textbox value="data.data.product_cross_customer.tracker_user_name"
                             label="{{'ZDIRECT_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password"
-                            name="pass-word" id="pass-word" label="{{'ZDIRECT_PASSWORD_LABEL'| translate}}"
+                            label="{{'ZDIRECT_PASSWORD_LABEL'| translate}}"
                             styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url"
                             name="access-url" id="access-url" label="{{'ZDIRECT_ACCESS_URL_LABEL'| translate}}"
@@ -70,6 +70,6 @@
                 <!--</button>-->
             </div>
 
-        </form>
+        </div>
     </section>
 </div>

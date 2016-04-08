@@ -2,16 +2,16 @@
     <ad-form-header-with-back-button cancel-action="goBackToPreviousState" form-title="{{'WINDSURFER_CRS_SETUP_HEADER'|translate}}"></ad-form-header-with-back-button>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <form class="form float" >
+        <div class="form float" >
             <ad-form-title full-width="true" form-title="{{'WINDSURFER_CRS_SUB_TITLE'| translate}}"></ad-form-title>
             <fieldset class="holder left">
                 <ad-toggle-button is-checked="windsurferSetup.active" label="{{'WINDSURFER_CRS_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
                 <ad-textbox inputtype="text" value="windsurferSetup.hotel_code" name="hotel-code" id="hotel-code" label="{{'WINDSURFER_CRS_HOTEL_CODE'| translate}}" styleclass="full-width" ng-if="windsurferSetup.active"></ad-textbox>
                 <ad-textbox inputtype="text" value="windsurferSetup.access_url" name="access-url" id="hotel-code" label="{{'WINDSURFER_CRS_ACCESS_URL'| translate}}" styleclass="full-width" ng-if="windsurferSetup.active"></ad-textbox>
-                <ad-textbox inputtype="text" value="windsurferSetup.username" name="username-windsurfer" id="username-windsurfer" label="{{'WINDSURFER_CRS_USERNAME'| translate}}" ng-if="windsurferSetup.active" styleclass="full-width"></ad-textbox>
-                <ad-textbox inputtype="password" value="windsurferSetup.password" name="password-windsurfer" id="password-windsurfer" label="{{'WINDSURFER_CRS_PASSWORD'| translate}}" styleclass="full-width" ng-if="windsurferSetup.active"></ad-textbox>
+                <ad-textbox inputtype="text" value="windsurferSetup.username" label="{{'WINDSURFER_CRS_USERNAME'| translate}}" ng-if="windsurferSetup.active" styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="password" value="windsurferSetup.password" label="{{'WINDSURFER_CRS_PASSWORD'| translate}}" styleclass="full-width" ng-if="windsurferSetup.active"></ad-textbox>
             </fieldset>
             <ad-save-cancel-area save-action="saveWindsurferCRSSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
-        </form>
+        </div>
     </section>
 </div>
