@@ -1,9 +1,9 @@
-
-<section id="main" role="main">
+<!-- Content -->
+<section id="main" class="centered" role="main"  click-touch='resetTime()'>
     <div id="content">
-        <h1 translate>FIND_YOUR_BILL_SUMMARY</h1>
+        <h1>{{'FIND_YOUR_BILL_SUMMARY' |translate}}</h1>
         <nav id="options" role="nav">
-            <ul role="menu">
+          <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press="captureKey()">
                         <div ng-include="icons.url.creditcard"></div>
@@ -22,4 +22,5 @@
             </ul>
         </nav>
     </div>
+<span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>
