@@ -274,6 +274,9 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 }
         };
         $scope.reservationIncludesEarlyCheckin = function(data){
+            if (!$scope.zestStationData.offer_early_checkin){
+                return false;
+            }
             
             if (data.guest_arriving_today && data.offer_eci_bypass){
                 console.info('selected reservation includes free early check-in!');
