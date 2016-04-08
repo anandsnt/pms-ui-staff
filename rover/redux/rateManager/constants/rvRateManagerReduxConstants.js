@@ -6,6 +6,7 @@ const RM_RX_CONST = {
 	ROOM_TYPE_VIEW_CHANGED                 : 'RM_Room_Type_View_Changed',
 	SINGLE_RATE_EXPANDABLE_VIEW_CHANGED    : 'RM_Single_Rate_Expandable_View_Changed',
 	
+	NO_RESULTS_FOUND_MODE 			   : 'RM_No_Results_Found_Mode',
 	NOT_CONFIGURED_MODE                : 'RM_Not_Configured_Mode',
 	RATE_VIEW_MODE                     : 'RM_Rate_View', //pls change VIEW_MODE_TEXT_MAPPINGS: when changing this one
 	ROOM_TYPE_VIEW_MODE                : 'RM_Room_Type_View', //pls change VIEW_MODE_TEXT_MAPPINGS: when changing this one
