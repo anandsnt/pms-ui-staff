@@ -374,7 +374,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             "swipe_alert":"Please swipe.",
             "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
         };
-        $scope.ws = new WebSocket($scope.wsConfig['swipeService']);
+        $scope.ws = $scope.socketOperator;
 
         $scope.setupWebSocketForSankyo = function(){
                 if ($scope.ws.readyState !== 1){
