@@ -272,6 +272,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
         };
         $scope.emitKeyError = function(response){
+            console.log('ws status: ',$scope.wsOpen, $scope.ws.readyState);
+            if ($scope.wsOpen || $scope.ws.readyState === 1){
+                    console.info('closing web socket');
+                    $scope.ws.close();
+            }
             $scope.$emit('MAKE_KEY_ERROR',response);
         };
 
