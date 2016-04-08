@@ -92,8 +92,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 
 		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
 			$timeout(function() {
-				// there is some delay in actual socket operations
-				// even after the socket is being open
 				// so inorder to avoid a possible error because of
 				// wrong timing adding a buffer of 1.5 seconds
                 $scope.socketBeingConnected = false;//connection success
@@ -102,6 +100,12 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 		var init = function(){
 			setTimeOutFunctionToEnsureSocketIsOpened();
+			//check if websocket is opened, else open
+			//
+			console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
+			//($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? 
+			//even if status says it open, it throwing error once key is written
+			$scope.$emit('CONNECT_WEBSOCKET');
 		}();
 
 		/** 

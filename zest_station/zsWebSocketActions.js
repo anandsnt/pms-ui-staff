@@ -10,43 +10,43 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     //ws = new WebSocket(wsConfig['swipeService']);
 
     this.simulateSwipe = function() {
-        ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
+        that.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
     };
     this.observe = function() {
-        ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
+        that.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
     };
     this.UUIDforDevice = function() {
-        ws.send("{\"Command\" : \"cmd_device_uid\"}");
+        that.ws.send("{\"Command\" : \"cmd_device_uid\"}");
     };
     this.DispenseKey = function(keyDispenseUID) { //write to key after successful encodeKey call
         console.info('dispense called : [', keyDispenseUID, ']')
-        ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"" + keyDispenseUID + "\"}");
+        that.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"" + keyDispenseUID + "\"}");
     };
     this.EjectKeyCard = function() { //reject key on failure
-        ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
+        that.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
     };
     this.CaptureKeyCard = function() { //dumps key into internal bucket after insert key
-        ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
+        that.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
     };
     this.InsertKeyCard = function() { //use key for checkout takes key in
-        ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
+        that.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
     this.connect = function() {
         try {
-            ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+            that.ws = new WebSocket("wss://localhost:4649/CCSwipeService");
         } catch (e) {
             console.error(e)
             socketOpenedFailureCallback();
         }
 
         //Triggers when websocket connection is established.
-        ws.onopen = function() {
+        that.ws.onopen = function() {
             console.info(wsConfig['connected_alert']);
             socketOpenedSuccessCallback();
         };
 
         // Triggers when there is a message from websocket server.
-        ws.onmessage = function(evt) {
+        that.ws.onmessage = function(evt) {
             var response = evt.data;
             if (response) {
                 response = JSON.parse(response);
@@ -54,12 +54,20 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
             }
         };
         // Triggers when the server is down.
-        ws.onclose = function() {
+        that.ws.onclose = function() {
             // websocket is closed.
             console.warn('[::: WebSocket Closed :::]');
             socketOpenedFailureCallback();
         };
-        return ws;
+        return that.ws;
+    };
+
+    this.returnWebSocketObject = function(){
+        return that.ws;
+    };
+
+    this.closeWebSocket = function(){
+        that.ws.close();
     };
 
     console.info('--> Connecting WebSocket...');
