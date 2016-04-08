@@ -7,7 +7,7 @@
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-        <form class="form float" >
+        <div class="form float" >
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>SYNXIS_SUB_TITLE</span> </h3>
@@ -45,8 +45,8 @@
                 
                 <br>
 
-                <ad-textbox value="data.data.product_cross_customer.tracker_user_name" name="user-name" id="user-name" label="{{'SYNXIS_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" name="pass-word" id="pass-word" label="{{'SYNXIS_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_user_name" label="{{'SYNXIS_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" label="{{'SYNXIS_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'SYNXIS_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.hotel_code" inputtype="hotel-code" name="hotel-code" id="hotel-code" label="{{'SITEMINDER_HOTEL_CODE_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                <ad-dropdown-name name="default-rate" savemodel="data.data.product_cross_customer.default_rate" id="rate-code" valueproperty="id" property="rate_name" list="rateSelection" label="{{'DEFAULT_EXTERNAL_RATE_CODE'| translate}}" styleclass="full-width"  style="padding-left: 0px;"></ad-dropdown-name>
@@ -67,6 +67,6 @@
                 </button-->
             </div>
 
-        </form>
+        </div>
     </section>
 </div>
