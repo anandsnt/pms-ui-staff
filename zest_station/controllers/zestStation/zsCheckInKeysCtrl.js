@@ -70,6 +70,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
+            console.log('ws status: ',$scope.wsOpen, $scope.ws.readyState);
+            if ($scope.wsOpen || $scope.ws.readyState === 1){
+                    console.info('closing web socket');
+                    $scope.ws.close();
+            }
+            
             $scope.$emit("hideLoader");
             $state.go('zest_station.key_success');
             $scope.$emit("hideLoader");
@@ -257,6 +263,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         }
 
                     } else {
+                         if ($scope.wsOpen || $scope.ws.readyState === 1){
+                                console.info('closing web socket');
+                                $scope.ws.close();
+                        }
                         $scope.emitKeyError(response);
                     }
                 };
