@@ -26,7 +26,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.home'); //go back to reservation search results
+			$state.go('zest_station.checkout_options'); //go back to checkout options
 		});
 
 		$scope.navToPrev = function() {
@@ -106,8 +106,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 		var init = function(){
 			setTimeOutFunctionToEnsureSocketIsOpened();
-			//check if websocket is opened, else open
-			//
 			console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
 			//close the opened socket
 			($scope.socketOperator.returnWebSocketObject().readyState === 1) ? $scope.socketOperator.closeWebSocket():"";
