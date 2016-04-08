@@ -5,6 +5,7 @@ module.exports = {
 		roverRoot 		= 'rover/',
 		controllerRoot 	= roverRoot + 'controllers/',
 		serviceRoot 	= roverRoot + 'services/',
+		directiveRoot	= roverRoot + 'directives/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -64,7 +65,9 @@ module.exports = {
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				serviceRoot + 'util/rvUtilSrv.js',
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
-				serviceRoot + 'workstation/workstationSrv.js'
+				serviceRoot + 'workstation/workstationSrv.js',
+
+				directiveRoot + 'Outside Click handler/outsideClickDirective.js'
 			]
 		};
 
