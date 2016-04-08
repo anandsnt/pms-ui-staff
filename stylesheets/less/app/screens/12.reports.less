@@ -819,6 +819,42 @@
             &:first-child { margin-top: 0; }
         }
 
+        &.card-authorization-check {
+                .grid-footer li {
+                    float: right !important;
+                }
+                .guest-status {
+                    width:20px;
+                    height:20px;
+                    margin-right: .5em;
+                    background-size: 80px;
+
+                    &.check-out {
+                        background-position: 6px -75px;
+                    }
+
+                    &.inhouse {
+                        background-position: 5px -128px;
+                    }
+                }
+                .card-meta {
+                    padding:0;
+                    margin:0 0 0.5em 0;
+                    font-size:16px;
+                    font-weight: 600;
+
+                    li {
+                        display: inline-block;
+                        margin-bottom: 0;
+                        min-width: 200px;
+                        padding-right:10px;
+                        &.guest {
+                            min-width: 300px;
+                        }
+                    }
+                }
+        }
+
         table {
             width: 100%;
             font-size: 14px;
@@ -940,7 +976,8 @@
             &.transaction-reports,
             &.financial-adjustment-reports,
             &.deposit-reports,
-            &.balance-reports {
+            &.balance-reports,
+            &.card-authorization-check-reports {
                 tr {
                     th {
                         line-height: 35px;
@@ -984,7 +1021,8 @@
             &.transaction-reports,
             &.financial-adjustment-reports,
             &.deposit-reports,
-            &.balance-reports {
+            &.balance-reports,
+            &.card-authorization-check-reports {
                 border-collapse: collapse;
                 border-spacing: 0;
 
@@ -1019,6 +1057,17 @@
                                 .size(10px, 100%);
                             }
                         }
+                    }
+                }
+            }
+
+            &.card-authorization-check-reports {
+                margin-bottom: 2em;
+
+                td {
+
+                    &.entity-name {
+                        width: 200px;
                     }
                 }
             }
@@ -2355,12 +2404,39 @@
     .report-content {
 
         table {
+        
+            &.card-authorization-check-reports {
+                margin-bottom: .5cm;
+            }
             td.code {
                 padding-left: 0pt;
             }
             .red,
             .penalty { color: @grey3; text-decoration: line-through; }
             .purple { color: @black; }
+        }
+
+        &.card-authorization-check {
+            .grid-footer li {
+                float: right !important;
+            }
+            .card-meta {
+                padding:0;
+                padding-right: 0.1cm;
+                margin:0 0 .2cm 0;
+                font-size:10pt;
+                font-weight: 600;
+
+                li {
+                    display: inline-block;
+                    margin-bottom: 0;
+                    min-width: 3cm;
+                    padding-right:.1cm;
+                    &.guest {
+                        min-width: 4cm;
+                    }
+                }
+            }
         }
     }
 }
