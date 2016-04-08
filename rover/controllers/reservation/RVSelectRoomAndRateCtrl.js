@@ -348,7 +348,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							restriction: proccesedRestrictions.firstRestriction,
 							numRestrictions: proccesedRestrictions.restrictionCount || 0,
 							forRoomType: roomType.id,
-							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, roomType.rate_id),
+							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, roomType.rate_id, roomType.availability),
 							showDays: false,
 							totalAmount: 0.0,
 							isCorporate: !!$scope.reservationData.ratesMeta[roomType.rate_id].account_id,
@@ -384,7 +384,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							defaultADR: rate.adr,
 							rooms: [],
 							hasRoomsList: false,
-							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id),
+							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, rate.availability),
 							isGroupRate: !!$scope.reservationData.group.id,
 							isAllotmentRate: !!$scope.reservationData.allotment.id,
 							isCorporate: !!$scope.reservationData.ratesMeta[rate.id].account_id,
@@ -847,19 +847,22 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				};
 				$scope.saveReservation(staycardDetails.name, staycardDetails.param);
 			},
-			getBookButtonStyle = function(numRestrictions, rateId) {
-				if (!!$scope.reservationData.ratesMeta[rateId].account_id && numRestrictions > 0) {
+			getBookButtonStyle = function(numRestrictions, rateId, roomsCount) {
+
+				var isRoomAvailable = roomsCount !== undefined && roomsCount > 0;
+
+				if (!!$scope.reservationData.ratesMeta[rateId].account_id && numRestrictions > 0 && !isRoomAvailable) {
 					return 'red';
 				}
 
 				if (!$scope.stateCheck.stayDatesMode) {
-					if (numRestrictions > 0) {
+					if (numRestrictions > 0 || !isRoomAvailable) {
 						return 'brand-colors';
 					} else {
 						return 'green';
 					}
 				} else { //Staydates mode
-					if (numRestrictions > 0) {
+					if (numRestrictions > 0 || !isRoomAvailable) {
 						return 'white brand-text';
 					} else {
 						return 'white green-text';
@@ -1588,7 +1591,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
 								restriction: proccesedRestrictions.firstRestriction,
-								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id)
+								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability)
 							};
 						rate.rooms.push(roomInfo);
 						$timeout(function() {
@@ -1638,7 +1641,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							restriction: proccesedRestrictions.firstRestriction,
 							numRestrictions: proccesedRestrictions.restrictionCount || 0,
 							forRoomType: rate.room_type_id,
-							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id),
+							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability),
 							showDays: false,
 							isGroupRate: !!$scope.reservationData.group.id,
 							isAllotmentRate: !!$scope.reservationData.allotment.id,
