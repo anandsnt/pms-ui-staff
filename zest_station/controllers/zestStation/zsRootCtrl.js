@@ -1052,6 +1052,7 @@ sntZestStation.controller('zsRootCtrl', [
     };
     var socketOpenedSuccess = function() {
         console.info("Websocket:-> socket connected");
+        $scope.$broadcast('SOCKET_CONNECTED');
     };
 
     $scope.$on('CONNECT_WEBSOCKET',function(){
