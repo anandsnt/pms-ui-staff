@@ -7,19 +7,19 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			<form style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
+			<div style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
 				<fieldset class="holder left">
 					<ad-textbox value="externalPmsConnectivityData.pms_access_url" styleclass="full-width" name = "pms-access-url" id = "pms-access-url" label = "Access Url" placeholder = "Enter access url" required = "yes" ></ad-textbox>
 
 					<ad-textbox value="externalPmsConnectivityData.pms_channel_code" styleclass="full-width" name = "pms-channel-code" id = "pms-channel-code" label = "Pms channel code " placeholder = "Enter pms cahnnel code" required = "yes" ></ad-textbox>
 
-					<ad-textbox value="externalPmsConnectivityData.pms_user_name" styleclass="full-width" name = "pms-user-name" id = "pms-user-name" label = "PMS Username" placeholder = "Enter pms user name" required = "yes" ></ad-textbox>
+					<ad-textbox value="externalPmsConnectivityData.pms_user_name" styleclass="full-width" label = "PMS Username" placeholder = "Enter pms user name" required = "yes" ></ad-textbox>
 
 					<ad-textbox value="externalPmsConnectivityData.pms_timeout" styleclass="full-width" name = "pms-timeout" id = "pms-timeout" label = "PMS Timeout [Seconds]" placeholder = "Enter pms timeout"  ></ad-textbox>
 
 				</fieldset>
 				<fieldset class="holder right">
-					<ad-textbox inputtype="password" value="externalPmsConnectivityData.pms_user_pwd" styleclass="full-width" name = "pms-password" id = "pms-password" label = "PMS password " placeholder = "Enter pms password " required = "yes" ></ad-textbox>
+					<ad-textbox inputtype="password" value="externalPmsConnectivityData.pms_user_pwd" styleclass="full-width" label = "PMS password " placeholder = "Enter pms password " required = "yes" ></ad-textbox>
 					<ad-textbox value="externalPmsConnectivityData.pms_hotel_code" styleclass="full-width" name = "pms-hotel-code" id = "pms-hotel-code" label = "Hotel Code " placeholder = "Enter Hotel Code" required = "yes" ></ad-textbox>
 
 					<ad-textbox value="externalPmsConnectivityData.pms_chain_code" styleclass="full-width" name = "pms-chain-code" id = "pms-chain-code" label = "Chain Code " placeholder = "Enter  Chain Code" required = "yes" ></ad-textbox>
@@ -38,7 +38,7 @@
 						Test Connectivity
 					</button>
 				</div>
-			</form>
+			</div>
 		</section>
 	</div>
 </section>

@@ -6,7 +6,7 @@
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<form name="icare-services" method="post" class="form float" action="">
+				<div name="icare-services" method="post" class="form float" action="">
 					
 					<fieldset class="holder full-width">
 						<div class="form-title">
@@ -28,9 +28,9 @@
 
 							<ad-textbox value="data.key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 				    		
-				    		<ad-textbox value="data.key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+				    		<ad-textbox value="data.key_username" id="dont-autofill-username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
-				    		<ad-textbox value="data.key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+				    		<ad-textbox value="data.key_password" id="dont-autofill-password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
 		                    <ad-textbox value="data.max_primary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>				
 
@@ -151,7 +151,7 @@
 							SAVE_CHANGES
 						</button>
 					</div>
-				</form>
+				</div>
 			</services>
 		</section>
 	</div>
