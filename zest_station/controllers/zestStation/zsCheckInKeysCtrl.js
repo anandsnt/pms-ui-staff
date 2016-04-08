@@ -272,6 +272,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
         };
         $scope.emitKeyError = function(response){
+            console.log($scope.ws)
             console.log('ws status: ',$scope.wsOpen, $scope.ws.readyState);
             if ($scope.wsOpen || $scope.ws.readyState === 1){
                     console.info('closing web socket');
@@ -376,6 +377,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.ws = new WebSocket($scope.wsConfig['swipeService']);
 
         $scope.setupWebSocketForSankyo = function(){
+                if ($scope.ws.readyState !== 1){
+                    $scope.ws.open();
+                }
                 $scope.simulateSwipe = function() {
                     $scope.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
                 };
@@ -472,7 +476,14 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.wsOpen = true;
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 console.info('[ :Local Key Print via Websocket: ]');
+                if ($scope.ws.readyState === 1){
+                    $scope.ws.close();
+                }
+                    
+                    
+                    
                 $scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
+                
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
                     //$scope.UUIDforDevice();
                     if ($state.simkey){
