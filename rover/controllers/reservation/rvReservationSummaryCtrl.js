@@ -1397,7 +1397,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
             // CICO-18594 - Urgent fix
-            if (typeof $scope.reservationData.reservation_type !== "undefined") {
+            if (typeof $scope.reservationData.reservation_type !== "undefined" && !$scope.reservationData.group.id ) {
                 $scope.demographics.reservationType = $scope.reservationData.reservation_type;
             };
 
