@@ -73,7 +73,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             console.log('ws status: ',$scope.wsOpen, $scope.ws.readyState);
             if ($scope.wsOpen || $scope.ws.readyState === 1){
                     console.info('closing web socket');
-                    $scope.ws.close();
+                    $scope.ws.closeWebSocket();
             }
             
             $scope.$emit("hideLoader");
@@ -82,11 +82,30 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
 
         $scope.makeKeys = function(n){
-            console.info('---: change screen to make_keys');
-            $state.input.makeKeys = n;
-            $state.input.madeKey = 0;
-            $state.input.nextKey = 1;
-            $state.go('zest_station.make_keys');
+            var continueWithMakeKey = function(){
+                console.info('---: change screen to make_keys');
+                $state.input.makeKeys = n;
+                $state.input.madeKey = 0;
+                $state.input.nextKey = 1;
+                $state.go('zest_station.make_keys');   
+            }
+            $scope.ws = new webSocketOperations(function () {
+                console.info(':: WebSocket Connected ::');
+                        $scope.wsOpen = true;
+                        continueWithMakeKey();
+                    }, function () {
+                        // websocket is closed.
+                        $scope.wsOpen = false;
+                        console.warn('[::: WebSocket Closed :::]');
+                    }, function (evt) {
+                        var received_msg = evt.data;
+                        if (received_msg){
+                            received_msg = JSON.parse(received_msg);
+                            var cmd = received_msg.Command, msg = received_msg.Message;
+                            $scope.initSankyoCmd(cmd, msg);
+                        }
+                    });;
+            
         };
 
         $scope.initKeySuccess = function(){
@@ -265,18 +284,19 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     } else {
                          if ($scope.wsOpen || $scope.ws.readyState === 1){
                                 console.info('closing web socket');
-                                $scope.ws.close();
+                                $scope.ws.closeWebSocket();
                         }
                         $scope.emitKeyError(response);
                     }
                 };
         };
         $scope.emitKeyError = function(response){
-            console.log($scope.ws)
-            console.log('ws status: ',$scope.wsOpen, $scope.ws.readyState);
-            if ($scope.wsOpen || $scope.ws.readyState === 1){
+            console.log('ws status: ',$scope.wsOpen, $scope.ws);
+            if ($scope.wsOpen || ($scope.ws && $scope.ws.readyState === 1)){
                     console.info('closing web socket');
-                    $scope.ws.close();
+                    if ($scope.ws.closeWebSocket){
+                        $scope.ws.closeWebSocket();
+                    }
             }
             $scope.$emit('MAKE_KEY_ERROR',response);
         };
@@ -367,28 +387,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         };
 
-        $scope.wsConfig = {
-            "swipeService":"wss://localhost:4649/CCSwipeService"   ,
-            "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
-            "close_alert":"Socket Server is no longer connected.",
-            "swipe_alert":"Please swipe.",
-            "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
-        };
-        $scope.ws = new webSocketOperations(function () {
-                        $scope.wsOpen = true;
-                        console.info($scope.wsConfig['connected_alert']);
-                    }, function () {
-                        // websocket is closed.
-                        $scope.wsOpen = false;
-                        console.warn('[::: WebSocket Closed :::]');
-                    }, function (evt) {
-                        var received_msg = evt.data;
-                        if (received_msg){
-                            received_msg = JSON.parse(received_msg);
-                            var cmd = received_msg.Command, msg = received_msg.Message;
-                            $scope.initSankyoCmd(cmd, msg);
-                        }
-                    });;
 
         $scope.setupWebSocketForSankyo = function(){
                 if ($scope.ws.readyState !== 1){
@@ -466,7 +464,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 console.info('[ :Local Key Print via Websocket: ]');
                 if ($scope.ws.readyState === 1){
-                    $scope.ws.close();
+                    $scope.ws.closeWebSocket();
                 }
                     
                     
