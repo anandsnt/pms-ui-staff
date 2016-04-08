@@ -70,12 +70,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
-            console.log('ws status: ',$scope.wsOpen, $scope.ws.readyState);
-            if ($scope.wsOpen || $scope.ws.readyState === 1){
-                    console.info('closing web socket');
-                    $scope.ws.closeWebSocket();
-            }
-            
             $scope.$emit("hideLoader");
             $state.go('zest_station.key_success');
             $scope.$emit("hideLoader");
@@ -282,22 +276,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         }
 
                     } else {
-                         if ($scope.wsOpen || $scope.ws.readyState === 1){
-                                console.info('closing web socket');
-                                $scope.ws.closeWebSocket();
-                        }
                         $scope.emitKeyError(response);
                     }
                 };
         };
         $scope.emitKeyError = function(response){
-            console.log('ws status: ',$scope.wsOpen, $scope.ws);
-            if ($scope.wsOpen || ($scope.ws && $scope.ws.readyState === 1)){
-                    console.info('closing web socket');
-                    if ($scope.ws.closeWebSocket){
-                        $scope.ws.closeWebSocket();
-                    }
-            }
             $scope.$emit('MAKE_KEY_ERROR',response);
         };
 
@@ -389,11 +372,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.setupWebSocketForSankyo = function(){
-                if ($scope.ws.readyState !== 1){
-                    if ($scope.ws && $scope.ws.open){
-                        $scope.ws.open();
-                    }
-                }
                 $scope.simulateSwipe = function() {
                     $scope.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
                 };
@@ -406,9 +384,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.DispenseKey = function() {//write to key after successful encodeKey call
                     //console.info('dispense called : [',$state.keyDispenseUID,']');
                     $state.keyDispenseUID = $scope.dispenseKeyData;
-                    if ($scope.ws.readyState === 3){
-                        $scope.wsOpen = false;
-                    }
                     if (!$scope.wsOpen){
                         $scope.emitKeyError('Websocket is in State (Closed)');
                     } else {
@@ -463,9 +438,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.wsOpen = true;
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 console.info('[ :Local Key Print via Websocket: ]');
-                if ($scope.ws.readyState === 1){
-                    $scope.ws.closeWebSocket();
-                }
                     
                     
                     
