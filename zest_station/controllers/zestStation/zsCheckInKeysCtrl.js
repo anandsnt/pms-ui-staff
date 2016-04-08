@@ -378,7 +378,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         $scope.setupWebSocketForSankyo = function(){
                 if ($scope.ws.readyState !== 1){
-                    $scope.ws.open();
+                    if ($scope.ws && $scope.ws.open){
+                        $scope.ws.open();
+                    }
                 }
                 $scope.simulateSwipe = function() {
                     $scope.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
