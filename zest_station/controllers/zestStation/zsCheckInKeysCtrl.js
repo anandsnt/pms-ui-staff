@@ -374,7 +374,21 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             "swipe_alert":"Please swipe.",
             "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
         };
-        $scope.ws = $scope.socketOperator;
+        $scope.ws = new webSocketOperations(function () {
+                        $scope.wsOpen = true;
+                        console.info($scope.wsConfig['connected_alert']);
+                    }, function () {
+                        // websocket is closed.
+                        $scope.wsOpen = false;
+                        console.warn('[::: WebSocket Closed :::]');
+                    }, function (evt) {
+                        var received_msg = evt.data;
+                        if (received_msg){
+                            received_msg = JSON.parse(received_msg);
+                            var cmd = received_msg.Command, msg = received_msg.Message;
+                            $scope.initSankyoCmd(cmd, msg);
+                        }
+                    });;
 
         $scope.setupWebSocketForSankyo = function(){
                 if ($scope.ws.readyState !== 1){
@@ -413,31 +427,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                  $scope.InsertKeyCard = function() {//use key for checkout takes key in
                     $scope.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
                 };
-                $scope.connect = function() {
-                    //Triggers when websocket connection is established.
-                    $scope.ws.onopen = function () {
-                        $scope.wsOpen = true;
-                        console.info($scope.wsConfig['connected_alert']);
-                    };
-
-                    // Triggers when there is a message from websocket server.
-                    $scope.ws.onmessage = function (evt) {
-                                var received_msg = evt.data;
-                                if (received_msg){
-                                    received_msg = JSON.parse(received_msg);
-                                    var cmd = received_msg.Command, msg = received_msg.Message;
-                                    $scope.initSankyoCmd(cmd, msg);
-                                }
-                    };
-
-                    // Triggers when the server is down.
-                    $scope.ws.onclose = function () {
-                        // websocket is closed.
-                        $scope.wsOpen = false;
-                        console.warn('[::: WebSocket Closed :::]');
-                    };
-                    return $scope.ws;
-                };
+               
 
 
 
@@ -447,10 +437,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.connectWebSocket = function(){
             console.info('--> Connecting WebSocket...');
             $scope.setupWebSocketForSankyo();
-            setTimeout(function(){
-                console.info('[:: Connecting ... .. .  ::]');
-                $scope.connect();
-            },$scope.wsConfig['connect_delay']);
+            
         };
         
         $scope.getKeyInfoFromResponse = function(response){
