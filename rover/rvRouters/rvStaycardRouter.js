@@ -138,12 +138,6 @@ angular.module('stayCardModule', [])
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
                     });
-                },
-                rateAddons: function($stateParams, RVReservationBaseSearchSrv, staycardJsAssets) {
-                    return RVReservationBaseSearchSrv.fetchAddonsForRates({
-                        from_date: $stateParams.from_date,
-                        to_date: $stateParams.to_date
-                    });
                 }
             }
         });

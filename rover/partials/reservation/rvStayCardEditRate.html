@@ -10,7 +10,10 @@
 		        <!-- If rate is already edited, show this button instead: -->
 		        <button type="button" ng-click="applyCustomRate()" class="button purple" ng-if="reservationParentData.is_modified == true" translate>MODIFY_CUSTOMRATE</button>
 
-		        <button type="button" ng-click="updateRoomRate()" class="button blue" ng-hide="reservationData.group_id || reservationData.reservation_card.group_id ">Update Room &amp; Rate</button>
+		        <button type="button" ng-click="updateRoomRate()" class="button blue"
+		        	ng-hide="reservationData.group_id || reservationData.reservation_card.group_id || reservationData.allotment_id || reservationData.reservation_card.allotment_id">
+		        		Update Room &amp; Rate
+		        </button>
 		        <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
 		    </div>
 		</form>

@@ -39,6 +39,22 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 		};
 
+
+		self.updateRateAddonsMeta = function(addonInfo) {
+			if(addonInfo.length === 0){
+				return false;
+			}
+			var rateAddons = _.findWhere(self.metaData.rateAddons, {
+				rate_id: addonInfo[0].rateId
+			});
+			
+			if(rateAddons){
+				rateAddons[0] = addonInfo[0];
+			}else{
+				self.metaData.rateAddons.push(addonInfo[0]);
+			}
+		};
+
 		self.getCustomRateModel = function(id, name, type) {
 			var isAllotment = type && type === 'ALLOTMENT',
 				rateIdentifier = isAllotment ? 'ALLOTMENT_CUSTOM_' + id : 'GROUP_CUSTOM_' + id, //Default to the GROUP
