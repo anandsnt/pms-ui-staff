@@ -90,13 +90,19 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			findReservationFailed();
 		});
 
+		$scope.$on('SOCKET_CONNECTED',function(){	
+			//will change this call back to init method
+			//once key dispenser is corrected
+			$scope.socketOperator.InsertKeyCard();
+		});
+
 		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
 			$timeout(function() {
 				// so inorder to avoid a possible error because of
 				// wrong timing adding a buffer of 1.5 seconds
                 $scope.socketBeingConnected = false;//connection success
-  			}, 1500);
-  			$scope.socketOperator.InsertKeyCard();
+  			}, 1000);
+  			
 		};
 		var init = function(){
 			setTimeOutFunctionToEnsureSocketIsOpened();
