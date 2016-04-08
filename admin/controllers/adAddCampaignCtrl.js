@@ -240,7 +240,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	$scope.$watch(function(){
 		return $scope.campaignData.delivery_details;
 	}, function(value) {
-			if($scope.isScreenSwitchDisabled()){
+			if($scope.campaignData.target_type === 'SCREEN' && $scope.isScreenSwitchDisabled()){
                  $scope.campaignData.target_type = "";
 				 $scope.campaignData.screen_type_id = "";
 			}
@@ -251,7 +251,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	$scope.$watch(function(){
 		return $scope.campaignData.audience_type;
 	}, function(value) {
-			if($scope.isScreenSwitchDisabled()){
+			if($scope.campaignData.target_type === 'SCREEN' && $scope.isScreenSwitchDisabled()){
                  $scope.campaignData.target_type = "";
 				 $scope.campaignData.screen_type_id = "";
 			}
