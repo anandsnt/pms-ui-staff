@@ -857,6 +857,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response
      */
     var onFetchSingleRateDetailsAndRestrictions = (response) => {
+
+
         var roomTypeRestrictions = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             dates = _.pluck(roomTypeRestrictions, 'date'),
@@ -867,6 +869,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //roomTypeList is now cached, we will not fetch that again
         cachedRoomTypeList = roomTypes;
+
+        if(roomTypeRestrictions[0].room_types.length === 0) {
+            hideAndClearDataForTopBar();
+            showNoResultsPage();
+            return;            
+        };
 
         //topbar
         $scope.fromDate = dates[0];
@@ -990,7 +998,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     const showNoResultsPage = () => {
         store.dispatch({
-            type: RM_RX_CONST.NO_RESULTS_FOUND_MODE
+            type: RM_RX_CONST.SHOW_NO_RESULTS
         });
     };
     
