@@ -152,6 +152,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             fetchSingleRateDetailsAndRestrictions(lastSelectedFilterValues[activeFilterIndex]);
         }
+        else if(numberOfRates === 0) {
+            hideAndClearDataForTopBar();
+            showNoResultsPage();
+        }
         else{
             return processForAllRates(response);
         }
@@ -190,72 +194,113 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
     };
 
-      /**
-       * when the daily rates success
-       * @param  {Object}
-       */
-        var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
-            var roomTypeRestrictions = response.roomTypeAndRestrictions,
-                roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
-                dates = _.pluck(roomTypeRestrictions, 'date'),
-                roomTypeIDs = _.pluck(roomTypes, 'id'),
-                roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
-                roomTypeObjectBasedOnID = {},
-                dateRoomTypeSet = null;
+    /**
+     * to show & form the data required for topbar
+     * @param  {array} dates [description]
+     */
+    const showAndformDataForTopBar = (dates) => {
+        $scope.fromDate = dates[0];
+        $scope.toDate = dates[dates.length - 1];
+        $scope.showTopBar = true;
+        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
+    };
 
-            //roomTypeList is now cached, we will not fetch that again
-            cachedRoomTypeList = roomTypes;
-
-            //topbar
-            $scope.fromDate = dates[0];
-            $scope.toDate = dates[dates.length - 1];
-            $scope.showTopBar = true;
-            $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
-            $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
-
-            roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
+    /**
+     * to form the rendering data model (for react) against all rates
+     * @param  {array} dates
+     * @param  {array} roomTypeRestrictions
+     * @param  {array} room types
+     * @return {array}
+     */
+    var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, roomTypes) => {
+        var dateRoomTypeSet = null,
+            roomTypeRestrictionWithDateAsKey = _.object(dates, roomTypeRestrictions),
+            roomTypeIDs = _.pluck(roomTypes, 'id'),
             roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
 
-            //we have lots of alternative ways, those depends on javascript array order
-            //which is buggy from browser to browser, so choosing this bad way
-            //may be this will result in running 365000 times
-            roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
-                roomType.restrictionList = [];
+        //rate & restrictions -> 2nd row onwards
+        var roomTypeWithRestrictions = roomTypeRestrictions[0].room_types.map((roomType) => {
+            roomType.restrictionList = [];
 
-                roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
+            roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
 
-                dates.map((date) => {
-                  dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, {id: roomType.id});
-                  roomType.restrictionList.push(dateRoomTypeSet.restrictions);
-                });
-
-                return _.omit(roomType, 'restrictions');
+            dates.map((date) => {
+                dateRoomTypeSet = _.findWhere(roomTypeRestrictionWithDateAsKey[date].room_types, {id: roomType.id});
+                roomType.restrictionList.push(dateRoomTypeSet.restrictions);
             });
 
-            //for the first row with common restrictions among the rates
-            //for now there will not be any id, we have to use certain things to identify (later) TODO
+            return _.omit(roomType, 'restrictions');
+        });
 
-            roomTypeWithRestrictions.unshift({
-              restrictionList: dates.map((date) => {
-                return roomTypeRestrictions[date].all_room_type_restrictions;
-              })
-            });
+        //forming the top row (All rates) with common restrictions
+        roomTypeWithRestrictions.unshift({
+            restrictionList: dates.map((date) => {
+                return roomTypeRestrictionWithDateAsKey[date].all_room_type_restrictions;
+            })
+        });
 
-            //closing the left side filter section
-            $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
+        return roomTypeWithRestrictions;
+    };
 
-            console.log('Strted: ', new Date().getTime());
-
-            store.dispatch({
-              type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
-              roomTypeRestrictionData: [...roomTypeWithRestrictions],
-              dates,
-              zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
-              businessDate: tzIndependentDate($rootScope.businessDate),
-              restrictionTypes,
-              callbacksFromAngular: getTheCallbacksFromAngularToReact(),
-            });
+    /**
+     * to update all room types view with latest data
+     * updating the store by dispatching the action
+     * @param  {array} roomTypeWithRestrictions
+     * @param  {array} dates
+     */
+    var updateAllRoomTypesView = (roomTypeWithRestrictions, dates) => {
+        var reduxActionForAllRoomTypesView = {
+            type                : RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
+            roomTypeRestrictionData : [...roomTypeWithRestrictions],
+            zoomLevel           : lastSelectedFilterValues[activeFilterIndex].zoomLevel,
+            businessDate        : tzIndependentDate($rootScope.businessDate),
+            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
+            dates,
+            restrictionTypes,
         };
+
+        //dispatching to redux
+        store.dispatch(reduxActionForAllRoomTypesView);
+    };
+
+    /**
+     * method to process the response for 'All Room types'
+     * @param  {Object} response
+     */
+    var processRoomTypesAndRestrictionForAllRoomType = (response) => {
+        var roomTypeRestrictions = response.roomTypeAndRestrictions;
+
+        //roomTypeList is now cached, we will not fetch that again
+        cachedRoomTypeList = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList;
+
+        //for topbar
+        var dates = _.pluck(roomTypeRestrictions, 'date');
+        showAndformDataForTopBar(dates);
+
+        var roomTypeWithRestrictions = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, cachedRoomTypeList);
+
+        //updating the view with results
+        updateAllRoomTypesView(roomTypeWithRestrictions, dates);
+
+        //closing the left side filter section
+        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);        
+    };
+
+    /**
+     * when the daily rates success
+     * @param  {Object}
+     */
+    var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
+        var numberOfRoomTypes = response.roomTypeAndRestrictions[0].room_types;
+        if(numberOfRoomTypes === 0) {
+            hideAndClearDataForTopBar();
+            showNoResultsPage();            
+        }
+        else {
+            processRoomTypesAndRestrictionForAllRoomType(response);
+        }
+    };
 
     /**
      * to fetch the room type & it's restrcitions
@@ -812,6 +857,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response
      */
     var onFetchSingleRateDetailsAndRestrictions = (response) => {
+
+
         var roomTypeRestrictions = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             dates = _.pluck(roomTypeRestrictions, 'date'),
@@ -822,6 +869,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //roomTypeList is now cached, we will not fetch that again
         cachedRoomTypeList = roomTypes;
+
+        if(roomTypeRestrictions[0].room_types.length === 0) {
+            hideAndClearDataForTopBar();
+            showNoResultsPage();
+            return;            
+        };
 
         //topbar
         $scope.fromDate = dates[0];
@@ -931,6 +984,24 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
     };
 
+    /**
+     * to hide & clear the data required for topbar
+     */
+    const hideAndClearDataForTopBar = () => {
+        $scope.showTopBar = false;
+        $scope.selectedCardNames = [];
+        $scope.selectedRateNames = [];
+    };
+
+    /**
+     * to show no results page
+     */
+    const showNoResultsPage = () => {
+        store.dispatch({
+            type: RM_RX_CONST.SHOW_NO_RESULTS
+        });
+    };
+    
     /**
      * to update results
      * @param  {Object} event
