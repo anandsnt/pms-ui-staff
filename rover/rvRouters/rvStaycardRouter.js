@@ -198,7 +198,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards/:isOnlineRoomMove',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards/:isOnlineRoomMove/:isKeySystemAvailable',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {
