@@ -254,13 +254,15 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
         }, 700)
     };
-
-    if(( $stateParams.isOnlineRoomMove == "false"
-        || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
-        && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
-        && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")){
-            $scope.showPopupsOnlineOfflineRoomMove();
+    if($rootScope.isStandAlone && !$rootScope.isHourlyRateOn){
+        if(( $stateParams.isOnlineRoomMove == "false"
+            || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
+            && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
+            && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")){
+                $scope.showPopupsOnlineOfflineRoomMove();
+        }
     }
+
 
     $scope.$watch('reservationData.reservation_card.room_number',function(){
        if ($rootScope.viaSharerPopup){
