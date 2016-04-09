@@ -28,6 +28,7 @@ sntRover.controller('RVroomAssignmentController',[
 	// currently used for group reservation
 	var wanted_to_forcefully_assign = false;
 	var isOnlineRoomMove = "";
+	var isKeySystemAvailable = false;
 
 	var oldRoomType = '';
 	$scope.errorMessage = '';
@@ -344,7 +345,8 @@ sntRover.controller('RVroomAssignmentController',[
 			selectedRoomType 	= $scope.selectedRoomType,
 			reservationData 	= $scope.reservationData.reservation_card;
 		isOnlineRoomMove    = data.is_online_move_allowed;
-		console.log("reached here"+ data.is_online_move_allowed + isOnlineRoomMove);
+		isKeySystemAvailable = (typeof data.is_online_move_allowed !== 'undefined') ? true : false;
+
 
 		_.extend (dataToUpdate,
 		{
@@ -536,7 +538,7 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function(){
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num ,isrefresh: false, isOnlineRoomMove: isOnlineRoomMove});
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num ,isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
 	};
 	/**
 	* function to show and hide the filters view
