@@ -69,8 +69,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
-            $state.ws.close();
-            
             $scope.$emit("hideLoader");
             $state.go('zest_station.key_success');
             $scope.$emit("hideLoader");
@@ -347,7 +345,16 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         $state.wsOpen = false;
                     }
                     if (!$state.wsOpen){
-                        $scope.emitKeyError('Websocket is in State (Closed)');
+                        $state.ws.open();
+                        setTimeout(function(){
+                            console.info('$state.ws.readyState: ',$state.ws.readyState);
+                            if ($state.ws.readyState === 1){
+                                $state.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}")  ;
+                            } else {
+                                $scope.emitKeyError('Websocket is in State (Closed), attempting re-connect with dispense');
+                            }
+                        },2000);
+                        
                     } else {
                         $state.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
                     }
