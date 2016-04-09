@@ -1725,8 +1725,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			delay: 500,
 			minLength: 0,
 			position: {
-				my: "right top",
-				at: "right bottom",
+				my: "left top",
+				at: "left bottom",
 				of: "input#find-rates",
 				collision: 'fit'
 			},

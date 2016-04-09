@@ -122,7 +122,9 @@
 		        position	: {
 		            my 			: "right top",
 		            at 			: "right bottom",
-		            collision	: 'flip'
+		            collision	: 'flip',
+    				of 			: (autocompleteEl),
+        			within 		: 'body'		            
 		        },
 	            source 		: autoCompleteSourceHandler,
 	            select 		: autoCompleteSelectHandler
