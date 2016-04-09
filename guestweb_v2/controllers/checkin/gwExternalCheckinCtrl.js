@@ -64,6 +64,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				zestwebData.isCCOnFile = (reservation_data.is_cc_attached === "true") ? true : false;
 				zestwebData.userEmail = reservation_data.guest_email;
 				zestwebData.userMobile = reservation_data.guest_mobile;
+				GwWebSrv.zestwebData.roomUpgraded  = false;
 
 				//navigate to next page
 				//to be done
