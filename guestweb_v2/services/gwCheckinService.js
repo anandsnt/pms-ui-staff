@@ -53,7 +53,13 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 
 	this.fetchRoomUpgradesDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/upgrade_options.json';
+		var url= "";
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/room_upgrades.json';
+		}
+		else{
+			url = '/guest_web/upgrade_options.json';
+		}
 		GWBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

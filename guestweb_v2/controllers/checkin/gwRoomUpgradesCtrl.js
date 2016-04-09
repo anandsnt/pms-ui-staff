@@ -62,11 +62,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		};
 
 		$scope.noThanksClicked = function() {
-			if (GwWebSrv.zestwebData.isAutoCheckinOn) {
-				$state.go('autoCheckinFinal');
-			} else {
-				$state.go('checkinFinal');
-			};
+			$state.go('termsAndConditions');
 		};
 	}
 ]);
