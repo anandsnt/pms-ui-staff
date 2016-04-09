@@ -8,9 +8,6 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             screenMappings: function(GwWebSrv) {
                 return GwWebSrv.fetchScreenMappings();
             },
-            zestWebGlobalSettings: function(GwWebSrv) {
-                return GwWebSrv.fetchZestwebGlobalSettings();
-            },
             zestwebData: function(GwWebSrv, $stateParams) {
 
                 var absUrl = window.location.href;
