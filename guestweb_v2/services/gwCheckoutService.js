@@ -47,13 +47,23 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 	 */
 	this.verifyRoom = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/verify_room.json';
-
-		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
+		var url = '';
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/return_status_success.json';
+			GWBaseWebSrv.getJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			url = '/guest_web/verify_room.json';
+			GWBaseWebSrv.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		}
 		return deferred.promise;
 	};
 
