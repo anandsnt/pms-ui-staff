@@ -9,7 +9,7 @@
             <h2 ng-show="is_early_prepaid && reservation_in_early_checkin_window" class="nocaps">{{'EARLY_AVAIL_PURCHASED' | translate}} </h2>
             <h2 ng-show="!is_early_prepaid && reservation_in_early_checkin_window"  class="nocaps">{{'EARLY_AVAIL_FREE' | translate}} </h2>
             
-            <button ng-show="reservation_in_early_checkin_window" type="button" class="button" touch-press='initTermsPage()'>{{'CONTINUE_TEXT' |translate}}</button>
+            <button ng-show="reservation_in_early_checkin_window" type="button" class="button" touch-press='initTermsPage(true)'>{{'CONTINUE_TEXT' |translate}}</button>
             <button ng-show="!reservation_in_early_checkin_window" type="button" class="button" touch-press='goToHome()'>{{'DONE' |translate}}</button>
 
         </div>
