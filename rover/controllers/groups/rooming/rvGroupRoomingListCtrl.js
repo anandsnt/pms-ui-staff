@@ -335,6 +335,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
             }
+            else if (data.result.length === 0) {
+                // No room type configured
+                $scope.roomTypesAndData = [];
+            }
             //if we have any data in our hand, just updating the available room count
             else {
                 _.each($scope.roomTypesAndData, function(roomTypeData) {

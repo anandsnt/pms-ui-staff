@@ -53,11 +53,14 @@
 
 <div class="page-print">
         <section id="registration-card" class="page-print">
-            <div class="logo">
+            <div class="logo centered-logo">
                 <div ng-include="icons.url.logo"></div>
             </div>
             <div class="content ows-content">
                 <span class="reg_text">{{currentOwsMessage}}</span>
+                <br><br>
+                <!-- to add some space in bottom of the page. else the page will be cut once the message is over -->
+                <span class="ows-footer">&nbsp;.</span>
             </div>
         </section>
     </div>
