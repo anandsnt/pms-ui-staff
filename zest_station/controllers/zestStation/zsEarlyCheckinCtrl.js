@@ -148,14 +148,10 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             } else {
                 if ($scope.reservationIncludesEarlyCheckin(response)){
                     
-                    var onSuccess = function(response){
-                            console.log('updated reservation for : early_checkin_prepaid : ',response);
                             $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
                             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                             $state.early_checkin_offer_id = response.early_checkin_offer_id;
                             $state.go('zest_station.early_checkin_prepaid');
-                        };
-                        $scope.updateReservationTime(onSuccess);
                     
                     $state.go('zest_station.early_checkin_prepaid');
                 } else {
@@ -186,6 +182,8 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             $scope.$emit('GENERAL_ERROR',response);
         };
         $scope.updateReservationTime = function(onsuccess){
+            
+                $scope.$emit('hideLoader');
                 var today = new Date();
                 var hours = today.getHours(),
                         min = today.getMinutes();
@@ -313,9 +311,9 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                     if (response.early_checkin_charge !== null &&
                             response.early_checkin_offer_id !== null){
                         
-                        response.is_early_prepaid = true;
-                    } else {
                         response.is_early_prepaid = false;
+                    } else {
+                        response.is_early_prepaid = true;
                         
                     }
                     $state.is_early_prepaid = response.is_early_prepaid;
