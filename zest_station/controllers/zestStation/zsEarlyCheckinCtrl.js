@@ -149,7 +149,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
 
                 if ($scope.reservationIncludesEarlyCheckin(response)){
                    if (response.is_early_prepaid){
-                       $state.is_early_prepaid = true;
+                        $state.is_early_prepaid = true;
                         $state.go('zest_station.early_checkin_prepaid');
 
                    } else {
@@ -317,19 +317,14 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 response.is_early_prepaid = false;
 
                 if (response.offer_eci_bypass){
-                    
-                    
-                    
-                    
                     if (response.early_checkin_charge !== null &&
                             response.early_checkin_offer_id !== null){
                         
-                        
                         response.is_early_prepaid = true;
                     } else {
-                        
                         response.is_early_prepaid = false;
                     }
+                    $state.is_early_prepaid = response.is_early_prepaid;
                 }
                 
                 
