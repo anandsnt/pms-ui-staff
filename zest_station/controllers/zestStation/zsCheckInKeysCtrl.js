@@ -325,8 +325,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
         };
         console.log('$state.ws: ',$state.ws);
+       
+        if ($scope.socketOperator){
+            if ($scope.socketOperator.closeWebSocket){
+                $scope.socketOperator.closeWebSocket();
+            }
+        }
         if (!$state.ws){
             $state.ws = new WebSocket($state.wsConfig['swipeService']);
+            
         } else if ($state.ws.readyState !== 1){
             console.log('re-opening websocket to make keys');
             if ($state.ws.open){

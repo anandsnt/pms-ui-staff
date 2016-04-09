@@ -337,8 +337,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             });
         };
             
-        $scope.initTermsPage = function(){
-            $scope.onStartCheckinUpsell();
+        $scope.initTermsPage = function(continueWithEarlyCheckin){
+            if (continueWithEarlyCheckin){
+                    $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
+                    $state.go('zest_station.terms_conditions');
+            } else {
+                $scope.onStartCheckinUpsell();
+            }
         };
 
 	var initializeMe = function() {
