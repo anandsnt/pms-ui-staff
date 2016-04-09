@@ -980,6 +980,8 @@ sntZestStation.controller('zsRootCtrl', [
     };
 
     var setPrinterOptions = function(){
+        $scope.zestStationData.theme = $state.theme;//again a state variable!!!!
+        //need to change all this codes
         // alert($scope.zestStationData.zest_printer_option)
          if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
             //add startac styles
