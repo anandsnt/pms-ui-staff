@@ -254,13 +254,16 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
         }, 700)
     };
+
     if($rootScope.isStandAlone && !$rootScope.isHourlyRateOn){
-        if(( $stateParams.isOnlineRoomMove == "false"
+        if((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"
             || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
             && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
             && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")){
+
                 $scope.showPopupsOnlineOfflineRoomMove();
         }
+
     }
 
 
