@@ -7,7 +7,7 @@ angular.module('reportsModule', [])
         controller: 'RVReportsMainCtrl',
         resolve: {         
             reportsAssets: function(jsMappings, mappingList) {
-                return jsMappings.fetchAssets(['react.files', 'rover.reports', 'directives'], ['ngReact']);
+                return jsMappings.fetchAssets(['react.files', 'rover.reports', 'directives'], ['react']);
             },
             payload: function(RVreportsSrv, reportsAssets) {
                 return RVreportsSrv.reportApiPayload();
