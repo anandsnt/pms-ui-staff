@@ -15,8 +15,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     return $sce.trustAsHtml(val);
                 };
             });
-        $state.simkey = false;//use for debugging, simulate success responses
-	/**
+        /**
 	 * when the back button clicked
 	 * @param  {[type]} event
 	 * @return {[type]}
@@ -82,24 +81,31 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $state.input.madeKey = 0;
                 $state.input.nextKey = 1;
                 $state.go('zest_station.make_keys');   
-            }
-            $scope.ws = new webSocketOperations(function () {
-                console.info(':: WebSocket Connected ::');
-                        $scope.wsOpen = true;
-                        continueWithMakeKey();
-                    }, function () {
-                        // websocket is closed.
-                        $scope.wsOpen = false;
-                        console.warn('[::: WebSocket Closed :::]');
-                    }, function (evt) {
-                        var received_msg = evt.data;
-                        if (received_msg){
-                            received_msg = JSON.parse(received_msg);
-                            var cmd = received_msg.Command, msg = received_msg.Message;
-                            $scope.initSankyoCmd(cmd, msg);
-                        }
-                    });;
-            
+            };
+            console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
+            $scope.$emit('CONNECT_WEBSOCKET');
+            setTimeout(function(){
+                console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
+                //after delay, run connect and make key operations
+                $scope.ws = new webSocketOperations(function () {
+                    console.info(':: WebSocket Connected ::');
+                            $scope.wsOpen = true;
+                            continueWithMakeKey();
+                        }, function () {
+                            // websocket is closed.
+                            $scope.wsOpen = false;
+                            console.warn('[::: WebSocket Closed :::]');
+                        }, function (evt) {
+                            var received_msg = evt.data;
+                            if (received_msg){
+                                received_msg = JSON.parse(received_msg);
+                                var cmd = received_msg.Command, msg = received_msg.Message;
+                                $scope.initSankyoCmd(cmd, msg);
+                            }
+                        });
+
+                },1500);
+                    
         };
 
         $scope.initKeySuccess = function(){
@@ -255,10 +261,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                      * get card data ready to write reservation info
                      */
                     console.info(response);
-                    if ($state.simkey){
-                        console.info('::: SIMULATE SUCCESS > Make Key :::');
-                        response.status = 'success';
-                    }
+                   
 
                     $scope.wsOpen = false;//by default dont use websockets, only if local encoding with sankyo device
 
@@ -429,10 +432,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             console.info('[:: Print Local Key ::]');
 
             console.info(response);
-            if ($state.simkey){//this and the below may need to change
-                console.info('::: SIMULATE SUCCESS > Print Local Key :::');
-                response.status = 'success';
-            }
+            
 
             if ($scope.successfulKeyEncode(response)){//This may need to go away, read response differently than encode success from print_key
                 $scope.wsOpen = true;
@@ -445,11 +445,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
                     //$scope.UUIDforDevice();
-                    if ($state.simkey){
-                        $scope.initSankyoCmd('cmd_dispense_key_card', '[fake:simluated sankyo response]');//fake the returning msg
-                    } else {
+                   
                         $scope.DispenseKey();
-                    }
+                    
                 },3500);
 
             } else {
