@@ -308,19 +308,17 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 response.is_early_prepaid = false;
 
                 if (response.offer_eci_bypass){//if bypass is true, early checkin may be part of their Rate
-                    if (response.early_checkin_charge !== null &&
-                            response.early_checkin_offer_id !== null){
-                        
-                        response.is_early_prepaid = false;
-                    } else {
-                        response.is_early_prepaid = true;
-                        
-                    }
-                    $state.is_early_prepaid = response.is_early_prepaid;
+                    response.is_early_prepaid = false;
                 }
                 
+                if (response.is_early_checkin_purchased){//user probably purchased an early checkin from zest web, or through zest station
+                    response.is_early_prepaid = true;
+                }
+                
+                $state.is_early_prepaid = response.is_early_prepaid;
+                
                 console.log('shouldGoToEarlyCheckInFlow: ',$scope.shouldGoToEarlyCheckInFlow(response));
-                if (!$state.earlyCheckinPurchased && 
+                if (!$state.earlyCheckinPurchased && //meaning if they purchased it through zest station a minute ago...dont re-prompt the user
                         $scope.shouldGoToEarlyCheckInFlow(response)){
                         //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
                         $scope.beginEarlyCheckin(response);
