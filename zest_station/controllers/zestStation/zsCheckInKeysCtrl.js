@@ -327,6 +327,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         console.log('$state.ws: ',$state.ws);
         if (!$state.ws){
             $state.ws = new WebSocket($state.wsConfig['swipeService']);
+        } else if ($state.ws.readyState !== 1){
+            console.log('re-opening websocket to make keys');
+            if ($state.ws.open){
+                $state.ws.open();
+            }
         }
 
         $scope.setupWebSocketForSankyo = function(){
