@@ -552,6 +552,7 @@ sntZestStation.controller('zsHomeCtrl', [
         $state.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
         $state.is_early_prepaid = false;
+        $state.earlyCheckinOfferId = null;
         
         $state.qr_code = null;
         $state.search = false;

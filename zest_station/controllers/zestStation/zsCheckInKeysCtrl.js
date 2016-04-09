@@ -375,9 +375,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.setupWebSocketForSankyo = function(){
-                $scope.simulateSwipe = function() {
-                    $scope.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
-                };
                 $scope.observe = function() {
                     $scope.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
                 };
@@ -403,10 +400,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                  $scope.InsertKeyCard = function() {//use key for checkout takes key in
                     $scope.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
                 };
-               
-
-
-
         };
 
 
