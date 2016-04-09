@@ -11,10 +11,19 @@ sntRover.directive('autoComplete', ['highlightFilter',
                 ulClass: '@ulClass'
             },
             link: function(scope, el, attrs) {
+                //CICO-26513
+                var ulElement = null;
+
                 $(el).autocomplete(scope.autoOptions)
                     .data('ui-autocomplete')
                     ._renderItem = function(ul, item) {
                         ul.addClass(scope.ulClass);
+
+                        //CICO-26513
+                        ulElement = ul;
+                        ulElement.off('touchmove').on('touchmove', function(e) {
+                            e.stopPropagation();
+                        });
 
                         var $content = highlightFilter(item.label, scope.ngModel),
                             $result = $("<a></a>").html($content),
@@ -61,6 +70,10 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                 scope.$on('$destroy', function(){
                     $(el).autocomplete( "destroy" );
+                    //unbinding the touch move
+                    if(ulElement instanceof HTMLElement) {
+                        ulElement.off('touchmove')
+                    }                    
                 });                    
             }
         };

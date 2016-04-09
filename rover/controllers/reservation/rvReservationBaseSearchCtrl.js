@@ -694,9 +694,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             delay: 0,
             minLength: 0,
             position: {
+                of : "#company-or-agent",
                 my: 'left bottom',
-                at: 'left top',
-                collision: 'flip'
+                at: 'left top-4',
+                collision : 'flip',
+                within: 'body'
             },
             source: autoCompleteSourceHandler,
             select: autoCompleteSelectHandler
@@ -912,8 +914,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             minLength: 0,
             position: {
                 my: 'left bottom',
-                at: 'left top',
-                collision: 'flip'
+                at: 'left top-4',
+                collision: 'flip',
+                of: '#codes-value',
+                within: 'body'
             },
             source: codeACSourceHandler,
             select: codeACSelectHandler
