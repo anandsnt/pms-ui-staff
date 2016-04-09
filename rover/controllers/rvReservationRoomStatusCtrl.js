@@ -238,9 +238,9 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		}
 
 	};
-    if($stateParams.isOnlineRoomMove == "false" && $scope.showKeysButton($scope.reservationData.reservation_card.reservation_status) && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN"){
+    var keySettings = $scope.reservationData.reservation_card.key_settings;
+    $scope.showPopupsOnlineOfflineRoomMove = function(){
         setTimeout(function(){
-            var keySettings = $scope.reservationData.reservation_card.key_settings;
             if(keySettings === "email"){
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyEmailPopup.html',
@@ -253,7 +253,13 @@ angular.module('sntRover').controller('reservationRoomStatus',
             }
 
         }, 700)
+    };
 
+    if(( $stateParams.isOnlineRoomMove == "false"
+        || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
+        && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
+        && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")){
+            $scope.showPopupsOnlineOfflineRoomMove();
     }
 
     $scope.$watch('reservationData.reservation_card.room_number',function(){
