@@ -420,6 +420,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
 
+			$scope.addData={};
 			$scope.addData.occupancy = [];
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
