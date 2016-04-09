@@ -146,25 +146,12 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 $scope.initRoomError();
 
             } else {
-
                 if ($scope.reservationIncludesEarlyCheckin(response)){
-                   if (response.is_early_prepaid){
-                        $state.is_early_prepaid = true;
-                        $state.go('zest_station.early_checkin_prepaid');
-
-                   } else {
-                       $state.is_early_prepaid = false;
-                       if (inUpsellWindow){
-                           if (inUpsellWindow && is_room_ready && response.early_checkin_charge !== null){
-                                $state.earlyCheckinOfferId = response.early_checkin_offer_id;
-                                $state.go('zest_station.early_checkin_nav');
-                            } else {
-                                $state.go('zest_station.early_checkin_unavailable');
-                            }
-                       }
-                   }
+                    $state.go('zest_station.early_checkin_prepaid');
+                    
                 } else {
-                    if (inUpsellWindow && is_room_ready && response.early_checkin_charge !== null){
+                    
+                    if (inUpsellWindow && response.early_checkin_charge !== null){
                         $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                         $state.go('zest_station.early_checkin_nav');
                     } else if (inUpsellWindow && is_room_ready && response.early_checkin_charge === null){
