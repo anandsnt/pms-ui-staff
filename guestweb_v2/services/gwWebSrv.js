@@ -80,22 +80,6 @@
 				return GwScreenMappingSrv.screenMappingList;
 
 			};
-			/*
-			 * To fetch Zestweb global settings
-			 * @return {object} Zestweb global settings details
-			 */
-			this.fetchZestwebGlobalSettings = function() {
-				var deferred = $q.defer();
-				var url = '/sample_json/zestweb_v2/zestweb_global_settings.json';
-				$http.get(url).success(function(response) {
-						deferred.resolve(response);
-					}.bind(this))
-					.error(function() {
-						deferred.reject();
-					});
-				return deferred.promise;
-
-			};
 
 			this.setScreenList = function(list) {
 				that.screenList = list;
