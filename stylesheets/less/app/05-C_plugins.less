@@ -285,6 +285,48 @@
             }
         }
 
+        &.find-guest {
+            width: 380px;
+
+            li {
+                a {
+                    font-size: 14px;
+                    line-height: 30px;
+                    font-weight: 400;
+                    padding: 10px;
+                    .float;
+
+                    .guest-image {
+                        margin-right: 20px;
+                        .square(30px);
+
+                        &.accompany {
+                            img { 
+                                width: 20px; 
+
+                                &:nth-child(2) {
+                                    top: 10px;
+                                    left: 10px;
+                                }
+                            }
+                        }
+                    }
+
+                    .name { 
+                        font-size: 18px;
+                        font-weight: 600;
+                        .pull-left; 
+                    }
+
+                    .room { 
+                        text-transform: uppercase;
+                        color: @grey3;
+                        .pull-right; 
+                    }
+                }
+            }
+        }
+
         &.find-rates {
             width: 380px;
 
@@ -319,87 +361,6 @@
         }
 
         &.find-user { width: auto; }
-
-        &.find-cards {
-            width: auto;
-
-            li {
-                a {
-                    position: relative;
-                    padding: 10px 20px 10px 50px;
-                    .show;
-
-                    .icons,
-                    .group-info,
-                    img {
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                        .square(30px);
-                        #border-radius > .rounded();
-                    }
-
-                    .icons {
-                        .hide-text;
-
-                        &.icon-company { 
-                            background-position: 7px -3514px;
-                            background-color: @ccard; 
-                        }
-
-                        &.icon-travel-agent { 
-                            background-position: 6px -3634px;
-                            background-color: @tacard; 
-                        }
-
-                        &.icon-group,
-                        &.icon-group-large { 
-                            background-position: 5px -7774px;
-                            background-color: @groupcard; 
-                        }
-
-                        &.icon-allotment { 
-                            background-position: 5px -8433px;
-                            background-color: @allotmentcard; 
-                        }
-                    }
-
-                    .group-info {
-                        font-size: 18px;
-                        line-height: 30px;
-                        text-transform: uppercase;
-                        font-weight: 600;
-                        text-align: center;
-                        color: @grey3;
-                        width: 30px;
-                        background-color: @grey1;
-                    }
-                }
-            }
-        }
-
-        &.find-user { width: auto; }
-
-        &.find-guest{
-            li{
-              height: 50px;
-            }
-            img {
-                 position: absolute;
-                 .square(30px);
-                 #border-radius > .rounded();
-            }
-            .name{
-              font-size: 18px;
-            }
-            .room{
-                 font-size: 14px;
-                 float: right;
-                 margin-right: 10px;
-                 text-transform: uppercase;
-                 color:@grey3
-            }
-         }
     }
 
     .ui-helper-hidden-accessible { .hide; }
@@ -4552,7 +4513,7 @@
             &.staycard-actions {
                 font-size: 16px;
                 padding: 0;
-                
+
                 .modal-header {
                     padding: 20px;
                     color: @white;
@@ -4571,12 +4532,12 @@
                         font-size: 18px;
                         font-weight: 600;
                         line-height: 20px;
+                        margin-right: 20px; 
                     }
 
                     span { 
                         font-size: 16px;
                         line-height: 20px;
-                        margin-left: 20px; 
                     }
 
                     .button {
@@ -4644,7 +4605,7 @@
                         position: absolute;
                         top: 23px;
                         right: 200px;
-                        width: 220px;
+                        width: 240px;
 
                         .date { 
                             font-size: 16px;
