@@ -26,7 +26,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.home'); //go back to reservation search results
+			$state.go('zest_station.checkout_options'); //go back to checkout options
 		});
 
 		$scope.navToPrev = function() {
@@ -90,20 +90,25 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			findReservationFailed();
 		});
 
+		$scope.$on('SOCKET_CONNECTED',function(){	
+			//will change this call back to init method
+			//once key dispenser is corrected
+			$scope.socketOperator.InsertKeyCard();
+		});
+
 		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
 			$timeout(function() {
 				// so inorder to avoid a possible error because of
 				// wrong timing adding a buffer of 1.5 seconds
                 $scope.socketBeingConnected = false;//connection success
-  			}, 1500);
-  			$scope.socketOperator.InsertKeyCard();
+  			}, 1000);
+  			
 		};
 		var init = function(){
 			setTimeOutFunctionToEnsureSocketIsOpened();
-			//check if websocket is opened, else open
-			//
 			console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
-			//($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? 
+			//close the opened socket
+			($scope.socketOperator.returnWebSocketObject().readyState === 1) ? $scope.socketOperator.closeWebSocket():"";
 			//even if status says it open, it throwing error once key is written
 			$scope.$emit('CONNECT_WEBSOCKET');
 		}();

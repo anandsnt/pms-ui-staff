@@ -444,7 +444,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'promotion_id': $scope.reservationData.promotionId,
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren'],
-                        'room_type_id':$scope.reservationData.tabs[0].roomTypeId
+                        'room_type_id':$scope.reservationData.tabs[0].roomTypeId,
+                        'is_member': !!$scope.reservationData.member.isSelected
                     });
                 }
             }
@@ -693,9 +694,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             delay: 0,
             minLength: 0,
             position: {
+                of : "#company-or-agent",
                 my: 'left bottom',
-                at: 'left top',
-                collision: 'flip'
+                at: 'left top-4',
+                collision : 'flip',
+                within: 'body'
             },
             source: autoCompleteSourceHandler,
             select: autoCompleteSelectHandler
@@ -911,8 +914,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             minLength: 0,
             position: {
                 my: 'left bottom',
-                at: 'left top',
-                collision: 'flip'
+                at: 'left top-4',
+                collision: 'flip',
+                of: '#codes-value',
+                within: 'body'
             },
             source: codeACSourceHandler,
             select: codeACSelectHandler

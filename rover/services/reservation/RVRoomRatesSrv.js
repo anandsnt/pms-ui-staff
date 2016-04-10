@@ -97,6 +97,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 deferred = $q.defer(),
                 data;
             if (defaultView === "RATE") {
+                params.order = "ALPHABETICAL";
                 promises.push(service.fetchRateADRs(params, true).then(function(response) {
                     data = response;
                 }));

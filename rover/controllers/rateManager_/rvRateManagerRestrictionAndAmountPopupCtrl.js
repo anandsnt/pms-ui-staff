@@ -90,9 +90,16 @@ angular.module('sntRover')
          * to set the scrollers in the ui
          */
         const setScroller = () => {
-            $scope.setScroller('scroller-restriction-list');
-            $scope.setScroller('room-type-price-listing');
-            $scope.setScroller('room-type-price-editing');
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false,
+                deceleration: 0.0001,
+                shrinkScrollbars: 'clip'
+            };
+
+            $scope.setScroller('scroller-restriction-list', scrollerOptions);
+            $scope.setScroller('room-type-price-listing', scrollerOptions);
+            $scope.setScroller('room-type-price-editing', scrollerOptions);
         };
 
         /**

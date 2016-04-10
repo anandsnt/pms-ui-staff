@@ -15,6 +15,8 @@ module.exports = {
 			],
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
+				loginRoot + 'loginApp.js',
+				loginRoot + 'loginRouter.js',
 				loginRoot + "**/*.js",
 				'!'+loginRoot+'loginJsAssetList.js',
                                 //these files used for zest station chromeapp 

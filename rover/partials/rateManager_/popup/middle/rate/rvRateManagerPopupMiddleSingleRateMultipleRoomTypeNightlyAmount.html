@@ -3,7 +3,7 @@
 		<h3>Adjust Price </h3>
 		<em>Adjust price for all room type</em>
 	</div>
-	<section class="price-field-container scrollable" ng-iscroll="room-type-price-editing">
+	<section class="price-field-container scrollable no-price-entry" ng-iscroll="room-type-price-editing">
 		<div class="wrapper">
 			<div class="price-fields">
 				
@@ -32,8 +32,7 @@
 					</select>
 				</span>
 				<br clear="all">
-				<!-- remove class .hidden if price has changed-->
-				<div class="apply-all-div" ng-class="{'hidden': priceDetails.single_changing_value.trim() === ''}">
+				<div class="apply-all-div">
 					<button ng-click="clickedOnApplyToAllOccupancies('single')" class="button blue apply-all-button" ng-class="{'grey': isPastDate}" 
 						ng-disabled="isPastDate">
 						Apply to all occupancies
@@ -67,13 +66,7 @@
 				
 				
 				<br clear="all">
-				<!-- remove class .hidden if price has changed-->
-				<div class="apply-all-div" ng-class="{'hidden': priceDetails.double_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('double')" class="button blue apply-all-button" ng-disabled="isPastDate"
-						ng-class="{'grey': isPastDate}">
-						Apply to all occupancies
-					</button>
-				</div>
+
 			</div>
 			<div class="price-fields">
 				<label ng-class="{'has-override': priceDetails.child_overridden}">
@@ -100,13 +93,6 @@
 					</select>
 				</span>
 				<br clear="all">
-				<!-- remove class .hidden if price has changed-->
-				<div class="apply-all-div" ng-class="{'hidden': priceDetails.child_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('child')" class="button blue apply-all-button" ng-disabled="isPastDate"
-						ng-class="{'grey': isPastDate}">
-						Apply to all occupancies
-					</button>
-				</div>
 			</div>
 			<div class="price-fields">
 				<label>
@@ -133,13 +119,6 @@
 					</select>
 				</span>
 				<br clear="all">
-				<!-- remove class .hidden if price has changed-->
-				<div class="apply-all-div" ng-class="{'hidden': priceDetails.extra_adult_changing_value.trim() === ''}">
-					<button ng-click="clickedOnApplyToAllOccupancies('extra_adult')" class="button blue apply-all-button" ng-disabled="isPastDate"
-						ng-class="{'grey': isPastDate}">
-						Apply to all occupancies
-					</button>
-				</div>
 			</div>
 		</div>
 	</section>

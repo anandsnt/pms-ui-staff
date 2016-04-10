@@ -76,11 +76,30 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
 
         $scope.makeKeys = function(n){
-            console.info('---: change screen to make_keys');
-            $state.input.makeKeys = n;
-            $state.input.madeKey = 0;
-            $state.input.nextKey = 1;
-            $state.go('zest_station.make_keys');
+            var continueWithMakeKey = function(){
+                console.info('---: change screen to make_keys');
+                $state.input.makeKeys = n;
+                $state.input.madeKey = 0;
+                $state.input.nextKey = 1;
+                $state.go('zest_station.make_keys');   
+            }
+            $scope.ws = new webSocketOperations(function () {
+                console.info(':: WebSocket Connected ::');
+                        $scope.wsOpen = true;
+                        continueWithMakeKey();
+                    }, function () {
+                        // websocket is closed.
+                        $scope.wsOpen = false;
+                        console.warn('[::: WebSocket Closed :::]');
+                    }, function (evt) {
+                        var received_msg = evt.data;
+                        if (received_msg){
+                            received_msg = JSON.parse(received_msg);
+                            var cmd = received_msg.Command, msg = received_msg.Message;
+                            $scope.initSankyoCmd(cmd, msg);
+                        }
+                    });;
+            
         };
 
         $scope.initKeySuccess = function(){
@@ -351,14 +370,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         };
 
-        $scope.wsConfig = {
-            "swipeService":"wss://localhost:4649/CCSwipeService"   ,
-            "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
-            "close_alert":"Socket Server is no longer connected.",
-            "swipe_alert":"Please swipe.",
-            "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
-        };
-        $scope.ws = new WebSocket($scope.wsConfig['swipeService']);
 
         $scope.setupWebSocketForSankyo = function(){
                 $scope.simulateSwipe = function() {
@@ -373,9 +384,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.DispenseKey = function() {//write to key after successful encodeKey call
                     //console.info('dispense called : [',$state.keyDispenseUID,']');
                     $state.keyDispenseUID = $scope.dispenseKeyData;
-                    if ($scope.ws.readyState === 3){
-                        $scope.wsOpen = false;
-                    }
                     if (!$scope.wsOpen){
                         $scope.emitKeyError('Websocket is in State (Closed)');
                     } else {
@@ -392,31 +400,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                  $scope.InsertKeyCard = function() {//use key for checkout takes key in
                     $scope.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
                 };
-                $scope.connect = function() {
-                    //Triggers when websocket connection is established.
-                    $scope.ws.onopen = function () {
-                        $scope.wsOpen = true;
-                        console.info($scope.wsConfig['connected_alert']);
-                    };
-
-                    // Triggers when there is a message from websocket server.
-                    $scope.ws.onmessage = function (evt) {
-                                var received_msg = evt.data;
-                                if (received_msg){
-                                    received_msg = JSON.parse(received_msg);
-                                    var cmd = received_msg.Command, msg = received_msg.Message;
-                                    $scope.initSankyoCmd(cmd, msg);
-                                }
-                    };
-
-                    // Triggers when the server is down.
-                    $scope.ws.onclose = function () {
-                        // websocket is closed.
-                        $scope.wsOpen = false;
-                        console.warn('[::: WebSocket Closed :::]');
-                    };
-                    return $scope.ws;
-                };
+               
 
 
 
@@ -426,10 +410,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.connectWebSocket = function(){
             console.info('--> Connecting WebSocket...');
             $scope.setupWebSocketForSankyo();
-            setTimeout(function(){
-                console.info('[:: Connecting ... .. .  ::]');
-                $scope.connect();
-            },$scope.wsConfig['connect_delay']);
+            
         };
         
         $scope.getKeyInfoFromResponse = function(response){
@@ -457,7 +438,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.wsOpen = true;
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 console.info('[ :Local Key Print via Websocket: ]');
+                    
+                    
+                    
                 $scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
+                
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
                     //$scope.UUIDforDevice();
                     if ($state.simkey){

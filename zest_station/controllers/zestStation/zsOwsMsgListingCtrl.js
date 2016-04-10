@@ -42,6 +42,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 */
 			setTimeout(function() {
 				removePrintOrientation();
+				$('.popup').show();//show popup again
 				$scope.runDigestCycle();
 			}, 100);
 		};

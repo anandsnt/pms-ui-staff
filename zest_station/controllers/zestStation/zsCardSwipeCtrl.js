@@ -682,36 +682,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
           "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
         };
     
-    
-	var isActive;
-	function onBlur() {
-		isActive = false;
-	};
-	function onFocus(){
-		isActive = true;
-	};
-
 	var ws;
-        function simulateSwipe() {
-            ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
-	}
 	function observe() {
 	    ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
-	}
-	function UUIDforDevice() {
-	    ws.send("{\"Command\" : \"cmd_device_uid\"}");
-	}
-	function DispenseKey() {
-	    ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"25CC2CDA31A70E87AF3731961096C90CA0\"}");
-	}
-	function EjectKeyCard() {
-	    ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
-	}
-	function CaptureKeyCard() {
-	    ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
-	}
-	function InsertKeyCard() {
-	    ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
 	}
 	function connect() {
             ws = new WebSocket(config['swipeService']);
@@ -725,7 +698,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 	    ws.onmessage = function (evt) {
                 	var received_msg = evt.data;
 			console.log(received_msg);
-                        $scope.$emit('SWIPE_ACTION',received_msg)
+                        $scope.$emit('SWIPE_ACTION',received_msg);
+                        ws.close();
                         $scope.goToCardSign();
             };
 
@@ -781,14 +755,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         $scope.setInitSwipeSettings = function(){
                 
-
+                    console.log('$scope.zestStationData: ',$scope.zestStationData);
                     if ($scope.zestStationData.payment_gateway !== "sixpayments") {
                 /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
                  * desktopSwipeEnabled flag is true
                  */
-                    if (!$scope.enable_remote_encoding){
                         $scope.initWsSwipe();
-                    } else {
+                        
                         if($scope.zestStationData.hotel_settings.allow_desktop_swipe && !zsPaymentSrv.checkDevice.any()){
                             console.log('init desktop swipe, any device');
                             initiateDesktopCardReader();
@@ -799,7 +772,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                                 $scope.initiateCardReader();
                               }, 2000);
                           }
-                      }
                     } else {
                         console.warn('refresh iframe with: ',$state.selectedReservation);
                         $scope.refreshIframeWithGuestData($state.selectedReservation);

@@ -7,7 +7,7 @@
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-        <form class="form float" >
+        <div class="form float" >
 
             <fieldset class="holder full-width">
                 <div class="form-title full-width">
@@ -25,8 +25,8 @@
                     <ad-charge-code-auto-complete ng-model="lightspeed.charge_code_name" selected-charge-code-id="lightspeed.charge_code_id" ng-if="lightspeed.enabled" label="Charge Code" entry-div-class="full-width"></ad-charge-code-auto-complete>                    
                 </fieldset>
                 <fieldset class="holder right">
-                    <ad-textbox value="lightspeed.username" name="username" id="username" label="{{'LIGHT_SPEED_POS_USERNAME'| translate}}" ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
-                    <ad-textbox inputtype="password" value="lightspeed.password" name="password" id="password" label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
+                    <ad-textbox value="lightspeed.username" label="{{'LIGHT_SPEED_POS_USERNAME'| translate}}" ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
+                    <ad-textbox inputtype="password" value="lightspeed.password" label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                </fieldset>
                 <fieldset class="holder left">
                     <ad-textbox inputtype="text" value="lightspeed.account_number" name="account-number" id="account-number" label="{{'LIGHT_SPEED_POS_ACCOUNT_NUMBER'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>                  
@@ -45,6 +45,6 @@
                 </button>
             </div>
 
-        </form>
+        </div>
     </section>
 </div>

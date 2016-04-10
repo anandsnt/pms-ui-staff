@@ -49,7 +49,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * function for initializing the scrollers
        */
       var setScroller = () => {
-        $scope.setScroller('filter_details', {});
+        $scope.setScroller('filter_details', {
+          tap: true,
+          preventDefault: false
+        });
       };
 
       /**
@@ -539,6 +542,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         initializeDataModelForMe();
 
         fillAndSetRateRateTypesAndSortOptions();
+        
+        refreshScroller();
 
       })();
     }]);

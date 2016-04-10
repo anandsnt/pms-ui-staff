@@ -103,14 +103,24 @@ const RateManagerGridViewRootComponent = createClass ({
 	refreshScrollers() {
 		var rightScroller = this.rightScroller,
 			leftScroller = this.leftScroller;
-		setTimeout(() => {
-			rightScroller.refresh();
-			leftScroller.refresh();
-		}, 0);	
+		if(rightScroller && leftScroller) {
+			setTimeout(() => {
+				rightScroller.refresh();
+				leftScroller.refresh();
+			}, 0);
+		}
 
 	},
 
 	componentDidUpdate() {
+		this.leftScrollableElement = this.rightScrollableElement = null;
+		if(this.leftScroller) {
+			this.leftScroller.destroy();
+		}
+		if(this.rightScroller) {
+			this.rightScroller.destroy();
+		}		
+		this.leftScroller = this.rightScroller = null;		
 		this.setScrollers();
 		this.refreshScrollers();
 		console.log('ended: ', new Date().getTime());
