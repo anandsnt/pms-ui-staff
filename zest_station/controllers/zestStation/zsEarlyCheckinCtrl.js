@@ -153,13 +153,12 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                             $state.early_checkin_offer_id = response.early_checkin_offer_id;
                             $state.go('zest_station.early_checkin_prepaid');
                     
-                    $state.go('zest_station.early_checkin_prepaid');
-                } else {
+                } else {//room is assumed to be pre-assigned and ready at this point
                     
                     if (inUpsellWindow && response.early_checkin_charge !== null){
                         $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                         $state.go('zest_station.early_checkin_nav');
-                    } else if (inUpsellWindow && is_room_ready && response.early_checkin_charge === null){
+                    } else if (inUpsellWindow && response.early_checkin_charge === null){
                         //update reservation to show arrival time is now, so guest may be elligible for early check-in on-site
                         
                         //fetch the early checkin charge code so guest can check-in early after purchase
