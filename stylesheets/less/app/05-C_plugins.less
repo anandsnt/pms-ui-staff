@@ -4550,9 +4550,9 @@
             /* StayCard Notes / Actions ***/
             &.staycard-notes,
             &.staycard-actions {
+                font-size: 16px;
                 padding: 0;
-                max-height: 540px;
-
+                
                 .modal-header {
                     padding: 20px;
                     color: @white;
@@ -4568,9 +4568,15 @@
                     }
 
                     strong { 
+                        font-size: 18px;
                         font-weight: 600;
                         line-height: 20px;
-                        .h4; 
+                    }
+
+                    span { 
+                        font-size: 16px;
+                        line-height: 20px;
+                        margin-left: 20px; 
                     }
 
                     .button {
@@ -4587,10 +4593,6 @@
                     padding: 20px;
                     background-color: rgba(0,0,0,.05);
                     .box-shadow(-2px 0 2px rgba(0,0,0,.3));
-                }
-
-                @media only screen and (min-height: 768px) { 
-                    max-height: 620px;
                 }
             }
 
@@ -4633,19 +4635,19 @@
 
                 .modal-header {
 
-                    h1,
-                    strong {
+                    h1 {
                         .calc-width(100, 420);
                         .nowrap();
                     }
-                    
+
                     .dates {
                         position: absolute;
                         top: 23px;
                         right: 200px;
-                        width: 200px;
+                        width: 220px;
 
                         .date { 
+                            font-size: 16px;
                             line-height: 20px; 
 
                             &:first-child { margin-bottom: 5px; }
@@ -4660,7 +4662,7 @@
 
                 .actions-content {
                     position: relative;
-                    .size(460px, 920px);
+                    .size(480px, 920px);
 
                     .content-left {
                         .scrollable { 
@@ -4705,8 +4707,12 @@
 
                         .add-content {
 
-                            label,
-                            .entry { margin-bottom: 0; }
+                            label {
+                                margin-bottom: 0;
+
+                                [color="green"] { color: @green; }
+                                [color="red"] { color: @red; }
+                            }
 
                             .entry:not(.full-width) {
                                 .calc-width(50, 10);
@@ -4786,7 +4792,7 @@
 
                 @media only screen and (min-height: 768px) { 
                     .actions-content { 
-                        height: 540px; 
+                        height: 550px; 
 
                         .content-right {
                             .add-content {
@@ -4809,11 +4815,13 @@
                 width: 420px;
 
                 label {
-                  margin-bottom: 0;
-                  .char-count{
-                    color: @green;
-                    &.full{ color: @red; }
-                  }
+                    margin-bottom: 0;
+                    
+                    .char-count{
+                        color: @green;
+                        
+                        &.full{ color: @red; }
+                    }
                 }
 
                 .entry:not(.full-width) {
@@ -4822,7 +4830,8 @@
                     &.margin { margin-right: 20px; }
                 }
 
-                .date {
+                .date,
+                .search {
                     position: relative;
 
                     .clear-query {
@@ -4833,46 +4842,6 @@
                         visibility: hidden;
                         background-color: @white;
                         .size(38px, 40px);
-
-                        .icons {
-                            position: absolute;
-                            top: 12.5px;
-                            right: 12.5px;
-                            background-color: @grey2;
-                            .hide-text;
-                            .square(15px);
-                            .opacity(0);
-                            .show;
-                            #fade > .out();
-                            #border-radius > .rounded(15px);
-                        }
-
-                        &.visible { 
-                            visibility: visible;
-
-                            .icons {    
-                                .opacity(100); 
-                                #fade > .in(); 
-                            }
-                        }
-
-                        &:hover,
-                        &.active { 
-                            .icons { background-color: @logoPrimary; }
-                        }
-                    }
-                }
-
-                .search {
-                    position: relative;
-
-                    .clear-query {
-                        position: absolute;
-                        top: 30px;
-                        right: 0;
-                        z-index: 99;
-                        visibility: hidden;
-                        .square(40px);
 
                         .icons {
                             position: absolute;
