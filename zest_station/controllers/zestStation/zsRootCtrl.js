@@ -868,7 +868,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showOnScreenKeyboard = function(id) {
                 $scope.lastKeyboardId = id;
                //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-                var isTouchDevice = 'ontouchstart' in document.documentElement;
+                var isTouchDevice = 'ontouchstart' in document.documentElement,
+                    agentString = window.navigator.userAgent;
                 var shouldShowKeyboard = (typeof chrome) && 
                         (agentString.toLowerCase().indexOf('window')!==-1) && 
                         isTouchDevice && 
