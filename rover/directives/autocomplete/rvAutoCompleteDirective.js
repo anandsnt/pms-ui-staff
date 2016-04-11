@@ -68,6 +68,15 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         return $('<li></li>').append($result).appendTo(ul);
                     };
 
+                $(el).autocomplete("instance")._resizeMenu = function() {
+                    
+                    if(this.menu.element.offset().top <= 0) {
+                        console.log($(el).offset().top - $(document).scrollTop() - 10);
+                        this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
+                    }
+                    
+                };
+
                 scope.$on('$destroy', function(){
                     $(el).autocomplete( "destroy" );
                     //unbinding the touch move
