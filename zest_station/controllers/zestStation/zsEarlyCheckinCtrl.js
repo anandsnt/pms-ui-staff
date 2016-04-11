@@ -256,10 +256,17 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 console.log('has free early chkin   : ',early_checkin_free);
                 console.log('---------');
 
+                if (!data.early_checkin_available && //if no early checkin is available but early checkin flow is On, go to unavailable screen
+                        $scope.zestStationData.offer_early_checkin && 
+                        data.early_checkin_on){
+                    $state.go('zest_station.early_checkin_unavailable');
+                    return false;
+                }
+                    
                 if (//if early checkin is not yet purchased and meets early upsell criteria..try to sell early checkin
                     $scope.zestStationData.offer_early_checkin && // hotel admin > station > checkin
                     data.early_checkin_available && //hotel admin > promos & upsell > early checkin upsell
-                    data.early_checkin_on //hotel admin > promos & upsell > early checkin upsell
+                    data.early_checkin_on           //hotel admin > promos & upsell > early checkin upsell
                   ){
                     return true;//proceed to early checkin flow
                 } else {
@@ -315,6 +322,10 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 }
                 
                 $state.is_early_prepaid = response.is_early_prepaid;
+                
+                
+                
+                
                 
                 console.log('shouldGoToEarlyCheckInFlow: ',$scope.shouldGoToEarlyCheckInFlow(response));
                 if (!$state.earlyCheckinPurchased && //meaning if they purchased it through zest station a minute ago...dont re-prompt the user
