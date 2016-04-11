@@ -310,7 +310,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                     response.is_early_prepaid = false;
                 }
                 
-                if (response.is_early_checkin_purchased || response.is_early_checkin_bundled){//user probably purchased an early checkin from zest web, or through zest station
+                if (response.is_early_checkin_purchased || response.is_early_checkin_bundled_by_addon){//user probably purchased an early checkin from zest web, or through zest station
                      response.is_early_prepaid = true;                                         //or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
                 }
                 
