@@ -318,11 +318,10 @@ sntZestStation.controller('zsFindReservationCtrl', [
             console.info('$scope.zestStationData: ',$scope.zestStationData);//allow debugging code until S50+
             
             if($scope.zestStationData.check_in_message_texts.not_available_message === "" ){
-                console.info('wait...');
                 $scope.messageOverride = false;
                 $scope.headingText = 'WAIT_MOMENT';
             } else{
-                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.not_available_message)
+                console.info('messageOverride: ',$scope.zestStationData.check_in_message_texts.not_available_message);
                 $scope.messageOverride = true;//need to turn off translate 
                 $scope.headingText = $scope.zestStationData.check_in_message_texts.not_available_message;
             }
