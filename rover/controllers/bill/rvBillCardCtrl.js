@@ -2129,6 +2129,7 @@ sntRover.controller('RVbillCardController',
 	// print the page
 	var printBill = function(data) {
 		var printDataFetchSuccess = function(successData){
+			$scope.isPrintRegistrationCard = false;
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
@@ -2153,7 +2154,7 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	};
-		    }, 100);
+		    }, 200);
 
 		    /*
 		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -2166,7 +2167,7 @@ sntRover.controller('RVbillCardController',
 
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
-		    }, 100);
+		    }, 200);
 
 		};
 
@@ -2219,13 +2220,13 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	};
-		    }, 100);
+		    }, 200);
 
 		    /*
 		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 		    */
 		    $timeout(function() {
-		    	$scope.isPrintRegistrationCard = false;
+
 
 				// CICO-9569 to solve the hotel logo issue
 				$("header .logo").removeClass('logo-hide');
@@ -2233,7 +2234,7 @@ sntRover.controller('RVbillCardController',
 
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
-		    }, 100);
+		    }, 200);
 
 		};
 
