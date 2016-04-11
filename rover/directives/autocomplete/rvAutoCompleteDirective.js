@@ -69,9 +69,8 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     };
 
                 $(el).autocomplete("instance")._resizeMenu = function() {
-                    
-                    if(this.menu.element.offset().top <= 0) {
-                        console.log($(el).offset().top - $(document).scrollTop() - 10);
+                    this.menu.element.css('height', 'auto');
+                    if(($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
                         this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
                     }
                     
