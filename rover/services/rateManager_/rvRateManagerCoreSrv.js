@@ -161,11 +161,23 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 roomTypes = [],
                 rates = [],
                 roomTypeAndRestrictions = [],
+                commonRestrictions = [],
                 deferred = $q.defer();
 
             promises.push(service.fetchSingleRateInfo(_.omit(params,'fetchRoomTypes')).then((data) => {
                 roomTypeAndRestrictions = data.results;
             }));
+
+            var commonRestrictionsParams = {
+                ..._.pick(params, 'from_date', 'to_date'),
+                'rate_ids[]': [params.rate_id]
+            }
+            promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
+                .then((data) => {
+                    commonRestrictions = data.results;
+                })
+            );
+
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
                     roomTypes = data;
@@ -181,7 +193,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 deferred.resolve({
                     roomTypes,
                     roomTypeAndRestrictions,
-                    rates
+                    rates,
+                    commonRestrictions
                 });
             });
 
@@ -192,11 +205,18 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             var promises = [],
                 roomTypes = [],
                 roomTypeAndRestrictions = [],
+                commonRestrictions = [],
                 deferred = $q.defer();
 
             promises.push(service.fetchAllRoomTypesInfo(_.omit(params,'fetchRoomTypes')).then((data) => {
                 roomTypeAndRestrictions = data.results;
             }));
+
+            promises.push(service.fetchCommonRestrictions(_.pick(params, 'from_date', 'to_date'))
+                .then((data) => {
+                    commonRestrictions = data.results;
+                })
+            ); 
 
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
@@ -206,7 +226,8 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             $q.all(promises).then((data) => {
                 deferred.resolve({
                     roomTypes,
-                    roomTypeAndRestrictions
+                    roomTypeAndRestrictions,
+                    commonRestrictions
                 });
             });
 

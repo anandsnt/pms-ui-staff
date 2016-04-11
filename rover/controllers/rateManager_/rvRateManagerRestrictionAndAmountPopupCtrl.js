@@ -705,7 +705,7 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(dialogData.restrictionTypes,
                     restrictionData.room_types,
-                    restrictionData.rate_restrictions);
+                    dialogData.commonRestrictions);
 
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 

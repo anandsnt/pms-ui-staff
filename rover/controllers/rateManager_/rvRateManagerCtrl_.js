@@ -627,10 +627,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * to form the rendering data model (for react) against all rates
      * @param  {array} dates
      * @param  {array} roomTypeRestrictions
+     * @param  {array} commonRestrictions
      * @param  {array} room types
      * @return {array}
      */
-    var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, roomTypes) => {
+    var formRenderingDataModelForAllRoomTypes = (dates, roomTypeRestrictions, commonRestrictions, roomTypes) => {
         var dateRoomTypeSet = null,
             roomTypeRestrictionWithDateAsKey = _.object(dates, roomTypeRestrictions),
             roomTypeIDs = _.pluck(roomTypes, 'id'),
@@ -653,7 +654,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //forming the top row (All rates) with common restrictions
         roomTypeWithRestrictions.unshift({
             restrictionList: dates.map((date) => {
-                return roomTypeRestrictionWithDateAsKey[date].all_room_type_restrictions;
+                return _.findWhere(commonRestrictions, { date: date }).restrictions;
             })
         });
 
@@ -686,7 +687,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response
      */
     var processRoomTypesAndRestrictionForAllRoomType = (response) => {
-        var roomTypeRestrictions = response.roomTypeAndRestrictions;
+        var roomTypeRestrictions = response.roomTypeAndRestrictions,
+            commonRestrictions = response.commonRestrictions;
 
         //roomTypeList is now cached, we will not fetch that again
         cachedRoomTypeList = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList;
@@ -695,7 +697,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var dates = _.pluck(roomTypeRestrictions, 'date');
         showAndformDataForTopBar(dates);
 
-        var roomTypeWithRestrictions = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, cachedRoomTypeList);
+        var roomTypeWithRestrictions = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList);
 
         //updating the view with results
         updateAllRoomTypesView(roomTypeWithRestrictions, dates);
@@ -763,72 +765,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
     };
 
-    /**
-     * when the daily rates success
-     * @param  {Object}
-     */
-    var onFetchRoomTypeAndRestrictionsSuccess = (response) => {
-        var roomTypeRestrictions = response.roomTypeAndRestrictions,
-            roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
-            dates = _.pluck(roomTypeRestrictions, 'date'),
-            roomTypeIDs = _.pluck(roomTypes, 'id'),
-            roomTypeWithRestrictions = roomTypeRestrictions[0].room_types,
-            roomTypeObjectBasedOnID = {},
-            dateRoomTypeSet = null;
-
-        //roomTypeList is now cached, we will not fetch that again
-        cachedRoomTypeList = roomTypes;
-
-        //topbar
-        $scope.fromDate = dates[0];
-        $scope.toDate = dates[dates.length - 1];
-        $scope.showTopBar = true;
-        $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
-        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
-
-        roomTypeRestrictions = _.object(dates, roomTypeRestrictions);
-        roomTypeObjectBasedOnID = _.object(roomTypeIDs, roomTypes);
-
-        //we have lots of alternative ways, those depends on javascript array order
-        //which is buggy from browser to browser, so choosing this bad way
-        //may be this will result in running 365000 times
-        roomTypeWithRestrictions = roomTypeWithRestrictions.map((roomType) => {
-            roomType.restrictionList = [];
-
-            roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
-
-            dates.map((date) => {
-                dateRoomTypeSet = _.findWhere(roomTypeRestrictions[date].room_types, {id: roomType.id});
-                roomType.restrictionList.push(dateRoomTypeSet.restrictions);
-            });
-
-            return _.omit(roomType, 'restrictions');
-        });
-
-        //for the first row with common restrictions among the rates
-        //for now there will not be any id, we have to use certain things to identify (later) TODO
-
-        roomTypeWithRestrictions.unshift({
-            restrictionList: dates.map((date) => {
-                return roomTypeRestrictions[date].all_room_type_restrictions;
-            })
-        });
-
-        //closing the left side filter section
-        $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
-
-        console.log('Strted: ', new Date().getTime());
-
-        store.dispatch({
-            type: RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
-            roomTypeRestrictionData: [...roomTypeWithRestrictions],
-            dates,
-            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
-            businessDate: tzIndependentDate($rootScope.businessDate),
-            restrictionTypes,
-            callbacksFromAngular: getTheCallbacksFromAngularToReact(),
-        });
-    };
 
 
     /**
@@ -838,6 +774,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
+            commonRestrictions = response.commonRestrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
             rateIDs = successCallBackParameters.rateIDs,
             rates = rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false));
@@ -887,6 +824,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var onFetchSingleRateRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
+            commonRestrictions = response.commonRestrictions[0].restrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0]
                 .room_types.map(roomType =>
@@ -899,12 +837,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRoomTypeList = roomTypes;
 
         var data = {
-            roomTypesAndPrices,
             mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE,
             rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
+            date: successCallBackParameters.date,
+            roomTypesAndPrices,
             restrictionData,
             restrictionTypes,
-            date: successCallBackParameters.date
+            commonRestrictions
         };
         showRateRestrictionPopup(data);
     };
@@ -1154,6 +1093,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
     };
 
+    
+    
     /**
      * when single rate details api call success
      * @param  {Object} response
