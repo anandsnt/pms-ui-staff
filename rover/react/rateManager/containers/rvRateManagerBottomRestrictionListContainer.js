@@ -24,7 +24,6 @@ const convertRestrictionsIntoProps = (restrictionTypes) => {
 };
 
 const mapStateToRateManagerBottomRestrictionListProps = (state) => ({
-	divClassNames: 'pinned-bottom',
 	ulClassNames: 'restriction-legends',
 	restrictionTypes: convertRestrictionsIntoProps(state.restrictionTypes)
 });
