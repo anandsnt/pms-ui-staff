@@ -121,9 +121,6 @@ var GlobalZestStationApp = function(){
     };
     this.resdebug = false;//to debug a reservation payment request from zest station
     this.resdebug_id = 0;
-    this.showDebugOptions = function(){
-        angular.element("#main").scope().showDebugOptions();
-    };
 };
 
 zestSntApp = new GlobalZestStationApp();
