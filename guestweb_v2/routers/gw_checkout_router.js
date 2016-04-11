@@ -16,7 +16,7 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 			pageTitle: 'Room verification'
 		}
 	 }).state('ccAddition', {
-	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow',
+	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow/:time/:ap/:amount',
 	 	templateUrl: '/assets/partials/checkout/gwCcEntry.html',
 	 	controller : 'GwCCAdditionController',
 	 	data: {
