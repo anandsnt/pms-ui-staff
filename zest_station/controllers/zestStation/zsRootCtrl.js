@@ -51,7 +51,6 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.goToAdmin = function() {
             $state.go ('zest_station.admin');
-           // $state.go('zest_station.home-admin',{'isadmin':true});//for debugging quickly
 	};
 
 	/**

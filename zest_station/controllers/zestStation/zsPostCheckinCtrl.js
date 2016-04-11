@@ -394,8 +394,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = 'SWIPE_ERR_HEADER';
                 
                 $scope.subHeadingText = '';
-                //$scope.subHeadingText = $state.swipe_error_msg;//dont show to guests, debugging only
-                
             } else if (current === 'zest_station.tab-kiosk-reservation-signature-time-out'){
                 $scope.at = 'cc-sign-time-out';
                 
