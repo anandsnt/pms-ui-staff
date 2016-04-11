@@ -21,7 +21,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                         //CICO-26513
                         ulElement = ul;
-                        ulElement.off('touchmove').on('touchmove', function(e) {
+                        ul.off('touchmove').on('touchmove', function(e) {
                             e.stopPropagation();
                         });
 
@@ -67,6 +67,14 @@ sntRover.directive('autoComplete', ['highlightFilter',
                         }
                         return $('<li></li>').append($result).appendTo(ul);
                     };
+
+                $(el).autocomplete("instance")._resizeMenu = function() {
+                    this.menu.element.css('height', 'auto');
+                    if(($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
+                        this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
+                    }
+                    
+                };
 
                 scope.$on('$destroy', function(){
                     $(el).autocomplete( "destroy" );
