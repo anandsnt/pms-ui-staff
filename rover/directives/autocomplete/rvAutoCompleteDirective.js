@@ -21,7 +21,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                         //CICO-26513
                         ulElement = ul;
-                        ulElement.off('touchmove').on('touchmove', function(e) {
+                        ul.off('touchmove').on('touchmove', function(e) {
                             e.stopPropagation();
                         });
 
