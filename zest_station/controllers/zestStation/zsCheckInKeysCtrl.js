@@ -15,7 +15,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     return $sce.trustAsHtml(val);
                 };
             });
-        $state.simkey = false;//use for debugging, simulate success responses
 	/**
 	 * when the back button clicked
 	 * @param  {[type]} event
@@ -70,15 +69,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	};
 
         $scope.goToKeySuccess = function(){
-            $scope.ws.close();
-            
             $scope.$emit("hideLoader");
             $state.go('zest_station.key_success');
             $scope.$emit("hideLoader");
         };
 
         $scope.makeKeys = function(n){
-            console.info('---: change screen to make_keys');
             $state.input.makeKeys = n;
             $state.input.madeKey = 0;
             $state.input.nextKey = 1;
@@ -101,12 +97,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.fetchDoorLockSettings = function(){
 
             var onResponse = function(response){
-                console.info('---> Door Lock Setting Fetch [Complete], Response: ',response);
                 if (response.status !== 'failure'){
                     var remote  = (response.enable_remote_encoding) ? 'enabled'
                                                                     : 'disabled';
                     $scope.remoteEncoding = response.enable_remote_encoding;
-                    console.info('---> Remote Encoding is: ',remote);
                     $scope.beginKeyEncode();
                 };
 
@@ -127,24 +121,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
              */
             $scope.at = 'make-keys';
             if ($state.input.makeKeys === 1){
-                console.log('make uno keys');
-
-                console.info('[ONLY 1 KEY]')
                 $scope.oneKeySetup();
-                console.log('$scope.oneKeySetup();')
             } else {
-                console.log('make dos keys');
-                console.info('[2 KEYS !!]')
-                //at first key
-                console.log('$state.input',$state.input);
                 if ($state.input.madeKey === 0){
-                    console.log('$scope.keyOneOfTwoSetup();');//sets up screen and runs init to make first key
                     $scope.keyOneOfTwoSetup();//sets up screen and runs init to make first key
 
-                } else if($state.input.madeKey === 1) {
-                    //$scope.keyTwoOfTwoSetup();//sets up screen and runs init to make second key
-                    console.log('$scope.keyTwoOfTwoSetup();')//sets up screen and runs init to make second key
-                }
+                } 
             }
 
 
@@ -153,7 +135,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         };
         $scope.initKeyCreate = function(){
-            console.log('[: Fetching DoorLock Settings: ...]');
             $scope.fetchDoorLockSettings();//get fresh settings on each call to ensure latest door lock settings are used, then continue using beginKeyEncode
         };
         $scope.keyTwoOfTwoSetup = function(){
@@ -203,7 +184,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
        $scope.keyOneOfTwoSuccess = function(){
             $state.input.madeKey = 1;
             $state.input.nextKey = 2;
-            console.info($state.input)
             $scope.keyTwoOfTwoSetup();
         };
 
@@ -216,8 +196,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.successMakeKey = function(response){
-            console.info('success key made?',response);
-            console.info('$scope.remoteEncoding: ',$scope.remoteEncoding)
                 var makeKeySuccess = $scope.successfulKeyEncode(response);
                 if (makeKeySuccess){
                     if ($scope.makingKey === 1 && $scope.input.makeKeys === 1){
@@ -232,18 +210,13 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     $state.selectedReservation.keySuccess = true;
                 } else {
                     $scope.emitKeyError(response);
-                    console.info('[:: Success Made Remote Key ::]');
                     /*
                      * when using websockets / sankyo to dispense keys, we can the print_key first to
                      * get card data ready to write reservation info
                      */
-                    console.info(response);
-                    if ($state.simkey){
-                        console.info('::: SIMULATE SUCCESS > Make Key :::');
-                        response.status = 'success';
-                    }
+                   
 
-                    $scope.wsOpen = false;//by default dont use websockets, only if local encoding with sankyo device
+                    $state.wsOpen = false;//by default dont use websockets, only if local encoding with sankyo device
 
                     if ($scope.successfulKeyEncode(response)){//due to backend sending 200 with status == failure, need to verify..
 
@@ -290,11 +263,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
 
         $scope.initMakeKey = function(n){
-            console.info('::KEY [',n,'] Init Encode::');
             $scope.makingKey = n;
             $state.nextKey = n+1;
             var options = $scope.getKeyOpts();
-                //console.info('encode key and set UID')
                 setTimeout(function(){
                     $state.keyDispenseUID = '';//used if
 
@@ -310,14 +281,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     
 
                     var onSuccessGetToken = function(response){
-                        console.info('got token callback',arguments);
-                      //  options.access_token = response.station_access_token;
-                      //  options.consumer_key="85a59b343f11949b3b204708039d781e";
-                        //"access_token":"4b30ffe1ece87a2abee1afc2831a45e7",
-
                         var printAPI = {
-                           // "consumer_key":"85a59b343f11949b3b204708039d781e",
-                           // "access_token":response.station_access_token,
                             "is_additional":false,
                             "is_kiosk":true,
                             "key":1,
@@ -353,56 +317,78 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         };
 
-        $scope.wsConfig = {
+        $state.wsConfig = {
             "swipeService":"wss://localhost:4649/CCSwipeService"   ,
             "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
             "close_alert":"Socket Server is no longer connected.",
             "swipe_alert":"Please swipe.",
             "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
         };
-        $scope.ws = new WebSocket($scope.wsConfig['swipeService']);
+        console.log('$state.ws: ',$state.ws);
+       
+        if ($scope.socketOperator){
+            if ($scope.socketOperator.closeWebSocket){
+                $scope.socketOperator.closeWebSocket();
+            }
+        }
+        if (!$state.ws){
+            $state.ws = new WebSocket($state.wsConfig['swipeService']);
+            
+        } else if ($state.ws.readyState !== 1){
+            console.log('re-opening websocket to make keys');
+            if ($state.ws.open){
+                $state.ws.open();
+            }
+        }
 
         $scope.setupWebSocketForSankyo = function(){
                 $scope.simulateSwipe = function() {
-                    $scope.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
+                    $state.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
                 };
                 $scope.observe = function() {
-                    $scope.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
+                    $state.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
                 };
                 $scope.UUIDforDevice = function() {
-                    $scope.ws.send("{\"Command\" : \"cmd_device_uid\"}");
+                    $state.ws.send("{\"Command\" : \"cmd_device_uid\"}");
                 };
                 $scope.DispenseKey = function() {//write to key after successful encodeKey call
-                    //console.info('dispense called : [',$state.keyDispenseUID,']');
                     $state.keyDispenseUID = $scope.dispenseKeyData;
-                    if ($scope.ws.readyState === 3){
-                        $scope.wsOpen = false;
+                    if ($state.ws.readyState === 3){
+                        $state.wsOpen = false;
                     }
-                    if (!$scope.wsOpen){
-                        $scope.emitKeyError('Websocket is in State (Closed)');
+                    if (!$state.wsOpen){
+                        $state.ws.open();
+                        setTimeout(function(){
+                            console.info('$state.ws.readyState: ',$state.ws.readyState);
+                            if ($state.ws.readyState === 1){
+                                $state.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}")  ;
+                            } else {
+                                $scope.emitKeyError('Websocket is in State (Closed), attempting re-connect with dispense');
+                            }
+                        },2000);
+                        
                     } else {
-                        $scope.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
+                        $state.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
                     }
                     
                 };
                  $scope.EjectKeyCard = function() {//reject key on failure
-                    $scope.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
+                    $state.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
                 };
                 $scope.CaptureKeyCard = function() {//dumps key into internal bucket after insert key
-                    $scope.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
+                    $state.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
                 };
                  $scope.InsertKeyCard = function() {//use key for checkout takes key in
-                    $scope.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
+                    $state.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
                 };
                 $scope.connect = function() {
                     //Triggers when websocket connection is established.
-                    $scope.ws.onopen = function () {
-                        $scope.wsOpen = true;
-                        console.info($scope.wsConfig['connected_alert']);
+                    $state.ws.onopen = function () {
+                        $state.wsOpen = true;
                     };
 
                     // Triggers when there is a message from websocket server.
-                    $scope.ws.onmessage = function (evt) {
+                    $state.ws.onmessage = function (evt) {
                                 var received_msg = evt.data;
                                 if (received_msg){
                                     received_msg = JSON.parse(received_msg);
@@ -412,12 +398,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     };
 
                     // Triggers when the server is down.
-                    $scope.ws.onclose = function () {
+                    $state.ws.onclose = function () {
                         // websocket is closed.
-                        $scope.wsOpen = false;
-                        console.warn('[::: WebSocket Closed :::]');
+                        $state.wsOpen = false;
                     };
-                    return $scope.ws;
+                    return $state.ws;
                 };
 
 
@@ -426,12 +411,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.connectWebSocket = function(){
-            console.info('--> Connecting WebSocket...');
             $scope.setupWebSocketForSankyo();
             setTimeout(function(){
-                console.info('[:: Connecting ... .. .  ::]');
                 $scope.connect();
-            },$scope.wsConfig['connect_delay']);
+            },$state.wsConfig['connect_delay']);
         };
         
         $scope.getKeyInfoFromResponse = function(response){
@@ -447,27 +430,14 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
           
         };
         $scope.printLocalKey = function(response){
-            console.info('[:: Print Local Key ::]');
-
-            console.info(response);
-            if ($state.simkey){//this and the below may need to change
-                console.info('::: SIMULATE SUCCESS > Print Local Key :::');
-                response.status = 'success';
-            }
-
             if ($scope.successfulKeyEncode(response)){//This may need to go away, read response differently than encode success from print_key
-                $scope.wsOpen = true;
+                $state.wsOpen = true;
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
-                console.info('[ :Local Key Print via Websocket: ]');
                 $scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
                     //$scope.UUIDforDevice();
-                    if ($state.simkey){
-                        $scope.initSankyoCmd('cmd_dispense_key_card', '[fake:simluated sankyo response]');//fake the returning msg
-                    } else {
                         $scope.DispenseKey();
-                    }
-                },3500);
+                },2500);
 
             } else {
                 $scope.emitKeyError(response);
@@ -477,7 +447,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.makeKeyParam = function(){
-            console.info('$state.input: ',$state.input);
             if ($state.input.makeKeys === 1){
                 //* dispense one key
                 return 'one';
@@ -500,7 +469,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.saveUIDToReservation = function(uid){
                 var onResponse = function(){
                     $scope.$emit("hideLoader");
-                    console.log(arguments);
                 };
              $scope.callAPI(zsTabletSrv.saveUIDtoRes, {
                 params: {
@@ -513,9 +481,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
          
         $scope.initSankyoCmd = function(cmd, msg){//should only init this if a dispense was called...
-            console.info('[:: WebSocket Received Message from CMD ('+cmd+') ::]');
-            console.info('---> "' +msg+ '"');
-            console.log(msg);
             if (typeof msg === typeof "str"){
                 if (msg.toLowerCase().indexOf('invalid') !== -1){
                     $scope.emitKeyError(msg);
@@ -530,19 +495,16 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
             switch ($scope.makeKeyParam()){
                 case 'one':
-                    console.info('handle one');
                     $scope.input.madeKey = 1;
                     
                     $scope.goToKeySuccess();
                     break;
 
                 case 'first':
-                    console.info('handle first');
                     $scope.keyOneOfTwoSuccess();
                     break;
 
                 case 'second':
-                    console.info('handle second');
                     $scope.keyTwoOfTwoSuccess();
                     break;
 
@@ -577,8 +539,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
             if (view === 'zest_station.make_keys'){
                 $scope.at = 'make-keys';
-                console.log('[ INIT ]');
-                console.info('[ :Start Key Create Process: ]')
                 $scope.initKeyCreate();
 
             } else if(view === 'zest_station.key_success'){
@@ -588,7 +548,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 
                 
                 
-                console.info('at : ',view);
                 $stateParams.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $scope.at = 'select-keys-after-checkin';
                 $scope.isPickupKeys = true;
@@ -596,7 +555,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
             } else {
-                console.info('select-keys-after-checkin');
                 $scope.at = 'select-keys-after-checkin';
             }
         };

@@ -148,22 +148,17 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             } else {
                 if ($scope.reservationIncludesEarlyCheckin(response)){
                     
-                    var onSuccess = function(response){
-                            console.log('updated reservation for : early_checkin_prepaid : ',response);
                             $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
                             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                             $state.early_checkin_offer_id = response.early_checkin_offer_id;
                             $state.go('zest_station.early_checkin_prepaid');
-                        };
-                        $scope.updateReservationTime(onSuccess);
                     
-                    $state.go('zest_station.early_checkin_prepaid');
-                } else {
+                } else {//room is assumed to be pre-assigned and ready at this point
                     
                     if (inUpsellWindow && response.early_checkin_charge !== null){
                         $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                         $state.go('zest_station.early_checkin_nav');
-                    } else if (inUpsellWindow && is_room_ready && response.early_checkin_charge === null){
+                    } else if (inUpsellWindow && response.early_checkin_charge === null){
                         //update reservation to show arrival time is now, so guest may be elligible for early check-in on-site
                         
                         //fetch the early checkin charge code so guest can check-in early after purchase
@@ -186,6 +181,8 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             $scope.$emit('GENERAL_ERROR',response);
         };
         $scope.updateReservationTime = function(onsuccess){
+            
+                $scope.$emit('hideLoader');
                 var today = new Date();
                 var hours = today.getHours(),
                         min = today.getMinutes();
@@ -310,19 +307,17 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 response.is_early_prepaid = false;
 
                 if (response.offer_eci_bypass){//if bypass is true, early checkin may be part of their Rate
-                    if (response.early_checkin_charge !== null &&
-                            response.early_checkin_offer_id !== null){
-                        
-                        response.is_early_prepaid = true;
-                    } else {
-                        response.is_early_prepaid = false;
-                        
-                    }
-                    $state.is_early_prepaid = response.is_early_prepaid;
+                    response.is_early_prepaid = false;
                 }
                 
+                if (response.is_early_checkin_purchased){//user probably purchased an early checkin from zest web, or through zest station
+                    response.is_early_prepaid = true;
+                }
+                
+                $state.is_early_prepaid = response.is_early_prepaid;
+                
                 console.log('shouldGoToEarlyCheckInFlow: ',$scope.shouldGoToEarlyCheckInFlow(response));
-                if (!$state.earlyCheckinPurchased && 
+                if (!$state.earlyCheckinPurchased && //meaning if they purchased it through zest station a minute ago...dont re-prompt the user
                         $scope.shouldGoToEarlyCheckInFlow(response)){
                         //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
                         $scope.beginEarlyCheckin(response);
@@ -341,8 +336,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             });
         };
             
-        $scope.initTermsPage = function(){
-            $scope.onStartCheckinUpsell();
+        $scope.initTermsPage = function(continueWithEarlyCheckin){
+            if (continueWithEarlyCheckin){
+                    $state.hotel_terms_and_conditions = $scope.hotel_terms_and_conditions;
+                    $state.go('zest_station.terms_conditions');
+            } else {
+                $scope.onStartCheckinUpsell();
+            }
         };
 
 	var initializeMe = function() {

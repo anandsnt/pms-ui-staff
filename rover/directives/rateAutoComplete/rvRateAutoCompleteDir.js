@@ -120,11 +120,9 @@
 	            delay		: _.isUndefined($scope.delay) ? 600 : parseInt($scope.delay),
 	            minLength	: 0,
 		        position	: {
-		            my 			: "right top",
-		            at 			: "right bottom",
-		            collision	: 'flip',
-    				of 			: (autocompleteEl),
-        			within 		: 'body'		            
+		            my 			: "left top",
+		            at 			: "left bottom",
+		            collision	: 'flip'		            
 		        },
 	            source 		: autoCompleteSourceHandler,
 	            select 		: autoCompleteSelectHandler
