@@ -63,7 +63,8 @@
 "CHROME_APP_ID":"Chrome App ID",
 "STATION_PRINTER_OPTIONS" : "Station Printer Options",
 "OWS_GUEST_MESSAGES" : "OWS Guest Messages",
-"BYPASS_CC_FOR_PREPAID_RESERVATIOIN":"Bypass Credit Card for Prepaid Reservations"
+"BYPASS_CC_FOR_PREPAID_RESERVATIOIN":"Bypass Credit Card for Prepaid Reservations",
+"DISPLAY_TERMS_AND_CONDITIONS" : "Display Terms & Conditions"
 
 
 
